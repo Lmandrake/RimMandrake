@@ -8,7 +8,9 @@
            · click-to-use per slot; clicking again takes it back; primary pick drives `decision`
            · pick and ✕ of one set cannot both stand (either order); a per-picture delete of the picked set is refused
            · ✕ on the ONLY in-game picture of a slot turns the slot into REDRAW and says the old one stays until replaced
-           · retire of a live picture: redraw, stays until replaced
+           · retire of a live picture: redraw, stays until replaced — unless another set is in use there: then both stand
+             in ONE pass (owner 2026-10-12), either click order
+           · no accept-unchanged control; a seeded agent prefill never reads as a pick (owner provenance)
            · `in random pool` only on a pool lane, never pre-ticked; "add all new renders" adds renders only
            · an unassigned render cannot be used until labelled; a catch row's reference renders never
            · a schema-1 record upgrades on edit: variants -> legacyVariants, a default list -> legacyVariantsDefault
@@ -83,7 +85,8 @@ ITEM = {
                   {"letter": "C", "kind": "donor", "faces": {"single": "c1"}, "setId": "sc", "purgeable": True}]},
         {"key": "R/Young", "res": "R/Young", "primary": False, "lane": "slot", "pool": False, "facings": ["single"], "role": "young plant",
          "slot": {"label": "PLANT · YOUNG (immature)", "kind": "plant_young", "required": False},
-         "cols": [{"letter": "D", "kind": "live", "winner": True, "faces": {"single": "d1"}, "setId": "sd"}]},
+         "cols": [{"letter": "D", "kind": "live", "winner": True, "faces": {"single": "d1"}, "setId": "sd"},
+                  {"letter": "G", "kind": "artpipe", "faces": {"single": "g1"}, "setId": "sg", "purgeable": True}]},
         {"key": "_byname", "res": None, "primary": False, "lane": "unassigned", "pool": False, "facings": ["single"], "role": "renders",
          "slot": {"label": "RENDERS NOT YET ASSIGNED", "kind": "unassigned"},
          "cols": [{"letter": "E", "kind": "artpipe", "faces": {"single": "e1"}, "setId": "se", "purgeable": True}]},
@@ -122,7 +125,14 @@ S.assign(it, u, 'E', 'R/Young'); o.pickAssigned = S.pick(it, u, 'R/Young', 'E');
 let a = {decision: '', note: ''}; S.slotButton(it, a, 'R/Grown', 'accept'); o.accept = cp(a);
 let m = {decision: 'B', note: '', variants: ['B', 'C'], at: 'x'}; S.v2(m); o.v2 = cp(m);
 let md = {decision: 'B', note: '', variants: ['B', 'C'], variantsDefault: true}; S.v2(md); o.v2d = cp(md);
-let n = {decision: '', note: ''}; o.need = S.needsYou(it, n); S.acceptAll(it, n); S.assign(it, n, 'E', 'not_needed'); o.need2 = S.needsYou(it, n);
+let n = {decision: '', note: ''}; o.need = S.needsYou(it, n); S.assign(it, n, 'E', 'not_needed'); o.need2 = S.needsYou(it, n);
+o.noAcceptAll = typeof S.acceptAll === 'undefined';
+let r1 = {decision: '', note: '', prefill: 'A'}; S.pick(it, r1, 'R/Young', 'G'); o.rpMsg = S.retire(it, r1, 'R/Young', 'D'); o.pickRetire = cp(r1);
+let r2 = {decision: '', note: '', prefill: 'A'}; S.retire(it, r2, 'R/Young', 'D'); S.pick(it, r2, 'R/Young', 'G'); o.retirePick = cp(r2);
+let pf = {decision: 'B', note: '', prefill: 'B'}; o.pfState = S.state(it, pf, it.graphics[0]); o.pfOnly = S.prefillOnly(pf);
+let hs = {decision: 'B', note: '', prefill: 'B', decidedAt: 'T'}; o.hisState = S.state(it, hs, it.graphics[0]);
+let ov = {decision: 'C', note: '', prefill: 'B'}; o.ovState = S.state(it, ov, it.graphics[0]);
+let old = {decision: 'B', note: '', at: 'T'}; o.oldState = S.state(it, old, it.graphics[0]);
 let k = {decision: '', note: ''}; S.setAsk(k, 'rename.name', 'Gloamling'); S.setAsk(k, 'describe', 'improve'); o.asks = cp(k.asks);
 S.setAsk(k, 'rename.name', ''); S.setAsk(k, 'describe', ''); o.asksCleared = k.asks === undefined;
 let lg = {decision: 'A', note: '', schema: 2, legacyVariants: ['B', 'D']};
@@ -159,12 +169,23 @@ console.log(JSON.stringify(o));
     check(o["pickAssigned"]["ok"] and o["afterAssigned"]["slots"]["R/Young"]["pick"] == "E" and o["afterAssigned"]["assign"] == {"E": "R/Young"},
           "once labelled 'young', render E can be used for the young slot")
     check(o["accept"]["slots"]["R/Grown"]["state"] == "accept" and o["accept"]["decision"] == "A",
-          "accept unchanged on the primary slot keeps the in-game set (decision = A)")
+          "an old record's 'accept' state still reads as keeping the in-game set (decision = A)")
+    check(o["noAcceptAll"], "no 'accept all unchanged' action exists (owner 2026-10-12: returning the sheet accepts)")
+    pr, rp = o["pickRetire"], o["retirePick"]
+    check(pr["slots"]["R/Young"]["state"] == "pick" and pr["slots"]["R/Young"]["pick"] == "G" and pr["retire"]["R/Young"] == ["D"]
+          and "same pass" in o["rpMsg"]["msg"] and "replaced by G" in o["rpMsg"]["msg"],
+          "use G then retire live D: both stand in ONE pass, and the sheet says D leaves in this same pass")
+    check(rp["slots"]["R/Young"]["state"] == "pick" and rp["slots"]["R/Young"]["pick"] == "G" and rp["retire"]["R/Young"] == ["D"],
+          "retire live D then use G: the redraw becomes the pick and the retire stands (either order, one pass)")
+    check(o["pfState"] == {"state": ""} and o["pfOnly"] == "B",
+          "an agent prefill seeded into the row is NOT a pick: the primary slot reads unanswered (prefill B shown apart)")
+    check(o["hisState"] == {"state": "pick", "pick": "B"} and o["ovState"]["pick"] == "C" and o["oldState"]["pick"] == "B",
+          "his click (decidedAt), an override of the prefill, and a pre-prefill saved letter all read as his pick")
     check(o["v2"].get("legacyVariants") == ["B", "C"] and "variants" not in o["v2"], "a schema-1 tick list upgrades to legacyVariants on edit")
     check(o["v2d"].get("legacyVariantsDefault") == ["B", "C"] and not o["v2d"].get("legacyVariants"),
           "a machine-default list upgrades to legacyVariantsDefault, never his")
-    check(o["need"] == ["PLANT · GROWN (random pool)", "1 render unassigned"] and o["need2"] == [],
-          "needs-you: the required slot and the unlabelled render; empty after accept-all + labelling")
+    check(o["need"] == ["1 render unassigned"] and o["need2"] == [],
+          "needs-you: only the unlabelled render — a required slot with art in game is kept on return, never nagged")
     check(o["asks"] == {"rename": {"name": "Gloamling"}, "describe": "improve"} and o["asksCleared"], "asks set and clear")
     check(o["lgOpen0"] == ["B", "D"] and o["lgKeep"]["ok"] and o["lgAfterKeep"]["legacyRuled"]["B"]["v"] == "confirm"
           and o["lgAfterKeep"]["legacyRuled"]["B"]["at"], "old tick: keep records legacyRuled{B: confirm, at}")
@@ -184,8 +205,19 @@ def markup_tests():
     check('data-act="pool"' not in young, "no pool control on a non-pool lane")
     unas = html[html.index("RENDERS NOT YET ASSIGNED"):html.index("REFERENCE")]
     check('data-act="pick"' not in unas and "this is:" in unas, "an unassigned render offers 'this is:' and no use button")
-    check("accept unchanged" in html and "redraw this slot" in html and "add all new renders to the pool" in html,
-          "slot buttons + the per-pool 'add all new renders' button")
+    check("accept unchanged" not in html and "accept all" not in html and "redraw this slot" in html
+          and "add all new renders to the pool" in html and "kept when you return the sheet" in html,
+          "no accept-unchanged control: slot buttons are redraw + the per-pool 'add all new renders'; unanswered = kept on return")
+    rh = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None),
+                     {"decision": "", "note": "", "prefill": "A", "schema": 2, "decidedAt": "T",
+                      "slots": {"R/Young": {"state": "pick", "pick": "G"}}, "retire": {"R/Young": ["D"]}})
+    check("leaves the game in this same pass, replaced by G" in rh and "D retired in the same pass" in rh,
+          "a retired live picture with a replacement in use says it leaves in THIS pass (no second sheet)")
+    ph = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                          rulings=[], desc={}, dependsOn=None), {"decision": "B", "note": "", "prefill": "B"})
+    check("agent prefill B — not your answer" in ph and "using B" not in ph,
+          "a seeded agent prefill shows as a suggestion, never as 'using B'")
     for f in ("Name", "Description", "More art", "Missing facings", "Size", "Belongs", "cut from this biome"):
         check(f in html, f"requests block has {f!r}")
     check('data-act="legacy"' not in html and "old tick" not in html and "ticked before" not in html,

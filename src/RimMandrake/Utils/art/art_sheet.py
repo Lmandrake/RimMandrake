@@ -1248,7 +1248,7 @@ if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelector
 }), 66);
 /* ═══ SLOTS (DESIGN 2026-10-10 §3; owner rulings by question card 2026-10-10) ═══════════════════════════════════════
    Every picture lives in a labelled SLOT — what the game draws it as. Click a picture to USE it for that slot (click it
-   again to take that back), or say `accept unchanged` / `redraw this slot`. ✕ is four different things and the sheet
+   again to take that back), or say `redraw this slot`; a slot left alone keeps its in-game art on return. ✕ is four different things and the sheet
    says which: `✕ not for this slot` (deletes nothing), `retire` (a live picture: it stays in game until its replacement
    is installed), `leave the random pool` (pool slots only), and the small per-picture ✕ that deletes from the art store.
    A variant tick (`in random pool`) exists only where the game truly draws from a random pool and is NEVER pre-ticked;
@@ -1286,11 +1286,22 @@ SLX.view = (it, rec) => {
   return lanes;
 };
 SLX.colIn = (it, rec, gk, L) => { const l = SLX.view(it, rec).find(x => x.g.key === gk); return l ? l.cols.find(c => c.letter === L) : null; };
+/* owner provenance (owner 2026-10-12; decisions_v2.decision_is_his): the page seeds every row's `decision` with the agent's
+   prefill. That seed is a SUGGESTION, never an answer: it reads as decided only once his click stamped it (decidedAt), it
+   was carried from his earlier ruling, or it overrides the prefill. */
+SLX.decisionIsHis = rec => {
+  const d = ((rec || {}).decision || '').trim();
+  if (!d) return false;
+  if (rec.decidedAt || rec.carriedRuledAt) return true;
+  if (!('prefill' in rec)) return !!rec.at;          /* never seeded by a prefilling page: a saved letter is his */
+  return rec.prefill != null && rec.prefill !== '' && d !== rec.prefill;
+};
+SLX.prefillOnly = rec => (!SLX.decisionIsHis(rec) && ((rec || {}).decision || '').trim()) || '';
 SLX.state = (it, rec, g) => {
   const s = ((rec || {}).slots || {})[g.key];
   if (s && s.state && !s.migrated) return s;
-  if (g.primary) {
-    const d = (rec || {}).decision;
+  if (g.primary && SLX.decisionIsHis(rec)) {
+    const d = rec.decision;
     if (d === 'redo') return { state: 'redraw' };
     if (d && d.length === 1) return { state: 'pick', pick: d };
   }
@@ -1340,10 +1351,6 @@ SLX.slotButton = (it, rec, gk, state) => {
   SLX.setSlot(it, rec, g, cur.state === state ? null : { state });
   return _ok();
 };
-SLX.acceptAll = (it, rec) => {
-  for (const g of it.graphics || []) if (g.lane === 'slot' && !SLX.state(it, rec, g).state) SLX.setSlot(it, rec, g, { state: 'accept' });
-  return _ok();
-};
 /* the only picture(s) the game draws in this slot are all being sent away and nothing new is picked: the slot becomes a
    REDRAW and the old picture stays in game until the new one is installed (owner ruling, question card 2026-10-10) */
 SLX._maybeRedraw = (it, rec, g) => {
@@ -1376,7 +1383,11 @@ SLX.retire = (it, rec, gk, L) => {
   if (s.has(L)) { s.delete(L); SLX.putList(rec, 'retire', gk, s); return _ok(); }
   s.add(L); SLX.putList(rec, 'retire', gk, s);
   { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null); }
-  return _ok(SLX._maybeRedraw(it, rec, g) || (L + ' stays in game until its replacement is installed.'));
+  /* retire + replace in ONE pass (owner 2026-10-12): with another set in use here, the retired picture leaves the game in
+     the same enact that installs the replacement; with none, the slot is a redraw and it stays until replaced */
+  const st2 = SLX.state(it, rec, g);
+  if (st2.state === 'pick' && st2.pick !== L) return _ok(L + ' leaves the game in this same pass, replaced by ' + st2.pick + '.');
+  return _ok(SLX._maybeRedraw(it, rec, g) || (L + ' stays in game until its replacement is installed — use another set here to replace it in this same pass.'));
 };
 SLX.poolRec = (rec, gk) => (((rec || {}).pool || {})[gk]) || { add: [], remove: [] };
 SLX.putPool = (it, rec, g, p) => {
@@ -1479,7 +1490,9 @@ SLX.legacyHtml = (it, rec, L, pool) => {
 };
 SLX.needsYou = (it, rec) => {
   const out = [];
-  for (const g of it.graphics || []) if (g.lane === 'slot' && (g.slot || {}).required && !SLX.state(it, rec, g).state) out.push((g.slot || {}).label || g.key);
+  /* no "accept unchanged" control (owner 2026-10-12): a slot he leaves alone keeps what the game draws when he returns the
+     sheet, so only a required slot with NOTHING in game needs his answer */
+  for (const g of it.graphics || []) if (g.lane === 'slot' && (g.slot || {}).required && !SLX.state(it, rec, g).state && !SLX.inGame(g).length) out.push((g.slot || {}).label || g.key);
   const un = (it.graphics || []).filter(g => g.lane === 'unassigned').flatMap(g => g.cols).filter(c => !SLX.assigned(rec)[c.letter]);
   if (un.length) out.push(un.length + ' render' + (un.length === 1 ? '' : 's') + ' unassigned');
   return out;
@@ -1563,7 +1576,8 @@ const _itemBody = it => {
         verbs.push(A('reject', X, rej ? '✕ not for this slot' : '✕ not for this slot', rej ? 'bad' : '', 'this set is wrong for this slot — deletes nothing'));
       }
       foot = verbs.join('');
-      if ((ret || leaves || rej) && c.winner) note = `<div class="sl-warn">${esc(c.letter)} stays in game until the new picture is installed</div>`;
+      if (ret && c.winner && st.state === 'pick' && st.pick !== c.letter) note = `<div class="sl-warn sl-replaced">${esc(c.letter)} leaves the game in this same pass, replaced by ${esc(st.pick)}</div>`;
+      else if ((ret || leaves || rej) && c.winner) note = `<div class="sl-warn">${esc(c.letter)} stays in game until the new picture is installed</div>`;
     }
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${(rej || ret || leaves) ? ' sl-rej' : ''}${inAdd ? ' bs-isvar' : ''}${c.noSelect ? ' bs-phcol' : ''}">
       ${head}${badges ? `<div class="sl-badges">${badges}</div>` : ''}
@@ -1577,19 +1591,21 @@ const _itemBody = it => {
     const st = SLX.state(it, d, g), ig = SLX.inGame(g).map(c => c.letter).join(', ');
     const pr = SLX.poolRec(d, g.key), pool = ((pr.add || []).length ? ' · pool + ' + pr.add.join(', ') : '') + ((pr.remove || []).length ? ' · ' + pr.remove.join(', ') + ' leave the pool' : '');
     if (st.state === 'pick' && !cols.some(c => c.letter === st.pick)) return `<span class="sl-chip bad" title="the pick recorded for this slot names a set that is not in this slot">your pick ${esc(st.pick)} is not in this slot</span>`;
-    if (st.state === 'pick') return `<span class="sl-chip done">using ${esc(st.pick)}${esc(pool)}</span>`;
+    if (st.state === 'pick') { const rt = [...SLX.list(d, 'retire', g.key)].filter(x => x !== st.pick); return `<span class="sl-chip done">using ${esc(st.pick)}${rt.length ? ' · ' + esc(rt.join(', ')) + ' retired in the same pass' : ''}${esc(pool)}</span>`; }
     if (st.state === 'accept') return `<span class="sl-chip done">accepted unchanged${ig ? ' (' + esc(ig) + ')' : ''}${esc(pool)}</span>`;
     if (st.state === 'redraw') return `<span class="sl-chip redraw">${it.dependsOn ? 'redraw waits for ' + esc(it.dependsOn) : 'redraw queued'}${ig ? ' · ' + esc(ig) + ' stays until replaced' : ''}</span>`;
     if (st.state === 'not_drawn') return '<span class="sl-chip done">not drawn</span>';
+    if (g.primary && SLX.prefillOnly(d)) return `<span class="sl-chip pf" title="the agent's guess, seeded into the row — it is NOT your answer and never counts as decided. Click a picture to use it; leave the slot alone and returning the sheet keeps what the game draws now.">agent prefill ${esc(SLX.prefillOnly(d))} — not your answer${ig ? ' · returning keeps ' + esc(ig) : ''}</span>`;
     if (pool) return `<span class="sl-chip done">${esc(pool.slice(3))}</span>`;
-    return (g.slot || {}).required ? '<span class="sl-chip need">needs you</span>' : '<span class="sl-chip">unreviewed — unchanged</span>';
+    return (g.slot || {}).required && !SLX.inGame(g).length ? '<span class="sl-chip need">needs you — nothing in game</span>'
+      : '<span class="sl-chip" title="leave it alone and returning the sheet keeps what the game draws now">unchanged — kept when you return the sheet</span>';
   };
   const sec = l => {
     const g = l.g, sl = g.slot || {};
     const ordered = l.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
     const st = SLX.state(it, d, g);
     const stub = c => `<details class="bs-nearstub"${st.pick === c.letter ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
-    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="accept"`, 'accept unchanged', st.state === 'accept' ? 'on' : '', 'keep what the game draws in this slot now')}${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}${g.pool ? A('pooladdall', ` data-g="${esc(g.key)}"`, 'add all new renders to the pool', '', 'put every new render of ours in this slot into the random pool (nothing is ever pre-ticked)') : ''}<span class="sub">click a picture to use it</span></div>`;
+    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}${g.pool ? A('pooladdall', ` data-g="${esc(g.key)}"`, 'add all new renders to the pool', '', 'put every new render of ours in this slot into the random pool (nothing is ever pre-ticked)') : ''}<span class="sub">click a picture to use it</span></div>`;
     const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
     return `<div class="sl-lane sl-${g.lane} sl-k-${esc(sl.kind || 'x')}" data-lane="${esc(g.key)}">
       <div class="sl-head"><b>${esc(sl.label || g.role)}</b>${chip(g, l.cols)}</div>
@@ -1601,7 +1617,7 @@ const _itemBody = it => {
   const need = SLX.needsYou(it, d), confl = SLX.conflicts(it, d);
   const shownL = new Set(lanes.flatMap(l => l.cols.map(c => c.letter)));
   const legacyUnshown = (d.legacyVariants || []).filter(L => !shownL.has(L));
-  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">every required slot has your answer</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${slotLanes.some(g => !SLX.state(it, d, g).state) ? A('acceptall', '', 'accept all unchanged slots', '', 'every slot you have not answered keeps what the game draws now') : ''}${SLX.legacyOpen(d).length ? `<span class="sl-chip old" title="old variant ticks from before 2026-10-10 that may have been the machine's default: each ships nothing until you say keep (its keep / drop is on the picture)">old tick ${esc(SLX.legacyOpen(d).join(', '))}: keep or drop?</span>` : ''}${legacyUnshown.map(L => SLX.legacyHtml(it, d, L)).join('')}</div>`;
+  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">nothing here needs you — unchanged slots keep what the game draws</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${SLX.legacyOpen(d).length ? `<span class="sl-chip old" title="old variant ticks from before 2026-10-10 that may have been the machine's default: each ships nothing until you say keep (its keep / drop is on the picture)">old tick ${esc(SLX.legacyOpen(d).join(', '))}: keep or drop?</span>` : ''}${legacyUnshown.map(L => SLX.legacyHtml(it, d, L)).join('')}</div>`;
   const donorAbs = it.donorAbsent ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>donor column</b><span>${esc(it.donorAbsent)}</span></div></div>` : '';
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
       <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
@@ -1687,7 +1703,6 @@ window.artAct = (el, ev) => {
   let r = { ok: true };
   if (act === 'pick') r = SLX.pick(it, rec, g, L);
   else if (act === 'slot') r = SLX.slotButton(it, rec, g, v);
-  else if (act === 'acceptall') r = SLX.acceptAll(it, rec);
   else if (act === 'reject') r = SLX.reject(it, rec, g, L);
   else if (act === 'retire') r = SLX.retire(it, rec, g, L);
   else if (act === 'pool') r = SLX.poolToggle(it, rec, g, L);
@@ -1858,7 +1873,9 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .sl-desc{font-size:11.5px;color:#a9b2bf;margin:1px 0 3px}
 .sl-poolnote{color:#9fb6ff;font-size:11px}
 .sl-chip{font-size:11.5px;padding:1px 8px;border-radius:10px;border:1px solid #3d4653;color:#c3cad6;background:#181c22;white-space:nowrap}
-.sl-chip.need{border-color:#b8862b;color:#ffd27a;background:#2a2010}.sl-chip.done{border-color:#2f7a45;color:#9fe0a8;background:#102016}
+.sl-chip.need{border-color:#b8862b;color:#ffd27a;background:#2a2010}
+.sl-chip.pf{border-style:dashed;border-color:#6b7380;color:#aab3c0;background:transparent}
+.sl-warn.sl-replaced{color:#9fd7a8}.sl-chip.done{border-color:#2f7a45;color:#9fe0a8;background:#102016}
 .sl-chip.redraw{border-color:#b85a2b;color:#ffb08a;background:#2a1610}.sl-chip.bad{border-color:#b3261e;color:#fff;background:#5a1a16;white-space:normal}
 .sl-chip.ref{color:#9fb6c9}.sl-chip.old{border-color:#7a6aa8;color:#d6c8ff;background:#1c1830}
 .sl-oldq{display:inline-flex;gap:3px;align-items:center;margin-right:4px}.sl-oldq .sl-oldb{font-size:10.5px;padding:0 6px}
@@ -1930,9 +1947,11 @@ the load-order race; <b>render</b> columns are artpipe outputs (newest first); <
 from git; <b>donor original</b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);
 hover a set's header for where it came from.</p>
 <p><b>Every picture lives in a labelled SLOT</b> — what the game draws it as (ADULT · MALE, ADULT · FEMALE, YOUNG, FLYING,
-PLANT · GROWN, CATCH ITEM …). <b>Click a picture to use it for that slot</b> (click again to take it back), or answer the slot with
-<b>accept unchanged</b> / <b>redraw this slot</b>. The ✕ verbs say what they do: <b>✕ not for this slot</b> deletes nothing;
-<b>✕ retire</b> takes a live picture out of the game once its replacement is installed (it stays until then); <b>leave the random
+PLANT · GROWN, CATCH ITEM …). <b>Click a picture to use it for that slot</b> (click again to take it back), or <b>redraw this
+slot</b>. A slot you leave alone keeps what the game draws now once you return the sheet; there is no accept button.
+The ✕ verbs say what they do: <b>✕ not for this slot</b> deletes nothing;
+<b>✕ retire</b> takes a live picture out of the game: with another set in use in that slot it leaves in the same pass, otherwise
+the slot is redrawn and it stays until the new picture is installed; <b>leave the random
 pool</b> exists only where the game picks among pictures at random; the small ✕ on one picture deletes it from the art store.
 <b>+ random pool</b> appears only on a real random pool and is never pre-ticked. Renders found by name sit under <b>RENDERS NOT YET
 ASSIGNED</b> until you say what each one is. <b>Requests</b> (rename, description, more art, missing facings, size, move/cut) have
@@ -2856,7 +2875,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "game shows now; a row with only name-found renders is prefilled to the newest render (⚠).",
         ],
         "posture": {"mode": "pick-one", "explain": "Each SLOT of a row (adult, female, young, flying, grown, catch …): click "
-                    "the picture to use, or accept unchanged / redraw. Nothing installs until you see that plan. '✕ not for this "
+                    "the picture to use, or redraw; a slot you leave alone keeps its in-game art when you return the sheet. Nothing "
+                    "installs until you see that plan. '✕ not for this "
                     "slot' deletes nothing; the small ✕ on one picture deletes it from the art store."},
         "options": opts, "groupLabel": "group", "media": True,
         "freshness": _fresh_banner(fresh, {it["id"] for it in ordered}),
