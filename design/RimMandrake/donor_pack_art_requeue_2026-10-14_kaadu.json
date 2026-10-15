@@ -1,0 +1,20 @@
+[
+ {
+  "id": "donorport_kaadu_f_v2",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "prompt": "RimWorld creature sprite of a female kaadu of Naboo: a tall two-legged flightless reptavian on very long thin grey scaly legs with big three-toed feet, heavy forward body, long curved neck, short tail, long flat duck-bill snout, yellow to bright orange body with darker spots, a periwinkle patch around each eye. Seen from the front with the head turned a little to one side, so the long, broad, flat duck-bill snout shows clearly in partial profile and extends well beyond the face. Whole animal in frame, centred, on a transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": "south",
+  "priority": 40,
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte textured hide, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon).",
+  "canon": "kaadu",
+  "target_def": "RSW_Kaadu",
+  "target_texpath": "swanimals/Kaadu/Kaadu_f",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Kaadu/Kaadu_f_{facing}.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "derive_from": "donorport_kaadu_f_v1_east"
+ }
+]
