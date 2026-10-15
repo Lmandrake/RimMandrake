@@ -12,10 +12,10 @@ source code in the mod upload too, so feel free to make your own edits... I only
 credit me").
 
 ONLY the `ScenPart_RuthlessPursuingMechanoids` half is forked — Omni Pursuit is dropped, it is
-not our fiction. Same namespace and ScenPartDef defName as the original, on purpose, for
+not our fiction. Same namespace and scenario-part class as the original, on purpose, for
 save/scenario compatibility with the design note this mod implements
 (design/Jawa/mods/ruthless_faction_pursuit.md) — which also means this mod REPLACES the
-original; do not run both, they collide on the same defName and class.
+original; do not run both, they collide on the same class.
 
 WHAT'S DIFFERENT FROM UPSTREAM
 
