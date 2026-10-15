@@ -57,3 +57,14 @@ The colonists were left drafted (their order to the shelter was refused). Key sh
 I saved the tier list and both Player.logs, and killed the game by PID. Running `modset_builder --restore` returned
 **ee01dae9, 550 active, verified**. The companion profile file is restored. `./game down`, bridge released. Extra save
 left behind: `RM_L2_deeplake_reload_check.rws`.
+
+## L2b: review save repaired (14:15-14:25 PDT)
+- **16**: `set_plants` clearFirst wipes the whole rect, so the second planting (quick) replaced the first (ember). The
+  builder now clears only on a station's first planting. Fix in 2aedbdc9b2 (`human_review.py`); the screenshot shows both grasses.
+- **9**: STAGING, not a mod defect. Vanilla `Fire.TryBurnFloor` turns terrain to its burnedDef only on a fire alive for
+  >= 7500 ticks, and the build burned for 4000. BURN_TICKS is now 8000. Station 9 reads RM_FE_Ash_Deep 64/64.
+- Rebuilt on ratchet_pilot + EmpirePursuit (23 mods): **41/41 stations verified**. Saved over the same name,
+  `RM_pyre_review_20261015`. Both the first build and the deep-lake throwaway are backed up in
+  `D:\Luke\dev\_rmscratch\bench_live_20261015_l2\saves_backup_pre_review`. `RM_L2_deeplake_reload_check.rws` is deleted
+  from Saves.
+- KEYSHEET.md regenerated. ModsConfig restored (ee01dae9, verified); companion profile restored; game down; bridge released.
