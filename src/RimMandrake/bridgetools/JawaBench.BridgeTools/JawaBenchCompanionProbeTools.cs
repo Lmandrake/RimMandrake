@@ -180,13 +180,59 @@ namespace JawaBench.BridgeTools
         }
 
 #if JAWA_GM_TOOLS
+        // Exact ThingID ("Human123") or bare thingIDNumber ("123"); the current map first, then every map.
+        // Matched on the trailing number first (ThingID is a fresh string per call), then confirmed by ThingID.
+        private static Thing StaticCallResolveThing(string a, out string foundAt)
+        {
+            foundAt = null;
+            if (Find.Maps == null) return null;
+            int cut = a.Length;
+            while (cut > 0 && char.IsDigit(a[cut - 1])) cut--;
+            if (cut == a.Length || !int.TryParse(a.Substring(cut), NumberStyles.None, CultureInfo.InvariantCulture, out int num))
+                return null;
+            bool bare = cut == 0;
+            var maps = new List<Map>();
+            if (Find.CurrentMap != null) maps.Add(Find.CurrentMap);
+            foreach (Map m in Find.Maps) if (!maps.Contains(m)) maps.Add(m);
+            foreach (Map m in maps)
+            {
+                List<Thing> all = m.listerThings.AllThings;
+                for (int k = 0; k < all.Count; k++)
+                {
+                    Thing t = all[k];
+                    if (t.thingIDNumber != num || (!bare && t.ThingID != a)) continue;
+                    foundAt = (m == Find.CurrentMap ? "current map" : "map " + m.Index) + (bare ? ", by thingIDNumber" : ", by ThingID");
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        // Up to 12 ThingIDs of the wanted type on the current map, so a refusal names something callable.
+        private static List<string> StaticCallThingCandidates(Type pt)
+        {
+            var outList = new List<string>();
+            Map m = Find.CurrentMap ?? Find.Maps?.FirstOrDefault();
+            if (m == null) return outList;
+            IEnumerable<Thing> src = typeof(Pawn).IsAssignableFrom(pt) ? m.mapPawns.AllPawnsSpawned.Cast<Thing>() : m.listerThings.AllThings;
+            foreach (Thing t in src)
+            {
+                if (!pt.IsInstanceOfType(t)) continue;
+                outList.Add(t.ThingID);
+                if (outList.Count >= 12) break;
+            }
+            return outList;
+        }
+
         [Tool(
             "jawa/static_call",
             Description =
                 "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod " +
                 "script needs to exercise (e.g. RM_ZennaqLightning.Redirect). args = '|'-separated, " +
                 "coerced by the parameter type: int/float/bool/string, IntVec3 as 'x,y,z' (or 'x,z'), " +
-                "Map as 'current' or a map index, ThingDef/any Def by defName. Instance methods and " +
+                "Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing " +
+                "subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every " +
+                "map - refused with candidates when absent or not of the parameter's type. Instance methods and " +
                 "overload ambiguity are REFUSED with the candidate signatures. The return value is " +
                 "rendered as text. Runs on the main thread. GM-gated: it can call anything public.",
             ResultDescription = "success, method (signature), result, ticksGame.")]
@@ -212,6 +258,7 @@ namespace JawaBench.BridgeTools
                 MethodInfo mi = cands[0];
                 var ps = mi.GetParameters();
                 var vals = new object[ps.Length];
+                var resolved = new List<object>();
                 for (int i = 0; i < ps.Length; i++)
                 {
                     string a = raw[i].Trim();
@@ -241,6 +288,23 @@ namespace JawaBench.BridgeTools
                                 if (vals[i] == null) return Fail("No " + pt.Name + " named '" + a + "'.");
                             }
                         }
+                        else if (typeof(Thing).IsAssignableFrom(pt))
+                        {
+                            // STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY: a Thing/Pawn arg by ThingID or thingIDNumber
+                            if (a.Length == 0 || a == "null") { vals[i] = null; }
+                            else
+                            {
+                                Thing found = StaticCallResolveThing(a, out string foundAt);
+                                if (found == null)
+                                    return Fail("No thing with ThingID or thingIDNumber '" + a + "' on any map (arg " + i + ", wants " + pt.Name + ").",
+                                        new { candidates = StaticCallThingCandidates(pt) });
+                                if (!pt.IsInstanceOfType(found))
+                                    return Fail("Arg " + i + " '" + a + "' resolved to " + found.GetType().Name + " " + found.ThingID +
+                                        " (" + foundAt + "), which is not a " + pt.Name + ".", new { candidates = StaticCallThingCandidates(pt) });
+                                vals[i] = found;
+                                resolved.Add(new { arg = i, thing = found.ThingID, type = found.GetType().Name, foundAt });
+                            }
+                        }
                         else return Fail("Unsupported parameter type " + pt.Name + " (arg " + i + ").");
                     }
                     catch (Exception e) { return Fail("Cannot coerce arg " + i + " '" + a + "' to " + pt.Name + ": " + e.Message); }
@@ -248,7 +312,7 @@ namespace JawaBench.BridgeTools
                 try
                 {
                     object r = mi.Invoke(null, vals);
-                    return (object)new { success = true, method = mi.ToString(), result = ProbeRender(r), ticksGame = TicksGameSafe() };
+                    return (object)new { success = true, method = mi.ToString(), result = ProbeRender(r), thingArgs = resolved, ticksGame = TicksGameSafe() };
                 }
                 catch (Exception e)
                 {

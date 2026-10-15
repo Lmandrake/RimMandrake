@@ -1686,6 +1686,10 @@ def firehawk(t):
         t.screenshot(rect=rect)
 
 
+WARMTH_FIELD = "RimMandrake.Pyrelands.FurnaceWarmthField"   # jawa/static_call target (CompFurnaceWarmthAura.cs)
+FAR_WARMTH_CELLS = 11
+
+
 @suite.chain("furnace_warmth")
 @_teardown()
 def furnace_warmth(t):
@@ -1708,6 +1712,12 @@ def furnace_warmth(t):
         col = (((r or {}).get("pawns") or [{}])[0]).get("id")
         if col:
             t.session.track("pawn", col, x=x + 1, z=z)
+        # the control: a second colonist 10+ cells off, outside every radius (max 4.9 x 1.37 = 6.7 cells at full charge)
+        rf = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x + FAR_WARMTH_CELLS, z=z, faction="player",
+                           count=1)
+        far = (((rf or {}).get("pawns") or [{}])[0]).get("id")
+        if far:
+            t.session.track("pawn", far, x=x + FAR_WARMTH_CELLS, z=z)
         samples = []
         for _ in range(4 if _live(t) else 0):
             _wait(t, 90)
@@ -1728,8 +1738,43 @@ def furnace_warmth(t):
             # (FurnaceWarmthField.OffsetFor), whose falloff maths the offline selftest proves.
             if any(sm["warm"] for sm in samples):
                 _fail("colonist beside the furnace-beast gained RM_FurnaceWarmth: the hediff was retired")
-            _unmeasured(t, "the felt-temperature offset needs a debug [Tool] reading Thing.AmbientTemperature "
-                           "(FurnaceWarmthField.OffsetFor) on a pawn; none exists yet, and no hediff is the control")
+        # STATIC_CALL_WIDEN_PAWNS_NEED_NOT_APPLY: the state half of the bar. FurnaceWarmthField.OffsetFor(Pawn) by ThingID
+        # (jawa/static_call resolves Thing/Pawn args), with jawa/thing_ambient_temp recorded beside it: its delta
+        # (pawn.AmbientTemperature - cell temperature) is every AmbientTemperature postfix, ours included.
+        offs = {}
+        for who, pid in (("beside", col), ("away", far)):
+            if not pid:
+                continue
+            r = t.bridge_call("jawa/static_call", type=WARMTH_FIELD, method="OffsetFor", args=pid)
+            amb = t.bridge_call("jawa/thing_ambient_temp", thing=pid)
+            row = _pawn_row(t, pid) or {}
+            b = _pawn_row(t, bid) or {}
+            d = None
+            if b.get("x") is not None and row.get("x") is not None:
+                d = ((b["x"] - row["x"]) ** 2 + (b["z"] - row["z"]) ** 2) ** 0.5
+            offs[who] = {"id": pid, "dist": d, "offset": (r or {}).get("result"), "staticCall": r if not (r or {}).get("success") else None,
+                         "ambient": (amb or {}).get("ambient"), "cellTemp": (amb or {}).get("cellTemp"),
+                         "delta": (amb or {}).get("delta")}
+        _note(t, "FurnaceWarmthField.OffsetFor beside / away (C)", offs)
+        if _live(t):
+            if not far:
+                _fail("could not spawn the control colonist: %r" % rf)
+            for who in ("beside", "away"):
+                o = offs.get(who) or {}
+                if o.get("offset") is None:
+                    _unmeasured(t, "static_call OffsetFor(%s) refused - is the widened companion deployed? %r"
+                                % (who, o.get("staticCall")))
+            beside, away = float(offs["beside"]["offset"]), float(offs["away"]["offset"])
+            if offs["away"]["dist"] is not None and offs["away"]["dist"] < FAR_WARMTH_CELLS - 1:
+                _unmeasured(t, "the control colonist wandered within %.1f cells of the beast" % offs["away"]["dist"])
+            if beside <= 0.0:
+                _fail("colonist beside the penned furnace-beast felt no warmth: OffsetFor = %r (dist %r)"
+                      % (beside, offs["beside"]["dist"]))
+            if away != 0.0:
+                _fail("colonist %r cells from the furnace-beast felt warmth %r: the field leaks past its radius"
+                      % (offs["away"]["dist"], away))
+            # thing_ambient_temp's delta is recorded, never graded: the sun-heat (CreatureBehaviors), forge-plume and
+            # solar-mirror mods postfix the same getter, and the pen is a room while the control stands outdoors.
         t.screenshot()
 
 
