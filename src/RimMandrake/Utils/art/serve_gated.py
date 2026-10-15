@@ -8,9 +8,15 @@ that route refuses any sheet whose PICTURES are game art (game_art.classify), wh
 Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after the check). A sheet that never passed
 `scaled_review_gate` (no stamp), or was edited after it (stamp mismatch), is REFUSED with exit 4 and nothing starts.
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).
+FRESH OR REFUSE (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): a stamped sheet any row of which no longer shows what is installed
+(sheet_freshness.verify_html, re-measured from disk) is REFUSED with exit 5; a running server re-checks on every page
+load and serves a refusal page in place of a sheet that went stale. `--serve-stale-i-know-it-shows-old-art` serves it
+anyway with a red banner naming every stale row.
 """
+import hashlib
 import os
 import sys
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -41,7 +47,39 @@ def guard_ops(ops: dict, disk_decisions: dict) -> dict:
     return out
 
 
-def serve_with_followed_guard(argv: list[str]) -> int:
+FRESH_MEMO_S = 5.0     # a page load never sees a measurement of the world older than this
+
+
+def fresh_gate(sheet: Path, mark: bool = False):
+    """Freshness on every page load (ART_SHEET_REDESIGN_FRESH_OR_REFUSE): returns a function html_bytes -> bytes that
+    re-measures the sheet against disk and serves the REFUSAL page instead of a sheet any row of which is stale."""
+    import sheet_freshness as FR
+    memo = {"at": 0.0, "key": None, "r": None}
+
+    def gate(html: bytes) -> bytes:
+        key = hashlib.sha256(html).hexdigest()
+        if memo["key"] != key or time.time() - memo["at"] > FRESH_MEMO_S:
+            try:
+                memo["r"] = FR.verify_html(sheet, html=html.decode("utf-8", "replace"))
+            except Exception as e:      # noqa: BLE001  unmeasured is refused, never served as fresh
+                memo["r"] = {"fresh": False, "rows": 0, "stale": {}, "manifest": False,
+                             "error": f"freshness UNMEASURED ({type(e).__name__}: {e})"}
+            memo.update(at=time.time(), key=key)
+        r = memo["r"]
+        if r["fresh"]:
+            return html
+        print(FR.report(sheet.name, r, limit=10), file=sys.stderr, flush=True)
+        if mark:                       # served on request: every stale row named in a red banner the page cannot hide
+            import re as _re
+            ban = FR.stale_banner(sheet.name, r)
+            txt = html.decode("utf-8", "replace")
+            m = _re.search(r"<body[^>]*>", txt)
+            return (txt[:m.end()] + ban + txt[m.end():] if m else ban + txt).encode()
+        return FR.refusal_page(sheet.name, r)
+    return gate
+
+
+def serve_with_followed_guard(argv: list[str], fresh=None) -> int:
     """Run the review-sheets sidecar in-process with write_ops wrapped by guard_ops (the skill's own file stays untouched)."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("serve_sheet", str(SERVE))
@@ -58,6 +96,12 @@ def serve_with_followed_guard(argv: list[str]) -> int:
         return orig(self, guard_ops(ops, disk) if isinstance(ops, dict) else ops, force=force)
 
     mod.DecisionsFile.write_ops = write_ops
+    if fresh is not None:
+        orig_inject = mod.inject_sidecar
+
+        def inject_sidecar(html, cfg):
+            return orig_inject(fresh(html), cfg)
+        mod.inject_sidecar = inject_sidecar
     sys.argv = [str(SERVE)] + argv
     return mod.main()
 
@@ -100,7 +144,20 @@ def main(argv: list[str]) -> int:
         print(f"REFUSED serve_gated: {p.name}: {msg}.\nBuild it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that "
               f"passes with `scaled_review_gate.py check {p.name} --stamp`.", file=sys.stderr)
         return 4
-    return serve_with_followed_guard(argv)
+    # FRESH OR REFUSE (owner 2026-10-12): a stamped art sheet any row of which no longer shows what is installed is not
+    # started, and a running one re-checks on every page load (a stale page is replaced by the refusal page)
+    import sheet_freshness as FR
+    r = FR.verify_html(p)
+    if not r["fresh"] and "--serve-stale-i-know-it-shows-old-art" not in argv:
+        print(f"REFUSED serve_gated: {FR.report(p.name, r, limit=20)}\nRebuild it (art_sheet.py with the arguments that "
+              f"built it, or refresh_sheets.py); this check re-measures disk, so a rebuilt sheet serves.", file=sys.stderr)
+        return 5
+    if "--serve-stale-i-know-it-shows-old-art" in argv:
+        argv = [a for a in argv if a != "--serve-stale-i-know-it-shows-old-art"]
+        print("WARNING serve_gated: serving a STALE sheet on request; every page load carries a red banner naming "
+              "each stale row", file=sys.stderr)
+        return serve_with_followed_guard(argv, fresh=fresh_gate(p, mark=True))
+    return serve_with_followed_guard(argv, fresh=fresh_gate(p))
 
 
 if __name__ == "__main__":

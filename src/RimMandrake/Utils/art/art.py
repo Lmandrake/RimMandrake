@@ -177,6 +177,10 @@ def cmd_install(a):
         print(f"REFUSED: {e}")
         return 2
     print(json.dumps(r))
+    if not a.dry_run:          # the install-side hook: name every sheet this install just made stale (they refuse to serve)
+        import sheet_freshness as FR
+        res = L.parse_texfile(a.rel)["res"]
+        FR.after_install([res, res.rpartition("/")[0]])
     return 0
 
 
