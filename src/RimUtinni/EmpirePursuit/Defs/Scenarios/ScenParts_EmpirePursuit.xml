@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Same namespace, defName and scenPartClass as upstream's RuthlessPursuingMechanoids.xml,
-       deliberately, for save/scenario compatibility — see About.xml for why this REPLACES
-       the original mod rather than running alongside it. -->
+  <!-- Same namespace and scenPartClass as upstream's RuthlessPursuingMechanoids.xml, deliberately,
+       for save/scenario compatibility — see About.xml for why this REPLACES the original mod rather
+       than running alongside it. The defName is NOT upstream's: Rename Phase 2a (aa759446e4) turned
+       upstream's RuthlessPursuingMechanoids into RUT_RuthlessPursuingMechanoids. -->
   <ScenPartDef Class="RuthlessPursuingMechanoids.ScenPartDef_RuthlessPursuit">
     <defName>RUT_RuthlessPursuingMechanoids</defName>
     <label>ruthless faction pursuit</label>
