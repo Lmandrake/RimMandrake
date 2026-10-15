@@ -1,0 +1,30 @@
+{
+ "item": "AIWHA_REDRAW_WINGS_STILL_TOO_SHORT",
+ "owner_card": "2026-10-14 Aiwha next -> Redraw with a wing-first prompt",
+ "tool": "src/RimMandrake/Utils/aiwha_composite.py",
+ "wings_piece": "aiwha_wingfirst_wings_v1",
+ "generations": 5,
+ "facings": {
+  "east": {
+   "job": "aiwha_wingfirst_composite_v1_east",
+   "body_piece": "aiwha_wingfirst_body_v1",
+   "command": "python3 src/RimMandrake/Utils/aiwha_composite.py --wings _artsrc/aiwha_wingfirst_wings_v1/aiwha_wingfirst_wings_v1.png --body _artsrc/aiwha_wingfirst_body_v1/aiwha_wingfirst_body_v1.png --out aiwha_wingfirst_composite_v1_east.png --ratio 5.5 --shoulder 0.62 --facing east --wing-squash 0.6 --match-hue --canvas 768x384",
+   "canon": "PASS 4/4",
+   "sha256": "341cc390c4d74fb667e3a7f1eec614a0be3fde7552605539bbb44ac6a18c34d3"
+  },
+  "south": {
+   "job": "aiwha_wingfirst_composite_v1_south",
+   "body_piece": "aiwha_wingfirst_body_s_v2_south",
+   "command": "python3 src/RimMandrake/Utils/aiwha_composite.py --wings _artsrc/aiwha_wingfirst_wings_v1/aiwha_wingfirst_wings_v1.png --body _artsrc/aiwha_wingfirst_body_s_v2_south/aiwha_wingfirst_body_s_v2_south.png --out aiwha_wingfirst_composite_v1_south.png --ratio 7.5 --shoulder 0.6 --facing south --head down --wing-squash 0.6 --match-hue --canvas 768x384",
+   "canon": "PASS 4/4",
+   "sha256": "03b57b24c5724faec375fd025f65074a2ff3591b33be371f189e2bd71ff5a8bf"
+  },
+  "north": {
+   "job": "aiwha_wingfirst_composite_v1_north",
+   "body_piece": "aiwha_wingfirst_body_ns_v1_north",
+   "command": "python3 src/RimMandrake/Utils/aiwha_composite.py --wings _artsrc/aiwha_wingfirst_wings_v1/aiwha_wingfirst_wings_v1.png --body _artsrc/aiwha_wingfirst_body_ns_v1_north/aiwha_wingfirst_body_ns_v1_north.png --out aiwha_wingfirst_composite_v1_north.png --ratio 5.5 --shoulder 0.62 --facing north --head up --wing-squash 0.6 --match-hue --canvas 768x384",
+   "canon": "PASS 4/4",
+   "sha256": "a60a676f874a7263ca877885e05796313038ce954a07f7be64c5fd023677aceb"
+  }
+ }
+}
