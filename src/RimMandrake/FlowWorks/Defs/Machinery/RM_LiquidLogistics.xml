@@ -110,6 +110,11 @@
     <building>
       <expandHomeArea>true</expandHomeArea>
     </building>
+    <comps>
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
+           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
         <tall>true</tall>   <!-- POND_VOLUME_UNIFY: 2x2 tall = 160 units (4 squares x 2 notches x 20) -->
@@ -154,6 +159,11 @@
     <building>
       <expandHomeArea>true</expandHomeArea>
     </building>
+    <comps>
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
+           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
         <capacityFactor>4</capacityFactor>   <!-- TANK_TALL: 2x2 x 20 x 4 = 320 units; ART is a placeholder (stacked drums) until real tall art lands -->

@@ -63,6 +63,11 @@
     <building>
       <expandHomeArea>true</expandHomeArea>
     </building>
+    <comps>
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
+           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
   </ThingDef>
 
   <!-- TANK_TALL_BUILD_TWICE_THE_DRINK (owner 2026-10-13: "Make tall tanks too that double the storage"). Same 2x2 footprint,
@@ -105,6 +110,11 @@
     <building>
       <expandHomeArea>true</expandHomeArea>
     </building>
+    <comps>
+      <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field; the picker
+           (PipeLook, PipeStyles.TankDefs) joins once RM_LiquidTankStyles.xml and the tank art are installed -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
         <tall>true</tall>   <!-- 2x2 tall = 160 units -->
