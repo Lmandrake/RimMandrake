@@ -1,0 +1,37 @@
+{
+ "calm": {
+  "biome": "AridShrubland",
+  "builtUtc": "2026-10-15T15:37:20Z",
+  "bytes": 8204122,
+  "head": "b5c8547e8b",
+  "mapId": 0,
+  "outdoorAtSave": 18.5519867,
+  "profile": "calm",
+  "save": "RM_TestSite_calm_v1",
+  "tile": 116136
+ },
+ "pyrelands": {
+  "biome": "RM_Pyrelands",
+  "builtUtc": "2026-10-15T15:42:04Z",
+  "bytes": 28575379,
+  "from": "NS_Pyrelands_site_1_417df172fdb5_r6",
+  "head": "b5c8547e8b",
+  "load": "northstar_site.py --site 1 --fingerprint 417df172fdb5 --tag calm --reload-only --tile 5",
+  "mapId": 1,
+  "outdoorAtSave": 56.6729622,
+  "profile": "danger",
+  "save": "NS_Pyrelands_site_1_417df172fdb5_calm",
+  "tile": 5
+ },
+ "river": {
+  "biome": "TemperateForest",
+  "builtUtc": "2026-10-15T15:40:29Z",
+  "bytes": 17287356,
+  "head": "b5c8547e8b",
+  "mapId": 5,
+  "outdoorAtSave": 11.0904512,
+  "profile": "calm",
+  "save": "RM_TestSite_river_v1",
+  "tile": 3247
+ }
+}

@@ -1,0 +1,219 @@
+{
+ "backup": {
+  "dir": "D:\\Luke\\dev\\_rmscratch\\bench_live_20261015_l1\\work\\saves_backup_20261015T084243",
+  "files": 297
+ },
+ "check": {
+  "colonists": [
+   [
+    "Human95731",
+    false
+   ],
+   [
+    "Human95734",
+    false
+   ],
+   [
+    "Human95737",
+    false
+   ]
+  ],
+  "danger": [],
+  "fires": 0,
+  "foggedCells": 0,
+  "hostiles": [],
+  "map": {
+   "mapBiome": "RM_Pyrelands",
+   "mapId": 1,
+   "outdoorTempNow": 56.6729622,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "tile": 5
+  },
+  "problems": [],
+  "site": "pyrelands",
+  "threatStructures": [],
+  "triggers": 0,
+  "utc": "2026-10-15T15:42:42Z",
+  "verified": true,
+  "weather": {
+   "current": "Clear",
+   "rainRate": 0.0
+  }
+ },
+ "clean": {
+  "dangerAfterUnfog": [],
+  "dangerFound": [
+   "AncientMechDropBeacon",
+   "AncientSecurityTurret",
+   "Sarcophagus"
+  ],
+  "dangerLeft": [],
+  "dangerVanished": 9,
+  "fog": {
+   "error": null,
+   "foggedBefore": 0,
+   "foggedNow": 0,
+   "hostilesAfter": [],
+   "hostilesBefore": [],
+   "releasedByUnfog": [],
+   "sweepPasses": 0,
+   "verified": true
+  },
+  "nonColonistsVanished": 14,
+  "nonColonistsVanishedBeforeUnfog": 0,
+  "problems": [],
+  "profile": "danger",
+  "quietMap": {
+   "arrivals": [],
+   "controls": [
+    {
+     "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+     "name": "threat_structures_cleared",
+     "readBack": {
+      "errors": [],
+      "kept": 0,
+      "removed": [],
+      "threatsAfter": 0
+     },
+     "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared"
+    },
+    {
+     "hides": "combat interactions with the mod's things",
+     "name": "hostiles_removed",
+     "readBack": {
+      "acted": 0,
+      "residue": []
+     },
+     "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)"
+    },
+    {
+     "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+     "name": "proximity_letters_sent",
+     "readBack": {
+      "letters": [],
+      "unsentAfter": 0
+     },
+     "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')"
+    },
+    {
+     "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+     "name": "modal_broker",
+     "readBack": {
+      "handled": [],
+      "unknown": []
+     },
+     "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates"
+    }
+   ],
+   "events": [],
+   "keepDefs": [],
+   "notSuppressed": [
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour"
+   ],
+   "note": "enableStoryteller is not saved with the game: re-apply after any load",
+   "problems": [],
+   "profile": "quiet_site",
+   "row": "test_site_saves_clean",
+   "suite": "isolated",
+   "topic": null,
+   "verify": null
+  },
+  "sky": {
+   "error": null,
+   "extinguished": 0,
+   "strayFires": 0,
+   "verified": true,
+   "weather": [
+    {
+     "after": "Clear",
+     "ok": true
+    },
+    {
+     "after": "Clear",
+     "ok": true
+    }
+   ]
+  },
+  "triggers": {
+   "byDef": {},
+   "destroyed": 0,
+   "error": null,
+   "found": 0,
+   "left": 0,
+   "verified": true
+  },
+  "triggersAfter": {
+   "byDef": {},
+   "destroyed": 0,
+   "error": null,
+   "found": 0,
+   "left": 0,
+   "verified": true
+  },
+  "utc": "2026-10-15T15:42:40Z"
+ },
+ "from": "NS_Pyrelands_site_1_417df172fdb5_r6",
+ "head": "b5c8547e8b",
+ "reload": {
+  "cellCount": 62500,
+  "latitude": 2.845912e-08,
+  "longitude": 20.9051571,
+  "mapBiome": "RM_Pyrelands",
+  "mapBiomeLabel": "the Pyrelands",
+  "mapId": 1,
+  "mapParent": {
+   "defName": "Settlement",
+   "faction": "PlayerColony",
+   "factionName": "Northstar Pyrelands",
+   "label": "Northstar Pyrelands"
+  },
+  "operation": {
+   "DurationMs": 48,
+   "OperationId": "op_5ced4cce773d43d0915be05f2439a1dc",
+   "Status": "Completed",
+   "Success": true
+  },
+  "outdoorTempNow": 56.6729622,
+  "playerSettlementsOnThisTile": 1,
+  "season": "PermanentSummer",
+  "sizeX": 250,
+  "sizeZ": 250,
+  "state": {
+   "hasCurrentGame": true,
+   "paused": true,
+   "programState": "Playing",
+   "tick": 684001,
+   "timeSpeed": "Paused"
+  },
+  "success": true,
+  "ticksGame": 684001,
+  "tile": 5,
+  "tileInfo": {
+   "biome": "RM_Pyrelands",
+   "elevation": 257.0,
+   "hilliness": "Flat",
+   "hillinessInt": 1,
+   "isSurfaceTile": true,
+   "pollution": 0.0,
+   "rainfall": 0.0,
+   "swampiness": 0.0,
+   "temperature": 50.0,
+   "waterCovered": false
+  },
+  "tileValid": true
+ },
+ "save": "NS_Pyrelands_site_1_417df172fdb5_calm",
+ "saved": {
+  "bytes": 28575379,
+  "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\NS_Pyrelands_site_1_417df172fdb5_calm.rws"
+ },
+ "site": "pyrelands",
+ "utc": "2026-10-15T15:42:04Z",
+ "verified": true
+}

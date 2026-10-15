@@ -64,6 +64,10 @@ DANGER_RE = re.compile(r"(Cryptosleep|Casket|HermeticCrate|Sarcophag|^Hive$|^BI_
 DANGER_ITEM_DEFS = ("Shell_AntigrainWarhead", "Shell_HighExplosive", "Shell_Incendiary", "Shell_EMP", "Shell_Firefoam",
                     "Shell_Smoke", "Shell_ChemFuel", "Shell_Toxic", "PsychicAnimalPulser", "ShardAnimalPulser",
                     "PsychicSoothePulser", "PsychicInsanityLance", "PsychicShockLance")
+# Kept on purpose (L1 2026-10-15, 3 of 6 quicktest rolls): Anomaly's Fallen monolith (VoidMonolith) is placed on every
+# new colony map, has hitPoints -1 (destroy_batch cannot remove it) and stays inert until a colonist is ordered to study
+# or activate it. It matched `Monolith$` and failed every clean, so it is exempt from the danger and ruin passes.
+INERT_FIXTURES = ("VoidMonolith",)
 LIST_LIMIT = 5000
 POLL_S = 1.0
 
@@ -105,11 +109,11 @@ def danger_things(call):
     -> (rows, error)."""
     b, e1 = _things(call, group="BuildingArtificial")
     i, e2 = _things(call, defName=",".join(DANGER_ITEM_DEFS))
-    rows = [t for t in b if is_danger_def(t.get("def")) and not _player(t)] + i
+    rows = [t for t in b if is_danger_def(t.get("def")) and not _player(t) and t.get("def") not in INERT_FIXTURES] + i
     return rows, e1 or e2
 
 
-def ruin_things(call, natural=("SteamGeyser", "VHGE_GasGeyser")):
+def ruin_things(call, natural=("SteamGeyser", "VHGE_GasGeyser") + INERT_FIXTURES):
     """Unowned artificial buildings (ruins, walls, columns, shrine decor), natural scenery excluded. -> (rows, error)."""
     b, err = _things(call, group="BuildingArtificial")
     return [t for t in b if _unowned(t) and t.get("def") not in natural], err
@@ -164,6 +168,10 @@ def clean_map(call, profile, quiet=True):
         rec["ruinsVanished"], rec["ruinsLeft"] = n, len(left)
         if err or err2 or left:
             rec["problems"].append("ruins: %s" % (err or err2 or "%d left" % len(left)))
+    # L1 2026-10-15 (HARNESS): vanishing shrine walls/caskets above opens their fog pocket and releases the sleepers
+    # (4 mechs listed hostile at the unfog guard, after the first sweep), so sweep non-colonists again before the unfog.
+    db2 = call("jawa/destroy_bulk", filter="nonColonists", dryRun=False) or {}
+    rec["nonColonistsVanishedBeforeUnfog"] = db2.get("matchedCount")
     rec["fog"] = TG.clear_map_fog(S)
     if rec["fog"].get("verified") is not True:
         rec["problems"].append("fog: %s" % rec["fog"].get("error"))
@@ -391,7 +399,12 @@ def _head():
         import subprocess
         return subprocess.check_output(["git", "rev-parse", "--short=10", "HEAD"], cwd=_UTILS, text=True).strip()
     except Exception:                            # noqa: BLE001
-        return None
+        # a git-archive export (the live runs' copy) has no .git: read the HEAD the exporter wrote beside it
+        try:
+            root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
+            return open(os.path.join(root, "EXPORT_HEAD"), encoding="utf-8").read().strip() or None
+        except OSError:
+            return None
 
 
 # ------------------------------------------------------------------ builds
@@ -442,6 +455,12 @@ def build(call, site, saves_dir, work_dir, max_rolls=6, sleep=time.sleep, name=N
     for _ in range(max_rolls):
         q = fresh_quicktest(call, sleep=sleep)
         why = roll_ok(call, site) if site == "calm" else None
+        if why is None and site == "calm":
+            # L1 2026-10-15 (SITE): a map whose clean cannot finish (an indestructible Fallen monolith, VoidMonolith,
+            # hitPoints -1, survives destroy_batch) is a bad roll, not a failed build: roll again.
+            rec["clean"] = clean_map(call, spec["profile"])
+            if rec["clean"]["problems"]:
+                why = "clean: %s" % rec["clean"]["problems"]
         q["rejected"] = why
         rec["rolls"].append(q)
         if why is None:
@@ -450,7 +469,7 @@ def build(call, site, saves_dir, work_dir, max_rolls=6, sleep=time.sleep, name=N
         raise RuntimeError("no acceptable quicktest map in %d rolls: %s" % (max_rolls, rec["rolls"]))
     if site == "river":
         rec["river"] = make_river_site(call, rec["rolls"][-1].get("tile"))
-    rec["clean"] = clean_map(call, spec["profile"])
+        rec["clean"] = clean_map(call, spec["profile"])
     if rec["clean"]["problems"]:
         raise RuntimeError("clean_map not clean: %s" % rec["clean"]["problems"])
     rec["check"] = check_map(call, site)
