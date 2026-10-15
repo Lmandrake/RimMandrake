@@ -230,9 +230,9 @@ namespace RimMandrake.FlowWorks
 		{
 			Map map = Find.CurrentMap;
 			string[] a = (arg ?? "").Split(';');
-			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 c))
+			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 c) || !c.InBounds(map))
 			{
-				return "REFUSED: arg must be x,z;rot or x,z;off";
+				return "REFUSED: arg must be x,z;rot or x,z;off on the current map";
 			}
 			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
 			if (a[1] == "off")
@@ -282,7 +282,7 @@ namespace RimMandrake.FlowWorks
 		{
 			Map map = Find.CurrentMap;
 			string[] a = (arg ?? "").Split(';');
-			if (map == null || a.Length != 3 || !Cell(a[1], out IntVec3 target))
+			if (map == null || a.Length != 3 || !Cell(a[1], out IntVec3 target) || !target.InBounds(map))
 			{
 				return "REFUSED: arg must be workerId;x,z;JobDefName";
 			}
