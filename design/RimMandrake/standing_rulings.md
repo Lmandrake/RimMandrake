@@ -106,8 +106,13 @@ as `fluidcanals`. If you find another such citation, delete it.
 Every mod we ship carries a real settings screen: on/off per major
 feature/mechanic, tuning where a number is the experience, defaults = shipped
 behavior, all-off degrades gracefully, and worldgen-affecting toggles labeled
-as such. Biome-kit mechanics are feature-gated so they can be enabled in other
-biomes without the biome. Spec + retrofit of existing mods:
+as such. Biome mechanics are promised inside our own biomes only (owner,
+2026-10-15: *"I would like to release the … requirement that the biome mechanics
+work in other biomes. That's too much of a lift. … We can't guarantee they will work
+in other biomes beyond our framework. They should… but we're not going to validate
+that at this time."*). No new mod builds a cross-biome switch; the existing ones stay,
+default off, labelled "Unsupported: may work outside our biomes, not tested" (owner
+card 2026-10-15). Spec + retrofit of existing mods:
 `MOD_OPTIONS_RETROFIT_1`. Applies to every future mod, no exceptions.
 
 ## Every DLC is assumed — owner, 2026-09-19/25/26
