@@ -73,3 +73,9 @@ Offline: `selftest_settings_kit.py` PASS, `selftest_settings_screens.py` all ok,
 `Transient/experiment_2026-10-14/live_worklist.md`): in the GSS and Pyrelands settings windows, a master off shades its
 dependents with the tooltip, clicks and drags on them change nothing, values return when the master is back on, and
 Reset all asks before it writes.
+
+## criteria
+
+- A1 L0: selftest_settings_kit.py PASS and selftest_settings_screens.py all ok at the implementing sha; GSS and Pyrelands DLL stamps MATCH.
+- A2 L1: in the GSS and Pyrelands settings windows a master off shades its dependents, clicks change nothing, values return with the master on.
+- A3 L1: Reset all to defaults asks first; Cancel changes nothing; Confirm resets every setting (GSS both tabs).
