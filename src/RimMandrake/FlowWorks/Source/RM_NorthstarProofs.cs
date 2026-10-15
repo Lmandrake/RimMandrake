@@ -144,6 +144,46 @@ namespace RimMandrake.FlowWorks
 				: RM_PocketGrid.ProofPocket(map, c, band);
 		}
 
+		/// <summary>PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: build or remove a ramp without a job. arg "x,z;rot" (rot 0 N, 1 E, 2 S,
+		/// 3 W; the ramp points uphill that way) spawns a wooden ramp for the player, honouring the placement rules; "x,z;off"
+		/// destroys the ramp there. Returns "RAMP x,z rot=R joins=b gen=N" or REFUSED: reason.</summary>
+		public static string ProofRamp(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z;rot or x,z;off";
+			}
+			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+			if (a[1] == "off")
+			{
+				Thing r = RM_PitRamp.RampAt(map, c);
+				if (r == null)
+				{
+					return "REFUSED: no ramp at " + a[0];
+				}
+				r.Destroy(DestroyMode.Deconstruct);
+				return "RAMP " + a[0] + " removed gen=" + (eng?.ClimbGeneration ?? 0);
+			}
+			if (!int.TryParse(a[1], out int ri) || ri < 0 || ri > 3 || RM_PitRamp.Def == null)
+			{
+				return "REFUSED: rot must be 0..3 (or no RM_PitRamp def)";
+			}
+			var rot = new Rot4(ri);
+			AcceptanceReport ok = new PlaceWorker_PitRamp().AllowsPlacing(RM_PitRamp.Def, c, rot, map);
+			if (!ok.Accepted)
+			{
+				return "REFUSED: " + ok.Reason;
+			}
+			Thing ramp = ThingMaker.MakeThing(RM_PitRamp.Def, ThingDefOf.WoodLog);
+			ramp.SetFaction(Faction.OfPlayer);
+			GenSpawn.Spawn(ramp, c, map, rot);
+			IntVec3 up = c + rot.FacingCell;
+			bool joins = RM_PitRamp.Joins(map, c, up, RM_SuperdeepTrap.StepDepthAt(map, eng, c), RM_SuperdeepTrap.StepDepthAt(map, eng, up));
+			return "RAMP " + a[0] + " rot=" + ri + " joins=" + joins + " gen=" + (eng?.ClimbGeneration ?? 0);
+		}
+
 		/// <summary>Capture down. arg = target pawn id: "VERDICT v held=b prisoner=b cell=x,z".</summary>
 		public static string ProofCaptureDown(string pawnId)
 		{

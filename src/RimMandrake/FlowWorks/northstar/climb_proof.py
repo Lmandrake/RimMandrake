@@ -26,7 +26,9 @@ No flyer, no flight check (standing rule).
 
 Rows (MEASURED now): CLIMB_pond_person_free, CLIMB_pond_person_walks_out, CLIMB_D3_person_trapped,
 CLIMB_D3_person_cannot_walk_out, CLIMB_D3_muffalo_free, CLIMB_D2_rat_trapped, CLIMB_ladder_prison_door,
-CLIMB_rebuild_follows_fill, CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
+CLIMB_rebuild_follows_fill, CLIMB_ramp_frees_and_retraps + CLIMB_ramp_walk_out (pit E: sheer D 4 3x3 at
+(24..26, 2..4), a D 1 shelf at (27, 3), a ramp on (26, 3) pointing east, built and removed by ProofRamp),
+CLIMB_mask_seals_cliff_edge (PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the person band's
 connectivity byte on pit B's west lip has no east bit, the muffalo band's has).  OWED (UNMEASURED by construction until the ramp / mask items land): CLIMB_ramp_frees_and_retraps,
 CLIMB_raider_never_crosses_ramped_moat, CLIMB_hauler_fetches_ramped_floor, CLIMB_save_reload_pockets_identical.
 
@@ -52,7 +54,6 @@ SETTLE = 70          # > RM_PocketGrid.RebuildMinTicks
 WAIT_OUT = 900
 
 OWED = {
-    "CLIMB_ramp_frees_and_retraps": "RM_PitRamp is built by the ramps item (design §8.4); no ramp exists yet",
     "CLIMB_raider_never_crosses_ramped_moat": "needs ramps (§8.4); the masks are in (§8.5 step 2)",
     "CLIMB_hauler_fetches_ramped_floor": "needs ramps (§8.4)",
     "CLIMB_save_reload_pockets_identical": "needs a save + reload cycle on the bridge; the grid is derived, never scribed",
@@ -96,6 +97,15 @@ def mask_verdict(person, big):
     if person.get("derived") != "True" or not van & 0x04:
         return "UNMEASURED"   # masks not derived yet, or vanilla itself has no east step there (a wall, the map edge)
     return "PASS" if (not bp & 0x04) and (bb & 0x04) else "FAIL"
+
+
+def ramp_verdict(before, with_ramp, removed):
+    """CLIMB_ramp_frees_and_retraps from three ProofClimb reads of one pit cell (person band): a pocket, then not, then again."""
+    reads = (before, with_ramp, removed)
+    if not all(r and fresh(r) and "pocket" in r for r in reads):
+        return "UNMEASURED"
+    want = ("True", "False", "True")
+    return "PASS" if tuple(r["pocket"] for r in reads) == want else "FAIL"
 
 
 def out_of(rect, xz):
@@ -189,7 +199,9 @@ def main():
             for z in range(3):
                 dig(P(10 + x, 2 + z), 3)
                 dig(P(20 + x, 2 + z), 4)
+                dig(P(24 + x, 2 + z), 4)
         dig(P(16, 3), 2)
+        dig(P(27, 3), 1)
         B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % P(20, 3))   # a wall cell: a ladder joins its cell to a SHALLOWER cardinal neighbour (design §8.4)
         B.ticks(SETTLE)
         # A: the dried pond
@@ -233,6 +245,19 @@ def main():
         km, tm = climb("mask:%d,%d;2" % P(9, 3))
         kb, tb = climb("mask:%d,%d;3" % P(9, 3))
         row("CLIMB_mask_seals_cliff_edge", mask_verdict(km, kb), "MOD", {"person": tm, "muffalo": tb})
+        # E: a ramp frees a sheer D 4 pit and removing it re-seals (PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS)
+        col_e = spawn("Colonist", P(25, 3), "player")
+        B.ticks(SETTLE)
+        k0, t0 = climb("%d,%d;2" % P(25, 3))
+        tr = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;1" % P(26, 3)) or {}
+        B.ticks(SETTLE)
+        k1, t1 = climb("%d,%d;2" % P(25, 3))
+        st, det = walk_verdict(order(col_e, P(25, 9)), (ox + 24, oz + 2, 3, 3), want_out=True)
+        row("CLIMB_ramp_walk_out", st, "MOD", dict(det, ramp=tr))
+        tr2 = B.call("jawa/static_call", type=PROOF_TYPE, method="ProofRamp", args="%d,%d;off" % P(26, 3)) or {}
+        B.ticks(SETTLE)
+        k2, t2 = climb("%d,%d;2" % P(25, 3))
+        row("CLIMB_ramp_frees_and_retraps", ramp_verdict(k0, k1, k2), "MOD", {"txt": [t0, t1, t2], "ramp": [tr, tr2]})
         # the grid follows a fill: raise B's middle-east wall cell from D 3 to D 1 -> 3 -> 1 -> 0 is a stair for a person
         f1 = B.call("jawa/flowworks_excavation_drive", x=P(12, 3)[0], z=P(12, 3)[1], deepenLevels=0, setFill=-1, fillInLevels=2) or {}
         B.ticks(SETTLE)

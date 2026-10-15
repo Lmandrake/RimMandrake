@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS — design/RimMandrake/relative_depth_climb_design_2026-10-12.md §8.2 modifiers (PROVISIONAL).
+  A creature's climb limit comes from its body size (RM_PitTrapMath.ClimbLimit); these races manage one level more:
+  climbers (insects and arachnids, monkeys, squirrels) and leapers (hares, cats). Read by RM_PocketGrid.ClimbLimitOf.
+  Core defs only, so every xpath matches on every load.
+-->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Megascarab" or defName="Spelopede" or defName="Megaspider" or defName="Monkey" or defName="Squirrel"]</xpath>
+    <value>
+      <li Class="RimMandrake.FlowWorks.RM_ClimbAbility">
+        <extraLevels>1</extraLevels>
+      </li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Hare" or defName="Snowhare" or defName="Cat" or defName="Lynx"]</xpath>
+    <value>
+      <li Class="RimMandrake.FlowWorks.RM_ClimbAbility">
+        <leaper>true</leaper>
+      </li>
+    </value>
+  </Operation>
+</Patch>

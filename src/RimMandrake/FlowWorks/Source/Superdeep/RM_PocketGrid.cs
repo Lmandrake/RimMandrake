@@ -113,10 +113,14 @@ namespace RimMandrake.FlowWorks
 			{
 				anyDug = depth[i] != 0;
 			}
+			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: a ramp joins its square to the one it faces, for every band (design §8.3).
+			Dictionary<int, int> ramps = anyDug ? RM_PitRamp.Pairs(map, depth) : null;
+			System.Func<int, int, bool> rampJoins = ramps == null || ramps.Count == 0 ? null
+				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
 			for (int k = 1; k < MaxDepth; k++)
 			{
 				// No dug cell: every band is one surface component per map; skip the floods.
-				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k) : AllSurface(w, h, k);
+				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
 			}
 			bands = fresh;
 			builtGeneration = eng?.ClimbGeneration ?? 0;
@@ -388,7 +392,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>Design §8.2 modifiers (PROVISIONAL): patched onto a race's ThingDef. Climbers (insects, monkeys, squirrels) and
-	/// leapers (hares, cats) each manage one level more. No race carries it yet: the race patches are owed with the ramp item.</summary>
+	/// leapers (hares, cats) each manage one level more (Patches/Canals/FlowWorks_ClimbAbility.xml).</summary>
 	public class RM_ClimbAbility : DefModExtension
 	{
 		public int extraLevels;

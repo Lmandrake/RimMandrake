@@ -34,7 +34,7 @@ check("can-fail: stayed in when it should walk out", C.walk_verdict(row_in, R, T
 check("stayed in when held: PASS", C.walk_verdict(row_in, R, False)[0] == "PASS")
 check("a game that never ticked is UNMEASURED", C.walk_verdict(dict(row_in, ticksElapsed=0), R, False)[0] == "UNMEASURED")
 check("an unaccepted order is UNMEASURED", C.walk_verdict(dict(row_in, orderAccepted=False), R, False)[0] == "UNMEASURED")
-check("owed rows are named, four of them", len(C.OWED) == 4 and all(k.startswith("CLIMB_") for k in C.OWED))
+check("owed rows are named, three of them", len(C.OWED) == 3 and all(k.startswith("CLIMB_") for k in C.OWED))
 
 # PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: the mask row
 MP = C.parse("CLIFF k=2 bits=0xFB vanilla=0xFF derived=True derives=4 | POCKET k=2 comp=0 pocket=False")
@@ -44,6 +44,14 @@ check("can-fail: person still open east is FAIL", C.mask_verdict(MB, MB) == "FAI
 check("masks not derived: UNMEASURED", C.mask_verdict(dict(MP, derived="False"), MB) == "UNMEASURED")
 check("vanilla has no east step (a wall): UNMEASURED", C.mask_verdict(dict(MP, vanilla="0xFB"), MB) == "UNMEASURED")
 check("a REFUSED read: UNMEASURED", C.mask_verdict(C.parse("REFUSED: no masks"), MB) == "UNMEASURED")
+
+# PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: the ramp row
+def pk(p, built=5):
+    return C.parse("POCKET k=2 comp=3 pocket=%s size=9 depth=4 gen=%d built=%d rebuilds=2" % (p, built, built))
+check("ramp: pocket, free, pocket again: PASS", C.ramp_verdict(pk("True"), pk("False"), pk("True")) == "PASS")
+check("can-fail: ramp did not free: FAIL", C.ramp_verdict(pk("True"), pk("True"), pk("True")) == "FAIL")
+check("can-fail: removal did not re-seal: FAIL", C.ramp_verdict(pk("True"), pk("False"), pk("False")) == "FAIL")
+check("a stale grid read: UNMEASURED", C.ramp_verdict(pk("True"), C.parse("POCKET k=2 pocket=False gen=6 built=5"), pk("True")) == "UNMEASURED")
 
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)

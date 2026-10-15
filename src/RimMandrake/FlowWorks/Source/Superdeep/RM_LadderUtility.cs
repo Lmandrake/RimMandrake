@@ -225,11 +225,26 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
-			if (engine == null || !engine.IsExcavated(loc))
+			if (engine == null || engine.ClimbDepthAt(loc) == 0)
 			{
 				return "RMFlow_LadderNeedsExcavation".Translate();
 			}
-			return true;
+			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4): a ladder joins its square to a SHALLOWER N/S/E/W neighbour, any
+			// depth, so it must stand against a wall; and a square holds a ramp or a ladder, never both.
+			if (RM_PitRamp.RampAt(map, loc) != null)
+			{
+				return "RMFlow_RampNotOnLadder".Translate();
+			}
+			int d = engine.ClimbDepthAt(loc);
+			for (int b = 0; b < 4; b++)
+			{
+				IntVec3 o = new IntVec3(loc.x + RM_CliffMaskMath.Dx[b], 0, loc.z + RM_CliffMaskMath.Dz[b]);
+				if (o.InBounds(map) && RM_CliffMaskMath.LadderJoins(d, engine.ClimbDepthAt(o)))
+				{
+					return true;
+				}
+			}
+			return "RMFlow_LadderNeedsWall".Translate();
 		}
 	}
 }
