@@ -9,6 +9,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_GreentideGrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>grass</label>
     <description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
     <statBases>

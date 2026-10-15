@@ -97,6 +97,7 @@
        that item's own scope. ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RUT_DarkCrust</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>vein moss</label>
     <description>A thin skin of phototrophic film, patched black, deep purple and blood-red, spread wherever a trunk or a stone faces the star's scattered light. It is not green because green is the wrong pigment for light this weak — it absorbs across the whole dim spectrum instead, and it is losing anyway. This is what grows on the things that actually won.</description>
     <statBases>

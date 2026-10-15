@@ -183,6 +183,7 @@
   </ThingDef>
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Selvix</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>selvix</label>
     <description>A flat star-shaped rosette of thick wet fuchsia arms, each rimmed with a frost of white crystal where it meets the air, a wine-red heart at the centre. It rings itself on stained ground. The arms are bitter and clean, and a poultice of them does what herbal medicine does.</description>
     <statBases>

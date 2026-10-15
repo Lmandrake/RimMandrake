@@ -48,6 +48,7 @@
   <!-- Toothmoss: burn-line carpet of grinding teeth; walking it is slow. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Toothmoss</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>toothmoss</label>
     <description>A carpet of small grinding teeth at the scorch margin, wearing themselves down chewing the sterilized matter back into soil the goo can take. Walking it is slow, and it crunches.</description>
     <statBases>
@@ -209,6 +210,7 @@
        in a spreading wave - the ground telling everything where you are. No yield. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Lashgrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>lashgrass</label>
     <description>Fine red filaments carpeting the ground, flinching away from footsteps in a spreading wave. It tells everything in the valley exactly where you are.</description>
     <statBases>

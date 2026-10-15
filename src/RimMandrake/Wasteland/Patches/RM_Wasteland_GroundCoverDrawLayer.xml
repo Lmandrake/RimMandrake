@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Wasteland_GroundCoverDrawLayer.xml   authored 2026-10-14
+  Owner ruling 2026-10-14 (typed): "Lower all such plants in all biomes. Small ground cover on the
+  appropriate layer."  Item: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS.
+
+  Donor-owned ground cover spawned by RM_Wasteland / RUT_Wasteland, moved from LowPlant (11)
+  to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude against 0.0366
+  between layers, so cover must sit >= 3 layers under the LowPlant plants it has to stay beneath;
+  inside one layer the order is hash-random (the "moss sometimes in front" report). Draw order only:
+  size, food, fertility and growth are untouched. The change is global to the def (all biomes).
+  Census and criteria: design/RimMandrake/plant_draw_layers_2026-10-14.md
+  (src/RimMandrake/Utils/plant_draw_layers.py). Each donor inherits altitudeLayer from its parent,
+  so the op ADDS the field to the def; the Replace branch covers a future own declaration. The def
+  is tested first: a missing donor is a silent no-op.
+-->
+<Patch>
+  <!-- ashskal (Biotech) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+</Patch>

@@ -76,6 +76,7 @@
   <!-- ============== Dewshrooms ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Dewshrooms</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>sikkra lure</label>
     <description>Clusters of tiny caps that glow a cold teal after dark. The light is a trap: gnats and small moths drift down to it, settle on the gills, stick fast in the glistening slime there and are slowly digested where they stand. A single patch can empty the air of a whole swarm in one night, and by morning its gills are furred with wings. The caps are harmless to touch and worthless to eat.</description>
     <graphicData>
@@ -112,6 +113,7 @@
   <!-- ============== Fruiting bodies ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_FruitingBodies</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>pimmik mold</label>
     <description>The fruiting bodies of a pale mold that carpets the forest floor wherever the mat is warm: a fuzz of tiny pins, each with a bead of a head. It is the most common thing in the biome and the least noticed.</description>
     <graphicData>
@@ -767,6 +769,7 @@
   <!-- ============== Sagecrust ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Sagecrust</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>tavvik crust</label>
     <description>A tough, leafy grey-green crust that clings to rock and fungal mat alike in overlapping scales, living on almost no light. Nothing much eats it and nothing much kills it. When the ground turns cold and everything else in the pale forest sickens back into the mat, the tavvik crust is the last thing still growing.</description>
     <graphicData>

@@ -58,6 +58,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RUT_Fuzz</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>the fuzz</label>
     <description>A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Its growth crown sits below the soil line, so grazing and cutting alike only ever take the expendable leaves above - the fuzz and the giants that mow it are one equilibrium, and it is back within days.</description>
     <statBases>

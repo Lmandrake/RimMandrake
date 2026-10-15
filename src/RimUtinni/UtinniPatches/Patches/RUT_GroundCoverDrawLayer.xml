@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GroundCoverDrawLayer.xml   authored 2026-10-14
+  Owner ruling 2026-10-14 (typed): "Lower all such plants in all biomes. Small ground cover on the
+  appropriate layer."  Item: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS.
+
+  Donor-owned ground cover spawned by RUT_Contagion, RUT_CrackedLands, RUT_BlueDesert, RUT_Wasteland, moved from LowPlant (11)
+  to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude against 0.0366
+  between layers, so cover must sit >= 3 layers under the LowPlant plants it has to stay beneath;
+  inside one layer the order is hash-random (the "moss sometimes in front" report). Draw order only:
+  size, food, fertility and growth are untouched. The change is global to the def (all biomes).
+  Census and criteria: design/RimMandrake/plant_draw_layers_2026-10-14.md
+  (src/RimMandrake/Utils/plant_draw_layers.py). Each donor inherits altitudeLayer from its parent,
+  so the op ADDS the field to the def; the Replace branch covers a future own declaration. The def
+  is tested first: a missing donor is a silent no-op.
+-->
+<Patch>
+  <!-- ocular grass (Alpha Biomes) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- hardy grass (Alpha Biomes) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- toxi grass (Alpha Biomes) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- moss (GrimTerra Biomes) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GRimMoss"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="GRimMoss"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="GRimMoss"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="GRimMoss"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- toxigrass (ReGrowth Core) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]/altitudeLayer</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]/altitudeLayer</xpath>
+      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RG_Plant_ToxiGrass"]</xpath>
+        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
+      </match>
+    </nomatch>
+  </Operation>
+</Patch>

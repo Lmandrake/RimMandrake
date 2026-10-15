@@ -65,6 +65,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Nemreth</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>nemreth</label>
     <description>A low mat of hair-fine red stalks, each ending in a clear glistening bead that holds the light like dew and never dries. From a distance the whole mat glitters; close up, the beads are thick and drawn into threads, and older stalks are curled inward around what they caught. The most beautiful thing in the biome that is also a killer, and it never pretended otherwise — its adhesive is the luxury attar's binder.</description>
     <graphicData>
@@ -139,6 +140,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Braskeen</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>braskeen</label>
     <description>A flat whorl lying on the surface, each arm ending in a pair of hinged blades held slightly open, fringed with stiff interlocking teeth. The blades close when something touches them and stay shut for a day with the catch showing between the teeth. Blade interiors are a raw wet pink. The only plant on the page with real motion — a channel of these snapping shut one after another as scuttlers cross is the biome's best ambient moment.</description>
     <graphicData>

@@ -20,6 +20,7 @@
        ground with the fertile-looking crop on it, and both are the lure. -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Plant_SlimeGrass</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>slime-grass</label>
     <description>Not grass. A fine green nap the body puts up where it wants light, soft-stemmed and faintly warm, and it regrows almost as fast as anything can eat it. Livestock will graze it happily for about a week.</description>
     <statBases>

@@ -204,6 +204,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Threllick</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>threllick</label>
     <description>A dense mat of interlaced surface roots, grey-brown and slick, running in visible strands between the thicket's trunks. It is the ground over most of the biome — you walk on it, and it is why walking is hard. The stolen river's first plumbing: every plant here is plumbed into it.</description>
     <statBases>
@@ -455,6 +456,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Grennick</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>grennick</label>
     <description>A dense dark turf whose leading edge is abrupt — a clean line of new green over burned or open ground, visibly further along every time you look. Behind the line, threllick and the thicket follow. The margin's advancing front as a plant, the groundcover of the shipped front-creep mechanism (RM_MapComponent_FrontCreep) — it regrows into an untrimmed light-moat.</description>
     <statBases>

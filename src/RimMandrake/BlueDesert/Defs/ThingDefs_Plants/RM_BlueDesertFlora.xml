@@ -58,6 +58,7 @@
   <!-- ============== Palefloss (fuzzball, ground cover) ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Palefloss</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>palefloss</label>
     <description>A fist of transparent filaments hugging the ice, refracting what little light reaches this plateau into faint rainbows at the edges. The Blue Desert's sparse "grass" — and every strand of it a charge of liquid butane.</description>
     <statBases>
@@ -441,6 +442,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Lisqueth</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>lisqueth</label>
     <description>A flat starburst rosette, waist-wide, of smoky-violet translucent ribs whose edges fluoresce a cool magenta-pink under starlight. Dim and never warm: the nightside's one natural lamp.</description>
     <statBases>

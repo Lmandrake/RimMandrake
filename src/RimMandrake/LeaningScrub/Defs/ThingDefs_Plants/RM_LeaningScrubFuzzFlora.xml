@@ -20,6 +20,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Whipfuzz</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>whipfuzz</label>
     <description>The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving.</description>
     <statBases>
@@ -63,6 +64,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Pillowmoss</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>pillowmoss</label>
     <description>A fat, low cushion that drinks the wind - fog beads on it all day, and the ground under a pillowmoss is the only reliably wet ground on the plain.</description>
     <statBases>
@@ -135,6 +137,7 @@
 
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Cruststar</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>cruststar</label>
     <description>A hand-span star of pale lichen flat against the root-bound crust, rimmed gold where it fruits. The crustweevils graze it like a herd on a pasture the size of a plate.</description>
     <statBases>

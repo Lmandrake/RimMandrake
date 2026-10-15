@@ -76,6 +76,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Pallasheen</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>pallasheen</label>
     <description>One wide pale leaf pressed flat to the ground, thin enough that the soil colour shows through, edged in a fine pink line. It never stands up and never clumps. Pallasheen germinates only on composter castings, so wherever it grows the exportable delta loam is already underneath it — the loam prospector's tell, and a way to walk up to and dig what would otherwise be an invisible by-product.</description>
     <graphicData>
@@ -108,6 +109,7 @@
 
   <ThingDef ParentName="PlantBase">
     <defName>RM_Wessaline</defName>
+<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>wessaline</label>
     <description>A continuous white-and-grey skin lying over the salt pans, crazed into plates that lift at the edges and crunch underfoot. Barely reads as living; only a faint green bloom in the fissures gives it away. Worth almost nothing, deliberately — it is the ground cover that makes the brine end of the delta look terminal rather than unfinished, and it is exactly what it looks like: dried mud, harmless underfoot, never a trap.</description>
     <graphicData>
