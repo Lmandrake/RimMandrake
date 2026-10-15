@@ -1,0 +1,1 @@
+python.exe: can't open file '\\\\wsl.localhost\\Ubuntu\\mnt\\d\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\src\\RimMandrake\\Utils\\health_observer.py': [Errno 13] Permission denied
