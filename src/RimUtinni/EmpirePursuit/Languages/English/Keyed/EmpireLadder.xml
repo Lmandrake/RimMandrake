@@ -27,7 +27,7 @@
 
   <!-- CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: a FlowWorks fuel blast draws the Empire -->
   <RUT_FuelBlast_Enabled>Fuel blasts draw the Empire</RUT_FuelBlast_Enabled>
-  <RUT_FuelBlast_EnabledDesc>With FlowWorks: an astrofuel channel detonating, or a big chemfuel moat fire, is seen from orbit. Colony Visibility jumps and an Imperial squad drops onto the blast to see what happened (at most once a day per map). Off: the Empire ignores them.</RUT_FuelBlast_EnabledDesc>
+  <RUT_FuelBlast_EnabledDesc>With FlowWorks: an astrofuel channel detonating, or a big chemfuel moat fire, is seen from orbit. Colony Visibility jumps and an Imperial squad drops onto the blast to see what happened (at most once a day per home map; on a temporary map only Visibility rises). Off: the Empire ignores them.</RUT_FuelBlast_EnabledDesc>
   <RUT_FuelBlast_Visibility>Visibility added by a detonation: {0} (a big one up to twice that, a chemfuel fire a third)</RUT_FuelBlast_Visibility>
   <RUT_FuelBlast_DropHours>Investigators drop in after: {0} hours</RUT_FuelBlast_DropHours>
   <RUT_FuelBlast_Seen>That blast was seen from orbit. The Empire is sending someone to look.</RUT_FuelBlast_Seen>

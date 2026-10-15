@@ -744,7 +744,9 @@ namespace RimMandrake.FlowWorks
 		/// waits for the next tick, so concurrent bodies never stack into one frozen tick).</summary>
 		private void RunDetonation(Map map, RM_MapComponent_Excavation ex, int now)
 		{
-			if (!RimMandrakeFlowWorksSettings.canalFireEnabled)
+			// fire off, or detonation switched off mid-chain: the rest of the schedule drops (its cells keep their fuel and
+			// burn however the settings now say, if anything lights them)
+			if (!RimMandrakeFlowWorksSettings.canalFireEnabled || !RimMandrakeFlowWorksSettings.astrofuelDetonationEnabled)
 			{
 				detTick.Clear(); detCell.Clear(); detKind.Clear(); detRadius.Clear(); detonating.Clear();
 				return;
@@ -865,6 +867,7 @@ namespace RimMandrake.FlowWorks
 					GenSpawn.Spawn(flyer, dest, map);
 				}
 			}
+			shoveScratch.Clear();   // static: never hold a pawn past the call (nor into the next game)
 		}
 
 		/// <summary>The farthest standable cell (up to KnockbackCells) straight away from the blast, in line of sight.</summary>
