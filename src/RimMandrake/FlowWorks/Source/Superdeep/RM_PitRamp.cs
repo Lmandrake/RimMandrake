@@ -15,7 +15,8 @@ namespace RimMandrake.FlowWorks
 	/// (RM_CliffMaskMath.RampJoins). That step is allowed for EVERY pawn, any size, both directions (enemies too), at flat
 	/// walking cost (RM_PitTrapMath.StepCost viaRamp). It is structural: it enters the pocket grid and every band's cliff mask,
 	/// so spawning or removing one bumps the climb generation; deconstructing it re-seals the pit.
-	/// ART: PLACEHOLDER (vanilla UI/Overlays/Arrow); the real art is owed through the art ledger with the owner.
+	/// ART: the four-facing earth-and-timber ramp (Things/Building/FlowWorks/Excavation/RM_PitRamp, Graphic_Multi), installed
+	/// through the art ledger at 04657a349b.
 	/// </summary>
 	public class RM_Building_PitRamp : Building
 	{
