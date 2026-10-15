@@ -1,0 +1,43 @@
+{
+ "tool": "jawa/kill_hostiles",
+ "args": "{\"pawnDef\":\"Megaspider\"}",
+ "result": {
+  "success": true,
+  "mapId": 0,
+  "dryRun": false,
+  "matched": 3,
+  "killed": 3,
+  "killedPawns": [
+   {
+    "id": "Megaspider45656",
+    "kind": "Megaspider",
+    "faction": "Insect"
+   },
+   {
+    "id": "Megaspider45657",
+    "kind": "Megaspider",
+    "faction": "Insect"
+   },
+   {
+    "id": "Megaspider45674",
+    "kind": "Megaspider",
+    "faction": "Insect"
+   }
+  ],
+  "survivorsNonHostile": 20,
+  "hostilesLeft": 3,
+  "operation": {
+   "OperationId": "op_3cbe6d60195244f296cd1c5f46b72cdd",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 37
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 55
+  }
+ }
+}

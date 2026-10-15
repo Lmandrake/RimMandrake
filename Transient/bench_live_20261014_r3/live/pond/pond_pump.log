@@ -1,0 +1,23 @@
+POND_PUMP_pond_limited             PASS       SITE     {"body": {"id": 1, "limitless": false, "stock": 12.0, "capacity": 12.0, "cellCount": 6, "recededCount": 0, "activeCellCount": 6, "truncated": false}}
+GOVERNOR_STOP {"utc": "2026-10-15T04:07:58Z", "message": "safe_advance stopped after 10 of 10 tick(s): hostile_arrival: present at arm: Megaspider Megaspider (animal)", "state": "stopped", "executed": 10, "requested": 10, "stopBy": {"seq": 171, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45656, "subject": "megaspider", "critical": false, "declared": false, "detail": "present at arm: Megaspider Megaspider (animal)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 171, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45656, "subject": "megaspider", "critical": false, "declared": false, "detail": "present at arm: Megaspider Megaspider (animal)"}, {"seq": 172, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45657, "subject": "megaspider", "critical": false, "declared": false, "detail": "present at arm: Megaspider Megaspider (animal)"}, {"seq": 173, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45673, "subject": "saluksis", "critical": false, "declared": false, "detail": "present at arm: VFEI2_Swarmling VFEI2_Swarmling (animal)"}, {"seq": 174, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45674, "subject": "megaspider", "critical": false, "declared": false, "detail": "present at arm: Megaspider Megaspider (animal)"}, {"seq": 175, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45675, "subject": "megascarab", "critical": false, "declared": false, "detail": "present at arm: Megascarab Megascarab (animal)"}, {"seq": 176, "kind": "hostile_arrival", "severity": "threat", "tick": 51, "map": 0, "subjectId": 45676, "subject": "megapede", "critical": false, "declared": false, "detail": "present at arm: VFEI2_Megapede VFEI2_Megapede (animal)"}], "argv": ["src/RimMandrake/FlowWorks/northstar/pond_pump.py", "D:\\Luke\\dev\\_rmscratch\\bench_live_20261014_r3\\r3\\pond_p
+result: D:\Luke\dev\_rmscratch\bench_live_20261014_r3\r3\pond_pump.json
+Traceback (most recent call last):
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\FlowWorks\northstar\pond_pump.py", line 232, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\FlowWorks\northstar\pond_pump.py", line 186, in main
+    pw = PH._powered(B, pump)
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\FlowWorks\northstar\proof_hose.py", line 223, in _powered
+    v, w = _poll(B, lambda: B.hp("pump:%d,%d" % tuple(pump)).get("powered"), bound, step=step)
+           ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\FlowWorks\northstar\proof_hose.py", line 232, in _poll
+    B.ticks(step)
+    ~~~~~~~^^^^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\FlowWorks\northstar\pond_pump.py", line 114, in ticks
+    raw_ticks(k)
+    ~~~~~~~~~^^^
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\Utils\validation_core.py", line 96, in ticks
+    ex = cg.advance_chunk(self, req)
+  File "D:\Luke\dev\_rmscratch\bench_live_20261014_r3\src\RimMandrake\Utils\modcheck\clockgate.py", line 211, in advance_chunk
+    raise GovernorStop(r)
+clockgate.GovernorStop: safe_advance stopped after 10 of 10 tick(s): hostile_arrival: present at arm: Megaspider Megaspider (animal)

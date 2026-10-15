@@ -1,0 +1,125 @@
+[
+ {
+  "tool": "jawa/kill_hostiles",
+  "args": "{}",
+  "result": {
+   "success": true,
+   "mapId": 0,
+   "dryRun": false,
+   "matched": 5,
+   "killed": 5,
+   "killedPawns": [
+    {
+     "id": "Fingerspike5219",
+     "kind": "Fingerspike",
+     "faction": "Entities"
+    },
+    {
+     "id": "Bulbfreak5221",
+     "kind": "Bulbfreak",
+     "faction": "Entities"
+    },
+    {
+     "id": "Trispike5220",
+     "kind": "Trispike",
+     "faction": "Entities"
+    },
+    {
+     "id": "Trispike5217",
+     "kind": "Trispike",
+     "faction": "Entities"
+    },
+    {
+     "id": "Bulbfreak5218",
+     "kind": "Bulbfreak",
+     "faction": "Entities"
+    }
+   ],
+   "survivorsNonHostile": 3,
+   "hostilesLeft": 0,
+   "operation": {
+    "OperationId": "op_9305e6c1c443439bac4c1eeecca0a01d",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 65
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31
+   }
+  }
+ },
+ {
+  "tool": "jawa/destroy_bulk",
+  "args": "{\"filter\":\"nonColonists\",\"dryRun\":false}",
+  "result": {
+   "success": true,
+   "dryRun": false,
+   "filter": "nonColonists",
+   "matchedCount": 0,
+   "destroyed": [],
+   "ticksGame": 31,
+   "operation": {
+    "OperationId": "op_5aa2d88c9ab942fba0f7421bb53e7ffe",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 33
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31
+   }
+  }
+ },
+ {
+  "tool": "jawa/quiet_site",
+  "args": "{\"action\":\"apply\",\"clearThreats\":true}",
+  "result": {
+   "success": true,
+   "action": "apply",
+   "mapId": 0,
+   "threats": [],
+   "removed": [],
+   "errors": [],
+   "threatsAfter": 0,
+   "kept": 0,
+   "letters": [
+    {
+     "id": "AncientExostriderRemains37253",
+     "def": "AncientExostriderRemains",
+     "label": "Ancient mech",
+     "sentBefore": false,
+     "sentAfter": false
+    },
+    {
+     "id": "VoidMonolith37287",
+     "def": "VoidMonolith",
+     "label": "Fallen monolith",
+     "sentBefore": false,
+     "sentAfter": false
+    }
+   ],
+   "lettersUnsentAfter": 2,
+   "ticksGame": 31,
+   "operation": {
+    "OperationId": "op_589aa71721454a52bcc5a63f3fd93530",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31
+   }
+  }
+ }
+]

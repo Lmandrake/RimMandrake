@@ -1,0 +1,49 @@
+{
+ "tool": "jawa/pawn_origin",
+ "args": "{\"ids\":\"Toughspike37317\"}",
+ "result": {
+  "success": true,
+  "installed": true,
+  "installStatus": "complete",
+  "startedBy": "bridge-registration",
+  "epoch": 23,
+  "notFound": [],
+  "pawns": [
+   {
+    "id": "Toughspike37317",
+    "kind": "Toughspike",
+    "spawn": {
+     "seq": 518,
+     "tick": 77,
+     "map": 0,
+     "classification": "observedRespawn",
+     "ranOriginal": true
+    },
+    "ourInvolvement": "unknown",
+    "statement": "origin unknown: no generation observation (generated before recording, outside a recorded context, or its tag was evicted); seen spawned on this map before (respawn)"
+   }
+  ],
+  "health": {
+   "untaggedGenerations": 0,
+   "tagEvictions": 0,
+   "seenEvictions": 0,
+   "spawnOverwritten": 0,
+   "faults": 0
+  },
+  "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+  "ticksGame": 135,
+  "operation": {
+   "OperationId": "op_9a4b4523ab2a49e1a657069fe767d352",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 46
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 135
+  }
+ }
+}
