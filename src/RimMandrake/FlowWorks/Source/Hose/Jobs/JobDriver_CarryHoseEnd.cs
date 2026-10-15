@@ -127,7 +127,9 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
         {
             CompHoseReel r = Reel;
             RM_MapComponent_Hoses comp = r != null && r.parent.Spawned ? r.parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
-            bool couples = comp != null && Dest.IsValid && comp.RelayAt(r, new RimMandrake.Shared.Slack.Cell(Dest.x, Dest.z)) != null;
+            // C7b-F8: coupling to a tank, pipe or machine (a port beside the end) takes the coupling time too, not only a relay
+            bool couples = comp != null && Dest.IsValid && (comp.RelayAt(r, new RimMandrake.Shared.Slack.Cell(Dest.x, Dest.z)) != null
+                || HosePorts.FindAt(r.parent.Map, Dest, r.parent, out RimMandrake.Shared.Slack.Cell _, out HosePortKind _) != null);
             return couples ? HoseJobTuning.coupleTicks : HoseJobTuning.setDownTicks;
         }
 

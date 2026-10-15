@@ -27,14 +27,25 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             if (p == null || r == null || clickedThing.Faction != Faction.OfPlayer) yield break;
             string label = clickedThing.LabelShort;
             string blocked = Blocked(p, r, clickedThing);
+            // C7b-F3: moving a laid end needs a path to the END, not to the reel (the work giver checks the end too)
+            string endBlocked = Blocked(p, r, clickedThing, false) ?? EndBlocked(p, r);
             if (r.carry == HoseCarryState.Stored)
                 yield return Opt("Carry hose out from " + label, blocked, () => TargetThen(p, r, "Cannot deploy the hose there: ", r.OrderDeploy));
             if (r.carry == HoseCarryState.Laid || r.carry == HoseCarryState.Dropped)
             {
-                yield return Opt("Pick up hose end of " + label, blocked ?? EndBlocked(p, r), () => TargetThen(p, r, "Cannot move the hose end there: ", r.OrderMove));
+                yield return Opt("Pick up hose end of " + label, endBlocked, () => TargetThen(p, r, "Cannot move the hose end there: ", r.OrderMove));
                 yield return Opt("Retract hose at " + label, blocked, () =>
                 {
-                    if (r.OrderRetract() == null) HoseJobs.GiveForced(p, HoseJobs.MakeRetract(r));
+                    HosePendingOrder prevOrder = r.pending;
+                    IntVec3 prevAt = r.pendingAt;
+                    bool prevFresh = r.pendingFresh;
+                    // C7b-F5: a refused forced job puts back what was queued, never leaves the new order for anyone
+                    if (r.OrderRetract() == null && !HoseJobs.GiveForced(p, HoseJobs.MakeRetract(r)))
+                    {
+                        r.pending = prevOrder;
+                        r.pendingAt = prevAt;
+                        r.pendingFresh = prevFresh;
+                    }
                 });
             }
         }
@@ -48,17 +59,17 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             foreach (CompHoseReel r in comp.Reels)
             {
                 if (!r.laid || r.far != context.ClickedCell || r.parent.Faction != Faction.OfPlayer) continue;
-                string blocked = Blocked(p, r, r.parent) ?? EndBlocked(p, r);
+                string blocked = Blocked(p, r, r.parent, false) ?? EndBlocked(p, r);
                 yield return Opt("Pick up hose end (reel at " + r.parent.Position + ")", blocked,
                     () => TargetThen(p, r, "Cannot move the hose end there: ", r.OrderMove));
             }
         }
 
-        private static string Blocked(Pawn p, CompHoseReel r, Thing reel)
+        private static string Blocked(Pawn p, CompHoseReel r, Thing reel, bool needReelPath = true)
         {
             if (r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) return "someone is handling it";
             if (!p.CanReserve(reel, 1, -1, null, true)) return "reserved";
-            if (!p.CanReach(reel, PathEndMode.Touch, Danger.Deadly)) return "no path";
+            if (needReelPath && !p.CanReach(reel, PathEndMode.Touch, Danger.Deadly)) return "no path";
             return null;
         }
 
@@ -76,6 +87,7 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             {
                 HosePendingOrder prevOrder = r.pending;
                 IntVec3 prevAt = r.pendingAt;
+                bool prevFresh = r.pendingFresh;
                 string why = order(t.Cell);
                 if (why != null)
                 {
@@ -88,10 +100,17 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
                     // GPT source read 2026-10-06 B12: the refused order used to stay queued behind this message; put back what was there
                     r.pending = prevOrder;
                     r.pendingAt = prevAt;
+                    r.pendingFresh = prevFresh;
                     Messages.Message("Cannot carry the hose: " + jwhy + ".", MessageTypeDefOf.RejectInput, false);
                     return;
                 }
-                HoseJobs.GiveForced(p, j);
+                if (!HoseJobs.GiveForced(p, j))
+                {
+                    // C7b-F5: the pawn refused the forced job: put back what was queued, as for a refused order above
+                    r.pending = prevOrder;
+                    r.pendingAt = prevAt;
+                    r.pendingFresh = prevFresh;
+                }
             }, caster: p);
         }
     }

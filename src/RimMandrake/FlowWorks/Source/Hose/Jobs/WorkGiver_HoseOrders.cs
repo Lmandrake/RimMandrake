@@ -50,7 +50,7 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             if (!forced && t.IsForbidden(pawn)) { why = "forbidden"; return null; }
             if (!pawn.CanReserve(t, 1, -1, null, forced)) { why = "reserved"; return null; }
             Danger d = forced ? Danger.Deadly : Danger.Some;
-            if (!HoseOrderRules.MayResume(r.carry, r.pending, forced, HoseJobTuning.autoResumeDroppedHose)) { why = "waiting for a new order"; return null; }
+            if (!HoseOrderRules.MayResume(r.carry, r.pending, forced, HoseJobTuning.autoResumeDroppedHose, r.pendingFresh)) { why = "waiting for a new order"; return null; }
 
             if (r.pending == HosePendingOrder.Retract)
             {
@@ -75,7 +75,9 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
             }
             if (!r.IsBringBack(dest))
             {
-                if (!pawn.CanReach(dest, PathEndMode.Touch, d)) { why = "no path to " + dest; return null; }
+                // C7b-F4: the same end mode the carry driver walks (JobDriver_CarryHoseEnd.WalkEndMode): onto a standable cell
+                PathEndMode destMode = dest.InBounds(pawn.Map) && dest.Standable(pawn.Map) ? PathEndMode.OnCell : PathEndMode.Touch;
+                if (!pawn.CanReach(dest, destMode, d)) { why = "no path to " + dest; return null; }
                 if (!forced && !dest.InAllowedArea(pawn)) { why = "destination outside allowed area"; return null; }
             }
             return HoseJobs.MakeCarry(r);
