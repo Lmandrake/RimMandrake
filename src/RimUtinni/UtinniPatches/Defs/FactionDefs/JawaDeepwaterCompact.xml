@@ -204,6 +204,13 @@
         </options>
       </li>
     </pawnGroupMakers>
+    <!-- FACTION_LEADER_REPAIR_SIX_EMPTY_THRONES: no Combat kind carries factionLeader, so without this
+         Faction.TryGenerateNewLeader finds nothing, leader stays null and Faction.FactionTick calls
+         Log.ErrorOnce("Faction leader for ... is null") EVERY TICK (measured 2026-10-14: 6 factions = 360
+         suppressed repeats/s). Inherit="False" as on the Junkers, so a parent list never names our leader. -->
+    <fixedLeaderKinds Inherit="False">
+      <li>RUT_Jawa_Deepwater_Leader</li>
+    </fixedLeaderKinds>
   </FactionDef>
 
 </Defs>
