@@ -687,6 +687,9 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
+            // Snapshotted BEFORE Section(), like the Pits section: its "Reset this section" button resets the field in the
+            // same frame, so a snapshot inside the body would miss the change and skip the re-pocket/redraw below.
+            bool hollowWas = pondBedHollowEnabled;
             if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
@@ -766,12 +769,12 @@ namespace RimMandrake.FlowWorks
                 "A dried pond square you dig becomes yours, and the pond shrinks by what it held. Filling it back in to "
               + "ground level returns it to the pond as dry bed. Off: the old behaviour (a filled-in square came back "
               + "as unpaid pond water and flickered).");
-            bool hollowWas = pondBedHollowEnabled;
             list.CheckboxLabeled("A drained pond leaves a hollow", ref pondBedHollowEnabled,
                 "A pond square that dries out becomes cracked lakebed sunk to the depth the water had: two levels where it "
               + "was shallow, four where it was deep. A pond with a shallow rim is walked out of; a sheer deep drop holds what "
               + "falls in. A canal whose water stands above the bed's floor runs back into the pond. Refilling re-wets the "
-              + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat mud.");
+              + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat ground. "
+              + "Climbing changes at once; squares already dry can keep their current look until they refill.");
             if (hollowWas != pondBedHollowEnabled)
             {
                 // the climb depth changed under every dry bed: re-pocket, and redraw the wall faces and sinks

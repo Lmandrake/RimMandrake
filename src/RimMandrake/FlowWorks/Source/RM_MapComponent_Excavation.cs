@@ -967,11 +967,20 @@ namespace RimMandrake.FlowWorks
 			}
 			byte f = fillGrid[i] > d ? d : fillGrid[i];
 			byte newD = (byte)(d - 1);
+			// POND_BED: a cut into a dry bed started at the bed's depth (Deepen), so filling it back in ends at the bed, not at
+			// ground level: one fill past the bed's floor returns the square to its pond, never shallower than it was then
+			// deeper again. Everything the cell held is displaced, as at the surface.
+			int bedFloor = BedFloorOfCut(c, i);
+			bool backToBed = bedFloor > 0 && newD <= bedFloor;
+			if (backToBed)
+			{
+				newD = RM_ExcavationDepth.Surface;
+			}
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 2b: the displaced liquid keeps the fluid this cell held.
 			FluidDef cellFluid = FluidAt(c) ?? ActiveFluid;
 			// The F - (D-1) clamp lives in RM_StockMath so the selftest covers the
 			// production arithmetic rather than a copy of it.
-			int displaced = RM_StockMath.DisplacedLevels(d, f);
+			int displaced = backToBed ? f : RM_StockMath.DisplacedLevels(d, f);
 			depthGrid[i] = newD;
 			fillGrid[i] = (byte)(f - displaced);
 			BumpClimbGeneration();
@@ -1273,6 +1282,17 @@ namespace RimMandrake.FlowWorks
 				FluidDef f = body.fluid ?? ActiveFluid;
 				NotifyOverflowDestroyed(excess / (f != null && f.volumePerTile > 0f ? f.volumePerTile : 1f));
 			}
+		}
+
+		/// <summary>POND_BED: the bed depth a dug square goes back to when filled in — its detached pond's bed depth while
+		/// hollows are on, else 0 (filled to ground level as before).</summary>
+		private int BedFloorOfCut(IntVec3 c, int i)
+		{
+			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || !detachedBedCells.ContainsKey(i) || !originalTerrain.ContainsKey(i))
+			{
+				return 0;
+			}
+			return BedLevelsAt(c);
 		}
 
 		/// <summary>Owner ruling 6's other half: a detached bed square filled back in to the surface goes back to its pond

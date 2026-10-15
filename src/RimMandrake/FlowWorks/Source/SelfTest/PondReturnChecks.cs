@@ -154,6 +154,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RiverSwitchFlipChecks.Src("Designator_DigCanal.cs").Contains("eng.FirstCutDepthAt(c) < 0"), "the designator refuses a maxed bed");
                 Assert(RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs").Contains("FirstCutDepthAt(c) < 0"), "the work giver drops a stale bed designation");
                 Assert(RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs").Contains("FirstCutDepthAt(c)"), "the dig work is the level below the bed");
+                // review 2026-10-14: filling a bed cut back in ends AT the bed (2 -> 3 -> 2), never 3 -> 2 -> 1 -> 0 then a hollow of 2
+                RiverSwitchFlipChecks.Has(ex, @"bool backToBed = bedFloor > 0 && newD <= bedFloor;", "fill-in stops at the bed's floor");
+                RiverSwitchFlipChecks.Has(ex, @"int displaced = backToBed \? f : RM_StockMath\.DisplacedLevels\(d, f\);", "and displaces all the cell held");
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                Assert(set.IndexOf("bool hollowWas = pondBedHollowEnabled;") < set.IndexOf("if (Section(list, \"Stock, recession and drainage\""),
+                    "the hollow toggle is snapshotted before its section's reset button can change it");
             });
 
             Case("Pond_bed_hollow_readers_pinned", () =>
