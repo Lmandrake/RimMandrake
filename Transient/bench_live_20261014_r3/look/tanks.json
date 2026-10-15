@@ -1,0 +1,295 @@
+[
+ {
+  "tool": "jawa/build_batch",
+  "args": "{\"ops\":\"RM_LiquidTankTall:121,150;RM_UniversalCargoTankXTall:127,150\",\"faction\":\"player\",\"wipeExisting\":true}",
+  "result": {
+   "success": true,
+   "placed": 2,
+   "survived": 2,
+   "lostToLaterOps": 0,
+   "failedCount": 0,
+   "failed": [],
+   "displacedCount": 3,
+   "displaced": [
+    {
+     "op": "RM_LiquidTankTall:121,150",
+     "destroyed": "Granite",
+     "x": 121,
+     "z": 151,
+     "placedByThisBatch": false,
+     "sameDefReplacedInPlace": false
+    },
+    {
+     "op": "RM_LiquidTankTall:121,150",
+     "destroyed": "Granite",
+     "x": 122,
+     "z": 151,
+     "placedByThisBatch": false,
+     "sameDefReplacedInPlace": false
+    },
+    {
+     "op": "RM_UniversalCargoTankXTall:127,150",
+     "destroyed": "Plant_Grass",
+     "x": 127,
+     "z": 151,
+     "placedByThisBatch": false,
+     "sameDefReplacedInPlace": false
+    }
+   ],
+   "placeWorkerWarningsCount": 0,
+   "placeWorkerWarnings": [],
+   "qualityIgnoredForDefs": [],
+   "message": "2 placed; 3 pre-existing thing(s) were wiped. See displaced[].",
+   "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+   "things": [
+    {
+     "def": "RM_LiquidTankTall",
+     "x": 121,
+     "z": 150,
+     "rot": 0,
+     "faction": "PlayerColony",
+     "hitPoints": 320,
+     "maxHitPoints": 320,
+     "destroyed": false
+    },
+    {
+     "def": "RM_UniversalCargoTankXTall",
+     "x": 127,
+     "z": 150,
+     "rot": 0,
+     "faction": "PlayerColony",
+     "hitPoints": 480,
+     "maxHitPoints": 480,
+     "destroyed": false
+    }
+   ],
+   "ticksGame": 19469,
+   "operation": {
+    "OperationId": "op_c4cb8cd8d8c2481fb5030935afaae595",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ },
+ {
+  "tool": "jawa/clear_ui",
+  "args": "{}",
+  "result": {
+   "success": true,
+   "closed": [],
+   "closedCount": 0,
+   "remaining": [
+    "ImmediateWindow"
+   ],
+   "deselected": 0,
+   "message": "Nothing to close and nothing was selected. The view was already clear \u2014 this is a no-op, not a failure.",
+   "operation": {
+    "OperationId": "op_70c1617aa156450a88e06f74160bb158",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 43
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ },
+ {
+  "tool": "rimworld/jump_camera_to_cell",
+  "args": "{\"x\":124,\"z\":151}",
+  "result": {
+   "success": true,
+   "cell": {
+    "x": 124,
+    "z": 151
+   },
+   "camera": {
+    "success": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "rootSize": 8.0,
+    "zoomRootSize": 8.0,
+    "zoomRange": "Closest",
+    "sizeRange": {
+     "min": 0.5,
+     "max": 100.0
+    },
+    "cameraZoomExtensionEnabled": false,
+    "mapPosition": {
+     "x": 106,
+     "z": 141
+    },
+    "viewRect": {
+     "minX": 89,
+     "minZ": 132,
+     "maxX": 123,
+     "maxZ": 150,
+     "width": 35,
+     "height": 19
+    }
+   },
+   "operation": {
+    "OperationId": "op_59a7e5b3bb2949658e73ec86cae5a749",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 15
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ },
+ {
+  "tool": "rimworld/set_camera_zoom",
+  "args": "{\"rootSize\":10}",
+  "result": {
+   "success": true,
+   "rootSize": 10.0,
+   "camera": {
+    "success": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "rootSize": 10.0,
+    "zoomRootSize": 10.0,
+    "zoomRange": "Closest",
+    "sizeRange": {
+     "min": 0.5,
+     "max": 100.0
+    },
+    "cameraZoomExtensionEnabled": false,
+    "mapPosition": {
+     "x": 124,
+     "z": 151
+    },
+    "viewRect": {
+     "minX": 103,
+     "minZ": 140,
+     "maxX": 145,
+     "maxZ": 162,
+     "width": 43,
+     "height": 23
+    }
+   },
+   "operation": {
+    "OperationId": "op_9f29ea2fe7734b1aa86e494422c8b26c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 14
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ },
+ {
+  "tool": "rimworld/take_screenshot",
+  "args": "{\"fileName\":\"r3_tall_tanks_look\"}",
+  "result": {
+   "success": true,
+   "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\r3_tall_tanks_look.png",
+   "fileName": "r3_tall_tanks_look",
+   "requestedFileName": "r3_tall_tanks_look",
+   "saveDataFolder": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios",
+   "screenshotFolder": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots",
+   "sizeBytes": 4675709,
+   "capturedAtUtc": "2026-10-15T04:15:18.8420228Z",
+   "suppressMessage": true,
+   "clipped": false,
+   "clipPadding": 0,
+   "screenTargets": {
+    "capturedAtUtc": "2026-10-15T04:15:18.6404074Z",
+    "uiState": {
+     "programState": "Playing",
+     "inEntryScene": false,
+     "hasCurrentGame": true,
+     "windowCount": 1,
+     "floatMenuOpen": false,
+     "nonImmediateDialogWindowOpen": false,
+     "mainTabOpen": false,
+     "topWindowType": "Verse.ImmediateWindow"
+    },
+    "camera": {
+     "success": true,
+     "map": "0",
+     "mapId": "Map_0",
+     "mapIndex": 0,
+     "rootSize": 10.0,
+     "zoomRootSize": 10.0,
+     "zoomRange": "Closest",
+     "sizeRange": {
+      "min": 0.5,
+      "max": 100.0
+     },
+     "cameraZoomExtensionEnabled": false,
+     "mapPosition": {
+      "x": 124,
+      "z": 151
+     },
+     "viewRect": {
+      "minX": 103,
+      "minZ": 140,
+      "maxX": 145,
+      "maxZ": 162,
+      "width": 43,
+      "height": 23
+     }
+    },
+    "selectedPawns": [],
+    "windows": [
+     {
+      "kind": "window",
+      "index": 0,
+      "id": -1593759361,
+      "type": "Verse.ImmediateWindow",
+      "layer": "GameUI",
+      "isTopWindow": true,
+      "isFocusedWindow": false,
+      "getsInput": true,
+      "windowTargetId": "window:-1593759361:Verse.ImmediateWindow",
+      "rect": {
+       "x": 1160.0,
+       "y": 3.0,
+       "width": 196.0,
+       "height": 25.0
+      }
+     }
+    ]
+   },
+   "operation": {
+    "OperationId": "op_fca969a2cadd4841937036626c59e225",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 231
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 19469
+   }
+  }
+ }
+]
