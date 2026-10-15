@@ -390,6 +390,10 @@ def test_safe_advance_chunks():
     s = S(set(), status={"success": True, "advance": None, "ticksGame": 100})
     cg.step(s, cg.ClockGate(100000), 600, chunk=600)
     ok(any(c[0] == "jawa/safe_advance" and c[1].get("ticks") == 600 for c in s.calls), "the real status shape enables it")
+    s = S(set(), status={"success": True, "ticksGame": 100})   # the WIRE shape before any advance: null `advance` dropped
+    cg.step(s, cg.ClockGate(100000), 600, chunk=600)
+    ok(any(c[0] == "jawa/safe_advance" and c[1].get("ticks") == 600 for c in s.calls),
+       "a status with no `advance` key (first call of a game session; the bridge drops nulls) still enables it")
 
 
 def main():
