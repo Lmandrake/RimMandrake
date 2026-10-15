@@ -8,6 +8,12 @@ and finally handoff." and "Yes you should examine the hash bound ones too. This 
     python3    src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate        # WSL: the offline tier only (seconds)
     python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live [--no-shots]   # gimmesomeslack tier, bridge held
     python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live --only core,aerial --no-fresh-map   # debug a block
+    python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live --fresh-map    # the old path: a new quicktest map
+
+THE MAP (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, owner by card 2026-10-15: "Clean saved maps"): by default P1 LOADS the clean
+saved site `calm` (Utils/modcheck/test_site_saves.py: cleaned once -- no shrine, casket, trigger, hive, ruin, fog or
+hostile -- and read back clean after every load) instead of generating a quicktest map. --fresh-map generates one as
+before; --no-fresh-map uses whatever map is current; --site-save NAME picks another registered site.
 
 Run python.exe from the repo root (bridge calls only work under python.exe; pipe through tr -d '\\r').
 
@@ -269,6 +275,15 @@ def _QS():
     return quiet_site
 
 
+def _TSS():
+    """The clean saved test sites (Utils/modcheck/test_site_saves.py)."""
+    d = os.path.join(V.UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.append(d)
+    import test_site_saves
+    return test_site_saves
+
+
 def _TG():
     """The shared test-environment guards (Utils/modcheck/testenv_guards.py): fog-trigger disarm, whole-map unfog."""
     d = os.path.join(V.UTILS, "modcheck")
@@ -400,8 +415,13 @@ class Proof(object):
     # ------------------------------------------------------------------ 1. preflight P1-P3
     def p1_fresh_map(self):
         B = self.B
-        st, r = None, {}
-        if not self.args.no_fresh_map:
+        st, r, site = None, {}, None
+        mode = getattr(self.args, "map_mode", None) or ("current" if self.args.no_fresh_map else "fresh")
+        if mode == "save":
+            site = _TSS().load_site(B.call, getattr(self.args, "site_save", None) or "calm")
+            self.res["site_save"] = site
+            r = {"success": site.get("verified")}
+        elif mode == "fresh":
             B.call("rimworld/go_to_main_menu")
             r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         t = time.time()
@@ -412,10 +432,11 @@ class Proof(object):
             time.sleep(0.5)
         mi = B.call("jawa/map_info")
         self.map_info = {k: mi.get(k) for k in ("sizeX", "sizeZ", "mapBiome", "longitude")}
-        ok = st == "Playing" and mi.get("sizeX") == 250 and mi.get("sizeZ") == 250
+        ok = st == "Playing" and mi.get("sizeX") == 250 and mi.get("sizeZ") == 250 and (site is None or site.get("verified") is True)
         self.row("preflight", "P1_fresh_map", "PASS" if ok else "FAIL", "SITE",
-                 {"fresh": not self.args.no_fresh_map, "start": r.get("success"), "programState": st, "map": self.map_info,
-                  "wait_s": round(time.time() - t, 1)})
+                 {"fresh": mode == "fresh", "mapMode": mode, "start": r.get("success"), "programState": st, "map": self.map_info,
+                  "wait_s": round(time.time() - t, 1),
+                  "siteSave": None if site is None else {k: site.get(k) for k in ("save", "load_s", "ready_s", "verified", "problems")}})
         if not ok:
             raise RuntimeError("no 250x250 map")
 
@@ -869,6 +890,9 @@ def main(argv=None):
     ap.add_argument("--no-shots", action="store_true", help="state only: no screenshot renders (camera moves kept)")
     ap.add_argument("--only", default=None, help="comma list of blocks (%s): a PARTIAL run, for debugging" % ",".join(BLOCKS))
     ap.add_argument("--no-fresh-map", action="store_true", help="use the current map (debug)")
+    ap.add_argument("--fresh-map", action="store_true", help="generate a new quicktest map (the pre-2026-10-15 path) "
+                                                             "instead of loading the clean saved site")
+    ap.add_argument("--site-save", default="calm", help="the clean saved site P1 loads (test_site_saves.py; default calm)")
     ap.add_argument("--skip-offline", action="store_true", help="do not run the offline gate (recorded; debug only)")
     ap.add_argument("--allow-red", action="append", default=[], help="an offline red id to accept (recorded in the result)")
     ap.add_argument("--spec", default=None, help="design spec JSON (default: the one the offline gate writes)")
@@ -884,6 +908,9 @@ def main(argv=None):
         ap.print_help()
         return 2
     a.only = [x.strip() for x in a.only.split(",")] if a.only else None
+    if a.fresh_map and a.no_fresh_map:
+        ap.error("--fresh-map and --no-fresh-map exclude each other")
+    a.map_mode = "fresh" if a.fresh_map else ("current" if a.no_fresh_map else "save")
     gate = None
     if not a.skip_offline:
         t = time.time()
