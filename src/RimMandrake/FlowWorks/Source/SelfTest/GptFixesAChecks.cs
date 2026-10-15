@@ -232,6 +232,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(lg.IndexOf("RM_HoseSettings.hoseSettingsImported = true;", mark + 1, StringComparison.Ordinal) < 0, "and nowhere else");
                 RiverSwitchFlipChecks.Has(lg, @"catch \(Exception ex\) \{ Log\.Warning\(.*?\); return false; \}", "a failed import changes nothing and retries");
             });
+
+            // HOSE_LAY_POLISH_CENTRE_VS_MOUTH C8a-F4: the install pre-check measures from the mouth the route starts at.
+            Case("GptA_hose_install_range_from_the_mouth", () =>
+            {
+                var w = new CordWorld(120, 40);
+                var reel = new HoseReelRect(50, 20, 2, 2);
+                var target = new Cell(40, 21);   // west, the mouth side: 9.5 from the mouth, 10.5 from the centre
+                double fromMouth = V2.Dist(reel.Mouth, target.Centre), fromCentre = V2.Dist(reel.Centre, target.Centre);
+                Assert(fromMouth < 10.0 && fromCentre > 10.2, "fixture: mouth " + fromMouth.ToString("0.00") + ", centre " + fromCentre.ToString("0.00"));
+                string why = HoseMath.CheckInstall(w, reel, target, 10.2);
+                Assert(why == null, "a target the route reaches within the hose is accepted (got " + (why ?? "null") + ")");
+                Assert(HoseMath.CheckInstall(w, reel, new Cell(30, 21), 10.2) == "too far", "a target past the hose's reach from the mouth is still too far");
+            });
         }
     }
 }
