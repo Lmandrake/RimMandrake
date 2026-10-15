@@ -1,0 +1,117 @@
+{
+ "qt": {
+  "status": "game_loaded",
+  "ticksGame": 1,
+  "mapCount": 1,
+  "selectedPawns": [],
+  "operation": {
+   "OperationId": "op_4d4e28c63ff74ba98639bbd13fc70eee",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 2
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 1
+  }
+ },
+ "start": {
+  "success": false,
+  "state": "running",
+  "requested": 20000,
+  "executed": 0,
+  "tickFrom": 1,
+  "tickTo": 1,
+  "triggers": [],
+  "triggersTotal": 0,
+  "wallS": 0.01,
+  "frames": 0,
+  "note": "still running after timeoutMs: poll action=status or cancel",
+  "ticksGame": 1,
+  "operation": {
+   "OperationId": "op_89a825a5fd4a4c49a47e82af59b34012",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 52
+  }
+ },
+ "mid": {
+  "success": true,
+  "advance": {
+   "state": "running",
+   "requested": 20000,
+   "executed": 840,
+   "tickFrom": 1,
+   "tickTo": 841,
+   "timeException": false,
+   "frames": 14,
+   "wallS": 1.91
+  },
+  "ticksGame": 841,
+  "operation": {
+   "OperationId": "op_305cf3c2f65b4b7d89a384f970b819c7",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 496
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 901
+  }
+ },
+ "menu": {
+  "success": true,
+  "status": "queued",
+  "message": "Queued return to the RimWorld main menu.",
+  "state": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "longEventPending": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "playable": false,
+   "visualReady": false,
+   "automationReady": false,
+   "tick": 961
+  },
+  "operation": {
+   "OperationId": "op_17ed406ecf8b4880bf8beec572403bc3",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 76
+  }
+ },
+ "status": {
+  "success": true,
+  "advance": {
+   "state": "aborted",
+   "requested": 20000,
+   "executed": 960,
+   "tickFrom": 1,
+   "tickTo": 961,
+   "abortWhy": "map_gone: start map #0 is no longer in Find.Maps",
+   "timeException": false,
+   "frames": 16,
+   "wallS": 2.42
+  },
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_8cfc19e1b2b643aeb6978b431722c481",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 3
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ }
+}
