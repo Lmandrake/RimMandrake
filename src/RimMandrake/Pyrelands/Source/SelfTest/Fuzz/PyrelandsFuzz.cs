@@ -841,6 +841,13 @@ namespace RimMandrake.Pyrelands.Fuzz
                     for (int k = 0; k < cells; k++) Check(rolledNew.Contains(k) || fruit[k], $"fire {k} of {cells} died without its roll and its burned cell bears no fruit");
                     Check(rolls > 0, "no fire in a burned cohort took its roll");
                     Check(oldFruit == 0, $"the first-interval roll found {oldFruit} spots in a fully grassed cohort - the regression model is blind");
+                    for (int m = 0; m < 16; m++)   // SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: only bare standable Pyrelands ground takes a pod
+                        Check(RM_FireEcoKernel.FruitLandingLegal((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 11), "FruitLandingLegal table " + m);
+                    Check(!RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.FirebreakDefName) && RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
+                          && !RM_FireEcoKernel.IsScorchableGround("WoodPlankFloor"), "a pod could land on a firebreak or a floor");
+                    var rsKeep = RM_FireEcoKernel.RolledStillBurning(new HashSet<int> { 1, 2, 3 }, new[] { 2, 3, 4 });
+                    Check(rsKeep.Count == 2 && rsKeep.Contains(2) && rsKeep.Contains(3) && RM_FireEcoKernel.RolledStillBurning(null, new[] { 1 }).Count == 0,
+                          "RolledStillBurning keeps exactly the rolled fires still burning");
                     Check(RM_FireEcoKernel.FirstFruitSpot((a, b) => true) == 0 && RM_FireEcoKernel.FruitSpotDx[0] == 0 && RM_FireEcoKernel.FruitSpotDz[0] == 0, "the burned cell itself is not scanned first");
                 }
                 // late ruin sweep (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE): subject table and the never-lighten rung rule

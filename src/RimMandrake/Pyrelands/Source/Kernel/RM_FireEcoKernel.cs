@@ -312,6 +312,26 @@ namespace RimMandrake.Pyrelands
         public static readonly int[] FruitSpotDx = { 0, -1, -1, -1, 0, 0, 1, 1, 1 };
         public static readonly int[] FruitSpotDz = { 0, -1, 0, 1, -1, 1, -1, 0, 1 };
 
+        /// <summary>SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: a pod lands only on bare, standable PYRELANDS GROUND (IsScorchableGround: deep
+        /// ash or the scorchable soils), never on a firebreak, a floor or other unburnable ground beside the fire.</summary>
+        public static bool FruitLandingLegal(bool inBounds, bool standable, bool hasPlant, bool scorchableGround)
+        {
+            return inBounds && standable && !hasPlant && scorchableGround;
+        }
+
+        /// <summary>SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: what a save keeps of the roll set - only the ids of fires still burning, so a
+        /// fire alive across a save/load does not roll twice and the saved list stays as small as the live burn.</summary>
+        public static List<int> RolledStillBurning(HashSet<int> rolled, IEnumerable<int> liveFireIds)
+        {
+            var keep = new List<int>();
+            if (rolled == null || liveFireIds == null) return keep;
+            foreach (int id in liveFireIds)
+            {
+                if (rolled.Contains(id)) keep.Add(id);
+            }
+            return keep;
+        }
+
         /// <summary>Index into FruitSpotDx/Dz of the first cell `legal(dx, dz)` accepts, or -1 when none does.</summary>
         public static int FirstFruitSpot(Func<int, int, bool> legal)
         {

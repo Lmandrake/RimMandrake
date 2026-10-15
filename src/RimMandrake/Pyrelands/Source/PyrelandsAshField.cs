@@ -43,6 +43,9 @@ namespace RimMandrake.Pyrelands
         private float[] rainAtBurn;
         private float rainAcc;
         private int blackRainWateredUntil = -1;
+        // Fires that took their one scorch-fruit roll (FireEcologyHook). Saved as the ids of fires still burning at the save, so a
+        // fire alive across a save/load does not roll again (SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK).
+        private HashSet<int> rolledFruitFires = new HashSet<int>();
 
         // Unsaved: rebuilt by the sweep within a few hundred ticks of a load.
         private int[] wateredUntil;
@@ -71,6 +74,8 @@ namespace RimMandrake.Pyrelands
             return lastComp;
         }
 
+        internal HashSet<int> RolledFruitFires => rolledFruitFires;
+
         public float RainAccumulator => rainAcc;
         public int BlackRainWateredUntil => blackRainWateredUntil;
 
@@ -98,6 +103,18 @@ namespace RimMandrake.Pyrelands
                 Buffer.BlockCopy(burnTick, 0, bt, 0, bt.Length);
                 rb = new byte[rainAtBurn.Length * 4];
                 Buffer.BlockCopy(rainAtBurn, 0, rb, 0, rb.Length);
+            }
+            List<int> rolled = null;
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                var live = new List<int>();
+                foreach (Thing f in map.listerThings.ThingsOfDef(ThingDefOf.Fire)) live.Add(f.thingIDNumber);
+                rolled = RM_FireEcoKernel.RolledStillBurning(rolledFruitFires, live);
+            }
+            Scribe_Collections.Look(ref rolled, "rolledFruitFires", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                rolledFruitFires = rolled != null ? new HashSet<int>(rolled) : new HashSet<int>();
             }
             DataExposeUtility.LookByteArray(ref bt, "ashBurnTick");
             DataExposeUtility.LookByteArray(ref rb, "ashRainAtBurn");
