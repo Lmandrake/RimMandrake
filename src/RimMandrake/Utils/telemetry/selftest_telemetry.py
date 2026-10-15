@@ -252,6 +252,18 @@ def main(argv) -> int:
         check("TPS ratio low at normal speed for 2 min", "tps_low:amber" in al, al)
         check("only stalls >= 10 s alert", sum(1 for x in al if x.startswith("stall")) == 1, al)
         check("exception storm", "exc_storm:amber" in al)
+        l2 = dict(lat, tps={"ts": now, "exc": 24, "dReal": 0.05})
+        check("[storm] 24 errors in a 0.05 s window is not a storm",
+              "exc_storm" not in {x["id"] for x in analysis.evaluate(l2, con, {}, None, now)})
+        l2["tps"] = {"ts": now, "exc": 5, "dReal": 1.0}
+        check("[storm] 5 errors is not a storm", "exc_storm" not in {x["id"] for x in analysis.evaluate(l2, con, {}, None, now)})
+        l2["incidents"] = [{"ts": now - 60, "gapS": 11.0, "type": "stall"}]
+        l2["bridge_holds"] = [(now - 55, 10890)]
+        check("[stall] a freeze covered by a bridge main-thread hold is an epoch, not an alert",
+              not any(x["id"].startswith("stall") for x in analysis.evaluate(l2, con, {}, None, now)))
+        l2["bridge_holds"] = [(now - 55, 300)]
+        check("[stall] a freeze with no bridge hold still alerts",
+              any(x["id"].startswith("stall") for x in analysis.evaluate(l2, con, {}, None, now)))
         check("blind: game running, TPS record silent", "blind:amber" in al, al)
         lat["tps_hist"] = [(now - 130 + i * 5, 0.2, "run", 1, 0.5 if i % 3 else 0.0) for i in range(27)]
         check("bridge-busy windows are not judged (too few calm windows -> no TPS alarm)",
