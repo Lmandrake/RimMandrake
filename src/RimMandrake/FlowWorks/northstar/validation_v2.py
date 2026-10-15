@@ -490,13 +490,33 @@ def rect_cells(x, z, w, h):
 # jawa/flowworks_pulse, so weather/pawns/time cannot reach it). The runner clears and paints
 # each body and scene (+2-cell ring) itself; L5 + the per-scene pre-read enforce R2.
 # The centre (+-25 of 125,125) is avoided: the quicktest colonists stand there.
+def _rm_volume_const(name, default):
+    """POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: read a constant from the mod's own RM_Volume.cs so the pond oracle follows
+    the yardstick instead of a copy (V2_POND_ROWS_REPAIR_STILL_COUNTS_FIVE). The default is used only if the source is absent."""
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Source", "RM_Volume.cs")
+    try:
+        with open(src, encoding="utf-8") as f:
+            m = re.search(r"public const int %s\s*=\s*(\d+)\s*;" % name, f.read())
+        return int(m.group(1)) if m else default
+    except OSError:
+        return default
+
+
+# a shallow natural pond square holds ShallowBedLevels levels x volumePerTile (water 1.0) x sourceBudgetMultiplier (1.0 default)
+POND_LEVELS_PER_CELL = _rm_volume_const("ShallowBedLevels", 2)
+
+
+def pond_capacity(n_cells):
+    return float(POND_LEVELS_PER_CELL * n_cells)
+
+
 BODIES = {
     "W1": dict(cells=rect_cells(0, 60, 16, 4), limitless=True),       # west edge, 64 cells
-    "W2": dict(cells=[(60, 150)], limitless=False, capacity=5),       # E3 budget (recession OFF)
-    "W2R": dict(cells=[(70, 150), (71, 150)], limitless=False, capacity=10),   # E3b recession (defaults); 2 cells since keep-last-cell
-    "W3": dict(cells=[(80, 150), (81, 150)], limitless=False, capacity=10),   # E4 engine
-    "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=False),     # edge, 40 < 50 cells
-    "W5": dict(cells=rect_cells(150, 30, 8, 8), limitless=False, capacity=320),  # interior 64
+    "W2": dict(cells=[(60, 150)], limitless=False, capacity=pond_capacity(1)),       # E3 budget (recession OFF)
+    "W2R": dict(cells=[(70, 150), (71, 150), (72, 150), (73, 150)], limitless=False, capacity=pond_capacity(4)),   # E3b recession (defaults); 2 cells since keep-last-cell
+    "W3": dict(cells=[(80, 150), (81, 150), (82, 150), (83, 150), (84, 150)], limitless=False, capacity=pond_capacity(5)),   # E4 engine
+    "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=False, capacity=pond_capacity(40)),     # edge, 40 < 50 cells
+    "W5": dict(cells=rect_cells(150, 30, 8, 8), limitless=False, capacity=pond_capacity(64)),  # interior 64
     "W6": dict(cells=rect_cells(0, 170, 16, 4), limitless=False, sticky_off=True),
     "W7": dict(cells=rect_cells(0, 180, 16, 4), limitless=True),      # W6's twin, sticky ON
     "W8": dict(cells=rect_cells(0, 220, 16, 4), limitless=True),      # shared-source twin
@@ -623,7 +643,7 @@ def edge_distance(c):
 
 
 def body_stock0(b):
-    return 0.0 if b["limitless"] else float(b.get("capacity", 5 * len(b["cells"])))
+    return 0.0 if b["limitless"] else float(b.get("capacity", pond_capacity(len(b["cells"]))))
 
 
 def oracle_for(scene_key, pulses, recession=False):
@@ -994,9 +1014,10 @@ def o5_oracle_selftest():
     # the source is spent -- the same OVERFLOW-clause behaviour as the east/north oscillation
     # (INT section 2). So the check is on the SUM, and E3 asserts the exact oracle vector.
     v = oracle_for("E3_budget", 14)
-    if any(sum(row) != 5 for row in v[-4:]):
-        probs.append("E3 budget: last sums %s (want 5)" % [sum(r) for r in v[-4:]])
-    return Check("O5", not probs, "; ".join(probs) or "live oscillation reproduced; hand cases; budget 5")
+    want = int(BODIES["W2"]["capacity"])
+    if any(sum(row) != want for row in v[-4:]):
+        probs.append("E3 budget: last sums %s (want %d)" % ([sum(r) for r in v[-4:]], want))
+    return Check("O5", not probs, "; ".join(probs) or "live oscillation reproduced; hand cases; budget = W2 capacity")
 
 
 DIRS = {"E": (1, 0), "N": (0, 1), "W": (-1, 0), "S": (0, -1)}   # E/N: cell index rises away
@@ -1182,9 +1203,10 @@ def o7_scene_predictions():
     if v[-1] != [1, 1, 1, 1]:
         probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 2-cell W2R pond: %s" % v)
     v = oracle_for("E3_budget", 14, recession=False)
-    if sum(v[-1]) != 5 or v[-1] != v[-2]:
-        probs.append("E3 budget (recession OFF) should deliver 5 and rest: %s" % v[-2:])
-    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 7 (water front creep), mouth end first; E3b fills its 4-cell run; E3 delivers 5 then rests")
+    want = int(BODIES["W2"]["capacity"])
+    if sum(v[-1]) != want or v[-1] != v[-2]:
+        probs.append("E3 budget (recession OFF) should deliver %d and rest: %s" % (want, v[-2:]))
+    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 7 (water front creep), mouth end first; E3b fills its 4-cell run; E3 delivers its pond capacity then rests")
 
 
 def o9_shared_source(claim=False):
@@ -1906,13 +1928,15 @@ def phase_S(L, args):
         else:
             bad = [] if got["W8"].get("limitless") is True else ["W8 (edge, 64) not limitless: %r" % got["W8"]]
             for k in ("W2", "W2R", "W3", "W4", "W5"):
-                want_c = float(BODIES[k].get("capacity", 5 * len(BODIES[k]["cells"])))
+                want_c = float(BODIES[k].get("capacity", pond_capacity(len(BODIES[k]["cells"]))))
                 g = got[k]
                 if g.get("limitless") is not False or abs((g.get("capacity") or 0) - want_c) > 1e-3 \
                         or abs((g.get("stock") or 0) - want_c) > 1e-3 or g.get("cellCount") != len(BODIES[k]["cells"]):
                     bad.append("%s %r (want limited cap %s)" % (k, g, want_c))
-            L.row("S3_classification", not bad, "MOD", bad or "W1, W8 limitless; W2 5, W2R 10, W3 10, W4 (edge,40) 200, "
-                  "W5 (interior,64) 320 all LIMITED")
+            L.row("S3_classification", not bad, "MOD", bad or "W1, W8 limitless; limited at %d levels a shallow square (RM_Volume.ShallowBedLevels): "
+                  "W2 %g, W2R %g, W3 %g, W4 (edge,40) %g, W5 (interior,64) %g" % (
+                      POND_LEVELS_PER_CELL, BODIES["W2"]["capacity"], BODIES["W2R"]["capacity"], BODIES["W3"]["capacity"],
+                      BODIES["W4"]["capacity"], BODIES["W5"]["capacity"]))
         band, inner = SCENES["S4_band"]["cells"]
         L.dig(band, 1)
         L.dig(inner, 1)
@@ -2010,10 +2034,17 @@ def phase_A(L, args):
         brec = Live.body_in(rec, bid)
         e3b = vec.get("E3b_recede", [[]])[-1]
         # keep-last-cell (LIQUID_RECESSION_TOPOLOGY_1, shipped ON) made a 1-cell pond never recede while stock > 0, so W2R is 2
-        # cells (capacity 10): it pays the 4-cell run (stock 10 -> 6, + a sub-0.05 refill) and sheds ONE cell (floor(6/5) = 1);
+        # cells (capacity = 2 levels a shallow square since the pond volume unify; W2R is now 4 cells): it pays the 4-cell run and keeps floor(stock/perCell) cells;
         # recession OFF sheds none (the no_recession fault)
-        L.row("E3b_recession_shipped", "E3b_recede" not in mism and sum(e3b) == 4 and brec.get("recededCount") == 1
-              and abs((brec.get("stock") if brec.get("stock") is not None else -9) - 6.0) < 0.05, "MOD",
+        # derived from the yardstick: W2R pays the 4-cell run (D=1 each), keeps stock cap-4, and keeps floor(stock/perCell)
+        # cells (keep-last-cell: at least one while stock > 0); the rest recede
+        w2r = BODIES["W2R"]
+        want_stock = w2r["capacity"] - 4.0
+        per_cell = w2r["capacity"] / len(w2r["cells"])
+        kept = max(int((want_stock + 1e-6) // per_cell), 1 if want_stock > 0 else 0)
+        want_rec = len(w2r["cells"]) - kept
+        L.row("E3b_recession_shipped", "E3b_recede" not in mism and sum(e3b) == 4 and brec.get("recededCount") == want_rec
+              and abs((brec.get("stock") if brec.get("stock") is not None else -9) - want_stock) < 0.05, "MOD",
               "final %s, W2R %s" % (e3b, {k: brec.get(k) for k in ("stock", "recededCount", "activeCellCount")}))
         sink1 = L.eng().get("sinkTransferredTotal")
         L.row("E5_sink_drains", "E5_sink" not in mism and abs((sink1 - sink0) - (L.o.drained - drained0)) < 1e-3
@@ -2040,16 +2071,16 @@ def phase_B(L, args):
             L.gmerge("B", mism)
             b = Live.body_in(rec, L.ids.get("W2"))
             v = vec.get("E3_budget", [[]])
-            L.row("E3_budget_exhaustion", not probs and "E3_budget" not in mism and sum(v[-1]) == 5 and v[-1] == v[-2]
+            L.row("E3_budget_exhaustion", not probs and "E3_budget" not in mism and sum(v[-1]) == int(BODIES["W2"]["capacity"]) and v[-1] == v[-2]
                   and (b.get("stock") if b.get("stock") is not None else 9) < 1, "MOD",
                   (probs, mism.get("E3_budget", "")[:3]) if (probs or mism) else
-                  "cap-5 pond delivered exactly 5 (%s), then rested; stock %s" % (v[-1], b.get("stock")))
+                  "cap-%g pond delivered exactly that (%s), then rested; stock %s" % (BODIES["W2"]["capacity"], v[-1], b.get("stock")))
             L.sset(S_FW, "sourceBudgetEnabled", False)
             L.o.budget = False
             try:
                 probs, mism, vec, rec = L.pulses(2, "B-off")
                 v2 = vec.get("E3_budget", [[]])
-                L.row("E3n_budget_off_supplies", not probs and "E3_budget" not in mism and sum(v2[-1]) > 5, "MOD",
+                L.row("E3n_budget_off_supplies", not probs and "E3_budget" not in mism and sum(v2[-1]) > int(BODIES["W2"]["capacity"]), "MOD",
                       (probs, mism.get("E3_budget", "")[:3]) if (probs or mism) else
                       "budget OFF: a spent pond supplies again (%s -> %s)" % (v[-1], v2[-1]))
                 L.gmerge("B", mism)
@@ -3184,7 +3215,7 @@ class MockBridge(object):
         edge = any(edge_distance(x) == 0 for x in seen)
         sticky = self.S("stickyLimitlessEnabled") or "sticky_ignored" in self.faults
         lim = sticky and edge and len(seen) >= 50
-        cap = 5.0 * len(seen)
+        cap = pond_capacity(len(seen))
         self.o.bodies[name] = dict(limitless=lim, stock=0.0 if lim else cap, capacity=None if lim else cap,
                                    cells=sorted(seen, key=self.o.idx), id=self.body_seq)
         for x in seen:
