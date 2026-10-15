@@ -193,8 +193,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(mod.Contains("\"pitRampsEnabled\", true") && mod.Contains("\"pitRampMaxSpan\", 3") && mod.Contains("\"pitLadderSlowness\", 2f"),
                     "Mod Settings: Ramps, Levels a ramp spans, Ladder slowness");
                 string defs = Src("..", "Defs", "Canals", "ThingDefs", "FlowWorks_ThingDefs.xml");
-                Assert(defs.Contains("<defName>RM_PitRamp</defName>") && defs.Contains("PlaceWorker_PitRamp") && defs.Contains("ART: PLACEHOLDER"),
-                    "the ramp def ships, placement-checked, its art marked as a placeholder");
+                Assert(defs.Contains("<defName>RM_PitRamp</defName>") && defs.Contains("PlaceWorker_PitRamp") && defs.Contains("Excavation/RM_PitRamp</texPath>")
+                    && !defs.Contains("(Placeholder art.)"),
+                    "the ramp def ships, placement-checked, drawing its own four-facing art");
                 string races = Src("..", "Patches", "Canals", "FlowWorks_ClimbAbility.xml");
                 Assert(races.Contains("RM_ClimbAbility") && races.Contains("defName=\"Squirrel\"") && races.Contains("<leaper>true</leaper>"),
                     "climbers and leapers carry RM_ClimbAbility (§8.2 modifiers)");

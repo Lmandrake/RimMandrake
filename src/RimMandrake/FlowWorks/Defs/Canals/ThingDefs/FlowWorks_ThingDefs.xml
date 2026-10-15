@@ -84,17 +84,19 @@
        owner 2026-10-12 Q3: "A ramp could take up 1 square but go down up to 3 levels at a time without movement penalty").
        1x1 on a dug square, rotation points UPHILL; joins its square to the one it faces when that is 1..3 levels shallower,
        for everyone, at walking speed (Source/Superdeep/RM_PitRamp.cs). Cost PROVISIONAL (25 wood or stone blocks).
-       ART: PLACEHOLDER — vanilla's UI/Overlays/Arrow, rotated with the ramp. Real art is owed through the art ledger with
-       the owner; do not ship this look. -->
+       Art: Graphic_Multi, one picture per facing, each drawn with the high (uphill) end brightest; installed through the
+       art ledger 2026-10-15 (owner by card: "Make both today"). Sources: art_source/PitRamp/. -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_PitRamp</defName>
     <label>pit ramp</label>
-    <description>A packed earth-and-timber ramp built in a dug pit, pointing uphill at a neighbouring square up to three levels shallower. Anyone walks it, both ways, at normal walking speed: your people, visitors, enemies and animals alike. A pit with a ramp is a pit people can leave; deconstruct the ramp to seal it again. (Placeholder art.)</description>
+    <description>A packed earth-and-timber ramp built in a dug pit, pointing uphill at a neighbouring square up to three levels shallower. Anyone walks it, both ways, at normal walking speed: your people, visitors, enemies and animals alike. A pit with a ramp is a pit people can leave; deconstruct the ramp to seal it again.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_PitRamp</thingClass>
     <graphicData>
-      <texPath>UI/Overlays/Arrow</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/FlowWorks/Excavation/RM_PitRamp</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <!-- The art is already painted earth and timber; the stuff tint would multiply it dark (wood) or grey (stone). -->
+      <ignoreThingDrawColor>true</ignoreThingDrawColor>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>
