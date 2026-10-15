@@ -27,8 +27,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// refreshed); pawns are checked every <see cref="CheckInterval"/> ticks so a pawn walking across a wire is
     /// caught. Numbers are PROVISIONAL.
     ///
-    /// The colonist on the re-string job (design 2.6) is never shocked: he walks to the cut, where the live half lies, and
-    /// handles the wire as the job's own work (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED: L1 2026-10-15 downed him 2/2).
+    /// The colonist on the re-string job (design 2.6) is not shocked by the wires of the cut he is sent to splice: he walks to
+    /// the cut, where the live half lies, and handles that wire as the job's own work (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED:
+    /// L1 2026-10-15 downed him 2/2). Any other live wire, on his way there or anywhere else, shocks him (<see cref="OnOwnCut"/>).
     /// </summary>
     public static class RM_FallenWireShock
     {
@@ -95,7 +96,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 List<Thing> things = map.thingGrid.ThingsListAtFast(c);
                 for (int i = 0; i < things.Count; i++)
                 {
-                    if (things[i] is Pawn p && AerialMath.ShockTakes(p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), p.CurJobDef == Restringing.Job))
+                    if (things[i] is Pawn p && AerialMath.ShockTakes(p.RaceProps.IsFlesh, p.Dead, AlreadyOut(p), OnOwnCut(p, map, c)))
                         (hit ??= new List<Pawn>()).Add(p);
                 }
             }
@@ -104,6 +105,37 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 if (p.Spawned && !p.Dead) Shock(p, contacts);
             }
+        }
+
+        /// <summary>The re-string worker's exemption, scoped (review 2026-10-15): he is on RM_RestringSpan AND <paramref name="c"/>
+        /// lies on a wire of the cut that job splices: either fallen half of any cut span of the anchor he was sent to
+        /// (RestringAll splices every one of them). Walking across any other live wire, he is shocked like anyone else.</summary>
+        public static bool OnOwnCut(Pawn p, Map map, IntVec3 c)
+        {
+            if (p.CurJobDef != Restringing.Job) return false;
+            CompAerialAnchor a = CompAerialAnchor.Of(p.CurJob.targetA.Thing);
+            RM_MapComponent_Aerial aerial = map.GetComponent<RM_MapComponent_Aerial>();
+            if (a == null || aerial == null) return false;
+            foreach (SpanLink l in a.links)
+            {
+                if (l.state != SpanState.Cut || l.other == null) continue;
+                if (HalfTouches(aerial, map, a, l.other.thingIDNumber, c) || HalfTouches(aerial, map, l.other, a.thingIDNumber, c)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Does <paramref name="c"/> lie on the grounded part of <paramref name="x"/>'s fallen half of its cut span to
+        /// <paramref name="partner"/>?</summary>
+        private static bool HalfTouches(RM_MapComponent_Aerial aerial, Map map, CompAerialAnchor x, int partner, IntVec3 c)
+        {
+            if (!x.Spawned || x.Map != map) return false;
+            foreach (FallenCord f in x.fallen)
+            {
+                if (f.cutPartner != partner) continue;
+                foreach (FallenLay lay in aerial.Lays(x, f))
+                    if (AerialMath.LayTouches(lay, c.x, c.z)) return true;
+            }
+            return false;
         }
 
         /// <summary>A pawn already knocked out by a shock is not re-shocked while it lies there (knock-out is a state,

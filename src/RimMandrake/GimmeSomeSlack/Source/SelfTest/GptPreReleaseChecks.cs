@@ -193,6 +193,17 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "any other flesh pawn on it still is; mechs, the dead and the knocked-out are not");
             Func<bool, bool, bool, bool> oldRule = (flesh, dead, outAlready) => flesh && !dead && !outAlready;
             Check(oldRule(true, false, false), "re-string can-fail: the old rule shocked the worker (L1 2026-10-15, 2/2 downed)");
+            // review 2026-10-15: the exemption is scoped to the wires of HIS cut (LayTouches over that cut's fallen halves); a
+            // second cut's wire he walks over on the way still shocks him. Two east-running fallen halves, z 10 and z 20.
+            FallenLay own = AerialMath.LayFallen(new P2(10.5, 13.7), new P2(10.5, 10.5), new P2(16.5, 10.5), 6.3, 42, (x, z) => true);
+            FallenLay other = AerialMath.LayFallen(new P2(10.5, 23.7), new P2(10.5, 20.5), new P2(16.5, 20.5), 6.3, 43, (x, z) => true);
+            P2 t0 = own.Tip;
+            int tx = (int)Math.Floor(t0.X), tz = (int)Math.Floor(t0.Z);
+            Check(AerialMath.LayTouches(own, tx, tz) && !AerialMath.LayTouches(other, tx, tz), "re-string: his cut's tip cell is on his wire, not the other cut's");
+            Check(AerialMath.LayTouches(other, (int)Math.Floor(other.Tip.X), (int)Math.Floor(other.Tip.Z)) &&
+                  !AerialMath.LayTouches(own, (int)Math.Floor(other.Tip.X), (int)Math.Floor(other.Tip.Z)),
+                  "re-string: on the other cut's wire he is not on his own (so ShockTakes(.., false) shocks him there)");
+            Check(!AerialMath.LayTouches(own, 10, 13), "re-string: the hanging part (thin air north of the mast) is not his wire either");
         }
 
         internal static class SettingsDummy
