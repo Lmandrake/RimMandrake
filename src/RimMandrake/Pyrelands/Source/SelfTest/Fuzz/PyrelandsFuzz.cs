@@ -841,6 +841,12 @@ namespace RimMandrake.Pyrelands.Fuzz
                     for (int k = 0; k < cells; k++) Check(rolledNew.Contains(k) || fruit[k], $"fire {k} of {cells} died without its roll and its burned cell bears no fruit");
                     Check(rolls > 0, "no fire in a burned cohort took its roll");
                     Check(oldFruit == 0, $"the first-interval roll found {oldFruit} spots in a fully grassed cohort - the regression model is blind");
+                    // ASH_FIELD_FIX_FORGETS_THE_WATER: the Black Rain setting at 0 dries the field at once; wet-to-dry is an overlay edge.
+                    Check(RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, false) && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 0f, false)
+                          && !RM_FireEcoKernel.BlackRainWaters(5000, 4000, 24f, true) && !RM_FireEcoKernel.BlackRainWaters(4000, 4000, 24f, false), "BlackRainWaters table");
+                    Check(RM_FireEcoKernel.WateredExpiredWithin(3900, 4000, 250) && RM_FireEcoKernel.WateredExpiredWithin(4000, 4000, 250)
+                          && !RM_FireEcoKernel.WateredExpiredWithin(3750, 4000, 250) && !RM_FireEcoKernel.WateredExpiredWithin(4001, 4000, 250)
+                          && !RM_FireEcoKernel.WateredExpiredWithin(0, 100, 250) && !RM_FireEcoKernel.WateredExpiredWithin(-1, 100, 250), "WateredExpiredWithin boundaries");
                     for (int m = 0; m < 16; m++)   // SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: only bare standable Pyrelands ground takes a pod
                         Check(RM_FireEcoKernel.FruitLandingLegal((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 11), "FruitLandingLegal table " + m);
                     Check(!RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.FirebreakDefName) && RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
