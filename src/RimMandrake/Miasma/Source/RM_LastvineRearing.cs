@@ -49,7 +49,12 @@ namespace RimMandrake.Miasma
 
     public class RM_PawnRenderNode_RearingBody : PawnRenderNode_AnimalPart_Body
     {
-        private static readonly Dictionary<string, bool> textureExists = new Dictionary<string, bool>();
+        private static readonly Dictionary<string, bool> textureExists = new Dictionary<string, bool>();  // main thread only (EnsureInitialized)
+
+        // Per-pawn "something near" scan cache. Instance fields, not shared statics: GetGraphicState runs inside the
+        // parallel pre-draw job, and only one job item handles a given pawn at a time.
+        internal int lastScanTick = -99999;
+        internal bool lastScanNear;
 
         public RM_PawnRenderNode_RearingBody(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree)
             : base(pawn, props, tree)
@@ -81,17 +86,21 @@ namespace RimMandrake.Miasma
             if (!exists)
                 return null;
             Graphic calm = data.Graphic;
-            Color c1 = pawn.health.hediffSet.GetSkinColor(calm.Color);
-            Color c2 = pawn.health.hediffSet.GetSkinColor(calm.ColorTwo);
+            Color c1 = calm.Color;
+            Color c2 = calm.ColorTwo;
+            if (pawn.IsMutant)
+            {
+                c1 = MutantUtility.GetMutantSkinColor(pawn, c1);
+                c2 = MutantUtility.GetMutantSkinColor(pawn, c2);
+            }
+            c1 = pawn.health.hediffSet.GetSkinColor(c1);
+            c2 = pawn.health.hediffSet.GetSkinColor(c2);
             return GraphicDatabase.Get<Graphic_Multi>(path, calm.Shader, calm.drawSize, c1, c2);
         }
     }
 
     public class RM_PawnRenderNodeWorker_Rearing : PawnRenderNodeWorker_AnimalBody
     {
-        private static readonly Dictionary<int, int> lastScanTick = new Dictionary<int, int>();
-        private static readonly Dictionary<int, bool> lastScanNear = new Dictionary<int, bool>();
-
         protected override GraphicStateDef GetGraphicState(PawnRenderNode node, PawnDrawParms parms)
         {
             GraphicStateDef reared = RM_MiasmaGraphicStateDefOf.RM_Reared;
@@ -101,12 +110,13 @@ namespace RimMandrake.Miasma
                 && parms.rotDrawMode == RotDrawMode.Fresh
                 && node.ContainsGraphicState(reared)
                 && node.Props is RM_PawnRenderNodeProperties_Rearing p
-                && Engaged(parms.pawn, p))
+                && node is RM_PawnRenderNode_RearingBody body
+                && Engaged(parms.pawn, p, body))
                 return reared;
             return base.GetGraphicState(node, parms);
         }
 
-        private static bool Engaged(Pawn pawn, RM_PawnRenderNodeProperties_Rearing p)
+        private static bool Engaged(Pawn pawn, RM_PawnRenderNodeProperties_Rearing p, RM_PawnRenderNode_RearingBody body)
         {
             if (pawn == null || pawn.Dead || pawn.Downed || !pawn.Spawned)
                 return false;
@@ -124,14 +134,14 @@ namespace RimMandrake.Miasma
             JobDef job = pawn.CurJobDef;
             if (job == JobDefOf.PredatorHunt || job == JobDefOf.AttackMelee || job == JobDefOf.AttackStatic)
                 return true;
-            return SomethingNear(pawn, p, now);
+            return SomethingNear(pawn, p, body, now);
         }
 
-        private static bool SomethingNear(Pawn pawn, RM_PawnRenderNodeProperties_Rearing p, int now)
+        private static bool SomethingNear(Pawn pawn, RM_PawnRenderNodeProperties_Rearing p, RM_PawnRenderNode_RearingBody body,
+            int now)
         {
-            int id = pawn.thingIDNumber;
-            if (lastScanTick.TryGetValue(id, out int at) && now - at < p.scanIntervalTicks && now >= at)
-                return lastScanNear[id];
+            if (now - body.lastScanTick < p.scanIntervalTicks && now >= body.lastScanTick)
+                return body.lastScanNear;
             bool near = false;
             foreach (Thing t in GenRadial.RadialDistinctThingsAround(pawn.Position, pawn.Map, p.nearRadius, true))
             {
@@ -141,8 +151,8 @@ namespace RimMandrake.Miasma
                     break;
                 }
             }
-            lastScanTick[id] = now;
-            lastScanNear[id] = near;
+            body.lastScanTick = now;
+            body.lastScanNear = near;
             return near;
         }
     }
