@@ -7,7 +7,7 @@ it again for another day. Super aggressive when angered, but otherwise totally d
 trigger = ONLY taking damage; cooldown = one day from the moment the swell ENDS; size REAL (body size, health, melee
 damage x3, sprite drawn 3x). And: *"Needs new angry art too... it should be very scary."*
 
-## built (3536bca79, NOT deployed)
+## built (3536bca79; deployed, DLL md5 5679f178 = repo)
 
 - `src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs` + `Source/Kernel/RM_SwellKernel.cs` (fuzz units in
   `Source/SelfTest/TheForgeFuzz.cs`): ThingComp trigger on `PostPostApplyDamage` (damage actually dealt > 0), 20000-tick
@@ -34,12 +34,28 @@ damage x3, sprite drawn 3x). And: *"Needs new angry art too... it should be very
 - Any damage triggers it (card), including Forge environment damage (scald, gas-wash fire) that gets through its
   heat-1.0 hide. If wild dhoggurs swell constantly on the Forge map, raise it with the owner.
 
+## live 2026-10-16 (FOUNDRY, donor_off_phase0 tier, quicktest map; DLL 5679f178 already deployed)
+
+- `dhoggur_swell` chain **12/12 PASS** (Transient/northstar/TheForge_20261016T161326Z.json). No mod defect found.
+  Three HARNESS defects fixed in `validation.py`: the action lookup's `_PREFIXES` lacked `Dhoggur swell:` / `Forge
+  sky:`; the swell's own manhunter stopped `safe_advance` (now a declared `clockgate.expected_disturbance` for THIS
+  dhoggur only); `_hit`'s Blunt 3 was deflected by the hide (`totalDamageDealt 0`, read as "did not swell") -> Blunt 10,
+  retried, a hit that never lands is UNMEASURED. Also a float setting read back `2` for `2.0`.
+- **Vanilla consumers see x3** (by hand): BodySize -> Mass 13.5 -> 40.5, CarryingCapacity 33.75 -> 101.25 (StatPart
+  reads `Pawn.BodySize`); HealthScale -> same injuries, painTotal 0.0346 swollen -> 0.2067 shrunk = x5.97 = x3 health
+  scale x the hediff's 0.5 painFactor (vanilla `Hediff_Injury.PainOffset`). The inlining risk did not show.
+- **Death on shrink is REAL**: swollen, 46 damage on the Body (calm max ~36, swollen ~108), swell switched off ->
+  dead within one rare tick; a corpse is left (a readable sign). Thematic per the risk note; **owner question**.
+- **Environment triggers it**: `RUT_Scald` 4 (every 60 ticks in the boiling rain) got through the heat-1.0 hide on 8 of
+  20 hits; the melt's Flame 18 on 1 of 4. So every wild dhoggur caught outdoors in a Rain phase swells within seconds,
+  once per cooldown. **Owner question** (the risk note said to raise it).
+- Calm adult dhoggur reads bodySize 0.45, healthScale 0.9 (as spawned by `spawn_pawn`).
+
 ## NEXT
 
-`DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR` — built, DLL committed but not deployed; NEXT: deploy The Forge (composed
-biomes) DLL + defs and run `northstar_driver/cli.py run --mod TheForge --plan src/RimMandrake/TheForge/northstar_plan.py`
-(chain `dhoggur_swell`), fix what it finds, then put the swollen art (artpipe job from the art helper) on his review
-sheet and `art install` only what he picks.
+`DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR` — live-proven 12/12, no mod defect; NEXT: ask the owner (card) whether rain
+scald / melt burns should trigger the swell (today they do, every Rain phase) and whether death-on-shrink stays, then
+serve the swollen art sheet with `serve_gated.py` (below) and `art install` only what he picks; close on his answers.
 Swollen art: artpipe jobs `forgeslot_dhoggur_swollen_v1_{east,south,north}` (done, NOT installed; west mirrors east),
 sheet `Transient/biome_ffar/dhoggur_swollen_sheet_2026-10-16.html` (built, gate-passed, NOT yet served: serve it with
 `serve_gated.py`; its scale panel shows the swollen art at the calm 1.2, so show him
