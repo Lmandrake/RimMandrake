@@ -28,8 +28,10 @@ namespace RimMandrake.LeaningScrub
     //          own omnidirectional roll runs untouched. Net: fire races
     //          downwind and creeps upwind.
     //
-    // Not in v1: windbreak calm wakes (microcells for the ripple / fog harvest,
-    // neither of which exists yet) and predators hunting by scent.
+    // Windbreak calm wakes live with the ripple (RM_Ripple.cs InWindbreakLee,
+    // setting leanWakesEnabled): in a wall's lee the ripple acts as in the Stall.
+    // Not in v1: the fog harvest (no such system) and predators hunting by scent
+    // (the spec's v1 scope rules out a hunting-AI rewrite).
     // ════════════════════════════════════════════════════════════════════
     public class RM_LeanExtension : DefModExtension
     {

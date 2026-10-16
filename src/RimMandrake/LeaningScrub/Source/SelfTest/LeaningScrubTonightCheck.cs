@@ -20,6 +20,11 @@ namespace RimMandrake.LeaningScrub.SelfTest
             Eq("stall mover seen", RM_RippleKernel.Hidden(true, true, false, true, 0.2f, 0.6f, false, true, true), false);
             Eq("stall still hidden", RM_RippleKernel.Hidden(true, true, false, true, 0.2f, 0.6f, false, true, false), true);
             Eq("negative limit", RM_RippleKernel.SizeLimit(-1f, true), 0f);
+            // windbreak lee: wind blows toward +x; a wall at x-2 shelters (x,z); a wall downwind does not
+            Eq("lee behind wall", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 8 && z == 10), true);
+            Eq("no lee downwind of cell", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 12 && z == 10), false);
+            Eq("no lee past wake", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 5 && z == 10), false);
+            Eq("zero wind no lee", RM_RippleKernel.InLee(10, 10, 0f, 0f, 4, (x, z) => x == 10 && z == 10), false);
             // stall hunt
             Eq("hunts in stall", RM_StallHuntKernel.Hunts(true, true, true, true, false, false, false), true);
             Eq("idle in wind", RM_StallHuntKernel.Hunts(true, false, true, true, false, false, false), false);

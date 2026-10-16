@@ -21,7 +21,7 @@ namespace RimMandrake.LeaningScrub
     //
     // Cover = a plant whose def carries RM_RippleCoverExtension (Patches/RM_Ripple_Cover.xml puts it on the fuzz
     // carpet). Who hides is RM_RippleKernel.Hidden: wild, not downed, on cover, body size within the limit (doubled in
-    // the Gale), and not moving during the Stall.
+    // the Gale), and not moving during the Stall or in a windbreak's calm wake (part 2, leanWakesEnabled).
     // Gate: modEnabled && rippleEnabled. Off: every hidden creature is shown again on the next pass.
     // ════════════════════════════════════════════════════════════════════
     public class RM_RippleCoverExtension : DefModExtension
@@ -46,9 +46,28 @@ namespace RimMandrake.LeaningScrub
         public bool ShouldHide(Pawn p, bool on)
         {
             bool wild = p.Faction == null && p.RaceProps.Animal;
-            return RM_RippleKernel.Hidden(on, wild, p.Downed, wild && OnCover(p), p.BodySize,
-                RM_LeaningScrubSettings.rippleMaxBodySize, RM_WindCalendar.IsGale(map), RM_WindCalendar.IsStall(map),
+            bool cover = wild && OnCover(p);
+            bool still = RM_WindCalendar.IsStall(map) || (on && cover && InWindbreakLee(p.Position));
+            return RM_RippleKernel.Hidden(on, wild, p.Downed, cover, p.BodySize,
+                RM_LeaningScrubSettings.rippleMaxBodySize, RM_WindCalendar.IsGale(map), still,
                 p.pather != null && p.pather.Moving);
+        }
+
+        /// <summary>Part 2 windbreak calm wake: a wind-blocking edifice (vanilla ThingDef.blockWind, the field wind
+        /// turbines read) within WakeLength cells upwind on a leaning map. Gate: leanWakesEnabled.</summary>
+        public bool InWindbreakLee(IntVec3 c)
+        {
+            if (!RM_WindCalendar.On(RM_LeaningScrubSettings.leanWakesEnabled)) return false;
+            RM_MapComponent_Lean lean = RM_MapComponent_Lean.For(map);
+            if (lean == null) return false;
+            UnityEngine.Vector2 dir = lean.Downwind;
+            return RM_RippleKernel.InLee(c.x, c.z, dir.x, dir.y, RM_RippleKernel.WakeLength, (x, z) =>
+            {
+                IntVec3 u = new IntVec3(x, 0, z);
+                if (!u.InBounds(map)) return false;
+                Building b = u.GetEdifice(map);
+                return b != null && b.def.blockWind;
+            });
         }
 
         public override void MapComponentTick()

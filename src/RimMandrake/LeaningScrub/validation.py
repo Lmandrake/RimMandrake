@@ -76,7 +76,7 @@ DEFAULTS = {
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
     # LEANINGSCRUB_MECHANICS_BUILD_1 parts 6, 5b, 8 (RM_Ripple.cs, RM_CallingPyre.cs, RM_ScrubInjections.cs)
-    "rippleEnabled": True, "rippleMaxBodySize": 0.6, "stallHuntEnabled": True,
+    "rippleEnabled": True, "rippleMaxBodySize": 0.6, "stallHuntEnabled": True, "leanWakesEnabled": True,
     "callingPyreEnabled": True, "callingPyreRadius": 14.0, "callingPyreHerdFactor": 1.0,
     "scrubInjectionsEnabled": True, "scrubRuinsPerMap": 3, "scrubCampsEnabled": True,
     # LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs)
