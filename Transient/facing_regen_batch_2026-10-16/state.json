@@ -1,0 +1,4082 @@
+{
+ "items": {
+  "rimstarwars/swbestiary/anooba/anooba_f": {
+   "attempts": 0,
+   "def": "RSW_Anooba",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "skipped",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Anooba/Anooba_f",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "rimstarwars/swbestiary/gizka/gizka": {
+   "attempts": 0,
+   "def": "RSW_Gizka",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
+    "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Gizka/Gizka",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/gizka/gizkaw": {
+   "attempts": 0,
+   "def": "RSW_Gizka",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Gizka/GizkaW",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/grank/grank": {
+   "attempts": 0,
+   "def": "RSW_Grank",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
+    "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Grank/Grank",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/horax/horax": {
+   "attempts": 0,
+   "def": "RSW_Horax",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "84e90569c6c8798c68afff4460c0a0a8b3e54db15ab21a4b50ba0e4611bd1f0a",
+    "south": "e2a8ea985523610c7592f8e89974dd7f011f2c37013eab0b6f8ab0c1c6e2587c"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Horax/Horax",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/kreetle/kreetle": {
+   "attempts": 0,
+   "def": "RSW_Kreetle",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/ollopom/ollopom": {
+   "attempts": 0,
+   "def": "RSW_Ollopom",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "19f3d7a408b69a1bd7b745518ccdbb25b67bd69d65c896ff54b12eed06c35d0d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Ollopom/Ollopom",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/orray/orray": {
+   "attempts": 0,
+   "def": "RSW_Orray",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "2302a7e0d2f999ded0290a179bc3d5564d98d13f07fdde5caef1c9764c1101d7",
+    "south": "206aaad1c3823f65cdecc8886623e9f706cb1f74f2d6c12a2430c0caa5798f1a"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Orray/Orray",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/shiro/shirob": {
+   "attempts": 0,
+   "def": "RSW_Shiro",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "49b00d1439c2b9e5b744df3e9fd322ae53eb1d74aa583e3aba6707fb86a12265",
+    "south": "ef9a7cffd35a1a4d7758b8204cbbc831a707f630188eb0cc52470096c92c5a7d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Shiro/ShiroB",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/vornskyr/vornskyr": {
+   "attempts": 0,
+   "def": "RSW_Vornskyr",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "423e80ceb91d4b9cbbf1d76e70b531f8a9a634eb65d31feb0274b4b48f2d08d2",
+    "south": "14247714a6dcc0bdd94bae619c1ce7a990defaa03aed778fb781c1faac51e527"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Vornskyr/Vornskyr",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/whisperbird/whisperbird": {
+   "attempts": 0,
+   "def": "RSW_Whisperbird",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+   "why": ""
+  },
+  "rimstarwars/swbestiary/zakkeg/zakkeg": {
+   "attempts": 0,
+   "def": "RSW_Zakkeg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ded48e738e7c051f7b667eb2944cc7fba39257b7fe1ae8f76697e2df9131115c",
+    "south": "fc41903ec644ef7beccc6b3e9d8ed8eb85a23da800c703381e58e06294beeb9b"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RimStarWars/SWBestiary/Zakkeg/Zakkeg",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_lirrith/rm_lirrith": {
+   "attempts": 0,
+   "def": "RM_Lirrith",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "8e9057d935ab2db956b6e4f504c7a784f65d5eeb9f8b7bcb18916727fcdb71e6"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_moravatha/rm_moravatha": {
+   "attempts": 0,
+   "def": "RM_Moravatha",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "d27738dd988ecd693dad4daebee9cf375420b327265699d21eec477cfd6e5ea0"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_ossumatha/rm_ossumatha": {
+   "attempts": 0,
+   "def": "RM_Ossumatha",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "fa4473d514362e6a350b01479a69778de9fc6974ba0fb529c88158966e94b1bf",
+    "south": "18bd0b2b8fac38d6608bc7f7666c7906aa67f805d50c4c958245dd7c633fde29"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_sesserith/rm_sesserith": {
+   "attempts": 0,
+   "def": "RM_Sesserith",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "5e587c3be4e2b0e92a44540a6cfe2e02248a6231342106f94f66aefe52babf7a",
+    "south": "bdb434d1b63ce0a5d52929f58b58b93f15d5ffa6ca466cb30c83877f24ed19d8"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_skarnix/rm_skarnix": {
+   "attempts": 0,
+   "def": "RM_Skarnix",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "23489a7245ee28e56c2f707d1a594a92fe9fd540b6914d125bd996edd9fd51cf",
+    "south": "33f08a1c23d094647960e193bd16d8ecefca82be6de7214a4acb80c338a5f7ab"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_summ/rm_summ": {
+   "attempts": 0,
+   "def": "RM_Summ",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "058d0ad960125179a2a807aee802278fe1851ecb86597caa815a9e62af9a6131",
+    "south": "28c188dd04beeafe6b3fbed1639d4a58c7c43c2e3124dcfee321a707c09763b0"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_summing/rm_summing": {
+   "attempts": 0,
+   "def": "RM_Summ",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2aa5553dbc53729d14abfbc80e2e916b08f52663eda3658abc84255a822050eb"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing",
+   "why": ""
+  },
+  "rm_abyss/things/pawn/animal/rm_ysvaltha/rm_ysvaltha": {
+   "attempts": 0,
+   "def": "RM_Ysvaltha",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "afd0efd5d02fc1da3fdfac7630e8454820d83c135ac66b5fe03fa71659f3209a"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/green/jewelbug": {
+   "attempts": 0,
+   "def": "RM_Gembug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "70d9604d24ad454677a6f4dcd2ee9617bb828d8c1d192a0c593905dc1cf81dc3",
+    "south": "dc09c4df2fd6a84ad2d81d022507fa78221ff08c82cfe88dba021ae27bc7684b"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Green/Jewelbug",
+   "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
+  },
+  "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug": {
+   "attempts": 0,
+   "def": "RM_Gembug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "fb9c3dec3d7fdba503419418f3c82df44e1d288c323b29b6d3d2b0f10fbbd580",
+    "south": "858704b6081e8e46408a4edc7571187cc694be3a15a3ff0f3f7c01cfe50522ca"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Red/Jewelbug",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/yellow/jewelbug": {
+   "attempts": 0,
+   "def": "RM_Gembug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "39ec8477dc89734a688534004bc8b0f81e2cee42b709c985a82685773a4eb1be",
+    "south": "87aba9f44e887916ed8b812b59a7bfa58190c2ca3d46cff6784b6121e52a9672"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug",
+   "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
+  },
+  "rm_lanterndeeps/fauna/bmt_caverns/things/animal/megapleura/megapleura": {
+   "attempts": 0,
+   "def": "RM_Megapleura",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
+    "south": "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/bmt_caverns/things/animal/mossbeetle/mossgrub": {
+   "attempts": 0,
+   "def": "RM_MossBeetleLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "2bc110c105922848c01b5f12138342cb5121349bfae29538fe0eb1a2af95ac53",
+    "south": "76a5e1619812f504d0fb6c1ce28e99cddd47c68e6424756c1c6dded28339aa9d"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/hydrocarbon/candler/candler": {
+   "attempts": 0,
+   "def": "RM_Candler",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "673d5a57df31af1e2135b378ea66ba27576468a7de0d42dec327344941581b4e",
+    "south": "4fd0431f42079449aa5b60cbde97fbd78e4cec7fd222d8d9de807b4d51cb450f"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/hydrocarbon/shoal/shoal": {
+   "attempts": 0,
+   "def": "RM_Shoal",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "cd392214f9c489d87e35ba09f3378c7d9f772b9b578ca3e25c78c64c890b83c7"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
+   "why": ""
+  },
+  "rm_lanterndeeps/fauna/hydrocarbon/slick/slick": {
+   "attempts": 0,
+   "def": "RM_Slick",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c66883a5e478ce7eb329f2d4494adda4939250405f83aa2219f02e39f6a11ab3",
+    "south": "176cb5443e0cecd888ac1cf4e0c08f782f7b4898c284fe60a35a4504f86fdba9"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Slick/Slick",
+   "why": ""
+  },
+  "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar": {
+   "attempts": 0,
+   "def": "RM_IllothLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "37fec96c9af85a3a4d2ac7bfd0e7ea5ea1af03d22c6222e98ea6bcdbff1afad9",
+    "south": "07c4fc955e9740167bc8e2159fb52ab6b045cdfaffeb6e69b7e52089936de7ee"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+   "why": ""
+  },
+  "rm_therot/fauna/hwelgrue/rm_hwelgrue": {
+   "attempts": 0,
+   "def": "RM_Hwelgrue",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
+    "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+   "why": ""
+  },
+  "rm_therot/fauna/redrawn/brogg/brogg": {
+   "attempts": 0,
+   "def": "RM_Brogg",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
+   "why": ""
+  },
+  "rm_therot/fauna/redrawn/grellik/grellik": {
+   "attempts": 0,
+   "def": "RM_Grellik",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+   "why": ""
+  },
+  "rotspecies/agaripawn/agaripawn": {
+   "attempts": 0,
+   "def": "RM_Agaripawn",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d0685f7758527e5dc293083a813c9e87f2f6b183cd6f98c9a415d851ca1f15b6"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RotSpecies/Agaripawn/Agaripawn",
+   "why": ""
+  },
+  "rotspecies/angelmoth/angelmoth_c": {
+   "attempts": 0,
+   "def": "RM_Dustveil",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "f736543ea507b131111a7c72c9fbcec94a85afbb27bcdc4546363355cfb7a79f",
+    "south": "a5cc188e7d0416307620c73474e7f1172230b7015c5dff4e56078fe455740766"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "RotSpecies/AngelMoth/AngelMoth_C",
+   "why": ""
+  },
+  "rotspecies/fungalweevil/fungalweevil": {
+   "attempts": 0,
+   "def": "RSW_FungalWeevil",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "RotSpecies/FungalWeevil/FungalWeevil",
+   "why": ""
+  },
+  "swanimals/absorbed/baseopsis/baseopsis": {
+   "attempts": 0,
+   "def": "RSW_Baseopsis",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "12fc9d2606122702e369120538e3cd707b8ca15d7fdb180db6f54eb27211452e",
+    "south": "a8872c1d1f2c2ee46887e842e3759c751c7b3c5ea7e2becd55bb03eab65062c7"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/absorbed/Baseopsis/Baseopsis",
+   "why": ""
+  },
+  "swanimals/absorbed/holcorobeus/holcorobeus": {
+   "attempts": 0,
+   "def": "RSW_Holcorobeus",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "75bd7c8514f859a441b17668418559e7a98680ef0476258b3bccaadd745fab6e",
+    "south": "7e448ea2e978674b0c20aaa25dedadc35119d347c0bc2b23ed3cec7ceeaa61e8"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/absorbed/Holcorobeus/Holcorobeus",
+   "why": ""
+  },
+  "swanimals/absorbed/protosolpuga/protosolpuga": {
+   "attempts": 0,
+   "def": "RSW_Protosolpuga",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ec5ed41cf55722059f2ff48cca1d00fa5ab3b0e266c95c1a1f4b450bbd7ebce3",
+    "south": "00fdc24c4e38a46de7257a241c98831603ed08f97809cf2c2a1ab5d055cd3cdd"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/absorbed/Protosolpuga/Protosolpuga",
+   "why": ""
+  },
+  "swanimals/absorbed/termitotron/termitotron": {
+   "attempts": 0,
+   "def": "RSW_Termitotron",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "509886e1a5ef0784e503bdd3cc07d229b0638a03f7ad7b5cb821edd3b1de79b0",
+    "south": "8a5da56eaf1100225e29eae1c8d76d62803ca64fea7fe9255b48e6022c40485e"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/absorbed/Termitotron/Termitotron",
+   "why": ""
+  },
+  "swanimals/akk/akk": {
+   "attempts": 0,
+   "def": "RSW_Akk",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "skipped",
+   "sw": true,
+   "texPath": "swanimals/Akk/Akk",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "swanimals/bantha/banthar": {
+   "attempts": 0,
+   "def": "RSW_Bantha",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6af441e81822dbee1f0708cc151a41204f760bf10573e2833d03b923a29cd16c"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Bantha/BanthaR",
+   "why": ""
+  },
+  "swanimals/bantha/banthav_g": {
+   "attempts": 0,
+   "def": "RSW_Bantha",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "ec8e236e1cb82eef53ee73525631c84e4f258669ac6a05604e1dba5e4a65e663"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Bantha/BanthaV_G",
+   "why": ""
+  },
+  "swanimals/bantha/banthav_h": {
+   "attempts": 0,
+   "def": "RSW_Bantha",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Bantha/BanthaV_H",
+   "why": ""
+  },
+  "swanimals/bantha/banthav_i": {
+   "attempts": 0,
+   "def": "RSW_Bantha",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2b86e472d073a580434e2976cc6448faa0657604ade31116d9d843fda75bed1f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Bantha/BanthaV_I",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/aaroxisdendoria/aaroxisdendorialarvae": {
+   "attempts": 0,
+   "def": "RSW_AaroxisDendoriaLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "40f4915ce582db54e2a54d59503d82e09a190f3fd5911332a4fc6fb8abd13138",
+    "south": "dbcd68abd678122c126b55e32398310897ef8fe97111ac008b0bcc7d1719334a"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoriaLarvae",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/basilisk/basilisk": {
+   "attempts": 0,
+   "def": "RSW_Basilisk",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "9ad8c96eee064d3dbc78b1136e5b8b5042e9082d20eb1f3a94a2b8d59bb2935b",
+    "south": "27fb705113556708f0b533ec7b6c441a13adc168de8a0d10ded184b7538b2bfc"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Basilisk/Basilisk",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/bloodropmoth/bloodropmothlarvae": {
+   "attempts": 0,
+   "def": "RSW_BloodropLarvae",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "5c9f6856535da25b97f3bcda6a45e054a2eed0cd5f35049bdebaab071dc4b928"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMothLarvae",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/bovinebeetle/bovinebeetlelarva": {
+   "attempts": 0,
+   "def": "RSW_BovineBeetleLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "00b7202f1d1c31e94458ae2028b851321481dbce62ee3379f581a74dcc37babc",
+    "south": "69bc3f2482932080d8b06bfffa39dbdfe621312b618c1f148ebd4d6df93bf2a2"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetleLarva",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/cavelemming/cavelemming": {
+   "attempts": 0,
+   "def": "RSW_CaveLemming",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "3f6e1e8cb8f8aaf1da96c1078ac06b8a13a729ccc9c5f4656656debb38c71963"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/cresteddragon/cresteddragon": {
+   "attempts": 0,
+   "def": "RSW_CrestedDragon",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "5893fffe56954bcdb4126ae98077d051e2b89be03b0f49d43c0e043f3c0f2b18"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/diggerpede/diggerpede": {
+   "attempts": 0,
+   "def": "RSW_Diggerpede",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803",
+    "south": "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/facetmoth/facetmoth": {
+   "attempts": 0,
+   "def": "RSW_FacetMoth",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "238cc748e36dd427cf87f6a30990b7b35b2db77f28b003b3e13d39b296543cf8"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/FacetMoth",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrybeetle": {
+   "attempts": 0,
+   "def": "RSW_FoundryBeetle",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "d5c46d60da621c47d296691a68d6c860eaa5544bd8948d838f31d395e9f2150c",
+    "south": "7a2d190015ccfccb423fc130e1e06215572ece40a4dd9acc48ffc2bdf38224b7"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrygrub": {
+   "attempts": 0,
+   "def": "RSW_FoundryBeetleLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "2fb6f6e8c8eb8cc0d55e1f7ec3c0025165d73b4b3b692f1d16fa6d6567b46ca3",
+    "south": "462c2d71af61c3e590e99825a4a184782c80f6e1ec41104017448a0fd6dd184f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryGrub",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/glowworm/glowworm": {
+   "attempts": 0,
+   "def": "RSW_PodWorm",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "aa69dc740ed27e095c65881711544b8922deb613a1b258f0edb64c0a066a8185",
+    "south": "d4beeb5fec5314fb6f7f36878e52325a69bb6e1976e8c0aa09c140303d2f90f6"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/jewelbeetle/jewelbeetle": {
+   "attempts": 0,
+   "def": "RSW_JewelBeetle",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c8bec6076eb6a8add6bf95efcc05fa9609e7125a1748b53da9c82498f97befd5",
+    "south": "106238778639d813ff4a6d0f38027a8580bf87ec1608063e5b5214c80622ffef"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/maguana/maguana": {
+   "attempts": 0,
+   "def": "RSW_Maguana",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "127ec9168d5edfc60b3349fd0657d6ad5cf8168f8b06b63bda02c82e87dc44f3",
+    "south": "28b3868ef16e5a94947a5a8b08b526cf416055c2eba62b8bc704d5eecdb34cfd"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalgrub": {
+   "attempts": 0,
+   "def": "RSW_RoyalRhinoLarvae",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2579ba23b93b47f355c4ef876fe3f46b2561eb017225dc2e55bed05959a5c810"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalGrub",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalrhino": {
+   "attempts": 0,
+   "def": "RSW_RoyalRhino",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "1369ab5cc6b34b74c373ab1a30909f1e4c08ef849850cd1e913e29901e82dca9",
+    "south": "bdbf68b522e752dcb6dd0ddb3946ac21732feffe2ca2c0317ea8e051663e15e1"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalRhino",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/sandpillar/sandpillar": {
+   "attempts": 0,
+   "def": "RSW_SandPillar",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "b7bd88a93528091ce425dd60112b75d3bbab49c28a0d82ea047224d46cb51976"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_caverns/things/animal/yooka/yooka": {
+   "attempts": 0,
+   "def": "RSW_Yooka",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "cef12bda5878966f2bbfdf32b92e26f83892e19750996b4295985bba41c291a4"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Yooka/Yooka",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/bloodletterpetrel/bloodletterpetrel": {
+   "attempts": 0,
+   "def": "RSW_BloodletterPetrel",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/bunkerbug/bunkerbug": {
+   "attempts": 0,
+   "def": "RSW_BunkerBug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "52fb3bd50ca63189134abccb02ce590ead0ce98f94c49f2095979a8afa7c4f64",
+    "south": "af4e9f88846ddf8bd34217cae71c26be14ae37f323d14c4addcf25697de0a95d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/gastrotoad/polluwog": {
+   "attempts": 0,
+   "def": "RSW_Polluwog",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "74ac30f1b4184a407e56f894742cba183cf8adf10ddc0e3cb468e02f6485fe6b",
+    "south": "750095d5f5b93914e68977cb3e2c313102c76eb202b69522dfc74ed148217d17"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/GastroToad/Polluwog",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtail": {
+   "attempts": 0,
+   "def": "RSW_Glowtail",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "4d55049b5bf9c3061cf952d2bec14f1a521a527ba166bd18232de2c65ca54cb4",
+    "south": "97d6b40c43f4c83e8ba3e9e3b32854effe4bd69ef7b22a643a2494d3154c00fb"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/Glowtail",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtailbaby": {
+   "attempts": 0,
+   "def": "RSW_Glowtail",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "f100f0006694b848c174b164ea35c2c6940edd86c33da1adf1d07114b3e76d9f",
+    "south": "99d68326a13ef774595418cb62695415a1a004b4d6859862a9eb2b84d6718649"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/GlowtailBaby",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatfemale": {
+   "attempts": 0,
+   "def": "RSW_Maligoat",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatmale": {
+   "attempts": 0,
+   "def": "RSW_Maligoat",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/megakrill/megakrill": {
+   "attempts": 0,
+   "def": "RSW_Megakrill",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "a429efcd51cc9676d15408c270f7bfbf94f617542f412afe8e47e781c96fcf46",
+    "south": "1d5b627d4142640e1f5b2927e48d734536cd73e749b0a9df5a38e3b8fc2d65c2"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megakrill/Megakrill",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutagenicnorphea/mutagenicnorphea": {
+   "attempts": 0,
+   "def": "RSW_MutagenicNorphea",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "406f7891285e5de327b092ae1401f6b87a7762fa0d692be87a358980c76ed905"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage1": {
+   "attempts": 0,
+   "def": "RSW_MutatingTumorfishSpawn",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "5e54841dee2ea6e9c7f40a8037788f8153352a28ce0f638f5303d234996f8d32"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage1",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage3": {
+   "attempts": 0,
+   "def": "RSW_MutatingTumorfishAdult",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "5fac3b4a7621ac1f49f451d97bdc1507d0a96b9ca6cc218f51cfa9942f8608d6"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage3",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/sacapillar/sacapillar": {
+   "attempts": 0,
+   "def": "RSW_Sacapillar",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3",
+    "south": "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+   "why": ""
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogapillar": {
+   "attempts": 0,
+   "def": "RSW_SmogMothLarvae",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "37fec96c9af85a3a4d2ac7bfd0e7ea5ea1af03d22c6222e98ea6bcdbff1afad9",
+    "south": "07c4fc955e9740167bc8e2159fb52ab6b045cdfaffeb6e69b7e52089936de7ee"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "needs_eyes",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
+   "why": "slug smogapillar collides with rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar (artpipe job id)"
+  },
+  "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogmoth": {
+   "attempts": 0,
+   "def": "RSW_SmogMoth",
+   "facings": [
+    "east"
+   ],
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "needs_eyes",
+   "sw": true,
+   "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/SmogMoth",
+   "why": "lint asks to regenerate ['east']: east is the anchor, never redrawn"
+  },
+  "swanimals/blarth/blarth": {
+   "attempts": 0,
+   "def": "RSW_Blarth",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "1f2c6d18e39de1f8a45f8ecdd2c5444080232a509a679a969dd44aea4d83f777"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Blarth/Blarth",
+   "why": ""
+  },
+  "swanimals/boarwolf/boarwolf": {
+   "attempts": 0,
+   "def": "RSW_Boarwolf",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "01ca8ee722096403f14d4175249e17942a6a93270ae6090ff2ab68e024d9bc75"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Boarwolf/Boarwolf",
+   "why": ""
+  },
+  "swanimals/bolotaur/bolotaur": {
+   "attempts": 0,
+   "def": "RSW_Bolotaur",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "a47592f78c40e079cce681b721a52b6ad81e9641127f5553eb248168db9becb3",
+    "south": "ad9c0c32664157500524be460e4bb074cf8753469f522888735423b3c1ef7ab2"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Bolotaur/Bolotaur",
+   "why": ""
+  },
+  "swanimals/borcatu/borcatu": {
+   "attempts": 0,
+   "def": "RSW_Borcatu",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "skipped",
+   "sw": true,
+   "texPath": "swanimals/Borcatu/Borcatu",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "swanimals/cancell/cancell": {
+   "attempts": 0,
+   "def": "RSW_CanCell",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "5b23c42aad8a407ecf29e7948a69b2d52a42cd8106ad4a81c62f356e825bd430"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/CanCell/CanCell",
+   "why": ""
+  },
+  "swanimals/corellianhound/corellianhound": {
+   "attempts": 0,
+   "def": "RSW_CorellianHound",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "7ac76bc65e5fe2de72f34e60c7484c825386c263786c6d7f6690807317d071a7"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/CorellianHound/CorellianHound",
+   "why": ""
+  },
+  "swanimals/desertport/zakkro/zakkro": {
+   "attempts": 0,
+   "def": "RSW_Zakkro",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "f4bbb0ec200e8a2aabf88988e5190b11599cb3bd8455e0ce18bf65a83a3596dc",
+    "south": "18229ca13b25d4d3990006387707ca91ff2b425eac9d15c12c9087d79db2b681"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/DesertPort/Zakkro/Zakkro",
+   "why": ""
+  },
+  "swanimals/eopie/eopie": {
+   "attempts": 0,
+   "def": "RSW_Eopie",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Eopie/Eopie",
+   "why": ""
+  },
+  "swanimals/frilledgorg/frilledgorg_j": {
+   "attempts": 0,
+   "def": "RSW_FrilledGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "14ed69702a2a4f0aca498fa3bb651918e0e707657b58ebc70c219e22145cbed0",
+    "south": "844947c2b964ba3091357e6baef10740cc02c377c246df2922bea81d20a058b1"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/FrilledGorg/FrilledGorg_j",
+   "why": ""
+  },
+  "swanimals/frilledgorg/frilledgorgv_j": {
+   "attempts": 0,
+   "def": "RSW_FrilledGorg",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "54fece3dc9a8d919ea56be4b7f1f78717f0f68c2aced3992a71961dc12f9deb9"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/FrilledGorg/FrilledGorgV_J",
+   "why": ""
+  },
+  "swanimals/gelagrub/gelagrub": {
+   "attempts": 0,
+   "def": "RSW_Gelagrub",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2f87d1691f424f5a94c771da9a2f5736de997fc19c67d656a1b1368c017fc111"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Gelagrub/Gelagrub",
+   "why": ""
+  },
+  "swanimals/gloomcast/gloomcast": {
+   "attempts": 0,
+   "def": "RM_Gloomcast",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d8aab44d3e687420c9d01d6ecc12f94ac190e6e899e1953f7315f212420d3442"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "swanimals/Gloomcast/Gloomcast",
+   "why": ""
+  },
+  "swanimals/gorg/gorgv_o": {
+   "attempts": 0,
+   "def": "RSW_Gorg",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "f81090ac86b87ec86bf5347e070ad770d99f991a9c7114a79a60c34d89789a9b"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Gorg/GorgV_O",
+   "why": ""
+  },
+  "swanimals/graniteslug/graniteslug": {
+   "attempts": 0,
+   "def": "RSW_GraniteSlug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+    "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/GraniteSlug/GraniteSlug",
+   "why": ""
+  },
+  "swanimals/grazer/grazer_f": {
+   "attempts": 0,
+   "def": "RSW_Grazer",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "947800e0b120e71b5efdfcb89f3828d33277dae2d4058c8ebc750c20f575ff39"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Grazer/Grazer_f",
+   "why": ""
+  },
+  "swanimals/grazer/grazer_m": {
+   "attempts": 0,
+   "def": "RSW_Grazer",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "fb647cabdd9323fe1da4d9ab75281383499babd346ab1f3a8db72e22159ac040"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Grazer/Grazer_m",
+   "why": ""
+  },
+  "swanimals/gullipud/gullipud": {
+   "attempts": 0,
+   "def": "RSW_Gullipud",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Gullipud/Gullipud",
+   "why": ""
+  },
+  "swanimals/harvesterbeetle/harvesterbeetle": {
+   "attempts": 0,
+   "def": "RSW_HarvesterBeetle",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c89222db1355fef48815c9f996d990bc940957865e79de3a282809f4d0d8b45d",
+    "south": "6e18cbd590feab2cbc6bdb3da5c36d11377fec40a83013768105a24bedae6f17"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/HarvesterBeetle/HarvesterBeetle",
+   "why": ""
+  },
+  "swanimals/hssiss/hssiss": {
+   "attempts": 0,
+   "def": "RSW_Hssiss",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "e84e3fba38c7a0e5cfd71104587134708b800a650f55d9481696ef3fab0e15be"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Hssiss/Hssiss",
+   "why": ""
+  },
+  "swanimals/hssiss/hssissa": {
+   "attempts": 0,
+   "def": "RSW_Hssiss",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "291c1ede2a0fe974a11a0e0145a25f9dbf7ce1a62a62ec6ee16848fb55d6d465"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Hssiss/HssissA",
+   "why": ""
+  },
+  "swanimals/hssiss/hssissb": {
+   "attempts": 0,
+   "def": "RSW_Hssiss",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "91d30b28f55403aad9b8b9ba58050c9fe2f20dfff759734ded608194b18b6987"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Hssiss/HssissB",
+   "why": ""
+  },
+  "swanimals/hssiss/hssissc": {
+   "attempts": 0,
+   "def": "RSW_Hssiss",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "e6ffe21911aff87bbbed86745221e253f8eea68fc90aba6a02c8f81e9815eced"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Hssiss/HssissC",
+   "why": ""
+  },
+  "swanimals/ithorianreek/ithorianreek": {
+   "attempts": 0,
+   "def": "RSW_IthorianReek",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "308fddf8634c7071f0be3ae04a54a1fc6c57cf12e4b62a4b29394d00b11d8283",
+    "south": "7123e3205408513a27a9e0c5a506051522f0338316d33d999a873750ef48fe90"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/IthorianReek/IthorianReek",
+   "why": ""
+  },
+  "swanimals/jamel/jamel": {
+   "attempts": 0,
+   "def": "RSW_Jamel",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "08d586f5808ca080f76e9b46d5e14d750ce804e59111b65853a81a824e9d887a"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Jamel/Jamel",
+   "why": ""
+  },
+  "swanimals/klorslug/klorslug": {
+   "attempts": 0,
+   "def": "RSW_Klorslug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "d62753e91074dc7dff313cd083e3700950cea0626e723b81a826d1127a8bd764",
+    "south": "2a543fc96a251167cb491fcaea063e43e5abdb342ad8674b61be9b357a80eec8"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Klorslug/Klorslug",
+   "why": ""
+  },
+  "swanimals/kraytdragon/kraytdragon_f": {
+   "attempts": 0,
+   "def": "RSW_KraytDragon",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "0fb16fa689a08181253ed2b6b8428429b108175ff6250a3db6eae7d194e38ae8",
+    "south": "8be79f2b641421e6e0c502975220eaadcb07e57ac3c4e1a498d8896421f9cbc2"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/KraytDragon/KraytDragon_f",
+   "why": ""
+  },
+  "swanimals/kraytdragon/kraytdragon_j": {
+   "attempts": 0,
+   "def": "RSW_KraytDragon",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "4b98fab5564bd239f9dd3240938ac70507dfa568a641e52eecb8eae52b55e558"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/KraytDragon/KraytDragon_j",
+   "why": ""
+  },
+  "swanimals/kraytdragon/kraytdragon_m": {
+   "attempts": 0,
+   "def": "RSW_KraytDragon",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "dc9f06ae65c91341a93aa25942dc084a168baafca2585c5e701e0c569aa88975",
+    "south": "8050c37ed2005a4f4c2d80cf0294ad871c1becde3bac38b9e7ee70b4d16bd34d"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/KraytDragon/KraytDragon_m",
+   "why": ""
+  },
+  "swanimals/kreetle/kreetle_j": {
+   "attempts": 0,
+   "def": "RSW_Kreetle",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
+    "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Kreetle/Kreetle_j",
+   "why": ""
+  },
+  "swanimals/kwazelmaw/kwazelmaw": {
+   "attempts": 0,
+   "def": "RSW_KwazelMaw",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "3c8d32ca87c5fc37e1f4efc86619249d2f6296518fe25f544a0b7494b31e8bd6",
+    "south": "01193b833dcdb560a9bfd7987f98eb4addefcd536e8ae4c7bbfd88333f10f943"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/KwazelMaw/KwazelMaw",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorg": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "428edd9fe12cceb8c9a0eb3b8eb56eade0a6843d359e0b5e719e07078a5a54ac",
+    "south": "acae07b9b0ed328e5a7243b9a8ef67ea8c3da3de73811d1fec56ea8328751d43"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorg",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorg_j": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c3a56038087947c5e39f20db91040a1b7ccf00cab1a3eab49058f4146d481b8d",
+    "south": "d0c6409f4a26cea787d94244237bd9576a3e1c3afa8b2f66a36e36d4fc1db230"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorg_j",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_g": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "b690aebb5166461428d3a7c55f9c4a9c7f6f94c5c38dc0831297ced1fee53293",
+    "south": "2cb6096cfef81812aa7e6577ef19d9a26ea9b1989d6d5691ce028335084d1a90"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_G",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_h": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "3a6a1a8efc91cc92cd5d859ebd8964389dab865480892bd3eb69752dee3f1e54",
+    "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_H",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_i": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
+    "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_I",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_j": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
+    "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_J",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_k": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_K",
+   "why": ""
+  },
+  "swanimals/longtailgorg/longtailgorgv_l": {
+   "attempts": 0,
+   "def": "RSW_LongtailGorg",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
+    "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LongtailGorg/LongtailGorgV_L",
+   "why": ""
+  },
+  "swanimals/lothcat/lothcat_m": {
+   "attempts": 0,
+   "def": "RSW_Lothcat",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "a6934821e1e6615fdde3189145de78d63b9854cfe69791f7d683fe9e22090701"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Lothcat/Lothcat_m",
+   "why": ""
+  },
+  "swanimals/lothwolf/lothwolf_f": {
+   "attempts": 0,
+   "def": "RSW_LothWolf",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "197a9755c80fdc277d68db70f86d2b354a5412ecfe311c07dc266affeaa4c32b"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LothWolf/LothWolf_f",
+   "why": ""
+  },
+  "swanimals/lothwolf/lothwolf_m": {
+   "attempts": 0,
+   "def": "RSW_LothWolf",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "6dc8a78ff1c570312785056190ddab1419ea196effb046981c9b209c2fd81ea0"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/LothWolf/LothWolf_m",
+   "why": ""
+  },
+  "swanimals/mastiffphalone/mastiffphalone": {
+   "attempts": 0,
+   "def": "RSW_MastiffPhalone",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "62365a5006b6a1608f1bd93b967c123492b4d09633af95bb6b12abf21e1894e8"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/MastiffPhalone/MastiffPhalone",
+   "why": ""
+  },
+  "swanimals/mott/mott_f": {
+   "attempts": 0,
+   "def": "RSW_Mott",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "36e3d79c344b266acdc237a2cc5bc1fc5596ab8d3f852ecab2e869731d0bb88a"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Mott/Mott_f",
+   "why": ""
+  },
+  "swanimals/mott/mott_m": {
+   "attempts": 0,
+   "def": "RSW_Mott",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c14b47e2fc083f4c77ff11548487c93b84db9e73bfceb72963a99d431c9c23a4",
+    "south": "f8800811a6b1c40baf3ef2cb13f8d987731134db2ca745c1fd33632f6dd0c25f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Mott/Mott_m",
+   "why": ""
+  },
+  "swanimals/narglatch/narglatch_f": {
+   "attempts": 0,
+   "def": "RSW_Narglatch",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "4c85240741e7442bd43852ba1f9c701dfaf2312fc3abcca93cd524ede254581c",
+    "south": "7644bcc5dbcbc3e09c6d547a6440447596950ef5a06a41c98970fb8d00347997"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Narglatch/Narglatch_f",
+   "why": ""
+  },
+  "swanimals/nexu/nexuw": {
+   "attempts": 0,
+   "def": "RSW_Nexu",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "dbf8063d7d49ed0b6169118a40e15192df9f6089994efeb4145c3f92d2784cef"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Nexu/NexuW",
+   "why": ""
+  },
+  "swanimals/porg/porg": {
+   "attempts": 0,
+   "def": "RSW_Porg",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "23331543a54c1c876e71b4e5719fa1aa817e628226d4d30ad0f0886b2bc8a8cc"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Porg/Porg",
+   "why": ""
+  },
+  "swanimals/reek/reek": {
+   "attempts": 0,
+   "def": "RSW_Reek",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "0eff87b5a3a678985a7a3889e1762f944c4b03f432055f6e7b4f052fc2252504",
+    "south": "36fe8967542f97ae77955e0e29976b07f954fbb55fe8fe27ad7785933a5e3965"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Reek/Reek",
+   "why": ""
+  },
+  "swanimals/rycrit/rycrit": {
+   "attempts": 0,
+   "def": "RSW_Rycrit",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "4055edcbc1a611aa2a2c1e5aa978f63a4cb6660c0bc2da1280ea4b1a7c8f2745",
+    "south": "d368c14d4763ea8ba67e32ff1059f99ed9ffc9efb10e856b4259625fd95f9f6e"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Rycrit/Rycrit",
+   "why": ""
+  },
+  "swanimals/shyrack/shyrack": {
+   "attempts": 0,
+   "def": "RSW_Shyrack",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "afd8f66c9e2f2b3994e95d7b639213454c76b0bbb3d3386001f315d582a8bc36"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Shyrack/Shyrack",
+   "why": ""
+  },
+  "swanimals/stintaril/stintaril": {
+   "attempts": 0,
+   "def": "RSW_Stintaril",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "af4d6075d693dbbc181cbd57946d0d484be1334ae59bf524ac2fe200c85cdb86",
+    "south": "d4fefcebf624cc568b7d6bd7e8613e62a84192e794e91496ba1ea9721ea53fa6"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Stintaril/Stintaril",
+   "why": ""
+  },
+  "swanimals/strill/strill": {
+   "attempts": 0,
+   "def": "RSW_Strill",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "acd77d22ead9f20e35090127cf6a1d6247c75f4e5184e921be3544ada6c51531",
+    "south": "e08a9f4fc51b7f65baa81c90d9172d6933f6e0b936336977ec910757385278fe"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Strill/Strill",
+   "why": ""
+  },
+  "swanimals/taozin/taozin": {
+   "attempts": 0,
+   "def": "RSW_Taozin",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2267903e8bd76ead7521227598e292a106a40db5771dad71db49aa600ad5f720"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Taozin/Taozin",
+   "why": ""
+  },
+  "swanimals/taozin/taozin_j": {
+   "attempts": 0,
+   "def": "RSW_Taozin",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "1e75da77429cc5a6fcfbff6848d535d86ff339d71fbbb03fc93b5f36eac4df5e",
+    "south": "63366f4b3ac117ada3ee7dad7abac78732c6c3b91936f6edc184af5478a47aec"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Taozin/Taozin_j",
+   "why": ""
+  },
+  "swanimals/teemuss/teemuss": {
+   "attempts": 0,
+   "def": "RSW_TeeMuss",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "c9f44d94cf509f7101141b037c31e2a2bfaf2509d9b1604f2eb06299af90079f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/TeeMuss/TeeMuss",
+   "why": ""
+  },
+  "swanimals/tukata/tukata": {
+   "attempts": 0,
+   "def": "RSW_Tukata",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "a31a0f391bdbceeb494c167a36b879fe43987c98e163f0d9dc1ee651be7955c1",
+    "south": "ca7d5b6836818e0affcf75e011686069e16e9e072f7434761a59463e671646db"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Tukata/Tukata",
+   "why": ""
+  },
+  "swanimals/tukata/tukatac": {
+   "attempts": 0,
+   "def": "RSW_Tukata",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d650010023f778c8cf7efaae2d9ce7d7fa2aa54e8b2daf6e2250d8caf8d7eaca"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Tukata/TukataC",
+   "why": ""
+  },
+  "swanimals/tuskcat/tuskcat": {
+   "attempts": 0,
+   "def": "RSW_TuskCat",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "f6c554373c737103f4e230bbc4c84a2042a25e07960424f4c13f06e8d7b197a5",
+    "south": "5a2868622dc609a4f78055bd4a9d24976858237dfa6ec412670614b56d0c0bad"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/TuskCat/TuskCat",
+   "why": ""
+  },
+  "swanimals/varactyl/varactyl_f": {
+   "attempts": 0,
+   "def": "RSW_Varactyl",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "0785b151d1c5252df9164e34c97b1ccf5f5f7db819b8a1a5ece15ff86d6ef000"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Varactyl/Varactyl_f",
+   "why": ""
+  },
+  "swanimals/varactyl/varactyl_m": {
+   "attempts": 0,
+   "def": "RSW_Varactyl",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "bc00bf239dd698679ff35d4b45f18a9b0beb4b98391abc34970428559992dd87"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Varactyl/Varactyl_m",
+   "why": ""
+  },
+  "swanimals/varactyl/varactylv_f": {
+   "attempts": 0,
+   "def": "RSW_Varactyl",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "38bd5860c1b47262e84c902b2553c34d3a7e7133ba3b040ecea723da43437456"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Varactyl/VaractylV_F",
+   "why": ""
+  },
+  "swanimals/wampa/wampa_j": {
+   "attempts": 0,
+   "def": "RSW_Wampa",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "59619e94a34980b3c146678c9ab9bde52488d0db4df76426eefda67fe933b106"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Wampa/Wampa_j",
+   "why": ""
+  },
+  "swanimals/yobshrimp/yobshrimp_j": {
+   "attempts": 0,
+   "def": "RSW_YobshrimpLand",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ee6204e2e3a8e2d5b8b142e69001a4cc8fcd627fbd919e15f822c60d007de6d3",
+    "south": "a74dbbdf55dbb5a12771867f74194509ab10f03df08fab7a1158bdf8130d41a5"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "swanimals/Yobshrimp/Yobshrimp_j",
+   "why": ""
+  },
+  "things/pawn/animal/aa_sandlion/aa_dessicated_sandlion": {
+   "attempts": 0,
+   "def": "RSW_SandLion",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "2b485a439e263230c90cf77df1c857a399b3742aa6cd4513ade35d9a3c29560f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion",
+   "why": ""
+  },
+  "things/pawn/animal/alligator/alligator": {
+   "attempts": 0,
+   "def": "RM_Vhakk",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Alligator/Alligator",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/alligator/dessicated_alligator": {
+   "attempts": 0,
+   "def": "RM_Vhakk",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Alligator/Dessicated_Alligator",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/fubbum/rm_fubbum": {
+   "attempts": 0,
+   "def": "RM_Fubbum",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6e97315c38e6df849d306ea50e00b60cfee0d1b80d3413b1ae5191b6b2bd03b1"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
+   "why": ""
+  },
+  "things/pawn/animal/gappo/rm_gappogreater": {
+   "attempts": 0,
+   "def": "RM_GappoGreater",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "c2e0cfad8a9085ea6b17925a37fc72fcddc7e2a30de1ba83c446907d581b33f2"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
+   "why": ""
+  },
+  "things/pawn/animal/gappo/rm_gappolesser": {
+   "attempts": 0,
+   "def": "RM_GappoLesser",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "736bc145228864a9b92b0d6d85b7032e472e2d13ecdd9b6e54d64637445b1324"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
+   "why": ""
+  },
+  "things/pawn/animal/kurreth/kurreth": {
+   "attempts": 0,
+   "def": "RM_Kurreth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "e79a79cebfce5fad4b359773390f87d1caec9bb6e684d7c2a2f2298a24d46184",
+    "south": "bd8f9b71f9cbc68f3322fb8b765010d5d16ebbdbccf88ecb2b07faf27cfe32e8"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Kurreth/Kurreth",
+   "why": ""
+  },
+  "things/pawn/animal/megatardi/megatardi": {
+   "attempts": 0,
+   "def": "VAEWaste_Megatardi",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7",
+    "south": "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee"
+   },
+   "mod": "RimUtinni Patches (Jawa campaign)",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Megatardi/Megatardi",
+   "why": ""
+  },
+  "things/pawn/animal/miasma/wardenmother/wardenmother": {
+   "attempts": 0,
+   "def": "RM_WardenMother",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "fac21ad8d15c5284d45328a4d8023bbbe993927222b84485443198d8385f632d"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
+   "why": ""
+  },
+  "things/pawn/animal/monkey/dessicated_monkey": {
+   "attempts": 0,
+   "def": "RM_Bloodlurk",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Monkey/Dessicated_Monkey",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/monkey/monkey": {
+   "attempts": 0,
+   "def": "RM_Tarruq",
+   "facings": [
+    "south"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Monkey/Monkey",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/pyrelands/ashwallow/ashwallow": {
+   "attempts": 0,
+   "def": "RM_Ashwallow",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "bc8778aa5b71cc94821a94aafabf5780f6296e79c451da71d3046ec97b25052d"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+   "why": ""
+  },
+  "things/pawn/animal/pyrelands/firewasp/dessicated_firewasp": {
+   "attempts": 0,
+   "def": "RM_FireWasp",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "5da84b93099b75dfd10286bc83acf2c8ac5cab86a3c1abd26f3c3e893796c190",
+    "south": "0cdf09cf71c27184f8f368f4570e65605fdd5346ca3c142c4e3885559a145900"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp",
+   "why": ""
+  },
+  "things/pawn/animal/pyrelands/flamefang/dessicated_flamefang": {
+   "attempts": 0,
+   "def": "RM_Flamefang",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "9e2ceca1d1fb0e960ca80c55544f110251bd0f6bea27c5bf902dd8768aceb4f5",
+    "south": "994573df1bb31e6390d59a2c45308fb1f900b06928800884e34289d34bc10ac2"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang",
+   "why": ""
+  },
+  "things/pawn/animal/pyrelands/flamefang/flamefang": {
+   "attempts": 0,
+   "def": "RM_Flamefang",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "675a463db3560beee149e10650f28a8d48d01d0a54ea50d655f3caa65e4908b3",
+    "south": "100fcd1a7622807308107f156095d4c15e0b191c171d3fbd1ccdda5611b60018"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang",
+   "why": ""
+  },
+  "things/pawn/animal/rat/dessicated_rat": {
+   "attempts": 0,
+   "def": "RM_Fleshsop",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Rat/Dessicated_Rat",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_bedbug/rm_bedbug": {
+   "attempts": 0,
+   "def": "RM_BedBug",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
+    "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
+   "why": ""
+  },
+  "things/pawn/animal/rm_bileworm/rm_bileworm": {
+   "attempts": 0,
+   "def": "RM_Bileworm",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_bladderboil/rm_bladderboil": {
+   "attempts": 0,
+   "def": "RM_Bladderboil",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
+   "why": ""
+  },
+  "things/pawn/animal/rm_bokka/rm_bokka": {
+   "attempts": 0,
+   "def": "RM_Bokka",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
+    "south": "9225dd365647e53b48cdadbd2c8c25eb2950f5b5e030a02900b6e3de95f6d2f7"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Bokka/RM_Bokka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_brathek/rm_brathek": {
+   "attempts": 0,
+   "def": "RM_Brathek",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "eb00abd90e594ba3d5d203372283e769b70c6728622d2a45fdac10502db8af26",
+    "south": "c8407c3382a4bc859263f703eda2e20c811aafa6cefa359574dc93edcdec47ff"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Brathek/RM_Brathek",
+   "why": ""
+  },
+  "things/pawn/animal/rm_canopyswinger/rm_canopyswinger": {
+   "attempts": 0,
+   "def": "RM_CanopySwinger",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "c99139294062ea02875ac9dfa013697acaeb606ea8ab2e5e391efc283b8ac335"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
+   "why": ""
+  },
+  "things/pawn/animal/rm_chatrak/rm_chatrak": {
+   "attempts": 0,
+   "def": "RM_Chatrak",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_chotrix/rm_chotrix": {
+   "attempts": 0,
+   "def": "RM_Chotrix",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Chotrix/RM_Chotrix",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_coolanteel/rm_coolanteel": {
+   "attempts": 0,
+   "def": "RM_CoolantEel",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
+   "why": ""
+  },
+  "things/pawn/animal/rm_dakkra/rm_dakkra": {
+   "attempts": 0,
+   "def": "RM_Dakkra",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "dbad53fabf1262d9b2c10690dcde32bcc550122601a2a4fc6b1e0652ee33c7ee"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+   "why": ""
+  },
+  "things/pawn/animal/rm_dhollock/rm_dhollock": {
+   "attempts": 0,
+   "def": "RM_Dhollock",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "4abf1cd6ba95c94b58e2375bb9c3b90e1cd9635308bb2159e6f490663b5d98f6"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Dhollock/RM_Dhollock",
+   "why": ""
+  },
+  "things/pawn/animal/rm_dustveillarva/rm_dustveillarva": {
+   "attempts": 0,
+   "def": "RM_DustveilLarva",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "b410fe8152e0e1879e629ea342754a63b0c135430a30658bdda3d69d3163676a",
+    "south": "a8cea57a8a0761364830a74a16376782a34ef3bf3d621dd2b6c837d63f182a14"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
+   "why": ""
+  },
+  "things/pawn/animal/rm_eesh/rm_eesh": {
+   "attempts": 0,
+   "def": "RM_Eesh",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268",
+    "south": "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
+   "why": ""
+  },
+  "things/pawn/animal/rm_electricgryllotalpa/rm_electricgryllotalpa": {
+   "attempts": 0,
+   "def": "RM_ElectricGryllotalpa",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_essarn/rm_essarn": {
+   "attempts": 0,
+   "def": "RM_Essarn",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "b4e7d5b6dd5244d3e16a40b23c70ef326d4c98558d3db6f1134d06e4fe84bfb6",
+    "south": "26701bb3ba801aa4001f090ac35fdc7f86b2cd98a179d3058e2b0e40dac5ebb1"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
+   "why": ""
+  },
+  "things/pawn/animal/rm_fuzzrunner/rm_fuzzrunner": {
+   "attempts": 0,
+   "def": "RM_Fuzzrunner",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "3be3e066f4c459ae98fdaa68227002f9625761697aa96564836ac61551672d79",
+    "south": "90099fd69d82e72f24ec0d03a63897fe871f16e4775fe2d65aee88fccffb7ec7"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
+   "why": ""
+  },
+  "things/pawn/animal/rm_fuzzviper/rm_fuzzviper": {
+   "attempts": 0,
+   "def": "RM_Fuzzviper",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "cdae58e535b701a0d75545a61d5fe668f6020063fdcc275633f49de832d8a50d",
+    "south": "5cf72a82011943a74d47dce57d47667a1c052e6c87a83a4e285097ed9e2068cf"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+   "why": ""
+  },
+  "things/pawn/animal/rm_gennok/rm_gennok": {
+   "attempts": 0,
+   "def": "RM_Gennok",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d349110ae418ab24c77866e0dccab92cd0cff3c109a0f00624d1e2dce69fda63"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Gennok/RM_Gennok",
+   "why": ""
+  },
+  "things/pawn/animal/rm_glomvar/rm_glomvar": {
+   "attempts": 0,
+   "def": "RM_Glomvar",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "7ad8b1fc1888095640a00fad2172133d54371c3784acd7ef531ca0698195def9",
+    "south": "b6553e921898888b4bb30f685fa47ada21fd489a4544c6ce0ecc41d9409267ed"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Glomvar/RM_Glomvar",
+   "why": ""
+  },
+  "things/pawn/animal/rm_grolth/rm_grolth": {
+   "attempts": 0,
+   "def": "RM_Grolth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "79a3cfebc2c84c1444a3ec5a89df167dbb099ec310a8f20c6b2ca394476347ea",
+    "south": "202de56bed10dd5390592a5cc63d05fed7b3ef571f2be6523bf7a10a0200d0bd"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Grolth/RM_Grolth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_gulloth/rm_gulloth": {
+   "attempts": 0,
+   "def": "RM_Gulloth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "1fa895d8b21640a86c3c9e46f438fdb1739d374f47ff1ad9daa6292eecbfb830",
+    "south": "9df7108819f8cf0a405af8c4700297544d61029eba04ec2fad6c4bd8ea1f1828"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Gulloth/RM_Gulloth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_gulveth/rm_gulveth": {
+   "attempts": 0,
+   "def": "RM_Gulveth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "966965fb45e0d02312ef20fe7b90a9f13427aeda32be5129a26c459b0ff5989f",
+    "south": "8008fe4c474c8f60e72ac332853042871c576bfee5476553b329011d98b86692"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_heemin/rm_heemin": {
+   "attempts": 0,
+   "def": "RM_Heemin",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/rm_iliss/rm_iliss": {
+   "attempts": 0,
+   "def": "RM_Iliss",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "b305f78d15ee5d4eb9ef771fea00694013574c2a186b8362c16346cecdaff3fb"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
+   "why": ""
+  },
+  "things/pawn/animal/rm_illisk/rm_illisk": {
+   "attempts": 0,
+   "def": "RM_Illisk",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "f916f0ed6b320c04fc03c78893b43756fb2eff7220b07c3bbb76d27cdd7aa584"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Illisk/RM_Illisk",
+   "why": ""
+  },
+  "things/pawn/animal/rm_ivvol/rm_ivvol": {
+   "attempts": 0,
+   "def": "RM_Ivvol",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "40785059dc8b68a04c212e90f2a944006a66f64dd9a9c3a322555a24736924f9"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Ivvol/RM_Ivvol",
+   "why": ""
+  },
+  "things/pawn/animal/rm_juggernautbeetle/rm_juggernautbeetle": {
+   "attempts": 0,
+   "def": "RM_JuggernautBeetle",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_julmox/rm_julmox": {
+   "attempts": 0,
+   "def": "RM_Julmox",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "37365033758c74463c6de71e3203d3bad42e1fde265794d88b67733ac96a4c63"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Julmox/RM_Julmox",
+   "why": ""
+  },
+  "things/pawn/animal/rm_karrek/rm_karrek": {
+   "attempts": 0,
+   "def": "RM_Karrek",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "2b4391b83bfb581398605288110da26a7dd584cecb6ad0f4015d1ded01b5984c"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Karrek/RM_Karrek",
+   "why": ""
+  },
+  "things/pawn/animal/rm_karrobel/rm_karrobel": {
+   "attempts": 0,
+   "def": "RM_Karrobel",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "523b78bdf1901365fc84039eddba1844ff0b6d3e8ef327f0fb07ef2900af2462",
+    "south": "d8ac28adfe3210d6b4d66435ef60f467dd6a25abcfaef1036fd477f556d2c441"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel",
+   "why": ""
+  },
+  "things/pawn/animal/rm_karrud/rm_karrud": {
+   "attempts": 0,
+   "def": "RM_Karrud",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "0f5c28efbebd08da9b68815c5cd942b8986528e47e359dc031b4d2b689fdbf76"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
+   "why": ""
+  },
+  "things/pawn/animal/rm_kellu/rm_kellu": {
+   "attempts": 0,
+   "def": "RM_Kellu",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "962ea7c5c82d2508a1424d36dee1da41726ed2a84f0ecef3edd6787bb1823145",
+    "south": "a197a455b534a5915c77b3be58db1905a321bdfa59d66c55662b68b38f2a3a7a"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Kellu/RM_Kellu",
+   "why": ""
+  },
+  "things/pawn/animal/rm_krissek/rm_krissek": {
+   "attempts": 0,
+   "def": "RM_Krissek",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/rm_kroffa/rm_kroffa": {
+   "attempts": 0,
+   "def": "RM_Kroffa",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Kroffa/RM_Kroffa",
+   "why": ""
+  },
+  "things/pawn/animal/rm_kroffa/rm_kroffafemale": {
+   "attempts": 0,
+   "def": "RM_Kroffa",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale",
+   "why": ""
+  },
+  "things/pawn/animal/rm_loohn/rm_loohn": {
+   "attempts": 0,
+   "def": "RM_Loohn",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "accbfbb57682832c9c4d6d34e6725ba1b2d08f9ab6b6e7c174d0ae7db0c094c6",
+    "south": "cb0947a8902dd4e3a9dc3292e458f1694bfd5cc0c9a21a9eab53e0abded24585"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Loohn/RM_Loohn",
+   "why": ""
+  },
+  "things/pawn/animal/rm_meltgut/rm_meltgut": {
+   "attempts": 0,
+   "def": "RM_Meltgut",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9",
+    "south": "22832bea0e572c9b779d8c5f0a8e086c5491acf1493714660f442f13c84b4cff"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+   "why": ""
+  },
+  "things/pawn/animal/rm_muddal/rm_muddal": {
+   "attempts": 0,
+   "def": "RM_Muddal",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e",
+    "south": "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Muddal/RM_Muddal",
+   "why": ""
+  },
+  "things/pawn/animal/rm_mullgoth/rm_mullgoth": {
+   "attempts": 0,
+   "def": "RM_Mullgoth",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_muurrok/rm_muurrok": {
+   "attempts": 0,
+   "def": "RM_Muurrok",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "d4cf3879121361428442c4d42a3b9d378402230de58ed2185283eaf763cc6333",
+    "south": "6b7dd2f57b5e3d92b3d6b6cb467a5a7552b6b9c8ce67c5bf181f9f9e8a66b16b"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Muurrok/RM_Muurrok",
+   "why": ""
+  },
+  "things/pawn/animal/rm_niim/rm_niim": {
+   "attempts": 0,
+   "def": "RM_Niim",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "8ead22f316cffa370211f66d06f55d97abd7ae2dd026ef0b39863c2b8cdb4ea2",
+    "south": "b29a3677231477a92b87f83a464269c57d586b6664ff98dc3325d630afe84604"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+   "why": ""
+  },
+  "things/pawn/animal/rm_nissik/rm_nissik": {
+   "attempts": 0,
+   "def": "RM_Nissik",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d1d56083af101c8467ebd98629c6af27ea2a2fd7b177aa95689c254fa3151d18"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
+   "why": ""
+  },
+  "things/pawn/animal/rm_nuudal/rm_nuudal": {
+   "attempts": 0,
+   "def": "RM_Nuudal",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "91a4434b80c62f465492d560c8a0305ec5824a4ecae33dac64dde403465806a5"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Nuudal/RM_Nuudal",
+   "why": ""
+  },
+  "things/pawn/animal/rm_nuudal/rm_nuudalc": {
+   "attempts": 0,
+   "def": "RM_Nuudal",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "0bb78436b4b283317bf07fe3b6401795ec6a797e78971c151cf0a8b3ac33c27b",
+    "south": "292ac98987cf4cbec53b6a1f37a4e293d7c7faa24e5c7bf4e8922c8366122e83"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Nuudal/RM_NuudalC",
+   "why": ""
+  },
+  "things/pawn/animal/rm_ollareth/rm_ollareth": {
+   "attempts": 0,
+   "def": "RM_Ollareth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "f351c737b9c5c856477ddbd3aae81f0c8889939b38417cd715fce6b18efbb01c",
+    "south": "4ef01bf7998db113f517b377d3646f1a328e9e6539986c48908626c5a2a8dd09"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_oomal/rm_oomal": {
+   "attempts": 0,
+   "def": "RM_Oomal",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "4615f73c05c4656960010b12c7b1bba9aa49dd7c64b8daa0c7a6569784db7da1",
+    "south": "099cf473717e76689988b1769da45e6ffe087812d7139dd68f4ae15b7cb215a8"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
+   "why": ""
+  },
+  "things/pawn/animal/rm_oomb/rm_oomb": {
+   "attempts": 0,
+   "def": "RM_Oomb",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "8da0d2040801e3545d02269798df4dcc29d25223ea77e6ce14ba3d9d3c18d90f"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Oomb/RM_Oomb",
+   "why": ""
+  },
+  "things/pawn/animal/rm_otheska/rm_otheska": {
+   "attempts": 0,
+   "def": "RM_Otheska",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "49b173dbd18e897214bf832583c741c4f68f2e0f84a79ee16e885caa73d59014",
+    "south": "3f0474f07453ffb6d1c084f5879ea826032920c308c6cfb539c7c632ec362da5"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Otheska/RM_Otheska",
+   "why": ""
+  },
+  "things/pawn/animal/rm_pallbearer/rm_pallbearer": {
+   "attempts": 0,
+   "def": "RM_Pallbearer",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_pallu/rm_pallu": {
+   "attempts": 0,
+   "def": "RM_Pallu",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "78580c4b1ab26e89e87142e4093f6513923c0f989c2d3d974167c95bc8d436f9"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Pallu/RM_Pallu",
+   "why": ""
+  },
+  "things/pawn/animal/rm_qorrax/rm_qorrax": {
+   "attempts": 0,
+   "def": "RM_Qorrax",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/rm_qorrax/rm_qorrax_dessicated": {
+   "attempts": 0,
+   "def": "RM_Qorrax",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "798687f5229bfcbe27531e1219d9604c5eea7e010c99fdff6590fb286d6424af"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated",
+   "why": ""
+  },
+  "things/pawn/animal/rm_quarrok/rm_quarrok": {
+   "attempts": 0,
+   "def": "RM_Quarrok",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ac6247a251cd132a1aebb9624aad35a3cf0bffc77d703372ff97b2dc0af75a76",
+    "south": "f34a8c0fb3d9139e9ed38ce179c05f1d2f3a685d06e87a4631c830f029fc1a30"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Quarrok/RM_Quarrok",
+   "why": ""
+  },
+  "things/pawn/animal/rm_rimclaw/rm_rimclaw": {
+   "attempts": 0,
+   "def": "RM_Rimclaw",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "things/pawn/animal/rm_ruukka/rm_ruukka": {
+   "attempts": 0,
+   "def": "RM_Ruukka",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "0fd7d86507c46a43086fd5dd762d8d901351a2b74adf12632d0b895c920d979c"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Ruukka/RM_Ruukka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_scaldhide/rm_scaldhide": {
+   "attempts": 0,
+   "def": "RM_Scaldhide",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+   "why": ""
+  },
+  "things/pawn/animal/rm_scaldwalker/rm_scaldwalker": {
+   "attempts": 0,
+   "def": "RM_ScaldWalker",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ee95242bd69cf8bb7fcd10ed5d028634d16c584523d394acace23db80a934b71",
+    "south": "0f9db331d61fd64ef857f498427ca3892793bbeffe0d2cdcdc2dc6b9de548cb6"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker",
+   "why": ""
+  },
+  "things/pawn/animal/rm_scumslider/rm_scumslider": {
+   "attempts": 0,
+   "def": "RM_Scumslider",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "017a385dd8178129baecc97985c3cc5e767fd58d64d96adb606e92807f4b3bf3"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Scumslider/RM_Scumslider",
+   "why": ""
+  },
+  "things/pawn/animal/rm_shirrel/rm_shirrel": {
+   "attempts": 0,
+   "def": "RM_Shirrel",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "52aca85288361f8d7f06d11268c1b81290fa9c8a8be369cdf1661eb3c9d8755b"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+   "why": ""
+  },
+  "things/pawn/animal/rm_shokka/rm_shokka": {
+   "attempts": 0,
+   "def": "RM_Shokka",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "7df7fa435774f2a8aa05f893db898d3ad74a25a6e6b72ba95a535e8a1c47f52b"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Shokka/RM_Shokka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_siidda/rm_siidda": {
+   "attempts": 0,
+   "def": "RM_Siidda",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/rm_silloch/rm_silloch": {
+   "attempts": 0,
+   "def": "RM_Silloch",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "9f417599d82357341748da5d6b2ec0c9d017f8e9ee4f3706e9639020b3fbf1d7",
+    "south": "3ca85afd688ec6d1b358874f33ac7034f23a355b35ceec87d3ef51de7c7bc193"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Silloch/RM_Silloch",
+   "why": ""
+  },
+  "things/pawn/animal/rm_skarrid/rm_skarrid": {
+   "attempts": 0,
+   "def": "RM_Skarrid",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "a361baa2e721e2dca7c84166bb9b2ad879b3d41d9533d32f5aa712e118651f7a",
+    "south": "c7c6444f44c85673966b66ade33a40fb7feab858035fc604e274b3e63cd8a395"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
+   "why": ""
+  },
+  "things/pawn/animal/rm_skreth/rm_skreth": {
+   "attempts": 0,
+   "def": "RM_Skreth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "90ff55ae48d899c9858d8a5aea81030e69bab1e68ed1de3e9278473b455dd46f",
+    "south": "1ea07fb14ee80c9c1e7e4237be9517f0285fd9166298ff0734b5a21f775488be"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Skreth/RM_Skreth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_sloghog/rm_sloghog": {
+   "attempts": 0,
+   "def": "RM_Sloghog",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6264db9e62adb0f50fb49855b16937a7cbbf92da1a6f2547de671e1f7e5ce6cf"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Sloghog/RM_Sloghog",
+   "why": ""
+  },
+  "things/pawn/animal/rm_sparkleechgrub/rm_sparkleechgrub": {
+   "attempts": 0,
+   "def": "RM_SparkleechGrub",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "d09f63f36c4c346a687429a723400a01c434026691cf50cd7eb4d40e7c44f6e3",
+    "south": "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+   "why": ""
+  },
+  "things/pawn/animal/rm_sulleth/rm_sulleth": {
+   "attempts": 0,
+   "def": "RM_Sulleth",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "fd48b53723abec87c0c6febbc296061bf9798810746d29861a82a88a980e97b1",
+    "south": "7635e8afb4d732a3ddf30d32d8e1d9ea77809e1770c2c57cf7b633d67d7fc5e0"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Sulleth/RM_Sulleth",
+   "why": ""
+  },
+  "things/pawn/animal/rm_suulk/rm_suulk": {
+   "attempts": 0,
+   "def": "RM_Suulk",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "ae5cfe51fabee3da85ad77b23d812d00a7e7c67a986dae2ab934ac7ae8a180dd",
+    "south": "4c7eac4380a3e75e23d64ee9509fc26f9a0f5650079988be145ee0e0a7109c1c"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Suulk/RM_Suulk",
+   "why": ""
+  },
+  "things/pawn/animal/rm_thornbug/rm_thornbug": {
+   "attempts": 0,
+   "def": "RM_Thornbug",
+   "facings": [
+    "south"
+   ],
+   "live_sha": {
+    "south": "54847e7e734444bf6cbd2e905bce313d5af6af84e07816fe5d2b69fc83abfc22"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug",
+   "why": ""
+  },
+  "things/pawn/animal/rm_thrummelbroodmother/rm_thrummelbroodmother": {
+   "attempts": 0,
+   "def": "RM_ThrummelBroodmother",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
+    "south": "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+   "why": ""
+  },
+  "things/pawn/animal/rm_thrummelwarden/rm_thrummelwarden": {
+   "attempts": 0,
+   "def": "RM_ThrummelWarden",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+   "why": ""
+  },
+  "things/pawn/animal/rm_thurrock/rm_thurrock": {
+   "attempts": 0,
+   "def": "RM_Thurrock",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "a85d83c331626a88d1eba4918160f742820138536ba166185dc66fe69755817e"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Thurrock/RM_Thurrock",
+   "why": ""
+  },
+  "things/pawn/animal/rm_thuum/rm_thuum": {
+   "attempts": 0,
+   "def": "RM_Thuum",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "1ca1f36e13f2a29c2c8a4333eb69cd5c0aa1e997cc03ed245de2564bfc77aaf7",
+    "south": "0804febcebf0cd1036b5294038c5993932d0f426598af4ea9e9fc7b9bca1ae09"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
+   "why": ""
+  },
+  "things/pawn/animal/rm_tunnelsnake/rm_tunnelsnake": {
+   "attempts": 0,
+   "def": "RM_TunnelSnake",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake",
+   "why": ""
+  },
+  "things/pawn/animal/rm_utikka/rm_utikka": {
+   "attempts": 0,
+   "def": "RM_Utikka",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "0e1a90004719690365e475afc579bd444c13562074643519cb14d24d1fa4c9d7"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vaulisk/rm_vaulisk": {
+   "attempts": 0,
+   "def": "RM_Vaulisk",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "6df5fa85d2cd31c63e1c47a7dc85084b4cf38118903c727d69cf6ad4055acf9d"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk",
+   "why": ""
+  },
+  "things/pawn/animal/rm_veessa/rm_veessa": {
+   "attempts": 0,
+   "def": "RM_Veessa",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "1d87a14284f93df40868768269f0e4b1ff84c47c185ba604d76ecce7c809e452",
+    "south": "a7ab80f53b3f9a77d31f96f11b948d36c4d23d8831ecde40065d0a9e6ce9ba68"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vekka/rm_vekka": {
+   "attempts": 0,
+   "def": "RM_Vekka",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "3a8187936aea4ce3e939d182cd8fd8bee0228ad6e7110d3c1d42f558581ed0e1"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vennick/rm_vennick": {
+   "attempts": 0,
+   "def": "RM_Vennick",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "0f074616c763fe742d2c56406eb87903e4129ce18b5fc2c13dacf65c261b49be"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vexxiss/rm_vexxiss": {
+   "attempts": 0,
+   "def": "RM_Vexxiss",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "d67349764a8a49aaebb9baae1fa3679406f3a93c1641de18f9d4a4b070bdfe07"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vosska/rm_vosska": {
+   "attempts": 0,
+   "def": "RM_Vosska",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+    "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vozzik/rm_vozzik": {
+   "attempts": 0,
+   "def": "RM_Vozzik",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vrekka/rm_vrekka": {
+   "attempts": 0,
+   "def": "RM_Vrekka",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "06ffd88629cd92c50165421fb5b515c558009b2c0a77a57fd3c4759bc2a78f7f",
+    "south": "11ff60d86cceff0c7a49ebe967b03ef3095c21e6dae0f778f3d30100e3be8a00"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka",
+   "why": ""
+  },
+  "things/pawn/animal/rm_vurra/rm_vurra": {
+   "attempts": 0,
+   "def": "RM_Vurra",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "60dcb8daee30a33b1621618a9269f9cf167d4bf282bffb444671fe3b203daa7c",
+    "south": "e95dc4defd553f749b8532d7bbb6ff31ca5c30d8328316ab8dbda1ca539b22bf"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/RM_Vurra/RM_Vurra",
+   "why": ""
+  },
+  "things/pawn/animal/rm_wuum/rm_wuum": {
+   "attempts": 0,
+   "def": "RM_Wuum",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "593f1b34d58c66c223a7820d909c8796398b99e555a7790b4ce78c6a5899c2e3"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Wuum/RM_Wuum",
+   "why": ""
+  },
+  "things/pawn/animal/rm_zrrik/rm_zrrik": {
+   "attempts": 0,
+   "def": "RM_Zrrik",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/rsw_tunnelsnake/rsw_tunnelsnake": {
+   "attempts": 0,
+   "def": "RSW_TunnelSnake",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake",
+   "why": ""
+  },
+  "things/pawn/animal/rsw_vozzik/rsw_vozzik": {
+   "attempts": 0,
+   "def": "RSW_Vozzik",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+    "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "why": ""
+  },
+  "things/pawn/animal/rut_fleetflier/rut_fleetflier": {
+   "attempts": 0,
+   "def": "RUT_FleetFlier",
+   "facings": [
+    "north"
+   ],
+   "live_sha": {
+    "north": "45f264f99ec62ba4d6f720bedadef69b4e7a2aeee5dbf1f715a5b6d1ac5a7304"
+   },
+   "mod": "RimUtinni Patches (Jawa campaign)",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier",
+   "why": ""
+  },
+  "things/pawn/animal/rut_greentideant/dessicated_rut_greentideant": {
+   "attempts": 0,
+   "def": "RUT_GreentideAnt",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "0dc8cfb18821de58a81e3704eff0ef87814e40f53ba2c1df1a83c04ac009685a",
+    "south": "1b2acd7f42152c4131ffbf0ef12318d5948aa45319db5fdd1bbf7a197eb1506f"
+   },
+   "mod": "RimUtinni: Greentide Raid Ant",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RUT_GreentideAnt/dessicated_RUT_GreentideAnt",
+   "why": ""
+  },
+  "things/pawn/animal/rut_vwake/rut_vwake": {
+   "attempts": 0,
+   "def": "RUT_VWake",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "61c816fccb1cc04d36babc554bfafc58a0c7d6b62aa2b9f41002b8746873b854",
+    "south": "c5156278cbeb2d15f42c326325c1a6fd44936344ef9896a4e2450db5af086a59"
+   },
+   "mod": "RimUtinni Patches (Jawa campaign)",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/RUT_VWake/RUT_VWake",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/abyssalcolo/abyssalcolo": {
+   "attempts": 0,
+   "def": "RM_AbyssalColo",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "0621cd5e33359faa9b20687582872707a86eb95bb626877d59f0a825468e0b49",
+    "south": "a2a96c2dbeafa8e1b65dc56455bbfc5ac98516747ccc36b34d44db6d91be7ba8"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/coloclawfish/coloclawfish": {
+   "attempts": 0,
+   "def": "RSW_ColoClawFish",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "54aa5f970955fc886254f4edf5167b8da116ec34451e391baddc85e6d9d03cf5",
+    "south": "4ee05f946cdaa661da7f0ad777fb1cef03db279527bf020cd014a50ad98ca25f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFish",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/eldersando/eldersando": {
+   "attempts": 0,
+   "def": "RSW_ElderSando",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
+    "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/faa/faa": {
+   "attempts": 0,
+   "def": "RSW_Faa",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "16bf54ac8baa12239db06f4d50d1df80c471a8e8cd8d4771dc0473ea399bb7f5",
+    "south": "f4d721d5a0ab356c6eba8cd8c85d6cf8ad8a2c11107ade307aa371caae791beb"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/grippingterror/grippingterror": {
+   "attempts": 0,
+   "def": "RM_GrippingTerror",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
+    "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/lanternwhale/lanternwhale": {
+   "attempts": 0,
+   "def": "RM_Lanternwhale",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "716edd7d0942e4415ad8dceb2bb662cef248bdbcd65f0ce2195ac750b6ef1496",
+    "south": "3a09151bee3a60501c11c0bc34c16056e14949c16e92c76ca3b3ec2579ac34b9"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/opeeseakiller/opeeseakiller": {
+   "attempts": 0,
+   "def": "RSW_OpeeSeaKiller",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "8dce0c0b15708be5424b76377e490fde8deca3b17ad5cb4bcf3f2e67ede196c8",
+    "south": "c5cca4d71538c005cc70304f06f392657ff90f132b60384bab0c7a57a094a75f"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/reefback/reefback": {
+   "attempts": 0,
+   "def": "RM_Reefback",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
+    "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/siltlamprey/siltlamprey": {
+   "attempts": 0,
+   "def": "RM_SiltLamprey",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
+    "south": "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/stormsando/stormsando": {
+   "attempts": 0,
+   "def": "RM_StormSando",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "skipped",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
+   "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
+  },
+  "things/pawn/animal/seabeasts/thornbackcolo/thornbackcolo": {
+   "attempts": 0,
+   "def": "RM_ThornbackColo",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "8884c74be0073453f2a39214c3e9608517f1eec1ad455276714a125ae4bdefcc",
+    "south": "16f1d74486bd94b5794e3230b075a24c24c96a318646ebaa022f371b3e294b87"
+   },
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "pending",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
+   "why": ""
+  },
+  "things/pawn/animal/seabeasts/yobshrimp/yobshrimp": {
+   "attempts": 0,
+   "def": "RSW_Yobshrimp",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "bbb416bfa70b9cc06aec2dda3c42b50bea040c00c56939ad575dcb31f84f7820",
+    "south": "7f02236c0f4a73884d72354cf513f638086b20e1de4efeb47b9478e75ca402bf"
+   },
+   "mod": "RimMandrake: SW \u2014 Bestiary",
+   "status": "pending",
+   "sw": true,
+   "texPath": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+   "why": ""
+  },
+  "things/pawn/animal/squirrel/dessicated_squirrel": {
+   "attempts": 0,
+   "def": "RM_ContagionIkee",
+   "facings": [
+    "north"
+   ],
+   "mod": "RimMandrake: Baroque Biomes",
+   "status": "needs_eyes",
+   "sw": false,
+   "texPath": "Things/Pawn/Animal/Squirrel/Dessicated_Squirrel",
+   "why": "live picture is not in this repo (vanilla/donor/workshop path)"
+  },
+  "ysalamiri/ysalamiri": {
+   "attempts": 0,
+   "def": "SWPotF_ysalamir",
+   "facings": [
+    "south",
+    "north"
+   ],
+   "live_sha": {
+    "north": "e8fc5dde10d2cadf95454404b93e6bb8e5f93373ab4a2a7c58e88da0393b0af1",
+    "south": "796d22f56e0f56747d58be28c1e32f6f5c6f3f3da4010594075f12612f13ed69"
+   },
+   "mod": "Jawa Armoury Rebalance",
+   "status": "pending",
+   "sw": false,
+   "texPath": "ysalamiri/ysalamiri",
+   "why": ""
+  }
+ },
+ "rows": "Transient/facing_rescale_2026-10-16/lint_after_reseat.json",
+ "schema": 1,
+ "tag": "standtall_b1"
+}
