@@ -5,7 +5,7 @@ The east (side) view is the anchor and is never touched. A regenerate-class faci
 fix it by rescaling, because the picture is a top-down view or the wrong surface) is redrawn by Codex from
 [east, south] as a ground-camera rear (north) or front (south) view, then CONFORMED: cropped to its visible
 silhouette (alpha >= 16), scaled so its height is the lint's target x east height, and placed on the old facing's
-canvas with the south's feet line and centre. Nothing is installed: candidates land in --out and are judged by
+canvas with the EAST view's feet row and the canvas centre (a deliberate >5% offset is kept). Nothing is installed: candidates land in --out and are judged by
 facing_scale_lint.judge() exactly as `lint` would judge them in place.
 
     facing_regen.py gen     --row <texPath suffix> --facing north --out DIR [--rows after2.json]
@@ -123,8 +123,9 @@ def conform(row, facing, out: Path, raw: Path | None = None) -> Path:
     if tw > W - 2:                                  # never wider than the canvas
         tw, th = W - 2, max(1, round(src.height * (W - 2) / src.width))
     small = src.convert("RGBa").resize((tw, th), Image.LANCZOS).convert("RGBA")
-    bottom = min(H - 1, round(anchor["bottom"] * H))
-    x = round(anchor["cx"] * W - tw / 2)
+    bottom = min(H - 1, round(e["bottom"] * H))      # feet row = the EAST view's (the creature must not drop when it turns)
+    cx = anchor["cx"] if abs(anchor["cx"] - 0.5) > L.CENTRE_KEEP else 0.5      # centred, unless deliberately offset
+    x = round(cx * W - tw / 2)
     x = max(1, min(W - tw - 1, x))
     y = max(1, bottom - th)
     canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
