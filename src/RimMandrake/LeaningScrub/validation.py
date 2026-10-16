@@ -272,8 +272,28 @@ def _prep(t, name, size=PAD_SIZE):
             print("[lscrub] neutral weather not set: %s" % ex, file=sys.stderr, flush=True)
     t.clear_area(size=size + 8)
     r = _rect(t, size + 8)
+    _open_sky(t, r)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(r)), layer="top")
     _settle_bystanders(t)
+
+
+def _open_sky(t, rect, raw=False):
+    """Remove every roof over `rect`, right after it was cleared. LIVE modcheck4 2026-10-16 (Autosave-9/10 letters): on
+    a mountainous site clear_area takes the natural rock out from under the mountain roof, which is then 'too far from
+    any support' and collapses on the first tick after setup: lash colonist Koyo, spawned at (171,80), was 'crushed to
+    death' (tick 25916), and at 43626/44106 two collapses near (112,167) crushed the bloom chain's dustflutters and
+    crustweevils (bloom_answers_a_walker 'no Flee job seen': the cohort was dead, not deaf). A collapse skips unroofed
+    cells (RoofCollapserImmediate.DropRoofInCells checks Roofed), so stripping the roof before any tick defuses it. A
+    chain that needs a roof (the gale room) builds its own after this. `raw` calls the session directly (teardown)."""
+    if t.session is None:
+        return
+    try:
+        if raw:
+            t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+        else:
+            t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+    except Exception as ex:    # upkeep, never a verdict: a missed strip shows up as the collapse it was meant to stop
+        print("[lscrub] roof strip failed over %s: %s" % (_rs(rect), ex), file=sys.stderr, flush=True)
 
 
 def _settle_bystanders(t):
@@ -539,6 +559,7 @@ def _stable(t, fn):
             try:
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)),
                                categories="All")
+                _open_sky(t, _rect(t, PAD_SIZE + 8), raw=True)   # the gale room's walls go here: its roof must not fall
             except Exception as ex:
                 print("[lscrub] pad cleanup failed: %s" % ex, file=sys.stderr, flush=True)
 
@@ -1329,23 +1350,33 @@ def bloom_chain(t):
         # order, before any bloom tick could run.
         t.bridge_call("jawa/order_pawn", pawnId=walker, x=x + 14, z=z, waitTicks=0, unpause=False)
         saw = dict((k, False) for k in cohort)
+        # LIVE 2026-10-16 modcheck4: both staged crustweevils and dustflutters (the z-3 row) were absent from EVERY
+        # site_state poll in both arms, from the first poll 30 ticks after spawn, while the z+3 row (fuzzrunners,
+        # visslers) fled; the same coordinates passed at 08:17 on another map. A species with no living staged animal
+        # cannot answer a bloom, so presence is tracked per species and an absent cohort is a SITE result, not a FAIL.
+        present = dict((k, False) for k in cohort)
         for _ in range(16):
             t.wait_ticks(30)
             jobs = _jobs(t)
             for k, pids in cohort.items():
+                if any(p in jobs for p in pids):
+                    present[k] = True
                 if any(jobs.get(p) == "Flee" for p in pids):
                     saw[k] = True
         arms = _stack_total(t, "RM_VisslerArm", _rs(_rect(t, PAD_SIZE + 8))) - arms0
         t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
+        # destroy_batch never removes pawns: without this the OFF arm's cohort is still wandering the pad in the ON arm.
+        _remove_pawns_in(t.bridge_call, _rs(_rect(t, PAD_SIZE + 8)))
         t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(_rect(t))), layer="top")
-        _note(t, "bloom trial %s: Flee seen per species / vissler arms shed" % tag, [saw, arms])
-        return saw, arms
+        _note(t, "bloom trial %s: Flee seen per species / vissler arms shed / cohort present" % tag, [saw, arms, present])
+        gone = sorted(k for k, v in present.items() if not v)
+        return saw, arms, gone
 
     def body():
         with _comp(t, "bloom_toggle_off_quiet", toggle="runwayBloomEnabled"):
             if _live(t):
                 with _setting(t, "runwayBloomEnabled", False):
-                    saw, arms = trial("OFF")
+                    saw, arms, _gone = trial("OFF")
                 # Flee alone is NOT bloom-specific: vanilla wild animals flee an approaching colonist with no
                 # bloom at all (LIVE 2026-10-08 acc_biomes: all four species fled with the toggle OFF while
                 # RM_MapComponent_RunwayBloom.MapComponentTick returns at its first line). The bloom's own
@@ -1355,7 +1386,10 @@ def bloom_chain(t):
                           % (arms, saw))
         with _comp(t, "bloom_answers_a_walker", toggle="runwayBloomEnabled"):
             if _live(t):
-                saw, arms = trial("ON")
+                saw, arms, gone = trial("ON")
+                if gone:
+                    _unmeasured(t, "staged %s never appeared in any job poll (dead or despawned within 30 ticks of "
+                                   "spawn): this site cannot show whether they answer a bloom" % gone)
                 silent = sorted(k for k, v in saw.items() if not v)
                 if silent:
                     _fail("no Flee job seen for %s after a colonist walked through the canopy "
@@ -1379,14 +1413,22 @@ def bloom_chain(t):
 
 # --------------------------------------------------------------------------- chain: stamp
 
+STAMP_DISC = 22     # RM_FireStampProof.DiscClear: radius the proof needs standable, unroofed, pawn- and fire-free
+PADS["stamp"] = (0, 0)    # the map centre: the 46-cell square sits between the +-45 pads
+
+
 @suite.chain("stamp")
 def stamp_chain(t):
-    """Part 5 fire-stamping (RM_FireStamp.cs). The C# proof hook builds the fixture on the current map (two
-    fires, then six; a far stamper, then a near one), drives the SHIPPED ConvergePass/StampPass and cleans up."""
+    """Part 5 fire-stamping (RM_FireStamp.cs). The C# proof hook builds the fixture on the pad this chain clears (two
+    fires, then six; a far stamper, then a near one), drives the SHIPPED ConvergePass/StampPass and cleans up.
+    LIVE 2026-10-16 the hook scanned the map for an ambient clear 22-cell disc and found none on the wooded run map,
+    so both rows were UNMEASURED whatever the mod did: the chain now clears a disc-sized pad and names its centre."""
+    _prep(t, "stamp", size=2 * STAMP_DISC - 6)      # _prep clears size + 8 = a 46-cell square, the disc's diameter
     for mode, name in (("on", "stamp_answers_a_blaze"), ("off", "stamp_toggle_off_ignores_fire")):
         with _comp(t, name, toggle="fireStampEnabled"):
+            x, z = t.anchor
             r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FireStampProof",
-                              method="ProofStamp", args=mode)
+                              method="ProofStamp", args="%s@%d,%d" % (mode, x, z))
             if _live(t):
                 txt = str((r or {}).get("result") or (r or {}).get("value") or r)
                 _note(t, "fire stamp proof (%s)" % mode, txt[:300])
@@ -1458,14 +1500,37 @@ def stallhunt_chain(t):
 
 # --------------------------------------------------------------------------- chain: pyre
 
+PYRE_CROP = "Plant_Potato"     # vanilla crop, Flammability 1: the "fields" the rite torches
+
+
+def _crop_patch(t):
+    """Lay a mature crop patch on the bloom pad for the pyre. NOT the fuzz: the scrub's living flora is fireproof by
+    design (arid_shrubland.md ban 9, RM_Fuzz Flammability 0) and LIVE 2026-10-16 the pyre lit 0 fires on a 225-cell
+    fuzz patch -- FireUtility.TryStartFireIn refuses a cell with nothing flammable. The rite torches the colony's
+    FIELDS, so the fixture is a field."""
+    _prep(t, "bloom")
+    if _live(t):
+        x, z = t.anchor
+        h = FUZZ_PATCH // 2
+        t.bridge_call("jawa/set_plants", ops="%s:%d,%d,%d,%d" % (PYRE_CROP, x - h, z - h, FUZZ_PATCH, FUZZ_PATCH),
+                      growth=1.0)
+        try:    # evidence only: a patch that did not take shows up as the hook's own FAIL/UNMEASURED, never a PASS
+            _note(t, "crop patch laid (cells)", _count(t, PYRE_CROP, _rs((x - h, z - h, FUZZ_PATCH, FUZZ_PATCH))))
+        except ExpectationFailed as ex:
+            _note(t, "crop patch count unreadable", str(ex)[:200])
+
+
 @suite.chain("pyre")
 def pyre_chain(t):
     """Part 5b the calling-pyre (RM_CallingPyre.cs; Q7 three beliefs, N3 fire/ritual memes only). Defs gated on the
-    memes; the SHIPPED Ignite/CallHerd on a fuzz patch; the gate refuses with the toggle off."""
+    memes; the SHIPPED Ignite/CallHerd on a crop patch; the gate refuses with the toggle off."""
     _proof(t, "pyre_beliefs_gated_on_memes", "RM_CallingPyreProof", "ProofPyre", "defs", "pyre defs")
-    _fuzz_patch(t)
-    _proof(t, "pyre_lights_fields_and_calls_herd", "RM_CallingPyreProof", "ProofPyre", "fire", "pyre fire", "callingPyreEnabled")
+    _crop_patch(t)
+    x, z = t.anchor
+    _proof(t, "pyre_lights_fields_and_calls_herd", "RM_CallingPyreProof", "ProofPyre", "fire@%d,%d" % (x, z), "pyre fire",
+           "callingPyreEnabled")
     _clear_fuzz_patch(t)
+    _unlock_weather(t)
     _proof(t, "pyre_toggle_off_refuses", "RM_CallingPyreProof", "ProofPyre", "off", "pyre off", "callingPyreEnabled")
 
 

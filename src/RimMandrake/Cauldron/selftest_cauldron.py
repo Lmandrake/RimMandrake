@@ -62,6 +62,7 @@ class Fake(object):
         self.rooms, self.letters, self.fires, self.jobs = [], [], [], {}
         self.last_letter = {}
         self.burned = 0                                   # vent-gas cells burned, map-wide (CAULDRON_MECHANICS_BUILD_1)
+        self.roof_stripped = []                           # rects the suite opened to the sky (jawa/set_roof_batch None)
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -165,12 +166,24 @@ class Fake(object):
                 return t
         return None
 
+    def roofed_site_collapse(self, v):
+        """SITE model (modcheck4 2026-10-16): on a mountain site the cleared pad keeps an unsupported thick roof unless
+        the suite strips it; the first tick drops it, leaving CollapsedRocks (gas-tight) on the vent."""
+        if "mountain_site" not in self.broken:
+            return False
+        stripped = any(inrect(v["x"], v["z"], r) for r in self.roof_stripped)
+        rocks = [t for t in self.of("CollapsedRocks") if t["x"] == v["x"] and t["z"] == v["z"]]
+        if not stripped and not rocks:
+            self.new("CollapsedRocks", v["x"], v["z"])
+            rocks = True
+        return bool(rocks)
+
     def gas_tick(self, d):
         b = self.broken
         for v in self.of(V.VENT):
             out = self.vent_output(v)
             tap = self.tap_on(v)
-            emitting = tap is None and out > 0.05 and self.vent_mult() != self.FALTER and "no_gas" not in b and self.on("ventGasEnabled", "gas_ignores_toggle")
+            emitting = not self.roofed_site_collapse(v) and tap is None and out > 0.05 and self.vent_mult() != self.FALTER and "no_gas" not in b and self.on("ventGasEnabled", "gas_ignores_toggle")
             if emitting:
                 v["gas"] = min(255.0, v["gas"] + d / 60.0 * 12 * out)
                 if "gas_is_tox" in b:
@@ -560,6 +573,13 @@ class Fake(object):
             return {"success": True}
         return {"success": True, "doorAt": {"x": door[0], "z": door[1]}}
 
+    def t_set_roof_batch(self, ops="", **k):
+        for op in ops.split(";"):
+            d, nums = op.split(":")
+            if d in ("None", "Clear") and "no_roof_strip" not in self.broken:
+                self.roof_stripped.append(tuple(int(v) for v in nums.split(",")))
+        return {"success": True}
+
     def t_get_roof_batch(self, rects=None, **k):
         return {"success": True, "roofedCells": 49}
 
@@ -822,6 +842,18 @@ def main():
         got = res.get("bloom.bloom_spares_roofed", ("?",))[0]
         if reds or got != "UNMEASURED":
             bad.append("site break %s: expected bloom_spares_roofed UNMEASURED and no red, got %s / %s" % (brk, got, reds))
+    # SITE: a mountain site. With the pad's roof stripped (_open_sky) nothing collapses and the whole run stays green;
+    # if the strip is lost the collapse buries the vent and vent_gas_emits must say UNMEASURED, never FAIL.
+    res = run(["mountain_site"])
+    notpass = sorted(k for k, v in res.items() if v[0] != "PASS" and k in healthy and healthy[k][0] == "PASS")
+    if notpass:
+        bad.append("site break mountain_site (roof stripped): expected the healthy verdicts, got non-PASS %s" % notpass)
+    res = run(["mountain_site", "no_roof_strip"])
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
+    got = res.get("gas.vent_gas_emits", ("?",))[0]
+    if reds or got != "UNMEASURED":
+        bad.append("site break mountain_site+no_roof_strip: expected vent_gas_emits UNMEASURED and no red, got %s / %s"
+                   % (got, reds))
     print("selftest Cauldron: %d components, healthy-PASS %d/%d; %d breaks, each turning exactly its own "
           "component red" % (n_comp, n_comp - len(notpass), n_comp,
                              len(BREAKS) - len([1 for b in bad if b.startswith("break ")])))

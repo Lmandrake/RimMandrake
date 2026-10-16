@@ -244,21 +244,42 @@ namespace RimMandrake.LeaningScrub
     // fixture on the current map, drives the SHIPPED passes directly, cleans up.
     public static class RM_FireStampProof
     {
-        private static IntVec3 FindSpot(Map map)
+        private static bool DiscClear(Map map, IntVec3 c)
         {
+            foreach (IntVec3 o in GenRadial.RadialCellsAround(c, 22f, true))
+            {
+                if (!o.InBounds(map) || !o.Standable(map) || o.Roofed(map) || o.GetFirstPawn(map) != null
+                    || map.thingGrid.ThingAt(o, ThingDefOf.Fire) != null) return false;
+            }
+            return true;
+        }
+
+        // `hint` is the pad validation.py cleared for this proof (LIVE 2026-10-16: on the run map, wooded and walled,
+        // no ambient 22-cell disc was standable, so both rows were UNMEASURED whatever the mod did). Without a hint the
+        // map is scanned as before.
+        private static IntVec3 FindSpot(Map map, IntVec3 hint)
+        {
+            if (hint.IsValid) return hint.InBounds(map) && DiscClear(map, hint) ? hint : IntVec3.Invalid;
             foreach (IntVec3 c in map.AllCells)
             {
                 if (c.x < 40 || c.z < 40 || c.x > map.Size.x - 40 || c.z > map.Size.z - 40) continue;
                 if (c.x % 9 != 0 || c.z % 9 != 0) continue;
-                bool ok = true;
-                foreach (IntVec3 o in GenRadial.RadialCellsAround(c, 22f, true))
-                {
-                    if (!o.InBounds(map) || !o.Standable(map) || o.Roofed(map) || o.GetFirstPawn(map) != null
-                        || map.thingGrid.ThingAt(o, ThingDefOf.Fire) != null) { ok = false; break; }
-                }
-                if (ok) return c;
+                if (DiscClear(map, c)) return c;
             }
             return IntVec3.Invalid;
+        }
+
+        // "mode" or "mode@x,z" (jawa/static_call passes one string). A malformed cell is Invalid, never a guess.
+        public static string ParseMode(string arg, out IntVec3 cell)
+        {
+            cell = IntVec3.Invalid;
+            if (arg == null) return "";
+            int at = arg.IndexOf('@');
+            if (at < 0) return arg;
+            string[] xz = arg.Substring(at + 1).Split(',');
+            if (xz.Length == 2 && int.TryParse(xz[0], out int x) && int.TryParse(xz[1], out int z)) cell = new IntVec3(x, 0, z);
+            else cell = new IntVec3(-1, 0, -1);   // asked for a cell but unreadable: InBounds fails -> UNMEASURED
+            return arg.Substring(0, at);
         }
 
         private static int Fires(Map map, IntVec3 at, int n, List<Thing> made)
@@ -278,8 +299,9 @@ namespace RimMandrake.LeaningScrub
 
         /// <summary>"on": 2 open fires (below threshold) send nobody; 6 send the stamper; a stamper
         /// beside the blaze puts fires out. "off" (fireStampEnabled false): nobody sent, nothing out.</summary>
-        public static string ProofStamp(string mode)
+        public static string ProofStamp(string arg)
         {
+            string mode = ParseMode(arg, out IntVec3 hint);
             Map map = Find.CurrentMap;
             if (map == null) return "UNMEASURED: no current map";
             var comp = map.GetComponent<RM_MapComponent_FireStamp>();
@@ -298,8 +320,12 @@ namespace RimMandrake.LeaningScrub
             {
                 RM_LeaningScrubSettings.modEnabled = true;
                 RM_LeaningScrubSettings.fireStampEnabled = on;
-                spot = FindSpot(map);
-                if (!spot.IsValid) return "UNMEASURED: no unroofed, empty, fire-free 22-cell disc on this map";
+                spot = FindSpot(map, hint);
+                if (!spot.IsValid)
+                {
+                    return hint.IsValid ? "UNMEASURED: the cleared pad at " + hint + " is not an unroofed, empty, fire-free 22-cell disc"
+                                        : "UNMEASURED: no unroofed, empty, fire-free 22-cell disc on this map";
+                }
                 Pawn far = PawnGenerator.GeneratePawn(kind);
                 GenSpawn.Spawn(far, spot + new IntVec3(-18, 0, 0), map);
                 made.Add(far);

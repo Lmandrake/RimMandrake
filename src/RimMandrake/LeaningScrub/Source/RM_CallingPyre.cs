@@ -222,13 +222,14 @@ namespace RimMandrake.LeaningScrub
 
     // Proof hook for jawa/static_call (validation.py chain "pyre"). Modes:
     //   defs  the three beliefs and the ritual are loaded and each is gated on the Ritualist meme (N3);
-    //   fire  the SHIPPED Ignite lights at least the fire-stamp threshold on a fuzz patch, and CallHerd walks the
+    //   fire  the SHIPPED Ignite lights at least the fire-stamp threshold on a crop patch ("fire@x,z"), and CallHerd walks the
     //         stamper kind in (UNMEASURED when no stamper creature is loaded); everything made is removed;
     //   off   with callingPyreEnabled off the gate refuses the player's ideoligion.
     public static class RM_CallingPyreProof
     {
-        public static string ProofPyre(string mode)
+        public static string ProofPyre(string arg)
         {
+            string mode = RM_FireStampProof.ParseMode(arg, out IntVec3 hint);
             if (mode == "defs")
             {
                 var bad = new List<string>();
@@ -254,12 +255,24 @@ namespace RimMandrake.LeaningScrub
                     return r == RM_PyreKernel.ReasonOff ? "PASS off: gate refuses" : "FAIL: callingPyreEnabled off but the gate said " + (r ?? "ok");
                 }
                 RM_LeaningScrubSettings.callingPyreEnabled = true;
+                // The fixture is a FLAMMABLE field: the rite torches the colony's fields, and the Leaning Scrub's own
+                // living flora is fireproof by design (arid_shrubland.md ban 9; RM_Fuzz Flammability 0), so a fuzz patch
+                // can never catch (LIVE 2026-10-16: lit=0 on a 225-cell fuzz patch). validation.py lays a crop patch and
+                // passes its centre ("fire@x,z"); without one, the first unroofed plant that can catch is used.
                 IntVec3 spot = IntVec3.Invalid;
-                foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
+                if (hint.IsValid)
                 {
-                    if (t.def.GetModExtension<RM_RippleCoverExtension>() != null && !t.Position.Roofed(map) && t.Position.DistanceToEdge(map) > 20) { spot = t.Position; break; }
+                    if (!hint.InBounds(map) || hint.Roofed(map)) return "UNMEASURED: the crop patch centre " + hint + " is out of bounds or roofed";
+                    spot = hint;
                 }
-                if (!spot.IsValid) return "UNMEASURED: no unroofed fuzz on this map";
+                else
+                {
+                    foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
+                    {
+                        if (!t.Position.Roofed(map) && t.Position.DistanceToEdge(map) > 20 && FireUtility.ChanceToStartFireIn(t.Position, map) > 0f) { spot = t.Position; break; }
+                    }
+                    if (!spot.IsValid) return "UNMEASURED: no unroofed flammable plant on this map";
+                }
                 int lit = RM_CallingPyre.Ignite(map, spot, 6f, RM_PyreKernel.FireCount(0), null);
                 foreach (Thing f in new List<Thing>(map.listerThings.ThingsOfDef(ThingDefOf.Fire)))
                 {
