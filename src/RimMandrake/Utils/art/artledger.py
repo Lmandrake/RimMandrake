@@ -411,6 +411,9 @@ def parse_texfile(rel: str) -> dict:
     m = FACING_RE.match(base)
     if m:
         return {"res": m["stem"], "facing": m["facing"], "mask": bool(m["mask"])}
+    # Graphic_Single's mask is <path>_m (Verse.Graphic_Single.MaskSuffix; Graphic_Collection skips "_m" files too)
+    if base.endswith("_m"):
+        return {"res": base[:-2], "facing": "single", "mask": True}
     return {"res": base, "facing": "single", "mask": False}
 
 

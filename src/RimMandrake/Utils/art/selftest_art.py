@@ -81,6 +81,9 @@ def main():
     # parse / role
     pt = L.parse_texfile("swanimals/Nuna/Nuna_f_eastm.png")
     check(pt == {"res": "swanimals/Nuna/Nuna_f", "facing": "east", "mask": True}, "parse_texfile reads mask + facing")
+    pt = L.parse_texfile("Things/Item/Resource/FlowWorks/Modern/RM_Bottle_m.png")
+    check(pt == {"res": "Things/Item/Resource/FlowWorks/Modern/RM_Bottle", "facing": "single", "mask": True},
+          "parse_texfile reads a Graphic_Single _m mask (Graphic_Single.MaskSuffix)")
     check(L.subject_key("A_Nuna") == "nuna" and L.subject_key("nuna_f") == "nuna", "subject_key normalises sheet keys")
     check(L.normalise_verdict("replace") == "replace-donor", "'replace' is NOT read as reject")
 
