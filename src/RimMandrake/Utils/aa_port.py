@@ -34,7 +34,6 @@ PREFIXES = ("RM_", "RSW_", "RUT_")
 PORTS = {
     "AA_Aerofleet": ("RM_Bulloo", "TheForge", None),
     "AA_AngelMoth": ("RM_Dustveil", "TheRot", "RotSpecies/AngelMoth/AngelMoth"),
-    "AA_AnimaColossus": ("RM_Pluurva", "TheRot", None),
     "AA_BedBug": ("RM_BedBug", "Cauldron", None),
     "AA_BloodShrimp": ("RM_Zrrik", "Greentide", None),
     "AA_RaptorShrimp": ("RM_Sharpshrimp", "Miasma", None),
@@ -402,7 +401,7 @@ def main():
 SWB = "mandrake.rsw.swbestiary"
 REPOINT = {
     "AA_Aerofleet": ("RM_Bulloo", "mandrake.rm.theforge"), "AA_AngelMoth": ("RM_Dustveil", "mandrake.rm.therot"),
-    "AA_AnimaColossus": ("RM_Pluurva", "mandrake.rm.therot"), "AA_BedBug": ("RM_BedBug", "mandrake.rm.cauldron"),
+    "AA_BedBug": ("RM_BedBug", "mandrake.rm.cauldron"),
     "AA_CrystalMit": ("RM_CrystalMit", "mandrake.rm.cauldron"),
     "AA_GiantCrownedSilkie": ("RM_GiantCrownedSilkie", "mandrake.rm.cauldron"),
     "AA_Lockjaw": ("RM_Siezer", "mandrake.rm.miasma"), "AA_Metallovore": ("RM_Metallovore", "mandrake.rm.theforge"),

@@ -748,49 +748,6 @@
     </match>
   </Operation>
 
-  <!-- anima colossus (RM_Pluurva) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -53.8..40 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_Pluurva"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-53.8</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-53.8</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases</xpath>
-            <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RM_Pluurva"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-53.8</ComfyTemperatureMin>
-          <ComfyTemperatureMax>40</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
   <!-- barbslinger (RM_Barbslinger) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -2..79.7 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Barbslinger"]</xpath>

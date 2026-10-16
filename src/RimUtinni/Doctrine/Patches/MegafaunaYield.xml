@@ -132,29 +132,6 @@
             <value><MeatAmount>560</MeatAmount></value>
           </nomatch>
         </match></li>
-        <!-- AA_AnimaColossus MeatAmount: bodySize 6.00, base 840, yields 5040 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_Pluurva"]</xpath><match Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>840</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases</xpath>
-            <value><MeatAmount>840</MeatAmount></value>
-          </nomatch>
-        </match></li>
-        <!-- AA_AnimaColossus BoneAmount: bodySize 6.00, base 300, yields 1800 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_Pluurva"]</xpath><match Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases/BoneAmount</xpath>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RM_Pluurva"]/statBases</xpath>
-              <value><BoneAmount>300</BoneAmount></value>
-            </nomatch>
-          </match>
-        </match></li>
         <!-- AA_Barbslinger MeatAmount: bodySize 2.50, base 350, yields 875 -->
         <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_Barbslinger"]</xpath><match Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="RM_Barbslinger"]/statBases/MeatAmount</xpath>
