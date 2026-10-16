@@ -201,8 +201,8 @@
            his word, after Wave A's donor-out ruling above. Both are our own ports now (Defs/ThingDefs_Races/
            RM_ContagionBulloos.xml, Phase 0 P3). The MayRequire stays only until our art is installed at our own path:
            until then their texPath is the donor's. -->
-      <RM_OcularJelly MayRequire="sarg.alphaanimals">0.5</RM_OcularJelly>  <!-- zhool; our port of AA_OcularJelly -->
-      <RM_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</RM_InfectedAerofleet>  <!-- blistered bulloo: a floating ball of gas, an unfortunate visitor become infected; our port of AA_InfectedAerofleet -->
+      <RM_OcularJelly>0.5</RM_OcularJelly>  <!-- zhool; our port of AA_OcularJelly -->
+      <RM_InfectedAerofleet>0.5</RM_InfectedAerofleet>  <!-- blistered bulloo: a floating ball of gas, an unfortunate visitor become infected; our port of AA_InfectedAerofleet -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
