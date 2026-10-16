@@ -55,7 +55,15 @@ namespace RimMandrake.FlowWorks.MapControls
 				{
 					if (scratch[i] is Building_RM_MapControl mc && mc.Spawned && mc.active)
 					{
-						mc.FlowPulse(ex);
+						// One faulty control must not stop the map's flow pulse (review 2026-10-16).
+						try
+						{
+							mc.FlowPulse(ex);
+						}
+						catch (System.Exception e)
+						{
+							Log.ErrorOnce("[RimMandrake.FlowWorks] map control " + mc.ThingID + " failed its pulse: " + e, mc.thingIDNumber ^ 0x5ca1e);
+						}
 					}
 				}
 			}
@@ -133,7 +141,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				return "REFUSED: no FluidDef named '" + fluid + "'";
 			}
-			mc.active = on;
+			mc.SetActive(on);
 			if (mc is Building_RM_FlowSource src)
 			{
 				if (f != null)
@@ -170,6 +178,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			string line = mc.StateLine();
 			mc.Destroy(DestroyMode.Vanish);
+			EdgeRuleChanged();
 			return "OK removed " + line;
 		}
 
@@ -278,7 +287,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		private static void RefreshEdgeCache(Map map)
 		{
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (map == edgeCacheMap && now == edgeCacheTick)
+			if (map == edgeCacheMap && now == edgeCacheTick && (edgeCacheRuler == null || (edgeCacheRuler.Spawned && edgeCacheRuler.active)))
 			{
 				return;
 			}
@@ -483,7 +492,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			h.setpoint = float.IsNaN(setpoint) ? 0.5f : UnityEngine.Mathf.Clamp01(setpoint);
 			h.ratePerPulse = RM_MapControlMath.ClampRate(ratePerPulse);
-			h.active = on;
+			h.SetActive(on);
 			return "OK " + h.StateLine();
 		}
 
@@ -522,7 +531,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			ts.invert = invert;
 			ts.radius = UnityEngine.Mathf.Clamp(radius, 1f, GenRadial.MaxRadialPatternRadius - 1f);
-			ts.active = on;
+			ts.SetActive(on);
 			return "OK " + ts.StateLine();
 		}
 
@@ -569,7 +578,7 @@ namespace RimMandrake.FlowWorks.MapControls
 				}
 			}
 			es.modes = m;
-			es.active = on;
+			es.SetActive(on);
 			EdgeRuleChanged();
 			return "OK " + es.StateLine();
 		}
@@ -608,7 +617,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			p.direction = ((direction % 8) + 8) % 8;
 			p.fast = fast;
 			p.radius = UnityEngine.Mathf.Clamp(radius, 1f, GenRadial.MaxRadialPatternRadius - 1f);
-			p.active = on;
+			p.SetActive(on);
 			p.Changed();
 			return "OK " + p.StateLine();
 		}
@@ -644,7 +653,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			th.targetC = float.IsNaN(targetC) ? 21f : UnityEngine.Mathf.Clamp(targetC, -100f, 200f);
 			th.radius = UnityEngine.Mathf.Clamp(radius, 1f, GenRadial.MaxRadialPatternRadius - 1f);
-			th.active = on;
+			th.SetActive(on);
 			return "OK " + th.StateLine();
 		}
 

@@ -26,6 +26,21 @@ namespace RimMandrake.FlowWorks.MapControls
 		/// <summary>The control's own line(s) for the inspect pane, after the shared on/off line.</summary>
 		protected abstract void AppendInspect(StringBuilder sb, RM_MapComponent_Excavation ex);
 
+		/// <summary>Switch on or off (gizmo, bridge, timer); a control whose state other systems cache hears it in
+		/// <see cref="OnActiveChanged"/>.</summary>
+		public void SetActive(bool on)
+		{
+			if (active != on)
+			{
+				active = on;
+				OnActiveChanged();
+			}
+		}
+
+		protected virtual void OnActiveChanged()
+		{
+		}
+
 		/// <summary>The control's own gizmos, after the shared on/off switch.</summary>
 		protected abstract IEnumerable<Gizmo> ControlGizmos();
 
@@ -122,7 +137,7 @@ namespace RimMandrake.FlowWorks.MapControls
 				defaultDesc = "Switch this " + def.label + " on or off. Off, it stays where it is and moves nothing.",
 				icon = def.uiIcon,
 				isActive = () => active,
-				toggleAction = () => active = !active,
+				toggleAction = () => SetActive(!active),
 			};
 			foreach (Gizmo g in ControlGizmos())
 			{

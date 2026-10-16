@@ -26,6 +26,23 @@ namespace RimMandrake.FlowWorks.MapControls
 		public override bool WorksOnDugChannel => false;
 		public override bool TimerSwitchable => false;
 
+		public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			base.SpawnSetup(map, respawningAfterLoad);
+			RM_MapControls.EdgeRuleChanged();
+		}
+
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+		{
+			base.DeSpawn(mode);
+			RM_MapControls.EdgeRuleChanged();
+		}
+
+		protected override void OnActiveChanged()
+		{
+			RM_MapControls.EdgeRuleChanged();
+		}
+
 		public override void FlowPulse(RM_MapComponent_Excavation ex)
 		{
 			// Nothing to do on the pulse: the rule is read where the edge matters (RM_MapControls.EdgeModes).

@@ -49,6 +49,11 @@ namespace RimMandrake.FlowWorks.MapControls
 			m?.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkPaintDirty();
 		}
 
+		protected override void OnActiveChanged()
+		{
+			Changed();
+		}
+
 		public void Changed()
 		{
 			Map?.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkPaintDirty();

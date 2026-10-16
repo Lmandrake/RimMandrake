@@ -173,7 +173,8 @@ namespace RimMandrake.FlowWorks.MapControls
 			float unit = RM_LiquidStock.LevelUnitOf(body, ex);
 			if (!(unit > 0f) || body.fluid != fluid)
 			{
-				lastNeed = 0;
+				lastNeed = lastHeld = lastCapacity = 0;
+				lastMode = "other liquid";
 				return;
 			}
 			lastCapacity = (int)(body.capacity / unit);
