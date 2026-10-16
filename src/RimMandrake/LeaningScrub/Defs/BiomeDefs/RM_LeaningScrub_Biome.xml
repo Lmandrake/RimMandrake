@@ -216,7 +216,6 @@
       <RM_SheddingVenomvine>0.02</RM_SheddingVenomvine>
       <!-- LEANINGSCRUB_SLEEPER_VINE_1: looks dead until a body of size >= 0.5 passes. PROVISIONAL placement, rare -->
       <RM_SleeperVenomvine>0.01</RM_SleeperVenomvine>
-      <RM_Salvessa>0.22</RM_Salvessa>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_Nysyllin_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
     <!-- RM_SweetlineTree is a landmark, not scatter: it is NOT in wildPlants. It reaches maps
          only through the RM_SweetlineTrees map step below (owner ruling R13, 2026-10-03: a rare

@@ -589,6 +589,7 @@ SETUPS = {
                                ("RM_UniversalCargoTank", 12, 6, None, None), ("Battery", 4, 9, 0, None),
                                ("PowerConduit", 3, 7, None, None), ("PowerConduit", 3, 8, None, None),
                                ("PowerConduit", 3, 9, None, None)],
+                        charge=[(4, 9)],    # GSS_CORD_SILENCE_PHANTOM_SPARK: a battery is built empty; fill it
                         try_=["unpause: the pump draws the pond down into the tank"],
                         look="weak spot: the pond not going down; the tank's fill bar never moving"),
     "pump_pour": dict(short="A pump set to Pour", notice="the same pump and tank, the pump set to Pour and the tank full",
@@ -597,7 +598,7 @@ SETUPS = {
                       build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
                              ("Battery", 4, 9, 0, None), ("PowerConduit", 3, 7, None, None),
                              ("PowerConduit", 3, 8, None, None), ("PowerConduit", 3, 9, None, None)],
-                      tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 80)], pump=[(3, 6, "pour")],
+                      tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 80)], pump=[(3, 6, "pour")], charge=[(4, 9)],
                       try_=["unpause: the tank empties back into the pond", "the pump's button flips Draw and Pour"],
                       look="weak spot: pouring with no power; water poured onto dry ground"),
     "tank_sizes": dict(short="Four tank sizes", notice="a short, a tall, a cargo and an extra-tall tank, each half full",
@@ -1088,8 +1089,18 @@ def layout_check(S, doc=None):
             cells += [(r[0], r[1]) for r in u.get(k, [])]
         cells += [c for r in u.get("hose_order", []) for c in ((r[0], r[1]), (r[2], r[3]))]
         cells += [c for r in u.get("hose_trail", []) for c in [(r[0], r[1])] + list(r[2])]
-        for k in ("tank", "pump", "ladder", "flood_trigger"):
+        for k in ("tank", "pump", "ladder", "flood_trigger", "charge"):
             cells += [(r[0], r[1]) for r in u.get(k, [])]
+        # GSS_CORD_SILENCE_PHANTOM_SPARK (owner 2026-10-16): a battery is built at 0 Wd, so a station whose only power is
+        # a battery is unpowered unless the battery is charged or a generator stands beside it
+        bats = {(r[1], r[2]) for r in u.get("build", []) if r[0] == "Battery"}
+        gens = [r for r in u.get("build", []) if "Generator" in r[0]]
+        charged = {(r[0], r[1]) for r in u.get("charge", [])}
+        if bats and not gens and not bats <= charged:
+            probs.append("station %d (%s): battery at %s starts empty and no generator powers it (add charge=)"
+                         % (s["n"], s["id"], sorted(bats - charged)))
+        for c in charged - bats:
+            probs.append("station %d (%s): charge at %s names no battery built there" % (s["n"], s["id"], c))
         dug = {(x, z) for r in u.get("dig", []) for x in range(r[0], r[0] + r[2]) for z in range(r[1], r[1] + r[3])}
         for r in u.get("flood_trigger", []):
             if not any((r[0] + dx, r[1] + dz) in dug for dx, dz in ((0, 0), (0, 1), (1, 0), (0, -1), (-1, 0))):
@@ -1586,6 +1597,10 @@ class Review(object):
                 self.gizmo_cycle(n, g(x, z), "Job:", "Job: " + mode)
         for x, z, on_clock, spill, cap in u.get("flood_trigger", []):
             self.static(n, BIOME_MC, "PlaceFloodTrigger", "%d,%d|%s|%s|%d" % (g(x, z) + (on_clock, spill, cap)))
+        for x, z in u.get("charge", []):   # fill the battery (a built battery holds 0 Wd); GSS's stage op owns the call
+            r = self.B.call("jawa/gss_stage", ops="kind=gss_charge|x=%d|z=%d" % g(x, z))
+            if not isinstance(r, dict) or r.get("success") is not True:
+                self.notes.append("station %s: battery at %s not charged: %s" % (n, (x, z), json.dumps(r)[:160]))
         for x, z, mode in u.get("pump", []):
             self.gizmo_cycle(n, g(x, z), ("Pouring", "Drawing"),
                              "Pouring into the channel" if mode == "pour" else "Drawing into the tank")

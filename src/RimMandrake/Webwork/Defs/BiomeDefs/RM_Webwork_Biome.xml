@@ -186,7 +186,6 @@
       <RM_Sorrivel>0.2</RM_Sorrivel>  <!-- the bait bloom -->
       <RM_Brimlock>0.2</RM_Brimlock>  <!-- the river held in flesh -->
       <RM_Ruddreth>0.15</RM_Ruddreth>  <!-- the nest-bloom -->
-      <RM_Glasmaw>0.3</RM_Glasmaw>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_TookeTrap_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
   </BiomeDef>
 

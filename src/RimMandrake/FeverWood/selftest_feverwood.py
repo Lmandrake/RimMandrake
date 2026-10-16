@@ -665,7 +665,7 @@ def main():
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
           len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 25, V.BOOL_TOGGLES)  # +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
-    check("harvest flora derived", len(V.FLORA_PRODUCTS) == 6, V.FLORA_PRODUCTS)  # +RM_Crimmelroot, +RM_LumbrelTree (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16)
+    check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
     check("genstep registrations derived", len(V.GENSTEPS_REGISTERED) == 3, V.GENSTEPS_REGISTERED)
     check("limb and tank numbers derived", V.LIMB_FEELER["hp"] > 0 and V.TANK_HP > 0 and V.TANK_OCCUPANT)

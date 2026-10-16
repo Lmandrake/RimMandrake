@@ -218,7 +218,6 @@
       <RM_Glasscrust>0.15</RM_Glasscrust>
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): the ultriss pad (was the Long Shade's ultracactus) — "supposed to be in the most extreme desert". Def lives in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
       <RM_UltrissPad MayRequire="mandrake.rm.biomes">0.8</RM_UltrissPad>
-      <RM_Murrowbulb>0.05</RM_Murrowbulb>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_Bloddle; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
     <allowedPackAnimals>
