@@ -23,6 +23,9 @@ Owner rulings 2026-10-04 that this code enforces (item notes):
   * replaced art goes to the store by fingerprint before any overwrite (install archives first);
   * the owner can simply DELETE an erroneous render: `purge` removes its bytes from the store
     and every later sheet filters it out (a `purge` event; registration skips purged shas);
+  * his newer, explicit words can bring a purged picture back (2026-10-15): an `unpurge` event
+    reverses the latest purge of that sha — append-only, owner words required, never usable by a
+    mechanical install;
   * only an owner `keep` with plumbing/typed provenance PROTECTS; flawed-sheet, prefill and
     legacy-unresolved rulings are shown but protect nothing.
 """
@@ -608,7 +611,9 @@ class Index:
         self.rulings_by_sha = defaultdict(list)
         self.live = {}                         # (mod, rel) -> live event (latest by causal prev)
         self._retired = {}                     # (mod, rel) -> the retire that emptied it (ordering tombstone)
-        self.purged = {}                       # sha -> purge event
+        self.purged = {}                       # sha -> purge event, while a purge is its latest purge/unpurge
+        self.unpurged = {}                     # sha -> unpurge event, while an unpurge is its latest (owner words)
+        self.purge_history = defaultdict(list) # sha -> every purge/unpurge event, fold order (history kept whole)
         self.rejected = defaultdict(list)      # sha -> [rejected events: bytes an owner redo/reject named]
         self.snapshots = []
         self.bindings = defaultdict(list)      # sha -> [binding events: a job's target_def tied a render to a subject]
@@ -634,8 +639,8 @@ class Index:
                 self.rulings_by_sha[s].append(ev)
         elif t == "live":
             self._fold_live(ev)
-        elif t == "purge":
-            self.purged[ev["sha"]] = ev
+        elif t in ("purge", "unpurge"):
+            self._fold_purge(ev)
         elif t == "rejected":
             self.rejected[ev["sha"]].append(ev)
         elif t == "snapshot":
@@ -658,6 +663,30 @@ class Index:
             else:
                 self.live[key] = ev
                 self._retired.pop(key, None)
+
+    def _fold_purge(self, ev):
+        """The latest of purge/unpurge is the state. Shards fold one seat after another, so 'latest' is causal first
+        (an event whose `follows` names the current one comes after it; one the current names came before it), then
+        by ts; a tie goes to the purge (fail safe: a picture stays deleted unless his later words clearly win)."""
+        sha = ev["sha"]
+        self.purge_history[sha].append(ev)
+        cur = self.purged.get(sha) or self.unpurged.get(sha)
+        if cur is not None:
+            if cur.get("follows") == ev.get("id"):
+                return                          # an older event folded late: the current one already follows it
+            ts, cts = ev.get("ts", ""), cur.get("ts", "")
+            if not (ev.get("follows") == cur.get("id") or ts > cts or (ts == cts and ev["type"] == "purge")):
+                return
+        if ev["type"] == "purge":
+            self.purged[sha] = ev
+            self.unpurged.pop(sha, None)
+        else:
+            self.unpurged[sha] = ev
+            self.purged.pop(sha, None)
+
+    def was_purged(self, sha: str) -> bool:
+        """Ever purged, including a purge his later words reversed: a mechanical install may not bring it back."""
+        return any(e.get("type") == "purge" for e in self.purge_history.get(sha, ()))
 
     def protected(self, sha: str) -> list[dict]:
         """Owner keeps with real provenance that name this sha and are not released."""
@@ -904,6 +933,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         why = mechanical_refusal(reason)
         if why:
             raise Refused(why)
+        if idx.was_purged(sha):
+            raise Refused(f"{sha[:12]} was purged by the owner (since unpurged by his words) — a mechanical install "
+                          f"({reason}) may not bring it back; it needs his ruling (--ruling <keep id> or --owner-said)")
         why = rejection_refusal(idx, rel, sha)
         if why:
             raise Refused(why + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
@@ -1079,10 +1111,37 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=Fal
     if p.is_file():
         p.unlink()
         removed = True
-    w.add({"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner",
-           "said": owner_said, "via": via, "bytes_removed": removed})
+    pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner",
+           "said": owner_said, "via": via, "bytes_removed": removed}
+    un = idx.unpurged.get(sha)
+    if un:                                       # a re-purge after his unpurge: a new id (not deduped), ordered after it
+        pev.update(id=det_id("purge", sha, un["id"]), follows=un["id"])
+    w.add(pev)
     w.flush()
     return {"sha": sha, "bytes_removed": removed}
+
+
+def unpurge(sha: str, *, owner_said: str, via: str = "art unpurge") -> dict:
+    """Reverse the latest purge of `sha` on the owner's newer, explicit words (2026-10-15: he accepted on a later
+    sheet a picture he had purged on an earlier one). Appends an `unpurge` event naming the purge it reverses; the
+    purge stays in history. It restores nothing else: no keep (an install with --owner-said / --ruling records one),
+    no bytes (put them in the store first if the purge deleted them), and a MECHANICAL install of a once-purged
+    picture stays refused (install: was_purged). Owner words are the only authorisation — there is no mechanical or
+    sheet route."""
+    if not owner_said or not owner_said.strip():
+        raise Refused("unpurge is the owner's act — it needs his typed words (--owner-said \"…\")")
+    idx = Index()
+    pev = idx.purged.get(sha)
+    if not pev:
+        raise Refused(f"{sha[:12]} is not purged — nothing to unpurge"
+                      + (" (already unpurged)" if sha in idx.unpurged else ""))
+    ev = {"type": "unpurge", "id": det_id("unpurge", sha, pev["id"]), "sha": sha, "by": "owner",
+          "said": owner_said.strip(), "via": via, "follows": pev["id"], "bytes_in_store": store_has(sha)}
+    w = Writer({e["id"] for e in idx.events})
+    w.add(ev)
+    w.flush()
+    _absorb([ev])
+    return {"sha": sha, "reverses": pev["id"], "bytes_in_store": ev["bytes_in_store"]}
 
 
 # ─────────────────────────────────────────── sheet snapshots: stable letters ──

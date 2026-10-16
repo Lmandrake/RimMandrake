@@ -369,6 +369,15 @@ git tag `art-snapshot-2026-10-04`. Sheet snapshots: `infrastructure/state/art/sh
   a compare sheet then `art.py ingest`. Deletes the bytes from the store, appends a `purge` event; every later
   sheet and every backfill skips the sha. Refused for a picture live in a mod; an owner keep on it is released
   in the same act (sheet route) or needs `--release-keep` (CLI). Renders stay in `_artsrc` (artpipe's state).
+- **Unpurge (2026-10-15, owner only):** `art.py unpurge <sha> --owner-said "…"`. His newer, explicit words
+  (*"accept all the art you showed me"* over a sheet that showed a picture he had purged earlier) reverse the
+  latest purge: an append-only `unpurge` event carrying his words and `follows: <purge id>`; the purge stays in
+  history. The fold takes the latest of purge/unpurge per sha — causal first (`follows`), then `ts`, a tie stays
+  purged; a re-purge after an unpurge gets its own id and `follows` the unpurge. It restores no bytes (put them in
+  the store first) and no keep (the install's `--owner-said`/`--ruling` records that), and a **mechanical install
+  of a once-purged picture stays refused** (`Index.was_purged`). Refused without his words; no sheet or
+  mechanical route. Shown by `art.py status`/`variants` (UNPURGED) and `art.py doctor`.
+  Test: `selftest_art_unpurge.py`.
 - **Slots are resolved from our defs on read** (`scan_def_slots`), not stored as `bind` events.
 - **Prefill inference:** with no byte-exact owner keep anywhere yet, the doubles sheet prefills a shipped column
   whose installing commit (or a look-alike parent before the halo sweep) cites an owner approval, marked ⚠ inferred.

@@ -87,7 +87,7 @@ _PURGED = None
 def _purged():
     global _PURGED
     if _PURGED is None:
-        _PURGED = {e["sha"] for e in L.read_events() if e.get("type") == "purge"}
+        _PURGED = set(L.Index().purged)      # the fold: an owner unpurge reverses a purge
     return _PURGED
 
 
