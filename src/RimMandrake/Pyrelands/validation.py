@@ -42,7 +42,7 @@ component has failed or gone UNMEASURED. A teardown step that does not take is i
 component (`teardown`), so leaked state can never sit under an all-PASS run.
 
 Not expressible with current bridge tools: forcing one `WeatherEvent_LightningStrike`
-(fulgurite_after_lightning locks DryThunderstorm and counts fulgurite), reading
+(a lightning strike cannot be forced), reading
 `MapComponent_BurnLine` directly (burn_line_present counts free-standing Fire, which is exactly
 what that component measures), and flyer flight (firehawk_carries_ember reads job state only;
 flyers are never live-tested unattended).
@@ -58,10 +58,9 @@ import time
 from modcheck import Suite, Component, ExpectationFailed
 
 suite = Suite("Pyrelands")
-suite.toggles = ["fulguriteEnabled", "ashDustingEnabled", "scorchFruitEnabled",
+suite.toggles = ["ashDustingEnabled", "scorchFruitEnabled",
                  "ashfallAccumulationEnabled", "biomeGenerationEnabled",
                  "ullaiEnabled", "ullaiHerdSizeMultiplier", "furnaceBeastGiant",
-                 "lightningBreakerEnabled", "breakerPyrelandsOnly", "breakerTripCost", "breakerRecipeCostFactor",
                  "sandShovelEnabled", "sandShovelYieldMultiplier"]
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
@@ -87,7 +86,7 @@ ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
 # Mechanics that must be OFF during the controlled bars (plan 2.3a isolation).
 ISOLATION_OFF = ["burnLineEnabled", "fireHawkSpreadEnabled", "fireClockEnabled",
                  "furnaceWorldMigrationEnabled", "burrowOnFireEnabled",
-                 "furnaceThermalEnabled", "fulguriteEnabled"]
+                 "furnaceThermalEnabled"]
 FIRE_HAWK_JOB = "RM_FireHawkCarryEmber"   # JobDefs/RM_PyrelandsJobs.xml (renamed from RUT_)
 EMBER_DRIVER = "RimMandrake.Pyrelands.JobDriver_RUT_FireHawkCarryEmber"   # ProbeFlight: the flight-tracker state read
 
@@ -804,7 +803,7 @@ def _tear_down(t, fire, weather):
         try:
             _session_call(t, "jawa/weather_set", unlock=True)
             # TESTENV_STORM_FIRES_HARDEN_DECOY_BURN (r6 p4): an unlock leaves the locked weather CURRENT, and one transition
-            # keeps lastWeather (lightning included) ticking for WeatherManager.TransitionTicks; the fulgurite storm then lit
+            # keeps lastWeather (lightning included) ticking for WeatherManager.TransitionTicks; a storm then lit
             # 177 fires that the next chain's burn line read as its burn. Two transitions to Clear end the storm outright.
             for _ in range(2):
                 _session_call(t, "jawa/weather_set", weather="Clear")
@@ -818,7 +817,7 @@ def _tear_down(t, fire, weather):
         except Exception as e:   # noqa: BLE001 - recorded below as a FAIL
             bad.append("extinguish: %s" % e)
     bad.extend("setting %s not restored: %r" % fb for fb in _restore(t))
-    bad.extend(_GEN.pop("teardown_bad", []))     # restores a chain ran inside its own component (_restore_terrain)
+    bad.extend(_GEN.pop("teardown_bad", []))     # restores a chain ran inside its own component 
     if bad:
         c = Component("teardown", None, False)
         c.verdict = "FAIL"
@@ -853,8 +852,6 @@ def _independent(t):
         t.upstream_reason = "upstream failed -- this chain's state is meaningless"
 
 
-SAND_FAMILY = ("RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand")   # FireEcologyHook.SandTerrainDefNames
-
 
 def biome_probe_animals(r, biome):
     """jawa/biome_probe reply -> ({animal defName: commonality}, None), or (None, why) when the read cannot be
@@ -872,18 +869,6 @@ def biome_probe_animals(r, biome):
     if b.get("wildAnimalCount") != len(animals):
         return None, "biome_probe listed %d of %r resolved animals (capped)" % (len(animals), b.get("wildAnimalCount"))
     return dict((a.get("defName"), a.get("commonality")) for a in animals), None
-
-
-def fulgurite_expected(strikes, sand_frac, chance):
-    """Expected new fulgurite, never more than the truth. Patch_LightningStrike_Fulgurite rolls ONCE per
-    strike (one Rand.Chance(fulguriteChance), one TryPlaceThing) and only on sand-family ground. A strike
-    lands on a uniformly random standable unroofed cell (WeatherEvent_LightningStrike.DoStrike), so the
-    sand strikes are a Poisson thinning of ALL strikes with probability >= sand_frac (sand over every
-    non-water cell; rock and roofs only shrink the real support). That holds whichever strikes lit a
-    fire: a sand strike that lit nothing is still in the total, and bare sand lighting fewer fires only
-    makes `strikes` smaller. `strikes` is a floor on all strikes (windows that held any fire, with every
-    other igniter isolated), so strikes x sand_frac x chance cannot exceed the true expectation."""
-    return strikes * sand_frac * chance
 
 
 def _preflight_module():
@@ -1116,18 +1101,6 @@ def burn_line(t):
 def startup_and_def_wiring(t):
     """Pure reads of what the session has loaded (toggle floor)."""
     _pad(t, PAD_PROBE)
-    with _comp(t, "fulgurite_armed_only", toggle="fulguriteEnabled"):
-        # The load-time "fulgurite-spawn: armed" line rolls out of drain_log's 1000-line buffer;
-        # the Harmony patch itself is the direct proof that the rule is armed.
-        r = t.bridge_call("jawa/harmony_patches", typeName="RimWorld.WeatherEvent_LightningStrike",
-                          methodName="DoStrike")
-        if _live(t):
-            posts = [p for m in (_ok(r, "harmony_patches").get("methods") or [])
-                     for p in (m.get("postfixes") or [])]
-            if not any("Patch_LightningStrike_Fulgurite" in (p.get("patchMethod") or "") for p in posts):
-                _fail("no Pyrelands fulgurite postfix on WeatherEvent_LightningStrike.DoStrike: %r" % posts)
-        t.screenshot()
-
     _independent(t)
     with _comp(t, "biome_def_wiring", toggle="biomeGenerationEnabled"):
         d = t.bridge_call("jawa/get_def", defName="RM_Pyrelands", defType="BiomeDef")
@@ -2140,20 +2113,6 @@ def embergrass_regrow(t):
         t.screenshot(rect=regrow)
 
 
-def _stack_total(t, defName):
-    """Items of `defName` on the map, summed over stackCount: a fulgurite placed Near merges into an
-    existing stack (stackLimit 25) and adds no thing. Refuses a truncated listing."""
-    r = t.bridge_call("jawa/list_things", defName=defName, limit=2000)
-    if not _live(t):
-        return 0
-    rows = _ok(r, "list_things(%s)" % defName).get("things")
-    if not isinstance(rows, list) or r.get("countMatched") != len(rows) or \
-            any(not isinstance(w.get("stackCount"), int) for w in rows):
-        _fail("list_things(%s) incomplete or without stackCount: countMatched %r, %r rows"
-              % (defName, r.get("countMatched"), len(rows) if isinstance(rows, list) else rows))
-    return sum(w["stackCount"] for w in rows)
-
-
 def _live_setting(t, field):
     r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
     if not _live(t):
@@ -2161,143 +2120,6 @@ def _live_setting(t, field):
     if not (r or {}).get("success") or r.get("value") is None:
         _fail("cannot read %s.%s: %r" % (SETTINGS, field, r))
     return r["value"]
-
-
-SAND_PATCH_MIN_FRAC = 0.4      # fulgurite needs enough sand that strikes x fraction x chance can reach fulgurite_expected's bar
-SAND_PATCH_TERRAIN = "Sand"    # vanilla sand: in SAND_FAMILY, and not behind the Pyrelands mechanics gate
-SAND_RESTORE_BATCH = 200
-
-
-def sand_patch_rect(map_x, map_z):
-    """The block laid when the site has too little sand: the west half of the map (a lightning strike lands on a random
-    cell, so the patch has to be a large share of the land for 20 windows to reach it). Pure."""
-    return (0, 0, max(1, map_x // 2), map_z)
-
-
-def sand_patch_needed(sand_cells, land_cells, min_frac=SAND_PATCH_MIN_FRAC):
-    """True when the site's sand-family share of land is below min_frac (PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: site r3 had
-    0 of 61978). Pure."""
-    return land_cells > 0 and float(sand_cells) / land_cells < min_frac
-
-
-def split_restore_ops(ops, batch=SAND_RESTORE_BATCH):
-    """'Def:x,z,w,h;...' (get_terrain_batch's reply) -> lists of at most `batch` ops joined for set_terrain_batch. Pure."""
-    items = [o.strip() for o in (ops or "").replace("\n", ";").split(";") if ":" in o]
-    return [";".join(items[i:i + batch]) for i in range(0, len(items), batch)]
-
-
-def _lay_sand_patch(t):
-    """Snapshot the patch rect's terrain, then paint it sand. Returns (rect_string, snapshot_ops) for _restore_terrain."""
-    mx, mz = _map_size(t)
-    rect = _rs(sand_patch_rect(mx, mz))
-    snap = t.bridge_call("jawa/get_terrain_batch", rects=rect)
-    _ok(snap, "get_terrain_batch(%s) before the sand patch" % rect)
-    if snap.get("cellsRead") != snap.get("cellsRequested") or not snap.get("ops"):
-        _fail("sand patch: could not snapshot %s to restore it (%r of %r cells)" % (
-            rect, snap.get("cellsRead"), snap.get("cellsRequested")))
-    t.bridge_call("jawa/set_terrain", x=0, z=0, terrainDef=SAND_PATCH_TERRAIN, width=mx // 2, height=mz, layer="top")
-    return rect, snap["ops"]
-
-
-def _restore_terrain(t, laid):
-    """Put the snapshotted terrain back. Runs in a finally, so it talks to the SESSION: t.bridge_call is a no-op once
-    the component has failed or gone UNMEASURED, which left half the map sand for every later chain. A restore that
-    does not take is reported by the chain's _tear_down as a teardown FAIL (never from inside the open component)."""
-    rect, ops = laid
-    sess = getattr(t, "session", None)
-    call = sess.call if sess is not None else t.bridge_call
-    bad = []
-    for chunk in split_restore_ops(ops):
-        try:
-            r = call("jawa/set_terrain_batch", ops=chunk, layer="top")
-            if sess is not None and (not isinstance(r, dict) or r.get("success") is False):
-                bad.append("sand patch %s restore refused: %r" % (rect, str(r)[:160]))
-        except Exception as e:   # noqa: BLE001 - keep restoring the rest; recorded as a FAIL
-            bad.append("sand patch %s restore raised %s" % (rect, e))
-    if sess is not None and bad:
-        _GEN.setdefault("teardown_bad", []).extend(bad)
-
-
-@suite.chain("fulgurite")
-@_teardown(fire=True, weather=True)
-def fulgurite(t):
-    """No tool forces one strike: lock DryThunderstorm and count fulgurite from before to after.
-    Lightning lights fires, so this runs after every fire-sensitive chain and the map is extinguished
-    after."""
-    _pad(t, PAD_PROBE)
-    with _comp(t, "fulgurite_after_lightning", shows=["pyre_fulgurite_after_lightning"]):
-        # Every other igniter OFF, so each fire seen below is a strike's (the burn line and the
-        # fire-hawk light their own fires and would read as strikes).
-        _isolate(t)
-        _set(t, {"fulguriteEnabled": True})
-        chance = _live_setting(t, "fulguriteChance")
-        before = _stack_total(t, "RM_FE_Fulgurite")
-        terr = _terrain(t, _whole(t))
-        # FulguriteMayRoll: RM_FE_ sand rolls only while the Pyrelands mechanics gate is on; when the
-        # gate cannot be read, that sand is left out (a smaller expectation, never a false FAIL).
-        g = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.PyrelandsMechanicsGate", method="get_On")
-        gate_on = str((g or {}).get("result")) == "True" if isinstance(g, dict) else False
-        sand = sum(v for k, v in terr.items()
-                   if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
-        land = sum(v for k, v in terr.items() if "Water" not in k)
-        laid = None
-        if _live(t) and sand_patch_needed(sand, land):
-            # PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: site r3 had 0 sand cells, so no strike could reach sand and the row was
-            # UNMEASURED. Lay a sand patch (snapshotted, restored in the finally below) and take the chance to 100% so the
-            # bar can be met; the row then proves "a strike on sand yields fulgurite", the chance itself is a Settings value.
-            laid = _lay_sand_patch(t)
-            try:
-                _set(t, {"fulguriteChance": 1.0})
-                chance = _live_setting(t, "fulguriteChance")
-                terr = _terrain(t, _whole(t))
-                sand = sum(v for k, v in terr.items()
-                           if k in SAND_FAMILY and (gate_on or not k.startswith("RM_FE_")))
-                land = sum(v for k, v in terr.items() if "Water" not in k)
-            except BaseException:
-                _restore_terrain(t, laid)       # the finally below is not reached yet: never leak the patch into later chains
-                raise
-        sand_frac = float(sand) / land if land else 0.0
-        _note(t, "sand-family cells (fulgurite needs sand)",
-              {"cells": sand, "nonWaterCells": land, "frac": sand_frac, "gateOn": gate_on, "gateRead": g,
-               "fulguriteChance": chance, "sandPatchLaid": laid[0] if laid else None})
-        try:
-            _fulgurite_windows(t, before, sand_frac, chance)
-        finally:
-            if laid is not None:
-                _restore_terrain(t, laid)
-        t.screenshot()
-
-
-def _fulgurite_windows(t, before, sand_frac, chance):
-    _extinguish(t)
-    t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
-    # Lightning lights the grass: extinguish every ~1,000 ticks so a strike cannot grow into
-    # a map-wide burn (run 4 burned the whole site to deep ash this way). A window that holds any
-    # fire saw at least one strike; counting fires or fire clusters instead would count one strike
-    # many times (sparks, and a burning animal that runs carries its fire across the map).
-    strikes, per_check = 0, []
-    for _ in range(20):
-        _wait(t, 1000, fast=True)
-        n_fire = _count(t, "Fire")
-        per_check.append(n_fire)
-        if n_fire:
-            strikes += 1
-        _extinguish(t)
-    after = _stack_total(t, "RM_FE_Fulgurite")
-    _note(t, "fulgurite across 20 windows of DryThunderstorm",
-          {"before": before, "after": after, "windowsWithFire": strikes, "firesPerWindow": per_check})
-    if _live(t):
-        try:
-            chance = float(chance)
-        except (TypeError, ValueError):
-            _fail("fulguriteChance read back non-numeric: %r" % (chance,))
-        expect = fulgurite_expected(strikes, sand_frac, chance)
-        if after - before < 1 and expect < 3:   # P(zero | working) = e^-expect, so < 3 is too weak to FAIL on
-            _unmeasured(t, "expected >= %.2f fulgurite (%d windows with fire x sand fraction %.4f x chance %.2f): "
-                           "too few strikes can reach sand to test the bar" % (expect, strikes, sand_frac, chance))
-        if after - before < 1:
-            _fail("no new RM_FE_Fulgurite after 20 windows of locked DryThunderstorm (%d -> %d; %d "
-                  "windows with fire, expected >= %.2f)" % (before, after, strikes, expect))
 
 
 def parse_kv(text):
@@ -2361,7 +2183,7 @@ CALM_SETTLE_TICKS = 60   # one burn-line watch interval after the extinguish: a 
 
 
 def _calm_sky(t):
-    """TESTENV_STORM_FIRES_HARDEN_DECOY_BURN (r6 p4, 2026-10-15): fulgurite_after_lightning (same fixture, run just before)
+    """TESTENV_STORM_FIRES_HARDEN_DECOY_BURN (r6 p4, 2026-10-15): a storm chain run just before
     left its DryThunderstorm current after the unlock, and the storm's fires (177 burning, centre 176,141) became the burn
     line's newest sample instead of burn B at (220,100): herd_follows_two_day_old_burn read UNMEASURED; alone on a fresh
     reload it PASSed. A row that reads the burn line's history needs a sky that lights nothing but the row's own burns:
@@ -2683,100 +2505,3 @@ def sand_shovel(t):
         for want in ("accepts True", "offRefuses True", "yield RM_GlassSand x5", "terrain RM_FE_Ground_Gravel", "orderGone True"):
             if want not in text:
                 _fail("shovel proof missing %r: %s" % (want, text))
-
-
-@suite.chain("lightning_breaker")
-@_teardown(fire=True)
-def lightning_breaker(t):
-    """PYRELANDS_LIGHTNING_BREAKER_BUILD_1 (RM_LightningBreaker.cs). Live proofs need no Pyrelands site: ProofTrip
-    builds battery-conduit-breaker-conduit-battery on the current map and forces a short circuit on A's side.
-    The three components read independent state, so each starts clean (_independent)."""
-    import re
-    import xml.etree.ElementTree as ET
-    here = os.path.dirname(os.path.abspath(__file__))
-    # No clear_area: ProofTrip finds its own free 9x4 near the centre, and the default anchor IS the centre, where the
-    # colonists stand (destroy_batch "All" would take them).
-    proof = "RimMandrake.Pyrelands.RM_LightningBreakerProof"
-    project = "RM_LightningBreakers"
-
-    def need_session(what):
-        if t.session is None:
-            raise ExpectationFailed("UNMEASURED: no bridge session for %s" % what)
-
-    def call(method, arg):
-        need_session(method)
-        r = t.bridge_call("jawa/static_call", type=proof, method=method, args=arg)
-        if not isinstance(r, dict) or r.get("success") is False:
-            raise ExpectationFailed("UNMEASURED: static_call %s refused: %s" % (method, str(r)[:200]))
-        text = str(r.get("result", ""))
-        if text.startswith("UNMEASURED"):
-            raise ExpectationFailed("UNMEASURED: %s" % text)
-        return text
-
-    def can_start(only):
-        """jawa/research_availability with breakerPyrelandsOnly forced to `only` (restored by the teardown)."""
-        _set(t, {"breakerPyrelandsOnly": only})
-        r = _ok(t.bridge_call("jawa/research_availability", project=project), "research_availability")
-        snap = r.get("result") or {}
-        if not isinstance(r.get("canStartNow"), bool) or not isinstance(snap.get("progress"), (int, float)):
-            _fail("research_availability(%s) unreadable: %s" % (project, str(r)[:200]))
-        return r["canStartNow"], snap
-
-    with t.component("metal_and_sand_at_the_forge", beyond_toggle=True):
-        root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
-        defs = {(d.tag, d.findtext("defName")): d for d in root}
-        if len(defs) != 4:   # sanity probe: research, core, recipe, building
-            _fail("read %s" % sorted(defs))
-        recipe = defs[("RecipeDef", "RM_Make_LightningBreakerCore")]
-        users = [li.text for li in recipe.findall("recipeUsers/li")]
-        ings = [li.findtext("filter/thingDefs/li") for li in recipe.findall("ingredients/li")]
-        if not set(users) & {"FueledSmithy", "ElectricSmithy"} or sorted(ings) != ["RM_GlassSand", "Steel"]:
-            _fail("recipe is not metal and sand at the smithy: users %r ingredients %r" % (users, ings))
-        b = defs[("ThingDef", "RM_LightningBreaker")]
-        if b.findtext("thingClass") != "RimMandrake.Pyrelands.RM_LightningBreaker" or \
-                b.find("comps/li[@Class='CompProperties_Power']/transmitsPower") is None:
-            _fail("breaker is not a power-transmitting RM_LightningBreaker")
-    _independent(t)
-    with t.component("research_only_in_the_pyrelands", toggle="breakerPyrelandsOnly"):
-        root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
-        rp = [d for d in root.findall("ResearchProjectDef") if d.findtext("defName") == project]
-        if len(rp) != 1:
-            _fail("ResearchProjectDef %s not read once (sanity probe): %d" % (project, len(rp)))
-        if rp[0].find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_PyrelandsOnlyResearch']") is None:
-            _fail("the research carries no Pyrelands-only gate")
-        with open(os.path.join(here, "Source", "RM_LightningBreaker.cs"), encoding="utf-8") as f:
-            src = f.read()
-        if "PropertyGetter(typeof(ResearchProjectDef), nameof(ResearchProjectDef.CanStartNow))" not in src:
-            _fail("CanStartNow is not gated")
-        # The live gate is read as the DIFFERENCE it makes: CanStartNow with the setting off (vanilla's own
-        # verdict) against CanStartNow with it on. A project vanilla already refuses (no bench, prerequisites)
-        # or one already begun (the gate exempts progress > 0) cannot show the gate at all.
-        need_session("the live research gate")
-        m = re.match(r"GATE canStart=(\w+) holdsPyrelands=(True|False) gated=(\w+)", call("ProofGate", project))
-        if not m:
-            _fail("ProofGate answer unparsed")
-        if m.group(3) != "True":
-            _fail("the live ResearchProjectDef carries no RM_PyrelandsOnlyResearch: gated=%s" % m.group(3))
-        holds = m.group(2) == "True"
-        ungated, snap = can_start(False)
-        gated, _ = can_start(True)
-        _note(t, "research gate", {"holdsPyrelands": holds, "canStartUngated": ungated, "canStartGated": gated,
-                                   "project": snap})
-        if snap.get("isFinished") or snap["progress"] > 0:
-            raise ExpectationFailed("UNMEASURED: %s is finished or begun (progress %r), which the gate exempts "
-                                    "by design" % (project, snap["progress"]))
-        if not ungated:
-            raise ExpectationFailed("UNMEASURED: vanilla already refuses %s here (bench, prerequisites, "
-                                    "techprints), so the gate's own refusal cannot be seen" % project)
-        if gated != holds:
-            _fail("with breakerPyrelandsOnly on, %s can start=%s while the player holds a Pyrelands home=%s"
-                  % (project, gated, holds))
-    _independent(t)
-    with t.component("short_circuit_trips_and_spares_the_far_side", toggle="lightningBreakerEnabled"):
-        need_session("ProofTrip")
-        _set(t, {"lightningBreakerEnabled": True})   # this component's own state; restored by the teardown
-        text = call("ProofTrip", "x")
-        m = re.search(r"oneNetBefore=True tripped=True storedA=(\d+) storedB=(\d+) splitAfter=True", text)
-        if not m or int(m.group(1)) > 1 or int(m.group(2)) < 500:
-            _fail("trip: %s" % text[:240])
-        t.screenshot()

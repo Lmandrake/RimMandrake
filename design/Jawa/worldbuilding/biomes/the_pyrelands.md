@@ -17,7 +17,7 @@ flame-line collecting a debt.**_
 
 🔑 **This sheet is an assembly on ruled fire canon** — `hydrology_and_fire_ecology.md`
 R-H3/R-H4/R-H9 (2026-08-15) and the **fire-ecology mod already built** at
-`src/RimMandrake/Pyrelands/` (`mandrake.rm.pyrelands`; the FireEcology name survives only in `FireEcologyHook.dll`) (scorch-fruit, BlackRain, ash terrains, fulgurite,
+`src/RimMandrake/Pyrelands/` (`mandrake.rm.pyrelands`; the FireEcology name survives only in `FireEcologyHook.dll`) (scorch-fruit, BlackRain, ash terrains,
 firefoam). What this sitting added: the water answer, the Rakatan crop, the four
 igniters, the three families, the Tribes' flame harvest and fire raids, and the
 Sun-Debt reconciliation.
@@ -161,8 +161,6 @@ against fuel-as-danger, opposite poles of one design.
   burn-line too — the Tribes notice how you do it.
 - **The herds** — the planet's richest grazing economy: meat, hides, and
   the pastoral game the dryland ladder never allowed.
-- **Fulgurite** (`RM_FE_Fulgurite`) — lightning-glass, "worthless to sell,
-  satisfying to find": the beachcombing of a thunderstorm country.
 - **Warmth on the hoof** — a furnace-beast herd is a walking hearth;
   caravans route with them toward the cold country.
 - **Ash-flush farming** — fields burned on purpose (Firebreak +
@@ -205,7 +203,7 @@ they will treat an unplanned burn as an act of war"*).
   lightning at the storm's base; BlackRain's filthy grey curtain, rare and
   total.
 - **Palette:** grass-gold, ash-black in migrating bands, regrowth's
-  shocking week-old green, fulgurite white in the black.
+  shocking week-old green.
 - **Silhouette language:** horizon-flat with walking interruptions — herd
   masses, a furnace-beast's shimmer-blur, hawk spirals over the flame-line,
   the Tribes' file of harvesters against the smoke.

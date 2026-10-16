@@ -74,7 +74,7 @@ WEATHERS = ("Clear", "RM_FE_Weather_AshDrift", "RM_FE_Weather_AshFall", "RM_FE_W
             "DryThunderstorm")
 GOLD, CREAM, TEAL, RUST = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b"
 EMBER, QUICK, POD = "RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass", "RM_FE_Plant_ScorchFruit"
-CHILL_C = 10                         # stations 27-28 start here (the heat pusher works below 24 C; outside is ~55 C)
+CHILL_C = 10                         # stations 23-24 start here (the heat pusher works below 24 C; outside is ~55 C)
 CAMPAIGN = ["RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka"]
 
 
@@ -86,15 +86,6 @@ def _pad(x=2, z=2, w=8, h=8):
 def _pen(kind, n=1, flyer=False, note=""):
     """A walled, roofed granite pen (make_empty_room) with deep-ash floor: wild animals cannot open its door."""
     return dict(room=(1, 1, 10, 10), pawns=[(kind, 6, 6, n)], keep=True, flyer=flyer, note=note)
-
-
-def _breaker_chain(fuel, charge):
-    """battery - conduit x2 - breaker - conduit x2 - battery, the ProofTrip layout, at local z 5. Only a charged net can
-    be picked by a short circuit (Zzzt), so the unarmed twin keeps its batteries empty."""
-    return dict(build=[("Battery", 2, 5, 0, None), ("PowerConduit", 3, 5, None, None), ("PowerConduit", 4, 5, None, None),
-                       ("RM_LightningBreaker", 5, 5, None, None), ("PowerConduit", 6, 5, None, None),
-                       ("PowerConduit", 7, 5, None, None), ("Battery", 8, 5, 0, None)],
-                battery=[(2, 5, charge), (8, 5, charge)], refuel=[("RM_LightningBreaker", 5, 5, fuel)])
 
 
 def station_defs():
@@ -139,13 +130,6 @@ def station_defs():
         "Nothing; colonists may clean it if it is in the home area (it is not).",
         spawn=[("RM_FE_Filth_LooseAsh", 2 + 2 * i, z, i + 1) for i in range(4) for z in range(3, 9)],
         expect_things=["RM_FE_Filth_LooseAsh"])
-    add("A", "FULGURITE ON SAND", "lightning glass where a strike hit sand",
-        "Three RM_FE_Fulgurite lumps on Pyrelands sand: how the glass reads at play zoom.",
-        ["--weather DryThunderstorm and unpause: strikes on sand leave fulgurite (35% a strike).",
-         "Haul one: it is an item (fulgurite)."], "Locked Clear weather: no lightning until you switch weather.",
-        terrain=[("RM_FE_Ground_Sand", 2, 2, 8, 8)],
-        spawn=[("RM_FE_Fulgurite", 4, 4, 1), ("RM_FE_Fulgurite", 7, 6, 1), ("RM_FE_Fulgurite", 5, 8, 1)],
-        expect_things=["RM_FE_Fulgurite"])
     add("A", "HEAT: SUN VS SHADE", "overhead sun; a roof answers it",
         "West pad open sky, east pad under a roof on four granite posts. The cell temperature is the same; the "
         "difference is in a pawn's felt heat (the sun-heat kind 'overhead', +4..10 C, from the shared "
@@ -254,40 +238,20 @@ def station_defs():
         expect_terrain={"WaterShallow": 1})
 
     # ---- D BUILD AND CRAFT
-    add("D", "BREAKER: ARMED", "battery, breaker, battery; hopper full",
-        "A lightning breaker between two charged batteries, its hopper full of glass sand. A short circuit on one "
-        "side trips it and spares the other side's batteries. Weak spot: the tripped (_Off) drawing.",
-        ["Dev > Incidents > Zzzt (short circuit): it can only pick a conduit here (21's batteries are empty and the "
-         "shelter has no conduit).",
-         "Then read both batteries and click 'Re-arm breaker'."],
-        "Nothing until a short circuit.",
-        expect_things=["RM_LightningBreaker", "Battery"], **_breaker_chain(30, 1.0))
-    add("D", "BREAKER: NO GLASS", "the same chain, hopper empty: not armed",
-        "Inspect reads 'Not armed: needs 10 glass sand'. Weak spot: does an unarmed breaker look different at all?",
-        ["Select the breaker: hopper 0 / 30.", "Drop glass sand from F and let a colonist refuel it."],
-        "Nothing.", expect_things=["RM_LightningBreaker", "Battery"], **_breaker_chain(0, 0.0))
-    add("D", "BREAKER CORE: SMITHY", "metal and glass sand at the smithy",
-        "A fueled smithy with steel, glass sand and wood beside it, and one finished breaker core. The research is "
-        "finished on this map (god mode); its Pyrelands-only gate is the matrix's to show.",
-        ["Smithy > Bills > Make lightning breaker core.", "Hover the core on the floor: its drawing."],
-        "A colonist would craft it (they are drafted in the shelter).",
-        build=[("FueledSmithy", 4, 6, 0, None)],
-        items=[("Steel", 75, 2, 3), ("RM_GlassSand", 50, 4, 3), ("WoodLog", 50, 6, 3), ("RM_LightningBreakerCore", 1, 8, 3)],
-        expect_things=["FueledSmithy", "RM_LightningBreakerCore"])
     add("D", "SHOVEL SAND", "an order: sand to glass sand, leaves gravel",
         "A Pyrelands sand patch. Orders > Shovel sand: a miner digs 5 glass sand a cell and the cell becomes gravel "
         "(a finite deposit). Weak spot: whether a miner takes the order at all (proven only by ProofShovel).",
         ["Orders > Shovel sand over the patch; undraft a colonist with Mining (heat!).", "Unpause."],
         "The colonist digs; glass sand piles up; gravel is left.",
         terrain=[("RM_FE_Ground_Sand", 2, 3, 8, 6)], expect_terrain={"RM_FE_Ground_Sand": 40})
-    add("D", "PYRELANDS ITEMS", "hide, glass, fruit, core, sprayer",
-        "Furnace hide, fulgurite, scorch-fruit, breaker core, firefoam sprayer and glass sand, one stack each, "
+    add("D", "PYRELANDS ITEMS", "hide, fruit, sprayer, glass sand",
+        "Furnace hide, scorch-fruit, firefoam sprayer and glass sand, one stack each, "
         "west to east. Weak spot: the furnace hide has no texture of its own (it draws its parent leather).",
         ["Hover each: label and description.", "Equip the sprayer and aim it at BURNING NOW."], "Fruit rots in ~4 days.",
-        items=[("RM_FurnaceHide", 20, 2, 6), ("RM_FE_Fulgurite", 3, 4, 6), ("RM_FE_ScorchFruitYield", 10, 6, 6),
-               ("RM_LightningBreakerCore", 1, 8, 6), ("RM_FE_FirefoamSprayer", 1, 10, 6), ("RM_GlassSand", 30, 6, 3)],
-        marks=[(2, 8, "hide"), (4, 8, "glass"), (6, 8, "fruit"), (8, 8, "core"), (10, 8, "sprayer")],
-        expect_things=["RM_FurnaceHide", "RM_FE_Fulgurite", "RM_FE_FirefoamSprayer"])
+        items=[("RM_FurnaceHide", 20, 2, 6), ("RM_FE_ScorchFruitYield", 10, 6, 6),
+               ("RM_FE_FirefoamSprayer", 1, 10, 6), ("RM_GlassSand", 30, 6, 3)],
+        marks=[(2, 8, "hide"), (4, 8, "glass"), (6, 8, "fruit"), (10, 8, "sprayer")],
+        expect_things=["RM_FurnaceHide", "RM_FE_FirefoamSprayer"])
 
     # ---- E CREATURES (the fire cast, each alone in a roofed pen)
     add("E", "FIRE-HAWK", "flyer, shown standing only",
@@ -367,9 +331,6 @@ SIGNS = {
     "LOOSE ASH DRIFTS": ("loose ash, 1 to 4 layers, west to east",
                          "select a drift; clean it if you like",
                          "do thick drifts read as ash, or as dirt?"),
-    "FULGURITE ON SAND": ("three lumps of lightning glass on sand",
-                          "zoom to play distance; haul one",
-                          "do the lumps read as glass at play zoom?"),
     "HEAT: SUN VS SHADE": ("west pad open sky, east pad under a roof",
                            "walk a colonist onto each pad; watch his heatstroke",
                            "does the roofed pad clearly slow heatstroke?"),
@@ -409,19 +370,10 @@ SIGNS = {
     "ASH + WATER": ("ash strip, water at the west end, potatoes",
                     "hover beside the water, then the dry end",
                     "140% by water, 40% dry: do the crops show it?"),
-    "BREAKER: ARMED": ("breaker between two charged batteries",
-                       "Dev > Incidents > Zzzt, then read both batteries",
-                       "did it trip and save one side? does tripped look tripped?"),
-    "BREAKER: NO GLASS": ("the same chain, hopper empty",
-                          "select the breaker: 'Not armed'",
-                          "does an unarmed breaker look different at all?"),
-    "BREAKER CORE: SMITHY": ("smithy, steel, glass sand, one finished core",
-                             "Smithy > Bills > Make lightning breaker core",
-                             "is the bill there? does the core look right?"),
     "SHOVEL SAND": ("a patch of Pyrelands sand",
                     "Orders > Shovel sand; undraft a miner; unpause",
                     "does he dig glass sand and leave gravel?"),
-    "PYRELANDS ITEMS": ("hide, glass, fruit, core, sprayer, glass sand",
+    "PYRELANDS ITEMS": ("hide, fruit, sprayer, glass sand",
                         "hover each item for its label and text",
                         "does each have its own look? (hide borrows leather)"),
     "FIRE-HAWK": ("a flyer, shown standing only",
@@ -453,7 +405,7 @@ SIGNS = {
 CAMPAIGN_SIGN = ("a canon animal the campaign adds here", "look at all three facings",
                  "does it belong in the Pyrelands?")
 BOARD_SIGNS = {
-    "N0": ("what the biome grew by itself", "walk it; compare station 16",
+    "N0": ("what the biome grew by itself", "walk it; compare station 15",
            "grass everywhere, ash where burned, no bare dirt?"),
     "R": ("the nearest ruin on the map", "look at the ground under and round it",
           "is the ruin blackened, or pristine?"),
@@ -496,45 +448,44 @@ FEATURES = [
     # terrain
     ("terrain", "Deep ash (RM_FE_Ash_Deep): ordinary ground, art", "Defs/TerrainDefs/AshField.xml", "1 N0"),
     ("terrain", "Unburned pockets: soil, rich soil, gravel, sand (RM_FE_Ground_*)", "ScorchableGround.xml", "2"),
-    ("terrain", "Every ground burns to deep ash in one step (burnedDef)", "ScorchableGround.xml", "8 9"),
+    ("terrain", "Every ground burns to deep ash in one step (burnedDef)", "ScorchableGround.xml", "7 8"),
     ("terrain", "Water ringed with mud and rich soil (terrainPatchMakers)", "BiomeDefs/Pyrelands.xml", "3 N0"),
-    ("terrain", "Firebreak line: buildable floor that stops fire", "TerrainDefs/Firebreak.xml", "4 13"),
+    ("terrain", "Firebreak line: buildable floor that stops fire", "TerrainDefs/Firebreak.xml", "4 12"),
     ("terrain", "Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)", "AshField.xml", None,
      "they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none "
      "remain. Their three PNGs are orphaned (named on station 1's card)."),
     # plants
-    ("plant", "Ember grass: three drawings, fast growth (growDays 0.8)", "ThingDefs_Plants/EmberGrass.xml", "14 16"),
-    ("plant", "Ember grass leafless (burnt) drawings, 4 variants", "EmberGrass.xml", "9",
-     "only a plant made leafless shows them; 9 shows any survivor of the burn, else they stay unseen"),
-    ("plant", "Quickgrass: three growth stages (Plant_GrowthStaged, PlantGrowthStages.cs)", "Quickgrass.xml", "15"),
-    ("plant", "Quickgrass leafless drawing", "Quickgrass.xml", "9",
-     "as ember grass: shown only on a leafless survivor at 9"),
-    ("plant", "Ground cover saturation (PYRELANDS_GRASS_SATURATION_1, owner look owed)", "BiomeDefs/Pyrelands.xml", "16 N0"),
+    ("plant", "Ember grass: three drawings, fast growth (growDays 0.8)", "ThingDefs_Plants/EmberGrass.xml", "13 15"),
+    ("plant", "Ember grass leafless (burnt) drawings, 4 variants", "EmberGrass.xml", "8",
+     "only a plant made leafless shows them; 8 shows any survivor of the burn, else they stay unseen"),
+    ("plant", "Quickgrass: three growth stages (Plant_GrowthStaged, PlantGrowthStages.cs)", "Quickgrass.xml", "14"),
+    ("plant", "Quickgrass leafless drawing", "Quickgrass.xml", "8",
+     "as ember grass: shown only on a leafless survivor at 8"),
+    ("plant", "Ground cover saturation (PYRELANDS_GRASS_SATURATION_1, owner look owed)", "BiomeDefs/Pyrelands.xml", "15 N0"),
     ("plant", "Only RM_FE grasses grow wild (WildPlantAllowlist.cs)", "Source/WildPlantAllowlist.cs", "N0",
      "a property of days of wild spawning: N0 shows the result; the matrix's plant_distribution_correct counts it"),
     ("plant", "Plant density enforcer (RM_PyrelandsDensityEnforcer.cs)", "Source", "N0",
      "shows only as the natural cover at N0; the matrix's grass_chokes_ground measures it"),
-    ("plant", "Scorch-fruit pod: growth, four drawings", "ThingDefs_ScorchFruit/ScorchFruit.xml", "17"),
-    ("plant", "Scorch-fruit is fire-born: seeded on burned cells (1 in 20, map cap 40)", "FireEcologyHook.cs", "9"),
-    ("plant", "Scorch-fruit harvest yields food; eating feeds", "ScorchFruit.xml", "18"),
-    ("plant", "Scorch-fruit spoils: fruit ~4 days, ripe pod withers ~1 day", "ScorchFruit.xml", "17 18"),
+    ("plant", "Scorch-fruit pod: growth, four drawings", "ThingDefs_ScorchFruit/ScorchFruit.xml", "16"),
+    ("plant", "Scorch-fruit is fire-born: seeded on burned cells (1 in 20, map cap 40)", "FireEcologyHook.cs", "8"),
+    ("plant", "Scorch-fruit harvest yields food; eating feeds", "ScorchFruit.xml", "17"),
+    ("plant", "Scorch-fruit spoils: fruit ~4 days, ripe pod withers ~1 day", "ScorchFruit.xml", "16 17"),
     ("plant", "Thornvine made edible for the furnace-beast (RUT_Thornvine_Edible.xml)", "PyrelandsMechanics/Patches",
      None, "thornvine is another mod's plant and the beast must roam free to eat it; no review map can pen both"),
     # ground mechanics
-    ("mechanic", "Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water)", "PyrelandsAshField.cs", "19"),
-    ("mechanic", "Fresh-burn bonus (+0.50 fading over 6 days)", "PyrelandsAshField.cs", "9 11"),
-    ("mechanic", "Black rain washes the bonus away and waters the field", "PyrelandsAshField.cs", "11 G"),
-    ("mechanic", "Fire dusts loose ash (RM_FE_Filth_LooseAsh)", "FireEcologyHook.cs", "5 9"),
+    ("mechanic", "Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water)", "PyrelandsAshField.cs", "18"),
+    ("mechanic", "Fresh-burn bonus (+0.50 fading over 6 days)", "PyrelandsAshField.cs", "8 10"),
+    ("mechanic", "Black rain washes the bonus away and waters the field", "PyrelandsAshField.cs", "10 G"),
+    ("mechanic", "Fire dusts loose ash (RM_FE_Filth_LooseAsh)", "FireEcologyHook.cs", "5 8"),
     ("mechanic", "Ash fall lays drifts that keep accumulating", "PyrelandsAshField.cs", "5 G"),
     ("mechanic", "Ambient ash drift is the commonest weather", "PyrelandsAshField.cs", "G"),
-    ("mechanic", "Lightning on sand leaves fulgurite (35% a strike)", "FireEcologyHook.cs", "6 G"),
     ("mechanic", "Standing burn line: the map is never fireless for 2 days (MapComponent_BurnLine)", "Source", "L",
      "the calm world puts it out; L's card says how it relights (2 quiet days at 3x)"),
     ("mechanic", "Fire front: a grass line goes up every 2-4 days (PyrelandsFireFront.cs)", "Source", "L",
      "a clock over days; L's card warns that it can light station grass once you unpause"),
-    ("mechanic", "Fire burns on deep ash and stamps the burn (fire-tick gate)", "FireEcologyHook.cs", "10 11"),
+    ("mechanic", "Fire burns on deep ash and stamps the burn (fire-tick gate)", "FireEcologyHook.cs", "9 10"),
     ("mechanic", "Ruins generate scorched and burned (GenStep RM_FE_ScorchRuins)", "GenStepDefs", "R"),
-    ("mechanic", "Overhead sun heat kind (+10 C at the substellar point; roofs answer it)", "BiomeDefs/Pyrelands.xml", "7"),
+    ("mechanic", "Overhead sun heat kind (+10 C at the substellar point; roofs answer it)", "BiomeDefs/Pyrelands.xml", "6"),
     ("mechanic", "Arrival letter on a new Pyrelands map", "BiomeDefs/Pyrelands.xml", None,
      "fires once when a colony first arrives; the review map is an already-settled site"),
     ("mechanic", "Acoustic-scanner payload for the biome", "Patches/RM_AcousticPayload_Pyrelands.xml", None,
@@ -542,51 +493,44 @@ FEATURES = [
     ("mechanic", "Mapgen raises no errors; plant and animal populations are the roster's", "validation.py", None,
      "a mapgen census, not a look: the matrix's mapgen_log_clean / *_distribution_correct; N0 shows the result"),
     # creatures
-    ("animal", "Fire-hawk: three standing facings", "RM_PyrelandsFauna.xml", "25"),
+    ("animal", "Fire-hawk: three standing facings", "RM_PyrelandsFauna.xml", "21"),
     ("animal", "Fire-hawk flying frames (5) and ember carrying (CompFireHawkSpread)", "RM_PyrelandsFauna.xml", None,
      "a flight: judged only with the owner present (FIREHAWK_FLIGHT_BEHAVIOR_1), never staged here"),
-    ("animal", "Fire-wasp: three standing facings", "RM_PyrelandsPortedFauna.xml", "26"),
+    ("animal", "Fire-wasp: three standing facings", "RM_PyrelandsPortedFauna.xml", "22"),
     ("animal", "Fire-wasp fly frames (8)", "RM_PyrelandsPortedFauna.xml", None, "a flight: owner-present only"),
-    ("animal", "Furnace-beast, giant art (setting furnaceBeastGiant, default on)", "RM_PyrelandsGiants.cs", "27"),
+    ("animal", "Furnace-beast, giant art (setting furnaceBeastGiant, default on)", "RM_PyrelandsGiants.cs", "23"),
     ("animal", "Furnace-beast classic (non-giant) art", "RM_PyrelandsFauna.xml", None,
      "only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here"),
     ("animal", "Furnace-beast heats an enclosed room (vanilla heat pusher, to 24 C, + its charged radiant push)",
-     "RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs", "27 28"),
-    ("animal", "Furnace-beast warmth aura (felt temperature near it)", "CompFurnaceWarmthAura.cs", "27"),
-    ("animal", "Furnace-beast bed-down ignition", "CompFurnaceBedIgnition.cs", "27"),
+     "RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs", "23 24"),
+    ("animal", "Furnace-beast warmth aura (felt temperature near it)", "CompFurnaceWarmthAura.cs", "23"),
+    ("animal", "Furnace-beast bed-down ignition", "CompFurnaceBedIgnition.cs", "23"),
     ("animal", "Furnace-beast thermal cycle: walks into fire to charge", "JobGiver_RUT_FurnaceThermalCycle.cs", None,
      "needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row"),
-    ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", "27",
+    ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", "23",
      "visible only as it surviving its own fire; the card says how"),
     ("animal", "Furnace-beast herd world migration (WorldObject RM_FurnaceHerd)", "WorldObject_RM_FurnaceHerd.cs", "W"),
-    ("animal", "Ullai herd: three facings, herd size", "RM_Ullai.xml", "29"),
+    ("animal", "Ullai herd: three facings, herd size", "RM_Ullai.xml", "25"),
     ("animal", "Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)", "RM_Ullai.xml", None,
      "needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet)"),
-    ("animal", "Ashwallow: three facings", "RM_Ashwallow.xml", "30"),
-    ("animal", "Burrow ahead of the fire (RM_Burrowed status)", "RM_JobGiver_BurrowOnFire.cs", "12"),
-    ("animal", "Emberscythe: three facings", "RM_Emberscythe.xml", "31"),
-    ("animal", "Sytheclaw: three facings", "RM_PyrelandsPortedFauna.xml", "32"),
-    ("animal", "Barbslinger: three facings", "RM_PyrelandsPortedFauna.xml", "33"),
+    ("animal", "Ashwallow: three facings", "RM_Ashwallow.xml", "26"),
+    ("animal", "Burrow ahead of the fire (RM_Burrowed status)", "RM_JobGiver_BurrowOnFire.cs", "11"),
+    ("animal", "Emberscythe: three facings", "RM_Emberscythe.xml", "27"),
+    ("animal", "Sytheclaw: three facings", "RM_PyrelandsPortedFauna.xml", "28"),
+    ("animal", "Barbslinger: three facings", "RM_PyrelandsPortedFauna.xml", "29"),
     ("animal", "Barbslinger tail gun and spike projectile art", "RM_PyrelandsPortedFauna.xml", None,
-     "a fight, not a look: draft a colonist at 33 in god mode to see it"),
-    ("animal", "Flamefang: three facings", "RM_PyrelandsPortedFauna.xml", "34"),
+     "a fight, not a look: draft a colonist at 29 in god mode to see it"),
+    ("animal", "Flamefang: three facings", "RM_PyrelandsPortedFauna.xml", "30"),
     ("animal", "Flamefang venom bite (RM_FlamefangVenom)", "HediffDefs", None,
-     "a fight, not a look: let it bite a god-mode colonist at 34"),
+     "a fight, not a look: let it bite a god-mode colonist at 30"),
     ("animal", "Dessicated (rotted corpse) drawings, five animals", "Textures/Things/Pawn/Animal/Pyrelands", None,
      "needs a fully rotted corpse (days of sim); kill one in its pen and run 3x for a few days to check by hand"),
-    ("animal", "Campaign cast on the Pyrelands roster (7 RSW_ kinds, UtinniPatches)", "WildAnimals_Pyrelands.xml", "35-41"),
+    ("animal", "Campaign cast on the Pyrelands roster (7 RSW_ kinds, UtinniPatches)", "WildAnimals_Pyrelands.xml", "31-37"),
     # buildings and items
-    ("building", "Lightning breaker: armed, trips on a short circuit, re-arms", "RM_LightningBreaker.cs", "20"),
-    ("building", "Lightning breaker: not armed with an empty hopper", "RM_LightningBreaker.cs", "21"),
-    ("building", "Lightning breaker tripped drawing (_Off)", "Textures/Things/Building/Power", "20"),
-    ("building", "Breaker core: metal and glass sand at the smithy", "LightningBreaker/RM_LightningBreaker.xml", "22"),
-    ("building", "Breaker research learnable only with a Pyrelands home", "RM_LightningBreaker.cs", None,
-     "research is finished on the review map (god mode); the matrix's research_only_in_the_pyrelands shows the gate"),
-    ("building", "Shovel sand order (sand -> 5 glass sand, leaves gravel)", "RM_TerrainDig.cs", "23"),
-    ("item", "Firefoam sprayer and its splash", "ThingDefs_Sprayer/FirefoamSprayer.xml", "24 10 13"),
-    ("item", "Furnace hide", "ThingDefs_Items/RM_FurnaceHide.xml", "24"),
-    ("item", "Fulgurite (lightning glass)", "ThingDefs_Fulgurite/Fulgurite.xml", "6 24"),
-    ("item", "Scorch-fruit (the harvested food)", "ScorchFruit.xml", "18 24"),
+    ("building", "Shovel sand order (sand -> 5 glass sand, leaves gravel)", "RM_TerrainDig.cs", "19"),
+    ("item", "Firefoam sprayer and its splash", "ThingDefs_Sprayer/FirefoamSprayer.xml", "20 9 12"),
+    ("item", "Furnace hide", "ThingDefs_Items/RM_FurnaceHide.xml", "20"),
+    ("item", "Scorch-fruit (the harvested food)", "ScorchFruit.xml", "17 20"),
     # weather
     ("weather", "Ash fall", "WeatherDefs/AshFall.xml", "G"),
     ("weather", "Ash drift", "WeatherDefs/AshFall.xml", "G"),
@@ -620,16 +564,16 @@ BOARDS = {
     "G": ("WEATHER SWITCH", "one global switch: --weather NAME",
           "Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: free-flying ash like snow "
           "(the commonest). RM_FE_Weather_AshFall: the map dims, loose-ash drifts pile up. RM_FE_Weather_Cinderfall: "
-          "glowing cinders, must not read as ash fall renamed. RM_FE_BlackRain: dark rain, washes the burn bonus at 11, "
-          "waters ash. DryThunderstorm: lightning without rain; strikes on sand leave fulgurite (6), and a strike on "
+          "glowing cinders, must not read as ash fall renamed. RM_FE_BlackRain: dark rain, washes the burn bonus at 10, "
+          "waters ash. DryThunderstorm: lightning without rain; a strike on "
           "station grass starts a fire there. There is no "
           "ordinary rain here. Unpause to see it fall; --weather Clear puts the calm back."),
     "S": ("MOD SETTINGS", "Options > Mod Settings > Pyrelands",
-          "Every toggle at its shipped default. Station by setting: fulgurite 6; fire dusts ash 5, 9; scorch-fruit "
-          "seeding 9, 17; ash-fall drifts 5, G; watered ash 19; fresh-burn bonus 9, 11; rain fades bonus 11; ambient "
-          "drift G; growth stages 15; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying "
-          "25 (flight, owner-present); furnace thermal 27-28; fire clock E; world migration W; giant furnace-beast 27 "
-          "(restart); ullai herds 29 (restart); burrowing 12; breakers 20-22; shovel sand 23; cross-biome (off). "
+          "Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; scorch-fruit "
+          "seeding 8, 16; ash-fall drifts 5, G; watered ash 18; fresh-burn bonus 8, 10; rain fades bonus 10; ambient "
+          "drift G; growth stages 14; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying "
+          "21 (flight, owner-present); furnace thermal 23-24; fire clock E; world migration W; giant furnace-beast 23 "
+          "(restart); ullai herds 25 (restart); burrowing 11; shovel sand 19; cross-biome (off). "
           "PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E."),
     "W": ("WORLD MAP", "press the World tab",
           "The site sits in a 2-ring Pyrelands patch: the biome's world drawing. A furnace-beast herd marker "
@@ -715,7 +659,6 @@ def layout_check(S, defs_known=None):
                     P.append("station %d %s op %s leaves the footprint" % (s["n"], key, op))
         cells = [(op[0], op[1], op[2]) for k in ("build", "spawn", "pawns") for op in u.get(k, [])]
         cells += [(op[0], op[2], op[3]) for op in u.get("items", [])]
-        cells += [(op[0], op[1], op[2]) for op in u.get("refuel", [])]
         cells += [("probe " + op[3], op[1], op[2]) for op in u.get("probes", [])]
         for d, cx, cz in cells:
             if not (0 <= cx < SW and 0 <= cz < SH):
@@ -774,8 +717,6 @@ def station_def_names(s):
     for key in ("terrain", "plants", "build", "items", "spawn", "pawns", "roof"):
         for op in u.get(key, []):
             out.add(op[0])
-    for d, *_ in u.get("refuel", []):
-        out.add(d)
     out.update(u.get("expect_things", []))
     out.update(u.get("expect_terrain", {}))
     out.discard("Fire")
@@ -965,7 +906,7 @@ def keysheet(S, live=None, save=None, weather="Clear"):
         md += ["### %s. %s" % (k, t.capitalize()), "", "*%s.*" % sub, "",
                "**Sign:** LOOK: %s. DO: %s. DECIDE: %s" % (lk, do, dec), "", body, ""]
     md += ["### F. Free area and shelter", "", "A roofed granite shelter with two coolers on a solar + battery net "
-           "(no conduits, so a short circuit can only hit station 20). Colonists stand drafted inside; undraft one to "
+           "(two batteries, no conduits). Colonists stand drafted inside; undraft one to "
            "use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, "
            "medicine, two firefoam sprayers.", ""]
     if live:
@@ -1181,8 +1122,7 @@ class Review(object):
             self.call("jawa/build_batch", ops="Door:%d,%d" % (x + w // 2, z), stuff=WALL_STUFF, faction="player",
                       wipeExisting=True)
             self.notes.append("shelter door re-made at the south wall (a cooler took the random one)")
-        # two batteries side by side (one net), the panel touching the east one; no conduit anywhere, so a short
-        # circuit (Zzzt) can only ever pick station 20's conduits
+        # two batteries side by side (one net), the panel touching the east one; no conduit anywhere
         self.call("jawa/build_batch", ops="Battery:%d,%d,0;Battery:%d,%d,0" % (x + 4, top + 2, x + 5, top + 2),
                   faction="player", wipeExisting=False)
         self.call("jawa/build_batch", ops="SolarGenerator:%d,%d" % (x + 7, top + 3), faction="player", wipeExisting=False)
@@ -1246,13 +1186,6 @@ class Review(object):
                 self.call("jawa/spawn_batch", ops="%s:%d,%d,%d" % ((d,) + g(x, z) + (n_,)))
             for d, n_, x, z in u.get("items", []):
                 self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=ox + x, z=oz + z)
-            for x, z, pct in u.get("battery", []):
-                for t in self.B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % g(x, z), limit=3).get("things") or []:
-                    self.call("jawa/battery_set", thing=str(t.get("id") or t.get("thingId")), mode="setPct", value=pct)
-            for d, x, z, amount in u.get("refuel", []):
-                for t in self.B.call("jawa/list_things", defName=d, rect="%d,%d,1,1" % g(x, z), limit=3).get("things") or []:
-                    if amount:
-                        self.call("jawa/thing_refuel", thingId=str(t.get("id") or t.get("thingId")), amount=float(amount))
         self.say("gallery: %d stations laid" % len(S))
 
     def plant(self, S, which):
@@ -1268,7 +1201,7 @@ class Review(object):
                 dens = op[6] if len(op) > 6 else 1.0
                 seed = op[7] if len(op) > 7 else s["n"]
                 # only a station's FIRST planting clears: set_plants clearFirst wipes the WHOLE rect, so a second
-                # overlapping mix (ember then quick) used to replace the first (station 16 showed quickgrass only, L2)
+                # overlapping mix (ember then quick) used to replace the first (the ground-cover mix showed quickgrass only, L2)
                 r = self.call("jawa/set_plants", ops="%s:%d,%d,%d,%d" % (d, ox + x, oz + z, w, h), growth=growth,
                               density=dens, seed=seed, clearFirst=(k == 0))
                 if r.get("planted") == 0:

@@ -33,7 +33,7 @@ PLANTS = [
     ("settings key differs from field", "Source/RM_PyrelandsMod.cs", 'Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);', 'Scribe_Values.Look(ref ashfallRateMultiplier, "ashRate", 1f);', "settings-scribed"),
     ("settings default differs from initialiser", "Source/RM_PyrelandsMod.cs", '"ashfallRateMultiplier", 1f)', '"ashfallRateMultiplier", 2f)', "settings-scribed"),
     ("slider range excludes the default", "Source/RM_PyrelandsMod.cs", "list.Slider(ashfallRateMultiplier, 0.25f, 3f)", "list.Slider(ashfallRateMultiplier, 1.5f, 3f)", "settings-range"),
-    ("a kernel file missing from the mod csproj", "Source/FireEcologyHook.csproj", '<Compile Include="Kernel\\RM_BreakerKernel.cs" />', "", "compile-listed"),
+    ("a kernel file missing from the mod csproj", "Source/FireEcologyHook.csproj", '<Compile Include="Kernel\\RM_BurnKernel.cs" />', "", "compile-listed"),
     ("a kernel file missing from the fuzz project", "Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj", '<Compile Include="..\\..\\Kernel\\RM_FireEcoKernel.cs" />', "", "pyrelands-kernel"),
     ("FurnaceWarmthMath missing from the fuzz project", "Source/SelfTest/Fuzz/RimMandrakePyrelands.Fuzz.csproj", '<Compile Include="..\\..\\FurnaceWarmthMath.cs" />', "", "pyrelands-kernel"),
     ("an engine reference inside a kernel", "Source/Kernel/RM_FireEcoKernel.cs", "using System;\n", "using System;\nusing Verse;\n", "pyrelands-kernel"),

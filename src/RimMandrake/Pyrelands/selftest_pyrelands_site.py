@@ -159,7 +159,7 @@ class FakeGame(object):
                 self.settings[fld] = p["value"]
                 return {"success": True, "valueAfter": p["value"]}
             v = self.settings[fld]
-            if "setting_off" in f and fld == "fulguriteEnabled":
+            if "setting_off" in f and fld == "ashDustingEnabled":
                 v = "False"
             return {"success": True, "field": fld, "value": v}
         if tool == "rimworld/step_game_ticks":
@@ -422,7 +422,7 @@ class FakeEnv(P.Env):
         with open(self.player_log, "w") as fh:
             fh.write("\n".join(log) + "\n")
         with open(os.path.join(self.config_dir, "Mod_123_RM_PyrelandsMod.xml"), "w") as fh:
-            fh.write("<SettingsBlock><ModSettings><fulguriteEnabled>True</fulguriteEnabled></ModSettings></SettingsBlock>")
+            fh.write("<SettingsBlock><ModSettings><ashDustingEnabled>True</ashDustingEnabled></ModSettings></SettingsBlock>")
         biome_off = "<li><key>Pyrelands</key><value>False</value></li>" if "biome_off" in self.faults else ""
         with open(os.path.join(self.config_dir, "Mod_456_RM_BiomesMod.xml"), "w") as fh:
             fh.write("<SettingsBlock><ModSettings><enabled>%s<li><key>Warscar</key><value>True</value></li>"
@@ -578,70 +578,6 @@ def test_manifests_match_suite():
           any(c[0] == "burn_line" for c in v.suite.chains), [c[0] for c in v.suite.chains])
     check("northstar_plan main split skips burn_line",
           "--skip-chains embergrass_regrow,burn_line" in open(os.path.join(HERE, "northstar_plan.py"), encoding="utf-8").read())
-
-
-def test_fulgurite_sand_patch():
-    """PYRE_FULGURITE_BUILD_NO_SAND_TO_STRIKE: a site with no sand gets a snapshotted, restorable sand patch."""
-    sys.path.insert(0, UTILS)
-    spec = importlib.util.spec_from_file_location("pyre_validation_sand", os.path.join(HERE, "validation.py"))
-    v = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(v)
-    check("sand patch needed at 0 of 61978 cells (site r3)", v.sand_patch_needed(0, 61978))
-    check("sand patch not needed at 50% sand", not v.sand_patch_needed(30000, 60000))
-    check("sand patch not needed with no land read (offline)", not v.sand_patch_needed(0, 0))
-    check("patch rect is the west half of the map", v.sand_patch_rect(250, 250) == (0, 0, 125, 250))
-    ops = ";".join("Soil:%d,0,1,250" % x for x in range(450))
-    chunks = v.split_restore_ops(ops, 200)
-    check("restore ops split in batches of <=200 and lose none",
-          [c.count(":") for c in chunks] == [200, 200, 50] and ";".join(chunks) == ops)
-
-    class Fake(object):
-        def __init__(self):
-            self.calls = []
-
-        def bridge_call(self, tool, **p):
-            self.calls.append((tool, p))
-            if tool == "jawa/map_info":
-                return {"sizeX": 250, "sizeZ": 250}
-            if tool == "jawa/get_terrain_batch":
-                return {"success": True, "cellsRead": 31250, "cellsRequested": 31250, "ops": "Soil:0,0,100,250;Gravel:100,0,25,250"}
-            return {"success": True}
-    f = Fake()
-    laid = v._lay_sand_patch(f)
-    sets = [c for c in f.calls if c[0] == "jawa/set_terrain"]
-    check("sand patch snapshots before it paints, once, sand, west half",
-          [c[0] for c in f.calls].index("jawa/get_terrain_batch") < [c[0] for c in f.calls].index("jawa/set_terrain")
-          and len(sets) == 1 and sets[0][1]["terrainDef"] == "Sand" and sets[0][1]["width"] == 125 and laid[0] == "0,0,125,250", sets)
-    v._restore_terrain(f, laid)
-    back = [c for c in f.calls if c[0] == "jawa/set_terrain_batch"]
-    check("restore re-applies the snapshot ops exactly", len(back) == 1 and back[0][1]["ops"] == "Soil:0,0,100,250;Gravel:100,0,25,250", back)
-
-    # The restore runs in a finally after the component may have FAILED or gone UNMEASURED, when t.bridge_call is a
-    # no-op (TestContext._guard): it must go through the session, and a refused restore is a teardown failure.
-    class _Sess(object):
-        def __init__(self, ok=True):
-            self.calls, self.ok = [], ok
-
-        def call(self, tool, **p):
-            self.calls.append((tool, p))
-            return {"success": self.ok}
-
-    class Failed(object):
-        def __init__(self, ok=True):
-            self.session, self.guarded = _Sess(ok), []
-
-        def bridge_call(self, tool, **p):
-            self.guarded.append(tool)
-            return None
-    v._GEN.pop("teardown_bad", None)
-    tf = Failed()
-    v._restore_terrain(tf, ("0,0,125,250", "Soil:0,0,100,250"))
-    check("restore after a failed component goes through the session, not the guarded bridge_call",
-          [c[0] for c in tf.session.calls] == ["jawa/set_terrain_batch"] and not tf.guarded
-          and not v._GEN.get("teardown_bad"), (tf.session.calls, tf.guarded))
-    tf = Failed(ok=False)
-    v._restore_terrain(tf, ("0,0,125,250", "Soil:0,0,100,250"))
-    check("a refused restore is queued for the chain teardown's FAIL", len(v._GEN.pop("teardown_bad", [])) == 1)
 
 
 def test_defaults_match_source():
@@ -1433,7 +1369,7 @@ def test_ash_control_and_herd_drive_2026_10_14():
 
 
 def main():
-    for t in (test_tier, test_manifests_match_suite, test_fulgurite_sand_patch, test_defaults_match_source, test_gate_a, test_gate_b,
+    for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,

@@ -147,12 +147,9 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
 1. **`biome_def_wiring`** asked about `RM_FE_Pyrelands`, a defName retired by
    `PYRELANDS_DEFNAME_RENAME_1`. `get_def` may also not serialise `terrainPatchMakers`. Re-target it
    to `RM_Pyrelands`, and fall back to an [O] XML read if the field is not exposed.
-2. **`fulgurite_armed_only`** expects the log prefix `[RimMandrake.StarWars.FireEcology]`, but the
-   source now logs `[RimMandrake.Pyrelands] fulgurite-spawn`. It passed in September and **will
-   false-fail** on the next run. Match on `fulgurite-spawn` alone.
-3. **`ash_ladder_escalation`** is retired with the ash ladder (2026-10-12 redesign).
-4. **`ashfall_accumulates`** counted inside a rect. Use bar 8's route instead.
-5. **Static settings fields.** The suite stopped short of toggling because they are static.
+2. **`ash_ladder_escalation`** is retired with the ash ladder (2026-10-12 redesign).
+3. **`ashfall_accumulates`** counted inside a rect. Use bar 8's route instead.
+4. **Static settings fields.** The suite stopped short of toggling because they are static.
    `jawa/mod_settings_field` now exists ("any public field, static OR instance"; closed
    `BRIDGE_STATIC_SETTINGS_FIELDS_1`). The OFF-arm floor checks therefore become possible:
    - toggle off → no effect;
@@ -209,7 +206,7 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
   and not a claim about the biome.
 - **Isolation for every controlled bar** (GPT #18). During bars 1–10, these are **all OFF**:
   `burnLineEnabled`, `fireHawkSpreadEnabled`, `fireClockEnabled`, `furnaceWorldMigrationEnabled`,
-  `burrowOnFireEnabled`, `furnaceThermalEnabled` and `fulguriteEnabled`. So is the storyteller.
+  `burrowOnFireEnabled` and `furnaceThermalEnabled`. So is the storyteller.
   Those mechanics get their own bars and arms (§2.4) on fresh fixtures.
 - **Statistics** (GPT #17). Purity (foreign = 0) stays deterministic and hard. Distribution shape:
   pool ≥ 150 wild animals, then report a multinomial goodness-of-fit against commonality-implied
@@ -229,7 +226,6 @@ the judge needs one.
 | `pyre_burn_line_present` | [L+V] `MapComponent_BurnLine` state read: an active front exists at gen; screenshot of the front and its scorched trail. Needs `burnLineEnabled` ON on its own fixture (it is OFF for bars 1–10, §2.3a). |
 | `pyre_scorchfruit_fire_born` | [L] after a controlled burn, ScorchFruit spawns inside the burned cohort; gen census (bar 1) finds none on unburned land. |
 | `pyre_ruins_scorched` | [L+V] a fixture whose mapgen placed a ruin: the ruin footprint carries ash terrain / scorch; screenshot. UNMEASURED: how often a 250×250 site gets a ruin — force one if the genstep allows. |
-| `pyre_fulgurite_after_lightning` | [L] force dry-lightning strikes on sand cells (n large enough at 0.35/strike); ≥ 1 `RM_FE_Fulgurite` at an impact cell. |
 | `pyre_firehawk_carries_ember` | [L] job read: `RUT_FireHawkCarryEmber` observed, and a new Fire within N cells of the drop. **Never** a flight or screenshot hunt (flyer ruling). |
 | `pyre_furnacebeast_warmth` | [L] pawn within the aura radius reads a higher `AmbientTemperature` (no hediff exists); it falls away after the pawn walks out. |
 | `pyre_furnacebeast_heats_room` | [L] two matched enclosed rooms at the same start temperature, one holding a furnace-beast; the room temperature delta after a settle. |
@@ -387,7 +383,7 @@ genstep's line as a by-product.
 ### 3.6 Weather, fog, settle and speed
 
 - **Lock** the weather to Clear during census, fire and growth steps. That stops
-  `DryThunderstorm` lightning (fulgurite, random fires) and BlackRain (it extinguishes fire) from
+  `DryThunderstorm` lightning (random fires) and BlackRain (it extinguishes fire) from
   contaminating the result. Unlock only for the weather bars.
 - **Weather transition:** after `weather_set`, settle **≥ 4,000 ticks** before a [V] capture
   (**UNMEASURED** constant; read `WeatherManager.TransitionLerpFactor` through RimSage). Assert

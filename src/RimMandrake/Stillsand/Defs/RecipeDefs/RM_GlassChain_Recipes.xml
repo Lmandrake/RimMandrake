@@ -3,9 +3,7 @@
   RM_GlassChain_Recipes.xml               RimMandrake — STILLSAND_GLASS_LENS_CHAIN_1 §3, §4, §6
 
   Plain glass sand makes plain sun glass; fine sand makes lens-grade glass (owner ruling
-  2026-09-30). The fulgurite melt is in Patches/RM_GlassChain_Fulgurite.xml, because the
-  fulgurite is the Pyrelands' def and an ingredient naming an absent def NREs the recipe
-  generator.
+  2026-09-30).
 -->
 <Defs>
 

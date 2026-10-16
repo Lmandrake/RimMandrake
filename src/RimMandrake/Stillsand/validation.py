@@ -1550,7 +1550,6 @@ def glass_chain(t):
             ("drift_clear_drops_glass_sand", "needs a driven drift clear on a Stillsand quicktest"),
             ("furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof", "needs a full bill cycle in sun, in a gale and under a roof"),
             ("oven_cooks_in_sun_not_shade", "needs a cooked meal in sun and in shade"),
-            ("lightning_on_deepsand_leaves_fulgurite_pyrelands_off", "needs a forced strike on RM_DeepSand with the Pyrelands master toggle off"),
             ("recipe_toggles_hide_recipes", "no bridge tool reads RecipeDef.AvailableNow for a bench")):
         with _comp(t, name):
             if _live(t):

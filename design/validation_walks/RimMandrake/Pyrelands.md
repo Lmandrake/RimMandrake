@@ -21,11 +21,6 @@ status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from
 - GenStep_Animals completes on Pyrelands mapgen with no
   BiomeDef.CommonalityOfAnimal NRE (a dangling wildAnimals PawnKindDef key kills
   the whole genstep and GiddyUp's startup cache — see MAYREQUIRE_OPERATION_INERT_SWEEP_1).
-- Lightning breakers (PYRELANDS_LIGHTNING_BREAKER_BUILD_1): a breaker core is metal and glass sand at the smithy;
-  the research begins only with a Pyrelands home (setting breakerPyrelandsOnly); a short circuit on one side of an
-  armed breaker trips it, splits the grid there and discharges only that side's batteries
-  → lightning_breaker.metal_and_sand_at_the_forge (static), lightning_breaker.research_only_in_the_pyrelands
-  (static + ProofGate), lightning_breaker.short_circuit_trips_and_spares_the_far_side (ProofTrip)
 - In the composed Baroque Biomes mod, its "Pyrelands" toggle off stops every mechanic that "Mod enabled" stops, on maps
   already running; the standalone mod (no shell) is governed by "Mod enabled" alone
   (PYRELANDS_SHIP_READINESS_1, PyrelandsMechanicsGate.cs)
@@ -107,9 +102,6 @@ freshly generated Pyrelands map in ordinary play.
       about a day.
 - [ ] `pyre_ruins_scorched` — ruins on a fresh Pyrelands map stand blackened
       and fire-scarred, not pristine.
-- [ ] `pyre_fulgurite_after_lightning` — after a dry-lightning storm strikes
-      sandy ground, at least one impact site bears a visible lump of fulgurite
-      glass.
 
 **The fire cast at work**
 - [ ] `pyre_firehawk_carries_ember` — a fire-hawk picks up a burning twig and

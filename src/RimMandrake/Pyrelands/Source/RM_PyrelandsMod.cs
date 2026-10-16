@@ -24,7 +24,6 @@ namespace RimMandrake.Pyrelands
     //      §6a: "the BiomeDef still loads"). Biome tile PLACEMENT has its
     //      own separate, worldgen-affecting switch (5) and is untouched by
     //      this one.
-    //   1. Fulgurite left by a lightning strike on sand-family ground.
     //   2. Loose ash dusting off a burning cell.
     //   3. Scorch-fruit seeded by a burning cell, plus its per-map cap.
     //   4. Ash accumulation (drifts) during Ash Fall / Cinderfall weather.
@@ -45,9 +44,6 @@ namespace RimMandrake.Pyrelands
         /// stops mattering — the per-mechanic toggles keep their own state
         /// for when this is back on.</summary>
         public static bool pyrelandsEnabled = true;
-
-        public static bool fulguriteEnabled = true;
-        public static float fulguriteChance = 0.35f;
 
         public static bool ashDustingEnabled = true;
         public static float ashDustingChance = 0.02f;
@@ -109,11 +105,6 @@ namespace RimMandrake.Pyrelands
         public static bool ullaiEnabled = true;
         public static float ullaiHerdSizeMultiplier = 1f;
         public static bool furnaceBeastGiant = true;
-        // PYRELANDS_LIGHTNING_BREAKER_BUILD_1
-        public static bool lightningBreakerEnabled = true;
-        public static bool breakerPyrelandsOnly = true;
-        public static int breakerTripCost = 10;
-        public static float breakerRecipeCostFactor = 1f;
         // PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" orders on terrain carrying RM_TerrainDigYieldExtension.
         public static bool sandShovelEnabled = true;
         public static float sandShovelYieldMultiplier = 1f;
@@ -156,8 +147,6 @@ namespace RimMandrake.Pyrelands
         {
             base.ExposeData();
             Scribe_Values.Look(ref pyrelandsEnabled, "pyrelandsEnabled", true);
-            Scribe_Values.Look(ref fulguriteEnabled, "fulguriteEnabled", true);
-            Scribe_Values.Look(ref fulguriteChance, "fulguriteChance", 0.35f);
             Scribe_Values.Look(ref ashDustingEnabled, "ashDustingEnabled", true);
             Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", 0.02f);
             Scribe_Values.Look(ref scorchFruitEnabled, "scorchFruitEnabled", true);
@@ -189,10 +178,6 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref ullaiEnabled, "ullaiEnabled", true);
             Scribe_Values.Look(ref ullaiHerdSizeMultiplier, "ullaiHerdSizeMultiplier", 1f);
             Scribe_Values.Look(ref furnaceBeastGiant, "furnaceBeastGiant", true);
-            Scribe_Values.Look(ref lightningBreakerEnabled, "lightningBreakerEnabled", true);
-            Scribe_Values.Look(ref breakerPyrelandsOnly, "breakerPyrelandsOnly", true);
-            Scribe_Values.Look(ref breakerTripCost, "breakerTripCost", 10);
-            Scribe_Values.Look(ref breakerRecipeCostFactor, "breakerRecipeCostFactor", 1f);
             Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
             Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
             Scribe_Values.Look(ref ashWaterFertilityEnabled, "ashWaterFertilityEnabled", true);
@@ -230,15 +215,14 @@ namespace RimMandrake.Pyrelands
         /// ashfall, the fresh-burn stamp (BurnStampMay), ambient ash, plant growth stages, the wild-plant allowlist, scorched
         /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock, migration and the herd seeder,
         /// and burrowers. Independent, as the master's own tooltip says or because the read site does not consult the gate:
-        /// fulgurite (any biome's sand), the ash-field water/fertility numbers, regrowth pace, biome placement, the restart-time
-        /// giants/ullai/recipe cost, breakers and sand shovelling, the cross-biome opt-in (its own master). Sub-switches
+        /// the ash-field water/fertility numbers, regrowth pace, biome placement, the restart-time
+        /// giants/ullai, sand shovelling, the cross-biome opt-in (its own master). Sub-switches
         /// replace the old "hide when off" blocks: the controls now stay visible, greyed, values kept.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "furnaceWorldMigrationEnabled", "furnaceHerdCount",
                      "burrowOnFireEnabled")
-            .Declare("fulguriteEnabled", "fulguriteChance")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
@@ -250,18 +234,16 @@ namespace RimMandrake.Pyrelands
             .Declare("furnaceWorldMigrationEnabled", "furnaceHerdCount")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
-            .Declare("lightningBreakerEnabled", "breakerTripCost")
             .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
             .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
-            .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant",
-                         "breakerRecipeCostFactor", "breakerPyrelandsOnly")
-            .Name("pyrelandsEnabled", "Mod enabled").Name("fulguriteEnabled", "Lightning leaves fulgurite")
+            .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant")
+            .Name("pyrelandsEnabled", "Mod enabled")
             .Name("ashDustingEnabled", "Fire dusts loose ash").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
             .Name("ashfallAccumulationEnabled", "Weather deposits ash drifts").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
             .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground").Name("rainFadesBurnBonus", "Rain washes the bonus away early")
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
             .Name("furnaceWorldMigrationEnabled", "Furnace-beast world migration").Name("ullaiEnabled", "Ullai herds")
-            .Name("lightningBreakerEnabled", "Breakers trip on a short circuit").Name("sandShovelEnabled", "Shovel sand")
+            .Name("sandShovelEnabled", "Shovel sand")
             .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
 
         private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -350,25 +332,13 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                     "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
                   + "mechanic below stops mattering (their own toggles still apply if this is back "
-                  + "on). Not gated by it, only by their own switches: fulgurites on ordinary sand outside the Pyrelands' own ground, "
-                  + "lightning breakers, sand shovelling, and the restart-time switches (giant furnace-beast, ullai spawning and herd size, breaker recipe cost). Biome tile placement has its own separate switch, further down. "
+                  + "on). Not gated by it, only by their own switches: sand shovelling, and the restart-time switches (giant furnace-beast, ullai spawning and herd size). Biome tile placement has its own separate switch, further down. "
                   + "When Pyrelands is part of RimMandrake: Baroque Biomes, that mod's Pyrelands toggle switches these mechanics off too.");
                 list.GapLine();
             }
 
-            if (Group(list, "Fulgurite, loose ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "fulguriteEnabled", "fulguriteChance", "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap" }))
+            if (Group(list, "Loose ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap" }))
             {
-    list.CheckboxLabeled("Lightning leaves fulgurite", ref fulguriteEnabled,
-                    "A strike on sand-family ground (sand, soft sand, deep sand, scorched sand) has a "
-                  + "chance to leave a fulgurite behind, in any biome; the Stillsand's dry "
-                  + "thunderstorms leave them too. Only strikes on the Pyrelands' own ground also need "
-                  + "\"Mod enabled\" above. Off: lightning strikes normally, nothing spawns.");
-                using (Dependent(list, "fulguriteChance"))
-                {
-                    list.Label("Chance per strike: " + fulguriteChance.ToString("0%"));
-                    fulguriteChance = list.Slider(fulguriteChance, 0f, 1f);
-                }
-                list.GapLine();
                 using (Dependent(list, "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap"))
                 {
     list.CheckboxLabeled("Fire dusts loose ash", ref ashDustingEnabled,
@@ -562,7 +532,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Giants and recipe costs (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "furnaceBeastGiant", "ullaiEnabled", "ullaiHerdSizeMultiplier", "breakerRecipeCostFactor" }, "[next game start]"))
+            if (Group(list, "Giants and herds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "furnaceBeastGiant", "ullaiEnabled", "ullaiHerdSizeMultiplier" }, "[next game start]"))
             {
     list.CheckboxLabeled("Giant furnace-beast (restart)", ref furnaceBeastGiant,
                     "Shipped default: ON. The furnace-beast is a giant (body size 6, a few per map, rarer), drawn huge, "
@@ -576,8 +546,6 @@ namespace RimMandrake.Pyrelands
                 list.Label("Ullai herd size (restart): " + ullaiHerdSizeMultiplier.ToStringPercent());
                 ullaiHerdSizeMultiplier = list.Slider(ullaiHerdSizeMultiplier, 0.25f, 2f);
                 }
-                list.Label("Breaker core recipe cost (restart): " + breakerRecipeCostFactor.ToStringPercent());
-                breakerRecipeCostFactor = list.Slider(breakerRecipeCostFactor, 0.25f, 3f);
                 list.GapLine();
             }
 
@@ -601,21 +569,9 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Lightning breakers and sand shovelling", RimMandrake.Shared.SettingScope.Now, new[] { "lightningBreakerEnabled", "breakerPyrelandsOnly", "breakerTripCost", "sandShovelEnabled", "sandShovelYieldMultiplier" }))
+            if (Group(list, "Sand shovelling", RimMandrake.Shared.SettingScope.Now, new[] { "sandShovelEnabled", "sandShovelYieldMultiplier" }))
             {
-    list.CheckboxLabeled("Breakers trip on a short circuit", ref lightningBreakerEnabled,
-                    "Shipped default: ON. A lightning breaker on a power line trips when a short circuit strikes its side of the "
-                  + "grid: the grid splits there and only the faulted side's batteries discharge. Off: breakers are plain "
-                  + "conduits and every short circuit drains the whole grid, as in vanilla.");
-                list.CheckboxLabeled("Learnable only in the Pyrelands", ref breakerPyrelandsOnly,
-                    "Shipped default: ON (owner ruling). The research can only be begun while you hold a home on a Pyrelands "
-                  + "map; once known, breakers are buildable anywhere and desert sand works. Off: researchable anywhere.");
-                using (Dependent(list, "breakerTripCost"))
-                {
-                list.Label("Glass sand spent per trip: " + breakerTripCost);
-                breakerTripCost = Mathf.RoundToInt(list.Slider(breakerTripCost, 0f, 30f));
-                }
-                list.CheckboxLabeled("Shovel sand (Orders)", ref sandShovelEnabled,
+    list.CheckboxLabeled("Shovel sand (Orders)", ref sandShovelEnabled,
                     "Shipped default: ON. A 'Shovel sand' order on Pyrelands sand: a miner digs the cell out for glass sand and "
                   + "leaves gravel underneath, so a sand patch is a finite deposit. Off: the order cannot be placed and "
                   + "standing orders are ignored.");

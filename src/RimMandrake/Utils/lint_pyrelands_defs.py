@@ -253,7 +253,7 @@ def extra(mod, E, W, defs_xml, patch_xml, defnames, ctx):
             E("pyrelands-kernel", f"Kernel/{base} is not in the fuzz project (unfuzzed)")
         if re.search(r"^\s*using (Verse|RimWorld|UnityEngine)", open(k, encoding="utf-8-sig").read(), flags=re.M):
             E("pyrelands-kernel", f"Kernel/{base} references Verse/RimWorld/UnityEngine (a kernel must be engine-free)")
-    if n["kernels"] < 4:
+    if n["kernels"] < 3:
         E("pyrelands-kernel", f"only {n['kernels']} kernel files found")
     # ---- a pawn's natural ranged attack (CompProperties_TurretGun, the Barbslinger's tail guns) names a ThingDef of this mod
     things, guns = set(), []

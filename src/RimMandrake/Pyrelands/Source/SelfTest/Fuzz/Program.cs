@@ -1,5 +1,5 @@
 // Pyrelands offline fuzz entry. Knobs (forwarded by selftest_pyrelands_fuzz.py): --fuzz-scale F (multiplies every case count, 0 skips),
-// --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (burn|furnace|breaker|eco|units), --tuning <path to PyrelandsTuning.cs>.
+// --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (burn|furnace|eco|units), --tuning <path to PyrelandsTuning.cs>.
 using System;
 
 namespace RimMandrake.Pyrelands.Fuzz

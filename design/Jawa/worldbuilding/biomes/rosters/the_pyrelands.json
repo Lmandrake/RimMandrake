@@ -7,9 +7,9 @@
       "why": "ZBiome_Grasslands is the currently painted donor def; rosters bind per def (R19a) so this file moves with the switch"
     },
     {
-      "claim": "RM_FE_Plant_ScorchFruit / RM_FE_Fulgurite exist as built defs",
+      "claim": "RM_FE_Plant_ScorchFruit exists as a built def",
       "status": "CONFIRMED in src (MEASURED grep, 2026-09-09)",
-      "why": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml and .../ThingDefs_Fulgurite/Fulgurite.xml define them, and FireEcologyHook.cs references both by name; the earlier NOT-FOUND finding was grepping the stale RSW_FE_ prefix — commit b2ebdfdb already renamed the tier to RM_FE_ across docs, this roster just missed that pass"
+      "why": "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml defines it, and FireEcologyHook.cs references it by name; the earlier NOT-FOUND finding was grepping the stale RSW_FE_ prefix — commit b2ebdfdb already renamed the tier to RM_FE_ across docs, this roster just missed that pass"
     },
     {
       "claim": "no nocturnal-behaviour audit applied",

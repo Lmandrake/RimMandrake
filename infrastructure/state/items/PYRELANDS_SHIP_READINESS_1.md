@@ -17,14 +17,13 @@ toggle must gate mechanics, not only worldgen).
 - [x] Code review CLEAN for every file this item named (checked 2026-10-11 with `code_review_status.py check`):
       `RM_PyrelandsMod.cs`, `RM_JobGiver_BurrowOnFire.cs`, `RM_JobDriver_Burrow.cs`, `RM_BurrowOnFireExtension.cs`,
       `PyrelandsTuning.cs`, `PyrelandsMechanicsDefOf.cs`, `PyrelandsMechanicsGate.cs`, `BiomesShell/Source/RM_BiomesMod.cs`
-      and `validation.py` (`a542f6539`). ⚠️ 19 other `Pyrelands/Source/*.cs` files are still DIRTY (content changed
-      since their 2026-09-26 marks, or never marked: `RM_LightningBreaker.cs`, `RM_PyrelandsGiants.cs`,
+      and `validation.py` (`a542f6539`). ⚠️ 18 other `Pyrelands/Source/*.cs` files are still DIRTY (content changed
+      since their 2026-09-26 marks, or never marked: `RM_PyrelandsGiants.cs`,
       `RM_TerrainDig.cs`). They belong to the standing review loop, not this item.
 - [x] Mod Settings: `settings_audit.py` reports every mod OK. Every Pyrelands toggle is labelled, and the
       worldgen-affecting ones are marked (pickAP). The gate census was run 2026-10-11: every one of the 34
       `RM_PyrelandsSettings` fields is read only from files that also consult `PyrelandsMechanicsGate.On` (master
-      AND shell "Pyrelands" toggle). The exceptions are the breaker fields (`RM_LightningBreaker.cs`) and the
-      sand-shovel fields (`RM_TerrainDig.cs`), which are exactly the ones the "Mod enabled" tooltip names as
+      AND shell "Pyrelands" toggle). The exception is the sand-shovel fields (`RM_TerrainDig.cs`), which are exactly the ones the "Mod enabled" tooltip names as
       running on their own switches. The census is file-level. Proof per call site is the offline `MechanicsOn`
       kernel test (`a820b692e`). The live proof of the gate waits on unification wave 2.
 - [x] The composed `mandrake.rm.biomes` deploys at 0 diff (2026-10-11). `deploy_custom_mods.py --compose biomes`

@@ -376,7 +376,7 @@ onto it:
   through the Star Wars layer; the franchise-free Stillsand chain may keep a generic glass of its own, which
   the campaign never produces.
 - **Natural glasses stay what they are.** Found or grown materials that are not made at a bench (biosilica,
-  glass pearl, waveglass, fexxil glass, aurora glass, fulgurite, lanternstone, floatstone, veil pane) keep
+  glass pearl, waveglass, fexxil glass, aurora glass, lanternstone, floatstone, veil pane) keep
   their own defs and biome jobs; they are not a second glass tier. Built in `GLASS_TO_TRANSPARISTEEL_1`.
 
 ### 3.9 Our own materials beside the canon ones

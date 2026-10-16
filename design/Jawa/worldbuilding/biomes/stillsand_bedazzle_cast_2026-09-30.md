@@ -18,10 +18,9 @@ Card selections are recorded as *decision taken by question card*; only typed wo
 | 3 | The muurrok **YES**, the free tier's giant, typed: *"Yes and use the beam attack style from mechanics due to reflections"* | card + typed | new: a reflected-sun beam in the mechanoid style. RimSage-verified as `Verb_ShootBeam` (`Gun_BeamGraser`), which needs an animal-safe copy (see `STILLSAND_EVENT_CREATURES_1` §3) |
 | 4 | The piinnok **admitted** with its sink-when-threat warning | card | it is also the first member of `WATCHER_CREATURES_MOD_1`, which owns its def, behaviour and art |
 | 5 | Drift shovelling yields glass sand at **full yield** | card | **reverses** the dunes engine's "dig vanishes" (the doc recommended no). The sieve now sifts glass sand into fine sand (`STILLSAND_GLASS_LENS_CHAIN_1` §2); `design/MOVING_DUNES_DESIGN.md` corrected in this commission |
-| 6 | Slate IN: droids invisible to swimmers; the thumper, typed *"Also thumper needs moisture not just thump"*; gale static; the mirage; fulgurites; sun glare + goggles; the sun lance; singing dunes warn; dust devils | card + typed | the thumper draws only while its sand is wet |
+| 6 | Slate IN: droids invisible to swimmers; the thumper, typed *"Also thumper needs moisture not just thump"*; gale static; the mirage; sun glare + goggles; the sun lance; singing dunes warn; dust devils | card + typed | the thumper draws only while its sand is wet |
 | 7 | Slate OUT: travel thirsty (the water appraisal), dunes take the ship, sinkholes | card | removed everywhere: no "wettest body" targeting, no hull burial, no sand caves |
 | 8 | Glare is race-gated, typed: *"the sun protection for the eyes is great for races that need it, but the Jawa won't need it, but the slaves might"* | typed | Jawas immune by gene (`RM_GlareAdapted` on `RSW_RimMandrakeJawa`); everyone else, slaves included, is affected |
-| 9 | Fulgurite art from real photographs, typed: *"the full rights should be looked up so you get realistic images of full rights, not some crazy simple tube or other fantasy image, actual lightning, striking actual sand"* ("full rights" = fulgurites, voice-typed) | typed | six real photos saved with licences in `references/fulgurite/` |
 | 10 | Lore IN: the mummified caravan, the krayt horn, the wringing still. OUT: the glass sea landmark | card | `RUT_GlassSea` stays unplaced |
 
 ## 1. The build items filed
@@ -37,7 +36,7 @@ Each carries a Mod Settings toggle per feature and the readable-sign rule.
 | `STILLSAND_EVENT_CREATURES_1` | krayt attack incident (krayts stay wild); the muurrok and its mirror beam; sarlacc comes to root; greater krayt den quest; krayt horn; Long Hunger live-fire | the swim kit |
 | `STILLSAND_PRECIOUS_CAVES_1` | the rock genstep, the cave as a place, the precious table; **replaces `STILLSAND_CAVERN_AUTHORING_1`** | nothing |
 | `STILLSAND_DUNE_GALE_1` | the dune gale, abrasion, carry-and-return, static, one emergence (mummified caravan), seeding, dust devils, tracks wiped | `MOVING_DUNES_BUILD_1` live run |
-| `STILLSAND_GLASS_LENS_CHAIN_1` | drift → glass sand; fine sand by sifting; sun furnace; sun glass; lens bench; lenses; solar still (+ wringing); solar oven; sun lance; geophone; fulgurites on Stillsand + real-photo art; ship lens array row | nothing (crest-plate oven upgrade waits on the muurrok) |
+| `STILLSAND_GLASS_LENS_CHAIN_1` | drift → glass sand; fine sand by sifting; sun furnace; sun glass; lens bench; lenses; solar still (+ wringing); solar oven; sun lance; geophone; ship lens array row | nothing (crest-plate oven upgrade waits on the muurrok) |
 | `STILLSAND_SKELETONS_TRACKS_1` | skeleton buildings, bone harps, corpse-to-skeleton, krayt graveyard re-pointed, track filths erased by the dunes, horizon warnings | the swim kit (wake filth) |
 | `STILLSAND_RETURN_RITUAL_1` | the Debt, the Return ritual at a debt stone, bloom-on-pour (RM) | the still |
 
@@ -81,7 +80,6 @@ under `origin/main:src` (7,512). Each subject was searched by current, port and 
 | goggles | goggle | only Armoury headgear PNGs (Bothan, light-scan, pao hat), none a desert sun goggle, **queued**; existing goggles also cancel glare by tag |
 | skeletons | skeleton, ribcage, kraytskull, kraytgraveyard | only `RM_FossilSkeleton` (Flooded Canyon, an item) and the krayt `*_Dessicated` corpse sprites; no giant skeleton building, **queued** |
 | tracks | tread, print, scar | `RSW_CrawlerTreadWreck` is a wreck, not a track; `RM_Filth_MiddenshellFootprint` is the Wasteland's; **queued** |
-| fulgurite | fulgurite | **EXISTS**: `RM_FE_Fulgurite` (Pyrelands, `pyre_fulgurite_v1`, `offbiome_fulgurite_v2/_v3`). The mechanism is reused; only the art is re-made, because the owner ruled it must come from real photographs |
 
 `fill_queue.py --dry-run`: 61 would be filed, 0 refused as duplicates, 0 row errors.
 
@@ -113,11 +111,6 @@ on a crucible, no fire), the **sieve** (driftwood sifting screen with two trays;
 tool or a Sand Sieve building, producing fine sand), the **lens bench** (3×1, faced), the **solar still** (black basin, beaded glass, one focal
 spot), the **solar oven** (mirror petals), the **sun lance** (base + rotating heliostat top) and the
 **geophone** (glass-bulb resonator spike).
-🔴 **The fulgurite** is drawn from the six real photographs in
-`design/Jawa/worldbuilding/biomes/references/fulgurite/` (Sahara dunes, Mauritania, Algeria,
-South Australia; licences in `SOURCES.json`): a crusty, knobbly, sand-coated, slightly flattened
-fused root with a frothy white glass hollow where it broke. The prompt bans a clear glass tube, a
-crystal and anything glowing. It replaces `RM_FE_Fulgurite.png` for every biome once accepted.
 
 ### 4D. Glare and the thumper (`STILLSAND_SUN_FROM_LATITUDE_1`, `STILLSAND_SAND_SWIM_KIT_1`)
 **Sun goggles**: icon plus a worn eyes-layer set (faced). **Thumper**: a hammer tripod with a water
@@ -151,15 +144,12 @@ eruption scar, glasscrust scar, crawler tread (RSW).
 - **Terrain** (brine seep, cave floor, the Return-line stain): terrain textures are authored with
   the terrain defs, not through these sprite jobs.
 
-**Skipped, art already in the game:** `RM_FE_Fulgurite`'s mechanism (only its art is re-made);
-krayt corpses (`*_Dessicated`); `RSW_KraytDragonSkull`, `RSW_KraytPearl`; the krayt SoundDefs.
+**Skipped, art already in the game:** krayt corpses (`*_Dessicated`); `RSW_KraytDragonSkull`, `RSW_KraytPearl`; the krayt SoundDefs.
 
 ## 6. Queued art: FILED 2026-09-30, 61 jobs, 0 refused
 
 **CSV:** `infrastructure/artpipe/art_lists/stillsand_bedazzle_cast.csv`. Channel codex,
-transparent, `reference` empty on every row (fresh designs, never reskins; the fulgurite's photo
-references are described in its prompt rather than passed as `reference`, which would trigger
-reskin validation). Queued with `fill_queue.py`, derive-facings default.
+transparent, `reference` empty on every row (fresh designs, never reskins). Queued with `fill_queue.py`, derive-facings default.
 **43 subjects (9 faced sets + 34 singles) = 61 job files.**
 
 | item | id | canvas | facings | anchor |
@@ -183,7 +173,6 @@ reskin validation). Queued with `fill_queue.py`, derive-facings default.
 | LENS | `RM_SolarOven` | 256 | single | sand ceramic and mirror |
 | LENS | `RM_SunLance_Base` / `RM_SunLance_Top` | 256 | single | slate and steel / faceted mirror |
 | LENS | `RM_Geophone` | 256 | single | glass and bronze |
-| LENS | `RM_FE_Fulgurite_real` | 256 | single | fused sand (real photos) |
 | SUN | `RM_SunGoggles` | 256 | single | smoked honey and leather |
 | SUN | `RM_SunGogglesWorn` | 256 | s,e,n | smoked honey and leather |
 | SWIM | `RM_Thumper` | 256 | single | iron and wet sand |
@@ -206,8 +195,6 @@ reskin validation). Queued with `fill_queue.py`, derive-facings default.
   RimSage check that a look can vary by terrain, and each watcher is bound to one medium
   (`WATCHER_CREATURES_MOD_1`); (d) the first heat values (+55 °C substellar, 0.35 glare floor) are
   accepted and tuned in live play (`STILLSAND_SUN_FROM_LATITUDE_1`).
-- `RM_FE_Fulgurite_real` is a re-make of a shipped texture: when it lands, put it beside the current
-  `RM_FE_Fulgurite.png` on a review sheet before swapping, since the Pyrelands ships the old one.
 - The worn-goggle set assumes a plain eyes-layer apparel with no body-type variants; if the def pass
   chooses otherwise, re-cut from the accepted east master.
 - The skeleton buildings are queued at 1024×512 single; if the build wants rotations, re-cut the

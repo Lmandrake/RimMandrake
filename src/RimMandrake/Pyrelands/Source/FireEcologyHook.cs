@@ -9,45 +9,21 @@ using Verse;
 namespace RimMandrake.Pyrelands
 {
     // 🔴 THE ONE LIGHT C# HOOK budgeted by FIRE_ECOLOGY_LOOP_1's item spec —
-    // "the one light C# hook: strike-spawns-prop." Two postfixes sharing one
-    // small spawn helper, not two hooks: the item's own text says "the
-    // weather doc's v2 reuses this same hook," so both trigger points
-    // (a lightning strike; a fire actively burning) drive the SAME narrow
-    // "roll a chance, spawn a prop nearby" shape rather than inventing a
-    // second mechanism for scorch-fruit.
+    // "roll a chance, spawn a prop nearby" while a fire burns.
     //
     // Everything else in FIRE_ECOLOGY_LOOP_1 (the weather-table strip, Black
     // Rain's trigger, burnedDef to deep ash, the firebreak) is pure XML riding
     // vanilla mechanisms that already exist — see the .xml files' own
     // comments for the RimSage citations. Only "a specific prop appears at a
     // specific cell because a specific event just happened here" has no
-    // XML-only route, because neither WeatherEvent_LightningStrike nor
-    // Fire.TickInterval exposes an event, signal or XML hook a def can bind.
+    // XML-only route, because Fire.TickInterval exposes no event, signal or
+    // XML hook a def can bind.
     [StaticConstructorOnStartup]
     public static class FireEcologyHookMod
     {
-        // Both terrain families the doc names as fulgurite-eligible ground:
-        // this engine's own scorchable-sand clone, and plain vanilla Sand —
-        // a strike on sand off the Pyrelands qualifies too (see IsPyrelandsGround).
-        // STILLSAND_GLASS_LENS_CHAIN_1 §10(a): vanilla SoftSand and FlowWorks'
-        // RM_DeepSand (the Stillsand's dune ground) join the family.
-        private static readonly string[] SandTerrainDefNames =
-        {
-            "RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand",
-        };
-
-        // The Pyrelands' own fire-ecology ground. Only strikes here are governed by
-        // the Pyrelands master switch; a strike on any other sand needs only the
-        // fulgurite toggle (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
-        internal static bool IsPyrelandsGround(TerrainDef terrain)
-        {
-            return terrain != null && RM_FireEcoKernel.IsPyrelandsGround(terrain.defName);
-        }
-
         // Shipped defaults for the numbers below now live as tunable fields on
         // RM_PyrelandsSettings (MOD_OPTIONS_RETROFIT_1) — read those at the
         // call sites, not these. Kept only as the historical/default record.
-        internal const float FulguriteChancePerStrike = 0.35f;
         internal const float AshDustingChancePerFireTick = 0.02f;
         internal const float ScorchFruitChancePerFireTick = 0.0025f;
         internal const int MinFireSizeForAshDusting = 1; // any live Fire counts — not yet gated on; reserved for a future fire-size check
@@ -55,10 +31,6 @@ namespace RimMandrake.Pyrelands
         static FireEcologyHookMod()
         {
             var h = new Harmony("mandrake.rm.pyrelands");
-
-            Apply(h, AccessTools.Method(typeof(WeatherEvent_LightningStrike), "DoStrike"),
-                  typeof(Patch_LightningStrike_Fulgurite), "fulgurite-spawn",
-                  "armed; strikes on sand-family ground may leave a fulgurite");
 
             Apply(h, AccessTools.Method(typeof(Fire), "TickInterval"),
                   typeof(Patch_FireTick_AshAndScorchFruit), "fire-tick-ash-scorchfruit",
@@ -72,8 +44,7 @@ namespace RimMandrake.Pyrelands
             if (target == null)
             {
                 Log.Error("[RimMandrake.Pyrelands] " + rule + ": TARGET METHOD NOT FOUND — "
-                          + "this rule is NOT in effect. A game update renamed it. The other "
-                          + "rule in this assembly is unaffected.");
+                          + "this rule is NOT in effect. A game update renamed it.");
                 return;
             }
             try
@@ -86,11 +57,6 @@ namespace RimMandrake.Pyrelands
                 Log.Error("[RimMandrake.Pyrelands] " + rule + ": patch FAILED, rule NOT "
                           + "in effect — " + e.Message);
             }
-        }
-
-        internal static bool IsSandFamily(TerrainDef terrain)
-        {
-            return terrain != null && RM_FireEcoKernel.IsSandFamily(terrain.defName, SandTerrainDefNames);
         }
 
         // Scorchable ground: ANY Pyrelands ground (RM_FE_*, deep ash included,
@@ -194,40 +160,6 @@ namespace RimMandrake.Pyrelands
         private static bool ForBiomeWith(BiomeDef biome, bool crossApplies)
         {
             return RM_FireEcoKernel.FireEcologyOnMap(biome != null && biome.defName == NativeBiomeDefName, crossApplies);
-        }
-    }
-
-    // Postfix on the STATIC WeatherEvent_LightningStrike.DoStrike(IntVec3
-    // strikeLoc, Map map, ref Mesh boltMesh). `strikeLoc` is reassigned
-    // inside the original method (Invalid -> a real cell) before the strike
-    // resolves; Harmony's postfix parameter of the same name reads that
-    // resolved value, not the caller's original argument — verified against
-    // the method body (RimSage) before writing this.
-    public static class Patch_LightningStrike_Fulgurite
-    {
-        public static void Postfix(IntVec3 strikeLoc, Map map)
-        {
-            try
-            {
-                if (!RM_PyrelandsSettings.fulguriteEnabled) return;
-                if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
-                TerrainDef terrain = strikeLoc.GetTerrain(map);
-                // The master switch governs the Pyrelands' own ground only, so Stillsand
-                // fulgurites do not need the Pyrelands on (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
-                if (!RM_FireEcoKernel.FulguriteMayRoll(true, true, FireEcologyHookMod.IsSandFamily(terrain),
-                        PyrelandsMechanicsGate.On, FireEcologyHookMod.IsPyrelandsGround(terrain))) return;
-                if (!Rand.Chance(RM_PyrelandsSettings.fulguriteChance)) return;
-
-                ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");
-                if (fulguriteDef == null) return; // mod not loaded / def missing — no-op, not a crash
-
-                Thing fulgurite = ThingMaker.MakeThing(fulguriteDef);
-                GenPlace.TryPlaceThing(fulgurite, strikeLoc, map, ThingPlaceMode.Near);
-            }
-            catch (Exception e)
-            {
-                Log.WarningOnce("[RimMandrake.Pyrelands] fulgurite-spawn: " + e.Message, 0x46E01);
-            }
         }
     }
 
