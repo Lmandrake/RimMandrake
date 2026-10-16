@@ -1,4 +1,4 @@
-# Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub (BENCH, 2026-10-15)
+# Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub + ExplosiveGrowth (BENCH, 2026-10-15)
 
 **Owner, by card 2026-10-15 ~16:45 PDT:** *"Which shape should the next sprint take? → Three biomes deep"*. That is
 option 2 of `design/RimMandrake/next_sprint_plan_2026-10-15.md`. Item: `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE`. The plan's
@@ -419,6 +419,35 @@ Proposed INFERRED row, to be pre-approved: downwind fire bias, scored from a com
 as graphics... during Bench settings"*, 2026-10-08). It needs him and the game on a Scrub map, with the run sheet at
 `Transient/venomvine_sitting_runsheet_2026-10-09.md`. It is folded into the S2 LeaningScrub review save, so it costs no
 extra sitting.
+
+### 1.4 ExplosiveGrowth (added to the sprint by the owner, 2026-10-16)
+
+**Owner, typed 2026-10-16:** *"Please add the Explosive_plant_growth mod as part of the next sprint (three biomes +
+explosive)."* Item `EXPLOSIVE_PLANT_GROWTH_1`; mod `src/RimMandrake/ExplosiveGrowth/` (`mandrake.rm.explosivegrowth`);
+design `design/Jawa/worldbuilding/explosive_plant_growth_design.md` (ruled, §9). FOUNDRY builds, BENCH tests, like the
+biomes. Shared lines M1-M6 and O1-O3 apply, with the mod's own suite (`EXPLOSIVE_GROWTH_FIRST_SCRIPT_1`) as M1.
+
+**Experience (his ruling on the item):** anywhere water soaks a plant, the player watches it get bigger, visibly and
+intimidatingly; the jungles visibly grow.
+
+Draft lines for S0 (from the item's `## Owed`, re-read 2026-10-16):
+
+- **X1** The mod is in the `biomes_sprint` tier, loading before `mandrake.rut.plantgrowth`, and the startup line
+  `[RM ExplosiveGrowth] N plant defs soak` appears with the roster rows resolved.
+- **X2** Perf gate (design §5): TPS and frame time on a jungle-density saved map with soaked plants stay inside the
+  bar he sets at S0. No density is promised until this row is MEASURED.
+- **X3** Every soak route proven live: crack flood, player irrigation (a dug FlowWorks water cell), the Miasma axis
+  fresh side, and the ×10 wet-ambient band in Greentide, Miasma and Fever Wood.
+- **X4** Cutting a charged plant forfeits the jackpot; harvesting keeps it (today the bonus applies to any yield).
+- **X5** Greentide's grazing hook and dry-air blower write the suppression grid (today M10's write is a no-op waiting
+  on this engine), so the Greentide review shows grazed ground staying low.
+- **Open for S0, cut or keep:** salted ground refusing the soak (no salt verb exists); the dynamic-draw close-up
+  layer (smooth swelling, real tremble); Fever Wood's inside-the-giant presentation; the roster's invented defaults
+  (hoarders NONE, extract override unbuilt); PlantGrowth's terminator list missing `RUT_`/`RM_PoisonForest` and the
+  `RUT_ExtremeDesert` ×4 exemption.
+
+Its live rows ride the biome rounds in §4: it adds about one live round (perf gate plus soak routes, about 2 h,
+INFERRED) and one sign in each relevant review save, with no extra owner sitting.
 
 ---
 

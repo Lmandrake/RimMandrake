@@ -2762,3 +2762,4 @@
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-16T03:55:36Z","tsn":1792122936903953661}
 {"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"BENCH.pid20690.271aa14d","expires":"2026-10-16T04:41:33Z","ts":"2026-10-16T03:56:33Z","tsn":1792122993830439048}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"GSS+FW walkthrough saves","ts":"2026-10-16T03:57:36Z","tsn":1792123056892554630}
+{"seat":"BENCH","event":"reassign","id":"EXPLOSIVE_PLANT_GROWTH_1","to":"FOUNDRY","why":"Owner put it in the sprint where FOUNDRY builds; it sat in BENCH's in-progress with no owner since 09-27","ts":"2026-10-16T04:00:33Z","tsn":1792123233552392563}
