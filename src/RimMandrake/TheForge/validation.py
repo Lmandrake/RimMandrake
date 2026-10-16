@@ -2085,13 +2085,13 @@ def _dhoggur(t):
     return d
 
 
-def _hit(t, pid, amount=10, by=None, damage="Blunt"):
+def _hit(t, pid, amount=10, by=None, damage="Blunt", tries=4):
     """The swell triggers only on damage actually DEALT. LIVE 2026-10-16: Blunt 3 is deflected by the hide
     (ArmorRating_Blunt 0.25, totalDamageDealt 0.0), which read as 'one hit did not swell it'. Hit for 10 and retry a
     deflection; a hit that never lands is UNMEASURED (harness), never a mod FAIL. `by` = the instigator's thing id
     (an attack); None = an instigator-less hit, the DamageInfo weather, fire and melt-back build."""
     kw = {"instigatorId": by} if by else {}
-    for _ in range(4):
+    for _ in range(tries):
         r = t.bridge_call("jawa/damage", damageDef=damage, amount=amount, thingId=pid, allowColonists=True, **kw)
         if not _live(t):
             return
@@ -2102,7 +2102,7 @@ def _hit(t, pid, amount=10, by=None, damage="Blunt"):
                            "was instigator-less (redeploy BridgeTools): %r" % (by, res))
         if any(float(x.get("totalDamageDealt") or 0) > 0 for x in res):
             return
-    _unmeasured(t, "four %s %s hits on %s all deflected (totalDamageDealt 0): the trigger was never offered" % (damage, amount, pid))
+    _unmeasured(t, "%d %s %s hits on %s all deflected (totalDamageDealt 0): the trigger was never offered" % (tries, damage, amount, pid))
 
 
 def _near(a, b, tol=0.02):
@@ -2154,7 +2154,7 @@ def dhoggur_swell(t):
             # Card 2026-10-16 "Only attacks and your colonists": the boiling rain's scald and fire nobody set hurt it
             # without swelling it. Same DamageInfo the pulse / a Fire / the melt-back build: the def, no instigator.
             with _comp(t, "rain_scald_does_not_swell", toggle="dhoggurSwellEnvironmentTriggers"):
-                _hit(t, box.get("id"), damage=RAIN_SCALD)
+                _hit(t, box.get("id"), damage=RAIN_SCALD, tries=10)
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 if _live(t):
@@ -2164,11 +2164,24 @@ def dhoggur_swell(t):
                         _fail("the boiling rain's scald set off (or spent) the swell: %s" % d["_line"])
 
             with _comp(t, "unattended_fire_does_not_swell", toggle="dhoggurSwellEnvironmentTriggers"):
-                _hit(t, box.get("id"), damage="Flame")
+                _hit(t, box.get("id"), damage="Flame", tries=10)
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 if _live(t) and (d["swollen"] or d["hediff"] or d["lastSource"] != "Environment"):
                     _fail("fire with no attacker set off the swell (or was not classed Environment): %s" % d["_line"])
+
+            # A fresh, unhurt dhoggur for the attack arms: the scald and fire above leave wounds, and wounds taken
+            # before a swell can kill it on the shrink (owner card 2026-10-16: "Keep it, it is the price of the swell").
+            with _comp(t, "fresh_dhoggur_for_attacks"):
+                if t.session is not None and box.get("id"):
+                    t.session.call("jawa/pawn_force_incapacitate", pawn=box["id"], action="vanish")
+                box["id"] = _spawn_wild(t, DHOGGUR, yx + 3, yz + 3)
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t):
+                    if d["swollen"] or d["hediff"] or d["manhunter"]:
+                        _fail("the fresh dhoggur is already swollen/angry: %s" % d["_line"])
+                    box["calm"] = d
 
             with _comp(t, "provoked_dhoggur_swells_x3", toggle="dhoggurSwellEnabled"):
                 _hit(t, box.get("id"), by=box.get("by"))
@@ -2271,7 +2284,7 @@ def dhoggur_swell(t):
                 if _live(t) and d["cooldownLeft"]:
                     _jump(t, d["cooldownLeft"] + 10)
                 with _settings(t, dhoggurSwellEnvironmentTriggers=True):
-                    _hit(t, box.get("id"), damage=RAIN_SCALD)
+                    _hit(t, box.get("id"), damage=RAIN_SCALD, tries=10)
                     t.wait_ticks(60)
                     d = _dhoggur(t)
                 if _live(t) and not d["swollen"]:
