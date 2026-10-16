@@ -188,6 +188,45 @@ namespace RimMandrake.FloodedCanyon
             }
             return result;
         }
+
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a flood trigger's footprint. The water enters at the trigger's
+        // own cell and runs ONLY along the dug channel joined to it: a deterministic 4-connected BFS over cells
+        // `channel` accepts (dug, not sealed), up to `target`. No random neighbour drop (FloodCells' 0.88 roll would
+        // break a one-wide canal). The trigger cell is in the footprint, first, only when `channel` accepts it;
+        // otherwise the water enters through the channel cells beside it. No channel cell at or beside it: empty.
+        public static List<long> FloodCellsAimed(int target, int tx, int tz, Func<int, int, bool> inBounds, Func<int, int, bool> channel)
+        {
+            var result = new List<long>();
+            if (target <= 0 || !inBounds(tx, tz)) return result;
+            int[] dx = { 0, 1, 0, -1 }, dz = { 1, 0, -1, 0 };
+            var visited = new HashSet<long> { Key(tx, tz) };
+            var frontier = new Queue<long>();
+            if (channel(tx, tz))
+            {
+                frontier.Enqueue(Key(tx, tz));
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    int nx = tx + dx[i], nz = tz + dz[i];
+                    if (inBounds(nx, nz) && visited.Add(Key(nx, nz)) && channel(nx, nz)) frontier.Enqueue(Key(nx, nz));
+                }
+            }
+            while (frontier.Count > 0 && result.Count < target)
+            {
+                long c = frontier.Dequeue();
+                result.Add(c);
+                int cx = KeyX(c), cz = KeyZ(c);
+                for (int i = 0; i < 4; i++)
+                {
+                    int nx = cx + dx[i], nz = cz + dz[i];
+                    if (inBounds(nx, nz) && visited.Add(Key(nx, nz)) && channel(nx, nz)) frontier.Enqueue(Key(nx, nz));
+                }
+            }
+            return result;
+        }
+
         public static long Key(int x, int z) { return ((long)x << 32) ^ (uint)z; }
         public static int KeyX(long k) { return (int)(k >> 32); }
         public static int KeyZ(long k) { return (int)(k & 0xffffffffL); }

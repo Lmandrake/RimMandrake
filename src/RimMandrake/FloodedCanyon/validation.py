@@ -48,6 +48,10 @@ P_EG_REPORT = "Actions\\Report state (current map)"
 P_REFUGE = "Actions\\Report ledge refuge (current map)"
 P_MARK_REFUGE = "Actions\\Mark debug refuge ledge at map centre (current map)"
 P_CLEAR_REFUGE = "Actions\\Clear debug refuge ledges (current map)"
+P_TRIGGER_PLACE = "Actions\\Place flood trigger (aimed at a canal)"
+P_SOAK_PLACE = "Actions\\Place soak zone (5x5, always)"
+P_MC_REPORT = "Actions\\Report flood triggers and soak zones (current map)"
+MC = "RimMandrake.FloodedCanyon.MapControls.RM_BiomeMapControls"
 P_TEACH = "Actions\\Teach player animals Obedience (current map)"
 
 
@@ -660,6 +664,20 @@ if Suite is not None:
         "needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an "
         "RM_FloodedCanyon map", "recedeMigrantsEnabled")
 
+    # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS (owner 2026-10-16, by card): the dev-placed flood trigger and soak zone
+    # (Source/MapControls/). Offline: the aimed footprint kernel is fuzzed (selftest_floodedcanyon_fuzz.py --fuzz-only
+    # cells: stays in the joined channel, enters at the trigger, takes the whole joined channel under the cap) and the
+    # wiring is read by _map_control_findings. The live half is FlowWorks review-map station "flow_canyon", which places a
+    # trigger beside its dry canal: press "Flood now" (or MC.FireFloodTrigger) and read MC.Report.
+    _um("flood_trigger_aimed_at_canal", "trigger_floods_joined_channel_only",
+        "needs a FlowWorks-dug channel on the site (no excavation tool in this suite); live route: FlowWorks review map "
+        "station flow_canyon, %s.FireFloodTrigger then .Report: reach= equals raisedFillCells=, activeFloodCells=0, "
+        "aimedAt= the trigger, and the flood survives the next tick on a non-canyon biome" % MC, "floodTriggersEnabled")
+    _um("soak_zone_keeps_ground_soaked", "zone_cells_soaked_in_window",
+        "needs an RM_ biome site (Plant Growth runs only in Baroque Biomes' biomes, so a bland site soaks nothing BY DESIGN); "
+        "live route: %s.PlaceSoakZone(cell|2|24) on an RM_ biome map, then ExplosiveGrowth 'Report state': soaked >= 25; "
+        "on a vanilla biome the zone's StateLine reads inert=not_one_of_Baroque_Biomes'..." % MC, "soakZonesEnabled")
+
     @suite.chain("peakstorm_dust_reversal")
     def peakstorm_dust_reversal(t):
         """CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1: while Peakstorm Light stands, the sky overlay's dust direction
@@ -751,6 +769,48 @@ def _ledge_refuge_findings():
     return bad
 
 
+def _map_control_findings(flood=None, defs_xml=None, soak=None):
+    """FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS wiring, read from the source: a flood trigger lifts the biome gate for
+    its own flood only, the flood enters through AimedCells while aimed, the aim is saved and cleared at recede, the
+    canyon ecology stays canyon; the two defs inherit FlowWorks' one map-control look and are not buildable; the soak
+    zone ticks Rare, soaks through the engine API and is gated on its setting. Control: Active must be found."""
+    src = lambda f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
+    flood = flood if flood is not None else src("RM_MapComponent_CanyonFlood.cs")
+    soak = soak if soak is not None else src("MapControls/Building_RM_SoakZone.cs")
+    if defs_xml is None:
+        defs_xml = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_BiomeMapControls.xml"), encoding="utf-8").read()
+    bad = []
+    if "private bool Active =>" not in flood:
+        return ["map controls: control hook (Active) not found, reader broken"]
+    active = flood.split("private bool Active =>")[1].split(";")[0]
+    if "CanyonGate" not in active or "FloodTriggersOn" not in active or "aimedAt.IsValid" not in active or "AnyClockTrigger" not in active:
+        bad.append("map controls: Active does not lift the biome gate for a trigger's flood (CanyonGate || triggers on && (aimed || clock trigger))")
+    start = flood.split("private int StartFlood(")[1].split("private void RecedeFlood(")[0] if "private int StartFlood(" in flood else ""
+    if "aimedAt.IsValid ? AimedCells(aimedAt)" not in start:
+        bad.append("map controls: StartFlood does not route an aimed flood through AimedCells")
+    if '"aimedAt"' not in flood.split("public override void ExposeData()")[1]:
+        bad.append("map controls: aimedAt is not scribed (a save mid-warning loses the aim and the biome gate tears the flood down)")
+    recede = flood.split("private void RecedeFlood(")[1].split("public List<IntVec3> AimedCells(")[0] if "private void RecedeFlood(" in flood else ""
+    if "aimedAt = IntVec3.Invalid" not in recede or "if (ecology" not in recede:
+        bad.append("map controls: RecedeFlood does not clear the aim, or runs the canyon ecology for an off-canyon trigger flood")
+    if "FloodCellsAimed(" not in flood:
+        bad.append("map controls: the canal-only footprint does not use RM_FloodKernel.FloodCellsAimed")
+    for name in ("RM_FloodTrigger", "RM_SoakZone"):
+        m = re.search(r'<ThingDef ParentName="RM_MapControlBase">\s*<defName>%s</defName>(.*?)</ThingDef>' % name, defs_xml, re.S)
+        if not m:
+            bad.append("map controls: %s missing or not a child of FlowWorks' RM_MapControlBase (one look for every map control)" % name)
+        elif "designationCategory" in m.group(1):
+            bad.append("map controls: %s is buildable (designationCategory set)" % name)
+    if not re.search(r"<defName>RM_SoakZone</defName>.*?<tickerType>Rare</tickerType>", defs_xml, re.S):
+        bad.append("map controls: RM_SoakZone does not tick Rare (TickRare is never called: the zone soaks nothing)")
+    tick = soak.split("public override void TickRare()")[1].split("public override void DrawExtraSelectionOverlays")[0] if "public override void TickRare()" in soak else ""
+    if "ExplosiveGrowthAPI.SoakCells" not in tick or "Inert()" not in tick:
+        bad.append("map controls: the soak zone's TickRare does not soak through ExplosiveGrowthAPI.SoakCells behind Inert()")
+    if "soakZonesEnabled" not in soak.split("public string Inert()")[1].split("public override void TickRare")[0]:
+        bad.append("map controls: Inert() is not gated on soakZonesEnabled")
+    return bad
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -788,6 +848,11 @@ def static_checks():
     bad.extend(_flora_shape_findings())
     bad.extend(_tarruq_call_findings())
     bad.extend(_ledge_refuge_findings())
+    bad.extend(_map_control_findings())
+    mc = open(os.path.join(HERE, "Source", "MapControls", "RM_BiomeMapControls.cs"), encoding="utf-8").read()
+    for p in (P_TRIGGER_PLACE, P_SOAK_PLACE, P_MC_REPORT):
+        if p.split("\\")[1] not in mc:
+            bad.append("debug action label for path %r not in RM_BiomeMapControls.cs" % p)
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad

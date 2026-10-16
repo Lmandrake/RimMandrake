@@ -59,5 +59,21 @@ check("contract: no bool TrySetDriverFill call in FloodedCanyon source", calls =
 check("sanity: the recede restores through TrySetDriverFillOutcome", outcome_calls >= 1, outcome_calls)
 check("break: the old bool call -> red",
       bool_driver_calls("(k, prior) => excavation?.TrySetDriverFill(Cell(k), prior));") != [])
+
+# FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: the map-control wiring reader is green on the tree and goes red on each break.
+check("map controls: wiring green", V._map_control_findings() == [], "; ".join(V._map_control_findings()))
+_flood = open(os.path.join(HERE, "Source", "RM_MapComponent_CanyonFlood.cs"), encoding="utf-8").read()
+_xml = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_BiomeMapControls.xml"), encoding="utf-8").read()
+_soak = open(os.path.join(HERE, "Source", "MapControls", "Building_RM_SoakZone.cs"), encoding="utf-8").read()
+check("break: biome gate not lifted -> red", any("Active does not lift" in f for f in V._map_control_findings(
+    flood=_flood.replace("(aimedAt.IsValid || RM_BiomeMapControls.AnyClockTrigger(map))", "false"))))
+check("break: aim not scribed -> red", any("not scribed" in f for f in V._map_control_findings(
+    flood=_flood.replace('"aimedAt"', '"aimedAtX"'))))
+check("break: buildable trigger -> red", any("buildable" in f for f in V._map_control_findings(
+    defs_xml=_xml.replace("<label>flood trigger</label>", "<label>flood trigger</label><designationCategory>Misc</designationCategory>"))))
+check("break: soak zone never ticks -> red", any("tick Rare" in f for f in V._map_control_findings(
+    defs_xml=_xml.replace("<tickerType>Rare</tickerType>", ""))))
+check("break: soak zone ungated -> red", any("soakZonesEnabled" in f for f in V._map_control_findings(
+    soak=_soak.replace('if (!RM_FloodedCanyonSettings.soakZonesEnabled) return', 'if (false) return'))))
 print("%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

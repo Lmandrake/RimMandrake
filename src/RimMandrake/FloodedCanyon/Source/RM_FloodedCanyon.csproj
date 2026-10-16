@@ -72,6 +72,9 @@
     <Compile Include="Kernel\RM_RefugeKernel.cs" />
     <Compile Include="Kernel\RM_PanKernel.cs" />
     <Compile Include="Kernel\RM_CanyonRulesKernel.cs" />
+    <Compile Include="MapControls\Building_RM_FloodTrigger.cs" />
+    <Compile Include="MapControls\Building_RM_SoakZone.cs" />
+    <Compile Include="MapControls\RM_BiomeMapControls.cs" />
   </ItemGroup>
 
   <ItemGroup>

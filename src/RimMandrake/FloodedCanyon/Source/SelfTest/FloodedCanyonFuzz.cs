@@ -256,6 +256,27 @@ namespace RimMandrake.FloodedCanyon.SelfTest
             }
             CellsMade += cells.Count;
 
+            // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: an aimed (trigger) flood stays inside the channel joined to the
+            // trigger, enters at the trigger cell when that is channel, and floods the WHOLE joined channel when the cap allows
+            int tx = r.Next(W), tz = r.Next(H);
+            var aimed = RM_FloodKernel.FloodCellsAimed(target, tx, tz, inb, elig);
+            Check(aimed.Count <= target && aimed.Distinct().Count() == aimed.Count, "aimed flood over its cap or a cell twice");
+            foreach (long k in aimed) Check(elig(RM_FloodKernel.KeyX(k), RM_FloodKernel.KeyZ(k)), "an aimed flood left the channel");
+            if (elig(tx, tz)) Check(aimed.Count >= 1 && aimed[0] == RM_FloodKernel.Key(tx, tz), "the trigger cell is channel but not the first flooded");
+            // oracle: the channel component(s) touching the trigger (its own cell, else its channel neighbours)
+            var reach = new HashSet<long>(); var rq = new Queue<long>();
+            Action<int, int> seedAt = (x, z) => { if (inb(x, z) && elig(x, z) && reach.Add(RM_FloodKernel.Key(x, z))) rq.Enqueue(RM_FloodKernel.Key(x, z)); };
+            if (elig(tx, tz)) seedAt(tx, tz); else { seedAt(tx, tz + 1); seedAt(tx + 1, tz); seedAt(tx, tz - 1); seedAt(tx - 1, tz); }
+            while (rq.Count > 0)
+            {
+                long c = rq.Dequeue(); int cx = RM_FloodKernel.KeyX(c), cz = RM_FloodKernel.KeyZ(c);
+                seedAt(cx, cz + 1); seedAt(cx + 1, cz); seedAt(cx, cz - 1); seedAt(cx - 1, cz);
+            }
+            var reachAll = reach;   // the trigger cell is in it only when it is channel (seedAt checks)
+            Check(aimed.All(reachAll.Contains), "an aimed flood reached channel not joined to the trigger");
+            Check(aimed.Count == Math.Min(target, reachAll.Count), $"aimed flood took {aimed.Count} of {Math.Min(target, reachAll.Count)} joined channel cells");
+            if (!reachAll.Any()) Check(aimed.Count == 0, "an aimed flood with no channel beside the trigger flooded something");
+
             // the ledger: excavated cells are raised or skipped, the rest become flood terrain; recede restores EXACTLY
             var excavated = new HashSet<long>(cells.Where(_ => r.Next(3) == 0));
             var fill = new Dictionary<long, int>(); foreach (long k in cells) fill[k] = r.Next(0, 5);
