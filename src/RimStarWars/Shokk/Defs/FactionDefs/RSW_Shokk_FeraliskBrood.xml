@@ -9,18 +9,19 @@
   world's own local name ("Wyyyschokk to the galaxy, Feralisk on this
   world" — the_webwork.md header ruling) — genuine Star Wars IP, which
   Q11a routes through the Utinni/RSW patch layer, never hardcoded into the
-  franchise-free RM_ mod. This mod already hard-depends on
-  mlie.starwarsanimalcollection (see this file's own About.xml), so
-  referencing Wyyyschokk directly here is the correct tier, not a shortcut.
+  franchise-free RM_ mod. SWAC PHASE 0 (2026-10-15): the brood fields
+  RM_Ollathrix, which IS the wyyyschokk (owner ruling 2026-10-03,
+  WYYYSCHOKK_IDENTITY_COLLISION_1; RSW_Shokk_OllathrixSkin.xml gives it the
+  canon look when this mod loads). The donor mod is no longer referenced.
 
   RM_MapComponent_TwoFrontLure (mandrake.rm.feverwood) looks this FactionDef
   up by defName only — no assembly reference either direction. When this mod
-  (or SWAC) is absent the lure uses the franchise-free RM_ brood instead:
+  (or the Webwork) is absent the lure uses the franchise-free RM_ brood instead:
   RM_FactionDef_SkrethBrood (skreth and skreth matron, FeverWood).
 -->
 <Defs>
 
-  <FactionDef MayRequire="mlie.starwarsanimalcollection">
+  <FactionDef MayRequire="mandrake.rm.webwork">
     <defName>RSW_Shokk_FeraliskBrood</defName>
     <label>feralisk brood</label>
     <!-- fixedName: a FactionDef with neither factionNameMaker nor fixedName NREs in NameGenerator.GenerateName when the
@@ -63,7 +64,7 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <Wyyyschokk>10</Wyyyschokk>
+          <RM_Ollathrix>10</RM_Ollathrix>
         </options>
       </li>
     </pawnGroupMakers>

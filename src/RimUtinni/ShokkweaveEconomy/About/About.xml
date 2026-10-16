@@ -14,13 +14,12 @@
   - The trader/quest/commonality strip and the rename's first half now live in the free
     mod mandrake.rm.webwork (thrixweave, WEBWORK_BASE_PORT_BUILD_1); this mod only repaints
     the same Hyperweave def as "shokkweave" and keeps the campaign-only routes below.
-  - Gives the donor Wyyyschokk (mlie.starwarsanimalcollection) a small butcher
-    yield of shokkweave: the silk is in the spider, not its hide (race.leatherDef
-    untouched).
+  - (The small shokkweave butcher yield now lives on RM_Ollathrix itself in
+    mandrake.rm.webwork; the former donor-Wyyyschokk patch was removed, SWAC Phase 0.)
   - Web-cutting: RUT_Webwork_SilkKnot, a mineable silk vein scattered onto
     RUT_Webwork maps only, yields shokkweave when cut.
-  - Nest raid: RUT_Webwork_Nest (MayRequire mlie.starwarsanimalcollection), a
-    dormant lair guarded by a Wyyyschokk that wakes on approach; breaking it
+  - Nest raid: RUT_Webwork_Nest (MayRequire mandrake.rm.webwork), a
+    dormant lair guarded by an RM_Ollathrix (the wyyyschokk) that wakes on approach; breaking it
     open drops a much larger shokkweave payout.
 
   Out of scope here (see the item and spec): live trader-generation proof and
