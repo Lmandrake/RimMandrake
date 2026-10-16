@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_OcularJelly_Twitch.xml: the zhool's twitching tentacles, built on the base game's own render tree.
+  Owner ruling 2026-10-15, by card on Transient/phase0_p3_questions.md Q1: "Both twitch" (greater bulloo and zhool).
+  Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md.
+
+  MECHANISM (RimSage, 1.6 source): Verse.PawnRenderNodeProperties_Spastic (node PawnRenderNode_Spastic, worker
+  PawnRenderNodeWorker_Spastic), the random twitch Anomaly's Toughspike, Trispike and Fingerspike trees use. Base game,
+  not the donor's AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled.
+
+  ONE THING VANILLA LACKS: a Spastic node's size is fixed, while the zhool has three life stages (body drawSize 0.5, 1.25,
+  1.75). So the tentacles hang under one invisible "TentacleRig" node whose only job is a vanilla PawnRenderSubWorker
+  hook (PawnRenderNodeProperties.subworkerClasses -> PawnRenderNode.GetTransform -> TransformScale):
+  RimMandrake.EnvironmentalHazards.PawnRenderSubWorker_KindLifeStageScale scales the rig by
+  (current life stage drawSize / adult drawSize). PawnRenderTree.TryGetMatrix composes every ancestor's transform, so the
+  rig's scale shrinks the tentacles AND their attach offsets about the body centre: a baby wears baby-sized tentacles at
+  baby-sized attach points. The numbers below are the ADULT's.
+
+  INERT UNTIL THE ART LANDS. Nothing names this tree yet; an unnamed tree resolves no texture (textures load at render
+  time). The race keeps vanilla's Animal tree and its one whole-body picture. Patches/RM_OcularJelly_TwitchWiring.xml
+  switches the race to this tree and the body to the tentacle-less bell; it sits in src/DEPLOY_HOLD.txt until the owner
+  accepts the split art.
+
+  GEOMETRY (cells from the pawn centre, z up, ADULT; PROVISIONAL, tune live in Dialog_DebugRenderTree):
+    Tentacles: mesh 1x1 (drawSize 1). Art contract: ROOT at the TOP CENTRE of the canvas, hanging straight down.
+    pivot (0.5, 0.05) fixes the root 0.45 above the mesh centre, so it sits at offset + (0, 0, 0.45) at every rotation
+    and drawData scale: offset.z = attach.z - 0.45. drawData scale sets the hanging length.
+    Layer: tentacles draw behind the bell (-5/-6) so its rim hides the root seam, except the oral arms, which hang in
+    front of the mouth on the south face (+5).
+    West mirrors east: offsets mirror on their own; flip and rotation are given explicitly, as vanilla's Toughspike does.
+  linkedBodyPartsGroup Arms: the tentacles vanish once every feeler is lost.
+-->
+<Defs>
+
+  <PawnRenderTreeDef>
+    <defName>RM_OcularJelly_Twitch</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li>
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <nodeClass>PawnRenderNode_AnimalPart_Body</nodeClass>
+          <workerClass>PawnRenderNodeWorker_AnimalBody</workerClass>
+          <useRottenColor>true</useRottenColor>
+          <children>
+            <li>
+              <debugLabel>TentacleRig</debugLabel>
+              <useGraphic>false</useGraphic>
+              <subworkerClasses>
+                <li>RimMandrake.EnvironmentalHazards.PawnRenderSubWorker_KindLifeStageScale</li>
+              </subworkerClasses>
+              <children>
+
+                <!-- Tentacle A: the long wavy trailing tentacle, outer left and right. -->
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>TentacleA_L</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-18~18</rotationRange>
+                  <scaleRange>0.92~1.06</scaleRange>
+                  <durationTicksRange>15~45</durationTicksRange>
+                  <nextSpasmTicksRange>5~40</nextSpasmTicksRange>
+                  <baseLayer>-5</baseLayer>
+                  <drawData>
+                    <scale>0.8</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(-0.38, 0, -0.57)</offset><rotationOffset>12</rotationOffset></dataSouth>
+                    <dataNorth><offset>(0.38, 0, -0.57)</offset><rotationOffset>-12</rotationOffset><flip>true</flip></dataNorth>
+                    <dataEast><offset>(-0.35, 0, -0.65)</offset><rotationOffset>35</rotationOffset></dataEast>
+                    <dataWest><rotationOffset>-35</rotationOffset><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>TentacleA_R</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-18~18</rotationRange>
+                  <scaleRange>0.92~1.06</scaleRange>
+                  <durationTicksRange>15~45</durationTicksRange>
+                  <nextSpasmTicksRange>5~40</nextSpasmTicksRange>
+                  <baseLayer>-5</baseLayer>
+                  <drawData>
+                    <scale>0.8</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(0.38, 0, -0.57)</offset><rotationOffset>-12</rotationOffset><flip>true</flip></dataSouth>
+                    <dataNorth><offset>(-0.38, 0, -0.57)</offset><rotationOffset>12</rotationOffset></dataNorth>
+                    <dataEast><offset>(-0.15, 0, -0.67)</offset><rotationOffset>28</rotationOffset><layer>-6</layer></dataEast>
+                    <dataWest><rotationOffset>-28</rotationOffset><layer>-6</layer><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+
+                <!-- Tentacle B: the shorter curling tentacle, inner left and right. -->
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>TentacleB_L</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-20~20</rotationRange>
+                  <scaleRange>0.9~1.08</scaleRange>
+                  <durationTicksRange>12~40</durationTicksRange>
+                  <nextSpasmTicksRange>5~35</nextSpasmTicksRange>
+                  <baseLayer>-5</baseLayer>
+                  <drawData>
+                    <scale>0.65</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(-0.18, 0, -0.63)</offset><rotationOffset>5</rotationOffset></dataSouth>
+                    <dataNorth><offset>(0.18, 0, -0.63)</offset><rotationOffset>-5</rotationOffset><flip>true</flip></dataNorth>
+                    <dataEast><offset>(0.05, 0, -0.70)</offset><rotationOffset>20</rotationOffset></dataEast>
+                    <dataWest><rotationOffset>-20</rotationOffset><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>TentacleB_R</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-20~20</rotationRange>
+                  <scaleRange>0.9~1.08</scaleRange>
+                  <durationTicksRange>12~40</durationTicksRange>
+                  <nextSpasmTicksRange>5~35</nextSpasmTicksRange>
+                  <baseLayer>-5</baseLayer>
+                  <drawData>
+                    <scale>0.65</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(0.18, 0, -0.63)</offset><rotationOffset>-5</rotationOffset><flip>true</flip></dataSouth>
+                    <dataNorth><offset>(-0.18, 0, -0.63)</offset><rotationOffset>5</rotationOffset></dataNorth>
+                    <dataEast><offset>(0.20, 0, -0.70)</offset><rotationOffset>15</rotationOffset><layer>-6</layer></dataEast>
+                    <dataWest><rotationOffset>-15</rotationOffset><layer>-6</layer><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+
+                <!-- Tentacle C: the thin whip at the back of the bell. -->
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>TentacleC_Back</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-24~24</rotationRange>
+                  <scaleRange>0.9~1.08</scaleRange>
+                  <durationTicksRange>10~35</durationTicksRange>
+                  <nextSpasmTicksRange>5~30</nextSpasmTicksRange>
+                  <baseLayer>-6</baseLayer>
+                  <drawData>
+                    <scale>0.75</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(0.05, 0, -0.55)</offset><rotationOffset>-3</rotationOffset></dataSouth>
+                    <dataNorth><offset>(-0.05, 0, -0.60)</offset><rotationOffset>3</rotationOffset><layer>-5</layer></dataNorth>
+                    <dataEast><offset>(-0.50, 0, -0.55)</offset><rotationOffset>45</rotationOffset></dataEast>
+                    <dataWest><rotationOffset>-45</rotationOffset><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+
+                <!-- Tentacle D: the frilled oral arms under the mouth; in front of the bell on the south face only. -->
+                <li Class="PawnRenderNodeProperties_Spastic">
+                  <debugLabel>OralArms</debugLabel>
+                  <texPath>Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD</texPath>
+                  <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+                  <rotDrawMode>Fresh, Rotting</rotDrawMode>
+                  <useRottenColor>true</useRottenColor>
+                  <rotateFacing>false</rotateFacing>
+                  <rotationRange>-10~10</rotationRange>
+                  <scaleRange>0.94~1.06</scaleRange>
+                  <durationTicksRange>20~50</durationTicksRange>
+                  <nextSpasmTicksRange>10~45</nextSpasmTicksRange>
+                  <baseLayer>-6</baseLayer>
+                  <drawData>
+                    <scale>0.55</scale>
+                    <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
+                    <dataSouth><offset>(0, 0, -0.67)</offset><layer>5</layer></dataSouth>
+                    <dataNorth><offset>(0, 0, -0.62)</offset></dataNorth>
+                    <dataEast><offset>(0.45, 0, -0.60)</offset><rotationOffset>10</rotationOffset><layer>-4</layer></dataEast>
+                    <dataWest><rotationOffset>-10</rotationOffset><layer>-4</layer><flip>true</flip></dataWest>
+                  </drawData>
+                </li>
+
+              </children>
+            </li>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Pack</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPack</nodeClass>
+              <workerClass>PawnRenderNodeWorker_AnimalPack</workerClass>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <baseLayer>5</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+</Defs>

@@ -1,0 +1,572 @@
+[
+ {
+  "id": "tt_bulloo_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.5,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the greater bulloo's BODY ONLY, for a jointed render rig. Repaint the attached render with every dangling dark feeler removed: keep the great pale spotted bell, its translucent gel sacs, the dripping gel and the little escort bulloos exactly where they are, at the same position and size on the canvas. Where a feeler hung from the underside of the rim, close the rim cleanly with the same skin. The feelers are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelera_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thick, gently curled near the tip, reaching about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: short and stubby with a blunt rounded tip, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerc_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: medium length, its tip splitting into two small grasping fingers, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerd_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thin, whip-like, with a slight S-curve, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.5,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the greater bulloo's BODY ONLY, for a jointed render rig. Repaint the attached render with every dangling dark feeler removed: keep the great pale spotted bell, its translucent gel sacs, the dripping gel and the little escort bulloos exactly where they are, at the same position and size on the canvas. Where a feeler hung from the underside of the rim, close the rim cleanly with the same skin. The feelers are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelera_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thick, gently curled near the tip, reaching about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: short and stubby with a blunt rounded tip, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerc_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: medium length, its tip splitting into two small grasping fingers, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerd_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thin, whip-like, with a slight S-curve, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.5,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the greater bulloo's BODY ONLY, for a jointed render rig. Repaint the attached render with every dangling dark feeler removed: keep the great pale spotted bell, its translucent gel sacs, the dripping gel and the little escort bulloos exactly where they are, at the same position and size on the canvas. Where a feeler hung from the underside of the rim, close the rim cleanly with the same skin. The feelers are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelera_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thick, gently curled near the tip, reaching about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: short and stubby with a blunt rounded tip, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerc_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: medium length, its tip splitting into two small grasping fingers, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_bulloo_feelerd_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_ColossalAerofleet",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD",
+  "install_to": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_ColossalAerofleet_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single feeler of the greater bulloo, for a jointed render rig. Take its look from the feelers in the attached render: long and thin, whip-like, with a slight S-curve, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.75,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the zhool's BELL ONLY, for a jointed render rig. Repaint the attached render with every hanging tentacle and the frilled oral arms below the mouth removed: keep the veined pink and red dome, its eye-spots and the mouth opening exactly where they are, at the same position and size on the canvas, and close the underside of the bell cleanly with the same skin. Leave out the reddish haze puff: the haze is a separate in-game effect. The tentacles are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclea_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a long wavy ribbon-like tentacle shading from dark red at the root to pale pink at the tip, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacleb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a shorter tentacle that curls at its tip, about two thirds of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclec_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a thin whip-like tentacle, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacled_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_east",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a cluster of three or four short frilled, ruffled oral arms bunched at one root, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.75,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the zhool's BELL ONLY, for a jointed render rig. Repaint the attached render with every hanging tentacle and the frilled oral arms below the mouth removed: keep the veined pink and red dome, its eye-spots and the mouth opening exactly where they are, at the same position and size on the canvas, and close the underside of the bell cleanly with the same skin. Leave out the reddish haze puff: the haze is a separate in-game effect. The tentacles are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclea_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a long wavy ribbon-like tentacle shading from dark red at the root to pale pink at the tip, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacleb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a shorter tentacle that curls at its tip, about two thirds of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclec_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a thin whip-like tentacle, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacled_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_north",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a cluster of three or four short frilled, ruffled oral arms bunched at one root, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_bell_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.75,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: the zhool's BELL ONLY, for a jointed render rig. Repaint the attached render with every hanging tentacle and the frilled oral arms below the mouth removed: keep the veined pink and red dome, its eye-spots and the mouth opening exactly where they are, at the same position and size on the canvas, and close the underside of the bell cleanly with the same skin. Leave out the reddish haze puff: the haze is a separate in-game effect. The tentacles are drawn as separate pictures and attached in game.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclea_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleA_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a long wavy ribbon-like tentacle shading from dark red at the root to pale pink at the tip, about nine tenths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacleb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleB_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a shorter tentacle that curls at its tip, about two thirds of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentaclec_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleC_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a thin whip-like tentacle, about four fifths of the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ },
+ {
+  "id": "tt_zhool_tentacled_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_OcularJelly",
+  "target_texpath": "Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD",
+  "install_to": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_OcularJelly/Tentacles/RM_OcularJelly_TentacleD_{facing}.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "gapall_AA_OcularJelly_v1_south",
+  "priority": 40,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite part, painterly: ONE single tentacle of the zhool, for a jointed render rig. Take its look from the tentacles in the attached render: a cluster of three or four short frilled, ruffled oral arms bunched at one root, about half the canvas height. Draw just this one piece, alone, on an empty transparent canvas: its ROOT (the end that joins the body) at the TOP CENTRE of the canvas, touching the top edge, and the piece hanging straight DOWN from there, centred left to right. Nothing else: no body, no other limbs. It is one part of a jointed render rig and will be attached to the body in game, so the root end must be cleanly cut, not tapered.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, transparent background, no ground, no props, no outlines. This is an EDIT of the attached accepted render of the same individual: keep its exact palette, skin texture, lighting and painted finish. Our own original design; do not copy any existing mod's art."
+ }
+]
