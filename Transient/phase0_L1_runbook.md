@@ -55,7 +55,8 @@ python.exe src/RimMandrake/Utils/modcheck/l1_donor_off_round.py run --manifest "
   `... run --manifest ... --phase flight --owner-present "<his exact words>"`. Without him the 23 FLIGHT rows stay UNMEASURED/OWNER.
 - **Save, last.** Loading the save ends the quicktest map: `... run --manifest ... --phase save [--save <name>]`.
   On a 25-mod tier the save's other mods are missing. Only reference errors that name a donor def, or its RSW_ rename, are graded.
-  If a mod-mismatch dialog blocks the load, the row reads UNMEASURED; read `rimworld/get_ui_state`.
+  No dialog blocks it: the bridge's `load_game` refuses a short tier with `code: save.missing_mods` unless
+  `ignoreModCompatibility: true`, which the driver passes (fixed 2026-10-16). A refused load reads UNMEASURED with the code.
 - A partial run (`--phase` not `all`) writes `mode: "partial"`. Each run writes `Transient/phase0_L1_result_<stamp>.json`.
 
 ## 4. Teardown

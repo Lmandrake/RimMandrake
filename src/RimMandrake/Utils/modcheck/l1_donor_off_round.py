@@ -1149,7 +1149,14 @@ class Round(object):
         needles = list(names.get("old", [])) + list(names.get("new", []))
         self.call("rimworld/go_to_main_menu")
         mark = self.log_mark()
-        self.call("rimworld/load_game", saveName=name)
+        # The save records the owner's full list (~614 mods) and this tier runs ~20, so the bridge's own
+        # pre-check refuses with code save.missing_mods and NO dialog ever opens: the old call ignored that
+        # reply and waited on Entry (PHASE0_L1_SAVE_LOAD, 2026-10-16). Missing mods are expected here.
+        lg = self.call("rimworld/load_game", saveName=name, ignoreModCompatibility=True)
+        if lg.get("success") is False:
+            self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", {"save": name, "loadGame": {
+                k: lg.get(k) for k in ("code", "message", "error", "transport")}})
+            return
         ok, waited = (self.V._wait_playing(self.B, budget_s=1200) if self.V else (False, "no harness"))
         logged = self.log_since(mark, ["Could not load reference", "Could not resolve cross-reference",
                                        "Could not find class"])
@@ -1161,8 +1168,9 @@ class Round(object):
         if ok and logged is None:
             self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, note="no journal tap: reference errors were not observable"))
         elif not ok:
-            self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, hint="a mod-mismatch dialog is the usual "
-                     "block on a short tier: read rimworld/get_ui_state"))
+            ui = self.call("rimworld/get_ui_state")
+            self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, uiState={
+                k: ui.get(k) for k in ("programState", "topWindowType", "topWindowTitle")}))
         else:
             self.row("SAVE_LOAD", "FAIL" if donor_refs else "PASS", "MOD", detail)
 
