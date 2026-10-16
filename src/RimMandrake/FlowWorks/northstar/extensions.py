@@ -73,6 +73,7 @@ FW_TOGGLES = [
     "digFindsEnabled", "digFindsLocalOnly", "digFindLetterEnabled",
     "liquidHeatPushEnabled",     # LIQUID_HEAT_PUSH_1 (2026-10-08): chain liquid_heat (DRAFT)
     "chemfuelInfernoEnabled", "astrofuelDetonationEnabled",   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: chain fuel_moat
+    "slimeSlipEnabled",          # SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: chain slime_slip
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -1618,6 +1619,51 @@ def toggle_pit_fill_effects(t):
                 _expect(row.get("fluid") == "RM_Fluid_Poison", "pirate not in the poison pit's census row: %r" % row)
                 _expect(float(row.get("tox", 0)) == 0, "toxin with poisonFillEnabled OFF: %r" % row)
 
+
+
+def _slime_report(t, arg=" "):
+    """SLIME_CROSSING_BUILD_SLIPPERY_SLOPE census: RM_SlimeSlip.ProofReport; "reset" zeroes the slip counts first."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_SlimeSlip", method="ProofReport", args=arg)
+    return str((r or {}).get("result", ""))
+
+
+def _slime_canal(t, x0, z0):
+    """An 8-cell D2 canal brim-full of green slime, and a colonist standing in its west end. -> (cells, pawn id)."""
+    cells = [(x0 + 4 + i, z0 + 6) for i in range(8)]
+    _dig_run(t, cells, 2)
+    for x, z in cells:
+        _fill_fluid(t, x, z, 2, "RM_Fluid_SlimeGreen")
+    pid = _spawn_pawn_at(t, "Colonist", cells[0][0], cells[0][1])
+    t.bridge_call("jawa/pawn_gear", pawn=pid, action="clear")
+    return cells, pid
+
+
+@suite.chain("slime_slip")
+def slime_slip(t):
+    """SLIME_CROSSING_BUILD_SLIPPERY_SLOPE first script. Owner: "Slime has the particular property of being so slippery
+    that it is nearly impossible to cross, and escape from the pit takes a great deal of time." A colonist ordered along a
+    slime-filled canal slips (counted by RM_SlimeSlip's census; every slip also throws a "Slipped in the ..." text mote);
+    the same walk in a water canal never slips. OFF: no slip."""
+    x0, z0 = _prep_plot(t, "G")
+    cells, pid = _slime_canal(t, x0, z0)
+    with t.component("slime_slips_the_wader", toggle="slimeSlipEnabled"):
+        _slime_report(t, "reset")
+        _march(t, pid, cells[-1][0], cells[-1][1], 20 * 60)
+        row = _fx_row(_slime_report(t), pid)
+        if t._guard():
+            _expect(row.get("fluid") == "RM_Fluid_SlimeGreen" or int(row.get("slips", 0)) > 0,
+                    "colonist not in the slime census: %r" % row)
+            _expect(int(row.get("slips", 0)) > 0, "20 s of walking in slime and no slip: %r" % row)
+    with t.component("slime_slip_off", toggle="slimeSlipEnabled"):
+        with _setting(t, "slimeSlipEnabled", False):
+            _slime_report(t, "reset")
+            _march(t, pid, cells[0][0], cells[0][1], 20 * 60)
+            rep = _slime_report(t)
+            row = _fx_row(rep, pid)
+            if t._guard():
+                _expect("enabled=False" in rep, "setting not off in the census: %r" % rep[:120])
+                _expect(int(row.get("slips", 0)) == 0, "slipped with slimeSlipEnabled OFF: %r" % row)
+    t.bridge_call("jawa/destroy_batch", rects=_rect(x0, z0, PW, PH), categories="All")
 
 def _count(t, def_name, x, z, w, h):
     """Spawned things of `def_name` in a rect (jawa/list_things); None offline / unanswered."""

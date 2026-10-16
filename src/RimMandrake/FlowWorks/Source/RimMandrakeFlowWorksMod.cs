@@ -219,6 +219,12 @@ namespace RimMandrake.FlowWorks
         public static bool pitDrowningEnabled = true;
         public static float pitDrowningRateMultiplier = 1f;
         public static bool poisonFillEnabled = true;
+        // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (PROVISIONAL): walking in slippery liquid (slime) slips, stuns and, on the climb
+        // out, slides back (RM_SlimeSlip / RM_SlimeMath; defaults = RM_SlimeMath.Default*, literals for the settings registry).
+        public static bool slimeSlipEnabled = true;
+        public static float slimeSlipChanceMultiplier = 1f;
+        public static float slimeSlipStunSeconds = 2f;
+        public static float slimeClimbOutSlipFactor = 2f;
         public static float pitTemperatureCoupling = 3f;
         public static float pitResistanceLossMultiplier = 1f;
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
@@ -478,6 +484,10 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitDrowningEnabled, "pitDrowningEnabled", true);
             Scribe_Values.Look(ref pitDrowningRateMultiplier, "pitDrowningRateMultiplier", 1f);
             Scribe_Values.Look(ref poisonFillEnabled, "poisonFillEnabled", true);
+            Scribe_Values.Look(ref slimeSlipEnabled, "slimeSlipEnabled", true);
+            Scribe_Values.Look(ref slimeSlipChanceMultiplier, "slimeSlipChanceMultiplier", 1f);
+            Scribe_Values.Look(ref slimeSlipStunSeconds, "slimeSlipStunSeconds", 2f);
+            Scribe_Values.Look(ref slimeClimbOutSlipFactor, "slimeClimbOutSlipFactor", 2f);
             Scribe_Values.Look(ref pitTemperatureCoupling, "pitTemperatureCoupling", 3f);
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
@@ -569,6 +579,7 @@ namespace RimMandrake.FlowWorks
             .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
             .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
             .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier")
+            .Declare("slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor")
             .Declare("pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier")
             .Declare("fallDamageEnabled", "fallDamageMultiplier")
             .Declare("spikesEnabled", "spikeDamageMultiplier")
@@ -591,6 +602,7 @@ namespace RimMandrake.FlowWorks
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
             .Name("chemfuelInfernoEnabled", "Chemfuel burns like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "A flooded pit drowns whoever cannot swim")
+            .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
             .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in")
             .Name("pitDepthDrawOffsetEnabled", "Pawns sink into dug channels and rise out of them")
@@ -1035,7 +1047,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -1133,6 +1145,19 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Poisonous liquid poisons whoever stands in it", ref poisonFillEnabled,
                 "A poison liquid builds up toxins in anyone standing in it, more the fuller the cell. "
               + "Toxic resistance helps. Off: poison is just another liquid.");
+            list.CheckboxLabeled("Slime is so slippery it is nearly impossible to cross", ref slimeSlipEnabled,
+                "Anyone walking through slime in a canal or pit keeps slipping: each slip stops them for a moment and "
+              + "says so over their head, and a slip while climbing out slides them back to the start of the climb, so "
+              + "getting out takes a long time. Colonists plan routes around slime. Off: slime is just a thick liquid.");
+            using (Dependent(list, "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor"))
+            {
+                list.Label("How often people slip: x" + slimeSlipChanceMultiplier.ToString("F2"));
+                slimeSlipChanceMultiplier = list.Slider(slimeSlipChanceMultiplier, 0.1f, 2.5f);
+                list.Label("How long a slip stops them: " + slimeSlipStunSeconds.ToString("F1") + " s");
+                slimeSlipStunSeconds = list.Slider(slimeSlipStunSeconds, 0.5f, 6f);
+                list.Label("Slipping while climbing out: x" + slimeClimbOutSlipFactor.ToString("F1") + " as often");
+                slimeClimbOutSlipFactor = list.Slider(slimeClimbOutSlipFactor, 1f, 4f);
+            }
             list.CheckboxLabeled("An open pit leaves whoever is in it exposed to the elements", ref pitExposureEnabled,
                 "Nobody in an open pit (no roof, no cover) can find shade, shelter or a windbreak: their comfortable "
               + "temperature range narrows, so the game's own heatstroke and hypothermia start sooner. Mild weather does "

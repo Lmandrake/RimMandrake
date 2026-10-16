@@ -55,6 +55,7 @@
     <Compile Include="..\RM_ExcavationSanityMath.cs" />
     <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
+    <Compile Include="..\RM_SlimeMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />
     <Compile Include="..\Quarry\RM_PlacerMath.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="RiverSwitchFlipChecks.cs" />
     <Compile Include="RiverWashChecks.cs" />
     <Compile Include="WeirPoolChecks.cs" />
+    <Compile Include="SlimeChecks.cs" />
   </ItemGroup>
 
 </Project>

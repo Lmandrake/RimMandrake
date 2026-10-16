@@ -18,12 +18,12 @@
        which WaterShallow already does and this file's ParentName inherits,
        as a source, limitless or limited by its body size — RM_LiquidStock).
 
-       pathCost per tier matches RM_Fill_Tar_* exactly (100/200/300/300;
-       the trace was left at WaterShallow's inherited 30 until
-       DEPTH_FILL_COST_MATRIX_1, cheaper than the dry Deep cut it fills) — slime is the SAME
-       Heavy viscosityClass as tar on the wade axis; what makes it read as
-       thicker still is the canal fluid's own ticksPerTile (480 vs tar's
-       360, FlowWorks_Fluids.xml), not a heavier wade cost invented fresh.
+       pathCost per tier is 200/300/450/450, about one and a half times
+       RM_Fill_Tar_* (100/200/300/300): SLIME_CROSSING_BUILD_SLIPPERY_SLOPE
+       (owner: "so slippery that it is nearly impossible to cross") makes
+       route planning avoid slime harder than tar. The walking itself is
+       made treacherous by RM_SlimeSlip (FluidDef.slipperiness 1: slips that
+       stun, and slide a climbing pawn back), not by pathCost alone.
 
        Colours are tints of vanilla's own WaterShallowRamp/WaterDeepRamp —
        no new art, the same "colour with material" convention this mod
@@ -39,8 +39,8 @@
     <defName>RM_Fill_SlimeRed_Trace</defName>
     <label>shallow red slime</label>
     <description>Red slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
-    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
-    <pathCost>100</pathCost>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
+    <pathCost>200</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -64,7 +64,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
-    <pathCost>200</pathCost>
+    <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>395</renderPrecedence>
@@ -86,7 +86,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>396</renderPrecedence>
@@ -108,7 +108,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
     <tags>
@@ -124,8 +124,8 @@
     <defName>RM_Fill_SlimeGreen_Trace</defName>
     <label>shallow green slime</label>
     <description>Green slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
-    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
-    <pathCost>100</pathCost>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
+    <pathCost>200</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -149,7 +149,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
-    <pathCost>200</pathCost>
+    <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>395</renderPrecedence>
@@ -171,7 +171,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>396</renderPrecedence>
@@ -193,7 +193,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
     <tags>
@@ -209,8 +209,8 @@
     <defName>RM_Fill_SlimeWhite_Trace</defName>
     <label>shallow white slime</label>
     <description>White slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
-    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
-    <pathCost>100</pathCost>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
+    <pathCost>200</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -236,7 +236,7 @@
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
     <color>(200,196,178)</color>
-    <pathCost>200</pathCost>
+    <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>395</renderPrecedence>
@@ -259,7 +259,7 @@
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
     <color>(200,196,178)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>396</renderPrecedence>
@@ -282,7 +282,7 @@
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
     <color>(200,196,178)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
     <tags>
@@ -298,8 +298,8 @@
     <defName>RM_Fill_SlimeYellow_Trace</defName>
     <label>shallow yellow slime</label>
     <description>Yellow slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
-    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
-    <pathCost>100</pathCost>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
+    <pathCost>200</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -323,7 +323,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
-    <pathCost>200</pathCost>
+    <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>395</renderPrecedence>
@@ -345,7 +345,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>396</renderPrecedence>
@@ -367,7 +367,7 @@
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
     <tags>
