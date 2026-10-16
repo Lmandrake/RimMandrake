@@ -302,11 +302,14 @@ namespace RimMandrake.FlowWorks
 				SetIf(m, "_BrightSpotThresholdMax", look.spotMax);
 			}
 			t.graphic = g;
-			if (flow || solid)
+			bool ripple = look.rippleDensity >= 0f || look.rippleIntensity >= 0f;
+			// no water ripple pass under a thick liquid, except a Solid look that asks for one (rippleDensity or
+			// rippleIntensity set): opaque colour with vanilla's ripple pass over it (TAR_LOOK_TUNE_THICK_AND_SLOW)
+			if (flow || (solid && !ripple))
 			{
-				t.waterDepthMaterial = null;     // no water ripple pass under a thick liquid
+				t.waterDepthMaterial = null;
 			}
-			else if (o.waterDepthMaterial != null && (look.rippleDensity >= 0f || look.rippleIntensity >= 0f))
+			else if (o.waterDepthMaterial != null && ripple)
 			{
 				Material wd = Own(t, o.waterDepthMaterial);
 				SetIf(wd, "_WaterRippleDensity", look.rippleDensity);
@@ -440,6 +443,7 @@ namespace RimMandrake.FlowWorks
 		/// lookless def a new look; a read never writes one.</summary>
 		private static RM_LiquidSurfaceLook Find(string defName, bool create)
 		{
+			defName = Resolve(defName) ?? defName;
 			FluidDef f = DefDatabase<FluidDef>.GetNamedSilentFail(defName);
 			if (f != null)
 			{
@@ -489,6 +493,133 @@ namespace RimMandrake.FlowWorks
 			return "applied " + n + (bad.Length > 0 ? " bad:" + bad : "") + " | " + RM_LiquidLooks.Describe(look);
 		}
 
+		/// <summary>TAR_LOOK_TUNE_THICK_AND_SLOW: a FluidDef/LiquidDef defName as given, else a short name ("tar", "Tar")
+		/// matched against RM_Liquid_&lt;name&gt; / RM_Fluid_&lt;name&gt; or a LiquidDef label, case-insensitively. Null when
+		/// nothing matches.</summary>
+		public static string Resolve(string name)
+		{
+			if (name.NullOrEmpty()) return null;
+			if (DefDatabase<FluidDef>.GetNamedSilentFail(name) != null || DefDatabase<LiquidDef>.GetNamedSilentFail(name) != null)
+			{
+				return name;
+			}
+			string key = name.Replace(" ", "");
+			foreach (LiquidDef l in DefDatabase<LiquidDef>.AllDefsListForReading)
+			{
+				if (string.Equals(l.defName, "RM_Liquid_" + key, StringComparison.OrdinalIgnoreCase)
+					|| string.Equals(l.label, name, StringComparison.OrdinalIgnoreCase))
+				{
+					return l.defName;
+				}
+			}
+			foreach (FluidDef f in DefDatabase<FluidDef>.AllDefsListForReading)
+			{
+				if (string.Equals(f.defName, "RM_Fluid_" + key, StringComparison.OrdinalIgnoreCase))
+				{
+					return f.defName;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>Field order of a dumped &lt;surfaceLook&gt; block: generate_liquid_suite.py's _LOOK_FIELDS, so a dump is
+		/// exactly what the generator emits for the same values (selftest_liquid_look_tune.py pins the two equal and
+		/// covering every public field of RM_LiquidSurfaceLook).</summary>
+		public static readonly string[] FieldOrder =
+		{
+			"shader", "texture", "mask", "tint", "depthDarken", "flowSpeed", "flowAmplitude", "flowFrequency",
+			"brightness", "spotScale", "spotSpeed", "spotMin", "spotMax", "rippleDensity", "rippleIntensity",
+			"fleck", "fleckChance", "splashes", "overlay", "highlight", "strength", "scale", "speed", "sharpness",
+			"stretch", "sheen", "wake", "bubbles", "bubbleColor", "seeThrough", "seeThroughTint"
+		};
+
+		private static string Text(object v)
+		{
+			return v is float x ? x.ToString("0.0##", CultureInfo.InvariantCulture)
+				: v is Color c ? string.Format(CultureInfo.InvariantCulture, "({0:0.0##},{1:0.0##},{2:0.0##})", c.r, c.g, c.b)
+				: v is bool b ? (b ? "true" : "false")
+				: v?.ToString();
+		}
+
+		/// <summary>Every field of one liquid's live look, field -&gt; text (null for an unset string), in
+		/// <see cref="FieldOrder"/>. Null when the def has no look.</summary>
+		public static Dictionary<string, string> Values(string defName)
+		{
+			RM_LiquidSurfaceLook look = Peek(defName);
+			if (look == null) return null;
+			Dictionary<string, string> d = new Dictionary<string, string>();
+			foreach (string k in FieldOrder)
+			{
+				FieldInfo f = typeof(RM_LiquidSurfaceLook).GetField(k, BindingFlags.Public | BindingFlags.Instance);
+				d[k] = f == null ? "?" : Text(f.GetValue(look));
+			}
+			return d;
+		}
+
+		/// <summary>The fields whose live value differs from RM_LiquidSurfaceLook's own default, in FieldOrder.</summary>
+		private static List<KeyValuePair<string, string>> Changed(RM_LiquidSurfaceLook look)
+		{
+			RM_LiquidSurfaceLook def = new RM_LiquidSurfaceLook();
+			List<KeyValuePair<string, string>> o = new List<KeyValuePair<string, string>>();
+			foreach (string k in FieldOrder)
+			{
+				FieldInfo f = typeof(RM_LiquidSurfaceLook).GetField(k, BindingFlags.Public | BindingFlags.Instance);
+				if (f == null) continue;
+				string now = Text(f.GetValue(look)), was = Text(f.GetValue(def));
+				if (now != was && now != null) o.Add(new KeyValuePair<string, string>(k, now));
+			}
+			return o;
+		}
+
+		/// <summary>One liquid's live look as the &lt;surfaceLook&gt; XML block (fields differing from the class
+		/// defaults, generator order), ready to paste into RM_LiquidDefRegistry.xml.</summary>
+		public static string Xml(string defName)
+		{
+			RM_LiquidSurfaceLook look = Peek(defName);
+			if (look == null) return null;
+			StringBuilder sb = new StringBuilder("<surfaceLook>\n");
+			foreach (KeyValuePair<string, string> kv in Changed(look))
+			{
+				sb.Append("  <").Append(kv.Key).Append('>').Append(System.Security.SecurityElement.Escape(kv.Value))
+					.Append("</").Append(kv.Key).Append(">\n");
+			}
+			return sb.Append("</surfaceLook>").ToString();
+		}
+
+		/// <summary>The same look as a SURFACE_LOOKS entry for Tools/generate_liquid_suite.py (the registry XML is
+		/// generated from that table, so the table is where a tuned look must land to survive a regenerate).</summary>
+		public static string GeneratorEntry(string defName)
+		{
+			RM_LiquidSurfaceLook look = Peek(defName);
+			if (look == null) return null;
+			List<string> parts = new List<string>();
+			FieldInfo[] fs = typeof(RM_LiquidSurfaceLook).GetFields(BindingFlags.Public | BindingFlags.Instance);
+			foreach (KeyValuePair<string, string> kv in Changed(look))
+			{
+				Type t = Array.Find(fs, f => f.Name == kv.Key).FieldType;
+				string v = t == typeof(float) ? kv.Value : t == typeof(bool) ? (kv.Value == "true" ? "True" : "False")
+					: "\"" + kv.Value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+				parts.Add("\"" + kv.Key + "\": " + v);
+			}
+			return "{" + string.Join(", ", parts) + "}";
+		}
+
+		/// <summary>Each terrain wearing this liquid's look, with what it actually draws (see <see cref="Material"/>).</summary>
+		public static List<string> Terrains(string defName)
+		{
+			RM_LiquidSurfaceLook look = Peek(defName);
+			List<string> o = new List<string>();
+			if (look == null) return o;
+			foreach (KeyValuePair<RM_LiquidSurfaceLook, RM_LiquidLooks.Member> kv in RM_LiquidLooks.Members())
+			{
+				if (kv.Key == look)
+				{
+					o.Add(kv.Value.terrain.defName + " tier=" + kv.Value.tier + " | " + Material(kv.Value.terrain.defName));
+				}
+			}
+			return o;
+		}
+
 		/// <summary>The current look of one liquid, as a spec string.</summary>
 		public static string Show(string defName)
 		{
@@ -510,6 +641,13 @@ namespace RimMandrake.FlowWorks
 			sb.Append(" | depth=").Append(wd == null ? "null" : wd.shader.name + " color=" + (wd.HasProperty("_Color") ? wd.color.ToString() : "n/a") + " queue=" + wd.renderQueue);
 			sb.Append(" | edgeMat=").Append(t.edgeType);
 			return sb.ToString();
+		}
+
+		/// <summary>A read of a look that never creates one (C8b-F2). Kept below Show so the mutation selftest's first
+		/// Find(defName, false) is still Show's own.</summary>
+		private static RM_LiquidSurfaceLook Peek(string defName)
+		{
+			return Find(defName, false);
 		}
 
 		/// <summary>"on" re-applies every look; "off" restores every fill's plain XML look (the Mod Setting's fallback).</summary>
