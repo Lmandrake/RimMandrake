@@ -535,7 +535,7 @@ yield backfill) that adds no git or review load. That fits the spirit of point 2
 - **Pilot scope widened (owner typed, 20:15):** *"I would like to take the Pyrelands + flowworks + gimme some slack together as the "around the loop" example. All three mods loaded together and pushed together."* → the pilot is ONE combined unit: Pyrelands + FlowWorks + GimmeSomeSlack on one mod list, one accepted version, checked and accepted together.
 - **Seat split for the pilot (owner, card 20:17):** *"For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment."* BENCH builds, runs the live game and lands commits for Pyrelands + FlowWorks + GimmeSomeSlack; FOUNDRY stays off those three mods and off the bridge for them until the pilot closes. Item: `RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP`.
 
-## H. Pilot verdict - Pyrelands + FlowWorks + GimmeSomeSlack (BENCH, 2026-10-12; interim, not yet accepted)
+## H. Pilot verdict - Pyrelands + FlowWorks + GimmeSomeSlack (BENCH, 2026-10-12; criteria met and pilot closed 2026-10-16)
 
 Evidence: `Transient/bench_live_20261012{,b,c,d}/SITTING.md`, handoff `BENCH_REBOOT_HANDOFF_202610121341`.
 Numbers below are from those sittings (MEASURED there); nothing here is estimated.
@@ -565,4 +565,4 @@ All hold at one HEAD sha on the 23-mod tier, recorded by `rimflow verify`:
 5. selftests N/N (`run_selftests.py`) and `code_review_status.py check` CLEAN on changed files.
 6. The owner review queue `Transient/ratchet_owner_review_2026-10-12.md` rows 1-4, 6, 8 have owner provenance on the ledger (`--owner-said` / `--by-card`). This is the only non-machine line.
 
-Status 2026-10-12 against this: criteria 1 and 2 met at passes 1-4 but not re-proved at one HEAD since the canal front fix (4de309155e); criterion 3 NOT met (embergrass_regrow UNMEASURED, regrow thresholds unruled, ash north-star bars replaced by the ash redesign and not yet live-proved); criteria 4-6 open.
+Outcome: all six criteria met; `RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP` closed 2026-10-16T01:46Z at 682da5d82c (C1 GSS proof_all 118/119 + S12d PASS in validation_style, counted by owner card; C2 FlowWorks v2 61/61, river 20/0/1 owed by design; C3 Pyrelands 35 PASS / 0 FAIL, regrow INFERRED; C4-C5 met; C6 owner rows ruled). The owner walked the Pyrelands review save and approved every station (2026-10-16). Release meaning, by card 2026-10-15: ready, not published - built, tested, reviewed, packaged (About, preview, version), deployed into his game; Workshop upload later. Release-readiness work after the close is tracked on the ledger, not here.
