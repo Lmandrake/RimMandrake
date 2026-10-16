@@ -20,6 +20,25 @@ namespace RimMandrake.Contagion
     // of v1 until the limb mechanism existed.
     public static class AmoebaHostUtility
     {
+        // The host currently dying because its gestation completed. Pawn.Kill runs the race's death action
+        // synchronously, so DeathActionWorker_RM_GenomeHostBurst reads this inside the Kill call and skips the acid
+        // burst for this one death only (owner by card 2026-10-15, Q3: "Burst only when killed"). Never saved:
+        // it is set and cleared around the one Kill call.
+        public static Pawn HostDyingInBirth { get; private set; }
+
+        private static void KillGivingBirth(Pawn host)
+        {
+            HostDyingInBirth = host;
+            try
+            {
+                host.Kill(null);
+            }
+            finally
+            {
+                HostDyingInBirth = null;
+            }
+        }
+
         // The sample an inject job uses: a carried Monstrous sample first, so
         // a Normal one can never be spent ahead of it. The float menu and the
         // job driver both call this, so they always agree.
@@ -128,7 +147,7 @@ namespace RimMandrake.Contagion
             {
                 Thing limb = ThingMaker.MakeThing(limbPool.RandomElement());
                 bool placed = GenPlace.TryPlaceThing(limb, pos, map, ThingPlaceMode.Near);
-                host.Kill(null);
+                KillGivingBirth(host);
                 if (placed)
                 {
                     Messages.Message(
@@ -166,7 +185,7 @@ namespace RimMandrake.Contagion
 
             // The host dies producing the batch — consumable per owner
             // ruling. Kill after spawning so pos/map are still valid.
-            host.Kill(null);
+            KillGivingBirth(host);
 
             if (spawned.Count > 0)
             {

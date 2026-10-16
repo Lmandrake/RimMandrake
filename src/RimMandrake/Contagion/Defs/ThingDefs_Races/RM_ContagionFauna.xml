@@ -65,6 +65,18 @@
       </li>
     </tools>
     <race>
+      <!-- The donor AA_RedGoo's acid death burst, at the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor
+           def. Owner by card 2026-10-15 (Transient/phase0_twin_only_questions.md Q3, "Burst only when killed"): our
+           worker skips the burst for the one death where the host dies giving birth to its grown organs or limb
+           (Source/DeathActionWorker_RM_GenomeHostBurst.cs); every other death bursts. -->
+      <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+        <workerClass>RimMandrake.Contagion.DeathActionWorker_RM_GenomeHostBurst</workerClass>
+        <flatRadius>2.5</flatRadius>
+        <damageDef>AcidBurn</damageDef>
+        <damageAmount>12</damageAmount>
+        <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+        <postExplosionFilthChance>0.5</postExplosionFilthChance>
+      </deathAction>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <bloodDef>Filth_Slime</bloodDef>
       <baseBodySize>1.0</baseBodySize>

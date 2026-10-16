@@ -84,6 +84,10 @@ namespace RimMandrake.Contagion
         // ---- the amoeba gestation ---------------------------------------------------------------
         public static bool GestationDone(float severity, float maxSeverity) { return severity >= maxSeverity - 0.001f; }
 
+        // The Bloody Mess's acid burst (owner by card 2026-10-15, Q3 "Burst only when killed"): every death bursts
+        // EXCEPT the one where the host dies giving birth to its grown organs or limb (DeathActionWorker_RM_GenomeHostBurst).
+        public static bool HostDeathBursts(bool diesGivingBirth) { return !diesGivingBirth; }
+
         // A monstrous sample (with grown limbs on and a non-empty limb pool) grows one limb; anything else, the organ batch.
         public static GestationPlan Plan(bool monstrous, bool grownLimbsEnabled, int limbPoolCount)
         {

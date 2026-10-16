@@ -448,6 +448,10 @@ namespace RimMandrake.Contagion.SelfTest
             }
             Check(RM_DraftprintKernel.GestationDone(1f, 1f) && RM_DraftprintKernel.GestationDone(0.9995f, 1f) && !RM_DraftprintKernel.GestationDone(0.998f, 1f), "gestation completes within 0.001 of the max");
             Check(RM_DraftprintKernel.BatchSize(3, 0) == 0 && RM_DraftprintKernel.BatchSize(3, 4) == 3, "BatchSize");
+            // the Bloody Mess's acid burst, both deaths (owner card 2026-10-15 Q3 "Burst only when killed"):
+            // killed -> bursts; dies giving birth to its organ batch / grown limb -> never bursts.
+            Check(RM_DraftprintKernel.HostDeathBursts(false), "a killed genome host must burst");
+            Check(!RM_DraftprintKernel.HostDeathBursts(true), "a genome host dying in birth must not burst");
             // the Unfinished
             Check(RM_DraftprintKernel.SpawnDue(100, 100) && !RM_DraftprintKernel.SpawnDue(99, 100) && RM_DraftprintKernel.NearbyAllows(2, 3) && !RM_DraftprintKernel.NearbyAllows(3, 3), "spawner clocks");
             float days = r.Next(1, 30) / 10f; Check(RM_DraftprintKernel.NextSpawn(1000, days) == 1000 + (int)(days * 60000f) && RM_DraftprintKernel.NextSpawn(1000, days) > 1000, "NextSpawn is always later");
