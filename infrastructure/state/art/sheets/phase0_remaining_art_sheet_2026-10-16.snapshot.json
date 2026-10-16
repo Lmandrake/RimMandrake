@@ -1,0 +1,543 @@
+{
+ "biome": "SUBJECTS_phase0_remaining_art",
+ "built": "2026-10-16T05:01:32-0700",
+ "census": "Transient/biome_ffar/phase0_remaining_art.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 551 active",
+ "rows": {
+  "RM_AngelMothEggFertilized": {
+   "columns": {
+    "A": {
+     "single": "fe7b2f0b5e03fe7ced839bd72939c40bd8d741b6943d3e0feb225dc5512cb541"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_DustveilEgg"
+   },
+   "labels": {
+    "A": "render donorart_p2_dustveil_egg_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_DustveilEgg",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "angelmotheggfertilized"
+  },
+  "RM_BedBugEggFertilized": {
+   "columns": {
+    "A": {
+     "single": "8f4a2f73d82f7546fb3a9af1b15a1967b50023bf97647f098ffe10064abe7bc3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_BedBugEgg"
+   },
+   "labels": {
+    "A": "render donorart_p2_bedbug_egg_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_BedBugEgg",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bedbugeggfertilized"
+  },
+  "RM_Bezzul": {
+   "columns": {
+    "A": {
+     "east": "93f8bf0a36d5cb39b0c2ad03ecbf5d8d0c2f5b2d65800d91d5a6b46b8536d32b",
+     "north": "f40a8604d2b6ead4373bc594047cc556207abc15f765bfd1861ef375daf2502c",
+     "south": "7bd8d45eec0c69096d359208d50fac556056a990381ee5294e6e09392da54218"
+    },
+    "B": {
+     "east": "cd3d23de97393e6be53ac1d25dd16b09b21a76e6d5299511ea427fd55d985c19",
+     "north": "891d5aae792081a2486f25ed2b502acafd201426a22089b3f19014b8d5496876",
+     "south": "53f29b52aa0cf095abfa88f88e7766a5784dc0bd1f14feead13e3be2cb14038a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bezzul/RM_Bezzul",
+    "B": "Things/Pawn/Animal/RM_Bezzul/RM_Bezzul"
+   },
+   "labels": {
+    "A": "render b07_bezzul",
+    "B": "render slime_bezzul"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Bezzul/RM_Bezzul",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bezzul"
+  },
+  "RM_Braskeen": {
+   "columns": {
+    "A": {
+     "single": "945461916ed00ae10eb62f7126d5e0c9c22df70ac82110cbd8a2122eaad2712f"
+    },
+    "B": {
+     "single": "2b9b675fca431be3682623553912facb7954bcb2756785a2ecdefa43db19396d"
+    },
+    "C": {
+     "single": "b75e70887de54a52c3c3b8a4d7c76a4a0e5091e6c77772849a599bebf2994142"
+    },
+    "D": {
+     "single": "268aace147126381485a037e971b9c679e3644f01d79a461e571327018bdece6"
+    },
+    "E": {
+     "single": "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
+    },
+    "F": {
+     "single": "ce4d35a90f75121427747ceda1ca21997a6706dfa6203a14d210eafd0dfac91c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "B": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "C": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "D": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "E": "_byname",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "render miasma_braskeen_closed_v2",
+    "B": "render miasma_braskeen_open_v2",
+    "C": "render miasma_braskeen_closed",
+    "D": "render miasma_braskeen_open",
+    "E": "render b07_braskeenA",
+    "F": "render b07_braskeenB"
+   },
+   "pools": [
+    "Things/Plant/RM_Braskeen/RM_Braskeen"
+   ],
+   "res": "Things/Plant/RM_Braskeen/RM_Braskeen",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "braskeen"
+  },
+  "RM_Dhoggur": {
+   "columns": {
+    "A": {
+     "east": "948188e777ef9336733d7570f826e654602ac47e2425f48bbdf82de63f652c40",
+     "north": "b1f818932f35c45309819fe4584922372f6672ae59aecb3f851850d9b626306f",
+     "south": "310dad78fcf39a060dabe1ccb7b307c0dda73866e348a9aed760922b3565a8dc"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render forgeslot_dhoggur_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "dhoggur"
+  },
+  "RM_FireSpit": {
+   "columns": {
+    "A": {
+     "single": "66bf71ad6509a706cba3523f665703269d51bc1f7234525b43514c12ae607bcc"
+    },
+    "B": {
+     "single": "1fa6f5eec50ec3d61c7bd2dddd3ba4cf48482fca49687012aa3120de401922bf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Projectile/RM_FireSpit",
+    "B": "Things/Projectile/RM_FireSpit"
+   },
+   "labels": {
+    "A": "render donorart_p2_firespit_icon_v1",
+    "B": "render donorart_p2_firespit_projectile_v1"
+   },
+   "pools": [],
+   "res": "Things/Projectile/RM_FireSpit",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "firespit"
+  },
+  "RM_GiantCrownedSilkie": {
+   "columns": {
+    "A": {
+     "east": "d9eb4a4c1dec738cd3f4a4d7fde27de8984a9c782da5fc17f2f9f9ac05cf9738",
+     "north": "ee62ed5065eaaa97d8a49f1ceb43453dd07fbec6da1e1d9cf0f34626c956380c",
+     "south": "ca753c575412496f9044c8ede46d56d79c0097051c06f556bd5a6931692cd414"
+    },
+    "B": {
+     "east": "dd689de83fa586a620eea2976fbb658f6c87536711491192936ca8cdd2526944",
+     "north": "e38313273886de873821a5bb1c7ac6645ac1a18ab54ce13c56a8c8c927ca7ec4",
+     "south": "77262c8a489ea8979b6c652111dc4c483ffa0727434e4610bba156cec120d0f2"
+    },
+    "C": {
+     "east": "6ab810659674d3885d8ffe63fd1eecfef20824a274e13a0b340b59f7e81e5c6c",
+     "north": "df7d17bc033213327c1a6fa6485bfd2ddebff1daeae63b15ed2b5fc1371e1581",
+     "south": "6bcd611a4a74aff828d3e9b89793ccad53a4b303712fba3df4ab61f0d0a5c75f"
+    },
+    "D": {
+     "east": "c2dba760bd7363f946ff8fe43b563d19523e161bb18b9d3680bd124d143d6a6f",
+     "north": "f862b756c4cad8010b815740ed72b192af9cd134bef3bf3c9accc6a3c830e091",
+     "south": "ba5bedae9e5834b22baa268559c89a9db5fd86e65b43febab1164b4c1980791f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie",
+    "B": "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie",
+    "C": "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "render enact_4d78432e_giantcrownedsilkie_v1",
+    "B": "render cauldronfix_giantcrownedsilkie_v2",
+    "C": "render gapall_AA_GiantCrownedSilkie_v1",
+    "D": "render b07_silkie"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "giantcrownedsilkie"
+  },
+  "RM_GiantCrownedSilkieSilk": {
+   "columns": {
+    "A": {
+     "single": "e830982f4e9e975fbb24f6a402295e9f86f2e8374c0a5803bb566cc672661090"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render donorart_p2_silkie_silk_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "giantcrownedsilkiesilk"
+  },
+  "RM_Ismerrow": {
+   "columns": {
+    "A": {
+     "single": "73353e258837c35ee97f605bd4e7d421a79412c8e13aa9a85388f5aaeadebb80"
+    },
+    "B": {
+     "single": "4b52f8cf7ce050a3191ae3deda9f353e23f9199ea82fd575903c12d7e2ec6a44"
+    },
+    "C": {
+     "single": "a3179a28c513eb5a9945a9b365e6c270ef71874abfbb2023f1b061455aefb030"
+    },
+    "D": {
+     "single": "80ade350dd5dd780b5f6c6c967c201b105bd0111f9df7585ae4d53f01cfdded3"
+    },
+    "E": {
+     "single": "9f0d00a495d3e754bb6c30a6b3e4df45d35338fa0d78f0a3347fd26d8e570242"
+    },
+    "F": {
+     "single": "e54bd6db6d469d8d99b7de46abee0cfecd6c6276e8695a084adb808bc28d5997"
+    },
+    "G": {
+     "single": "988d133eba969338df771f52af039b6b41461fdadbf3bde8268577862355488b"
+    },
+    "H": {
+     "single": "4fd2981030c98ac5ee9820fde95e6662f85b828f0115bdd2f4cbb75a6b1f28e7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+    "B": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+    "C": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+    "D": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname",
+    "H": "_byname"
+   },
+   "labels": {
+    "A": "render miasma_ismerrow_a",
+    "B": "render miasma_ismerrow_b",
+    "C": "render miasma_ismerrow_c",
+    "D": "render miasma_ismerrow_d",
+    "E": "render b07_ismerrowA",
+    "F": "render b07_ismerrowB",
+    "G": "render b07_ismerrowC",
+    "H": "render b07_ismerrowD"
+   },
+   "pools": [
+    "Things/Plant/RM_Ismerrow/RM_Ismerrow"
+   ],
+   "res": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "ismerrow"
+  },
+  "RM_Jobbosh": {
+   "columns": {
+    "A": {
+     "east": "6e3104dd0eed1be18dc89de760aaca72049eae59cd5dc2f7964c384f021f9937",
+     "north": "16c75cc183b660666ebc2a0e7eb5178abd3753a5c9671ec71155ee909868efc3",
+     "south": "d84e3132fca249183813396b00ac6d5a8f5452bc95a45e56a9fcd06d14c8b350"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render forgeslot_jobbosh_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "jobbosh"
+  },
+  "RM_Jurrox": {
+   "columns": {
+    "A": {
+     "east": "61c4d4d96d60df89a031fa343c2c1a93d174482e9b9097cab3ab1cd147a9e409",
+     "north": "09caeec485214224a7d7dbfdb01bc850f534a5d38d213994e8e736af20d658bc",
+     "south": "301f8ec574785eb4863758390353928cccc0b4c6d2ffee07f8421fe938edca83"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render forgeslot_jurrox_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "jurrox"
+  },
+  "RM_Leather_RaptorPlates": {
+   "columns": {
+    "A": {
+     "single": "9283fb59b94fff5247e04ec87c5710e83d8f8fcfaf25d9bbebcb1d3909f16aae"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Leather_RaptorPlates"
+   },
+   "labels": {
+    "A": "render b07_leather_raptorplates"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Leather_RaptorPlates",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "leather_raptorplates"
+  },
+  "RM_Leather_RaptorPlatesMiasma": {
+   "columns": {
+    "A": {
+     "single": "f04230f5301a79e9dbe8d4ff650dca1a81267ad4494012bfe7d489bf9648c6f7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Leather_RaptorPlatesMiasma"
+   },
+   "labels": {
+    "A": "render b07_leather_raptorplatesmiasma"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Leather_RaptorPlatesMiasma",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "leather_raptorplatesmiasma"
+  },
+  "RM_Pluurva": {
+   "columns": {
+    "A": {
+     "east": "585727796be6b27556bd85df4c87fd312072b4a9dad8161a171e5ef296d4a946",
+     "north": "4058629f5275b6d98da642b1cdbd318b34c5deb4ff0fb88620151833f06a4989",
+     "south": "7b833f25e1d41959481ca97bf0f8b69df4648a6a2d94361b65265cf9ea44bd77"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Pluurva/RM_Pluurva"
+   },
+   "labels": {
+    "A": "render b07_pluurva"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/RM_Pluurva/RM_Pluurva",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pluurva"
+  },
+  "RUT_IdeoIcon_AscendantGenome": {
+   "columns": {
+    "A": {
+     "single": "a1e893e0fc3f5b1e454fafbc7682bd80c2741cb996d6f940f779729f04678d1b"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_ascendantgenome_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_ascendantgenome"
+  },
+  "RUT_IdeoIcon_Astropolitan": {
+   "columns": {
+    "A": {
+     "single": "7087864afbc3239955b8c91e208931bd8d092670ad10683a25e2a7859109e8c2"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_astropolitan_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_astropolitan"
+  },
+  "RUT_IdeoIcon_Balance": {
+   "columns": {
+    "A": {
+     "single": "5ecfa4884f32d705e0089d80bf2f0f43cbdd0a1c60cc1fe06843e5c84e05be3b"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_balance_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_balance"
+  },
+  "RUT_IdeoIcon_Contract": {
+   "columns": {
+    "A": {
+     "single": "54ce8ea3dd606f10a36af343ae030c9756c5761c23efeb03e839aa3640f20a26"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_contract_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_contract"
+  },
+  "RUT_IdeoIcon_SunDebt": {
+   "columns": {
+    "A": {
+     "single": "17e2016ae85e8eb105d4396dfb14c70b8922745684619272d886e60f2e225b27"
+    },
+    "B": {
+     "single": "817c8f1f3823a540e62bd2c8956dd5e6d39d52039c7d71b1f8dd0a7f1a7e9fdf"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_sundebt_v1",
+    "B": "render ideoicon_sundebt_v2"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_sundebt"
+  },
+  "RUT_IdeoIcon_Weight": {
+   "columns": {
+    "A": {
+     "single": "d0a53069cd1e3fbbf1a7be562e84392e82e3b05f574d39e1b8ffb64105a87be1"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render ideoicon_weight_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ideoicon_weight"
+  }
+ },
+ "sheetId": "phase0_remaining_art_sheet_2026-10-16",
+ "snapshotId": "9f7c88a63bab6cbb"
+}
