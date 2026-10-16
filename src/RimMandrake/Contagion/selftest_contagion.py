@@ -368,6 +368,11 @@ class Fake(object):
                 "baseWeatherCommonalities": tab, "animalDensity": 3.0, "modExtensions": ext,
                 "wildAnimals": [{"animal": a, "commonality": 1} for a in V.WILD_ANIMALS],
                 "wildPlants": [{"plant": a, "commonality": 1} for a in V.WILD_PLANTS]}}]}
+        if want == ["ThingDef/RM_Rattlegrope", "ThingDef/RM_Gawpsack"]:
+            tc = "Plant" if "tells_unwired" in self.broken else "RimMandrake.Contagion.RM_Plant_Rattlegrope"
+            return {"success": True, "foundCount": 2, "notFound": [], "defs": [
+                {"defName": "RM_Rattlegrope", "fields": {"thingClass": tc, "drawerType": "MapMeshAndRealTime"}},
+                {"defName": "RM_Gawpsack", "fields": {"race": {"renderTree": "RM_GawpsackSink"}}}]}
         if want == ["FactionDef/" + V.HELIX_FACTION]:
             kinds = ["Caravan_Outlander_BulkGoods"] + ([] if "helix_trader_unwired" in self.broken else [V.HELIX_TRADER])
             return {"success": True, "foundCount": 1, "notFound": [], "defs": [{"defName": V.HELIX_FACTION,
@@ -660,6 +665,7 @@ BREAKS = {
     "arrest_ignored": ["touched.sunbeam_hit_arrests"],
     "mulch_none": ["spawner.unfinished_leaves_mulch"],
     "helix_trader_unwired": ["defs.helix_trader_wired"],
+    "tells_unwired": ["defs.visible_tells_wired"],
 }
 
 

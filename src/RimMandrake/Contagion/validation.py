@@ -632,6 +632,27 @@ def defs_chain(t):
             if HELIX_TRADER not in json.dumps(kinds):
                 _fail("the Helix caravans do not include %s: %s" % (HELIX_TRADER, json.dumps(kinds)[:300]))
 
+    # Owner Q6 (2026-10-15, "Build the visible sink and shake"): the drawn tells hang on two def fields. The motion itself is
+    # arithmetic (SelfTest family "tells") and a LOOK for the owner's visual bar; this row proves only the wiring loaded.
+    with _comp(t, "visible_tells_wired"):
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Rattlegrope;ThingDef/RM_Gawpsack",
+                              fields="thingClass,drawerType,race", deep=True, limit=5)
+            _ok(r, "get_defs(rattlegrope, gawpsack)")
+            rows = dict((d.get("defName"), d.get("fields") or {}) for d in (r.get("defs") or []))
+            rg, gs = rows.get("RM_Rattlegrope"), rows.get("RM_Gawpsack")
+            if rg is None or gs is None:
+                _unmeasured(t, "rattlegrope/gawpsack rows unreadable: %r" % (r.get("notFound"),))
+            if "RM_Plant_Rattlegrope" not in json.dumps(rg.get("thingClass")):
+                _fail("RM_Rattlegrope thingClass is %r, not RM_Plant_Rattlegrope (no drawn shake)" % rg.get("thingClass"))
+            if "RealTime" not in json.dumps(rg.get("drawerType")):
+                _fail("RM_Rattlegrope drawerType %r has no RealTime: the shake is never drawn" % rg.get("drawerType"))
+            race = json.dumps(gs.get("race"))
+            if "renderTree" not in race:
+                _unmeasured(t, "the gawpsack's race.renderTree is not serialised: %s" % race[:200])
+            if "RM_GawpsackSink" not in race:
+                _fail("RM_Gawpsack does not use the RM_GawpsackSink render tree (no drawn sink)")
+
     with _comp(t, "organ_patch_comps"):
         if _live(t):
             for organ in ("Kidney", "Liver", "Lung", "Heart"):

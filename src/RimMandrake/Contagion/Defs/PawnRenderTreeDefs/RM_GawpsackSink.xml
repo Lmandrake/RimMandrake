@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 — the gawpsack's visible sink before a Burn (owner Q6, 2026-10-15, by card: "Build the
+  visible Burn tell motion -> Build the visible sink and shake"). Core's Animal render tree (RimSage, 1.6) with the
+  Body node's worker swapped for PawnRenderNodeWorker_RM_TellSink and its props for RM_PawnRenderNodeProperties_TellSink:
+  from the first tell the body drops sinkDepth cells and flattens by squash, holds through the Burn, and rises after.
+  Everything else is the vanilla tree, node for node. Source/RM_ContagionTellRender.cs.
+-->
+<Defs>
+
+  <PawnRenderTreeDef>
+    <defName>RM_GawpsackSink</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li Class="RimMandrake.Contagion.RM_PawnRenderNodeProperties_TellSink">
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <nodeClass>PawnRenderNode_AnimalPart_Body</nodeClass>
+          <workerClass>RimMandrake.Contagion.PawnRenderNodeWorker_RM_TellSink</workerClass>
+          <useRottenColor>true</useRottenColor>
+          <sinkDepth>0.3</sinkDepth>
+          <squash>0.12</squash>
+          <children>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Pack</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPack</nodeClass>
+              <workerClass>PawnRenderNodeWorker_AnimalPack</workerClass>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <baseLayer>5</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+</Defs>

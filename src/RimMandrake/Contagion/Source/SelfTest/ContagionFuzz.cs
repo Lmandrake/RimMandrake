@@ -3,6 +3,7 @@
 //   coalescence  the Coalescence's stage / growth / emission / death spill (RM_CoalescenceKernel)
 //   burn         the Burn's pressure classification, exposure and dive choice, exhaustively (RM_SkyKernel)
 //   touched      Contagion-touched: exposure dose, mutation clock, the ruled 50/50 deck and the never-upgrade law (RM_TouchedKernel)
+//   tells        the visible Burn tells: gawpsack settle fraction and rattlegrope shake (RM_TellRenderKernel)
 //   zhool        the zhool haze's eligibility, shape, chance, puffs and message throttle (RM_ZhoolHazeKernel)
 //   draftprint   sampling, extreme stat, worst limb, contract match and reward, market value, gestation plan, the Unfinished
 //                spawner arithmetic (RM_DraftprintKernel)
@@ -596,6 +597,56 @@ namespace RimMandrake.Contagion.SelfTest
             return fails;
         }
 
+        // ════════════════════════ tells (visible) ════════════════════════
+        // Owner Q6 2026-10-15 "Build the visible sink and shake": the gawpsack's settle fraction and the rattlegrope's shake.
+        public static long VSettled, VRising, VShakeBig;
+
+        private static string TellsCase(int seed)
+        {
+            var r = new Random(seed ^ 0x5115);
+            int lead = r.Next(0, 3000), ramp = r.Next(1, 600), next = r.Next(lead, 200000);
+            bool on = r.Next(5) > 0;
+            float prev = -1f;
+            // walk the tell window forward: the fraction never drops before the Burn, and is in [0,1]
+            for (int now = next - lead; now < next; now += 1 + r.Next(60))
+            {
+                float f = RM_TellRenderKernel.SinkFraction(on, true, now, next, lead, false, -1, ramp);
+                Check(f >= 0f && f <= 1f, "fraction out of [0,1]");
+                if (!on) Check(f == 0f, "sank with tells off");
+                Check(f >= prev - 1e-6f, "a sinker rose again before the Burn");
+                prev = f;
+                if (f >= 1f) VSettled++;
+                Check(RM_TellRenderKernel.Shaking(on, true, false) == on, "shaking disagrees with tells on/off");
+            }
+            Check(RM_TellRenderKernel.SinkFraction(on, false, next, -1, lead, true, -1, ramp) == (on ? 1f : 0f), "a Burn must hold it fully down");
+            Check(!RM_TellRenderKernel.Shaking(on, true, true), "shaking during the Burn: the rattle stops when the light arrives");
+            // the rise after the Burn: falls from 1 to 0 over ramp and stays 0 after
+            int end = next + r.Next(1, 4000);
+            float last = 2f;
+            for (int now = end; now < end + ramp + 50; now += 1 + r.Next(30))
+            {
+                float f = RM_TellRenderKernel.SinkFraction(on, false, now, -1, lead, false, end, ramp);
+                Check(f >= 0f && f <= 1f, "rise fraction out of [0,1]");
+                Check(f <= last + 1e-6f, "the rise went back down");
+                if (now - end >= ramp) Check(f == 0f, "still sunk after the rise");
+                if (f > 0 && f < 1) VRising++;
+                last = f;
+            }
+            Check(RM_TellRenderKernel.SinkFraction(on, false, end + ramp * 3, -1, lead, false, -1, ramp) == 0f, "sunk with no tell and no Burn");
+            float amp = (float)r.NextDouble() * 0.2f;
+            int sd = r.Next();
+            for (int k = 0; k < 40; k++)
+            {
+                float o = RM_TellRenderKernel.ShakeOffset(r.Next(), sd, amp);
+                Check(Math.Abs(o) <= amp + 1e-6f, "shake beyond its amplitude");
+                if (Math.Abs(o) > amp * 0.5f) VShakeBig++;
+            }
+            Check(RM_TellRenderKernel.ShakeOffset(r.Next(), sd, 0f) == 0f, "shook with zero amplitude");
+            return null;
+        }
+
+        public static List<string> Tells(int n, int baseSeed) { return Family("tells", n, baseSeed, TellsCase); }
+
         public static List<string> Zhool(int n, int baseSeed) { return Family("zhool", n, baseSeed, ZhoolCase); }
 
         public static bool Run(double scale, int? oneSeed, string only)
@@ -612,6 +663,7 @@ namespace RimMandrake.Contagion.SelfTest
                 ("draftprint", () => Draft(N(4000), S(1))),
                 ("zhool", () => Zhool(N(4000), S(1))),
                 ("touched", () => Touched(N(3000), S(1))),
+                ("tells", () => Tells(N(2000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -624,10 +676,10 @@ namespace RimMandrake.Contagion.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}; zhool converts {ZConvert}/{ZConvert + ZRefuse}, tree/cover/shrub {ZTree}/{ZCover}/{ZShrub}, messages {ZMsg}; touched doses {TDosed}, mutations {TMutations}, half fallbacks {TFallbacks}, capped {TCapped}");
+            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}; zhool converts {ZConvert}/{ZConvert + ZRefuse}, tree/cover/shrub {ZTree}/{ZCover}/{ZShrub}, messages {ZMsg}; touched doses {TDosed}, mutations {TMutations}, half fallbacks {TFallbacks}, capped {TCapped}; tells settled {VSettled}, rising {VRising}, big shakes {VShakeBig}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0 || ZConvert == 0 || ZRefuse == 0 || ZMsg == 0 || ZTree == 0 || ZCover == 0 || ZShrub == 0 || TDosed == 0 || TMutations == 0 || TFallbacks == 0 || TCapped == 0)
+                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0 || ZConvert == 0 || ZRefuse == 0 || ZMsg == 0 || ZTree == 0 || ZCover == 0 || ZShrub == 0 || TDosed == 0 || TMutations == 0 || TFallbacks == 0 || TCapped == 0 || VSettled == 0 || VRising == 0 || VShakeBig == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"contagion fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
