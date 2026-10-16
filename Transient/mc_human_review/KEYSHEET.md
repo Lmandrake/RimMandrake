@@ -620,7 +620,7 @@ three separate powered nets two cells apart; two nets end to end with a one-cell
 
 ### 29. RELAY REELS: GOING FARTHER
 
-three hose reels in a row, 32 cells apart: the first reel's hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)
+three hose reels in a row, 28 cells apart: the first reel's hose is laid onto the second reel, whose own hose is laid onto the third (58 cells end to end; one hose holds 40)
 
 **Poke it:** reel in the first hose: the second drains
 
@@ -720,7 +720,7 @@ From the feature inventory (review/COVERAGE.md): waterproof conduit in four look
 
 ### 34. WATERPROOF CONDUIT: FOUR LOOKS
 
-four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look
+four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look (plain conduit on the soil legs: vanilla allows waterproof conduit only on water or marsh)
 
 **Poke it:** Mod Settings > Which conduits become cords > untick Waterproof
 
@@ -728,7 +728,7 @@ four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industri
 
 **Notice**
 
-- each run draws its look's cord on soil AND in the water: waterproof conduit is the same cord as plain conduit
+- each run draws its look's cord on soil AND in the water: the waterproof cells are the same cord as the plain ones
 - in the water the cord dives (Mod Settings 'cords dive under walls and water'): it should not lie on top of the water as if on soil
 - all four lamps lit
 
@@ -907,7 +907,7 @@ Global settings change every station at once, so they are never faked side by si
 | `gss.sway` | True | hanging cords sway in the wind | 13 (unpause) |
 | `gss.swayAmplitude` | 1.0 | cord sway strength | 13 |
 | `gss.swayMode` | CPU | cord sway on the CPU or the plant wind shader | 13 |
-| `gss.floorRipple` | False | outdoor floor cords ripple | 1-4 (unpause) |
+| `gss.floorRipple` | True | outdoor floor cords ripple | 1-4 (unpause) |
 | `gss.excludedConduits` | [] | which conduits become cords (a list: Mod Settings window only) | 34, 35 |
 | `gss.lod` | True | far zoom: one thin strand, no pieces | any: zoom out |
 | `gss.debugDraw` | False | draw the node graph | any |
@@ -916,7 +916,7 @@ Global settings change every station at once, so they are never faked side by si
 | `aerial.sag` | 0.06 | sag, share of the span | 26 |
 | `aerial.autoLink` | True | new anchors link to the nearest in range | F, 38 |
 | `aerial.maxStrands` | 3 | wires per span, 1 to this | 6, 27 |
-| `aerial.dripLoops` | False | drip loops at the insulators | 6 |
+| `aerial.dripLoops` | True | drip loops at the insulators | 6 |
 | `aerial.keepWiresOnGravship` | True | wires on a launched gravship stay strung | no station (needs a gravship launch) |
 | `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 26 (unpause) |
 | `aerial.swayStrength` | 1.0 | wire sway strength | 6, 26 |
@@ -1044,3 +1044,685 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
 | new | **41** | STYLED BLUEPRINTS |
 | F | **F** | free build area |
 | M | **M** | art-slot board |
+
+## This build
+
+```
+{
+ "builds": {
+  "Battery/hostile": "3/3",
+  "Battery/player": "25/25",
+  "Cooler/player": "1/1",
+  "ElectricStove/player": "3/3",
+  "FlatscreenTelevision/player": "2/2",
+  "Granite/None": "287/287",
+  "Heater/player": "11/11",
+  "HiTechResearchBench/player": "2/2",
+  "HiddenConduit/player": "12/12",
+  "PowerConduit/hostile": "28/28",
+  "PowerConduit/player": "294/294",
+  "PowerSwitch/player": "1/1",
+  "RM_AerialLampMast/player": "3/3",
+  "RM_AerialMast/player": "45/45",
+  "RM_AerialWallBracket/player": "1/1",
+  "RM_HoseReel/player": "17/17",
+  "RM_LiquidTank/hostile": "1/1",
+  "RM_PowerTapClamp/player": "5/5",
+  "SolarGenerator/player": "2/2",
+  "StandingLamp/hostile": "1/1",
+  "StandingLamp/player": "45/45",
+  "SunLamp/player": "2/2",
+  "Turret_MiniTurret/player": "2/2",
+  "Wall/player": "317/317",
+  "WallLamp/player": "1/1",
+  "WaterproofConduit/player": "20/20"
+ },
+ "default_style": "StarWarsJawa",
+ "expected_refusals": {
+  "25:0-2": "Roofed (expected Roofed)",
+  "26:2-3": "OutOfRange (expected OutOfRange)",
+  "27:0-5": "FullA (expected FullA)"
+ },
+ "hose_hooks": {
+  "21": {
+   "judged": "TODO validation_hose.review_maze",
+   "route": {
+    "couplings": 2,
+    "layOk": true,
+    "layReason": null,
+    "pathLen": 20.812,
+    "state": "Plump"
+   }
+  },
+  "22": {
+   "after_wall": {
+    "couplings": 2,
+    "layOk": true,
+    "layReason": null,
+    "pathLen": 20.812,
+    "state": "Plump"
+   },
+   "before": {
+    "couplings": 2,
+    "layOk": true,
+    "layReason": null,
+    "pathLen": 20.812,
+    "state": "Plump"
+   },
+   "judged": "TODO validation_hose.review_block_wall"
+  },
+  "30": {
+   "colonist": {
+    "cmd": "pawn:672=tp:16,128",
+    "pawn": {
+     "downed": false,
+     "drafted": false,
+     "driver": null,
+     "forced": false,
+     "id": 672,
+     "job": null,
+     "name": "Haplo",
+     "pos": [
+      16,
+      128
+     ],
+     "toil": -1
+    },
+    "success": true
+   },
+   "order": {
+    "carry": "Stored",
+    "cmd": "order:14,124=deploy:38,125",
+    "pending": "Deploy",
+    "pendingAt": [
+     38,
+     125
+    ],
+    "reason": null,
+    "success": true
+   }
+  },
+  "31": {
+   "settrail": {
+    "carry": "Dropped",
+    "cmd": "settrail:58,124=dropped;58,124;59,124;60,124;61,124;62,124;63,124;64,124;65,124;66,124;67,124;68,124;69,124;70,124;71,124;72,124",
+    "layOk": true,
+    "success": true,
+    "trail": 15,
+    "trailLength": 14.4862
+   }
+  }
+ },
+ "hose_states": {
+  "11@206,14": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 22.7354,
+   "state": "Plump"
+  },
+  "11@206,19": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 22.7354,
+   "state": "Plump"
+  },
+  "11@206,24": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 22.7354,
+   "state": "Plump"
+  },
+  "11@206,9": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 22.7354,
+   "state": "Plump"
+  },
+  "11@224,14": {
+   "blend": 0,
+   "couplings": null,
+   "pathLen": null,
+   "state": "Flat"
+  },
+  "11@224,19": {
+   "blend": 0,
+   "couplings": null,
+   "pathLen": null,
+   "state": "Flat"
+  },
+  "11@224,24": {
+   "blend": 0,
+   "couplings": null,
+   "pathLen": null,
+   "state": "Flat"
+  },
+  "11@224,9": {
+   "blend": 0,
+   "couplings": null,
+   "pathLen": null,
+   "state": "Flat"
+  },
+  "12@208,98": {
+   "blend": 0,
+   "couplings": 2,
+   "pathLen": 24.7895,
+   "state": "Flat"
+  },
+  "16@100,39": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 29.7296,
+   "state": "Plump"
+  },
+  "16@100,41": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 29.7296,
+   "state": "Plump"
+  },
+  "16@100,43": {
+   "blend": 0,
+   "couplings": 2,
+   "pathLen": 29.7296,
+   "state": "Flat"
+  },
+  "17@100,14": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 29.7296,
+   "state": "Plump"
+  },
+  "17@100,23": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 29.7296,
+   "state": "Plump"
+  },
+  "17@106,8": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 25.1091,
+   "state": "Plump"
+  },
+  "17@115,8": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 25.1091,
+   "state": "Plump"
+  },
+  "21@172,149": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 20.812,
+   "state": "Plump"
+  },
+  "22@200,149": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 20.812,
+   "state": "Plump"
+  },
+  "29@160,174": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 35.9758,
+   "state": "Plump"
+  },
+  "29@188,174": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 27.711,
+   "state": "Plump"
+  },
+  "32@98,124": {
+   "blend": 1,
+   "couplings": 2,
+   "pathLen": 21.8581,
+   "state": "Plump"
+  },
+  "33@142,124": {
+   "blend": 0,
+   "couplings": 2,
+   "pathLen": 21.8581,
+   "state": "Flat"
+  }
+ },
+ "merge_actions": {
+  "7": {
+   "action": "C",
+   "error": null,
+   "message": "Joined a Modern run to a larger Industrial run (8 conduit cells): the Modern run is now Industrial.",
+   "ok": true
+  },
+  "8": {
+   "action": "C",
+   "error": null,
+   "message": "Joined a Futuristic run to a larger Scrapper run (5 conduit cells): the Futuristic run is now Scrapper.",
+   "ok": true
+  },
+  "9": {
+   "action": "D",
+   "error": null,
+   "message": "Joined a Futuristic run to a larger Scrapper run (5 conduit cells): the Futuristic run is now Scrapper.",
+   "ok": true
+  }
+ },
+ "notes": [
+  "swept 2 hostile/non-colonist pawn(s) off the review map"
+ ],
+ "pawns_in_region": [
+  "Human672",
+  "Human675",
+  "Human678"
+ ],
+ "peaceful": true,
+ "station_roofs": true,
+ "style_reads": {
+  "1": {
+   "runs": [
+    {
+     "PowerConduit_Scrapper": 16,
+     "PowerSwitch_Scrapper": 1
+    },
+    {
+     "PowerConduit_Scrapper": 2
+    }
+   ]
+  },
+  "2": {
+   "runs": [
+    {
+     "PowerConduit_Industrial": 16,
+     "PowerSwitch_Industrial": 1
+    },
+    {
+     "PowerConduit_Industrial": 2
+    }
+   ]
+  },
+  "3": {
+   "runs": [
+    {
+     "PowerConduit_Modern_Blue": 16,
+     "PowerSwitch_Modern": 1
+    },
+    {
+     "PowerConduit_Modern_Green": 2
+    }
+   ]
+  },
+  "4": {
+   "runs": [
+    {
+     "PowerConduit_Futuristic": 16,
+     "PowerSwitch_Futuristic": 1
+    },
+    {
+     "PowerConduit_Futuristic": 2
+    }
+   ]
+  },
+  "5": {
+   "mixPieces": 5,
+   "mixStrands": [
+    "Strand_Brown",
+    "Strand_Green",
+    "Strand_Yellow"
+   ],
+   "runs": [
+    {
+     "PowerConduit_Modern_Mix": 18
+    },
+    {
+     "PowerConduit_Modern_Brown": 12
+    },
+    {
+     "PowerConduit_Modern_Orange": 12
+    },
+    {
+     "PowerConduit_Modern_Green": 12
+    },
+    {
+     "PowerConduit_Modern_Brown": 12
+    },
+    {
+     "PowerConduit_Modern_Yellow": 12
+    },
+    {
+     "PowerConduit_Modern_Blue": 12
+    }
+   ]
+  },
+  "6": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Futuristic",
+     [
+      "Futuristic",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Futuristic",
+     [
+      "Futuristic",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Futuristic",
+     [
+      "Futuristic",
+      "AerialLampMast"
+     ]
+    ],
+    [
+     "RM_AerialWallBracket",
+     "RM_AerialWallBracket_Futuristic",
+     [
+      "Futuristic",
+      "WallBracket"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Modern",
+     [
+      "Modern",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Modern",
+     [
+      "Modern",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Modern",
+     [
+      "Modern",
+      "AerialLampMast"
+     ]
+    ],
+    [
+     "RM_AerialWallBracket",
+     "RM_AerialWallBracket_Modern",
+     [
+      "Modern",
+      "WallBracket"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Industrial",
+     [
+      "Industrial",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Industrial",
+     [
+      "Industrial",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Industrial",
+     [
+      "Industrial",
+      "AerialLampMast"
+     ]
+    ],
+    [
+     "RM_AerialWallBracket",
+     "RM_AerialWallBracket_Industrial",
+     [
+      "Industrial",
+      "WallBracket"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ],
+    [
+     "RM_AerialWallBracket",
+     "RM_AerialWallBracket_Scrapper",
+     [
+      "Scrapper",
+      "WallBracket"
+     ]
+    ]
+   ],
+   "runs": [
+    {
+     "RM_AerialLampMast_Futuristic": 1,
+     "RM_AerialMast_Futuristic": 2,
+     "RM_AerialWallBracket_Futuristic": 1
+    },
+    {
+     "RM_AerialLampMast_Modern": 1,
+     "RM_AerialMast_Modern": 2,
+     "RM_AerialWallBracket_Modern": 1
+    },
+    {
+     "RM_AerialLampMast_Industrial": 1,
+     "RM_AerialMast_Industrial": 2,
+     "RM_AerialWallBracket_Industrial": 1
+    },
+    {
+     "RM_AerialLampMast_Scrapper": 1,
+     "RM_AerialMast_Scrapper": 2,
+     "RM_AerialWallBracket_Scrapper": 1
+    }
+   ]
+  },
+  "7": {
+   "afterLooks": [
+    "Industrial"
+   ],
+   "runs": [
+    {
+     "PowerConduit_Industrial": 8
+    },
+    {
+     "PowerConduit_Modern_Orange": 4
+    },
+    {
+     "PowerConduit_Industrial": 13
+    }
+   ]
+  },
+  "8": {
+   "afterLooks": [
+    "Scrapper"
+   ],
+   "runs": [
+    {
+     "PowerConduit_Scrapper": 5
+    },
+    {
+     "PowerConduit_Futuristic": 5
+    },
+    {
+     "PowerConduit_Scrapper": 11
+    }
+   ]
+  },
+  "9": {
+   "afterRuns": 2,
+   "runs": [
+    {
+     "PowerConduit_Industrial": 11
+    },
+    {
+     "PowerConduit_Industrial": 5
+    },
+    {
+     "PowerConduit_Industrial": 5
+    }
+   ]
+  },
+  "10": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "runs": [
+    {
+     "PowerConduit_Scrapper": 12,
+     "PowerSwitch_Scrapper": 1,
+     "RM_AerialLampMast_Scrapper": 1,
+     "RM_AerialMast_Scrapper": 1
+    }
+   ]
+  },
+  "11": {
+   "reels": [
+    [
+     "Futuristic",
+     "RM_HoseReel_Futuristic",
+     "deployed"
+    ],
+    [
+     "Futuristic",
+     "RM_HoseReel_Futuristic",
+     "stored"
+    ],
+    [
+     "Modern",
+     "RM_HoseReel_Modern",
+     "deployed"
+    ],
+    [
+     "Modern",
+     "RM_HoseReel_Modern",
+     "stored"
+    ],
+    [
+     "Industrial",
+     "RM_HoseReel_Industrial",
+     "deployed"
+    ],
+    [
+     "Industrial",
+     "RM_HoseReel_Industrial",
+     "stored"
+    ],
+    [
+     "Scrapper",
+     "RM_HoseReel_Scrapper",
+     "deployed"
+    ],
+    [
+     "Scrapper",
+     "RM_HoseReel_Scrapper",
+     "stored"
+    ]
+   ],
+   "runs": []
+  },
+  "12": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     null,
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     null,
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "reels": [
+    [
+     "Scrapper",
+     null,
+     "deployed"
+    ]
+   ],
+   "runs": [
+    {
+     "null": 13
+    }
+   ]
+  },
+  "34": {
+   "runs": [
+    {
+     "PowerConduit_Futuristic": 7,
+     "WaterproofConduit_Futuristic": 6
+    },
+    {
+     "PowerConduit_Modern_Yellow": 7,
+     "WaterproofConduit_Modern_Yellow": 6
+    },
+    {
+     "PowerConduit_Industrial": 7,
+     "WaterproofConduit_Industrial": 6
+    },
+    {
+     "PowerConduit_Scrapper": 7,
+     "WaterproofConduit_Scrapper": 6
+    }
+   ]
+  },
+  "41": {
+   "runs": []
+  }
+ },
+ "styled_refused": [],
+ "wall_s": 178.5
+}
+```

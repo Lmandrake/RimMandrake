@@ -226,9 +226,12 @@ check(scribed and scribed <= fields | {"legacy"}, "every saved setting of both s
 check(HR.check_sets(["gss.slack=0.5", "aerial.maxSpan=25"]) == [] and len(HR.check_sets(["gss.nope=1", "gss.slack", "gss.excludedConduits=x"])) == 3,
       "--set: known fields pass offline; can fail: an unknown field, a missing value and the list field are refused")
 s34 = by[34]
-check({d for _, d, _, _ in s34["styled"]} == {"WaterproofConduit"} and {HR.look_of_key(k) for _, _, k, _ in s34["styled"]} == set(HR.LOOKS)
-      and all(k in HR.CONDUIT_KEYS for _, _, k, _ in s34["styled"]) and s34["terrain"],
-      "34: waterproof conduit in all four looks (real menu keys) across water")
+_w34 = [r for d, r in s34["terrain"] if d == "WaterShallow"]
+_inw = lambda c: any(x <= c[0] < x + w and z <= c[1] < z + h for x, z, w, h in _w34)
+check({d for _, d, _, _ in s34["styled"]} == {"WaterproofConduit", "PowerConduit"} and {HR.look_of_key(k) for _, _, k, _ in s34["styled"]} == set(HR.LOOKS)
+      and all(k in HR.CONDUIT_KEYS for _, _, k, _ in s34["styled"]) and _w34
+      and all(_inw(c) == (d == "WaterproofConduit") for _, d, _, c in s34["styled"]),
+      "34: conduit in all four looks (real menu keys); waterproof exactly on the water strip (vanilla refuses it on soil)")
 s35 = by[35]
 check(s35["hconduit"] and s35["wconduit"] and s35["conduit"] and not s35["styled"], "35: plain, waterproof and hidden conduit, unstyled")
 rots = sorted(m[2] for m in by[36]["masts"] if m[0] == "RM_AerialWallBracket")
