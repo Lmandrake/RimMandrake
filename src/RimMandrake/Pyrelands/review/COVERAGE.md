@@ -16,77 +16,70 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 
 ## Feature inventory -> station
 
-80 features, 48 stations (41 numbered + 7 boards: N0, R, G, S, W, E, L). Stations: see `review/KEYSHEET.md`.
+73 features, 44 stations (37 numbered + 7 boards: N0, R, G, S, W, E, L). Stations: see `review/KEYSHEET.md`.
 
 | kind | feature | source | station | note |
 |---|---|---|---|---|
 | terrain | Deep ash (RM_FE_Ash_Deep): ordinary ground, art | Defs/TerrainDefs/AshField.xml | 1 N0 |  |
 | terrain | Unburned pockets: soil, rich soil, gravel, sand (RM_FE_Ground_*) | ScorchableGround.xml | 2 |  |
-| terrain | Every ground burns to deep ash in one step (burnedDef) | ScorchableGround.xml | 8 9 |  |
+| terrain | Every ground burns to deep ash in one step (burnedDef) | ScorchableGround.xml | 7 8 |  |
 | terrain | Water ringed with mud and rich soil (terrainPatchMakers) | BiomeDefs/Pyrelands.xml | 3 N0 |  |
-| terrain | Firebreak line: buildable floor that stops fire | TerrainDefs/Firebreak.xml | 4 13 |  |
+| terrain | Firebreak line: buildable floor that stops fire | TerrainDefs/Firebreak.xml | 4 12 |  |
 | terrain | Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load) | AshField.xml | none | they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none remain. Their three PNGs are orphaned (named on station 1's card). |
-| plant | Ember grass: three drawings, fast growth (growDays 0.8) | ThingDefs_Plants/EmberGrass.xml | 14 16 |  |
-| plant | Ember grass leafless (burnt) drawings, 4 variants | EmberGrass.xml | 9 | only a plant made leafless shows them; 9 shows any survivor of the burn, else they stay unseen |
-| plant | Quickgrass: three growth stages (Plant_GrowthStaged, PlantGrowthStages.cs) | Quickgrass.xml | 15 |  |
-| plant | Quickgrass leafless drawing | Quickgrass.xml | 9 | as ember grass: shown only on a leafless survivor at 9 |
-| plant | Ground cover saturation (PYRELANDS_GRASS_SATURATION_1, owner look owed) | BiomeDefs/Pyrelands.xml | 16 N0 |  |
+| plant | Ember grass: three drawings, fast growth (growDays 0.8) | ThingDefs_Plants/EmberGrass.xml | 13 15 |  |
+| plant | Ember grass leafless (burnt) drawings, 4 variants | EmberGrass.xml | 8 | only a plant made leafless shows them; 8 shows any survivor of the burn, else they stay unseen |
+| plant | Quickgrass: three growth stages (Plant_GrowthStaged, PlantGrowthStages.cs) | Quickgrass.xml | 14 |  |
+| plant | Quickgrass leafless drawing | Quickgrass.xml | 8 | as ember grass: shown only on a leafless survivor at 8 |
+| plant | Ground cover saturation (PYRELANDS_GRASS_SATURATION_1, owner look owed) | BiomeDefs/Pyrelands.xml | 15 N0 |  |
 | plant | Only RM_FE grasses grow wild (WildPlantAllowlist.cs) | Source/WildPlantAllowlist.cs | N0 | a property of days of wild spawning: N0 shows the result; the matrix's plant_distribution_correct counts it |
 | plant | Plant density enforcer (RM_PyrelandsDensityEnforcer.cs) | Source | N0 | shows only as the natural cover at N0; the matrix's grass_chokes_ground measures it |
-| plant | Scorch-fruit pod: growth, four drawings | ThingDefs_ScorchFruit/ScorchFruit.xml | 17 |  |
-| plant | Scorch-fruit is fire-born: seeded on burned cells (1 in 20, map cap 40) | FireEcologyHook.cs | 9 |  |
-| plant | Scorch-fruit harvest yields food; eating feeds | ScorchFruit.xml | 18 |  |
-| plant | Scorch-fruit spoils: fruit ~4 days, ripe pod withers ~1 day | ScorchFruit.xml | 17 18 |  |
+| plant | Scorch-fruit pod: growth, four drawings | ThingDefs_ScorchFruit/ScorchFruit.xml | 16 |  |
+| plant | Scorch-fruit is fire-born: seeded on burned cells (1 in 20, map cap 40) | FireEcologyHook.cs | 8 |  |
+| plant | Scorch-fruit harvest yields food; eating feeds | ScorchFruit.xml | 17 |  |
+| plant | Scorch-fruit spoils: fruit ~4 days, ripe pod withers ~1 day | ScorchFruit.xml | 16 17 |  |
 | plant | Thornvine made edible for the furnace-beast (RUT_Thornvine_Edible.xml) | PyrelandsMechanics/Patches | none | thornvine is another mod's plant and the beast must roam free to eat it; no review map can pen both |
-| mechanic | Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water) | PyrelandsAshField.cs | 19 |  |
-| mechanic | Fresh-burn bonus (+0.50 fading over 6 days) | PyrelandsAshField.cs | 9 11 |  |
-| mechanic | Black rain washes the bonus away and waters the field | PyrelandsAshField.cs | 11 G |  |
-| mechanic | Fire dusts loose ash (RM_FE_Filth_LooseAsh) | FireEcologyHook.cs | 5 9 |  |
+| mechanic | Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water) | PyrelandsAshField.cs | 18 |  |
+| mechanic | Fresh-burn bonus (+0.50 fading over 6 days) | PyrelandsAshField.cs | 8 10 |  |
+| mechanic | Black rain washes the bonus away and waters the field | PyrelandsAshField.cs | 10 G |  |
+| mechanic | Fire dusts loose ash (RM_FE_Filth_LooseAsh) | FireEcologyHook.cs | 5 8 |  |
 | mechanic | Ash fall lays drifts that keep accumulating | PyrelandsAshField.cs | 5 G |  |
 | mechanic | Ambient ash drift is the commonest weather | PyrelandsAshField.cs | G |  |
-| mechanic | Lightning on sand leaves fulgurite (35% a strike) | FireEcologyHook.cs | 6 G |  |
 | mechanic | Standing burn line: the map is never fireless for 2 days (MapComponent_BurnLine) | Source | L | the calm world puts it out; L's card says how it relights (2 quiet days at 3x) |
 | mechanic | Fire front: a grass line goes up every 2-4 days (PyrelandsFireFront.cs) | Source | L | a clock over days; L's card warns that it can light station grass once you unpause |
-| mechanic | Fire burns on deep ash and stamps the burn (fire-tick gate) | FireEcologyHook.cs | 10 11 |  |
+| mechanic | Fire burns on deep ash and stamps the burn (fire-tick gate) | FireEcologyHook.cs | 9 10 |  |
 | mechanic | Ruins generate scorched and burned (GenStep RM_FE_ScorchRuins) | GenStepDefs | R |  |
-| mechanic | Overhead sun heat kind (+10 C at the substellar point; roofs answer it) | BiomeDefs/Pyrelands.xml | 7 |  |
+| mechanic | Overhead sun heat kind (+10 C at the substellar point; roofs answer it) | BiomeDefs/Pyrelands.xml | 6 |  |
 | mechanic | Arrival letter on a new Pyrelands map | BiomeDefs/Pyrelands.xml | none | fires once when a colony first arrives; the review map is an already-settled site |
 | mechanic | Acoustic-scanner payload for the biome | Patches/RM_AcousticPayload_Pyrelands.xml | none | needs the Acoustic Scanner mod and a gravship scan; neither is on the ratchet_pilot tier |
 | mechanic | Mapgen raises no errors; plant and animal populations are the roster's | validation.py | none | a mapgen census, not a look: the matrix's mapgen_log_clean / *_distribution_correct; N0 shows the result |
-| animal | Fire-hawk: three standing facings | RM_PyrelandsFauna.xml | 25 |  |
+| animal | Fire-hawk: three standing facings | RM_PyrelandsFauna.xml | 21 |  |
 | animal | Fire-hawk flying frames (5) and ember carrying (CompFireHawkSpread) | RM_PyrelandsFauna.xml | none | a flight: judged only with the owner present (FIREHAWK_FLIGHT_BEHAVIOR_1), never staged here |
-| animal | Fire-wasp: three standing facings | RM_PyrelandsPortedFauna.xml | 26 |  |
+| animal | Fire-wasp: three standing facings | RM_PyrelandsPortedFauna.xml | 22 |  |
 | animal | Fire-wasp fly frames (8) | RM_PyrelandsPortedFauna.xml | none | a flight: owner-present only |
-| animal | Furnace-beast, giant art (setting furnaceBeastGiant, default on) | RM_PyrelandsGiants.cs | 27 |  |
+| animal | Furnace-beast, giant art (setting furnaceBeastGiant, default on) | RM_PyrelandsGiants.cs | 23 |  |
 | animal | Furnace-beast classic (non-giant) art | RM_PyrelandsFauna.xml | none | only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here |
-| animal | Furnace-beast heats an enclosed room (vanilla heat pusher, to 24 C, + its charged radiant push) | RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs | 27 28 |  |
-| animal | Furnace-beast warmth aura (felt temperature near it) | CompFurnaceWarmthAura.cs | 27 |  |
-| animal | Furnace-beast bed-down ignition | CompFurnaceBedIgnition.cs | 27 |  |
+| animal | Furnace-beast heats an enclosed room (vanilla heat pusher, to 24 C, + its charged radiant push) | RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs | 23 24 |  |
+| animal | Furnace-beast warmth aura (felt temperature near it) | CompFurnaceWarmthAura.cs | 23 |  |
+| animal | Furnace-beast bed-down ignition | CompFurnaceBedIgnition.cs | 23 |  |
 | animal | Furnace-beast thermal cycle: walks into fire to charge | JobGiver_RUT_FurnaceThermalCycle.cs | none | needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row |
-| animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | 27 | visible only as it surviving its own fire; the card says how |
+| animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | 23 | visible only as it surviving its own fire; the card says how |
 | animal | Furnace-beast herd world migration (WorldObject RM_FurnaceHerd) | WorldObject_RM_FurnaceHerd.cs | W |  |
-| animal | Ullai herd: three facings, herd size | RM_Ullai.xml | 29 |  |
+| animal | Ullai herd: three facings, herd size | RM_Ullai.xml | 25 |  |
 | animal | Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn) | RM_Ullai.xml | none | needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet) |
-| animal | Ashwallow: three facings | RM_Ashwallow.xml | 30 |  |
-| animal | Burrow ahead of the fire (RM_Burrowed status) | RM_JobGiver_BurrowOnFire.cs | 12 |  |
-| animal | Emberscythe: three facings | RM_Emberscythe.xml | 31 |  |
-| animal | Sytheclaw: three facings | RM_PyrelandsPortedFauna.xml | 32 |  |
-| animal | Barbslinger: three facings | RM_PyrelandsPortedFauna.xml | 33 |  |
-| animal | Barbslinger tail gun and spike projectile art | RM_PyrelandsPortedFauna.xml | none | a fight, not a look: draft a colonist at 33 in god mode to see it |
-| animal | Flamefang: three facings | RM_PyrelandsPortedFauna.xml | 34 |  |
-| animal | Flamefang venom bite (RM_FlamefangVenom) | HediffDefs | none | a fight, not a look: let it bite a god-mode colonist at 34 |
+| animal | Ashwallow: three facings | RM_Ashwallow.xml | 26 |  |
+| animal | Burrow ahead of the fire (RM_Burrowed status) | RM_JobGiver_BurrowOnFire.cs | 11 |  |
+| animal | Emberscythe: three facings | RM_Emberscythe.xml | 27 |  |
+| animal | Sytheclaw: three facings | RM_PyrelandsPortedFauna.xml | 28 |  |
+| animal | Barbslinger: three facings | RM_PyrelandsPortedFauna.xml | 29 |  |
+| animal | Barbslinger tail gun and spike projectile art | RM_PyrelandsPortedFauna.xml | none | a fight, not a look: draft a colonist at 29 in god mode to see it |
+| animal | Flamefang: three facings | RM_PyrelandsPortedFauna.xml | 30 |  |
+| animal | Flamefang venom bite (RM_FlamefangVenom) | HediffDefs | none | a fight, not a look: let it bite a god-mode colonist at 30 |
 | animal | Dessicated (rotted corpse) drawings, five animals | Textures/Things/Pawn/Animal/Pyrelands | none | needs a fully rotted corpse (days of sim); kill one in its pen and run 3x for a few days to check by hand |
-| animal | Campaign cast on the Pyrelands roster (7 RSW_ kinds, UtinniPatches) | WildAnimals_Pyrelands.xml | 35-41 |  |
-| building | Lightning breaker: armed, trips on a short circuit, re-arms | RM_LightningBreaker.cs | 20 |  |
-| building | Lightning breaker: not armed with an empty hopper | RM_LightningBreaker.cs | 21 |  |
-| building | Lightning breaker tripped drawing (_Off) | Textures/Things/Building/Power | 20 |  |
-| building | Breaker core: metal and glass sand at the smithy | LightningBreaker/RM_LightningBreaker.xml | 22 |  |
-| building | Breaker research learnable only with a Pyrelands home | RM_LightningBreaker.cs | none | research is finished on the review map (god mode); the matrix's research_only_in_the_pyrelands shows the gate |
-| building | Shovel sand order (sand -> 5 glass sand, leaves gravel) | RM_TerrainDig.cs | 23 |  |
-| item | Firefoam sprayer and its splash | ThingDefs_Sprayer/FirefoamSprayer.xml | 24 10 13 |  |
-| item | Furnace hide | ThingDefs_Items/RM_FurnaceHide.xml | 24 |  |
-| item | Fulgurite (lightning glass) | ThingDefs_Fulgurite/Fulgurite.xml | 6 24 |  |
-| item | Scorch-fruit (the harvested food) | ScorchFruit.xml | 18 24 |  |
+| animal | Campaign cast on the Pyrelands roster (7 RSW_ kinds, UtinniPatches) | WildAnimals_Pyrelands.xml | 31-37 |  |
+| building | Shovel sand order (sand -> 5 glass sand, leaves gravel) | RM_TerrainDig.cs | 19 |  |
+| item | Firefoam sprayer and its splash | ThingDefs_Sprayer/FirefoamSprayer.xml | 20 9 12 |  |
+| item | Furnace hide | ThingDefs_Items/RM_FurnaceHide.xml | 20 |  |
+| item | Scorch-fruit (the harvested food) | ScorchFruit.xml | 17 20 |  |
 | weather | Ash fall | WeatherDefs/AshFall.xml | G |  |
 | weather | Ash drift | WeatherDefs/AshFall.xml | G |  |
 | weather | Cinderfall (distinct from ash fall) | WeatherDefs/Cinderfall.xml | G |  |
@@ -101,7 +94,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | setting | Mechanics gate: 'Mod enabled' and the Baroque Biomes 'Pyrelands' toggle | PyrelandsMechanicsGate.cs | S |  |
 | rite | Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1) | item only | none | NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built |
 
-## Features with no station (15)
+## Features with no station (14)
 
 - **Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)**: they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none remain. Their three PNGs are orphaned (named on station 1's card).
 - **Thornvine made edible for the furnace-beast (RUT_Thornvine_Edible.xml)**: thornvine is another mod's plant and the beast must roam free to eat it; no review map can pen both
@@ -113,18 +106,17 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 - **Furnace-beast classic (non-giant) art**: only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here
 - **Furnace-beast thermal cycle: walks into fire to charge**: needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row
 - **Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)**: needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet)
-- **Barbslinger tail gun and spike projectile art**: a fight, not a look: draft a colonist at 33 in god mode to see it
-- **Flamefang venom bite (RM_FlamefangVenom)**: a fight, not a look: let it bite a god-mode colonist at 34
+- **Barbslinger tail gun and spike projectile art**: a fight, not a look: draft a colonist at 29 in god mode to see it
+- **Flamefang venom bite (RM_FlamefangVenom)**: a fight, not a look: let it bite a god-mode colonist at 30
 - **Dessicated (rotted corpse) drawings, five animals**: needs a fully rotted corpse (days of sim); kill one in its pen and run 3x for a few days to check by hand
-- **Breaker research learnable only with a Pyrelands home**: research is finished on the review map (god mode); the matrix's research_only_in_the_pyrelands shows the gate
 - **Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1)**: NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built
 
 ## Stations
 
-- **A GROUND:** 1 DEEP ASH, 2 UNBURNED POCKETS, 3 WATER RING, 4 FIREBREAK LINE, 5 LOOSE ASH DRIFTS, 6 FULGURITE ON SAND, 7 HEAT: SUN VS SHADE
-- **B FIRE:** 8 BEFORE THE BURN, 9 AFTER THE BURN, 10 BURNING NOW, 11 BURN BONUS VS CONTROL, 12 BURROWER, 13 FIREBREAK AND FOAM
-- **C PLANTS:** 14 EMBER GRASS: GROWTH, 15 QUICKGRASS: 3 STAGES, 16 GROUND COVER MIX, 17 SCORCH-FRUIT PODS, 18 SCORCH-FRUIT HARVEST, 19 ASH + WATER
-- **D BUILD AND CRAFT:** 20 BREAKER: ARMED, 21 BREAKER: NO GLASS, 22 BREAKER CORE: SMITHY, 23 SHOVEL SAND, 24 PYRELANDS ITEMS
-- **E CREATURES:** 25 FIRE-HAWK, 26 FIRE-WASP, 27 FURNACE-BEAST (GIANT), 28 CONTROL PEN: NO BEAST, 29 ULLAI HERD, 30 ASHWALLOW, 31 EMBERSCYTHE, 32 SYTHECLAW, 33 BARBSLINGER, 34 FLAMEFANG
-- **F CAMPAIGN CAST:** 35 ANOOBA, 36 IRIAZ, 37 NUNA, 38 ORRAY, 39 ZEER, 40 DALGO, 41 GIZKA
+- **A GROUND:** 1 DEEP ASH, 2 UNBURNED POCKETS, 3 WATER RING, 4 FIREBREAK LINE, 5 LOOSE ASH DRIFTS, 6 HEAT: SUN VS SHADE
+- **B FIRE:** 7 BEFORE THE BURN, 8 AFTER THE BURN, 9 BURNING NOW, 10 BURN BONUS VS CONTROL, 11 BURROWER, 12 FIREBREAK AND FOAM
+- **C PLANTS:** 13 EMBER GRASS: GROWTH, 14 QUICKGRASS: 3 STAGES, 15 GROUND COVER MIX, 16 SCORCH-FRUIT PODS, 17 SCORCH-FRUIT HARVEST, 18 ASH + WATER
+- **D BUILD AND CRAFT:** 19 SHOVEL SAND, 20 PYRELANDS ITEMS
+- **E CREATURES:** 21 FIRE-HAWK, 22 FIRE-WASP, 23 FURNACE-BEAST (GIANT), 24 CONTROL PEN: NO BEAST, 25 ULLAI HERD, 26 ASHWALLOW, 27 EMBERSCYTHE, 28 SYTHECLAW, 29 BARBSLINGER, 30 FLAMEFANG
+- **F CAMPAIGN CAST:** 31 ANOOBA, 32 IRIAZ, 33 NUNA, 34 ORRAY, 35 ZEER, 36 DALGO, 37 GIZKA
 - **Boards:** N0 NATURAL GROUND, R SCORCHED RUIN, G WEATHER SWITCH, S MOD SETTINGS, W WORLD MAP, E FIRE-CLOCK EVENTS, L BURN LINE AND FIRE FRONT, F free area + shelter

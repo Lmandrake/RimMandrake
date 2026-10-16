@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace RimMandrake.Pyrelands
 {
     // Verse-free decisions of the fire-ecology hooks and the biome (FireEcologyHook.cs, WildPlantAllowlist.cs, RM_PyrelandsMod.cs): the
-    // biome placement score, the terrain-family predicates, the fulgurite / ash-dusting / scorch-fruit gates, the ash-fall rate and
+    // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, the ash-fall rate and
     // attempt count, the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
     // same expressions; the offline fuzz drives them.
 
@@ -48,22 +48,6 @@ namespace RimMandrake.Pyrelands
         public static float AridShrublandScore(float temperature, float rainfall)
         {
             return 22.5f + (temperature - 20f) * 2.2f + (rainfall - 600f) / 100f;
-        }
-
-        public static bool IsSandFamily(string terrainDefName, IReadOnlyList<string> family)
-        {
-            if (terrainDefName == null)
-            {
-                return false;
-            }
-            for (int i = 0; i < family.Count; i++)
-            {
-                if (terrainDefName == family[i])
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public static bool IsPyrelandsGround(string terrainDefName)
@@ -224,17 +208,6 @@ namespace RimMandrake.Pyrelands
                 return false;
             }
             return lastNudgeTick < 0 || now < lastNudgeTick || now - lastNudgeTick >= minGapTicks;
-        }
-
-        /// <summary>The fulgurite postfix: a valid in-bounds strike on sand-family ground; the Pyrelands master switch governs only the
-        /// Pyrelands' own ground. (The chance roll follows.)</summary>
-        public static bool FulguriteMayRoll(bool fulguriteEnabled, bool strikeUsable, bool sandFamily, bool pyrelandsEnabled, bool pyrelandsGround)
-        {
-            if (!fulguriteEnabled || !strikeUsable || !sandFamily)
-            {
-                return false;
-            }
-            return pyrelandsEnabled || !pyrelandsGround;
         }
 
         /// <summary>The fire-tick postfix, before any roll: master on, one of the two outcomes on, a spawned ground fire (not a burning pawn)

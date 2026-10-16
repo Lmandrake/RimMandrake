@@ -25,7 +25,6 @@
   <ItemGroup>
     <Compile Include="..\..\Kernel\RM_BurnKernel.cs" />
     <Compile Include="..\..\Kernel\RM_FurnaceKernel.cs" />
-    <Compile Include="..\..\Kernel\RM_BreakerKernel.cs" />
     <Compile Include="..\..\Kernel\RM_FireEcoKernel.cs" />
     <Compile Include="..\..\FurnaceWarmthMath.cs" />
     <Compile Include="..\..\..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />

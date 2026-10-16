@@ -5,7 +5,6 @@
 //            geometry; the rite gates. This is where the arson-debt and minimum-fire bars are proven
 //   furnace  the thermal-charge step, the world herd's three-leg cycle, the nearest-tile search vs brute force, biome routing against
 //            the real name lists, the bed-ignition rest clock, size ratio, hawk cooldown, the warmth maths
-//   breaker  the lightning-breaker section flood-fill against a union-find spec on random power graphs, battery partition, blast
 //   eco      biome placement score, ash-fall rate and attempts, the once-per-fire roll set, terrain-family predicates, gates, list parser
 //   units    tuning-file relationships (read from PyrelandsTuning.cs itself) and exhaustive truth tables
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
@@ -619,85 +618,6 @@ namespace RimMandrake.Pyrelands.Fuzz
             return ticks / 60000.0;
         }
 
-        // ════════════════════════ breaker ════════════════════════
-        public static long BreakerPlans, BreakerWorth, BreakerNoBoundary, BreakerNoProtected, BreakerBlastsBig, BreakerMonotone;
-
-        private static List<string> Breaker(int n, int seed)
-        {
-            var fails = new List<string>();
-            fails.AddRange(RunSeeded("breaker-graph", n, seed, r =>
-            {
-                int nodes = 2 + r.Next(40);
-                var adj = new List<int>[nodes];
-                for (int i = 0; i < nodes; i++) adj[i] = new List<int>();
-                int edges = nodes - 1 + r.Next(nodes * 2);
-                for (int i = 1; i < nodes && r.Next(8) != 0; i++) { int j = r.Next(i); adj[i].Add(j); adj[j].Add(i); } // mostly connected
-                for (int e = 0; e < edges / 2; e++) { int a = r.Next(nodes), b = r.Next(nodes); if (a == b) continue; adj[a].Add(b); adj[b].Add(a); }
-                var inNet = new bool[nodes]; var armed = new bool[nodes];
-                for (int i = 0; i < nodes; i++) { inNet[i] = r.Next(10) != 0; armed[i] = r.Next(7) == 0; }
-                int start = r.Next(nodes);
-                RM_BreakerKernel.Section(start, c => adj[c], c => inNet[c], c => armed[c], out HashSet<int> visited, out HashSet<int> boundary);
-                // spec: union-find over nodes that may be walked through (in the net, not an armed breaker) plus the start
-                var uf = Enumerable.Range(0, nodes).ToArray();
-                Func<int, int> find = null; find = x => uf[x] == x ? x : (uf[x] = find(uf[x]));
-                Func<int, bool> walk = x => x == start || (inNet[x] && !armed[x]);
-                for (int a = 0; a < nodes; a++) if (walk(a)) foreach (int b in adj[a]) if (walk(b)) uf[find(a)] = find(b);
-                // the flood only crosses an edge from a node it has entered; a walkable node reached only THROUGH the start is entered too
-                var comp = new HashSet<int>(Enumerable.Range(0, nodes).Where(x => walk(x) && find(x) == find(start)));
-                var specBoundary = new HashSet<int>();
-                foreach (int a in comp) foreach (int b in adj[a]) if (inNet[b] && armed[b] && !comp.Contains(b)) specBoundary.Add(b);
-                Check(visited.SetEquals(comp), $"section {{{string.Join(",", visited.OrderBy(x => x))}}}, spec {{{string.Join(",", comp.OrderBy(x => x))}}}");
-                Check(boundary.SetEquals(specBoundary), "boundary != armed in-net breakers touching the section");
-                Check(visited.Contains(start), "the section lost its start");
-                Check(!visited.Overlaps(boundary), "a breaker is both inside the section and on its boundary");
-                Check(boundary.All(b => armed[b] && inNet[b]), "a boundary node is not an armed in-net breaker");
-                Check(visited.Where(x => x != start).All(x => inNet[x] && !armed[x]), "the section entered an armed or foreign node");
-                BreakerPlans++;
-                // batteries
-                int batt = r.Next(0, 6); int protectedCount = 0, lostCount = 0;
-                for (int b = 0; b < batt; b++)
-                {
-                    bool hasParent = r.Next(5) != 0; int parent = r.Next(nodes); int self = nodes + b;
-                    bool inSec = RM_BreakerKernel.InSection(visited, self, hasParent, parent);
-                    Check(inSec == (hasParent && comp.Contains(parent)), "battery partition");
-                    if (inSec) lostCount++; else protectedCount++;
-                }
-                bool worth = RM_BreakerKernel.WorthTripping(boundary.Count, protectedCount);
-                Check(worth == (boundary.Count > 0 && protectedCount > 0), "WorthTripping");
-                if (boundary.Count == 0) BreakerNoBoundary++; else if (protectedCount == 0) BreakerNoProtected++; else BreakerWorth++;
-                // arming one more breaker never grows the section
-                int extra = r.Next(nodes);
-                if (extra != start && !armed[extra])
-                {
-                    armed[extra] = true;
-                    RM_BreakerKernel.Section(start, c => adj[c], c => inNet[c], c => armed[c], out HashSet<int> v2, out HashSet<int> b2);
-                    Check(v2.IsSubsetOf(visited), "arming a breaker grew the section");
-                    Check(!v2.Contains(extra) || extra == start, "an armed breaker was entered");
-                    BreakerMonotone++;
-                }
-                // blast
-                float e1 = (float)(r.NextDouble() * 5000.0), e2 = e1 + (float)(r.NextDouble() * 5000.0);
-                float r1 = RM_BreakerKernel.BlastRadius(e1), r2 = RM_BreakerKernel.BlastRadius(e2);
-                Check(r1 >= 1.5f && r1 <= 14.9f && r2 >= r1 - 1e-6f, "blast radius out of bounds / not monotone");
-                Check(RM_BreakerKernel.BlastRadius(0f) == 1.5f && RM_BreakerKernel.BlastRadius(1e9f) == 14.9f, "blast radius clamps");
-                Check(RM_BreakerKernel.SecondBlast(3.51f) && !RM_BreakerKernel.SecondBlast(3.5f), "second-blast boundary");
-                if (RM_BreakerKernel.SecondBlast(r1)) BreakerBlastsBig++;
-                Check(RM_BreakerKernel.LostCanBlast(new[] { 20.1f }) && !RM_BreakerKernel.LostCanBlast(new[] { 20f, 5f }) && !RM_BreakerKernel.LostCanBlast(new float[0]), "LostCanBlast boundary");
-                Steps += nodes + batt;
-            }));
-            fails.AddRange(RunSeeded("breaker-arm", n, seed, 777, r =>
-            {
-                for (int m = 0; m < 16; m++)
-                {
-                    bool tripped = (m & 1) != 0, on = (m & 2) != 0, hopper = (m & 4) != 0, fueled = (m & 8) != 0;
-                    float cost = 10f, fuel = fueled ? 10f : 9.99f;
-                    bool want = !tripped && on && (!hopper || fuel >= cost);
-                    Check(RM_BreakerKernel.Armed(tripped, on, hopper, fuel, cost) == want, "Armed table " + m);
-                }
-            }));
-            return fails;
-        }
-
         // ════════════════════════ eco ════════════════════════
         public static long ScoresInBand, ScoresOutside, ScoresOff, AshSkips, AshAttemptsTotal, OnceHits, OnceClears, ParseCases;
 
@@ -940,12 +860,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(got.SequenceEqual(want), $"ParseList [{string.Join("|", got)}], spec [{string.Join("|", want)}] for '{text}'");
                 ParseCases++;
                 // gates, exhaustively
-                for (int m = 0; m < 32; m++)
-                {
-                    bool fe = (m & 1) != 0, usable = (m & 2) != 0, sand = (m & 4) != 0, pe = (m & 8) != 0, pg = (m & 16) != 0;
-                    bool want2 = fe && usable && sand && (pe || !pg);
-                    Check(RM_FireEcoKernel.FulguriteMayRoll(fe, usable, sand, pe, pg) == want2, "FulguriteMayRoll table " + m);
-                }
                 for (int m = 0; m < 64; m++)
                 {
                     bool pe = (m & 1) != 0, ash = (m & 2) != 0, fruit = (m & 4) != 0, spawned = (m & 8) != 0, att2 = (m & 16) != 0, scorch = (m & 32) != 0;
@@ -1008,8 +922,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(!RM_FireEcoKernel.ScorchableHere(true, "RM_FE_FirebreakLine") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
                     && RM_FireEcoKernel.ScorchableHere(true, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.ScorchableHere(true, null), "ScorchableHere corners");
                 Check(RM_FireEcoKernel.FireEcologyOnMap(true, false) && RM_FireEcoKernel.FireEcologyOnMap(false, true) && !RM_FireEcoKernel.FireEcologyOnMap(false, false), "FireEcologyOnMap table");
-                string[] fam = { "RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand" };
-                Check(RM_FireEcoKernel.IsSandFamily("Sand", fam) && !RM_FireEcoKernel.IsSandFamily("sand", fam) && !RM_FireEcoKernel.IsSandFamily(null, fam) && !RM_FireEcoKernel.IsSandFamily("SandX", fam), "IsSandFamily exact match");
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround("RM_FE") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
                 Check(RM_FireEcoKernel.DustChance(0.02f, 15) == 0.02f * 15 && RM_FireEcoKernel.UnderFruitCap(39, 40) && !RM_FireEcoKernel.UnderFruitCap(40, 40), "dust chance / fruit cap");
@@ -1110,7 +1022,6 @@ namespace RimMandrake.Pyrelands.Fuzz
             {
                 ("burn", () => Burn(N(1200), S(1))),
                 ("furnace", () => Furnace(N(800), S(1))),
-                ("breaker", () => Breaker(N(3000), S(1))),
                 ("eco", () => Eco(N(4000), S(1))),
                 ("units", () => Units()),
             };
@@ -1128,14 +1039,12 @@ namespace RimMandrake.Pyrelands.Fuzz
             Console.WriteLine($"burn: measures {Measures}, debt rises {DebtRises} / decays {DebtDecays}, reseed attempts {ReseedAttempts} (landed {ReseedSuccess}), fronts armed {FrontsArmed} / fired {FrontsFired}, history samples {HistorySamples} (longest ring {HistoryMaxLen}), raids fired {RaidsFired} / insults {RaidInsults} / refused {RaidRefused} / gated off {RaidGated}, arson-liveness probes {LivenessChecks}, harvests allowed {HarvestsAllowed} / refused {HarvestsRefused}");
             Console.WriteLine($"burn front line: the old truncated construction lit {LegacyWidths - LegacyCellsLost} of {LegacyWidths} requested cells ({100.0 * (LegacyWidths - LegacyCellsLost) / Math.Max(1, LegacyWidths):F1}%); the kernel line is exact");
             Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, herd advances {HerdAdvances}, searches found {BfsFound} / missed {BfsMissed}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
-            Console.WriteLine($"breaker: plans {BreakerPlans} (worth tripping {BreakerWorth}, no boundary {BreakerNoBoundary}, no spared battery {BreakerNoProtected}), arm-monotone probes {BreakerMonotone}, second blasts {BreakerBlastsBig}");
             Console.WriteLine($"eco: scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}, list parses {ParseCases}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();
                 if (Measures == 0 || DebtRises == 0 || DebtDecays == 0 || ReseedAttempts == 0 || ReseedSuccess == 0 || FrontsFired == 0 || FrontsArmed == 0 || HistorySamples == 0 || RaidsFired == 0 || RaidInsults == 0 || RaidGated == 0 || LivenessChecks == 0 || HarvestsAllowed == 0 || HarvestsRefused == 0) blind.Add("burn never measured/accrued/decayed/reseeded/fired a front/recorded history/raided/insulted/gated/proved liveness/allowed or refused a harvest");
                 if (ChargeUps == 0 || ChargeDowns == 0 || ChargeHolds == 0 || HerdAdvances == 0 || BfsFound == 0 || BfsMissed == 0 || RestsRolled == 0 || RestsShort == 0) blind.Add("furnace never charged/bled/held/advanced a herd/found/missed a tile/rolled a rest/skipped a short rest");
-                if (BreakerPlans == 0 || BreakerWorth == 0 || BreakerNoBoundary == 0 || BreakerNoProtected == 0 || BreakerMonotone == 0) blind.Add("breaker never planned / found a worthwhile trip / saw an unbounded fault / saw no spared battery");
                 if (ScoresInBand == 0 || ScoresOutside == 0 || ScoresOff == 0 || AshSkips == 0 || AshAttemptsTotal == 0 || OnceClears == 0) blind.Add("eco never scored in/out of band/off, skipped a zero rate, deposited ash, or cleared its roll set");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }

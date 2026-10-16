@@ -69,7 +69,7 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
 # PyrelandsTuning.WorldHerdDefaultCount = 2. Plan §3.3: all features ON, crossBiome* false,
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
-    "pyrelandsEnabled": True, "fulguriteEnabled": True, "fulguriteChance": 0.35,
+    "pyrelandsEnabled": True,
     "ashDustingEnabled": True, "ashDustingChance": 0.02,
     "scorchFruitEnabled": True, "scorchFruitChance": 0.05, "scorchFruitMapCap": 40,
     "ashfallAccumulationEnabled": True, "ashfallRateMultiplier": 1.0,
@@ -81,8 +81,6 @@ DEFAULTS = {
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,
-    "lightningBreakerEnabled": True, "breakerPyrelandsOnly": True, "breakerTripCost": 10,
-    "breakerRecipeCostFactor": 1.0,
     "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.4, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0, "rainFadesBurnBonus": True,

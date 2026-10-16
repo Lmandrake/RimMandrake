@@ -14,7 +14,7 @@
 
     The assembly name is historical: it began as FIRE_ECOLOGY_LOOP_1's one
     light hook (FireEcologyHook.cs) and now carries the whole mod's C# —
-    fire cycle, ash field, fauna behaviours, terrain dig, lightning breaker,
+    fire cycle, ash field, fauna behaviours, terrain dig,
     settings and the Verse-free kernels listed below.
   -->
 
@@ -70,7 +70,6 @@
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationRead.cs" Link="Shared\FlowWorksIrrigationRead.cs" />
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="RM_PyrelandsGiants.cs" />
-    <Compile Include="RM_LightningBreaker.cs" />
     <Compile Include="RM_TerrainDig.cs" />
     <Compile Include="PyrelandsFireFront.cs" />
     <Compile Include="CompFireHawkSpread.cs" />
@@ -95,7 +94,6 @@
     <!-- Verse-free kernels the fuzz (SelfTest/Fuzz) drives; the mod and mandrake.rut.pyrelandsmechanics call them with the same expressions -->
     <Compile Include="Kernel\RM_BurnKernel.cs" />
     <Compile Include="Kernel\RM_FurnaceKernel.cs" />
-    <Compile Include="Kernel\RM_BreakerKernel.cs" />
     <Compile Include="Kernel\RM_FireEcoKernel.cs" />
   </ItemGroup>
 

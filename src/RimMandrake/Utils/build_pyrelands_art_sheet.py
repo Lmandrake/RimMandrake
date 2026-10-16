@@ -186,10 +186,6 @@ ROWS: list[tuple] = [
         ("pod (plant)", f"{P}/Plant/RM_FE_ScorchFruitPod.png"),
         ("item", f"{P}/Item/Resource/RM_FE_ScorchFruit.png"),
     ], "keep", "Plant and its harvested resource. Check the two read as the same thing."),
-
-    ("fulgurite", "Flora (ours)", "Fulgurite", [
-        ("item", f"{P}/Item/Resource/RM_FE_Fulgurite.png"),
-    ], "keep", "Resource item only — lightning-fused sand. No plant sprite by design."),
 ]
 
 OPTIONS = [

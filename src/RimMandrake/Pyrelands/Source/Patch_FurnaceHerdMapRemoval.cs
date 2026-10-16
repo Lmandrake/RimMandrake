@@ -22,7 +22,7 @@ namespace RimMandrake.Pyrelands
     /// ⚠️ APPLIED MANUALLY IN A STATIC CTOR, not via a [HarmonyPatch] attribute
     /// + PatchAll — this assembly (mandrake.rm.pyrelands / FireEcologyHook)
     /// has no PatchAll() call anywhere; every one of its patches
-    /// (Patch_FurnaceBeastHeatImmunity, Patch_LightningStrike_Fulgurite,
+    /// (Patch_FurnaceBeastHeatImmunity,
     /// WildPlantAllowlist) self-applies the same way. An attribute alone here
     /// would compile clean and never actually run — the exact "success with
     /// nothing changed" trap this codebase's CLAUDE.md warns about elsewhere.

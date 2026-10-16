@@ -527,7 +527,7 @@ CLUSTER_OVERRIDES = {
         "RM_SlackwaxTimber", "RM_Bones", "RSW_KilnClay", "RSW_CrackedCeramicShards", "RM_TollhornCore")},
     **{d: "glass/silica/optics" for d in (
         "RM_Biosilica", "RM_BiosilicaGrit", "RM_FineSand", "RM_GlassSand", "RM_SunGlass", "RM_GlassPearl",
-        "RM_WaveglassShard", "RM_VeilPane", "RM_FexxilShard", "RM_FE_Fulgurite", "RUT_AuroraGlass",
+        "RM_WaveglassShard", "RM_VeilPane", "RM_FexxilShard", "RUT_AuroraGlass",
         "RM_Floatstone", "RM_Filth_CleaverShards")},
     **{d: "fuel/oil/wax/hydrocarbon" for d in (
         "RM_KorvethPitch", "KOTOR_RawRhydonium", "RM_TarspoolStalk", "RM_PitchpearlBeads", "RM_LampBladder",

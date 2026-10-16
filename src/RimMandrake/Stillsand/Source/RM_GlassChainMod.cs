@@ -14,9 +14,7 @@ namespace RimMandrake.Stillsand
     // assembly, each with its own settings file), same as the event creatures.
     //
     // Drift yield (the shovel half of §1) lives with the dune engine that owns
-    // the clear job: MovingDunes' own settings panel. Stillsand fulgurites ride
-    // the Pyrelands' fulgurite toggle, which no longer needs the Pyrelands
-    // master switch off Pyrelands ground.
+    // the clear job: MovingDunes' own settings panel.
     //
     // A table toggled off still stands but works no bills and says why. All
     // off: the items remain plain trade goods.
@@ -203,8 +201,7 @@ namespace RimMandrake.Stillsand
                     "The lens bench grinds a krayt pearl into a krayt lens (needs the Star Wars bestiary's pearl). Off: the recipe is hidden.");
                 list.CheckboxLabeled("Sun-glass goggles recipe", ref glassGogglesEnabled,
                     "Sun-glass goggles are a second way to make glare-proof eyewear, from sun glass and cloth. Off: the recipe is hidden.");
-                list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
-                           + "follow the Pyrelands' fulgurite toggle.");
+                list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\".");
                 list.GapLine();
             }
 

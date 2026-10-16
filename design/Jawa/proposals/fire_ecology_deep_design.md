@@ -285,22 +285,13 @@ with a fire-triggered yield swap, precedented by vanilla's existing
 scorched-ground harvest hooks; the new part is gating harvest to "`Fire`
 active on this cell, or within N ticks of it."
 
-**Fire-glass fulgurites — where lightning struck.** Every dry-lightning
-strike on sand-adjacent ground (the Pyrelands margin toward true desert,
-R-H9's tar-pit interspersion) has a chance to drop a small, fused-glass
-fulgurite prop — hooked straight off the lightning-strike event: check the
-underlying terrain, roll to spawn a mineable node. Low value individually,
-satisfying to collect, and it turns "a storm just passed through" into "go
-see what it left" — a pure exploration reward for having survived being
-nearby, no combat attached.
-
 **The reap-ritual's yield, made literal.** Per `canon.yml`
 `deep_desert_tribes.fire_identity_src`, the Deep Desert Tribes light fires to
 "burn away the life and reveal the food: take the scorched fruits and seeds
 that remain and move on." Scorch-fruit IS that yield, mechanically — a player
 who understands the loop can run the Tribes' own play: light a controlled
-burn on a scar they intend to return to, then harvest scorch-fruit and
-fulgurites off the aftermath.
+burn on a scar they intend to return to, then harvest scorch-fruit off the
+aftermath.
 
 **Creatures only present mid-burn.** Cinderclutch juveniles (§2a) and the
 Silhouette-hunter's active hunting behavior (§2b) only exist/activate during
@@ -372,8 +363,7 @@ strategy ④'s ceramite firebreaks, the expensive industrial answer.
 **v1 slice.** Strip rain from the Pyrelands table, crank `DryThunderstorm`
 (pure XML, §1 Stage 0). Ship Black Rain to follow and extinguish any
 sufficiently large fire, plus the ash-accumulation ladder (§3). Ship
-scorch-fruit's fire-triggered harvest window and fulgurites off lightning
-strikes (§4, mostly XML). Ship the firefoam sprayer + layable firebreak line
+scorch-fruit's fire-triggered harvest window (§4, mostly XML). Ship the firefoam sprayer + layable firebreak line
 (§6). Proves the loop and gives the player a reason to walk into it — no new
 creatures, no C# beyond a light lightning-strike-spawns-prop hook.
 

@@ -22,7 +22,7 @@ describes), `RM_SunFurnace`, `RM_LensBench`, `RM_MeltSunGlass`, `RM_MeltLensGlas
 3. Tier (`biome_mod_architecture.md` §7 Q11a): transparisteel is a canon name, so the campaign gets it through
    the Star Wars layer, guarded by `PatchOperationConditional`/`FindMod`, never `MayRequire` on an Operation.
    The franchise-free Stillsand may keep a generic glass the campaign never produces.
-4. Natural glasses stay their own defs: biosilica, glass pearl, waveglass, fexxil, aurora glass, fulgurite,
+4. Natural glasses stay their own defs: biosilica, glass pearl, waveglass, fexxil, aurora glass,
    lanternstone, floatstone, veil pane. (Boundary drawn by BENCH; the owner's words name bottles, objects and
    lenses.)
 5. Descriptions and labels say transparisteel; `STILLSAND_GLASS_CHAIN_REMAINDER_1`'s krayt-lens and goggle

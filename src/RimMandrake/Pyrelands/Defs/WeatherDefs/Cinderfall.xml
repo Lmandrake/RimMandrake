@@ -29,11 +29,6 @@
     invents an ignition system in XML; the intervals are simply tighter
     than DryThunderstorm's 1200 so the storm reads as a storm.
 
-    That same strike is what this mod's existing fulgurite hook is
-    postfixed onto (Source/FireEcologyHook.cs), so a cinderfall over sand
-    leaves glass behind it as well as fire — no extra wiring, the hook was
-    already listening for exactly this event.
-
     Ember tint, same mechanism as AshFall: Verse/SkyManager.cs:117 tints
     every non-forced overlay with `curSky.colors.overlay`, so the
     `<overlay>` colour below is what turns the hard-snow particle sheet

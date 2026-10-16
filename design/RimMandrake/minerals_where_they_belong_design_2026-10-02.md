@@ -96,7 +96,6 @@ Already in a non-vein form (these are the precedents the design builds on):
 | sieve / sand product | `RM_FineSand`, `RM_GlassSand`, `RM_BiosilicaGrit`, `RM_GlassPearl` + recipes `RM_MeltLensGlass`, `RM_MeltSunGlass` | `src/RimMandrake/Stillsand` |
 | creature-produced item | `RM_ContaminantBezoar`, `RUT_MetalSaltBezoar`, `RM_CrestPlate` | Wasteland, UtinniPatches, Stillsand |
 | world-site salvage | TileMutators `RSW_CrashedShip`, `RSW_DeadCrawler`, `RSW_MiningSite`, `RUT_GlassSea`, `RUT_Kiln` | StructureInjections* |
-| heat-formed glass | `RM_FE_Fulgurite` | Pyrelands |
 
 Our biomes: 28 `RM_` BiomeDefs (parse of `src/**`), each with a `RUT_` twin plus RUT-only biomes
 (arid shrubland, desert, extreme desert, fuel snows, Umbra).
@@ -196,8 +195,6 @@ Steel deep deposit (F11). That is the whole of "things like iron".
 | **Weeping Stones** | seep-salt | F5 crust off steamfrond vents (the only source) | `RM_SeepSalt` | BUILT |
 | **Miasma** | delta salt | F5/F7 | `RM_DeltaSalt` | BUILT |
 | **Stillsand** | glass sand, fine sand | F8 sieve | `RM_SandSieve` | BUILT |
-| | fulgurite | heat-formed item | `RM_FE_Fulgurite` | BUILT |
-| **Pyrelands** | fulgurite | lightning glass | `RM_FE_Fulgurite` | BUILT |
 | **Blue Desert** | blue ice | biome wall | `RM_BlueIceMineable` | BUILT |
 | | meteoritic metal (silver, gold, a little uranium) | F3 nodules + F10 wreckage at the ablation line | none | PROMISED `the_blue_desert.md:221,251`; metals PROPOSED |
 | **Contagion** | gallium | F7 off Red Spore shells | none | PROMISED `the_contagion.md:210` |

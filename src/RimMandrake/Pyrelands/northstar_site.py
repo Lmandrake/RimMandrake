@@ -61,7 +61,7 @@ POLL_S = 1.0
 # Mechanics that start fires / move herds: OFF while the gen census runs (plan §2.3a, §3.7).
 ISOLATION_OFF = ("burnLineEnabled", "fireHawkSpreadEnabled", "fireClockEnabled",
                  "furnaceWorldMigrationEnabled", "burrowOnFireEnabled",
-                 "furnaceThermalEnabled", "fulguriteEnabled")
+                 "furnaceThermalEnabled")
 TICKS_PER_DAY = 60000
 TICKS_PER_HOUR = 2500
 TICKS_PER_QUADRUM = 15 * TICKS_PER_DAY

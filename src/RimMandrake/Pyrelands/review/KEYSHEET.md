@@ -79,22 +79,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Nothing; colonists may clean it if it is in the home area (it is not).
 
-### 6. Fulgurite on sand
-
-*Lightning glass where a strike hit sand.*
-
-**Sign:** LOOK: three lumps of lightning glass on sand. DO: zoom to play distance; haul one. DECIDE: do the lumps read as glass at play zoom?
-
-**Look for:** Three RM_FE_Fulgurite lumps on Pyrelands sand: how the glass reads at play zoom.
-
-**Poke it:**
-
-- --weather DryThunderstorm and unpause: strikes on sand leave fulgurite (35% a strike).
-- Haul one: it is an item (fulgurite).
-
-**If you unpause:** Locked Clear weather: no lightning until you switch weather.
-
-### 7. Heat: sun vs shade
+### 6. Heat: sun vs shade
 
 *Overhead sun; a roof answers it.*
 
@@ -111,7 +96,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ## B - Fire
 
-### 8. Before the burn
+### 7. Before the burn
 
 *Unburned grass on soil: light it.*
 
@@ -126,7 +111,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Paused: nothing. Lit: burns out in ~1-2 in-game hours inside the ring and leaves what the AFTER pad shows.
 
-### 9. After the burn
+### 8. After the burn
 
 *Burned during the build, then put out.*
 
@@ -141,7 +126,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Regrowth over days; any scorch-fruit pod ripens and withers within ~a day.
 
-### 10. Burning now
+### 9. Burning now
 
 *A live fire, paused mid-burn.*
 
@@ -156,7 +141,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Burns out inside the ring in about an hour.
 
-### 11. Burn bonus vs control
+### 10. Burn bonus vs control
 
 *Burned ash feeds; unburned ash does not.*
 
@@ -171,7 +156,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** The bonus fades linearly over 6 days.
 
-### 12. Burrower
+### 11. Burrower
 
 *An ashwallow in grass: light it.*
 
@@ -185,7 +170,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Paused: nothing. Lit: the burn crosses the pen; the ashwallow dives and surfaces.
 
-### 13. Firebreak and foam
+### 12. Firebreak and foam
 
 *Lay your own firebreak, then light it.*
 
@@ -202,7 +187,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ## C - Plants
 
-### 14. Ember grass: growth
+### 13. Ember grass: growth
 
 *Sprout to full, west to east.*
 
@@ -217,7 +202,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** All strips reach full within a day.
 
-### 15. Quickgrass: 3 stages
+### 14. Quickgrass: 3 stages
 
 *Sprout, half, tall: three drawings.*
 
@@ -232,7 +217,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** All strips grow to tall within a day.
 
-### 16. Ground cover mix
+### 15. Ground cover mix
 
 *Ember and quick grass, carpeting ash.*
 
@@ -246,7 +231,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Nothing visible within hours.
 
-### 17. Scorch-fruit pods
+### 16. Scorch-fruit pods
 
 *Unripe, growing, ripe: four pod drawings.*
 
@@ -261,7 +246,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Ripe pods wither within about a day; that is the point of the fruit.
 
-### 18. Scorch-fruit harvest
+### 17. Scorch-fruit harvest
 
 *Pick it, eat it, watch it rot.*
 
@@ -276,7 +261,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Pods wither in ~a day; the stack rots in ~4 days.
 
-### 19. Ash + water
+### 18. Ash + water
 
 *Deep ash beside water feeds; dry ash starves.*
 
@@ -293,52 +278,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ## D - Build and craft
 
-### 20. Breaker: armed
-
-*Battery, breaker, battery; hopper full.*
-
-**Sign:** LOOK: breaker between two charged batteries. DO: Dev > Incidents > Zzzt, then read both batteries. DECIDE: did it trip and save one side? does tripped look tripped?
-
-**Look for:** A lightning breaker between two charged batteries, its hopper full of glass sand. A short circuit on one side trips it and spares the other side's batteries. Weak spot: the tripped (_Off) drawing.
-
-**Poke it:**
-
-- Dev > Incidents > Zzzt (short circuit): it can only pick a conduit here (21's batteries are empty and the shelter has no conduit).
-- Then read both batteries and click 'Re-arm breaker'.
-
-**If you unpause:** Nothing until a short circuit.
-
-### 21. Breaker: no glass
-
-*The same chain, hopper empty: not armed.*
-
-**Sign:** LOOK: the same chain, hopper empty. DO: select the breaker: 'Not armed'. DECIDE: does an unarmed breaker look different at all?
-
-**Look for:** Inspect reads 'Not armed: needs 10 glass sand'. Weak spot: does an unarmed breaker look different at all?
-
-**Poke it:**
-
-- Select the breaker: hopper 0 / 30.
-- Drop glass sand from F and let a colonist refuel it.
-
-**If you unpause:** Nothing.
-
-### 22. Breaker core: smithy
-
-*Metal and glass sand at the smithy.*
-
-**Sign:** LOOK: smithy, steel, glass sand, one finished core. DO: Smithy > Bills > Make lightning breaker core. DECIDE: is the bill there? does the core look right?
-
-**Look for:** A fueled smithy with steel, glass sand and wood beside it, and one finished breaker core. The research is finished on this map (god mode); its Pyrelands-only gate is the matrix's to show.
-
-**Poke it:**
-
-- Smithy > Bills > Make lightning breaker core.
-- Hover the core on the floor: its drawing.
-
-**If you unpause:** A colonist would craft it (they are drafted in the shelter).
-
-### 23. Shovel sand
+### 19. Shovel sand
 
 *An order: sand to glass sand, leaves gravel.*
 
@@ -353,13 +293,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** The colonist digs; glass sand piles up; gravel is left.
 
-### 24. Pyrelands items
+### 20. Pyrelands items
 
-*Hide, glass, fruit, core, sprayer.*
+*Hide, fruit, sprayer, glass sand.*
 
-**Sign:** LOOK: hide, glass, fruit, core, sprayer, glass sand. DO: hover each item for its label and text. DECIDE: does each have its own look? (hide borrows leather)
+**Sign:** LOOK: hide, fruit, sprayer, glass sand. DO: hover each item for its label and text. DECIDE: does each have its own look? (hide borrows leather)
 
-**Look for:** Furnace hide, fulgurite, scorch-fruit, breaker core, firefoam sprayer and glass sand, one stack each, west to east. Weak spot: the furnace hide has no texture of its own (it draws its parent leather).
+**Look for:** Furnace hide, scorch-fruit, firefoam sprayer and glass sand, one stack each, west to east. Weak spot: the furnace hide has no texture of its own (it draws its parent leather).
 
 **Poke it:**
 
@@ -370,7 +310,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ## E - Creatures
 
-### 25. Fire-hawk
+### 21. Fire-hawk
 
 *Flyer, shown standing only.*
 
@@ -384,7 +324,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays in its roofed pen.
 
-### 26. Fire-wasp
+### 22. Fire-wasp
 
 *Flyer, shown standing only.*
 
@@ -398,7 +338,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays in its roofed pen.
 
-### 27. Furnace-beast (giant)
+### 23. Furnace-beast (giant)
 
 *The walking hearth: it warms a cold room.*
 
@@ -414,7 +354,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Its pen warms faster than the control pen; when it lies down it may smoulder its bed (the ash floor has nothing to burn).
 
-### 28. Control pen: no beast
+### 24. Control pen: no beast
 
 *The same room with no beast in it.*
 
@@ -428,7 +368,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Warms only from the outdoor heat through its walls, slower than the beast's pen.
 
-### 29. Ullai herd
+### 25. Ullai herd
 
 *The ash grazer, three of a herd.*
 
@@ -442,7 +382,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** They graze the pen.
 
-### 30. Ashwallow
+### 26. Ashwallow
 
 *The burrowing grazer.*
 
@@ -456,7 +396,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It grazes.
 
-### 31. Emberscythe
+### 27. Emberscythe
 
 *Predator; its dessicated art still borrows.*
 
@@ -470,7 +410,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 32. Sytheclaw
+### 28. Sytheclaw
 
 *Predator.*
 
@@ -484,7 +424,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 33. Barbslinger
+### 29. Barbslinger
 
 *Predator with a tail gun.*
 
@@ -498,7 +438,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 34. Flamefang
+### 30. Flamefang
 
 *Predator; a venomous bite.*
 
@@ -514,7 +454,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ## F - Campaign cast
 
-### 35. Anooba
+### 31. Anooba
 
 *Campaign roster (utinnipatches).*
 
@@ -528,7 +468,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 36. Iriaz
+### 32. Iriaz
 
 *Campaign roster (utinnipatches).*
 
@@ -542,7 +482,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 37. Nuna
+### 33. Nuna
 
 *Campaign roster (utinnipatches).*
 
@@ -556,7 +496,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 38. Orray
+### 34. Orray
 
 *Campaign roster (utinnipatches).*
 
@@ -570,7 +510,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 39. Zeer
+### 35. Zeer
 
 *Campaign roster (utinnipatches).*
 
@@ -584,7 +524,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 40. Dalgo
+### 36. Dalgo
 
 *Campaign roster (utinnipatches).*
 
@@ -598,7 +538,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** It stays.
 
-### 41. Gizka
+### 37. Gizka
 
 *Campaign roster (utinnipatches).*
 
@@ -618,7 +558,7 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *the site's own cover round its pond: untouched.*
 
-**Sign:** LOOK: what the biome grew by itself. DO: walk it; compare station 16. DECIDE: grass everywhere, ash where burned, no bare dirt?
+**Sign:** LOOK: what the biome grew by itself. DO: walk it; compare station 15. DECIDE: grass everywhere, ash where burned, no bare dirt?
 
 What the biome grew by itself: the two grasses, deep ash, a pond ringed with rich ground and mud. PYRELANDS_GRASS_SATURATION_1 asks for your look here: grass everywhere, ash where burned, no bare dirt.
 
@@ -636,7 +576,7 @@ Ruins on a Pyrelands map stand blackened: deep ash under and round them, loose a
 
 **Sign:** LOOK: weather is one switch for the map. DO: ask the agent: --weather NAME, then unpause. DECIDE: does each weather read as itself?
 
-Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: free-flying ash like snow (the commonest). RM_FE_Weather_AshFall: the map dims, loose-ash drifts pile up. RM_FE_Weather_Cinderfall: glowing cinders, must not read as ash fall renamed. RM_FE_BlackRain: dark rain, washes the burn bonus at 11, waters ash. DryThunderstorm: lightning without rain; strikes on sand leave fulgurite (6), and a strike on station grass starts a fire there. There is no ordinary rain here. Unpause to see it fall; --weather Clear puts the calm back.
+Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: free-flying ash like snow (the commonest). RM_FE_Weather_AshFall: the map dims, loose-ash drifts pile up. RM_FE_Weather_Cinderfall: glowing cinders, must not read as ash fall renamed. RM_FE_BlackRain: dark rain, washes the burn bonus at 10, waters ash. DryThunderstorm: lightning without rain; a strike on station grass starts a fire there. There is no ordinary rain here. Unpause to see it fall; --weather Clear puts the calm back.
 
 ### S. Mod settings
 
@@ -644,7 +584,7 @@ Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: fr
 
 **Sign:** LOOK: every setting at its default. DO: Options > Mod Settings > Pyrelands. DECIDE: are the toggles clear? anything missing?
 
-Every toggle at its shipped default. Station by setting: fulgurite 6; fire dusts ash 5, 9; scorch-fruit seeding 9, 17; ash-fall drifts 5, G; watered ash 19; fresh-burn bonus 9, 11; rain fades bonus 11; ambient drift G; growth stages 15; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying 25 (flight, owner-present); furnace thermal 27-28; fire clock E; world migration W; giant furnace-beast 27 (restart); ullai herds 29 (restart); burrowing 12; breakers 20-22; shovel sand 23; cross-biome (off). PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E.
+Every toggle at its shipped default. Station by setting: fire dusts ash 5, 8; scorch-fruit seeding 8, 16; ash-fall drifts 5, G; watered ash 18; fresh-burn bonus 8, 10; rain fades bonus 10; ambient drift G; growth stages 14; wild allowlist N0; scorched ruins R; standing burn line L; fire-hawk carrying 21 (flight, owner-present); furnace thermal 23-24; fire clock E; world migration W; giant furnace-beast 23 (restart); ullai herds 25 (restart); burrowing 11; shovel sand 19; cross-biome (off). PyrelandsMechanics: arson-justice raids, flame-harvest visits, the tribes' fire rite: E.
 
 ### W. World map
 
@@ -672,4 +612,4 @@ A Pyrelands map is never fireless: after 2 quiet days the standing burn relights
 
 ### F. Free area and shelter
 
-A roofed granite shelter with two coolers on a solar + battery net (no conduits, so a short circuit can only hit station 20). Colonists stand drafted inside; undraft one to use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, medicine, two firefoam sprayers.
+A roofed granite shelter with two coolers on a solar + battery net (two batteries, no conduits). Colonists stand drafted inside; undraft one to use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, medicine, two firefoam sprayers.

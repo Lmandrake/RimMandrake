@@ -7,7 +7,7 @@ Caused by `GREENTIDE_SCORING_SITTING_1` (turn 1). Free tier, `mandrake.rm.greent
 learns to make a cartridge that stops all bleeding on a wounded pawn, anywhere.* ⛔ The hull rasp and
 noise cover were not chosen and are not to be built.
 
-Mark 2 (discoverable technology): learned here, used anywhere, like the lightning breakers. **Renamed:**
+Mark 2 (discoverable technology): learned here, used anywhere. **Renamed:**
 GPT's "nethr" collides in `design/` (4 files) and is not used. The name is **stellock** (Greentide accent,
 *-ock*, doubled *ll*): python sweep of `src/`, `design/`, `infrastructure/` 0 hits (probes `korrum` 92,
 `krannock` 15 files); Wookieepedia search 0 results (probe `wyyyschokk` 50); artpipe `find stellock` 0
