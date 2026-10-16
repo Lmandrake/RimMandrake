@@ -12,7 +12,7 @@
     The quest itself is FLOOD_WITNESS_EVENT_1's to build; this def is real now,
     so that quest's stub-degrades-gracefully branch is simply never taken.
     Worker: RimMandrake.ExplosiveGrowth.RM_IncidentWorker_BloomBurst (RM tier);
-    the campaign names the bloom plant (RUT_BloomCrop, a BURST plant).
+    the campaign names the bloom plant (RM_BloomCrop, a BURST plant).
   -->
   <IncidentDef>
     <defName>RUT_BloomBurst</defName>
@@ -30,7 +30,7 @@
     <letterDef>NeutralEvent</letterDef>
     <modExtensions>
       <li Class="RimMandrake.ExplosiveGrowth.RM_BloomBurstExtension">
-        <bloomPlant>RUT_BloomCrop</bloomPlant>
+        <bloomPlant>RM_BloomCrop</bloomPlant>
         <sowChance>0.6</sowChance>
         <soakHours>24</soakHours>
       </li>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DyingCreep — the short-lived red creep the contagion probe pushes up a slope (forge_kit_spec.md F5,
+  "the Contagion die-off ring"). Moved here from UtinniPatches' RUT_DyingCreep by
+  PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner, 2026-10-16: generic plants live in Baroque Biomes);
+  description rewritten on his sheet note "regenerate description". A saved RUT_DyingCreep loads as this
+  def through RM_PlantTierReconcile_Aliases.xml (EnvironmentalHazards).
+
+  RM_CompScriptedDieOff (EnvironmentalHazards) carries the spread-then-die cycle; spreadThingDef is unset, so the
+  ring spreads as more of this same def, and the dead half is RM_DeadCreep (filth, this mod).
+  It is in NO BiomeDef's wildPlants on purpose: a plant absent from every wildPlants dict never spawns or spreads
+  wild, so the only copies are the probe's spawn and the comp's own scripted spread. Unsowable, no yield.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_DyingCreep</defName>
+    <label>dying creep</label>
+    <description>A wet red skin of creeping growth, thrown out past the Contagion's edge by a surge from below. It runs fast and shallow across bare ground, but it has no roots to hold what it takes: within hours it darkens, cracks and dies, leaving a black mat that clings to the soil for weeks.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <graphicData>
+      <texPath>Things/Plant/RM_DyingCreep</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <plant>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>0.1</growDays>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <maxGrowthTemperature>200</maxGrowthTemperature>
+      <minGrowthTemperature>-200</minGrowthTemperature>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ScriptedDieOff">
+        <deadThingDef>RM_DeadCreep</deadThingDef>
+        <deadThingIsFilth>true</deadThingIsFilth>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

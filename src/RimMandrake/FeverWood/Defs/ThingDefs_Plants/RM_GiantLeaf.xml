@@ -25,8 +25,10 @@
       <Flammability>1</Flammability>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: Graphic_Random over the folder, carrying the owner's
+           nonrm_plants_census pool (a + b, c), 2026-10-16. -->
+      <texPath>Things/Plant/RM_GiantLeaf</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.1, 0.2, 0.1)</volume>
       </shadowData>

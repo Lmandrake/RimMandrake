@@ -275,7 +275,17 @@
     "RUT_DosimeterLawn": {
       "at": "2026-10-16T13:13:29.353Z",
       "decision": "A",
-      "note": "rename to radmoss",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:13:29.353Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "rename to radmoss",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -285,7 +295,17 @@
       "at": "2026-10-16T13:21:52.135Z",
       "decidedAt": "2026-10-16T13:21:38.910Z",
       "decision": "A",
-      "note": "regenerate description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:21:52.135Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "regenerate description",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "reject": {},
       "retire": {},
@@ -531,7 +551,17 @@
       "at": "2026-10-16T13:17:37.768Z",
       "decision": "hold",
       "migratedFrom": 1,
-      "note": "cut this",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:17:37.768Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "cut this",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "hold",
       "rev": "99af6462218085cf",
       "schema": 2
@@ -587,7 +617,17 @@
       "at": "2026-10-16T13:10:47.031Z",
       "decidedAt": "2026-10-16T13:10:42.968Z",
       "decision": "hold",
-      "note": "terrestrial remove",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:10:47.031Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "terrestrial remove",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -617,7 +657,17 @@
       "at": "2026-10-16T13:13:40.973Z",
       "decidedAt": "2026-10-16T13:13:37.509Z",
       "decision": "hold",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:13:40.973Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -627,7 +677,17 @@
       "at": "2026-10-16T13:13:51.273Z",
       "decidedAt": "2026-10-16T13:13:48.716Z",
       "decision": "hold",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:13:51.273Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -637,7 +697,17 @@
       "at": "2026-10-16T13:15:08.558Z",
       "decidedAt": "2026-10-16T13:15:05.596Z",
       "decision": "hold",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:15:08.558Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -646,7 +716,17 @@
     "VCE_Plant_PeyotePlant": {
       "at": "2026-10-16T13:15:18.535Z",
       "decision": "A",
-      "note": "remote terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:15:18.535Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remote terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -655,7 +735,17 @@
     "VCE_Plant_PincushionPlant": {
       "at": "2026-10-16T13:15:28.121Z",
       "decision": "A",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:15:28.121Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -664,7 +754,17 @@
     "VCE_Plant_Schlumbergera": {
       "at": "2026-10-16T13:15:34.234Z",
       "decision": "A",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:15:34.234Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -673,7 +773,17 @@
     "VCE_Plant_SnakePlant": {
       "at": "2026-10-16T13:16:03.404Z",
       "decision": "A",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:16:03.404Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,
@@ -682,7 +792,17 @@
     "VCE_Plant_SweetheartPlant": {
       "at": "2026-10-16T13:16:06.746Z",
       "decision": "A",
-      "note": "remove terran",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-16T13:16:06.746Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "remove terran",
+          "when": "2026-10-16T06:41:36-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "99af6462218085cf",
       "schema": 2,

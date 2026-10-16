@@ -30,7 +30,7 @@
 
     <plants>
       <!-- BURST — dry-adapted: one chance in years, spent all at once. -->
-      <li><plant>RUT_BloomCrop</plant><top>Burst</top></li>                 <!-- the flagship; RUT_BloomBurst's sprout -->
+      <li><plant>RM_BloomCrop</plant><top>Burst</top></li>                 <!-- the flagship; RUT_BloomBurst's sprout -->
       <li><plant>Plant_HubbaGourd_Wild</plant><top>Burst</top></li>         <!-- ruled 2026-09-21: bursts in the Greentide too -->
       <li><plant>RSW_Plant_HubbaGourd_Wild</plant><top>Burst</top></li>
       <li><plant>RSW_Scrubgrass</plant><top>Burst</top></li>
@@ -48,7 +48,7 @@
       <li><plant>Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>RSW_Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>RSW_Plant_JoganTree_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
-      <li><plant>RUT_GiantLeaf</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <li><plant>RM_GiantLeaf</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>Plant_FelucianGlowspore_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>Plant_Bubblespore_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>Plant_Chakroot_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
@@ -57,15 +57,14 @@
       <!-- NONE — the roster's deliberate exclusions, campaign-tier names. -->
       <li><plant>RUT_PaleTree</plant><top>None</top></li>
       <li><plant>RUT_PaleMoss</plant><top>None</top></li>
-      <li><plant>RUT_DyingCreep</plant><top>None</top></li>                 <!-- hard call 3 -->
+      <li><plant>RM_DyingCreep</plant><top>None</top></li>                 <!-- hard call 3 -->
       <li><plant>RM_Ollim</plant><top>None</top></li>
       <li><plant>RM_LightPipeNub</plant><top>None</top></li>
-      <li><plant>RUT_SweetlineTree</plant><top>None</top></li>
-      <li><plant>RUT_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
-      <li><plant>RUT_TreeMartyr</plant><top>None</top></li>
-      <li><plant>RUT_HeatsinkFungus</plant><top>None</top></li>
+      <li><plant>RM_SweetlineTree</plant><top>None</top></li>
+      <li><plant>RM_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
+      <li><plant>RM_TreeMartyr</plant><top>None</top></li>
+      <li><plant>RM_HeatsinkFungus</plant><top>None</top></li>
       <li><plant>RUT_Placeholder_GreentideGiantTree</plant><top>None</top></li>
-      <li><plant>RUT_TwinkleSpikeTestPlant</plant><top>None</top></li>
     </plants>
 
     <!-- Soak carve-outs (design doc §3). The terminator never soaks (R-G3:

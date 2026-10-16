@@ -47,10 +47,6 @@
 
   <ItemGroup>
     <Compile Include="GeothermalDensityField.cs" />
-    <!-- TWINKLE_FLORA_SPIKE_1 (2026-09-10): timeboxed feasibility spike, not
-         a shipped feature: see the .cs file's own header and
-         infrastructure/state/items/TWINKLE_FLORA_SPIKE_1.md. -->
-    <Compile Include="TwinkleFloraSpike.cs" />
     <!-- SHRINE_GUARDIAN_BIOME_GATE_1 (2026-09-10): plain subclass of Core's
          SymbolResolver_Interior_AncientTemple, swapped in by
          Patches/AmbientShrineGuardians.xml. Still no Harmony reference on this

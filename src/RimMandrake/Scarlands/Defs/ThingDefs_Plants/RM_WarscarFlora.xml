@@ -17,8 +17,9 @@
   copied from the twin's ScorchedStars_a/_b.png, same "own art copy"
   convention RM_CathedralRoach used (RUSTCATHEDRAL_RM_MOD_BUILD_1).
 
-  RM_Glower: duplicated rather than moved, because the frozen twin's own
-  RUT_Glower must stay live and byte-identical for the frozen campaign world.
+  RM_Glower: first duplicated from RUT_Glower; RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): RUT_Glower and RUT_ScorchedStars are gone, the
+  frozen RUT_Scarlands/RUT_Wasteland name RM_Glower/RM_ScorchedStars, and saved RUT_ names load as them through
+  RM_PlantTierReconcile_Aliases.xml.
   Art: rutglower_v1 (infrastructure/artpipe/done), wired WARSCAR_FREE_TIER_BODY_1.
 
   RM_WreckLichen: WARSCAR_FREE_TIER_BODY_1. Never in wildPlants and never

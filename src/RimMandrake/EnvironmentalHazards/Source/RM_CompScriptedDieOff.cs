@@ -10,7 +10,7 @@ namespace RimMandrake.EnvironmentalHazards
     // it stands, optionally leaving a "dead" marker (filth or a ground-cover
     // ThingDef) behind. Explicitly reusable beyond the Forge — the spec's
     // own cross-flow note: "if a shared creep system lands later,
-    // RUT_DyingCreep becomes its client" of the_contagion.md's kit, not the
+    // RM_DyingCreep becomes its client" of the_contagion.md's kit, not the
     // other way round, so this comp stays generic rather than Forge-coded.
     //
     // Per-instance model, not a MapComponent coordinator: XML <li
@@ -28,7 +28,7 @@ namespace RimMandrake.EnvironmentalHazards
     // `wildPlants` commonality dict (BiomeDef.CommonalityOfPlant →
     // WildPlantSpawner.GetCommonalityOfPlant, both verified), which returns
     // 0 for any ThingDef absent from that dict. So "no reproduction" for
-    // RUT_DyingCreep is enforced by simply never listing it in any
+    // RM_DyingCreep is enforced by simply never listing it in any
     // BiomeDef's wildPlants — not a field this comp or its ThingDef needs
     // to carry — and this comp's own scripted spread (below) is the ONLY
     // way copies appear, exactly the sheet's "physics as def structure."
@@ -59,7 +59,7 @@ namespace RimMandrake.EnvironmentalHazards
         public ThingDef spreadThingDef;
 
         /// <summary>Left behind at this instance's own cell on death.
-        /// Null = leaves nothing. "RUT_DeadCreep" in the concrete F5
+        /// Null = leaves nothing. "RM_DeadCreep" in the concrete F5
         /// build.</summary>
         public ThingDef deadThingDef;
 
@@ -99,7 +99,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
-        // The only user is a PlantBase plant (RUT_DyingCreep), and plants tick Long only, so the
+        // The only user is a PlantBase plant (RM_DyingCreep), and plants tick Long only, so the
         // clock advances in TickLongInterval steps (TICKER_NEVER_FIRES_FIX_1; it was CompTick and never ran).
         public override void CompTickLong()
         {

@@ -10,11 +10,9 @@
   (COMMISSION_LEDGER_CLEANUP_1, design/Jawa/worldbuilding/biomes/
   arid_shrubland.md §4 "The giants").
 
-  🔑 The ORIGINAL RUT_Fuzz def is left standing in mandrake.rut.ashkarrflora,
-  untouched — the frozen RUT_AridShrubland.xml still names it under
-  MayRequire="mandrake.rut.ashkarrflora" and must keep resolving until Phase
-  B deletes that biome def outright. See RM_LeaningScrub_Biome.xml's own
-  header for the full reasoning.
+  RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): the original RUT_Fuzz and the whole
+  mandrake.rut.ashkarrflora mod are gone; RUT_AridShrubland.xml names this def, and a saved RUT_Fuzz loads as
+  it through RM_PlantTierReconcile_Aliases.xml (EnvironmentalHazards).
 
   Art: the finished rutfuzz_v1 render is wired at Textures/Things/Plant/
   RM_Fuzz/RM_Fuzz_a.png (LEANINGSCRUB_RULED_CONTENT_1).

@@ -47,8 +47,8 @@
       RUT_Glower and RUT_ScorchedStars — duplicated rather than moved because
       RUT_ScorchedStars is also shared with the frozen twin's own RUT_Wasteland
       sibling (moving it would make Wasteland depend on this mod) and
-      RUT_Glower must stay live for the frozen twin regardless. The frozen
-      originals are completely untouched.
+      RUT_Glower had to stay live for the frozen twin. RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): both
+      originals are gone and the frozen twins name these RM_ defs.
     - texture kept pointing at the same World/Biomes/Scarlands path the twin
       uses (first-party Odyssey world-map icon, not a donor or campaign
       asset) pending any future dedicated art commission.

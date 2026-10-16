@@ -13,7 +13,7 @@ BEHAVIOR a bridge session can exercise; raw def-existence/log-cleanliness
 is that separate walk-doc checklist's own job. What this suite DOES cover
 is the mod's actual C# surface -- `Source/AmbientShrineGuardians.cs`,
 `Source/GeothermalDensityField.cs`, `Source/PatchOperationSettingGate.cs`,
-`Source/TwinkleFloraSpike.cs`, `Source/UtinniPatchesSettings.cs` -- every
+`Source/UtinniPatchesSettings.cs` -- every
 one read whole before writing this, plus a small, representative sample of
 the walk doc's own flagship defs (not all ~150).
 
@@ -52,16 +52,6 @@ UNCOVERED here rather than faked:
     confirms the XML actually wires `PatchOperationSettingGate` with
     `setting=utinniWorldIconEnabled` and a real `<match>` branch, which is
     everything a live session COULD prove about wiring that already ran.
-  * `CompGlowPulse`/`RUT_PlantTwinkle` (Twinkle Flora Spike) is the one
-    mechanism that IS live-drivable -- it is a timeboxed feasibility spike
-    "not wired into any live biome or shipped plant" (its own header) but
-    spawnable by hand, exactly as that header invites. No bridge tool
-    reads a Thing's live rendered colour back, so this suite proves only
-    that the comp survives real ticking across multiple `CompTickRare`
-    (every 250 ticks) cycles without throwing or despawning the plant --
-    not the actual colour-pulse math, which needs either a colour-read
-    tool or the timeboxed item's own console measurement, neither of which
-    exists here.
 
 Still not proven / real gaps:
   1. Ambient Shrine Guardians and Geothermal Density Field: see above --
@@ -99,10 +89,6 @@ suite.toggles = ["ambientShrineDoctrineEnabled", "geothermalDensityFieldEnabled"
 
 _MOD_DIR = os.path.dirname(os.path.abspath(__file__))
 _WORLDICON_PATCH = os.path.join(_MOD_DIR, "Patches", "UtinniWorldIcon.xml")
-_TWINKLE_DEF = os.path.join(_MOD_DIR, "Defs", "ThingDefs_Plants",
-                            "RUT_TwinkleSpikeTestPlant.xml")
-
-TWINKLE_PLANT = "RUT_TwinkleSpikeTestPlant"
 
 
 def _live(t):
@@ -134,27 +120,6 @@ def repo_checks(t):
             raise ExpectationFailed(
                 "UtinniWorldIcon.xml's gate has no <match> branch -- nothing would "
                 "apply even with the setting on")
-
-    with t.component("twinkle_flora_spike_only_wired_to_its_own_test_plant",
-                      beyond_toggle=True):
-        # The comp's own header claims RUT_TwinkleSpikeTestPlant.xml is the
-        # ONLY def referencing CompProperties_GlowPulse -- confirmed by
-        # grepping every Defs/ThingDefs_Plants file, not trusted from the
-        # comment alone.
-        plants_dir = os.path.join(_MOD_DIR, "Defs", "ThingDefs_Plants")
-        referencing = []
-        for name in os.listdir(plants_dir):
-            if not name.endswith(".xml"):
-                continue
-            with open(os.path.join(plants_dir, name), "r", encoding="utf-8") as f:
-                if "CompProperties_GlowPulse" in f.read():
-                    referencing.append(name)
-        if referencing != ["RUT_TwinkleSpikeTestPlant.xml"]:
-            raise ExpectationFailed(
-                "expected exactly RUT_TwinkleSpikeTestPlant.xml to reference "
-                "CompProperties_GlowPulse, found %r -- either the spike got wired "
-                "into a real plant (update this suite's live coverage) or the "
-                "test def was renamed/removed" % referencing)
 
 
 def naboo_fish_checks():
@@ -204,37 +169,6 @@ def naboo_fish_in_twilight(t):
     bad = naboo_fish_checks()
     if bad:
         raise ExpectationFailed("; ".join(bad))
-
-
-@suite.chain("twinkle_flora_spike_survives_ticking")
-def twinkle_flora_spike_survives_ticking(t):
-    """The one live-drivable mechanism (module docstring). Spawns the
-    timeboxed test plant and steps past several `CompTickRare` cycles
-    (every 250 ticks) -- proves the comp does not throw/despawn the plant
-    across real ticking, NOT the actual colour-pulse math (no bridge tool
-    reads a Thing's rendered colour back). `t.screenshot()` at the end is
-    the best available evidence for a human glance at the pulse itself."""
-    t.clear_area(size=10)
-    t.spawn(TWINKLE_PLANT, count=1, at="point")
-
-    with t.component("plant_survives_multiple_glow_pulse_ticks", beyond_toggle=True):
-        r = t.bridge_call("jawa/list_things", defName=TWINKLE_PLANT)
-        rows = (r or {}).get("things") or []
-        if _live(t) and not rows:
-            raise ExpectationFailed(
-                "no %s found via jawa/list_things right after spawning it"
-                % TWINKLE_PLANT)
-
-        t.wait_ticks(1200)  # ~5 CompTickRare cycles (250 ticks each)
-
-        r2 = t.bridge_call("jawa/list_things", defName=TWINKLE_PLANT)
-        rows2 = (r2 or {}).get("things") or []
-        if _live(t) and not rows2:
-            raise ExpectationFailed(
-                "%s is gone after 1200 ticks of CompTickRare pulsing -- "
-                "CompGlowPulse or RUT_PlantTwinkle.Graphic may be throwing "
-                "and getting the plant destroyed/de-registered" % TWINKLE_PLANT)
-        t.screenshot()
 
 
 @suite.chain("planet_name_patch_on_quicktest_world")

@@ -18,7 +18,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_DosimeterLawn</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
-    <label>dosimeter lawn</label>
+    <label>radmoss</label>  <!-- owner sheet note 2026-10-16 "rename to radmoss" (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE); defName kept -->
     <description>A low mat of sickly, unnervingly vivid moss-lichen. It grows thickest over the hottest ground -- locals read its color and density as a rough gauge of what's buried beneath, and camp where it refuses to grow at all.</description>
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
