@@ -1,0 +1,1 @@
+Vanilla 1.6 WaterBodyTracker: a water cell flipping between two waterBodyTypes leaves the old body's CellCount high; turning the rest of that body to land throws 'Sequence contains no matching element'. FlowWorks now patches it (waterBodyTypeFlipFixEnabled).

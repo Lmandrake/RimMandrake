@@ -1,0 +1,1 @@
+After the donor-free save loads on a short tier, VEF Dialog_NewFactionSpawning windows stack (close each with rimworld/close_window), and go_to_main_menu then NREs: restart the game (~80 s on 21 mods) rather than fight it.
