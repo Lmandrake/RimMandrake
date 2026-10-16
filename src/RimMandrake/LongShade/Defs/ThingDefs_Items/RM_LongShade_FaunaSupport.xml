@@ -57,7 +57,7 @@
 		<description>Fertilized ulgga egg. If all goes well, it should hatch into a ulgga.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<texPath>Things/Item/Resource/RM_EggTuskcoil</texPath>
 			<color>(126,113,117)</color>
 		</graphicData>
 		<tradeability>None</tradeability>
@@ -79,7 +79,7 @@
 		<description>Unfertilized ulgga egg. Edible raw, much better cooked.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<texPath>Things/Item/Resource/RM_EggTuskcoil</texPath>
 			<color>(126,113,117)</color>
 		</graphicData>
 		<tradeability>Sellable</tradeability>
@@ -133,7 +133,7 @@
 		<description>Hard overlapping scales of insectoid chitin. Exceptionally durable in combat, but a poor defense against weather.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_Chitin</texPath>
+			<texPath>Things/Item/Resource/RM_BlackChitin</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
 			<color>(66,57,60)</color>
 		</graphicData>

@@ -74,7 +74,7 @@ result is behaviourally identical, without porting the abstract chain.
 		<description>A strange meat, part vegetable, part animal, harvested from cactus-hybrid creatures.</description>
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_Cactipine_Meat</texPath>
+			<texPath>Things/Item/Resource/RSW_CactusMeat</texPath>
 		</graphicData>
 		<statBases>
 			<MarketValue>1.1</MarketValue>
