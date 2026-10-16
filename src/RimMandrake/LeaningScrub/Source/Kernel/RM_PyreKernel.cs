@@ -16,21 +16,20 @@ namespace RimMandrake.LeaningScrub
 
         public const string Ok = null;
         public const string ReasonOff = "off";
-        public const string ReasonNoBelief = "nobelief";
         public const string ReasonForbidden = "forbidden";
         public const string ReasonNoEnemies = "noenemies";
 
         // Forbidden never; last rite only with enemies on the map; venerated any time. An ideoligion that holds the ritual but
-        // no calling-pyre belief (edited by hand) is refused: the belief is what says when the herds may be called.
+        // took no calling-pyre belief (the belief is a separate issue the generator may not fill) reads it as a last
+        // rite, the sheet's own framing, so the ritual is never listed and dead.
         public static string Gate(bool featureOn, int belief, int hostilesOnMap)
         {
             if (!featureOn) return ReasonOff;
             switch (belief)
             {
                 case BeliefForbidden: return ReasonForbidden;
-                case BeliefLastRite: return hostilesOnMap > 0 ? Ok : ReasonNoEnemies;
                 case BeliefVenerated: return Ok;
-                default: return ReasonNoBelief;
+                default: return hostilesOnMap > 0 ? Ok : ReasonNoEnemies; // last rite, or no belief taken
             }
         }
 

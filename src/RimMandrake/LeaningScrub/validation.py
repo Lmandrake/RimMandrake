@@ -1407,11 +1407,16 @@ def injections_chain(t):
         if _live(t):
             txt = str((r or {}).get("result") or (r or {}).get("value") or r)
             _note(t, "injections (PLACED sites=n vaporatorWrecks=+n campPeople=+n)", txt[:300])
-            m = re.search(r"sites=(\d+) vaporatorWrecks=\+(-?\d+)", txt)
+            m = re.search(r"sites=(\d+) vaporatorWrecks=\+(-?\d+) campPeople=\+(-?\d+) farmers=(\w+)", txt)
             if not m:
                 _unmeasured(t, "injection proof did not answer PLACED: %s" % txt[:200])
-            if int(m.group(1)) < 1 or int(m.group(2)) < 1:
-                _fail("the map step placed no ruin or no dead farmstead: %s" % txt[:300])
+            if int(m.group(1)) < 1:
+                _unmeasured(t, "no open site on this map for any injection: %s" % txt[:200])
+            if int(m.group(2)) < 1:
+                _fail("the map step placed no dead farmstead: %s" % txt[:300])
+            if m.group(4) == "True" and int(m.group(3)) < 1:
+                _fail("the comb holds exist and are at peace but no camp people were placed: %s" % txt[:300])
+            # NOTE: the proof leaves its ruins and camp on the map (a disposable test map); later chains see them.
 
 
 # --------------------------------------------------------------------------- chain: the six further forms

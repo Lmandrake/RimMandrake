@@ -45,16 +45,22 @@ namespace RimMandrake.LeaningScrub
 
         public bool ShouldHide(Pawn p, bool on)
         {
-            bool wild = p.Faction == null && p.RaceProps.Animal;
+            return ShouldHide(p, on, RM_WindCalendar.IsGale(map), RM_WindCalendar.IsStall(map));
+        }
+
+        private bool ShouldHide(Pawn p, bool on, bool gale, bool stall)
+        {
+            // A creature in a mental state (manhunting, hunting the colony) never hides: it could not be shot back.
+            bool wild = p.Faction == null && p.RaceProps.Animal && !p.InMentalState;
             bool cover = wild && OnCover(p);
-            bool still = RM_WindCalendar.IsStall(map) || (on && cover && InWindbreakLee(p.Position));
+            bool still = stall || (on && cover && InWindbreakLee(p.Position));
             return RM_RippleKernel.Hidden(on, wild, p.Downed, cover, p.BodySize,
-                RM_LeaningScrubSettings.rippleMaxBodySize, RM_WindCalendar.IsGale(map), still,
+                RM_LeaningScrubSettings.rippleMaxBodySize, gale, still,
                 p.pather != null && p.pather.Moving);
         }
 
-        /// <summary>Part 2 windbreak calm wake: a wind-blocking edifice (vanilla ThingDef.blockWind, the field wind
-        /// turbines read) within WakeLength cells upwind on a leaning map. Gate: leanWakesEnabled.</summary>
+        /// <summary>Part 2 windbreak calm wake: a solid wind-blocking edifice (vanilla ThingDef.blockWind, the field wind
+        /// turbines read, and impassable: walls and rock, not furniture or machines) within WakeLength cells upwind on a leaning map. Gate: leanWakesEnabled.</summary>
         public bool InWindbreakLee(IntVec3 c)
         {
             if (!RM_WindCalendar.On(RM_LeaningScrubSettings.leanWakesEnabled)) return false;
@@ -66,7 +72,7 @@ namespace RimMandrake.LeaningScrub
                 IntVec3 u = new IntVec3(x, 0, z);
                 if (!u.InBounds(map)) return false;
                 Building b = u.GetEdifice(map);
-                return b != null && b.def.blockWind;
+                return b != null && b.def.blockWind && b.def.passability == Traversability.Impassable;
             });
         }
 
@@ -89,6 +95,7 @@ namespace RimMandrake.LeaningScrub
                 return 0;
             }
             int hidden = 0;
+            bool gale = RM_WindCalendar.IsGale(map), stall = RM_WindCalendar.IsStall(map);
             tmpPawns.Clear();
             tmpPawns.AddRange(map.mapPawns.AllPawnsSpawned);
             for (int i = 0; i < tmpPawns.Count; i++)
@@ -99,7 +106,7 @@ namespace RimMandrake.LeaningScrub
                     continue;
                 }
                 Hediff have = p.health.hediffSet.GetFirstHediffOfDef(def);
-                bool want = ShouldHide(p, on);
+                bool want = ShouldHide(p, on, gale, stall);
                 if (want && have == null)
                 {
                     p.health.AddHediff(def);

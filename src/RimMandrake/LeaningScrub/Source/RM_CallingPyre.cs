@@ -61,7 +61,6 @@ namespace RimMandrake.LeaningScrub
                 case RM_PyreKernel.ReasonOff: return "The calling-pyre is turned off in Mod Settings (Leaning Scrub).";
                 case RM_PyreKernel.ReasonForbidden: return "Calling the herds with fire is forbidden by this belief.";
                 case RM_PyreKernel.ReasonNoEnemies: return "A last rite: it can only be called with enemies on the map.";
-                case RM_PyreKernel.ReasonNoBelief: return "This belief holds no view on the calling-pyre, so no one knows when to call the herds.";
                 default: return null;
             }
         }
@@ -74,16 +73,17 @@ namespace RimMandrake.LeaningScrub
 
         public static PawnKindDef StamperKind()
         {
+            var found = new List<PawnKindDef>();
             List<PawnKindDef> all = DefDatabase<PawnKindDef>.AllDefsListForReading;
             for (int i = 0; i < all.Count; i++)
             {
                 PawnKindDef k = all[i];
                 if (k.race != null && k.RaceProps != null && k.RaceProps.Animal && RM_MapComponent_FireStamp.IsStamperDef(k.race))
                 {
-                    return k;
+                    found.Add(k);
                 }
             }
-            return null;
+            return found.Count == 0 ? null : found.RandomElement();
         }
 
         /// <summary>Light up to <paramref name="want"/> fires on plants around <paramref name="center"/>, the
@@ -98,9 +98,16 @@ namespace RimMandrake.LeaningScrub
                 if (map.thingGrid.ThingAt(c, ThingDefOf.Fire) != null) continue;
                 if (c.GetZone(map) is Zone_Growing) zoned.Add(c); else wild.Add(c);
             }
+            // Nearest first (zones before wild plants at each distance band) so the fires stay clustered: the fire-stamp
+            // only counts open fires within ClusterRadius of one another. A light shuffle inside each list breaks ties.
             zoned.Shuffle();
             wild.Shuffle();
-            zoned.AddRange(wild);
+            zoned.SortBy(c => c.DistanceToSquared(center));
+            wild.SortBy(c => c.DistanceToSquared(center));
+            if (zoned.Count < want)
+            {
+                zoned.AddRange(wild);
+            }
             int lit = 0;
             for (int i = 0; i < zoned.Count && lit < want; i++)
             {
@@ -111,9 +118,9 @@ namespace RimMandrake.LeaningScrub
 
         /// <summary>Walk <paramref name="count"/> giants in from the edge; <paramref name="raging"/> of them manhunting.
         /// Returns the pawns spawned.</summary>
-        public static List<Pawn> CallHerd(Map map, PawnKindDef kind, int count, int raging)
+        public static List<Pawn> CallHerd(Map map, PawnKindDef kind, int count, int raging, List<Pawn> made = null)
         {
-            var made = new List<Pawn>();
+            made = made ?? new List<Pawn>();
             if (kind == null || count <= 0) return made;
             if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, 0f)) return made;
             for (int i = 0; i < count; i++)
@@ -189,15 +196,16 @@ namespace RimMandrake.LeaningScrub
             {
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RM_CallingPyreDefOf.RM_CalledTheHerds, organizer.Named(HistoryEventArgsNames.Doer)));
             }
+            string thin = lit < RM_MapComponent_FireStamp.MinOpenFires ? " Too little caught to draw the giants already on the map." : "";
             if (came.Count > 0)
             {
                 letterLookTargets = new LookTargets(came[0]);
-                extraOutcomeDesc = string.Format("{0} fires were set. {1} {2} came in from the edge of the map, {3} of them raging at everyone in their path.",
-                    lit, came.Count, came.Count == 1 ? kind.label : kind.GetLabelPlural(), raging);
+                extraOutcomeDesc = string.Format("{0} fires were set. {1} {2} came in from the edge of the map, {3} of them raging at everyone in their path.{4}",
+                    lit, came.Count, came.Count == 1 ? kind.label : kind.GetLabelPlural(), raging, thin);
             }
             else
             {
-                extraOutcomeDesc = string.Format("{0} fires were set, but no herd on this world answered the call.", lit);
+                extraOutcomeDesc = string.Format("{0} fires were set, but no herd on this world answered the call.{1}", lit, thin);
             }
         }
     }
@@ -225,6 +233,7 @@ namespace RimMandrake.LeaningScrub
             Map map = Find.CurrentMap;
             if (map == null) return "UNMEASURED: no current map";
             bool savedMod = RM_LeaningScrubSettings.modEnabled, savedPyre = RM_LeaningScrubSettings.callingPyreEnabled;
+            var herd = new List<Pawn>();
             try
             {
                 RM_LeaningScrubSettings.modEnabled = true;
@@ -250,9 +259,9 @@ namespace RimMandrake.LeaningScrub
                 int came = -1, raging = 0;
                 if (kind != null)
                 {
-                    List<Pawn> herd = RM_CallingPyre.CallHerd(map, kind, 3, 1);
+                    RM_CallingPyre.CallHerd(map, kind, 3, 1, herd);
                     came = herd.Count;
-                    foreach (Pawn p in herd) { if (p.InMentalState) raging++; if (!p.Destroyed) p.Destroy(); }
+                    foreach (Pawn p in herd) { if (p.InMentalState) raging++; }
                 }
                 string st = string.Format("lit={0} came={1} raging={2}", lit, came, raging);
                 if (lit < RM_MapComponent_FireStamp.MinOpenFires) return "FAIL: the pyre lit fewer fires than the stamp threshold " + st;
@@ -262,6 +271,7 @@ namespace RimMandrake.LeaningScrub
             }
             finally
             {
+                foreach (Pawn p in herd) { if (!p.Destroyed) p.Destroy(); }
                 RM_LeaningScrubSettings.modEnabled = savedMod;
                 RM_LeaningScrubSettings.callingPyreEnabled = savedPyre;
             }

@@ -376,7 +376,8 @@ class Fake(object):
                     if "vaporator_unlearnable" in self.broken else "PASS vaporator"}
         if method == "ProofInjections":
             wrecks = 0 if "no_farmstead" in self.broken else 3
-            return {"success": True, "result": "PLACED sites=4 vaporatorWrecks=+%d campPeople=+4 farmers=True scavengers=False" % wrecks}
+            people = 0 if "no_camp_people" in self.broken else 4
+            return {"success": True, "result": "PLACED sites=4 vaporatorWrecks=+%d campPeople=+%d farmers=True scavengers=False" % (wrecks, people)}
         if method == "ProofComfortDelta":
             on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
             d = 0.10 if on and "no_comfort" not in self.broken else 0.0
@@ -636,6 +637,7 @@ BREAKS = {
     "pyre_ignores_toggle": "pyre.pyre_toggle_off_refuses",
     "vaporator_unlearnable": "injections.vaporator_learned_from_farmstead",
     "no_farmstead": "injections.map_holds_ruins_and_camps",
+    "no_camp_people": "injections.map_holds_ruins_and_camps",
 }
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form

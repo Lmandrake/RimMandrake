@@ -51,6 +51,12 @@
     <techprintCount>1</techprintCount>
     <techprintCommonality>0</techprintCommonality>
     <techprintMarketValue>250</techprintMarketValue>
+    <!-- Required whenever techprintCount > 0 (ResearchProjectDef.ConfigErrors). Commonality 0 means no trader or
+         quest hands the print out anyway; the dead farmstead is the only source. Outlander is the comb holds' own
+         category (inherited from OutlanderFactionBase). -->
+    <heldByFactionCategoryTags>
+      <li>Outlander</li>
+    </heldByFactionCategoryTags>
     <researchViewX>5.00</researchViewX>
     <researchViewY>6.60</researchViewY>
   </ResearchProjectDef>
@@ -58,7 +64,8 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_FogWater</defName>
     <label>fog water</label>
-    <description>Water combed out of the Leaning Scrub's wind by a vaporator. Clean, flat-tasting, and never quite enough.\n\nPROVISIONAL: value, mass and nutrition are placeholder figures.</description>
+    <description>Water combed out of the Leaning Scrub's wind by a vaporator. Clean, flat-tasting, and never quite enough.</description>
+    <!-- PROVISIONAL: value, mass and nutrition are placeholder figures (copied from RM_DistilledWater). -->
     <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
       <texPath>Things/Item/Drug/Beer</texPath>

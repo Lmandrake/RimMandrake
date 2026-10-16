@@ -24,6 +24,12 @@ namespace RimMandrake.LeaningScrub.SelfTest
             Eq("lee behind wall", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 8 && z == 10), true);
             Eq("no lee downwind of cell", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 12 && z == 10), false);
             Eq("no lee past wake", RM_RippleKernel.InLee(10, 10, 1f, 0f, 4, (x, z) => x == 5 && z == 10), false);
+            // heading (0.5, 0.866): upwind steps k=1..4 land on (-1,-1),(-1,-2),(-2,-3),(-2,-3)... rounded away from zero
+            Eq("diagonal lee k1", RM_RippleKernel.InLee(10, 10, 0.5f, 0.866f, 4, (x, z) => x == 9 && z == 9), true);
+            Eq("diagonal lee k3", RM_RippleKernel.InLee(10, 10, 0.5f, 0.866f, 4, (x, z) => x == 8 && z == 7), true);
+            Eq("west wind lee", RM_RippleKernel.InLee(10, 10, -1f, 0f, 4, (x, z) => x == 12 && z == 10), true);
+            Eq("west wind no lee upwind side", RM_RippleKernel.InLee(10, 10, -1f, 0f, 4, (x, z) => x == 8 && z == 10), false);
+            Eq("prey at limit", RM_StallHuntKernel.Prey(true, false, false, false, 0.65f, 0.65f), true);
             Eq("zero wind no lee", RM_RippleKernel.InLee(10, 10, 0f, 0f, 4, (x, z) => x == 10 && z == 10), false);
             // stall hunt
             Eq("hunts in stall", RM_StallHuntKernel.Hunts(true, true, true, true, false, false, false), true);
@@ -41,7 +47,8 @@ namespace RimMandrake.LeaningScrub.SelfTest
             Eq("last rite needs enemies", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefLastRite, 0), RM_PyreKernel.ReasonNoEnemies);
             Eq("last rite with enemies", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefLastRite, 2), RM_PyreKernel.Ok);
             Eq("venerated any time", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefVenerated, 0), RM_PyreKernel.Ok);
-            Eq("no belief refuses", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefNone, 3), RM_PyreKernel.ReasonNoBelief);
+            Eq("no belief acts as last rite (enemies)", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefNone, 3), RM_PyreKernel.Ok);
+            Eq("no belief acts as last rite (none)", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefNone, 0), RM_PyreKernel.ReasonNoEnemies);
             for (int tier = -2; tier < 7; tier++)
             {
                 if (RM_PyreKernel.FireCount(tier) < 5) { bad++; Console.Error.WriteLine("FAIL fire tier " + tier + " under stamp threshold"); }

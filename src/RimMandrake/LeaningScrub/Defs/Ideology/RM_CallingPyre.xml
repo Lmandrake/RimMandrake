@@ -113,7 +113,7 @@
   <PreceptDef>
     <defName>RM_Ritual_CallingPyre</defName>
     <label>calling-pyre</label>
-    <description>The colony sets its own fields alight to bring the fire-stamping giants down on everyone who remains, attacker and defender alike. Whether and when it may be held is the calling-pyre belief's to say.</description>
+    <description>The colony sets its own fields alight to bring the fire-stamping giants down on everyone who remains, attacker and defender alike. Whether and when it may be held is the calling-pyre belief's to say; without one, it is a last rite.</description>
     <issue>Ritual</issue>
     <impact>Medium</impact>
     <preceptClass>Precept_Ritual</preceptClass>
@@ -165,6 +165,10 @@
     <defName>RM_CallingPyre</defName>
     <description>Depending on ritual quality, participants will get between {MINMOOD} and {MAXMOOD} mood for {MOODDAYS} days. The fields around the ritual spot are set alight and fire-stamping giants come; the worse the outcome, the more of them come raging.</description>
     <workerClass>RimMandrake.LeaningScrub.RM_RitualOutcomeEffectWorker_CallingPyre</workerClass>
+    <!-- PROVISIONAL. Without a base the participant count alone caps quality near 0.35, and positive tiers scale with
+         quality (RitualOutcomeEffectWorker_FromQuality.ChanceWithQuality): most rites would rage. 0.4 base plus up to
+         0.35 from participants lets a well-attended pyre come out Good most of the time. -->
+    <startingQuality>0.4</startingQuality>
     <comps>
       <li Class="RitualOutcomeComp_ParticipantCount">
         <label>participant count</label>
