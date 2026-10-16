@@ -47,8 +47,8 @@
   3 wildPlants rows: RSW_Plant_Chakroot_Wild is also already ported (same fix, same
   day) — the other two remain genuinely unported (DONOR_DEFS_PORT_TO_OURS_1):
     mandrake.rsw.swbestiary: RSW_Plant_Chakroot_Wild 0.4
-    mlie.starwarsanimalcollection (SW canon, no port yet):
-      Plant_HydenockTree_Wild 1.5, Plant_JoganTree_Wild 0.6
+    ported 2026-10-15 (SWAC Phase 0 P1), also ours now:
+      RSW_Plant_HydenockTree_Wild 1.5, RSW_Plant_JoganTree_Wild 0.6
     (hydenock/jogan/chak-root are Q11a's own worked canon examples.)
 
   ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional
@@ -105,18 +105,19 @@
     </match>
   </Operation>
 
-  <!-- Star Wars canon, not yet ported to our own RSW_ defs (DONOR_DEFS_PORT_TO_OURS_1). -->
+  <!-- Star Wars canon wildPlants, now our own RSW_ ports (SWAC Phase 0 P1,
+       RSW_DonorPack_P1_Plants.xml): the donor Plant_HydenockTree_Wild / Plant_JoganTree_Wild rows were repointed. -->
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
+      <li>RimMandrake: SW — Bestiary</li>
     </mods>
     <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
         <value>
-          <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>
-          <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_JoganTree_Wild>
+          <RSW_Plant_HydenockTree_Wild>1.5</RSW_Plant_HydenockTree_Wild>
+          <RSW_Plant_JoganTree_Wild>0.6</RSW_Plant_JoganTree_Wild>
         </value>
       </match>
     </match>

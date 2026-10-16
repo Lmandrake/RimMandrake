@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_DonorPack_P1_Plants.xml - SWAC PHASE 0, step P1 (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md 0.5.2).
+     Three wild plants ported from Star Wars Animal Collection (mlie), the last three SWAC plants the shipping rosters name
+     with no twin of ours: hydenock tree (FeverWood), jogan tree (FeverWood, Greentide) and tooke-trap plant (Webwork).
+     Base+Wild donor pairs are FLATTENED into one self-contained RSW_ ThingDef (no donor abstract parent survives), exactly
+     as RSW_DesertPortB_Plants.xml did for chak-root and nysyllin. Wild plants are not sowable: the donor's sowTags /
+     sowResearchPrerequisites resets are simply not carried over.
+     ART: no donor pixels. texPaths name OUR folders under Textures/Things/Plant/ and Textures/Things/Item/; the renders are
+     filed in design/RimMandrake/swac_p1_art_2026-10-15.json (artpipe). Until they install, these defs have no texture:
+     do not deploy SWBestiary past this commit before they land. The immature / snow overlay paths reuse the mature render
+     (as RSW_Plant_Chakroot_Wild does); real immature art is a follow-up.
+     RawJoganFruit and the taste thought are ported alongside for closure; the tooke-trap root is RSW_RawTookeTrapRoot
+     (RSW_DonorPack_W4a.xml). Hydenock's harvest is vanilla Dye. -->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RSW_Plant_HydenockTree_Wild</defName>
+    <label>wild hydenock tree</label>
+    <description>The hydenock was a species of reddish, curving trees native to planet Alderaan, whose bark produced a dye which could be harvested in large amounts.</description>
+    <graphicData>
+      <texPath>Things/Plant/RSW_Plant_HydenockTree_Wild</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.15, 0.3, 0.1)</volume>
+        <offset>(-0.03,0,-0.44)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <statBases>
+      <Beauty>15</Beauty>
+      <BeautyOutdoors>15</BeautyOutdoors>
+      <Nutrition>1.5</Nutrition>
+    </statBases>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>150</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <sowResearchPrerequisites Inherit="False" />
+      <dieIfLeafless>true</dieIfLeafless>
+      <growDays>10</growDays>
+      <visualSizeRange>1~2</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <mustBeWildToSow>false</mustBeWildToSow>
+      <immatureGraphicPath>Things/Plant/RSW_Plant_HydenockTree_Wild</immatureGraphicPath>
+      <harvestWork>310</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <forceIsTree>true</forceIsTree>
+      <harvestYield>30</harvestYield>
+      <harvestedThingDef>Dye</harvestedThingDef>
+      <harvestFailable>true</harvestFailable>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RSW_Plant_JoganTree_Wild</defName>
+    <label>wild jogan tree</label>
+    <description>Jogan trees were the source of the popular jogan fruit. There were jogan tree orchards on the planet Lothal but the popularity of the fruit resulted in the trees being spread across the galaxy.</description>
+    <graphicData>
+      <texPath>Things/Plant/RSW_Plant_JoganTree_Wild</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.15, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <statBases>
+      <Beauty>10</Beauty>
+      <BeautyOutdoors>10</BeautyOutdoors>
+      <Nutrition>1.5</Nutrition>
+    </statBases>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>150</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <sowResearchPrerequisites Inherit="False" />
+      <fertilitySensitivity>0.8</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <growDays>10</growDays>
+      <visualSizeRange>1~2</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <mustBeWildToSow>false</mustBeWildToSow>
+      <immatureGraphicPath>Things/Plant/RSW_Plant_JoganTree_Wild</immatureGraphicPath>
+      <harvestWork>280</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <forceIsTree>true</forceIsTree>
+      <harvestYield>40</harvestYield>
+      <harvestedThingDef>RSW_RawJoganFruit</harvestedThingDef>
+      <harvestFailable>true</harvestFailable>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RSW_Plant_TookeTrap_Wild</defName>
+    <label>wild tooke-trap plant</label>
+    <description>Tooke-trap plants were a species of carnivorous plant that were native to the swamps of Naboo. This strain was selected for its beauty but there were rumours of larger more aggressive variants that could eat small animals like the Tooke (for which the plant got its name).</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Beauty>20</Beauty>
+      <BeautyOutdoors>20</BeautyOutdoors>
+      <Nutrition>0.25</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RSW_Plant_TookeTrap_Wild</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>150</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <sowResearchPrerequisites Inherit="False" />
+      <growDays>3</growDays>
+      <growMinGlow>0.1</growMinGlow>
+      <growOptimalGlow>1.0</growOptimalGlow>
+      <allowAutoCut>false</allowAutoCut>
+      <immatureGraphicPath>Things/Plant/RSW_Plant_TookeTrap_Wild</immatureGraphicPath>
+      <harvestTag>Standard</harvestTag>
+      <drugForHarvestPurposes>True</drugForHarvestPurposes>
+      <harvestedThingDef>RSW_RawTookeTrapRoot</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <visualSizeRange>0.3~1.0</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Beauty</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RSW_AteJoganFruit</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate jogan fruit</label>
+        <description>Sweet with a crisp texture, it has to be jogan fruit.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_RawJoganFruit</defName>
+    <label>jogan fruit</label>
+    <description>Raw jogan fruit. A distinct fruit that was desired for its characteristic flavour.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/RSW_RawJoganFruit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.6</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>RSW_AteJoganFruit</tasteThought>
+      <specialThoughtAsIngredient>RSW_AteJoganFruit</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
