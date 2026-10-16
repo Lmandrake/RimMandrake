@@ -62,6 +62,7 @@
     <Compile Include="RM_MiasmaProof.cs" />
     <Compile Include="RM_MiasmaKernel.cs" />
     <Compile Include="RM_LastvineRearing.cs" />
+    <Compile Include="RM_HediffComp_NotOnMechsOrGhouls.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

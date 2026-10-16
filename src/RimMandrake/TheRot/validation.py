@@ -190,6 +190,15 @@ def static_checks():
             bad.append("RM_UnjoiningDraught.xml lacks %s (ROT_UNJOINING_DRAUGHT_1)" % need)
     bad += cast_checks()
     bad += ambrosyx_checks()
+    # Phase 0: RM_SwarmlingImplantation's donor comps (AlphaBehavioursAndEvents TurnWhenDead + RemoveFromMechsAndGhouls)
+    # are ours now. A donor Class here fails def load with the donor off and takes the hediff (and the Chittik bite) with it.
+    ck = open(os.path.join(HERE, "Defs", "Fauna", "RM_Chittik.xml"), encoding="utf-8").read()
+    if "AlphaBehavioursAndEvents" in ck:
+        bad.append("RM_Chittik.xml still names an AlphaBehavioursAndEvents class")
+    for need in ("RimMandrake.TheRot.RM_HediffCompProperties_SpawnOnDeath", "<pawnKind>RM_Chittik</pawnKind>",
+                 "RimMandrake.TheRot.RM_HediffCompProperties_NotOnMechsOrGhouls"):
+        if need not in ck:
+            bad.append("RM_SwarmlingImplantation lacks %s" % need)
     return bad
 
 
