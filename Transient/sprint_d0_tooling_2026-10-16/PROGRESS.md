@@ -26,7 +26,13 @@ First run (2026-10-16 ~00:xx, offline, ~60 s each):
 - All three: O-MANIFEST UNMEASURED (S0 freezes `design/RimMandrake/sprint_manifests/<Biome>.json`), O-SITE UNMEASURED.
 
 ## 3. Cauldron saved-site spec
-_pending_
+DONE offline (not run live). `src/RimMandrake/Cauldron/site_spec.py` (data: RM_TestSite_cauldron_v1, danger profile,
+tile values from cauldron.md §0: 13 C, rain 0, elev 58, Flat; >=1 living native required; vents recorded) +
+`src/RimMandrake/Cauldron/prep_site.py` (recipe: Pyrelands' scratch-world steps -> retile RM_Cauldron -> generate ->
+home/retire/name/food -> test_site_saves clean/check + census -> backup -> save -> registry -> load_site read-back).
+`test_site_saves.py`: SITES["cauldron"], check_map now checks `biome` when a site declares one, and `build <site>`
+dispatches to a site's `builder` module. Selftest `src/RimMandrake/Cauldron/selftest_cauldron_site.py` (fake bridge:
+nothing saved on an unclean read-back or 0 natives). Cauldron northstar_plan.py docstring now names biomes_sprint + site.
 
 ## 4. LeaningScrub lean-site item
 _pending_

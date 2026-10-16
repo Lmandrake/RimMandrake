@@ -54,6 +54,12 @@ SITES = {
               "minRiverEdges": 2, "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
     "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm2",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
                   "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm2, then northstar_driver run"]},
+    # BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: a scratch-world RM_Cauldron patch, danger-cleaned (wildlife and vents stay).
+    # Single source: src/RimMandrake/Cauldron/site_spec.py site_entry() (selftest_cauldron_site.py compares the two).
+    # `builder` = the module whose build_site_save(session, work_dir) `build cauldron` runs.
+    "cauldron": {"save": "RM_TestSite_cauldron_v1", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
+                 "minColonists": 3, "biome": "RM_Cauldron", "builder": "Cauldron/prep_site.py",
+                 "suites": ["northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py"]},
 }
 
 # Ancient-danger containers and map-gen threats (r8 spawner probe, 4 maps: every released group sat in a shrine with
@@ -236,6 +242,8 @@ def check_map(call, site):
     out["map"] = {k: mi.get(k) for k in ("tile", "mapId", "sizeX", "sizeZ", "mapBiome", "outdoorTempNow")}
     if spec.get("size") and (mi.get("sizeX"), mi.get("sizeZ")) != (spec["size"], spec["size"]):
         P.append("map is %sx%s, want %d" % (mi.get("sizeX"), mi.get("sizeZ"), spec["size"]))
+    if spec.get("biome") and mi.get("mapBiome") != spec["biome"]:
+        P.append("map biome %s, want %s" % (mi.get("mapBiome"), spec["biome"]))
     fg = call("jawa/set_fog", action="unfog", rect="0,0,1,1") or {}
     out["foggedCells"] = fg.get("foggedCellsNow")
     if fg.get("foggedCellsNow") != 0:
@@ -560,6 +568,8 @@ def main(argv=None):
             res = load_site(call, a.site)
         elif a.site == "pyrelands":
             res = build_pyrelands(call, a.fingerprint, a.from_tag, a.tile, work)
+        elif SITES[a.site].get("builder"):
+            res = build_with_builder(a.site, work)
         else:
             from game_paths import SAVES
             res = build(call, a.site, SAVES, work)
@@ -570,6 +580,24 @@ def main(argv=None):
     print("%s %s: %s -> %s %s" % (a.verb, a.site, "CLEAN" if ok else "NOT CLEAN", out,
                                  "" if ok else (res.get("problems") or (res.get("check") or {}).get("problems"))))
     return 0 if ok else 3
+
+
+def build_with_builder(site, work_dir):
+    """A biome site with its own recipe module (SITES[site]["builder"], relative to src/RimMandrake/): its
+    build_site_save(session, work_dir) founds, cleans, reads back, saves and registers the site."""
+    import importlib.util
+    root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
+    path = os.path.join(root, "src", "RimMandrake", SITES[site]["builder"])
+    mdir = os.path.dirname(path)
+    if mdir not in sys.path:
+        sys.path.insert(0, mdir)
+    spec = importlib.util.spec_from_file_location("site_builder_%s" % site, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    from northstar_driver.session import FastSession
+    s = FastSession(strict=False)
+    with s:
+        return mod.build_site_save(s, work_dir)
 
 
 def build_pyrelands(call, fingerprint, from_tag, tile, work_dir):

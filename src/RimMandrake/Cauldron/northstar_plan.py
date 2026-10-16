@@ -1,9 +1,11 @@
 """northstar_driver plan for Cauldron (the suite in validation.py). Offline:
   python3 src/RimMandrake/Utils/northstar_driver/cli.py run --mock --mod Cauldron \\
       --plan src/RimMandrake/Cauldron/northstar_plan.py --mock-skip-site
-Live (python.exe, bridge held, game up on the `baroque_wave0` tier, a quicktest map >= 150 cells):
+Live, sprint (M1): python.exe, bridge held, game up on the `biomes_sprint` tier, the registered saved site loaded
+(`test_site_saves.py load cauldron`; built once by `test_site_saves.py build cauldron`, recipe prep_site.py):
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Cauldron \\
       --plan src/RimMandrake/Cauldron/northstar_plan.py
+Offline first: python3 src/RimMandrake/Cauldron/preflight_cauldron.py
 One command from nothing (stops the game, swaps the tier, deploys the composed mod, launches, starts a
 quicktest, runs this plan):
   python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod Cauldron --tier baroque_wave0 \\
