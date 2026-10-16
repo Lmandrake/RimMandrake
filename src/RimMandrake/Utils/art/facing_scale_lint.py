@@ -62,6 +62,10 @@ MIN_RUN = 2
 MARGIN = 0.0             # band = vanilla p2.5 / (1+M) .. p97.5 * (1+M)
 MAX_UPSCALE = 1.25
 WEST_BAND = (0.95, 1.05)
+MIN_PLAN_N = 8           # a body plan with fewer vanilla animals than this borrows the all-vanilla band
+MARGINS = (0.0, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20)   # widening of vanilla's per-plan ENVELOPE tried, smallest first
+TARGET_FLAG_RATE = 0.05  # vanilla's own flag rate (animal level, S or N or N:S; leave-one-out) must not exceed this
+FEET_PLANS = ("quadruped", "biped", "flyer")   # plans whose legs are visible as separate feet in a ground-camera view
 FACES = ("east", "south", "north", "west")
 
 
@@ -157,10 +161,74 @@ def vanilla_faces(base: str) -> dict:
     return out
 
 
+def vanilla_kind_index() -> dict:
+    """texture base name -> {PawnKindDef defName} for the BASE GAME's kinds, read from the game's own Data/*/Defs XML
+    (the DefDump is post-patch: mods retexture vanilla kinds, e.g. Rat -> FancyRat, so it cannot say who drew Rat)."""
+    by = {}
+    for p in GAME_DATA.glob("*/Defs/**/*.xml"):
+        try:
+            root = ET.parse(p).getroot()
+        except (ET.ParseError, OSError):
+            continue
+        for k in root.iter("PawnKindDef"):
+            dn = (k.findtext("defName") or "").strip()
+            for tp in k.iter("texPath"):
+                t = (tp.text or "").strip()
+                if dn and t.startswith("Things/Pawn/Animal/"):
+                    by.setdefault(t.rsplit("/", 1)[-1], set()).add(dn)
+    return by
+
+
+def vanilla_plan(base: str, kidx: dict) -> tuple[str, str]:
+    """(plan, evidence) of a vanilla texture base via its PawnKindDef's race body; UNCLASSIFIED when no kind owns it."""
+    import facing_body_plan as BP
+    for cand in (base, re.sub(r"\d+$", "", base), re.sub(r"(_?[AB]|Male|Female|Baby|_Stationary)$", "", base)):
+        for k in sorted(kidx.get(cand, ())):
+            plan, ev = BP.plan_of_kind(k)
+            if plan != "UNCLASSIFIED":
+                return plan, f"{k}: {ev}"
+    return "UNCLASSIFIED", "no ludeon PawnKindDef draws this texture"
+
+
+def plan_stats(animals, plan, margin):
+    """d_south / d_north statistics over the animals of one plan (None = all). The BAND is vanilla's observed envelope
+    for that plan (min..max) widened by `margin`: percentile tails (even 0.25%) flag 8-17% of vanilla itself, because
+    four ratios per animal each have their own extremes; only the envelope keeps vanilla near 5%."""
+    sel = [a for a in animals if plan is None or a["plan"] == plan]
+    out = {"n": len(sel)}
+    for k in ("d_south", "d_north"):
+        xs = [a["ratios"][k] for a in sel]
+        q = {"min": round(min(xs), 4), "max": round(max(xs), 4)}
+        q.update({p: round(_quant(xs, v), 4) for p, v in (("p25", .25), ("p50", .5), ("p75", .75))})
+        q["p02.5"], q["p97.5"] = round(q["min"] / (1 + margin), 4), round(q["max"] * (1 + margin), 4)
+        q["band"] = [q["p02.5"], q["p97.5"]]
+        out[k] = q
+    return out
+
+
+def build_cal(animals, base_cal, margin):
+    """base_cal's coefficients/quantiles with per-plan envelope bands from `animals`."""
+    c = dict(base_cal)
+    c["quantiles"] = {k: dict(v) for k, v in base_cal["quantiles"].items()}
+    xs = [a["ratios"]["ns"] for a in animals]
+    c["quantiles"]["ns"]["band"] = [round(min(xs) / (1 + margin), 4), round(max(xs) * (1 + margin), 4)]
+    counts = {}
+    for a in animals:
+        counts[a["plan"]] = counts.get(a["plan"], 0) + 1
+    c["plans"] = {"all": plan_stats(animals, None, margin)}
+    for pl, n in counts.items():
+        if n >= MIN_PLAN_N:
+            c["plans"][pl] = plan_stats(animals, pl, margin)
+    c["margin_envelope"] = margin
+    return c
+
+
 def calibrate() -> dict:
     import csv
     import gametex as G
+    import numpy as np
     bases = vanilla_animal_bases()
+    kidx = vanilla_kind_index()
     rows = {}
     with open(G.BUNDLES / "index.csv", newline="") as fh:
         for r in csv.DictReader(fh):
@@ -169,14 +237,14 @@ def calibrate() -> dict:
             m = re.fullmatch(r"(.+)_(east|south|north)", r["m_Name"])
             if m and m.group(1) in bases and not m.group(1).lower().startswith("swimming"):   # not a standing pose
                 rows.setdefault((r["sourceKey"], m.group(1)), {})[m.group(2)] = str(G.BUNDLES / r["file"])
-    import numpy as np
     animals = []
     for (src, base), faces in sorted(rows.items()):
         if set(faces) != {"east", "south", "north"}:
             continue
         m = {f: measure_file(p) for f, p in faces.items()}
         if all(m.values()):
-            animals.append({"source": src, "base": base, "m": m})
+            plan, ev = vanilla_plan(base, kidx)
+            animals.append({"source": src, "base": base, "m": m, "plan": plan, "plan_evidence": ev})
     # depth model: a south/north view's vertical extent is part body height, part foreshortened body LENGTH (east's
     # width) — vanilla's N/S are taller than E for exactly this reason (median S/E height 1.20, N/E 1.33)
     E = np.array([[a["m"]["east"]["h"], a["m"]["east"]["w"]] for a in animals])
@@ -198,9 +266,29 @@ def calibrate() -> dict:
     res = {"what": "vanilla animal facing ratios from ludeon.* AssetBundle textures (Core + DLC animals with all three "
                    "facings); d_* = S/N silhouette height over the depth model's prediction a*hE + b*wE; "
                    "regenerate with `facing_scale_lint.py calibrate`",
-           "alpha": ALPHA, "margin": MARGIN, "n": len(animals), "coef": coef, "quantiles": q,
-           "animals": [{"base": a["base"], "source": a["source"],
-                        **{k: round(v, 4) for k, v in a["ratios"].items()}} for a in animals]}
+           "alpha": ALPHA, "margin": MARGIN, "n": len(animals), "coef": coef, "quantiles": q}
+    # per-body-plan envelope bands for d_south/d_north: widen the margin until vanilla flags <= TARGET_FLAG_RATE of
+    # itself when each animal is judged against the envelope of all the OTHERS (leave-one-out: an honest rate)
+    plan_counts = {}
+    for a in animals:
+        plan_counts[a["plan"]] = plan_counts.get(a["plan"], 0) + 1
+    res["loo_by_margin"] = {}
+    for mg in MARGINS:
+        flagged = [a for a in animals
+                   if judge(a["m"], build_cal([x for x in animals if x is not a], res, mg), "topdown", a["plan"])["flags"]]
+        res["loo_by_margin"][str(mg)] = round(len(flagged) / len(animals), 4)
+        if len(flagged) / len(animals) <= TARGET_FLAG_RATE:
+            break
+    res.update({k: v for k, v in build_cal(animals, res, mg).items() if k in ("plans", "margin_envelope")})
+    res["quantiles"] = build_cal(animals, res, mg)["quantiles"]
+    res["tail"] = None
+    flagged = [a for a in animals if judge(a["m"], res, "topdown", a["plan"])["flags"]]   # in-sample
+    res["vanilla_flag_rate_in_sample"] = round(len(flagged) / len(animals), 4)
+    res["vanilla_flag_rate"] = res["loo_by_margin"][str(mg)]       # leave-one-out, at the chosen margin
+    res["vanilla_flagged_in_sample"] = [a["base"] for a in flagged]
+    res["plan_counts"] = plan_counts
+    res["animals"] = [{"base": a["base"], "source": a["source"], "plan": a["plan"], "plan_evidence": a["plan_evidence"],
+                       **{k: round(v, 4) for k, v in a["ratios"].items()}} for a in animals]
     CAL.write_text(json.dumps(res, indent=1) + "\n")
     return res
 
@@ -213,7 +301,8 @@ def load_cal() -> dict:
 
 def _excess(v, band):
     lo, hi = band
-    return v / hi - 1 if v > hi else (lo / v - 1 if v < lo else 0.0)
+    ex = v / hi - 1 if v > hi else (lo / v - 1 if v < lo else 0.0)
+    return ex if ex > 0.002 else 0.0               # bands are stored to 4 places: an animal ON the edge is inside
 
 
 def elevation_band(cal) -> list:
@@ -226,20 +315,42 @@ def elevation_band(cal) -> list:
     return [round(lo, 4), round(hi, 4)]
 
 
-def judge(m: dict, cal: dict, view: str = "topdown") -> dict:
+def plan_band(cal: dict, plan: str | None) -> dict:
+    """The per-plan d_south/d_north stats, or the all-vanilla ones when the plan has too few vanilla animals."""
+    P = cal.get("plans") or {}
+    return P.get(plan) if plan in P else P.get("all")
+
+
+def judge(m: dict, cal: dict, view: str = "topdown", plan: str | None = None) -> dict:
     """-> {ratios, flags:[{facing, key, value, band, excess}], severity, fixes:{facing: {...}}}.
-    A S/N facing is flagged when its depth-model height ratio is outside vanilla's band; when only the N:S ratio is
-    out, the facing further from the model's median is the one flagged. A hand-drawn west must match east."""
+    A S/N facing is flagged when its depth-model height ratio is outside the band of its BODY PLAN (vanilla's 2.5..97.5
+    percentile scatter, widened until vanilla flags <= 5% of itself); when only the N:S ratio is out, the facing
+    further from the model's median is the one flagged. A hand-drawn west must match east.
+    ELEVATION art (ground camera) expects S/E and N/E height 1: the same band re-centred on its plan median. A S/N is
+    elevation when the picture comes from a mandrake.* mod and either its plan is one whose legs read as separate feet
+    (FEET_PLANS: and the silhouette then stands on 2+ feet, as does east) or its plan has no reliable feet signal
+    (fish, serpent, blob, lowslung, insect: convention alone decides — the feet test misreads their splayed or absent
+    legs)."""
     q = dict(cal["quantiles"])
+    pb = plan_band(cal, plan) if cal.get("plans") else None
+    if pb:
+        q["d_south"], q["d_north"] = dict(pb["d_south"]), dict(pb["d_north"])
     r = ratios(m, cal["coef"])
     views = {}
-    eb = elevation_band(cal)
-    for f in ("south", "north"):           # per facing: a S/N standing on 2+ feet is a ground-camera ELEVATION view
-        if f in m and view == "elevation" and m[f].get("feet", 0) >= 2 and m["east"].get("feet", 0) >= 2:
+    for f in ("south", "north"):
+        feet_ok = (plan in FEET_PLANS or plan is None) and m.get(f, {}).get("feet", 0) >= 2 and m["east"].get("feet", 0) >= 2
+        if f in m and view == "elevation" and (feet_ok or (plan is not None and plan not in FEET_PLANS)):
             views[f] = "elevation"
             if f"e_{f}" in r:
                 r[f"d_{f}"] = r[f"e_{f}"]
-            q[f"d_{f}"] = {"band": eb, "p25": 1.0, "p75": 1.0, "p50": 1.0, "p02.5": eb[0], "p97.5": eb[1]}
+            if pb:                          # the plan's scatter around its own median, re-centred on 1
+                med = pb[f"d_{f}"]["p50"]
+                qq = {k: v / med for k, v in pb[f"d_{f}"].items() if k != "band"}
+                qq["band"] = [qq["p02.5"], qq["p97.5"]]
+                q[f"d_{f}"] = qq
+            else:
+                eb = elevation_band(cal)
+                q[f"d_{f}"] = {"band": eb, "p25": 1.0, "p75": 1.0, "p50": 1.0, "p02.5": eb[0], "p97.5": eb[1]}
         elif f in m:
             views[f] = "topdown"
     flags = []
@@ -485,6 +596,11 @@ def faces_of(texpath: str, use_repo: bool) -> tuple[dict, str]:
     return faces, where, view
 
 
+def kind_plan(kind: str) -> tuple[str, str]:
+    import facing_body_plan as BP
+    return BP.plan_of_kind(kind)
+
+
 def lint(defs=None, use_repo=False) -> list[dict]:
     cal = load_cal()
     rows, done = [], {}
@@ -507,8 +623,17 @@ def lint(defs=None, use_repo=False) -> list[dict]:
                            why=("one picture, no facings" if set(faces) <= {"single"} else
                                 "no east facing" if "east" not in m else "no south/north facing"))
             else:
-                j = judge(m, cal, view)
-                row.update(j, verdict="FLAG" if j["flags"] else "ok")
+                plan, plan_ev = kind_plan(dn)
+                j = judge(m, cal, view, None if plan == "UNCLASSIFIED" else plan)
+                row.update(j, plan=plan, plan_evidence=plan_ev, verdict="FLAG" if j["flags"] else "ok")
+                # A FLAG under the owner's ground-camera standard may still sit inside what VANILLA ships (vanilla's
+                # S/N are top-down, taller than E by design). beyond_vanilla = also TOO BIG against vanilla's own
+                # top-down envelope for the plan: indefensible by either standard.
+                if j["flags"] and view == "elevation":
+                    tv = judge(m, cal, "topdown", None if plan == "UNCLASSIFIED" else plan)
+                    row["beyond_vanilla"] = any(x["value"] > x["band"][1] for x in tv["flags"])
+                else:
+                    row["beyond_vanilla"] = bool(j["flags"])
                 for f, s in m.items():
                     s["h_world"] = round(s["h"] * gr["drawSize"][1], 3)
                     s["w_world"] = round(s["w"] * gr["drawSize"][0], 3)
@@ -537,7 +662,9 @@ def to_md(rows, title) -> str:
              f"({sum(bool(act(r, 'rescale')) and not act(r, 'regenerate') for r in fl)} rescale, "
              f"{sum(bool(act(r, 'regenerate')) for r in fl)} regenerate), "
              f"{sum(r['verdict'] == 'UNMEASURED' for r in pics)} UNMEASURED, "
-             f"{sum(r['verdict'] == 'ok' for r in pics)} ok.",
+             f"{sum(r['verdict'] == 'ok' for r in pics)} ok. "
+             f"{sum(bool(r.get('beyond_vanilla')) for r in fl)} of the FLAGs are also too big against vanilla's own "
+             "top-down envelope for their body plan (the rest are ground-camera-standard only).",
              "", "| sev | picture | drawn by | S, N height / depth model; N:S | fix |", "|---|---|---|---|---|"]
     for r in fl:
         rt = r["ratios"]
