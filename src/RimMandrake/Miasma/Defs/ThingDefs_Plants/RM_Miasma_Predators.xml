@@ -144,13 +144,11 @@
     <label>braskeen</label>
     <description>A flat whorl lying on the surface, each arm ending in a pair of hinged blades held slightly open, fringed with stiff interlocking teeth. The blades close when something touches them and stay shut for a day with the catch showing between the teeth. Blade interiors are a raw wet pink. The only plant on the page with real motion — a channel of these snapping shut one after another as scuttlers cross is the biome's best ambient moment.</description>
     <graphicData>
-      <!-- Graphic_Random over RM_BraskeenA (open) / RM_BraskeenB (closed) —
-           ambient variety of both states scattered across a bed. The actual
-           touch-triggered snap animation needs the same future predation
-           pass as this file's header notes; this ships the visual range
-           now rather than a single open sprite with none of the row's
-           motion. -->
-      <texPath>Things/Plant/RM_Braskeen/RM_Braskeen</texPath>
+      <!-- Graphic_Random: texPath is the FOLDER; every PNG in it is a variant. Variant E (the asymmetric
+           open whorl) is the one picture there; the symmetric others were purged (owner 2026-10-16: "Add
+           variations based on E. The others are too symmetric and should be removed."). Variations
+           derived from E install into this folder after his sheet look (BRASKEEN_REDRAW_VARIATIONS_ON_E). -->
+      <texPath>Things/Plant/RM_Braskeen</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>
