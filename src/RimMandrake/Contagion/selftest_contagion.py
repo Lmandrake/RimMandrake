@@ -64,7 +64,7 @@ class Fake(object):
         # mountain roof. Clearing a pad (destroy_batch All) removes the roof holders, and on the next tick every cell of
         # it still roofed collapses and crushes what stands there (RoofCollapserImmediate: 99999 Crush). Only cells the
         # harness unroofed ('None:' set_roof_batch ops) are open sky.
-        self.open_sky, self.collapse_pending = [], []
+        self.open_sky, self.collapse_pending, self.host_gone = [], [], False
         self.next_burn, self.bills = -1, set()
 
     # ------------------------------------------------------------ session surface
@@ -444,7 +444,9 @@ class Fake(object):
             del self.things[tid]
         self.roofs = [r for r in self.roofs if not (inrect(r[0], r[1], rr))]
         if categories == "All":
-            self.collapse_pending.append(rr)      # the rock that held the mountain roof is gone
+            # the rock that held the mountain roof is gone: support is lost up to ~6.9 cells beyond the cleared rect
+            m = V.ROOF_MARGIN
+            self.collapse_pending.append([rr[0] - m, rr[1] - m, rr[2] + 2 * m, rr[3] + 2 * m])
         return {"success": True}
 
     def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
@@ -493,7 +495,8 @@ class Fake(object):
 
     def t_spawn_pawn(self, kindDef=None, x=0, z=0, faction="none", **k):
         p = self.pawn(kindDef, x, z, faction)
-        if kindDef == V.HOST and "host_vanishes" in self.broken and not V._STATE.get("host"):
+        if kindDef == V.HOST and "host_vanishes" in self.broken and not self.host_gone:
+            self.host_gone = True
             p["vanished"] = True                  # SITE: the spawner's host is gone before the arms read it
         return {"success": True, "pawns": [{"id": p["id"]}]}
 

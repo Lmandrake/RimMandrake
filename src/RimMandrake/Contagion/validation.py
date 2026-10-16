@@ -235,7 +235,7 @@ def _rect(t, size=PAD_SIZE, dx=0, dz=0):
 # it could bud (spawner_buds_unfinished), the whole Burn fixture crushed during order_pawn's 300-tick wait
 # (burn_harmless_at_zero_damage: native alive=False), the Coalescence crushed (coalescence_off_absorbs_nothing) -- and
 # the touched chain's 'died: Crush' governor stop. A collapse only drops a cell that is STILL roofed when it resolves,
-# so the pad is unroofed in the same paused tick as the clear. The margin covers every cell within the 6.9-cell roof
+# so the pad is unroofed (before the clear) and nothing is left to drop. The margin covers every cell within the 6.9-cell roof
 # support range of the cleared rock. Outdoors is also what the Burn rows assume: under a mountain roof the "open"
 # visitor is sheltered. A row that wants a roof (the burn chain's patch) sets its own after _prep.
 ROOF_MARGIN = 7
@@ -244,13 +244,15 @@ ROOF_MARGIN = 7
 def _prep(t, name, size=PAD_SIZE):
     """Clear the pad, lay plain soil so everything stands on walkable ground, and take the roof off (see ROOF_MARGIN)."""
     _pad(t, name)
-    t.clear_area(size=size + 8)
-    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(_rect(t, size + 8))), layer="top")
+    # Unroofed BEFORE the clear: the collapse marked by the clear then finds no roof to drop, whatever ticks follow.
     r = t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(_rect(t, size + 8 + 2 * ROOF_MARGIN)))
     if _live(t):
-        if not isinstance(r, dict) or r.get("success") is False or r.get("cellsFailedVerify"):
+        if not isinstance(r, dict) or r.get("success") is False or "cellsChanged" not in r \
+                or r.get("cellsFailedVerify"):
             _unmeasured(t, "SITE: could not unroof the pad (a collapse would crush the fixture): %r" % (r,))
         _note(t, "pad %s unroofed" % name, {"cellsChanged": r.get("cellsChanged"), "perDef": r.get("perDef")})
+    t.clear_area(size=size + 8)
+    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(_rect(t, size + 8))), layer="top")
 
 
 def _things(t, defName, rect=None, limit=300):
@@ -929,9 +931,11 @@ def spawner(t):
 
 
 def _need_host(t):
-    """The budding host must be alive, or the spawner arms measure nothing (UNMEASURED, never PASS/FAIL)."""
-    if not _alive(_rows(t).get(_STATE.get("host"))):
-        _unmeasured(t, "SITE: the %s host %s is not alive on the map; nothing could bud" % (HOST, _STATE.get("host")))
+    """The budding host must be alive INSIDE host_rect (the rect the buds are counted in), or the spawner arms measure
+    nothing (UNMEASURED, never PASS/FAIL)."""
+    if not _alive(_rows(t, _STATE["host_rect"]).get(_STATE.get("host"))):
+        _unmeasured(t, "SITE: the %s host %s is not alive inside %s; nothing could bud there"
+                    % (HOST, _STATE.get("host"), _STATE["host_rect"]))
 
 
 def _things_pawns(t, kind, rect):
