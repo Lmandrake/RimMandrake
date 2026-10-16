@@ -6,7 +6,8 @@
                                                     # N0 natural ground, R scorched ruin, 0 overview
     python.exe src/RimMandrake/Pyrelands/human_review.py --weather RM_FE_BlackRain | tr -d '\\r'   # the one weather switch
     python.exe src/RimMandrake/Pyrelands/human_review.py --labels | tr -d '\\r'     # re-pin labels after a load
-    python3    src/RimMandrake/Pyrelands/human_review.py --signs-for RM_pyre_review_YYYYMMDD  # offline: sign sidecar
+    python.exe src/RimMandrake/Pyrelands/human_review.py --signs | tr -d '\\r'      # re-place the in-save sign books
+    python3    src/RimMandrake/Pyrelands/human_review.py --signs-for RM_pyre_review_YYYYMMDD  # offline: label sidecar
     python.exe src/RimMandrake/Pyrelands/human_review.py --clear | tr -d '\\r'
     python.exe src/RimMandrake/Pyrelands/human_review.py --save [--name RM_pyre_review_YYYYMMDD] | tr -d '\\r'
 
@@ -914,6 +915,23 @@ def label_ops(S, weather="Clear", ruin=None):
     return "\n".join(L)
 
 
+def sign_ops(S, ruin=None):
+    """The signs that live IN the save: one vanilla Novel per station on the first gap cell north of its NW corner, and
+    one per board (modcheck/reviewmap.sign_book; jawa/review_sign places them). A plain load shows them with no agent:
+    mouse over one for its DO line, press i for the whole sign."""
+    L = []
+    for s in S:
+        x, z = s["origin"]
+        L.append(RM.sign_book(x, z + SH, s["n"], s["short"], s["sub"], *sign_of(s), more="Key sheet: station %d." % s["n"]))
+    nx, nz, nw, nh = NATURAL["rect"]
+    L.append(RM.sign_book(nx + nw // 2, nz + nh, "N0", BOARDS["N0"][0], BOARDS["N0"][1], *BOARD_SIGNS["N0"]))
+    if ruin:
+        L.append(RM.sign_book(ruin[0], ruin[1] + 2, "R", BOARDS["R"][0], BOARDS["R"][1], *BOARD_SIGNS["R"]))
+    for i, k in enumerate(("G", "S", "E", "L", "W")):
+        L.append(RM.sign_book(20 + 30 * i, 106, k, BOARDS[k][0], BOARDS[k][1], *BOARD_SIGNS[k]))
+    return L
+
+
 # ------------------------------------------------------------------------------------------------ key sheet
 NO_SAVE = "(no keeper saved yet: build, then --save)"
 
@@ -926,8 +944,10 @@ def keysheet(S, live=None, save=None, weather="Clear"):
           "Load %s in RimWorld. Paused, god mode on, research finished, %s weather locked, noon, Peaceful. Mod "
           "Settings are the shipped defaults. Every station carries an in-world sign: its number, a short name, one "
           "clause, then LOOK / DO / DECIDE (zoom in to read the last three); this sheet repeats each sign and has the "
-          "rest. The signs come back with the save (a sidecar the JawaBench companion reads on load); if they are "
-          "missing, `--labels` re-pins them. Colonists are drafted inside the cool shelter at F: outside is "
+          "rest. Each station also has a SIGN BOOK in the save itself, on the cell just north of its west corner: "
+          "mouse over it for the DO line, press i for the whole sign; it needs no agent and no mod. The floating "
+          "labels return with the save when the JawaBench companion is awake; if they are missing, `--labels` "
+          "re-pins them. Colonists are drafted inside the cool shelter at F: outside is "
           "~50 C, so anything that sends a colonist out costs Heatstroke." % (save or NO_SAVE, weather), "",
           "Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`. Rows run north to south: "
           + ", ".join("%s %s" % (r, n.lower()) for r, n, _ in ROWS) + ".", ""]
@@ -1403,6 +1423,7 @@ def main(argv=None):
     ap.add_argument("--clear", action="store_true")
     ap.add_argument("--weather", choices=WEATHERS, default=None)
     ap.add_argument("--save", action="store_true")
+    ap.add_argument("--signs", action="store_true", help="re-place the in-save sign books (live)")
     ap.add_argument("--signs-for", default=None, metavar="SAVE",
                     help="offline: write the sign sidecar for an existing keeper SAVE (no game needed)")
     ap.add_argument("--name", default="RM_pyre_review_%s" % time.strftime("%Y%m%d"))
@@ -1463,6 +1484,9 @@ def main(argv=None):
         n_ok, blind = R.verify_all(S)
         weather = "Clear"
         R.labels(S, weather, ruin)
+        sg = RM.place_signs(R.B, sign_ops(S, ruin))
+        if not sg.get("success") or sg.get("count") != len(sign_ops(S, ruin)):
+            R.notes.append("signs: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
         R.B.call("jawa/clear_ui", all=True)
         R.goto(S, "0")
         chilled = {s["n"]: R.verify.get(s["n"], {}).get("probes", {}).get("room") for s in S
@@ -1495,6 +1519,9 @@ def main(argv=None):
         if r["ok"]:
             keysheet(S, st.get("live"), save=name, weather=st.get("weather", "Clear"))
         return rc if r["ok"] else 1
+    if a.signs:
+        r = RM.place_signs(R.B, sign_ops(S, st.get("ruin")))
+        print("signs: %s" % {k: r.get(k) for k in ("count", "refused", "message")})
     if a.labels:
         r = R.labels(S, st.get("weather", "Clear"), st.get("ruin"))
         print("labels: %s" % {k: r.get(k) for k in ("added", "refused", "count")})
