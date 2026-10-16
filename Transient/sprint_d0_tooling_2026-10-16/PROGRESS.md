@@ -35,10 +35,19 @@ dispatches to a site's `builder` module. Selftest `src/RimMandrake/Cauldron/self
 nothing saved on an unclean read-back or 0 natives). Cauldron northstar_plan.py docstring now names biomes_sprint + site.
 
 ## 4. LeaningScrub lean-site item
-_pending_
+FILED `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY` (--for BENCH, needs bridge), prose
+`infrastructure/state/items/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.md` (copy the Cauldron recipe). Packet §1.3 and §4 D0
+now name it. NOT renamed (other owners' files): `src/RimMandrake/LeaningScrub/validation.py` lines 29/1363 and
+`design/validation_walks/RimMandrake/LeaningScrub.md` lines 39-41 still say LEANING_SCRUB_LEAN_SITE_1.
 
 ## Selftests
-_pending_
+GREEN: selftest_modset_biomes_sprint, selftest_modset_restore, selftest_biome_preflight, selftest_cauldron_site,
+selftest_test_site_saves, selftest_cauldron (run_selftests --only).
 
 ## Left for the live round
-_pending_
+- `modset_builder.py --tier biomes_sprint --apply` (seat holding the game), then `test_site_saves.py build cauldron`
+  and `load cauldron`, then the M1 driver run. First live use of prep_site.py: tool shapes UNPROVEN live.
+- Rerun `required_checks.py` after FOUNDRY's Contagion validation.py edit lands (O-SUITE stale).
+- Cauldron art gaps (O-TEX): RM_Bezzul, RM_GiantCrownedSilkie, 2 fleck overlays; dew variants unmeasured.
+- Acceptance manifests `design/RimMandrake/sprint_manifests/<Biome>.json` are frozen at S0 (O-MANIFEST).
+- Contagion and LeaningScrub sites: none yet (LeaningScrub filed; Contagion has no item).
