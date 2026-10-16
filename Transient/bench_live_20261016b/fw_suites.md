@@ -28,3 +28,13 @@ PASS: L1, L3 (A4 intake needs pump), L6 foreign tank / free-end names faction, D
 - door facing, flow_map_controls(_six): the validation.py chains' `*_live` components are hard-coded UNMEASURED placeholders (offline selftests only); live needs `jawa/static_call RM_MapControls.PlaceSource/PlaceSink` by hand: NOT done (bridge time).
 - lacquer bill chain: no `lacquer_bill` chain exists in validation.py or extensions.py; NOT done.
 - review-map labels `8:` and `9:` (REVIEW_MAP_LABELS_FIX_ORPHANS_ADOPTED): `review_map.py --labels` added 463 labels, refused []; a `jawa/review_label list` read-back holds `8: the same drained pond with a muffalo standing` / `8: in its bed` and `9: a pond feeding a water canal, with a fill-in` / `9: order on the canal's far end`. PASS (on the calm-site map, not the built review map).
+
+## Re-check
+
+Run on ratchet_pilot tier, calm map RM_TestSite_calm_v1, after pull (already up to date).
+
+- validation_v2.py --live: GREEN, 61 PASS / 0 FAIL / 0 UNMEASURED (result validation_v2_result_20261016T125532.json). Both earlier HARNESS fails now pass.
+- liquid_checks.py --fresh-map --only L2,L4,L6 --theft-day: 8 PASS / 0 FAIL / 2 UNMEASURED (liquid_checks_result_20261016T125537.json). L2 x2, L4 fill/empty, L6 foreign tank / theft letter / free-end faction all PASS.
+  - L4_on_a_real_gravship UNMEASURED, SITE: no gravship fixture on a quicktest map; a plain RM_UniversalCargoTank stands in (no ship-tank def exists).
+  - L6_block UNMEASURED, HARNESS: GovernorStop, safe_advance stopped at 1200/1500 ticks, colonist Kiyoshi (843) Starving (seq 39, tick 47904), after the three L6 rows had already passed. Fresh map's unfed colony starved during the theft-day advance; the trailing block, not a mod row.
+- L5 skipped (needs deploy+restart). Game returned to calm map (test_site_saves load calm: CLEAN), paused.
