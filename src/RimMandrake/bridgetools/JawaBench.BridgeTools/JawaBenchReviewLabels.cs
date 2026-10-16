@@ -5,7 +5,7 @@
 //
 // How it draws: a Harmony postfix on RimWorld.MapInterface.MapInterfaceOnGUI_BeforeMainTabs (decompiled 1.6:
 // runs every OnGUI while a map is drawn, after MapComponentOnGUI) projects each label's cell centre with
-// Vector3.MapToUIPosition and draws a dark box plus text. Installed lazily by the first review_label call.
+// Vector3.MapToUIPosition and draws a dark box plus text. Installed lazily by the first jawa/ call of a session (JawaBenchInit) or review_label call.
 //
 // Deliberately NOT a MapComponent/GameComponent: those are found by reflection over every loaded assembly and
 // are WRITTEN INTO THE SAVE, so a review save would carry a dev-assembly class name. Labels are process memory,
@@ -153,6 +153,8 @@ namespace JawaBench.BridgeTools
 
         private static void LoadPrefix(string saveFileName)
         {
+            // the old game's labels go with it: map uniqueIDs restart per save (a fresh map 0 would inherit them)
+            Labels.Clear();
             PendingSave = saveFileName;
         }
 

@@ -103,5 +103,17 @@ pth = RM.write_signs("RM_x", [ln, "", RM.label_line(3, 4, "U")], folder=d)
 rows = open(pth, encoding="utf-8").read().splitlines()
 check(rows[0] == "# map ?" and rows[1] == ln and len(rows) == 3, "write_signs file: %r" % rows)
 
+# save_keeper(signs=): an ok save writes the sidecar beside the Saves folder; a failed save writes none
+dd = tempfile.mkdtemp()
+sv = os.path.join(dd, "Saves")
+saves4 = {}
+r4 = RM.save_keeper(FakeB(saves=saves4, write={"S.rws": (1, 1)}), "S", saves=sv, stat=lambda d: dict(saves4),
+                    sleep=lambda s: None, wait_s=0, signs=[ln])
+check(r4["ok"] and r4.get("signs") == os.path.join(dd, "JawaBenchReviewSigns", "S.txt") and os.path.exists(r4["signs"]),
+      "save_keeper writes the sign sidecar on an ok save: %s" % r4)
+r5 = RM.save_keeper(FakeB(saves=saves4, write={}), "T", saves=sv, stat=lambda d: dict(saves4), sleep=lambda s: None,
+                    wait_s=0, signs=[ln])
+check(not r5["ok"] and "signs" not in r5, "no sidecar for a failed save: %s" % r5)
+
 print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  reviewmap: save names, save judge (wrong-slot trap), sweep, labels, signs")
 sys.exit(1 if fails else 0)
