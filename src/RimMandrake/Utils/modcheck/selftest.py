@@ -88,6 +88,18 @@ def t_chain_happy_path_is_pass():
     check("chain: all_green true with no failures", result["all_green"] is True)
 
 
+def t_empty_suite_is_not_green():
+    suite = Suite("t_mod")
+
+    @suite.chain("c1")
+    def c1(t):
+        pass            # opens no component: nothing was measured
+
+    result = runner.run_suite(suite, _fake_session())
+    check("chain: a suite that recorded no component is not all_green (all() of nothing is True)",
+         result["all_green"] is False, result["all_green"])
+
+
 def t_chain_failure_marks_downstream_unmeasured_and_continues():
     suite = Suite("t_mod")
     order = []
@@ -104,6 +116,8 @@ def t_chain_failure_marks_downstream_unmeasured_and_continues():
             t.wait_ticks(60)                  # must be a no-op: upstream_failed
 
     session = _fake_session()
+    bridge_calls = []      # _fake_session's `.calls` int is never incremented by the scripted lambda: count here
+    session.call = lambda tool, **p: bridge_calls.append(tool) or {"success": True}
     result = runner.run_suite(suite, session)
     verdicts = [c["verdict"] for c in result["chains"][0]["components"]]
     check("chain: first component still passes", verdicts[0] == PASS, verdicts)
@@ -113,8 +127,10 @@ def t_chain_failure_marks_downstream_unmeasured_and_continues():
     check("chain: the run continues past a failure (all three bodies ran)",
          order == ["first_ok body ran", "second_fails body ran", "third body ran"],
          order)
-    check("chain: a no-op verb after upstream_failed made no bridge call",
-         session.calls == 0, session.calls)
+    # run_suite itself makes housekeeping calls (map_info ...); the no-op wait_ticks must have moved no game time
+    moved = [c for c in bridge_calls if c in ("rimworld/step_game_ticks", "jawa/safe_advance")]
+    check("chain: a no-op verb after upstream_failed moved no game time",
+         moved == [], bridge_calls)
     check("chain: a failure is not silently dropped -- it's marked FAIL, not PASS",
          not result["all_green"])
     check("chain: the failing component was handed to on_finding",
@@ -617,6 +633,7 @@ TESTS = [
     t_compose_test_list_appends_once_and_reads_back,
     t_floor_met_when_every_toggle_has_a_component,
     t_chain_happy_path_is_pass,
+    t_empty_suite_is_not_green,
     t_chain_failure_marks_downstream_unmeasured_and_continues,
     t_script_declared_unmeasured_is_not_a_fail,
     t_unverified_write_taints_pass_but_is_not_a_failure,
@@ -639,9 +656,12 @@ TESTS = [
 
 
 def main():
+    failed_tests = 0
     for t in TESTS:
+        before = len(FAILURES)
         t()
-    passed = len(TESTS) - len(FAILURES)
+        failed_tests += len(FAILURES) > before
+    passed = len(TESTS) - failed_tests
     print("\nSELFTEST %s -- %d/%d passed"
          % ("FAILED" if FAILURES else "OK", passed, len(TESTS)))
     if FAILURES:
