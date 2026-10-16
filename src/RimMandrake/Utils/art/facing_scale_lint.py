@@ -67,6 +67,8 @@ MARGINS = (0.0, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20)   # widening of vanilla's pe
 TARGET_FLAG_RATE = 0.05  # vanilla's own flag rate (animal level, S or N or N:S; leave-one-out) must not exceed this
 FEET_PLANS = ("quadruped", "biped", "flyer")   # plans whose legs are visible as separate feet in a ground-camera view
 FACES = ("east", "south", "north", "west")
+FEET_TOL = 0.03          # ground-camera S/N feet row (silhouette bottom, canvas fraction) within this of the same picture's east
+CENTRE_KEEP = 0.05       # a S/N centred further than this from the canvas middle is a deliberate offset: kept, not re-centred
 
 
 # ───────────────────────────────────────────────────────── measurement ──
@@ -634,6 +636,16 @@ def lint(defs=None, use_repo=False) -> list[dict]:
                     row["beyond_vanilla"] = any(x["value"] > x["band"][1] for x in tv["flags"])
                 else:
                     row["beyond_vanilla"] = bool(j["flags"])
+                if view == "elevation":      # ground-camera S/N must stand where east stands (the creature must not drop when it turns)
+                    off = {f: round(m[f]["bottom"] - m["east"]["bottom"], 4) for f in ("south", "north")
+                           if f in m and abs(m[f]["bottom"] - m["east"]["bottom"]) > FEET_TOL}
+                    row["feet_off"] = off
+                    for f in off:
+                        row["fixes"].setdefault(f, {"action": "reseat", "scale": 1.0, "target": None, "width_after": None,
+                                                   "why": f"feet row {off[f]:+.3f} of canvas height from east's"})
+                    if off:
+                        row["verdict"] = "FLAG"
+                        row["severity"] = max(row.get("severity", 0.0), round(max(abs(v) for v in off.values()), 3))
                 for f, s in m.items():
                     s["h_world"] = round(s["h"] * gr["drawSize"][1], 3)
                     s["w_world"] = round(s["w"] * gr["drawSize"][0], 3)
@@ -682,8 +694,28 @@ def to_md(rows, title) -> str:
 
 # ───────────────────────────────────────────────────────────────── fix ──
 
-def rescale(img, s: float):
-    """Resample the silhouette about its ground-contact point (bottom-centre of the opaque bbox); canvas kept."""
+def reseat(img, east: dict, keep_offset: float = CENTRE_KEEP):
+    """Integer-translate a S/N picture (no resample) so its feet row equals EAST's (canvas fraction) and its
+    silhouette is centred on the canvas, unless it sits more than keep_offset of the width off-centre (deliberate:
+    kept). A translation that would clip opaque pixels is cut short. -> (image, {dx, dy, kept_offset})."""
+    from PIL import Image
+    im = img.convert("RGBA")
+    sil = silhouette(im)
+    W, H = im.size
+    dy = round(east["bottom"] * H) - (sil["y1"] + 1)
+    dy = max(-sil["y0"], min(H - 1 - sil["y1"], dy))
+    kept = abs(sil["cx"] - 0.5) > keep_offset
+    dx = 0 if kept else round(W / 2 - (sil["x0"] + sil["x1"] + 1) / 2)
+    dx = max(-sil["x0"], min(W - 1 - sil["x1"], dx))
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    out.paste(im, (dx, dy))
+    return out, {"dx": dx, "dy": dy, "kept_offset": kept}
+
+
+def rescale(img, s: float, east: dict | None = None):
+    """Resample the silhouette about its ground-contact point (bottom-centre of the opaque bbox); canvas kept.
+    With `east` (its silhouette) the result is then seated: feet row = east's feet row, centred (see reseat) —
+    anchoring at the S/N's own bottom left creatures standing lower than in their east view."""
     from PIL import Image
     im = img.convert("RGBA")
     sil = silhouette(im)
@@ -694,6 +726,8 @@ def rescale(img, s: float):
     ox, oy = round(ax - ax * s), round(ay - ay * s)
     out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     out.paste(big, (ox, oy))                       # a plain paste: the transparent margin replaces, never blends
+    if east and silhouette(out):
+        out, _ = reseat(out, east)
     return out
 
 
@@ -706,7 +740,7 @@ def fix(rows, defs, out_dir: Path, owner_said: str | None, dry_run: bool) -> lis
             continue
         for f, x in r["fixes"].items():
             src = r["files"][f]
-            if x["action"] != "rescale" or src in done:
+            if x["action"] not in ("rescale", "reseat") or src in done:
                 continue
             done.add(src)
             try:
@@ -717,7 +751,7 @@ def fix(rows, defs, out_dir: Path, owner_said: str | None, dry_run: bool) -> lis
             dst = out_dir / mod / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             with Image.open(src) as im:
-                rescale(im, x["scale"]).save(dst)
+                rescale(im, x["scale"], r["silhouette"].get("east")).save(dst)
             row = {"def": r["def"], "texPath": r["texPath"], "facing": f, "file": src, "fixed": str(dst),
                    "scale": x["scale"], "mod": mod, "rel": rel}
             if not dry_run:
@@ -787,6 +821,9 @@ def main(argv=None) -> int:
     li.add_argument("--json")
     li.add_argument("--md")
     li.add_argument("--title", default="Facing scale lint")
+    rs = sub.add_parser("reseat", help="shift-only: seat installed S/N pictures on east's feet row (no resample)")
+    rs.add_argument("files", nargs="+", help="repo S/N PNGs; east is the sibling *_east.png")
+    rs.add_argument("--out", required=True, help="mirror dir (<mod>/<rel>) for art.py install")
     fx = sub.add_parser("fix")
     fx.add_argument("--json", required=True)
     fx.add_argument("--defs", required=True)
@@ -809,6 +846,20 @@ def main(argv=None) -> int:
             Path(a.md).write_text(md)
         print("\n".join(md.splitlines()[:3 + 2 + 30]))
         return 1 if any(r["verdict"] != "ok" for r in rows) else 0
+    if a.cmd == "reseat":
+        import artledger as AL
+        from PIL import Image
+        for f in a.files:
+            e = measure_file(re.sub(r"_(south|north)\.png$", "_east.png", f))
+            with Image.open(f) as im:
+                out, info = reseat(im, e)
+            if info["dx"] or info["dy"]:
+                mod, rel = AL.locate(f)
+                dst = Path(a.out) / mod / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                out.save(dst)
+            print(json.dumps({"file": f, **info}))
+        return 0
     rows = json.loads(Path(a.json).read_text())
     res = fix(rows, set(a.defs.split(",")), Path(a.out), a.owner_said, a.dry_run)
     print(json.dumps(res, indent=1))

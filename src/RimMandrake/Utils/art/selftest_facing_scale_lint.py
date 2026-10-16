@@ -75,6 +75,24 @@ def main() -> int:
           (a, b))
     check(abs(b["h"] - a["h"] * 0.5) < 0.02, "rescale shrinks the silhouette by the factor", (a["h"], b["h"]))
 
+    # seating: feet row = east's, centred (shift only), deliberate offset kept, rescale(east=) applies it
+    from PIL import Image
+    east = F.silhouette(legged(120, 90))                  # feet at canvas row 190 of 200
+    low = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    low.paste(legged(60, 80).crop((0, 0, 200, 200)), (8, 5))   # 5 px low, 8 px (4%) right
+    r, info = F.reseat(low, east)
+    b = F.silhouette(r)
+    check(abs(b["bottom"] - east["bottom"]) < 0.006 and abs(b["cx"] - 0.5) < 0.006, "reseat puts feet on east's row, centred", (b, east))
+    check(F.silhouette(low)["area"] == b["area"], "reseat is shift-only (area unchanged)")
+    off = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    off.paste(legged(40, 60), (50, 0))                    # 25% off-centre on purpose
+    ro, io = F.reseat(off, east)
+    check(io["kept_offset"] and io["dx"] == 0, "reseat keeps a deliberate >5% offset", io)
+    rr = F.rescale(legged(90, 90), 0.5, east)
+    check(abs(F.silhouette(rr)["bottom"] - east["bottom"]) < 0.006, "rescale(east=) seats the feet on east's row")
+    # lint rule: FEET_TOL
+    check(F.FEET_TOL == 0.03, "feet-row tolerance is 3% of the canvas")
+
     # calibration sanity
     q = cal["quantiles"]
     check(cal["n"] >= 100, "calibration covers >= 100 vanilla animals", cal["n"])
