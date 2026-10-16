@@ -288,6 +288,16 @@ def check_scale(ctx, items) -> Check:
             f = ctx["sheet_dir"] / str(s.get(key) or "")
             if not s.get(key) or not f.is_file():
                 p.append(f"{it['id']}: scale {key} image missing on disk ({s.get(key)})")
+        # EVERY candidate shown in the primary graphic has its own true-scale panel (owner, 2026-10-15) — a set whose
+        # pictures are on the sheet (in thumbs) and no panel is a failure, never one panel standing in for the row
+        prim = next((g for g in it.get("graphics", []) if g.get("primary")), None) or {}
+        thumbs = it.get("thumbs") or {}
+        for c in prim.get("cols") or []:
+            if not any(sh in thumbs for sh in (c.get("faces") or {}).values()):
+                continue
+            cs = c.get("scale") or {}
+            if not cs.get("img") or not (ctx["sheet_dir"] / str(cs["img"])).is_file():
+                p.append(f"{it['id']}: set {c.get('letter')} has no true-scale panel of its own")
     if art_rows == 0:
         p.append("no row has art — nothing to scale (zero panels is a failed build)")
     elif n_img == 0 and n_none < art_rows:
