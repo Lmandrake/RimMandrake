@@ -1,0 +1,6 @@
+LC_preflight                             PASS       HARNESS  {"playing": true, "flowworks": true, "drafted": [816, 820, 39822, 39826, 39830, 39835, 39839, 39843, 39847, 39851, 39855, 39859, 39863, 39867, 39871, 39875, 39879, 39883, 39887, 39891, 39895, 39898, 39902, 39906, 39910, 39915, 39919, 39923, 39927, 39931, 39936, 39940, 39944, 39948, 39952, 39956, 399
+== L7
+L7_levelset_setting_on                   PASS       MOD      {"levelSetEnabled": "True"}
+L7_flow_drains_levels_flat               PASS       MOD      {"dug": 59, "wet": 29, "stripes": 0, "steps": 0, "firstStripes": [], "firstSteps": [], "wetSurfaces": [-1, 0], "allStripes": [], "movingStripes": [], "station": 1, "rect": [0, 228, 68, 14], "pulses": 16, "ticksGame": 16659}
+L7_flow_spreads_levels_flat              PASS       MOD      {"dug": 22, "wet": 13, "stripes": 0, "steps": 0, "firstStripes": [], "firstSteps": [], "wetSurfaces": [-1, 0], "allStripes": [], "movingStripes": [], "station": 2, "rect": [74, 228, 16, 14], "pulses": 16, "ticksGame": 16909}
+result: \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimMandrake\FlowWorks\northstar\liquid_checks_result_20261016T162747.json {"PASS": 4, "FAIL": 0, "UNMEASURED": 0}

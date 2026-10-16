@@ -21,3 +21,12 @@
   - L7_flow_drains_levels_flat (station 1) **FAIL MOD**: dug 59, wet 33, stripes 23, steps 0, first stripes (13,233),(15,233),(17,233),(19,233),(21,233),(23,233), 16 pulses
   - L7_flow_spreads_levels_flat (station 2) **FAIL MOD**: dug 22, wet 10, stripes 2, steps 0, stripes (79,234),(82,235), 16 pulses
 - Screenshots (paused, framed): station1_after2.bmp/.png, station2_after2.bmp/.png (1600px).
+
+## Level solve live (fix 2)
+- Deploy: FlowWorks DLL + .srchash only (plan level_plan3.txt), VERIFIED in sync; dll_source_stamp MATCH (31f335066b body fix). Relaunched via Steam, save RM_FW_walk_20261016 loaded, 462 labels re-pinned.
+- Pawn safety as before (fix.py: pit hediffs removed, 7 pawns in Superdeep cells moved 3 out, all colonists drafted); restored after (restore.py), none downed.
+- L7 (no --fresh-map), full run, no governor stop. Raw: L7_run3.txt, result liquid_checks_result_20261016T162747.json.
+  - L7_levelset_setting_on PASS MOD
+  - L7_flow_drains_levels_flat (station 1) **PASS MOD**: dug 59, wet 29, stripes 0, steps 0, wetSurfaces [-1,0], 16 pulses
+  - L7_flow_spreads_levels_flat (station 2) **PASS MOD**: dug 22, wet 13, stripes 0, steps 0, wetSurfaces [-1,0], 16 pulses
+- Screenshots (paused): station1_after3.bmp/.png, station2_after3.bmp/.png (1600px). Game left paused framed on station 2.
