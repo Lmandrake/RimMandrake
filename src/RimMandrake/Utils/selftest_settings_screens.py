@@ -99,6 +99,8 @@ MODS = {
         "Vissler arms and fire-stamping giants": "Now",
         "Venomvine forms": "Now",
         "Forms that act when the Gale starts": "NextPulse",
+        "The ripple and the calling-pyre": "Now",
+        "Ruins and living camps": "NewMapsOnly",
     }, ()),
     "LanternDeeps": ("LanternDeepsMod.cs", "RM_LanternDeeps.csproj", {
         "Entrances: cave mouth and ruined mineshaft": "NewMapsOnly",
@@ -162,6 +164,9 @@ MODS = {
         "Draftprints": "Now",
         "Helix contract pay": "NextPulse",
         "Helix devices": "Now",
+        "Contagion-touched": "Now",
+        "Contagion mulch": "Now",
+        "The zhool's red haze": "Now",
     }, ()),
     "Cauldron": ("RM_CauldronMod.cs", "RM_Cauldron.csproj", {
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
@@ -176,6 +181,8 @@ MODS = {
         "Flora expansion and fexxil venom": "NextGameStart",
         "Vexxith acid-proofing": "Now",
         "Acid-proof vexxith door": "NextGameStart",
+        "Vent gas": "Now",
+        "Corroded ruins (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
     "Pyrelands": ("RM_PyrelandsMod.cs", "FireEcologyHook.csproj", {
         "Mod enabled": "Now",

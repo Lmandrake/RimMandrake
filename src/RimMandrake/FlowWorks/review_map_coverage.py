@@ -44,6 +44,7 @@ FEATURES = [
     ("set", r"^digToDepthEnabled$", "Dig deeper", "dig_canal"),
     ("set", r"^fillIn", "Fill-in and its push-back", "dig_fill_in"),
     ("set", r"^digFind", "Digging turns up minerals", "dig_finds"),
+    ("set", r"^(digRock|digSoilChunk)", "Digging rock takes longer and drops chunks (soil less)", "dig_canal"),   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK: no rock-dig station, so the canal-dig one
     # ---- flow
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
     ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled)$", "Viscosity: tar crawls", "flow_identity"),
@@ -229,7 +230,7 @@ FEATURES = [
     ("def", r"^GenStepDef/RM_LiquidShores$", "Typed liquid shores", M + "map generation only (the shores of a new map)"),
     ("set", r"^typedLiquidShoresEnabled$", "Typed shores", M + "map generation only"),
     ("set", r"^(liquidHeatPushEnabled|liquidHeatStrength)$", "Hot liquid warms the air", "land_shores"),
-    ("def", r"^(TerrainDef/RM_(Water|Slime)_|ThingDef/RM_WaterBottle_)", "Coloured waters and slimes", "many_waters"),
+    ("def", r"^(TerrainDef/RM_(Water|Slime)_|(ThingDef/)?RM_WaterBottle_)", "Coloured waters and slimes", "many_waters"),
     ("def", r"^FleckDef/RM_Fleck_Steam_", "Coloured river steam", M + "rises only off a RIVER of a coloured water; no "
      "generated map here has one"),
     ("set", r"^(riverSteamEnabled|puffRateMultiplier)$", "River steam", M + "as coloured river steam"),
