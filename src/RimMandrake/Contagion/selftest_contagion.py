@@ -247,7 +247,7 @@ class Fake(object):
                             continue
                         if "native_unhurt" not in b:
                             self.addh(p, "Burn", 3 * max(f, 0.5))
-                        if p["kind"] not in LEAKERS and "no_dive" not in b:
+                        if p["kind"] not in LEAKERS and p["kind"] not in ARMORED and "no_dive" not in b:
                             roof = self.roofs[0]
                             p["x"], p["z"] = roof[0] + 2, roof[1] + 2
                     elif "no_dose" not in b:
