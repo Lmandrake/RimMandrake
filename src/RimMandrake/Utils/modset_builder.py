@@ -669,11 +669,13 @@ TIERS["biomes_sprint"] = {
            "Contagion, LeaningScrub and the rest, composed) + the pilot mods (FlowWorks, GSS, Pyrelands mechanics) with "
            "ratchet_pilot's guards, so the pilot guards (M6) run on the same load. Phase 0 donors (Star Wars Animal "
            "Collection, Alpha Animals and its Outposts patch) are forbidden: a dependency dragging one back fails the "
-           "plan. ExplosiveGrowth: %s." % (
+           "plan. Huge Things (mandrake.rm.hugethings) loads in every sprint test (owner 2026-10-16: 'We have so many huge "
+           "things, we want to make sure we're always compatible with them'). ExplosiveGrowth: %s." % (
                "composed into mandrake.rm.biomes with the everyday growth bands (the former mandrake.rut.plantgrowth, "
                "absorbed 2026-10-16); both standalone packageIds forbidden" if _EG_FOLDED else
                "NOT yet folded (EXPLOSIVE_GROWTH_MERGE_COMES_HOME), so the standalone mandrake.rm.explosivegrowth loads"),
-    "want": list(TIERS["ratchet_pilot"]["want"]) + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),
+    "want": list(TIERS["ratchet_pilot"]["want"]) + ["mandrake.rm.hugethings"]
+            + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),
     "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"]
               + (["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"] if _EG_FOLDED else []),
     "forbid_substr": list(TIERS["ratchet_pilot"]["forbid_substr"]),
