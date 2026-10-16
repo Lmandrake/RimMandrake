@@ -160,7 +160,12 @@ caps_ = {"RM_LiquidTank": 80, "RM_LiquidTankTall": 160, "RM_UniversalCargoTank":
 ts = R.SETUPS["tank_sizes"]
 at = {(b[1], b[2]): b[0] for b in ts["build"]}
 check(all(u * 2 == caps_[at[(x, z)]] for x, z, _, _, u in ts["tank"]), "tank_sizes not staged half full")
-check(R.SETUPS["hold_ladder_raised"]["ladder"] == [(5, 6, "raise")], "the raised-ladder station is not raised")
+check(R.SETUPS["hold_ladder_raised"]["ladder"] == [(7, 8, "raise")], "the raised-ladder station is not raised")
+# PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: each ladder station stages one slid up and one slid down on DIFFERENT walls
+_hl = R.SETUPS["hold_ladder"]
+check([(d, x, z) for d, x, z, _ in _hl["spawn"]] == [("RM_Ladder", 5, 6), ("RM_Ladder", 7, 4)]
+      and _hl["ladder"] == [(7, 4, "raise")], "hold_ladder: west slid down + south slid up")
+check(("RM_Ladder", 12, 6, 1, None) in R.SETUPS["hold_ladder_raised"]["build"], "hold_ladder_raised: an east-wall ladder built turned east")
 
 # map R: anchors on a synthetic river (vertical band x 100..110 of moving water on a 250 map)
 import review_map_rivers as RV  # noqa: E402

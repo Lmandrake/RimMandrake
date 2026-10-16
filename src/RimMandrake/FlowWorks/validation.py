@@ -390,6 +390,37 @@ def flow_door_facing(t):
                                     "superdeep canal, blueprint and finished door (SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR)")
 
 
+# PIT_LADDER_REDRAW_HUNG_ON_THE_WALL (owner 2026-10-16: "installed along a side of the pit, like a door to a room"): the
+# ladder stands on the pit square hung on ONE wall (its rotation; auto-turned to the biggest drop), joins only that wall,
+# and slid up holds everyone below. Offline proof of the wall verdict, the state->climb rule and the call sites
+# (Source/SelfTest/LadderWallChecks.cs). OWED live: review map stations hold_ladder / hold_ladder_raised -- a ladder on each
+# of N, S, W, E drawn against its wall; a colonist climbs out by a slid-down one and not by a slid-up one; a colonist in a
+# corner square does not climb out over the wall the ladder does NOT hang on; per-wall art once installed.
+LADDER_WALL_CASES = ["LadderWall_placed_rotation_stands_on_a_wall", "LadderWall_auto_turns_to_the_biggest_drop",
+                     "LadderWall_no_wall_refused", "LadderWall_joins_only_the_wall_it_hangs_on",
+                     "LadderWall_slid_up_holds_everyone_slid_down_is_the_prison_door", "LadderWall_call_sites"]
+
+
+@suite.chain("ladder_hung_on_wall")
+def ladder_hung_on_wall(t):
+    """Offline: the pit ladder hangs on one wall (RM_LadderWallMath + call sites). 0 ticks, no bridge."""
+    cases = {}
+    with t.component("ladder_wall_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in LADDER_WALL_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    with t.component("ladder_wall_live"):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- ladders on N/S/E/W walls drawn against their wall, "
+                                    "slid down climbed and slid up not, no climb over a wall it does not hang on "
+                                    "(PIT_LADDER_REDRAW_HUNG_ON_THE_WALL; review map hold_ladder / hold_ladder_raised)")
+
+
 # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
 # Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
 # pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).
