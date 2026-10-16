@@ -99,6 +99,10 @@ def build(w: "S.World | None" = None, idx: "L.Index | None" = None) -> dict:
             fam = S.FAM_RE.sub("", job)
             rec = {"job": job, "family": fam}
             bd = [b for b in idx.bindings.get(sha, []) if b.get("job") == job]
+            # a `bound` binding (a job's target_def, or a stated mapping) outranks every derived name-match: bindings
+            # are append-only, so a token guess written before the right subject existed (job slime_greateroomb
+            # -> RSW_Filth_Snail_Slime on the token 'slime') can only be corrected by a later bound event.
+            bd = [b for b in bd if b.get("confidence") == "bound"] or bd
             if bd:
                 rec.update(resolution="bound", via="binding", subjects=sorted({b["subject"] for b in bd}),
                            evidence=bd[0]["evidence"])
@@ -255,11 +259,36 @@ def write_bindings(res: dict) -> int:
     return len(w.known) - n0
 
 
+def bind_family(family: str, subject: str, evidence: str) -> int:
+    """Append a `bound` binding for every artpipe render of job family FAMILY (e.g. slime_greateroomb, all facings).
+    The supported correction for a wrong name-match: bindings are never rewritten, a later bound event outranks them."""
+    idx = L.Index()
+    w = L.Writer()
+    n0 = len(w.known)
+    for sha, vs in idx.variants.items():
+        for v in vs:
+            job = v.get("job")
+            if v.get("kind") != "artpipe" or not job or S.FAM_RE.sub("", job) != family:
+                continue
+            w.add({"type": "binding", "id": L.det_id("binding", "manual", sha, job, subject), "sha": sha, "job": job,
+                   "subject": subject, "originals": [], "texpath": None, "confidence": "bound", "evidence": evidence})
+    w.flush()
+    return len(w.known) - n0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out")
     ap.add_argument("--write-bindings", action="store_true")
+    ap.add_argument("--bind", nargs=2, metavar=("JOB_FAMILY", "SUBJECT"),
+                    help="write a bound binding for every render of the job family (corrects a wrong name-match)")
+    ap.add_argument("--evidence", help="required with --bind: why this subject (cite the job's own notes)")
     a = ap.parse_args(argv)
+    if a.bind:
+        if not a.evidence:
+            ap.error("--bind needs --evidence")
+        print("binding events written:", bind_family(a.bind[0], a.bind[1], a.evidence))
+        return 0
     res = build()
     p = Path(a.out) if a.out else L.ledger_dir() / "render_subjects.json"
     p.parent.mkdir(parents=True, exist_ok=True)
