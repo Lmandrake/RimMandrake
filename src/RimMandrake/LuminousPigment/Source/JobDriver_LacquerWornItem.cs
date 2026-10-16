@@ -121,6 +121,23 @@ namespace RimMandrake.LuminousPigment
             return power == null || power.PowerOn;
         }
 
+        // The "lacquer worn item..." button only exists for a player who can act on it: lacquering is enabled in Mod
+        // Settings AND this map has a deepfire press built (it is the only station the button uses; a map with no press
+        // has nothing to offer, and showing it on every colonist was owner-reported noise 2026-10-16). Cached per map
+        // for 250 ticks because GetGizmos runs every frame for a selected pawn.
+        private static readonly Dictionary<int, KeyValuePair<int, bool>> pressCache = new Dictionary<int, KeyValuePair<int, bool>>();
+
+        public static bool GizmoRelevant(Map map)
+        {
+            if (map == null || !LuminousPigmentSettings.paintingEnabled) return false;
+            int now = Find.TickManager.TicksGame;
+            if (pressCache.TryGetValue(map.uniqueID, out var hit) && now - hit.Key < 250 && now >= hit.Key) return hit.Value;
+            ThingDef pressDef = DefDatabase<ThingDef>.GetNamedSilentFail(PressDefName);
+            bool has = pressDef != null && map.listerThings.ThingsOfDef(pressDef).Count > 0;
+            pressCache[map.uniqueID] = new KeyValuePair<int, bool>(now, has);
+            return has;
+        }
+
         public static Thing FindPress(Pawn pawn, bool forced)
         {
             ThingDef pressDef = DefDatabase<ThingDef>.GetNamedSilentFail(PressDefName);
@@ -204,7 +221,8 @@ namespace RimMandrake.LuminousPigment
         {
             foreach (Gizmo g in __result) yield return g;
             if (__instance.IsColonistPlayerControlled && __instance.Spawned
-                && (__instance.apparel != null || __instance.equipment != null))
+                && (__instance.apparel != null || __instance.equipment != null)
+                && LacquerWornItemUtility.GizmoRelevant(__instance.Map))
             {
                 yield return LacquerWornItemUtility.MakeGizmo(__instance);
             }

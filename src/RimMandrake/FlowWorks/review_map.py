@@ -1140,8 +1140,11 @@ def label_ops(S, st, doc, m=None):
         add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), sign, col[s["status"]], "small")
         low = ("NOT BUILT yet: " + (s["say"] or s["title"])) if s["placeholder"] else s["notice"]
         if low:
+            # owner walk 2026-10-16: seen from the next row up, these lines floated with no number ("two stations with
+            # no numbers and nothing built"); the number card is north of the body, this line south of it. So every
+            # line carries its station's number.
             for k, part in enumerate(wrap(low, 46)[:3]):
-                add(x + SW // 2, z - 1 - k, part, "", CREAM, "tiny")
+                add(x + SW // 2, z - 1 - k, "%d: %s" % (s["n"], part), "", CREAM, "tiny")
         for dx, dz, text in s["setup"].get("marks", []):
             add(x + dx, z + dz, text, "", RUST, "tiny")
     fx, fz, fw, fh = FREE["rect"]
