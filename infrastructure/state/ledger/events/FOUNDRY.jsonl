@@ -5859,3 +5859,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"JURROX_MIGRATE_INTO_WARSCAR_GAUNT","why":"FOUNDRY helper assigned the port","ts":"2026-10-16T12:23:35Z","tsn":1792153415475427155}
 {"seat":"FOUNDRY","event":"start","id":"JURROX_MIGRATE_INTO_WARSCAR_GAUNT","why":"FOUNDRY helper assigned the port","ts":"2026-10-16T12:23:35Z","tsn":1792153415719959793}
 {"seat":"FOUNDRY","event":"implemented","id":"JURROX_MIGRATE_INTO_WARSCAR_GAUNT","sha":"c22528850265","ref":"origin/main","criteria":[],"why":"def, Warscar roster row, art and offline static checks landed; static PASS, validate_patch 0 errors","ts":"2026-10-16T12:27:31Z","tsn":1792153651485561616}
+{"seat":"FOUNDRY","event":"close","id":"IDEOICONS_INSTALL_SIX_REPOINT","sha":"5d2be928409f","why":"installed, defs added, save map extended; dry/real rewrite on scratch copy: 6 iconDefs renamed. Deploy of UtinniPatches owed at a game-down window","ts":"2026-10-16T12:29:13Z","tsn":1792153753619943668}
