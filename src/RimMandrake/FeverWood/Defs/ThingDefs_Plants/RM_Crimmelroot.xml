@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Crimmelroot - PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner 2026-10-16: "Star Wars will have a very few canon plants, and those can just be reskins of non-canon versions we create in the Baroque Biomes"; by card "Invent 7 new Baroque bases").
+  Invented, franchise-free base whose growth, harvest and stats are copied 1:1 from the canon RSW_Plant_Chakroot_Wild
+  (SWBestiary RSW_DesertPortB_Plants.xml), which is now a pure reskin of this def (ParentName="RM_Crimmelroot").
+  Home: RM_FeverWood. TEMP ART: vanilla placeholders until the base art is ruled and installed.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase" Name="RM_Crimmelroot">
+    <defName>RM_Crimmelroot</defName>
+    <label>wild crimmelroot</label>
+    <description>A marsh herb: a ruff of glossy, ribbed blades over a swollen root crown banded in crimson that shoulders up through the mud. The root is tangy and sweet, and anyone who has eaten it once goes looking for it again.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP placeholder (vanilla); base art pending owner review -->
+      <texPath>Things/Plant/BerryPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>250</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <immatureGraphicPath>Things/Plant/BerryPlant</immatureGraphicPath>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawCrimmelroot</harvestedThingDef>
+      <harvestYield>11</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>4</growDays>
+      <visualSizeRange>0.5~1.5</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase" Name="RM_RawCrimmelroot">
+    <defName>RM_RawCrimmelroot</defName>
+    <label>crimmelroot</label>
+    <description>Raw crimmelroot. A banded red root prized for its tangy, sweet flavour.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP placeholder (vanilla) -->
+      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+      <specialThoughtAsIngredient>RM_AteCrimmelroot</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RM_AteCrimmelroot</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate crimmelroot</label>
+        <description>That tang and sweetness - there is no mistaking crimmelroot.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
