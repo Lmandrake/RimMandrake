@@ -76,6 +76,5 @@ listed factions, confirm the pendant sells to a vanilla trader. See
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
 </ModMetaData>

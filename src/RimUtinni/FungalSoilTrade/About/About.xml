@@ -55,7 +55,6 @@ whichever item eventually places Moisture Farmer settlements on the world.</desc
          PawnKindDefs are resolved by defName string in C#, and the biome check is a
          defName string too), so a missing one just means the GenStep/distress response
          no-ops on that particular map/roster entry rather than failing to load. -->
-    <li>sarg.alphaanimals</li>       <!-- AA_Agaripawn/Agaripod/Wildpawn/Wildpod/Swarmling/MycoidColossus -->
     <li>mandrake.rut.patches</li>    <!-- BiomeCast_Ashkarr.xml, the source for the roster's live commonalities -->
   </loadAfter>
 </ModMetaData>

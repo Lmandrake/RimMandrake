@@ -29,20 +29,15 @@
 <Patch>
 
   <!-- Neebray (mlie.starwarsanimalcollection) -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ThingDef[defName="Neebray"]/race/specificMeatDef</xpath>
+  <Operation Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Neebray"]</xpath><match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RSW_Neebray"]/race/specificMeatDef</xpath>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="Neebray"]/race</xpath>
+        <xpath>Defs/ThingDef[defName="RSW_Neebray"]/race</xpath>
         <value>
           <specificMeatDef>RUT_NeebrayMeat</specificMeatDef>
         </value>
       </nomatch>
-    </match>
-  </Operation>
+    </match></Operation>
 
   <!-- RSW_Screecher (ours, mandrake.rsw.swbestiary) -->
   <Operation Class="PatchOperationConditional">
@@ -72,19 +67,14 @@
   </Operation>
 
   <!-- AA_Helixien (sarg.alphaanimals) -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Animals</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ThingDef[defName="AA_Helixien"]/race/specificMeatDef</xpath>
+  <Operation Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RM_Bileworm"]</xpath><match Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Bileworm"]/race/specificMeatDef</xpath>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="AA_Helixien"]/race</xpath>
+        <xpath>Defs/ThingDef[defName="RM_Bileworm"]/race</xpath>
         <value>
           <specificMeatDef>RUT_HelixienMeat</specificMeatDef>
         </value>
       </nomatch>
-    </match>
-  </Operation>
+    </match></Operation>
 
 </Patch>

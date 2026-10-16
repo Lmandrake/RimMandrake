@@ -61,6 +61,5 @@ verify beyond the skin patch's static xpath match.</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.biomes</li>
-    <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
 </ModMetaData>

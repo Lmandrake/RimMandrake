@@ -26,7 +26,6 @@
          into ExplosiveGrowthAPI). Every read of biomes content here is lazy runtime reflection /
          GetNamedSilentFail, so it needs no order; naming biomes here made a cycle. -->
     <li>sarg.alphabiomes</li>
-    <li>sarg.alphaanimals</li>
   </loadAfter>
   <description>EXPLOSIVE_PLANT_GROWTH_1. Water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
 
