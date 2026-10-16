@@ -587,10 +587,16 @@ window.artFollowedHtml = d => {
   const f = (d && d.notes_followed) || [];
   return f.length ? `<div class="ac-followed" style="font-size:12px;opacity:.75;margin:3px 0">${f.map(x => `followed: “${esc(x.note)}” <span class="sub">(${esc((x.followed_by || []).slice(0, 2).join(', '))}${(x.followed_by || []).length > 2 ? ' …' : ''} · ${esc(String(x.when || '').slice(0, 10))})</span>`).join('<br>')}</div>` : '';
 };
+/* A row collapsed as "already ruled elsewhere" wraps its .ac-body in <details class="bs-ruled">. Repaint replaces that
+   OUTER element and marks the row open: replacing only the inner .ac-body nested a fresh CLOSED <details> inside the
+   open one on every click (owner, 2026-10-15: "Clicking anything on the Murrelith kept closing their art"). */
 window.artRepaint = id => {
-  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);
   const it = byId.get(id);
-  if (node && it) node.outerHTML = window.itemBody(it);
+  const row = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  const node = row && (row.querySelector('details.bs-ruled') || row.querySelector('.ac-body'));
+  if (!node || !it) return;
+  if (it.ruledElsewhere) it.ruledOpen = true;     // he is working in this row: it never re-collapses this session
+  node.outerHTML = window.itemBody(it);
 };
 window.artTogglePurge = (id, sha) => {
   if (frozen) return;
@@ -1739,7 +1745,7 @@ const _itemBody = it => {
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
-  return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
+  return re ? `<details class="bs-ruled"${it.ruledOpen || d.at || d.decidedAt ? ' open' : ''}>${reHead}${inner}</details>` : inner;
 };
 /* requests that used to be typed into the note get their own fields (owner rulings by question card 2026-10-10: rename,
    description, make N more based on X, missing facings, size, move biome/tier, cut). The note stays for everything else.
@@ -2354,6 +2360,17 @@ def _epoch(ts: str) -> float:
         return float("inf")
 
 
+def new_sets_since(gitems, idx, when: str) -> list[str]:
+    """Letters of columns whose every picture the ledger first recorded AFTER `when` (his ruling elsewhere). A row
+    with such columns holds unruled candidates, so it must not collapse as already ruled (Murrelith, 2026-10-15:
+    ruled `redo` on feverwood 10-08, redrawn 10-15, and the redraw sheet hid it behind "already ruled")."""
+    t0 = _epoch(when)
+    if t0 == float("inf"):
+        return []
+    return sorted({c["letter"] for g in gitems for c in g["cols"]
+                   if c.get("faces") and all(_first_seen(idx, s_) > t0 for s_ in c["faces"].values() if s_)})
+
+
 def _first_seen(idx, sha: str) -> float:
     """When the ledger first recorded this picture (earliest variant event); unknown -> -inf (never 'new')."""
     ts = [_epoch(v.get("ts")) for v in idx.variants.get(sha, ()) if v.get("ts")]
@@ -2929,6 +2946,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             set().union(*[_subject_names(x) for x in [key] + list(r.get("defNames") or []) if x]), _elsewhere)
         if _re and b.get("subjects") and ruling_predates_jobs(_re, r.get("artpipe_state_jobs") or []):
             _re = None                    # a named render newer than his ruling: this sheet exists to judge it
+        if _re and new_sets_since(gitems, idx, _re.get("at") or ""):
+            _re = None                    # pictures he has never ruled on (a redraw landed): the row is open work
         if _re:
             item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
