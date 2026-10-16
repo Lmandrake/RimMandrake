@@ -373,7 +373,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Zisska</defName>
     <label>zisska</label>
-    <description>Low and broad as a dropped shield, plated like the stones it eats. The zisska spends its life nose-down against rock and old trunks, rasping off the mineral rings the forest paints on everything that stands still -- and everything it rasps stays in it. The Farmers of other countries would call it livestock. Here the butchers wear gloves to the elbow, and the meat is worth the gloves.</description>
+    <description>Low and broad as a dropped shield, plated like the stones it eats. The zisska spends its life nose-down against rock and old trunks, rasping off the mineral rings the forest paints on everything that stands still -- and everything it rasps stays in it. The Farmers of other countries would call it livestock. Here the butchers wear gloves to the elbow, and the meat is worth the gloves. Corner one and it hawks the rasped sulphur back up in a burning gobbet: the stuff lights on the air, and a frightened herd can set a stand of trunks ablaze.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <Mass>60</Mass>
@@ -427,6 +427,13 @@
         </li>
       </lifeStageAges>
     </race>
+    <comps>
+      <!-- FIRESPIT_EXPLAIN_BEFORE_JUDGING: the orphaned RM_FireSpit (ex-Bezzul) lives here now.
+           Owner 2026-10-16: "Add firespit to something in the Cauldron that needs some pizzaz." -->
+      <li Class="VEF.AnimalBehaviours.CompProperties_InitialAbility" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <initialAbility>RM_FireSpit</initialAbility>
+      </li>
+    </comps>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>

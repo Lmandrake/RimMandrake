@@ -805,9 +805,9 @@ def source_checks():
     # Alpha Animals rows; src/RimMandrake/Utils/aa_port.py), with their eggs, silk, bricks, bodies, bite, ability, projectile.
     # 71 since CAULDRON_MECHANICS_BUILD_1 parts 3/4 (2026-10-16): + the gas tap, Filter-Works, corroded rig, vent reagent,
     # filter cartridge, RM_FilterWorksResearch and RM_CauldronRuinScatter (ResearchProjectDef/GenStepDef now parsed too).
-    # 68/8 since BEZZUL_DELETE_NOT_NEEDED_ANYMORE (2026-10-16): RM_Bezzul removed (owner: drop it).
-    if len(V.SHIPPED) != 68 or len(V.FLORA) != 17 or len(V.KINDS) != 8:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 68 / 17 / 8); update "
+    # 69/8: RM_Bezzul removed (BEZZUL_DELETE_NOT_NEEDED_ANYMORE); RM_FireSpit projectile restored for RM_Zisska (2026-10-16).
+    if len(V.SHIPPED) != 69 or len(V.FLORA) != 17 or len(V.KINDS) != 8:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 69 / 17 / 8); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 
