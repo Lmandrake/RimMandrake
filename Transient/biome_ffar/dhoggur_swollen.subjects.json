@@ -1,0 +1,61 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T08:15:12-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_dhoggur_swollen"
+ ],
+ "biomes": {
+  "SUBJECTS_dhoggur_swollen": {
+   "label": "Dhoggur swollen/angry state",
+   "slug": "dhoggur_swollen",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Dhoggur swollen/angry state \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RM_Dhoggur",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Dhoggur",
+     "defNames": [
+      "RM_Dhoggur"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "forgeslot_dhoggur_swollen_v1_east",
+      "forgeslot_dhoggur_swollen_v1_north",
+      "forgeslot_dhoggur_swollen_v1_south"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Dhoggur"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Dhoggur found"
+     }
+    }
+   ]
+  }
+ }
+}
