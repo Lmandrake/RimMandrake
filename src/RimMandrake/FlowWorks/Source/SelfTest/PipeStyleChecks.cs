@@ -76,6 +76,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
             });
+            Case("TankStyles_choose_style_gizmo", () =>
+            {
+                // TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH (owner 2026-10-16: "I don't see the switch."): every tank carries the built
+                // tank's Choose style gizmo, and the gizmo restyles through the shared picker (never a def swap).
+                XDocument a = Load("LiquidTypes", "ThingDefs", "RM_LiquidTank.xml"), b = Load("Machinery", "RM_LiquidLogistics.xml");
+                foreach (string tank in PipeStyles.TankDefs)
+                {
+                    XElement td = Thing(a, tank) ?? Thing(b, tank);
+                    Assert(td != null, tank + " shipped");
+                    Assert(td.Element("comps")?.Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.Machinery.CompProperties_TankLook") == true,
+                        tank + ": the Choose style gizmo (CompProperties_TankLook)");
+                }
+                // can-fail: a liquid-tank-class building outside TankDefs would be built with no look at all
+                foreach (XDocument d in new[] { a, b })
+                    foreach (XElement td in d.Descendants("ThingDef").Where(e => ((string)e.Element("thingClass") ?? "").EndsWith(".Building_LiquidTank")))
+                        Assert(PipeStyles.TankDefs.Contains((string)td.Element("defName")), (string)td.Element("defName") + ": a liquid tank missing from PipeStyles.TankDefs");
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                Assert(src.Contains("class CompTankLook") && src.Contains("PipeLook.StyleFor(tank?.def, look)") && src.Contains("tank.SetStyleDef(sd)"),
+                    "CompTankLook restyles in place through the shared picker");
+                Assert(src.Contains("tank.OccupiedRect()"), "the whole footprint is redrawn (a 2x2 can straddle a mesh section)");
+            });
             Case("PipeStyles_shipped_style_defs", () =>
             {
                 XDocument d = Load("Machinery", "RM_UniversalPipeStyles.xml");

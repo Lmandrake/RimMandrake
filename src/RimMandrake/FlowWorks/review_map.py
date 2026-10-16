@@ -619,8 +619,9 @@ SETUPS = {
                         style=[(d, x, z, "%s_%s" % (d, lk)) for d, z in (("RM_LiquidTank", 2), ("RM_LiquidTankTall", 8))
                                for x, lk in zip((1, 5, 9, 13), LOOKS)],
                         marks=[(1, 0, "scrapper"), (5, 0, "industrial"), (9, 0, "modern"), (13, 0, "futuristic")],
-                        try_=["select a tank: Choose style"],
-                        look="weak spot: a look whose tall tank does not match its short one; a look missing art"),
+                        try_=["select a tank: Choose style (this tank)", "drag-select a row: Choose style, every selected tank"],
+                        look="weak spot: no Choose style button on a built tank; a look whose tall tank does not match its "
+                             "short one; a tall tank's top left in the old look after a switch"),
     "tank_styles_cargo": dict(short="Tank looks: cargo tanks", notice="the cargo tank (bottom) and the extra-tall cargo "
                               "tank (top) in each of the four looks", s="carry", after="tank_styles",
                               probes=["xml:defName>RM_UniversalCargoTank_Futuristic<",
@@ -632,7 +633,8 @@ SETUPS = {
                                                                                ("RM_UniversalCargoTankXTall", 8))
                                      for x, lk in zip((1, 5, 9, 13), LOOKS)],
                               marks=[(1, 0, "scrapper"), (5, 0, "industrial"), (9, 0, "modern"), (13, 0, "futuristic")],
-                              try_=["select a tank: Choose style"],
+                              try_=["select a tank: Choose style (this tank)",
+                                    "drag-select a row: Choose style, every selected tank"],
                               look="weak spot: the extra-tall tank's top running into the label above the station"),
     "tank_modes": dict(short="Tank modes", notice="four tanks set Store, Fill, Empty and Dump, with empty bottles by them",
                        s="carry", after="tank_styles_cargo", probes=["cs:RMFlow_TankMode_", "cs:class Building_LiquidTank"],

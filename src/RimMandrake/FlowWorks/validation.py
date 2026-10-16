@@ -529,7 +529,9 @@ def hose_switch_flips(t):
 # joining up on a map are owed to a live row.
 PIPE_LOOK_CASES = ["PipeStyles_looks_are_the_wires_looks", "PipeStyles_resolve_rule", "PipeStyles_shipped_style_defs",
                    "PipeStyles_pipe_is_styleable", "BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab",
-                   "Pitch_never_solidifies_in_bulk"]
+                   "Pitch_never_solidifies_in_bulk",
+                   # TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH (owner 2026-10-16): the four tanks' looks and their Choose style gizmo
+                   "TankStyles_four_looks_per_tank", "TankStyles_choose_style_gizmo"]
 
 
 @suite.chain("pipe_looks")
@@ -550,6 +552,19 @@ def pipe_looks(t):
             missing = [w for w in want if not os.path.isfile(w)]
             if missing:
                 raise ExpectationFailed("pipe art missing: %s" % missing)
+    with t.component("tank_art_installed"):
+        if t._guard():
+            want = [os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Tank", l, d + ".png")
+                    for l in ("Scrapper", "Industrial", "Modern", "Futuristic")
+                    for d in ("RM_LiquidTank", "RM_LiquidTankTall", "RM_UniversalCargoTank", "RM_UniversalCargoTankXTall")]
+            missing = [w for w in want if not os.path.isfile(w)]
+            if missing:
+                raise ExpectationFailed("tank art missing: %s" % missing)
+    with t.component("tank_choose_style_live"):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- select a built tank, Choose style -> Modern: the art "
+                                    "changes in place, survives save/reload; multi-select restyles every selected tank "
+                                    "(TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH; review map station tank_styles)")
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
