@@ -10,8 +10,12 @@ the Oomo shrine; the Scrub gets the calling-pyre with three beliefs and living c
 and §4 below are revised to that scope. N1-N4 are RULED in §2.3 and added the new people, the new gas type and the
 exposure rules to the work; one small new open question (N5, the new people's stance) is in §2.3.
 
+**Phase 0 comes first (owner, 2026-10-15 ~19:30 PDT):** the donor art mods are retired before any biome beyond the Pyrelands
+is reviewed. See §0.5. Every biome art sitting in §4 now follows its gate.
+
 This packet holds:
 
+- §0.5, Phase 0: retire Star Wars Animal Collection and Alpha Animals (Alpha Biomes is a candidate) before any biome review;
 - §1, the criteria list for each biome at the ruled scope, for him to approve, edit or cut at S0;
 - §2, his rulings on the kickoff cards, and the new open questions as question cards;
 - §3, the LeaningScrub art redo;
@@ -38,6 +42,149 @@ in §2.1. Only the Seismometer is cut; nothing else was deferred.
 | LeaningScrub blocked on the "calling-pyre ritual" | **The concept is ruled.** By card on 2026-10-01 it was merged with the controlled waking: the calling-pyre is the controlled waking's Scrub form (`design/Jawa/biome_rites_pass_2026-10-01.md` §7.1). Only the precept shape and the build size are open (Q7). |
 | "Patch-added RM_ cast" for every biome | Contagion has no `WildAnimals_Contagion.xml`: its whole roster is inline in `RM_Contagion.xml`. LeaningScrub's patch-added cast (about 38 rows in `src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml`) is all `RSW_`, not `RM_`. The manifests list the real files. |
 | north-star line counts 7 / 8 / 8 | Those are the must-show lines. Each biome also has 2 cannot-show lines. In all three, `### the experience` is "(not yet dictated)". |
+
+---
+
+## 0.5 Phase 0: retire the donor art mods (prerequisite)
+
+**Owner, 2026-10-15 ~19:30 PDT** (ledger note on `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE`): *"since we're about ready to retire
+two entire art mods and maybe some more, we should finish THAT before we try to review any biomes beyond the Pyrelands."*
+So no art sheet for Cauldron, Contagion or LeaningScrub goes to him until Phase 0's gate passes. Builds that need no
+review keep running alongside it (§4).
+
+**How this was measured (2026-10-15 ~19:40 PDT, read-only, the game left alone).** Roster rows were parsed as XML elements from every
+`BiomeDef` under `src/` and every patch that adds to `wildAnimals`/`wildPlants`/`diseases`. Ownership was read from each
+row's `MayRequire`. The **shipping layer** is the `RM_` defs plus their patches. The frozen `RUT_` twins in
+`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/` are counted separately: they are deleted at the one-time paint and are not
+ported. Donor def lists came from each workshop folder's `1.6/Defs`. The campaign save
+`CANONICAL_ASHKARR_START_2026-09-12.rws` was grepped for `<def>NAME</def>`; as a check that the grep can see, it found
+`Human` 75 times. Tools: `donor_pack_port.py check`, `donor_code_census.py`, an md5 comparison of our 9,613 PNGs
+against the donors' PNGs, and a census subagent whose scripts are in the session scratchpad and are not committed.
+
+### 0.5.1 The mods
+
+| mod (packageId) | why it is on the list | shipping roster rows | frozen-twin rows |
+|---|---|---:|---:|
+| **Star Wars Animal Collection** (`mlie.starwarsanimalcollection`, workshop 3497316713) | named by him; XML only, art in a 33.5 MB AssetBundle | **4** (FeverWood 2, Webwork 1, LeaningScrub 1, all canon plants) | ~16 |
+| **Alpha Animals** (`sarg.alphaanimals`, 1541721856, has a DLL) | named by him | **31 rows, 26 creatures, 11 biomes** (Cauldron 6, TheRot 5, Miasma 5, TheForge 4, LeaningScrub 3, Greentide 2, Contagion 2, and one each in FloodedCanyon, TwilightSea, BlueDesert, NightsideIce) | ~80 |
+| **Alpha Animals Patch for Outposts** (`daria40k.alphaanimalspatchoutposts`) | it needs Alpha Animals to load, so it leaves when Alpha Animals leaves; nothing of ours uses it | 0 | 0 |
+| *candidate:* **Alpha Biomes** (`sarg.alphabiomes`) | "and maybe some more": it is the third-largest source of borrowed art (plants and diseases) | **18 rows, 16 names** (TheRot 12, Miasma 3, TheForge 3) | ~64 |
+| *candidate tail:* VFE Insectoids 2, ReGrowth 2, Primordial Geysers, Horrors, Alpha Memes, VGE | small; most of their rows are not art | 4, 4, 3, 2, 2, 1 | ... |
+
+🔑 **Alpha Animals is the job.** 9 of its 31 shipping rows sit in the three sprint biomes (Cauldron 6, LeaningScrub 3,
+Contagion 2), so porting it does sprint work too.
+
+### 0.5.2 Star Wars Animal Collection: what is left (most of it is done)
+
+**Done and measured.** `donor_pack_port.py check` (re-run 2026-10-15): 371 roster `RSW_` rows resolve, 0 unresolved,
+**0 unguarded donor-only refs, 0 donor-served textures**. The one `BAD` line, `RSW_Bullet_AnimalToxbomb Things/Projectile/Acid`,
+is served by Biotech, not by the donor. The art went in at `78f55b91b` (40 species, 120 facings) and `b1e7d0152` (Akk S, Nexu N,
+Veermok S, owner accepted). The hard `modDependencies` entries are gone: no `About.xml` names the donor except as
+`loadAfter`, which does nothing when the mod is absent. A 22-mod load with the donor off came up clean on 2026-10-15
+(`Transient/Player_donor_off_w4.log`).
+
+**Left:**
+1. **14 guarded references still name donor defs. They load safely, but the content silently disappears.** A
+   `MayRequire` guard does not port anything: with the donor gone, these rows simply vanish.
+   - Repoint these to our existing twins: `Bantha` and `Dewback` in the animal groups of the `JawaWildsteamClan` and
+     `JawaHuttCartel` FactionDefs; `Plant_TookeTrap_Wild` in `WildPlants_Webwork.xml`; `Plant_Nysyllin_Wild` in
+     `RM_LeaningScrub_Biome.xml`; `swfish_Faa` and `swfish_Laa` in `SeaBeasts_Scalefish.xml`.
+   - Decide or port these: `sw_DeadSarlaccCave` (`Required="True"` in `RUT_GapingDoom.xml`, against our Sarlacc mod's
+     defs); the Shokkweave harvest nodes and their GenStep, which are gated on the donor as a whole def; and
+     `RSW_Shokk_FeraliskBrood`, a FactionDef gated on the donor.
+   - Port these two plants, which have no twin: `Plant_HydenockTree_Wild` and `Plant_JoganTree_Wild` (FeverWood).
+     They need art of ours.
+   - Remove the donor packageId string from the C# in
+     `src/RimMandrake/EnvironmentalHazards/Source/RM_StrandingPoolsExtension.cs`.
+2. **Art the owner has not seen yet:** FrogDog, the Grazer male, the Torton female, and the juvenile, female and swimming
+   facings of the 40 (FOUNDRY handoff 2026-10-15). They go on the Phase 0 sheet (O1 in 0.5.4). The 18 species the owner kept on
+   donor art (FOUNDRY Part B, 2026-10-15) stay as he ruled them.
+3. **The save.** The canonical save holds **9 SWAC defs, 27 references**: `sw_Sarlacc` 8, `sw_DeadSarlacc` 7, `Scavrat` 3,
+   `WompRat` 2, `WarWyrm` 2, `SW_Calamity` 2, `Lothcat`, `Mynock` and `Kreetle` 1 each. Its mod list also names the donor.
+   This matters per the `doorsexpanded` precedent: a clean mod-stack check did not stop that donor retirement breaking the
+   campaign load.
+4. **Live checks:** spawn every ported species on the donor-off tier (`modset_builder.py` `donor_off_w4`); generate a map
+   for every biome that had a donor row, at least AridShrubland, TheRot and Webwork; read flight state from
+   `Pawn_FlightTracker`/`MaxFlightTime` only, with no visual flight test. This was blocked on 2026-10-15 by a companion build
+   mismatch (L05).
+5. **Cleanup:** delete the SWBestiary `manhunterOn*Chance` PatchOperationConditionals that target donor-only defs (they
+   log "failed"), and drop the `loadAfter` entries (13 About.xml files).
+
+### 0.5.3 Alpha Animals: the bulk of Phase 0
+
+**Done.** 14 Alpha Animals creatures carry a machine-readable `AA_X -> R*_Y` port comment, mostly in the desert port and
+in `ALPHA_ANIMAL_PORTS_REHOME_1`. Only one texPath of ours still points into the donor's texture folders:
+`RSW_SandLion` (6 refs, to `AA_SandLion`). Its v2 art was commissioned at `a874b5e41`. One donor-identical PNG exists in our
+tree, `src/RimMandrake/TheRot/Textures/.../AngelMoth_south.png`; nothing points at it, because the TheRot roster still
+names the donor def `AA_AngelMoth`.
+
+**Left:**
+1. **Port the 26 rostered creatures** that the shipping layer still names by donor def. First subtract any that already
+   have a port: only 14 are machine-mapped, so match the rest by stats rather than by name. Each port becomes an owned
+   def under its existing label and is wired in the donor row's place at the same commonality. This is a port, not a
+   keep/cut decision; evictions stay stopped. Include `AA_Eyeling` (the "ikee", renamed by `Ikee_Rename.xml`, which
+   patches it into the vanilla Wasteland, ExtremeDesert and DesertOasis biomes). It is also in the canonical save twice.
+2. **17 rostered creatures run on the donor's C#** (`AlphaBehavioursAndEvents.dll`, per `donor_code_census.py` today).
+   - The acid and flashstorm death bursts already have our own equivalents (`DONOR_CODE_BURST_REBUILD_1`, patch
+     `RM_AlphaAnimals_DeathBursts.xml`), so those creatures only need repointing.
+   - Six use `PawnRenderNode_Alternates` or `GraphicsRefresher`. Five use the `SpasticScaled` render tree, which flight
+     doctrine bans. The grow-on-combat anole is a separate case. All of these get a plain directional graphic, which is
+     an engine fact rather than a cosmetic choice. `VFEI2_BlackSwarmling`'s cocoon comp also depends on this DLL.
+3. **Rows filed earlier:** the Abyss sheet's 15 ports (`ABYSS_SHEET_DONOR_PORT_1`); `AA_Helixien` "Bileworm" on the Warscar
+   sheet (`WARSCAR_SHEET_DONOR_PORT_1`); the Skorra art pick that still needs a ruling (`ALPHA_ANIMAL_PORTS_REHOME_1`); and
+   the dusk rat redo (`ABYSS_CRAGS_ART_ON_PORTED_DEFS_1`).
+4. **Load wiring:** SWBestiary still lists `sarg.alphaanimals` in `<modDependencies>`, which is a hard dependency. Drop
+   it. The live Cherry Picker config cuts 12 Alpha Animals defs (none of them rostered) and `CherryPicker.SHIP.xml` cuts
+   26 `AA_` defs. Remove those keys when the donor leaves.
+5. **Art:** every new port needs a render of ours, because no donor art is kept (owner, 2026-10-05). That is about 26
+   creatures x 3 facings, roughly 80 artpipe jobs. Check `artpipe_state.py find` and the sheets' `.decisions.json` first:
+   the Abyss crags sets and the Rot art already exist.
+6. **Save:** only `AA_Eyeling` x2 in the canonical save.
+7. **Live checks:** the same donor-off round as SWAC, with spawn, mapgen and flight state read on the same tier.
+
+**Alpha Biomes (candidate):** 16 plant and disease names in TheRot, Miasma and TheForge, plus donor strings in the C# of
+`RM_WarmGroundExtension.cs` and `Pyrelands/Source/WildPlantAllowlist.cs`. Including it is his call: it is one card,
+asked at the same sitting as the Phase 0 sheet.
+
+### 0.5.4 The retirement sequence (agent-hours INFERRED)
+
+The **P** steps run in parallel. Each **L** step uses the one bridge and runs alone. **[O]** marks an owner touchpoint.
+
+| step | work | needs | agent-h |
+|---|---|---|---:|
+| P1 | SWAC: repoint the 6 refs with twins; port Hydenock and Jogan; decide or port the Sarlacc landmark, Shokkweave nodes and Feralisk brood; remove the C# string; delete the manhunter patches | offline | 4-6 |
+| P2 | AA: match the 26 rostered creatures against existing ports (stats diff, as in W0); port the rest as plain XML and repoint the rows; drop the SWBestiary hard dependency | offline, sonnet workers | 10-14 |
+| P3 | AA code-riders: repoint the death bursts to ours; give the Alternates and Spastic creatures plain graphics; handle the swarmling cocoon | offline | 6-8 |
+| P4 | Art: queue renders for every new port, plus SandLion v2, Hydenock and Jogan, and the AngelMoth row. Canon-check them against `canon_references/` where they are canon. | artpipe, parallel | 3 (about 2 h wall, as commission 2 measured) |
+| **O1** | **[O] ONE sitting, ONE sheet:** every Phase 0 art row, grouped by biome inside the one page (he has asked for one sheet per biome), plus the SWAC rows he has not seen and the Skorra pick, plus one card: *"Retire Alpha Biomes now too?"* | owner, 30-45 min (INFERRED) | 2 to build |
+| P5 | `art.py enact` for his picks, then deploy | offline | 2 |
+| P6 | Save: rewrite the 11 donor def references in a copy of the canonical save (`rimworld-savegame` skill, back up first), or replace them in game and resave | offline (+L1) | 2-3 |
+| L1 | Donor-off round: tier with neither donor; first exception; spawn every ported species; mapgen every biome that had a donor row; flight state read; load the fixed save | bridge, about 2 h | 3 |
+| P7 | Remove both donors and the Outposts patch from the full list (`modset_builder.py`) and from the Cherry Picker keys; drop the `loadAfter` lines; `rimflow verify` | offline | 1 |
+| (opt) | Alpha Biomes, if he says yes at O1: the same P2, P4 and L1 steps for 16 names; its art joins a second short round | | 8-10 |
+
+**Total: about 36-46 agent-hours, 3-4 calendar days, one owner sitting** (plus a short return round only if he sends rows
+back). The critical path runs P2/P3 -> P4 -> O1 -> P5 -> L1.
+
+### 0.5.5 The gate for "retired" (machine-checkable, per packageId)
+
+A donor is **retired** when all of the following hold. Each check is a command, not a reading.
+
+1. **Rosters:** the shipping-layer census (the method above) finds **0** rows guarded by the packageId and 0 elements
+   naming one of its defNames, and `donor_code_census.py` finds 0 rostered creatures on `AlphaBehavioursAndEvents`
+   classes.
+2. **References:** `grep` of `src/` finds the packageId in no `MayRequire`, `FindMod`, `modDependencies` or C# string.
+   (The frozen `RUT_` twins are exempt; their guarded rows drop out quietly and die at the paint.)
+3. **Art:** `donor_pack_port.py check` reports 0 donor-served texPaths and exits 0 apart from the known Biotech `Acid`
+   line; the md5 comparison finds 0 donor-identical PNGs that a def references; every ported def's art has an
+   owner-accepted art-ledger event.
+4. **Save:** the canonical save's `<def>` names include 0 of the donor's defNames, and its mod list no longer names the
+   donor.
+5. **Live:** the donor-off `Player.log` has 0 exceptions and 0 cross-reference or texture misses on `RM_`/`RSW_`/`RUT_`;
+   every ported species spawns; every biome that had a donor row generates a map with animals (or plants) present;
+   flight state reads true for every flyer.
+6. **List:** the donor is absent from the full modset and from both Cherry Picker profiles, and the item records it all
+   with `rimflow verify`.
 
 ---
 
@@ -453,9 +600,7 @@ A second round (S1b) happens only for rows he sends back.
 
 ## 4. Sprint schedule (critical path, from measured agent throughput)
 
-**Estimate: about 8-10 calendar days from D0, sign-off around Sat 10-24 to Mon 10-26. INFERRED.** The earlier calendar
-priced human builder-days (14-20 days) and is replaced. Basis: build hours (§2.2, 48-72 agent-hours over 3-4 parallel
-builders) fit inside the first two days, so they are not the critical path. The path is the serial resources:
+**Estimate (revised 2026-10-15 ~19:45 PDT for Phase 0, §0.5): about 11-13 calendar days from D0, sign-off around Tue 10-27 to Thu 10-29. INFERRED.** Phase 0 (retire the donor art mods) comes first, by his ruling, and takes D0-D3. Builds that need no review run alongside it. Every biome art sheet (S1, S1b, S1c) and everything that waits on those sheets moves back three days. The previous estimate was 8-10 days, sign-off 10-24 to 10-26. The serial resources are unchanged, except that Phase 0 adds one live round (L1, about 2 h) and one owner art sitting (O1).
 
 | serial resource | figure (INFERRED) | basis |
 |---|---|---|
@@ -467,20 +612,22 @@ Owner sittings are marked **[S#]**. Builders are FOUNDRY; BENCH runs the tooling
 
 | day | agents (parallel) | live game (serial) | owner gate |
 |---|---|---|---|
-| **D0 Fri 10-16** | FOUNDRY starts all three biomes at once, N2 gas spike first. BENCH: tooling slice (`biomes_sprint` tier, preflight, Cauldron site), file `LEANING_SCRUB_LEAN_SITE_1`, freeze manifests from S0 answers. Art agents start kit and new-people renders. | none | **[S0]** Approve §1 lists; answer N5; pilot C6 sign-off; one typed venomvine sentence (§3 item 4). |
-| **D1 Sat 10-17** | Builds continue (Contagion and Scrub features offline). BENCH builds the early art sheet with the five grown limbs and the rider rows. | **Gas spike round, about 1.5 h** (minimal list, plus a vanilla-gas guard). The gate: if the new gas type cannot be isolated, the sprint stops and asks him. | **[S1]** art sheet with grown limbs (reply within a day). |
-| **D2 Sun 10-18** | Install S1 picks. Offline reviews finish; a separate reviewer marks files CLEAN. Kit art (Filter-Works, ruins, shrine, vaporator, camps, pyre, new people) goes out as ONE batched sheet. | Cauldron round 1 (about 2 h, includes the falter-tell check). | **[S1b]** the batched kit sheet (reply within a day). |
-| **D3 Mon 10-19** | Fix-ups from round 1; install kit picks; redo any sent-back art. | Contagion round (about 2 h), then Scrub round (about 2 h). | none |
-| **D4 Tue 10-20** | Fix-ups; build the three review saves with key sheets. | Targeted second round on failing chains only (about 3-4 h). | **[S1c]** return round for sent-back art, if any (15-30 min). |
-| **D5 Wed 10-21** | Last fixes; freeze manifests and record hashes. | **Final one-HEAD round, all three plus pilot guards (about 6 h)**, `rimflow verify` per line. | none |
-| **D6 Thu 10-22** | Standing by for rejections. | Game up for the sitting. | **[S2] 75-105 min:** walk the three review saves, accept or reject each bar (O2); venomvine sitting; any flyer look with him present. |
-| **D7-D9 (buffer)** | Redo whatever S2 rejected. | Rerun only suites whose inputs changed (plan X4); about 2-4 h. | **[S3] 10 min:** sign-off card citing the three manifest hashes (O3). |
+| **D0 Fri 10-16** | **Phase 0 P1-P3** (SWAC repoints and plant ports; Alpha Animals ports and code-riders) and P4 art jobs. FOUNDRY starts the three biome builds that need no review, N2 gas spike first. BENCH: tooling slice (`biomes_sprint` tier, preflight, Cauldron site), file `LEANING_SCRUB_LEAN_SITE_1`, freeze manifests from S0 answers. | none | **[S0]** Approve §1 lists; answer N5; pilot C6 sign-off; one typed venomvine sentence (§3 item 4). |
+| **D1 Sat 10-17** | Phase 0 renders land; build the O1 sheet. Biome builds continue. Kit and new-people art agents may draw, but nothing is shown to him. | **Gas spike round, about 1.5 h.** The gate: if the new gas type cannot be isolated, the sprint stops and asks him. | **[O1]** the Phase 0 donor-retirement sheet, plus the Alpha Biomes card (reply within a day). |
+| **D2 Sun 10-18** | P5 enacts his picks and deploys; P6 fixes the save. Offline reviews finish; a separate reviewer marks files CLEAN. | **L1 donor-off round, about 2 h** (spawn, mapgen, flight state, fixed save). | none |
+| **D3 Mon 10-19** | P7 removes the donors from the list; run the §0.5.5 gate. **Phase 0 RETIRED.** BENCH builds the early biome art sheet (grown limbs and riders). Ports landed in Cauldron, Contagion and LeaningScrub show up there as our own art. | Cauldron round 1 (about 2 h, includes the falter-tell check). | Return round for O1, only if he sent rows back (15 min). |
+| **D4 Tue 10-20** | Install S1 picks. Kit art goes out as ONE batched sheet. | Contagion round (about 2 h), then Scrub round (about 2 h). | **[S1]** art sheet with grown limbs (reply within a day). |
+| **D5 Wed 10-21** | Install kit picks; redo any sent-back art; fix-ups from round 1. | none | **[S1b]** the batched kit sheet (reply within a day). |
+| **D6 Thu 10-22** | Fix-ups; build the three review saves with key sheets. | Targeted second round on failing chains only (about 3-4 h). | **[S1c]** return round for sent-back art, if any (15-30 min). |
+| **D7 Fri 10-23** | Last fixes; freeze manifests and record hashes. | **Final one-HEAD round, all three plus pilot guards (about 6 h)**, `rimflow verify` per line. | none |
+| **D8 Sat 10-24** | Standing by for rejections. | Game up for the sitting. | **[S2] 75-105 min:** walk the three review saves, accept or reject each bar (O2); venomvine sitting; any flyer look with him present. |
+| **D9-D12 (buffer)** | Redo whatever S2 rejected. | Rerun only suites whose inputs changed (plan X4); about 2-4 h. | **[S3] 10 min:** sign-off card citing the three manifest hashes (O3). |
 
-**Critical path:** S0 -> gas spike round (D1) -> batched kit sheet and his reply (D2-D3) -> live rounds one and two
-(D2-D4) -> final one-HEAD round (D5) -> S2 (D6) -> reject round if any -> S3 (D7-D9). Two items can add whole days: a
+**Critical path:** S0 -> Phase 0 (P2/P3 -> art -> O1 -> L1 -> gate, D0-D3) -> S1 (D4) -> batched kit sheet and his reply (D4-D5) -> live rounds one and two
+(D3-D6) -> final one-HEAD round (D7) -> S2 (D8) -> reject round if any -> S3 (D9-D12). Two items can add whole days: a
 failed gas spike adds 1-2 days, and each late art reply adds a day.
 
-**Owner total:** about 4-5 h active in 5-7 sittings (INFERRED from the sittings above; S1c and the buffer round appear
+**Owner total:** about 4.5-5.5 h active in 6-8 sittings (Phase 0 adds O1, 30-45 min, and maybe a 15 min return round) (INFERRED from the sittings above; S1c and the buffer round appear
 only if he sends rows back).
 
 **If an answer is late:** the agents carry on with the other biomes and the harness work, which need no answers. N1-N4
