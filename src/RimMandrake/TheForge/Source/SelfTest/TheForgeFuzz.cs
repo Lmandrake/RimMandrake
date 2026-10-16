@@ -854,6 +854,23 @@ namespace RimMandrake.TheForge.SelfTest
                 Check(Near(x0, 11.6, 1e-4) && Near(z0, 10.0, 1e-4), "mote starts 1.6 east of its column cell");
                 RM_SkyKernel.MotePos(10f, 10f, 0f, 7.5f, 239, out float x1, out float z1);
                 Check(z1 > z0 + 2.9, "motes rise about 3.2 cells over their life");
+                // dhoggur swell (DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB): damage-only trigger, 1/3 day, cooldown from the END
+                var sw = new SwellState { swellEndTick = -1, cooldownUntilTick = 0 };
+                Check(!RM_SwellKernel.CanSwell(sw, true, false, 0f, 100), "a fully absorbed hit must not swell it");
+                Check(!RM_SwellKernel.CanSwell(sw, false, false, 5f, 100) && !RM_SwellKernel.CanSwell(sw, true, true, 5f, 100), "off or dead: no swell");
+                Check(RM_SwellKernel.CanSwell(sw, true, false, 0.1f, 100), "any real damage swells a rested dhoggur");
+                int dur = RM_SwellKernel.DurationTicks(8f), cd = RM_SwellKernel.CooldownTicks(1f);
+                Check(dur == 20000 && cd == 60000, "shipped 8 h = 20000 ticks (1/3 day), 1 day = 60000 ticks");
+                RM_SwellKernel.Begin(ref sw, 100, dur);
+                Check(RM_SwellKernel.Swollen(sw) && !RM_SwellKernel.CanSwell(sw, true, false, 9f, 200), "a swollen dhoggur cannot re-swell (no refresh)");
+                Check(!RM_SwellKernel.ShouldEnd(sw, true, 20099) && RM_SwellKernel.ShouldEnd(sw, true, 20100) && RM_SwellKernel.ShouldEnd(sw, false, 500), "ends at exactly 20000 ticks, or at once when switched off");
+                Check(RM_SwellKernel.TicksLeft(sw, 10100) == 10000 && RM_SwellKernel.CooldownLeft(sw, 10100) == 0, "ticks left while swollen");
+                Check(RM_SwellKernel.Scale(true, 3f) == 3f && RM_SwellKernel.Scale(false, 3f) == 1f && RM_SwellKernel.Scale(true, 0.5f) == 1f, "scale x3 while swollen only, never shrinks");
+                RM_SwellKernel.End(ref sw, 20100, cd);
+                Check(!RM_SwellKernel.Swollen(sw) && sw.cooldownUntilTick == 80100, "cooldown counted from the swell's end");
+                Check(!RM_SwellKernel.CanSwell(sw, true, false, 5f, 80099) && RM_SwellKernel.CanSwell(sw, true, false, 5f, 80100), "rested again exactly a day after the end");
+                Check(RM_SwellKernel.CooldownLeft(sw, 50100) == 30000, "cooldown left");
+                Steps++;
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
             return fails;

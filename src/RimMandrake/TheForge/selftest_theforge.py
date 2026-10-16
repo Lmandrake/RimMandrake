@@ -429,7 +429,8 @@ class FGame(MockGame):
             {"label": "Forge plumes: spawn a front on a crust cell (mouse cell if none)", "path": "Actions\\RMTheForge\\plume_spawn"},
             {"label": "Forge sky: report (current map)", "path": "Actions\\RMTheForge\\sky_report"},
             {"label": "Spunstone: report knowledge", "path": "Actions\\RMTheForge\\spun_report"},
-            {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"}]}
+            {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"},
+            {"label": "Dhoggur swell: report (newest dhoggur, current map)", "path": "Actions\\RMTheForge\\dhoggur_report"}]}
 
     def log(self, line):
         if "log_cap" in self.brk:
@@ -443,6 +444,8 @@ class FGame(MockGame):
 
     def t_rimworld_execute_debug_action(self, p):
         path = p.get("path", "")
+        if path.endswith("dhoggur_report"):
+            return self.log("[RMTheForgeDebug] " + self.dhoggur_line())
         if path.endswith("plume_report") or path.endswith("plume_spawn"):
             if path.endswith("plume_spawn"):
                 self.plume_spawns.append(self.ticks)
@@ -498,7 +501,60 @@ class FGame(MockGame):
         self.pawns.append(row)
         return {"success": True, "pawns": [{"id": pid}]}
 
+    # ------------------------------------------------------------------ the dhoggur's swell (RM_ForgeDhoggurSwell.cs)
+    def F(self, field):
+        return float(self.settings[SET_FORGE][field])
+
+    def dhog_on(self):
+        return self.active("dhoggurSwellEnabled") or "dhoggur_off_ignored" in self.brk
+
+    def dhog_update(self):
+        now = self.ticks
+        for pw in self.pawns:
+            if pw["kindDef"] != V.DHOGGUR or pw.get("swell_end", -1) < 0 or "dhoggur_never_ends" in self.brk:
+                continue
+            if not self.dhog_on() or now >= pw["swell_end"]:
+                end = min(now, pw["swell_end"]) if self.dhog_on() else now
+                pw["swell_end"] = -1
+                pw["cd_until"] = end + int(round(self.F("dhoggurCooldownDays") * 60000))
+                pw["hediffs"] = [h for h in pw["hediffs"] if h != V.SWELL_HEDIFF]
+
+    def t_jawa_damage(self, p):
+        self.dhog_update()
+        pw = next((q for q in self.pawns if q["id"] == p.get("thingId")), None)
+        if pw is None:
+            return {"success": False, "message": "no such thing"}
+        if pw["kindDef"] != V.DHOGGUR or "dhoggur_no_swell" in self.brk or not self.dhog_on():
+            return {"success": True}
+        swollen = pw.get("swell_end", -1) >= 0
+        rested = self.ticks >= pw.get("cd_until", 0) or "dhoggur_cooldown_ignored" in self.brk
+        if (not swollen and rested) or (swollen and "dhoggur_refresh" in self.brk):
+            pw["swell_end"] = self.ticks + int(round(self.F("dhoggurSwellHours") * 2500))
+            if V.SWELL_HEDIFF not in pw["hediffs"]:
+                pw["hediffs"].append(V.SWELL_HEDIFF)
+        return {"success": True}
+
+    def dhoggur_line(self):
+        self.dhog_update()
+        ds = [q for q in self.pawns if q["kindDef"] == V.DHOGGUR and not q.get("dead")]
+        if not ds:
+            return "no dhoggur on this map"
+        pw = ds[-1]
+        now = self.ticks
+        sw = pw.get("swell_end", -1) >= 0
+        k = self.F("dhoggurSwellScale") if sw and self.dhog_on() else 1.0
+        if "dhoggur_scale_ignored" in self.brk and sw:
+            k = 3.0
+        size = 1.0 if "dhoggur_not_x3" in self.brk else k
+        return ("dhoggur id=%s swollen=%s hediff=%s ticksLeft=%d cooldownLeft=%d bodySize=%.3f healthScale=%.3f "
+                "meleeFactor=%.3f fireSpit=%s manhunter=%s drawScale=%.3f swollenArt=False" % (
+                    pw["id"], sw, V.SWELL_HEDIFF in pw["hediffs"], max(0, pw["swell_end"] - now) if sw else 0,
+                    0 if sw else max(0, pw.get("cd_until", 0) - now), 0.45 * size, 0.9 * size, k,
+                    sw and "dhoggur_no_fire" not in self.brk,
+                    sw and self.S("dhoggurSwellManhunts") and "dhoggur_not_angry" not in self.brk, k))
+
     def t_jawa_list_pawns(self, p):
+        self.dhog_update()
         rows = []
         for q in self.pawns:
             if p.get("rect"):
@@ -761,7 +817,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("44 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 44, sorted(V.SETTINGS_DEFAULTS))
+    check("49 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 49, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -774,7 +830,8 @@ def main():
           'private const string CAT = "RMTheForge"' in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"),
                                                               encoding="utf-8").read())
     for lab in ("Forge cycle: report state", "Forge cycle: advance one phase", "Spunstone: report knowledge",
-                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report"):
+                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report",
+                "Dhoggur swell: report"):
         check("debug action label exists in the C#: %s" % lab,
               lab in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"), encoding="utf-8").read())
     check("the letter labels are in the C#", all(
@@ -825,7 +882,8 @@ def main():
         # a leaked crust also reddens every later chain's site setup: the precondition names the cause
         ("melt_keeps_crust", {W + "melt_restores_lava_and_counts_losses", A + "site_ready_arms", "plume_fronts.site_ready_plume",
                               "still_heat_hiss.site_ready_hiss", "voices.site_ready_voices",
-                              "dormancy.site_ready_dormancy", "floatstone_harvest.site_ready_harvest"}),
+                              "dormancy.site_ready_dormancy", "floatstone_harvest.site_ready_harvest",
+                              "dhoggur_swell.site_ready_dhoggur"}),
         ("melt_silent", {W + "melt_restores_lava_and_counts_losses"}),
         ("no_letters", {W + "telegraph_letters_sent", "still_heat_hiss.hiss_letter_sent_before_gas_wash"}),
         ("gas_off_ignored", {A + "gas_wash_off_no_ignitions"}),
@@ -855,6 +913,15 @@ def main():
         ("no_soak", {"plume_fronts.plume_soaks_ground"}),
         ("keel_wrong", {"keelwork.keel_default_saving"}),
         ("keel_apply_garbled", {"keelwork.keel_off_zeroes_saving"}),
+        ("dhoggur_no_swell", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
+        ("dhoggur_not_x3", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
+        ("dhoggur_no_fire", {"dhoggur_swell.swollen_dhoggur_spits_fire"}),
+        ("dhoggur_not_angry", {"dhoggur_swell.swollen_wild_dhoggur_is_manhunter"}),
+        ("dhoggur_scale_ignored", {"dhoggur_swell.scale_setting_is_read_live"}),
+        ("dhoggur_refresh", {"dhoggur_swell.second_hit_does_not_refresh"}),
+        ("dhoggur_never_ends", {"dhoggur_swell.swell_reverts_after_a_third_of_a_day"}),
+        ("dhoggur_cooldown_ignored", {"dhoggur_swell.cooldown_blocks_a_new_swell"}),
+        ("dhoggur_off_ignored", {"dhoggur_swell.switched_off_it_shrinks_at_once"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))
@@ -899,6 +966,15 @@ def main():
     check("floatstone without the weave category reddens the same component",
           set(bad) == {"keelwork.spunstone_parts_source_floatstone_only_and_gated"}, bad)
 
+    real = V._read_cs
+    try:
+        V._read_cs = lambda n: real(n).replace("PostPostApplyDamage", "X") if n == "RM_ForgeDhoggurSwell.cs" else real(n)
+        bad = reds(run())
+    finally:
+        V._read_cs = real
+    check("stripped dhoggur damage trigger reddens only the source wiring component",
+          set(bad) == {"dhoggur_swell.dhoggur_source_wiring"}, bad)
+
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     un = unmeasured(run(("log_cap",)))
     check("break log_cap: every debug-action component is UNMEASURED, none PASS",
@@ -924,7 +1000,7 @@ def main():
         for f in FAILS:
             print("  - " + f)
         return 1
-    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 6))
+    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7))
     return 0
 
 

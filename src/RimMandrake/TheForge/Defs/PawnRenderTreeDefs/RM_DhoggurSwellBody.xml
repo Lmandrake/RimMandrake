@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB. Core's "Animal" PawnRenderTreeDef with the body node swapped for
+  RimMandrake.TheForge.RM_PawnRenderNodeProperties_Swell (Source/RM_ForgeDhoggurSwell.cs): while the dhoggur is swollen
+  its body is drawn at the swell scale (shipped 3x) and, once the swollen texture
+  (Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_{south,east,north}) is installed, with that art; until then the
+  calm art is drawn 3x. Same pattern as the Miasma lastvine (RM_Lastvine render tree).
+-->
+<Defs>
+
+  <GraphicStateDef>
+    <defName>RM_DhoggurSwollen</defName>
+  </GraphicStateDef>
+
+  <PawnRenderTreeDef>
+    <defName>RM_DhoggurSwellBody</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li Class="RimMandrake.TheForge.RM_PawnRenderNodeProperties_Swell">
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <useRottenColor>true</useRottenColor>
+          <children>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Pack</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPack</nodeClass>
+              <workerClass>PawnRenderNodeWorker_AnimalPack</workerClass>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <baseLayer>5</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+</Defs>
