@@ -96,3 +96,7 @@ Biome-sprint kit art (ruled by card 2026-10-16, *"Let me guess the designs"*): c
 2. **Retire Alpha Biomes too?** (Unchanged from the kickoff; it decides whether its 16 names get art jobs.)
 
 Check progress: `ls D:\Luke\dev\_artpipe\pending` and `...\active`; per job `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <id> --names-only`.
+
+## Update 2026-10-16 (later): dessicated corpses queued, Alpha Biomes retired
+
+Owner, `--owner-said`: *"Go ahead and queue all pending art"*. By card: dessicated corpses drawn per species now; Alpha Biomes retires. 63 jobs `dessic_*` queued (priority 51; file `dessicated_corpses_commission_2026-10-16.json`, builder `dessicated_corpses_commission_build.py`; item `DESSICATED_CORPSES_REDRAW_ONE_BY_ONE`). The species' own body art rides as `canon_reference`, never `reference`; no `canon` entry is set because a living animal's Must-show list would mis-grade a skeleton. Alpha Biomes: `alpha_biomes_retirement_2026-10-16.md`; zero art jobs queued because all 14 plants already have ours.
