@@ -50,3 +50,48 @@
 {"key": "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:45"}
 {"key": "rm_therot/fauna/hwelgrue/rm_hwelgrue", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:50"}
 {"key": "rm_therot/fauna/redrawn/brogg/brogg", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:28:53"}
+{"event": "publish", "n_paths": 33, "result": "close with: rimflow close <ID> --sha 8bbb444258cf", "at": "2026-10-16T12:29:04"}
+{"key": "rm_therot/fauna/redrawn/grellik/grellik", "event": "done", "seconds": 80, "at": "2026-10-16T12:30:24"}
+{"key": "rotspecies/agaripawn/agaripawn", "event": "done", "seconds": 73, "at": "2026-10-16T12:31:37"}
+{"key": "rotspecies/angelmoth/angelmoth_c", "event": "done", "seconds": 111, "at": "2026-10-16T12:33:29"}
+{"key": "rotspecies/fungalweevil/fungalweevil", "event": "done", "seconds": 68, "at": "2026-10-16T12:34:37"}
+{"key": "swanimals/absorbed/baseopsis/baseopsis", "event": "done", "seconds": 155, "at": "2026-10-16T12:37:12"}
+{"key": "swanimals/absorbed/holcorobeus/holcorobeus", "event": "done", "seconds": 122, "at": "2026-10-16T12:39:14"}
+{"key": "swanimals/absorbed/protosolpuga/protosolpuga", "event": "done", "seconds": 115, "at": "2026-10-16T12:41:09"}
+{"key": "swanimals/absorbed/termitotron/termitotron", "event": "done", "seconds": 143, "at": "2026-10-16T12:43:32"}
+{"key": "swanimals/bantha/banthar", "event": "done", "seconds": 86, "at": "2026-10-16T12:44:58"}
+{"key": "swanimals/bantha/banthav_g", "event": "done", "seconds": 80, "at": "2026-10-16T12:46:18"}
+{"key": "swanimals/bantha/banthav_h", "event": "done", "seconds": 92, "at": "2026-10-16T12:47:50"}
+{"key": "swanimals/bantha/banthav_i", "event": "done", "seconds": 81, "at": "2026-10-16T12:49:12"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/aaroxisdendoria/aaroxisdendorialarvae", "event": "done", "seconds": 110, "at": "2026-10-16T12:51:02"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/basilisk/basilisk", "event": "done", "seconds": 121, "at": "2026-10-16T12:53:03"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/bloodropmoth/bloodropmothlarvae", "event": "done", "seconds": 97, "at": "2026-10-16T12:54:40"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/bovinebeetle/bovinebeetlelarva", "event": "done", "seconds": 155, "at": "2026-10-16T12:57:16"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/cavelemming/cavelemming", "event": "done", "seconds": 55, "at": "2026-10-16T12:58:11"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/cresteddragon/cresteddragon", "event": "done", "seconds": 95, "at": "2026-10-16T12:59:46"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/diggerpede/diggerpede", "event": "done", "seconds": 105, "at": "2026-10-16T13:01:30"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/facetmoth/facetmoth", "event": "done", "seconds": 98, "at": "2026-10-16T13:03:08"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrybeetle", "event": "done", "seconds": 122, "at": "2026-10-16T13:05:11"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrygrub", "event": "done", "seconds": 158, "at": "2026-10-16T13:07:49"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/glowworm/glowworm", "event": "done", "seconds": 138, "at": "2026-10-16T13:10:07"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/jewelbeetle/jewelbeetle", "event": "done", "seconds": 132, "at": "2026-10-16T13:12:18"}
+{"key": "rm_therot/fauna/redrawn/grellik/grellik", "event": "installed", "facings": ["south"], "at": "2026-10-16T13:12:21"}
+{"key": "rotspecies/agaripawn/agaripawn", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:12:23"}
+{"key": "rotspecies/angelmoth/angelmoth_c", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:25"}
+{"key": "rotspecies/fungalweevil/fungalweevil", "event": "installed", "facings": ["south"], "at": "2026-10-16T13:12:25"}
+{"key": "swanimals/absorbed/baseopsis/baseopsis", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:27"}
+{"key": "swanimals/absorbed/holcorobeus/holcorobeus", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:28"}
+{"key": "swanimals/absorbed/protosolpuga/protosolpuga", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:30"}
+{"key": "swanimals/absorbed/termitotron/termitotron", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:31"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/aaroxisdendoria/aaroxisdendorialarvae", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:33"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/basilisk/basilisk", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:34"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/bloodropmoth/bloodropmothlarvae", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:12:35"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/bovinebeetle/bovinebeetlelarva", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:37"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/cavelemming/cavelemming", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:12:39"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/cresteddragon/cresteddragon", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:12:42"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/diggerpede/diggerpede", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:46"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/facetmoth/facetmoth", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:12:47"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrybeetle", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:51"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrygrub", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:53"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/glowworm/glowworm", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:57"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/jewelbeetle/jewelbeetle", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:59"}
