@@ -4,20 +4,25 @@
 option 2 of `design/RimMandrake/next_sprint_plan_2026-10-15.md`. Item: `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE`. The plan's
 exit criterion: a per-biome criteria list he approves at sprint start (S0), and his sign-off cites that list.
 
-This packet exists so that sitting S0 is short. It holds:
+**Status, 2026-10-16 ~00:50 PDT: the kickoff cards are ANSWERED.** Every Q1-Q12 is RULED in §2 (his answers are ledger
+notes on the item). The ruled scope is bigger than the draft's recommendations: Cauldron gets the Filter-Works, ruins and
+the Oomo shrine; the Scrub gets the calling-pyre with three beliefs and living camps; FOUNDRY builds and BENCH tests. §1
+and §4 below are revised to that scope. Four new open questions the rulings created are in §2.3.
 
-- §1, a draft criteria list for each biome, for him to approve, edit or cut;
-- §2, the design calls blocking the three mechanics builds, as question cards;
+This packet holds:
+
+- §1, the criteria list for each biome at the ruled scope, for him to approve, edit or cut at S0;
+- §2, his rulings on the kickoff cards, and the new open questions as question cards;
 - §3, the LeaningScrub art redo;
-- §4, the day-by-day schedule with his sittings marked.
+- §4, the day-by-day schedule with his sittings marked, re-estimated.
 
 Every fact was re-measured on 2026-10-15 from the item files, the ledger, the design sheets, each biome's walk file
 (`design/validation_walks/RimMandrake/<Biome>.md`, which holds its `## north star`) and the 2026-10-08 modcheck records
 (`Transient/modcheck/<Biome>_20261008*.json`). Those runs used fresh maps at pre-pilot HEADs: they show how far each suite
 reaches, not today's state.
 
-**Said to him in these words (plan §2.2):** wherever he chooses "defer" below, "done" means *done against the scope he
-froze at S0*, not done with every mechanic he designed.
+**Said to him in these words (plan §2.2):** "done" means *done against the scope he froze at S0*, which is the ruled scope
+in §2.1. Only the Seismometer is cut; nothing else was deferred.
 
 ---
 
@@ -27,7 +32,7 @@ froze at S0*, not done with every mechanic he designed.
 |---|---|
 | Cauldron blocked on "falter-tell foreknowledge" | **Settled by the build, not by a question.** `src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs` uses the weather-transition ramp as the tell and needs no foreknowledge. `vents.vent_falter_precedes_bloom` PASSed live on 2026-10-08. Dropped from the cards. |
 | Cauldron: 4 overlay textures missing | **7.** The 2 assay-fleck overlays (`Things/Plant/RM_AssayFlecks/Flecks_{Light,Heavy}`), plus 5 dew variants `Things/Plant/RM_Dewfall/<def>_dew` for CrystalFlower, BloodBouquet, RedBugloss, KeeningCordax and GiantToxicFlower. The lint does not count the dew variants. |
-| Contagion blocked on the "grown-limbs owner sheet" | **Answered.** At the bedazzle sitting on 2026-09-27 he said *"Approved, this looks great!"*. All five limbs were built to the sheet's recommendations (`CONTAGION_GROWN_LIMBS_BUILD_1` and `_REST_1` are closed). What remains is a live proof and placeholder art for three limbs, which is build work. His look at the limbs happens in the S2 review save, not on a card. |
+| Contagion blocked on the "grown-limbs owner sheet" | **Answered twice.** At the bedazzle sitting on 2026-09-27 he said *"Approved, this looks great!"*; all five limbs were built to the sheet's recommendations (`CONTAGION_GROWN_LIMBS_BUILD_1` and `_REST_1` are closed). On 2026-10-15 he asked by card for a design sheet early and to build what he keeps. So the built five get reviewed on an early S1 sheet (§3), and what remains is a live proof and real art for three placeholder limbs. |
 | Contagion blocked on the "rattle render seam" | It is engineering, not design. It stays a scope card (Q6) only because it is polish that could be cut. |
 | LeaningScrub blocked on the "calling-pyre ritual" | **The concept is ruled.** By card on 2026-10-01 it was merged with the controlled waking: the calling-pyre is the controlled waking's Scrub form (`design/Jawa/biome_rites_pass_2026-10-01.md` §7.1). Only the precept shape and the build size are open (Q7). |
 | "Patch-added RM_ cast" for every biome | Contagion has no `WildAnimals_Contagion.xml`: its whole roster is inline in `RM_Contagion.xml`. LeaningScrub's patch-added cast (about 38 rows in `src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml`) is all `RSW_`, not `RM_`. The manifests list the real files. |
@@ -74,7 +79,8 @@ yield, bloom, water, fire, vents and log. The 2026-10-08 result was 58 PASS / 1 
 | `bloom.bloom_spares_natives` | Run on a real `RM_Cauldron` site with a native and a non-native herbivore | the saved site |
 | `water.water_poison_toggle_off` | Pen the test vexxiss in the pond so it cannot wander off | site |
 | New, cheap rows (in only if he keeps the visuals) | Dewfall bead count; dew swap and reverse; fleck overlay draw on a graded tree; footprint ledger read | new rows |
-| New rows if Q1 is built | Vent gas ignites and burns into toxic smoke; the vexxiss attacks an igniter | new rows |
+| New rows (Q1 ruled) | Vents emit drifting gas clouds through the game's gas system; the cloud ignites and burns into toxic smoke; the vexxiss attacks an igniter | new rows |
+| New rows (Q2 ruled) | Filter-Works refines vent gas into reagents; ruin set-pieces present on a generated map; Oomo shrine present and usable | new rows |
 
 Proposed INFERRED rows: none.
 
@@ -86,6 +92,8 @@ Proposed INFERRED rows: none.
   - Martyr and thornwood read as sweating metal, unlike vanilla trees. A mature tree's assay grade shows as flecks.
   - Under dewfall, beads form and the accent plants change to their dew look, then change back.
   - The two soils read as dark, gassy ground, and the rich one differs visibly from the plain one.
+  - Vent gas reads as a drifting cloud that moves with the air, not a static patch.
+  - A Filter-Works reads as a working gas refinery; the ruins read as ruins; the Oomo shrine reads as a shrine.
   - The four natives read as four different animals.
   - The suush floats above the ground.
   - A vexxiss leaves footprints.
@@ -97,10 +105,10 @@ Proposed INFERRED rows: none.
 **Art set:**
 
 - The 7 missing textures (2 fleck overlays and 5 dew variants).
+- New for the ruled scope: the Filter-Works, the ruin set-piece kit, and the Oomo shrine. All need an art sheet round.
 - The bedazzle sheet's open picks from 2026-09-29, still unverified as actioned:
   - Eskith "improve" (five eyes, so the side profile shows three);
-  - Vexxiss "improve" (as colourful as the vents);
-  - Seismograph "regen" (only if Q2 keeps it).
+  - Vexxiss "improve" (as colourful as the vents).
 - *Rider for the S1 art sheet:* which accent plants get dew variants. The XML default of five stands until he picks.
 
 **Mechanics.**
@@ -108,7 +116,12 @@ Proposed INFERRED rows: none.
 - *In scope, built:* the four weathers; vents with the falter tell; the bloom metal-load hediff; vexxiss vent-drinking,
   fire warden and water poisoning; metal yield and assay; nettle gardens; vexxith acid immunity; the dewfall, fleck and
   footprint visuals; 27 settings.
-- *Decided at S0:* flammable vent gas (Q1), and the Filter-Works / ruin kit / seismograph / Oomo shrine set (Q2).
+- *In scope, to build (ruled):*
+  - drifting vent gas on the game's native gas system, burning into toxic smoke when lit (Q1);
+  - the Filter-Works, the ruin set-pieces and the Oomo shrine (Q2).
+- *Falter tell target:* about one in-game hour of warning before a vent bloom (ruled by card). The built tell (the weather
+  transition ramp) is checked against this on the first live round. If it is shorter or longer, the ramp is retuned.
+- *Cut:* the seismograph / Seismometer (*"I don't like that idea."*). The seismograph art is dropped, not regenerated.
 - *Out of scope:* sound, by his 2026-10-03 ruling (vanilla sounds).
 
 ### 1.2 Contagion
@@ -125,7 +138,7 @@ burn_natural, uv, coalescence and genome. The 2026-10-08 result was 52 PASS / 0 
 | `repulsor_clear.site_ready_baseline` and the 3 rows downstream of it; `site.retile_to_contagion` | All five share one cause. The suite wants a stock-biome start, but a saved Contagion site is already Contagion. Run the off-Contagion arm on the calm site, and keep the retile control there | harness + site |
 | `genome.extraction_surgery_yields_sample` | Put the patient in a bed and make the bill giver usable | fixture |
 | New rows | Bloom/Burn tells by a state read of `RM_MapComponent_ContagionSky`; a Sunbeam firing fixture; limb install, and limb removal spawning an Unfinished | new rows |
-| New rows if built | The arrest (Q3); mulch (Q4); trader and quest stock (Q5) | new rows |
+| New rows (Q3-Q6 ruled) | The Sunbeam arrest (stops current mutations, no later protection); the plain mulch item and its drops; Cloud Repulsor and Sunbeam in quest rewards and in a visiting Helix trader's stock; the sink and shake tells by a state read | new rows |
 
 Proposed INFERRED row, to be pre-approved: natural Coalescence formation in a long Bloom. It is a statistical event,
 scored from the forced-formation rows plus the Bloom-duration timer.
@@ -137,6 +150,7 @@ scored from the forced-formation rows plus the Bloom-duration timer.
   - At a Burn the light turns to a near-white shaft, and the gawpsacks and rattlegropes give their tells before it.
   - A powered Cloud Repulsor clears the sky around it while the rest stays under the Bloom.
   - The Sunbeam reads as a beam of light striking its target.
+  - Before a Burn, gawpsacks visibly sink and rattlegropes visibly shake.
   - Meatvine, toothmoss, eyebark and wombpod read as grown flesh at play zoom.
   - The Unfinished read as half-made, wrong creatures, each different.
   - The Coalescence reads as one living mass, with three stages you can tell apart.
@@ -151,9 +165,11 @@ scored from the forced-formation rows plus the Bloom-duration timer.
   - Eyeburst (tinted vanilla);
   - Caudal Spring (Anomaly's TentacleLimbA);
   - Bellows (no render node).
+- The five grown limbs go on an EARLY S1 design sheet (ruled): he keeps or sends back each, and FOUNDRY builds what he
+  keeps. This includes real art for the three placeholders above.
 - Confirm the cast-review redo wave landed. On 2026-09-29: 40 keep, 6 improve, 1 regen; 10 jobs queued, unverified since.
 - The half-transformed tree, still owed by the sheet.
-- The tell animation, only if Q6 builds it.
+- The visible sink and shake tell animation (Q6 ruled: build).
 - *Rider for the S1 art sheet:* one row for the donor/port overlap. `AA_OcularJelly` shares the roster with
   `RM_Gawpsack`, and `AA_InfectedAerofleet` with `RM_Blisterfloat`.
 
@@ -169,7 +185,13 @@ scored from the forced-formation rows plus the Bloom-duration timer.
   - the Unfinished spawner;
   - Draftprints and the Helix contract;
   - 11 settings.
-- *Decided at S0:* the arrest (Q3), mulch (Q4), trade and quest stock (Q5), and the drawn tells (Q6).
+- *In scope, to build (ruled):*
+  - the Sunbeam arrest: a slow Contagion-touched condition, which a Sunbeam treatment freezes. Current mutations stop
+    and stay; later exposure starts it again (Q3);
+  - a plain mulch item: Coalescences and Unfinished drop it and it works as fertilizer, with no sunned or raw states and
+    no field infection (Q4);
+  - the Cloud Repulsor and Sunbeam as quest rewards plus a visiting Helix trader, added if none exists (Q5);
+  - the visible gawpsack sink and rattlegrope shake before a Burn (Q6).
 - *Proposed deferral:* the Dive and Bodyprints, parts 2 and 3 of `CONTAGION_GPT_ENRICHMENT_1`, which were never on the
   build list.
 
@@ -190,7 +212,7 @@ manifest's row count comes from a fresh run on day 2.
 | `stamp.*` (2) | No loaded creature carried `RM_FireStamperExtension` on `acc_biomes-15`. `biomes_sprint` loads UtinniPatches and SWBestiary, which should clear this | tier |
 | `dripping.dripping_survives_harvest` | The harvest never finished within 1200 ticks. Give the window more time, or pre-position the pawn | harness |
 | New, needing a Scrub site | The Lean: the heading locks per map, animals flee upwind, fire biases downwind. `LEANING_SCRUB_LEAN_SITE_1` is cited in code but missing from the ledger; it gets filed | new rows |
-| New rows if built | Calling-pyre availability (Q7); vaporator placement and the wake capping and healing (Q8); ripple concealment by weather (Q9); injection set-pieces present on a generated map (Q10) | new rows |
+| New rows (Q7-Q10 ruled) | Calling-pyre availability and each of its three belief variants; vaporator placement and the wake capping and healing; ripple concealment by weather, with the shimmer; ruins and living camps present on a generated map | new rows |
 
 Proposed INFERRED row, to be pre-approved: downwind fire bias, scored from a compressed run plus the heading-lock row.
 
@@ -204,6 +226,9 @@ Proposed INFERRED row, to be pre-approved: downwind fire bias, scored from a com
   - Each venomvine form can be told apart from the others at play zoom.
   - A sweetline tree stands out as a named landmark, taller than the scrub.
   - The wild cast reads as distinct animals in one line-up.
+  - Hidden small creatures show a faint shimmer under the fuzz.
+  - The map holds ruined farmsteads and fields and inhabited camps, each reading as a place someone lived or lives.
+  - A vaporator reads as a working moisture farm.
   - A runway bloom sends dustflutters up in a burst. This is checked by a flight-state read only; flight is never
     filmed or live-tested without him.
 - *Cannot show:*
@@ -212,15 +237,19 @@ Proposed INFERRED row, to be pre-approved: downwind fire bias, scored from a com
   - A donor-art stand-in.
   - A magenta square.
 
-**Art set:** see §3.
+**Art set:** see §3, plus the vaporator look, the camp kit and the calling-pyre art, each a sheet round.
 
 **Mechanics.**
 
 - *In scope, built:* the Stall and Gale calendar; the Lean v1; smother-craft; the twitcher lash; fire-stamping
   thunderstep giants; the soundscape on vanilla sounds; the dripping, crown, bloom and sweetline systems; 11 venomvine
   forms; sweetline visitors; vissler-arm scavengers.
-- *Decided at S0:* the calling-pyre ritual (Q7), the vaporator and V-blight (Q8), the ripple (Q9), and the inhabited
-  set-pieces (Q10).
+- *In scope, to build (ruled):*
+  - the calling-pyre ritual, with all three belief variants: forbidden, last rite and venerated (Q7);
+  - a plain vaporator, learned by studying a dead farmstead, with no drying scar; one art-sheet round for its look (Q8);
+  - the ripple: small creatures hide under the fuzz, with a faint shimmer over the hidden ones (Q9);
+  - set-pieces: the ruins (dead farmstead, smother-claimed field, hedge homestead) plus living camps (Q10). The camps
+    need a faction choice (new question N1).
 - *Agent default, not asked:* no Lean heading readout. The lean shows in the plants themselves (the first bar), and his
   trim law reads *"Too much focus on constant advanced warning... Players arent that into it."*
 
@@ -231,145 +260,134 @@ extra sitting.
 
 ---
 
-## 2. Design calls blocking the mechanics builds (card-ready)
+## 2. His rulings, and the questions they created
 
-**Ten cards.** These were verified against the ledger (no owner-said, by-card or per-ruling event answers any of them),
-`design/RimMandrake/standing_rulings.md`, `biome_rulings.md` and the design sheets.
+### 2.1 Rulings on the kickoff cards (2026-10-15, all RULED)
+
+Where he typed words they are quoted exactly. Where he took a card, the card's question and option are given. The
+alternatives he did not take are deleted. All are notes on `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE`.
 
 **Dropped as already settled; never asked again:**
 
 - **Cauldron falter-tell foreknowledge** — settled by the build (see §0).
-- **Contagion grown limbs** — *"Approved, this looks great!"* (2026-09-27); built.
+- **Contagion grown limbs** — *"Approved, this looks great!"* (2026-09-27); built. His later card asks for an early sheet
+  anyway (below).
 - **Calling-pyre concept** — merged with the controlled waking by card on 2026-10-01.
 - **Sound for all three biomes** — vanilla sounds, by his ruling of 2026-10-03.
 - **The Zizzik rite cap** — *"Just leave them all for now"* (2026-10-02).
 
-Each card has a "leave it out of this sprint" choice, so an unanswered card never blocks the other biomes.
+**Cauldron**
 
-### Cauldron
+- **Q1, vent gas: RULED.** He typed: *"Drifting gas clouds plus the native gas system already built into rimworld"*.
+  Vents emit real drifting gas clouds, built on the game's own gas system. The burning mechanism is left open (N2).
+- **Q2, extras: RULED.** He typed: *"Everything except the Seismometer. I don't like that idea."* In: the Filter-Works,
+  the ruin set-pieces and the Oomo shrine. Cut: the seismograph.
+- **Falter warning length: RULED by card** (*Cauldron falter warning length → About one in-game hour*). The target is
+  about one in-game hour before a vent bloom; the built tell is checked against it on the first live round.
 
-**Q1. The Cauldron's vent gas is supposed to catch fire and burn into poison smoke. How should we make that work?**
+**Contagion**
 
-The game's gas system has a fixed list of gases, and none of them burns. Everything about igniting vents hangs on this:
-the gas tap, the toxic-smoke fire, and the vexxiss attacking whoever lights it.
+- **Q3, Sunbeam arrest: RULED.** He typed: *"Stops current mutations. No protection if you get exposed again later."*
+  The Sunbeam freezes the corruption where it stands. It gives no immunity. The source of the condition is open (N4).
+- **Grown limbs: RULED by card** (*Grown limbs this sprint → Design sheet early, build the keepers*). The built five are
+  reviewed on a sheet at the first art sitting, and what he keeps gets built or finished.
+- **Q4, mulch: RULED by card** (*Contagion mulch scope → Plain fertilizer only*). One fertilizer item. No sunned or raw
+  states, no field infection.
+- **Q5, who sells the Repulsor and Sunbeam: RULED by card** (*→ Quests plus a visiting Helix trader*). Agents find whether
+  a Helix trader exists and add one if not.
+- **Q6, Burn tell: RULED by card** (*Build the visible Burn tell motion → Build the visible sink and shake*).
 
-- **(A) Fake it with a burnable haze — recommended.** Leaking vents lay a thin "vent haze" on the ground. Fire touching
-  it flashes and releases the game's own toxic gas. It is small and safe and looks right in play, but it is not a real
-  gas cloud that drifts.
-- **(B) Teach the game a new burnable gas.** This is the true version, where the gas drifts, spreads and burns. It needs
-  deep engine patching, is the riskiest build of the sprint, and could break other mods' gases.
-- **(C) Vents leak the game's existing toxic gas, and fire does nothing special.** This is the cheapest. It loses the
-  "should be stopped / burns" drama he ruled on 2026-09-28.
-- **(D) Leave fire out of this sprint.** The vents ship as they are (falter, bloom, exposure). "Done" then excludes
-  burning gas.
+**LeaningScrub**
 
-**Q2. The Cauldron design also has a Filter-Works (refine vent gas into reagents), ruin set-pieces, a seismograph and
-an Oomo shrine. None is built. Which belong in this sprint?**
+- **Q7, calling-pyre: RULED by card** (*Calling-pyre size → Ritual plus all three beliefs*): forbidden, last rite and
+  venerated. The precept shape is open (N3).
+- **Q8, vaporator: RULED by card** (*Vaporator scope → Plain vaporator, no scar*). Learned from a dead farmstead; one
+  art-sheet round.
+- **Q9, ripple: RULED by card** (*Ripple → Hiding with a faint shimmer*).
+- **Q10, set-pieces: RULED by card** (*Scrub set-pieces → Ruins plus living camps*). The faction is open (N1).
 
-- **(A) Leave all four out of this sprint and file them — recommended.** This keeps the sprint to what exists plus Q1.
-  The trade-off is that the "refine it to valuable reagents" payoff waits.
-- **(B) Build the Filter-Works only.** It gives the payoff for stopping the gas. It needs new FlowWorks liquids, a
-  building and cartridges: about two agent-days, and one more look from him.
-- **(C) Build all four.** This is the whole sheet. It roughly doubles Cauldron's build, and the seismograph art needs
-  regenerating (his 2026-09-29 note: "weird, replace").
+**Process**
 
-### Contagion
+- **Q11, who builds: RULED by card** (*Who builds during the biome sprint → FOUNDRY builds, BENCH tests*). BENCH runs the
+  live tests and integrates. The swept-files risk (plan X3) is managed by committing explicit paths and building DLLs from
+  clean exports.
+- **Q12, response time: RULED by card** (*How fast can you answer a packet → Within a day*). The calendar assumes one day
+  per reply.
 
-**Q3. You ruled the Sunbeam "arrests" the Contagion's corruption: irradiate the patient and it stops getting worse. But
-no corruption condition exists yet for it to stop. What should we do?**
+### 2.2 What the rulings added to the work
 
-- **(A) Add a slow "Contagion-touched" condition, which the Sunbeam freezes — recommended.**
-  - Colonists exposed in the Bloom pick up a condition that slowly worsens and brings bad changes at set points.
-  - A Sunbeam treatment stops it from getting any worse, and what already changed stays.
-  - It fits your ruling exactly. It adds a new threat and about a day of building and testing.
-- **(B) Leave the arrest out of this sprint.** The Sunbeam stays a weapon, strong against natives. Your ruled "cure"
-  waits, and "done" excludes it.
-- **(C) Reuse an existing mutation condition from the base game or Anomaly.** This is quicker. It risks breaking the
-  rule that a colonist never just turns into a limb, and it may not read as the Contagion's own.
+The ruled scope is larger than the draft recommended. Rough builder-days, FOUNDRY, including FOUNDRY's own offline
+checks but not BENCH's live rounds:
 
-**Q4. You ruled Contagion mulch "the best fertilizer on Ash'karr": sunned, it is super-compost; un-sunned, it infects
-your field. Nothing makes mulch yet. How much should we build?**
+| item | builder-days |
+|---|---|
+| Cauldron: drifting vent gas and burning | 2-3 |
+| Cauldron: Filter-Works (new FlowWorks liquids, building, cartridges) | 2 |
+| Cauldron: ruin kit and Oomo shrine, with art rounds | 1.5-2 |
+| Contagion: arrest condition, mulch, Helix trader and quests, visible tell | 3.5 |
+| Contagion: finishing the limbs he keeps | 0.5-1.5 |
+| Scrub: calling-pyre with three beliefs | 3 |
+| Scrub: plain vaporator and study source | 1.5 |
+| Scrub: ripple with shimmer | 1 |
+| Scrub: ruins and living camps | 3 |
+| **Total** | **about 18-22** |
 
-- **(A) A mulch item with the two states, sunned and raw — recommended.**
-  - Dead Coalescences and Unfinished drop it.
-  - Laying it out under a Burn turns it into super-compost.
-  - Raw mulch used as fertilizer spreads ocular grass into the field.
-  - About a day's build. It keeps the bargain you ruled.
-- **(B) A plain fertilizer item only, with no infection and no sunning.** Half a day. It loses the risk that makes it
-  interesting.
-- **(C) Leave mulch out of this sprint.** The Coalescence still drops Monstrous samples, so the loop has a reward.
+Per mod, in sequence: Cauldron about 6-7, Contagion about 4-5, Scrub about 8.5. Scrub is the critical path.
 
-**Q5. You ruled the Cloud Repulsor and the Sunbeam "purchasable and quest-given". Who should sell them?**
+### 2.3 New open questions (card-ready)
 
-- **(A) Quest rewards, plus a Helix trader who visits — recommended.** They appear only where the Contagion's story is,
-  so they don't leak into unrelated games. Agents first have to find whether a Helix trader exists or must be added.
-- **(B) Add them to an existing trader type, such as the exotic-goods trader.** It is simplest and they show up more
-  often. They would also appear in colonies nowhere near the Contagion.
-- **(C) Quest rewards only for now.** The quest wiring is mostly there (the Draftprint contract works). Players can't
-  buy them, which contradicts "purchasable" until a later sprint.
+These are the only questions left. Each has a "leave it out" or default choice, so an unanswered card never blocks the
+other biomes.
 
-**Q6. Before a Burn, the gawpsacks are meant to visibly sink and the rattlegropes to visibly shake. Today they puff and
-rattle by sound only. Should we build the visible motion?**
+**N1. Which faction lives in the Scrub's living camps?**
 
-- **(A) Build the visible sink and shake — recommended.** The warning becomes something you see, which matches your
-  ruling. It needs a drawing hook in the engine, about a day, and an in-game look from you in the review save.
-- **(B) Keep the sound-and-puff tell only.** No new work. Players who don't notice sound get no warning before the Burn.
+You chose ruins plus living camps. A camp needs someone living in it, and the Scrub's setting has more than one
+candidate.
 
-### LeaningScrub
+- **(A) Scavenger clans (Jawa-type), the wanderers of Ash'karr — recommended.** They fit a flat, wind-scoured plain and
+  the "scavengers wearing a vissler arm" already built. The roster, pawn kinds and trade lines mostly exist, so it is
+  the cheapest option. The risk is that the Scrub reads like every other scavenger map.
+- **(B) A new Scrub-only people who farm the vaporators.** This is the strongest tie to the biome's economy and to the
+  dead farmsteads they could be the heirs of. It means new pawn kinds, art and a faction def, about two more days, and
+  more sheets for you.
+- **(C) Passive settlers who never fight and trade only.** They are cheap and cannot make the map dangerous, but a camp
+  with no threat is a decoration.
+- **(D) Leave the living camps out and ship the ruins only.** This reverses part of your ruling, so only if you choose
+  it.
 
-**Q7. The calling-pyre is the Scrub's form of the controlled waking (ruled 2026-10-01). What it should be as a
-ritual isn't decided. How big should it be this sprint?**
+**N2. How should vent gas burn, now that it drifts on the game's gas system?**
 
-- **(A) One ritual, with no new beliefs — recommended.** The colony lights its own dry fuzz field when thunderstep herds
-  and enemies are near, and the giants come stamping. It reuses the fire-stamp behaviour that is already built. The
-  belief hooks ("forbidden", "last rite", "venerated") wait.
-- **(B) The ritual plus all three belief variants.** This is the full design. It adds ideology content and more choices
-  for you, and probably two more days.
-- **(C) Leave the ritual out of this sprint.** The biome's link to its god is then missing from "done", which your
-  2026-09-29 slate admitted as a must.
+The game's gas list has no burnable gas, and you want real drifting clouds. Fire in a cloud needs a rule.
 
-**Q8. The vaporator, a moisture farm that dries a V-shaped scar downwind, is the Scrub's planned economy. Nothing of it
-is built: no building, no look, no study source. What should we build?**
+- **(A) Use an existing gas for the cloud and add a fire rule on top — recommended.** The vent cloud is a real drifting
+  gas. Our code watches for fire touching a cell where the cloud is dense, then flashes and releases toxic smoke. It
+  looks and behaves right, is small, and cannot break other mods' gases. The cloud is not a unique gas type underneath.
+- **(B) Add a new gas type to the engine through patches.** This is the purest version, with a gas that is fully its
+  own. It is the riskiest build of the sprint and could disturb other mods' gases.
+- **(C) Drifting clouds that never burn.** This is the cheapest, and it drops the "burns into poison smoke" drama you
+  ruled on 2026-09-28.
 
-- **(A) A plain vaporator only, with no scar — recommended for this sprint.** Players learn it by studying a dead
-  farmstead. It gives water and a little food. The look comes from one art-sheet round with you. It skips the
-  ground-drying scar, which is the expensive part.
-- **(B) The whole thing.** The vaporator, the drying scar that heals when you cap it, and animals raiding vaporators.
-  This is the richest version and the largest build of the sprint, about three days plus terrain art.
-- **(C) Leave it out of this sprint.** The Scrub then ships without its signature economy.
+**N3. Where do the calling-pyre's three beliefs live in the ideology?**
 
-**Q9. The "ripple" lets small creatures hide under the fuzz: they can't be targeted from far away, the Gale doubles it,
-and moving in the Stall gives them away. Should it come in, and should hiding show?**
+Forbidden, last rite and venerated need a home, since a precept belongs to an ideoligion.
 
-- **(A) Hiding with a faint shimmer over hidden creatures — recommended.** The shimmer is how the mechanic looks, not a
-  warning instrument, so it should sit within your "no constant advance warning" rule. About a day.
-- **(B) Hiding with no visible sign.** It costs the same. Missed shots would look like bad luck rather than cover.
-- **(C) Leave the ripple out of this sprint.** The stallhawk-rise and stall-exposure ideas that build on it also wait.
+- **(A) Three precepts attached to the fire and ritual memes that already exist — recommended.** Any colony that picks
+  those memes can choose among the three. It reuses existing content and keeps the cost to about three days.
+- **(B) One new Scrub-only meme that carries all three.** This ties the ritual to the biome and gives the Scrub its own
+  ideology flavour. It adds a meme def, its art and text, and one more review, about one extra day.
+- **(C) Three precepts available to every ideoligion.** This is the simplest, and it makes the ritual show up in
+  colonies that have nothing to do with the Scrub.
 
-**Q10. The design scatters set-pieces across Scrub maps: dead farmsteads, smothered fields, venomvine homesteads,
-living camps. None is placed yet. Which kinds should we build?**
+**N4. What exposes a colonist to the Contagion's condition, so the Sunbeam has something to stop?**
 
-- **(A) Ruins only: a dead farmstead, a smother-claimed field and a hedge homestead — recommended.** It reuses the
-  set-piece tooling. The farmstead doubles as the vaporator's study source (Q8). About a day.
-- **(B) Ruins plus living camps.** The map feels inhabited. It needs a faction choice and AI behaviour, and roughly
-  doubles the work.
-- **(C) Leave set-pieces out of this sprint.**
+You ruled that the Sunbeam stops current mutations and gives no protection later. That needs a condition that starts
+somewhere.
 
-### Process cards (from plan §3 "Questions for S0", still open)
-
-**Q11. Who builds?**
-
-- **(A) BENCH owns everything, as in the pilot — recommended for one-HEAD discipline.**
-- **(B) FOUNDRY builds while BENCH runs the live rounds and integrates.** This is faster in parallel, at the cost of
-  the swept-files risk (plan X3).
-
-**Q12. Can you answer each packet within about a day?**
-
-- **(A) Yes, one day.**
-- **(B) Two days.**
-- **(C) No fixed window; ping me.**
-
-His response time sets the calendar (plan §3, item 8).
+- **(A) Time spent outdoors under a Bloom, building up slowly, and a stronger dose in a Burn — recommended.** The
+  Bloom is already the biome's threat. Shelter, the Cloud Repulsor and the Sunbeam then each have a job. About a day.
+- **(B) Only a Burn exposes you.** This is simpler and rarer, and the Bloom stops being dangerous to people.
+- **(C) Only contact with the Unfinished and Coalescences.** This is the safest to build, and it makes the Contagion a
+  creature threat and takes the sky out of it.
 
 ---
 
@@ -431,7 +449,9 @@ with `artpipe_state.py find leaningscrub_` and the sheet's decisions file.
 
 1. Run `refresh_sheets.py --dry-run --only leaningscrub`. The sheet was rebuilt on 10-14, so this is likely a no-op. If
    it changed, refresh and run `remap_decisions.py`.
-2. Add the riders as rows on the same page: the Cauldron and Contagion art, the Dustflutter numbers, and Nuna.
+2. Add the riders as rows on the same page: the Cauldron and Contagion art, the five Contagion grown limbs (reviewed
+   early, ruled), the Dustflutter numbers, and Nuna. The Cauldron Filter-Works, ruins and Oomo shrine, and the Scrub
+   vaporator, camps and calling-pyre, each get a concept sheet round once their art is drawn (D2-D3).
 3. Gate with `scaled_review_gate.py check`, serve with `serve_gated.py`, and send him the URL plus the full path. He only
    needs to look at the rows not yet picked; the rest keep his earlier picks.
 4. When he says done, run `art.py enact <decisions.json>` as a dry run, then `--apply`, with `--hold` on the venomvine
@@ -442,23 +462,32 @@ A second round (S1b) happens only for rows he sends back.
 
 ---
 
-## 4. Sprint schedule
+## 4. Sprint schedule (re-estimated for the ruled scope)
 
-Owner sittings are marked **[S#]**. Agent days assume one BENCH builder per mod (plan X3). Each "his reply" is one
-response interval; the calendar below assumes he replies within a day (Q12).
+**Honest estimate: about 14-16 calendar days, sign-off around Fri 10-30 to Sun 11-01.** The draft said 7-10 days. The
+ruled scope adds roughly 18-22 builder-days (§2.2). FOUNDRY builds, so builders can run per mod in parallel, but the
+Scrub alone is about 8.5 builder-days in sequence, and every build then needs a BENCH live round, an art sheet round and a
+separate reviewer. If FOUNDRY cannot field three parallel builders, add about 4-5 days. The owner's reply interval is
+one day (Q12), and it applies to each sheet round, of which there are four or five, so owner latency is about 5 of the
+14-16 days.
 
-| day | agents | owner |
-|---|---|---|
-| **D0 (Fri 10-16)** | Send this packet. File `LEANING_SCRUB_LEAN_SITE_1`. Close the pilot's C5 once the nightly selftests are green. Tooling slice, at most one agent-day: add the `biomes_sprint` tier to `modset_builder.py`; add the preflight (companion-profile expiry, tier membership); add biome sites to `test_site_saves.py` (`northstar_site.py` builder, then clean, save and register), proven on Cauldron first. | **[S0] about 45-60 min, asynchronous or one sitting.** Answer Q1-Q12. Edit or approve the three criteria lists in §1. Dictate `### the experience` for each biome (one or two sentences; it can wait until S2). Sign off the pilot (C6). One typed sentence restating his 2026-10-09 venomvine-art card, needed because the art ledger cannot install over a kept sha on a card path (§3 item 4). |
-| **D1** | Freeze the three acceptance manifests from his S0 answers and record their hashes on the ledger. Build the Cauldron and Contagion sites. One live round: the current suites at one HEAD on the saved sites. Harness fixes: Contagion's off-biome arm and its surgery fixture; Cauldron's suush spacing, vexxiss pen and yield rerun. Build the LeaningScrub art sheet (§3). | **[S1] about 30-45 min, asynchronous.** The LeaningScrub art sheet, with riders: Cauldron's 7 textures and dew-variant pick; Contagion's three limb placeholders and the donor/port row; Dustflutter numbers; the vaporator look if Q8 is A or B. |
-| **D2** | Mechanics builds per S0, in parallel, one builder per mod: Cauldron Q1-Q2; Contagion Q3-Q6. LeaningScrub harness: the `ProofForm` signature; diagnose the bloom toggle; Scrub site; a fresh run for the row count. Install the art he picked. A separate reviewer marks files CLEAN. | — |
-| **D3** | LeaningScrub builds per S0 (Q7-Q10) and the Lean rows. Second live round for Cauldron and Contagion; target 0/0. Second art round if his S1 asked for re-picks. | **[S1b] about 15-30 min, only if needed:** the second art round. |
-| **D4** | Build the three review saves, one per biome, each with a key sheet (Pyrelands pattern: `RM_pyre_review_20261015`). Each holds every visual bar plus the venomvine forms and the grown limbs, staged at stations. Live round for LeaningScrub. | — |
-| **D5** | Fix whatever his S2 rejects. Final one-HEAD round for all three, plus the pilot guards (M6). Run `rimflow verify` on each line. | **[S2] about 60-90 min, game up, one sitting** (or two half-sittings). Walk the three review saves. Accept or reject each bar (O2). Hold the venomvine sitting at the Scrub stations. Any flyer look happens here, with him present. |
-| **D6-D7 (buffer)** | Redo anything S2 rejected, then rerun only the suites whose inputs changed (plan X4). | **[S3] about 10 min:** the sign-off card citing the three manifest hashes (O3). |
+Owner sittings are marked **[S#]**. FOUNDRY builds; BENCH runs the tooling slice, the live rounds, integration and the
+review saves.
 
-**Owner total:** about 3-3.5 h active, in 4-5 sittings, matching plan Option 2. The critical path is S0, then the
-LeaningScrub art loop (S1/S1b), then S2.
+| day | FOUNDRY (builds) | BENCH (tests, integrates) | owner |
+|---|---|---|---|
+| **D0 (Fri 10-16)** | Starts on the questions-independent work: the Cauldron gas clouds up to the open N2 point, the Contagion mulch and Helix trader. | Send this packet. File `LEANING_SCRUB_LEAN_SITE_1`. Close the pilot's C5 once the nightly selftests are green. Tooling slice, at most one agent-day: the `biomes_sprint` tier in `modset_builder.py`; the preflight; biome sites in `test_site_saves.py`, proven on Cauldron first. | **[S0] about 45-60 min.** Approve the three lists in §1; answer N1-N4. Dictate `### the experience` per biome (can wait until S2). Sign off the pilot (C6). One typed sentence restating his 2026-10-09 venomvine-art card (§3 item 4). |
+| **D1 (10-17)** | Contagion: arrest condition, visible tell. Cauldron: gas and fire per N2. | Freeze the three acceptance manifests from his S0 answers and record their hashes. Build the Cauldron and Contagion sites. One live round at one HEAD; check the falter tell against about one in-game hour. Harness fixes (Contagion off-biome arm and surgery fixture; Cauldron suush spacing, vexxiss pen, yield rerun). Build the early art sheet (§3) with the five grown limbs. | **[S1] about 40-60 min.** The LeaningScrub art sheet with riders, and the grown limbs. |
+| **D2-D5** | Cauldron: Filter-Works, ruins, Oomo shrine. Contagion: the limbs he keeps, Helix quests. Scrub: calling-pyre with three beliefs, then vaporator. | LeaningScrub harness (`ProofForm`, bloom toggle diagnosis, Scrub site, fresh row count). Install his art picks. Live rounds as builds land; a separate reviewer marks files CLEAN. | **[S1b, S1c] 15-30 min each:** art sheets for the Cauldron kit and the vaporator, one day each reply. |
+| **D6-D10** | Scrub: ripple, ruins, living camps. Contagion and Cauldron fix-ups from live rounds. | Second live round Cauldron and Contagion, target 0/0. Camp and ruin placement rows on the Scrub site. | **[S1d] 15-30 min:** camp kit art sheet. |
+| **D11-D12** | Fixes. | Build the three review saves with key sheets (Pyrelands pattern), every visual bar plus the venomvine forms and the grown limbs. Live round for LeaningScrub. | — |
+| **D13 (about 10-29)** | Standing by for rejections. | Final one-HEAD round for all three, plus the pilot guards (M6). `rimflow verify` per line. | **[S2] about 75-105 min, game up.** Walk the three review saves; accept or reject each bar (O2); venomvine sitting; any flyer look with him present. |
+| **D14-D16 (buffer)** | Redo whatever S2 rejected. | Rerun only the suites whose inputs changed (plan X4). | **[S3] about 10 min:** the sign-off card citing the three manifest hashes (O3). |
 
-**If an answer is late:** the agents carry on with the other biomes and the harness work, which need no answers.
-Silence is never approval.
+**Owner total:** about 4.5-5.5 h active in 6-8 sittings (the draft said 3-3.5 h). That is more than plan Option 2's
+estimate, and it is the cost of the larger scope. The critical path is the Scrub build chain (calling-pyre, vaporator,
+ripple, ruins and camps), then S2.
+
+**If an answer is late:** the agents carry on with the other biomes and the harness work, which need no answers. N1 gates
+the camp half of Scrub set-pieces (D6+), N2 gates Cauldron fire (D1), N3 gates the belief half of the calling-pyre (D2),
+N4 gates the arrest condition (D1). Silence is never approval.
