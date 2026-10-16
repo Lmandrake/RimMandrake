@@ -136,6 +136,28 @@ def feet_off(m) -> dict:
             if f in m and "east" in m and abs(m[f]["bottom"] - m["east"]["bottom"]) > L.FEET_TOL}
 
 
+SANDBOX_BASE = [0]
+STOP = threading.Event()
+
+
+def sandbox_setup_count(home: Path) -> int:
+    n = 0
+    for f in (home / ".sandbox").glob("sandbox.*.log"):
+        try:
+            n += f.read_text(errors="replace").count("sandbox setup required")
+        except OSError:
+            pass
+    return n
+
+
+def sandbox_guard(home: Path) -> None:
+    """A new 'sandbox setup required' in the home's sandbox log = Codex is provisioning (UAC on his screen): stop all."""
+    if sandbox_setup_count(home) > SANDBOX_BASE[0]:
+        STOP.set()
+        log({"event": "STOP", "why": f"sandbox setup required logged in {home}"})
+        raise RuntimeError(f"STOP: sandbox setup required in {home}/.sandbox")
+
+
 def run_one(key: str, row: dict, home: Path) -> None:
     st = load()["items"][key]
     env_home = str(home)
@@ -158,6 +180,7 @@ def run_one(key: str, row: dict, home: Path) -> None:
                 p = subprocess.run([sys.executable, str(HERE / "facing_regen.py"), "gen", "--row", row["texPath"],
                                     "--facing", f, "--out", str(out), "--rows", str(ROWS), "--timeout", "170"],
                                    capture_output=True, text=True, env=dict(os.environ, FACING_REGEN_CODEX_HOME=env_home))
+                sandbox_guard(home)
                 if p.returncode == 0:
                     ok = True
                     break
@@ -196,6 +219,7 @@ def run_one(key: str, row: dict, home: Path) -> None:
                 continue
             r = C.check_one(jid, done=common.DEFAULT_DONE, failed=common.DEFAULT_FAILED, artsrc=common.DEFAULT_ARTSRC,
                             force=True, dry_run=False, home=home)
+            sandbox_guard(home)
             c = C.normalize(r.get("check")) or {}
             canon[jid] = {"status": r.get("status"), "verdict": c.get("verdict") or c.get("status"),
                           "score": c.get("score"), "flags": (c.get("flags") or [])[:4], "note": r.get("note", "")}
@@ -278,26 +302,25 @@ def run(jobs: int) -> int:
     todo = [k for k, v in st["items"].items()
             if v["status"] in ("pending", "in_progress") or (v["status"] == "retryable_failure" and v["attempts"] < MAX_ATTEMPTS)]
     print(f"{len(todo)} to run; {status()}", flush=True)
-    base = Path("/mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen")
-    homes = []
-    for i in range(1, jobs + 1):
-        h = Path(f"/mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen_w{i}")
-        h.mkdir(parents=True, exist_ok=True)
-        for fn in ("auth.json", "config.toml", "models_cache.json"):
-            if (base / fn).exists() and not (h / fn).exists():
-                shutil.copyfile(base / fn, h / fn)
-        homes.append(h)
+    # ONE worker on the SHARED home (coordinator 2026-10-16): an isolated per-worker home whose sandbox seed predates
+    # the current codex.exe re-runs Codex's Windows sandbox setup -> a UAC dialog on the owner's screen.
+    if jobs != 1:
+        sys.exit("refused: -j must be 1 (parallel isolated codex homes raise UAC sandbox dialogs)")
+    homes = [Path(R.CODEX_HOME)]
+    SANDBOX_BASE[0] = sandbox_setup_count(homes[0])
     free = list(homes)
     flock = threading.Lock()
     pending_paths, since = [], [0]
 
     def work(key):
+        if STOP.is_set():
+            return
         with flock:
             home = free.pop()
         try:
             run_one(key, rows[key], home)
         except Exception as exc:  # noqa: BLE001 — recorded, never fatal to the batch
-            update(key, status="retryable_failure", why=f"{type(exc).__name__}: {exc}"[:300])
+            update(key, status="pending" if STOP.is_set() else "retryable_failure", why=f"{type(exc).__name__}: {exc}"[:300])
             log({"key": key, "event": "exception", "err": repr(exc)[:300]})
         finally:
             with flock:
@@ -326,13 +349,87 @@ def run(jobs: int) -> int:
     return 0
 
 
+def montage(per_page: int = 24, ppu: int = 110) -> list[str]:
+    """Every installed creature's S/E/N side by side at TRUE scale (drawSize x ppu px per tile, same for all), a
+    1-tile bar on each page, plus the needs-eyes list as text. -> written paths."""
+    from PIL import Image, ImageDraw, ImageFont
+    rows = {}
+    for r in json.loads(ROWS.read_text()):
+        rows.setdefault(r["texPath"].lower(), r)
+    st = load()["items"]
+    keys = sorted((k for k, v in st.items() if v["status"] == "installed"), key=lambda k: st[k]["def"])
+    try:
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+    except OSError:
+        font = ImageFont.load_default()
+    cells = []
+    for k in keys:
+        r = rows[k]
+        dw, dh = r["drawSize"]
+        ims = []
+        for f in ("south", "east", "north"):
+            if f in r["files"]:
+                im = Image.open(r["files"][f]).convert("RGBA")
+                ims.append(im.resize((max(1, round(dw * ppu)), max(1, round(dh * ppu))), Image.BOX))
+        w = sum(i.width for i in ims) + 10 * (len(ims) - 1)
+        h = max(i.height for i in ims)
+        c = Image.new("RGBA", (max(w, 260), h + 24), (0, 0, 0, 0))
+        x = 0
+        for i in ims:
+            c.alpha_composite(i, (x, 24 + h - i.height))
+            x += i.width + 10
+        ImageDraw.Draw(c).text((0, 2), f"{r['def']}  ({', '.join(st[k]['installed'])} new)", fill=(30, 20, 10), font=font)
+        cells.append(c)
+    out = []
+    BATCH.mkdir(parents=True, exist_ok=True)
+    for old in BATCH.glob("montage_*.png"):
+        old.unlink()
+    for pi in range(0, len(cells), per_page):
+        page = cells[pi:pi + per_page]
+        W = 2400
+        lines, line, lw = [], [], 0
+        for c in page:
+            if line and lw + c.width + 30 > W - 40:
+                lines.append(line)
+                line, lw = [], 0
+            line.append(c)
+            lw += c.width + 30
+        if line:
+            lines.append(line)
+        H = 70 + sum(max(c.height for c in ln) + 30 for ln in lines)
+        img = Image.new("RGBA", (W, H), (214, 196, 160, 255))
+        d = ImageDraw.Draw(img)
+        d.text((20, 15), f"Facings stand tall batch — installed S / E / N at true scale ({ppu}px = 1 tile); page "
+               f"{pi // per_page + 1} of {-(-len(cells) // per_page)}", fill=(30, 20, 10), font=font)
+        d.rectangle((W - 40 - ppu, 20, W - 40, 30), fill=(60, 40, 20))
+        d.text((W - 40 - ppu, 34), "1 tile", fill=(30, 20, 10), font=font)
+        y = 60
+        for ln in lines:
+            x = 20
+            for c in ln:
+                img.alpha_composite(c, (x, y))
+                x += c.width + 30
+            y += max(c.height for c in ln) + 30
+        p = BATCH / f"montage_{pi // per_page + 1:02d}.png"
+        img.convert("RGB").save(p, optimize=True)
+        out.append(str(p))
+    ne = [f"- `{v['def']}` ({v['texPath']}): {v['why']}" + (f" — candidates: {', '.join(v['cands'].values())}" if v.get("cands") else "")
+          for k, v in sorted(st.items(), key=lambda kv: kv[1]["def"]) if v["status"] in ("needs_eyes", "retryable_failure")]
+    (BATCH / "needs_eyes.md").write_text("# Facings stand tall batch — needs eyes\n\n" + "\n".join(ne) + "\n")
+    out.append(str(BATCH / "needs_eyes.md"))
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "run", "status", "install"])
-    ap.add_argument("-j", "--jobs", type=int, default=3)
+    ap.add_argument("cmd", choices=["plan", "run", "status", "install", "montage"])
+    ap.add_argument("-j", "--jobs", type=int, default=1)
     a = ap.parse_args(argv)
     if a.cmd == "plan":
         return plan()
+    if a.cmd == "montage":
+        print("\n".join(montage()))
+        return 0
     if a.cmd == "status":
         print(status())
         return 0

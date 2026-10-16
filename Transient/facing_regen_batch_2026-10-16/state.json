@@ -24,10 +24,12 @@
     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
+   "seconds": 394,
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/Gizka",
-   "why": ""
+   "why": "",
+   "worker": "codex_home_facing_regen_w3"
   },
   "rimstarwars/swbestiary/gizka/gizkaw": {
    "attempts": 0,
@@ -42,7 +44,8 @@
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/GizkaW",
-   "why": ""
+   "why": "",
+   "worker": "codex_home_facing_regen_w2"
   },
   "rimstarwars/swbestiary/grank/grank": {
    "attempts": 0,
@@ -56,10 +59,12 @@
     "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
+   "seconds": 370,
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Grank/Grank",
-   "why": ""
+   "why": "",
+   "worker": "codex_home_facing_regen_w1"
   },
   "rimstarwars/swbestiary/horax/horax": {
    "attempts": 0,
@@ -76,7 +81,8 @@
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Horax/Horax",
-   "why": ""
+   "why": "",
+   "worker": "codex_home_facing_regen_w1"
   },
   "rimstarwars/swbestiary/kreetle/kreetle": {
    "attempts": 0,
@@ -91,7 +97,8 @@
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Kreetle/Kreetle",
-   "why": ""
+   "why": "",
+   "worker": "codex_home_facing_regen_w3"
   },
   "rimstarwars/swbestiary/ollopom/ollopom": {
    "attempts": 0,
