@@ -19,6 +19,10 @@
     - useMeatFrom Megaspider added (PROVISIONAL, stands in for the donor's own meat item)
     - customResourceString AA_BlueGel -> 'blue gel' (donor translation key replaced by the words)
     - texPath Things/Item/Resource/AA_BlueGel -> Things/Item/Resource/RM_BlueGel (ART OWED, RM_BlueGel)
+    - TEMP PLACEHOLDER ART (2026-10-15): texPath points at our owner-accepted aerofleet render
+      (AA_Aerofleet_TwilightSea, job gapall_AA_Aerofleet_v1, Twilight Sea sheet column B), which lives in
+      TerminalBiomes, so the bulloo is not invisible. ART OWED: install that render (or its successor)
+      at Things/Pawn/Animal/RM_Bulloo/RM_Bulloo through the art ledger and repoint the three lifeStages.
 -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Bulloo</defName>
@@ -127,21 +131,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath>  <!-- TEMP PLACEHOLDER, see header -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath>  <!-- TEMP PLACEHOLDER, see header -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath>  <!-- TEMP PLACEHOLDER, see header -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
         </bodyGraphicData>
