@@ -2948,6 +2948,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             _re = None                    # a named render newer than his ruling: this sheet exists to judge it
         if _re and new_sets_since(gitems, idx, _re.get("at") or ""):
             _re = None                    # pictures he has never ruled on (a redraw landed): the row is open work
+            item["reopenedByNewSets"] = True   # the gate (req 7) must agree this row is deliberately live
         if _re:
             item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}

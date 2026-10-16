@@ -434,8 +434,8 @@ def check_ruled_elsewhere(ctx, items) -> Check:
         hit = A.ruled_elsewhere_for(names, ents)
         if hit and ctx.get("subjects_sheet") and A.ruling_predates_jobs(hit, r.get("artpipe_state_jobs") or []):
             hit = None        # the sheet names a render filed after his ruling (a redraw he asked for): not a repeat
-        if not hit:
-            continue
+        if not hit or it.get("reopenedByNewSets"):
+            continue          # reopened by pictures he never ruled on (art_sheet.new_sets_since): open work, not a repeat
         n += 1
         if not it.get("ruledElsewhere") or it.get("group") != RULED_GROUP:
             p.append(f"{it['id']}: ruled on {hit['sheet_id']} ({hit['decision']}) but shown as a live row")
