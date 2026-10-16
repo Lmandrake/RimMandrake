@@ -379,6 +379,11 @@ class Fake(object):
             return {"success": False, "message": "No public static %s with %d params." % (method, n),
                     "details": {"available": sorted(cs_arities(type, method))}}
         if method == "ProofStamp":
+            # The suite must name the pad it cleared ("mode@x,z"): LIVE 2026-10-16 the wooded run map held no ambient
+            # clear 22-cell disc, so a bare mode is the UNMEASURED the live hook returned.
+            if "@" not in args:
+                return {"success": True, "result": "UNMEASURED: no unroofed, empty, fire-free 22-cell disc on this map"}
+            args = args.split("@")[0]
             on = (args != "off" and "stamp_never" not in self.broken) or (args == "off" and "stamp_ignores_toggle" in self.broken)
             if args != "off":
                 return {"success": True, "result": ("PASS sent=1 stamped=2" if on else
@@ -403,6 +408,8 @@ class Fake(object):
             if args == "off":
                 return {"success": True, "result": "FAIL: callingPyreEnabled off but the gate said ok"
                         if "pyre_ignores_toggle" in self.broken else "PASS off: gate refuses"}
+            if "@" not in args:     # the suite must name its crop patch: the scrub's own flora is fireproof (ban 9)
+                return {"success": True, "result": "FAIL: the pyre lit fewer fires than the stamp threshold lit=0"}
             return {"success": True, "result": "FAIL: the pyre lit fewer fires than the stamp threshold lit=2"
                     if "pyre_no_fire" in self.broken else "PASS lit=6 came=3 raging=1"}
         if method == "ProofVaporator":
@@ -516,6 +523,13 @@ class Fake(object):
         self.rooms.append(V_rect(rect))
         return {"success": True}
 
+    def t_set_roof_batch(self, ops="", **k):
+        for op in ops.split(";"):
+            d, nums = op.split(":")
+            if d in ("None", "Clear"):
+                ROOF_STRIPS.append(tuple(int(v) for v in nums.split(",")))
+        return {"success": True}
+
     def t_get_roof_batch(self, rects=None, **k):
         return {"success": True, "roofedCells": 49}
 
@@ -591,6 +605,9 @@ def V_rect(s):
 
 
 # ------------------------------------------------------------------ the runner
+
+ROOF_STRIPS = []    # rects the suite opened to the sky (modcheck4 2026-10-16: unsupported mountain roof crushed actors)
+
 
 def run(broken=()):
     game = Fake(broken)
@@ -688,6 +705,13 @@ def main():
     declared = len(V.suite.components_declared())
     if declared != n_comp:
         bad.append("declared %d components but the run produced %d" % (declared, n_comp))
+    # SITE guard (modcheck4 2026-10-16): every cleared pad must be opened to the sky before any tick, or a mountain
+    # site's unsupported roof drops on the chain's actors (Koyo crushed in lash; the bloom cohort crushed).
+    pads = set(re.findall(r'_prep\(t, "(\w+)"', open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()))
+    centres = set((x + w // 2, z + h // 2) for x, z, w, h in ROOF_STRIPS)
+    want = set((100 + V.PADS[p][0], 100 + V.PADS[p][1]) for p in pads if p in V.PADS)
+    if want - centres:
+        bad.append("pads cleared but never opened to the sky (roof strip): %s" % sorted(want - centres))
     for brk, target in sorted(BREAKS.items()):
         res = run([brk])
         reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))

@@ -64,6 +64,7 @@ import sys
 import time
 
 from modcheck import Suite, ExpectationFailed
+import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
 
 # The situational runner picks the anchor FARTHEST from colonists (0.2..0.8 of the map), which on a 250 map can be
 # (50, 50); the pads below reach 85 cells from it, so spawns landed "Cell is outside the map" (LIVE 2026-10-03). The
@@ -327,7 +328,44 @@ def _prep(t, name, size=PAD_SIZE):
             print("%s neutral weather not set: %s" % (TAG, ex), file=sys.stderr, flush=True)
     t.clear_area(size=size + 8)
     r = _rect(t, size + 8)
+    _open_sky(t, r)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(r)), layer="top")
+    _settle_bystanders(t)
+
+
+def _open_sky(t, rect, raw=False):
+    """Remove every roof over `rect`, right after it was cleared. LIVE modcheck4 2026-10-16 (Autosave-6 letters): the
+    site map is mountainous, clear_area's destroy_batch takes the natural rock out from under RoofRockThick, the roof
+    is left 'too far from any support', and on the FIRST tick after setup it collapses: the yield colonist spawned at
+    (170,131) was 'crushed to death' (Roof collapse letter, tick 801), and the gas pad at (40,40) sits under thick
+    roof whose collapse leaves CollapsedRocks (a Full-fillage edifice) on the vent, where GasGrid.GasCanMoveTo refuses
+    every cell, so the vent emits nothing (vent_gas_emits FAIL 'cells 0 peak 0'). A collapse skips unroofed cells
+    (RoofCollapserImmediate.DropRoofInCells checks Roofed), so stripping the roof before any tick defuses it. A chain
+    that needs a roof (the bloom room) builds its own after this. `raw` calls the session directly (the _stable
+    teardown runs after a chain may have failed, when t.bridge_call is a no-op)."""
+    if t.session is None:
+        return
+    try:
+        if raw:
+            t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+        else:
+            t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+    except Exception as ex:    # upkeep, never a verdict: a missed strip shows up as the collapse it was meant to stop
+        print("%s roof strip failed over %s: %s" % (TAG, _rs(rect), ex), file=sys.stderr, flush=True)
+
+
+def _settle_bystanders(t):
+    """The site's own colonists, mended and drafted at chain setup (helpers.settle_bystanders), as LeaningScrub does.
+    LIVE modcheck4 2026-10-16: site colonist Per was hurt (arm lost) and later downed mid-chain, and the vitals latch
+    ended the water and vents chains UNMEASURED. No Cauldron row reads a site colonist: every row spawns its own."""
+    if not _live(t):
+        return
+    try:
+        res = H.settle_bystanders(t.session)
+        _note(t, "bystanders settled (mended / drafted / residue)",
+              [res.evidence.get("removed"), res.evidence.get("drafted"), res.residue])
+    except Exception as ex:    # upkeep: a failure is evidence, never a verdict (the vitals latch still guards the row)
+        _note(t, "bystanders not settled", str(ex)[:200])
 
 
 def _count(t, defName, rect=None):
@@ -573,6 +611,7 @@ def _stable(t, fn):
                 _kill_pawns_in(t, _rect(t, PAD_SIZE + 24))
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 24)),
                                categories="All")
+                _open_sky(t, _rect(t, PAD_SIZE + 24), raw=True)   # the teardown takes rock (and the bloom room's walls) too
             except Exception as ex:
                 print("%s pad cleanup failed: %s" % (TAG, ex), file=sys.stderr, flush=True)
 
@@ -1877,6 +1916,12 @@ def gas_chain(t):
                 if g.get("capped"):
                     _unmeasured(t, "the fresh vent reads capped")
                 if g["cells"] <= 0 or g["peak"] <= 0:
+                    # SITE before MOD: a gas-tight edifice on the vent (CollapsedRocks from a roof collapse, modcheck4)
+                    # makes GasGrid.GasCanMoveTo refuse every vent cell, so AddGas rightly adds nothing.
+                    rocks = _things(t, "CollapsedRocks", "%d,%d,2,2" % (x, z))
+                    if rocks:
+                        _unmeasured(t, "CollapsedRocks stand on the vent (%d): gas cannot enter those cells, so this "
+                                       "site cannot show emission" % len(rocks))
                     _fail("a breathing vent made no gas in 1500 ticks: %r" % g)
                 # isolation guard: unburned vent gas is its own type, never vanilla tox gas
                 if g["tox"] != 0:
