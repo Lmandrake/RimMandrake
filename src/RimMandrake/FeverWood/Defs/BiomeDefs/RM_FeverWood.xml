@@ -290,9 +290,6 @@
       <RM_Wanlith>0.4</RM_Wanlith>  <!-- wanlith - the pale one -->
       <RM_Tullick>0.25</RM_Tullick>  <!-- tullick - the tuber -->
       <!-- Feverwood art sheet 2026-10-08 (owner): RM_Skethral CUT from this roster ("cut no longer needed"); scoped to the Fever Wood only, def kept. -->
-      <RM_Crimmelroot>0.4</RM_Crimmelroot>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_Chakroot_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
-      <RM_CorriskTree>1.5</RM_CorriskTree>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_HydenockTree_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
-      <RM_LumbrelTree>0.6</RM_LumbrelTree>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_JoganTree_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

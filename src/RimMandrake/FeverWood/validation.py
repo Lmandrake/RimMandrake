@@ -253,8 +253,7 @@ for _t, _n, _el in _BY_DIR["ThingDefs_Races"]:
             SAP_KINDS.append((_n, _li.findtext("refusalHediff").strip(), _num(_li, "refusalSeverity", 1.0),
                               int(_num(_li, "cooldownTicks", 2500))))
 
-# the flora that yield one of this mod's own harvest items through the vanilla Harvest job (4 at authoring; RM_Crimmelroot
-# and RM_LumbrelTree joined 2026-10-16, PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE — placement starts at x-12 so 7 fit the PAD)
+# the four flora that yield one of this mod's own harvest items through the vanilla Harvest job
 FLORA_PRODUCTS = []
 for _t, _n, _el in _BY_DIR["ThingDefs_Plants"]:
     _h = (_el.findtext("plant/harvestedThingDef") or "").strip()
@@ -1612,7 +1611,7 @@ def flora_harvest(t):
                 t.bridge_call("jawa/pawn_need", pawn=box["handler"], action="need", need="Rest", level=1.0)
                 t.bridge_call("jawa/set_draft", pawnId=box["handler"], drafted=False)
             for i, (plant, product, _) in enumerate(FLORA_PRODUCTS):
-                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,3,1" % (plant, x - 12 + i * 4, z + 6), growth=1.0)
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,3,1" % (plant, x - 4 + i * 4, z + 6), growth=1.0)
             if _live(t):
                 for plant, product, _ in FLORA_PRODUCTS:
                     box[plant] = [p.get("id") for p in _things(t, plant, _pad_rect(t))[:3]]

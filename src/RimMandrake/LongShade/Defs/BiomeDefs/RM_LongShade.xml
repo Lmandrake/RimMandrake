@@ -243,7 +243,6 @@
       <!-- The 2 remaining RSW_-tier rows (canon chak-root, hubba gourd) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
-      <RM_Thrannagourd>0.2</RM_Thrannagourd>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_HubbaGourd_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 

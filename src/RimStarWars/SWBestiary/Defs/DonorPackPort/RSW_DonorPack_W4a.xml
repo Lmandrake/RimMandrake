@@ -92,14 +92,34 @@
       </li>
     </stages>
   </ThoughtDef>
-  <ThingDef ParentName="RM_RawGlasmawRoot">
-    <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: reskin of RM_RawGlasmawRoot; only label, description, art (and taste thought text) differ. -->
+  <ThingDef ParentName="RoughPlantBase">
     <defName>RSW_RawTookeTrapRoot</defName>
     <label>tooke-trap root</label>
     <description>Raw tooke-trap root. Can be used to make a shiro-trap symbiote or as emergency animal feed.</description>
+    <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/TookeTrapRoot</texPath>
     </graphicData>
+    <statBases>
+      <MarketValue>1.3</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>1.3</Flammability>
+      <Nutrition>1.0</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <optimalityOffsetFeedingAnimals>7</optimalityOffsetFeedingAnimals>
+    </ingestible>
   </ThingDef>
   <ThingDef ParentName="ResourceVerbBase">
     <defName>RSW_SkalderTusk</defName>
