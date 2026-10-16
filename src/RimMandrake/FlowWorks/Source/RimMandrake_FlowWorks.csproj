@@ -212,6 +212,8 @@
     <Compile Include="Machinery\RM_MachinerySettings.cs" />
     <Compile Include="Machinery\PipeStyles.cs" />
     <Compile Include="Machinery\PipeLook.cs" />
+    <Compile Include="Machinery\LiquidJoinRule.cs" />
+    <Compile Include="Machinery\RM_LiquidJoins.cs" />
     <Compile Include="Machinery\RM_ConversionMath.cs" />
     <Compile Include="Machinery\CompLiquidConverter.cs" />
     <Compile Include="Machinery\CompLiquidPipeAdapter.cs" />

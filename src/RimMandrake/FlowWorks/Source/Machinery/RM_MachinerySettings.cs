@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Machinery
@@ -61,6 +62,16 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// existed draws in. Art only.</summary>
 		public static string pipeDefaultLook = "Scrapper";
 
+		/// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16: "if you build a pipe alongside a tank but not under it:
+		/// the pipe looks like it doesn't even connect, but it should"): a pipe beside a tank or liquid machine runs its arm on to
+		/// the shared edge (RM_LiquidJoins). Art only. Off: the pipe ends in a cap short of it, as before.</summary>
+		public static bool pipeLinksIntoMachines = true;
+
+		/// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: draw a flange/coupler/saddle at every liquid join (RM_LiquidJoins). OFF until
+		/// the owner rules on the connector art (design/RimMandrake/liquid_connections_visuals_2026-10-16.md); until then the
+		/// pieces draw a placeholder. Art only.</summary>
+		public static bool joinFittings = false;
+
 		private static List<string> disabledMachines = new List<string>();
 
 		public static string KeyOf(ThingDef def)
@@ -91,6 +102,8 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref industrialWorksBuildAnywhere, "industrialWorksBuildAnywhere", false);
 			Scribe_Values.Look(ref pipeAdaptersEnabled, "pipeAdaptersEnabled", true);
 			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
+			Scribe_Values.Look(ref pipeLinksIntoMachines, "pipeLinksIntoMachines", true);
+			Scribe_Values.Look(ref joinFittings, "joinFittings", false);
 			Scribe_Values.Look(ref unitsPerFilth, "unitsPerFilth", 2);
 			Scribe_Values.Look(ref liquidTheftEnabled, "liquidTheftEnabled", true);
 			Scribe_Values.Look(ref liquidTheftGoodwillPerDay, "liquidTheftGoodwillPerDay", 2);
@@ -154,6 +167,16 @@ namespace RimMandrake.FlowWorks.Machinery
 					opts.Add(new FloatMenuOption(l, () => pipeDefaultLook = l));
 				}
 				Find.WindowStack.Add(new FloatMenu(opts));
+			}
+			bool linksWas = pipeLinksIntoMachines, fitWas = joinFittings;
+			list.CheckboxLabeled("Pipes run right up to the tanks and machines they join (art only)", ref pipeLinksIntoMachines,
+				"On: a pipe beside a tank, pump or still draws its run on to the shared edge, so you can see it joins. Off: it ends in a cap short of it. Needs a restart to take effect if it was off at startup.");
+			list.CheckboxLabeled("Connector fittings at liquid joins (preview: placeholder art)", ref joinFittings,
+				"Draws a flange where a pipe meets a tank or machine, a coupler where a pump touches a tank, and a saddle where a hose couples onto a pipe. " +
+				"The fitting art is still being designed; until it lands every fitting draws a stand-in. Art only.");
+			if ((linksWas != pipeLinksIntoMachines || fitWas != joinFittings) && Current.ProgramState == ProgramState.Playing && Find.Maps != null)
+			{
+				foreach (Map m in Find.Maps) m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings);
 			}
 			foreach ((string key, string label) row in ToggleRows())
 			{

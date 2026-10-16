@@ -771,6 +771,8 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 V2 dp = fe.PortSide.X == 0 && fe.PortSide.Z == 0 ? d1 : new V2(fe.PortSide.X, fe.PortSide.Z);
                 Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint);
+                // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
+                RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
                 lastPortCouplings++;
             }
             else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
