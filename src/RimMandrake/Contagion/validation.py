@@ -549,7 +549,8 @@ def _quiet_site(t):
                                          keep_defs=(COALESCENCE, REPULSOR))
         except Exception as ex:                                 # noqa: BLE001 - recorded, never silent
             rc = {"error": "%s: %s" % (type(ex).__name__, ex)}
-        _STATE["quiet"] = rc
+        if not rc.get("error"):
+            _STATE["quiet"] = rc          # a profile that errored is retried at the next chain, never cached
         rb = dict((c.get("name"), c.get("readBack")) for c in rc.get("controls") or [])
         _note(t, "quiet-site profile (once per run)",
               {"storyteller/mental/disease": rb.get("storyteller_off"), "wildSpawner": rb.get("wild_spawner_off"),
@@ -1293,15 +1294,18 @@ def zhool_haze(t):
 
 # --------------------------------------------------------------------------- chain: coalescence
 
-def _unfinished_emission(trig):
-    """A safe_advance trigger caused by an emitted manhunter Unfinished (see coalescence_emits_...)."""
+def _unfinished_emission(trig, known_nums=frozenset()):
+    """A safe_advance trigger caused by an emitted manhunter Unfinished (see coalescence_emits_...). `known_nums`: the
+    thingIDNumbers of every pawn on the map before the jump; a 'mental Manhunter' trigger carries no def, so only a
+    pawn that was NOT there before (an emission) may match it."""
     if trig.get("critical") or trig.get("declared"):
         return False
     k, d = trig.get("kind"), str(trig.get("detail") or "")
     if k == "hostile_arrival":
         return UNFINISHED in d
     if k == "mental":
-        return "Manhunter" in d and trig.get("severity") != "damage"
+        return ("Manhunter" in d and trig.get("severity") != "damage"
+                and trig.get("subjectId") is not None and trig.get("subjectId") not in known_nums)
     if k == "hurt":
         return ("from " + UNFINISHED) in d
     return False
@@ -1386,13 +1390,15 @@ def coalescence(t):
             if _live(t):
                 _, before = _inspect(t, _STATE["coal"])
                 known = set(p["id"] for p in _things_pawns(t, UNFINISHED, None))
+                before_nums = frozenset(n for n in (_idnum(i) for i in _rows(t)) if n is not None)
                 _jump(t, 7000)              # passive growth is 1 mass / 6000 ticks; emit every 3000 (stage 2)
                 # The arm's OWN product stops safe_advance by design: an emitted manhunter Unfinished is a
                 # hostile_arrival / 'turned hostile' / mental Manhunter trigger, and it bites whoever it reaches.
                 # Declared for this wait only; any other trigger (a colonist turned hostile, a death, a hurt
                 # from anything else) still stops the clock.
                 import clockgate   # noqa: E402
-                with clockgate.expected_disturbance("Coalescence emits manhunter Unfinished", _unfinished_emission):
+                with clockgate.expected_disturbance("Coalescence emits manhunter Unfinished",
+                                                    lambda trig: _unfinished_emission(trig, before_nums)):
                     _wait(t, 400)
                 stage, mass = _mass_stage(_inspect(t, _STATE["coal"])[1])
                 m0 = _mass_stage(before)[1]
@@ -1512,7 +1518,9 @@ def _surgery_done(t, g):
     import clockgate   # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
     pnum = _idnum(g["patient"])
     pred = (lambda trig: trig.get("kind") == "hurt" and pnum is not None and trig.get("subjectId") == pnum)
-    waited, ended = 0, False
+    # A try counts as COMPLETED only if the doctor was SEEN in DoBill, then seen out of it (a readable census), with the
+    # patient still lying in the bed: an unreadable census or a doctor that never started is not a surgery that ran.
+    waited, ended, seen = 0, False, False
     with clockgate.expected_disturbance("extraction surgery bleeds its own patient", pred):
         while waited < SURGERY_CEILING:
             _wait(t, SURGERY_STEP)
@@ -1520,8 +1528,13 @@ def _surgery_done(t, g):
             got = _things(t, SAMPLE, g["rect"])
             if got:
                 return got
-            if _job(_census(t, g["doer"])) != "DoBill":
-                ended = True
+            d = _census(t, g["doer"])
+            if d is None:
+                break
+            if _job(d) == "DoBill":
+                seen = True
+            else:
+                ended = seen
                 break
     c = _census(t, g["patient"])
     if ended and _job(c) == "LayDown":
@@ -1549,7 +1562,7 @@ def _inject(t, doer, host):
         return
     if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
         _fail("RM_InjectGenomeSample was not accepted and running: %r" % r)
-    waited, c = 0, None
+    waited, c, reorders = 0, None, 0
     while waited < INJECT_CEILING:
         _wait(t, INJECT_STEP)
         waited += INJECT_STEP
@@ -1561,7 +1574,18 @@ def _inject(t, doer, host):
             _unmeasured(t, "the injecting colonist could not act (census %s) after %d ticks" % (json.dumps(c)[:300], waited))
         if _job(c) != "RM_InjectGenomeSample":
             _note(t, "inject: the job ended", {"ticks": waited, "doerJobNow": _job(c), "at": (c.get("x"), c.get("z"))})
-            return
+            if not _alive(_rows(t).get(host)):
+                _unmeasured(t, "the host is gone or dead after %d ticks; the inject could not finish" % waited)
+            if reorders >= 1:
+                return            # ordered twice, ended twice, no gestation: the caller's check is the verdict
+            # One re-order before concluding: an interrupted doer is not a verdict. A job that spends the sample
+            # without a gestation cannot be re-ordered into one (FailOn: no sample in the pack), so a real defect
+            # still ends here as a FAIL.
+            reorders += 1
+            r = t.bridge_call("jawa/ordered_job", pawnId=doer, jobDef="RM_InjectGenomeSample",
+                              targetAId=host, waitTicks=0, timeoutSeconds=30)
+            _note(t, "inject: re-ordered once", {"accepted": (r or {}).get("accepted"),
+                                                 "running": (r or {}).get("nowRunningRequested")})
     _unmeasured(t, "the inject job was still running after %d ticks (doer at %s, job %s): the window, not the mod"
                 % (waited, (c or {}).get("x"), json.dumps((c or {}).get("job"))[:200]))
 
@@ -1779,4 +1803,5 @@ def site_restore(t):
             prob = QS.restore_attached(t.session)
         except Exception as ex:                                 # noqa: BLE001
             prob = "%s: %s" % (type(ex).__name__, ex)
+        _STATE.pop("quiet", None)
         print("[contagion-note] quiet-site restore: %s" % (prob or "ok"), file=sys.stderr, flush=True)
