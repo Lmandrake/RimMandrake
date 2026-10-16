@@ -45,6 +45,9 @@ import os
 import sys
 import textwrap
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import donor_name_map as dnm  # noqa: E402  donor name -> ours
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
 ROSTERS = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'biomes', 'rosters')
@@ -66,7 +69,11 @@ def rows():
         with open(fp, encoding='utf-8') as fh:
             d = json.load(fh)
         for s in d.get('flora_stat_adjustments') or []:
-            out.append((d.get('sheet') or name[:-5], s))
+            # rosters speak the donor's names; a patch on a retired donor name matches nothing
+            t = dnm.ours(s['def'])
+            if t is None:
+                continue
+            out.append((d.get('sheet') or name[:-5], dict(s, **{'def': t})))
     return out
 
 

@@ -79,6 +79,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import biome_flora as bf                                            # noqa: E402  the rosters
+import donor_name_map as dnm                                        # noqa: E402  donor name -> ours
 
 ROOT = bf.ROOT
 # ⚠️ This used to point at src/Jawa/Jawa_Patches/, which JAWA_PATCHES_SPLIT_1 retired.
@@ -254,7 +255,11 @@ def compute(plants):
     rows, bonus, already, repicks = [], 0, 0, []
     for p, ts in sorted(homes.items()):
         d = plants.get(p)
-        if not d or not ts:
+        # 🔴 A biome with ZERO painted tiles is the EXPECTED state until the planet is repainted once at
+        # the end (owner 2026-09-20), and the tile CSV also still carries pre-rename biome names, so its
+        # `ts` is empty for the Abyss and the Rot. That must not drop the plant: fall back to the SHEET
+        # demand alone. (Skipping them left 36 landed rows unable to grow and made verify() refuse to write.)
+        if not d or (not ts and p not in sheets):
             continue
         # 🔴 `cur` IS THE DONOR'S VALUE, NOT THE LIVE DUMP'S — and this is the defect that
         # made this generator DISSOLVE ITS OWN OUTPUT. The dump is of a game with this very
@@ -270,8 +275,11 @@ def compute(plants):
                                 for k in FIELDS}
         cur = dict(cur)
 
-        need_lo = _pct(ts, 0.05) - SWING            # what this biome actually demands
-        need_hi = _pct(ts, 0.95) + SWING
+        if ts:
+            need_lo = _pct(ts, 0.05) - SWING            # what this biome actually demands
+            need_hi = _pct(ts, 0.95) + SWING
+        else:
+            need_lo, need_hi = sheets[p]
         s_lo, s_hi = sheets.get(p, (need_lo, need_hi))   # and what its SHEET demands
         need_lo, need_hi = min(need_lo, s_lo), max(need_hi, s_hi)
         need_w = need_hi - need_lo
@@ -389,8 +397,19 @@ def emit(rows, plants):
          '       a def, not the one that defines it. PatchOperationConditional on the def is',
          '       the correct guard and a biome/plant that is absent simply fails the xpath. -->',
          '']
-    for p, cur, new, nlo, nhi, n in rows:
-        lab = (plants[p]['fields'].get('label') or p)
+    # 🔴 Rosters and the def dump still speak the DONOR's names; a patch keyed on a donor name matches
+    # nothing once the donor is retired. Translate at emit time (the bands above were fitted from the
+    # donor's shipped values, which our port copied). Donor-only plants with no twin emit nothing.
+    seen, mapped = set(), []
+    for r in rows:
+        t = dnm.ours(r[0])
+        if t is None or t in seen:
+            continue
+        seen.add(t)
+        mapped.append((t,) + tuple(r[1:]) + (r[0],))
+    rows = mapped
+    for p, cur, new, nlo, nhi, n, dp in rows:
+        lab = (plants[dp]['fields'].get('label') or p)
         o += [f'  <!-- {lab} ({p}) - {n} tiles, home demands {nlo:g} … {nhi:g} °C',
               '       ' + '  '.join(f'{k[:12]} {cur[k]:g}->{new[k]:g}' for k in FIELDS) + ' -->',
               '  <Operation Class="PatchOperationConditional">',

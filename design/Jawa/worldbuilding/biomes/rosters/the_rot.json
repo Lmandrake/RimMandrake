@@ -653,15 +653,7 @@
       "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20 — executed the 2026-09-10 sheet's decision=out that was graded and never applied (\"4 flora purges remain purged\"). No successor authored — \"I don't want new versions of these silly plants.\""
     }
   ],
-  "flora_stat_adjustments": [
-    {
-      "authority": "donor-bug clamp, 2026-09-09 fix wave: 40 is 26x the pool maximum (1.5) and would make one ingested marsh fungus the most flammable object on the planet. 1.0 is the pool's ordinary living-plant value. No sheet law changes.",
-      "def": "RUT_GreyLady",
-      "field": "flammability",
-      "from": 40,
-      "to": 1.0
-    }
-  ],
+  "flora_stat_adjustments": [],
   "law_sources": [
     "the_rot.md §4/§6/§7b",
     "_freeze_rulings_2026-09-07.md R25/R29/R30",
