@@ -235,9 +235,11 @@ def _arm(t, **values):
 
 # ---- the soak's scope (EXPLOSIVE_GROWTH_MERGE_COMES_HOME)
 
-def _rebuild(t, method="ProofRebuild"):
-    """Rebuild the live plant table (ProofRebuild, or a ProofTestScopeAll* variant); -> (parsed dict, raw)."""
-    r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof",
+def _rebuild(t, method="ProofRebuild", unguarded=False):
+    """Rebuild the live plant table (ProofRebuild, or a ProofTestScopeAll* variant); -> (parsed dict, raw).
+    unguarded: call the session directly, past the failed-chain guard (restores in a `finally`)."""
+    call = t.session.call if (unguarded and t.session is not None) else t.bridge_call
+    r = call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof",
                       method=method, args="current")
     text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
     if _live(t) and "outOfScope=" not in text:
@@ -247,9 +249,11 @@ def _rebuild(t, method="ProofRebuild"):
 
 def _test_scope_all(t, on):
     """Set the TEST-ONLY, never-Scribed every-plant override and rebuild; -> the scope read."""
-    v, raw = _rebuild(t, "ProofTestScopeAllOn" if on else "ProofTestScopeAllOff")
     if t.session is not None:
-        t.session._eg_scope_all = bool(on)
+        t.session._eg_scope_all = None      # unknown until the read below confirms it
+    v, raw = _rebuild(t, "ProofTestScopeAllOn" if on else "ProofTestScopeAllOff")
+    if t.session is not None and v.get("testScopeAll") == str(bool(on)):
+        t.session._eg_scope_all = bool(on)  # only a confirmed state is cached; anything else re-arms next time
     return v, raw
 
 
@@ -270,7 +274,7 @@ def _real_option(t, value):
     finally:
         if t.session is not None:
             for what, step in (("put", lambda: _put(t, "soakOtherModsPlants", DEFAULT_OF["soakOtherModsPlants"])),
-                               ("rebuild", lambda: _rebuild(t))):
+                               ("rebuild", lambda: _rebuild(t, unguarded=True))):
                 try:                        # each step on its own: a failed put must not skip the rebuild
                     step()
                 except Exception as e:      # never mask the body's own exception
@@ -978,7 +982,7 @@ def scope_native_only(t):
                 if v.get("forcedBy", "none") != "none":
                     _unmeasured(t, "SITE: roster %s forces every plant into scope (a campaign layer is loaded), so the "
                                    "default scope cannot be seen on this list: %s" % (v.get("forcedBy"), raw))
-                if not v.get("home", "NONE").startswith("mandrake.rm.biomes"):
+                if v.get("home", "NONE") != "mandrake.rm.biomes":
                     _fail("the engine's home mod is %r, not Baroque Biomes (mandrake.rm.biomes): it is not composed, "
                           "or a standalone copy loaded: %s" % (v.get("home"), raw))
                 if v.get("riceInHomeBiome") == "True":
@@ -1002,6 +1006,10 @@ def scope_option_extends(t):
         if _live(t):
             if v.get("riceLoaded") != "True":
                 _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
+            if v.get("forcedBy", "none") != "none" or v.get("riceInHomeBiome") == "True":
+                _unmeasured(t, "SITE: rice is in scope without the option (forcedBy=%s riceInHomeBiome=%s), so this "
+                               "list cannot show the option's effect: %s"
+                               % (v.get("forcedBy"), v.get("riceInHomeBiome"), raw))
             if v.get("rice") != "True":
                 _fail("soakOtherModsPlants=true but vanilla Plant_Rice still does not soak: %s" % raw)
             if int(v.get("outOfScope", -1)) != 0 or int(v.get("allPlants", 0)) < 1:
@@ -1155,14 +1163,20 @@ def settings_restored(t):
     """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run). The suite's
     own scope arm (soakOtherModsPlants on) is undone here first, with a table rebuild."""
     with _comp(t, "all_settings_at_shipped_defaults"):
+        cleared, clear_err = {}, None
         if t.session is not None:
             try:
-                _test_scope_all(t, False)
-            except Exception as e:      # still read every field back below
-                print("[eg] clearing the test scope override failed: %s" % e, file=sys.stderr, flush=True)
+                cleared, _raw = _test_scope_all(t, False)
+            except Exception as e:      # still read every field back below, then FAIL on it
+                clear_err = e
                 t.upstream_failed = False
                 t._why = None
         if _live(t):
+            if clear_err is not None:
+                _fail("clearing the test-only scope override failed: %s" % clear_err)
+            if cleared.get("testScopeAll") != "False" or cleared.get("option") != "False":
+                _fail("after clearing, the live table still reads testScopeAll=%r option=%r (want False/False)"
+                      % (cleared.get("testScopeAll"), cleared.get("option")))
             bad = []
             for f, d in DEFAULTS:
                 if not _same(_get(t, f), _sv(d)):
