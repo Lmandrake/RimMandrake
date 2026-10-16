@@ -65,6 +65,8 @@ namespace RimMandrake.FlowWorks
         public static bool canalFireEnabled = true;
         // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).
         public static bool liquidHeatPushEnabled = true;
+        // FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: fixes a vanilla water-body count bug when water changes type.
+        public static bool waterBodyTypeFlipFixEnabled = true;
         public static float liquidHeatStrength = 1f;
         public static float canalBurnDaysPerLevel = 1f;
         public static float sourceBurnDaysPerLevel = 5f;
@@ -423,6 +425,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", true);
             Scribe_Values.Look(ref canalFireEnabled, "canalFireEnabled", true);
             Scribe_Values.Look(ref liquidHeatPushEnabled, "liquidHeatPushEnabled", true);
+            Scribe_Values.Look(ref waterBodyTypeFlipFixEnabled, "waterBodyTypeFlipFixEnabled", true);
             Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
             Scribe_Values.Look(ref canalBurnDaysPerLevel, "canalBurnDaysPerLevel", 1f);
             Scribe_Values.Look(ref sourceBurnDaysPerLevel, "sourceBurnDaysPerLevel", 5f);
@@ -612,11 +615,12 @@ namespace RimMandrake.FlowWorks
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
-            .Independent("pulseIntervalTicks", "sourceBudgetMultiplier", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled")
+            .Independent("pulseIntervalTicks", "sourceBudgetMultiplier", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled")
             .Name("depthEngineEnabled", "Depth engine")
             .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
             .Name("viscosityEnabled", "Thick liquids flow slower than water")
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
+            .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
             .Name("chemfuelInfernoEnabled", "Chemfuel burns like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "A flooded pit drowns whoever cannot swim")
@@ -1007,6 +1011,11 @@ namespace RimMandrake.FlowWorks
                 list.Label("Heat strength: x" + liquidHeatStrength.ToString("F2") + " (PROVISIONAL; applies now)");
                 liquidHeatStrength = list.Slider(liquidHeatStrength, 0.25f, 3f);
             }
+            list.CheckboxLabeled("Water changing type keeps the game's water-body counts right", ref waterBodyTypeFlipFixEnabled,
+                "A fix for a base-game bug. When a water cell turns into a different kind of water (fresh to salt, or "
+              + "water to one of our liquids), the game keeps counting it in its old pond. Filling in the rest of that "
+              + "pond later throws an error and the ground is not changed. On: the cell leaves its old pond first. "
+              + "Off: the base game's behaviour. Takes effect at once.");
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
             }
