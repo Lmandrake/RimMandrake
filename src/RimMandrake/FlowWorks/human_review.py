@@ -55,7 +55,13 @@ COLOR = {"PROVEN-LIVE": "#5ac37f", "BUILT-UNPROVEN": "#6aa6e8", "PARTIAL": "#e8b
 # open = rimflow's own model (built/validated are open too); a hand list here dropped them and the sheet asked the
 # owner about items that were in fact still open
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
-from rimflow.model import OPEN_STATES  # noqa: E402
+try:
+    from rimflow.model import OPEN_STATES  # noqa: E402
+except ImportError:                           # Windows python.exe (review_map.py --build): rimflow.model imports fcntl.
+    import ast                                # Read the same tuple out of the model's source, never a hand copy.
+    with open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "model.py"), encoding="utf-8") as _f:
+        OPEN_STATES = next(ast.literal_eval(n.value) for n in ast.parse(_f.read()).body if isinstance(n, ast.Assign)
+                           and any(getattr(t, "id", None) == "OPEN_STATES" for t in n.targets))
 
 # Screenshots of the live 2026-10-05 run (Transient/belt_bridge5_review, scene groups) and one owner/design
 # reference image cited by PIT_SUPERDEEP_COLLAPSE_1 (ruling 33). Copied (downscaled JPEG) into review/shots/ so the

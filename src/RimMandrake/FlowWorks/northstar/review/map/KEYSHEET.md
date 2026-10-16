@@ -1,6 +1,6 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_walk_20261015). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
@@ -785,7 +785,7 @@ Pipe-net adapters
 
 Spilled liquid
 
-**Look at:** spilled liquid (left) and tracked tar (right) on the ground
+**Look at:** spilled liquid (left) and tracked tar (right) on a concrete pad
 
 **Poke it:**
 
