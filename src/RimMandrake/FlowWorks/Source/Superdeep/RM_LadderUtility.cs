@@ -65,7 +65,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the wall a ladder on this square hangs on, as a Rot4 index — the
 		/// placed rotation when it faces a shallower neighbour, else the biggest drop (RM_LadderWallMath.Resolve); -1 when the
-		/// square has no wall (or is not dug).</summary>
+		/// square has no wall (or is not dug). Depths are STEP depths (an intact cover reads as ground), the same read the
+		/// cliff masks and the pocket grid join by, so a ladder hung toward a covered pit beside it is a wall here too.</summary>
 		public static int WallRotAt(Map map, IntVec3 c, Rot4 placed)
 		{
 			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
@@ -73,14 +74,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return -1;
 			}
-			int d = eng.ClimbDepthAt(c);
+			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 			int[] sideD = new int[4];
 			bool[] inB = new bool[4];
 			for (int r = 0; r < 4; r++)
 			{
 				IntVec3 o = new IntVec3(c.x + RM_LadderWallMath.FX[r], 0, c.z + RM_LadderWallMath.FZ[r]);
 				inB[r] = o.InBounds(map);
-				sideD[r] = inB[r] ? eng.ClimbDepthAt(o) : d;
+				sideD[r] = inB[r] ? RM_SuperdeepTrap.StepDepthAt(map, eng, o) : d;
 			}
 			return RM_LadderWallMath.Resolve(placed.AsInt, d, sideD, inB);
 		}
@@ -118,6 +119,11 @@ namespace RimMandrake.FlowWorks
 	public class RM_CompLadder : ThingComp
 	{
 		public bool raised;
+
+		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: this ladder has been turned to its wall once (scribed). A save made
+		/// before ladders turned has false, so its first load turns it; after that a reload keeps the saved rotation, so a
+		/// ladder whose wall was filled in (or whose sides moved with a setting) does not swing onto another wall on load.</summary>
+		public bool hung;
 		private Graphic raisedGraphic;
 
 		public RM_CompProperties_Ladder Props => (RM_CompProperties_Ladder)props;
@@ -197,6 +203,7 @@ namespace RimMandrake.FlowWorks
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref raised, "rmLadderRaised", false);
+			Scribe_Values.Look(ref hung, "rmLadderHung", false);
 		}
 	}
 
@@ -213,10 +220,20 @@ namespace RimMandrake.FlowWorks
 			// PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: hang on a wall like a door between rooms. The placed rotation stands when it
 			// faces a wall; otherwise (a dev spawn, a pre-rotation save, a blueprint placed before the cut beside it was dug)
 			// turn to the wall with the biggest drop. No wall: keep the rotation; the ladder leads nowhere (the inspect says so).
-			int wall = RM_LadderUtility.WallRotAt(map, Position, Rotation);
-			if (wall >= 0 && wall != Rotation.AsInt)
+			// A reload keeps a rotation already settled (RM_CompLadder.hung): live, a ladder whose wall is filled in stays
+			// leading nowhere, and the reloaded game must agree.
+			RM_CompLadder comp = GetComp<RM_CompLadder>();
+			if (!respawningAfterLoad || comp == null || !comp.hung)
 			{
-				Rotation = new Rot4(wall);
+				int wall = RM_LadderUtility.WallRotAt(map, Position, Rotation);
+				if (wall >= 0 && wall != Rotation.AsInt)
+				{
+					Rotation = new Rot4(wall);
+				}
+			}
+			if (comp != null)
+			{
+				comp.hung = true;
 			}
 			base.SpawnSetup(map, respawningAfterLoad);
 			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
