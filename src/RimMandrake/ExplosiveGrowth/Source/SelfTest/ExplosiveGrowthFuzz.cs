@@ -471,6 +471,33 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
             return fails;
         }
 
+        // ════════════════════════ scope ════════════════════════
+        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME: exhaustive over the four inputs. In scope iff any input holds; the reason is
+        // the first that holds in the order opt-in, home pack, home biome, all-plants option; out of scope only when all
+        // four are false (so the option, default off, is the ONLY way a foreign plant with no opt-in soaks).
+        private static List<string> Scope()
+        {
+            var fails = new List<string>();
+            try
+            {
+                for (int m = 0; m < 16; m++)
+                {
+                    bool opt = (m & 1) != 0, pack = (m & 2) != 0, biome = (m & 4) != 0, all = (m & 8) != 0;
+                    byte got = RM_ExplosiveGrowthKernel.SoakScope(opt, pack, biome, all);
+                    byte want = opt ? RM_ExplosiveGrowthKernel.ScopeOptIn : pack ? RM_ExplosiveGrowthKernel.ScopeHomePack
+                              : biome ? RM_ExplosiveGrowthKernel.ScopeHomeBiome : all ? RM_ExplosiveGrowthKernel.ScopeAllPlants
+                              : RM_ExplosiveGrowthKernel.ScopeOut;
+                    Check(got == want, $"SoakScope(optIn {opt}, pack {pack}, biome {biome}, all {all}) = {got}, want {want}");
+                    Check((got == RM_ExplosiveGrowthKernel.ScopeOut) == (m == 0), $"scope flags {m}: out-of-scope must mean no input holds");
+                    Cases++; Steps++;
+                }
+                Check(RM_ExplosiveGrowthKernel.SoakScope(false, false, false, false) == RM_ExplosiveGrowthKernel.ScopeOut,
+                      "a foreign plant with the option at its default (off) must not soak");
+            }
+            catch (Exception e) { fails.Add("scope: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -483,6 +510,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 ("clock", () => Clock(N(3000), S(1))),
                 ("slice", () => Slice(N(2000), S(1))),
                 ("top", () => Top()),
+                ("scope", () => Scope()),
             };
             foreach (var f in fam)
             {

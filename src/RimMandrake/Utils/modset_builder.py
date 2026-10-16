@@ -175,8 +175,10 @@ TIERS = {
                "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
                "guards stay (stale pits, ManyWaters, Invisible Conduit Continued for the GSS rows).",
         "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes",
-                 "mandrake.rm.explosivegrowth", "mandrake.rut.rivercolors"],
-        "forbid": ["mandrake.rm.pits", "glitchgoblin.invisibleconduitcont"],
+                 "mandrake.rut.rivercolors"],
+        # ExplosiveGrowth is composed in mandrake.rm.biomes (EXPLOSIVE_GROWTH_MERGE_COMES_HOME); its old standalone
+        # packageId would load it twice.
+        "forbid": ["mandrake.rm.pits", "glitchgoblin.invisibleconduitcont", "mandrake.rm.explosivegrowth"],
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
@@ -353,28 +355,25 @@ TIERS = {
         "dlc": True,
     },
     "explosivegrowth": {
-        "why": "Live-verify EXPLOSIVE_PLANT_GROWTH_1's 2026-09-26 charge-clock fix "
-               "(RM_MapComponent_ExplosiveGrowth.StepCharge: wet+growing advances, "
-               "wet+dormant HOLDS, dry decays) on a real plant -- the engine "
-               "(mandrake.rm.explosivegrowth) and its ×10 wet-ambient band "
-               "(mandrake.rut.plantgrowth) with nothing else on the map that could "
-               "explain a failure. Both packageIds are already active in the "
-               "owner's full ModsConfig but have never been live-tested on any "
-               "smaller tier -- this exists so the next re-verify (perf gate, "
-               "cut-vs-harvest, every top) doesn't cost a full-list restart either.",
-        "want": [BRIDGE, "mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
+        "why": "Live-verify EXPLOSIVE_PLANT_GROWTH_1 with its x10 wet-ambient band: the engine, composed in "
+               "Baroque Biomes (mandrake.rm.biomes) since EXPLOSIVE_GROWTH_MERGE_COMES_HOME, plus "
+               "mandrake.rut.plantgrowth (the band, and the campaign roster that opts the campaign's flora "
+               "into the soak). Biomes brings its own hard dependencies (Alpha Biomes and the rest). The old "
+               "standalone packageId is forbidden: it would load the engine twice.",
+        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.plantgrowth"],
+        "forbid": ["mandrake.rm.explosivegrowth"],
         "dlc": True,
     },
     "explosivegrowth_solo": {
-        "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script: mandrake.rm.explosivegrowth "
-               "ALONE with the bridge. NOT the `explosivegrowth` tier above -- that one adds "
-               "mandrake.rut.plantgrowth, whose x4/x10 ambient bands multiply the same "
-               "Plant.GrowthRate the soak postfix multiplies (it cancels in a ratio but "
-               "not in any absolute rate), and the RM-tier script must not depend on a "
-               "campaign mod. Vanilla + DLC plants carry every Churn check; the "
-               "donor-plant tops (Burst/Tinder/Slime/Rupture/Flush) read UNMEASURED here by "
-               "design. All five DLCs and Harmony resolve automatically.",
-        "want": [BRIDGE, "mandrake.rm.explosivegrowth"],
+        "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script on the smallest list that loads the engine: "
+               "since EXPLOSIVE_GROWTH_MERGE_COMES_HOME that is Baroque Biomes (mandrake.rm.biomes, which composes "
+               "it) with the bridge, and NOT mandrake.rut.plantgrowth, whose x4/x10 ambient bands multiply the same "
+               "Plant.GrowthRate the soak postfix multiplies (it cancels in a ratio but not in any absolute rate); "
+               "the RM-tier script must not depend on a campaign mod. The vanilla-plant checks run with the "
+               "suite's soakOtherModsPlants arm (vanilla plants are outside the default scope). Biomes brings "
+               "Alpha Biomes, so several donor tops can run here too. The old standalone packageId is forbidden.",
+        "want": [BRIDGE, "mandrake.rm.biomes"],
+        "forbid": ["mandrake.rm.explosivegrowth"],
         "dlc": True,
     },
     "fish": {

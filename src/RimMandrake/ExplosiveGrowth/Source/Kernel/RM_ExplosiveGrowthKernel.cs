@@ -125,6 +125,24 @@ namespace RimMandrake.ExplosiveGrowth
         }
         public static int NextCursor(int cursor) { return (cursor + 1) % SliceCount; }
         public static bool InSurgeBand(float salinity) { return !(salinity < SurgeFreshMin || salinity > SurgeFreshMax); }
+
+        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME (owner, 2026-10-16: "It should only natively apply to plants within the Baroque
+        // Biomes, though option settings could allow it to apply to other plants from other mods or vanilla basegame").
+        // Why a plant is in the soak's scope, first reason wins. 0 = out of scope: the plant never soaks.
+        public const byte ScopeOut = 0, ScopeOptIn = 1, ScopeHomePack = 2, ScopeHomeBiome = 3, ScopeAllPlants = 4;
+
+        /// <param name="optIn">an RM_ExplosiveGrowthExtension on the def, or a row in a roster marked nativeSoak</param>
+        /// <param name="homePack">the def ships in the same mod as this engine (Baroque Biomes)</param>
+        /// <param name="homeBiome">the def grows wild in a BiomeDef that ships in that mod</param>
+        /// <param name="allPlants">the Mod Settings option extending the soak to every other mod's and the base game's plants</param>
+        public static byte SoakScope(bool optIn, bool homePack, bool homeBiome, bool allPlants)
+        {
+            if (optIn) return ScopeOptIn;
+            if (homePack) return ScopeHomePack;
+            if (homeBiome) return ScopeHomeBiome;
+            if (allPlants) return ScopeAllPlants;
+            return ScopeOut;
+        }
     }
 
     /// <summary>One map's soak grid, suppression grid and charge records, and the pass over them.</summary>

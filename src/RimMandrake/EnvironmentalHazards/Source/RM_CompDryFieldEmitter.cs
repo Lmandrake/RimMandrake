@@ -131,17 +131,18 @@ namespace RimMandrake.EnvironmentalHazards
 
         // Piece 2: "repels encroachment: writes suppression into the
         // EXPLOSIVE_PLANT_GROWTH_1 engine's suppression grid over a doorway
-        // arc." WIRED 2026-09-26: that grid now exists
-        // (mandrake.rm.explosivegrowth); the write goes through
-        // RM_ExplosiveGrowthSuppressionBridge by reflection, so without that
-        // mod this is still a no-op. Same arc as RepelAnimals (the spec ties
+        // arc." WIRED 2026-09-26: that grid is the Explosive Growth engine's;
+        // since EXPLOSIVE_GROWTH_MERGE_COMES_HOME both ship composed in Baroque
+        // Biomes and the write is a DIRECT ExplosiveGrowthAPI.Suppress call
+        // (skipped while the engine or its suppression is switched off). Same arc as RepelAnimals (the spec ties
         // both to one doorway arc), each cell suppressed for suppressHoldTicks
         // and re-granted every active rare tick — so when the blower stops,
         // "the green notices within hours".
         private void SuppressPlantGrowth()
         {
             Map map = parent.Map;
-            if (map == null || !RM_ExplosiveGrowthSuppressionBridge.Available)
+            if (map == null || !RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings.On
+                || !RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings.suppressionEnabled)
             {
                 return;
             }
@@ -159,7 +160,7 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     continue;
                 }
-                RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, 0, Props.suppressHoldTicks);
+                RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI.Suppress(map, cell, 0, Props.suppressHoldTicks);
             }
         }
 

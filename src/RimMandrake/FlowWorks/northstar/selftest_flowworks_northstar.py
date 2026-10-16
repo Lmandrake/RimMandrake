@@ -65,7 +65,6 @@ def _fake_installed(drop=()):
     deps = {"mandrake.rm.flowworks": ["brrainz.harmony"], "mandrake.rm.gimmesomeslack": ["brrainz.harmony"],
             "mandrake.rm.biomes": ["brrainz.harmony", "mandrake.rm.flowworks", "sarg.alphabiomes"],
             "sarg.alphabiomes": [],
-            "mandrake.rm.explosivegrowth": ["brrainz.harmony"],
             "mandrake.rut.rivercolors": ["ludeon.rimworld", "brrainz.harmony"]}
     pids = ["ludeon.rimworld", "brrainz.harmony", M.BRIDGE] + list(M.DLC_IDS) + list(deps)
     return {p: {"packageId": p, "name": p, "deps": deps.get(p, []), "after": [], "before": []}
@@ -76,10 +75,12 @@ def test_gss_sitting_tier():
     check("tier `fw_gss_sitting` exists", "fw_gss_sitting" in M.TIERS)
     t = M.TIERS["fw_gss_sitting"]
     # FloodedCanyon ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
-    check("fw_gss_sitting = flowworks want + biomes (carries FloodedCanyon), explosivegrowth, rivercolors",
-          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes", "mandrake.rm.explosivegrowth",
-                                                       "mandrake.rut.rivercolors"], t["want"])
-    check("fw_gss_sitting never wants the composed member's own id", "mandrake.rm.floodedcanyon" not in t["want"])
+    check("fw_gss_sitting = flowworks want + biomes (carries FloodedCanyon AND ExplosiveGrowth), rivercolors",
+          t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes", "mandrake.rut.rivercolors"], t["want"])
+    check("fw_gss_sitting never wants the composed members' own ids",
+          "mandrake.rm.floodedcanyon" not in t["want"] and "mandrake.rm.explosivegrowth" not in t["want"])
+    check("fw_gss_sitting forbids the folded ExplosiveGrowth standalone id (it would load twice)",
+          "mandrake.rm.explosivegrowth" in t["forbid"])
     check("fw_gss_sitting dlc True (all five expansions)", t["dlc"] is True)
     check("fw_gss_sitting keeps the flowworks forbids except Alpha Biomes (biomes hard-depends on it)",
           set(M.TIERS["flowworks"]["forbid"]) - {"sarg.alphabiomes"} <= set(t["forbid"])

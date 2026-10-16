@@ -31,11 +31,16 @@ namespace RimMandrake.ExplosiveGrowth
             int[] t = RM_ExplosiveGrowthRegistry.CountByTop;
             Log.Message(string.Format(
                 "[RM ExplosiveGrowth] {0} plant defs soak (churn {1}, burst {2}, slime {3}, tinder {4}, rupture {5}, flush {6}), {7} never soak; " +
-                "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}.",
+                "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}. " +
+                "Scope (home mod {12}): opted in {13}, Baroque Biomes plants {14}, their biomes' wild flora {15}, " +
+                "by the all-plants option {16}; {17} plants of other mods / the base game left out.",
                 RM_ExplosiveGrowthRegistry.CountSoaking, t[0], t[1], t[2], t[3], t[4], t[5],
                 RM_ExplosiveGrowthRegistry.CountNone, RM_ExplosiveGrowthRegistry.RosterResolved,
                 RM_ExplosiveGrowthRegistry.RosterMissing, RM_ExplosiveGrowthRegistry.RupturePawnKinds.Count,
-                RM_ExplosiveGrowthRegistry.RuptureMutationHediffs.Count));
+                RM_ExplosiveGrowthRegistry.RuptureMutationHediffs.Count,
+                ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", RM_ExplosiveGrowthRegistry.ScopeOptIn,
+                RM_ExplosiveGrowthRegistry.ScopeHomePack, RM_ExplosiveGrowthRegistry.ScopeHomeBiome,
+                RM_ExplosiveGrowthRegistry.ScopeAllPlants, RM_ExplosiveGrowthRegistry.OutOfScope));
         }
     }
 
@@ -54,7 +59,7 @@ namespace RimMandrake.ExplosiveGrowth
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref float __result)
         {
-            if (__result <= 0f || !ExplosiveGrowthSettings.enabled) return;
+            if (__result <= 0f || !ExplosiveGrowthSettings.On) return;
             Map map = __instance.Map;
             if (map == null) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(map);
@@ -80,7 +85,7 @@ namespace RimMandrake.ExplosiveGrowth
         public static void Prefix(Plant __instance, out FloatRange? __state)
         {
             __state = null;
-            if (!ExplosiveGrowthSettings.enabled) return;
+            if (!ExplosiveGrowthSettings.On) return;
             Map map = __instance.Map;
             RM_MapComponent_ExplosiveGrowth comp = map != null ? RM_MapComponent_ExplosiveGrowth.For(map) : null;
             if (comp == null || !comp.AnyCharging) return;
@@ -120,7 +125,7 @@ namespace RimMandrake.ExplosiveGrowth
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref Graphic __result)
         {
-            if (__result == null || !ExplosiveGrowthSettings.enabled || !ExplosiveGrowthSettings.hueShiftEnabled) return;
+            if (__result == null || !ExplosiveGrowthSettings.On || !ExplosiveGrowthSettings.hueShiftEnabled) return;
             if (!__instance.Spawned) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
             if (comp == null || !comp.AnyCharging) return;
@@ -152,7 +157,7 @@ namespace RimMandrake.ExplosiveGrowth
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref int __result)
         {
-            if (__result <= 0 || !ExplosiveGrowthSettings.enabled || !ExplosiveGrowthSettings.harvestJackpotEnabled) return;
+            if (__result <= 0 || !ExplosiveGrowthSettings.On || !ExplosiveGrowthSettings.harvestJackpotEnabled) return;
             if (!__instance.Spawned) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
             if (comp == null || !comp.AnyCharging) return;
@@ -180,7 +185,7 @@ namespace RimMandrake.ExplosiveGrowth
         [HarmonyPrefix]
         public static bool Prefix(Plant __instance)
         {
-            if (!ExplosiveGrowthSettings.enabled || !__instance.Spawned) return true;
+            if (!ExplosiveGrowthSettings.On || !__instance.Spawned) return true;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
             if (comp == null || !comp.AnyCharging) return true;
             float charge = comp.TakeCharge(__instance);

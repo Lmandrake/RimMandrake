@@ -72,7 +72,7 @@ namespace RimMandrake.Utinni.PlantGrowth
             // other, never stack): terminator x0.4, the three wet biomes x10
             // (ruling 6, 2026-09-21), everywhere else x4. The explosive-growth
             // SOAK multiplier is a separate event tier owned by
-            // mandrake.rm.explosivegrowth's own postfix and multiplies on top
+            // the Explosive Growth engine's own postfix (mandrake.rm.biomes) and multiplies on top
             // of whichever band this picks — do not fold it in here.
             BiomeDef biome = map?.Biome;
             if (biome != null && PlantGrowthConfig.IsTerminatorBiome(biome))

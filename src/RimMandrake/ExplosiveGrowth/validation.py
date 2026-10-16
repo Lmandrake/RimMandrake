@@ -1,14 +1,16 @@
-"""validation.py -- modcheck suite for RimMandrake: Explosive Plant Growth
-(mandrake.rm.explosivegrowth). Walk: design/validation_walks/RimMandrake/ExplosiveGrowth.md
-(`## must be true`, every line ends in `-> chain.component` or `-> UNCOVERED: why`).
+"""validation.py -- modcheck suite for the Explosive Plant Growth engine, a composed member of
+RimMandrake: Baroque Biomes (mandrake.rm.biomes) since EXPLOSIVE_GROWTH_MERGE_COMES_HOME; its old
+standalone packageId mandrake.rm.explosivegrowth is retired. Walk:
+design/validation_walks/RimMandrake/ExplosiveGrowth.md (`## must be true`, every line ends in
+`-> chain.component` or `-> UNCOVERED: why`).
 
 Never deployed (deploy_custom_mods.py excludes `.py`). Drive it on the `explosivegrowth_solo`
-tier (engine alone + the bridge, all five DLCs):
+tier (Baroque Biomes + the bridge, all five DLCs):
 
     python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod ExplosiveGrowth \\
         --plan src/RimMandrake/ExplosiveGrowth/northstar_plan.py
 
-Grounded in the mod's own source (`Source/`): `ExplosiveGrowthMod.cs` (25 settings fields, all
+Grounded in the mod's own source (`Source/`): `ExplosiveGrowthMod.cs` (26 settings fields, all
 `public static` on `RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings`), the Harmony patches
 in `RM_ExplosiveGrowthPatches.cs`, the registry (`RM_ExplosiveGrowthRegistry.cs`), the per-map
 component (`RM_MapComponent_ExplosiveGrowth.cs`: soak grid, suppression grid, the charge clock,
@@ -35,9 +37,15 @@ correctly never charges (`StepCharge`, fixed 2026-09-26). Every chain that needs
 the control plant's own GrowthRate and records UNMEASURED (a SITE fault) when it is 0.
 
 THE TOPS. Burst / Tinder / Slime / Rupture / Flush plants are roster rows naming Alpha Biomes (`AB_`),
-`RG_` and Pyrelands (`RM_FE_`) plants that the solo tier does not load: those chains probe for the
-donor def and record UNMEASURED ("donor not loaded") on it. They run for real on a list that carries
-the donors (the owner's full list). Churn, the default top, is proven on the solo tier with vanilla Rice.
+`RG_` and Pyrelands (`RM_FE_`) plants: a chain whose donor def is not loaded probes for it and records
+UNMEASURED ("donor not loaded"). Churn, the default top, is proven with vanilla Rice.
+
+THE SCOPE (owner, 2026-10-16). By default only Baroque Biomes plants soak (its own plant defs, the wild
+flora of its biomes, and plants opted in by a nativeSoak roster or an extension); vanilla Rice/Bush/Corn
+are OUTSIDE it. So every chain that stages a vanilla plant first turns `soakOtherModsPlants` on and
+rebuilds the plant table (`_suite_scope`, through RM_ExplosiveGrowthProof.ProofRebuild: a field written
+by jawa/mod_settings_field never runs WriteSettings). `scope_native_only` / `scope_option_extends` prove
+the default and the option themselves; `settings_restored` puts the option back off and rebuilds.
 
 A FAIL turns the rest of a chain UNMEASURED, so every independent proof has its OWN chain, and
 every settings arm restores the shipped default in a `finally` that bypasses the guard.
@@ -64,7 +72,7 @@ HARMONY_ID = "mandrake.rm.explosivegrowth"
 # field -> shipped default (ExplosiveGrowthMod.cs). The suite restores exactly these.
 DEFAULTS = [
     ("enabled", True), ("soakMultiplier", 10.0), ("defaultSoakHours", 24.0),
-    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True),
+    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True), ("soakOtherModsPlants", False),
     ("irrigationSoakEnabled", True), ("gradientSurgeSoakEnabled", True), ("weatherSoakEnabled", True),
     ("chargeHours", 6.0), ("maxOvergrowthScale", 2.0), ("reprintIntervalTicks", 250),
     ("hueShiftEnabled", True), ("tellSoundsEnabled", True), ("groundTellEnabled", True),
@@ -222,10 +230,38 @@ def _arm(t, **values):
                 print("[eg] RESTORE FAILED %s: %s" % (f, e), file=sys.stderr, flush=True)
 
 
+# ---- the soak's scope (EXPLOSIVE_GROWTH_MERGE_COMES_HOME)
+
+def _rebuild(t):
+    """Rebuild the live plant table from the current settings; -> (parsed dict, raw)."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof",
+                      method="ProofRebuild", args="current")
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    if _live(t) and "outOfScope=" not in text:
+        _unmeasured(t, "ProofRebuild gave no scope read: %r" % (text[:200] or r))
+    return dict(re.findall(r"(\w+)=([\w.\-/]+)", text)), text
+
+
+def _set_scope(t, all_plants):
+    """Write soakOtherModsPlants and rebuild the table; -> the scope read after the rebuild."""
+    _put(t, "soakOtherModsPlants", all_plants)
+    v, raw = _rebuild(t)
+    if t.session is not None:
+        t.session._eg_scope_all = all_plants
+    return v, raw
+
+
+def _suite_scope(t):
+    """Vanilla subjects are outside the default scope: put every plant in scope for the suite (once per session)."""
+    if t.session is not None and getattr(t.session, "_eg_scope_all", None) is not True:
+        _set_scope(t, True)
+
+
 # ---- site
 
 def _prep(t, size=40):
     """Everything true before the first assertion: cleared, open fertile soil, clear weather, noon."""
+    _suite_scope(t)
     t.clear_area(size=size)
     x, z = t.anchor
     h = size // 2
@@ -906,6 +942,53 @@ def burst_hurts_pawns(t):
                     _fail("burstHurtsPawns=false but the pawn carries %d hediff(s): %s" % (n, str(snap["hediffs"])[:200]))
 
 
+# --------------------------------------------------------------------------- the scope (EXPLOSIVE_GROWTH_MERGE_COMES_HOME)
+
+@suite.chain("scope_native_only")
+def scope_native_only(t):
+    """Option OFF (the shipped default): vanilla Plant_Rice is out of scope and never soaks; Baroque Biomes' own plants
+    do; the table leaves some foreign plants out and puts none in by the option. Can FAIL: a registry that ignored the
+    scope would report rice=True and outOfScope=0."""
+    with _comp(t, "default_soaks_baroque_biomes_plants_only", toggle="soakOtherModsPlants"):
+        try:
+            v, raw = _set_scope(t, False)
+            _note(t, "scope_off", raw)
+            if _live(t):
+                if v.get("riceLoaded") != "True":
+                    _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
+                if not v.get("home", "NONE").startswith("mandrake.rm.biomes"):
+                    _fail("the engine's home mod is %r, not Baroque Biomes (mandrake.rm.biomes): it is not composed, "
+                          "or a standalone copy loaded: %s" % (v.get("home"), raw))
+                if v.get("riceInHomeBiome") == "True":
+                    _unmeasured(t, "SITE: a Baroque Biomes biome lists Plant_Rice as wild flora, so rice is native and "
+                                   "cannot stand for a foreign plant: %s" % raw)
+                if v.get("rice") != "False":
+                    _fail("soakOtherModsPlants=false but vanilla Plant_Rice soaks: %s" % raw)
+                if int(v.get("homeSoaking", 0)) < 1:
+                    _fail("no Baroque Biomes plant def soaks (homePlants=%s): %s" % (v.get("homePlants"), raw))
+                if int(v.get("outOfScope", 0)) < 1 or int(v.get("allPlants", -1)) != 0:
+                    _fail("with the option off the table must leave foreign plants out (outOfScope>0) and admit none "
+                          "by the option (allPlants=0): %s" % raw)
+        finally:
+            if t.session is not None:
+                t.session._eg_scope_all = None     # the next staging chain re-arms the suite scope
+
+
+@suite.chain("scope_option_extends")
+def scope_option_extends(t):
+    """Option ON: vanilla Plant_Rice soaks, nothing is left out of scope, and the option itself admitted plants."""
+    with _comp(t, "option_soaks_other_mods_and_base_game_plants", toggle="soakOtherModsPlants"):
+        v, raw = _set_scope(t, True)
+        _note(t, "scope_on", raw)
+        if _live(t):
+            if v.get("riceLoaded") != "True":
+                _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
+            if v.get("rice") != "True":
+                _fail("soakOtherModsPlants=true but vanilla Plant_Rice still does not soak: %s" % raw)
+            if int(v.get("outOfScope", -1)) != 0 or int(v.get("allPlants", 0)) < 1:
+                _fail("with the option on nothing may be left out of scope and the option must admit plants: %s" % raw)
+
+
 # --------------------------------------------------------------------------- settings round trip
 
 # Settings with no reachable live effect in this suite; each gets a write + read-back so a mistyped
@@ -950,6 +1033,7 @@ for _f, _d, _a in FLIPS:
 # pawn near the map centre. An "ERROR" answer (no plantable cell, no Muffalo) is a SITE fault: UNMEASURED.
 
 def _probe(t, method):
+    _suite_scope(t)     # the proofs stage vanilla plants (Plant_Corn, ...): outside the default scope
     r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof", method=method,
                       args="current")
     text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
@@ -1049,8 +1133,11 @@ def probe_tell_scale_off(t):
 
 @suite.chain("settings_restored")
 def settings_restored(t):
-    """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run)."""
+    """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run). The suite's
+    own scope arm (soakOtherModsPlants on) is undone here first, with a table rebuild."""
     with _comp(t, "all_settings_at_shipped_defaults"):
+        if t.session is not None:
+            _set_scope(t, DEFAULT_OF["soakOtherModsPlants"])
         if _live(t):
             bad = []
             for f, d in DEFAULTS:

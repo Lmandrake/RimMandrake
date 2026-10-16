@@ -5,10 +5,11 @@ using Verse;
 namespace RimMandrake.ExplosiveGrowth
 {
     /// <summary>
-    /// The public surface other mods call — by REFLECTION, so none of them
-    /// needs this mod as a dependency (FloodedCanyon's flood, the Greentide
-    /// kit's M2 blower and M10 grazing hook all do it that way). Keep these
-    /// signatures stable: they are looked up by name.
+    /// The public surface other mods call. Baroque Biomes' own members
+    /// (FloodedCanyon's flood, the Environmental Hazards kit's M2 blower and
+    /// M10 grazing hook) call it DIRECTLY, since this engine is composed into
+    /// the same mod (EXPLOSIVE_GROWTH_MERGE_COMES_HOME). A mod outside Baroque
+    /// Biomes may still bind it by reflection, so keep these signatures stable.
     /// </summary>
     public static class ExplosiveGrowthAPI
     {

@@ -124,7 +124,7 @@ as evidence only.
 | EnvironmentalHazards | mandrake.rm.environmentalhazards | yes | Kit consumed by 9+ biome mods (XML workers) and 3 biome DLLs at compile time — but also by ShipVermin-adjacent content. Fold IN, or stay a hard-required framework? §3 + card Q3 |
 | CreatureBehaviors | mandrake.rm.creaturebehaviors | yes | Same shape: consumed by 10 biome mods' XML + FeverWood/EH DLLs, but ALSO by ShipVermin (OUT) and HostileFlora. Card Q3 |
 | LanternDeeps | mandrake.rm.lanterndeeps | yes — `mandrake.rm.lanterndeeps` is active on the live file (2026-09-27); `mandrake.rut.lanterndeeps` is not | An underground biome layer (worldbuilding/biomes/) implemented as dungeon injection, and DivingInteraction's XML names its classes. Biome or dungeon framework? Card Q4 |
-| ExplosiveGrowth | mandrake.rm.explosivegrowth | yes | Soaked-plant growth mechanic — generic RM engine used by wet biomes. Kit or framework? Card Q4 |
+| ExplosiveGrowth | mandrake.rm.explosivegrowth (retired: composed in mandrake.rm.biomes since 2026-10-16) | yes | Soaked-plant growth mechanic — generic RM engine used by wet biomes. Card Q4 OUT, reversed by the owner 2026-10-16: IN, as an engine entry (`EXPLOSIVE_GROWTH_MERGE_COMES_HOME`) |
 | HostileFlora | mandrake.rm.hostileflora | no | Mobile hostile plants (XML-only, rides CreatureBehaviors); cast spans biomes. Card Q4 |
 | MovingDunes | mandrake.rm.movingdunes | yes | Moving sand — desert-biome kit in spirit, but works on any sandy map. Card Q4 |
 | OasisMaker | mandrake.rm.oasismaker | no | Oasis-building machines — desert gameplay content, not a biome def. Card Q4 |
@@ -449,8 +449,8 @@ IN** (owner, typed 2026-10-16, reversing this card: *"Yes, Explosive Plant Growt
 Biomes."*; item `EXPLOSIVE_GROWTH_MERGE_COMES_HOME`) · **Q5** per-biome DLLs · **Q6** compose at deploy time from per-biome dev
 folders · **Q7** FlowWorks owns generic liquid terrain — TerminalBiomes retargets
 now, nothing deleted until the world-remake window · **Q8** waves, the live list
-written once at wave 2. **Final IN roster: 29 mods** (the §1 25 + CB + EH +
-LanternDeeps + MovingDunes). Execution: `BAROQUE_BIOMES_COMPOSE_1` (wave 1 tooling),
+written once at wave 2. **Final IN roster at that ruling: 29 mods** (the §1 25 + CB + EH +
+LanternDeeps + MovingDunes); ExplosiveGrowth joined on 2026-10-16, and `src/RimMandrake/Biomes.compose.json` is the live roster. Execution: `BAROQUE_BIOMES_COMPOSE_1` (wave 1 tooling),
 `TERMINALBIOMES_LIQUID_RETARGET_1` (Q7). The eight cards as asked, for the record:
 
 **Q1 — Final mod name (and packageId stays `mandrake.rm.biomes`).**

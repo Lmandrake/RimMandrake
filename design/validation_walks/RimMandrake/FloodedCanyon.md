@@ -1,6 +1,6 @@
 # RimMandrake: Flooded Canyon — validation walk
 subject: src/RimMandrake/FloodedCanyon  (packageId `mandrake.rm.floodedcanyon`)
-deps: `brrainz.harmony`, `mandrake.rm.flowworks` (modDependencies); `mandrake.rm.explosivegrowth` is an optional companion found by reflection (the soak does nothing without it). Fold-aware: if this biome is folded into `mandrake.rm.biomes` it is active under the composed name 'RimMandrake: Baroque Biomes'.
+deps: `brrainz.harmony`, `mandrake.rm.flowworks` (modDependencies); the soak goes to the Explosive Growth engine, a fellow composed member of `mandrake.rm.biomes`, by a direct `ExplosiveGrowthAPI.SoakCells` call (the flood soaks nothing while that engine is switched off). Fold-aware: if this biome is folded into `mandrake.rm.biomes` it is active under the composed name 'RimMandrake: Baroque Biomes'.
 list: a tier carrying FlowWorks + FloodedCanyon + ExplosiveGrowth, all five DLCs, plain open biome map (the suite arms `featureInOtherBiomes` itself)
 status-hint: FLOOD_CANYON_BIOME_1 / CRACKEDLANDS_MECHANICS_BUILD_1 — a canyon biome whose map floods on a clock: herald beats, chimes, a wall of water that soaks the ground, recedes to soil, leaves a feast and salvage and re-cuts fossil seams. Script: `src/RimMandrake/FloodedCanyon/validation.py` (plan `northstar_plan.py`), first script FLOODED_CANYON_FIRST_SCRIPT_1. NEVER RUN LIVE.
 
