@@ -26,11 +26,18 @@ namespace RimMandrake.Contagion
         private int nextBurnTick = -1;
         private bool tellsBegun;
         private int bloomSinceTick = -1;
+        // The visible tells (RM_ContagionTellRender.cs, owner Q6 2026-10-15): when the last Burn ended (the gawpsacks rise
+        // from it), and whether the rattlers were shaking at the last poll (their mesh is rebuilt when that changes).
+        // Cosmetic only, so not saved: a load mid-rise just skips the rise.
+        private int lastBurnEndTick = -1;
+        private bool wasBurning;
+        private bool lastShaking;
 
         public RM_MapComponent_ContagionSky(Map map) : base(map) { }
 
         public int NextBurnTick => nextBurnTick;
         public bool TellsBegun => tellsBegun;
+        public int LastBurnEndTick => lastBurnEndTick;
 
         public override void ExposeData()
         {
@@ -78,6 +85,26 @@ namespace RimMandrake.Contagion
                 }
             }
             if ((act & SkyAct.StartBurn) != 0) StartBurn(ext.burnDurationTicks.RandomInRange, null);
+            UpdateVisibleTells(ext, now);
+        }
+
+        // Owner Q6 (2026-10-15): the sink and shake are drawn from this clock; here the clock only notes the Burn's end
+        // and rebuilds the rattlers' static mesh when shaking starts or stops (RM_Plant_Rattlegrope leaves the mesh while
+        // it shakes).
+        private void UpdateVisibleTells(RM_ContagionSkyExtension ext, int now)
+        {
+            bool burning = ext != null && BurnActive;
+            if (wasBurning && !burning) lastBurnEndTick = now;
+            wasBurning = burning;
+            bool shaking = ext != null && RM_TellRenderKernel.Shaking(RM_ContagionSettings.burnTellsEnabled, tellsBegun, burning);
+            if (shaking == lastShaking) return;
+            lastShaking = shaking;
+            if (ext == null || ext.tellRattlers.NullOrEmpty()) return;
+            List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
+            for (int i = 0; i < plants.Count; i++)
+            {
+                if (ext.tellRattlers.Contains(plants[i].def)) map.mapDrawer.MapMeshDirty(plants[i].Position, MapMeshFlagDefOf.Things);
+            }
         }
 
         // Part 2 — the Coalescence forms during a LONG Bloom (bloomSinceTick
@@ -150,12 +177,11 @@ namespace RimMandrake.Contagion
         // ── the tells ───────────────────────────────────────────────────
         // Tell 1 (Gawpsack sink): on the first pulse every sinker stops what
         // it is doing and settles in place for the rest of the lead; every
-        // pulse throws a low dark puff under it. The DRAWN sink (the body
-        // dropping from canopy height) needs a render seam and is listed as
-        // remaining work — this is the behavioural beat.
+        // pulse throws a low dark puff under it. The DRAWN sink (body lowered and
+        // flattened) is PawnRenderNodeWorker_RM_TellSink (RM_ContagionTellRender.cs).
         // Tell 2 (rattle): every rattler plant throws an air puff each pulse.
         // Each pulse also plays tellRattleSound at one rattling plant (vanilla
-        // clip, audio ruling 2026-10-03); a per-plant shake needs a render seam.
+        // clip, audio ruling 2026-10-03); the drawn shake is RM_Plant_Rattlegrope.
         private void DoTells(RM_ContagionSkyExtension ext, bool first, int ticksLeft)
         {
             if (!ext.tellSinkers.NullOrEmpty())

@@ -338,6 +338,10 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Rattlegrope</defName>
     <label>rattlegrope</label>
+    <!-- owner Q6 2026-10-15 ("Build the visible sink and shake"): draws itself shaking before a Burn
+         (Source/RM_ContagionTellRender.cs); identical to a vanilla Plant otherwise. RealTime is needed for the per-frame draw. -->
+    <thingClass>RimMandrake.Contagion.RM_Plant_Rattlegrope</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <description>A knot of tentacular limbs that gropes slowly at the air, blue nodules at each tip. It rattles before a Burn comes through -- one of the valley's two tells that the sky is about to clear.</description>
     <statBases>
       <MaxHitPoints>110</MaxHitPoints>

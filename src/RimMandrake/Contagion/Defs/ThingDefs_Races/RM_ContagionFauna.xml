@@ -187,6 +187,8 @@
       </li>
     </tools>
     <race>
+      <!-- owner Q6 2026-10-15: the visible sink before a Burn (Defs/PawnRenderTreeDefs/RM_GawpsackSink.xml) -->
+      <renderTree>RM_GawpsackSink</renderTree>
       <body>QuadrupedAnimalWithPaws</body>
       <bloodDef>Filth_Slime</bloodDef>
       <baseBodySize>0.7</baseBodySize>

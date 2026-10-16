@@ -89,6 +89,9 @@
     <Compile Include="RM_ContagionTouched.cs" />
     <Compile Include="RM_SunbeamArrest.cs" />
     <Compile Include="RM_ContagionMulch.cs" />
+    <!-- owner Q6 2026-10-15: the visible sink and shake -->
+    <Compile Include="Kernel\RM_TellRenderKernel.cs" />
+    <Compile Include="RM_ContagionTellRender.cs" />
   </ItemGroup>
 
   <ItemGroup>
