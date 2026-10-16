@@ -292,6 +292,28 @@ def _rows(t, rect=None):
     return dict((p.get("id"), p) for p in (_ok(r, "list_pawns").get("pawns") or []))
 
 
+def _burned_off(row):
+    """{'Burn'} when a part on this row was destroyed by a burn: a part burned away outright is a MissingBodyPart whose
+    lastInjury is Burn and leaves no Burn hediff (LIVE modcheck7 2026-10-16: the UV-shy native read only
+    'MissingBodyPart'). lastInjury is read off list_pawns (jawa companion 2026-10-16); a row without it gives set()."""
+    for h in (((row or {}).get("health") or {}).get("hediffs") or []):
+        if isinstance(h, dict) and h.get("def") == "MissingBodyPart" and h.get("lastInjury") == "Burn":
+            return {"Burn"}
+    return set()
+
+
+def _sev_sum(row, defname):
+    """Total severity of every hediff of `defname` on a list_pawns row (an injury def lands as one hediff per hit)."""
+    tot = 0.0
+    for h in (((row or {}).get("health") or {}).get("hediffs") or []):
+        if isinstance(h, dict) and (h.get("def") or h.get("defName") or h.get("hediff")) == defname:
+            try:
+                tot += float(h.get("severity") or 0)
+            except (TypeError, ValueError):
+                pass
+    return tot
+
+
 def _hdefs(row):
     """The set of hediff DEFNAMES on a row. Exact names, never a substring ('Burn' is inside
     'RM_BurnDose'). row['health']['hediffs'] is the nested shape the tool documents."""
@@ -472,17 +494,21 @@ def _wait(t, n):
             time.sleep(1.0)
             now = s._ticks()
             if now is None:
-                raise ExpectationFailed("clock unreadable during a %d-tick wait" % n)
+                _unmeasured(t, "clock unreadable during a %d-tick wait" % n)
             if now >= target - 400:
                 break
             if now > last:
                 last, stall = now, time.time()
             elif time.time() - stall > 60:
-                raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal dialog "
-                                        "pausing the game?)" % (now, n))
+                # The instrument (the clock) stopped, not the mod: UNMEASURED, never a FAIL (modcheck6 2026-10-16
+                # recorded a haze_turns_grass_in_place FAIL off this line).
+                _unmeasured(t, "clock stalled at %d during a %d-tick wait (a modal dialog pausing the game?)"
+                            % (now, n))
     finally:
         s.call("rimworld/set_time_speed", speed="Paused")
     now = s._ticks()
+    if now is None:
+        _unmeasured(t, "clock unreadable after a %d-tick wait" % n)
     if now < target:
         t.wait_ticks(target - now)
         now = s._ticks()
@@ -1093,15 +1119,20 @@ def burn_forced(t):
                 b["armored_fixture"] = b["armored"]
                 b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
-                track, atrack = [], []
-                for _ in range(4):                   # 4 x 200 = the same 800 ticks, sampling the dive
-                    _wait(t, 200)
+                track, atrack, nhd = [], [], set()
+                for _ in range(8):                   # 8 x 100 = the same 800 ticks, sampling the dive
+                    _wait(t, 100)
                     srows = _rows(t)
-                    nrow = srows.get(b["native"]) or {}
+                    nrow = srows.get(b["native"])
                     arow = srows.get(b["armored"]) or {}
-                    track.append((nrow.get("x"), nrow.get("z")))
+                    if nrow is not None and _alive(nrow):                 # only a living sample is a position or a hediff read
+                        track.append((nrow.get("x"), nrow.get("z")))
+                        nhd |= _hdefs(nrow) | _burned_off(nrow)
                     atrack.append((arow.get("x"), arow.get("z")))
-                b["native_track"], b["armored_track"] = track, atrack
+                # LIVE modcheck5 2026-10-16: the UV-shy native died inside the 800 ticks and list_pawns lists no corpses,
+                # so the end-of-window row was absent and both native rows went UNMEASURED. What it carried and where it
+                # stood while ALIVE is kept, so a Burn and a dive seen before it died are still read.
+                b["native_track"], b["armored_track"], b["native_hd_alive"] = track, atrack, nhd
                 rows = _rows(t)
                 if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
@@ -1123,20 +1154,24 @@ def burn_forced(t):
                     _unmeasured(t, "burn_doses_the_exposed_visitor did not run")
                 nat, arm = rows.get(b["native"]), rows.get(b["armored"])
                 # A row that is not there at all (crushed, vanished, or killed: list_pawns lists no corpses) proves
-                # neither arm; only a readable row is a measurement.
-                if nat is None or not _alive(arm):
-                    _unmeasured(t, "native row %s / armored alive %s: nothing to judge"
-                                % ("absent" if nat is None else "read", _alive(arm)))
-                if not _alive(nat):
-                    _unmeasured(t, "the UV-shy native's row reads dead: its damage cannot be read")
-                if "Burn" not in _hdefs(nat):
+                # nothing by itself; the hediffs read on the native while it was still alive (native_hd_alive) are.
+                alive_hd = set(b.get("native_hd_alive") or ())
+                if not _alive(arm):
+                    _unmeasured(t, "armored alive %s: nothing to judge" % _alive(arm))
+                if _alive(nat):
+                    alive_hd |= _hdefs(nat) | _burned_off(nat)
+                elif "Burn" not in alive_hd:
+                    _unmeasured(t, "the UV-shy native's row is %s and no living sample carried Burn: its damage cannot "
+                                   "be read (living hediffs %s)" % ("absent" if nat is None else "dead", sorted(alive_hd)))
+                _note(t, "native alive at the end / Burn seen while alive", [_alive(nat), "Burn" in alive_hd])
+                if "Burn" not in alive_hd:
                     _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
-                          % sorted(_hdefs(nat)))
+                          % sorted(alive_hd))
                 apos = list(b.get("armored_track") or []) + [(arm.get("x"), arm.get("z"))]
                 if not all(_on_open_pad(t, px, pz) for px, pz in apos):
                     _unmeasured(t, "the armored control left the open pad (positions %s): 'spared' could be shelter"
                                 % apos)
-                if "Burn" in _hdefs(arm):
+                if "Burn" in (_hdefs(arm) | _burned_off(arm)):
                     _fail("the ARMORED native took Burn damage: %s" % sorted(_hdefs(arm)))
 
         with _comp(t, "native_dives_for_roof"):
@@ -1145,16 +1180,18 @@ def burn_forced(t):
                 if rows is None:
                     _unmeasured(t, "burn_doses_the_exposed_visitor did not run")
                 nat = rows.get(b["native"])
-                if nat is None or not _alive(nat):
-                    _unmeasured(t, "the native died before its dive could be read")
                 x, z = t.anchor
 
                 def _under(px, pz):
                     return px is not None and pz is not None and x + 6 <= px < x + 14 and z - 4 <= pz < z + 4
                 # It dives to the patch's nearest edge cell, then may wander out and be re-dived at the
                 # next 250-tick pass, so ANY sample under the patch is the dive (it spawned 6 cells out).
+                # The track holds living samples only, so a dive seen before the native died still counts.
                 track = b.get("native_track") or []
-                if not (_under(nat.get("x"), nat.get("z")) or any(_under(px, pz) for px, pz in track)):
+                dived = any(_under(px, pz) for px, pz in track)
+                if (nat is None or not _alive(nat)) and not dived:
+                    _unmeasured(t, "the native died before its dive could be read (living positions %s)" % track)
+                if not dived and not _under(nat.get("x"), nat.get("z")):
                     _fail("the UV-shy native never reached the roof patch %s; positions %s, final (%s,%s)"
                           % ((x + 6, z - 4, 8, 8), track, nat.get("x"), nat.get("z")))
 
@@ -1381,12 +1418,23 @@ def touched(t):
                         _unmeasured(t, "the toggle-off Sunbeam hit left no RM_UVSunburn: it did not land (%s)" % sorted(hd0))
                     if TOUCHED not in hd0:
                         _fail("a Sunbeam hit arrested %s with sunbeamArrestEnabled off" % TOUCHED)
-                _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
-                    "damage(RM_UVBeam)")
-                row = _rows(t, _rs(_rect(t))).get(pid)
-                hd = _hdefs(row)
-                if "RM_UVSunburn" not in hd:
-                    _unmeasured(t, "the Sunbeam hit left no RM_UVSunburn: the hit itself did not land (%s)" % sorted(hd))
+                # LIVE modcheck6 2026-10-16: 'RM_UVSunburn present' after this hit was inherited from the OFF arm's hit,
+                # so a deflected ON hit (no damage dealt, so rightly no arrest) read as 'landed, did not arrest'. The ON
+                # hit lands only if the sunburn GREW.
+                # LIVE modcheck8 2026-10-16: a hit can be wholly deflected (sunburn 5.00 -> 5.00), which rightly arrests
+                # nothing; up to three hits are tried and the first that lands is the one judged.
+                burn0 = burn1 = _sev_sum(_rows(t, _rs(_rect(t))).get(pid), "RM_UVSunburn")
+                for _try in range(3):
+                    _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
+                        "damage(RM_UVBeam)")
+                    row = _rows(t, _rs(_rect(t))).get(pid)
+                    hd = _hdefs(row)
+                    burn1 = _sev_sum(row, "RM_UVSunburn")
+                    if burn1 > burn0:
+                        break
+                if burn1 <= burn0:
+                    _unmeasured(t, "the Sunbeam hit added no RM_UVSunburn (%.2f -> %.2f): the hit itself did not land "
+                                   "(%s)" % (burn0, burn1, sorted(hd)))
                 if TOUCHED in hd:
                     _fail("a Sunbeam hit did not arrest %s" % TOUCHED)
     _stable(t, body)
@@ -1426,9 +1474,15 @@ def zhool_haze(t):
                         _wait(t, 3000)
                         lash = _things(t, LASHGRASS, _STATE["zrect"])
                         # 'nothing turned' means something only while a zhool and grass are there to turn
-                        if not _alive(_rows(t, _STATE["zrect"]).get(_STATE.get("zhool"))) \
-                                or not _things(t, GRASS, _STATE["zrect"]):
-                            _unmeasured(t, "the zhool or its grass is gone from the pad: the off arm saw nothing")
+                        zrow = _rows(t).get(_STATE.get("zhool"))      # map-wide: wandered off vs died
+                        zon = _alive(_rows(t, _STATE["zrect"]).get(_STATE.get("zhool")))
+                        ngrass = len(_things(t, GRASS, _STATE["zrect"]))
+                        # 'nothing turned' means something only while a zhool and grass are there to turn
+                        if not zon or not ngrass:
+                            _unmeasured(t, "the zhool or its grass is gone from the pad: the off arm saw nothing "
+                                           "(zhool on pad %s, map row %s, grass %d)"
+                                        % (zon, json.dumps({k: (zrow or {}).get(k) for k in ("x", "z", "dead", "downed")}),
+                                           ngrass))
                         if lash:
                             _fail("%d grass turned to lashgrass with zhoolConversionEnabled off" % len(lash))
                 _STATE["grass0"] = len(_things(t, GRASS, _STATE["zrect"]))
@@ -1709,9 +1763,22 @@ def _surgery_done(t, g):
                 ended = seen
                 break
     c = _census(t, g["patient"])
+    # What the ended try actually did (LIVE modcheck5 2026-10-16: three 'completed' tries, no sample, nothing else read):
+    # the patient's BloodLoss and its bill stack say whether ApplyOnPawn ran (Bill_Medical deletes the bill on completion),
+    # a map-wide sample count catches one placed outside the pad, and the doer's census says why DoBill ended.
+    hd = sorted(_hdefs(_rows(t).get(g["patient"])))
+    br = t.bridge_call("jawa/bill_list", thingId=g["patient"])
+    bills = [b.get("recipeDefName") for b in ((br or {}).get("bills") or [])] if isinstance(br, dict) else br
+    try:
+        on_map = [(s.get("x"), s.get("z")) for s in _things(t, SAMPLE)]
+    except Exception as ex:    # evidence only
+        on_map = "unread: %s" % ex
     if ended and _job(c) == "LayDown":
         g["completed"] = g.get("completed", 0) + 1
-    _note(t, "surgery try ended without a sample", {"ticks": waited, "doBillEnded": ended, "patient": c})
+        g.setdefault("evidence", []).append({"bloodLoss": "BloodLoss" in hd, "bills": bills, "samplesOnMap": on_map})
+    _note(t, "surgery try ended without a sample", {"ticks": waited, "doBillEnded": ended, "patient": c,
+                                                    "patientHediffs": hd, "patientBills": bills,
+                                                    "samplesOnMap": on_map, "doer": _census(t, g["doer"])})
     return []
 
 
@@ -1816,8 +1883,14 @@ def genome(t):
                     _unmeasured(t, "fixture: the Bed did not spawn for the surgery")
                 bed = beds[0]
                 for attempt in range(3):     # surgery can fail on skill; three completed tries
-                    t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample",
-                                  repeatMode="repeatcount", repeatCount=1)
+                    # A surgery bill is a Bill_Medical (jawa/bill_add makes one for a surgery on a pawn since
+                    # 2026-10-16; before, it made a Bill_Production that never ran ApplyOnPawn), with no repeat fields.
+                    bl = t.bridge_call("jawa/bill_list", thingId=g["patient"])
+                    if not any(b.get("recipeDefName") == "RM_ExtractGenomeSample" for b in ((bl or {}).get("bills") or [])):
+                        ba = t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample")
+                        if (ba or {}).get("billClass") != "Bill_Medical":
+                            _unmeasured(t, "HARNESS: bill_add did not make a Bill_Medical for the surgery: %s"
+                                        % json.dumps(ba, default=str)[:300])
                     inbed, c = _lay_in_bed(t, g["patient"], bed)
                     if inbed is None:
                         _unmeasured(t, "SITE: the patient never lay in the bed at (%s,%s) (census %s)"
@@ -1837,7 +1910,8 @@ def genome(t):
                 if not made:
                     if not g.get("completed"):
                         _unmeasured(t, "none of the three surgery tries ran to its end with the patient in bed")
-                    _fail("%d completed extraction surgery tries produced no genome sample" % g["completed"])
+                    _fail("%d completed extraction surgery tries produced no genome sample (per try: %s)"
+                          % (g["completed"], json.dumps(g.get("evidence"), default=str)[:500]))
                 _, lines = _inspect(t, made["id"])
                 if "Genome source:" not in lines:
                     _fail("the sample does not record its source colonist: %r" % lines)
