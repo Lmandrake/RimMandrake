@@ -205,8 +205,7 @@
       <MarketValue>9.0</MarketValue>
     </statBases>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_BedBugEgg</texPath>
-      <color>(99,45,40)</color>
+      <texPath>Things/Item/RM_BedBugEggFertilized/RM_BedBugEggFertilized</texPath>
     </graphicData>
     <comps>
       <li Class="CompProperties_Hatcher">
