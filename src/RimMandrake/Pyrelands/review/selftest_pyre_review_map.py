@@ -75,6 +75,20 @@ check(len(books) == len(S) + 6 and all(b.split("|")[2].startswith("SIGN ") for b
       and len(set(cells)) == len(cells) and all(0 <= x < H.MAP_SIZE and 0 <= z < H.MAP_SIZE for x, z in cells),
       "one SIGN book a station + 6 boards, each on its own free cell outside every station (inside: %s)" % inside)
 check(all("DECIDE:" in b.split("|")[3] for b in books), "every sign book carries LOOK/DO/DECIDE in its body")
+class _RuinB(object):
+    def __init__(self, rows):
+        self.rows = rows
+
+    def call(self, tool, **kw):
+        return {"things": self.rows} if tool == "jawa/list_things" else {}
+
+
+reg = H.region_rect(S)
+edge = dict(x=reg[0] + 5, z=reg[1] + reg[3])         # its own cell just north of the gallery: book/label land inside
+far = dict(x=220, z=30)
+rv = H.Review(_RuinB([dict(defName="Wall", x=edge["x"], z=edge["z"]), dict(defName="Wall", x=far["x"], z=far["z"])]))
+got = rv.find_ruin(S)
+check(got and got[:2] == [220, 30], "find_ruin skips a ruin whose sign book/label would land in the gallery (got %s)" % got)
 fur = [s for s in S if s["setup"].get("chill") is not None]
 check(len(fur) == 2 and any(s["setup"].get("pawns") for s in fur) and any(not s["setup"].get("pawns") for s in fur),
       "the furnace-beast pen and its empty control pen are both chilled (got %s)" % [s["n"] for s in fur])

@@ -143,7 +143,8 @@ def station_defs():
         roof=[("RoofConstructed", 7, 3, 4, 5)], marks=[(3, 9, "open sun"), (9, 9, "shade")],
         probes=[("temp", 3, 5, "open"), ("temp", 8, 5, "shade")], expect_things=["Wall"])
 
-    # ---- B FIRE (every station ringed with the firebreak; its pad is the 8x8 inside the ring)
+    # ---- B FIRE (the ringed stations: a firebreak ring, the pad the 8x8 inside it; BURROWER is a walled pen and
+    # FIREBREAK AND FOAM is unringed, held in by the bare deep ash round it)
     ring = dict(ring=True)
     add("B", "BEFORE THE BURN", "unburned grass on soil: light it",
         "The twin of the next station before fire: ember grass and quickgrass on an unburned soil pocket.",
@@ -507,8 +508,8 @@ FEATURES = [
     ("animal", "Furnace-beast bed-down ignition", "CompFurnaceBedIgnition.cs", "23"),
     ("animal", "Furnace-beast thermal cycle: walks into fire to charge", "JobGiver_RUT_FurnaceThermalCycle.cs", None,
      "needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row"),
-    ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", "23",
-     "visible only as it surviving its own fire; the card says how"),
+    ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", None,
+     "visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns"),
     ("animal", "Furnace-beast herd world migration (WorldObject RM_FurnaceHerd)", "WorldObject_RM_FurnaceHerd.cs", "W"),
     ("animal", "Ullai herd: three facings, herd size", "RM_Ullai.xml", "25"),
     ("animal", "Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)", "RM_Ullai.xml", None,
@@ -806,7 +807,7 @@ def coverage_md(S):
           "map and refuses one that is not RM_Pyrelands or not 250x250.",
           "- **Expected runtime: about 6-8 minutes** after the game is up (an ESTIMATE; no live build has run): save "
           "load ~2-3 min on the 22-mod tier, ~400 bridge calls ~2 min, %d ticks of burn at the ~60 ticks/s MEASURED "
-          "for short waits (northstar_plan.py) ~70 s, verify + labels ~1 min. "
+          "for short waits (northstar_plan.py) ~2.5 min, verify + labels ~1 min. "
           "Then `--save` (~30 s) writes the keeper `RM_pyre_review_YYYYMMDD`." % (BURN_TICKS + NOW_TICKS),
           "- Exit code 0 only when every station verified as built; refusals land in "
           "`Transient/pyre_review_map_state.json` and the key sheet's agent block.", "",
@@ -1122,7 +1123,8 @@ class Review(object):
             self.call("jawa/build_batch", ops="Door:%d,%d" % (x + w // 2, z), stuff=WALL_STUFF, faction="player",
                       wipeExisting=True)
             self.notes.append("shelter door re-made at the south wall (a cooler took the random one)")
-        # two batteries side by side (one net), the panel touching the east one; no conduit anywhere
+        # two batteries side by side (one net), the panel touching the east one; no conduit anywhere: the coolers join
+        # the net by their own connector wire (vanilla PowerConnectionMaker links a consumer to a transmitter <= 6 cells)
         self.call("jawa/build_batch", ops="Battery:%d,%d,0;Battery:%d,%d,0" % (x + 4, top + 2, x + 5, top + 2),
                   faction="player", wipeExisting=False)
         self.call("jawa/build_batch", ops="SolarGenerator:%d,%d" % (x + 7, top + 3), faction="player", wipeExisting=False)
@@ -1238,7 +1240,8 @@ class Review(object):
         return [footprint(s) for s in S if s["setup"].get("keep")]
 
     def find_ruin(self, S):
-        """The nearest non-player BuildingArtificial outside the gallery and free area: the scorched-ruin board."""
+        """The nearest non-player BuildingArtificial whose cell, board book (z+2) and label (z+3) all clear the gallery,
+        the free area and the natural window: the scorched-ruin board."""
         rows = self.B.call("jawa/list_things", group="BuildingArtificial", limit=2000).get("things") or []
         reg = self.region(S)
         best = None
@@ -1247,7 +1250,9 @@ class Review(object):
                 continue
             pos = t.get("position") or t.get("pos") or {}
             x, z = RM.pawn_xz({"position": pos}) if pos else (t.get("x"), t.get("z"))
-            if x is None or _overlap(reg, (x, z, 1, 1)) or _overlap(FREE["rect"], (x, z, 1, 1)):
+            # its board book (z+2) and label (z+3) must clear the gallery, the free area and the natural window too
+            if x is None or z is None or z + 4 >= MAP_SIZE or any(
+                    _overlap(r, (x - 1, z - 1, 3, 6)) for r in (reg, FREE["rect"], NATURAL["rect"])):
                 continue
             d = (x - 125) ** 2 + (z - 125) ** 2
             if best is None or d < best[0]:
