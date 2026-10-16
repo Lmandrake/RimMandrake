@@ -504,8 +504,15 @@ def resolve_art(name: str, world: World | None = None, originals=()) -> dict:
     bound_fams = {c["ref"] for c in cols if c["kind"] == "job"} | \
         {FAM_RE.sub("", j) for c in cols if c["kind"] == "ledger" for j in c["jobs"]}
     fams = w.families
+    # a family that something ELSE binds (a `bound` ledger binding, or a job whose target_def names another def) is
+    # that subject's picture, never ours by a spelling match: the token 'slime' (label of RSW_Filth_Snail_Slime) was
+    # name-matching every slime_* job, the greater oomb's among them (Phase 0 cleanup 2026-10-15)
+    elsewhere = {FAM_RE.sub("", b["job"]) for bl in idx.bindings.values() for b in bl
+                 if b.get("confidence") == "bound" and b.get("job") and b.get("subject") not in names}
+    elsewhere |= {FAM_RE.sub("", jid) for jid, t in jt.items() if t["target_def"] and t["target_def"] not in names
+                  and not (names & set(t["target_original"]))}
     for fam in sorted(fams):
-        if fam in bound_fams:
+        if fam in bound_fams or fam in elsewhere:
             continue
         for k, src in keys.items():
             if token_match(fam, k):
