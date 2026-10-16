@@ -1,5 +1,7 @@
 # Explosive growth: a deep dive (2026-10-16)
 
+**Superseded as a direction by `design/RimMandrake/explosive_growth_consensus_2026-10-16.md`** (the owner's 16:21 statement of the original design, and the consensus model built on it). §1 stays as the measured build.
+
 Item: `EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS`. Owner, 2026-10-16 15:53: *"I have SERIOUS concerns about
 explosive growth, so we need a deep dive on precisely what it's configured to do currently, what the original design
 was, and where to take it."*
@@ -208,7 +210,7 @@ the wet jungles.
 
   The rebuilds are the real cost: one map section is redrawn per touched section. A 400-cell flood touches roughly
   10–20 sections every 250 ticks.
-- The perf gate the design required before any density promise (X2, bar "≥90% TPS", S0-6) **has not run**.
+- The perf gate the design required before any density promise (X2, bar "≥90% TPS", S0-6, ruled 15:53) **has not run**.
 
 ### 1.9 What the player sees and controls
 
@@ -240,9 +242,11 @@ toggle on the Baroque Biomes page:
 
 ---
 
-## 2. The original design
+## 2. What the design documents recorded
 
-### 2.1 The planetary fact: PLANT_GROWTH_SPEC (2026-08-15)
+The original design is his 16:21 statement (*"dry-adapted alien plants of this world generally barely grow at all until they get access to water, then they grow x10 speed"*); the documents below are how agents recorded it, drift included (consensus doc §2).
+
+### 2.1 The planetary ×4: PLANT_GROWTH_SPEC (2026-08-15)
 
 `design/Jawa/worldbuilding/PLANT_GROWTH_SPEC.md`:
 - *"every plant on this world grows at a rate that reads as obtrusive, aggressive, wrong."*
@@ -308,8 +312,9 @@ I'd like to restore its original intention."* Eight rulings:
   without the campaign?" → **"Yes, on for everyone"**.
 - 14:59, by card: "ExplosiveGrowth X1-X5 → Approve". These are the sprint kickoff's lines in
   `design/RimMandrake/biome_sprint_kickoff_2026-10-15.md` §1.4.
-  - S0-7 (Cauldron to the stalled band; keep the `RUT_ExtremeDesert` ×4 exemption; *tune bands and soak together at
-    the S2 walk*) has no recorded answer in the ledger.
+- 15:53, by card: "speed bar → at least 90%; EG loose ends → agree to all". So S0-6 is ruled (≥90% TPS) and S0-7 is
+  agreed (Cauldron to the stalled band; keep the `RUT_ExtremeDesert` ×4 exemption; tune bands and soak together at the
+  S2 walk).
 - 15:53: this item.
 
 ---
@@ -322,8 +327,8 @@ nearly no growth, water means explosive. The build has no notion of dry.
   Wasteland included (`AmbientBand`, `RM_ExplosiveGrowthKernel.cs:133-140`).
 - The only below-vanilla band is "stalled". It has **zero members in the RM tier** and one (`PoisonForest`) in the
   campaign.
-- The card at 12:49 approved "everyday ×4 on for everyone". That was answered before the moisture question was
-  asked, and it is the exact number his sentence contradicts in dry biomes.
+- The card at 12:49 approved "everyday ×4 on for everyone". It asked about on/off with ×4 as the framing; a moisture
+  model was never offered, and ×4 is the exact number his sentence contradicts in dry biomes.
 
 **G2 — Lost carve-outs.**
 - R-G3 (the terminator stays stunted) is gone in the RM tier: the Cauldron runs ×4 and soaks.
