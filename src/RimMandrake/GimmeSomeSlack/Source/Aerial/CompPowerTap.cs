@@ -228,6 +228,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
     }
 
+    // toggle-off: stays ungated; inert when off (CompPowerTap steals 0), and gating could let a tap's power this tick go undebited
     [RimMandrake.Shared.PatchFeature("Power taps", typeof(AerialSettings), "tapsEnabled")]
     [HarmonyPatch(typeof(PowerNet), nameof(PowerNet.CurrentEnergyGainRate))]
     internal static class Patch_PowerNet_GainRate_TapDebit

@@ -439,6 +439,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>Every new run member (conduit, switch, pole, bracket) is queued once for the run rule. Loading a save never
     /// queues: a loaded map is already resolved, and an older save must load unchanged.</summary>
+    // toggle-off: stays ungated; the run rule writes only stored style (invisible while off, cords drawn vanilla), so a run built while off is not mixed-look when switched back on
     [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
     internal static class Patch_Building_SpawnSetup_Runs
@@ -465,6 +466,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>Linking two anchors (by hand, or auto-link) can join two runs: queue the bridge check.</summary>
+    // toggle-off: stays ungated; a span joining two runs while off still settles one stored look, so the joined run is not mixed-look when switched back on
     [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(CompAerialAnchor), nameof(CompAerialAnchor.TryLink))]
     internal static class Patch_TryLink_Bridge
