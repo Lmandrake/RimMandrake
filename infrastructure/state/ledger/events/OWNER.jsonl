@@ -625,3 +625,4 @@
 {"seat":"OWNER","event":"note","id":"PYRELANDS_GRASS_SATURATION_1","text":"Owner rules the grass look in review save RM_pyre_review_20261015 station 16 tonight","byCard":"Grass cover → I'll rule it in the review save","ts":"2026-10-16T01:48:34Z","tsn":1792115314346245799}
 {"seat":"OWNER","event":"drop","id":"AIWHA_REDRAW_WINGS_STILL_TOO_SHORT","reason":"Aiwha dropped from our mods by owner 2026-10-15","ownerSaid":"Retire the Aiwha in our mods. Too much trouble.","ts":"2026-10-16T01:50:22Z","tsn":1792115422850742175}
 {"seat":"OWNER","event":"drop","id":"AIWHA_HEAD_CLOSEUP_REDRAW_STILL_UGLY","reason":"Aiwha dropped from our mods by owner 2026-10-15","ownerSaid":"Retire the Aiwha in our mods. Too much trouble.","ts":"2026-10-16T01:50:24Z","tsn":1792115424065019334}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"owner review walk","ts":"2026-10-16T01:52:44Z","tsn":1792115564759716020}
