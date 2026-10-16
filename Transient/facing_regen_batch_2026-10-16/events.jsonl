@@ -1,2 +1,4 @@
 {"key": "rimstarwars/swbestiary/grank/grank", "event": "gen_fail", "facing": "north", "at": "2026-10-16T07:47:44"}
 {"key": "rimstarwars/swbestiary/gizka/gizka", "event": "gen_fail", "facing": "north", "at": "2026-10-16T07:48:08"}
+{"event": "STOP", "why": "sandbox setup required logged in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen", "at": "2026-10-16T07:54:10"}
+{"key": "rimstarwars/swbestiary/gizka/gizka", "event": "exception", "err": "RuntimeError('STOP: sandbox setup required in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen/.sandbox')", "at": "2026-10-16T07:54:10"}

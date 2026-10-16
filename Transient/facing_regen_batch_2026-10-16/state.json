@@ -13,7 +13,7 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "rimstarwars/swbestiary/gizka/gizka": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Gizka",
    "facings": [
     "south",
@@ -28,8 +28,8 @@
    "status": "pending",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/Gizka",
-   "why": "",
-   "worker": "codex_home_facing_regen_w3"
+   "why": "RuntimeError: STOP: sandbox setup required in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen/.sandbox",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/gizka/gizkaw": {
    "attempts": 0,
