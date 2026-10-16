@@ -767,7 +767,7 @@ Four pipe looks
 
 - select a pipe: Choose style, for one pipe or its whole run
 
-**Look for:** weak spot: the tees (middle of the top and third runs) breaking the joins; a run that changes look half way
+**Look for:** weak spot: the tees (middle of the bottom run and the third run up) breaking the joins; a run that changes look half way
 
 ### 60. Pipe-net adapters - built, not yet seen
 

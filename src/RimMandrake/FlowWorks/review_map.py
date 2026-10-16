@@ -583,7 +583,7 @@ SETUPS = {
                            ("RM_UniversalPipe", 8, 9, "RM_UniversalPipe_Modern")],
                         marks=[(0, 2, "scrapper"), (0, 5, "industrial"), (0, 8, "modern"), (0, 11, "futuristic")],
                         try_=["select a pipe: Choose style, for one pipe or its whole run"],
-                        look="weak spot: the tees (middle of the top and third runs) breaking the joins; a run that changes "
+                        look="weak spot: the tees (middle of the bottom run and the third run up) breaking the joins; a run that changes "
                              "look half way"),
     "pipe_adapter": dict(short="Pipe-net adapters", notice="the chemfuel and propane adapters next to a tank", s="carry",
                          after="pipe_styles", caps=["K10"], needs_def="RM_PipeAdapter_Chemfuel",

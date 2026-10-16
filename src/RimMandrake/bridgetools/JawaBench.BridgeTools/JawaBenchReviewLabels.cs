@@ -44,6 +44,7 @@ namespace JawaBench.BridgeTools
         public string Text, Sub, Tag, SubRaw, SizeName;
         public Color Color;
         public GameFont Font;
+        public Game Game;          // the game it was pinned in: map uniqueIDs restart per game, so a label never crosses
     }
 
     internal static class JawaBenchReviewLabelDrawer
@@ -59,6 +60,7 @@ namespace JawaBench.BridgeTools
         internal static bool SidecarHooks;
         internal static string SidecarError, PendingSave, LastSidecarRead, LastSidecarWritten;
         internal static int LastSidecarCount;
+        private static Map _mapAtLoad;     // the map current when a load was requested: the sidecar waits for a NEW one
         private const float SignMinCellPx = 28f;
 
         internal static string SidecarDir => Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBenchReviewSigns");
@@ -98,7 +100,7 @@ namespace JawaBench.BridgeTools
             string raw = f.Length > 3 ? f[3] : null;
             Labels.Add(new JawaReviewLabel
             {
-                MapId = map.uniqueID, X = x, Z = z, Text = f[2], SubRaw = raw,
+                MapId = map.uniqueID, Game = Current.Game, X = x, Z = z, Text = f[2], SubRaw = raw,
                 Sub = raw == null ? null : raw.Replace("\\n", "\n"),
                 Color = col, Font = font, SizeName = sz,
                 Tag = f.Length > 6 && f[6].Length > 0 ? f[6] : (defaultTag ?? "")
@@ -110,7 +112,7 @@ namespace JawaBench.BridgeTools
         internal static int WriteSidecar(string saveName, Map map)
         {
             if (map == null || string.IsNullOrEmpty(saveName)) return 0;
-            var mine = Labels.Where(l => l.MapId == map.uniqueID).ToList();
+            var mine = Labels.Where(l => l.MapId == map.uniqueID && l.Game == Current.Game).ToList();
             if (mine.Count == 0) return 0;
             Directory.CreateDirectory(SidecarDir);
             var lines = new List<string> { "# map " + map.uniqueID.ToString(CultureInfo.InvariantCulture) };
@@ -132,7 +134,7 @@ namespace JawaBench.BridgeTools
                 int.TryParse(lines[0].Substring(6).Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int mid))
                 map = Find.Maps.FirstOrDefault(m => m.uniqueID == mid) ?? map;
             if (map == null) return -1;
-            Labels.RemoveAll(l => l.MapId == map.uniqueID);
+            Labels.RemoveAll(l => l.MapId == map.uniqueID || l.Game != Current.Game);
             int n = 0;
             foreach (string raw in lines)
             {
@@ -156,11 +158,14 @@ namespace JawaBench.BridgeTools
             // the old game's labels go with it: map uniqueIDs restart per save (a fresh map 0 would inherit them)
             Labels.Clear();
             PendingSave = saveFileName;
+            _mapAtLoad = Find.CurrentMap;
         }
 
         private static void TryPendingSidecar()
         {
-            if (PendingSave == null || Current.ProgramState != ProgramState.Playing || Find.CurrentMap == null) return;
+            // LoadGame only QUEUES the load: until it runs, the old map is still current and still Playing
+            if (PendingSave == null || Current.ProgramState != ProgramState.Playing || Find.CurrentMap == null ||
+                Find.CurrentMap == _mapAtLoad) return;
             string name = PendingSave;
             PendingSave = null;
             try { ReadSidecar(name); }
@@ -210,9 +215,11 @@ namespace JawaBench.BridgeTools
                 GameFont oldFont = Text.Font;
                 TextAnchor oldAnchor = Text.Anchor;
                 Color oldColor = GUI.color;
+                try
+                {
                 foreach (JawaReviewLabel l in Labels)
                 {
-                    if (l.MapId != id) continue;
+                    if (l.MapId != id || l.Game != Current.Game) continue;
                     Vector2 p = new Vector3(l.X + 0.5f, 0f, l.Z + 0.5f).MapToUIPosition();
                     if (p.x < -400 || p.y < -100 || p.x > UI.screenWidth + 400 || p.y > UI.screenHeight + 100) continue;
                     Text.Font = l.Font;
@@ -237,9 +244,13 @@ namespace JawaBench.BridgeTools
                     }
                     GUI.color = Color.white;
                 }
-                Text.Font = oldFont;
-                Text.Anchor = oldAnchor;
-                GUI.color = oldColor;
+                }
+                finally
+                {
+                    Text.Font = oldFont;
+                    Text.Anchor = oldAnchor;
+                    GUI.color = oldColor;
+                }
                 Draws++;
             }
             catch (Exception e)
@@ -310,7 +321,8 @@ namespace JawaBench.BridgeTools
                 }
                 else if (act == "clear")
                 {
-                    removed = L.RemoveAll(l => l.MapId == map.uniqueID && (string.IsNullOrEmpty(tag) || l.Tag == tag));
+                    removed = L.RemoveAll(l => (l.Game != Current.Game) ||
+                                               (l.MapId == map.uniqueID && (string.IsNullOrEmpty(tag) || l.Tag == tag)));
                 }
                 else if (act == "show" || act == "hide")
                 {
@@ -320,7 +332,7 @@ namespace JawaBench.BridgeTools
                 {
                     return Fail("Unknown action '" + action + "'. Use add, clear, list, show, hide, save_sidecar or load_sidecar.");
                 }
-                var mine = L.Where(l => l.MapId == map.uniqueID).ToList();
+                var mine = L.Where(l => l.MapId == map.uniqueID && l.Game == Current.Game).ToList();
                 return (object)new
                 {
                     success = JawaBenchReviewLabelDrawer.Installed && refused.Count == 0,
@@ -410,7 +422,11 @@ namespace JawaBench.BridgeTools
                         fInval.SetValue(book, false);
                         if (!GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Direct) &&
                             !GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Near))
-                        { refused.Add(line + " -> could not place"); continue; }
+                        {
+                            if (!book.Destroyed) book.Destroy(DestroyMode.Vanish);
+                            refused.Add(line + " -> could not place");
+                            continue;
+                        }
                         RimWorld.ForbidUtility.SetForbidden(book, true, warnOnFail: false);
                         placed.Add(new { id = book.ThingID, x = book.Position.x, z = book.Position.z, moved = book.Position != cell });
                     }

@@ -2,7 +2,7 @@
 
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --build [--fresh-map] [--style StarWarsJawa] | tr -d '\\r'
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --goto 7 | tr -d '\\r'     # frame station 7 (S0 = style gallery 1-12,
-                                    # 0 = whole south region, N0 = north gallery 18-41, M = art-slot board, F = free area)
+                                    # 0 = whole south region, N0 = north gallery 18-33 + 38-41, M = art-slot board, F = free area)
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --style Cybertek | tr -d '\\r'   # set the DEFAULT look only
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --labels | tr -d '\\r'     # re-pin the labels (after a load/restart)
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --clear | tr -d '\\r'      # wipe the review region and its labels
@@ -80,6 +80,7 @@ if _UTILS not in sys.path:
 from modcheck import reviewmap as RM  # noqa: E402  (label_line, weak_spot_sign: the shared review signs)
 
 OUT = os.path.join(REPO, "Transient", "mc_human_review")
+LIVE_JSON = os.path.join(OUT, "last_build.json")          # the last --build's agent block (a program reads it: not a sheet)
 STYLES = ("StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek")
 # the Mod Settings names (owner review 2026-10-04 B19: labels only, the enum names / saved keys are unchanged)
 LOOK = {"StarWarsJawa": "Scrapper", "StarWars": "Industrial", "ExtensionCord": "Modern", "Cybertek": "Futuristic"}
@@ -359,8 +360,9 @@ def stations_style(mk):
 
 
 def station_list():
-    """The 33 stations in number order. `prev` = the station's number on the 47-station map (2026-10-04); None = new
-    (16 HOSE STATES, 2026-10-05). The cut ones (CUTS) are gone from the code; git holds their old cards."""
+    """The 41 stations in number order. `prev` = the station's number on the 47-station map (2026-10-04); stations
+    added since (16 HOSE STATES, 2026-10-05; 34-41, round 8) carry prev = their own number. The cut ones (CUTS) are
+    gone from the code; git holds their old cards."""
     S = []
 
     def mk(n, row, x, z, w, h, title, what, notice, interact, **k):
@@ -824,7 +826,7 @@ BOARD = dict(rect=(96, 236, 60, 12), region=2)
 BOARD_NOTES = ["U_style_missing_art (moved off the live proof 2026-10-05): per-family EndFrayed_Live / PowerStrip / "
                "StrandShadow art does not exist; those slots fall back to the Jawa (Scrapper) pieces. Judge whether the "
                "fallback reads acceptably in each look; it is taste, not a Northstar bar."]
-STYLE_GALLERY = (140, 6, 96, 104)                       # --goto S0: both style blocks (stations 1-12)        # M: the art-slot board (labels only), east of the free area
+STYLE_GALLERY = (140, 6, 96, 104)                       # --goto S0: both style blocks (stations 1-12; row H, 34-37, sits inside it too)        # M: the art-slot board (labels only), east of the free area
 
 # ------------------------------------------------------------------------------------------------ art-slot board (M)
 # Each (piece, look) slot names the file the shipped code reads for that look (CordMaterials / AerialMaterials /
@@ -1174,7 +1176,7 @@ def label_ops(S, style):
     add(COL_X - 6, COL_Z[13] + 4, "ROW A - FLOOR CORDS", "station 13, default look", TEAL, "small")
     add(COL_X - 6, COL_Z[15] + 10, "ROW B - OVERHEAD LINES", "stations 14-15, default look", TEAL, "small")
     add(COL_X - 6, COL_Z[16] - 4, "ROW C - FLEXIBLE HOSES", "stations 16-17: states, lanes, crossings", TEAL, "small")
-    add(120, 182, "GIMME SOME SLACK - NORTH GALLERY", "stations 18-41   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
+    add(120, 182, "GIMME SOME SLACK - NORTH GALLERY", "stations 18-33 + 38-41   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
     add(32, 174, "ROW E - POWER SHOWPIECES", "stations 18-20", TEAL, "small")
     add(188, 160, "ROW F - HOSE MAZES", "stations 21-22", TEAL, "small")
     add(160, 75, "ROW H - PIECES THE GALLERY NEVER SHOWED", "stations 34-37: waterproof looks, conduit kinds, bracket faces, clamp poses", TEAL, "small")
@@ -1531,6 +1533,9 @@ class Review(object):
         B.ticks(2)
         for s in S:
             for a, b in s["cuts"]:
+                if s["_ids"][a] is None or s["_ids"][b] is None:
+                    self.notes.append("station %d: anchor missing for cut %d-%d" % (s["n"], a, b))
+                    continue
                 d = B.ap("cut:%d,%d" % (s["_ids"][a], s["_ids"][b])).get("done")
                 if not d:
                     self.notes.append("station %d cut %d-%d not done" % (s["n"], a, b))
@@ -1943,13 +1948,20 @@ def main(argv=None):
                 "pawns_in_region": R.pawns_in_region, "notes": R.notes, "wall_s": round(time.time() - t0, 1)}
         apply_sets(R, a.set)
         keysheet(S, style, live)
+        with open(LIVE_JSON, "w", encoding="utf-8") as f:     # so a later --style re-sheet keeps this build's block
+            json.dump(live, f, indent=1, default=str)
         R.say("DONE in %ss; notes: %s" % (live["wall_s"], R.notes or "none"))
         return 0
     apply_sets(R, a.set)
     if style:
         r = R.B.probe("set:style=%s" % style)
         R.labels(S, style)
-        keysheet(S, style)
+        try:
+            with open(LIVE_JSON, encoding="utf-8") as f:
+                last = json.load(f)
+        except (OSError, ValueError):
+            last = None
+        keysheet(S, style, last)
         print("default look -> %s (%s); stations 1-11 keep their stored looks" % (style, r.get("value")))
     if a.labels:
         cur = (R.B.call("jawa/mod_settings_field", typeName="RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings", action="get",
