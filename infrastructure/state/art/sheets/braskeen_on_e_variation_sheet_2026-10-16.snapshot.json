@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_braskeen_on_e_variation",
+ "built": "2026-10-16T07:56:57-0700",
+ "census": "Transient/biome_ffar/braskeen_on_e_variation.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 20 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_Braskeen": {
+   "columns": {
+    "A": {
+     "single": "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Braskeen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Braskeen (1 of 1) \u2014 Miasma"
+   },
+   "pools": [
+    "Things/Plant/RM_Braskeen"
+   ],
+   "res": "Things/Plant/RM_Braskeen",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "braskeen"
+  }
+ },
+ "sheetId": "braskeen_on_e_variation_sheet_2026-10-16",
+ "snapshotId": "15764663b6838179"
+}

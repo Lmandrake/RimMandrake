@@ -1,0 +1,59 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T07:56:18-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_braskeen_on_e_variation"
+ ],
+ "biomes": {
+  "SUBJECTS_braskeen_on_e_variation": {
+   "label": "Braskeen E variation (v3; v1/v2 rejected by validator)",
+   "slug": "braskeen_on_e_variation",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Braskeen E variation (v3; v1/v2 rejected by validator) \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RM_Braskeen",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "braskeen",
+     "defNames": [
+      "RM_Braskeen"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "braskeen_onE_v3"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Braskeen",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Braskeen"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Braskeen found"
+     }
+    }
+   ]
+  }
+ }
+}
