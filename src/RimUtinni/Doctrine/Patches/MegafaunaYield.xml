@@ -145,20 +145,20 @@
           </nomatch>
         </match></li>
         <!-- AA_GiantCrownedSilkie MeatAmount: bodySize 1.10, base 154, yields 169 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]</xpath><match Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/MeatAmount</xpath>
+        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]</xpath><match Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/MeatAmount</xpath>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases</xpath>
             <value><MeatAmount>154</MeatAmount></value>
           </nomatch>
         </match></li>
         <!-- AA_GiantCrownedSilkie BoneAmount: bodySize 1.10, base 55, yields 61 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]</xpath><match Class="PatchOperationFindMod">
+        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]</xpath><match Class="PatchOperationFindMod">
           <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
           <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/BoneAmount</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/BoneAmount</xpath>
             <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases</xpath>
+              <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases</xpath>
               <value><BoneAmount>55</BoneAmount></value>
             </nomatch>
           </match>
@@ -307,8 +307,8 @@
           </nomatch>
         </match></li>
         <!-- AA_GiantCrownedSilkie woolAmount: bodySize 1.10, 30 -> 33 -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]</xpath><match Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/comps/li[woolAmount]/woolAmount</xpath>
+        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]</xpath><match Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>33</woolAmount></value>
         </match></li>
         <!-- AA_Radyak milkAmount: bodySize 2.50, 15 -> 12 -->

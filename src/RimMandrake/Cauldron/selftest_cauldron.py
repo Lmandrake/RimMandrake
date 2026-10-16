@@ -801,7 +801,7 @@ def source_checks():
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
     # 48/5 since DONOR_CODE_PLAIN_PORTS_1: + RM_Radyak (ThingDef, PawnKindDef, RM_OssrithCrystal, its RecipeDef).
     # The walk's wild-kinds step spawns every KIND.
-    # 64/9 since Phase 0 P2 (2026-10-15): + RM_BedBug, RM_CrystalMit, RM_GiantCrownedSilkie, RM_Bezzul (owned ports of the
+    # 64/9 since Phase 0 P2 (2026-10-15): + RM_BedBug, RM_CrystalMit, RM_SikkaSikka, RM_Bezzul (owned ports of the
     # Alpha Animals rows; src/RimMandrake/Utils/aa_port.py), with their eggs, silk, bricks, bodies, bite, ability, projectile.
     # 71 since CAULDRON_MECHANICS_BUILD_1 parts 3/4 (2026-10-16): + the gas tap, Filter-Works, corroded rig, vent reagent,
     # filter cartridge, RM_FilterWorksResearch and RM_CauldronRuinScatter (ResearchProjectDef/GenStepDef now parsed too).

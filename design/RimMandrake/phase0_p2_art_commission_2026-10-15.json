@@ -73,9 +73,9 @@
   "facings": "",
   "priority": 50,
   "style_notes": "inventory item icon, painterly vanilla-RimWorld look, matte painted natural-history illustration, no outlines, bake NO cast shadow onto the ground. Regenerate from the description; do not reuse donor pixels.",
-  "target_def": "RM_GiantCrownedSilkieSilk",
-  "target_texpath": "Things/Item/Resource/RM_GiantCrownedSilkieSilk",
-  "install_to": "src/RimMandrake/Cauldron/Textures/Things/Item/Resource/RM_GiantCrownedSilkieSilk.png",
+  "target_def": "RM_SikkaSikkaSilk",
+  "target_texpath": "Things/Item/Resource/RM_SikkaSikkaSilk",
+  "install_to": "src/RimMandrake/Cauldron/Textures/Things/Item/Resource/RM_SikkaSikkaSilk.png",
   "biome_neutral": true,
   "background": "transparent"
  },
