@@ -495,6 +495,9 @@ TIERS = {
             "mandrake.rut.patches",
             "mandrake.rsw.shokk",
             "oskarpotocki.vfe.insectoid2",
+            # The fixed world carries Deep Orbit's PlanetLayerDef Orbit2; without it WorldGrid.CreateRequiredLayers
+            # NREs and the SAVE_LOAD row falls back to the main menu (PHASE0_L1_SAVE_LOAD, live 2026-10-16).
+            "broms.deeporbit",
         ],
         "forbid": ["mlie.starwarsanimalcollection", "sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"],
         "dlc": True,
