@@ -17,6 +17,53 @@ is reviewed. See §0.5. Every biome art sitting in §4 now follows its gate.
 *"Let's define a standard savegame for the biomes like this"*): its station kinds, pen rules, sign format and pre-walk gates
 PW1-PW9 / PL1-PL7 apply to the Cauldron, Contagion and LeaningScrub saves.
 
+## S0: the decision lines, ready to land (revised 2026-10-16 ~08:00 PDT)
+
+Each line is one decision. He answers each with "yes", an edit, or "cut"; BENCH lands each answer as a ledger event on
+`BIOME_SPRINT_PROVE_SCRUB_SETS_PACE` (`--owner-said` for typed words, `--by-card` for a card) and freezes the four
+acceptance manifests (`design/RimMandrake/sprint_manifests/<Mod>.json`) from them.
+
+| # | decision | agent recommendation |
+|---|---|---|
+| S0-1 | Approve the Cauldron list (§1.1) as the frozen scope. | Approve |
+| S0-2 | Approve the Contagion list (§1.2), with the Dive and Bodyprints deferred to v2. | Approve, defer both |
+| S0-3 | Approve the LeaningScrub list (§1.3). | Approve |
+| S0-4 | Approve the ExplosiveGrowth list (§1.4, X1-X5) inside Baroque Biomes. | Approve |
+| S0-5 | Pre-approve two INFERRED rows: natural Coalescence formation in a long Bloom (Contagion), and downwind fire bias (Scrub). | Approve both |
+| S0-6 | ExplosiveGrowth perf bar (X2): on the jungle-density saved map with soaked plants, TPS at speed 3 stays at least 90% of the same map with the soak off. | Approve the 90% figure, or name his own |
+| S0-7 | ExplosiveGrowth open items: cut salted-ground refusal; defer the dynamic close-up layer and Fever Wood's inside-the-giant view (not sprint biomes); keep the invented roster defaults; add `RUT_`/`RM_Cauldron` to the stalled band and keep the `RUT_ExtremeDesert` x4 exemption; tune bands and soak together at the S2 walk. | Approve as listed |
+| S0-8 | ExplosiveGrowth's `scope_native_only` row runs on the short `explosivegrowth_solo` load in the same sitting, because the campaign layer on `biomes_sprint` puts every biome in scope (`EXPLOSIVE_SCOPE_ROW_PROVE_NEEDS_QUIET_LIST`). | Approve |
+| S0-9 | The Cauldron Filter-Works rows are measured after FlowWorks moves to litres (`LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS`, another agent), so the Filter-Works never ships on a unit that is changing. | Approve |
+| S0-10 | N5: the vaporator-farming people (`RM_CombHolds`) trade first and turn hostile only if attacked. | Option A |
+| S0-11 | Venomvine (§3 item 4): one typed sentence, *"Install the owned venomvine renders over the thicket copy on the other venomvine plants"*, or keep it for the S2 venomvine sitting. | His words, or defer to S2 |
+| S0-12 | Pilot C6: sign off the Ratchet pilot (GSS, FlowWorks, Pyrelands) so its guards become M6 for this sprint. | His sign-off |
+
+Silence on a line is not approval: an unanswered line keeps its item open and the agents work on the other lines.
+
+### Offline readiness on HEAD, MEASURED 2026-10-16 ~07:50 PDT (game and bridge untouched)
+
+`python3 src/RimMandrake/<Mod>/preflight_<mod>.py` (rows in `src/RimMandrake/Utils/northstar_driver/biome_preflight.py`)
+and `modset_builder.py --tier biomes_sprint`:
+
+| row | Cauldron | Contagion | LeaningScrub | ExplosiveGrowth |
+|---|---|---|---|---|
+| O-TIER (`biomes_sprint`, 22 mods incl. Huge Things, no donors) | PASS | PASS | PASS | PASS |
+| O-PLAN | PASS | PASS | PASS | PASS |
+| O-DEPLOY (composite equals `src/`) | FAIL: stale, today's commits not deployed | FAIL: stale | FAIL: stale | PASS |
+| O-ROSTER | PASS, 39 rows | PASS, 36 rows | PASS, 84 rows | n/a (no BiomeDef) |
+| O-TEX (M2) | FAIL: `RM_SikkaSikka` not deployed yet; 2 fleck overlays absent from `src/` | PASS, 36/36 | FAIL: `RM_Salvessa` not deployed yet | n/a |
+| O-SUITE | PASS, 73 rows | PASS, 80 rows | PASS, 85 rows | PASS, 59 rows |
+| O-MANIFEST | UNMEASURED until S0 | UNMEASURED | UNMEASURED | UNMEASURED |
+| O-SITE | UNMEASURED: recipe ready, not built | UNMEASURED: recipe ready, not built | UNMEASURED: recipe ready, not built | UNMEASURED: `calm` site built, reload never read back |
+
+The deploy is the first step of the live run (`Transient/biome_sprint_live_order_2026-10-16.md`), done by the seat
+that holds the game. Once deployed, the only O-TEX fail left is the Cauldron fleck art
+(`CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK`, FOUNDRY). One suite gap is also filed: Cauldron has no rows for the
+Filter-Works, the ruins, the Oomo shrine or the gas drift (`CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD`, FOUNDRY).
+Contagion's suite cannot run on an already-Contagion site until `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` (FOUNDRY)
+lands. LeaningScrub's Lean rows wait on `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY`. The three site recipes print
+offline (`prep_site.py --plan`), their census natives are all real defs, and their selftests pass.
+
 This packet holds:
 
 - §0.5, Phase 0: retire Star Wars Animal Collection and Alpha Animals (Alpha Biomes is a candidate) before any biome review;
@@ -205,6 +252,14 @@ ONE HEAD on the `biomes_sprint` tier, each recorded by `rimflow verify`:
 - **M5** `run_selftests.py --only` passes on the changed files, and `code_review_status.py check` reads CLEAN on them,
   marked by a reviewer who is not the builder.
 - **M6** The pilot guards (GSS, FlowWorks, Pyrelands) are green at matching inputs.
+- **M7** Every suite runs on the ONE `biomes_sprint` launch (`src/RimMandrake/Utils/modset_builder.py`), which loads
+  Huge Things in every sprint test (owner, 2026-10-16: *"We have so many huge things, we want to make sure we're always
+  compatible with them"*) and forbids both donors and both retired growth packageIds. The one exception is
+  ExplosiveGrowth's scope row (S0-8).
+- **V1** In every Baroque biome, a plant further south draws in front of one further north (`RM_PlantDrawOrder`,
+  f89a991bed; a Mod Settings toggle, on by default). Checked on each review save.
+- **Dependency:** FlowWorks' liquid accounting is moving to litres (`LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS`, another
+  agent). Sprint builders do not edit FlowWorks; the Cauldron Filter-Works rows wait for it (S0-9).
 - **O1** He dictates `### the experience` (his words; agents never fill it).
 - **O2** He accepts the visual bars against the review save.
 - **O3** His sign-off cites the manifest hash.
@@ -231,7 +286,7 @@ yield, bloom, water, fire, vents and log. The 2026-10-08 result was 58 PASS / 1 
 | `water.water_poison_toggle_off` | Pen the test vexxiss in the pond so it cannot wander off | site |
 | New, cheap rows (in only if he keeps the visuals) | Dewfall bead count; dew swap and reverse; fleck overlay draw on a graded tree; footprint ledger read | new rows |
 | New rows (Q1, N2 ruled) | Vents emit a drifting cloud of the NEW vent-gas type; the type exists beside the vanilla gases and leaves other mods' gases untouched; the cloud ignites and burns into toxic smoke; the vexxiss attacks an igniter | new rows |
-| New rows (Q2 ruled) | Filter-Works refines vent gas into reagents; ruin set-pieces present on a generated map; Oomo shrine present and usable | new rows |
+| New rows (Q2 ruled) | Filter-Works refines vent gas into reagents (after the FlowWorks litres change, S0-9); ruin set-pieces present on a generated map (the saved site IS one, so its build can census them); Oomo shrine present and usable. The built suite has no rows for these yet: `CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD` | new rows |
 
 Proposed INFERRED rows: none.
 
@@ -255,7 +310,7 @@ Proposed INFERRED rows: none.
 
 **Art set:**
 
-- The 7 missing textures (2 fleck overlays and 5 dew variants).
+- The 7 missing textures (2 fleck overlays and 5 dew variants): `CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK`. The C# skips a missing overlay quietly, so they fail only the offline O-TEX row.
 - New for the ruled scope: the Filter-Works, the ruin set-piece kit, and the Oomo shrine. All need an art sheet round.
 - The bedazzle sheet's open picks from 2026-09-29, still unverified as actioned:
   - Eskith "improve" (five eyes, so the side profile shows three);
@@ -396,7 +451,7 @@ Proposed INFERRED row, to be pre-approved: downwind fire bias, scored from a com
   - A donor-art stand-in.
   - A magenta square.
 
-**Art set:** see §3, plus the vaporator look, the camp kit and the calling-pyre art, each a sheet round.
+**Art set:** see §3, plus the vaporator look, the camp kit and the calling-pyre art, each a sheet round. The plant-tier reconcile of 2026-10-16 added `RM_Salvessa` (one of the 7 new non-canon Baroque base plants, 7aa0506443; his pick installed at 813af30a49) to the Scrub roster and retired the five `mandrake.rut.ashkarrflora` plants into the Scrub's `RM_` twins (6a1183226c; the AshkarrFlora mod is deleted). Saved `RUT_`/`RSW_` names load as the `RM_` defs.
 
 **Mechanics.**
 
@@ -458,8 +513,10 @@ fused Plant Growth in too (*"those mods are fusing! They were never meant to be 
 the plants won't be growing almost at all unless water is present, then they grow explosively. So yes, always
 together, fuse them as a single mod right now and let's tune them all together."*) and made the scope a biome (*"Yes,
 there should just be an option in Baroque Biomes to allow the accelerated plant growth and explosive growth to apply
-to other biomes, but we won't test or support that."*). X1 above is the result. Work:
-`EXPLOSIVE_GROWTH_MERGE_COMES_HOME` (FOUNDRY), `PLANT_GROWTH_MERGE_NEVER_MEANT_APART` (BENCH).
+to other biomes, but we won't test or support that."*). X1 above is the result. The fusion is built (b9a689a8ab;
+1c9e7d4bbf stops soak and charging at once on an out-of-scope map); its live proof rides this sprint's launch:
+`EXPLOSIVE_GROWTH_MERGE_COMES_HOME` (built, FOUNDRY), `PLANT_GROWTH_MERGE_NEVER_MEANT_APART` (in progress). The suite
+(59 rows) already checks the fused settings; the scope row needs the solo load (S0-8).
 
 Its live rows ride the biome rounds in §4: it adds about one live round (perf gate plus soak routes, about 2 h,
 INFERRED) and one sign in each relevant review save, with no extra owner sitting.
@@ -660,7 +717,7 @@ Owner sittings are marked **[S#]**. Builders are FOUNDRY; BENCH runs the tooling
 
 | day | agents (parallel) | live game (serial) | owner gate |
 |---|---|---|---|
-| **D0 Fri 10-16** | **Phase 0 P1-P3** (SWAC repoints and plant ports; Alpha Animals ports and code-riders) and P4 art jobs. FOUNDRY starts the three biome builds that need no review, N2 gas spike first. BENCH: tooling slice (`biomes_sprint` tier, preflight, Cauldron site), file `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY` (filed), freeze manifests from S0 answers. | none | **[S0]** Approve §1 lists; answer N5; pilot C6 sign-off; one typed venomvine sentence (§3 item 4). |
+| **D0 Fri 10-16** | **Phase 0 P1-P3** (SWAC repoints and plant ports; Alpha Animals ports and code-riders) and P4 art jobs. FOUNDRY starts the three biome builds that need no review, N2 gas spike first. BENCH: tooling slice (`biomes_sprint` tier, preflight, Cauldron site), file `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY` (filed), freeze manifests from S0 answers. | none | **[S0]** the twelve decision lines S0-1 to S0-12 at the top of this packet. |
 | **D1 Sat 10-17** | Phase 0 renders land; build the O1 sheet. Biome builds continue. Kit and new-people art agents may draw, but nothing is shown to him. | **Gas spike round, about 1.5 h.** The gate: if the new gas type cannot be isolated, the sprint stops and asks him. | **[O1]** the Phase 0 donor-retirement sheet, plus the Alpha Biomes card (reply within a day). |
 | **D2 Sun 10-18** | P5 enacts his picks and deploys; P6 fixes the save. Offline reviews finish; a separate reviewer marks files CLEAN. | **L1 donor-off round, about 2 h** (spawn, mapgen, flight state, fixed save). | none |
 | **D3 Mon 10-19** | P7 removes the donors from the list; run the §0.5.5 gate. **Phase 0 RETIRED.** BENCH builds the early biome art sheet (grown limbs and riders). Ports landed in Cauldron, Contagion and LeaningScrub show up there as our own art. | Cauldron round 1 (about 2 h, includes the falter-tell check). | Return round for O1, only if he sent rows back (15 min). |

@@ -19,6 +19,10 @@ DEFAULTS = {
     "tinderEnabled": "True", "slimeEnabled": "True", "ruptureEnabled": "True", "ruptureMutationChance": "0.08",
     "flushEnabled": "True", "harvestJackpotEnabled": "True", "lastSwingGambleEnabled": "True",
     "suppressionEnabled": "True",
+    # the everyday bands fused in from Jawa Plant Growth (b9a689a8ab) and the off-by-default, unsupported scope option
+    "bandsEnabled": "True", "defaultMultiplier": "4", "treeMultiplier": "2.5", "terminatorMultiplier": "0.4",
+    "wetAmbientMultiplier": "10", "wetAmbientTreeMultiplier": "6.25", "minGrowDaysToBoost": "1",
+    "applyInOtherBiomes": "False",
 }
 
 
