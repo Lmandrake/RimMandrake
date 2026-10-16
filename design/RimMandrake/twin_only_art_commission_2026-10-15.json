@@ -1,0 +1,19 @@
+[
+ {
+  "id": "donorart_lesseroomb_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_LesserOomb",
+  "target_original": "AA_AcanthamoebaGiganteaSmall",
+  "target_texpath": "Things/Pawn/Animal/RM_LesserOomb/RM_LesserOomb",
+  "install_to": "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/RM_LesserOomb/RM_LesserOomb_{facing}.png",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "facings": "east,south,north",
+  "priority": 41,
+  "background": "transparent",
+  "prompt": "RimWorld creature sprite of the lesser oomb, a young giant amoeba. SCALE: a small animal, footprint about 1.5x1.5 cells (drawSize 1.5); a colonist is about 1 cell. CANVAS: 256x256, square, the creature fills the frame width. VIEW: orthographic side view facing right (east), resting naturally on a transparent background, whole creature in frame, centred. SUBJECT: a single giant cell freshly split from its parent: one blunt rounded translucent lobe of gel, studded with short soft spikes, a darker nucleus visible inside, two stubby pseudopods pushing at the ground, amber-green translucence with a faint inner glow; smaller and smoother than the full oomb, its spikes still short. MUST SHOW: (1) one-celled amoeba body, no head, no eyes, no legs; (2) translucent gel with a visible nucleus; (3) short soft spikes over the surface. NEGATIVE: no slug or snail shape, no mouth with teeth, no glossy plastic look.",
+  "style_notes": "Realistic painted natural-history illustration of a living creature, grounded believable form, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Same species as the full oomb (artpipe slime_oomb), younger and smaller. Regenerate from the description; do not reuse donor pixels.",
+  "biome_neutral": true
+ }
+]
