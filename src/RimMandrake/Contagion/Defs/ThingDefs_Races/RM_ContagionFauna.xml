@@ -65,7 +65,7 @@
       </li>
     </tools>
     <race>
-      <!-- The donor AA_RedGoo's acid death burst, at the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor
+      <!-- The donor AA_RedGoo's acid death burst, at the values the retired donor death-burst patch (deleted 2026-10-15) set
            def. Owner by card 2026-10-15 (Transient/phase0_twin_only_questions.md Q3, "Burst only when killed"): our
            worker skips the burst for the one death where the host dies giving birth to its grown organs or limb
            (Source/DeathActionWorker_RM_GenomeHostBurst.cs); every other death bursts. -->
@@ -398,7 +398,7 @@
     </tools>
     <race>
       <!-- Phase 0 twin-only ports (owner 2026-10-15, "port all"): the donor AA_RedSpore's acid death burst, repointed
-           to our own class with the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def. -->
+           to our own class with the values the retired donor death-burst patch (deleted 2026-10-15) set. -->
       <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
         <flatRadius>2.5</flatRadius>
         <damageDef>AcidBurn</damageDef>

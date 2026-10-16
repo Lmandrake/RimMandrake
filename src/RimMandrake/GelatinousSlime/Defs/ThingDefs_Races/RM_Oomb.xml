@@ -21,7 +21,7 @@
 
   ALL THREE:
     REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
-      (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor defs).
+      (the values the retired donor death-burst patch (deleted 2026-10-15) set).
     KEPT, VEF-guarded (a framework we keep, as P3 did): eating filth, trash and grass off the ground
       (CompProperties_EatWeirdFood; the VEF weird-eater think tree is added by
       Patches/RM_Oomb_VEFThinkTree.xml only when VEF loads, the fermatalis's pattern). Growth and the split ride the
@@ -31,7 +31,7 @@
     DROPPED: VRecyclingE_Trash from the food list (another mod's item); donor wildBiomes; the VEF
       AnimalStatExtension info-card rows and its donor art panel; the donor dessicated picture (a cell leaves no
       skeleton; RM_Meltgut precedent); the greater oomb's Odyssey trainable VEF_CycleSeverance.
-    GREATER OOMB burst: the donor's huge size had no row in RM_AlphaAnimals_DeathBursts.xml; ours carries on the
+    GREATER OOMB burst: the donor's huge size had no row in the retired donor death-burst patch; ours carries on the
       lesser -> oomb step (1.9/10 -> 3.5/16) to 4.9/20.
   ART: the oomb's render exists (artpipe slime_oomb, 3 facings) and so does the greater oomb's (artpipe
     slime_greateroomb, 3 facings, art-ledger artpipe rows 3bba33d0481f35c2726c / 77cf2fe3e0b6b7c7eecf /

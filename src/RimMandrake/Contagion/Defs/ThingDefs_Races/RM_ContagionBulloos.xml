@@ -10,7 +10,7 @@
 
   BLISTERED BULLOO (RM_InfectedAerofleet). Owner pick "rebuild" (donor_code_creatures_sheet_2026-10-09).
     REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
-      (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).
+      (the values the retired donor death-burst patch (deleted 2026-10-15) set).
   ZHOOL (RM_OcularJelly). Owner pick "rebuild" (twitching limbs).
     PLAIN GRAPHIC for now: the donor drew four twitching tentacle sprites with its own SpasticScaled render
     tree (donor code). Every picture of ours bakes the tentacles into one whole-body sprite, so the creature

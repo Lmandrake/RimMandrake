@@ -16,7 +16,7 @@
   run "on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life".
 
   REPOINTED to ours: deathAction -> RimMandrake.EnvironmentalHazards.DeathActionProperties_SummonFlashstorm
-    (same values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).
+    (same values the retired donor death-burst patch (deleted 2026-10-15) set).
   SWAPPED, donor defs -> ours or vanilla:
     tool capacity AA_Electric -> RM_ThunderbeastShock (ours, below; vanilla ElectricalBurn damage);
     ability AA_ElectricBolt -> RM_ThunderbeastArc (ours, below; the description's "long, crackling
