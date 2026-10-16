@@ -59,10 +59,10 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.5 step 7): a pit room is a person-band POCKET — pawn-independent
-			// (GPT #11); a gentle bowl is no enclosure and a sheer D 3 pit is a prison. The grid never rebuilds mid-flood.
+			// (GPT #11); a gentle bowl is no enclosure. PIT_PRISON_JUDGE_D3_ROOMS (owner card 2026-10-15): superdeep ONLY, a sheer D 3 pocket is no prison (capture-down and lip service need D4). The grid never rebuilds mid-flood.
 			if (RM_PocketGrid.Relative)
 			{
-				return eng.IsDugRaw(c) && RM_PocketGrid.IsPersonPocketCell(map, c);
+				return eng.IsSuperdeepRaw(c) && RM_PocketGrid.IsPersonPocketCell(map, c);
 			}
 			return eng.IsSuperdeepRaw(c);
 		}
