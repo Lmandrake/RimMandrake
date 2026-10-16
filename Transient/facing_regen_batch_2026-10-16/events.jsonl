@@ -2,3 +2,51 @@
 {"key": "rimstarwars/swbestiary/gizka/gizka", "event": "gen_fail", "facing": "north", "at": "2026-10-16T07:48:08"}
 {"event": "STOP", "why": "sandbox setup required logged in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen", "at": "2026-10-16T07:54:10"}
 {"key": "rimstarwars/swbestiary/gizka/gizka", "event": "exception", "err": "RuntimeError('STOP: sandbox setup required in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen/.sandbox')", "at": "2026-10-16T07:54:10"}
+{"key": "rimstarwars/swbestiary/gizka/gizka", "event": "gen_fail", "facing": "north", "at": "2026-10-16T11:33:20"}
+{"key": "rimstarwars/swbestiary/gizka/gizkaw", "event": "done", "seconds": 77, "at": "2026-10-16T11:37:16"}
+{"key": "rimstarwars/swbestiary/grank/grank", "event": "done", "seconds": 153, "at": "2026-10-16T11:39:49"}
+{"key": "rimstarwars/swbestiary/horax/horax", "event": "done", "seconds": 156, "at": "2026-10-16T11:42:25"}
+{"key": "rimstarwars/swbestiary/kreetle/kreetle", "event": "done", "seconds": 70, "at": "2026-10-16T11:43:36"}
+{"key": "rimstarwars/swbestiary/ollopom/ollopom", "event": "done", "seconds": 88, "at": "2026-10-16T11:45:03"}
+{"key": "rimstarwars/swbestiary/orray/orray", "event": "done", "seconds": 129, "at": "2026-10-16T11:47:13"}
+{"key": "rimstarwars/swbestiary/shiro/shirob", "event": "done", "seconds": 181, "at": "2026-10-16T11:50:14"}
+{"key": "rimstarwars/swbestiary/vornskyr/vornskyr", "event": "done", "seconds": 173, "at": "2026-10-16T11:53:07"}
+{"key": "rimstarwars/swbestiary/whisperbird/whisperbird", "event": "done", "seconds": 128, "at": "2026-10-16T11:55:15"}
+{"key": "rimstarwars/swbestiary/zakkeg/zakkeg", "event": "done", "seconds": 164, "at": "2026-10-16T11:57:58"}
+{"key": "rm_abyss/things/pawn/animal/rm_lirrith/rm_lirrith", "event": "done", "seconds": 63, "at": "2026-10-16T11:59:01"}
+{"key": "rm_abyss/things/pawn/animal/rm_moravatha/rm_moravatha", "event": "done", "seconds": 64, "at": "2026-10-16T12:00:06"}
+{"key": "rm_abyss/things/pawn/animal/rm_ossumatha/rm_ossumatha", "event": "done", "seconds": 110, "at": "2026-10-16T12:01:56"}
+{"key": "rm_abyss/things/pawn/animal/rm_sesserith/rm_sesserith", "event": "done", "seconds": 123, "at": "2026-10-16T12:03:59"}
+{"key": "rm_abyss/things/pawn/animal/rm_skarnix/rm_skarnix", "event": "done", "seconds": 123, "at": "2026-10-16T12:06:02"}
+{"key": "rm_abyss/things/pawn/animal/rm_summ/rm_summ", "event": "done", "seconds": 147, "at": "2026-10-16T12:08:29"}
+{"key": "rm_abyss/things/pawn/animal/rm_summing/rm_summing", "event": "done", "seconds": 64, "at": "2026-10-16T12:09:33"}
+{"key": "rm_abyss/things/pawn/animal/rm_ysvaltha/rm_ysvaltha", "event": "done", "seconds": 50, "at": "2026-10-16T12:10:23"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug", "event": "done", "seconds": 123, "at": "2026-10-16T12:12:26"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/megapleura/megapleura", "event": "done", "seconds": 124, "at": "2026-10-16T12:14:30"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/mossbeetle/mossgrub", "event": "done", "seconds": 141, "at": "2026-10-16T12:16:52"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/candler/candler", "event": "done", "seconds": 116, "at": "2026-10-16T12:18:48"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/shoal/shoal", "event": "done", "seconds": 47, "at": "2026-10-16T12:19:35"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/slick/slick", "event": "done", "seconds": 161, "at": "2026-10-16T12:22:16"}
+{"key": "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar", "event": "done", "seconds": 121, "at": "2026-10-16T12:24:17"}
+{"key": "rm_therot/fauna/hwelgrue/rm_hwelgrue", "event": "done", "seconds": 130, "at": "2026-10-16T12:26:27"}
+{"key": "rm_therot/fauna/redrawn/brogg/brogg", "event": "done", "seconds": 67, "at": "2026-10-16T12:27:35"}
+{"key": "rimstarwars/swbestiary/horax/horax", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:27:40"}
+{"key": "rimstarwars/swbestiary/ollopom/ollopom", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:27:42"}
+{"key": "rimstarwars/swbestiary/orray/orray", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:27:47"}
+{"key": "rm_abyss/things/pawn/animal/rm_lirrith/rm_lirrith", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:27:50"}
+{"key": "rm_abyss/things/pawn/animal/rm_moravatha/rm_moravatha", "event": "installed", "facings": ["south"], "at": "2026-10-16T12:27:52"}
+{"key": "rm_abyss/things/pawn/animal/rm_ossumatha/rm_ossumatha", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:27:57"}
+{"key": "rm_abyss/things/pawn/animal/rm_sesserith/rm_sesserith", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:02"}
+{"key": "rm_abyss/things/pawn/animal/rm_skarnix/rm_skarnix", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:07"}
+{"key": "rm_abyss/things/pawn/animal/rm_summ/rm_summ", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:11"}
+{"key": "rm_abyss/things/pawn/animal/rm_summing/rm_summing", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:28:14"}
+{"key": "rm_abyss/things/pawn/animal/rm_ysvaltha/rm_ysvaltha", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:28:16"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:21"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/megapleura/megapleura", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:26"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/mossbeetle/mossgrub", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:31"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/candler/candler", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:36"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/shoal/shoal", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:28:39"}
+{"key": "rm_lanterndeeps/fauna/hydrocarbon/slick/slick", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:44"}
+{"key": "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:45"}
+{"key": "rm_therot/fauna/hwelgrue/rm_hwelgrue", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T12:28:50"}
+{"key": "rm_therot/fauna/redrawn/brogg/brogg", "event": "installed", "facings": ["north"], "at": "2026-10-16T12:28:53"}
