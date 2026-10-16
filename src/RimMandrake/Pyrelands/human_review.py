@@ -292,7 +292,7 @@ def station_defs():
     add("E", "ULLAI HERD", "the ash grazer, four of a herd",
         "Four of a herd, one per facing (S, E, N, W). Its burn-following walk (to a two-day-old burn) needs days of roaming: the "
         "matrix's row, not this pen.", ["Four of it, set facing S, E, N, W; its size beside the others."],
-        "They graze the pen.", **_pen("RM_Ullai", 3))
+        "They graze the pen.", **_pen("RM_Ullai"))
     add("E", "ASHWALLOW", "the burrowing grazer",
         "Standing art: four, one per facing (S, E, N, W). Its burrow is shown at B (BURROWER).", ["Four of it, set facing S, E, N, W."], "It grazes.",
         **_pen("RM_Ashwallow"))
@@ -1230,6 +1230,12 @@ class Review(object):
                                    % (s["n"], i, ox + fx, oz + fz, kind, FACINGS[i % 4]))
                     r = self.call("jawa/artboard_stage", phase="subjects", ops="\n".join(ops), killHostiles=False,
                                   pause=True)
+                    for i, o in enumerate(r.get("ops") or []):   # male/female alternate where the race has sexes
+                        if not (o.get("ok") and o.get("thingId")):
+                            continue
+                        g = ((self.call("jawa/pawn_get", pawn=str(o["thingId"])).get("pawns") or [{}])[0]).get("gender")
+                        if g in ("Male", "Female"):     # a race without sexes ("None") is left alone
+                            self.call("jawa/set_pawn_gender", pawn=str(o["thingId"]), gender=("Male", "Female")[i % 2])
                     bad = [o for o in (r.get("ops") or []) if not o.get("ok")]
                     if bad or not r.get("ops"):
                         self.notes.append("station %d: facings %s refused %s" % (s["n"], kind, json.dumps(bad or r)[:200]))
@@ -1451,6 +1457,7 @@ def main(argv=None):
         chilled = {s["n"]: R.verify.get(s["n"], {}).get("probes", {}).get("room") for s in S
                    if s["setup"].get("chill") is not None}
         R.say("chilled pens after %d ticks (station: C): %s" % (NOW_TICKS, chilled))
+        R.chill(S)   # re-chill: four furnace-beasts warm their pen ~11 C in those ticks; the save starts both at CHILL_C
         live = dict(stations_ok=n_ok, verify=R.verify, notes=R.notes, ruin=ruin, colonists=ids, in_shelter=inside,
                     chilled_pens_c=chilled,
                     burned=lit, burning_now=now, wall_s=round(time.time() - t0, 1))
