@@ -68,6 +68,8 @@ namespace RimMandrake.LeaningScrub
         public static float leanScentRange = 16f;
         public static bool leanFireEnabled = true;
         public static float leanFireBias = 0.5f;
+        // part 2 windbreak calm wakes (RM_Ripple.cs InWindbreakLee): in a wall's lee the ripple behaves as in the Stall.
+        public static bool leanWakesEnabled = true;
 
         // ── LEANINGSCRUB_GPT_ENRICHMENT_1 (RM_VenomvineRooms.cs,
         //    RM_RunwayBloom.cs, RM_SweetlineStation.cs) ──
@@ -184,6 +186,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
             Scribe_Values.Look(ref rippleEnabled, "rippleEnabled", true, true);
+            Scribe_Values.Look(ref leanWakesEnabled, "leanWakesEnabled", true, true);
             Scribe_Values.Look(ref rippleMaxBodySize, "rippleMaxBodySize", 0.6f, true);
             Scribe_Values.Look(ref stallHuntEnabled, "stallHuntEnabled", true, true);
             Scribe_Values.Look(ref callingPyreEnabled, "callingPyreEnabled", true, true);
@@ -459,7 +462,7 @@ namespace RimMandrake.LeaningScrub
                 list.GapLine();
             }
 
-            if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
+            if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "leanWakesEnabled", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
             {
                 list.CheckboxLabeled("Small creatures hide under the fuzz", ref rippleEnabled,
                     "A small wild animal standing in the fuzz cannot be shot, hunted or seen by predators; you see it "
@@ -470,6 +473,9 @@ namespace RimMandrake.LeaningScrub
                     list.Label("Largest body size that hides: " + rippleMaxBodySize.ToString("0.00") + " (PROVISIONAL; a hare is about 0.2, a person 1.0)");
                     rippleMaxBodySize = Mathf.Round(list.Slider(rippleMaxBodySize, 0.1f, 1.5f) * 20f) / 20f;
                 }
+                list.CheckboxLabeled("Walls cast a calm wake", ref leanWakesEnabled,
+                    "On a leaning map, the few cells downwind of a wall are out of the wind: there, as in the Stall, "
+                    + "a small creature that moves is seen. Needs the Lean on.");
                 list.CheckboxLabeled("Stall hunters hunt while the wind is dead", ref stallHuntEnabled,
                     "While the Stall holds, a wild zellik goes after the nearest small creature it can see, hungry "
                     + "or not. In wind its prey hides under the fuzz. Off: it hunts only when hungry, like any predator.");

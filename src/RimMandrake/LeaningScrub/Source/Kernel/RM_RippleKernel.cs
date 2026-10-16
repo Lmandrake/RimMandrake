@@ -18,6 +18,22 @@ namespace RimMandrake.LeaningScrub
             return gale ? maxBodySize * 2f : maxBodySize;
         }
 
+        // Part 2 windbreak calm wakes: a cell is in a windbreak's lee when a wind-blocking edifice stands within wakeLength
+        // cells upwind of it (stepping against the Lean heading). In the lee the wind is still, so the ripple behaves as
+        // in the Stall there: a creature that moves is seen. PROVISIONAL wake length.
+        public const int WakeLength = 4;
+
+        public static bool InLee(int x, int z, float downwindX, float downwindZ, int wakeLength, System.Func<int, int, bool> blocksWind)
+        {
+            for (int k = 1; k <= wakeLength; k++)
+            {
+                RM_LeanKernel.Step(x, z, -downwindX, -downwindZ, k, out int ux, out int uz);
+                if (ux == x && uz == z) continue;
+                if (blocksWind(ux, uz)) return true;
+            }
+            return false;
+        }
+
         public static bool Hidden(bool featureOn, bool wild, bool downed, bool onCover, float bodySize, float maxBodySize,
             bool gale, bool stall, bool moving)
         {
