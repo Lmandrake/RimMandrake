@@ -1,0 +1,94 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T07:56:05-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_firespit_with_zisska"
+ ],
+ "biomes": {
+  "SUBJECTS_firespit_with_zisska": {
+   "label": "Fire spit, shown with the Zisska that spits it",
+   "slug": "firespit_with_zisska",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Fire spit, shown with the Zisska that spits it \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RM_FireSpit",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_FireSpit",
+     "defNames": [
+      "RM_FireSpit"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Projectile/RM_FireSpit",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FireSpit"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FireSpit found"
+     }
+    },
+    {
+     "key": "RM_Zisska",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "zisska",
+     "defNames": [
+      "RM_Zisska"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RM_Zisska/RM_Zisska",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Zisska"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Zisska found"
+     }
+    }
+   ]
+  }
+ }
+}
