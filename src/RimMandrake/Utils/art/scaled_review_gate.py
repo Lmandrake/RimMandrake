@@ -430,6 +430,8 @@ def check_ruled_elsewhere(ctx, items) -> Check:
         if it["id"] in own:
             continue
         r = by_key.get(it["id"], {"key": it["id"]})
+        if r.get("reopen"):
+            continue          # --reopen: re-shown on purpose at his request
         names = set().union(*[A._subject_names(x) for x in _rownames(r)])
         hit = A.ruled_elsewhere_for(names, ents)
         if hit and ctx.get("subjects_sheet") and A.ruling_predates_jobs(hit, r.get("artpipe_state_jobs") or []):

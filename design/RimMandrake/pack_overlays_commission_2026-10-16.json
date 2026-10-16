@@ -1,0 +1,19 @@
+[
+ {
+  "id": "packoverlay_quadruped_v1",
+  "rimflow_item_id": "PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS",
+  "prompt": "RimWorld loaded-pack overlay for a large four-legged beast of burden, seen from the side facing right (east). ONLY the gear is drawn, on a fully transparent background: a pair of well-worn brown leather saddlebags hanging one on each flank from a woven rope girth strap, a rolled bedroll and a small wooden crate tied across the top of the strap, short rope ends hanging down. The gear is shaped to drape over the back and ribs of a stocky quadruped; the middle of the drawing, where the animal's back would be, is empty. Grounded, believable gear; no creature, no ground, no lettering.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "oversize_reason": "detail floor: 512px so straps and stitching read (owner: sizing errs generous)",
+  "facings": "east,south,north",
+  "priority": 50,
+  "style_notes": "Realistic painted natural-history illustration of ordinary field gear, matte textured leather and rope, soft painted edges, readable silhouette at game zoom; same painterly look as vanilla RimWorld animal art. Shared overlay: generic gear, colour-neutral brown so it sits on any hide.",
+  "target_def": "RSW_Bantha",
+  "target_texpath": "swanimals/Bantha/BanthaRPack",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Bantha/BanthaRPack.png",
+  "biome_neutral": true,
+  "background": "transparent"
+ }
+]
