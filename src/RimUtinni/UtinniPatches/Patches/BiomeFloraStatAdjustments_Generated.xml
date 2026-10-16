@@ -24,6 +24,10 @@
              stop burning. The sheet's own designed flora - the fuzz, venomvine -
              is non-flammable by design; this patch retires when they land.
 
+             DONOR BUG, the Rot: BMT_GreyLady ships Flammability 40, against a
+             whole-pool maximum of 1.5. Clamped, not zeroed - it is an ordinary
+             living fungus, and the Rot has no flammability ban.
+
   10 adjustment(s) across 10 def(s).
 
   ⚠️ NESTED conditionals, NOT match-only. Flammability is inherited from PlantBase
@@ -108,31 +112,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="Plant_HealrootWild"]</xpath>
-      <value><statBases><Flammability>0</Flammability></statBases></value>
-    </nomatch>
-  </Operation>
-
-  <!-- Plant_Nysyllin_Wild.flammability: 1 -> 0   (arid_shrubland.json)
-       arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist
-       fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes;
-       the designed fuzz/venomvine flora is non-flammable by design and this patch retires with
-       them.
-  -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Plant_Nysyllin_Wild"]/statBases</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="Plant_Nysyllin_Wild"]/statBases/Flammability</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="Plant_Nysyllin_Wild"]/statBases/Flammability</xpath>
-        <value><Flammability>0</Flammability></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="Plant_Nysyllin_Wild"]/statBases</xpath>
-        <value><Flammability>0</Flammability></value>
-      </nomatch>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Plant_Nysyllin_Wild"]</xpath>
       <value><statBases><Flammability>0</Flammability></statBases></value>
     </nomatch>
   </Operation>
@@ -283,6 +262,31 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="RG_Plant_Dervish"]</xpath>
+      <value><statBases><Flammability>0</Flammability></statBases></value>
+    </nomatch>
+  </Operation>
+
+  <!-- RSW_Plant_Nysyllin_Wild.flammability: 1 -> 0   (arid_shrubland.json)
+       arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist
+       fire greatly and burn only grudgingly.' Interim stand-ins kept because no donor passes;
+       the designed fuzz/venomvine flora is non-flammable by design and this patch retires with
+       them.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Plant_Nysyllin_Wild"]/statBases</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RSW_Plant_Nysyllin_Wild"]/statBases/Flammability</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RSW_Plant_Nysyllin_Wild"]/statBases/Flammability</xpath>
+        <value><Flammability>0</Flammability></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RSW_Plant_Nysyllin_Wild"]/statBases</xpath>
+        <value><Flammability>0</Flammability></value>
+      </nomatch>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Plant_Nysyllin_Wild"]</xpath>
       <value><statBases><Flammability>0</Flammability></statBases></value>
     </nomatch>
   </Operation>
