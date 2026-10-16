@@ -27,7 +27,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(40, 34, 28)</color>
     </graphicData>
     <statBases>

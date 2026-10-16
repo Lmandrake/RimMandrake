@@ -80,7 +80,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(215,225,235)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
     </graphicData>
@@ -106,7 +106,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(225,200,130)</colorTwo>
       <drawSize>(0.6,0.6)</drawSize>
     </graphicData>
@@ -140,7 +140,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(200,120,110)</colorTwo>
       <drawSize>(1.8,1.8)</drawSize>
     </graphicData>
@@ -166,7 +166,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(80,70,65)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>
     </graphicData>
@@ -196,7 +196,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(190,195,200)</colorTwo>
       <drawSize>(0.9,0.9)</drawSize>
     </graphicData>
@@ -222,7 +222,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(225,215,185)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
     </graphicData>
@@ -253,7 +253,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(190,115,70)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>
     </graphicData>

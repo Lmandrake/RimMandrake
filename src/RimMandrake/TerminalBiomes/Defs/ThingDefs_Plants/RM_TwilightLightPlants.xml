@@ -31,7 +31,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(180,150,80)</colorTwo>
       <drawSize>(1.2,1.2)</drawSize>
     </graphicData>

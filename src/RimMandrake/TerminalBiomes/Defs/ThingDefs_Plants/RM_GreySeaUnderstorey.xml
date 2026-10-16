@@ -99,7 +99,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(240,240,236)</colorTwo>
     </graphicData>
     <plant>
@@ -240,7 +240,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(150,154,152)</colorTwo>
     </graphicData>
     <plant>

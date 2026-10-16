@@ -37,7 +37,7 @@
     <description>A sheared vexxith plate, still holding the curve of the animal's flank. Acid beads off it. Fire cannot warm it. The forge-hands say working it is like arguing with something that has already decided -- and everything made from it outlives the argument, the forge, and the smith.</description>
     <graphicData>
       <texPath>Things/Item/RM_Vexxith/RM_Vexxith</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>

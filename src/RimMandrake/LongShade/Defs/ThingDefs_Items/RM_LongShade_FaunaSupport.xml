@@ -58,6 +58,7 @@
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
 			<texPath>Things/Item/Resource/RM_EggTuskcoil</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
 			<color>(126,113,117)</color>
 		</graphicData>
 		<tradeability>None</tradeability>
@@ -80,6 +81,7 @@
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
 			<texPath>Things/Item/Resource/RM_EggTuskcoil</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
 			<color>(126,113,117)</color>
 		</graphicData>
 		<tradeability>Sellable</tradeability>
@@ -99,6 +101,7 @@
 		</statBases>
 		<graphicData>
 			<texPath>Things/Item/Resource/RM_EggGulloth</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<comps>
 			<li Class="CompProperties_Hatcher">
@@ -115,6 +118,7 @@
 		<description>An unfertilized gulloth egg: a leathery canteen of a shell. It can be eaten raw, but it is better cooked, and disgusting either way.</description>
 		<graphicData>
 			<texPath>Things/Item/Resource/RM_EggGulloth</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<tradeability>Sellable</tradeability>
 		<statBases>
@@ -134,7 +138,7 @@
 		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
 		<graphicData>
 			<texPath>Things/Item/Resource/RM_BlackChitin</texPath>
-			<graphicClass>Graphic_StackCount</graphicClass>
+			<graphicClass>Graphic_Single</graphicClass>
 			<color>(66,57,60)</color>
 		</graphicData>
 		<statBases>

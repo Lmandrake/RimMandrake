@@ -32,7 +32,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
@@ -55,7 +55,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>

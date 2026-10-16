@@ -27,7 +27,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/DosimeterLawn</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.1</drawSize>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -57,7 +57,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/VaultRoot</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2</drawSize>
       <shadowData>
         <volume>(0.22, 0.28, 0.15)</volume>
@@ -134,7 +134,7 @@
     <description>A wiry tussock of grease-slicked grass that grows where cleaner plants die — dull grey-green blades with an oily sheen, tips crusted white with salt. The biome's default green: sparse but firmly rooted, and grazing animals eat it without complaint.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Scumgrass</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.9</drawSize>
     </graphicData>
     <selectable>false</selectable>
@@ -157,7 +157,7 @@
     <description>The same wiry, grease-slicked grass where the ground is richest — which here means worst. Waist-high, sight-blocking, salt crust heavier at the tips.</description>
     <graphicData>
       <texPath>Things/Plant/RM_TallScumgrass</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.3</drawSize>
     </graphicData>
     <selectable>false</selectable>
@@ -187,7 +187,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Pusberry</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.3, 0.25, 0.2)</volume>
         <offset>(0,0,-0.3)</offset>
@@ -218,7 +218,7 @@
     <description>A ground bulb swollen into a blistered dome, mineral-crusted at the base, faintly warm to the hand. A forage staple for the wretched-many cast and a processed-food input for colonists.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Boilbulb</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>
     <statBases>
@@ -248,7 +248,7 @@
     <description>A knee-high shrub whose bark is one continuous wart-field — sequestration in miniature, locking what it drinks into its galls. Galls harvestable as a low-grade chemical/fuel input.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Wartshrub</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.0</drawSize>
       <shadowData>
         <volume>(0.4, 0.2, 0.2)</volume>
@@ -286,7 +286,7 @@
     <description>A felt-grey mat that grows only on fresh ash fall. After every storm the flats grow a grey pelt, and where the felt is thickest, the fall was heaviest — which is where the survey, and the dose, is. Fast-growing, short-lived; it dies as the fall compacts.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Cinderfelt</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.0</drawSize>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>

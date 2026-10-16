@@ -6,7 +6,7 @@
     <defName>RM_DielectricGel</defName>
     <label>dielectric gel</label>
     <description>An amber gel drawn from the pool's first phase. It does not conduct. Refuels an aerosol screen.</description>
-    <graphicData><texPath>Things/Item/RM_DielectricGel</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <graphicData><texPath>Things/Item/RM_DielectricGel</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
     <thingCategories><li>Manufactured</li></thingCategories>
     <stackLimit>25</stackLimit>
     <statBases><MarketValue>14</MarketValue><Mass>0.4</Mass><Flammability>0</Flammability></statBases>
@@ -16,7 +16,7 @@
     <defName>RM_Etchant</defName>
     <label>etchant</label>
     <description>A violet liquor that eats the old alloy and leaves a surface that takes new metal. Cradle limbs are etched with it; a refitted turret is built with it.</description>
-    <graphicData><texPath>Things/Item/RM_Etchant</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <graphicData><texPath>Things/Item/RM_Etchant</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
     <thingCategories><li>Manufactured</li></thingCategories>
     <stackLimit>25</stackLimit>
     <statBases><MarketValue>18</MarketValue><Mass>0.4</Mass><Flammability>0</Flammability></statBases>
@@ -26,7 +26,7 @@
     <defName>RM_MedicalCoagulant</defName>
     <label>medical coagulant</label>
     <description>A pale green dressing drawn from the pool's third phase. A herbal-tier bandage that seals a wound fast.</description>
-    <graphicData><texPath>Things/Item/RM_MedicalCoagulant</texPath><graphicClass>Graphic_StackCount</graphicClass><drawSize>0.85</drawSize></graphicData>
+    <graphicData><texPath>Things/Item/RM_MedicalCoagulant</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.85</drawSize></graphicData>
     <statBases>
       <MarketValue>12</MarketValue>
       <Mass>0.35</Mass>
@@ -41,7 +41,7 @@
     <defName>RM_BloomLiquor</defName>
     <label>bloom liquor</label>
     <description>What the pool gives at its worst hour: a pink-white liquor that sells for a great deal and burns whoever draws it.</description>
-    <graphicData><texPath>Things/Item/RM_BloomLiquor</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <graphicData><texPath>Things/Item/RM_BloomLiquor</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
     <thingCategories><li>Manufactured</li></thingCategories>
     <stackLimit>10</stackLimit>
     <statBases><MarketValue>260</MarketValue><Mass>0.5</Mass><Flammability>0</Flammability></statBases>

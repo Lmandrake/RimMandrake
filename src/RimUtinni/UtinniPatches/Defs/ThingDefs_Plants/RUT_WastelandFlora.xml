@@ -39,7 +39,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/DosimeterLawn</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.1</drawSize>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
@@ -69,7 +69,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/VaultRoot</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.22, 0.28, 0.15)</volume>
         <offset>(0,0,-0.36)</offset>

@@ -51,7 +51,7 @@
     <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
@@ -87,7 +87,7 @@
     <description>Amber-hard resin, cracked from a sealed vaulm's own shell. It sets glass-smooth and takes a fine finish — a real crafting material, and the reason anyone bothers a defended sap-sucker at all.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
@@ -109,7 +109,7 @@
     <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DrommathSap/RM_DrommathSap</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
@@ -144,7 +144,7 @@
     <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.1</drawSize>
     </graphicData>
     <statBases>

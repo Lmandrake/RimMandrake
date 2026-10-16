@@ -53,7 +53,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_FossilImpression/RM_FossilImpression</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
@@ -79,7 +79,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
