@@ -2,7 +2,7 @@
  "sheetId": "plant_baroque_bases_sheet_2026-10-16",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/plant_baroque_bases_sheet_2026-10-16.snapshot.json",
- "snapshotId": "33135a3aea42cb43",
+ "snapshotId": "8059bed6406bf99c",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "SUBJECTS_plant_baroque_bases",
  "reviewStatus": {
@@ -30,34 +30,22 @@
   "RM_CorriskTree": {
    "decision": "A",
    "note": "",
-   "prefill": "A",
-   "picks": {
-    "swplants/HydenockTree_Immature": "E"
-   }
+   "prefill": "A"
   },
   "RM_LumbrelTree": {
    "decision": "A",
    "note": "",
-   "prefill": "A",
-   "picks": {
-    "swplants/JoganTree_Immature": "C"
-   }
+   "prefill": "A"
   },
   "RM_Salvessa": {
    "decision": "A",
    "note": "",
-   "prefill": "A",
-   "picks": {
-    "swplants/Nysillin_Immature": "C"
-   }
+   "prefill": "A"
   },
   "RM_Glasmaw": {
    "decision": "A",
    "note": "",
-   "prefill": "A",
-   "picks": {
-    "swplants/TookeTrap_Immature": "D"
-   }
+   "prefill": "A"
   }
  }
 }

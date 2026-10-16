@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_plant_baroque_bases",
- "built": "2026-10-16T07:05:13-0700",
+ "built": "2026-10-16T07:15:46-0700",
  "census": "Transient/biome_ffar/plant_baroque_bases.subjects.json",
  "census_git_head": null,
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
@@ -8,57 +8,25 @@
   "RM_CorriskTree": {
    "columns": {
     "A": {
-     "single": "d683e2f3e4e9b78fd3d132af578dabf3d1d22450606d8c874870d80cc181a460"
-    },
-    "B": {
-     "single": "ec139cb2286d339324525b168f9dc34822dea03284557c77c81734f03dbe76aa"
-    },
-    "C": {
-     "single": "38ab3e7dce83801a99a3f8f9e23e9d2790c99f8dc611d3df3f3c1ae2bc66dbf9"
-    },
-    "D": {
-     "single": "d1d29ffecf631507d18cad78c9b516c1441b9aedcb488a351ee9b9af5b906b3a"
-    },
-    "E": {
-     "single": "baa5b4b4f62c5cd99f9923864e48cc58ae615a392cb4ad38a0c230213df9dc78"
-    },
-    "F": {
      "single": "2ac5268baf1185dbd47ecd689c22e95976ca90a6ba049e6d10d78dda04b37ebb"
     },
-    "G": {
+    "B": {
      "single": "e9506aa827d5a4b4cfc84eb401579a0ce1a906b6cbdf705504de0add9a42d230"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_HydenockTree_Wild",
-    "B": "Things/Plant/RSW_Plant_HydenockTree_Wild",
-    "C": "Things/Plant/RSW_Plant_HydenockTree_Wild",
-    "D": "Things/Plant/RSW_Plant_HydenockTree_Wild",
-    "E": "swplants/HydenockTree_Immature",
-    "F": "_byname",
-    "G": "_byname"
+    "A": "Things/Plant/RM_CorriskTree",
+    "B": "Things/Plant/RM_CorriskTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_WildA (1 of 4) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_b (2 of 4) \u2014 SWBestiary",
-    "C": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_c (3 of 4) \u2014 SWBestiary",
-    "D": "IN GAME \u2014 random variant RSW_Plant_HydenockTree_Wild_d (4 of 4) \u2014 SWBestiary",
-    "E": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "F": "render RM_CorriskTree_base_v1",
-    "G": "render RM_CorriskTree_base_v2"
+    "A": "render RM_CorriskTree_base_v1",
+    "B": "render RM_CorriskTree_base_v2"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_HydenockTree_Wild"
-   ],
-   "res": "Things/Plant/RSW_Plant_HydenockTree_Wild",
+   "pools": [],
+   "res": "Things/Plant/RM_CorriskTree",
    "reserved": [
     "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G"
+    "B"
    ],
    "shownBase": [],
    "subject_key": "corrisktree"
@@ -66,63 +34,19 @@
   "RM_Crimmelroot": {
    "columns": {
     "A": {
-     "single": "c7c380ec9133a3b9bd9adc0ca7cd89392881508f2eba754d0983f37c40713e04"
-    },
-    "B": {
-     "single": "d79e1c50d2428558689edca01f9ca223928692fbb4dfbd2c6f9757c031f16518"
-    },
-    "C": {
-     "single": "c4b22950f0abae61c07b6757792291c8e3fb6654736893daefeab09770d38f52"
-    },
-    "D": {
-     "single": "d374c387ba027c5ea6fa0bc7d930f4f9f2f98542c3120e1d41e56d9b23781cec"
-    },
-    "E": {
-     "single": "2c2ade8a6b934617a022ed25666f8c76b220d0db8a6cfccd5cdbda416e0f8d83"
-    },
-    "F": {
-     "single": "281b6baf86ac2e09b77af4781045f5bd56010c0b89b8527cc981f4c92faca5bc"
-    },
-    "G": {
-     "single": "9719fa6ae5e057be04fc2ff95a67c2910ffb80e230e3f135f90438392c6db6d1"
-    },
-    "H": {
      "single": "a5e9fbe3db7763b9ab8eebd0a553927b99cf9e1da3f4d875d1d6a71d2731046f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "B": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "C": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "D": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "E": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "F": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "G": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "H": "_byname"
+    "A": "Things/Plant/RM_Crimmelroot"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_Chakroot_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render gate_gap_chakroot_v1",
-    "C": "render longshade_rsw_chakroot_v1",
-    "D": "render longshade_rsw_chakroot_v2",
-    "E": "render longshade_rsw_chakroot_v3",
-    "F": "render longshade_rsw_chakroot_v4",
-    "G": "our deployed art \u2014 RimMandrake: SW \u2014 Bestiary",
-    "H": "render RM_Crimmelroot_base_v1"
+    "A": "render RM_Crimmelroot_base_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_Chakroot_Wild"
-   ],
-   "res": "Things/Plant/RSW_Plant_Chakroot_Wild",
+   "pools": [],
+   "res": "Things/Plant/RM_Crimmelroot",
    "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "A"
    ],
    "shownBase": [],
    "subject_key": "crimmelroot"
@@ -130,51 +54,19 @@
   "RM_Glasmaw": {
    "columns": {
     "A": {
-     "single": "3171a7befb931a5cf5ff41de26edb5a5d483678ede5330aa10219b2c4c224f5e"
-    },
-    "B": {
-     "single": "17afca25e456ddcadec920e0eb029e1c9eef6df6aada0d905cafb059fced7f25"
-    },
-    "C": {
-     "single": "4bf9fbb9b496e18be992580e1af022200d892bda373efc8c12eb37b2442d7dce"
-    },
-    "D": {
-     "single": "b12464e8182bc8d13e3818ca03f2a4dc9db508959318a54e8d826ff87c527db1"
-    },
-    "E": {
      "single": "0627055d4f17e42b8f92b8d689dd577c6b684c199e444f336c0e743c61420fa0"
-    },
-    "F": {
-     "single": "98240d5e368db8ac4b6eac9778de9029264b7f1c47f429cb667171c77f8cf595"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "B": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "C": "Things/Plant/RSW_Plant_TookeTrap_Wild",
-    "D": "swplants/TookeTrap_Immature",
-    "E": "_byname",
-    "F": "_byname"
+    "A": "Things/Plant/RM_Glasmaw"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_WildA (1 of 2) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant RSW_Plant_TookeTrap_Wild_c (2 of 2) \u2014 SWBestiary",
-    "C": "render gapall_Plant_TookeTrap_Wild_v1",
-    "D": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "E": "render RM_Glasmaw_base_v1",
-    "F": "render webwork_tooketrap_redo_v3"
+    "A": "render RM_Glasmaw_base_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_TookeTrap_Wild"
-   ],
-   "res": "Things/Plant/RSW_Plant_TookeTrap_Wild",
+   "pools": [],
+   "res": "Things/Plant/RM_Glasmaw",
    "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F"
+    "A"
    ],
    "shownBase": [],
    "subject_key": "glasmaw"
@@ -182,45 +74,25 @@
   "RM_LumbrelTree": {
    "columns": {
     "A": {
-     "single": "62db452cd793839b9278b0ab48adeb45979b686fc3e9e721739aaeb24727d9be"
-    },
-    "B": {
-     "single": "4049a36c5c68562da91bf2ac69e04d1cc021809c3bebf3cdd3f50ad4115f00fe"
-    },
-    "C": {
-     "single": "261ef0e4f942cf20f10533c66a6ab6266d7591d312f3cb0a16b8a00d33e0fa45"
-    },
-    "D": {
      "single": "145345fb6860b9d44e8de4c0d3444d07c1a45898496e4a9e6d9bf6a06222aad0"
     },
-    "E": {
+    "B": {
      "single": "ef4b7dcded7b0dd6f0aede47d43376ac70a791895c37effc3cab5cc234a3993e"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "B": "Things/Plant/RSW_Plant_JoganTree_Wild",
-    "C": "swplants/JoganTree_Immature",
-    "D": "_byname",
-    "E": "_byname"
+    "A": "Things/Plant/RM_LumbrelTree",
+    "B": "Things/Plant/RM_LumbrelTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_JoganTree_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render gapall_Plant_JoganTree_Wild_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "D": "render RM_LumbrelTree_base_v1",
-    "E": "render RM_LumbrelTree_base_v2"
+    "A": "render RM_LumbrelTree_base_v1",
+    "B": "render RM_LumbrelTree_base_v2"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_JoganTree_Wild"
-   ],
-   "res": "Things/Plant/RSW_Plant_JoganTree_Wild",
+   "pools": [],
+   "res": "Things/Plant/RM_LumbrelTree",
    "reserved": [
     "A",
-    "B",
-    "C",
-    "D",
-    "E"
+    "B"
    ],
    "shownBase": [],
    "subject_key": "lumbreltree"
@@ -228,87 +100,19 @@
   "RM_Murrowbulb": {
    "columns": {
     "A": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "B": {
-     "single": "0f35431ae70ca1f3c22e67b7ae387f8b17f6aa514358bbde646b9b42e793e480"
-    },
-    "C": {
-     "single": "372060452ed2933976d5e9512ac43a897854b9868905d10320bfa52aa7afa83e"
-    },
-    "D": {
-     "single": "62d66a32e1b4ebb8f9b3fc46f4884f75f64ccb87f05c9cf87cda73a9e0286b0c"
-    },
-    "E": {
-     "single": "2e8dd050cb44bf46cb993249c130dc9acf79bd1a5ad83444b6d308914f98549f"
-    },
-    "F": {
-     "single": "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25"
-    },
-    "G": {
-     "single": "7e46a06226533de20765e8881bfee6075517ab29eea532cc5a4457b77d731bf8"
-    },
-    "H": {
-     "single": "4a2dbc4f27f86124be1d3884b210cb72c3e819d94c27b2d7a4a64cab99dee7f9"
-    },
-    "I": {
-     "single": "8a9467ec8215d4dee0bd9741fec70421d2b993a2195f8c48a73ad4d70bdeb76e"
-    },
-    "J": {
-     "single": "21f13693fa8e167b794939dd8242e6553851859352787094ea6f2b3e12127a42"
-    },
-    "K": {
-     "single": "dc7fe47e313e98d46afd06892c8a0df0c02b22323122fee76c329ee49466f73b"
-    },
-    "L": {
      "single": "5f6e6b98a55c934c87d5607c1ace7ca901462ac162e3437c3728c0471551c99c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_Bloddle",
-    "B": "Things/Plant/RSW_Plant_Bloddle",
-    "C": "Things/Plant/RSW_Plant_Bloddle",
-    "D": "Things/Plant/RSW_Plant_Bloddle",
-    "E": "Things/Plant/RSW_Plant_Bloddle",
-    "F": "Things/Plant/RSW_Plant_Bloddle",
-    "G": "Things/Plant/RSW_Plant_Bloddle",
-    "H": "Things/Plant/RSW_Plant_Bloddle",
-    "I": "Things/Plant/RSW_Plant_Bloddle",
-    "J": "Things/Plant/RSW_Plant_Bloddle",
-    "K": "Things/Plant/RSW_Plant_Bloddle",
-    "L": "_byname"
+    "A": "Things/Plant/RM_Murrowbulb"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_BloddleA (1 of 7) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant RSW_Plant_BloddleB (2 of 7) \u2014 SWBestiary",
-    "C": "IN GAME \u2014 random variant RSW_Plant_BloddleC (3 of 7) \u2014 SWBestiary",
-    "D": "IN GAME \u2014 random variant RSW_Plant_BloddleD (4 of 7) \u2014 SWBestiary",
-    "E": "IN GAME \u2014 random variant RSW_Plant_BloddleE (5 of 7) \u2014 SWBestiary",
-    "F": "IN GAME \u2014 random variant RSW_Plant_BloddleF (6 of 7) \u2014 SWBestiary",
-    "G": "IN GAME \u2014 random variant RSW_Plant_BloddleG (7 of 7) \u2014 SWBestiary",
-    "H": "render stillsand_s2_RSW_Plant_Bloddle_var6",
-    "I": "render stillsand_s2_RSW_Plant_Bloddle_var7",
-    "J": "render stillsand_s2_RSW_Plant_Bloddle_var8",
-    "K": "render stillsand_s2_RSW_Plant_Bloddle_var9",
-    "L": "render RM_Murrowbulb_base_v1"
+    "A": "render RM_Murrowbulb_base_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_Bloddle"
-   ],
-   "res": "Things/Plant/RSW_Plant_Bloddle",
+   "pools": [],
+   "res": "Things/Plant/RM_Murrowbulb",
    "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L"
+    "A"
    ],
    "shownBase": [],
    "subject_key": "murrowbulb"
@@ -316,76 +120,19 @@
   "RM_Salvessa": {
    "columns": {
     "A": {
-     "single": "e8171f251958d644670b6dfb5bb5ebe05691eea90979b1e7e7ebe638b1c01acb"
-    },
-    "B": {
-     "single": "b2cc062489033687a20ee5dd715bd265fecc7eb3d237854683d7d7c34380a5ed"
-    },
-    "C": {
-     "single": "a2a117779fbfefb99394d291c58ce8eace9deaa63b1ca92949f6b4c06763ec1a"
-    },
-    "D": {
-     "single": "8f416c92e7a7a3f448e52217a7daa052f325bef55c77b28829cb7fe4ac0d6904"
-    },
-    "E": {
-     "single": "f475685d0cf992dda88ff157f323312d1d4bc64c98ea8d11670df70329490042"
-    },
-    "F": {
-     "single": "1a51e709954fc3115d4030e4e66cbca1e26584a0d021a725678a399fd5e22668"
-    },
-    "G": {
-     "single": "81bff13530c8f80c2d54398fe92bd7c44b13a8f37d71b47dae55f5a6c2e0d72c"
-    },
-    "H": {
-     "single": "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c"
-    },
-    "I": {
-     "single": "354cb8820aa84fa13d2482661e24bd3aa7d69c9a10712a94bb6af166e269852e"
-    },
-    "J": {
      "single": "e3104c8770316ee457a63e888b57b9b25d8eca09d2c664e07c894a0a49f3a352"
     }
    },
    "graphic_of": {
-    "A": "swplants/Nysillin",
-    "B": "swplants/Nysillin",
-    "C": "swplants/Nysillin_Immature",
-    "D": "swplants/Nysillin_Immature",
-    "E": "swplants/Nysillin_Immature",
-    "F": "swplants/Nysillin_Immature",
-    "G": "swplants/Nysillin_Immature",
-    "H": "swplants/Nysillin_Immature",
-    "I": "swplants/Nysillin_Immature",
-    "J": "_byname"
+    "A": "Things/Plant/RM_Salvessa"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Nysillin_a (1 of 2) \u2014 SWBestiary",
-    "B": "IN GAME \u2014 random variant Nysillin_e (2 of 2) \u2014 SWBestiary",
-    "C": "IN GAME \u2014 random variant Nysillin_Immature_a (1 of 6) \u2014 SWBestiary",
-    "D": "IN GAME \u2014 random variant Nysillin_Immature_f (2 of 6) \u2014 SWBestiary",
-    "E": "IN GAME \u2014 random variant Nysillin_Immature_g (3 of 6) \u2014 SWBestiary",
-    "F": "IN GAME \u2014 random variant Nysillin_Immature_h (4 of 6) \u2014 SWBestiary",
-    "G": "IN GAME \u2014 random variant Nysillin_Immature_i (5 of 6) \u2014 SWBestiary",
-    "H": "IN GAME \u2014 random variant Nysillin_Immature_j (6 of 6) \u2014 SWBestiary",
-    "I": "donor original \u2014 mlie.starwarsanimalcollection",
-    "J": "render RM_Salvessa_base_v1"
+    "A": "render RM_Salvessa_base_v1"
    },
-   "pools": [
-    "swplants/Nysillin",
-    "swplants/Nysillin_Immature"
-   ],
-   "res": "swplants/Nysillin",
+   "pools": [],
+   "res": "Things/Plant/RM_Salvessa",
    "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J"
+    "A"
    ],
    "shownBase": [],
    "subject_key": "salvessa"
@@ -393,56 +140,24 @@
   "RM_Thrannagourd": {
    "columns": {
     "A": {
-     "single": "dbdd048d3894e81529b5d4223ba1a4b45d05ed638e1801926728a8cdbae261ee"
-    },
-    "B": {
-     "single": "f6a652bd0632092970168cc2a4c1eac2bf93001490050f2e6b210779790ec66c"
-    },
-    "C": {
-     "single": "fb115f79fd0fdfcd7b99369f037c4f5ce4206aaab13062cb87666a115beb5324"
-    },
-    "D": {
-     "single": "bf361d20f250ff66724faabb75684222bab6ca8e75c416419f7c049da9182c90"
-    },
-    "E": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "F": {
      "single": "487147bb4c1c6fbafc786294bd4b6d30fc24cf3330510a88b68eb09f8afc0574"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "B": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "C": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "D": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "E": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "F": "_byname"
+    "A": "Things/Plant/RM_Thrannagourd"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RSW_Plant_HubbaGourd_WildA (1 of 1) \u2014 SWBestiary",
-    "B": "render longshade_rsw_hubbagourd_v1",
-    "C": "render longshade_rsw_hubbagourd_v2",
-    "D": "render longshade_rsw_hubbagourd_v3",
-    "E": "render desertportb_plant_hubbagourd_wild",
-    "F": "render RM_Thrannagourd_base_v1"
+    "A": "render RM_Thrannagourd_base_v1"
    },
-   "pools": [
-    "Things/Plant/RSW_Plant_HubbaGourd_Wild"
-   ],
-   "res": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+   "pools": [],
+   "res": "Things/Plant/RM_Thrannagourd",
    "reserved": [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F"
+    "A"
    ],
    "shownBase": [],
    "subject_key": "thrannagourd"
   }
  },
  "sheetId": "plant_baroque_bases_sheet_2026-10-16",
- "snapshotId": "33135a3aea42cb43"
+ "snapshotId": "8059bed6406bf99c"
 }
