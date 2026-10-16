@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated": "2026-10-16T07:03:52-0700",
+ "generated": "2026-10-16T07:14:31-0700",
  "git_head": null,
  "biome_order": [
   "SUBJECTS_plant_baroque_bases"
@@ -12,19 +12,18 @@
    "subjects": true,
    "ground_terrain": "Soil",
    "title": "Baroque base candidates for the 7 canon plants \u2014 game art",
-   "lead_html": "<p>Each row is a NEW franchise-free RimMandrake plant (Baroque Biomes) that one Star Wars canon plant will become a pure reskin of (item PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE). The render columns are the base's candidate art; the IN GAME column is the installed CANON art of its reskin, shown for comparison only. Judge: does the base read as its own plant, clearly not the canon look? Size is measured from the canon twin's def (the reskin shares it).</p>",
+   "lead_html": "<p>Each row is a NEW franchise-free RimMandrake plant (Baroque Biomes) that one Star Wars canon plant will become a pure reskin of (item PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE). Every pickable column is the base's own art for its own texPath Things/Plant/RM_&lt;Name&gt;. Where a canon-library entry exists, the canon plant is shown beside the row as a read-only reference: the base should read as its own plant, clearly NOT that look.</p>",
    "rows": [
     {
      "key": "RM_Murrowbulb",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_Murrowbulb (base) beside canon RSW_Plant_Bloddle",
+     "label": "RM_Murrowbulb",
      "defNames": [
-      "RM_Murrowbulb",
-      "RSW_Plant_Bloddle"
+      "RM_Murrowbulb"
      ],
      "commonality_max": null,
      "twins": [],
@@ -32,7 +31,7 @@
       "RM_Murrowbulb_base_v1"
      ],
      "canon": {
-      "entry": null,
+      "entry": "design/RimStarWars/canon_references/bloddle",
       "match": null,
       "images": [],
       "has_must_show": false,
@@ -43,7 +42,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/BerryPlant",
+        "res": "Things/Plant/RM_Murrowbulb",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -56,15 +55,14 @@
     },
     {
      "key": "RM_Crimmelroot",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_Crimmelroot (base) beside canon RSW_Plant_Chakroot_Wild",
+     "label": "RM_Crimmelroot",
      "defNames": [
-      "RM_Crimmelroot",
-      "RSW_Plant_Chakroot_Wild"
+      "RM_Crimmelroot"
      ],
      "commonality_max": null,
      "twins": [],
@@ -72,7 +70,7 @@
       "RM_Crimmelroot_base_v1"
      ],
      "canon": {
-      "entry": null,
+      "entry": "design/RimStarWars/canon_references/chak_root",
       "match": null,
       "images": [],
       "has_must_show": false,
@@ -83,7 +81,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/BerryPlant",
+        "res": "Things/Plant/RM_Crimmelroot",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -96,15 +94,14 @@
     },
     {
      "key": "RM_Thrannagourd",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_Thrannagourd (base) beside canon RSW_Plant_HubbaGourd_Wild",
+     "label": "RM_Thrannagourd",
      "defNames": [
-      "RM_Thrannagourd",
-      "RSW_Plant_HubbaGourd_Wild"
+      "RM_Thrannagourd"
      ],
      "commonality_max": null,
      "twins": [],
@@ -112,7 +109,7 @@
       "RM_Thrannagourd_base_v1"
      ],
      "canon": {
-      "entry": null,
+      "entry": "design/RimStarWars/canon_references/hubba_gourd",
       "match": null,
       "images": [],
       "has_must_show": false,
@@ -123,7 +120,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/BerryPlant",
+        "res": "Things/Plant/RM_Thrannagourd",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -136,16 +133,14 @@
     },
     {
      "key": "RM_CorriskTree",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_CorriskTree (base) beside canon RSW_Plant_HydenockTree_Wild",
+     "label": "RM_CorriskTree",
      "defNames": [
-      "RM_CorriskTree",
-      "Plant_HydenockTree_Wild",
-      "RSW_Plant_HydenockTree_Wild"
+      "RM_CorriskTree"
      ],
      "commonality_max": null,
      "twins": [],
@@ -165,7 +160,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/TreeOak",
+        "res": "Things/Plant/RM_CorriskTree",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -178,16 +173,14 @@
     },
     {
      "key": "RM_LumbrelTree",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_LumbrelTree (base) beside canon RSW_Plant_JoganTree_Wild",
+     "label": "RM_LumbrelTree",
      "defNames": [
-      "RM_LumbrelTree",
-      "Plant_JoganTree_Wild",
-      "RSW_Plant_JoganTree_Wild"
+      "RM_LumbrelTree"
      ],
      "commonality_max": null,
      "twins": [],
@@ -207,7 +200,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/TreeOak",
+        "res": "Things/Plant/RM_LumbrelTree",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -220,15 +213,14 @@
     },
     {
      "key": "RM_Salvessa",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_Salvessa (base) beside canon RSW_Plant_Nysyllin_Wild",
+     "label": "RM_Salvessa",
      "defNames": [
-      "RM_Salvessa",
-      "RSW_Plant_Nysyllin_Wild"
+      "RM_Salvessa"
      ],
      "commonality_max": null,
      "twins": [],
@@ -236,7 +228,7 @@
       "RM_Salvessa_base_v1"
      ],
      "canon": {
-      "entry": null,
+      "entry": "design/RimStarWars/canon_references/nysillin",
       "match": null,
       "images": [],
       "has_must_show": false,
@@ -247,7 +239,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/BerryPlant",
+        "res": "Things/Plant/RM_Salvessa",
         "role": "body",
         "joined_by": "def",
         "subjects": [
@@ -260,16 +252,14 @@
     },
     {
      "key": "RM_Glasmaw",
-     "kind": "flora",
+     "kind": "other",
      "port": null,
      "donors": [],
      "pairing": {},
      "placements": [],
-     "label": "RM_Glasmaw (base) beside canon RSW_Plant_TookeTrap_Wild",
+     "label": "RM_Glasmaw",
      "defNames": [
-      "RM_Glasmaw",
-      "Plant_TookeTrap_Wild",
-      "RSW_Plant_TookeTrap_Wild"
+      "RM_Glasmaw"
      ],
      "commonality_max": null,
      "twins": [],
@@ -277,7 +267,7 @@
       "RM_Glasmaw_base_v1"
      ],
      "canon": {
-      "entry": null,
+      "entry": "design/RimStarWars/canon_references/tooke_trap_plant",
       "match": null,
       "images": [],
       "has_must_show": false,
@@ -288,7 +278,7 @@
      "art": {
       "resources": [
        {
-        "res": "Things/Plant/BerryPlant",
+        "res": "Things/Plant/RM_Glasmaw",
         "role": "body",
         "joined_by": "def",
         "subjects": [
