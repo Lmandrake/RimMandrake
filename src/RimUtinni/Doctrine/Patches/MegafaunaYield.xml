@@ -5439,33 +5439,6 @@
             </nomatch>
           </match>
         </li>
-        <!-- Aiwha MeatAmount: bodySize 3.00, base 420, yields 1260 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>420</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases</xpath>
-            <value><MeatAmount>420</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- Aiwha BoneAmount: bodySize 3.00, base 150, yields 450 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>150</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="Aiwha"]/statBases</xpath>
-              <value><BoneAmount>150</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
         <!-- Behemoth MeatAmount: bodySize 6.00, base 840, yields 5040 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Behemoth"]/statBases/MeatAmount</xpath>
