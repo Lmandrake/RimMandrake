@@ -155,7 +155,6 @@
       <RM_Eskith>0.4</RM_Eskith>  <!-- eskith - silent-flock small bird -->
       <!-- CAULDRON_RULED_CONTENT_1: owner-ruled donor imports (Alpha Animals, Q9 inline). Wired and kept on purpose:
            overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" them back out. -->
-      <RM_Bezzul>0.1</RM_Bezzul>  <!-- plasmorph -->
       <RM_Radyak>0.1</RM_Radyak>  <!-- ossrith; our port of AA_Radyak (DONOR_CODE_PLAIN_PORTS_1), art installed 2026-10-10 -->
     </wildAnimals>
     <coastalWildAnimals />

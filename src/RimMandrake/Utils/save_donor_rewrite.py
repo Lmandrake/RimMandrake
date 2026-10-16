@@ -47,7 +47,7 @@ EXPLICIT = {
     # Alpha Animals P2 (Transient/phase0_p2_classification.md)
     "AA_Aerofleet": "RM_Bulloo", "AA_AngelMoth": "RM_Dustveil", "AA_AnimaColossus": "RM_Pluurva",
     "AA_Cactipine": "RM_Chikka", "AA_Helixien": "RM_Bileworm", "AA_Lockjaw": "RM_Siezer",
-    "AA_Murkling": "RM_Lirrith", "AA_Plasmorph": "RM_Bezzul", "AA_ShockGoat": "RM_Zhissa",
+    "AA_Murkling": "RM_Lirrith", "AA_ShockGoat": "RM_Zhissa",
     "AA_Swarmling": "RM_Chittik", "AA_Wildpawn": "RM_Durrok", "AA_Wildpod": "RM_Mullgoth",
     "AA_Eyeling": "RSW_Ikee",
     # shrimps (4da613788), ondrukka (aabcd7a5a), twin-only slime family (3021d7031, 3fbec5530)

@@ -42,7 +42,6 @@ PORTS = {
     "AA_GiantCrownedSilkie": ("RM_GiantCrownedSilkie", "Cauldron", None),
     "AA_Lockjaw": ("RM_Siezer", "Miasma", None),
     "AA_Metallovore": ("RM_Metallovore", "TheForge", None),
-    "AA_Plasmorph": ("RM_Bezzul", "Cauldron", None),
     "AA_ShockGoat": ("RM_Zhissa", "NightsideIce", None),
     "AA_Swarmling": ("RM_Chittik", "TheRot", None),
 }
@@ -407,7 +406,7 @@ REPOINT = {
     "AA_CrystalMit": ("RM_CrystalMit", "mandrake.rm.cauldron"),
     "AA_GiantCrownedSilkie": ("RM_GiantCrownedSilkie", "mandrake.rm.cauldron"),
     "AA_Lockjaw": ("RM_Siezer", "mandrake.rm.miasma"), "AA_Metallovore": ("RM_Metallovore", "mandrake.rm.theforge"),
-    "AA_Plasmorph": ("RM_Bezzul", "mandrake.rm.cauldron"), "AA_ShockGoat": ("RM_Zhissa", "mandrake.rm.nightsideice"),
+    "AA_ShockGoat": ("RM_Zhissa", "mandrake.rm.nightsideice"),
     "AA_Swarmling": ("RM_Chittik", "mandrake.rm.therot"), "AA_BloodShrimp": ("RM_Zrrik", "mandrake.rm.greentide"),
     "AA_RaptorShrimp": ("RM_Sharpshrimp", "mandrake.rm.miasma"),
     # already ported before this pass (matched by stats, see Transient/phase0_p2_classification.md)
