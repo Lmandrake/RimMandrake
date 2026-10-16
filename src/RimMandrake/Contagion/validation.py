@@ -1055,6 +1055,8 @@ def burn_forced(t):
                 if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
                           "(hediffs: %s)" % sorted(_hdefs(rows.get(b["open"]))))
+                if not _alive(rows.get(b["roofed"])):
+                    _unmeasured(t, "the ROOFED control visitor is not readable alive: shelter cannot be judged")
                 if "RM_BurnDose" in _hdefs(rows.get(b["roofed"])):
                     _fail("a ROOFED visitor was dosed: shelter must protect")
                 _STATE["rows_after"] = rows
@@ -1065,6 +1067,11 @@ def burn_forced(t):
                 if rows is None:
                     _unmeasured(t, "burn_doses_the_exposed_visitor did not run")
                 nat, arm = rows.get(b["native"]), rows.get(b["armored"])
+                # A row that is not there at all (crushed, vanished, or killed: list_pawns lists no corpses) proves
+                # neither arm; only a readable row is a measurement.
+                if nat is None or not _alive(arm):
+                    _unmeasured(t, "native row %s / armored alive %s: nothing to judge"
+                                % ("absent" if nat is None else "read", _alive(arm)))
                 if not (not _alive(nat) or "Burn" in _hdefs(nat)):
                     _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
                           % sorted(_hdefs(nat)))
@@ -1104,7 +1111,10 @@ def burn_forced(t):
                     if not _has_cond(t, BURN_COND):
                         _fail("the forced Burn vanished when burnEnabled went off: the device must "
                               "still hold the storm open")
-                    if "RM_BurnDose" in _hdefs(_rows(t).get(fresh)):
+                    frow = _rows(t).get(fresh)
+                    if not _alive(frow):
+                        _unmeasured(t, "the fresh visitor is not readable alive: 'not dosed' would mean nothing")
+                    if "RM_BurnDose" in _hdefs(frow):
                         _fail("a fresh exposed visitor was dosed with burnEnabled off")
 
         with _comp(t, "repulsor_off_lapses_burn", toggle="cloudRepulsorEnabled"):
@@ -1326,6 +1336,10 @@ def zhool_haze(t):
                     with _setting(t, "zhoolConversionEnabled", False):
                         _wait(t, 3000)
                         lash = _things(t, LASHGRASS, _STATE["zrect"])
+                        # 'nothing turned' means something only while a zhool and grass are there to turn
+                        if not _alive(_rows(t, _STATE["zrect"]).get(_STATE.get("zhool"))) \
+                                or not _things(t, GRASS, _STATE["zrect"]):
+                            _unmeasured(t, "the zhool or its grass is gone from the pad: the off arm saw nothing")
                         if lash:
                             _fail("%d grass turned to lashgrass with zhoolConversionEnabled off" % len(lash))
                 _STATE["grass0"] = len(_things(t, GRASS, _STATE["zrect"]))
