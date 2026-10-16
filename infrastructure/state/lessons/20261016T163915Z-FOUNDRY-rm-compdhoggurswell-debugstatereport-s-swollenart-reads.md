@@ -1,0 +1,1 @@
+RM_CompDhoggurSwell.DebugStateReport's swollenArt reads a static set only when the body graphic is built (on draw); off-camera it reads False although the _Swollen art is installed and draws (seen 2026-10-16). Do not read swollenArt=False as 'art missing'; owed fix: compute ContentFinder existence in the report.

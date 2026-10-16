@@ -5871,3 +5871,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"Dhoggur swell live proof + Forge DLL deploy; owner handed bridge","ts":"2026-10-16T16:02:26Z","tsn":1792166546403351549}
 {"seat":"FOUNDRY","event":"verify","id":"DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR","result":"pass","config":"donor_off_phase0 quicktest; dhoggur_swell 12/12 PASS (TheForge_20261016T161326Z); vanilla BodySize/HealthScale consumers x3; death-on-shrink and rain-scald triggering are owner questions","sha":"b90399225","why":"live proof run as FOUNDRY helper","ts":"2026-10-16T16:17:18Z","tsn":1792167438475964553}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-16T16:17:32Z","tsn":1792167452914289451}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"dhoggur_swell live re-run (source filter) + swollen art look","ts":"2026-10-16T16:30:37Z","tsn":1792168237071427378}
+{"seat":"FOUNDRY","event":"close","id":"DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR","sha":"64cba2bdbcb0","why":"both owner cards answered and built; live chain 16/16 PASS; swollen art deployed and seen drawn in game","ts":"2026-10-16T16:39:09Z","tsn":1792168749824734794}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-16T16:39:15Z","tsn":1792168755733184567}
