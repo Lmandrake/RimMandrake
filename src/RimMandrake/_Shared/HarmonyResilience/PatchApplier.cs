@@ -151,8 +151,9 @@ namespace RimMandrake.Shared
 		}
 
 		/// <summary>Call first in ModSettings.ExposeData: while SAVING, the player's own values go back into the
-		/// forced-off fields so the file keeps them.</summary>
-		public static void BeforeExpose()
+		/// forced-off fields so the file keeps them. A mod with more than one settings class passes
+		/// <c>GetType()</c> so only that class's fields are touched (PATCH_APPLIER_FIX_WRONG_SETTINGS_REREAD).</summary>
+		public static void BeforeExpose(Type owner = null)
 		{
 			if (Scribe.mode != LoadSaveMode.Saving)
 			{
@@ -160,23 +161,37 @@ namespace RimMandrake.Shared
 			}
 			foreach (KeyValuePair<FieldInfo, bool> kv in userValues)
 			{
-				kv.Key.SetValue(null, kv.Value);
+				if (Owns(owner, kv.Key))
+				{
+					kv.Key.SetValue(null, kv.Value);
+				}
 			}
 		}
 
 		/// <summary>Call last in ModSettings.ExposeData: a value just LOADED becomes the remembered player value, and every
-		/// failed feature is forced off again.</summary>
-		public static void AfterExpose()
+		/// failed feature is forced off again. Pass <c>GetType()</c> when the mod has more than one settings class:
+		/// otherwise loading class A re-reads class B's field while it is held off, and the forced-off value is later
+		/// saved as the player's choice.</summary>
+		public static void AfterExpose(Type owner = null)
 		{
 			if (Scribe.mode == LoadSaveMode.LoadingVars)
 			{
 				var keys = new List<FieldInfo>(userValues.Keys);
 				foreach (FieldInfo fi in keys)
 				{
-					userValues[fi] = (bool)fi.GetValue(null);
+					if (Owns(owner, fi))
+					{
+						userValues[fi] = (bool)fi.GetValue(null);
+					}
 				}
 			}
 			ReforceOff();
+		}
+
+		// null owner = the mod's only settings class: every remembered field is its own.
+		private static bool Owns(Type owner, FieldInfo fi)
+		{
+			return owner == null || fi.DeclaringType.IsAssignableFrom(owner);
 		}
 
 		/// <summary>Keep every failed feature off (call after drawing the settings window, so a click cannot turn a

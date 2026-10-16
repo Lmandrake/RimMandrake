@@ -98,7 +98,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public override void ExposeData()
 		{
-			RimMandrake.Shared.PatchApplier.BeforeExpose();
+			RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());
 			base.ExposeData();
 			Scribe_Values.Look(ref humMechanicEnabled, "humMechanicEnabled", true);
 			Scribe_Values.Look(ref commentaryEnabled, "commentaryEnabled", true);
@@ -127,7 +127,7 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref hullBoltRealiseDays, "hullBoltRealiseDays", 10f);
 			Scribe_Values.Look(ref hullBoltRevealDays, "hullBoltRevealDays", 5f);
 			Scribe_Values.Look(ref hullBoltPetMemoryEnabled, "hullBoltPetMemoryEnabled", true);
-			RimMandrake.Shared.PatchApplier.AfterExpose();
+			RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
 		}
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.

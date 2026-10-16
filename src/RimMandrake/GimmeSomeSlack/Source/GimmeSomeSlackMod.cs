@@ -96,7 +96,7 @@ namespace RimMandrake.GimmeSomeSlack
         public override void ExposeData()
         {
             base.ExposeData();
-            RimMandrake.Shared.PatchApplier.BeforeExpose();   // a feature forced off by a failed patch is never SAVED as off
+            RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());   // a feature forced off by a failed patch is never SAVED as off
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref style, "style", CordStyle.StarWarsJawa);
             Scribe_Values.Look(ref slack, "slack", 1f);
@@ -130,7 +130,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
             Scribe_Collections.Look(ref excludedConduits, "excludedConduits", LookMode.Value);
             if (excludedConduits == null) excludedConduits = new List<string>();
-            RimMandrake.Shared.PatchApplier.AfterExpose();
+            RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
         }
 
         public static void ResetToDefaults()

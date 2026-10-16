@@ -26,13 +26,13 @@ namespace RimMandrake.RustCathedral.Walls
 
         public override void ExposeData()
         {
-            RimMandrake.Shared.PatchApplier.BeforeExpose();
+            RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());
             base.ExposeData();
             Scribe_Values.Look(ref wallTiersEnabled, "wallTiersEnabled", true);
             Scribe_Values.Look(ref sacredWallsEnabled, "sacredWallsEnabled", true);
             Scribe_Values.Look(ref sacredWallChanceMultiplier, "sacredWallChanceMultiplier", 1f);
             Scribe_Values.Look(ref livePatternMetalGateEnabled, "livePatternMetalGateEnabled", true);
-            RimMandrake.Shared.PatchApplier.AfterExpose();
+            RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
