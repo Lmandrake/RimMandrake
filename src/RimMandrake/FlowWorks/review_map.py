@@ -45,6 +45,7 @@ import html
 import importlib.util
 import json
 import os
+import re
 import sys
 import time
 
@@ -899,6 +900,9 @@ SETUPS = {
                                (13, 12, "chalk")],
                         items=[("RM_WaterBottle_" + c, 5, 1 + 3 * i, 1) for i, c in enumerate(
                             ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
+                        # Patches/RM_ColoredWaterBottles_Patch.xml adds the bottles only when Dubs Bad Hygiene (Lite or
+                        # full) defines ResourceBasedMom; the FlowWorks pilot tier has no DBH, so the bottle row is empty
+                        items_need="Dubs Bad Hygiene (Lite or full)",
                         try_=["hover each; the bottles along the bottom are each water bottled",
                               "coloured steam rises only off a RIVER of these waters (not here)"],
                         look="weak spot: two colours that read the same; a slime that looks like its water"),
@@ -1499,8 +1503,19 @@ class Review(object):
                 if lt:
                     self.call("jawa/set_bed_owner_type", thing=str(lt[0].get("id") or lt[0].get("thingId")),
                               ownerType="Prisoner", medical="false")
+            gone = set()
+            if u.get("items_need"):
+                # items another mod brings (many_waters' bottles: Dubs Bad Hygiene): one note, no refused spawns
+                want = sorted({r[0] for r in u["items"]})
+                r = B.call("jawa/get_defs", defs=";".join("ThingDef/" + d for d in want)) or {}
+                miss = " ".join(str(m) for m in r.get("notFound") or [])
+                gone = {d for d in want if re.search(r"\b%s\b" % re.escape(d), miss)}
+                if gone:
+                    self.notes.append("station %d (%s): %s not loaded on this mod list (they need %s); skipped" % (
+                        s["n"], s["id"], ", ".join(sorted(gone)), u["items_need"]))
             for d, n_, x, z in u.get("items", []):
-                self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=ox + x, z=oz + z)
+                if d not in gone:
+                    self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=ox + x, z=oz + z)
             for d, x, z, w, h in u.get("roof", []):
                 self.call("jawa/set_roof_batch", ops="%s:%d,%d,%d,%d" % ((d,) + g(x, z) + (w, h)))
             for d, x, z, w, h in u.get("designate", []):
