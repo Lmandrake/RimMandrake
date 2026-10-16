@@ -68,8 +68,7 @@
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
             <value>
-              <RM_Skorra MayRequire="mandrake.rsw.swbestiary">0.3</RM_Skorra>
-              <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>
+              <RM_Zrrik MayRequire="mandrake.rm.greentide">0.2</RM_Zrrik>
             </value>
           </match>
         </li>

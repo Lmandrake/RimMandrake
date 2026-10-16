@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Sharpshrimp: owned RM_ port of the Alpha Animals RaptorShrimp (sarg.alphaanimals AA_RaptorShrimp, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Miasma.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 4 op(s) from src/RimUtinni/UtinniPatches/Patches/Miasma_Rename.xml
+    - texPath Things/Item/Resource/AA_Chitin -> Things/Item/Resource/RM_Leather_RaptorPlatesMiasma (ART OWED, RM_Leather_RaptorPlatesMiasma)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sharpshrimp</defName>
+    <label>sharpshrimp</label>
+    <description>A crustacean as tall as a man, stalking the reed-beds on jointed legs, its forelimbs ending in two long serrated blades. The sharpshrimp hunts from cover, motionless among the stems for hours with only its stalked eyes turning, then lunges faster than the eye can follow. Its shell turns bullets, and its flesh knits back almost as fast as it is cut — a sharpshrimp is not dead until it has stopped moving for a long while. People who lose companions in the Miasma's reeds rarely see what took them.</description>
+    <statBases>
+      <MoveSpeed>4.70</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <MarketValue>750</MarketValue>
+      <ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.9</Wildness>
+      <ComfyTemperatureMax>74.2</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RM_MouthMiasma</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left blade</label>
+        <capacities>
+          <li>RM_Pierce</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>1.55</cooldownTime>
+        <linkedBodyPartsGroup>RM_BladeAttackToolMiasma</linkedBodyPartsGroup>
+        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right blade</label>
+        <capacities>
+          <li>RM_Pierce</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>1.55</cooldownTime>
+        <linkedBodyPartsGroup>RM_BladeAttackToolMiasma</linkedBodyPartsGroup>
+        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Regeneration" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <rateInTicks>20</rateInTicks>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <body>RM_SnakeWithTwoLimbsMiasma</body>
+      <baseBodySize>1.40</baseBodySize>
+      <baseHungerRate>0.4</baseHungerRate>
+      <baseHealthScale>3</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>RM_Leather_RaptorPlatesMiasma</leatherDef>
+      <meatLabel>sharpshrimp flesh</meatLabel>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>.8</manhunterOnDamageChance>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Megaspider_Wounded</soundWounded>
+          <soundDeath>Pawn_Megaspider_Death</soundDeath>
+          <soundCall>Pawn_Megaspider_Call</soundCall>
+          <soundAngry>Pawn_Megaspider_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sharpshrimp</defName>
+    <race>RM_Sharpshrimp</race>
+    <label>sharpshrimp</label>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.9</ecoSystemWeight>
+    <wildGroupSize>
+      <min>1</min>
+      <max>3</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sharpshrimp/RM_Sharpshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sharpshrimp/RM_Sharpshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sharpshrimp/RM_Sharpshrimp</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <BodyPartGroupDef>
+    <defName>RM_MouthMiasma</defName>
+    <label>mouth</label>
+  </BodyPartGroupDef>
+  <DamageDef>
+    <defName>RM_Pierce</defName>
+    <label>pierce</label>
+    <workerClass>DamageWorker_Stab</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been gored to death.</deathMessage>
+    <hediff>Stab</hediff>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Slice</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+  </DamageDef>
+  <ManeuverDef>
+    <defName>RM_Pierce</defName>
+    <requiredCapacity>RM_Pierce</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_Pierce</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Stab_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Stab_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Stab_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Stab_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+  <ToolCapacityDef>
+    <defName>RM_Pierce</defName>
+    <label>piercing</label>
+  </ToolCapacityDef>
+  <BodyPartGroupDef>
+    <defName>RM_BladeAttackToolMiasma</defName>
+    <label>blade</label>
+  </BodyPartGroupDef>
+  <BodyDef>
+    <defName>RM_SnakeWithTwoLimbsMiasma</defName>
+    <label>SnakeWithTwoLimbs</label>
+    <corePart>
+      <def>SnakeBody</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>RM_LeftCreatureLimbMiasma</def>
+          <coverage>0.08</coverage>
+          <depth>Outside</depth>
+          <parts>
+            <li>
+              <def>RM_LeftCreatureBladeMiasma</def>
+              <coverage>0.2</coverage>
+              <depth>Outside</depth>
+              <groups>
+                <li>RM_BladeAttackToolMiasma</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_RightCreatureLimbMiasma</def>
+          <coverage>0.08</coverage>
+          <depth>Outside</depth>
+          <parts>
+            <li>
+              <def>RM_RightCreatureBladeMiasma</def>
+              <coverage>0.2</coverage>
+              <depth>Outside</depth>
+              <groups>
+                <li>RM_BladeAttackToolMiasma</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.22</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>SnakeHead</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>left ear</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>Ear</def>
+                  <customLabel>right ear</customLabel>
+                  <coverage>0.08</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>SnakeMouth</def>
+                  <coverage>0.1</coverage>
+                  <groups>
+                    <li>RM_MouthMiasma</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <ThingDef ParentName="LeatherBase">
+    <defName>RM_Leather_RaptorPlatesMiasma</defName>
+    <label>hardened chitin</label>
+    <description>Overlapping plates of hardened chitin. Really durable in combat, but provides little protection from weather.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Leather_RaptorPlatesMiasma</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(86,94,74)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.2</MarketValue>
+      <StuffPower_Armor_Sharp>1.4</StuffPower_Armor_Sharp>
+      <StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>6</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(86,94,74)</color>
+      <commonality>0.001</commonality>
+      <statFactors>
+        <MaxHitPoints>2</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <BodyPartDef>
+    <defName>RM_LeftCreatureLimbMiasma</defName>
+    <label>left limb</label>
+    <hitPoints>30</hitPoints>
+    <frostbiteVulnerability>1</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_LeftCreatureBladeMiasma</defName>
+    <label>left blade</label>
+    <hitPoints>15</hitPoints>
+    <skinCovered>false</skinCovered>
+    <bleedRate>0</bleedRate>
+    <solid>true</solid>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_RightCreatureLimbMiasma</defName>
+    <label>right limb</label>
+    <hitPoints>30</hitPoints>
+    <frostbiteVulnerability>1</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_RightCreatureBladeMiasma</defName>
+    <label>right blade</label>
+    <hitPoints>15</hitPoints>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+</Defs>

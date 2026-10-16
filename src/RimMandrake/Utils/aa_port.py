@@ -36,6 +36,8 @@ PORTS = {
     "AA_AngelMoth": ("RM_Dustveil", "TheRot", "RotSpecies/AngelMoth/AngelMoth"),
     "AA_AnimaColossus": ("RM_Pluurva", "TheRot", None),
     "AA_BedBug": ("RM_BedBug", "Cauldron", None),
+    "AA_BloodShrimp": ("RM_Zrrik", "Greentide", None),
+    "AA_RaptorShrimp": ("RM_Sharpshrimp", "Miasma", None),
     "AA_CrystalMit": ("RM_CrystalMit", "Cauldron", None),
     "AA_GiantCrownedSilkie": ("RM_GiantCrownedSilkie", "Cauldron", None),
     "AA_Lockjaw": ("RM_Siezer", "Miasma", None),
@@ -48,7 +50,7 @@ FOLDER = {"TheRot": "Fauna", "NightsideIce": "Fauna"}      # the folder each mod
 # species we do NOT port as a dependency of another: swapped for a vanilla def in exactly these text positions
 SPECIES_SWAP = {
     "AA_Helixien": "Megaspider", "AA_BoulderMit": "Tortoise", "AA_RoughPlatedMonitor": "Iguana",
-    "AA_OvergrownColossus": "Elephant",
+    "AA_OvergrownColossus": "Elephant", "AA_RaptorShrimp": "Megaspider",
 }
 # a donor item that is only decoration on the animal: dropped (leather) so no new art is owed for it
 DROP_ELEMENTS = {("leatherDef", "Leather_Chitin"), ("leatherDef", "AA_Leather_Aerofleet"),
@@ -56,7 +58,7 @@ DROP_ELEMENTS = {("leatherDef", "Leather_Chitin"), ("leatherDef", "AA_Leather_Ae
 USEMEAT_WHEN_DROPPED = {"AA_Aerofleet": "Megaspider"}
 # SoundDef families by creature (vanilla Pawn_<fam>_<Angry|Wounded|Death|Call>)
 SOUND_FAMILY = {"AA_GiantCrownedSilkie": "Peacock", "AA_ShockGoat": "Goat", "AA_Lockjaw": "Alligator",
-                "AA_Plasmorph": "Thrumbo"}
+                "AA_Plasmorph": "Thrumbo", "AA_BloodShrimp": "Megaspider", "AA_RaptorShrimp": "Megaspider"}
 SOUND_SWAP = {"AA_FireSpit": "Shot_IncendiaryLauncher"}      # cast sound of the fire-spit ability
 SOUND_TAGS = {"soundCast", "soundCastTail", "soundWounded", "soundDeath", "soundCall", "soundAngry"}
 DROP_COMP_CLASSES = {"VEF.AnimalBehaviours.CompProperties_AttachEffecter"}   # falling-leaves effecter: cosmetic, 3 flecks of art
@@ -271,7 +273,7 @@ def build(donor_name, registry):
     kinds_map = {"soundWounded": "Wounded", "soundDeath": "Death", "soundCall": "Call", "soundAngry": "Angry"}
     for d in [tdef] + support:
         for el in d.iter():
-            if el.tag in SOUND_TAGS and (el.text or "").strip().startswith("AA_"):
+            if el.tag in SOUND_TAGS and (el.text or "").strip().startswith(("AA_", "Pawn_RaptorShrimp_")):
                 t = el.text.strip()
                 if t in SOUND_SWAP:
                     el.text = SOUND_SWAP[t]
@@ -406,7 +408,8 @@ REPOINT = {
     "AA_GiantCrownedSilkie": ("RM_GiantCrownedSilkie", "mandrake.rm.cauldron"),
     "AA_Lockjaw": ("RM_Siezer", "mandrake.rm.miasma"), "AA_Metallovore": ("RM_Metallovore", "mandrake.rm.theforge"),
     "AA_Plasmorph": ("RM_Bezzul", "mandrake.rm.cauldron"), "AA_ShockGoat": ("RM_Zhissa", "mandrake.rm.nightsideice"),
-    "AA_Swarmling": ("RM_Chittik", "mandrake.rm.therot"), "AA_Needlepost": ("RM_Skorra", SWB),
+    "AA_Swarmling": ("RM_Chittik", "mandrake.rm.therot"), "AA_BloodShrimp": ("RM_Zrrik", "mandrake.rm.greentide"),
+    "AA_RaptorShrimp": ("RM_Sharpshrimp", "mandrake.rm.miasma"),
     # already ported before this pass (matched by stats, see Transient/phase0_p2_classification.md)
     "AA_Cactipine": ("RM_Chikka", SWB), "AA_Wildpawn": ("RM_Durrok", SWB), "AA_Wildpod": ("RM_Mullgoth", SWB),
     "AA_Murkling": ("RM_Lirrith", "mandrake.rm.abyss"), "AA_Helixien": ("RM_Bileworm", "mandrake.rm.scarlands"),
