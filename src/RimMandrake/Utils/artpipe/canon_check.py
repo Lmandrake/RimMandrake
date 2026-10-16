@@ -16,7 +16,17 @@ WHAT IS GRADED
                 a ruling, to the end). Each sentence is a check line.
   neither     — skipped, recorded as such.
   A line the render's facing cannot show (a face on a north view), or a non-visual line ("Not Star Wars IP"), is
-  `na` and does not count. Verdict = FAIL iff any line fails; score "passed/graded".
+  `na` and does not count. Verdict = FAIL iff any line fails; score "passed/graded"; UNGRADED when every line was
+  n/a (0/0 — nothing was checked, so it is never reported as a PASS).
+
+FACING TAGS (decided in code, not by the model). A Must-show / owner-note line may carry one tag, anywhere in it:
+  [not:north]  [not:north,south]   n/a on those facings          [only:east,west]  [east-only]   n/a elsewhere
+  The tag is stripped from the line before grading. A job with no facing ignores tags. An unparseable tag (unknown
+  facing) is left in the text and reported in the verdict's `tag_errors`; it never fails the grade.
+
+ADVISOR, NEVER A GATE (owner, 2026-10-15, by question card). The verdict is attached to the picture for the owner to
+read on the sheet / in chat; it never blocks, never files a job failed, and never re-files a job with corrections.
+Evidence: Transient/art_review_2026-10-15/pipeline_review.md §3 (FAIL predicted 0 of 64 owner rejections).
 
 ROUTE
   codex.exe exec, read-only sandbox, `--output-schema` JSON, images via `-i`, prompt on stdin, cwd + image copies in
@@ -24,10 +34,9 @@ ROUTE
   reads — same staging gpt_consult.py uses). Model: $ARTPIPE_CANON_MODEL, else gpt_consult's consult default
   (gpt-6.1-sol); effort high. In the daemon it runs on the job's leased codex home (artpiped's slot pool).
 
-CLI (retroactive grading of finished renders; never requeues unless --requeue)
+CLI (retroactive grading of finished renders; it never requeues anything)
     python3 canon_check.py <job_id> [...]          grade these done/ (or failed/) renders
     python3 canon_check.py --since 2026-10-04T20:41  every done/ job created at/after this (UTC, job `created`)
-    python3 canon_check.py --since ... --requeue   also requeue each FAIL once, corrections appended to its prompt
     flags: --force (re-grade already-graded) · -j N parallel graders (default 2) · --dry-run (resolve only)
   Verdict lands in done/<id>.manifest.json["canon_check"] and _artsrc/<id>/<id>.canon_check.json.
 """
@@ -61,7 +70,11 @@ DEFAULT_EFFORT = "high"
 DEFAULT_TIMEOUT_S = 600
 OWNER_MARK = re.compile(r"\bowner\b|\brejected\b|\bruled\b|\bpraised\b", re.I)
 SLUG_IN_TEXT = re.compile(r"canon_references/([A-Za-z0-9_\-]+)/")
+# Old retry jobs (before the grader became an advisor, 2026-10-15) carry this block in their prompt; it is stripped
+# when reading owner-note lines. Nothing writes it any more.
 CORRECTIONS_HEAD = "CANON CORRECTIONS"
+FACINGS = ("north", "east", "south", "west")
+TAG_RE = re.compile(r"\s*\[\s*(?:(not|only)\s*:\s*([a-z ,/]+?)|(north|east|south|west)[- ]only)\s*\]", re.I)
 
 RESPONSE_SCHEMA = {
     "type": "object", "additionalProperties": False, "required": ["lines", "summary"],
@@ -94,6 +107,22 @@ def must_show_lines(section: str) -> list[str]:
         elif raw.strip() and out and raw.startswith((" ", "\t")):
             out[-1] += " " + raw.strip()  # wrapped continuation
     return out
+
+
+def line_facings(line: str) -> tuple[str, frozenset | None, str | None]:
+    """A line's facing tag -> (line without the tag, facings it applies to or None = every facing, tag error or None)."""
+    m = TAG_RE.search(line)
+    if not m:
+        return line, None, None
+    if m.group(3):
+        allowed = frozenset({m.group(3).lower()})
+    else:
+        names = [x for x in re.split(r"[ ,/]+", m.group(2).lower()) if x]
+        bad = [x for x in names if x not in FACINGS]
+        if bad or not names:
+            return line, None, f"unknown facing {', '.join(bad) or '(none)'} in tag {m.group(0).strip()!r}"
+        allowed = (frozenset(FACINGS) - set(names)) if m.group(1).lower() == "not" else frozenset(names)
+    return (line[:m.start()] + line[m.end():]).strip(), allowed, None
 
 
 def _sentences(text: str) -> list[str]:
@@ -162,6 +191,7 @@ def gather(job: dict, use_subject: bool = True) -> dict | None:
     owner = owner_note_lines(job)
     slug, how = resolve_slug(job, use_subject)
     base = {"na_marks": job.get("canon_na") or [], "na_reason": str(job.get("canon_na_reason") or "").strip(),
+            "line_facings": [], "tag_errors": [],
             "facing": job.get("facing"), "prompt": (job.get("prompt") or "")[:3000], "owner_note": owner}
     if slug:
         secs = _sections((CANON_ROOT / slug / "description.md").read_text(errors="replace"))
@@ -171,12 +201,25 @@ def gather(job: dict, use_subject: bool = True) -> dict | None:
             if not imgs:
                 imgs = sorted(str(p) for p in (CANON_ROOT / slug).iterdir()
                               if p.suffix.lower() in IMG_EXT and not p.name.startswith("donor_"))
-            return dict(base, kind="canon", slug=slug, slug_via=how, lines=lines,
+            return _tagged(dict(base, kind="canon", slug=slug, slug_via=how, lines=lines,
                         brief=secs.get("visual brief", ""), engine_limits=secs.get("engine limits", ""),
-                        images=imgs[:MAX_CANON_IMAGES])
+                        images=imgs[:MAX_CANON_IMAGES]))
     if owner:
-        return dict(base, kind="owner", slug=None, slug_via="", lines=owner, brief="", engine_limits="", images=[])
+        return _tagged(dict(base, kind="owner", slug=None, slug_via="", lines=owner, brief="", engine_limits="",
+                            images=[]))
     return None
+
+
+def _tagged(spec: dict) -> dict:
+    """Strip facing tags off spec['lines'] into the parallel spec['line_facings']; bad tags go to tag_errors."""
+    lines, facs, errs = [], [], []
+    for raw in spec["lines"]:
+        text, allowed, err = line_facings(raw)
+        lines.append(text)
+        facs.append(allowed)
+        if err:
+            errs.append(err)
+    return dict(spec, lines=lines, line_facings=facs, tag_errors=errs)
 
 
 # ──────────────────────────────────────────────────────────── grade ──
@@ -184,6 +227,11 @@ def gather(job: dict, use_subject: bool = True) -> dict | None:
 def resolve_na(spec: dict) -> dict[int, str]:
     """canon_na marks (1-based line number or exact/substring line text) -> {line index: reason}."""
     out = {}
+    facing = str(spec.get("facing") or "").lower()
+    if facing in FACINGS:
+        for i, allowed in enumerate(spec.get("line_facings") or [], 1):
+            if allowed is not None and facing not in allowed and i <= len(spec["lines"]):
+                out[i] = f"facing tag: this line applies to {'/'.join(f for f in FACINGS if f in allowed)} only"
     reason = spec.get("na_reason") or "owner marked n/a for this job"
     for m in spec.get("na_marks") or []:
         idx = None
@@ -234,7 +282,7 @@ def build_prompt(spec: dict) -> str:
              + "\n".join(f"{i}. {line}" for i, line in enumerate(spec["lines"], 1)))
     na = resolve_na(spec)
     if na:
-        p.append("Lines the owner marked N/A for this job (answer 'na' for them; do not judge): "
+        p.append("Lines marked N/A for this job (answer 'na' for them; do not judge): "
                  + ", ".join(str(i) for i in sorted(na)))
     p.append("Reply with JSON only: {\"lines\":[{\"n\":<line number>,\"verdict\":\"pass\"|\"fail\"|\"na\","
              "\"reason\":\"<one line: what you see in the render>\"}...],\"summary\":\"<one sentence>\"}.")
@@ -367,7 +415,8 @@ def _gated(spec: dict) -> tuple[dict, int]:
         return spec, 0
     g = len(GATE_LINES)
     marks = [m + g if isinstance(m, int) and not isinstance(m, bool) else m for m in spec.get("na_marks") or []]
-    return dict(spec, lines=list(GATE_LINES) + list(spec["lines"]), na_marks=marks), g
+    facs = [None] * g + list(spec.get("line_facings") or [None] * len(spec["lines"]))
+    return dict(spec, lines=list(GATE_LINES) + list(spec["lines"]), na_marks=marks, line_facings=facs), g
 
 
 def grade_v2(render: Path, spec: dict, vision=None, **vision_kw) -> dict:
@@ -385,13 +434,14 @@ def grade_v2(render: Path, spec: dict, vision=None, **vision_kw) -> dict:
     text = vision(build_prompt_v2(gspec, desc), imgs, **vision_kw)
     rows, summary = parse_answer(text, gspec["lines"])
     for i, why in resolve_na(gspec).items():
-        rows[i - 1] = dict(rows[i - 1], verdict="na", reason=f"n/a by canon_na: {why}", canon_na=True)
+        rows[i - 1] = _na_row(rows[i - 1], why)
     for r in rows[:g]:
         r["gate"] = True
     graded = [r for r in rows if r["verdict"] != "na"]
     failed = [r for r in graded if r["verdict"] == "fail"]
     passed = sum(r["verdict"] == "pass" for r in graded)
-    return {"status": "graded", "verdict": "FAIL" if failed else "PASS", "mode": "v2",
+    return {"status": "graded", "verdict": _verdict(graded, failed), "mode": "v2", "advisory": True,
+            "flags": _flags(failed), "tag_errors": spec.get("tag_errors") or [],
             "score": f"{passed}/{len(graded)}", "passed": passed, "graded": len(graded),
             "na": len(rows) - len(graded), "kind": spec["kind"], "slug": spec.get("slug"),
             "slug_via": spec.get("slug_via"), "lines": rows, "summary": summary,
@@ -413,11 +463,12 @@ def grade(render: Path, spec: dict, vision=None, mode: str = "v1", **vision_kw) 
     text = vision(build_prompt(spec), images, **vision_kw)
     rows, summary = parse_answer(text, spec["lines"])
     for i, why in resolve_na(spec).items():
-        rows[i - 1] = dict(rows[i - 1], verdict="na", reason=f"n/a by canon_na: {why}", canon_na=True)
+        rows[i - 1] = _na_row(rows[i - 1], why)
     graded = [r for r in rows if r["verdict"] != "na"]
     passed = sum(r["verdict"] == "pass" for r in graded)
     failed = [r for r in graded if r["verdict"] == "fail"]
-    return {"status": "graded", "verdict": "FAIL" if failed else "PASS",
+    return {"status": "graded", "verdict": _verdict(graded, failed), "advisory": True,
+            "flags": _flags(failed), "tag_errors": spec.get("tag_errors") or [],
             "score": f"{passed}/{len(graded)}", "passed": passed, "graded": len(graded),
             "na": len(rows) - len(graded), "kind": spec["kind"], "slug": spec.get("slug"),
             "slug_via": spec.get("slug_via"), "lines": rows, "summary": summary,
@@ -426,20 +477,61 @@ def grade(render: Path, spec: dict, vision=None, mode: str = "v1", **vision_kw) 
             "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
 
 
-def corrections_text(verdict: dict) -> str:
-    fails = [r for r in verdict.get("lines", []) if r["verdict"] == "fail"]
-    src = "canon entry" if verdict.get("kind") == "canon" else "owner note"
-    body = " ".join(f"({i}) MUST: {r['line']} — the previous render failed this: {r['reason']}"
-                    for i, r in enumerate(fails, 1))
-    return (f" {CORRECTIONS_HEAD} (a vision check of the previous render of this job against its {src} failed "
-            f"these lines; fix every one, keep everything else): {body}")
+def _na_row(row: dict, why: str) -> dict:
+    if why.startswith("facing tag"):
+        return dict(row, verdict="na", reason=f"n/a by {why}", facing_na=True)
+    return dict(row, verdict="na", reason=f"n/a by canon_na: {why}", canon_na=True)
 
 
-def with_corrections(job: dict, verdict: dict) -> dict:
-    j = dict(job)
-    j["prompt"] = (job.get("prompt") or "").split(f" {CORRECTIONS_HEAD}")[0] + corrections_text(verdict)
-    j["canon_retry"] = int(job.get("canon_retry") or 0) + 1
-    return j
+def _verdict(graded: list, failed: list) -> str:
+    return "UNGRADED" if not graded else "FAIL" if failed else "PASS"
+
+
+def _flags(failed: list) -> list[dict]:
+    return [{"line": r["line"], "reason": r["reason"]} for r in failed]
+
+
+def normalize(check) -> dict | None:
+    """A stored canon_check (dict, or an old Python-repr string) as a dict with the advisory reading applied: a 0/0
+    graded verdict reads UNGRADED (old records said PASS), and `flags` is filled from the lines. None if unreadable."""
+    if isinstance(check, str):
+        import ast
+        try:
+            check = ast.literal_eval(check)
+        except (ValueError, SyntaxError):
+            return None
+    if not isinstance(check, dict):
+        return None
+    c = dict(check)
+    if c.get("status") == "graded":
+        if not c.get("graded"):
+            c["verdict"] = "UNGRADED"
+        if "flags" not in c:
+            c["flags"] = _flags([r for r in c.get("lines") or [] if r.get("verdict") == "fail"])
+    return c
+
+
+def advisory_text(check, limit: int = 3) -> str:
+    """One owner-facing line: what the grader flagged, as advice. '' when there is nothing to say."""
+    c = normalize(check)
+    if not c:
+        return ""
+    st = c.get("status")
+    if st == "skipped":
+        return "grader: nothing to grade (no canon entry, no owner note)"
+    if st == "error":
+        return "grader: did not run (error)"
+    if st != "graded":
+        return ""
+    v = c.get("verdict")
+    if v == "UNGRADED":
+        return "grader UNGRADED (0/0: every line was n/a, nothing was checked)"
+    if v == "PASS":
+        return f"grader PASS {c.get('score', '')} (advisory)"
+    fl = c.get("flags") or []
+    body = " · ".join(f"✗ {f['line']} — {f['reason']}" for f in fl[:limit])
+    more = f" · (+{len(fl) - limit} more)" if len(fl) > limit else ""
+    return f"grader flag (advisory) {c.get('score', '')}: {body}{more}"
 
 
 # ────────────────────────────────────────────────────────────── CLI ──
@@ -488,22 +580,11 @@ def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: boo
     return {"id": job_id, "status": "checked", "check": rec, "job": job, "dir": d.name}
 
 
-def requeue(job: dict, verdict: dict, pending: Path) -> Path:
-    j = with_corrections(job, verdict)
-    j["created"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    dst = pending / f"{job['id']}.json"
-    if dst.exists():
-        raise CanonCheckError(f"{dst} already pending")
-    common.atomic_write_json(dst, j)
-    return dst
-
-
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("job_ids", nargs="*")
     ap.add_argument("--since", help="ISO timestamp; grade done/ jobs whose `created` is at/after it")
     ap.add_argument("--match", help="regex the job id must match (with --since)")
-    ap.add_argument("--requeue", action="store_true", help="requeue each FAIL once with corrections")
     ap.add_argument("--force", action="store_true", help="re-grade jobs already graded")
     ap.add_argument("--dry-run", action="store_true", help="resolve canon/owner specs only; no model calls")
     ap.add_argument("-j", "--jobs", type=int, default=2)
@@ -514,7 +595,6 @@ def main(argv=None) -> int:
     ap.add_argument("--json-out", type=Path, help="write all results here")
     ap.add_argument("--done-dir", type=Path, default=common.DEFAULT_DONE)
     ap.add_argument("--failed-dir", type=Path, default=common.DEFAULT_FAILED)
-    ap.add_argument("--pending-dir", type=Path, default=common.DEFAULT_PENDING)
     ap.add_argument("--artsrc-dir", type=Path, default=common.DEFAULT_ARTSRC)
     a = ap.parse_args(argv)
     ids = list(a.job_ids)
@@ -541,7 +621,7 @@ def main(argv=None) -> int:
     for r in results:
         c = r.get("check") or {}
         if c.get("status") == "graded":
-            tag = f"{c['verdict']} {c['score']} ({c['kind']}{': ' + c['slug'] if c.get('slug') else ''})"
+            tag = f"{c['verdict']} {c['score']} ({c['kind']}{': ' + c['slug'] if c.get('slug') else ''}) — advisory"
             if c["verdict"] == "FAIL":
                 fails.append(r)
         elif c.get("status") == "skipped":
@@ -550,7 +630,7 @@ def main(argv=None) -> int:
             tag = f"{r['status'].upper()} {r.get('note') or ''}".strip()
         print(f"{r['id']}: {tag}")
         for line in c.get("lines", []):
-            if line.get("canon_na"):
+            if line.get("canon_na") or line.get("facing_na"):
                 print(f"    - n/a {line['line'][:70]} — {line['reason'][:100]}")
             if line["verdict"] == "fail":
                 print(f"    ✗ {line['line'][:90]} — {line['reason'][:140]}")
@@ -558,17 +638,10 @@ def main(argv=None) -> int:
         a.json_out.parent.mkdir(parents=True, exist_ok=True)
         a.json_out.write_text(json.dumps([{k: v for k, v in r.items() if k != "job"} for r in results], indent=1))
     graded = [r for r in results if (r.get("check") or {}).get("status") == "graded"]
-    print(f"[canon_check] graded {len(graded)}, PASS {len(graded) - len(fails)}, FAIL {len(fails)}, "
-          f"other {len(results) - len(graded)}", file=sys.stderr)
-    if a.requeue:
-        for r in fails:
-            if int(r["job"].get("canon_retry") or 0) >= 1:
-                print(f"  not requeued (already retried once): {r['id']}")
-                continue
-            try:
-                print(f"  requeued: {requeue(r['job'], r['check'], a.pending_dir)}")
-            except CanonCheckError as exc:
-                print(f"  not requeued: {exc}")
+    ungraded = sum(1 for r in graded if r["check"]["verdict"] == "UNGRADED")
+    print(f"[canon_check] graded {len(graded)}, PASS {len(graded) - len(fails) - ungraded}, FAIL {len(fails)}, "
+          f"UNGRADED {ungraded}, other {len(results) - len(graded)} (advisory: nothing is requeued or blocked)",
+          file=sys.stderr)
     return 0
 
 
