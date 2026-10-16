@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_FireSpit: restored verbatim from RM_Bezzul.xml (deleted 9c02a72fd) and given to RM_Zisska.
+  Owner 2026-10-16: "Keep it for a Cauldron creature. Add firespit to something in the Cauldron that needs some pizzaz."
+  Granted by VEF CompProperties_InitialAbility on the race. Art: art ledger jobs donorart_p2_firespit_icon_v1 /
+  donorart_p2_firespit_projectile_v1 (install via art install, never regenerate).
+  -->
+  <AbilityDef>
+    <defName>RM_FireSpit</defName>
+    <label>fire spit</label>
+    <description>Spit a glob of self-igniting fluid that burns its target.</description>
+    <iconPath>UI/Abilities/RM_FireSpit</iconPath>
+    <cooldownTicksRange>240</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>False</disableGizmoWhileUndrafted>
+    <writeCombatLog>True</writeCombatLog>
+    <verbProperties>
+      <verbClass>Verb_AbilityShoot</verbClass>
+      <defaultProjectile>RM_FireSpit</defaultProjectile>
+      <accuracyTouch>0.85</accuracyTouch>
+      <accuracyShort>0.8</accuracyShort>
+      <accuracyMedium>0.8</accuracyMedium>
+      <accuracyLong>0.7</accuracyLong>
+      <range>15</range>
+      <burstShotCount>5</burstShotCount>
+      <defaultCooldownTime>4</defaultCooldownTime>
+      <muzzleFlashScale>0</muzzleFlashScale>
+      <warmupTime>3</warmupTime>
+      <soundCast>Shot_IncendiaryLauncher</soundCast>
+      <commonality>0.9</commonality>
+      <minRange>2</minRange>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+      </targetParams>
+      <ai_IsWeapon>false</ai_IsWeapon>
+    </verbProperties>
+  </AbilityDef>
+  <ThingDef ParentName="BaseBullet">
+    <defName>RM_FireSpit</defName>
+    <label>fire spit</label>
+    <graphicData>
+      <texPath>Things/Projectile/RM_FireSpit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <projectile>
+      <flyOverhead>false</flyOverhead>
+      <damageDef>Flame</damageDef>
+      <damageAmountBase>1</damageAmountBase>
+      <speed>15</speed>
+    </projectile>
+  </ThingDef>
+</Defs>
