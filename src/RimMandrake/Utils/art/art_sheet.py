@@ -3198,9 +3198,11 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
     R = scale_panel.Resolver()
     by_def: dict = {d: [] for d in defs}
     for j in jobs:
-        td = _job(j).get("target_def")
+        # JOB=DEF binds a job whose spec names no target_def (older renders) to the def it is for
+        j, _, bound = j.partition("=")
+        td = bound or _job(j).get("target_def")
         if not td:
-            raise SystemExit(f"artpipe job {j} names no target_def — pass the def it is for with --subjects")
+            raise SystemExit(f"artpipe job {j} names no target_def — bind it as --jobs {j}=<DefName>")
         by_def.setdefault(td, []).append(j)
     rows = [subject_row(R, d, js) for d, js in by_def.items()]
     key = f"SUBJECTS_{name}"
@@ -3295,7 +3297,7 @@ def main(argv=None):
     ap.add_argument("--recommend", nargs="*", default=[], metavar="FAMILY=WHY",
                     help="with --subjects/--jobs: prefill the column of this render family (job id minus facing) with "
                          "the agent's reason — a suggestion shown as the agent prefill, never his answer")
-    ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row")
+    ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row; JOB=DEF binds a job with no target_def")
     ap.add_argument("--textures", metavar="MANIFEST",
                     help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
     ap.add_argument("--name", help="with --subjects/--jobs: the sheet's name (lower_snake); file <name>_sheet_<date>.html")

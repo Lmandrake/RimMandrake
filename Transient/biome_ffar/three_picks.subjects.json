@@ -1,0 +1,206 @@
+{
+ "schema": 1,
+ "generated": "2026-10-15T19:42:58-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_three_picks"
+ ],
+ "biomes": {
+  "SUBJECTS_three_picks": {
+   "label": "Three picks: Ashwallow, Nuna female, Barbslinger north",
+   "slug": "three_picks",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Three picks: Ashwallow, Nuna female, Barbslinger north \u2014 game art",
+   "lead_html": "Three picks from the 2026-10-15 graphics audit. <b>Ashwallow</b>: A is live (your 10-11 'terran hippo' rejection), B is the drawn redo \u2014 pick the one to keep. <b>Nuna</b>: A = Nuna_f (female base), B = Nuna_m (male), the next row is variant C (fV_C), deployed as a female variant but variants apply to BOTH sexes \u2014 pick which to keep for female/both. <b>Barbslinger</b>: A is live S/E/N; the audit suspects the north is reversed (stingers on the far side, no pincers). No surviving alternative north exists (older designs were purged) \u2014 keep it, or leave a note to redraw north.",
+   "rows": [
+    {
+     "key": "RM_Ashwallow",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ashwallow",
+     "defNames": [
+      "RM_Ashwallow"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "enact_f6734fd2_ashwallow_v1_east",
+      "enact_f6734fd2_ashwallow_v1_north",
+      "enact_f6734fd2_ashwallow_v1_south"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Ashwallow"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Ashwallow found"
+     }
+    },
+    {
+     "key": "RSW_Nuna",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nuna",
+     "defNames": [
+      "RSW_Nuna"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/nuna",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Nuna"
+        ]
+       },
+       {
+        "res": "RimStarWars/SWBestiary/Nuna/Nuna_m",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Nuna"
+        ]
+       },
+       {
+        "res": "RimStarWars/SWBestiary/Nuna/Nuna_fV_C",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Nuna"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Nuna found"
+     }
+    },
+    {
+     "key": "RSW_Nuna_variantC",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Nuna female variant C (fV_C)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1.0,
+       1.0
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RSW_Nuna adult female bodyGraphicData drawSize 1.0"
+     },
+     "runtimeDesc": {
+      "def": "RSW_Nuna_variantC",
+      "label": "Nuna female variant C (fV_C)",
+      "description": "nuna \u00b7 look C \u00b7 texture RimStarWars/SWBestiary/Nuna/Nuna_fV_C \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest nunac.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimStarWars/SWBestiary/Nuna/Nuna_fV_C",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RSW_Nuna_variantC"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimStarWars/SWBestiary/Nuna/Nuna_fV_C"
+     }
+    },
+    {
+     "key": "RM_Barbslinger",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "barbslinger",
+     "defNames": [
+      "RM_Barbslinger"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Barbslinger"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Barbslinger found"
+     }
+    }
+   ]
+  }
+ }
+}
