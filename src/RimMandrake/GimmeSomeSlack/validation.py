@@ -1224,7 +1224,7 @@ def same_frame_dirty_live(B, rows):
     d.update({"fresh": {k: fr.get(k) for k in ("edges", "same", "different", "missing", "extra")},
               "badPaths": st.get("badPaths"), "cleared": cl.get("destroyed")})
     if not sf.get("success") or not sf.get("oneFrame") or not sf.get("onScreen") or not sf.get("wallChangesRoute") \
-            or not sf.get("sectionsRegenerated") or not fr.get("success"):
+            or not sf.get("sectionsRegenerated") or not fr.get("success") or not fr.get("edges"):
         row(rows, "A8_same_frame_dirty_not_dropped", "UNMEASURED", "SITE", d)
         return
     ok = fr.get("different") == 0 and fr.get("missing") == 0 and fr.get("extra") == 0 and st.get("badPaths") == 0
@@ -1326,8 +1326,7 @@ def shader_sway_far_zoom_live(B, rows):
     finally:
         B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
         B.probe("set:swayMode=%s" % prev_mode)
-        if prev_lod is not None:
-            B.probe("set:lod=%s" % ("True" if prev_lod else "False"))
+        B.probe("set:lod=%s" % ("False" if prev_lod is False else "True"))   # an unread setting restores the shipped default (on)
         frame_fit(B, SITE)
         B.ticks(2)
     lifted = [x for x in (sn.get("strands") or []) if x.get("lifted") and x.get("ownerPrinted")]
@@ -1340,10 +1339,10 @@ def shader_sway_far_zoom_live(B, rows):
     if near.get("swayMode") != "Shader" or not lifted:
         row(rows, "B12_shader_sway_far_zoom_drawn_once", "UNMEASURED", "SITE", d)
         return
-    near_ok = (near.get("shaderEnabled", 0) > 0 and near.get("swayDraws") == 0 and not near.get("lodFarNow") and
+    near_ok = ((near.get("shaderEnabled") or 0) > 0 and near.get("swayDraws") == 0 and not near.get("lodFarNow") and
                all(x.get("printedStatic") and not x.get("dynamic") and x.get("paths") == 1 for x in lifted))
     far_ok = (far.get("lodFarNow") is True and far.get("shaderEnabled") == 0 and far.get("swayDraws") == 0 and
-              far.get("lodEnabled", 0) > 0 and far.get("fullEnabled") == 0 and d["farLiftedDynamic"] == 0)
+              (far.get("lodEnabled") or 0) > 0 and far.get("fullEnabled") == 0 and d["farLiftedDynamic"] == 0)
     row(rows, "B12_shader_sway_far_zoom_drawn_once", "PASS" if near_ok and far_ok else "FAIL", "MOD", d)
 
 
