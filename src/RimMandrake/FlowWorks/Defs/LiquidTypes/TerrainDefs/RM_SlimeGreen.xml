@@ -27,7 +27,7 @@
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <waterBodyType>None</waterBodyType>
-    <pathCost>40</pathCost>
+    <pathCost>200</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
       <li>ShallowWater</li>
@@ -59,7 +59,7 @@
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <waterBodyType>None</waterBodyType>
-    <pathCost>300</pathCost>
+    <pathCost>450</pathCost>
     <passability>Standable</passability>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>

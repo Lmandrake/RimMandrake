@@ -163,13 +163,14 @@ Canyon floods run through your canals instead of wiping them out
 
 Slime is nearly impossible to cross and slow to climb out of. Your words: so slippery it is nearly uncrossable.
 
-**Look at:** a canal three wide, brim-full of green slime; one colonist waits on the south bank, another stands stuck in the middle of it
+**Look at:** a canal three wide, brim-full of green slime; one colonist waits on the south bank, another stands stuck in the middle of it; a natural slime pool, undug, top right
 
 **Poke it:**
 
 - unpause, order the bank colonist to the far mark: he walks round the canal's end rather than wade three cells of slime
 - order him onto a slime cell instead: he wades in and keeps stopping, 'Slipped in the green slime' over his head each time
 - undraft the stuck one: every slip on the climb out says 'Slid back into the green slime' and he starts the climb again; getting out takes many seconds
+- order the bank colonist into the natural pool (owner 2026-10-16: "Natural slime should also be slippery."): he slips there too, but never slides back (no climb out of undug ground)
 - Mod Settings > Slime is so slippery it is nearly impossible to cross OFF: both just wade
 
 **Look for:** weak spot: a colonist who stops with no text over him; one who walks across at tar speed; a climb out that never ends

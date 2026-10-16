@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SlipperySlimeGround.xml — SLIME_CROSSING_BUILD_SLIPPERY_SLOPE, hand-written (not generated).
+  Owner, 2026-10-16: "Natural slime should also be slippery." Marks natural slime ground with
+  RM_SlipperyTerrain so RM_SlimeSlip makes walkers slip on it, as in a slime canal (no climb-out rule:
+  natural ground has no climb).
+
+  The set was MEASURED from the def dump (every TerrainDef whose defName/label/description says slime,
+  2026-10-16 capture), then kept to the WET slime: FlowWorks' four natural slime pools (shallow + deep),
+  ManyWaters' five coloured slimes, GelatinousSlime's liquid slime and slimy mud, Alpha Biomes' liquid
+  slime. Left out on purpose: hardened/rich slime ground, slime grass and slime stone (RM_Slime_Hardened,
+  RM_Slime_Rich, RM_Slime_Grass, AB_Slime, AB_RichSlime, AB_SlimeGrass, AB_SlimeStone_*): set solid.
+  Ooze is not slime.
+
+  Each op is guarded on its target existing, so a missing GelatinousSlime or Alpha Biomes prints nothing.
+  The extension's type ships in this mod's own assembly, so it cannot discard a def.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeRedShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeRedShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeRedDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeRedDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeGreenShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeGreenShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeGreenDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeGreenDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeWhiteShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeWhiteShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeWhiteDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeWhiteDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_SlimeYellowDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Rust"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Rust"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Verdigris"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Verdigris"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Amber"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Amber"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Violet"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Violet"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Chalk"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Chalk"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RM_Slime_Mud"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RM_Slime_Mud"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="AB_LiquidSlime"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="AB_LiquidSlime"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_SlipperyTerrain"><slipperiness>1</slipperiness></li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

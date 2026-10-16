@@ -242,7 +242,8 @@ CAPS = [
          probes=["xml:defName>RM_Fluid_SlimeGreen", "tex:(?i)slime"], bars=["slime_reads_as_viscous_not_water"], src="Owner experience"),
     dict(id="D09", g="D", label="Slime is nearly impossible to cross, slow to escape", item="SLIME_CROSSING_BUILD_SLIPPERY_SLOPE",
          effect="Owner: slime is so slippery it is nearly uncrossable and escape takes a long time. Walking in slime slips "
-                "(a stop and a 'Slipped in the slime' text); a slip while climbing out slides back; routes avoid slime.",
+                "(a stop and a 'Slipped in the slime' text); a slip while climbing out slides back; routes avoid slime. "
+                "Natural slime ground slips too (owner 2026-10-16).",
          probes=["cs:class RM_SlimeSlip", "set:slimeSlipEnabled", "xml:<slipperiness>1</slipperiness>"], src="Owner experience"),
     dict(id="D10", g="D", label="A pawn in slime is drawn sunk into it", item="PIT_DEPTH_DRAW_OFFSET_1",
          effect="An occupant of a slime-filled D=4 cell is drawn down in the slime, not on its surface.",

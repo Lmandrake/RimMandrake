@@ -71,6 +71,39 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(slimy < 120f, "climbing out takes " + slimy + " s: never, not a great deal of time");
                 Assert(RM_SlimeMath.ExpectedClimbOutSeconds(0f, 58, Stun) == clean, "no slip = the plain climb");
             });
+            Case("Slime_natural_ground_slips_too", () =>
+            {
+                // owner 2026-10-16: "Natural slime should also be slippery." Natural ground has no fill ladder and no climb:
+                // RM_SlimeSlip rolls SlipChance(s, 1, 1, climbingOut false) there, i.e. the brim chance.
+                string root = ModRoot();
+                Assert(Math.Abs(RM_SlimeMath.SlipChance(1f, 1, 1, false, false, 1f, 1f) - RM_SlimeMath.BaseSlipChance) < 1e-6,
+                    "natural slime does not slip at the brim chance");
+                string patch = File.ReadAllText(Path.Combine(root, "Patches", "Canals", "RM_SlipperySlimeGround.xml"));
+                var targets = new System.Collections.Generic.SortedSet<string>();
+                foreach (Match m in Regex.Matches(patch, @"<match Class=""PatchOperationAddModExtension"">\s*<xpath>/Defs/TerrainDef\[defName=""(\w+)""\]</xpath>"))
+                    targets.Add(m.Groups[1].Value);
+                var want = new System.Collections.Generic.SortedSet<string> { "AB_LiquidSlime", "RM_Slime_Liquid", "RM_Slime_Mud",
+                    "RM_Slime_Amber", "RM_Slime_Chalk", "RM_Slime_Rust", "RM_Slime_Verdigris", "RM_Slime_Violet" };
+                foreach (string col in new[] { "Red", "Green", "White", "Yellow" })
+                {
+                    want.Add("RM_Slime" + col + "Shallow");
+                    want.Add("RM_Slime" + col + "Deep");
+                }
+                Assert(targets.SetEquals(want), "slippery ground set: " + string.Join(",", targets));
+                Assert(Regex.Matches(patch, "Class=\"RimMandrake.FlowWorks.RM_SlipperyTerrain\"").Count == want.Count, "one RM_SlipperyTerrain per target");
+                Assert(Regex.Matches(patch, "PatchOperationConditional").Count == want.Count, "every op guarded on its target");
+                foreach (string col in new[] { "Red", "Green", "White", "Yellow" })
+                {
+                    string t = File.ReadAllText(Path.Combine(root, "Defs", "LiquidTypes", "TerrainDefs", "RM_Slime" + col + ".xml"));
+                    var sh = Regex.Match(t, @"<defName>RM_Slime" + col + @"Shallow</defName>.*?<pathCost>(\d+)</pathCost>", RegexOptions.Singleline);
+                    var dp = Regex.Match(t, @"<defName>RM_Slime" + col + @"Deep</defName>.*?<pathCost>(\d+)</pathCost>", RegexOptions.Singleline);
+                    Assert(sh.Groups[1].Value == "200" && dp.Groups[1].Value == "450",
+                        col + " natural pool walk cost " + sh.Groups[1].Value + "/" + dp.Groups[1].Value + " != canal 200/450");
+                }
+                string slip = File.ReadAllText(Path.Combine(root, "Source", "RM_SlimeSlip.cs"));
+                Assert(slip.Contains("class RM_SlipperyTerrain : DefModExtension") && slip.Contains("NaturalSlime(map, c)"),
+                    "RM_SlimeSlip does not read natural slime ground");
+            });
             Case("Slime_shipped_data_and_wiring", () =>
             {
                 string root = ModRoot();
