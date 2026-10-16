@@ -98,7 +98,7 @@ PLAN = {
     "VFEI2_Thornspitter":           (25,   None, None, None),
     "VFES_Turret_Flame":            (33,   None, None, None),   # Wildsteam keep
     # --- 2x2 (direct mult 16, blast mult 4, side 2) ---
-    "AA_BlackDefiler":              (100,  7.8,  None, None),
+    # AA_BlackDefiler (Alpha Animals) row removed 2026-10-15: donor-only, no twin of ours.
     "DP_Automortar":                (560,  6.0,  None, None),
     "OuterRim_MediumLaserCannon":   (1104, None, None, None),
     "OuterRim_ProtonMortar":        (560,  11.8, None, None),

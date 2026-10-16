@@ -129,8 +129,7 @@ names the donor def `AA_AngelMoth`.
    keep/cut decision; evictions stay stopped. Include `AA_Eyeling` (the "ikee", renamed by `Ikee_Rename.xml`, which
    patches it into the vanilla Wasteland, ExtremeDesert and DesertOasis biomes). It is also in the canonical save twice.
 2. **17 rostered creatures run on the donor's C#** (`AlphaBehavioursAndEvents.dll`, per `donor_code_census.py` today).
-   - The acid and flashstorm death bursts already have our own equivalents (`DONOR_CODE_BURST_REBUILD_1`, patch
-     `RM_AlphaAnimals_DeathBursts.xml`), so those creatures only need repointing.
+   - The acid and flashstorm death bursts already have our own equivalents (`DONOR_CODE_BURST_REBUILD_1`, patch deleted 2026-10-15 with the donor patch layer), so those creatures only need repointing.
    - Six use `PawnRenderNode_Alternates` or `GraphicsRefresher`. Five use the `SpasticScaled` render tree, which flight
      doctrine bans. The grow-on-combat anole is a separate case. All of these get a plain directional graphic, which is
      an engine fact rather than a cosmetic choice. `VFEI2_BlackSwarmling`'s cocoon comp also depends on this DLL.

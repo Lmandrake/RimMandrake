@@ -66,51 +66,32 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Animals</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
+  <Operation Class="PatchOperationSequence">
+    <operations>
 
-        <!-- The ThingDef: what the player reads on the animal itself. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/label</xpath>
-          <value><label>ikee</label></value>
-        </li>
-
-        <!-- The PawnKindDef shares the defName and also ships label "eyeling".
-             Renaming only the ThingDef would leave the old name showing wherever
-             the kind's label is used. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/label</xpath>
-          <value><label>ikee</label></value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/description</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/description</xpath>
           <value>
             <description>A single great eye walking on soft tentacles, warm to the touch and blind to nothing. The clans keep them because an ikee sees the glint of buried metal long before a Jawa does - and because a people known across the desert by their own glowing eyes cannot help but read one as a good omen. It eats what the waste offers.</description>
           </value>
-        </li>
+        </match></li>
 
-        <li Class="PatchOperationAdd">
+        <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="Wasteland"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
           <value><AA_Eyeling>1.2</AA_Eyeling></value>
-        </li>
+        </match></li>
 
-        <li Class="PatchOperationAdd">
+        <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ExtremeDesert"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
           <value><AA_Eyeling>0.5</AA_Eyeling></value>
-        </li>
+        </match></li>
 
-        <li Class="PatchOperationAdd">
+        <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
           <value><AA_Eyeling>0.8</AA_Eyeling></value>
-        </li>
+        </match></li>
 
       </operations>
-    </match>
-  </Operation>
+    </Operation>
 
 </Patch>

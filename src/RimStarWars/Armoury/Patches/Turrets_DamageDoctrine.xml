@@ -6,24 +6,6 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Alpha Animals</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- AA_BlackDefiler_Projectile : damageAmountBase -> 100 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_BlackDefiler_Projectile"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>100</damageAmountBase></value>
-        </li>
-        <!-- AA_BlackDefiler_Projectile : explosionRadius -> 7.8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_BlackDefiler_Projectile"]/projectile/explosionRadius</xpath>
-          <value><explosionRadius>7.8</explosionRadius></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Alpha Biomes</li></mods>
     <match Class="PatchOperationSequence">
       <operations>

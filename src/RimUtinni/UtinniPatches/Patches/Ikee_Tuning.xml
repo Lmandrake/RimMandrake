@@ -47,56 +47,46 @@
   <!-- ==================================================================
        1. A THIRD OF ITS SIZE - body, health, mass and the drawn sprite
        ================================================================== -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Alpha Animals</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
+  <Operation Class="PatchOperationSequence">
+    <operations>
 
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/baseBodySize</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race/baseBodySize</xpath>
           <value><baseBodySize>0.13</baseBodySize></value>
-        </li>
+        </match></li>
 
         <!-- 0.5 -> 0.35, not 0.17. A third of the HEALTH would make a pet that
              dies to a stray spark, and the owner asked for a posterchild, not a
              tragedy. Small and fragile, still keepable. -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/baseHealthScale</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race/baseHealthScale</xpath>
           <value><baseHealthScale>0.35</baseHealthScale></value>
-        </li>
+        </match></li>
 
         <!-- a third the size carries a third the mass. 60 -> 20.
              🔑 CONDITIONAL, not a bare Replace: this node is NOT authored in
              Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
              another mod's patch - so a Replace matches 0 nodes on disk and would be
              a silent no-op depending on load order. Replace it if present, add it if not. -->
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Mass</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Mass</xpath>
-            <value><Mass>20</Mass></value>
-          </match>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/statBases/Mass</xpath>
           <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Ikee"]/statBases</xpath>
             <value><Mass>20</Mass></value>
           </nomatch>
-        </li>
+        </match></li>
 
         <!-- ⚠️ drawSize is on the PawnKindDef's lifeStages, NOT on the ThingDef's
              graphicData - the ThingDef carries no graphicData at all. Three life
              stages, each divided by three: 1 / 1.25 / 1.5 -> 0.33 / 0.42 / 0.5 -->
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/PawnKindDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="RSW_Ikee"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>0.33</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/PawnKindDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="RSW_Ikee"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>0.42</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="AA_Eyeling"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>0.5</drawSize></value>
-        </li>
+        </match></li>
 
         <!-- ==================================================================
              2. NUZZLES FOUR TIMES A DAY, and is a pet at all
@@ -106,31 +96,27 @@
              Races_Eyeling.xml - it is inherited from AnimalThingBase or written by
              another mod's patch - so a Replace matches 0 nodes on disk and would be
              a silent no-op depending on load order. Replace it if present, add it if not. -->
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/nuzzleMtbHours</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/nuzzleMtbHours</xpath>
-            <value><nuzzleMtbHours>6</nuzzleMtbHours></value>
-          </match>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race/nuzzleMtbHours</xpath>
           <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race</xpath>
             <value><nuzzleMtbHours>6</nuzzleMtbHours></value>
           </nomatch>
-        </li>
+        </match></li>
 
         <!-- petness 0 means it can NEVER bond, which would have made every other
              change here cosmetic. 0.9 is above the husky (0.75); this thing is
              meant to imprint on a Jawa and stay imprinted. -->
-        <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race</xpath>
           <value><petness>0.9</petness></value>
-        </li>
+        </match></li>
 
         <!-- a pet that turns manhunter on 50% of damage is not a pet. -->
-        <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race</xpath>
           <value><manhunterOnDamageChance>0.02</manhunterOnDamageChance></value>
-        </li>
+        </match></li>
 
         <!-- ==================================================================
              3. VERY EASY TO TRAIN - both halves
@@ -141,27 +127,27 @@
              under <race>. A value written into <race>/wildness is an unknown
              field the loader silently discards (measured: AA_Eyeling shipped
              statBases already declares Wildness 0.2, per Races_Eyeling.xml). -->
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Wildness</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/statBases/Wildness</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases/Wildness</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Ikee"]/statBases/Wildness</xpath>
             <value><Wildness>0.02</Wildness></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="AA_Eyeling"]/statBases</xpath>
+            <xpath>Defs/ThingDef[defName="RSW_Ikee"]/statBases</xpath>
             <value><Wildness>0.02</Wildness></value>
           </nomatch>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]/race/trainability</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]/race/trainability</xpath>
           <value><trainability>Advanced</trainability></value>
-        </li>
+        </match></li>
 
         <!-- ==================================================================
              4. VERY MESSY ALL OVER - see the header for why this is a comp
              ================================================================== -->
-        <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="AA_Eyeling"]</xpath>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath><match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RSW_Ikee"]</xpath>
           <value>
             <comps>
               <li Class="CompProperties_Spawner">
@@ -173,10 +159,9 @@
               </li>
             </comps>
           </value>
-        </li>
+        </match></li>
 
       </operations>
-    </match>
-  </Operation>
+    </Operation>
 
 </Patch>

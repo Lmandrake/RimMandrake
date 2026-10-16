@@ -11,7 +11,7 @@
   our art is installed (the P3 convention).
 
   REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
-    (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).
+    (the values the retired donor death-burst patch (deleted 2026-10-15) set).
   PLAIN GRAPHIC: the donor drew a body plus two twitching tentacle sprites with its own SpasticScaled render tree
     (donor code). Ours is one fixed whole-body picture per life stage on the vanilla animal render tree.
   KEPT, VEF-guarded (a framework we keep, as P3 did): asexual self-cloning, capped at 40 on a map.

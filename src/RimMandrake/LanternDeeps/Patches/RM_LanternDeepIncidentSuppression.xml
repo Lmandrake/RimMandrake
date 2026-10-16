@@ -79,11 +79,5 @@
       <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
     </nomatch>
   </Operation>
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Alpha Animals</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations><li Class="PatchOperationConditional"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]/disallowedBiomes</xpath><match Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]/disallowedBiomes</xpath><value><li>RM_LanternDeeps</li></value></match><nomatch Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_IncidentSummitCrab"]</xpath><value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value></nomatch></li><li Class="PatchOperationConditional"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]/disallowedBiomes</xpath><match Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]/disallowedBiomes</xpath><value><li>RM_LanternDeeps</li></value></match><nomatch Class="PatchOperationAdd"><xpath>Defs/IncidentDef[defName="AA_Incident_SkyMeteorite"]</xpath><value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value></nomatch></li></operations>
-    </match>
-  </Operation>
 
 </Patch>
