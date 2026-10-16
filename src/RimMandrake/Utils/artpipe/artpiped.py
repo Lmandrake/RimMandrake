@@ -2231,6 +2231,10 @@ def _advisory_palette_distance(candidate: Path, master_png: Path) -> float | Non
         return None
 
 
+# worker_status of a codex job refused BEFORE launch by the sandbox guard: retryable, returned to pending/.
+SANDBOX_NOT_READY = "sandbox_not_ready"
+
+
 def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx,
                        derive_master_png: Path | None = None) -> dict:
     """Runs in a worker thread. Returns a result dict; touches no shared
@@ -2261,6 +2265,16 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
         # brand-new one, forever — and never shared with another daemon,
         # openai/codex #11435). A run with no codex jobs never acquires one.
         codex_home = ctx.codex_home_for_slot(slot)
+        # SANDBOX_UAC_ONE_STATE (2026-10-16): HARD pre-launch guard. Sync this slot's sandbox state from
+        # the shared home and refuse — WITHOUT launching codex — unless the shared state is proven current
+        # against Windows' own sandbox-user provisioning. A refusal is returned to pending/ by main() and
+        # latches the codex channel off for this run, so no worker ever raises the UAC setup dialog.
+        sandbox_ok, sandbox_why = common.ensure_worker_sandbox(
+            codex_home, getattr(ctx, "codex_sandbox_base", None))
+        if not sandbox_ok:
+            return {"id": job_id, "channel": "codex", "status": "failed", "cost_usd": 0.0,
+                    "worker_status": SANDBOX_NOT_READY, "validator": "not_run",
+                    "note": f"codex NOT launched — sandbox not ready: {sandbox_why}"}
         meter_before = codex_grumpiness.read_meters(codex_home)
         prompt = build_job_prompt(job)
 
@@ -2874,6 +2888,14 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--poll-interval", type=float, default=2.0)
     ap.add_argument("--once", action="store_true",
                      help="drain what's claimable now, then exit — for scripts/tests")
+    ap.add_argument("--check-sandbox", action="store_true",
+                     help="report whether starting would raise the Windows UAC sandbox-setup dialog "
+                          "(net.exe + file reads only; never launches codex, writes nothing); "
+                          "exit 0 = safe, 1 = codex launches would be refused")
+    ap.add_argument("--sync-sandbox", action="store_true",
+                     help="adopt the sandbox provisioning Windows currently holds (found in any known "
+                          "codex home) into the shared home + seed template, with a backup; never "
+                          "launches codex. Then prints --check-sandbox")
     ap.add_argument("--dry-run", action="store_true",
                      help="report what pending/ would run and exit — reads "
                           "only, never claims, reconciles, or moves anything")
@@ -3150,6 +3172,16 @@ def main(argv=None) -> int:
     if args.dry_run:
         return run_dry_run(args)
 
+    # SANDBOX_UAC_ONE_STATE: offline sandbox check / repair — never launch codex.
+    if args.sync_sandbox:
+        ok, msg = common.sync_shared_sandbox(args.codex_home_root, args.codex_sandbox_base)
+        print(("ok   " if ok else "FAIL ") + msg)
+    if args.check_sandbox or args.sync_sandbox:
+        safe, lines = common.sandbox_check_report(args.codex_home_root, args.workers,
+                                                  args.codex_sandbox_base)
+        print("\n".join(lines))
+        return 0 if safe else 1
+
     # §7: --status is read-only over --status-dir alone — never touches the
     # queue, creates no directories, takes no lock. Returns before
     # ensure_queue_dirs, exactly like --dry-run above.
@@ -3263,6 +3295,7 @@ def main(argv=None) -> int:
                  throughput_log=args.throughput_log,
                  done_dir=args.done_dir, failed_dir=args.failed_dir,
                  canon_vision=_canon_vision_for(args), canon_model=args.canon_model)
+    ctx.codex_sandbox_base = args.codex_sandbox_base  # SANDBOX_UAC_ONE_STATE pre-launch guard's base
     if ctx.canon_vision is None:
         console_obj.info("canon advisor OFF for this run")
     else:
@@ -3397,6 +3430,20 @@ def main(argv=None) -> int:
                     job_path, ch, reserved_usd = futures.pop(fut)
                     try:
                         result = fut.result()
+                        if result.get("worker_status") == SANDBOX_NOT_READY:
+                            # Retryable: codex never ran, nothing billed. Back to pending/ and the codex
+                            # channel latches off for the rest of this run (no claim/refuse loop).
+                            dest = args.pending_dir / job_path.name
+                            if not dest.exists():
+                                try:
+                                    os.rename(job_path, dest)
+                                except FileNotFoundError:
+                                    pass
+                            if codex_sandbox_ok:
+                                codex_sandbox_ok = False
+                                console_obj.warn(f"codex channel disabled for this run — {result.get('note')}")
+                                console_obj.mark_codex_channel_disabled()
+                            continue
                     except Exception as exc:  # never let a worker-thread crash kill the daemon
                         # `ch` is what claim_next() actually claimed THIS
                         # job as — preserved here even though process_job

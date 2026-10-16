@@ -98,6 +98,11 @@ def job_dict(job_id: str, reference: Path | str | None, priority: int = 100,
     }
 
 
+SANDBOX_PWSET_PINNED = "2026-10-16T17:20:36Z"
+SANDBOX_MARKER_CURRENT = '{"version": 5, "created_at": "2026-10-16T17:20:37.0+00:00"}'
+SANDBOX_MARKER_STALE = '{"version": 5, "created_at": "2026-10-16T14:47:43.0+00:00"}'
+
+
 def make_job(pending_dir: Path, job_id: str, reference: Path | None,
              priority: int = 100, prompt: str | None = None,
              channel: str = "codex") -> Path:
@@ -162,8 +167,13 @@ class Queue:
              f"codex-command-runner-{base_version}.exe").write_bytes(b"x")
 
         shutil.rmtree(self.codex_sandbox_template, ignore_errors=True)
-        (self.codex_sandbox_template / ".sandbox").mkdir(parents=True)
-        (self.codex_sandbox_template / ".sandbox" / "setup_marker.json").write_text("{}")
+        # SANDBOX_UAC_ONE_STATE: base and template carry the SAME provisioning, and it matches the
+        # machine reading pinned in run()'s env ($CODEX_SANDBOX_MACHINE_PWSET) — never net.exe here.
+        for root in (self.codex_sandbox_base, self.codex_sandbox_template):
+            (root / ".sandbox").mkdir(parents=True, exist_ok=True)
+            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
+            (root / ".sandbox-secrets").mkdir(parents=True, exist_ok=True)
+            (root / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5}')
         if template_has_bin:
             (self.codex_sandbox_template / ".sandbox-bin").mkdir()
             if template_version is not None:
@@ -191,6 +201,7 @@ class Queue:
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(self.codex_sandbox_template)
+        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED
         return subprocess.run(self.daemon_args(*extra), capture_output=True,
                                text=True, timeout=timeout, env=env)
 
@@ -1419,6 +1430,62 @@ def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
            "0.153.1" in proc.stdout and "0.153.4" in proc.stdout, proc.stdout)
         ok("sandbox-preflight mismatch: the log names the recapture command",
            "cp -r" in proc.stdout, proc.stdout)
+
+
+def test_sandbox_stale_vs_machine_blocks_codex():
+    """SANDBOX_UAC_ONE_STATE (2026-10-16): base == template, same runner build, but BOTH hold an older
+    provisioning than Windows' sandbox users (another home re-ran setup). The codex channel is refused
+    at startup — the job is never claimed — and --check-sandbox says NOT SAFE without launching."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        for root in (q.codex_sandbox_base, q.codex_sandbox_template):
+            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
+        make_job(q.pending, "stalecodex", q.reference, channel="codex")
+        proc = q.run({"stalecodex": "ok"}, "--once", "--workers", "1")
+        ok("stale-vs-machine: codex job never claimed",
+           (q.pending / "stalecodex.json").is_file(), proc.stdout + proc.stderr)
+        ok("stale-vs-machine: log names --sync-sandbox", "--sync-sandbox" in proc.stdout, proc.stdout)
+        chk = q.run({}, "--check-sandbox", "--workers", "1")
+        ok("--check-sandbox exits 1 when unsafe", chk.returncode == 1, chk.stdout + chk.stderr)
+        ok("--check-sandbox says NOT SAFE", "NOT SAFE" in chk.stdout, chk.stdout)
+        ok("--check-sandbox created no worker home",
+           not q.codex_homes.is_dir() or not any(q.codex_homes.iterdir()))
+        # --sync-sandbox adopts a current home's state (here a pre-existing worker home w0).
+        w0 = q.codex_homes / "w0"
+        (w0 / ".sandbox").mkdir(parents=True)
+        (w0 / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
+        (w0 / ".sandbox-secrets").mkdir()
+        (w0 / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5, "fresh": 1}')
+        (w0 / ".sandbox-bin").mkdir()
+        (w0 / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"z")
+        syn = q.run({}, "--sync-sandbox", "--workers", "1")
+        ok("--sync-sandbox then reports SAFE", syn.returncode == 0 and "SAFE:" in syn.stdout,
+           syn.stdout + syn.stderr)
+        ok("--sync-sandbox copied the current users file into the shared base",
+           "fresh" in (q.codex_sandbox_base / ".sandbox-secrets" / "sandbox_users.json").read_text())
+        chk2 = q.run({}, "--check-sandbox", "--workers", "1")
+        ok("--check-sandbox exits 0 after sync", chk2.returncode == 0, chk2.stdout)
+
+
+def test_sandbox_guard_refusal_returns_job_to_pending():
+    """The per-launch guard: the startup preflight passes, but this slot's home cannot be brought to the
+    shared state (its .sandbox-secrets is a FILE, so the sync fails). The worker must NOT be launched,
+    the job goes back to pending/ (retryable, nothing in failed/), and the codex channel latches off."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        w0 = q.codex_homes / "w0"
+        w0.mkdir(parents=True)
+        (w0 / ".sandbox-secrets").write_text("not a directory")
+        make_job(q.pending, "guarded", q.reference, channel="codex")
+        proc = q.run({"guarded": "ok"}, "--once", "--workers", "1")
+        ok("guard refusal: job is back in pending/", (q.pending / "guarded.json").is_file(),
+           proc.stdout + proc.stderr)
+        ok("guard refusal: nothing filed to failed/ or done/",
+           not (q.failed / "guarded.json").exists() and not (q.done / "guarded.json").exists())
+        ok("guard refusal: no image was produced (worker never launched)",
+           not any(q.artsrc.rglob("*.png")))
+        ok("guard refusal: codex channel disabled in the log", "codex channel disabled" in proc.stdout,
+           proc.stdout)
 
 
 def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
@@ -4040,6 +4107,8 @@ def main() -> int:
         test_codex_sandbox_preflight_matching_allows_codex_jobs,
         test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini,
         test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
+        test_sandbox_stale_vs_machine_blocks_codex,
+        test_sandbox_guard_refusal_returns_job_to_pending,
         test_reference_less_job_size_mismatch_is_caught,
         test_oversized_same_aspect_is_downscaled_and_kept,
         test_oversized_wrong_aspect_still_rejected,
