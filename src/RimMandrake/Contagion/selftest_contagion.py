@@ -555,6 +555,7 @@ class Fake(object):
     def t_do_bill_now(self, billGiverId=None, pawnId=None, **k):
         if billGiverId in self.bills:
             self.bills.discard(billGiverId)
+            self.pawns[pawnId]["job"] = "DoBill"
             p = self.pawns[billGiverId]
             if self.on("genomeOrganGrowingEnabled") and "extract_nothing" not in self.broken:
                 self.new(V.SAMPLE, p["x"] + 1, p["z"], monstrous=False, source="Patient")
@@ -576,6 +577,8 @@ class Fake(object):
                 return {"success": False, "message": "no pawn %s" % pid}
             rows.append({"id": pid, "x": p["x"], "z": p["z"], "dead": p["dead"], "downed": False,
                          "inMentalState": bool(p["mental"]), "job": {"def": p["job"]} if p.get("job") else None})
+            if p.get("job") == "DoBill":
+                p["job"] = None              # the fake surgery is seen running once, then it is over
         return {"success": True, "pawns": rows}
 
     def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, **k):
@@ -704,6 +707,20 @@ def main():
             bad.append("break %-26s expected only %s FAIL, got %s" % (brk, target, reds))
         else:
             ok_breaks += 1
+    # the coalescence emit arm's declared disturbance: its own emissions only, never anything else
+    em = V._unfinished_emission
+    for trig, want in (({"kind": "hostile_arrival", "detail": "arrived: RM_TheUnfinished RM_TheUnfinished (animal)"}, True),
+                       ({"kind": "hostile_arrival", "detail": "arrived: Megaspider Megaspider (animal)"}, False),
+                       ({"kind": "mental", "severity": "info", "subjectId": 900, "detail": "mental state Manhunter"}, True),
+                       ({"kind": "mental", "severity": "info", "subjectId": 7, "detail": "mental state Manhunter"}, False),
+                       ({"kind": "mental", "severity": "damage", "subjectId": 900, "detail": "mental state Berserk"}, False),
+                       ({"kind": "hurt", "detail": "health 1 -> 0.9; newest hediff Bite/Leg age 3 from RM_TheUnfinished"}, True),
+                       ({"kind": "hurt", "detail": "health 1 -> 0.9; newest hediff Bruise/Leg age 3 from Human"}, False),
+                       ({"kind": "downed", "detail": "downed (health 0.2)"}, False),
+                       ({"kind": "colonist_hostile", "detail": "colonist turned hostile (Berserk)"}, False),
+                       ({"kind": "hurt", "critical": True, "detail": "x from RM_TheUnfinished"}, False)):
+        if bool(em(trig, frozenset([7]))) != want:
+            bad.append("_unfinished_emission(%s) != %s" % (trig, want))
     print("selftest Contagion: %d components, healthy PASS %d/%d; %d/%d breaks each turn exactly "
           "their component red" % (n_comp, n_comp - len(notpass), n_comp, ok_breaks, len(BREAKS)))
     for b in bad:
