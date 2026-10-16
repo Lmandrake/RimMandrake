@@ -2769,3 +2769,4 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"remove hoses from GSS walk","ts":"2026-10-16T04:52:12Z","tsn":1792126332857700049}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T04:53:57Z","tsn":1792126437637470851}
 {"seat":"BENCH","event":"close","id":"FLYER_NORTH_REDRAW_WINGS_LEFT_AT_HOME","sha":"19775594de","reason":"picks installed, owner-ruled keep; deploy at next restart","ts":"2026-10-16T04:57:09Z","tsn":1792126629219633919}
+{"seat":"BENCH","event":"note","id":"FLYER_NORTH_REDRAW_WINGS_LEFT_AT_HOME","text":"Close event cites 19775594de by mistake; the install commit is beb2bf0af4.","why":"sha correction","ts":"2026-10-16T04:57:29Z","tsn":1792126649095397093}
