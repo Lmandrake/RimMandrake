@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """selftest_art_ledger_fixes.py — the 2026-10-15 art-ledger review fixes, on a disposable fixture.
 
+A  records and files cannot drift apart: a push range is checked event -> PNG as well as PNG -> event (a superseded
+   event is fine), `art.py doctor` lists ledger-vs-committed-tree disagreements, and a backfill re-scan reports
+   drift instead of relabelling a recorded slot.
 B  mod/rel spelling is canonicalised inside install() (alias map at read and write, history never rewritten);
    `art.py put` / `install --file` get bytes into the store with containment and symlink checks.
 """
@@ -128,10 +131,110 @@ def test_b(tmp):
     check(rc == 2, "install with neither <sha> nor --file is refused")
 
 
+def git(cwd, *a):
+    import subprocess
+    r = subprocess.run(["git", "-C", str(cwd), *a], capture_output=True, text=True)
+    if r.returncode:
+        raise RuntimeError(f"git {a}: {r.stderr}")
+    return r.stdout.strip()
+
+
+def git_fixture():
+    repo = Path(tempfile.mkdtemp(prefix="art-ledger-drift-"))
+    git(repo, "init", "-q", "-b", "main")
+    git(repo, "config", "user.email", "t@t")
+    git(repo, "config", "user.name", "t")
+    git(repo, "config", "core.hooksPath", "/dev/null")
+    os.environ["ARTSTORE"] = str(repo.parent / (repo.name + "-store"))
+    os.environ["ART_LEDGER_DIR"] = str(repo / "infrastructure" / "state" / "art")
+    os.environ["ART_SRC_ROOT"] = str(repo / "src")
+    (repo / "infrastructure" / "state" / "art" / "events").mkdir(parents=True)
+    (repo / "src" / "RimMandrake" / "Fix" / "Textures" / "T").mkdir(parents=True)
+    (repo / "README").write_text("x")
+    git(repo, "add", "README")
+    git(repo, "commit", "-q", "-m", "root")
+    return repo
+
+
+def test_a():
+    import artledger as L
+    import art_guard as G
+    import backfill as BF
+    repo = git_fixture()
+    shard = "infrastructure/state/art/events/BUILD.jsonl"
+    mod, slot = "src/RimMandrake/Fix", "src/RimMandrake/Fix/Textures/T/Beast_south.png"
+    red, blue, green = png((255, 0, 0, 255)), png((0, 0, 255, 255)), png((0, 255, 0, 255))
+    sred, sblue, sgreen = (L.store_put_bytes(x) for x in (red, blue, green))
+
+    base = git(repo, "rev-parse", "HEAD")
+    L.install(mod, "T/Beast_south.png", sred, reason=WRITER)
+    git(repo, "add", shard)
+    git(repo, "commit", "-q", "-m", "events only")         # the 10-07 FlowWorks shape: event pushed, PNG left behind
+    bad = G.check_range(repo, base, "HEAD")
+    check(any(p == slot and "no such file" in w for _c, p, w in bad),
+          f"push check: a live event whose PNG is not in the pushed tree is refused ({bad})")
+    rows = G.doctor(repo)
+    check([r["kind"] for r in rows] == ["LIVE_NOT_IN_TREE"] and rows[0]["uncommitted_install"],
+          "doctor lists it as LIVE_NOT_IN_TREE, an install sitting uncommitted in the worktree")
+    git(repo, "add", slot)
+    git(repo, "commit", "-q", "-m", "png")
+    check(G.check_range(repo, base, "HEAD") == [], "push check passes once the PNG travels with its event")
+    check(G.doctor(repo) == [], "doctor is clean when the committed tree matches the ledger")
+
+    base2 = git(repo, "rev-parse", "HEAD")
+    L.install(mod, "T/Beast_south.png", sblue, reason=WRITER)
+    L.install(mod, "T/Beast_south.png", sgreen, reason=WRITER)   # blue's event is superseded inside the range
+    git(repo, "add", shard, slot)
+    git(repo, "commit", "-q", "-m", "two installs, last one shipped")
+    check(G.check_range(repo, base2, "HEAD") == [], "a superseded event in the range is allowed")
+
+    # the tree changes in a commit but the ledger is not told (direction 1 still bites)
+    base3 = git(repo, "rev-parse", "HEAD")
+    (repo / slot).write_bytes(red)
+    git(repo, "add", slot)
+    git(repo, "commit", "-q", "-m", "raw revert")
+    bad = G.check_range(repo, base3, "HEAD")
+    check(len(bad) == 1 and bad[0][1] == slot, f"a raw byte change is reported once, not twice ({bad})")
+    git(repo, "reset", "-q", "--hard", base3)
+
+    # backfill re-scan: a differing disk file is DRIFT, reported, not relabelled; an unrecorded file is observed
+    (repo / slot).write_bytes(red)                     # disk now disagrees with the ledger's green
+    newf = repo / "src" / "RimMandrake" / "Fix" / "Textures" / "T" / "Other.png"
+    newf.write_bytes(blue)
+    n_before = len(L.read_events())
+    r = BF.step_disk()
+    lv = [e for e in L.read_events()[n_before:] if e.get("type") == "live"]
+    check(r.get("drift") == 1, f"backfill reports the differing slot as drift ({r})")
+    check([e["rel"] for e in lv] == ["T/Other.png"], "backfill writes live only for the slot with no record")
+    check(L.Index().live[(mod, "T/Beast_south.png")]["sha"] == sgreen, "the recorded live sha is NOT overwritten")
+    (repo / slot).write_bytes(green)
+
+    # a hand-written backfill-observed relabel is refused by the guard (enforced from ENFORCE_FROM)
+    git(repo, "add", shard, "src/RimMandrake/Fix/Textures/T/Other.png")
+    git(repo, "commit", "-q", "-m", "backfill")
+    base4 = git(repo, "rev-parse", "HEAD")
+    check(G.check_range(repo, base3, base4) == [], "a backfill of a never-recorded slot passes the push check")
+    L.append({"type": "live", "mod": mod, "rel": "T/Beast_south.png", "sha": sred, "prev": None,
+              "reason": "backfill-observed", "ts": "2099-01-01T00:00:00-0700"})
+    (repo / slot).write_bytes(red)
+    git(repo, "add", shard, slot)
+    git(repo, "commit", "-q", "-m", "relabel")
+    bad = G.check_range(repo, base4, "HEAD")
+    check(any("backfill" in w for _c, _p, w in bad), f"push check refuses a backfill that relabels a recorded slot ({bad})")
+    git(repo, "reset", "-q", "--hard", base4)
+    L.append({"type": "live", "mod": mod, "rel": "T/Beast_south.png", "sha": sred, "prev": None,
+              "reason": "backfill-observed", "ts": "2099-01-01T00:00:01-0700"})
+    git(repo, "add", shard)
+    git(repo, "commit", "-q", "-m", "relabel, ledger only (the exact 10-14 shape: tree untouched)")
+    bad = G.check_range(repo, base4, "HEAD")
+    check(any("backfill" in w for _c, _p, w in bad), f"…also when only the event moves ({bad})")
+
+
 def main():
     sys.path.insert(0, str(HERE))
     tmp = fixture()
     test_b(tmp)
+    test_a()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

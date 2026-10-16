@@ -9,6 +9,11 @@ Every PNG added, changed or deleted under src/**/Textures/ must be the end of a 
     owner-kept (a kept picture moves only on his ruling);
   * the ledger's own bookkeeping reasons (`backfill-observed`, `retire-duplicate`).
 
+And the other direction (2026-10-15 review: 18 FlowWorks installs recorded live on 10-07 never reached git, and a
+10-14 re-scan relabelled them back): every slot a pushed `live` event or texture change touches must hold, in the
+pushed tree, what the folded ledger says (superseded events are fine), and a `backfill-observed` event may not
+overwrite a slot the ledger already recorded. `art.py doctor` lists every disagreement in a tree.
+
 So a raw `cp`/`Image.save` into Textures + commit is refused, and a hand-appended `live` line
 whose `prev` skips a transition is refused too. The way to make a change legal is
 `art.py install` (or a writer calling `artledger.install_bytes`), which writes the event.
@@ -32,6 +37,17 @@ import artledger as L  # noqa: E402
 
 LEDGER_EVENTS = "infrastructure/state/art/events"
 BOOKKEEPING = {"backfill-observed", "retire-duplicate"}
+# Events stamped at or after this are judged by the 2026-10-15 review rules (backfill may not overwrite a recorded
+# slot, …); older events keep the rules they were written under, so `range` over history does not re-judge them.
+ENFORCE_FROM = "2026-10-15T19:00:00-0700"
+
+
+def _enforced(ev: dict) -> bool:
+    return (ev.get("ts") or "") >= ENFORCE_FROM
+
+
+def _key(ev: dict) -> tuple[str, str]:
+    return L.mod_key(ev["mod"]), L.rel_key(ev["rel"])
 
 
 def is_texture_png(path: str) -> bool:
@@ -103,6 +119,10 @@ def check_change(idx: L.Index, lives: dict, path: str, old: str | None, new: str
         why = _authorized(e, idx)
         if why:
             return why
+        if e.get("reason") == "backfill-observed" and _enforced(e) and any(
+                x is not e and (x.get("ts") or "") < (e.get("ts") or "") for x in evs):
+            return ("a backfill observation overwrites a slot the ledger already recorded — a re-scan flags drift "
+                    "(art.py doctor), it never relabels")
         if e.get("prev") == old:
             return None
         if e.get("prev") is None and e.get("reason") == "backfill-observed" and old is not None:
@@ -118,7 +138,7 @@ def check(changes, events: list[dict]) -> list[tuple[str, str]]:
     lives: dict = {}
     for ev in idx.events:
         if ev.get("type") == "live":
-            lives.setdefault((L.mod_key(ev["mod"]), L.rel_key(ev["rel"])), []).append(ev)
+            lives.setdefault(_key(ev), []).append(ev)
     out = []
     for path, old, new in changes:
         why = check_change(idx, lives, path, old, new)
@@ -192,18 +212,163 @@ def ledger_at(cwd, rev: str) -> list[dict]:
     return events
 
 
+def added_events(cwd, base: str, head: str) -> list[dict]:
+    """Art-ledger events whose lines base..head ADDS (shards are append-only; a rotation's moved lines cancel)."""
+    raw = _git(cwd, "diff", "--no-renames", "--no-ext-diff", "-U0", base, head, "--", LEDGER_EVENTS + "/")
+    plus, minus = {}, set()
+    for ln in raw.splitlines():
+        if ln.startswith(("+++", "---")) or not ln[:1] in ("+", "-"):
+            continue
+        try:
+            ev = json.loads(ln[1:])
+        except ValueError:
+            continue
+        if ln[0] == "+":
+            plus[ev.get("id")] = ev
+        else:
+            minus.add(ev.get("id"))
+    return [ev for i, ev in plus.items() if i not in minus]
+
+
+def tree_sha256(cwd, rev: str, paths: list[str]) -> dict:
+    """path -> sha256 of its bytes in `rev`'s tree (None when the tree has no such file)."""
+    if not paths:
+        return {}
+    r = subprocess.run(["git", "-C", str(cwd), "cat-file", "--batch-check=%(objectname) %(objecttype)"],
+                       input="".join(f"{rev}:{p}\n" for p in paths), capture_output=True, text=True, timeout=300)
+    if r.returncode != 0:
+        raise RuntimeError("git cat-file --batch-check failed")
+    blob = {}
+    for p, line in zip(paths, r.stdout.splitlines()):
+        f = line.split()
+        blob[p] = f[0] if len(f) == 2 and f[1] == "blob" else None
+    shas = _sha256_blobs(cwd, [b for b in blob.values() if b])
+    return {p: (shas.get(b) if b else None) for p, b in blob.items()}
+
+
+def expected_at(idx: L.Index, key: tuple[str, str]):
+    """(known, sha) — what the folded ledger says the slot holds: a sha, or None for retired."""
+    if key in idx.live:
+        return True, idx.live[key].get("sha")
+    if key in idx._retired:
+        return True, None
+    return False, None
+
+
+def check_tree(cwd, idx: L.Index, rev: str, keys) -> list[tuple[str, str]]:
+    """[(path, why)] for every slot whose `rev` tree bytes differ from the folded ledger (the event -> PNG half)."""
+    want = {}
+    for k in keys:
+        known, sha = expected_at(idx, k)
+        if known:
+            want[f"{k[0]}/Textures/{k[1]}"] = sha
+    tree = tree_sha256(cwd, rev, sorted(want))
+    out = []
+    for path, sha in sorted(want.items()):
+        got = tree.get(path)
+        if got == sha:
+            continue
+        if sha is None:
+            out.append((path, f"the ledger retired this slot but the pushed tree still holds {got[:12]}"))
+        elif got is None:
+            out.append((path, f"the ledger records {sha[:12]} live here but the pushed tree has no such file — "
+                              f"commit the PNG with its event"))
+        else:
+            out.append((path, f"the ledger records {sha[:12]} live here but the pushed tree holds {got[:12]}"))
+    return out
+
+
 def check_range(cwd, base: str, head: str) -> list[tuple[str, str, str]]:
-    """[(commit, path, why)] for every non-merge commit in base..head. Ledger read at head."""
+    """[(commit, path, why)] for base..head, both directions, ledger read at head:
+      PNG -> event: every non-merge commit's texture change ends an authorized `live` chain;
+      event -> PNG: every slot a `live` event added in the range (or a texture change in the range, merges
+      included) names holds, in head's tree, exactly what the folded ledger says — a superseded event is fine."""
     commits = _git(cwd, "rev-list", "--no-merges", "--reverse", f"{base}..{head}").split()
     per = [(c, commit_changes(cwd, c)) for c in commits]
-    if not any(ch for _c, ch in per):
+    new_lives = [e for e in added_events(cwd, base, head) if e.get("type") == "live" and e.get("mod") and e.get("rel")]
+    if not any(ch for _c, ch in per) and not new_lives:
         return []
     events = ledger_at(cwd, head)
     out = []
     for c, ch in per:
         for path, why in check(ch, events):
             out.append((c, path, why))
+    keys = {_key(e) for e in new_lives}
+    for path, _o, _n in range_changes(cwd, base, head):
+        sp = L.split_texture_path(path)
+        if sp:
+            keys.add((L.mod_key(sp[0]), L.rel_key(sp[1])))
+    idx = L.Index(events)
+    by_key: dict = {}
+    for ev in events:
+        if ev.get("type") == "live" and ev.get("mod") and ev.get("rel"):
+            by_key.setdefault(_key(ev), []).append(ev)
+    for e in new_lives:                                   # a re-scan relabelling a recorded slot (10-14 shape)
+        if e.get("reason") == "backfill-observed" and _enforced(e) and any(
+                x.get("id") != e.get("id") and (x.get("ts") or "") < (e.get("ts") or "") for x in by_key.get(_key(e), [])):
+            k = _key(e)
+            out.append((head, f"{k[0]}/Textures/{k[1]}",
+                        "a backfill observation overwrites a slot the ledger already recorded — a re-scan flags "
+                        "drift (art.py doctor), it never relabels"))
+    flagged = {p for _c, p, _w in out}
+    for path, why in check_tree(cwd, idx, head, keys):
+        if path not in flagged:
+            out.append((head, path, why))
     return out
+
+
+def range_changes(cwd, base: str, head: str) -> list[tuple[str, str, str]]:
+    """Texture PNG paths whose bytes differ between base and head (merge resolutions included)."""
+    raw = _git(cwd, "diff", "--no-renames", "--raw", "-z", base, head, "--", "src/").split("\0")
+    rows, i = [], 0
+    while i < len(raw) - 1:
+        if raw[i].startswith(":"):
+            f = raw[i][1:].split()
+            if is_texture_png(raw[i + 1]):
+                rows.append((raw[i + 1], f[2], f[3]))
+            i += 2
+        else:
+            i += 1
+    return rows
+
+
+def doctor(cwd, rev: str = "HEAD") -> list[dict]:
+    """Every slot where the folded ledger and `rev`'s committed tree disagree, plus what the working tree holds
+    there (an uncommitted install shows as worktree == ledger). Read-only."""
+    cwd = Path(cwd)
+    idx = L.Index()
+    names = _git(cwd, "ls-tree", "-r", "-z", "--name-only", rev, "--", "src/").split("\0")
+    tree_paths = {p for p in names if is_texture_png(p)}
+    keys = set(idx.live) | set(idx._retired)
+    for p in tree_paths:
+        sp = L.split_texture_path(p)
+        keys.add((L.mod_key(sp[0]), L.rel_key(sp[1])))
+    paths = sorted({f"{m}/Textures/{r}" for m, r in keys} | tree_paths)
+    tree = {}
+    for i in range(0, len(paths), 2000):
+        tree.update(tree_sha256(cwd, rev, paths[i:i + 2000]))
+    rows = []
+    for m, r in sorted(keys):
+        path = f"{m}/Textures/{r}"
+        known, want = expected_at(idx, (m, r))
+        got = tree.get(path)
+        if known and got == want:
+            continue
+        wt_f = cwd / path
+        wt = L.sha256_file(wt_f) if wt_f.is_file() else None
+        if not known:
+            kind = "TREE_UNRECORDED"
+        elif want is None:
+            kind = "TREE_RETIRED"
+        elif got is None:
+            kind = "LIVE_NOT_IN_TREE"
+        else:
+            kind = "LIVE_DIFFERS"
+        ev = idx.live.get((m, r)) or idx._retired.get((m, r)) or {}
+        rows.append({"kind": kind, "path": path, "ledger": want, "tree": got, "worktree": wt,
+                     "uncommitted_install": bool(want and wt == want),
+                     "event": {k: ev.get(k) for k in ("id", "ts", "seat", "reason", "prev")} if ev else None})
+    return rows
 
 
 def worktree_changes(cwd, paths: list[str] | None = None) -> list[tuple[str, str | None, str | None]]:
