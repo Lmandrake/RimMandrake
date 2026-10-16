@@ -121,23 +121,6 @@ namespace RimMandrake.LuminousPigment
             return power == null || power.PowerOn;
         }
 
-        // The "lacquer worn item..." button only exists for a player who can act on it: lacquering is enabled in Mod
-        // Settings AND this map has a deepfire press built (it is the only station the button uses; a map with no press
-        // has nothing to offer, and showing it on every colonist was owner-reported noise 2026-10-16). Cached per map
-        // for 250 ticks because GetGizmos runs every frame for a selected pawn.
-        private static readonly Dictionary<int, KeyValuePair<int, bool>> pressCache = new Dictionary<int, KeyValuePair<int, bool>>();
-
-        public static bool GizmoRelevant(Map map)
-        {
-            if (map == null || !LuminousPigmentSettings.paintingEnabled) return false;
-            int now = Find.TickManager.TicksGame;
-            if (pressCache.TryGetValue(map.uniqueID, out var hit) && now - hit.Key < 250 && now >= hit.Key) return hit.Value;
-            ThingDef pressDef = DefDatabase<ThingDef>.GetNamedSilentFail(PressDefName);
-            bool has = pressDef != null && map.listerThings.ThingsOfDef(pressDef).Count > 0;
-            pressCache[map.uniqueID] = new KeyValuePair<int, bool>(now, has);
-            return has;
-        }
-
         public static Thing FindPress(Pawn pawn, bool forced)
         {
             ThingDef pressDef = DefDatabase<ThingDef>.GetNamedSilentFail(PressDefName);
@@ -171,61 +154,6 @@ namespace RimMandrake.LuminousPigment
             Job job = JobMaker.MakeJob(DeepfireDefOf.RM_LacquerWornItem, station, stack, item);
             job.count = cost;
             return job;
-        }
-
-        public static Gizmo MakeGizmo(Pawn pawn)
-        {
-            List<ThingWithComps> items = WornGlowUtility.Lacquerable(pawn);
-            var cmd = new Command_Action
-            {
-                defaultLabel = "lacquer worn item...",
-                defaultDesc = "Walk to a powered deepfire press with enough deepfire and lacquer one worn "
-                    + "garment or held weapon (one coat, up to three). A lacquered item glows on its wearer -- "
-                    + "and a pawn glowing in the dark is easier to hit.",
-                icon = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Deepfire")?.uiIcon ?? BaseContent.BadTex,
-                action = delegate
-                {
-                    var options = new List<FloatMenuOption>();
-                    Thing press = FindPress(pawn, forced: true);
-                    foreach (ThingWithComps item in WornGlowUtility.Lacquerable(pawn))
-                    {
-                        ThingWithComps target = item;
-                        int coats = target.GetComp<CompDeepfire>().coats;
-                        string label = target.LabelCap + " (coats " + coats + ", costs " + CostFor(target) + " deepfire)";
-                        Job job = MakeJob(pawn, target, press, out string why);
-                        if (job == null)
-                        {
-                            options.Add(new FloatMenuOption(label + ": " + why, null));
-                            continue;
-                        }
-                        options.Add(new FloatMenuOption(label, delegate
-                        {
-                            pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
-                        }));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(options));
-                },
-            };
-            if (items.Count == 0) cmd.Disable("Nothing worn or held can take another coat.");
-            return cmd;
-        }
-    }
-
-    // Spec §3.4: the pawn's own gizmo, drafted or not. One gizmo per pawn
-    // (not per item), so it rides Pawn.GetGizmos rather than a per-apparel
-    // CompGetWornGizmosExtra. Pass-through iterator postfix.
-    [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
-    public static class Patch_Pawn_GetGizmos_Lacquer
-    {
-        public static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Pawn __instance)
-        {
-            foreach (Gizmo g in __result) yield return g;
-            if (__instance.IsColonistPlayerControlled && __instance.Spawned
-                && (__instance.apparel != null || __instance.equipment != null)
-                && LacquerWornItemUtility.GizmoRelevant(__instance.Map))
-            {
-                yield return LacquerWornItemUtility.MakeGizmo(__instance);
-            }
         }
     }
 }

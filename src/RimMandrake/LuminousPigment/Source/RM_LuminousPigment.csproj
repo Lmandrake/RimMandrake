@@ -103,6 +103,8 @@
     <Compile Include="MapComponent_DeepfireLights.Worn.cs" />
     <Compile Include="MapComponent_DeepfireLights.Visibility.cs" />
     <Compile Include="JobDriver_LacquerWornItem.cs" />
+    <Compile Include="LacquerAtPress.cs" />
+    <Compile Include="LacquerAtPressDebugActions.cs" />
     <Compile Include="DeepfireCombatPatches.cs" />
     <Compile Include="DeepfireStylingStationPatches.cs" />
     <Compile Include="DeepfireWornGlowDebugActions.cs" />
