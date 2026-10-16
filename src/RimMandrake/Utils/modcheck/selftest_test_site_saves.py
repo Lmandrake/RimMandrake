@@ -100,6 +100,7 @@ class Fake(object):
             self.state = "Entry"
             return {"success": True}
         if tool == "rimworld/load_game":
+            self.load_args = dict(kw)
             self.state = "Playing"
             return {"success": True}
         return {"success": True}
@@ -171,6 +172,8 @@ QS.site_profile_receipt = lambda *a, **k: {"problems": [], "error": None}
 r = T.load_site(f, "calm", sleep=lambda s: None)
 check("6 load via main menu before load_game", f.log.index("rimworld/go_to_main_menu") < f.log.index("rimworld/load_game"))
 check("6 loaded clean map verified", r["verified"], r["problems"])
+check("6 load ignores the save's mod header (fixture save, tier list differs)",
+      getattr(f, "load_args", {}).get("ignoreModCompatibility") is True, getattr(f, "load_args", None))
 try:
     T.load_site(f, "pyrelands")
     check("6 pyrelands has no save of its own here", False)

@@ -385,7 +385,11 @@ def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None)
             rec["verified"] = False
             return rec
     try:
-        call("rimworld/load_game", saveName=name)
+        # ignoreModCompatibility: a registered site save is a fixed fixture whose own mod list is not the tier's. The calm
+        # site RM_TestSite_calm_v1 records 22 mods incl. Alpha Animals (sarg.alphaanimals), absent from the 21-mod
+        # ratchet_pilot tier, so a plain load answered save.missing_mods and validation_v2 aborted at L0 after 420 s
+        # (2026-10-16b). The site is verified by check_map read-back below, not by the save's mod header.
+        call("rimworld/load_game", saveName=name, ignoreModCompatibility=True)
     except Exception as ex:                      # noqa: BLE001 - polled below, never resent
         rec["loadCallRaised"] = type(ex).__name__
     got = _wait(lambda: _state(call) == "Playing" and (call("jawa/map_info") or {}).get("tile") is not None, budget_s, sleep)
