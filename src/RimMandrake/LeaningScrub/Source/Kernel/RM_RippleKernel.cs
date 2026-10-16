@@ -10,7 +10,7 @@ namespace RimMandrake.LeaningScrub
 {
     public static class RM_RippleKernel
     {
-        public const int CheckInterval = 120;
+        public const int CheckInterval = 60; // ~1 s hide/show lag, accepted
 
         public static float SizeLimit(float maxBodySize, bool gale)
         {
@@ -27,7 +27,10 @@ namespace RimMandrake.LeaningScrub
         {
             for (int k = 1; k <= wakeLength; k++)
             {
-                RM_LeanKernel.Step(x, z, -downwindX, -downwindZ, k, out int ux, out int uz);
+                // Rounded half away from zero (not RM_LeanKernel.Step's banker's rounding), so the sampled line does not
+                // flip with k's parity on a tie heading.
+                int ux = x + (int)System.Math.Round(-downwindX * k, System.MidpointRounding.AwayFromZero);
+                int uz = z + (int)System.Math.Round(-downwindZ * k, System.MidpointRounding.AwayFromZero);
                 if (ux == x && uz == z) continue;
                 if (blocksWind(ux, uz)) return true;
             }

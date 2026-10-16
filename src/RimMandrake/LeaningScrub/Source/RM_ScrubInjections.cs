@@ -22,7 +22,8 @@ namespace RimMandrake.LeaningScrub
     //   camps  — a LIVING CAMP of the comb-row farmers (RM_Faction_CombHolds, the new people) and one of a scavenger
     //            clan (scavengerFactions: empty in this franchise-free tier; UtinniPatches adds the Jawa clans).
     //            A camp is skipped when its faction is missing from the world or hostile to the player. Its people
-    //            hold the camp (LordJob_DefendBase; they turn on the colony if the colony makes them enemies) and
+    //            hold the camp (RM_LordJob_ScrubCamp: defend, and assault only once the colony is their enemy; vanilla
+    //            LordJob_DefendBase would assault on a timer, a 3% roll and hunger, announcing an attack while at peace) and
     //            RM_MapComponent_ScrubCamps keeps them fed and rested: sustenance is present, not produced (the
     //            same answer as the Inhabited mod's InhabitedPlaceDef notes; NPCs cannot farm).
     // Settings: scrubInjectionsEnabled (ruins), scrubCampsEnabled (camps), scrubRuinsPerMap. New maps only.
@@ -51,7 +52,13 @@ namespace RimMandrake.LeaningScrub
         public override void Generate(Map map, GenStepParams parms)
         {
             placed.Clear();
-            MapGenerator.TryGetVar("UsedRects", out List<CellRect> used);
+            // Only the player's own home maps: the step rides the biome's extraGenSteps, so it would otherwise also run
+            // on enemy bases, quest sites and ambush maps of this biome.
+            if (map.ParentFaction == null || map.ParentFaction != Faction.OfPlayerSilentFail)
+            {
+                return;
+            }
+            List<CellRect> used = MapGenerator.UsedRects;
             if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubInjectionsEnabled))
             {
                 int ruins = RM_InjectionKernel.Clamp(RM_LeaningScrubSettings.scrubRuinsPerMap, 0, 8);
@@ -205,6 +212,8 @@ namespace RimMandrake.LeaningScrub
         {
             if (thicketDef == null) return;
             int claim = RM_CompSmotherable.ClaimTicks;
+            // On a brand-new game TicksGame is 0, so MidCycleStart clamps to 0 and these claims start fresh; on any
+            // later map they are found part-way through.
             int now = Find.TickManager.TicksGame;
             foreach (IntVec3 cell in CellRect.CenteredOn(c, 4))
             {
@@ -263,7 +272,7 @@ namespace RimMandrake.LeaningScrub
             }
             if (people.Count > 0)
             {
-                LordMaker.MakeNewLord(faction, new LordJob_DefendBase(faction, c, 25000, attackWhenPlayerBecameEnemy: true), map, people);
+                LordMaker.MakeNewLord(faction, new RM_LordJob_ScrubCamp(faction, c), map, people);
                 map.GetComponent<RM_MapComponent_ScrubCamps>()?.Add(people);
             }
             Claim(c, 5, used);
@@ -326,6 +335,48 @@ namespace RimMandrake.LeaningScrub
         }
     }
 
+    /// <summary>A living camp's lord: defend the camp; assault the colony only once its faction is the colony's enemy,
+    /// and go back to defending if peace returns. No timer, chance, hunger or clamor trigger (vanilla DefendBase has all
+    /// four, and fires a ThreatBig "attacking your colony" message with each).</summary>
+    public class RM_LordJob_ScrubCamp : LordJob
+    {
+        private Faction faction;
+        private IntVec3 baseCenter;
+
+        public RM_LordJob_ScrubCamp()
+        {
+        }
+
+        public RM_LordJob_ScrubCamp(Faction faction, IntVec3 baseCenter)
+        {
+            this.faction = faction;
+            this.baseCenter = baseCenter;
+        }
+
+        public override StateGraph CreateGraph()
+        {
+            StateGraph graph = new StateGraph();
+            LordToil_DefendBase defend = new LordToil_DefendBase(baseCenter);
+            graph.StartingToil = defend;
+            LordToil_AssaultColony assault = new LordToil_AssaultColony(attackDownedIfStarving: true) { useAvoidGrid = true };
+            graph.AddToil(assault);
+            Transition toWar = new Transition(defend, assault);
+            toWar.AddTrigger(new Trigger_BecamePlayerEnemy());
+            toWar.AddPostAction(new TransitionAction_WakeAll());
+            graph.AddTransition(toWar);
+            Transition toPeace = new Transition(assault, defend);
+            toPeace.AddTrigger(new Trigger_BecameNonHostileToPlayer());
+            graph.AddTransition(toPeace);
+            return graph;
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_References.Look(ref faction, "faction");
+            Scribe_Values.Look(ref baseCenter, "baseCenter");
+        }
+    }
+
     /// <summary>Keeps the people of the Scrub's living camps fed and rested while they are not at war with the
     /// colony. Nobody in a camp farms (NPCs cannot); the camp's sustenance is simply present.</summary>
     public class RM_MapComponent_ScrubCamps : MapComponent
@@ -369,6 +420,10 @@ namespace RimMandrake.LeaningScrub
         public override void ExposeData()
         {
             base.ExposeData();
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                people.RemoveAll(p => p == null || p.Dead || p.Destroyed || p.Discarded);
+            }
             Scribe_Collections.Look(ref people, "rmScrubCampPeople", LookMode.Reference);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

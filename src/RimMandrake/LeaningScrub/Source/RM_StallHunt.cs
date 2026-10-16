@@ -14,7 +14,8 @@ namespace RimMandrake.LeaningScrub
     //           with no code here.
     //   Stall — every PassInterval ticks each idle wild stall hunter (ThingDef carries RM_StallHunterExtension; RM_Zellik
     //           in this mod) is given a vanilla PredatorHunt job (the JobGiver_GetFood shape: killIncappedTarget) on the
-    //           nearest visible wild creature of another kind within SearchRadius and maxPreyBodySize, hungry or not.
+    //           nearest visible wild creature of another kind within SearchRadius and maxPreyBodySize that vanilla's
+    //           FoodUtility.IsAcceptablePreyFor also accepts, hungry or not. Only an idle hawk is sent (never a fleeing one).
     //           A creature that holds still in the Stall keeps its ripple cover and cannot be picked.
     // Flight itself is the def's MaxFlightTime stat (vanilla). Never live-tested without the owner (flyer law); the
     // proof reads job state only.
@@ -45,6 +46,13 @@ namespace RimMandrake.LeaningScrub
         /// <summary>Send every idle stall hunter after prey. Returns how many hunts were started.</summary>
         public int Pass()
         {
+            return Pass(null);
+        }
+
+        /// <summary>As Pass(), but only <paramref name="only"/> may hunt when it is given (the proof hook drives
+        /// its own spawned hawk without starting hunts for the map's real ones).</summary>
+        public int Pass(Pawn only)
+        {
             bool on = RM_WindCalendar.On(RM_LeaningScrubSettings.stallHuntEnabled);
             if (!on || !RM_WindCalendar.IsStall(map))
             {
@@ -56,13 +64,17 @@ namespace RimMandrake.LeaningScrub
             for (int i = 0; i < tmpPawns.Count; i++)
             {
                 Pawn hawk = tmpPawns[i];
+                if (only != null && hawk != only)
+                {
+                    continue;
+                }
                 RM_StallHunterExtension ext = hawk.def.GetModExtension<RM_StallHunterExtension>();
                 if (ext == null)
                 {
                     continue;
                 }
-                if (!RM_StallHuntKernel.Hunts(true, true, hawk.Faction == null, hawk.Awake(), hawk.Downed, hawk.InMentalState,
-                        hawk.CurJobDef == JobDefOf.PredatorHunt))
+                if (!RM_StallHuntKernel.Hunts(on, true, hawk.Faction == null, hawk.Awake(), hawk.Downed, hawk.InMentalState,
+                        hawk.CurJobDef == JobDefOf.PredatorHunt) || !Idle(hawk))
                 {
                     continue;
                 }
@@ -80,6 +92,13 @@ namespace RimMandrake.LeaningScrub
             return started;
         }
 
+        // Only an idle hawk is sent: never one fleeing, eating, mating or otherwise busy (InterruptForced would cut it).
+        private static bool Idle(Pawn hawk)
+        {
+            JobDef cur = hawk.CurJobDef;
+            return cur == null || cur == JobDefOf.Wait_Wander || cur == JobDefOf.GotoWander || cur == JobDefOf.Wait;
+        }
+
         private Pawn FindPrey(Pawn hawk, RM_StallHunterExtension ext)
         {
             Pawn best = null;
@@ -91,16 +110,24 @@ namespace RimMandrake.LeaningScrub
                 {
                     continue;
                 }
-                if (!RM_StallHuntKernel.Prey(p.Faction == null, p.def == hawk.def, p.Dead, p.IsPsychologicallyInvisible(), p.BodySize, ext.maxPreyBodySize))
+                float d = (p.Position - hawk.Position).LengthHorizontalSquared;
+                if (d >= bestDist)
                 {
                     continue;
                 }
-                float d = (p.Position - hawk.Position).LengthHorizontalSquared;
-                if (d < bestDist && hawk.CanReach(p, PathEndMode.Touch, Danger.Deadly) && hawk.CanReserve(p))
+                if (!RM_StallHuntKernel.Prey(p.Faction == null, p.def.GetModExtension<RM_StallHunterExtension>() != null, p.Dead,
+                        p.IsPsychologicallyInvisible(), p.BodySize, ext.maxPreyBodySize))
                 {
-                    best = p;
-                    bestDist = d;
+                    continue;
                 }
+                // Vanilla's own prey test (flesh, canBePredatorPrey, fog, the combat-power check, the race's own
+                // maxPreyBodySize): the Stall makes the hawk bold, not suicidal.
+                if (!FoodUtility.IsAcceptablePreyFor(hawk, p) || !hawk.CanReach(p, PathEndMode.Touch, Danger.Deadly))
+                {
+                    continue;
+                }
+                best = p;
+                bestDist = d;
             }
             return best;
         }
@@ -122,7 +149,8 @@ namespace RimMandrake.LeaningScrub
             {
                 if (k.race == null || k.RaceProps == null || !k.RaceProps.Animal) continue;
                 if (hawkKind == null && k.race.GetModExtension<RM_StallHunterExtension>() != null) hawkKind = k;
-                else if (preyKind == null && k.race.race.baseBodySize <= 0.3f && !k.RaceProps.Dryad && k.race.GetModExtension<RM_StallHunterExtension>() == null) preyKind = k;
+                else if (preyKind == null && k.race.race.baseBodySize <= 0.3f && !k.RaceProps.Dryad && !k.RaceProps.predator && k.RaceProps.IsFlesh
+                    && k.RaceProps.canBePredatorPrey && k.race.GetModExtension<RM_StallHunterExtension>() == null) preyKind = k;
             }
             if (hawkKind == null || preyKind == null) return "UNMEASURED: no stall hunter or no small prey kind loaded";
             IntVec3 at = CellFinder.RandomClosewalkCellNear(map.Center, map, 20, c => !c.Roofed(map) && c.GetFirstPawn(map) == null);
@@ -143,8 +171,8 @@ namespace RimMandrake.LeaningScrub
                 GenSpawn.Spawn(prey, CellFinder.RandomClosewalkCellNear(at, map, 4), map);
                 made.Add(prey);
                 if (!hawk.Awake()) return "UNMEASURED: the spawned " + hawkKind.defName + " is asleep";
-                int started = comp.Pass();
-                bool hunting = hawk.CurJobDef == JobDefOf.PredatorHunt;
+                int started = comp.Pass(hawk);
+                bool hunting = hawk.CurJobDef == JobDefOf.PredatorHunt && hawk.CurJob.targetA.Thing == prey;
                 string st = string.Format("hawk={0} prey={1} started={2} hunting={3}", hawkKind.defName, preyKind.defName, started, hunting);
                 if (mode == "off") return hunting ? "FAIL: stallHuntEnabled off but the hawk hunted " + st : "PASS off " + st;
                 return hunting ? "PASS " + st : "FAIL: a stall hunter beside visible prey did not hunt in the Stall " + st;
