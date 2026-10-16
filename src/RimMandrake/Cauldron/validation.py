@@ -1341,7 +1341,8 @@ def bloom_chain(t):
                 if door.get("x") is not None:
                     t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (door["x"], door["z"]), categories="All")
                     t.bridge_call("jawa/spawn_batch", ops="Wall:%d,%d" % (door["x"], door["z"]), stuff="Steel")
-                if _live(t) and (door.get("x") is None or _count(t, "Door", "%d,%d,9,9" % (x - 11, z - 4)) != 0):
+                if _live(t) and (door.get("x") is None or _count(t, "Door", "%d,%d,9,9" % (x - 11, z - 4)) != 0
+                                 or _count(t, "Wall", "%d,%d,1,1" % (door["x"], door["z"])) != 1):
                     _unmeasured(t, "could not seal the roofed room (door %r still open): an indoor colonist "
                                    "can walk out" % (door,))
                 ids["out"] = _spawn(t, "Colonist", x + 6, z + 8, faction="player")

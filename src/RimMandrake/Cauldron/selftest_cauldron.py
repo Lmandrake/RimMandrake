@@ -526,6 +526,8 @@ class Fake(object):
         for op in ops.split(";"):
             d, nums = op.split(":")
             n = [int(v) for v in nums.split(",")]
+            if d == "Wall" and "wall_not_placed" in self.broken:
+                continue
             self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1)
         return {"success": True}
 
@@ -814,7 +816,7 @@ def main():
         if reds != [target]:
             bad.append("break %-22s expected only %s FAIL, got %s" % (brk, target, reds))
     # SITE breaks (not mod defects): the roofed-room guard must answer UNMEASURED, never FAIL and never PASS.
-    for brk in ("room_reports_no_door", "indoor_walks_out"):
+    for brk in ("room_reports_no_door", "wall_not_placed", "indoor_walks_out"):
         res = run([brk])
         reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
         got = res.get("bloom.bloom_spares_roofed", ("?",))[0]
