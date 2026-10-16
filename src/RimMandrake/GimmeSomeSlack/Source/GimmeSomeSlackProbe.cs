@@ -367,14 +367,14 @@ namespace RimMandrake.GimmeSomeSlack
         {
             if (args == "clear")
             {
-                bool had = sameFrameWall != null && sameFrameWall.Spawned;
+                bool had = sameFrameWall != null && sameFrameWall.Spawned && sameFrameWall.Map == map;   // a Thing from a prior game is never touched
                 if (had) sameFrameWall.Destroy(DestroyMode.Vanish);
                 sameFrameWall = null;
                 return "{\"success\":true,\"cmd\":\"sameframe:clear\",\"destroyed\":" + J.B(had) + "}";
             }
             int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
             var rect = new CellRect(a[0], a[1], a[2], a[3]);
-            if (sameFrameWall != null && sameFrameWall.Spawned) sameFrameWall.Destroy(DestroyMode.Vanish);   // review: never leave an earlier wall behind
+            if (sameFrameWall != null && sameFrameWall.Spawned && sameFrameWall.Map == map) sameFrameWall.Destroy(DestroyMode.Vanish);   // review: never leave an earlier wall behind
             sameFrameWall = null;
             int frame = UnityEngine.Time.frameCount;
             comp.Rebuild();
