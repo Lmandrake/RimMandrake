@@ -139,5 +139,39 @@ namespace RimMandrake.ExplosiveGrowth
             p.Destroy();
             return "maxScale=" + ExplosiveGrowthSettings.maxOvergrowthScale.ToString("0.00") + " " + string.Join(" ", parts);
         }
+
+        /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME. A field written through jawa/mod_settings_field does not run
+        /// WriteSettings, so a registry-affecting setting (soakOtherModsPlants, minGrowDaysToSoak, cavePlantsNeverSoak)
+        /// only takes effect after this rebuild. Returns the same read as ProofScope.</summary>
+        public static string ProofRebuild(Map map)
+        {
+            RM_ExplosiveGrowthRegistry.Rebuild();
+            return ProofScope(map);
+        }
+
+        /// <summary>The soak's native scope as the live plant table holds it: does vanilla Plant_Rice soak, is it one of
+        /// the home biomes' wild plants (then it is native and the off-arm cannot test it), how many of the home mod's
+        /// own plant defs soak, and the scope counters.</summary>
+        public static string ProofScope(Map map)
+        {
+            ModContentPack home = ExplosiveGrowthMod.Home;
+            ThingDef rice = DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Rice");
+            int homePlants = 0, homeSoaking = 0;
+            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (d.plant == null || home == null || d.modContentPack != home) continue;
+                homePlants++;
+                if (RM_ExplosiveGrowthRegistry.For(d)?.Soaks == true) homeSoaking++;
+            }
+            return "home=" + (home?.PackageId ?? "NONE")
+                   + " option=" + ExplosiveGrowthSettings.soakOtherModsPlants
+                   + " rice=" + (rice != null && RM_ExplosiveGrowthRegistry.For(rice)?.Soaks == true)
+                   + " riceLoaded=" + (rice != null)
+                   + " riceInHomeBiome=" + (rice != null && RM_ExplosiveGrowthRegistry.HomeBiomePlants.Contains(rice))
+                   + " homePlants=" + homePlants + " homeSoaking=" + homeSoaking
+                   + " optIn=" + RM_ExplosiveGrowthRegistry.ScopeOptIn + " homePack=" + RM_ExplosiveGrowthRegistry.ScopeHomePack
+                   + " homeBiome=" + RM_ExplosiveGrowthRegistry.ScopeHomeBiome + " allPlants=" + RM_ExplosiveGrowthRegistry.ScopeAllPlants
+                   + " outOfScope=" + RM_ExplosiveGrowthRegistry.OutOfScope;
+        }
     }
 }

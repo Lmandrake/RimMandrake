@@ -111,7 +111,7 @@ namespace RimMandrake.ExplosiveGrowth
         /// carve-out biome (terminator, deep desert — design doc §3).</summary>
         public bool TrySoak(IntVec3 c, int ticks)
         {
-            bool allowed = ExplosiveGrowthSettings.enabled && c.InBounds(map)
+            bool allowed = ExplosiveGrowthSettings.On && c.InBounds(map)
                 && !RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome);
             return ledger.TrySoak(c, Find.TickManager.TicksGame, ticks, allowed);
         }
@@ -212,7 +212,7 @@ namespace RimMandrake.ExplosiveGrowth
             int now = Find.TickManager.TicksGame;
             if (now < nextPassTick) return;
             nextPassTick = now + PassInterval;
-            if (!ExplosiveGrowthSettings.enabled || !RM_ExplosiveGrowthRegistry.Ready)
+            if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready)
             {
                 lastPassTick = now;
                 return;
@@ -336,11 +336,15 @@ namespace RimMandrake.ExplosiveGrowth
 
         private string Report()
         {
-            return string.Format("soaked={0} charging={1} suppressed={2} ruptures={3} biomeRefusesSoak={4} registry: soaking={5} none={6} rosterRows resolved={7} missing={8}",
+            return string.Format("soaked={0} charging={1} suppressed={2} ruptures={3} biomeRefusesSoak={4} registry: soaking={5} none={6} rosterRows resolved={7} missing={8}"
+                + " scope: optIn={9} homePack={10} homeBiome={11} allPlants={12} outOfScope={13} mechanicsOn={14}",
                 ledger.soakUntil.Count, ledger.charges.Count, ledger.suppressedUntil.Count, ruptures.Count,
                 RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome),
                 RM_ExplosiveGrowthRegistry.CountSoaking, RM_ExplosiveGrowthRegistry.CountNone,
-                RM_ExplosiveGrowthRegistry.RosterResolved, RM_ExplosiveGrowthRegistry.RosterMissing);
+                RM_ExplosiveGrowthRegistry.RosterResolved, RM_ExplosiveGrowthRegistry.RosterMissing,
+                RM_ExplosiveGrowthRegistry.ScopeOptIn, RM_ExplosiveGrowthRegistry.ScopeHomePack,
+                RM_ExplosiveGrowthRegistry.ScopeHomeBiome, RM_ExplosiveGrowthRegistry.ScopeAllPlants,
+                RM_ExplosiveGrowthRegistry.OutOfScope, ExplosiveGrowthSettings.On);
         }
 
         public override void ExposeData()

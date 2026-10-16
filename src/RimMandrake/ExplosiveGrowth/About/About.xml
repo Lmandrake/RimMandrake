@@ -22,14 +22,17 @@
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rm.flowworks</li>
-    <!-- NOT mandrake.rm.biomes: biomes loads AFTER this engine (FloodedCanyon pushes its flood
-         into ExplosiveGrowthAPI). Every read of biomes content here is lazy runtime reflection /
-         GetNamedSilentFail, so it needs no order; naming biomes here made a cycle. -->
+    <!-- EXPLOSIVE_GROWTH_MERGE_COMES_HOME: this folder is a COMPOSED MEMBER of Baroque Biomes
+         (mandrake.rm.biomes, src/RimMandrake/Biomes.compose.json); it is never deployed standalone.
+         This About is read only by the composer (dependency union, and the folded-packageId
+         rewrite of MayRequire guards that still name mandrake.rm.explosivegrowth). -->
     <li>sarg.alphabiomes</li>
   </loadAfter>
   <description>EXPLOSIVE_PLANT_GROWTH_1. Water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
 
-RM tier: nothing here knows what campaign or planet uses it.
+Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own toggle on the Baroque Biomes settings page, and its own settings page). RM tier: nothing here knows what campaign or planet uses it.
+
+WHICH PLANTS. By default only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension). A Mod Settings option (off by default) extends the soak to every other mod's and the base game's plants.
 
 THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of whatever ambient rate the rest of your mod list gives them. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
 
@@ -45,7 +48,7 @@ THE TOP belongs to the PLANT, never the ground it stands on:
 
 PLAYER VERBS. Harvest a swollen plant for extra produce. Cut it to defuse it — though once it trembles, the last swing is a gamble. Keep ground dry. Grazing animals (and a dry-air blower, where another mod ships one) suppress encroachment for a few days.
 
-Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI for other mods to call by reflection.
+Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI; the Baroque Biomes members (Flooded Canyon, Environmental Hazards) call it directly, other mods may call it by reflection.
 
 Ships the IncidentWorker behind a map-scale bloom (RM_IncidentWorker_BloomBurst); a campaign layer names the IncidentDef and the bloom plant.
 

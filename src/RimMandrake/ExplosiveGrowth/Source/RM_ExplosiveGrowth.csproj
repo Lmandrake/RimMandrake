@@ -83,6 +83,13 @@
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- EXPLOSIVE_GROWTH_MERGE_COMES_HOME: this engine is a composed member of Baroque Biomes (mandrake.rm.biomes),
+         whose settings shell DLL sits in the composed mod's root Assemblies/ and so loads before every member.
+         ExplosiveGrowthSettings.On reads the shell's "ExplosiveGrowth" roster toggle directly. Build BiomesShell FIRST. -->
+    <Reference Include="RimMandrake.Biomes">
+      <HintPath>..\..\BiomesShell\Assemblies\RimMandrake.Biomes.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -38,7 +38,7 @@ namespace RimMandrake.Utinni.PlantGrowth
         //             x10 instead of x4 growth here." It REPLACES the default
         //             band on those biomes, it does not stack on it. This is
         //             NOT the soak multiplier (that is an event multiplier owned
-        //             by mandrake.rm.explosivegrowth and stacks on top of
+        //             by the Explosive Growth engine in mandrake.rm.biomes and stacks on top of
         //             whichever ambient band applies).
         //             Trees: the ruling names one number. 6.25 keeps the
         //             tree:default ratio the spec already rules (2.5:4) —

@@ -17,8 +17,16 @@ namespace RimMandrake.ExplosiveGrowth
     // ════════════════════════════════════════════════════════════════════
     public class ExplosiveGrowthSettings : ModSettings
     {
-        // Master switch. Off: no soak forms, nothing charges, every patch no-ops.
+        // Master switch. Off: no soak forms, nothing charges, every patch no-ops. Every runtime read goes through On,
+        // which ANDs it with the Baroque Biomes roster toggle "ExplosiveGrowth" (two switches, both must be on).
         public static bool enabled = true;
+
+        /// <summary>The roster key of this engine in src/RimMandrake/Biomes.compose.json.</summary>
+        public const string RosterKey = "ExplosiveGrowth";
+
+        /// <summary>What every mechanic reads: this page's switch AND the Baroque Biomes page's toggle for this engine.
+        /// Never Scribed; each switch keeps its own saved state.</summary>
+        public static bool On => enabled && RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
 
         // ── the soak ─────────────────────────────────────────────────────
         // Design doc §0 🄸: the soak multiplier stacks multiplicatively on the
@@ -32,6 +40,10 @@ namespace RimMandrake.ExplosiveGrowth
         public static float minGrowDaysToSoak = 1f;
         // 🄸 INVENTED generalisation of the fungal carve-out to the RM tier.
         public static bool cavePlantsNeverSoak = true;
+        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME, owner 2026-10-16: "It should only natively apply to plants within the
+        // Baroque Biomes, though option settings could allow it to apply to other plants from other mods or vanilla
+        // basegame". Off = the ruled default.
+        public static bool soakOtherModsPlants = false;
 
         public static bool irrigationSoakEnabled = true;
         public static bool gradientSurgeSoakEnabled = true;
@@ -84,6 +96,7 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref defaultSoakHours, "defaultSoakHours", 24f);
             Scribe_Values.Look(ref minGrowDaysToSoak, "minGrowDaysToSoak", 1f);
             Scribe_Values.Look(ref cavePlantsNeverSoak, "cavePlantsNeverSoak", true);
+            Scribe_Values.Look(ref soakOtherModsPlants, "soakOtherModsPlants", false);
             Scribe_Values.Look(ref irrigationSoakEnabled, "irrigationSoakEnabled", true);
             Scribe_Values.Look(ref gradientSurgeSoakEnabled, "gradientSurgeSoakEnabled", true);
             Scribe_Values.Look(ref weatherSoakEnabled, "weatherSoakEnabled", true);
@@ -122,7 +135,10 @@ namespace RimMandrake.ExplosiveGrowth
             if (Group(list, "Mod switch", RimMandrake.Shared.SettingScope.Now, new[] { "enabled" }))
             {
                 list.CheckboxLabeled("Explosive plant growth enabled", ref enabled,
-                    "Off: water never soaks a plant, nothing swells, nothing reaches a top. Plants grow at whatever ambient rate the rest of your mod list gives them.");
+                    "Off: water never soaks a plant, nothing swells, nothing reaches a top. Plants grow at whatever ambient rate the rest of your mod list gives them.\n\n"
+                    + "The Baroque Biomes settings page has its own toggle for this engine (under Engines); both must be on.");
+                if (!RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey))
+                    list.Label("  The Baroque Biomes page has this engine switched OFF, so nothing here runs until it is back on.");
                 list.GapLine();
             }
 
@@ -146,8 +162,17 @@ namespace RimMandrake.ExplosiveGrowth
                 list.GapLine();
             }
 
-            if (Group(list, "Which plants soak", RimMandrake.Shared.SettingScope.Now, new[] { "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
+            if (Group(list, "Which plants soak", RimMandrake.Shared.SettingScope.Now, new[] { "soakOtherModsPlants", "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
             {
+                list.CheckboxLabeled("Also soak plants from other mods and the base game", ref soakOtherModsPlants,
+                    "Off (default): only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, "
+                    + "and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension on the plant).\n\n"
+                    + "On: any plant from any mod or the base game can soak, minus the exemptions below. Applied when you close this window.");
+                if (RM_ExplosiveGrowthRegistry.Ready)
+                    list.Label("  Soaking now: " + RM_ExplosiveGrowthRegistry.CountSoaking + " plant kinds ("
+                               + (RM_ExplosiveGrowthRegistry.ScopeHomePack + RM_ExplosiveGrowthRegistry.ScopeHomeBiome + RM_ExplosiveGrowthRegistry.ScopeOptIn)
+                               + " Baroque Biomes or opted in, " + RM_ExplosiveGrowthRegistry.ScopeAllPlants + " by this option); "
+                               + RM_ExplosiveGrowthRegistry.OutOfScope + " other plant kinds left out.");
                 list.Label("Plants faster than " + minGrowDaysToSoak.ToString("0.0") + " grow-days never soak (applied when you close this window)");
                 minGrowDaysToSoak = list.Slider(minGrowDaysToSoak, 0.1f, 5f);
                 list.CheckboxLabeled("Cave plants and fungi never soak", ref cavePlantsNeverSoak,
@@ -257,9 +282,16 @@ namespace RimMandrake.ExplosiveGrowth
     {
         public static ExplosiveGrowthSettings settings;
 
+        /// <summary>The mod this engine shipped in — Baroque Biomes (mandrake.rm.biomes), of which it is a composed
+        /// member. Its plants, and the wild flora of its biomes, are the soak's native scope.</summary>
+        public static ModContentPack Home;
+
         public ExplosiveGrowthMod(ModContentPack content) : base(content)
         {
+            Home = content;
             settings = GetSettings<ExplosiveGrowthSettings>();
+            // The shell's tooltip then says this engine's toggle stops it on running maps too (spec §5, arm 2).
+            RimMandrake.Biomes.RM_BiomesSettings.mechanicsGated.Add(ExplosiveGrowthSettings.RosterKey);
         }
 
         public override string SettingsCategory() => "Explosive Plant Growth";

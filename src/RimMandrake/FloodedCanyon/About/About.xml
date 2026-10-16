@@ -21,7 +21,6 @@
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>mandrake.rm.flowworks</li>
-    <li>mandrake.rm.explosivegrowth</li>
   </loadAfter>
   <description>FLOOD_CANYON_BIOME_1 (owner ruling, 2026-09-12, verbatim on the filing
 event: the flood-witness work restructures into its own standalone biome mod —
@@ -56,16 +55,17 @@ shipped behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
      FlowWorks, which owns depth and fill, and empties them again when it
      recedes. A dug channel, a pit or a superdeep excavation therefore
      survives a flood instead of being erased by it.
-  3. The soak: every cell the flood wets is handed to RimMandrake: Explosive
-     Plant Growth (mandrake.rm.explosivegrowth) as SOAKED ground for the
-     flood's duration plus a few days, so the wet floor swells, charges and
-     blooms. That mod owns the growth and the terminal moments; it is an
-     optional companion found by reflection — without it the flood still
-     floods, chimes and leaves soil, and simply soaks nothing.
+  3. The soak: every cell the flood wets is handed to the Explosive Plant
+     Growth engine as SOAKED ground for the flood's duration plus a few days,
+     so the wet floor swells, charges and blooms. That engine owns the growth
+     and the terminal moments; both ship composed in RimMandrake: Baroque
+     Biomes, and the flood calls it directly. With the engine switched off in
+     Mod Settings the flood still floods, chimes and leaves soil, and simply
+     soaks nothing.
 
 NOT in this mod (owned elsewhere, per the calling item's own boundary): the
 Utinni campaign's guaranteed first-witnessing quest beat
-(FLOOD_WITNESS_EVENT_1) and the plant-growth engine (EXPLOSIVE_PLANT_GROWTH_1,
-mandrake.rm.explosivegrowth) — both live outside it.
+(FLOOD_WITNESS_EVENT_1), which lives outside it, and the plant-growth engine
+(EXPLOSIVE_PLANT_GROWTH_1), a separate member of Baroque Biomes.
   </description>
 </ModMetaData>

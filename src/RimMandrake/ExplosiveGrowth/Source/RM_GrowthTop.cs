@@ -57,7 +57,8 @@ namespace RimMandrake.ExplosiveGrowth
     /// the plant by string, so an absent donor is skipped silently rather than
     /// eating the def (a modExtension patched onto a def whose mod is missing
     /// is exactly the silent-discard trap this repo keeps hitting).
-    /// A modExtension wins over any roster row.
+    /// A modExtension wins over any roster row, and it also puts the plant in the
+    /// soak's native scope (it is an explicit opt-in by the plant's owner).
     /// </summary>
     public class RM_ExplosiveGrowthExtension : DefModExtension
     {
@@ -95,6 +96,13 @@ namespace RimMandrake.ExplosiveGrowth
     public class RM_ExplosiveGrowthRosterDef : Def
     {
         public List<RM_ExplosiveGrowthRosterEntry> plants = new List<RM_ExplosiveGrowthRosterEntry>();
+
+        /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME: true puts every plant this roster's rows name INTO the soak's
+        /// native scope (as an RM_ExplosiveGrowthExtension does). False (the default) only assigns tops: the rows
+        /// then matter for plants already in scope (Baroque Biomes' own and their biomes' wild flora) or for every
+        /// plant once the player turns on "soak other mods' and base-game plants". A campaign layer whose world is
+        /// its own flora (the Utinni roster) sets it.</summary>
+        public bool nativeSoak;
 
         /// <summary>R-G5: plants whose slowness is a mechanic. Never soak.</summary>
         public List<string> exemptPlants = new List<string>();

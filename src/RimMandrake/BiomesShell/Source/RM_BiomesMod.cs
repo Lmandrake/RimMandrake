@@ -188,9 +188,19 @@ namespace RimMandrake.Biomes
                 if (members.Count == 0) continue;
                 string title = g == "biome" ? "Biomes (WORLDGEN-AFFECTING)" : g == "engine" ? "Engines" : "Mechanics";
                 string tag = RimMandrake.Shared.SettingsKitCore.ScopeTag(RimMandrake.Shared.SettingScope.NewMapsOnly);
-                string note = members.Any(e => e.biomeDefs.Count > 0)
-                    ? tag + " changes only affect worlds generated afterwards"
-                    : "[no effect yet] these toggles are recorded but nothing reads them; each is wired per mod later";
+                // A group mixes entries that ship biomes (worldgen), entries whose own mod reads the toggle at once
+                // (mechanicsGated, e.g. the Explosive Growth engine) and entries nothing reads yet; say each that applies.
+                var notes = new List<string>();
+                if (members.Any(e => e.biomeDefs.Count > 0))
+                    notes.Add(tag + " changes only affect worlds generated afterwards");
+                if (members.Any(e => e.biomeDefs.Count == 0 && RM_BiomesSettings.mechanicsGated.Contains(e.key)))
+                    notes.Add(RimMandrake.Shared.SettingsKitCore.ScopeTag(RimMandrake.Shared.SettingScope.Now)
+                              + " " + string.Join(", ", members.Where(e => e.biomeDefs.Count == 0 && RM_BiomesSettings.mechanicsGated.Contains(e.key)).Select(e => e.label))
+                              + ": switches that mechanic on or off on running maps at once");
+                if (members.Any(e => e.biomeDefs.Count == 0 && !RM_BiomesSettings.mechanicsGated.Contains(e.key)))
+                    notes.Add("[no effect yet] " + string.Join(", ", members.Where(e => e.biomeDefs.Count == 0 && !RM_BiomesSettings.mechanicsGated.Contains(e.key)).Select(e => e.label))
+                              + ": recorded, but nothing reads these yet; each is wired per mod later");
+                string note = string.Join("\n", notes);
                 if (!Group(list, title, note, searchQuery, members)) continue;
                 foreach (var e in members)
                 {
@@ -207,8 +217,11 @@ namespace RimMandrake.Biomes
                               + (RM_BiomesSettings.mechanicsGated.Contains(e.key)
                                   ? "Also switches this biome's mechanics off at once, on maps already running.\n" : "")
                               + "Biome defs: " + string.Join(", ", e.biomeDefs)
-                            : "\n\nThis entry ships no biome of its own; its toggle is recorded for "
-                              + "the mechanics gate, which is wired per mod. Nothing reads it yet.");
+                            : RM_BiomesSettings.mechanicsGated.Contains(e.key)
+                                ? "\n\nThis entry ships no biome of its own. Its toggle switches this mechanic on or off at once, "
+                                  + "on maps already running; its own settings page has a further switch, and both must be on."
+                                : "\n\nThis entry ships no biome of its own; its toggle is recorded for "
+                                  + "the mechanics gate, which is wired per mod. Nothing reads it yet.");
                     list.CheckboxLabeled(e.label, ref on, tip);
                     if (on != was) settings.enabled[e.key] = on;
                     Text.Font = GameFont.Tiny;

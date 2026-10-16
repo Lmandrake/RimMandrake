@@ -462,9 +462,11 @@ if Suite is not None:
         with _comp(t, "flood_soaks_cells_via_explosive_growth", toggle="growthCouplingEnabled"):
             with _arm(t, featureInOtherBiomes=True, floodCycleEnabled=True):
                 st = _settle(t)
-                if _live(t) and st.get("explosiveGrowth", "").startswith("ABSENT"):
-                    _unmeasured(t, "Explosive Growth is not loaded on this tier (report says ABSENT): the soak is a "
-                                   "no-op by design, which the flood_cycle chain covers; run on a list carrying it")
+                eg = st.get("explosiveGrowth", "")
+                if _live(t) and eg.startswith(("ABSENT", "OFF")):
+                    _unmeasured(t, "Explosive Growth is %s on this load (report says %s): the soak is a no-op by "
+                                   "design, which the flood_cycle chain covers; switch the engine on (its own page AND "
+                                   "the Baroque Biomes toggle)" % ("not loaded" if eg.startswith("ABSENT") else "switched off", eg))
                 base = _eg_soaked(t)
                 with _arm(t, growthCouplingEnabled=False):
                     st = _flood_once(t)

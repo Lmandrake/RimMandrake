@@ -1,5 +1,5 @@
 // ExplosiveGrowth offline fuzz entry. Knobs (forwarded by selftest_explosivegrowth_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (ledger|clock|slice|top).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (ledger|clock|slice|top|scope).
 using System;
 
 namespace RimMandrake.ExplosiveGrowth.SelfTest

@@ -39,6 +39,11 @@ namespace RimMandrake.ExplosiveGrowth
         public static bool Ready { get; private set; }
 
         public static int CountSoaking, CountNone, RosterResolved, RosterMissing;
+        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME: soaking plants by the reason they are in scope (kernel SoakScope order),
+        // and plants left out only because they are foreign and the "other mods' plants" option is off.
+        public static int ScopeOptIn, ScopeHomePack, ScopeHomeBiome, ScopeAllPlants, OutOfScope;
+        /// <summary>Plants that grow wild in a BiomeDef shipped by this engine's own mod (read at the last Rebuild).</summary>
+        public static HashSet<ThingDef> HomeBiomePlants = new HashSet<ThingDef>();
         public static readonly int[] CountByTop = new int[7];
 
         public static RM_PlantProfile For(ThingDef def)
@@ -55,6 +60,7 @@ namespace RimMandrake.ExplosiveGrowth
             Ready = false;
 
             var rows = new Dictionary<string, RM_ExplosiveGrowthRosterEntry>();
+            var optInRows = new HashSet<string>();
             var exempt = new HashSet<string>(BuiltinExempt);
             var biomes = new HashSet<BiomeDef>();
             var kinds = new List<PawnKindDef>();
@@ -67,7 +73,9 @@ namespace RimMandrake.ExplosiveGrowth
             {
                 foreach (RM_ExplosiveGrowthRosterEntry e in roster.plants)
                 {
-                    if (!string.IsNullOrEmpty(e?.plant)) rows[e.plant] = e;
+                    if (string.IsNullOrEmpty(e?.plant)) continue;
+                    rows[e.plant] = e;
+                    if (roster.nativeSoak) optInRows.Add(e.plant);
                 }
                 foreach (string s in roster.exemptPlants) exempt.Add(s);
                 foreach (string s in roster.noSoakBiomes)
@@ -92,6 +100,24 @@ namespace RimMandrake.ExplosiveGrowth
                     if (w != null) weathers.Add(w);
                 }
             }
+
+            // The native scope (owner, 2026-10-16): plants that ship in the same mod as this engine (Baroque Biomes, of
+            // which it is a composed member), and every plant that grows wild in a biome that mod ships — the donor
+            // and base-game flora our biomes list are "plants within the Baroque Biomes" too. Read AFTER patches, so a
+            // patch-added cast (UtinniPatches' WildAnimals_/WildPlants_ files on our twins) counts.
+            ModContentPack home = ExplosiveGrowthMod.Home;
+            var homeBiomePlants = new HashSet<ThingDef>();
+            if (home != null)
+            {
+                foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
+                {
+                    if (b.modContentPack != home) continue;
+                    List<ThingDef> wild = b.AllWildPlants;
+                    if (wild == null) continue;
+                    foreach (ThingDef w in wild) if (w != null) homeBiomePlants.Add(w);
+                }
+            }
+            int sOpt = 0, sPack = 0, sBiome = 0, sAll = 0, sOut = 0;
 
             var table = new RM_PlantProfile[DefDatabase<ThingDef>.DefCount];
             for (int t = 0; t < CountByTop.Length; t++) CountByTop[t] = 0;
@@ -132,6 +158,23 @@ namespace RimMandrake.ExplosiveGrowth
                     p.top = RM_GrowthTop.None;
                 }
 
+                if (p.Soaks)
+                {
+                    byte scope = RM_ExplosiveGrowthKernel.SoakScope(
+                        ext != null || optInRows.Contains(def.defName),
+                        home != null && def.modContentPack == home,
+                        homeBiomePlants.Contains(def),
+                        ExplosiveGrowthSettings.soakOtherModsPlants);
+                    switch (scope)
+                    {
+                        case RM_ExplosiveGrowthKernel.ScopeOptIn: sOpt++; break;
+                        case RM_ExplosiveGrowthKernel.ScopeHomePack: sPack++; break;
+                        case RM_ExplosiveGrowthKernel.ScopeHomeBiome: sBiome++; break;
+                        case RM_ExplosiveGrowthKernel.ScopeAllPlants: sAll++; break;
+                        default: p.top = RM_GrowthTop.None; sOut++; break;
+                    }
+                }
+
                 table[def.index] = p;
                 CountByTop[(int)p.top]++;
                 if (p.Soaks) soaking++; else none++;
@@ -153,6 +196,12 @@ namespace RimMandrake.ExplosiveGrowth
             CountNone = none;
             RosterResolved = resolved;
             RosterMissing = missing;
+            ScopeOptIn = sOpt;
+            ScopeHomePack = sPack;
+            ScopeHomeBiome = sBiome;
+            ScopeAllPlants = sAll;
+            OutOfScope = sOut;
+            HomeBiomePlants = homeBiomePlants;
             Ready = true;
         }
     }

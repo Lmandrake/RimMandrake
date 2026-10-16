@@ -4,9 +4,13 @@
   <!--
     EXPLOSIVE_PLANT_GROWTH_1 — the CAMPAIGN half of the roster: the RUT_ and
     RSW_ plants and the Star Wars donor flora the frozen world rosters carry.
-    Loaded only when mandrake.rm.explosivegrowth is active (LoadFolders.xml),
-    so this mod never hard-depends on it. The RM-tier half (AB_/RG_/vanilla/RM_
-    rows) ships in that mod.
+    Loaded only when mandrake.rm.biomes (which carries the engine) is active
+    (LoadFolders.xml), so this mod never hard-depends on it. The RM-tier half
+    (AB_/RG_/vanilla/RM_ rows) ships with the engine.
+
+    nativeSoak (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): the engine soaks only Baroque
+    Biomes plants by default; this campaign's world is its own flora, so every
+    plant named below is opted INTO the soak whatever mod ships it.
 
     Source: design/RimUtinni/explosive_plant_growth_roster.md, regenerated
     2026-09-21 against ruling 4 (water scarcity decides). CHURN is the default
@@ -17,6 +21,7 @@
   -->
   <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
     <defName>RUT_ExplosiveGrowthRoster_Campaign</defName>
+    <nativeSoak>true</nativeSoak>
 
     <plants>
       <!-- BURST — dry-adapted: one chance in years, spent all at once. -->

@@ -66,7 +66,9 @@ MUTATIONS = [
     ("EffectiveTop Tinder falls to None", "case 3: return tinder ? top : fallback;", "case 3: return tinder ? top : (byte)6;"),
     ("prune keeps entries due now", "if (kv.Value <= now) tmp.Add(kv.Key);", "if (kv.Value < now) tmp.Add(kv.Key);"),
     ("GrowthFactor ignores the plant", "if (!plantSoaks) return 1f;", ""),
-    ("PassDelta unclamped", "Math.Min(Math.Max(now - lastPassTick, 1), PassInterval * 8)", "Math.Max(now - lastPassTick, 1)"),
+    ("SoakScope ignores home biome", "if (homeBiome) return ScopeHomeBiome;", ""),
+    ("SoakScope default soaks all", "            return ScopeOut;\n        }", "            return ScopeAllPlants;\n        }"),
+    ("PassDelta unclamped","Math.Min(Math.Max(now - lastPassTick, 1), PassInterval * 8)", "Math.Max(now - lastPassTick, 1)"),
 ]
 
 if __name__ == "__main__":

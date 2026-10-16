@@ -37,7 +37,7 @@ namespace RimMandrake.ExplosiveGrowth
     {
         protected override bool CanFireNowSub(IncidentParms parms)
         {
-            return ExplosiveGrowthSettings.enabled && parms.target is Map map
+            return ExplosiveGrowthSettings.On && parms.target is Map map
                 && !RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome);
         }
 

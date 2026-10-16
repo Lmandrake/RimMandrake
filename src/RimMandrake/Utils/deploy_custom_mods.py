@@ -458,6 +458,14 @@ def main():
         compose_tmp = os.path.dirname(csrc)
         holds = holds + extra
         targets = [(cname, csrc)]
+        # A folded member's OWN packageId still active in ModsConfig loads that member a second time beside the
+        # composed copy (its defs and types twice). EXPLOSIVE_GROWTH_MERGE_COMES_HOME folded a mod that was live
+        # standalone; say so on every compose plan until the list is fixed. Never edits ModsConfig itself.
+        twice = sorted(set(biomes_compose.folded_ids(SRC_ROOT)) & active)
+        if twice:
+            print("WARNING: folded into %s but STILL ACTIVE standalone in ModsConfig.xml: %s\n"
+                  "  remove them from the mod list (and their old deployed folders) before the next load, or their "
+                  "defs and types load twice." % (cname, ", ".join(twice)))
     else:
         names = args.mod or sorted(known_mods)
         targets = [(n, mod_dir(n)) for n in names]

@@ -16,7 +16,8 @@ namespace RimMandrake.FloodedCanyon
     // components).
     //
     // This mod owns the biome, the phase clock and the chime. The SOAK the
-    // flood leaves is owned by mandrake.rm.explosivegrowth (see StartFlood);
+    // flood leaves is owned by the Explosive Growth engine (see StartFlood;
+    // a direct ExplosiveGrowthAPI call, both composed in Baroque Biomes);
     // this mod only reports which cells the water reached. It
     // does NOT own what an excavated cell looks like — FlowWorks does
     // (flowworks_mod_definition.md §15 ruling 8: one engine, per-driver
@@ -142,7 +143,7 @@ namespace RimMandrake.FloodedCanyon
                 st.Phase, st.NextFloodTick, st.FloodEndTick, Find.TickManager.TicksGame,
                 ledger.Active.Count, ledger.RaisedCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
-                RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)",
+                RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings.On ? "present" : "OFF(engine-switched-off;flood-soaks-nothing)",
                 st.ChimeStage, st.LastRecedeTick, st.PeakstormPulled,
                 map.weatherManager.curWeather?.defName ?? "null",
                 st.HeraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
@@ -409,7 +410,7 @@ namespace RimMandrake.FloodedCanyon
 
             if (RM_FloodedCanyonSettings.growthCouplingEnabled)
             {
-                RM_ExplosiveGrowthBridge.SoakCells(map, cells, soakTicks);
+                RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI.SoakCells(map, cells, soakTicks);
             }
 
             if (RM_FloodedCanyonSettings.floodDamageEnabled)

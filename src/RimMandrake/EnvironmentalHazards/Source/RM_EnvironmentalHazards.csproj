@@ -222,7 +222,6 @@
     <Compile Include="RM_Patch_GravshipArrivalLetter.cs" />
     <Compile Include="RM_Patch_LaunchHeldColonistWarning.cs" />
     <Compile Include="RM_Patch_GrazingSuppressionHook.cs" />
-    <Compile Include="RM_ExplosiveGrowthSuppressionBridge.cs" />
     <Compile Include="RM_Patch_HazardApparelScoring.cs" />
     <Compile Include="RM_DefAliases.cs" />
     <Compile Include="RM_SurfaceHome.cs" />
@@ -280,6 +279,13 @@
          honest rather than adding a new one. -->
     <Reference Include="RimMandrakeFlowWorks">
       <HintPath>..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- EXPLOSIVE_GROWTH_MERGE_COMES_HOME: grazing (M10) and the dry-air blower (M2) write the soak engine's
+         suppression grid by a DIRECT ExplosiveGrowthAPI.Suppress call; both are composed members of Baroque Biomes,
+         the engine listed before this kit in Biomes.compose.json. Build ExplosiveGrowth FIRST. -->
+    <Reference Include="RimMandrake.ExplosiveGrowth">
+      <HintPath>..\..\ExplosiveGrowth\Assemblies\RimMandrake.ExplosiveGrowth.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

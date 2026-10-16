@@ -18,14 +18,18 @@ namespace RimMandrake.EnvironmentalHazards
     // the whole mechanism per the spec's own text ("zero new defs — any
     // plant-eater suppresses, which is exactly the sheet's ecology").
     //
-    // WIRED 2026-09-26: the grid this hook was built to write into now
-    // exists (mandrake.rm.explosivegrowth, EXPLOSIVE_PLANT_GROWTH_1). The
-    // write goes through RM_ExplosiveGrowthSuppressionBridge by reflection,
-    // so this kit still takes no hard dependency on that mod — without it
-    // the hook stays armed and writes nothing.
+    // WIRED 2026-09-26: the grid this hook was built to write into is the
+    // Explosive Growth engine's (EXPLOSIVE_PLANT_GROWTH_1). Since
+    // EXPLOSIVE_GROWTH_MERGE_COMES_HOME both are composed members of Baroque
+    // Biomes, so the write is a DIRECT call to ExplosiveGrowthAPI.Suppress
+    // (the former reflection bridge is gone).
+    //
+    // greentide_kit_spec.md M10: "a decay of a few days" — INVENTED 3.
     [StaticConstructorOnStartup]
     public static class RM_GrazingSuppressionHookPatch
     {
+        public const int GrazingSuppressionTicks = 3 * 60000;
+
         static RM_GrazingSuppressionHookPatch()
         {
             var target = AccessTools.Method(typeof(Plant), "IngestedCalculateAmounts");
@@ -83,8 +87,8 @@ namespace RimMandrake.EnvironmentalHazards
         // raw all hold the green back the same way.
         private static void WriteSuppression(IntVec3 cell, Map map, Pawn ingester)
         {
-            RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, SuppressionRadius,
-                RM_ExplosiveGrowthSuppressionBridge.GrazingSuppressionTicks);
+            if (map == null) return;
+            RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI.Suppress(map, cell, SuppressionRadius, GrazingSuppressionTicks);
         }
     }
 }

@@ -57,7 +57,6 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_BiomeWorker_FloodedCanyon.cs" />
     <Compile Include="RM_MapComponent_CanyonFlood.cs" />
-    <Compile Include="RM_ExplosiveGrowthBridge.cs" />
     <Compile Include="RM_FossilStrata.cs" />
     <Compile Include="RM_CompPanSleeper.cs" />
     <Compile Include="RM_WeatherEvent_DistantFlicker.cs" />
@@ -98,6 +97,13 @@
     </Reference>
     <Reference Include="RimMandrakeFlowWorks">
       <HintPath>$(FlowWorksDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- EXPLOSIVE_GROWTH_MERGE_COMES_HOME: the flood hands its cells to the soak engine by a DIRECT
+         ExplosiveGrowthAPI.SoakCells call; both are composed members of Baroque Biomes, the engine listed
+         first in Biomes.compose.json. Build ExplosiveGrowth FIRST. -->
+    <Reference Include="RimMandrake.ExplosiveGrowth">
+      <HintPath>..\..\ExplosiveGrowth\Assemblies\RimMandrake.ExplosiveGrowth.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
