@@ -792,6 +792,9 @@ def main():
         got = dict((k, res.get(k, ("ABSENT",))[0]) for k in want)
         if got != want:
             bad.append("site break %-22s expected %s, got %s" % (brk, want, got))
+        crashed = sorted(k for k, v in res.items() if v[0] == "CRASH")
+        if crashed:                           # a site fault must never crash the script (BREAKS checks the [] reds)
+            bad.append("site break %-22s crashed %s" % (brk, crashed))
     for brk, target in sorted(BREAKS.items()):
         if target is None:                    # checked by SITE_EXPECT only
             ok_breaks += 1
