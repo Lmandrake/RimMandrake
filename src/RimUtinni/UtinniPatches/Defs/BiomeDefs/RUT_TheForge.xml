@@ -136,7 +136,7 @@
       <Clear>40</Clear>
       <AB_VolcanicAsh MayRequire="sarg.alphabiomes">20</AB_VolcanicAsh>
       <AB_VolcanicAshRain MayRequire="sarg.alphabiomes">6</AB_VolcanicAshRain>
-      <RSW_SW_RedFog MayRequire="mandrake.rsw.swbestiary">8</RSW_SW_RedFog>
+      <RM_RedFog MayRequire="mandrake.rm.theforge">8</RM_RedFog>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <SnowGentle>0</SnowGentle>
