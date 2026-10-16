@@ -1,6 +1,13 @@
 # Standard biome review savegame — specification
 
-spec-version: **1** (2026-10-15, BENCH)
+spec-version: **1.1** (2026-10-15, BENCH)
+
+Changelog:
+- **1.1 (2026-10-15):** owner ruled all five open questions (§11). Pen size is four facings, or up to eight specimens
+  when the def has variants (§5, PW9). Layout is free per biome, so the fixed row order and shared row letters are gone
+  (§3, §4). Pre-walk art defects go to one pick sheet (PW8, unchanged). Action is a DO line on the sign. The save is
+  paused-only and signs warn what unpausing breaks.
+- 1 (2026-10-15): first version.
 
 **Owner, 2026-10-15 ~20:10 PDT:** *"Let's define a standard savegame for the biomes like this, so we can start improving
 the specification, ok?"* "Like this" means the Pyrelands review save `RM_pyre_review_20261015`, built by
@@ -53,10 +60,10 @@ hold); the review ladder `infrastructure/VALIDATION_LADDER.md`; the skills `rimw
 
 ## 3. Required station kinds
 
-Each biome supplies stations of the kinds below. A kind the biome has nothing for is marked `none: <reason>` in COVERAGE,
+Each biome supplies stations of the kinds below. The letter names a KIND of station. It does not fix a position on the map (§4). A kind the biome has nothing for is marked `none: <reason>` in COVERAGE,
 never silently dropped.
 
-| row | kind | what a station of this kind must show |
+| kind | name | what a station of this kind must show |
 |---|---|---|
 | **A** | Ground / terrain | Each terrain the biome ships, on a pad big enough to judge the tiling (8x8 or larger), with its edge against the biome's common ground. Each terrain transition the biome causes (a burn, a wash, a freeze) shows as a BEFORE pad and an AFTER pad. |
 | **B** | Mechanics demos | Each mechanic a player can SEE, staged in its working state. Every comparative claim (X heats, Y grows faster, Z protects) has a **control** beside it (§6). A mechanic that runs over days shows a staged state (for example "burned 2 days ago"), never a clock. |
@@ -82,9 +89,12 @@ staged for content that never reached play, and he excised it, 5d8609cc8b.)
 
 ## 4. Layout and grid key
 
-- **Rows run north to south in the fixed order A B C D E F.** A row letter means the same thing on every biome's map, so
-  he learns the layout once. Stations are numbered 1..n continuously across the rows. Boards sit in a line along the
-  gallery's south edge, and the free area sits clear of the gallery.
+- **Free layout per biome** (owner, 2026-10-15, by card: *Free layout per biome*). Each biome's map is laid out for that
+  biome. There is no fixed row order and no shared row letters. The kind letters in §3 name what a station shows, not
+  where it sits. Stations are numbered 1..n continuously in walking order, boards are grouped where the biome's layout
+  wants them, and the free area sits clear of the gallery.
+- **Per-map grid key.** Every map carries its own grid key (which block of the map holds which stations, with numbers),
+  printed at the top of the key sheet and pinned as a sign at the map's start, so he learns each map from its key.
 - **Pitch.** Each station has a fixed footprint (12x12 in v1). There are at least 4 empty cells between stations, and
   the title and sign book sit in that gap. Each station is visible as a whole at one zoom level.
 - **Hazard separation.** A station that stages a hazard (fire, gas, acid, explosion) sits at least
@@ -94,7 +104,7 @@ staged for content that never reached play, and he excised it, 5d8609cc8b.)
 - **The whole gallery is floored with the biome's common ground**, so every station is judged on the right ground.
 - **Navigation.** `--goto <n|letter|N0|F|0>` frames a station, a board, the free area or the overview, and re-sweeps
   hostiles on the way.
-- **Key sheet.** `review/KEYSHEET.md` (and `Transient/<biome>_human_review/keysheet.html`) lists the rows, then every
+- **Key sheet.** `review/KEYSHEET.md` (and `Transient/<biome>_human_review/keysheet.html`) lists the grid key, then every
   station in order: its full sign, then *Look for*, *Poke it* and *If you unpause*. It ends with a "This build" block
   (what verified, what was refused). The sheet repeats the save. It does not replace it.
 
@@ -107,15 +117,18 @@ Owner, 2026-10-15: *"You should put many creatures in each pen so they will have
 - **Specimen matrix.** Each pen holds one specimen for every graphic the game can draw for that kind:
   every life stage with its own graphic (baby, juvenile, adult) × each sex with a distinct graphic (female, male) × every
   alternate graphic (`alternateGraphics`, xenotype or variant comps, and modExtension graphics). The builder expands
-  the matrix from the def, so nobody writes it by hand. The **floor is 4 specimens**, even when the def draws one graphic.
+  the matrix from the def, so nobody writes it by hand. The **floor is 4 specimens** (one per facing), even when the def draws one graphic, and the **ceiling is 8** (see Count).
 - **All four facings show while paused.** Specimens are placed in a ring and given rotations South, East, North and West,
   so each graphic in the matrix is seen from all four sides across the pen. West is the mirrored East and is still shown,
   because a mirror defect is visible only there. The builder reads the rotations back after the spawn (gate PL2). If
   the bridge cannot set a pawn's rotation, that is a companion tool owed (`rimbridge-companion`), not a pen with one facing.
   UNMEASURED: whether today's spawn call accepts a rotation.
-- **Size.** The pen interior grows with the matrix: about 2.5 cells per specimen, 10x10 minimum. A matrix over 16
-  specimens splits into a main pen (adults, both sexes) and an alternates pen beside it.
-- **The sign names the matrix**: "6: adult F/M, juvenile, baby, variant B ×2; four facings each". The key sheet lists which
+- **Count** (owner, 2026-10-15, typed): *"all four facings unless there are variants... then n up to eight."* A species
+  with no variants stands as 4 specimens, one per facing. A species with variants gets n specimens, where n is what its
+  variants need, up to eight. The matrix above is trimmed to that: all four facings of the main graphic, and variants
+  (life stage, sex, alternate) added up to n. A variant that does not fit under eight goes to its sign's DO line.
+- **Size.** The pen interior grows with n: about 2.5 cells per specimen, 10x10 minimum.
+- **The sign names the specimens**: "6: adult F/M, juvenile, baby, variant B x2; facings spread across them". The key sheet lists which
   specimen stands where.
 - **Corpses and rotted drawings** are not staged by default (they need days of sim). The pen's DO line says how to see
   them by hand.
@@ -128,9 +141,10 @@ Owner, 2026-10-15: *"You should put many creatures in each pen so they will have
 - **Both start where the mechanic visibly works.** The control must be a working comparison, not a second copy of the
   ambient. Pyrelands: both furnace-beast rooms are chilled to 10 C, because the heat pusher only works below 24 C and
   the outdoors is about 50 C. A per-station `climate` op sets this, and the verify reads it.
+- **Unpausing** (owner, 2026-10-15, by card): the save is paused-only. It is not built to survive running.
 - **A staged state is named for its age** ("burned 8000 ticks ago"). It is staged by the builder through the mechanic's
   own route (a real fire, a real weather), never by writing the end state, unless a sign says so.
-- **What unpausing does** is written on every station ("If you unpause"), including the bad things ("the fire front can
+- **What unpausing breaks** is written on every station ("If you unpause"), including the bad things ("the fire front can
   light this grass").
 
 ## 7. Sign format
@@ -175,7 +189,7 @@ FAIL does.
 | PW6 | deploy currency | `deploy_custom_mods.py` dry run shows zero pending lines for every mod in the review tier. Every DLL's `.srchash` matches. Nothing retired is still deployed (a file removed from the repo but still in the game's Mods folder is a FAIL). |
 | PW7 | graphics audit | Every picture the GAME will load for every station's subjects resolves, read from the DEPLOYED Mods folders in the live load order (later mods win). This covers all facings, life stages, sexes, `alternateGraphics`, plant growth stages and random variants, leafless drawings, rotted-corpse drawings, projectiles, and every texPath inside a modExtension or comp (the gap `texture_gap_lint` cannot see). Result: 0 missing, plus a contact sheet `Transient/<biome>_review_audit_<date>/sheet.png` at true scale beside a vanilla human. |
 | PW8 | defects disposed | Every PW7 defect is FIXED AND DEPLOYED (counted under PW6), or it is a row on ONE pick sheet (`art_sheet.py`, served gated) with an id, and its station's sign names the open pick. There is no third state. |
-| PW9 | pen matrix | Every pen's planned specimens cover the def's matrix (§5), with at least 4 specimens and 4 rotations each. |
+| PW9 | pen matrix | Every pen's planned specimens cover the def's matrix (§5), with 4 to 8 specimens and all 4 rotations each. |
 
 **Live (`--build`, `--save`):**
 
@@ -250,43 +264,15 @@ FlowWorks are not biomes and keep their own builders.
 The event board in v1 is **V**, not E (Pyrelands used E for both the creature row and the event board). Pyrelands keeps
 its letters until it migrates to the generic builder.
 
-## 11. Open questions for the owner (card-ready)
+## 11. Owner rulings on the open questions (RULED 2026-10-15)
 
-Each goes through the `question-card` skill. The options are real, and the recommendation comes first.
+All five were put to him and answered; the ledger notes are on `BIOME_SPRINT_PROVE_SCRUB_SETS_PACE`.
 
-**Q1. How many animals in each pen?**
-- *Every look, all four facings (recommended).* One animal for every drawing the game has (young, adult, female, male,
-  each alternate), turned four ways. A species with many variants gets a second pen beside it. Complete, but some pens
-  hold 12-16 animals.
-- *Capped at 8 per pen.* Smaller pens and a quicker walk. Rare alternates go to one shared "alternates" pen at the end of
-  the row, away from their species.
-- *Adults only, four facings.* The fastest walk. Young and alternate drawings go on the art sheet instead, so they are
-  never seen in the game.
-
-**Q2. Should every biome's map use the same layout?**
-- *Same rows, same letters, every biome (recommended).* A is always ground, E is always the biome's animals. You learn
-  the map once, but a biome with no items still has an empty-marked row D.
-- *Same order, rows a biome lacks are skipped.* Tighter maps, but the letters shift between biomes.
-- *Free layout per biome.* Each map is shaped to its biome, and every map is new to you.
-
-**Q3. Where do the art defects found before your walk go?**
-- *One pick sheet before the walk, then the save (recommended).* You settle the pictures first. The walk then shows only
-  the art you chose, but it costs one extra short sitting and possibly one more rebuild.
-- *Into the save, as a "picks" board.* One sitting: the open picks stand in a pen beside each other in the game. Only
-  options that already exist as deployable art can be shown this way.
-- *On the walk's key sheet only.* Fastest, but you judge those pictures on a page, not in the game.
-
-**Q4. Fights, bites and other action (venom, tail guns, a burrow) — how are they shown?**
-- *A DO line on the pen's sign (recommended for v1).* "Draft a god-mode colonist and let it bite." Nothing extra is built,
-  but you do the staging yourself.
-- *An "action" row staged by the builder.* A paused moment mid-fight (projectile in the air, venom on a colonist). It
-  shows more, but it is fragile to stage and costs build time.
-- *Leave action to the matrix.* The save stays about looks only, and action is never judged by eye.
-
-**Q5. What should happen if you unpause?**
-- *Paused-only, and every sign says what unpausing breaks (recommended, today's rule).* Simple, but one unpause can
-  spoil stations (animals turn, grass burns), and a rebuild takes about 1 minute plus a reload.
-- *Safe for about a day at 3x.* Pens fed, hazards fenced, clocks off. You can watch things move, but the build costs more
-  and the hazard stations must be self-contained.
-- *A second save at a later moment.* The same map saved again after N hours of sim, so you can compare before and after.
-  Two saves to keep current.
+- **Q1 pens (typed):** *"all four facings unless there are variants... then n up to eight."* Applied in §5 and PW9.
+- **Q2 layout (card):** *Free layout per biome.* Each biome's map is laid out for that biome, with a per-map grid key.
+  Applied in §3 and §4.
+- **Q3 defects (card):** *One pick sheet before the walk.* Applied in PW8: his picks are settled first, then the save
+  shows only the chosen art.
+- **Q4 action (card):** *A DO line on the sign.* Fights, bites, venom and burrows are not staged. The pen's DO line says
+  how to provoke them (for example "draft a god-mode colonist and let it bite"). Applied in §5 and §7.
+- **Q5 unpause (card):** *Paused-only; signs warn what breaks.* Applied in §2 and §6.
