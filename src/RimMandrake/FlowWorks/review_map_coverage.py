@@ -110,6 +110,8 @@ FEATURES = [
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
      "pit_flood"),
     ("def", r"^HediffDef/RM_PitDrowning$", "Drowning", "pit_flood"),
+    ("set", r"^slime(SlipEnabled|SlipChanceMultiplier|SlipStunSeconds|ClimbOutSlipFactor)$",
+     "Slime slips: nearly uncrossable, slow to climb out of", "flow_slime"),
     # ---- pits: holding
     ("set", r"^(ladderRequiredToExitEnabled|ladderPrisonDoorEnabled|ladderRaiseLowerEnabled|pitLadderSlowness)$",
      "Ladders", "hold_ladder_raised"),

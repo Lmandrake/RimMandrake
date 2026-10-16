@@ -69,6 +69,10 @@ namespace RimMandrake.FlowWorks
 		/// a brimming cell, scaled by fill and the pawn's toxic resistance. 0 = not poisonous.</summary>
 		public float toxicPerDayAtBrim;
 
+		/// <summary>SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: how slippery this liquid is to walk through, 0..1 (RM_SlimeSlip /
+		/// RM_SlimeMath). 0 = never slips; the four slimes ship 1 (owner: "so slippery that it is nearly impossible to cross").</summary>
+		public float slipperiness;
+
 		/// <summary>LIQUID_HEAT_PUSH_1: this fluid warms (hot) or chills (cold) the room it stands in through vanilla heat
 		/// (RM_LiquidHeat). A FluidDef with neither flag still heats when its LiquidDef (the one naming it as canalFluid)
 		/// is hot or cold. Shipped: RM_Fluid_BoilingWater sets hot, RM_Fluid_IcyWater sets cold (FlowWorks_PitFluids.xml).</summary>

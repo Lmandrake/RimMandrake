@@ -108,6 +108,7 @@
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
+    <slipperiness>1</slipperiness>   <!-- SLIME_CROSSING_BUILD_SLIPPERY_SLOPE -->
   </RimMandrake.FlowWorks.FluidDef>
 
   <RimMandrake.FlowWorks.FluidDef>
@@ -123,6 +124,7 @@
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
+    <slipperiness>1</slipperiness>   <!-- SLIME_CROSSING_BUILD_SLIPPERY_SLOPE -->
   </RimMandrake.FlowWorks.FluidDef>
 
   <RimMandrake.FlowWorks.FluidDef>
@@ -138,6 +140,7 @@
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
+    <slipperiness>1</slipperiness>   <!-- SLIME_CROSSING_BUILD_SLIPPERY_SLOPE -->
   </RimMandrake.FlowWorks.FluidDef>
 
   <!-- YELLOW — the item's own "documented example row", canal side. Same
@@ -157,6 +160,7 @@
     <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
+    <slipperiness>1</slipperiness>   <!-- SLIME_CROSSING_BUILD_SLIPPERY_SLOPE -->
   </RimMandrake.FlowWorks.FluidDef>
 
 </Defs>

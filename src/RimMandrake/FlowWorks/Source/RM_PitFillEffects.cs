@@ -25,6 +25,7 @@ namespace RimMandrake.FlowWorks
 
 		public static void Tick(Map map, RM_MapComponent_Excavation ex)
 		{
+			RM_SlimeSlip.Tick(map, ex);   // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: its own one-second timer and switch
 			if (Find.TickManager.TicksGame % RM_FillEffectMath.IntervalTicks != 0)
 			{
 				return;

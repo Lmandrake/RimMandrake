@@ -1,10 +1,10 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_walk_20261016). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-87 stations: 13 works in game, 63 built, not yet seen, 10 partly built, 1 not built yet.
+87 stations: 13 works in game, 63 built, not yet seen, 11 partly built, 0 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -159,11 +159,20 @@ Canyon floods run through your canals instead of wiping them out
 
 **Look for:** weak spot: the flood wiping the canal flat instead of running in it
 
-### 12. Slime is nearly uncrossable - not built yet
+### 12. Slime is nearly uncrossable - built, not yet seen
 
 Slime is nearly impossible to cross and slow to climb out of. Your words: so slippery it is nearly uncrossable.
 
-Not built yet: the station is an empty concrete pad with its label.
+**Look at:** a canal three wide, brim-full of green slime; one colonist waits on the south bank, another stands stuck in the middle of it
+
+**Poke it:**
+
+- unpause, order the bank colonist to the far mark: he walks round the canal's end rather than wade three cells of slime
+- order him onto a slime cell instead: he wades in and keeps stopping, 'Slipped in the green slime' over his head each time
+- undraft the stuck one: every slip on the climb out says 'Slid back into the green slime' and he starts the climb again; getting out takes many seconds
+- Mod Settings > Slime is so slippery it is nearly impossible to cross OFF: both just wade
+
+**Look for:** weak spot: a colonist who stops with no text over him; one who walks across at tar speed; a climb out that never ends
 
 ## 1 · Digging canals and pits
 
@@ -920,7 +929,7 @@ A hose on THEIR tank
 
 **Look for:** weak spot: the brass coupling not on THEIR tank; their faction is only a state read (HoseProbe census): nobody's inspect names it
 
-### 72. Drills, taps and stills - built, not yet seen
+### 72. Drills, taps and stills - partly built
 
 Drills and taps bring underground liquids up, and cleaned water feeds thirst
 
@@ -931,6 +940,8 @@ Drills and taps bring underground liquids up, and cleaned water feeds thirst
 - select the drill: it says what liquid lies under it, if any
 
 **Look for:** weak spot: a drill with nothing under it and no message saying so
+
+**Not built yet in this feature:** water cleaning feeding into thirst
 
 ### 73. Liquid kits - partly built
 
