@@ -337,12 +337,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         public static AerialSettings Settings;
 
-        // Harmony: GimmeSomeSlackMod's PatchApplier.Apply(assembly) already applies every [HarmonyPatch] in this assembly,
-        // the aerial ones included. Patching again here would double every patch.
+        // Harmony: GimmeSomeSlackMod.SettingsLoaded applies every [HarmonyPatch] in this assembly once, the aerial ones
+        // included. Patching again here would double every patch.
         public AerialLinesMod(ModContentPack content) : base(content)
         {
             LegacyMigration.SettingsFiles(content);
-            Settings = GetSettings<AerialSettings>();
+            try { Settings = GetSettings<AerialSettings>(); }
+            finally { GimmeSomeSlackMod.SettingsLoaded(); }   // Harmony applies once both settings files are loaded
         }
 
         /// <summary>B27: empty, so RimWorld lists no separate entry; drawn as a tab of GimmeSomeSlackMod's one window.</summary>
