@@ -6,6 +6,10 @@
     python3 artpipe_state.py collect <job_id> --to src/<Mod>/Textures/.../X_east.png [--dry-run]
     python3 artpipe_state.py collect --from-jobs        # every done job carrying "install_to" not yet collected
     python3 artpipe_state.py migrate --from /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe [--dry-run]
+    python3 artpipe_state.py owner-accepted <job_id> [...] --note "<his words / where he accepted it>"
+
+`owner-accepted` moves a failed/ job the owner accepted anyway (an old `failed_canon` the grader got wrong) to
+done/: status ok, worker_status owner_accepted, the failed record kept under `failed_record`. Nothing else moves.
 
 `collect` is how finished art reaches `src/`: the daemon never writes into a
 clone (it leaves `<state>/_artsrc/<id>/<id>.png` + `done/<id>.manifest.json`);
@@ -368,6 +372,35 @@ def cmd_migrate(args) -> int:
     return 0
 
 
+# ---------------------------------------------------------------- owner-accepted
+
+def owner_accept(root: Path, job_id: str, note: str) -> Path:
+    """failed/<id>.json + .manifest.json -> done/, the manifest marked owner_accepted. Refuses rather than overwrite."""
+    fj, fm = root / "failed" / f"{job_id}.json", root / "failed" / f"{job_id}.manifest.json"
+    dj, dm = root / "done" / f"{job_id}.json", root / "done" / f"{job_id}.manifest.json"
+    if not (fj.is_file() and fm.is_file()):
+        raise SystemExit(f"owner-accepted: {job_id} has no failed/ job + manifest")
+    if dj.exists() or dm.exists():
+        raise SystemExit(f"owner-accepted: {job_id} already has a done/ record — refusing to overwrite")
+    m = json.loads(fm.read_text())
+    m["failed_record"] = {k: m.get(k) for k in ("status", "worker_status", "note")}
+    m.update(status="ok", worker_status="owner_accepted", note=f"owner accepted: {note}",
+             owner_accepted={"note": note, "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+    dm.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dm.with_name(dm.name + ".tmp")
+    tmp.write_text(json.dumps(m, indent=1))
+    os.replace(tmp, dm)
+    shutil.move(str(fj), str(dj))
+    fm.unlink()
+    return dm
+
+
+def cmd_owner_accepted(args) -> int:
+    for j in args.job_ids:
+        print(f"owner-accepted: {j} -> {owner_accept(args.state, j, args.note)}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--state", type=Path, default=state_dir.STATE_ROOT,
@@ -393,9 +426,12 @@ def main(argv=None) -> int:
     m = sub.add_parser("migrate")
     m.add_argument("--from", dest="src", type=Path, required=True)
     m.add_argument("--dry-run", action="store_true")
+    oa = sub.add_parser("owner-accepted", help="move failed/ jobs the owner accepted anyway to done/")
+    oa.add_argument("job_ids", nargs="+")
+    oa.add_argument("--note", required=True, help="his words, or where/when he accepted it")
     args = ap.parse_args(argv)
     return {"where": cmd_where, "find": cmd_find, "collect": cmd_collect,
-            "migrate": cmd_migrate}[args.cmd](args)
+            "migrate": cmd_migrate, "owner-accepted": cmd_owner_accepted}[args.cmd](args)
 
 
 if __name__ == "__main__":

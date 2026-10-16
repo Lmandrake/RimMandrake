@@ -156,10 +156,31 @@ def test_requeue(tmp: Path):
     check("rejected job stays failed", (tmp / "failed" / "reject.json").exists())
 
 
+def test_owner_accepted(tmp: Path):
+    for d in ("done", "failed"):
+        (tmp / d).mkdir()
+    (tmp / "failed" / "j.json").write_text(json.dumps({"id": "j"}))
+    (tmp / "failed" / "j.manifest.json").write_text(json.dumps({"id": "j", "status": "failed",
+                                                               "worker_status": "failed_canon", "note": "FAIL 4/5"}))
+    AS.main(["--state", str(tmp), "owner-accepted", "j", "--note", "installed on his word"])
+    m = json.loads((tmp / "done" / "j.manifest.json").read_text())
+    check("owner-accepted: job + manifest moved to done/, nothing left in failed/",
+          (tmp / "done" / "j.json").is_file() and not list((tmp / "failed").iterdir()))
+    check("owner-accepted: ok/owner_accepted, failed record and note kept",
+          m["status"] == "ok" and m["worker_status"] == "owner_accepted"
+          and m["failed_record"]["worker_status"] == "failed_canon" and "his word" in m["owner_accepted"]["note"])
+    try:
+        AS.main(["--state", str(tmp), "owner-accepted", "j", "--note", "x"])
+        check("owner-accepted: refuses a job not in failed/", False)
+    except SystemExit:
+        check("owner-accepted: refuses a job not in failed/", True)
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
-        for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue)):
+        for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue,
+                                  test_owner_accepted)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)
