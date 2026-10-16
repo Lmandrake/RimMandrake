@@ -173,7 +173,7 @@
       <li>
         <label>vekka cub</label>
         <bodyGraphicData>
-          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <!-- vekka art: own render, owner-accepted 2026-10-15 -->
           <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
@@ -185,7 +185,7 @@
       <li>
         <label>vekka juvenile</label>
         <bodyGraphicData>
-          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <!-- vekka art: own render, owner-accepted 2026-10-15 -->
           <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
           <drawSize>1.85</drawSize>
           <shadowData>
@@ -200,7 +200,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
+          <!-- vekka art: own render, owner-accepted 2026-10-15 -->
           <texPath>Things/Pawn/Animal/AA_SandLion/AA_SandLion</texPath>
           <drawSize>2.5</drawSize>
           <shadowData>
