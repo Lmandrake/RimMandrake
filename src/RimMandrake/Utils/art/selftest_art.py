@@ -335,7 +335,7 @@ def main():
     spurple, swhite = L.sha256_bytes(purple), L.sha256_bytes(white)
     ik = "Things/Pawn/Animal/RM_Ikee/RM_Ikee_south.png"
     L.store_put_bytes(purple), L.store_put_bytes(white)
-    L.install(mod, ik, spurple, reason="script:selftest")
+    L.install(mod, ik, spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py")
     snap2 = {"sheetId": "c", "rows": {"RM_Ikee": {"subject_key": "ikee", "columns": {"A": {"south": spurple}},
                                                   "labels": {"A": "IN GAME — FixtureMod"}}}}
     sp2, dec2 = tmp / "c.snapshot.json", tmp / "c.decisions.json"
@@ -352,20 +352,20 @@ def main():
             return None
         except L.Refused as e:
             return str(e)
-    check(refused("Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot_south.png", spurple, reason="script:selftest"),
+    check(refused("Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot_south.png", spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py"),
           "a redo'd picture cannot be copied onto another creature")
-    check(refused("Things/Pawn/Animal/RUT_Ikee/RUT_Ikee_south.png", spurple, reason="script:selftest") is None,
+    check(refused("Things/Pawn/Animal/RUT_Ikee/RUT_Ikee_south.png", spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py") is None,
           "the same creature's current picture may still be moved (RUT_ twin)")
     cik = "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee_south.png"
-    check(refused(cik, spurple, reason="script:selftest"), "a renamed def without an alias is another creature")
+    check(refused(cik, spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py"), "a renamed def without an alias is another creature")
     (L.ledger_dir() / L.ALIASES_FILE).write_text(json.dumps({"aliases": {"ContagionIkee": "ikee"}}))
-    check(refused(cik, spurple, reason="script:selftest") is None and L.canonical_subject("contagionikee") == "ikee",
+    check(refused(cik, spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py") is None and L.canonical_subject("contagionikee") == "ikee",
           "an aliased rename is the same creature")
     check(any(x.get("subject_key") == "ikee" for x in L.Index().subject_rulings({"contagionikee"})),
           "rulings follow a creature through its alias")
     for rel_ in (ik, cik, "Things/Pawn/Animal/RUT_Ikee/RUT_Ikee_south.png"):
-        L.install(mod, rel_, swhite, reason="script:selftest")
-    msg = refused("Things/Pawn/Animal/RM_Ikee/RM_Ikee_east.png", spurple, reason="script:selftest")
+        L.install(mod, rel_, swhite, reason="script:src/RimMandrake/Utils/art/selftest_art.py")
+    msg = refused("Things/Pawn/Animal/RM_Ikee/RM_Ikee_east.png", spurple, reason="script:src/RimMandrake/Utils/art/selftest_art.py")
     check(bool(msg) and "resurrects" in msg and "hideous" in msg, "a redo'd picture live nowhere cannot be resurrected, and says why")
     check(refused(ik, spurple, owner_said="actually I like the purple one") is None, "his words still bring it back")
     import art_guard

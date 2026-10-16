@@ -362,7 +362,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
             w.flush()
             try:
                 L.purge(sha, owner_said=note or f"reject+purge on sheet {snap.get('sheetId')}",
-                        via=via, release_keep=True)
+                        via=via, release_from_sheet=(via, row))     # only this row's own keeps; any other refuses
                 out["purged"] += 1
             except L.Refused as e:
                 out["purge_refused"] += 1

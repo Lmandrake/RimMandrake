@@ -101,7 +101,7 @@ def main():
         # 2. install_bytes -> allowed, but only together with its ledger shard
         dest = os.path.join(tex, "Beast_south.png")
         rel = "src/FixMod/Textures/Things/Beast/Beast_south.png"
-        r = L.install_bytes(dest, red, reason="script:selftest")
+        r = L.install_bytes(dest, red, reason="script:.claude/hooks/selftest_block_unledgered_texture.py")
         check(r["status"] == "installed", "install_bytes installs on a mechanical reason")
         v, out = hook("./publish -m art %s" % rel, clone)
         check(v == "deny" and "art-ledger lines behind" in out, "ledgered PNG without its shard refused")
@@ -117,8 +117,8 @@ def main():
         check(prepush(clone, head, base) == 0, "pre-push passes an install commit")
 
         # 3. a second install chained twice before one commit: chain walk
-        L.install_bytes(dest, blue, reason="script:selftest")
-        L.install_bytes(dest, green, reason="script:selftest")
+        L.install_bytes(dest, blue, reason="script:.claude/hooks/selftest_block_unledgered_texture.py")
+        L.install_bytes(dest, green, reason="script:.claude/hooks/selftest_block_unledgered_texture.py")
         v, out = hook("./publish -m art2 %s %s" % (rel, shard), clone)
         check(v == "allow", "two chained installs before one commit allowed (%s)" % out[:200])
         git(clone, "add", rel, shard)
@@ -146,7 +146,7 @@ def main():
         bad = L.sha256_bytes(blue + b"x")
         L.store_put_bytes(blue + b"x")
         L.append({"type": "live", "mod": "src/FixMod", "rel": "Things/Beast/Beast_south.png",
-                  "sha": bad, "prev": "f" * 64, "reason": "script:hand"})
+                  "sha": bad, "prev": "f" * 64, "reason": "script:.claude/hooks/selftest_block_unledgered_texture.py"})
         with open(dest, "wb") as fh:
             fh.write(blue + b"x")
         v, out = hook("git commit -m skip -- %s %s" % (rel, shard), clone)
@@ -157,12 +157,12 @@ def main():
         L.append({"type": "ruling", "id": "keepgreen", "target": {"sha": sg}, "verdict": "keep",
                   "by": "owner", "trust": "ruled", "said": "fixture"})
         try:
-            L.install_bytes(dest, red, reason="script:selftest")
+            L.install_bytes(dest, red, reason="script:.claude/hooks/selftest_block_unledgered_texture.py")
             check(False, "mechanical install over an owner-kept picture refused")
         except L.Refused:
             check(True, "mechanical install over an owner-kept picture refused")
         L.append({"type": "live", "mod": "src/FixMod", "rel": "Things/Beast/Beast_south.png",
-                  "sha": L.sha256_bytes(red), "prev": sg, "reason": "script:hand"})
+                  "sha": L.sha256_bytes(red), "prev": sg, "reason": "script:.claude/hooks/selftest_block_unledgered_texture.py"})
         with open(dest, "wb") as fh:
             fh.write(red)
         v, out = hook("git commit -m k -- %s %s" % (rel, shard), clone)
@@ -176,7 +176,7 @@ def main():
         git(clone, "checkout", "-q", "--", rel)
         L.append({"type": "ruling", "id": "rel", "verdict": "release", "releases": "keepgreen",
                   "by": "owner", "trust": "ruled", "target": {"sha": sg}})
-        r = L.retire(dest, reason="script:selftest")
+        r = L.retire(dest, reason="script:.claude/hooks/selftest_block_unledgered_texture.py")
         check(r["status"] == "retired", "retire archives and removes")
         v, out = hook("git commit -m del -- %s %s" % (rel, shard), clone)
         check(v == "allow", "ledger retire + commit allowed (%s)" % out[:200])

@@ -18,7 +18,10 @@
                                             also checked event -> PNG (the committed tree holds what the ledger says)
     art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
                                             (default HEAD) disagree, with the worktree bytes; read-only
-    art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only)
+    art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only); a kept picture is
+                                            refused unless --release-keep names his words for releasing it
+    art.py kept-purged [--out FILE]         pictures purged while an owner keep on them is still active —
+                                            REPORTED for his reconciliation, never auto-released
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
     art.py index                            write the gitignored projection index.json
     art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
@@ -233,6 +236,41 @@ def cmd_doctor(a):
     return 1 if rows else 0
 
 
+def cmd_kept_purged(a):
+    idx = L.Index()
+    rows = idx.kept_but_purged()
+    gone = sum(1 for r in rows if not r["bytes_in_store"])
+    print(f"kept-purged: {len(rows)} purged picture(s) still carry an active owner keep; {gone} have no bytes in the store")
+    if not a.out:
+        for r in rows[:30]:
+            print(f"  {r['sha'][:12]} purged {(r['purge'].get('ts') or '')[:16]}  keeps: "
+                  + "; ".join(f"{(k.get('ts') or '')[:16]} {Path(k.get('via') or '').name or 'words'}" for k in r["keeps"][:2]))
+        return 1 if rows else 0
+    out = Path(a.out)
+    lines = ["# Kept but purged — art ledger, " + L.now()[:10], "",
+             "Pictures the owner purged (bytes deleted from the art store) while an owner `keep` on them is still active, "
+             "so the projection claims a protection that cannot be installed. **Reported for his decision; nothing was "
+             "released or deleted.** Regenerate: `python3 src/RimMandrake/Utils/art/art.py kept-purged --out <file>`.", "",
+             f"**{len(rows)} pictures; {gone} have no bytes left in the store; "
+             f"{sum(1 for r in rows if any((k.get('ts') or '') < (r['purge'].get('ts') or '') for k in r['keeps']))} were kept "
+             f"before the purge, {sum(1 for r in rows if all((k.get('ts') or '') >= (r['purge'].get('ts') or '') for k in r['keeps']))} "
+             f"only after it.**", "",
+             "| sha | bytes in store | live at | purged (ts · via · his words) | active keep(s) (ts · via · words) |",
+             "|---|---|---|---|---|"]
+
+    def cell(x):
+        return str(x or "").replace("|", "/").replace("\n", " ")[:90]
+    for r in rows:
+        pv = r["purge"]
+        ks = "<br>".join(f"{(k.get('ts') or k.get('at') or '')[:16]} · {cell(Path(k.get('via') or '').name)} · {cell(k.get('said'))}"
+                         for k in r["keeps"])
+        lines.append(f"| `{r['sha'][:16]}` | {'yes' if r['bytes_in_store'] else 'NO'} | {cell(', '.join(r['live_at']))} | "
+                     f"{(pv.get('ts') or '')[:16]} · {cell(Path(pv.get('via') or '').name)} · {cell(pv.get('said'))} | {ks} |")
+    out.write_text("\n".join(lines) + "\n")
+    print(f"  report -> {out}")
+    return 0
+
+
 def cmd_purge(a):
     idx = L.Index()
     full = [s for s in idx.variants if s.startswith(a.sha)] or ([a.sha] if len(a.sha) == 64 else [])
@@ -327,6 +365,7 @@ def main(argv=None):
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
     p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")
     sp.add_parser("index")
+    p = sp.add_parser("kept-purged"); p.add_argument("--out")
     p = sp.add_parser("doctor"); p.add_argument("--rev", default="HEAD"); p.add_argument("--out")
     p = sp.add_parser("backfill-rejections", help="record the bytes behind past owner redo/reject rulings")
     p.add_argument("--dry-run", action="store_true")
@@ -346,7 +385,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 
