@@ -645,6 +645,40 @@ TIERS["ratchet_pilot"] = {
     "dlc": True,
 }
 
+def _composed_in_biomes(key):
+    """True when Biomes.compose.json composes `key` into mandrake.rm.biomes (wave <= compose_wave).
+    Read at import so a tier follows a fold the moment it lands in the compose file."""
+    try:
+        import json
+        with open(os.path.join(ROOT, "src", "RimMandrake", "Biomes.compose.json"), encoding="utf-8") as fh:
+            d = json.load(fh)
+        cw = d.get("compose_wave", 0)
+        return any(e.get("key") == key and e.get("wave", 99) <= cw for e in d.get("entries", ()))
+    except (OSError, ValueError):
+        return False
+
+
+# BIOME_SPRINT_PROVE_SCRUB_SETS_PACE (next_sprint_plan_2026-10-15.md §3 "one launch serves every suite";
+# kickoff packet §1 M1-M6, §1.4 X1). ratchet_pilot + nothing per biome: none of Cauldron, Contagion or
+# LeaningScrub has its own Utinni mechanics mod (MEASURED 2026-10-16), all three are composed in mandrake.rm.biomes.
+# 🔑 ExplosiveGrowth guard (EXPLOSIVE_GROWTH_MERGE_COMES_HOME, FOUNDRY): until the fold lands it loads standalone;
+# once Biomes.compose.json composes it, the standalone packageId flips to FORBIDDEN (its defs/types would load twice).
+_EG_FOLDED = _composed_in_biomes("ExplosiveGrowth")
+TIERS["biomes_sprint"] = {
+    "why": "BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: ONE launch for every sprint suite -- all of Baroque Biomes (Cauldron, "
+           "Contagion, LeaningScrub and the rest, composed) + the pilot mods (FlowWorks, GSS, Pyrelands mechanics) with "
+           "ratchet_pilot's guards, so the pilot guards (M6) run on the same load. Phase 0 donors (Star Wars Animal "
+           "Collection, Alpha Animals and its Outposts patch) are forbidden: a dependency dragging one back fails the "
+           "plan. ExplosiveGrowth: %s." % (
+               "composed into mandrake.rm.biomes, standalone packageId forbidden" if _EG_FOLDED else
+               "NOT yet folded (EXPLOSIVE_GROWTH_MERGE_COMES_HOME), so the standalone mandrake.rm.explosivegrowth loads"),
+    "want": list(TIERS["ratchet_pilot"]["want"]) + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),
+    "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"]
+              + (["mandrake.rm.explosivegrowth"] if _EG_FOLDED else []),
+    "forbid_substr": list(TIERS["ratchet_pilot"]["forbid_substr"]),
+    "dlc": True,
+}
+
 TIERS["flowworks_vepipe"] = {
     "why": "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES A2: the `flowworks` tier plus one Vanilla Expanded PipeSystem mod "
            "(Vanilla Chemfuel Expanded, which brings VEF and the shared VCHE_PipeNetworks designation category), so the "
