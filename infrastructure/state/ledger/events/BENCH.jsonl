@@ -2758,3 +2758,7 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T03:30:13Z","tsn":1792121413139141769}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner watches firehawk fly","ts":"2026-10-16T03:48:55Z","tsn":1792122535729417964}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T03:51:01Z","tsn":1792122661070955399}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-16T03:55:35Z","tsn":1792122935740870177}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-16T03:55:36Z","tsn":1792122936903953661}
+{"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"BENCH.pid20690.271aa14d","expires":"2026-10-16T04:41:33Z","ts":"2026-10-16T03:56:33Z","tsn":1792122993830439048}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"GSS+FW walkthrough saves","ts":"2026-10-16T03:57:36Z","tsn":1792123056892554630}
