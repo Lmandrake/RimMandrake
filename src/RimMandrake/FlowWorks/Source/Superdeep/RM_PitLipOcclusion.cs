@@ -66,6 +66,12 @@ namespace RimMandrake.FlowWorks
 					h.y = Mathf.Max(h.y, 0.5f * g.drawSize.y);
 				}
 			}
+			// PIT_LIP_FIX_BOAR_HANGS_OUT: a lying pawn (asleep, downed, crawling) is drawn rotated by vanilla's BodyAngle,
+			// so the cover spans the rotated sprite's box rather than the upright one.
+			if (p.GetPosture() != PawnPosture.Standing && p.Drawer?.renderer != null)
+			{
+				RM_WallFaceMath.RotatedHalfExtent(h.x, h.y, p.Drawer.renderer.BodyAngle(PawnRenderFlags.None), out h.x, out h.y);
+			}
 			return h;
 		}
 
@@ -229,10 +235,11 @@ namespace RimMandrake.FlowWorks
 						{
 							continue;   // never draw the cover over a pawn standing at ground level or on the lip
 						}
-						// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, at every depth
+						// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, but only where the lip would
+						// hide more than half of it (PIT_LIP_FIX_BOAR_HANGS_OUT: with the sink clamp on, the part below the rim is hidden)
 						float l1 = left, r1 = right, l2 = 0f, r2 = 0f;
 						int pieces = 1;
-						if (RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled)
+						if (RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled && RM_WallFaceMath.OccupantCutNeeded(lipZ, bottom, top))
 						{
 							float cw = 0.5f * Mathf.Max(0.1f, RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth);
 							pieces = RM_WallFaceMath.CutCoverSpan(left, right, dp.x - cw, dp.x + cw, out l1, out r1, out l2, out r2);
