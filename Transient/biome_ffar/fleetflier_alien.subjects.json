@@ -1,0 +1,94 @@
+{
+ "schema": 1,
+ "generated": "2026-10-15T21:48:31-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_fleetflier_alien"
+ ],
+ "biomes": {
+  "SUBJECTS_fleetflier_alien": {
+   "label": "Fleet Flier, alien redesign",
+   "slug": "fleetflier_alien",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Fleet Flier, alien redesign \u2014 game art",
+   "lead_html": "Owner 2026-10-15: <i>I like your Fleet Flier, but alas it must be much more alien. Longer wings, strange colors, elongated face, to look less avian.</i> Three redesigned S/E/N sets (fleetflier_alien_x violet/teal tube-snout, _y sulphur/magenta proboscis, _z rust/verdigris eel-head), beside the current art and the earlier back-view redraws. RM_ and RUT_ share one drawing today (no canon entry). Nothing is installed until you pick.",
+   "rows": [
+    {
+     "key": "RM_FleetFlier",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "fleet flier",
+     "defNames": [
+      "RM_FleetFlier"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FleetFlier"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FleetFlier found"
+     }
+    },
+    {
+     "key": "RUT_FleetFlier",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "fleet flier",
+     "defNames": [
+      "RUT_FleetFlier"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RUT_FleetFlier"
+        ]
+       }
+      ],
+      "searched": "live def dump: RUT_FleetFlier found"
+     }
+    }
+   ]
+  }
+ }
+}
