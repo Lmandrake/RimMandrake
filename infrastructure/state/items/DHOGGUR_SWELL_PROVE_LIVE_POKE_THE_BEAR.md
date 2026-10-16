@@ -56,7 +56,6 @@ damage x3, sprite drawn 3x). And: *"Needs new angry art too... it should be very
 `DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR` — live-proven 12/12, no mod defect; NEXT: ask the owner (card) whether rain
 scald / melt burns should trigger the swell (today they do, every Rain phase) and whether death-on-shrink stays, then
 serve the swollen art sheet with `serve_gated.py` (below) and `art install` only what he picks; close on his answers.
-Swollen art: artpipe jobs `forgeslot_dhoggur_swollen_v1_{east,south,north}` (done, NOT installed; west mirrors east),
-sheet `Transient/biome_ffar/dhoggur_swollen_sheet_2026-10-16.html` (built, gate-passed, NOT yet served: serve it with
-`serve_gated.py`; its scale panel shows the swollen art at the calm 1.2, so show him
-`Transient/biome_ffar/dhoggur_swollen_vs_calm_scale_2026-10-16.png` (human / calm 1.2 / swollen 3.6) beside it).
+Swollen art INSTALLED 2026-10-16 on his word (*"swollen dhoggur is awesome."*) via `art install` to
+`TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_{east,south,north}.png` (512px; the C# loads
+`<body texPath>_Swollen`, so no def change). NEXT: deploy TheForge textures when the game is down, then look at it in game.
