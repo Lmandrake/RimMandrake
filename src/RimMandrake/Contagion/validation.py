@@ -227,11 +227,30 @@ def _rect(t, size=PAD_SIZE, dx=0, dz=0):
     return x - half + dx, z - half + dz, size, size
 
 
+# SITE, LIVE 2026-10-16 (modcheck round 4): the quicktest tile was Mountainous, so clear_area carved every pad out of
+# solid rock (1286 Slate on the repulsor pad) under the mountain's overhead RoofRockThick. Destroying the rock despawns
+# the roof holders, the unsupported cells are marked to collapse, and the next tick drops a thick roof on the pad:
+# RoofCollapserImmediate deals 99999 Crush to every thing and pawn in the cell (decompiled Verse). That one site defect
+# was four FAILs -- the repulsor gone before its inspect read (off_when_setting_off), the Unfinished host crushed before
+# it could bud (spawner_buds_unfinished), the whole Burn fixture crushed during order_pawn's 300-tick wait
+# (burn_harmless_at_zero_damage: native alive=False), the Coalescence crushed (coalescence_off_absorbs_nothing) -- and
+# the touched chain's 'died: Crush' governor stop. A collapse only drops a cell that is STILL roofed when it resolves,
+# so the pad is unroofed in the same paused tick as the clear. The margin covers every cell within the 6.9-cell roof
+# support range of the cleared rock. Outdoors is also what the Burn rows assume: under a mountain roof the "open"
+# visitor is sheltered. A row that wants a roof (the burn chain's patch) sets its own after _prep.
+ROOF_MARGIN = 7
+
+
 def _prep(t, name, size=PAD_SIZE):
-    """Clear the pad and lay plain soil so everything stands on walkable ground."""
+    """Clear the pad, lay plain soil so everything stands on walkable ground, and take the roof off (see ROOF_MARGIN)."""
     _pad(t, name)
     t.clear_area(size=size + 8)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(_rect(t, size + 8))), layer="top")
+    r = t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(_rect(t, size + 8 + 2 * ROOF_MARGIN)))
+    if _live(t):
+        if not isinstance(r, dict) or r.get("success") is False or r.get("cellsFailedVerify"):
+            _unmeasured(t, "SITE: could not unroof the pad (a collapse would crush the fixture): %r" % (r,))
+        _note(t, "pad %s unroofed" % name, {"cellsChanged": r.get("cellsChanged"), "perDef": r.get("perDef")})
 
 
 def _things(t, defName, rect=None, limit=300):
@@ -294,7 +313,10 @@ def _inspect(t, thing_id):
     if not _live(t):
         return None, ""
     rows = (_ok(r, "inspect_string").get("things") or [])
-    if not rows or rows[0].get("error"):
+    if not rows:
+        _fail("inspect_string(%s): the thing is no longer on the map (matched %r of %r examined)"
+              % (thing_id, r.get("matched"), r.get("examined")))
+    if rows[0].get("error"):
         _fail("inspect_string(%s) unreadable: %r" % (thing_id, rows[:1]))
     return rows[0].get("label"), "\n".join(str(x) for x in (rows[0].get("inspect") or []))
 
@@ -527,6 +549,25 @@ def _baseline(t):
     run's quiet-site profile and the colony's own colonists kept calm and fed (_quiet_site)."""
     t.bridge_call("jawa/site_state", storyteller="off", autoHome="off", clearIncidentQueue=True)
     _quiet_site(t)
+    _clear_wildlife(t)
+
+
+# SITE, LIVE 2026-10-16 (round 4): the map's own mapgen wildlife (shambles, snoruuk, brogg, shiro-traps: the quiet-site
+# profile blocks NEW arrivals but leaves mapgen animals) fought and sickened far from every pad, and a shambles downed at
+# (244,175) stopped the zhool chain's safe_advance ('downed: the shambles'); the zhool sat at (80,170). No Contagion row
+# reads a wild animal it did not spawn, so the map's factionless animals are removed (no death, no corpse) before each
+# chain spawns its fixtures. Every fixture animal is spawned AFTER this, and a previous chain's are gone by _stable.
+def _clear_wildlife(t):
+    if not _live(t):
+        return
+    try:
+        import helpers as H              # noqa: E402
+        res = H.kill_wildlife(t.session)
+        out = {"removed": res.acted, "verified": res.verified, "residue": res.residue[:8]}
+    except Exception as ex:                                     # noqa: BLE001 - site upkeep, never a verdict
+        out = {"error": "%s: %s" % (type(ex).__name__, ex)}
+    if out.get("removed") or out.get("residue") or out.get("error"):
+        _note(t, "mapgen wildlife removed", out)
 
 
 # SITE, LIVE 2026-10-16 (modcheck run Contagion --policy record, no --situational): with no Watch nobody turned off
@@ -832,13 +873,18 @@ def spawner(t):
                 with _setting(t, "unfinishedSpawnerEnabled", False):
                     _jump(t, 90000)           # past nextSpawnTick (0.6-1.4 days) either way
                     _wait(t, 200)
+                    # LIVE 2026-10-16: the host was crushed by a roof collapse in the first ticks and this arm PASSED
+                    # on an empty rect. "Nothing budded" means something only while the host is there to bud.
+                    _need_host(t)
                     n = len(_things_pawns(t, UNFINISHED, _STATE["host_rect"]))
                     if n:
                         _fail("%d Unfinished budded with unfinishedSpawnerEnabled off" % n)
 
-        with _comp(t, "spawner_buds_unfinished", toggle="unfinishedSpawnerEnabled"):
+        # poison: with no budded Unfinished (host gone: UNMEASURED) the three rows below have nothing to read
+        with _comp(t, "spawner_buds_unfinished", poison=True, toggle="unfinishedSpawnerEnabled"):
             if _live(t):
                 _wait(t, 250)                 # toggle is back on; the overdue timer fires at once
+                _need_host(t)
                 kids = _things_pawns(t, UNFINISHED, _STATE["host_rect"])
                 if not 1 <= len(kids) <= 3:
                     _fail("expected 1..3 (maxNearby) Unfinished budded by the host, found %d" % len(kids))
@@ -880,6 +926,12 @@ def spawner(t):
                     _fail("no %s near the dissolved Unfinished" % MULCH)
                 _note(t, "mulch heaps", [h.get("stackCount") for h in heaps])
     _stable(t, body)
+
+
+def _need_host(t):
+    """The budding host must be alive, or the spawner arms measure nothing (UNMEASURED, never PASS/FAIL)."""
+    if not _alive(_rows(t).get(_STATE.get("host"))):
+        _unmeasured(t, "SITE: the %s host %s is not alive on the map; nothing could bud" % (HOST, _STATE.get("host")))
 
 
 def _things_pawns(t, kind, rect):
@@ -1478,9 +1530,14 @@ def _idnum(pid):
     return int(m.group(1)) if m else None
 
 
-def _near_bed(c, bed):
+def _on_bed(c, bed):
+    """The patient stands ON the bed's sleeping slot: a single bed's slot is its Position (the cell list_things reports).
+    LIVE 2026-10-16 (round 4): the old test, 'within 1 cell', read a patient still WALKING to the bed, diagonal to it at
+    (122,173) vs (121,174), as lying in it; do_bill_now then refused (UsableForBillsAfterFueling false, the patient was
+    not in bed) and extraction_surgery_yields_sample went UNMEASURED. pawn_census carries no in-bed field, so the cell
+    is the read."""
     try:
-        return max(abs(int(c["x"]) - int(bed["x"])), abs(int(c["z"]) - int(bed["z"]))) <= 1
+        return int(c["x"]) == int(bed["x"]) and int(c["z"]) == int(bed["z"])
     except (KeyError, TypeError, ValueError):
         return False
 
@@ -1495,7 +1552,7 @@ def _lay_in_bed(t, patient, bed, ceiling=600, step=60):
     waited, c = 0, None
     while True:
         c = _census(t, patient)
-        if _job(c) == "LayDown" and _near_bed(c, bed):
+        if _job(c) == "LayDown" and _on_bed(c, bed):
             return waited, c
         if waited >= ceiling:
             return None, c

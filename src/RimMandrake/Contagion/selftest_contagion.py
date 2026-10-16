@@ -60,6 +60,11 @@ class Fake(object):
             self.settings["burnFrequency"] = "2.0"
         self.weather, self.biome = "Clear", "TemperateForest"
         self.things, self.pawns, self.conds, self.roofs = {}, {}, [], []
+        # SITE model of the round-4 quicktest tile (LIVE 2026-10-16, Mountainous): the whole map lies under an overhead
+        # mountain roof. Clearing a pad (destroy_batch All) removes the roof holders, and on the next tick every cell of
+        # it still roofed collapses and crushes what stands there (RoofCollapserImmediate: 99999 Crush). Only cells the
+        # harness unroofed ('None:' set_roof_batch ops) are open sky.
+        self.open_sky, self.collapse_pending = [], []
         self.next_burn, self.bills = -1, set()
 
     # ------------------------------------------------------------ session surface
@@ -126,7 +131,20 @@ class Fake(object):
         return p["kind"] in NATIVES
 
     def exposed(self, x, z):
-        return not any(inrect(x, z, r) for r in self.roofs)
+        return any(inrect(x, z, r) for r in self.open_sky) and not any(inrect(x, z, r) for r in self.roofs)
+
+    def roofed_by_mountain(self, x, z):
+        return not any(inrect(x, z, r) for r in self.open_sky)
+
+    def resolve_collapse(self):
+        for rr in self.collapse_pending:
+            for p in self.pawns.values():
+                if not p["vanished"] and inrect(p["x"], p["z"], rr) and self.roofed_by_mountain(p["x"], p["z"]):
+                    p["vanished"] = p["crushed"] = True       # a crushed pawn is a corpse: gone from list_pawns
+            for tid in [i for i, t in self.things.items()
+                        if inrect(t["x"], t["z"], rr) and self.roofed_by_mountain(t["x"], t["z"])]:
+                del self.things[tid]
+        self.collapse_pending = []
 
     # ------------------------------------------------------------ simulation
     def advance(self, n):
@@ -134,6 +152,10 @@ class Fake(object):
             d = min(250, n)
             n -= d
             self.ticks += d
+            self.resolve_collapse()
+            for p in self.pawns.values():         # a patient ordered to its bed arrives on a later tick
+                if p.get("walk_to") and not p["vanished"]:
+                    p["x"], p["z"] = p.pop("walk_to")
             self.step()
 
     def cond(self, name):
@@ -421,6 +443,8 @@ class Fake(object):
                     and (categories == "All" or t["def"] not in bldg)]:
             del self.things[tid]
         self.roofs = [r for r in self.roofs if not (inrect(r[0], r[1], rr))]
+        if categories == "All":
+            self.collapse_pending.append(rr)      # the rock that held the mountain roof is gone
         return {"success": True}
 
     def t_pawn_force_incapacitate(self, pawn=None, action=None, **k):
@@ -434,9 +458,17 @@ class Fake(object):
         return {"success": True}
 
     def t_set_roof_batch(self, ops="", **k):
+        n = 0
         for op in ops.split(";"):
-            self.roofs.append(rect(op.split(":")[1]))
-        return {"success": True}
+            name, rr = op.split(":")[0], rect(op.split(":")[1])
+            n += rr[2] * rr[3]
+            if name in ("None", "Clear"):
+                if "unroof_noop" not in self.broken:
+                    self.open_sky.append(rr)
+                    self.roofs = [r for r in self.roofs if not inrect(r[0], r[1], rr)]
+            else:
+                self.roofs.append(rr)
+        return {"success": True, "cellsChanged": n, "cellsFailedVerify": 0}
 
     def t_spawn_batch(self, ops="", **k):
         for op in ops.split(";"):
@@ -461,6 +493,8 @@ class Fake(object):
 
     def t_spawn_pawn(self, kindDef=None, x=0, z=0, faction="none", **k):
         p = self.pawn(kindDef, x, z, faction)
+        if kindDef == V.HOST and "host_vanishes" in self.broken and not V._STATE.get("host"):
+            p["vanished"] = True                  # SITE: the spawner's host is gone before the arms read it
         return {"success": True, "pawns": [{"id": p["id"]}]}
 
     def t_list_pawns(self, rect=None, includeHealth=False, limit=500, **k):
@@ -553,6 +587,11 @@ class Fake(object):
         return {"success": True}
 
     def t_do_bill_now(self, billGiverId=None, pawnId=None, **k):
+        pat = self.pawns.get(billGiverId)
+        if pat and not any(b["x"] == pat["x"] and b["z"] == pat["z"] for b in self.of("Bed")):
+            # live: a surgery's giver is the patient, usable only while it lies IN the bed
+            return {"success": False, "message": "WorkGiver_DoBill.JobOnThing(forced:true) returned null.",
+                    "details": {"usableAfterFueling": False}}
         if billGiverId in self.bills:
             self.bills.discard(billGiverId)
             self.pawns[pawnId]["job"] = "DoBill"
@@ -586,7 +625,11 @@ class Fake(object):
             bed = self.things.get(targetAId)
             if bed:
                 p = self.pawns[pawnId]
-                p["job"], p["x"], p["z"] = "LayDown", bed["x"], bed["z"]
+                if "patient_walks_to_bed" in self.broken:
+                    # LIVE 2026-10-16: the patient is read beside the bed, still walking, before it lies down
+                    p["job"], p["x"], p["z"], p["walk_to"] = "LayDown", bed["x"] + 1, bed["z"] - 1, (bed["x"], bed["z"])
+                else:
+                    p["job"], p["x"], p["z"] = "LayDown", bed["x"], bed["z"]
         if jobDef == "RM_InjectGenomeSample":
             doer, host = self.pawns[pawnId], self.pawns.get(targetAId)
             if doer["inv"] and host and host["kind"] == V.HOST and "no_gestation" not in self.broken:
@@ -671,6 +714,9 @@ BREAKS = {
     "samples_not_monstrous": ["coalescence.burn_collapses_it_into_monstrous_samples"],
     "extract_nothing": ["genome.extraction_surgery_yields_sample"],
     "patient_wont_lie": [],                   # SITE: the patient never lies down -> extraction UNMEASURED, never FAIL
+    "patient_walks_to_bed": [],               # SITE timing: read beside the bed first; must still PASS (SITE_EXPECT)
+    "host_vanishes": [],                      # SITE: no host -> the spawner arms UNMEASURED, never PASS (SITE_EXPECT)
+    "unroof_noop": None,                      # SITE: the pad stays mountain-roofed -> fixtures crushed (SITE_EXPECT)
     "no_gestation": ["genome.inject_starts_gestation", "coalescence.monstrous_gestation_grows_one_limb"],
     "host_survives": ["genome.gestation_dies_producing_one_organ_batch"],
     "organ_count": ["genome.gestation_dies_producing_one_organ_batch", "coalescence.grown_limbs_off_grows_organs"],
@@ -689,6 +735,19 @@ BREAKS = {
 }
 
 
+# SITE breaks whose point is a verdict other than FAIL: {break: {component: verdict}}
+SITE_EXPECT = {
+    "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
+    "host_vanishes": {"spawner.spawner_off_buds_nothing": "UNMEASURED",
+                      "spawner.spawner_buds_unfinished": "UNMEASURED"},
+    # the round-4 failure, reproduced: without the unroof the fake map crushes the pads exactly as live did
+    "unroof_noop": {"repulsor_clear.off_when_setting_off": "FAIL",
+                    "spawner.spawner_off_buds_nothing": "UNMEASURED",
+                    "burn_forced.burn_harmless_at_zero_damage": "FAIL",
+                    "coalescence.coalescence_off_absorbs_nothing": "FAIL"},
+}
+
+
 def main():
     bad = []
     healthy = run()
@@ -700,7 +759,15 @@ def main():
     if declared != n_comp:
         bad.append("declared %d components but the run produced %d" % (declared, n_comp))
     ok_breaks = 0
+    for brk, want in sorted(SITE_EXPECT.items()):
+        res = run([brk])
+        got = dict((k, res.get(k, ("ABSENT",))[0]) for k in want)
+        if got != want:
+            bad.append("site break %-22s expected %s, got %s" % (brk, want, got))
     for brk, target in sorted(BREAKS.items()):
+        if target is None:                    # checked by SITE_EXPECT only
+            ok_breaks += 1
+            continue
         res = run([brk])
         reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
         if reds != sorted(target):
