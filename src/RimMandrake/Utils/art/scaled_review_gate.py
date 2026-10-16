@@ -46,7 +46,7 @@ SHEET_DIR = L.REPO_ROOT / "Transient" / "biome_ffar"
 CHECK_SHEET = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "check_sheet.py"
 SHEET_RE = re.compile(r"^([a-z_]+_sheet_\d{4}-\d{2}-\d{2})\.html$")
 STAMP_RE = re.compile(r'<meta name="scaled-review-gate" content="([^"]*)">')
-FAILED_CANON_BADGE = " — failed canon check"
+FAILED_CANON_BADGE = " — grader flagged (advisory)"  # == art_sheet.FAILED_CANON_BADGE
 RULED_GROUP = "Already ruled on another sheet"
 SIZE_FALLBACK_FLAG = "SIZE FALLBACK"
 SKIP_FRESH = False     # fixture selftests of the gate's OTHER requirements set this (their pictures are not on disk)

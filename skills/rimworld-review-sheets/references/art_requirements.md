@@ -38,8 +38,11 @@ set and never merges biome rosters.
    shows the reference images and the entry's `## Must show` next to its pictures, as REFERENCE —
    never pickable. A row without one says so. A canon creature and our franchise-free stand-in are
    separate rows in one coloured band, linked both ways.
-6. **Renders that failed the canon gate still appear**, badged "failed canon check", and stay
-   pickable — the gate has false-failed a picture he then chose.
+6. **The canon grader is an ADVISOR, never a gate** (owner, 2026-10-15, by card). Every artpipe
+   render shows the grader's reading under its pictures, per facing: score and each flagged line
+   with its reason, or UNGRADED when nothing was checked (0/0). It never hides, blocks or demotes a
+   picture; renders the old gate filed `failed_canon` carry "grader flagged (advisory)" and stay
+   pickable.
 7. **Do not repeat what he already ruled.** A subject ruled on any other sheet renders collapsed at
    the bottom — "Already ruled on <sheet>: <pick>" — expandable, never deleted (2026-10-05: *"a lot
    of redundant creatures from other forms listed on here as well that I've already reviewed"*).
