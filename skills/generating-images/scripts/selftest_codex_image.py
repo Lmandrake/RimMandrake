@@ -31,6 +31,24 @@ import codex_image as ci  # noqa: E402
 _REAL_NEEDS_STAGING = ci.needs_staging
 ci.needs_staging = lambda args: False
 
+# SANDBOX_UAC_ONE_STATE: pin the machine's "Password last set" reading so no test calls net.exe, and stub
+# the pre-launch guard for the mock-run contract tests; test_ensure_home_sandbox_guard exercises the real one.
+PINNED_PWSET = "2026-10-16T17:20:36Z"
+os.environ[ci.MACHINE_PWSET_ENV] = PINNED_PWSET
+CUR_MARKER = '{"version": 5, "created_at": "2026-10-16T17:20:37.036050700+00:00"}'
+OLD_MARKER = '{"version": 5, "created_at": "2026-10-16T14:47:43.844442100+00:00"}'
+_REAL_ENSURE = ci.ensure_home_sandbox
+ci.ensure_home_sandbox = lambda home, base=None: (True, "selftest stub")
+
+
+def give_state(root: Path, marker: str = CUR_MARKER, users: str = '{"version": 5}') -> Path:
+    """Write a sandbox state (marker + sandbox_users.json) into root."""
+    (root / ".sandbox").mkdir(parents=True, exist_ok=True)
+    (root / ".sandbox" / "setup_marker.json").write_text(marker)
+    (root / ".sandbox-secrets").mkdir(parents=True, exist_ok=True)
+    (root / ".sandbox-secrets" / "sandbox_users.json").write_text(users)
+    return root
+
 FAILURES: list[str] = []
 
 
@@ -384,11 +402,9 @@ def test_sandbox_seed_template() -> None:
         with tempfile.TemporaryDirectory() as td:
             template = Path(td) / "template"
             (template / ".sandbox").mkdir(parents=True)
-            (template / ".sandbox" / "setup_marker.json").write_text('{"version": 5}')
+            give_state(template)
             (template / ".sandbox-bin").mkdir()
             (template / ".sandbox-bin" / "codex-command-runner-1.2.3.exe").write_bytes(b"x")
-            (template / ".sandbox-secrets").mkdir()
-            (template / ".sandbox-secrets" / "sandbox_users.json").write_text("{}")
             (template / ".sandbox_migration").write_text("1")
             os.environ["CODEX_SANDBOX_SEED"] = str(template)
 
@@ -397,6 +413,7 @@ def test_sandbox_seed_template() -> None:
             installed_base = Path(td) / "installed_base"
             (installed_base / ".sandbox-bin").mkdir(parents=True)
             (installed_base / ".sandbox-bin" / "codex-command-runner-1.2.3.exe").write_bytes(b"y")
+            give_state(installed_base)
 
             check("sandbox_seed_template() finds a valid template",
                   ci.sandbox_seed_template() == template)
@@ -415,17 +432,16 @@ def test_sandbox_seed_template() -> None:
             check(".sandbox_migration file copied into the fresh home",
                   (fresh / ".sandbox_migration").is_file())
 
-            # A home that already has its OWN real setup is left untouched -
-            # never overwritten by the template.
+            # SANDBOX_UAC_ONE_STATE (2026-10-16): a home holding an OLD or half-written provisioning
+            # (marker, no sandbox_users.json - artpipe w0/w3/w4) used to be "left untouched", and re-ran
+            # the UAC setup on its next launch. It is now re-synced to the current state.
             already_set_up = Path(td) / "already_set_up"
             (already_set_up / ".sandbox").mkdir(parents=True)
             (already_set_up / ".sandbox" / "setup_marker.json").write_text('{"real": true}')
-            got2 = ci.seed_sandbox_from_template(already_set_up)
-            check("an already-set-up home is reported as fine", got2 is True)
-            check("an already-set-up home's OWN marker is not overwritten",
-                  "real" in (already_set_up / ".sandbox" / "setup_marker.json").read_text())
-            check("an already-set-up home did NOT get .sandbox-bin from the template",
-                  not (already_set_up / ".sandbox-bin").exists())
+            got2 = ci.seed_sandbox_from_template(already_set_up, installed_base)
+            check("a stale already-set-up home is reported as fine", got2 is True)
+            check("a stale already-set-up home's marker is replaced by the current one",
+                  ci.sandbox_state_blob(already_set_up) == ci.sandbox_state_blob(template))
 
             # No template at all -> honest False, never a raise, never a fake claim.
             # Redirect the DEFAULT lookup too (not just the env override) - this
@@ -449,7 +465,7 @@ def test_sandbox_seed_template() -> None:
         with tempfile.TemporaryDirectory() as td2:
             template = Path(td2) / "template"
             (template / ".sandbox").mkdir(parents=True)
-            (template / ".sandbox" / "setup_marker.json").write_text("{}")
+            give_state(template)
             (template / ".sandbox-bin").mkdir()
             (template / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"x")
             os.environ["CODEX_SANDBOX_SEED"] = str(template)
@@ -463,6 +479,7 @@ def test_sandbox_seed_template() -> None:
             # .sandbox-bin so this stays the "compatible" case.
             (base / ".sandbox-bin").mkdir()
             (base / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"y")
+            give_state(base)
 
             worker = Path(td2) / "worker"
             ci.seed_codex_home(base, worker)
@@ -535,15 +552,31 @@ def test_check_sandbox_fingerprint() -> None:
         base = root / "base_match"
         (base / ".sandbox-bin").mkdir(parents=True)
         (base / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"x")
+        give_state(base)
         template = root / "template_match"
-        (template / ".sandbox").mkdir(parents=True)
-        (template / ".sandbox" / "setup_marker.json").write_text("{}")
+        give_state(template)
         (template / ".sandbox-bin").mkdir()
         (template / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"y")
         status, tfp, ifp, msg = ci.check_sandbox_fingerprint(base, template)
         check("matching versions -> status match", status == "match", status)
         check("match carries no message", msg == "", msg)
         check("match reports both fingerprints", tfp == ifp == "codex-command-runner-1.0.0.exe")
+
+        # SANDBOX_UAC_ONE_STATE: base == template but BOTH on an older provisioning than the machine's
+        # (the 2026-10-16 state after worker w1 re-ran setup) -> mismatch, naming --sync-sandbox.
+        give_state(base, OLD_MARKER)
+        give_state(template, OLD_MARKER)
+        status, _t, _i, msg = ci.check_sandbox_fingerprint(base, template)
+        check("base+template stale vs machine -> mismatch", status == "mismatch", status)
+        check("stale message names --sync-sandbox", "--sync-sandbox" in msg, msg)
+        os.environ[ci.MACHINE_PWSET_ENV] = "none"
+        try:
+            give_state(base)
+            give_state(template)
+            status, _t, _i, msg = ci.check_sandbox_fingerprint(base, template)
+            check("machine reading unavailable -> mismatch, never a pass", status == "mismatch", status)
+        finally:
+            os.environ[ci.MACHINE_PWSET_ENV] = PINNED_PWSET
 
         # mismatched versions (the actual CODEX_UAC_STORM_1 root cause)
         base2 = root / "base_mismatch"
@@ -786,6 +819,60 @@ def test_staging_round_trip() -> None:
         ci.run_codex, ci.CODEX_SCRATCH = real_run_codex, real_scratch
 
 
+def test_ensure_home_sandbox_guard() -> None:
+    """SANDBOX_UAC_ONE_STATE: the hard pre-launch guard. Never launches codex."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        base = give_state(root / "base")
+        (base / ".sandbox-bin").mkdir()
+        (base / ".sandbox-bin" / "codex-command-runner-1.0.0.exe").write_bytes(b"x")
+        home = root / "w0"
+        (home / ".sandbox").mkdir(parents=True)
+        (home / ".sandbox" / "setup_marker.json").write_text(OLD_MARKER)  # half-written, no users file
+        ok, why = _REAL_ENSURE(home, base)
+        check("current base + stale home -> synced and ready", ok, why)
+        check("home now carries the base's exact state",
+              ci.sandbox_state_blob(home) == ci.sandbox_state_blob(base))
+        check("home got the base's runner", ci.sandbox_bin_fingerprint(home) == "codex-command-runner-1.0.0.exe")
+
+        give_state(base, OLD_MARKER)
+        stale_home = give_state(root / "w1", '{"x": 1}')
+        ok, why = _REAL_ENSURE(stale_home, base)
+        check("stale base -> refused", not ok, why)
+        check("refusal names --sync-sandbox", "--sync-sandbox" in why, why)
+        check("refused home is left untouched", '{"x": 1}' in (stale_home / ".sandbox" / "setup_marker.json").read_text())
+
+        os.environ[ci.MACHINE_PWSET_ENV] = "none"
+        try:
+            give_state(base)
+            ok, why = _REAL_ENSURE(home, base)
+            check("unreadable machine provisioning -> refused", not ok, why)
+        finally:
+            os.environ[ci.MACHINE_PWSET_ENV] = PINNED_PWSET
+
+        found = ci.find_current_sandbox_state([give_state(root / "old", OLD_MARKER), base])
+        check("find_current_sandbox_state picks the current home", found == base, str(found))
+
+        # _do_image must refuse BEFORE run_codex when the guard says no.
+        give_state(base, OLD_MARKER)
+        real_run, real_env_home = ci.run_codex, os.environ.get("CODEX_HOME")
+        launched = []
+        ci.run_codex = lambda *a, **k: launched.append(1) or (0, "", False)
+        ci.ensure_home_sandbox = _REAL_ENSURE
+        os.environ["CODEX_HOME"] = str(base)
+        try:
+            rc = ci.do_image(args_for(root / "out.png"))
+        finally:
+            ci.run_codex = real_run
+            ci.ensure_home_sandbox = lambda home, base=None: (True, "selftest stub")
+            if real_env_home is None:
+                os.environ.pop("CODEX_HOME", None)
+            else:
+                os.environ["CODEX_HOME"] = real_env_home
+        check("do_image exits 2 on a not-ready sandbox", rc == 2, str(rc))
+        check("do_image never launched codex", not launched)
+
+
 def main() -> int:
     for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
                test_timeout_still_harvests,
@@ -796,6 +883,7 @@ def main() -> int:
                test_sandbox_bin_fingerprint_picks_newest_by_version,
                test_check_sandbox_fingerprint,
                test_seed_sandbox_from_template_refuses_on_mismatch,
+               test_ensure_home_sandbox_guard,
                test_kill_orphaned_sandbox_helpers_parses_pids,
                test_kill_orphaned_sandbox_helpers_survives_powershell_failure,
                test_orphan_cleanup_only_fires_on_timeout_with_home_override,

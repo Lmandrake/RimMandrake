@@ -324,6 +324,62 @@ def codex_sandbox_preflight(base: Path | None = None) -> tuple[bool, str]:
     return False, message
 
 
+def ensure_worker_sandbox(home: Path, base: Path | None = None) -> tuple[bool, str]:
+    """SANDBOX_UAC_ONE_STATE hard pre-launch guard - see
+    codex_image.ensure_home_sandbox. False = do NOT launch codex."""
+    codex_image = _import_codex_image()
+    try:
+        return codex_image.ensure_home_sandbox(home, base)
+    except codex_image.EnvError as exc:
+        return False, str(exc)
+
+
+def sandbox_check_report(codex_home_root: Path, workers: int,
+                         base: Path | None = None) -> tuple[bool, list[str]]:
+    """`artpiped.py --check-sandbox`: would starting the daemon raise the
+    UAC sandbox-setup dialog? Read-only (net.exe + file reads); never
+    launches codex, never writes. Returns (safe, lines)."""
+    ci = _import_codex_image()
+    lines: list[str] = []
+    try:
+        base = base if base is not None else ci.base_codex_home()
+    except ci.EnvError as exc:
+        return False, [f"FAIL base home: {exc}"]
+    pw = ci.machine_sandbox_password_set()
+    lines.append(f"machine sandbox users last provisioned: "
+                 f"{pw.strftime('%Y-%m-%dT%H:%M:%SZ') if pw else 'UNREADABLE'}")
+    ok_pre, msg = codex_sandbox_preflight(base)
+    lines.append(f"{'ok  ' if ok_pre else 'FAIL'} shared home {base}: {msg}")
+    for i in range(workers):
+        home = codex_home_root / f"w{i}"
+        cur, why = ci.sandbox_state_current(home) if home.is_dir() else (False, "not created yet")
+        same = home.is_dir() and ci.sandbox_state_blob(home) == ci.sandbox_state_blob(base)
+        lines.append(f"     slot {home.name}: {'current' if cur else 'stale/missing'}"
+                     f"{' (== shared)' if same else ''} - "
+                     f"{'will be synced from shared before launch' if ok_pre else 'launch refused'}"
+                     f"{'' if cur else ' (' + why + ')'}")
+    lines.append("SAFE: starting would not raise the sandbox dialog" if ok_pre else
+                 "NOT SAFE: codex launches would be refused (no dialog); fix with --sync-sandbox")
+    return ok_pre, lines
+
+
+def sync_shared_sandbox(codex_home_root: Path, base: Path | None = None) -> tuple[bool, str]:
+    """`artpiped.py --sync-sandbox`: adopt the provisioning Windows currently
+    holds (found in any known codex home) into the shared home and the seed
+    template, with a backup. Never launches codex."""
+    ci = _import_codex_image()
+    try:
+        base = base if base is not None else ci.base_codex_home()
+    except ci.EnvError as exc:
+        return False, str(exc)
+    roots = [codex_home_root]
+    wh = ci.windows_home()
+    if wh is not None:
+        roots.append(wh / ".codex_workers")
+    template = ci.sandbox_seed_template()
+    return ci.adopt_current_sandbox_state(base, template, roots)
+
+
 DEFAULT_CODEX_HOME_ROOT = _default_codex_home_root()
 MAX_CODEX_HOME_SLOTS = 64
 

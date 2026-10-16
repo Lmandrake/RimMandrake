@@ -189,6 +189,191 @@ def template_sandbox_fingerprint(template: Path) -> str | None:
     return sandbox_bin_fingerprint(template)
 
 
+# --------------------------------------------------------------------------
+# sandbox-user PROVISIONING currency (SANDBOX_UAC_ONE_STATE, 2026-10-16)
+# --------------------------------------------------------------------------
+# MEASURED 2026-10-16 10:24 PDT, offline: every elevated
+# codex-windows-sandbox-setup run re-provisions the two MACHINE-wide users and
+# resets their passwords. `net user CodexSandboxOffline` read "Password last
+# set 10/16/2026 10:20:36 AM" - the exact second artpipe worker w1 wrote its
+# .sandbox-secrets/sandbox_users.json (marker created_at 17:20:37Z). So the
+# ONE valid sandbox state on the machine is whichever home holds the newest
+# provisioning; every other home (including the shared ~/.codex and the seed
+# template) is stale the instant any other home runs setup, and a stale home
+# re-runs setup = a UAC dialog. With N homes that never converges.
+# The instrument below compares the marker's own created_at with Windows'
+# own "Password last set" for those users - read-only, never launches codex.
+SANDBOX_STATE_FILES = (".sandbox/setup_marker.json", ".sandbox-secrets/sandbox_users.json")
+SANDBOX_USER_NAMES = ("CodexSandboxOffline", "CodexSandboxOnline")
+SANDBOX_PWSET_TOLERANCE_S = 15.0
+# Tests (and nothing else) pin the machine reading: an ISO-8601 UTC time, or
+# "none" for "could not read it".
+MACHINE_PWSET_ENV = "CODEX_SANDBOX_MACHINE_PWSET"
+
+
+def sandbox_state_blob(root: Path) -> bytes | None:
+    """setup_marker.json + sandbox_users.json bytes, or None if either is missing."""
+    try:
+        return b"".join((root / rel).read_bytes() for rel in SANDBOX_STATE_FILES)
+    except OSError:
+        return None
+
+
+def sandbox_marker_created(root: Path) -> datetime | None:
+    """The marker's own created_at (UTC), or None."""
+    try:
+        raw = json.loads((root / SANDBOX_STATE_FILES[0]).read_text()).get("created_at")
+    except (OSError, ValueError, AttributeError):
+        return None
+    if not isinstance(raw, str):
+        return None
+    m = re.match(r"(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(\.\d+)?", raw)
+    if not m:
+        return None
+    return datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+
+
+def machine_sandbox_password_set() -> datetime | None:
+    """Windows' "Password last set" for the codex sandbox users (UTC, the
+    newer of the two), read with net.exe - never codex. None = unreadable."""
+    pinned = os.environ.get(MACHINE_PWSET_ENV)
+    if pinned is not None:
+        if pinned.lower() == "none":
+            return None
+        return datetime.fromisoformat(pinned.replace("Z", "+00:00")).astimezone(timezone.utc)
+    net = Path("/mnt/c/Windows/System32/net.exe") if in_wsl() else Path("net")
+    newest = None
+    for user in SANDBOX_USER_NAMES:
+        try:
+            out = subprocess.run([str(net), "user", user], capture_output=True, text=True,
+                                 timeout=30, stdin=subprocess.DEVNULL).stdout
+        except (OSError, subprocess.TimeoutExpired):
+            return None
+        m = re.search(r"Password last set\s+(\d+/\d+/\d{4} \d+:\d\d:\d\d(?: [AP]M)?)", out or "")
+        if not m:
+            return None
+        txt = m.group(1)
+        fmt = "%m/%d/%Y %I:%M:%S %p" if txt.endswith("M") else "%m/%d/%Y %H:%M:%S"
+        # net.exe prints Windows local time; WSL shares the Windows clock/zone.
+        when = datetime.strptime(txt, fmt).astimezone().astimezone(timezone.utc)
+        newest = when if newest is None or when > newest else newest
+    return newest
+
+
+def sandbox_state_current(root: Path) -> tuple[bool | None, str]:
+    """Is `root`'s sandbox state THE provisioning Windows currently holds?
+    True = proven current; False = proven stale/missing; None = the machine
+    reading is unavailable (callers treat None as not-ready, never as a pass)."""
+    if sandbox_state_blob(root) is None:
+        return False, f"{root} has no complete sandbox state ({' + '.join(SANDBOX_STATE_FILES)})"
+    created = sandbox_marker_created(root)
+    if created is None:
+        return False, f"{root}/{SANDBOX_STATE_FILES[0]} has no readable created_at"
+    pwset = machine_sandbox_password_set()
+    if pwset is None:
+        return None, "cannot read 'Password last set' for the codex sandbox users (net.exe user)"
+    gap = abs((created - pwset).total_seconds())
+    if gap <= SANDBOX_PWSET_TOLERANCE_S:
+        return True, f"marker {created:%Y-%m-%dT%H:%M:%SZ} matches machine provisioning {pwset:%Y-%m-%dT%H:%M:%SZ}"
+    return False, (f"{root} holds provisioning {created:%Y-%m-%dT%H:%M:%SZ} but Windows' sandbox users "
+                   f"were last provisioned {pwset:%Y-%m-%dT%H:%M:%SZ} - a launch against it would re-run "
+                   f"the UAC-gated sandbox setup")
+
+
+def find_current_sandbox_state(candidates) -> Path | None:
+    """The first candidate home whose sandbox state is proven current."""
+    for root in candidates:
+        if root is not None and root.is_dir() and sandbox_state_current(root)[0] is True:
+            return root
+    return None
+
+
+def _copy_sandbox_state(src: Path, dst: Path) -> None:
+    """Copy marker + every .sandbox-secrets file (+ .sandbox_migration, and
+    .sandbox-bin when dst lacks it) from src into dst. Logs are left alone."""
+    (dst / ".sandbox").mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src / SANDBOX_STATE_FILES[0], dst / SANDBOX_STATE_FILES[0])
+    (dst / ".sandbox-secrets").mkdir(parents=True, exist_ok=True)
+    for f in (src / ".sandbox-secrets").iterdir():
+        if f.is_file():
+            shutil.copy2(f, dst / ".sandbox-secrets" / f.name)
+    for name in SANDBOX_SEED_FILES:
+        if (src / name).is_file():
+            shutil.copy2(src / name, dst / name)
+    if sandbox_bin_fingerprint(dst) != sandbox_bin_fingerprint(src) and (src / ".sandbox-bin").is_dir():
+        shutil.copytree(src / ".sandbox-bin", dst / ".sandbox-bin", dirs_exist_ok=True)
+
+
+def ensure_home_sandbox(home: Path, base: Path | None = None) -> tuple[bool, str]:
+    """HARD PRE-LAUNCH GUARD (SANDBOX_UAC_ONE_STATE): make `home` carry the
+    shared base home's sandbox state, and say whether a codex launch against
+    it can be expected NOT to run the elevated setup. Never launches codex.
+
+    Refuses (False) when the base itself is not proven current against the
+    machine, when its runner build is unknown, or when, after syncing, the
+    home's state still differs from the base's. On False the caller must NOT
+    launch codex."""
+    base = base if base is not None else base_codex_home()
+    cur, why = sandbox_state_current(base)
+    if cur is not True:
+        return False, (f"shared sandbox state is not current ({why}); run "
+                       f"`artpiped.py --sync-sandbox` (no codex launch) and retry")
+    if sandbox_bin_fingerprint(base) is None:
+        return False, f"{base} has no .sandbox-bin runner - cannot prove the build"
+    if home.resolve() != base.resolve():
+        if (sandbox_state_blob(home) != sandbox_state_blob(base)
+                or sandbox_bin_fingerprint(home) != sandbox_bin_fingerprint(base)):
+            try:
+                _copy_sandbox_state(base, home)
+            except OSError as exc:
+                return False, f"could not sync sandbox state {base} -> {home}: {exc}"
+        if sandbox_state_blob(home) != sandbox_state_blob(base):
+            return False, f"{home}'s sandbox state still differs from {base} after sync"
+        if sandbox_bin_fingerprint(home) != sandbox_bin_fingerprint(base):
+            return False, (f"{home} runner {sandbox_bin_fingerprint(home)} != base "
+                           f"{sandbox_bin_fingerprint(base)} after sync")
+    return True, f"{home} carries the current shared sandbox state ({why})"
+
+
+def adopt_current_sandbox_state(base: Path, template: Path | None, search_roots) -> tuple[bool, str]:
+    """Make the shared base home (and the seed template) carry the sandbox
+    state Windows currently holds, copied from whichever known home has it
+    (`search_roots`: homes or directories of homes). Backs up what it
+    overwrites under <windows home>/.codex_sandbox_backup_<UTC stamp>/.
+    Never launches codex. (False, why) when no home holds current state -
+    then only a deliberate, human-watched setup can produce one."""
+    cands: list[Path] = [base] + ([template] if template is not None else [])
+    for r in search_roots:
+        r = Path(r)
+        if (r / ".sandbox").is_dir():
+            cands.append(r)
+        elif r.is_dir():
+            cands.extend(sorted(p for p in r.iterdir() if (p / ".sandbox").is_dir()))
+    src = find_current_sandbox_state(cands)
+    if src is None:
+        return False, ("no home holds the sandbox state Windows currently has - nothing to adopt; "
+                       "a human-watched setup (CODEX_ALLOW_SANDBOX_SETUP=1, ONE call) is the only way out")
+    targets = [t for t in (base, template)
+               if t is not None and (sandbox_state_blob(t) != sandbox_state_blob(src)
+                                     or sandbox_bin_fingerprint(t) != sandbox_bin_fingerprint(src))]
+    if not targets:
+        return True, f"shared home and template already current (source {src})"
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    backup_root = (windows_home() or base.parent) / f".codex_sandbox_backup_{stamp}"
+    for t in targets:
+        bk = backup_root / t.name
+        for rel in (".sandbox/setup_marker.json", ".sandbox-secrets"):
+            s = t / rel
+            if s.is_file():
+                (bk / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(s, bk / rel)
+            elif s.is_dir():
+                shutil.copytree(s, bk / rel, dirs_exist_ok=True)
+        _copy_sandbox_state(src, t)
+    return True, (f"adopted current sandbox state from {src} into "
+                  f"{', '.join(str(t) for t in targets)} (backup {backup_root})")
+
+
 def check_sandbox_fingerprint(base: Path | None = None, template: Path | None = None
                                ) -> tuple[str, str | None, str | None, str]:
     """The ONE fingerprint comparison shared by seed_sandbox_from_template()
@@ -238,6 +423,14 @@ def check_sandbox_fingerprint(base: Path | None = None, template: Path | None = 
                     f"(setup_marker.json / .sandbox-secrets/sandbox_users.json differ) - seeding would trigger the "
                     f"UAC sandbox setup dialog. Re-sync: cp {base}/.sandbox/setup_marker.json {template}/.sandbox/ && "
                     f"cp {base}/.sandbox-secrets/sandbox_users.json {template}/.sandbox-secrets/")
+        # SANDBOX_UAC_ONE_STATE: template == base is not enough either - BOTH can be stale together the
+        # moment any other home runs setup (2026-10-16: worker w1 re-provisioned at 10:20:36, leaving the
+        # shared home and the template on the 07:47 provisioning). Prove the base against the machine.
+        cur, why = sandbox_state_current(base)
+        if cur is not True:
+            return ("mismatch", template_fp, installed_fp,
+                    f"shared sandbox state is not current: {why}. Fix without launching codex: "
+                    f"python3 src/RimMandrake/Utils/artpipe/artpiped.py --sync-sandbox")
         return "match", template_fp, installed_fp, ""
     return ("mismatch", template_fp, installed_fp,
             f"sandbox seed template at {template} was captured against codex "
@@ -273,14 +466,20 @@ def seed_sandbox_from_template(home: Path, base: Path | None = None) -> bool:
     never seeded and no caller can mistake this for success; see
     check_sandbox_fingerprint() for what counts as proven.
     """
-    if (home / ".sandbox" / "setup_marker.json").is_file():
-        return True  # already set up (either real, or seeded on a prior call)
     template = sandbox_seed_template()
     if template is None:
-        return False
+        # No template: an already-set-up home is left as it is (pre-2026-09 behaviour).
+        return (home / ".sandbox" / "setup_marker.json").is_file()
     status, _template_fp, _installed_fp, message = check_sandbox_fingerprint(base, template)
     if status == "mismatch":
         raise EnvError(message)
+    # SANDBOX_UAC_ONE_STATE (2026-10-16): a home that HAS a marker used to return True here untouched, so
+    # worker homes holding an old or half-written provisioning (w0/w2/w3/w4: marker but no
+    # sandbox_users.json) were never repaired and each re-ran the UAC setup. Re-sync whenever it differs.
+    if (home / ".sandbox" / "setup_marker.json").is_file():
+        if sandbox_state_blob(home) != sandbox_state_blob(template):
+            _copy_sandbox_state(template, home)
+        return True
     for name in SANDBOX_SEED_DIRS:
         src = template / name
         if src.is_dir() and not (home / name).is_dir():
@@ -925,6 +1124,16 @@ def _do_image(args, finalize=None) -> int:
     # printed next to it. Track the pre-run mtime and require it to move.
     existed_before = out.exists()
     mtime_before = out.stat().st_mtime if existed_before else None
+
+    # SANDBOX_UAC_ONE_STATE: never launch codex.exe against a home whose sandbox state would make it run
+    # the elevated setup (a UAC dialog on the owner's screen). Exit 2 = environment not usable, launch
+    # never attempted. A human deliberately re-running setup sets CODEX_ALLOW_SANDBOX_SETUP=1.
+    if os.environ.get("CODEX_ALLOW_SANDBOX_SETUP") != "1":
+        ok, why = ensure_home_sandbox(home)
+        if not ok:
+            print(f"ERROR sandbox-not-ready: refusing to launch codex (would raise the UAC sandbox "
+                  f"setup dialog): {why}", file=sys.stderr)
+            return 2
 
     before = snapshot_generated(home)
     started = time.time()
