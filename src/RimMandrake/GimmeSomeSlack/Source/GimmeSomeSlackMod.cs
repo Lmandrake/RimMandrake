@@ -477,9 +477,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static int settingsLoaded;
 
-        /// <summary>Both Mod constructors call this after their GetSettings; the second applies Harmony. PatchApplier.AfterExpose,
-        /// on ANY settings load, re-reads every forced-off field as the player's value, so a settings file loaded after a patch
-        /// failure (AerialSettings, whose Mod may construct after this one) would save the other class's feature as off for good.</summary>
+        /// <summary>Both Mod constructors call this after their GetSettings; the second applies Harmony, so no patch can fail
+        /// (and force a feature off) before both settings files have loaded their player values. Each class also passes
+        /// GetType() to PatchApplier.Before/AfterExpose, so a later load re-reads only its own fields.</summary>
         internal static void SettingsLoaded()
         {
             if (++settingsLoaded != 2) return;
