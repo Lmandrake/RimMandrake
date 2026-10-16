@@ -357,6 +357,10 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <modExtensions>
+      <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 1: the Stall hunter (Source/RM_StallHunt.cs). -->
+      <li Class="RimMandrake.LeaningScrub.RM_StallHunterExtension" />
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

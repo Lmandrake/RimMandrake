@@ -357,6 +357,11 @@ class Fake(object):
                 return {"success": True, "result": "PASS wind=True stallStill=True" if hides else
                         "FAIL: small wild creature on fuzz in wind was not hidden"}
             return {"success": True, "result": "FAIL: rippleEnabled off but the creature hid" if hides else "PASS off wind=False"}
+        if method == "ProofStallHunt":
+            hunts = (args != "off" and "stallhunt_never" not in self.broken) or (args == "off" and "stallhunt_ignores_toggle" in self.broken)
+            if args != "off":
+                return {"success": True, "result": "PASS hunting=True" if hunts else "FAIL: a stall hunter did not hunt"}
+            return {"success": True, "result": "FAIL: stallHuntEnabled off but the hawk hunted" if hunts else "PASS off hunting=False"}
         if method == "ProofPyre":
             if args == "defs":
                 return {"success": True, "result": "FAIL: RM_CallingPyre_Venerated not gated on Ritualist"
@@ -622,6 +627,8 @@ BREAKS = {
     "log_error": "log.log_clean",
     "stamp_never": "stamp.stamp_answers_a_blaze",
     "stamp_ignores_toggle": "stamp.stamp_toggle_off_ignores_fire",
+    "stallhunt_never": "stallhunt.stallhawk_hunts_in_the_stall",
+    "stallhunt_ignores_toggle": "stallhunt.stallhawk_toggle_off_idle",
     "ripple_never": "ripple.ripple_hides_small_creatures",
     "ripple_ignores_toggle": "ripple.ripple_toggle_off_nobody_hides",
     "pyre_ungated": "pyre.pyre_beliefs_gated_on_memes",

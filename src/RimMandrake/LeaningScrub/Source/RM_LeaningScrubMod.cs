@@ -101,6 +101,8 @@ namespace RimMandrake.LeaningScrub
         // LEANINGSCRUB_MECHANICS_BUILD_1 part 6 (RM_Ripple.cs). PROVISIONAL size limit (doubled in the Gale).
         public static bool rippleEnabled = true;
         public static float rippleMaxBodySize = 0.6f;
+        // part 1 (RM_StallHunt.cs): the stallhawk hunts while the Stall holds.
+        public static bool stallHuntEnabled = true;
 
         // LEANINGSCRUB_MECHANICS_BUILD_1 part 5, second half (RM_CallingPyre.cs). PROVISIONAL numbers.
         public static bool callingPyreEnabled = true;
@@ -183,6 +185,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
             Scribe_Values.Look(ref rippleEnabled, "rippleEnabled", true, true);
             Scribe_Values.Look(ref rippleMaxBodySize, "rippleMaxBodySize", 0.6f, true);
+            Scribe_Values.Look(ref stallHuntEnabled, "stallHuntEnabled", true, true);
             Scribe_Values.Look(ref callingPyreEnabled, "callingPyreEnabled", true, true);
             Scribe_Values.Look(ref callingPyreRadius, "callingPyreRadius", 14f, true);
             Scribe_Values.Look(ref callingPyreHerdFactor, "callingPyreHerdFactor", 1f, true);
@@ -456,7 +459,7 @@ namespace RimMandrake.LeaningScrub
                 list.GapLine();
             }
 
-            if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
+            if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
             {
                 list.CheckboxLabeled("Small creatures hide under the fuzz", ref rippleEnabled,
                     "A small wild animal standing in the fuzz cannot be shot, hunted or seen by predators; you see it "
@@ -467,6 +470,9 @@ namespace RimMandrake.LeaningScrub
                     list.Label("Largest body size that hides: " + rippleMaxBodySize.ToString("0.00") + " (PROVISIONAL; a hare is about 0.2, a person 1.0)");
                     rippleMaxBodySize = Mathf.Round(list.Slider(rippleMaxBodySize, 0.1f, 1.5f) * 20f) / 20f;
                 }
+                list.CheckboxLabeled("Stall hunters hunt while the wind is dead", ref stallHuntEnabled,
+                    "While the Stall holds, a wild zellik goes after the nearest small creature it can see, hungry "
+                    + "or not. In wind its prey hides under the fuzz. Off: it hunts only when hungry, like any predator.");
                 list.CheckboxLabeled("The calling-pyre ritual can be held", ref callingPyreEnabled,
                     "Belief systems with a fire or ritual meme can hold the calling-pyre: the colony's own fields are "
                     + "set alight and the fire-stamping giants come down on everyone. Off: the ritual cannot be started.");

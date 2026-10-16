@@ -89,6 +89,8 @@
     <Compile Include="RM_Ripple.cs" />
     <Compile Include="RM_CallingPyre.cs" />
     <Compile Include="RM_ScrubInjections.cs" />
+    <Compile Include="Kernel\RM_StallHuntKernel.cs" />
+    <Compile Include="RM_StallHunt.cs" />
   </ItemGroup>
 
   <ItemGroup>
