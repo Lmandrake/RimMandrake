@@ -694,8 +694,10 @@ def source_checks():
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
     # 48/5 since DONOR_CODE_PLAIN_PORTS_1: + RM_Radyak (ThingDef, PawnKindDef, RM_OssrithCrystal, its RecipeDef).
     # The walk's wild-kinds step spawns every KIND.
-    if len(V.SHIPPED) != 48 or len(V.FLORA) != 17 or len(V.KINDS) != 5:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 48 / 17 / 5); update "
+    # 64/9 since Phase 0 P2 (2026-10-15): + RM_BedBug, RM_CrystalMit, RM_GiantCrownedSilkie, RM_Bezzul (owned ports of the
+    # Alpha Animals rows; src/RimMandrake/Utils/aa_port.py), with their eggs, silk, bricks, bodies, bite, ability, projectile.
+    if len(V.SHIPPED) != 64 or len(V.FLORA) != 17 or len(V.KINDS) != 9:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 64 / 17 / 9); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

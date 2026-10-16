@@ -163,9 +163,9 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - non-Star-Wars donor, Q9 -->
-      <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - non-Star-Wars donor, Q9 -->
-      <AA_Wildpawn MayRequire="sarg.alphaanimals">0.1</AA_Wildpawn>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
-      <AA_Wildpod MayRequire="sarg.alphaanimals">0.025</AA_Wildpod>  <!-- wildpod - non-Star-Wars donor, Q9 -->
+      <RM_Chikka MayRequire="mandrake.rsw.swbestiary">0.25</RM_Chikka>  <!-- cactipine - non-Star-Wars donor, Q9 -->
+      <RM_Durrok MayRequire="mandrake.rsw.swbestiary">0.1</RM_Durrok>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
+      <RM_Mullgoth MayRequire="mandrake.rsw.swbestiary">0.025</RM_Mullgoth>  <!-- wildpod - non-Star-Wars donor, Q9 -->
       <!-- LEANINGSCRUB_RULED_CONTENT_1: the ruled cast (RM_LeaningScrubFauna.xml) -->
       <RM_Fuzzrunner>1.0</RM_Fuzzrunner>
       <RM_Thornhold>0.4</RM_Thornhold>

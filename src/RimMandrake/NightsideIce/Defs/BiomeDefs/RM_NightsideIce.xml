@@ -195,7 +195,7 @@
            ⛔ So this is NOT a pyramid defect to fix: do not lower it, and do not remove it
            to make ECOSYSTEM_PYRAMID_LAW_1 pass. The remedy runs the other way — this biome
            has no small natives of its own, only giant imports, and owes some. -->
-      <AA_ShockGoat MayRequire="sarg.alphaanimals">0.03</AA_ShockGoat>  <!-- shock goat - small native visitor, ruled -->
+      <RM_Zhissa>0.03</RM_Zhissa>  <!-- shock goat - small native visitor, ruled -->
       <!-- RSW_CaveLemming (0.03, owner-ruled 2026-09-21) is Star Wars canon and does NOT
            ship here (Q11a) — it rides WildAnimals_NightsideIce.xml onto this def instead.
            See NIGHTSIDEICE_RM_MOD_BUILD_1 step 2. -->

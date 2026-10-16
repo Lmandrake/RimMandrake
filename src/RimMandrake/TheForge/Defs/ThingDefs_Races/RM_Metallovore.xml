@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Metallovore: owned RM_ port of the Alpha Animals Metallovore (sarg.alphaanimals AA_Metallovore, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod TheForge.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 1 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml
+    - useMeatFrom AA_Helixien -> Megaspider (vanilla; PROVISIONAL)
+    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Metallovore</defName>
+    <label>metallovore</label>
+    <description>Metallovores are repulsive creatures genetically modified to fill a very specific niche: eating metals. The writhing tentacles in the animal's mouth secrete an organic substance that is capable of quickly rusting and dissolving most common metals, turning them into small flakes that serve as sustenance for the metallovore. They prefer small chunks of metal, since they can be more easily digested, but they will resort to digging into rocks in search of new metal if they can find none available.\n\nPresumably, they were created to get rid of scrap metal, but they are mostly found in the wild now.</description>
+    <statBases>
+      <MoveSpeed>2.00</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>85</ComfyTemperatureMax>
+      <Flammability>0</Flammability>
+      <MarketValue>150</MarketValue>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>RM_TentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>body</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>8</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_EatWeirdFood" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <customThingToEat>
+          <li>ChunkSlagSteel</li>
+          <li>Steel</li>
+          <li>Silver</li>
+          <li>Gold</li>
+          <li>MineableSteel</li>
+          <li>MineableSilver</li>
+          <li>MineableGold</li>
+        </customThingToEat>
+        <nutrition>1</nutrition>
+        <digThingIfMapEmpty>true</digThingIfMapEmpty>
+        <thingToDigIfMapEmpty>ChunkSlagSteel</thingToDigIfMapEmpty>
+        <fullyDestroyThing>false</fullyDestroyThing>
+        <percentageOfDestruction>0.2</percentageOfDestruction>
+        <needsWater>false</needsWater>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
+      <body>RM_TentacledSlug</body>
+      <baseBodySize>2</baseBodySize>
+      <baseHealthScale>2</baseHealthScale>
+      <baseHungerRate>0.85</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.80</manhunterOnDamageChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>7</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Metallovore</defName>
+    <label>metallovore</label>
+    <race>RM_Metallovore</race>
+    <combatPower>150</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>
+      <min>5</min>
+      <max>8</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Metallovore/RM_Metallovore</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.30, 0.25, 0.20)</volume>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Metallovore/RM_Metallovore</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Metallovore/RM_Metallovore</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.75</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,-0.05)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <BodyPartGroupDef>
+    <defName>RM_TentacleAttackTool</defName>
+    <label>tentacle</label>
+  </BodyPartGroupDef>
+  <BodyDef>
+    <defName>RM_TentacledSlug</defName>
+    <label>tentacled slug</label>
+    <corePart>
+      <def>RM_SlugBodyTheForge</def>
+      <coverage>0.10</coverage>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Heart</def>
+          <coverage>0.1</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_Carapace</def>
+          <customLabel>carapace</customLabel>
+          <coverage>0.2</coverage>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Skull</def>
+              <coverage>0.15</coverage>
+              <depth>Inside</depth>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.5</coverage>
+                  <depth>Inside</depth>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Nose</def>
+              <coverage>0.1</coverage>
+            </li>
+            <li>
+              <def>Jaw</def>
+              <coverage>0.1</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>first tentacle</customLabel>
+          <groups>
+            <li>RM_TentacleAttackTool</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>second tentacle</customLabel>
+          <groups>
+            <li>RM_TentacleAttackTool</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>third tentacle</customLabel>
+          <groups>
+            <li>RM_TentacleAttackTool</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>fourth tentacle</customLabel>
+          <groups>
+            <li>RM_TentacleAttackTool</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyPartDef>
+    <defName>RM_SlugBodyTheForge</defName>
+    <label>slug body</label>
+    <hitPoints>25</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_Carapace</defName>
+    <label>metallic carapace</label>
+    <hitPoints>100</hitPoints>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+</Defs>
