@@ -192,6 +192,10 @@
       <RM_Fubbum>0.15</RM_Fubbum>
       <!-- GELATINOUSSLIME_DWOMMO_FLIER_1, // INVENTED: the flying aristocracy, low commonality -->
       <RM_Dwommo>0.2</RM_Dwommo>
+      <!-- Phase 0 twin-only ports (owner 2026-10-15, "port all"): the oomb, the resistant trash-eating native of
+           the_slime.md §4, at the twin's 0.15. Guarded on the donor until our art is installed at our own path
+           (the P3 convention); the wuum is NOT cast here (Transient/phase0_twin_only_questions.md Q1). -->
+      <RM_Oomb MayRequire="sarg.alphaanimals">0.15</RM_Oomb>
       <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
            ecoSystemWeight of 6 means one titanoslime costs the map's animal
            budget what six gelatids would, so the spawner stops adding animals

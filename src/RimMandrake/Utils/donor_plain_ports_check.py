@@ -72,6 +72,18 @@ PORTS = [
     # Phase 0 P3 Q4 (owner by card 2026-10-15): the ondrukka kept as ours, without the cocoon
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_Ondrukka.xml", "ours": "RM_Ondrukka",
      "donor": "VFEI2_BlackSwarmling", "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
+    # Phase 0 twin-only ports (owner by card 2026-10-15, "port all"): the creatures only the frozen RUT_ twins cast
+    {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Oomb.xml", "ours": "RM_Oomb",
+     "donor": "AA_AcanthamoebaGiganteaLarge", "roster": "Defs/BiomeDefs/GelatinousSlime.xml",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea"}},  # one file holds both
+    {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Oomb.xml", "ours": "RM_LesserOomb",
+     "donor": "AA_AcanthamoebaGiganteaSmall", "roster": None,
+     "uncast_why": "home undecided (twin Wasteland vs round-2 Scarlands), Transient/phase0_twin_only_questions.md Q2",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea"}},
+    {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Wuum.xml", "ours": "RM_Wuum",
+     "donor": "AA_GreenGoo", "roster": None,
+     "uncast_why": "RM_Gelatid already holds the Slime's substrate slot, Transient/phase0_twin_only_questions.md Q1",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo"}},
 ]
 
 
