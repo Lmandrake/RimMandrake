@@ -471,7 +471,18 @@ namespace RimMandrake.GimmeSomeSlack
         public GimmeSomeSlackMod(ModContentPack content) : base(content)
         {
             LegacyMigration.SettingsFiles(content);
-            Settings = GetSettings<GimmeSomeSlackSettings>();
+            try { Settings = GetSettings<GimmeSomeSlackSettings>(); }
+            finally { SettingsLoaded(); }
+        }
+
+        private static int settingsLoaded;
+
+        /// <summary>Both Mod constructors call this after their GetSettings; the second applies Harmony. PatchApplier.AfterExpose,
+        /// on ANY settings load, re-reads every forced-off field as the player's value, so a settings file loaded after a patch
+        /// failure (AerialSettings, whose Mod may construct after this one) would save the other class's feature as off for good.</summary>
+        internal static void SettingsLoaded()
+        {
+            if (++settingsLoaded != 2) return;
             RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.gimmesomeslack"), typeof(GimmeSomeSlackMod).Assembly, "RimMandrake.GimmeSomeSlack");
         }
 
@@ -511,6 +522,7 @@ namespace RimMandrake.GimmeSomeSlack
                 case SettingsTab.OverheadLines: LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.DoSettingsWindowContents(inner); break;
                 default: Settings?.DoWindowContents(inner); break;
             }
+            RimMandrake.Shared.PatchApplier.ReforceOff();   // a feature whose patch failed cannot be clicked (or reset) back on
         }
 
         public static string StyleLabel(CordStyle s)
