@@ -1,0 +1,1 @@
+Deleting a donor-name patch whose effect 'was folded elsewhere' made RM_Zhissa and RM_Bulloo INVISIBLE (no texPath): before deleting any patch, prove the target def's texPath resolves to a real file; patch cleanup agents must prove effect survival per def, not by header comment.
