@@ -1,0 +1,3957 @@
+{
+ "mode": "partial",
+ "tier": "donor_off_phase0",
+ "manifestHead": "f7f2a6d30",
+ "utc": "2026-10-16T15:56:47Z",
+ "phases": [
+  "pre",
+  "log",
+  "spawn",
+  "plants",
+  "burst",
+  "oomb",
+  "haze",
+  "portal",
+  "mapgen",
+  "save"
+ ],
+ "ownerPresent": null,
+ "aborted": false,
+ "rows": [
+  {
+   "id": "P01_TIER_TRUTH",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "running": 21,
+    "tierLen": 21,
+    "donorsPresent": [],
+    "dlcMissing": [],
+    "vef": true,
+    "lenMatches": true
+   }
+  },
+  {
+   "id": "P02_TOOLS",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "missing": [],
+    "tools": 538
+   }
+  },
+  {
+   "id": "P03_LOG_ALIVE",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "alive": true,
+    "sentinel": "[proof log sentinel] revive 1792166036967",
+    "emitted": true,
+    "why": null,
+    "cleared": true
+   }
+  },
+  {
+   "id": "P04_MAP",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "mapId": 0,
+    "tile": 21283,
+    "biome": "RM_TheRot",
+    "colonist": "Human849"
+   }
+  },
+  {
+   "id": "L01_FIRST_EXCEPTION",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "exceptions": 0,
+    "first": "Config error in BasicMechtech: requires no techprints but has heldByFactionCategoryTags.",
+    "firstException": null,
+    "configErrors": 12
+   }
+  },
+  {
+   "id": "L02_XREF_OURS",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "count": 0,
+    "examples": []
+   }
+  },
+  {
+   "id": "L03_TEX_PORTED",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "count": 0,
+    "examples": []
+   }
+  },
+  {
+   "id": "L04_TEX_OURS",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "count": 38,
+    "ofWhichPorted": 0,
+    "examples": [
+     "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Glasskelle' in any active mod or in base resources.",
+     "Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Pulsebead' in any active mod or in base resources.",
+     "Collection cannot init: No textures found at path Things/RM_Glasmaw/RM_Glasmaw",
+     "Collection cannot init: No textures found at path Things/Plant/RM_Glasmaw",
+     "Could not load Texture2D at 'Things/Item/Resource/PlantFoodRaw/Hay' for def 'RM_RawGlasmawRoot' in any active mod or in base resources.",
+     "Collection cannot init: No textures found at path Things/Item/RM_AngelMothEggFertilized/RM_AngelMothEggFertilized",
+     "Collection cannot init: No textures found at path Things/Item/Resource/RM_DustveilEgg",
+     "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Rimebeard' in any active mod or in base resources.",
+     "Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantB' for def 'RM_Stillbloom' in any active mod or in base resources.",
+     "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Simmerlace' in any active mod or in base resources."
+    ]
+   }
+  },
+  {
+   "id": "SPAWN_BADTEX_CONTROL",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "note": "no control: a vanilla Muffalo read badTex=true (Pawn.Graphic not drawn yet) or could not be spawned/read; pawn badTex is ignored, texture grading rests on the Player.log rows (L03/L04)"
+   }
+  },
+  {
+   "id": "SPAWN_RM_BedBug",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Bileworm",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Blisterfloat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Bloodlurk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_BloodyMess",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Bulloo",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Chikka",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Chittik",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_ColossalAerofleet",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_ContagionIkee",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Crispling",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_CrystalMit",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Danglemaw",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Doublemaw",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Durrok",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Dustveil",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_DustveilLarva",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Eyestinger",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Fleshsop",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Gawpsack",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Gnashling",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Gorekite",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_GreaterOomb",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_InfectedAerofleet",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_LesserOomb",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Lirrith",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Mantrap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Meltgut",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Metallovore",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Mullgoth",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_OcularJelly",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Ogleknot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Ollathrix",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Ondrukka",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Oomb",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Peeper",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Scaldhide",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Scorchpod",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Sharpshrimp",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Siezer",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Skinflap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Sloshbelly",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Sparkleech",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_SparkleechGrub",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Thunderbeast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Wuum",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Zhissa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RM_Zrrik",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Acklay",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Akk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Anooba",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Bantha",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Behemoth",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Beldon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Blarth",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Blixus",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Blurrg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Boarwolf",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Bogwing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Bolotaur",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Boma",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Borcatu",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Bordok",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Brezak",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Bursa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_CanCell",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Cannok",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_ChrysalideRancor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Clodhopper",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Convor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_CorellianHound",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Corinathoth",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Dactillion",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Dalgo",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Devourers",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Dewback",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Dianoga",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Dragonsnake",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Drexl",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_EnergySpider",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Eopie",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Faa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Falumpaset",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Fambaa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Fanback",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_FeralGrazer",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_FeralNerf",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_FrilledGorg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_FrogDog",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gelagrub",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gizka",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gorg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gornt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_GraniteSlug",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Grank",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Grazer",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_GreaterKraytDragon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gualaar",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gullipud",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gundark",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Gutkurr",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_HarvesterBeetle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Hawkbat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Horax",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Hrumph",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Hssiss",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Igitz",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Insectomorph",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Iriaz",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_IridonianReek",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_IthorianReek",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Jakobeast",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Jamel",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Jimvu",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_JungleRancor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Kaadu",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Katarn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_KellDragon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Kinrath",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Klorslug",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_KowakianMonkeyLizard",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_KraytDragon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Kreetle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Krykna",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_KwazelMaw",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Kwi",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Kybuck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Laa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_LavaFlea",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Leaftail",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_LongtailGorg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_LothWolf",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Lothcat",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Lylek",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Maalraas",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Manka",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_MarshHaunt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Massiff",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_MastiffPhalone",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Mastmot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Mawvorr",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Mee",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Mott",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Mudhorn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Narglatch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Neebray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Nerf",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Nexu",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Nuna",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Ollopom",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Orray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_PaintedSpat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_PekoPeko",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Pikobis",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Porg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Pufferpig",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Qormot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Rancor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Raxshir",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Reek",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Rikknit",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Roggwart",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Ronto",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Runyip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Rycrit",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Scavrat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Scurrier",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Shaak",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Shiro",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_ShiroTrap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Shyrack",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Silooth",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Skalder",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Sketto",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Snoruuk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Squall",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Stintaril",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Strill",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Tach",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Taozin",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Tauntaun",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_TeeMuss",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_TetnissCrab",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Thranta",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Tibidee",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Tooke",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Torton",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Tukata",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_TuskCat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Urusai",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Uvak",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Vapaad",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Varactyl",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Veermok",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Voorpak",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Vornskyr",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Vulptex",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Wampa",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_WarWyrm",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Warbird",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 1,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Whisperbird",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_WompRat",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Woolamander",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Worrt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Wraid",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Yobshrimp",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Zakkeg",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "SPAWN_RSW_Zeer",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 2,
+    "alive": 2,
+    "substituted": [],
+    "badTex": [],
+    "graphic": "read",
+    "log": [],
+    "texOwed": []
+   }
+  },
+  {
+   "id": "PLANT_RSW_Plant_HydenockTree_Wild",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "standing": 1,
+    "texture": "RSW_Plant_HydenockTree_WildA"
+   }
+  },
+  {
+   "id": "PLANT_RSW_Plant_JoganTree_Wild",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "standing": 1,
+    "texture": "RSW_Plant_JoganTree_WildA"
+   }
+  },
+  {
+   "id": "PLANT_RSW_Plant_TookeTrap_Wild",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "standing": 1,
+    "texture": "RSW_Plant_TookeTrap_WildA"
+   }
+  },
+  {
+   "id": "BURST_BLOODYMESS_KILLED",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "death": "kill",
+    "deathCall": "None",
+    "dead": 1,
+    "before": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "after": {
+     "acid": 12,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       141,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "why": "b4a5cf348: bursts into acid when killed (owner card Q3 'Burst only when killed')",
+    "acidDelta": 12,
+    "sentinelHurt": true
+   }
+  },
+  {
+   "id": "BURST_BLOODYMESS_GESTATION",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "death": "gestation",
+    "deathCall": "null",
+    "dead": 1,
+    "before": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "after": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 2
+    },
+    "why": "b4a5cf348: no burst when it dies giving birth (AmoebaHostUtility.CompleteGestation -> KillGivingBirth)",
+    "acidDelta": 0,
+    "sentinelHurt": false
+   }
+  },
+  {
+   "id": "BURST_BULLOO",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "death": "kill",
+    "deathCall": "None",
+    "dead": 1,
+    "before": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "after": {
+     "acid": 0,
+     "fire": 1,
+     "sentinelHp": [
+      [
+       140,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "why": "447cae1f2 / ab6ba54f4: the bulloo keeps vanilla DeathActionWorker_SmallExplosion (flame)",
+    "acidDelta": 0,
+    "sentinelHurt": true
+   }
+  },
+  {
+   "id": "BURST_BLISTERED_BULLOO",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "death": "kill",
+    "deathCall": "None",
+    "dead": 1,
+    "before": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "after": {
+     "acid": 1,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       146,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "why": "ab6ba54f4: the blistered bulloo's acid burst repointed to EnvironmentalHazards ScaledExplosion",
+    "acidDelta": 1,
+    "sentinelHurt": true
+   }
+  },
+  {
+   "id": "BURST_SCORCHPOD",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "death": "kill",
+    "deathCall": "None",
+    "dead": 1,
+    "before": {
+     "acid": 0,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       150,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "after": {
+     "acid": 9,
+     "fire": 0,
+     "sentinelHp": [
+      [
+       141,
+       150
+      ]
+     ],
+     "organs": 0
+    },
+    "why": "f690b6984: the scorchpod carries the red spore's acid burst (ScaledExplosion)",
+    "acidDelta": 9,
+    "sentinelHurt": true
+   }
+  },
+  {
+   "id": "OOMB_GROWTH",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "subject": "RM_LesserOomb",
+    "into": "RM_Oomb",
+    "cycles": 16,
+    "ticks": 8000,
+    "feedingsNeeded": 10,
+    "counter": {
+     "currentFeedings": "1"
+    },
+    "method": "compressed: food need set to 0 each 500-tick cycle (debug_process long-duration rule)",
+    "meaning": "the cycle did not complete inside the budget; read `counter`: a rising count with no change is a MOD lead, a flat one is SITE"
+   }
+  },
+  {
+   "id": "OOMB_SPLIT",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "subject": "RM_GreaterOomb",
+    "into": "RM_LesserOomb",
+    "cycles": 4,
+    "ticks": 2000,
+    "feedingsNeeded": 20,
+    "counter": {
+     "currentFeedings": "0"
+    },
+    "method": "compressed: food need set to 0 each 500-tick cycle (debug_process long-duration rule)",
+    "governorStop": "GovernorStop: safe_advance stopped after 300 of 500 tick(s): downed: downed (health 0.72)"
+   }
+  },
+  {
+   "id": "HAZE_ZHOOL",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": 3,
+    "before": 0,
+    "after": 5,
+    "ticks": 2500,
+    "rate": "5",
+    "method": "compressed: conversion rate 5 (MaxRate), restored to 1"
+   }
+  },
+  {
+   "id": "PORTAL_ENTER",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "orderedJob": "None",
+    "governorStop": "GovernorStop: safe_advance stopped after 120 of 250 tick(s): hurt: health 0.73 -> 0.68; newest hediff ToxicBuildup age 3",
+    "newMaps": 0
+   }
+  },
+  {
+   "id": "PORTAL_EXIT",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": "no pocket map to exit"
+  },
+  {
+   "id": "ROSTER_RM_Abyss",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_BlueDesert",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Cauldron",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {
+     "RM_Bileworm": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Contagion",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 23,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_FeverWood",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 2,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_FloodedCanyon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_GelatinousSlime",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Greentide",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {
+     "RM_Zrrik": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_LeaningScrub",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Miasma",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 5,
+    "notSpawning": {
+     "RM_Bileworm": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_NightsideIce",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TheForge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TheRot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TwilightSea",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 3,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Warscar",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_Webwork",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 1,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RUT_AridShrubland",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 0,
+    "notSpawning": {},
+    "donorGuardedDropExpected": [
+     "AA_Cactipine",
+     "AA_Needlepost",
+     "AA_Wildpawn",
+     "AA_Wildpod",
+     "Plant_Nysyllin_Wild"
+    ]
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Abyss",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21323,
+    "mapBiome": "RM_Abyss",
+    "temperature": 0.0,
+    "wildAnimals": 5,
+    "kinds": {
+     "RM_Sesserith": 3,
+     "RM_Drokattak": 1,
+     "RM_Durrgak": 1
+    },
+    "plants": 4227,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_BlueDesert",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 21434,
+    "mapBiome": "RM_BlueDesert",
+    "temperature": -55.5,
+    "wildAnimals": 3,
+    "kinds": {
+     "RM_Dorrak": 2,
+     "RM_Zhaaz": 1
+    },
+    "plants": 487,
+    "exceptions": [
+     "Error in GenStep: System.ArgumentNullException: Value cannot be null.\r\nParameter name: source\r\n[Ref 31ABDE28]\nSystem.Linq.OrderedEnumerable`2[[RimWorld.Planet.SurfaceTile+RiverLink, Assembly-CSharp, V"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Cauldron",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21471,
+    "mapBiome": "RM_Cauldron",
+    "temperature": 0.0,
+    "wildAnimals": 9,
+    "kinds": {
+     "RM_CrystalMit": 2,
+     "RSW_Silooth": 2,
+     "RSW_VentStalker": 1,
+     "RM_DecayDrake": 1,
+     "RSW_Mynock": 1,
+     "RM_Suush": 1,
+     "RSW_Neebray": 1
+    },
+    "plants": 5973,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Contagion",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21508,
+    "mapBiome": "RM_Contagion",
+    "temperature": 30.0,
+    "wildAnimals": 11,
+    "kinds": {
+     "RM_Scorchpod": 4,
+     "RM_Sparkleech": 3,
+     "RM_Fleshsop": 1,
+     "RM_Bloodlurk": 1,
+     "RM_Gawpsack": 1,
+     "RM_BloodyMess": 1
+    },
+    "plants": 4640,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_FeverWood",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21582,
+    "mapBiome": "RM_FeverWood",
+    "temperature": 27.5,
+    "wildAnimals": 6,
+    "kinds": {
+     "RM_Drommath": 3,
+     "RM_Murrelith": 2,
+     "VFEI2_Megathrips": 1
+    },
+    "plants": 8677,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_FloodedCanyon",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21693,
+    "mapBiome": "RM_FloodedCanyon",
+    "temperature": 25.0,
+    "wildAnimals": 7,
+    "kinds": {
+     "RM_Lirrith": 3,
+     "RM_Ommok": 2,
+     "RSW_SandPillar": 2
+    },
+    "plants": 192,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_GelatinousSlime",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 21730,
+    "mapBiome": "RM_GelatinousSlime",
+    "temperature": 22.5,
+    "wildAnimals": 4,
+    "kinds": {
+     "WasteRat": 1,
+     "Seal": 1,
+     "RSW_Segnosaurus": 1,
+     "RSW_Clodhopper": 1
+    },
+    "plants": 8469,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Greentide",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22063,
+    "mapBiome": "RM_Greentide",
+    "temperature": 27.5,
+    "wildAnimals": 28,
+    "kinds": {
+     "RM_Yammeth": 17,
+     "RM_Sulleth": 8,
+     "RM_Gristle": 2,
+     "RM_Vurrak": 1
+    },
+    "plants": 6667,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_LeaningScrub",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22137,
+    "mapBiome": "RM_LeaningScrub",
+    "temperature": 22.5,
+    "wildAnimals": 9,
+    "kinds": {
+     "RSW_Nuna": 6,
+     "RM_Barkwarden": 3
+    },
+    "plants": 4164,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Miasma",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22211,
+    "mapBiome": "RM_Miasma",
+    "temperature": 30.0,
+    "wildAnimals": 27,
+    "kinds": {
+     "RM_Karrobel": 8,
+     "RSW_PodWorm": 3,
+     "RM_Bozzuga": 3,
+     "RM_Liliana": 3,
+     "RM_Karrolun": 3,
+     "RSW_Bogwing": 2,
+     "RSW_CrestedDragon": 2,
+     "RSW_Shiro": 2,
+     "RSW_Grank": 1
+    },
+    "plants": 2476,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_NightsideIce",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22248,
+    "mapBiome": "RM_NightsideIce",
+    "temperature": null,
+    "wildAnimals": 1,
+    "kinds": {
+     "RM_Zhissa": 1
+    },
+    "plants": 0,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TheForge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22470,
+    "mapBiome": "RM_TheForge",
+    "temperature": 35.0,
+    "wildAnimals": 4,
+    "kinds": {
+     "RM_ColossalAerofleet": 2,
+     "RSW_Maguana": 1,
+     "RSW_Tibidee": 1
+    },
+    "plants": 1112,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TheRot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22581,
+    "mapBiome": "RM_TheRot",
+    "temperature": 5.0,
+    "wildAnimals": 6,
+    "kinds": {
+     "RM_Agaripod": 3,
+     "RM_Brullith": 1,
+     "RM_MycoidColossus": 1,
+     "RM_Mullgoth": 1
+    },
+    "plants": 8634,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TwilightSea",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22618,
+    "mapBiome": "RM_TwilightSea",
+    "temperature": 20.0,
+    "wildAnimals": 3,
+    "kinds": {
+     "RM_Tikkarr": 2,
+     "RM_Lunoowa": 1
+    },
+    "plants": 706,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Warscar",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22692,
+    "mapBiome": "RM_Warscar",
+    "temperature": 33.5,
+    "wildAnimals": 9,
+    "kinds": {
+     "RSW_Mynock": 4,
+     "RM_Chotrix": 2,
+     "RM_Chatrak": 2,
+     "RSW_FoundryBeetle": 1
+    },
+    "plants": 225,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Webwork",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22766,
+    "mapBiome": "RM_Webwork",
+    "temperature": 25.0,
+    "wildAnimals": 15,
+    "kinds": {
+     "RM_Sivvern": 6,
+     "RM_Cravvet": 4,
+     "RM_Ollathrix": 3,
+     "RM_Quarrok": 2
+    },
+    "plants": 8607,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "MAPGEN_RUT_AridShrubland",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tile": 22951,
+    "mapBiome": "RUT_AridShrubland",
+    "temperature": 26.0,
+    "wildAnimals": 5,
+    "kinds": {
+     "RSW_Eopie": 5
+    },
+    "plants": 3144,
+    "exceptions": [],
+    "errors": 0
+   }
+  },
+  {
+   "id": "SAVE_LOAD",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree",
+    "playing": true,
+    "waited": 9,
+    "referenceErrors": 2617,
+    "donorReferenceErrors": [],
+    "tapLost": 6947,
+    "modMatch": "Prepatcher, Harmony, Load Tracer (local), Better Stacktraces, Core, Royalty, Ideology, Biotech, Anomaly, Odyssey, [1.6] CAI 5000 - Advanced AI + Fog Of War (continued), (NWN) Real Fog of War (Continue"
+   }
+  },
+  {
+   "id": "SAVE_DONOR_REFS",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree",
+    "playing": true,
+    "waited": 9,
+    "referenceErrors": 2617,
+    "donorReferenceErrors": [],
+    "tapLost": 6947,
+    "modMatch": "Prepatcher, Harmony, Load Tracer (local), Better Stacktraces, Core, Royalty, Ideology, Biotech, Anomaly, Odyssey, [1.6] CAI 5000 - Advanced AI + Fog Of War (continued), (NWN) Real Fog of War (Continue",
+    "note": "log tap incomplete (tapLost or no tap): absence of donor refs is not observable; use the offline save grep"
+   }
+  }
+ ],
+ "summary": {
+  "PASS": 249,
+  "FAIL": 11,
+  "UNMEASURED": 6
+ },
+ "tapLost": 6947,
+ "plan": {
+  "P01_TIER_TRUTH": [
+   "jawa/running_mods details=false",
+   "no donor packageId; all five DLC; len == manifest tier len",
+   "a label that is not the list (2026-10-10: a 'tier' run on 550 mods)"
+  ],
+  "P02_TOOLS": [
+   "rimbridge list_tools",
+   "every tool this round calls is registered",
+   "a stale companion (L05, 2026-10-15) answers some calls and not others"
+  ],
+  "P03_LOG_ALIVE": [
+   "validation_core.log_revive",
+   "the sentinel warning reads back",
+   "Verse.Log cap: silent PASSes"
+  ],
+  "P04_MAP": [
+   "jawa/map_info + list_pawns faction=player",
+   "a Playing map with >=1 free colonist",
+   "rows that wait on a colonist void after a menu drop"
+  ],
+  "L01_FIRST_EXCEPTION": [
+   "Player.log of this load",
+   "0 lines containing Exception",
+   "a stale log from the previous process (identity: [JawaBench] ready line)"
+  ],
+  "L02_XREF_OURS": [
+   "Player.log",
+   "0 'Could not resolve cross-reference' lines naming RM_/RSW_/RUT_",
+   "cross-refs to absent mods' defs are expected on a 25-mod tier; only ours are graded"
+  ],
+  "L03_TEX_PORTED": [
+   "Player.log",
+   "0 texture misses on a manifest subject's texPath",
+   "a pawn texture resolves at load, not at spawn: the spawn row alone cannot see it"
+  ],
+  "L04_TEX_OURS": [
+   "Player.log",
+   "0 texture misses on any RM_/RSW_/RUT_ path (gate 0.5.5 #5)",
+   "art-owed items (no PNG yet) fail this honestly; read the split before blaming the port"
+  ],
+  "SPAWN_*": [
+   "jawa/spawn_pawn count=2 faction=none; 60 ticks; list_pawns; thing_graphic; tap",
+   "2 alive, kindActual == kind, no badTex, no new log line naming the kind/race/texPath",
+   "thing_graphic may not read a pawn graphic (then the log is the only texture evidence: said so)"
+  ],
+  "PLANT_*": [
+   "jawa/set_plants; list_things; thing_graphic",
+   "the plant stands and badTex is false",
+   "a plant with no PNG reads badTex only if the instrument can see the material"
+  ],
+  "BURST_*": [
+   "spawn hostile, kill_hostiles(pawnDef, destroyCorpses=false), 30 ticks, census the rect",
+   "acid: Filth_SpentAcid delta > 0; sentinel: WoodLog HP < max or Fire; gestation: organs > 0, acid 0",
+   "the burst's own Mod Setting off reads as a mod FAIL: the row reports the death and the tell separately"
+  ],
+  "OOMB_GROWTH": [
+   "tamed RM_LesserOomb; food need 0 then 500 ticks, repeated",
+   "RM_Oomb appears, the lesser is gone",
+   "growth is VEF's feeding counter: no VEF, no growth (P01 reads VEF in the list)"
+  ],
+  "OOMB_SPLIT": [
+   "tamed RM_GreaterOomb; same cycle",
+   ">=2 new tamed RM_LesserOomb, the greater is gone",
+   "fissionOnlyIfTamed: a wild subject never splits (spawned as player on purpose)"
+  ],
+  "HAZE_ZHOOL": [
+   "home tile -> RM_Contagion, grass site, 3 zhools, rate 5 (compressed, restored), 2500 ticks",
+   "converted ocular flora count > 0",
+   "OurBiome() refuses a non-mandrake biome: the row reads the map biome back first"
+  ],
+  "PORTAL_ENTER": [
+   "spawn RSW_DeadSarlaccHusk; ordered_job EnterPortal",
+   "a new map with a CaveExit, colonist on it",
+   "the old route listed loaded maps from a wrong key and read 'no map' x4 (SEA_DIVE_LIVE_ERRORS_1)"
+  ],
+  "PORTAL_EXIT": [
+   "ordered_job EnterPortal on the CaveExit",
+   "the colonist is back on the home map",
+   ""
+  ],
+  "MAPGEN_*": [
+   "jawa/world_tile_map_generate(tile, biome) on a scratch tile, read, map_drop",
+   "map biome == B; wild animals > 0 or plants > 0 (gate 0.5.5 #5); no exception during mapgen",
+   "a tile climate outside the roster's comfort reads 0 animals: the row says the temperature used"
+  ],
+  "ROSTER_*": [
+   "jawa/biome_probe find=<ported rows of B>",
+   "each unguarded port reads 'spawning'",
+   "rows still MayRequire'd on a donor (art owed) drop donor-off: expected, listed, not FAIL"
+  ],
+  "FLIGHT_*": [
+   "OWNER PRESENT ONLY: jawa/pawn_flight action=report kind=K",
+   "canEverFly true, maxFlightTimeStat > 0",
+   "never visual; never forced; a report read is the whole bar"
+  ],
+  "SAVE_LOAD": [
+   "go_to_main_menu; rimworld/load_game <fixed save>",
+   "Playing; 0 reference errors naming a donor def or its RSW_ rename",
+   "on a 25-mod tier the save's other mods are missing: only donor names graded"
+  ]
+ }
+}
