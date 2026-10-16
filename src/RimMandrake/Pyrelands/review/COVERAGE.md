@@ -52,9 +52,9 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | mechanic | Arrival letter on a new Pyrelands map | BiomeDefs/Pyrelands.xml | none | fires once when a colony first arrives; the review map is an already-settled site |
 | mechanic | Acoustic-scanner payload for the biome | Patches/RM_AcousticPayload_Pyrelands.xml | none | needs the Acoustic Scanner mod and a gravship scan; neither is on the ratchet_pilot tier |
 | mechanic | Mapgen raises no errors; plant and animal populations are the roster's | validation.py | none | a mapgen census, not a look: the matrix's mapgen_log_clean / *_distribution_correct; N0 shows the result |
-| animal | Fire-hawk: three standing facings | RM_PyrelandsFauna.xml | 21 |  |
+| animal | Fire-hawk: four standing, one per facing | RM_PyrelandsFauna.xml | 21 |  |
 | animal | Fire-hawk flying frames (5) and ember carrying (CompFireHawkSpread) | RM_PyrelandsFauna.xml | none | a flight: judged only with the owner present (FIREHAWK_FLIGHT_BEHAVIOR_1), never staged here |
-| animal | Fire-wasp: three standing facings | RM_PyrelandsPortedFauna.xml | 22 |  |
+| animal | Fire-wasp: four standing, one per facing | RM_PyrelandsPortedFauna.xml | 22 |  |
 | animal | Fire-wasp fly frames (8) | RM_PyrelandsPortedFauna.xml | none | a flight: owner-present only |
 | animal | Furnace-beast, giant art (setting furnaceBeastGiant, default on) | RM_PyrelandsGiants.cs | 23 |  |
 | animal | Furnace-beast classic (non-giant) art | RM_PyrelandsFauna.xml | none | only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here |
@@ -64,15 +64,15 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | animal | Furnace-beast thermal cycle: walks into fire to charge | JobGiver_RUT_FurnaceThermalCycle.cs | none | needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row |
 | animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | none | visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns |
 | animal | Furnace-beast herd world migration (WorldObject RM_FurnaceHerd) | WorldObject_RM_FurnaceHerd.cs | W |  |
-| animal | Ullai herd: three facings, herd size | RM_Ullai.xml | 25 |  |
+| animal | Ullai herd: four, one per facing, herd size | RM_Ullai.xml | 25 |  |
 | animal | Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn) | RM_Ullai.xml | none | needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet) |
-| animal | Ashwallow: three facings | RM_Ashwallow.xml | 26 |  |
+| animal | Ashwallow: four, one per facing | RM_Ashwallow.xml | 26 |  |
 | animal | Burrow ahead of the fire (RM_Burrowed status) | RM_JobGiver_BurrowOnFire.cs | 11 |  |
-| animal | Emberscythe: three facings | RM_Emberscythe.xml | 27 |  |
-| animal | Sytheclaw: three facings | RM_PyrelandsPortedFauna.xml | 28 |  |
-| animal | Barbslinger: three facings | RM_PyrelandsPortedFauna.xml | 29 |  |
+| animal | Emberscythe: four, one per facing | RM_Emberscythe.xml | 27 |  |
+| animal | Sytheclaw: four, one per facing | RM_PyrelandsPortedFauna.xml | 28 |  |
+| animal | Barbslinger: four, one per facing | RM_PyrelandsPortedFauna.xml | 29 |  |
 | animal | Barbslinger tail gun and spike projectile art | RM_PyrelandsPortedFauna.xml | none | a fight, not a look: draft a colonist at 29 in god mode to see it |
-| animal | Flamefang: three facings | RM_PyrelandsPortedFauna.xml | 30 |  |
+| animal | Flamefang: four, one per facing | RM_PyrelandsPortedFauna.xml | 30 |  |
 | animal | Flamefang venom bite (RM_FlamefangVenom) | HediffDefs | none | a fight, not a look: let it bite a god-mode colonist at 30 |
 | animal | Dessicated (rotted corpse) drawings, five animals | Textures/Things/Pawn/Animal/Pyrelands | none | needs a fully rotted corpse (days of sim); kill one in its pen and run 3x for a few days to check by hand |
 | animal | Campaign cast on the Pyrelands roster (7 RSW_ kinds, UtinniPatches) | WildAnimals_Pyrelands.xml | 31-37 |  |

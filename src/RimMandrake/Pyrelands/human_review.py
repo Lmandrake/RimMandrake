@@ -83,9 +83,16 @@ def _pad(x=2, z=2, w=8, h=8):
     return (x, z, w, h)
 
 
-def _pen(kind, n=1, flyer=False, note=""):
-    """A walled, roofed granite pen (make_empty_room) with deep-ash floor: wild animals cannot open its door."""
-    return dict(room=(1, 1, 10, 10), pawns=[(kind, 6, 6, n)], keep=True, flyer=flyer, note=note)
+FACINGS = ("South", "East", "North", "West")
+FACING_SPOTS = ((3, 7), (8, 7), (3, 3), (8, 3))   # pen-local interior cells, one per facing
+
+
+def _pen(kind, n=4, flyer=False, note=""):
+    """A walled, roofed granite pen (make_empty_room) with deep-ash floor: wild animals cannot open its door.
+    Owner, 2026-10-15: "You should put many creatures in each pen so they will have different facings to study."
+    So every pen holds n (default 4) placed at FACING_SPOTS and turned S/E/N/W explicitly (jawa/artboard_stage
+    gives each a long Wait job and sets its rotation after it), never left to wander into a facing."""
+    return dict(room=(1, 1, 10, 10), pawns=[(kind, 6, 6, n)], keep=True, flyer=flyer, note=note, facings=True)
 
 
 def station_defs():
@@ -256,13 +263,13 @@ def station_defs():
 
     # ---- E CREATURES (the fire cast, each alone in a roofed pen)
     add("E", "FIRE-HAWK", "flyer, shown standing only",
-        "Three facings standing. Its five flying frames and its ember carrying are a FLIGHT: judged only with you "
+        "Four standing, one per facing (S, E, N, W). Its five flying frames and its ember carrying are a FLIGHT: judged only with you "
         "present (FIREHAWK_FLIGHT_BEHAVIOR_1), never here.",
-        ["Rotate the camera round it; check the three facings."], "It stays in its roofed pen.",
+        ["Four of it, set facing S, E, N, W (west is east mirrored)."], "It stays in its roofed pen.",
         **_pen("RM_FireHawk", flyer=True))
     add("E", "FIRE-WASP", "flyer, shown standing only",
         "Standing art only; its eight fly frames are a flight (owner-present only).",
-        ["Look at all three facings."], "It stays in its roofed pen.", **_pen("RM_FireWasp", flyer=True))
+        ["Four of it, set facing S, E, N, W."], "It stays in its roofed pen.", **_pen("RM_FireWasp", flyer=True))
     s = _pen("RM_FurnaceBeast")
     s.update(probes=[("temp", 3, 3, "room")], chill=CHILL_C)
     add("E", "FURNACE-BEAST (GIANT)", "the walking hearth: it warms a cold room",
@@ -282,29 +289,29 @@ def station_defs():
                                                                    "beast's pen."],
         "Warms only from the outdoor heat through its walls, slower than the beast's pen.",
         room=(1, 1, 10, 10), probes=[("temp", 3, 3, "room")], chill=CHILL_C, expect_things=["Wall", "Door"])
-    add("E", "ULLAI HERD", "the ash grazer, three of a herd",
-        "Three facings, herd look. Its burn-following walk (to a two-day-old burn) needs days of roaming: the "
-        "matrix's row, not this pen.", ["Look at the three facings and its size beside the others."],
+    add("E", "ULLAI HERD", "the ash grazer, four of a herd",
+        "Four of a herd, one per facing (S, E, N, W). Its burn-following walk (to a two-day-old burn) needs days of roaming: the "
+        "matrix's row, not this pen.", ["Four of it, set facing S, E, N, W; its size beside the others."],
         "They graze the pen.", **_pen("RM_Ullai", 3))
     add("E", "ASHWALLOW", "the burrowing grazer",
-        "Standing art (three facings). Its burrow is shown at B (BURROWER).", ["Facings."], "It grazes.",
+        "Standing art: four, one per facing (S, E, N, W). Its burrow is shown at B (BURROWER).", ["Four of it, set facing S, E, N, W."], "It grazes.",
         **_pen("RM_Ashwallow"))
     add("E", "EMBERSCYTHE", "predator; its dessicated art still borrows",
-        "Three facings (emberscythe_v1). Weak spot: only its dessicated (rotted corpse) graphic is the Megascarab's.",
-        ["Facings."], "It stays.", **_pen("RM_Emberscythe"))
-    add("E", "SYTHECLAW", "predator", "Three facings.", ["Facings."], "It stays.", **_pen("RM_Sytheclaw"))
+        "Four, one per facing (S, E, N, W) (emberscythe_v1). Weak spot: only its dessicated (rotted corpse) graphic is the Megascarab's.",
+        ["Four of it, set facing S, E, N, W."], "It stays.", **_pen("RM_Emberscythe"))
+    add("E", "SYTHECLAW", "predator", "Four, one per facing (S, E, N, W).", ["Four of it, set facing S, E, N, W."], "It stays.", **_pen("RM_Sytheclaw"))
     add("E", "BARBSLINGER", "predator with a tail gun",
-        "Three facings (the scorpion redesign). Its spike projectile shows only in a fight.", ["Facings."],
+        "Four, one per facing (S, E, N, W) (the scorpion redesign). Its spike projectile shows only in a fight.", ["Four of it, set facing S, E, N, W."],
         "It stays.", **_pen("RM_Barbslinger"))
     add("E", "FLAMEFANG", "predator; a venomous bite",
-        "Three facings. Its venom (RM_FlamefangVenom) shows only after a bite.", ["Facings."], "It stays.",
+        "Four, one per facing (S, E, N, W). Its venom (RM_FlamefangVenom) shows only after a bite.", ["Four of it, set facing S, E, N, W."], "It stays.",
         **_pen("RM_Flamefang"))
 
     # ---- F CAMPAIGN CAST (Star Wars canon kinds UtinniPatches adds to the Pyrelands roster)
     for k in CAMPAIGN:
         add("F", k.replace("RSW_", "").upper(), "campaign roster (UtinniPatches)",
             "A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is "
-            "SWBestiary's, not this mod's. Here so the whole roster stands in one place.", ["Facings."], "It stays.",
+            "SWBestiary's, not this mod's. Here so the whole roster stands in one place.", ["Four of it, set facing S, E, N, W."], "It stays.",
             **_pen(k))
     return S
 
@@ -378,10 +385,10 @@ SIGNS = {
                         "hover each item for its label and text",
                         "does each have its own look? (hide borrows leather)"),
     "FIRE-HAWK": ("a flyer, shown standing only",
-                  "look at all three facings",
+                  "four of it: one faces each way",
                   "standing art right? (flight is judged with you live)"),
     "FIRE-WASP": ("a flyer, shown standing only",
-                  "look at all three facings",
+                  "four of it: one faces each way",
                   "standing art right? (flight is judged with you live)"),
     "FURNACE-BEAST (GIANT)": ("this pen and the control pen east both start cold",
                               "hover both floors; unpause 1 hour at 1x; hover again",
@@ -389,21 +396,21 @@ SIGNS = {
     "CONTROL PEN: NO BEAST": ("EMPTY ON PURPOSE: the yardstick for the beast",
                               "hover its floor, then the furnace-beast pen west",
                               "after an hour unpaused, is this pen the cooler one?"),
-    "ULLAI HERD": ("three ullai, the ash grazer",
-                   "look at facings and size beside the others",
+    "ULLAI HERD": ("four ullai, the ash grazer",
+                   "four: one faces each way; size beside the others",
                    "does it read as a herd grazer?"),
     "ASHWALLOW": ("the burrowing grazer, standing",
-                  "look at all three facings",
+                  "four of it: one faces each way",
                   "is the art right? (its burrow is at BURROWER)"),
-    "EMBERSCYTHE": ("a predator", "look at all three facings",
+    "EMBERSCYTHE": ("a predator", "four of it: one faces each way",
                     "is the art right? (only its rotted corpse borrows)"),
-    "SYTHECLAW": ("a predator", "look at all three facings", "is the art right?"),
-    "BARBSLINGER": ("a predator with a tail gun", "look at all three facings",
+    "SYTHECLAW": ("a predator", "four of it: one faces each way", "is the art right?"),
+    "BARBSLINGER": ("a predator with a tail gun", "four of it: one faces each way",
                     "is the art right? (the spike shows only in a fight)"),
-    "FLAMEFANG": ("a venomous predator", "look at all three facings",
+    "FLAMEFANG": ("a venomous predator", "four of it: one faces each way",
                   "is the art right? (the venom shows only after a bite)"),
 }
-CAMPAIGN_SIGN = ("a canon animal the campaign adds here", "look at all three facings",
+CAMPAIGN_SIGN = ("a canon animal the campaign adds here", "four of it: one faces each way",
                  "does it belong in the Pyrelands?")
 BOARD_SIGNS = {
     "N0": ("what the biome grew by itself", "walk it; compare station 15",
@@ -494,10 +501,10 @@ FEATURES = [
     ("mechanic", "Mapgen raises no errors; plant and animal populations are the roster's", "validation.py", None,
      "a mapgen census, not a look: the matrix's mapgen_log_clean / *_distribution_correct; N0 shows the result"),
     # creatures
-    ("animal", "Fire-hawk: three standing facings", "RM_PyrelandsFauna.xml", "21"),
+    ("animal", "Fire-hawk: four standing, one per facing", "RM_PyrelandsFauna.xml", "21"),
     ("animal", "Fire-hawk flying frames (5) and ember carrying (CompFireHawkSpread)", "RM_PyrelandsFauna.xml", None,
      "a flight: judged only with the owner present (FIREHAWK_FLIGHT_BEHAVIOR_1), never staged here"),
-    ("animal", "Fire-wasp: three standing facings", "RM_PyrelandsPortedFauna.xml", "22"),
+    ("animal", "Fire-wasp: four standing, one per facing", "RM_PyrelandsPortedFauna.xml", "22"),
     ("animal", "Fire-wasp fly frames (8)", "RM_PyrelandsPortedFauna.xml", None, "a flight: owner-present only"),
     ("animal", "Furnace-beast, giant art (setting furnaceBeastGiant, default on)", "RM_PyrelandsGiants.cs", "23"),
     ("animal", "Furnace-beast classic (non-giant) art", "RM_PyrelandsFauna.xml", None,
@@ -511,17 +518,17 @@ FEATURES = [
     ("animal", "Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)", "Source", None,
      "visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns"),
     ("animal", "Furnace-beast herd world migration (WorldObject RM_FurnaceHerd)", "WorldObject_RM_FurnaceHerd.cs", "W"),
-    ("animal", "Ullai herd: three facings, herd size", "RM_Ullai.xml", "25"),
+    ("animal", "Ullai herd: four, one per facing, herd size", "RM_Ullai.xml", "25"),
     ("animal", "Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)", "RM_Ullai.xml", None,
      "needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet)"),
-    ("animal", "Ashwallow: three facings", "RM_Ashwallow.xml", "26"),
+    ("animal", "Ashwallow: four, one per facing", "RM_Ashwallow.xml", "26"),
     ("animal", "Burrow ahead of the fire (RM_Burrowed status)", "RM_JobGiver_BurrowOnFire.cs", "11"),
-    ("animal", "Emberscythe: three facings", "RM_Emberscythe.xml", "27"),
-    ("animal", "Sytheclaw: three facings", "RM_PyrelandsPortedFauna.xml", "28"),
-    ("animal", "Barbslinger: three facings", "RM_PyrelandsPortedFauna.xml", "29"),
+    ("animal", "Emberscythe: four, one per facing", "RM_Emberscythe.xml", "27"),
+    ("animal", "Sytheclaw: four, one per facing", "RM_PyrelandsPortedFauna.xml", "28"),
+    ("animal", "Barbslinger: four, one per facing", "RM_PyrelandsPortedFauna.xml", "29"),
     ("animal", "Barbslinger tail gun and spike projectile art", "RM_PyrelandsPortedFauna.xml", None,
      "a fight, not a look: draft a colonist at 29 in god mode to see it"),
-    ("animal", "Flamefang: three facings", "RM_PyrelandsPortedFauna.xml", "30"),
+    ("animal", "Flamefang: four, one per facing", "RM_PyrelandsPortedFauna.xml", "30"),
     ("animal", "Flamefang venom bite (RM_FlamefangVenom)", "HediffDefs", None,
      "a fight, not a look: let it bite a god-mode colonist at 30"),
     ("animal", "Dessicated (rotted corpse) drawings, five animals", "Textures/Things/Pawn/Animal/Pyrelands", None,
@@ -1213,6 +1220,20 @@ class Review(object):
         for s in S:
             ox, oz = s["origin"]
             for kind, x, z, n_ in s["setup"].get("pawns", []):
+                if s["setup"].get("facings"):
+                    ops = []
+                    for i in range(n_):
+                        fx, fz = FACING_SPOTS[i % len(FACING_SPOTS)]
+                        if i >= len(FACING_SPOTS):
+                            fx, fz = fx + 1, fz - 1
+                        ops.append("id=s%d_%d|kind=pawn|x=%d|z=%d|def=%s|rot=%s|faction=none"
+                                   % (s["n"], i, ox + fx, oz + fz, kind, FACINGS[i % 4]))
+                    r = self.call("jawa/artboard_stage", phase="subjects", ops="\n".join(ops), killHostiles=False,
+                                  pause=True)
+                    bad = [o for o in (r.get("ops") or []) if not o.get("ok")]
+                    if bad or not r.get("ops"):
+                        self.notes.append("station %d: facings %s refused %s" % (s["n"], kind, json.dumps(bad or r)[:200]))
+                    continue
                 r = self.call("jawa/spawn_pawn", kindDef=kind, x=ox + x, z=oz + z, faction="none", count=n_)
                 if not (r.get("pawns") or r.get("id") or r.get("pawnId")):
                     self.notes.append("station %d: no %s spawned (%s)" % (s["n"], kind, json.dumps(r)[:160]))
