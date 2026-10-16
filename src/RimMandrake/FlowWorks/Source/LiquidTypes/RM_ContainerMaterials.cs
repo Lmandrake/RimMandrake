@@ -112,27 +112,31 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     ///  3. a stone-made container is GLASS: "granite empty bottle" reads "glass empty bottle" -- the
     ///     stone only tints it (vanilla's own "ThingMadeOfStuffLabel" pattern is rebuilt with the glass
     ///     word, so it holds in any language that keeps that pattern; otherwise the label is untouched).
-    ///  4. a FILLED container shows its liquid's colour (LiquidDef.color); an empty or dirty one, or a
-    ///     liquid left white, falls through to vanilla's stuff colour -- the material. One Graphic: the
+    ///  4. a FILLED container shows its liquid's colour (LiquidDef.color) in its window; since
+    ///     LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (card 2026-10-16) the material colours only the trim
+    ///     (RM_LiquidContainer.DrawColorTwo) and an empty/dirty window is clear glass/grime. One Graphic: the
     ///     colour is chosen once when the Thing's graphic is built, and every fill/wash/pour already makes
     ///     a NEW Thing (RM_LiquidBottleUtility.MakeContainer), so no cached graphic ever goes stale.
     /// Plus an inspect line for what this material holds and refuses.</summary>
     public class RM_CompContainerMaterial : ThingComp
     {
-        private const float WhiteEpsilon = 0.01f;
-
-        private LiquidDef Contained => parent.def.GetModExtension<RM_BottledLiquidExtension>()?.liquid;
-
+        /// <summary>LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (card 2026-10-16): the sprites are CutoutComplex, so this
+        /// colour reaches only the mask's RED region, the liquid window -- never the painted body. Filled: the liquid's
+        /// colour (white liquid = a clear window). Empty: pale clear glass. Dirty: grime. The material moved to the trim
+        /// (mask green, RM_LiquidContainer.DrawColorTwo).</summary>
         public override Color? ForceColor()
         {
-            LiquidDef liquid = Contained;
-            if (liquid == null)
+            RM_BottledLiquidExtension ext = parent.def.GetModExtension<RM_BottledLiquidExtension>();
+            if (ext == null)
             {
                 return null;
             }
-            Color c = liquid.color;
-            bool white = c.r > 1f - WhiteEpsilon && c.g > 1f - WhiteEpsilon && c.b > 1f - WhiteEpsilon;
-            return white ? (Color?)null : c;
+            if (ext.liquid != null)
+            {
+                return ext.liquid.color;
+            }
+            float[] w = ext.dirty ? RM_ContainerStyleMath.DirtyWindow : RM_ContainerStyleMath.EmptyWindow;
+            return new Color(w[0], w[1], w[2]);
         }
 
         public override string TransformLabel(string label)

@@ -70,6 +70,7 @@
     <Compile Include="..\MapControls\RM_MapControlMath.cs" />
     <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
+    <Compile Include="..\LiquidTypes\RM_ContainerStyleMath.cs" />
     <!-- hose port (step 2): the cord geometry (_Shared/SlackGeometry, internal types), the Verse-free hose files, and the hose
          suites moved from Gimme Some Slack's SelfTest, run through HoseChecks.cs's Program.Check shim -->
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="StyleStage3Checks.cs" />
     <Compile Include="PipeStyleChecks.cs" />
+    <Compile Include="ContainerStyleChecks.cs" />
     <Compile Include="HoseRulingTextChecks.cs" />
     <Compile Include="ReviewFixChecks.cs" />
     <Compile Include="ReviewBatch56Checks.cs" />

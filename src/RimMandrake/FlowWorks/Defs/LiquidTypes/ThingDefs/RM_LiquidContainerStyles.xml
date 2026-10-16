@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: the bottle, bucket and barrel in the four looks (owner 2026-10-16: "They too
+     should have the four styles of art."; sheet approved 100% the same day; by card: material colour on the TRIM only, body
+     keeps its painted style, liquid shows in the masked window). CutoutComplex: each texture has a _m mask, red = the liquid
+     window (DrawColor, RM_CompContainerMaterial.ForceColor), green = the trim (DrawColorTwo = material,
+     RM_LiquidContainer), black = painted, never tinted. Picked on the crafting bill (Source/LiquidTypes/RM_ContainerStyles.cs);
+     no StyleCategoryDef lists these, so no ideoligion can hand them out. drawSize = each ItemBase's (a style never resizes).
+     Design: design/RimMandrake/liquid_containers_four_styles_2026-10-16.md. -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_Bottle_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Scrapper/RM_Bottle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bottle_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bottle_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Modern/RM_Bottle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bottle_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Futuristic/RM_Bottle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bucket_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Scrapper/RM_Bucket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bucket_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bucket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bucket_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Modern/RM_Bucket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Bucket_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Futuristic/RM_Bucket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Barrel_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Scrapper/RM_Barrel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Barrel_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Barrel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Barrel_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Modern/RM_Barrel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_Barrel_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Futuristic/RM_Barrel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

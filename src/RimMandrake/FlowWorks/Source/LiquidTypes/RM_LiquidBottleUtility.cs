@@ -174,6 +174,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 made.HitPoints = RM_ContainerMaterialMath.CarriedHitPoints(from.HitPoints, from.MaxHitPoints, made.MaxHitPoints);
             }
+            // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: a soda bottle filled is still a soda bottle
+            RM_ContainerStyles.CarryStyle(from, made);
             return made;
         }
 

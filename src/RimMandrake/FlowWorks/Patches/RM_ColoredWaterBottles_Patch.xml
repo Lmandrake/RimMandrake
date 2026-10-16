@@ -18,9 +18,9 @@
   Each variant below restates DBH_WaterBottle's own fields (the `WaterExt` modExtension,
   `ingestible` block, stack/mass stats) on `ResourceBasedMom` (see FIXED below) and
   differs only in defName/label/description/colour, so these drink and satisfy thirst
-  exactly like DBH's bottle — same texture (`DBH/Things/Resource/
-  WaterBottles`), tinted via `graphicData.color` the same way the terrain and fleck
-  variants are, per this item's colour set (Defs/TerrainDefs/RM_ColoredWater.xml).
+  exactly like DBH's bottle. Drawn since LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (2026-10-16) as our Industrial
+  water bottle (CutoutComplex), `graphicData.color` tinting only the mask's red liquid window, per this item's colour
+  set (Defs/TerrainDefs/RM_ColoredWater.xml); the whole-bottle tint read as a fantasy potion.
 
   DBH_WATER_MEND_ACID_ON_TAP (C9-F6, 2026-10-15): gated `MayRequireAnyOf` Lite OR full
   `Dubwise.DubsBadHygiene` (workshop 836308268): full DBH's 1.6 defines `ResourceBasedMom`
@@ -71,9 +71,12 @@
           </li>
         </modExtensions>
         <graphicData>
-          <texPath>DBH/Things/Resource/WaterBottles</texPath>
-          <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
-          <drawSize>0.8</drawSize>
+          <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, card): our Industrial water bottle, the
+               colour on the mask's red liquid window only, never the whole bottle -->
+          <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
           <color>(168,92,58)</color>
         </graphicData>
         <comps>
@@ -123,9 +126,12 @@
           </li>
         </modExtensions>
         <graphicData>
-          <texPath>DBH/Things/Resource/WaterBottles</texPath>
-          <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
-          <drawSize>0.8</drawSize>
+          <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, card): our Industrial water bottle, the
+               colour on the mask's red liquid window only, never the whole bottle -->
+          <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
           <color>(70,168,140)</color>
         </graphicData>
         <comps>
@@ -175,9 +181,12 @@
           </li>
         </modExtensions>
         <graphicData>
-          <texPath>DBH/Things/Resource/WaterBottles</texPath>
-          <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
-          <drawSize>0.8</drawSize>
+          <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, card): our Industrial water bottle, the
+               colour on the mask's red liquid window only, never the whole bottle -->
+          <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
           <color>(198,150,60)</color>
         </graphicData>
         <comps>
@@ -227,9 +236,12 @@
           </li>
         </modExtensions>
         <graphicData>
-          <texPath>DBH/Things/Resource/WaterBottles</texPath>
-          <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
-          <drawSize>0.8</drawSize>
+          <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, card): our Industrial water bottle, the
+               colour on the mask's red liquid window only, never the whole bottle -->
+          <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
           <color>(120,80,168)</color>
         </graphicData>
         <comps>
@@ -279,9 +291,12 @@
           </li>
         </modExtensions>
         <graphicData>
-          <texPath>DBH/Things/Resource/WaterBottles</texPath>
-          <graphicClass>DubsBadHygiene.Graphic_StackCountTech</graphicClass>
-          <drawSize>0.8</drawSize>
+          <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, card): our Industrial water bottle, the
+               colour on the mask's red liquid window only, never the whole bottle -->
+          <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
           <color>(200,196,178)</color>
         </graphicData>
         <comps>

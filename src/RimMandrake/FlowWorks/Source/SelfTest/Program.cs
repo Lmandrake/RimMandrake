@@ -1870,6 +1870,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SlimeChecks.Run(Case);             // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: slime slips, climb-out slides back (SlimeChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
+            ContainerStyleChecks.Run(Case);    // LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: bottle/bucket/barrel in the four looks
             ReviewFixChecks.Run(Case);         // code-review batches 2-4 behaviour fixes (2026-10-11)
             ReviewBatch56Checks.Run(Case);     // code-review batches 5+6 behaviour fixes (2026-10-11); also the d1898bef91 re-review fixes
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
