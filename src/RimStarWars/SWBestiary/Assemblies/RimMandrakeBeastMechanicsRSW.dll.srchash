@@ -1,5 +1,6 @@
 # project: RimStarWars/SWBestiary/Source/BeastMechanics/RimMandrakeBeastMechanicsRSW.csproj
-# dll: 65342bb12a3e23601446a3074b36abd165199b49d4a1ffcb90df4d8e398112df
+# dll: aaf2a5525d43565e9a622cf611f2395d9793de45ddb0fb70a76cd941c300ed9d
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 229c37ab479ccb04c9ab0adc9108a2d2f728cc3fed514658dc9457c542c42dfd RSW_BeastMechanicsProof.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
 3ad97dea02cb03e6e0e46fd5ceddc20137dfc5438df308d9d522821503fce934 JobDriver_HoardScrap.cs
@@ -12,5 +13,4 @@ d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../../Rim
 ddb30403d95084b0fb5064b7c6f8df25cff0a2f6142d5cbaa8c0180062c69908 ToxinDependence.cs
 e427a31d1df36e7eb3b100f531755604030da80526f813115545aa6574d22106 JobGiver_HoardScrap.cs
 e84493c6b9e6b93578c6772454e3d5ac8c2ad9828021163f842acb8e8398f3f9 ScrapThiefFlock.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 fb6d4f761bed4f70b7b6fbdb75bab97326d41f98dfb71e3e186a2dc798a071db Kernel/RSW_BeastKernel.cs

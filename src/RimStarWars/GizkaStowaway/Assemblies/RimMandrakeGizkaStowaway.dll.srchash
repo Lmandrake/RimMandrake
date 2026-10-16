@@ -1,6 +1,7 @@
 # project: RimStarWars/GizkaStowaway/Source/RimMandrakeGizkaStowaway.csproj
-# dll: 1d35d2641fd8c24181ea952e3d443bed203433cd510bc07a6f8322e3f8fb1038
+# dll: 0cd943829edf4a6d4c2b545c64a5be5167e5e13c8ec232f7298fe9aec0634c56
 0ae4daef313f1d1d5f8e257a1f2fb3b4b8b6bf973ada8b36b538110c474ce542 RSW_GizkaSettings.cs
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
 479d53be2f7669395b697ce5fad2dea7b5b22f802233fdc901bc2db2a7a8a1c7 HediffComp_GizkaFecundity.cs
 8063a338987ef40c8c4037eb1d9fbf548fcd7e9d4b39903047749c7d52ee6ad0 RSW_GizkaHarmonyPatches.cs
@@ -8,4 +9,3 @@ a3e3e4f53b050964335d6c0a529b1b5e6198c9185503f285a0845f69016ee6d2 MapComponent_Gi
 d5901c3cbf558fbedb31b5393797060e8190579422cfa88730cf2ef1a8262393 RSW_GizkaPopulation.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
 f3f60f13d85efbda0a61ed96cf2188bc66c39fbb32248b6eeaa7674f490821ce RSW_GizkaStowawayManager.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
