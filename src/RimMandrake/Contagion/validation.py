@@ -501,8 +501,10 @@ def _jump(t, delta):
         after = t.session._ticks()
         if after is not None:
             w.gate.observe(after, epoch_change=True, reason="time_set_ticks declared jump")
-    if (r or {}).get("ticksGameAfter") is not None and r["ticksGameAfter"] < now + delta - 5:
-        _fail("time_set_ticks did not take: %r" % r)
+    # read the clock back ourselves: a reply without ticksGameAfter must not make a no-op jump look taken
+    after = t.session._ticks()
+    if after is None or after < now + delta - 5:
+        _fail("time_set_ticks did not take: clock %r after asking for %d (%r)" % (after, now + delta, r))
 
 
 def _map_biome(t):
@@ -915,6 +917,8 @@ def spawner(t):
         with _comp(t, "unfinished_dissolves_on_death"):
             if _live(t):
                 kid = _STATE.get("kid")
+                if not _alive(_rows(t).get(kid)):
+                    _unmeasured(t, "the budded Unfinished is gone before the push: 'dissolved' could not be seen")
                 r = t.bridge_call("jawa/pawn_severity_adjust", pawn=kid,
                                   hediff="RM_UnfinishedUnraveling", offset=1.0)
                 _ok(r, "pawn_severity_adjust")
@@ -1081,7 +1085,9 @@ def burn_forced(t):
                 if nat is None or not _alive(arm):
                     _unmeasured(t, "native row %s / armored alive %s: nothing to judge"
                                 % ("absent" if nat is None else "read", _alive(arm)))
-                if not (not _alive(nat) or "Burn" in _hdefs(nat)):
+                if not _alive(nat):
+                    _unmeasured(t, "the UV-shy native's row reads dead: its damage cannot be read")
+                if "Burn" not in _hdefs(nat):
                     _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
                           % sorted(_hdefs(nat)))
                 if "Burn" in _hdefs(arm):
@@ -1527,7 +1533,7 @@ def coalescence(t):
                     _fail("collapse at stage %d mass %d should spill %d samples, found %d"
                           % (stage, mass, want, len(got)))
                 bad = []
-                for s in got[:3]:
+                for s in got:
                     if "Monstrous" not in _inspect(t, s["id"])[1]:
                         bad.append(s["id"])
                 if bad:
@@ -1865,6 +1871,9 @@ def log_chain(t):
             owned = set(n for ns in DEFS_BY_TYPE.values() for n in ns)
             r2 = _ok(t.bridge_call("jawa/drain_log", contains="cross-reference", errorsOnly=True, limit=100),
                      "drain_log(cross-reference)")
+            if len(r2.get("messages") or []) >= 100:
+                # the owned-def filter runs after the cap: a full page may hide ours behind other mods' errors
+                _unmeasured(t, "the cross-reference page is full (100): ours could lie past it")
             xref = [m.get("text") for m in ((r2 or {}).get("messages") or [])
                     if any(d in (m.get("text") or "") for d in owned)]
             _note(t, "log scan", {"contagion errors": len(bad), "xref naming our defs": len(xref),

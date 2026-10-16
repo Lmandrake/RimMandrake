@@ -361,6 +361,8 @@ class Fake(object):
         return {"success": True}
 
     def t_time_set_ticks(self, ticks=0, **k):
+        if "jump_noop" in self.broken:            # a no-op jump whose reply carries no ticksGameAfter
+            return {"success": True}
         self.ticks = int(ticks)
         return {"success": True, "ticksGameAfter": self.ticks}
 
@@ -645,6 +647,10 @@ class Fake(object):
         msgs = []
         if "log_error" in self.broken and contains == "Contagion":
             msgs = [{"text": "RM_Contagion: Could not resolve"}]
+        if "xref_error" in self.broken and contains == "cross-reference":
+            msgs = [{"text": "Could not resolve cross-reference to Verse.ThingDef named %s" % V.MULCH}]
+        if "xref_flood" in self.broken and contains == "cross-reference":
+            msgs = [{"text": "Could not resolve cross-reference to Verse.ThingDef named OtherMod_%d" % i} for i in range(100)]
         return {"success": True, "totalInBuffer": 100, "messages": msgs}
 
 
@@ -726,6 +732,9 @@ BREAKS = {
     "monstrous_organs": ["coalescence.monstrous_gestation_grows_one_limb"],
     "limbs_ignore_toggle": ["coalescence.grown_limbs_off_grows_organs"],
     "log_error": ["log.log_clean"],
+    "xref_error": ["log.log_clean"],
+    "xref_flood": [],                         # a full page of other mods' errors: UNMEASURED (SITE_EXPECT)
+    "jump_noop": None,                        # harness instrument: a jump that did not take (SITE_EXPECT)
     "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
     "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
     "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
@@ -740,6 +749,8 @@ BREAKS = {
 
 # SITE breaks whose point is a verdict other than FAIL: {break: {component: verdict}}
 SITE_EXPECT = {
+    "xref_flood": {"log.log_clean": "UNMEASURED"},
+    "jump_noop": {"spawner.spawner_off_buds_nothing": "FAIL", "burn_natural.burn_off_never_schedules": "FAIL"},
     "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
     "host_vanishes": {"spawner.spawner_off_buds_nothing": "UNMEASURED",
                       "spawner.spawner_buds_unfinished": "UNMEASURED"},
