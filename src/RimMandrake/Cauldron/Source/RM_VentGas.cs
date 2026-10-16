@@ -34,7 +34,6 @@ namespace RimMandrake.Cauldron
         private RM_VentGasCells cells;
         private int cycleDiffusion;
         private int cycleDissipation;
-        private int driftVisit;
         private readonly int[] order = { 0, 1, 2, 3 };
         private System.Func<int, bool> canMoveTo;
         private System.Action<int> dirty;
@@ -97,9 +96,7 @@ namespace RimMandrake.Cauldron
                 else if ((k & 7) == 0) dirty(i);   // thinning shows, at an eighth of the visits
             }
 
-            bool drifts = RM_CauldronSettings.ventGasDrifts;
-            float chance = drifts ? RM_VentGasKernel.DriftChance(map.windManager.WindSpeed) : 0f;
-            int driftEvery = chance > 0f ? Mathf.Max(1, Mathf.RoundToInt(1f / chance)) : int.MaxValue;
+            float chance = RM_CauldronSettings.ventGasDrifts ? RM_VentGasKernel.DriftChance(map.windManager.WindSpeed) : 0f;
             int heading = RM_VentGasKernel.Heading(Find.TickManager.TicksGame, map.uniqueID * 7919 + 17);
             int nDiff = Mathf.CeilToInt(area / 64f);
             for (int k = 0; k < nDiff; k++)
@@ -110,11 +107,7 @@ namespace RimMandrake.Cauldron
                 if (cells.Density[i] < RM_VentGasKernel.MinDiffusion) continue;
                 order.Shuffle();
                 cells.DiffuseFrom(i, order, canMoveTo, dirty);
-                if (drifts && ++driftVisit >= driftEvery)
-                {
-                    driftVisit = 0;
-                    cells.Drift(i, heading, canMoveTo, dirty);
-                }
+                if (chance > 0f && Rand.Chance(chance)) cells.Drift(i, heading, canMoveTo, dirty);
             }
 
             if (map.IsHashIntervalTick(RM_VentGasKernel.BurnScanIntervalTicks)) BurnScan();
@@ -159,6 +152,8 @@ namespace RimMandrake.Cauldron
                 ToxAddedTotal += tox;
             }
             FleckMaker.ThrowFireGlow(c.ToVector3Shifted(), map, 1.2f);
+            // Deliberately NOT FireUtility.TryStartFireIn: that refuses cells with nothing flammable (bare ground, stone
+            // floor), and burning gas burns wherever it is. With no fuel under it the fire dies down on its own.
             TerrainDef t = c.GetTerrain(map);
             if (!c.ContainsStaticFire(map) && (t == null || !t.IsWater))
             {
@@ -209,7 +204,8 @@ namespace RimMandrake.Cauldron
 
     // Drawn with vanilla's own gas material and mesh builder (SectionLayer_Gas.AddCell). Vanilla reads the vertex colour
     // as (smoke, tox, rot stink, deadlife) densities; vent gas is written as a smoke/tox blend so it reads as a dull
-    // yellow-grey haze, unlike pure tox gas. PROVISIONAL look: the visual bar "vent gas reads as a drifting cloud" is
+    // yellow-grey haze, unlike pure tox gas. Densities go in raw (0..255), exactly as vanilla's own layer passes them, so
+    // the colour saturates the same way vanilla tox gas does. PROVISIONAL look: the visual bar "vent gas reads as a drifting cloud" is
     // judged live; the blend is the one knob.
     public class RM_SectionLayer_VentGas : SectionLayer_Gas
     {
@@ -221,9 +217,11 @@ namespace RimMandrake.Cauldron
             relevantChangeTypes = MapMeshFlagDefOf.Gas;
         }
 
+        private RM_MapComponent_VentGas comp;   // fetched once per Regenerate, not once per cell
+
         public override Vector4 DensityAt(IntVec3 cell)
         {
-            var comp = RM_MapComponent_VentGas.For(Map);
+            if (comp == null) comp = RM_MapComponent_VentGas.For(Map);
             float d = comp == null ? 0f : comp.DensityAt(cell);
             return new Vector4(d * SmokeShare, d * ToxShare, 0f, 0f);
         }
@@ -231,7 +229,7 @@ namespace RimMandrake.Cauldron
         public override void Regenerate()
         {
             ClearSubMeshes(MeshParts.All);
-            var comp = RM_MapComponent_VentGas.For(Map);
+            comp = RM_MapComponent_VentGas.For(Map);
             if (comp == null || !comp.AnyGas) return;
             LayerSubMesh subMesh = GetSubMesh(Mat);
             float altitude = AltitudeLayer.Gas.AltitudeFor();

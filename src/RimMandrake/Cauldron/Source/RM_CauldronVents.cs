@@ -166,16 +166,15 @@ namespace RimMandrake.Cauldron
             if (this.IsHashIntervalTick(250) && suppression > 0f && Ext != null)
                 suppression = RM_VentKernel.Decay(suppression, Ext.suppressionDecayPerDay);
 
-            // Part 3: the vent breathes real gas (RM_VentGas.cs) unless a gas-tap scaffold caps it.
-            bool capped = IsCapped;
+            // Part 3: the vent breathes real gas (RM_VentGas.cs) unless a gas-tap scaffold caps it or it is faltering.
             if (this.IsHashIntervalTick(RM_VentGasKernel.EmitIntervalTicks))
             {
-                int amt = RM_VentGasKernel.EmitAmount(RM_CauldronSettings.ventGasEnabled, capped, Output,
+                int amt = RM_VentGasKernel.EmitAmount(RM_CauldronSettings.ventGasEnabled, IsCapped, IsFaltering(Map), Output,
                     temperament == RM_VentTemperament.Leaking, RM_CauldronSettings.ventGasEmissionFactor);
                 if (amt > 0) RM_MapComponent_VentGas.For(Map)?.AddGas(this.OccupiedRect().RandomCell, amt);
             }
 
-            if (!capped && this.IsHashIntervalTick(20))
+            if (this.IsHashIntervalTick(20) && !IsCapped)
             {
                 float o = Output;
                 if (RM_VentKernel.PuffsAt(o) && Rand.Chance(RM_VentKernel.PuffChance(o)))
@@ -323,14 +322,17 @@ namespace RimMandrake.Cauldron
 
         // The natives fall silent: every wild, awake, idle-able pawn of a hush race holds still for a few seconds, renewed
         // every 240 ticks until the falter ends. Never a pawn in a mental state, downed, asleep, owned, or already fighting.
+        private readonly List<Pawn> hushTmp = new List<Pawn>();
+
         private void HushFauna()
         {
             RM_VentExtension ext = RM_CauldronDefOf.RM_CauldronVent?.GetModExtension<RM_VentExtension>();
             if (ext == null || ext.hushRaces.NullOrEmpty() || Vents().Count == 0) return;
-            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
-            for (int i = 0; i < pawns.Count; i++)
+            hushTmp.Clear();
+            hushTmp.AddRange(map.mapPawns.AllPawnsSpawned);   // a copy: starting jobs below must not walk the live list
+            for (int i = 0; i < hushTmp.Count; i++)
             {
-                Pawn p = pawns[i];
+                Pawn p = hushTmp[i];
                 if (p.Faction != null || p.Dead || p.Downed || !p.Awake() || p.InMentalState || p.jobs == null) continue;
                 if (!ext.hushRaces.Contains(p.def)) continue;
                 JobDef cur = p.CurJobDef;

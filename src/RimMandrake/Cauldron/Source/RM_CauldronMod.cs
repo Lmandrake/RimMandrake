@@ -7,11 +7,8 @@ namespace RimMandrake.Cauldron
 {
     // ════════════════════════════════════════════════════════════════════
     // MOD SETTINGS — MOD_OPTIONS_RETROFIT_1 doctrine: every mod ships a real
-    // settings screen. No mechanics kit exists for this biome yet (thin
-    // biome per biome_mod_architecture.md — def + terrain + plants + fauna
-    // partition only, no mechanic to gate beyond worldgen insertion), so the
-    // only control is the standard worldgen-rarity slider every sibling
-    // biome mod ships.
+    // settings screen, one switch per mechanic (defaults = shipped behaviour)
+    // plus the standard worldgen-rarity slider every sibling biome mod ships.
     //
     // STATIC FIELD, read from the biome worker which runs during worldgen
     // with no Mod instance handy — same pattern as every sibling.

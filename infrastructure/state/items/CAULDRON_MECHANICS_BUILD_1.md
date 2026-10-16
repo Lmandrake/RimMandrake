@@ -4,7 +4,12 @@ From `CAULDRON_BEDAZZLE_SITTING_1` (volley closed 2026-09-28; every ruling is a
 ledger note on that item, owner-typed). Analysis source:
 `design/Jawa/worldbuilding/biomes/cauldron_bedazzle_review_2026-09-28.md`
 (§Candidate mechanics slate carries the engine notes). Mod is
-`src/RimMandrake/PoisonForest/` today; coordinate with `CAULDRON_FULL_RENAME_1`.
+`src/RimMandrake/Cauldron/` (composed into `mandrake.rm.biomes`).
+
+Owner rulings since filing (`design/RimMandrake/biome_sprint_kickoff_2026-10-15.md` §2): sound is OUT (vanilla
+sounds, 2026-10-03); the seismograph is CUT (*"I don't like that idea."*); vent gas is a brand-new gas type with
+drifting clouds (Q1, N2); the Filter-Works, ruin set-pieces and Oomo shrine are IN (Q2); falter target about one
+in-game hour.
 
 ## spec
 

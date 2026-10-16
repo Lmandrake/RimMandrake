@@ -4,9 +4,9 @@
   building + consumable cartridges converts input fluid -> output fluid."
 
   It IS FlowWorks' converter kit (CompLiquidConverter), so what it converts is registry DATA: every LiquidDef step whose
-  process is filter / detox / refine at Industrial tier or below. Today that is
+  process is detox / refine at Industrial tier or below. Today that is
     RM_Liquid_VentCondensate (refine) to RM_VentReagent (item, dropped beside it)   (Defs/LiquidDefs, this mod)
-    RM_Liquid_ToxicWater     (filter, detox) to RM_Liquid_FreshWater (into a tank)   (FlowWorks registry)
+    RM_Liquid_ToxicWater     (detox, 2:1) to RM_Liquid_FreshWater (into a tank)      (FlowWorks registry)
     RM_Liquid_AcidWater      (detox) to RM_Liquid_FreshWater                         (FlowWorks registry)
   Input from a tank on its liquid line, liquid product into another tank. Cartridges are its fuel (CompRefuelable,
   RM_FilterCartridge, consumed only while working: fuelPerDay 1 = one cartridge per working day). Needs power.
@@ -61,12 +61,14 @@
           </thingDefs>
         </fuelFilter>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <showFuelGizmo>true</showFuelGizmo>
       </li>
       <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
         <tier>Industrial</tier>
+        <!-- No "filter": FlowWorks takes a liquid's FIRST matching step, and toxic water lists Crude filter (3:1) before
+             Industrial detox (2:1), so carrying filter would make this works run the worse step. -->
         <processes>
           <li>refine</li>
-          <li>filter</li>
           <li>detox</li>
         </processes>
         <inputUnitsPerDay>80</inputUnitsPerDay>

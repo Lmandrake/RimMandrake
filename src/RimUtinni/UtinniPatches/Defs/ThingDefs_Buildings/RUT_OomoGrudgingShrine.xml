@@ -51,6 +51,7 @@
       <BlocksGranite>40</BlocksGranite>
     </costList>
     <building>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
       <ai_neverTrashThis>true</ai_neverTrashThis>
       <ai_chillDestination>false</ai_chillDestination>
       <destroySound>BuildingDestroyed_Stone_Small</destroySound>
