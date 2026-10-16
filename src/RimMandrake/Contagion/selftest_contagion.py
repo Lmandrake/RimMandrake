@@ -567,7 +567,23 @@ class Fake(object):
         self.pawns[pawn]["inv"].append(t)
         return {"success": True, "movedCount": 1}
 
+    def t_pawn_census(self, ids="", **k):
+        # job is the pawn's CURRENT job; the fake's jobs finish instantly, so only a lying patient has one
+        rows = []
+        for pid in str(ids).split(","):
+            p = self.pawns.get(pid)
+            if p is None:
+                return {"success": False, "message": "no pawn %s" % pid}
+            rows.append({"id": pid, "x": p["x"], "z": p["z"], "dead": p["dead"], "downed": False,
+                         "inMentalState": bool(p["mental"]), "job": {"def": p["job"]} if p.get("job") else None})
+        return {"success": True, "pawns": rows}
+
     def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, **k):
+        if jobDef == "LayDown" and "patient_wont_lie" not in self.broken:
+            bed = self.things.get(targetAId)
+            if bed:
+                p = self.pawns[pawnId]
+                p["job"], p["x"], p["z"] = "LayDown", bed["x"], bed["z"]
         if jobDef == "RM_InjectGenomeSample":
             doer, host = self.pawns[pawnId], self.pawns.get(targetAId)
             if doer["inv"] and host and host["kind"] == V.HOST and "no_gestation" not in self.broken:
@@ -651,6 +667,7 @@ BREAKS = {
     "wrong_samples": ["coalescence.burn_collapses_it_into_monstrous_samples"],
     "samples_not_monstrous": ["coalescence.burn_collapses_it_into_monstrous_samples"],
     "extract_nothing": ["genome.extraction_surgery_yields_sample"],
+    "patient_wont_lie": [],                   # SITE: the patient never lies down -> extraction UNMEASURED, never FAIL
     "no_gestation": ["genome.inject_starts_gestation", "coalescence.monstrous_gestation_grows_one_limb"],
     "host_survives": ["genome.gestation_dies_producing_one_organ_batch"],
     "organ_count": ["genome.gestation_dies_producing_one_organ_batch", "coalescence.grown_limbs_off_grows_organs"],
