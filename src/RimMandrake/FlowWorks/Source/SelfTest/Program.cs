@@ -1875,6 +1875,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
             RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
             GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
+            FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)

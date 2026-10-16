@@ -45,6 +45,7 @@
     <Compile Include="..\RM_Volume.cs" />
     <Compile Include="..\RM_BedMath.cs" />
     <Compile Include="..\RM_PitTrapMath.cs" />
+    <Compile Include="..\Superdeep\RM_FlowDoorFacingMath.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
     <Compile Include="..\RM_WakeMath.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="RiverWashChecks.cs" />
     <Compile Include="WeirPoolChecks.cs" />
     <Compile Include="SlimeChecks.cs" />
+    <Compile Include="FlowDoorFacingChecks.cs" />
   </ItemGroup>
 
 </Project>

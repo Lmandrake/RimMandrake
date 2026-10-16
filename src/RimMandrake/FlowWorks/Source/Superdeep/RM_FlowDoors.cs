@@ -90,6 +90,94 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: vanilla re-turns every 1x1 door and door blueprint each frame it draws
+	/// (Building_Door.DoorPreDraw, Blueprint_Door.DrawAt) through DoorUtility.DoorRotationAt; a flow door (or its blueprint)
+	/// standing on a dug cell is re-scored so its leaf spans between the canal banks (RM_FlowDoorFacingMath). Every other
+	/// door pays one edifice-grid read. A frame keeps its placed rotation, as vanilla's does.</summary>
+	[HarmonyPatch(typeof(DoorUtility), nameof(DoorUtility.DoorRotationAt))]
+	[RimMandrake.Shared.PatchFeature("Sluices and grates turn across their canal like doors between walls")]
+	public static class RM_Patch_FlowDoorFacing
+	{
+		private delegate int AlignQualityFn(IntVec3 c, IntVec3 offset, Map map, bool preferFences);
+
+		/// <summary>Vanilla's private side score; null (a renamed method) leaves vanilla's verdict alone rather than throwing
+		/// on every door's draw.</summary>
+		private static readonly AlignQualityFn AlignQualityAgainst = Bind();
+
+		private static AlignQualityFn Bind()
+		{
+			System.Reflection.MethodInfo m = AccessTools.Method(typeof(DoorUtility), "AlignQualityAgainst",
+				new[] { typeof(IntVec3), typeof(IntVec3), typeof(Map), typeof(bool) });
+			if (m == null)
+			{
+				Log.ErrorOnce("[FlowWorks] DoorUtility.AlignQualityAgainst not found: sluices and grates keep vanilla's door rotation.", 0x5F10D0);
+				return null;
+			}
+			return AccessTools.MethodDelegate<AlignQualityFn>(m);
+		}
+
+		public static void Postfix(ref Rot4 __result, IntVec3 loc, Map map, bool preferFences)
+		{
+			if (AlignQualityAgainst == null || map == null || !loc.InBounds(map) || !FlowDoorStandsAt(loc, map))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+			if (eng == null || !eng.IsExcavated(loc))
+			{
+				return;
+			}
+			int e = Side(loc, IntVec3.East, map, preferFences, eng);
+			int w = Side(loc, IntVec3.West, map, preferFences, eng);
+			int n = Side(loc, IntVec3.North, map, preferFences, eng);
+			int s = Side(loc, IntVec3.South, map, preferFences, eng);
+			__result = RM_FlowDoorFacingMath.FacesNorth(e, w, n, s) ? Rot4.North : Rot4.East;
+		}
+
+		private static int Side(IntVec3 loc, IntVec3 offset, Map map, bool preferFences, RM_MapComponent_Excavation eng)
+		{
+			IntVec3 c = loc + offset;
+			bool inBounds = c.InBounds(map);
+			return RM_FlowDoorFacingMath.SideQuality(true, inBounds,
+				inBounds && (eng.IsExcavated(c) || eng.IsSourceCell(c)),
+				inBounds && DoorOrDoorBlueprintAt(c, map),
+				AlignQualityAgainst(loc, offset, map, preferFences));
+		}
+
+		/// <summary>The flow door itself, or (no edifice yet) a flow door blueprint. Vanilla doors stop at the edifice read.</summary>
+		private static bool FlowDoorStandsAt(IntVec3 loc, Map map)
+		{
+			Building edifice = loc.GetEdifice(map);
+			if (edifice != null)
+			{
+				return edifice is Building_RM_FlowDoor;
+			}
+			List<Thing> things = loc.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is Blueprint bp && RM_FlowDoorRules.IsFlowDoorDef(bp.def.entityDefToBuild as ThingDef))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static bool DoorOrDoorBlueprintAt(IntVec3 c, Map map)
+		{
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				Thing t = things[i];
+				if (t is Building_Door || (t is Blueprint bp && bp.def.entityDefToBuild is ThingDef td && td.IsDoor))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
 	public static class RM_FlowDoorRules
 	{
 		/// <summary>True for the sluice and the grate defs (their thingClass), blueprint and frame excluded.</summary>
