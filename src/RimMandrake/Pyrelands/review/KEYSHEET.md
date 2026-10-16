@@ -314,13 +314,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Flyer, shown standing only.*
 
-**Sign:** LOOK: a flyer, shown standing only. DO: look at all three facings. DECIDE: standing art right? (flight is judged with you live)
+**Sign:** LOOK: a flyer, shown standing only. DO: four of it: one faces each way. DECIDE: standing art right? (flight is judged with you live)
 
-**Look for:** Three facings standing. Its five flying frames and its ember carrying are a FLIGHT: judged only with you present (FIREHAWK_FLIGHT_BEHAVIOR_1), never here.
+**Look for:** Four standing, one per facing (S, E, N, W). Its five flying frames and its ember carrying are a FLIGHT: judged only with you present (FIREHAWK_FLIGHT_BEHAVIOR_1), never here.
 
 **Poke it:**
 
-- Rotate the camera round it; check the three facings.
+- Four of it, set facing S, E, N, W (west is east mirrored).
 
 **If you unpause:** It stays in its roofed pen.
 
@@ -328,13 +328,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Flyer, shown standing only.*
 
-**Sign:** LOOK: a flyer, shown standing only. DO: look at all three facings. DECIDE: standing art right? (flight is judged with you live)
+**Sign:** LOOK: a flyer, shown standing only. DO: four of it: one faces each way. DECIDE: standing art right? (flight is judged with you live)
 
 **Look for:** Standing art only; its eight fly frames are a flight (owner-present only).
 
 **Poke it:**
 
-- Look at all three facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays in its roofed pen.
 
@@ -370,15 +370,15 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 ### 25. Ullai herd
 
-*The ash grazer, three of a herd.*
+*The ash grazer, four of a herd.*
 
-**Sign:** LOOK: three ullai, the ash grazer. DO: look at facings and size beside the others. DECIDE: does it read as a herd grazer?
+**Sign:** LOOK: four ullai, the ash grazer. DO: four: one faces each way; size beside the others. DECIDE: does it read as a herd grazer?
 
-**Look for:** Three facings, herd look. Its burn-following walk (to a two-day-old burn) needs days of roaming: the matrix's row, not this pen.
+**Look for:** Four of a herd, one per facing (S, E, N, W). Its burn-following walk (to a two-day-old burn) needs days of roaming: the matrix's row, not this pen.
 
 **Poke it:**
 
-- Look at the three facings and its size beside the others.
+- Four of it, set facing S, E, N, W; its size beside the others.
 
 **If you unpause:** They graze the pen.
 
@@ -386,13 +386,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *The burrowing grazer.*
 
-**Sign:** LOOK: the burrowing grazer, standing. DO: look at all three facings. DECIDE: is the art right? (its burrow is at BURROWER)
+**Sign:** LOOK: the burrowing grazer, standing. DO: four of it: one faces each way. DECIDE: is the art right? (its burrow is at BURROWER)
 
-**Look for:** Standing art (three facings). Its burrow is shown at B (BURROWER).
+**Look for:** Standing art: four, one per facing (S, E, N, W). Its burrow is shown at B (BURROWER).
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It grazes.
 
@@ -400,13 +400,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Predator; its dessicated art still borrows.*
 
-**Sign:** LOOK: a predator. DO: look at all three facings. DECIDE: is the art right? (only its rotted corpse borrows)
+**Sign:** LOOK: a predator. DO: four of it: one faces each way. DECIDE: is the art right? (only its rotted corpse borrows)
 
-**Look for:** Three facings (emberscythe_v1). Weak spot: only its dessicated (rotted corpse) graphic is the Megascarab's.
+**Look for:** Four, one per facing (S, E, N, W) (emberscythe_v1). Weak spot: only its dessicated (rotted corpse) graphic is the Megascarab's.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -414,13 +414,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Predator.*
 
-**Sign:** LOOK: a predator. DO: look at all three facings. DECIDE: is the art right?
+**Sign:** LOOK: a predator. DO: four of it: one faces each way. DECIDE: is the art right?
 
-**Look for:** Three facings.
+**Look for:** Four, one per facing (S, E, N, W).
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -428,13 +428,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Predator with a tail gun.*
 
-**Sign:** LOOK: a predator with a tail gun. DO: look at all three facings. DECIDE: is the art right? (the spike shows only in a fight)
+**Sign:** LOOK: a predator with a tail gun. DO: four of it: one faces each way. DECIDE: is the art right? (the spike shows only in a fight)
 
-**Look for:** Three facings (the scorpion redesign). Its spike projectile shows only in a fight.
+**Look for:** Four, one per facing (S, E, N, W) (the scorpion redesign). Its spike projectile shows only in a fight.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -442,13 +442,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Predator; a venomous bite.*
 
-**Sign:** LOOK: a venomous predator. DO: look at all three facings. DECIDE: is the art right? (the venom shows only after a bite)
+**Sign:** LOOK: a venomous predator. DO: four of it: one faces each way. DECIDE: is the art right? (the venom shows only after a bite)
 
-**Look for:** Three facings. Its venom (RM_FlamefangVenom) shows only after a bite.
+**Look for:** Four, one per facing (S, E, N, W). Its venom (RM_FlamefangVenom) shows only after a bite.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -458,13 +458,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -472,13 +472,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -486,13 +486,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -500,13 +500,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -514,13 +514,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -528,13 +528,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
@@ -542,13 +542,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Campaign roster (utinnipatches).*
 
-**Sign:** LOOK: a canon animal the campaign adds here. DO: look at all three facings. DECIDE: does it belong in the Pyrelands?
+**Sign:** LOOK: a canon animal the campaign adds here. DO: four of it: one faces each way. DECIDE: does it belong in the Pyrelands?
 
 **Look for:** A canon kind the campaign adds to the Pyrelands roster (WildAnimals_Pyrelands.xml); its art is SWBestiary's, not this mod's. Here so the whole roster stands in one place.
 
 **Poke it:**
 
-- Facings.
+- Four of it, set facing S, E, N, W.
 
 **If you unpause:** It stays.
 
