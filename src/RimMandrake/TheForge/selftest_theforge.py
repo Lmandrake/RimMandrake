@@ -524,15 +524,17 @@ class FGame(MockGame):
         pw = next((q for q in self.pawns if q["id"] == p.get("thingId")), None)
         if pw is None:
             return {"success": False, "message": "no such thing"}
+        # live shape (MEASURED 2026-10-16): results[].totalDamageDealt; the fake's hide never deflects
+        landed = {"success": True, "results": [{"id": pw["id"], "totalDamageDealt": float(p.get("amount") or 0)}]}
         if pw["kindDef"] != V.DHOGGUR or "dhoggur_no_swell" in self.brk or not self.dhog_on():
-            return {"success": True}
+            return landed
         swollen = pw.get("swell_end", -1) >= 0
         rested = self.ticks >= pw.get("cd_until", 0) or "dhoggur_cooldown_ignored" in self.brk
         if (not swollen and rested) or (swollen and "dhoggur_refresh" in self.brk):
             pw["swell_end"] = self.ticks + int(round(self.F("dhoggurSwellHours") * 2500))
             if V.SWELL_HEDIFF not in pw["hediffs"]:
                 pw["hediffs"].append(V.SWELL_HEDIFF)
-        return {"success": True}
+        return landed
 
     def dhoggur_line(self):
         self.dhog_update()

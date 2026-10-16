@@ -1,0 +1,1 @@
+HealthScale postfix check without a max-HP tool: pain is a vanilla HealthScale consumer (Hediff_Injury.PainOffset divides by it). Same injuries, swell on vs off, painTotal ratio = scale x any stage painFactor (measured x5.97 = 3 x 1/0.5 for the dhoggur swell). Mass and CarryingCapacity in jawa/pawn_stats prove a BodySize postfix the same way.

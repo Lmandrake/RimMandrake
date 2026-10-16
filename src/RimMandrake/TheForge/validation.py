@@ -526,6 +526,15 @@ def _raw_set(t, field, value, type_name=SETTINGS):
     return t.session.call("jawa/mod_settings_field", typeName=type_name, action="set", field=field, value=str(value))
 
 
+def _same_number(a, b):
+    if isinstance(a, bool) or isinstance(b, bool):
+        return False
+    try:
+        return abs(float(a) - float(b)) < 1e-6
+    except (TypeError, ValueError):
+        return False
+
+
 @contextlib.contextmanager
 def _settings(t, type_name=SETTINGS, **kv):
     """Set `kv` for the body and ALWAYS restore the previous raw values, even after a failed chain."""
@@ -540,7 +549,7 @@ def _settings(t, type_name=SETTINGS, **kv):
                 if not r.get("success"):
                     _fail("mod_settings_field(set %s=%s) failed: %s" % (f, v, json.dumps(r, default=str)[:200]))
                 back = _raw_get(t, f, type_name)
-                if str(back) != str(v):
+                if str(back) != str(v) and not _same_number(back, v):    # LIVE 2026-10-16: float 2.0 reads back '2'
                     _fail("setting %s did not take: wrote %r, read %r" % (f, v, back))
         yield
     finally:
@@ -575,7 +584,7 @@ def _apply_safely(t):
 # ------------------------------------------------------------------------------ the mod's debug actions
 
 _ACTIONS = {}
-_PREFIXES = ("Forge cycle:", "Spunstone:", "Forge plumes:")
+_PREFIXES = ("Forge cycle:", "Spunstone:", "Forge plumes:", "Forge sky:", "Dhoggur swell:")
 
 
 def _find_actions(t):
@@ -2070,10 +2079,18 @@ def _dhoggur(t):
     return d
 
 
-def _hit(t, pid, amount=3):
-    r = t.bridge_call("jawa/damage", damageDef="Blunt", amount=amount, thingId=pid, allowColonists=True)
-    if _live(t):
+def _hit(t, pid, amount=10):
+    """The swell triggers only on damage actually DEALT. LIVE 2026-10-16: Blunt 3 is deflected by the hide
+    (ArmorRating_Blunt 0.25, totalDamageDealt 0.0), which read as 'one hit did not swell it'. Hit for 10 and retry a
+    deflection; a hit that never lands is UNMEASURED (harness), never a mod FAIL."""
+    for _ in range(4):
+        r = t.bridge_call("jawa/damage", damageDef="Blunt", amount=amount, thingId=pid, allowColonists=True)
+        if not _live(t):
+            return
         _ok(r, "damage(%s)" % pid)
+        if any(float(x.get("totalDamageDealt") or 0) > 0 for x in (r.get("results") or [])):
+            return
+    _unmeasured(t, "four Blunt %s hits on %s all deflected (totalDamageDealt 0): the trigger was never offered" % (amount, pid))
 
 
 def _near(a, b, tol=0.02):
@@ -2094,8 +2111,18 @@ def dhoggur_swell(t):
     actually cast (needs a target in range and the AI's choice; the ability's presence is what is read)."""
     _enter(t)
     box = {}
+
+    def _own_dhoggur(trig):
+        # The swell's OWN product stops safe_advance by design: the swollen wild dhoggur goes Manhunter (hostile_arrival
+        # 'turned hostile') and is hurt by our _hit. Declared for this chain only, and only for THIS dhoggur; a colonist
+        # hurt, a death or any other subject still stops the clock (LIVE 2026-10-16: the first run stopped here).
+        did = re.sub(r"\D", "", str(box.get("id") or ""))
+        return bool(did) and str(trig.get("subjectId")) == did and trig.get("kind") in ("hostile_arrival", "mental", "hurt")
+
+    import clockgate   # noqa: E402
     try:
-        with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
+        with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False), \
+                clockgate.expected_disturbance("swollen dhoggur turns manhunter (owner 2026-10-16)", _own_dhoggur):
             with _comp(t, "site_ready_dhoggur"):
                 _reset_pad(t)
                 yx, yz, _, _ = _yard(t)
