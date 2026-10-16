@@ -16,8 +16,9 @@
     tree (donor code). Every picture of ours bakes the tentacles into one whole-body sprite, so the creature
     gets the vanilla animal render tree and one fixed graphic per life stage. Rebuilding the twitch needs new
     body-only and limb art: the owner's call, Transient/phase0_p3_questions.md Q1.
-    OWED: the reddish haze (donor gas AA_OcularGas, a donor class) that the description names. Dropped here;
-    Transient/phase0_p3_questions.md Q2.
+    REBUILT in our code: the reddish haze the description names (donor gas AA_OcularGas, Alpha Animals code) is
+    RimMandrake.Contagion.CompZhoolHaze (owner, 2026-10-15, phase0_p3_questions.md Q2 "A"): tinted fleck haze;
+    plants in it turn into the Contagion's ocular-forest flora, only on our biomes. Mod Settings: "The zhool's red haze".
   BOTH:
     KEPT, VEF-guarded (a framework we keep): Floating (drifts, ignores terrain), asexual fission.
     Floating is kept rather than real flight: these drift permanently at canopy height, which the
@@ -205,6 +206,23 @@
         <customString>Asexual fission in: </customString>
       </li>
       <li Class="VEF.AnimalBehaviours.CompProperties_Floating" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" />
+      <li Class="RimMandrake.Contagion.CompProperties_ZhoolHaze">
+        <!-- the Contagion's ocular-forest flora (CONTAGION_FLORA_PORT_1): tree, ground cover, everything else -->
+        <treeResult>RM_HalfmadeTree</treeResult>
+        <groundCoverResult>RM_Lashgrass</groundCoverResult>
+        <shrubResult>RM_Bleedleaf</shrubResult>
+        <immunePlants>
+          <li>RM_Meatvine</li>
+          <li>RM_Toothmoss</li>
+          <li>RM_Wombpod</li>
+          <li>RM_Eyebark</li>
+          <li>RM_Gorestalk</li>
+          <li>RM_Rattlegrope</li>
+          <li>RM_Sapblister</li>
+          <li>RM_BloodyFist</li>
+          <li>RM_HalfmadeTreeBlighted</li>
+        </immunePlants>
+      </li>
     </comps>
     <race>
       <herdAnimal>true</herdAnimal>

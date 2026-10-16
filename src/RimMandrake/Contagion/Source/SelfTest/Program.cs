@@ -1,5 +1,5 @@
 // Contagion offline fuzz entry. Knobs (forwarded by selftest_contagion_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (sky|coalescence|burn|draftprint).
+// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (sky|coalescence|burn|draftprint|zhool).
 using System;
 
 namespace RimMandrake.Contagion.SelfTest
