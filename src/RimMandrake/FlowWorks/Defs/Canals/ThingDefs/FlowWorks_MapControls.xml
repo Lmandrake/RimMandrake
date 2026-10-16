@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): map controls, plain markers a map maker places in
+       development mode (debug actions "Place flow source..." / "Place flow sink", or the bridge's
+       RimMandrake.FlowWorks.MapControls.RM_MapControls). NOT buildable: no designationCategory, no cost. Owner: "They
+       should not have any fancy graphics, just a minimal appearance that can be overlooked." The look is vanilla's pen
+       marker stake, small and tinted (blue-grey source, rust-grey sink): no new art. Not an edifice, no faction, no hit
+       points, so it never blocks digging, a sluice, a pawn or a raid. C#: Source/MapControls/. -->
+  <ThingDef Name="RM_MapControlBase" ParentName="BuildingBase" Abstract="True">
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Furniture/PenMarker</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.6,0.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>false</useHitPoints>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <tickerType>Never</tickerType>
+    <terrainAffordanceNeeded IsNull="True" />
+    <castEdgeShadows>false</castEdgeShadows>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <statBases>
+      <Beauty>0</Beauty>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_FlowSource</defName>
+    <label>flow source</label>
+    <description>A map maker's marker. Every flow pulse it pours a chosen liquid, at a set rate, into the dug channel it stands on or beside, as if a spring fed it from nowhere. Placed in development mode only; it cannot be built. Its liquid, rate and on/off are set from its buttons in development mode.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowSource</thingClass>
+    <graphicData>
+      <color>(0.55,0.68,0.85)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_FlowSink</defName>
+    <label>flow sink</label>
+    <description>A map maker's marker. Every flow pulse it takes liquid out of the dug channel it stands on or beside, at a set rate or as much as there is, and the liquid leaves the map. Placed in development mode only; it cannot be built. Its rate, which liquid it takes, and on/off are set from its buttons in development mode.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowSink</thingClass>
+    <graphicData>
+      <color>(0.72,0.55,0.48)</color>
+    </graphicData>
+  </ThingDef>
+
+</Defs>

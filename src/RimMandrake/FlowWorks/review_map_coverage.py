@@ -46,6 +46,11 @@ FEATURES = [
     ("set", r"^digFind", "Digging turns up minerals", "dig_finds"),
     ("set", r"^(digRock|digSoilChunk)", "Digging rock takes longer and drops chunks (soil less)", "dig_canal"),   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK: no rock-dig station, so the canal-dig one
     # ---- flow
+    # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source / sink (no station yet; review-map station
+    # 11-type staging is to move onto them later)
+    ("def", r"^ThingDef/RM_Flow(Source|Sink)$", "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
+    ("set", r"^mapControlsEnabled$", "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
+    ("gizmo", r'^"(On|Remove|Rate\.\.\.)"$|^"(Liquid|Takes): " \+ FluidLabel', "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
     ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled)$", "Viscosity: tar crawls", "flow_identity"),
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|sourceBudgetMultiplier|minLimitlessBodyCells)$",

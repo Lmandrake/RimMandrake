@@ -65,6 +65,7 @@
     <Compile Include="..\Machinery\Kits\RM_LiquidBathMath.cs" />
     <Compile Include="..\RM_WallFaceMath.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
+    <Compile Include="..\MapControls\RM_MapControlMath.cs" />
     <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
     <!-- hose port (step 2): the cord geometry (_Shared/SlackGeometry, internal types), the Verse-free hose files, and the hose
@@ -128,6 +129,7 @@
     <Compile Include="RiverWashChecks.cs" />
     <Compile Include="WeirPoolChecks.cs" />
     <Compile Include="SlimeChecks.cs" />
+    <Compile Include="MapControlChecks.cs" />
     <Compile Include="FlowDoorFacingChecks.cs" />
   </ItemGroup>
 
