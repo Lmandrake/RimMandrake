@@ -610,7 +610,7 @@ SELFTEST_ROSTER = (
 # because the art is bad. ⛔ Do not "fix" this row by loosening
 # FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
 HEIGHT_MUST_FLAG = {
-    "Anooba_m", "Flamefang", "Bolotaur", "FireWasp",
+    "FrozenAnooba_m", "Flamefang", "Bolotaur", "FrozenFireWasp",
     "GR_Mantistanis", "Orray",
 }
 # Dalgo moved FLAG -> PASS 2026-10-12: PROVISIONAL art (commit 68ee19c27d) accepted by owner
@@ -632,6 +632,9 @@ HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f", "Da
 # rest of the set approved by eye — and now sits in HEIGHT_MUST_FLAG.
 HEIGHT_REGRESSION = {}
 
+# FrozenAnooba_m / FrozenFireWasp are the pre-rescale bytes (3791e139e^ / 1ad73a28a^) in
+# Utils/selftest_fixtures: the owner-directed rescales of 2026-10-15 FIXED the live
+# Anooba_m and FireWasp, so the live files can no longer be the known-bad calibration inputs.
 # 🔴 FurnaceBeast was handed to me as known-GOOD at 1.03x, and it is NOT. That 1.03x
 # is the RAW alpha bbox, inflated by 3901 px of alpha 1..16 dust reaching to y=480
 # while the painted body stops at y=400. Its real east/north visible mismatch is the
