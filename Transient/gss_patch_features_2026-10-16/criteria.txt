@@ -1,0 +1,2 @@
+- O1 L0: lint_harmony_targets GSS feature-findings 0, winbuild clean, GSS selftests 5/5 GREEN
+- A1 L1: next GSS live round, settings all-off then all-on: census "patched 23, missing 0", no red line, masters revert art

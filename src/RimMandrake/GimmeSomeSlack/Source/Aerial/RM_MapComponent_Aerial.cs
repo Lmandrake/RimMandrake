@@ -962,6 +962,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>Keeps RM_MapComponent_Aerial out of the save (as the cord component is kept out): a save loads clean
     /// without the mod's component class. Links are on the anchors.</summary>
+    // always on: save bookkeeping, keeps the component out of every save whatever the settings say
+    [RimMandrake.Shared.PatchFeature("Overhead lines: save stays loadable without the mod")]
     [HarmonyPatch(typeof(Map), "ExposeComponents")]
     internal static class Patch_Map_ExposeComponents_SkipAerial
     {
@@ -992,6 +994,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>Explosions cut spans whose ground line they reach (design 2.6). GenExplosion.DoExplosion signature read in
     /// decompiled 1.6 (center, map, radius, damType, instigator, damAmount = -1, ...).</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: explosions cut wires", typeof(AerialSettings), "explosionsCut")]
     [HarmonyPatch(typeof(GenExplosion), nameof(GenExplosion.DoExplosion))]
     internal static class Patch_GenExplosion_CutSpans
     {

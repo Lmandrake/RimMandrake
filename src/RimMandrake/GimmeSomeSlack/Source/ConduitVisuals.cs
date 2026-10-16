@@ -176,6 +176,7 @@ namespace RimMandrake.GimmeSomeSlack
     /// The power-overlay connector line (forPowerOverlay:true) is NEVER touched: Invisible Conduit's
     /// unconditional prefix erased it, which is the bug this avoids (§2, risk register row 16).
     /// </summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: hide vanilla hookup wires", typeof(GimmeSomeSlackSettings), "hideHookupWires")]
     [HarmonyPatch(typeof(PowerNetGraphics), nameof(PowerNetGraphics.PrintWirePieceConnecting))]
     public static class Patch_PrintWirePieceConnecting
     {
