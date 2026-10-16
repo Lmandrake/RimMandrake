@@ -16,7 +16,14 @@
   </ThingDef>
 
   <!-- ==================================================================
-       PHASE 5 — THE LADDER. A dug cell is exitable only by a ladder in
+       PHASE 5 — THE LADDER. PIT_LADDER_REDRAW_HUNG_ON_THE_WALL (owner 2026-10-16: "installed along a side of the
+       pit, like a door to a room"): it stands on the pit square and HANGS ON ONE WALL, its rotation (the shallower
+       N/S/E/W neighbour it faces, auto-turned to the biggest drop when the placed rotation faces none:
+       RM_LadderWallMath). It joins its square to that wall square only. Slid down (lowered) it is drawn pressed
+       against that wall; slid up (raised) it is drawn lying on the rim beyond it (drawOffset per facing).
+       PLACEHOLDER ART: the old single pictures, turned per facing, until the per-wall set
+       (art_source/Ladder/, RM_LadderHung_* / RM_LadderStowed_*, Graphic_Multi) is ruled on and installed.
+       A dug cell is exitable only by a ladder in
        it that lets THIS pawn climb (RM_LadderRules.LadderLetsOut, per
        pawn): raised, it lets nobody out; lowered, it works like a prison
        door (MayClimb: your people and non-hostiles climb, trapped enemies
@@ -34,18 +41,22 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
     <label>ladder</label>
-    <description>A rough ladder braced against the wall of an excavation. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Raised, nobody climbs it.</description>
+    <description>A rough ladder hung on one wall of an excavation, like a door between the pit and the ground above. Slid down, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Slid up onto the rim, nobody climbs it.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_Ladder</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.15)</drawOffsetNorth>
+      <drawOffsetEast>(0.15,0,0)</drawOffsetEast>
+      <drawOffsetSouth>(0,0,-0.15)</drawOffsetSouth>
+      <drawOffsetWest>(-0.15,0,0)</drawOffsetWest>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0</fillPercent>
     <pathCost>0</pathCost>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <selectable>true</selectable>
     <useHitPoints>true</useHitPoints>
     <designationCategory>Structure</designationCategory>
@@ -72,6 +83,10 @@
           <texPath>Things/Building/FlowWorks/Canals/RM_LadderRaised</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>(1,1)</drawSize>
+          <drawOffsetNorth>(0,0,0.6)</drawOffsetNorth>
+          <drawOffsetEast>(0.6,0,0)</drawOffsetEast>
+          <drawOffsetSouth>(0,0,-0.6)</drawOffsetSouth>
+          <drawOffsetWest>(-0.6,0,0)</drawOffsetWest>
         </raisedGraphicData>
       </li>
     </comps>

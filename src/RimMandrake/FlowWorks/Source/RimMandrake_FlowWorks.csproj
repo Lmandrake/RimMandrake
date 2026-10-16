@@ -154,6 +154,7 @@
     <Compile Include="RM_PitDrawMath.cs" />
     <Compile Include="Superdeep\RM_FlowDoors.cs" />
     <Compile Include="Superdeep\RM_FlowDoorFacingMath.cs" />
+    <Compile Include="Superdeep\RM_LadderWallMath.cs" />
     <Compile Include="RM_PitTrapMath.cs" />
     <Compile Include="RM_PocketGridMath.cs" />
     <Compile Include="RM_CliffMaskMath.cs" />

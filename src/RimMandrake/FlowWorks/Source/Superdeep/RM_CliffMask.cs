@@ -339,7 +339,8 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>Structural join for the masks: a ramp, or a lowered ladder in the deeper cell (any pawn; the prison-door
+		/// <summary>Structural join for the masks: a ramp, or a lowered ladder in the deeper cell hung on the wall toward the
+		/// shallower one (any pawn; the prison-door
 		/// rule is per request). aD / bD: the step depths of a and b.</summary>
 		public static bool Structural(Map map, RM_MapComponent_Excavation eng, IntVec3 a, IntVec3 b, int aD, int bD)
 		{
@@ -351,10 +352,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			return aD > bD ? LoweredLadderAt(map, a) : LoweredLadderAt(map, b);
+			// PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: only across the wall the ladder hangs on.
+			IntVec3 deep = aD > bD ? a : b, shallow = aD > bD ? b : a;
+			return LoweredLadderAt(map, deep) && RM_LadderUtility.HangsToward(RM_LadderUtility.LadderAt(map, deep), shallow);
 		}
 
-		/// <summary>The per-pawn join (the step floor, step cost): a ramp, or a ladder in the deeper cell THIS pawn may climb.</summary>
+		/// <summary>The per-pawn join (the step floor, step cost): a ramp, or a ladder in the deeper cell, hung on the wall toward
+		/// the shallower one, that THIS pawn may climb.</summary>
 		public static bool ForPawn(Map map, RM_MapComponent_Excavation eng, IntVec3 a, IntVec3 b, int aD, int bD, Pawn p,
 			out bool viaLadder, out bool viaRamp)
 		{
@@ -369,7 +373,7 @@ namespace RimMandrake.FlowWorks
 				return true;
 			}
 			IntVec3 deep = aD > bD ? a : b;
-			if (RM_LadderRules.LadderLetsOut(map, deep, p))
+			if (RM_LadderRules.LadderLetsOutToward(map, deep, aD > bD ? b : a, p))
 			{
 				viaLadder = true;
 				return true;

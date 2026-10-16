@@ -357,7 +357,7 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
-				if (ComponentOf(k, c) == component && LadderLeadsOut(k, component, c)
+				if (ComponentOf(k, c) == component && LadderLeadsOut(k, component, c, ladders[i].Rotation.AsInt)
 					&& RM_PocketGridMath.LadderIsAWay(p != null, p == null && RM_ClimbJoins.LoweredLadderAt(map, c),
 						p != null && RM_LadderRules.LadderLetsOut(map, c, p)))
 				{
@@ -369,21 +369,20 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: a ladder is a way out only where it joins its cell to a SHALLOWER
 		/// cardinal neighbour of another component (RM_CliffMaskMath.LadderJoins), the edge the masks and the step floor
-		/// restore. A ladder in the middle of a flat floor leads nowhere, so the pocket and the pathfinder agree.</summary>
-		private bool LadderLeadsOut(int k, int component, IntVec3 c)
+		/// restore. A ladder in the middle of a flat floor leads nowhere, so the pocket and the pathfinder agree.
+		/// PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: only the wall it hangs on (its rotation, RM_LadderWallMath.Joins).</summary>
+		private bool LadderLeadsOut(int k, int component, IntVec3 c, int rot)
 		{
+			if (rot < 0 || rot > 3)
+			{
+				return false;
+			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
-			for (int b = 0; b < 4; b++)
-			{
-				var o = new IntVec3(c.x + RM_CliffMaskMath.Dx[b], 0, c.z + RM_CliffMaskMath.Dz[b]);
-				if (o.InBounds(map) && ComponentOf(k, o) != component
-					&& RM_CliffMaskMath.LadderJoins(d, RM_SuperdeepTrap.StepDepthAt(map, eng, o)))
-				{
-					return true;
-				}
-			}
-			return false;
+			int dx = RM_LadderWallMath.FX[rot], dz = RM_LadderWallMath.FZ[rot];
+			var o = new IntVec3(c.x + dx, 0, c.z + dz);
+			return o.InBounds(map) && ComponentOf(k, o) != component
+				&& RM_LadderWallMath.Joins(rot, d, dx, dz, RM_SuperdeepTrap.StepDepthAt(map, eng, o));
 		}
 
 		/// <summary>No way out at all for this pawn from its pocket (design §8.3).</summary>

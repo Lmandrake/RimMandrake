@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -40,6 +42,54 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return false;
+		}
+
+		/// <summary>The ladder standing in this cell (a built one), or null.</summary>
+		public static Thing LadderAt(Map map, IntVec3 c)
+		{
+			ThingDef ladder = RimMandrakeFlowWorks_DefOf.RM_Ladder;
+			if (map == null || ladder == null || !c.InBounds(map))
+			{
+				return null;
+			}
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i].def == ladder)
+				{
+					return things[i];
+				}
+			}
+			return null;
+		}
+
+		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the wall a ladder on this square hangs on, as a Rot4 index — the
+		/// placed rotation when it faces a shallower neighbour, else the biggest drop (RM_LadderWallMath.Resolve); -1 when the
+		/// square has no wall (or is not dug).</summary>
+		public static int WallRotAt(Map map, IntVec3 c, Rot4 placed)
+		{
+			RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (eng == null || !c.InBounds(map))
+			{
+				return -1;
+			}
+			int d = eng.ClimbDepthAt(c);
+			int[] sideD = new int[4];
+			bool[] inB = new bool[4];
+			for (int r = 0; r < 4; r++)
+			{
+				IntVec3 o = new IntVec3(c.x + RM_LadderWallMath.FX[r], 0, c.z + RM_LadderWallMath.FZ[r]);
+				inB[r] = o.InBounds(map);
+				sideD[r] = inB[r] ? eng.ClimbDepthAt(o) : d;
+			}
+			return RM_LadderWallMath.Resolve(placed.AsInt, d, sideD, inB);
+		}
+
+		/// <summary>Does this ladder hang on the wall toward <paramref name="other"/> (its rotation faces that cell)? The
+		/// depth half of the join is the caller's (the masks pass step depths).</summary>
+		public static bool HangsToward(Thing ladder, IntVec3 other)
+		{
+			return ladder != null && RM_LadderWallMath.Faces(ladder.Rotation.AsInt, other.x - ladder.Position.x, other.z - ladder.Position.z);
 		}
 	}
 
@@ -160,6 +210,14 @@ namespace RimMandrake.FlowWorks
 		// delta at all and must push its own. RM_Building_PitRamp relies on the vanilla one (RAMP_MASKS_VERIFY_STALE_SLOPE).
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
+			// PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: hang on a wall like a door between rooms. The placed rotation stands when it
+			// faces a wall; otherwise (a dev spawn, a pre-rotation save, a blueprint placed before the cut beside it was dug)
+			// turn to the wall with the biggest drop. No wall: keep the rotation; the ladder leads nowhere (the inspect says so).
+			int wall = RM_LadderUtility.WallRotAt(map, Position, Rotation);
+			if (wall >= 0 && wall != Rotation.AsInt)
+			{
+				Rotation = new Rot4(wall);
+			}
 			base.SpawnSetup(map, respawningAfterLoad);
 			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
 			if (!respawningAfterLoad)
@@ -178,6 +236,15 @@ namespace RimMandrake.FlowWorks
 			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
 			map?.pathFinder?.MapData?.Notify_CellDelta(pos);
 			map?.reachability.ClearCache();
+		}
+
+		public override string GetInspectString()
+		{
+			string s = base.GetInspectString();
+			string line = RM_LadderUtility.WallRotAt(Map, Position, Rotation) == Rotation.AsInt
+				? "RMFlow_LadderHangsOn".Translate(("RMFlow_LadderWall" + Rotation.AsInt).Translate())
+				: "RMFlow_LadderHangsOnNothing".Translate();
+			return string.IsNullOrEmpty(s) ? line : s + "\n" + line;
 		}
 
 		public override Graphic Graphic
@@ -219,6 +286,13 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
+		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: does the ladder on <paramref name="deep"/> hang on the wall toward
+		/// <paramref name="other"/> and let THIS pawn climb it? The edge read (the masks' per-pawn join).</summary>
+		public static bool LadderLetsOutToward(Map map, IntVec3 deep, IntVec3 other, Pawn p)
+		{
+			return RM_LadderUtility.HangsToward(RM_LadderUtility.LadderAt(map, deep), other) && LadderLetsOut(map, deep, p);
+		}
+
 		/// <summary>The prison-door rule for a lowered ladder.</summary>
 		public static bool MayClimb(Pawn p)
 		{
@@ -242,9 +316,10 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>A ladder belongs in a hole. Refusing it on open ground is not
-	/// pedantry — a ladder that can be built anywhere and does nothing anywhere
-	/// else is a button that lies.</summary>
+	/// <summary>A ladder belongs in a hole, hung on one of its walls like a door between rooms. Refusing it on open ground
+	/// is not pedantry — a ladder that can be built anywhere and does nothing anywhere else is a button that lies.
+	/// PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the square must have a wall (a shallower N/S/E/W neighbour); the placed rotation
+	/// picks which when it faces one, else the biggest drop (RM_LadderWallMath.Resolve). The ghost outlines the wall square.</summary>
 	public class PlaceWorker_LadderOnExcavation : PlaceWorker
 	{
 		public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot,
@@ -259,22 +334,42 @@ namespace RimMandrake.FlowWorks
 			{
 				return "RMFlow_LadderNeedsExcavation".Translate();
 			}
-			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4): a ladder joins its square to a SHALLOWER N/S/E/W neighbour, any
-			// depth, so it must stand against a wall; and a square holds a ramp or a ladder, never both.
+			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.4): a square holds a ramp or a ladder, never both.
 			if (RM_PitRamp.RampAt(map, loc) != null)
 			{
 				return "RMFlow_RampNotOnLadder".Translate();
 			}
-			int d = engine.ClimbDepthAt(loc);
-			for (int b = 0; b < 4; b++)
+			return RM_LadderUtility.WallRotAt(map, loc, rot) >= 0 ? (AcceptanceReport)true : "RMFlow_LadderNeedsWall".Translate();
+		}
+
+		public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
+		{
+			Map map = Find.CurrentMap;
+			int wall = RM_LadderUtility.WallRotAt(map, center, rot);
+			if (wall >= 0)
 			{
-				IntVec3 o = new IntVec3(loc.x + RM_CliffMaskMath.Dx[b], 0, loc.z + RM_CliffMaskMath.Dz[b]);
-				if (o.InBounds(map) && RM_CliffMaskMath.LadderJoins(d, engine.ClimbDepthAt(o)))
-				{
-					return true;
-				}
+				GenDraw.DrawFieldEdges(new List<IntVec3> { center + new Rot4(wall).FacingCell }, Color.white);
 			}
-			return "RMFlow_LadderNeedsWall".Translate();
+		}
+	}
+
+	/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: a ladder blueprint turns to its wall when placed, so the blueprint and the
+	/// frame already hang where the ladder will (the building re-checks on spawn). Early-outs on every other def.</summary>
+	[HarmonyPatch(typeof(GenConstruct), nameof(GenConstruct.PlaceBlueprintForBuild))]
+	[RimMandrake.Shared.PatchFeature("Pit ladders turn to the wall they hang on")]
+	public static class RM_Patch_LadderBlueprintFacesWall
+	{
+		public static void Prefix(BuildableDef sourceDef, IntVec3 center, Map map, ref Rot4 rotation)
+		{
+			if (sourceDef == null || sourceDef != RimMandrakeFlowWorks_DefOf.RM_Ladder)
+			{
+				return;
+			}
+			int wall = RM_LadderUtility.WallRotAt(map, center, rotation);
+			if (wall >= 0)
+			{
+				rotation = new Rot4(wall);
+			}
 		}
 	}
 }

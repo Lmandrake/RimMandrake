@@ -436,19 +436,30 @@ SETUPS = {
                       try_=["open the sluice (select it): water pours into the pit"],
                       look="weak spot: water stopping at the open sluice; a boar that never starts drowning"),
     # ---- 5 holding
-    "hold_ladder": dict(short="A ladder in and out", notice="a 5x5 pit with a LOWERED ladder on its west wall, a colonist "
-                        "in it and steel on its floor",
-                        dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None)], items=[("Steel", 20, 7, 6)],
+    # PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: a ladder hangs on ONE wall (it turns to the only wall its square has, on spawn),
+    # so each station stages a slid-down and a slid-up ladder on DIFFERENT walls: west down + south up here, north up +
+    # east down next door. The south-wall one sits behind the near lip (the art must read so).
+    "hold_ladder": dict(short="A ladder in and out", notice="a 5x5 pit: a ladder SLID DOWN on its west wall, another SLID UP "
+                        "on its south wall, a colonist in it and steel on its floor",
+                        dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None), ("RM_Ladder", 7, 4, None)],
+                        items=[("Steel", 20, 7, 6)], ladder=[(7, 4, "raise")],
                         pawns=[("Colonist", 6, 5, "player", "drafted")],
-                        try_=["undraft him: he climbs out; undrafted haulers then fetch the steel off the pit floor",
-                              "select the ladder: Ladder up and nobody climbs it either way"],
-                        look="weak spot: haulers ignoring the steel while the ladder is down"),
-    "hold_ladder_raised": dict(short="A raised ladder strands him", notice="the same pit with its ladder RAISED",
+                        try_=["undraft him: he climbs out by the west ladder; undrafted haulers then fetch the steel",
+                              "select the west ladder: Ladder up and nobody climbs it either way",
+                              "the south ladder lies on the rim beyond the near lip; the west one hangs down its wall"],
+                        look="weak spot: a ladder lying loose in the pit instead of hung on its wall; slid up and "
+                             "slid down drawn alike"),
+    "hold_ladder_raised": dict(short="A raised ladder strands him", notice="the same pit: its only ladder SLID UP on the "
+                               "north wall; a ladder slid down on the east wall of a sealed 1x1 shaft beside it",
                                s="hold", after="hold_ladder", caps=["H01", "J08"],
-                               dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None)], items=[("Steel", 20, 7, 6)],
-                               ladder=[(5, 6, "raise")], pawns=[("Colonist", 6, 5, "player", "drafted")],
+                               dig=[_pit(5, 4, 5, 5), (12, 6, 1, 1, 4)],
+                               spawn=[("RM_Ladder", 7, 8, None)], build=[("RM_Ladder", 12, 6, 1, None)],
+                               items=[("Steel", 20, 7, 6)],
+                               ladder=[(7, 8, "raise")], pawns=[("Colonist", 6, 5, "player", "drafted")],
                                try_=["undraft him: he stays put, and nobody goes down for the steel",
-                                     "select the ladder: Ladder down and he climbs out"],
+                                     "select the north ladder: Ladder down and he climbs out",
+                                     "the shaft's ladder was built turned east: every side of a 1x1 shaft is a wall, "
+                                     "so the placed turn stands"],
                                look="weak spot: raised and lowered drawn the same (compare the station to the left); "
                                     "anyone using a raised ladder"),
     "hold_prison": dict(short="A pit prison, run from the lip", notice="a 3x4 pit with a prisoner bed and a prisoner",
