@@ -1211,7 +1211,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     for _m, r in fl):
                 for m, r in fl:
                     P["retire"].append({"row": row, "mod": m, "rel": r, "sha": sha, "xed": True})
-                P["purge"].append({"row": row, "sha": sha, "note": note, "release": bool(kept_all)})
+                P["purge"].append({"row": row, "sha": sha, "note": note, "release": [k["id"] for k in kept_all]})
                 continue
             if live or kept or sha in protect_here:
                 why = (f"live at {live[0]}" if live else
@@ -1219,7 +1219,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                        "it is this row's own pick/variant")
                 P["conflicts"].append(f"{row}: ✕ {sha[:12]} not purged — {why}")
                 continue
-            P["purge"].append({"row": row, "sha": sha, "note": note, "release": bool(kept_all)})
+            P["purge"].append({"row": row, "sha": sha, "note": note, "release": [k["id"] for k in kept_all]})
     for c in P["cuts"]:
         c["plan"] = plan_cut(src, biome, c["names"])
     return P
@@ -1622,7 +1622,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         for p in P["purge"]:
             try:
                 L.purge(p["sha"], owner_said=p["note"] or f"reject+purge on sheet {sheet}",
-                        via=I.rel_via(decisions), release_keep=bool(p.get("release")))
+                        via=I.rel_via(decisions), release_keep=set(p.get("release") or ()))
                 R["purged"] += 1
             except L.Refused as e:
                 R["conflicts"].append(f"{p['row']}: ✕ {p['sha'][:12]} not purged — {e}")

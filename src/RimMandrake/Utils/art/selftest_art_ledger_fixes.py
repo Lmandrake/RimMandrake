@@ -6,6 +6,9 @@ A  records and files cannot drift apart: a push range is checked event -> PNG as
    drift instead of relabelling a recorded slot.
 B  mod/rel spelling is canonicalised inside install() (alias map at read and write, history never rewritten);
    `art.py put` / `install --file` get bytes into the store with containment and symlink checks.
+C  no bypass tags: a `script:` reason must name a writer file in the repo, `retire-duplicate` needs his words (events
+   from ENFORCE_REASONS_FROM; older ones keep their rules); a purge never silently releases a keep; kept-but-purged
+   pictures are reported, not deleted.
 """
 from __future__ import annotations
 
@@ -230,11 +233,77 @@ def test_a():
     check(any("backfill" in w for _c, _p, w in bad), f"…also when only the event moves ({bad})")
 
 
+def test_c():
+    import artledger as L
+    import art_guard as G
+    import art
+    tmp = fixture()
+    canon = "src/RimStarWars/SWBestiary"
+    red, blue, green = png((255, 0, 0, 255)), png((0, 0, 255, 255)), png((0, 255, 0, 255))
+    sred, sblue, sgreen = (L.store_put_bytes(x) for x in (red, blue, green))
+    rel = "Things/Nuna/Nuna_south.png"
+    for bad in ("script:decision taken by question card 2026-10-11", "script:owner-card-2026-10-09-rot",
+                "script:src/no/such/writer.py", "retire-duplicate", "script:../../etc/passwd"):
+        check(refused(L.install, canon, rel, sred, reason=bad) is not None, f"install refuses reason {bad!r}")
+    check(refused(L.install, canon, rel, sred, reason=WRITER + " (note after the path)") is None,
+          "install accepts script:<existing repo path> with a trailing note")
+    check(refused(L.retire, tmp / canon / "Textures" / rel, reason="retire-duplicate") is not None,
+          "retire refuses the hand-typed retire-duplicate tag")
+
+    # the guard: new events judged by the new rules, old events by theirs
+    L.append({"type": "ruling", "id": "keepred", "target": {"sha": sred}, "verdict": "keep", "by": "owner",
+              "trust": "ruled", "said": "fixture"})
+    idx = L.Index()
+    NEW, OLD = "2099-01-01T00:00:00-0700", "2026-10-10T00:00:00-0700"
+    ev = {"type": "live", "mod": canon, "rel": rel, "sha": sblue, "prev": sred, "reason": "retire-duplicate"}
+    check(G._authorized({**ev, "ts": NEW}, idx) is not None, "guard: a new retire-duplicate over a kept picture is refused")
+    check(G._authorized({**ev, "ts": NEW, "said": "Yes, retire the duplicate."}, idx) is None,
+          "guard: retire-duplicate carrying his words passes")
+    check(G._authorized({**ev, "ts": OLD}, idx) is None, "guard: a pre-enforcement retire-duplicate keeps its old rule")
+    ev2 = {"type": "live", "mod": canon, "rel": rel, "sha": sblue, "prev": sgreen,
+           "reason": "script:decision taken by question card 2026-10-11"}
+    check(G._authorized({**ev2, "ts": NEW}, idx) is not None, "guard: a new free-text script: tag is refused")
+    check(G._authorized({**ev2, "ts": OLD}, idx) is None, "guard: an old free-text script: tag is not re-judged")
+    check(G._authorized({**ev2, "reason": WRITER, "ts": NEW}, idx) is None, "guard: a verifiable script: writer passes")
+
+    # purge never silently releases a keep
+    L.append({"type": "ruling", "id": "keepblue_sheetA", "target": {"shas": [sblue], "row": "Nuna"}, "verdict": "keep",
+              "by": "owner", "trust": "ruled", "via": "sheetA.decisions.json", "said": "keep"})
+    msg = refused(L.purge, sblue, owner_said="cut it", via="sheetB.decisions.json",
+                  release_from_sheet=("sheetB.decisions.json", "Nuna"))
+    check(msg is not None and "never silently releases" in msg and L.store_has(sblue),
+          "purge from another sheet refuses a picture kept elsewhere; bytes stay")
+    check(not [e for e in L.read_events() if e.get("verdict") == "release"], "…and writes no release")
+    check(refused(L.purge, sblue, owner_said="x", release_keep={"someotherkeep"}) is not None,
+          "purge naming a different keep id refuses")
+    check(refused(L.purge, sblue, owner_said="x", via="sheetA.decisions.json",
+                  release_from_sheet=("sheetA.decisions.json", "Nuna")) is None and not L.store_has(sblue),
+          "the same sheet row that minted the keep may release it with its ✕")
+    L.store_put_bytes(green)
+    L.append({"type": "ruling", "id": "keepgreen", "target": {"sha": sgreen}, "verdict": "keep", "by": "owner",
+              "trust": "ruled", "said": "keep"})
+    check(refused(L.purge, sgreen, owner_said="delete it, I release the keep", release_keep=True) is None,
+          "art purge --release-keep (his explicit words) still releases")
+
+    # kept-but-purged: reported, not deleted
+    L.append({"type": "ruling", "id": "late_keep", "target": {"sha": sblue}, "verdict": "keep", "by": "owner",
+              "trust": "ruled", "via": "sheetC.decisions.json", "said": "keep this"})
+    idx = L.Index()
+    kp = idx.kept_but_purged()
+    check([r["sha"] for r in kp] == [sblue] and not kp[0]["bytes_in_store"],
+          "kept_but_purged lists a purged picture with an active keep (and only it)")
+    n = len(L.read_events())
+    out = tmp / "kept_but_purged.md"
+    check(art.main(["kept-purged", "--out", str(out)]) == 0 and sblue[:16] in out.read_text()
+          and len(L.read_events()) == n, "art.py kept-purged writes the report and no events")
+
+
 def main():
     sys.path.insert(0, str(HERE))
     tmp = fixture()
     test_b(tmp)
     test_a()
+    test_c()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

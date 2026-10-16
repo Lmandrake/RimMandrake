@@ -684,6 +684,17 @@ class Index:
             return []
         return self.rejected.get(sha, [])
 
+    def kept_but_purged(self) -> list[dict]:
+        """Pictures whose bytes the owner purged while an owner keep on them is still active: the projection claims a
+        protection that cannot be installed. REPORTED (art.py kept-purged), never auto-released or deleted."""
+        out = []
+        for sha, pev in sorted(self.purged.items()):
+            keeps = self.protected(sha)
+            if keeps:
+                out.append({"sha": sha, "purge": pev, "keeps": keeps, "bytes_in_store": store_has(sha),
+                            "live_at": self.live_anywhere(sha)})
+        return out
+
     def live_anywhere(self, sha: str) -> list[str]:
         return [f"{m}/Textures/{r}" for (m, r), ev in self.live.items() if ev.get("sha") == sha]
 
@@ -798,6 +809,36 @@ def is_mechanical_reason(reason: str | None) -> bool:
     return False
 
 
+def script_writer(reason: str | None) -> Path | None:
+    """The repo file a `script:<path> [note]` reason names, when it exists inside this clone; else None."""
+    if not reason or not reason.startswith("script:"):
+        return None
+    tok = reason[len("script:"):].strip().split()
+    if not tok:
+        return None
+    root = REPO_ROOT.resolve()
+    p = (root / tok[0]).resolve()
+    try:
+        p.relative_to(root)
+    except ValueError:
+        return None
+    return p if p.is_file() else None
+
+
+def mechanical_refusal(reason: str | None) -> str | None:
+    """None when `reason` is a VERIFIABLE mechanical tag (2026-10-15 review fix C): `artpipe-collect`, or
+    `script:<repo path> [note]` whose path is a file in this clone. Free text after `script:` ('decision taken by
+    question card …', 'retire-duplicate') hid owner authority inside a mechanical tag, where protection does not
+    apply — owner authority goes through --ruling / --owner-said instead."""
+    if not is_mechanical_reason(reason):
+        return (f"reason {reason!r} is not a mechanical tag (allowed: artpipe-collect | script:<repo path of the "
+                f"writer>); an owner decision goes through --ruling <keep id> or --owner-said")
+    if reason.startswith("script:") and script_writer(reason) is None:
+        return (f"reason {reason!r} does not name a writer file in this clone (script:<repo-relative path> [note]); "
+                f"an owner decision goes through --ruling <keep id> or --owner-said")
+    return None
+
+
 PLACEHOLDER_RULE = ('owner, 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder art ever '
                     'remain a viable Variant or selection, ok?"')
 
@@ -860,9 +901,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     elif owner_said:
         pass
     elif reason:
-        if not is_mechanical_reason(reason):
-            raise Refused(f"reason {reason!r} is not a mechanical tag (allowed: "
-                          f"{', '.join(MECHANICAL_REASONS)}<name>)")
+        why = mechanical_refusal(reason)
+        if why:
+            raise Refused(why)
         why = rejection_refusal(idx, rel, sha)
         if why:
             raise Refused(why + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
@@ -973,8 +1014,12 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     old = sha256_file(target)
     if idx.protected(old) and not owner_said:
         raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words")
-    if not (owner_said or is_mechanical_reason(reason)):
-        raise Refused("retire needs the owner's words or a mechanical reason")
+    if not owner_said:
+        if not reason:
+            raise Refused("retire needs the owner's words or a mechanical reason")
+        why = mechanical_refusal(reason)
+        if why:
+            raise Refused(why)
     store_put_file(target)
     if not store_has(old):
         raise Refused("archive did not verify — nothing removed")
@@ -989,12 +1034,17 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
 
 # ─────────────────────────────────────────────────────────────── purging ──
 
-def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep: bool = False,
-          live_paths: list[str] | None = None) -> dict:
+def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep=False,
+          release_from_sheet: tuple[str, str] | None = None, live_paths: list[str] | None = None) -> dict:
     """Reject+purge: the owner deletes an erroneous render so it stops polluting option
     space. Removes the bytes from the store and records a `purge` event; every sheet and
     every later registration skips the sha. Refuses a picture that is live in a mod
-    (install something else first) or one he kept, unless release_keep."""
+    (install something else first) or one he kept — never a silent release (2026-10-15 review: 79 purged pictures
+    still carried an active keep). A keep is released only when NAMED:
+      * release_keep=True — the owner's explicit `art purge --release-keep` (his words recorded on the release);
+      * release_keep={keep ids} — exactly those keeps (enact: the keeps this same sheet row minted);
+      * release_from_sheet=(via, row) — the keeps that same sheet row minted (ingest).
+    Any other keep on the picture refuses the purge."""
     if not owner_said or not owner_said.strip():
         raise Refused("purge is the owner's act — needs his typed words or a sheet ruling")
     idx = Index()
@@ -1007,8 +1057,19 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep: bo
                       f"{' …' if len(live_paths) > 4 else ''}{under} — install a replacement first")
     prot = idx.protected(sha)
     w = Writer({e["id"] for e in idx.events})
-    if prot and not release_keep:
-        raise Refused(f"{sha[:12]} carries an owner keep ({prot[0]['id']}) — pass release_keep")
+    if release_keep is True:
+        others = []
+    else:
+        named = set(release_keep or ())
+        if release_from_sheet:
+            sv, srow = release_from_sheet
+            named |= {k["id"] for k in prot if k.get("via") == sv and (k.get("target") or {}).get("row") == srow}
+        others = [k for k in prot if k["id"] not in named]
+    if others:
+        k = others[0]
+        raise Refused(f"{sha[:12]} carries an owner keep ({k['id']}, {Path(k.get('via') or '').name or 'his words'}"
+                      f"{': ' + repr(k.get('said'))[:80] if k.get('said') else ''}) — a purge never silently releases "
+                      f"a keep; ask him, then `art.py purge {sha[:12]} --owner-said \"…\" --release-keep`")
     for k in prot:
         w.add({"type": "ruling", "id": det_id("release", k["id"], sha), "target": {"sha": sha},
                "verdict": "release", "releases": k["id"], "by": "owner", "said": owner_said,

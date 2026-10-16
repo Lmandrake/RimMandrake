@@ -7,7 +7,8 @@ Every PNG added, changed or deleted under src/**/Textures/ must be the end of a 
   * `ruling_id` naming an owner keep (trust=ruled) of that very sha;
   * a mechanical reason (`artpipe-collect`, `script:<path>`) whose displaced picture was NOT
     owner-kept (a kept picture moves only on his ruling);
-  * the ledger's own bookkeeping reasons (`backfill-observed`, `retire-duplicate`).
+  * the ledger's own bookkeeping reason `backfill-observed` (and, for events before ENFORCE_FROM only,
+    `retire-duplicate`; from then on a `script:` tag must also name a writer file in the repo).
 
 And the other direction (2026-10-15 review: 18 FlowWorks installs recorded live on 10-07 never reached git, and a
 10-14 re-scan relabelled them back): every slot a pushed `live` event or texture change touches must hold, in the
@@ -40,6 +41,7 @@ BOOKKEEPING = {"backfill-observed", "retire-duplicate"}
 # Events stamped at or after this are judged by the 2026-10-15 review rules (backfill may not overwrite a recorded
 # slot, …); older events keep the rules they were written under, so `range` over history does not re-judge them.
 ENFORCE_FROM = "2026-10-15T19:00:00-0700"
+ENFORCE_REASONS_FROM = "2026-10-15T20:00:00-0700"     # fix C (reasons), shipped after fix A
 
 
 def _enforced(ev: dict) -> bool:
@@ -79,10 +81,24 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
                 or L.normalise_verdict(r.get("verdict")) != "keep":
             return f"ruling {ev['ruling_id']} is not an owner keep with real provenance"
         return None
-    if reason in BOOKKEEPING:
-        return None
     if ev.get("sha") is None and ev.get("said"):
         return None                         # a retire on the owner's typed words (artledger.retire)
+    if (ev.get("ts") or "") >= ENFORCE_REASONS_FROM:
+        # 2026-10-15 review fix C: `retire-duplicate` is hand-typed (no code writes it) and displaced 121 kept
+        # pictures; free text after `script:` hid owner authority in a mechanical tag. From ENFORCE_FROM on, only
+        # backfill-observed is bookkeeping, and a mechanical tag must name a writer file in the repo.
+        if reason == "backfill-observed":
+            return None
+        if reason == "retire-duplicate":
+            if ev.get("said"):
+                return None                 # the owner's typed words on the event
+            return ("`retire-duplicate` is not an authority — retire through artledger.retire with "
+                    "script:<writer path>, or the owner's words / ruling when the picture is kept")
+        why = L.mechanical_refusal(reason)
+        if why:
+            return f"live event has no ruling and no verifiable reason: {why}"
+    elif reason in BOOKKEEPING:
+        return None
     if L.is_mechanical_reason(reason):
         if ev.get("prev") and idx.protected(ev["prev"]):
             return f"mechanical install ({reason}) displaced owner-kept {ev['prev'][:12]}"
