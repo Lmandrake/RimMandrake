@@ -256,10 +256,10 @@
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet: "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier"): the ommok, moved here from the Long Shade (def stays in mandrake.rm.longshade's RM_LongShade_Fauna.xml, same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
       <RM_Ommok MayRequire="mandrake.rm.biomes">0.025</RM_Ommok>
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
-      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- ondrukka (renamed from black swarmlings, Miasma sheet 2026-10-08) - vermin -->
+      <RM_Ondrukka>0.5</RM_Ondrukka>  <!-- ondrukka (renamed from black swarmlings, Miasma sheet 2026-10-08) - vermin; our port of VFEI2_BlackSwarmling without the cocoon (Phase 0 P3 Q4, Defs/ThingDefs_Races/RM_Ondrukka.xml) -->
       <RM_Siezer>0.2</RM_Siezer>  <!-- siezer (renamed from lockjaw, Miasma sheet 2026-10-08) - channel-predator -->
       <RM_Mantrap MayRequire="sarg.alphaanimals">0.2</RM_Mantrap>  <!-- lastvine (renamed from mantrap, Miasma sheet 2026-10-08) - root-ambush; our port of AA_Mantrap (Phase 0 P3, Defs/ThingDefs_Races/RM_Lastvine.xml); MayRequire only until our art is installed at our own path -->
-      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- sharpshrimp (renamed from raptor shrimp, Miasma sheet 2026-10-08) - channel-predator -->
+      <RM_Sharpshrimp>0.2</RM_Sharpshrimp>  <!-- sharpshrimp (renamed from raptor shrimp, Miasma sheet 2026-10-08) - channel-predator -->
       <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis - composter; our port of AA_DecayDrake (DONOR_CODE_PLAIN_PORTS_1) -->
       <RM_Bileworm MayRequire="mandrake.rm.scarlands">0.1</RM_Bileworm>  <!-- helixien - strange -->
       <RM_Thermadon>0.1</RM_Thermadon>  <!-- duskfire - channel-predator; our port of AA_Thermadon (DONOR_CODE_PLAIN_PORTS_1) -->
