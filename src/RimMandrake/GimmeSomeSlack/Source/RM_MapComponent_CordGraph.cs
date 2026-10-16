@@ -53,6 +53,10 @@ namespace RimMandrake.GimmeSomeSlack
 
         public void Notify_SettingsChanged() => builtFrame = -1;
 
+        /// <summary>GSS A8 (live 2026-10-15, proof row A8 FAIL): this frame already rebuilt, so a dirty event landing now is
+        /// not seen by PiecesForSection until something dirties again.</summary>
+        internal bool BuiltThisFrame => builtFrame == Time.frameCount;
+
         /// <summary>Lane F 2026-10-02: a change dirtied a section that is OFF SCREEN. Vanilla only regenerates
         /// sections overlapping the view (Section.TryUpdate), so the rebuild that our layer's regenerate triggers
         /// never ran and the pieces lagged the map until the camera looked (live: the 18-scene aerial board's
@@ -929,8 +933,14 @@ namespace RimMandrake.GimmeSomeSlack
             }
             Map map = mapOf(__instance);   // cached field ref: MapMeshDirty can fire many times a tick (Traverse allocated per call)
             if (map == null) return;
-            if (map == Find.CurrentMap && Find.CameraDriver != null && Find.CameraDriver.CurrentViewRect.ExpandedBy(3).Contains(loc)) return; // on screen: the layer regenerates itself
             RM_MapComponent_CordGraph comp = map.GetComponent<RM_MapComponent_CordGraph>();
+            if (map == Find.CurrentMap && Find.CameraDriver != null && Find.CameraDriver.CurrentViewRect.ExpandedBy(3).Contains(loc))
+            {
+                // on screen the layer regenerates itself -- unless this frame already rebuilt (GSS A8): the regenerate would then
+                // reuse this frame's pieces and drop the change, so defer one rebuild to the next frame (it reprints what moved)
+                if (comp != null && comp.BuiltThisFrame) comp.StaleOffscreen = true;
+                return;
+            }
             if (comp != null) comp.StaleOffscreen = true;
         }
     }
