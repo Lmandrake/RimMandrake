@@ -12,6 +12,12 @@
     the default and is never listed. A row naming a plant that is not loaded is
     skipped silently and counted in the startup log line.
 
+    SCOPE (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): this roster is NOT nativeSoak, so
+    its rows only assign TOPS. A row's plant soaks only when it is already in the
+    native scope (shipped by Baroque Biomes, or wild flora of one of its biomes —
+    e.g. the Contagion's AB_ rupture flora) or when the player turns on "Also soak
+    plants from other mods and the base game".
+
     ⛔ No biome decides a top. noSoakBiomes is the soak CARVE-OUT only
     (design doc §3) and is empty here: the RM tier names no campaign biome.
   -->
@@ -47,6 +53,21 @@
       <li><plant>AB_TentacularPlant</plant><top>Rupture</top></li>
       <li><plant>AB_GlobularPlant</plant><top>Rupture</top></li>
       <li><plant>RM_RustPuff</plant><top>Rupture</top></li>
+      <!-- CONTAGION_FLORA_PORT_1 replaced the AB_ cast above with these RM_ ports in RM_Contagion's
+           <wildPlants> (the AB_ rows stay for lists that still carry the donor, e.g. RUT_Contagion).
+           Same ruling 5 (contaminated plants RUPTURE), carried to the port: EXPLOSIVE_GROWTH_MERGE_COMES_HOME. -->
+      <li><plant>RM_Eyebark</plant><top>Rupture</top></li>
+      <li><plant>RM_Lashgrass</plant><top>Rupture</top></li>
+      <li><plant>RM_Bleedleaf</plant><top>Rupture</top></li>
+      <li><plant>RM_Gorestalk</plant><top>Rupture</top></li>
+      <li><plant>RM_HalfmadeTree</plant><top>Rupture</top></li>
+      <li><plant>RM_HalfmadeTreeBlighted</plant><top>Rupture</top></li>
+      <li><plant>RM_Rattlegrope</plant><top>Rupture</top></li>
+      <li><plant>RM_Sapblister</plant><top>Rupture</top></li>
+      <li><plant>RM_BloodyFist</plant><top>Rupture</top></li>
+      <li><plant>RM_Meatvine</plant><top>Rupture</top></li>
+      <li><plant>RM_Toothmoss</plant><top>Rupture</top></li>
+      <li><plant>RM_Wombpod</plant><top>Rupture</top></li>
       <li><plant>RUT_RustPuff</plant><top>Rupture</top></li>
 
       <!-- BURST — dry-adapted (roster §BURST; ruling 4). -->

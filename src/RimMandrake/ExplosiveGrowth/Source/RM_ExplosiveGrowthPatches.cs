@@ -33,14 +33,15 @@ namespace RimMandrake.ExplosiveGrowth
                 "[RM ExplosiveGrowth] {0} plant defs soak (churn {1}, burst {2}, slime {3}, tinder {4}, rupture {5}, flush {6}), {7} never soak; " +
                 "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}. " +
                 "Scope (home mod {12}): opted in {13}, Baroque Biomes plants {14}, their biomes' wild flora {15}, " +
-                "by the all-plants option {16}; {17} plants of other mods / the base game left out.",
+                "by the all-plants option {16}{18}; {17} plants of other mods / the base game left out.",
                 RM_ExplosiveGrowthRegistry.CountSoaking, t[0], t[1], t[2], t[3], t[4], t[5],
                 RM_ExplosiveGrowthRegistry.CountNone, RM_ExplosiveGrowthRegistry.RosterResolved,
                 RM_ExplosiveGrowthRegistry.RosterMissing, RM_ExplosiveGrowthRegistry.RupturePawnKinds.Count,
                 RM_ExplosiveGrowthRegistry.RuptureMutationHediffs.Count,
                 ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", RM_ExplosiveGrowthRegistry.ScopeOptIn,
                 RM_ExplosiveGrowthRegistry.ScopeHomePack, RM_ExplosiveGrowthRegistry.ScopeHomeBiome,
-                RM_ExplosiveGrowthRegistry.ScopeAllPlants, RM_ExplosiveGrowthRegistry.OutOfScope));
+                RM_ExplosiveGrowthRegistry.ScopeAllPlants, RM_ExplosiveGrowthRegistry.OutOfScope,
+                RM_ExplosiveGrowthRegistry.ScopeForcedBy != null ? " (forced on by roster " + RM_ExplosiveGrowthRegistry.ScopeForcedBy + ")" : ""));
         }
     }
 

@@ -168,10 +168,13 @@ namespace RimMandrake.ExplosiveGrowth
                     "Off (default): only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, "
                     + "and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension on the plant).\n\n"
                     + "On: any plant from any mod or the base game can soak, minus the exemptions below. Applied when you close this window.");
+                if (RM_ExplosiveGrowthRegistry.ScopeForcedBy != null)
+                    list.Label("  A campaign layer on your mod list (" + RM_ExplosiveGrowthRegistry.ScopeForcedBy
+                               + ") puts every plant in scope, so this option changes nothing while it is loaded.");
                 if (RM_ExplosiveGrowthRegistry.Ready)
                     list.Label("  Soaking now: " + RM_ExplosiveGrowthRegistry.CountSoaking + " plant kinds ("
                                + (RM_ExplosiveGrowthRegistry.ScopeHomePack + RM_ExplosiveGrowthRegistry.ScopeHomeBiome + RM_ExplosiveGrowthRegistry.ScopeOptIn)
-                               + " Baroque Biomes or opted in, " + RM_ExplosiveGrowthRegistry.ScopeAllPlants + " by this option); "
+                               + " Baroque Biomes or opted in, " + RM_ExplosiveGrowthRegistry.ScopeAllPlants + " by this option or a campaign layer); "
                                + RM_ExplosiveGrowthRegistry.OutOfScope + " other plant kinds left out.");
                 list.Label("Plants faster than " + minGrowDaysToSoak.ToString("0.0") + " grow-days never soak (applied when you close this window)");
                 minGrowDaysToSoak = list.Slider(minGrowDaysToSoak, 0.1f, 5f);
@@ -301,7 +304,7 @@ namespace RimMandrake.ExplosiveGrowth
         public override void WriteSettings()
         {
             base.WriteSettings();
-            if (RM_ExplosiveGrowthRegistry.Ready) RM_ExplosiveGrowthRegistry.Rebuild();
+            if (RM_ExplosiveGrowthRegistry.Ready) RM_ExplosiveGrowthRegistry.TryRebuild("settings closed");
         }
     }
 }
