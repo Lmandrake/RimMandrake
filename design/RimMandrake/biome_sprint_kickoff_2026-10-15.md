@@ -13,6 +13,10 @@ exposure rules to the work; one small new open question (N5, the new people's st
 **Phase 0 comes first (owner, 2026-10-15 ~19:30 PDT):** the donor art mods are retired before any biome beyond the Pyrelands
 is reviewed. See §0.5. Every biome art sitting in §4 now follows its gate.
 
+**Every S2 review save is built to `design/RimMandrake/biome_review_save_standard.md`** (spec v1, owner 2026-10-15 ~20:10:
+*"Let's define a standard savegame for the biomes like this"*): its station kinds, pen rules, sign format and pre-walk gates
+PW1-PW9 / PL1-PL7 apply to the Cauldron, Contagion and LeaningScrub saves.
+
 This packet holds:
 
 - §0.5, Phase 0: retire Star Wars Animal Collection and Alpha Animals (Alpha Biomes is a candidate) before any biome review;
