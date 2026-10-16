@@ -24,6 +24,12 @@ Without Biotech the seeker, the archive and the injectable simply do not spawn, 
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <!-- the oomb's and wuum's acid death burst is our own DeathActionProperties_ScaledExplosion (2026-10-15 ports) -->
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
   </modDependencies>
   <!-- 🔑 No Harmony dependency, deliberately: every hook this mod uses is a
        vanilla extension point (BiomeWorker, HediffComp, MapComponent,
@@ -31,6 +37,7 @@ Without Biotech the seeker, the archive and the injectable simply do not spawn, 
        patches an engine method, so nothing here breaks on a game update
        that renames one. Do not add one without a reason written down. -->
   <loadAfter>
+    <li>mandrake.rm.environmentalhazards</li>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Biotech</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Wuum.xml — the wuum, the Slime's substrate creature. Owner ruling 2026-10-15 (by card): PORT ALL of the
+  creatures that exist only on the frozen RUT_ twin rosters. Invented creature, no Star Wars IP: RM_ tier.
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_GreenGoo.xml, AA_GreenGoo).
+  Label and description are ours: the words the campaign's Slime_Rename.xml patches onto the donor def.
+
+  NOT CAST. RM_Gelatid already holds the substrate slot on RM_GelatinousSlime ("the substrate creature",
+  RM_gelatinous_slime_mod.md §2) at 3.0; the wuum would be a second substrate at the twin's 2.0. Which one the
+  free def carries is the owner's call: Transient/phase0_twin_only_questions.md Q1.
+
+  REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
+    (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).
+  PLAIN GRAPHIC: the donor drew a body plus two twitching tentacle sprites with its own SpasticScaled render tree
+    (donor code). Ours is one fixed whole-body picture per life stage on the vanilla animal render tree.
+  KEPT, VEF-guarded (a framework we keep, as P3 did): asexual self-cloning, capped at 40 on a map.
+  SWAPPED: body AA_GooBody -> RM_AmorphousBody (this mod's own); sounds AA_GreenGoo_* -> vanilla tortoise (as the
+    gelatid); tentacles -> pseudopods.
+  DROPPED: the donor's poison-bolt ability AA_PoisonBolt (a donor ability, named in neither description); the
+    Odyssey trainable; donor wildBiomes; the VEF AnimalStatExtension info-card rows; the donor dessicated picture
+    (a goo leaves no skeleton; RM_Meltgut precedent).
+  ART: our render exists (artpipe slime_wuum, 3 facings) and is not installed in this mod. Until the art ledger
+    installs it, the texPath is the donor path (a placeholder, reported ART OWED by donor_plain_ports_check.py).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Wuum</defName>
+    <label>wuum</label>
+    <description>Countless small bodies that all belong to one vast, spreading thing — every wuum you see is a cell of the same superorganism, working toward the same single purpose: grow, and keep growing.\n\nA wuum buds off a copy of itself every few days and needs almost nothing to eat. It bursts when it dies, and what bursts out burns like acid.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>85</ComfyTemperatureMax>
+      <MarketValue>125</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>pseudopods</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>RM_Pseudopods</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>10</reproductionIntervalDays>
+        <customString>Cloning in: </customString>
+        <isGreenGoo>true</isGreenGoo>
+        <GreenGooLimit>40</GreenGooLimit>
+        <GreenGooTarget>RM_Wuum</GreenGooTarget>
+      </li>
+    </comps>
+    <race>
+      <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+        <flatRadius>1.9</flatRadius>
+        <damageDef>AcidBurn</damageDef>
+        <damageAmount>8</damageAmount>
+        <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+        <postExplosionFilthChance>0.4</postExplosionFilthChance>
+      </deathAction>
+      <executionRange>6</executionRange>
+      <herdAnimal>false</herdAnimal>
+      <body>RM_AmorphousBody</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.75</baseHealthScale>
+      <baseHungerRate>0.005</baseHungerRate>
+      <hasGenders>false</hasGenders>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <useMeatFrom>Pig</useMeatFrom>
+      <lifeExpectancy>10</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.01</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.02</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+    <modExtensions>
+      <!-- the body itself: resistant by identity (the_slime roster: "the body itself; resistant by identity") -->
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Wuum</defName>
+    <label>wuum</label>
+    <race>RM_Wuum</race>
+    <combatPower>75</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.01</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
