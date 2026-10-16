@@ -1,0 +1,191 @@
+[
+ {
+  "def": "RSW_SandLion",
+  "texPath": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/AA_SandLion/AA_SandLion_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/Things/Pawn/Animal/AA_SandLion/AA_SandLion_south.png",
+  "scale": 1.0,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "Things/Pawn/Animal/AA_SandLion/AA_SandLion_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/AA_SandLion/AA_SandLion_south.png\", \"old\": \"299942e9ebdca75569c773eae5c336e950de5fb43a62cc72b9ac54d9a90745bc\", \"new\": \"b51490d3c57a9e694001291eb53b4c3aedf8f57c997e8829e9718fe237818856\", \"o"
+ },
+ {
+  "def": "RM_ScarRoach",
+  "facing": "south",
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach_south.png",
+  "status": "REFUSED: /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach_south.png is not inside this clone (/home/mandrake/rm/bench)"
+ },
+ {
+  "def": "RM_ScarRoach",
+  "facing": "north",
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach_north.png",
+  "status": "REFUSED: /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach_north.png is not inside this clone (/home/mandrake/rm/bench)"
+ },
+ {
+  "def": "RM_Sytheclaw",
+  "texPath": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimMandrake/Pyrelands/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png",
+  "scale": 0.9983,
+  "mod": "src/RimMandrake/Pyrelands",
+  "rel": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png\", \"old\": \"662946ff95b68e833892029a582c0c77feca4bf869d6161f5899b37475d2071b\", \"new\": \"1834440f53e1c6bdc74ed9d91794192623b24eeac58ce8dd492dd"
+ },
+ {
+  "def": "RM_Sytheclaw",
+  "texPath": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimMandrake/Pyrelands/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png",
+  "scale": 1.0,
+  "mod": "src/RimMandrake/Pyrelands",
+  "rel": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png\", \"old\": \"7869652b2d61a15a82e456c8c6e17e57754f3558b0174a88b1530a1368fb3308\", \"new\": \"f2e242fca0035931b1199186cc21d59755f23354784a00ccf43bcf1a20f138c8"
+ },
+ {
+  "def": "RM_Pallbearer",
+  "facing": "south",
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer_south.png",
+  "status": "REFUSED: /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Warscar/Textures/Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer_south.png is not inside this clone (/home/mandrake/rm/bench)"
+ },
+ {
+  "def": "RSW_Dewback",
+  "texPath": "RimStarWars/SWBestiary/Dewback/Dewback",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/RimStarWars/SWBestiary/Dewback/Dewback_north.png",
+  "scale": 0.883,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "RimStarWars/SWBestiary/Dewback/Dewback_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_north.png\", \"old\": \"b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db\", \"new\": \"e8cd12f697c972e7b64022e26a964a6f7bf1e05a9e1f8be3219167c8eea7ef6e\", \"old_p"
+ },
+ {
+  "def": "RSW_SandLeaper",
+  "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_north.png",
+  "scale": 0.9232,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_north.png\", \"old\": \"b8daeed8f484cb9f0b4429dec862333c29875cd0ff4451cd186cf3cdfbd3e4a7\", \"new\": \"56a038077d9ba0df56f7ea4e65a1757f10c55885462"
+ },
+ {
+  "def": "RSW_KellDragon",
+  "texPath": "swanimals/KellDragon/KellDragon",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/KellDragon/KellDragon_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/KellDragon/KellDragon_south.png",
+  "scale": 1.0,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/KellDragon/KellDragon_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/KellDragon/KellDragon_south.png\", \"old\": \"b04a4f799f772ffaadbb596579e11feda59620ed46a491687bfc90820359b08e\", \"new\": \"1e5c910b5c1dda0aa19ca16204327620b674864d41c43e129ded7c08a5618063\", \"old_protecte"
+ },
+ {
+  "def": "RSW_Fambaa",
+  "texPath": "RimStarWars/SWBestiary/Fambaa/Fambaa",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Fambaa/Fambaa_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/RimStarWars/SWBestiary/Fambaa/Fambaa_north.png",
+  "scale": 0.8975,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "RimStarWars/SWBestiary/Fambaa/Fambaa_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Fambaa/Fambaa_north.png\", \"old\": \"a494ed01585563429a90cddd7706f8172648f19fff5c268e894c7f36058920c1\", \"new\": \"ccadf9c2223f161ec5197e5f75f13960aa40b3afeaa72a8856248fb869a1f14b\", \"old_pro"
+ },
+ {
+  "def": "RM_SumpMouse",
+  "texPath": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimMandrake/TheSump/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png",
+  "scale": 0.8926,
+  "mod": "src/RimMandrake/TheSump",
+  "rel": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png\", \"old\": \"632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0\", \"new\": \"35d71fedde9cef885b6b2ccfa40a8bd7b0226469a3ada1ab5b00ea76413fb2bb\", \"ol"
+ },
+ {
+  "def": "RSW_Clodhopper",
+  "texPath": "swanimals/Clodhopper/Clodhopper",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Clodhopper/Clodhopper_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Clodhopper/Clodhopper_north.png",
+  "scale": 1.0,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Clodhopper/Clodhopper_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Clodhopper/Clodhopper_north.png\", \"old\": \"2c6d872e5ea9ef8d2c0400f6bd6ee6e9485b5326ec967bd228ea18f100b80577\", \"new\": \"5eb028e95e9b0fef980b88135ad9052acfae1b6bd929d2e8c5753f8f091eb9f6\", \"old_protecte"
+ },
+ {
+  "def": "RSW_Brezak",
+  "texPath": "swanimals/Brezak/Brezak",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Brezak/Brezak_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Brezak/Brezak_north.png",
+  "scale": 0.9263,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Brezak/Brezak_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Brezak/Brezak_north.png\", \"old\": \"7f9dedbe45025010ee91bebc708924c57ad720d62b70b41561420d66e03eb5be\", \"new\": \"0e0e34b7ea375e92529fe868801de3bcedd142dc550077a0a0b3fb422bed513b\", \"old_protected\": true"
+ },
+ {
+  "def": "RSW_Boarwolf",
+  "texPath": "swanimals/Boarwolf/Boarwolf_j",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Boarwolf/Boarwolf_j_south.png",
+  "scale": 0.9677,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Boarwolf/Boarwolf_j_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_south.png\", \"old\": \"b93d657e6ee90497f5c449a832c487a28519d4e9c59e961997bd6c32cdff17cb\", \"new\": \"03632fa5a494a29f6bf06c411baf6cc22d8e59ec7b3f35b8135074605a148266\", \"old_protected\""
+ },
+ {
+  "def": "RM_Siezer",
+  "texPath": "Things/Pawn/Animal/RM_Siezer/RM_Siezer",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimMandrake/Miasma/Things/Pawn/Animal/RM_Siezer/RM_Siezer_north.png",
+  "scale": 0.9337,
+  "mod": "src/RimMandrake/Miasma",
+  "rel": "Things/Pawn/Animal/RM_Siezer/RM_Siezer_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_north.png\", \"old\": \"de89c31957122795af6bfe1aaab72388996bd935c830df700dce7d4edc0bc757\", \"new\": \"b8a232d40a648b59c6cc265d241d37861f7d219eeb1a351fc8b31078852ce787\", \"old_prote"
+ },
+ {
+  "def": "RM_Fethrik",
+  "facing": "south",
+  "file": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431/Textures/Things/Pawn/Animal/Megascarab/Megascarab_south.png",
+  "status": "REFUSED: /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431/Textures/Things/Pawn/Animal/Megascarab/Megascarab_south.png is not inside this clone (/home/mandrake/rm/bench)"
+ },
+ {
+  "def": "RSW_Fambaa",
+  "texPath": "swanimals/Fambaa/Fambaa_j",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Fambaa/Fambaa_j_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Fambaa/Fambaa_j_north.png",
+  "scale": 1.1239,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Fambaa/Fambaa_j_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Fambaa/Fambaa_j_north.png\", \"old\": \"91e0b73b459ad1b340e67b21dd41212d7108b0ac27a144a2eba7371d214718a1\", \"new\": \"fa5d1ea153cf98bf51e4666d04b5c94f0a26654d420b15b4da3ca9cdbebdd484\", \"old_protected\": tr"
+ },
+ {
+  "def": "RSW_Mudhorn",
+  "texPath": "swanimals/Mudhorn/Mudhorn",
+  "facing": "north",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Mudhorn/Mudhorn_north.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Mudhorn/Mudhorn_north.png",
+  "scale": 0.8942,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Mudhorn/Mudhorn_north.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Mudhorn/Mudhorn_north.png\", \"old\": \"76f829e7eacbb5b68e15e0e2fad225ca05f6c38401f4e6579968d0fd92d2bb61\", \"new\": \"1aa163382b5a4adfc1c683d7da53f56892a9a82b1441759fb61196cec6aea305\", \"old_protected\": tr"
+ },
+ {
+  "def": "RSW_Gorg",
+  "texPath": "swanimals/Gorg/GorgV_N",
+  "facing": "south",
+  "file": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Gorg/GorgV_N_south.png",
+  "fixed": "Transient/facing_rescale_2026-10-16/fixed2/src/RimStarWars/SWBestiary/swanimals/Gorg/GorgV_N_south.png",
+  "scale": 1.0,
+  "mod": "src/RimStarWars/SWBestiary",
+  "rel": "swanimals/Gorg/GorgV_N_south.png",
+  "status": "{\"status\": \"installed\", \"path\": \"/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Gorg/GorgV_N_south.png\", \"old\": \"8c8a9d168927e52480bf538c4f52d2099331b75d6c9df9c8298bfcbfc1a003f5\", \"new\": \"a44586cefffecd8a8e4929dc9eb93803119f5278576908cdb6298c133c596108\", \"old_protected\": true}"
+ }
+]
