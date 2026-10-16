@@ -30,3 +30,11 @@ Cards put by BENCH from `explosive_growth_consensus_2026-10-16.md` (C/W/T lines)
 | W3/EC2 when is water fresh again | *"It always counts as fresh as long as it's there. It's continuous."* | NO settle-to-×4 and no re-arm timer: while water is present the ground is fresh, continuously (×10 for dry natives). Retires the consensus's settled-wet state for player water and the burst-vs-steady problem with it |
 | W4/HW1 sharing water | *"Hose + carried + sprinklers"* | all three: hose spill, a carried-water job, and sprinklers (source question asked in round 4) |
 | W2 riverbank | *"(1) and the plants continuously grow and writhe there"* | only the water and mud cells themselves count; plants there grow and churn continuously |
+
+## Light (12:28 PDT, typed)
+
+*"And of course the plants ONLY grow like this while there is light. On the Utinni world, this is always or never true. On other worlds it will cycle."*
+
+Means: the ×10 (and all water-driven growth) applies only while the cell has light. Ash'karr is tidally locked, so a
+cell is permanently lit or permanently dark; on other worlds it follows the day/night cycle. (Vanilla already stops
+growth below its light threshold; our factor must not bypass that, and dark-side cells never get the show.)
