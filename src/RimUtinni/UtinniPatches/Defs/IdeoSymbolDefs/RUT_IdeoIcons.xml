@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Six ideoligion icons replacing the donor sw_* icons (DONOR_DEFS_PORT_TO_OURS_1). Plan: Transient/ideo_icons_repoint_plan.md. -->
+<Defs>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_Contract</defName>
+    <iconPath>UI/Ideoligions/RUT_contract</iconPath>
+    <cultures><li>RUT_Jawa_Culture_Blackstar</li></cultures>
+  </IdeoIconDef>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_AscendantGenome</defName>
+    <iconPath>UI/Ideoligions/RUT_ascendantgenome</iconPath>
+    <cultures><li>RUT_Jawa_Culture_Helix</li></cultures>
+  </IdeoIconDef>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_Balance</defName>
+    <iconPath>UI/Ideoligions/RUT_balance</iconPath>
+    <cultures><li>RUT_Jawa_Culture_Deepwater</li></cultures>
+  </IdeoIconDef>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_Weight</defName>
+    <iconPath>UI/Ideoligions/RUT_weight</iconPath>
+    <cultures><li>RUT_Jawa_Culture_Junkers</li></cultures>
+  </IdeoIconDef>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_SunDebt</defName>
+    <iconPath>UI/Ideoligions/RUT_sundebt</iconPath>
+    <cultures><li>RUT_Jawa_Culture_DeepDesert</li></cultures>
+  </IdeoIconDef>
+
+  <IdeoIconDef>
+    <defName>RUT_IdeoIcon_Astropolitan</defName>
+    <iconPath>UI/Ideoligions/RUT_astropolitan</iconPath>
+    <cultures><li>Astropolitan</li></cultures>
+  </IdeoIconDef>
+
+</Defs>
