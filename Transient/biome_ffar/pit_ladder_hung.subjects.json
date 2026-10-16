@@ -1,0 +1,147 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T06:47:35-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_pit_ladder_hung"
+ ],
+ "biomes": {
+  "SUBJECTS_pit_ladder_hung": {
+   "label": "Pit ladder hung on the wall",
+   "slug": "pit_ladder_hung",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Pit ladder hung on the wall \u2014 game art",
+   "lead_html": "<p><b>Pit ladder, redrawn to hang on a wall</b> (PIT_LADDER_REDRAW_HUNG_ON_THE_WALL). Owner 2026-10-16: <i>\u201cIt clearly needs to be installed along a side of the pit, like a door to a room, and have a 'slid up' version that's inaccessible to the prisoners below or a 'slid down' version that is clearly visible.\u201d</i> Rotation = the wall it hangs on: north = far wall (visible face), south = near wall (only the hooks show over the lip), east/west = side walls. Stowed is drawn 0.55 cell toward its wall, on the rim. Each column is one candidate; the in-pit mock is Transient/ladder_art_2026-10-16/ladder_in_pit_mock.png.</p>",
+   "rows": [
+    {
+     "key": "RM_LadderHung",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pit ladder, slid DOWN, hung on the pit wall the rotation names (usable)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_LadderStowed",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "ladderhung_a",
+      "ladderhung_b"
+     ],
+     "render_match": "ladderhung_a|ladderhung_b",
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Ladder ThingDef: 1x1 building on the pit cell, drawSize 1 (Graphic_Multi by rotation = wall)"
+     },
+     "runtimeDesc": {
+      "def": "RM_LadderHung",
+      "label": "pit ladder, slid DOWN, hung on the pit wall the rotation names (usable)",
+      "description": "ladder \u00b7 look hung \u00b7 texture Things/Building/FlowWorks/Canals/RM_LadderHung \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest ladder_textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Canals/RM_LadderHung",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_LadderHung"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Canals/RM_LadderHung"
+     }
+    },
+    {
+     "key": "RM_LadderStowed",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pit ladder, slid UP, laid on the rim beside that wall (prisoners cannot reach it)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_LadderHung",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [
+      "ladderstowed_a",
+      "ladderstowed_b"
+     ],
+     "render_match": "ladderstowed_a|ladderstowed_b",
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Ladder ThingDef: 1x1 building on the pit cell, drawSize 1 (Graphic_Multi by rotation = wall)"
+     },
+     "runtimeDesc": {
+      "def": "RM_LadderStowed",
+      "label": "pit ladder, slid UP, laid on the rim beside that wall (prisoners cannot reach it)",
+      "description": "ladder \u00b7 look stowed \u00b7 texture Things/Building/FlowWorks/Canals/RM_LadderStowed \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest ladder_textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Canals/RM_LadderStowed",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_LadderStowed"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Things/Building/FlowWorks/Canals/RM_LadderStowed"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/bench/Transient/ladder_art_2026-10-16/ladder_textures.json"
+  }
+ }
+}

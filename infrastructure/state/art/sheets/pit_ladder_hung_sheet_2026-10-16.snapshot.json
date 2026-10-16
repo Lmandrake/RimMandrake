@@ -1,0 +1,75 @@
+{
+ "biome": "SUBJECTS_pit_ladder_hung",
+ "built": "2026-10-16T06:48:01-0700",
+ "census": "Transient/biome_ffar/pit_ladder_hung.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_LadderHung": {
+   "columns": {
+    "A": {
+     "east": "a56303f98c0b0d3ddb0b521c9fe11203c6d72406070d0a8992b156585eabc1d5",
+     "north": "c42582bfe8655f57381cf7124df7a2e099340abd203d89c30804252aa53ae906",
+     "south": "b82dc1cf6ded3932e2760b313f37240168c6d1cf537084173986b538dcfb0be6",
+     "west": "d031258d115fa6eb5943fdddebae5e11360783e9e5b5dfae86d33f3da40efd60"
+    },
+    "B": {
+     "east": "867c25cb750dda640bf4490c5b29cf39d163e15a1cf160e014502504691fbe70",
+     "north": "afaba8debdc3f069c40a0fe11693f06dc6d559eed7e5a9ec13836e7379a2c008",
+     "south": "9e8cbc417fd815add8e37d3e6eb30babd51a52fd34f044e929b903bee28801c7",
+     "west": "7898f74bbb9c9ffd4b73825800ca6b9a819ddf6eb229defdfac33ba24368da22"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_LadderHung",
+    "B": "Things/Building/FlowWorks/Canals/RM_LadderHung"
+   },
+   "labels": {
+    "A": "render ladderhung_a",
+    "B": "render ladderhung_b"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_LadderHung",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ladderhung"
+  },
+  "RM_LadderStowed": {
+   "columns": {
+    "A": {
+     "east": "c7018017f3849850f910c448664967dba092f69a4f5740d5522fb2b6dce60c4a",
+     "north": "91c2f1a4386ba285b9d21f9c0ed6e076b7a6e88f592ff11278f2c65e55e9f2c7",
+     "south": "bdc0f7f1f3f61f230b71e88fe801520e95d19c833c045dfa69710107746871d9",
+     "west": "f4f269415dee7434a1fe4fd7157d8fe2e04ce791318810b9a1d065bd635a724a"
+    },
+    "B": {
+     "east": "e8c6b811492bb37eb2fe6d532d4bce1c4efb75e91f3be17db48e9a12213c8f18",
+     "north": "14f6fb68f5f13d5c210248dc104daf4235d6927da912f216d1c5c5c188a24e31",
+     "south": "21a02d8f5f72300ba095edf7dae65ed4e63115595788caa7e92854464cc43dcc",
+     "west": "86389cc75cd12ecddbc9d5b93ca21d5187284e9039b9e8bd1b855feadaa47900"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_LadderStowed",
+    "B": "Things/Building/FlowWorks/Canals/RM_LadderStowed"
+   },
+   "labels": {
+    "A": "render ladderstowed_a",
+    "B": "render ladderstowed_b"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_LadderStowed",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ladderstowed"
+  }
+ },
+ "sheetId": "pit_ladder_hung_sheet_2026-10-16",
+ "snapshotId": "ce8b994c369cbbb2"
+}

@@ -1,0 +1,63 @@
+{
+ "rows": [
+  {
+   "key": "RM_LadderHung",
+   "label": "pit ladder, slid DOWN, hung on the pit wall the rotation names (usable)",
+   "part": "ladder",
+   "look": "hung",
+   "section": "FlowWorks pit ladder",
+   "resources": [
+    "Things/Building/FlowWorks/Canals/RM_LadderHung"
+   ],
+   "former": [
+    "Things/Building/FlowWorks/Canals/RM_Ladder"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_Ladder ThingDef: 1x1 building on the pit cell, drawSize 1 (Graphic_Multi by rotation = wall)"
+   },
+   "jobs": [
+    "ladderhung_a",
+    "ladderhung_b"
+   ],
+   "render_match": "ladderhung_a|ladderhung_b"
+  },
+  {
+   "key": "RM_LadderStowed",
+   "label": "pit ladder, slid UP, laid on the rim beside that wall (prisoners cannot reach it)",
+   "part": "ladder",
+   "look": "stowed",
+   "section": "FlowWorks pit ladder",
+   "resources": [
+    "Things/Building/FlowWorks/Canals/RM_LadderStowed"
+   ],
+   "former": [
+    "Things/Building/FlowWorks/Canals/RM_LadderRaised"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_Ladder ThingDef: 1x1 building on the pit cell, drawSize 1 (Graphic_Multi by rotation = wall)"
+   },
+   "jobs": [
+    "ladderstowed_a",
+    "ladderstowed_b"
+   ],
+   "render_match": "ladderstowed_a|ladderstowed_b"
+  }
+ ],
+ "lead_html": "<p><b>Pit ladder, redrawn to hang on a wall</b> (PIT_LADDER_REDRAW_HUNG_ON_THE_WALL). Owner 2026-10-16: <i>\u201cIt clearly needs to be installed along a side of the pit, like a door to a room, and have a 'slid up' version that's inaccessible to the prisoners below or a 'slid down' version that is clearly visible.\u201d</i> Rotation = the wall it hangs on: north = far wall (visible face), south = near wall (only the hooks show over the lip), east/west = side walls. Stowed is drawn 0.55 cell toward its wall, on the rim. Each column is one candidate; the in-pit mock is Transient/ladder_art_2026-10-16/ladder_in_pit_mock.png.</p>"
+}
