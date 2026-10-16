@@ -32,8 +32,34 @@ def main():
         check(n > 0 or not items, f"{f.stem}: {n} of {len(items)} rows carry a scale panel picture")
     rgb, src = A.measure_ground("RM_LeaningScrub")
     check(rgb is not None and "Sand" in src, f"Leaning Scrub ground measured: {rgb} from {src}")
+    source_xml_fallback()
     print(f"{len(FAILS)} failed" if FAILS else "all passed")
     return 1 if FAILS else 0
+
+
+def source_xml_fallback():
+    """A plant NEWER than the live dump is sized from its source XML (ParentName followed within src/, engine defaults at
+    a vanilla parent) and stays FALLBACK — never "measured" — with the real quad, so a tree is not drawn as one cell."""
+    import tempfile
+    import scale_panel as SP
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td) / "src" / "ModX" / "Defs"
+        d.mkdir(parents=True)
+        (d / "a.xml").write_text('<Defs><ThingDef ParentName="TreeBase" Name="ST_TreeAbs" Abstract="True">'
+                                 '<plant><visualSizeRange>4~7.5</visualSizeRange></plant></ThingDef>'
+                                 '<ThingDef ParentName="ST_TreeAbs"><defName>ST_NewTree</defName></ThingDef>'
+                                 '<ThingDef ParentName="BuildingBase"><defName>ST_NotPlant</defName></ThingDef></Defs>')
+        R = SP.Resolver()
+        R.SRC_ROOT = Path(td) / "src"
+        z = R.size({"key": "ST_NewTree", "defNames": ["ST_NewTree"]})
+        check(z["status"] == "fallback" and z.get("kind") == "plant" and z.get("quad") == 7.5 and z.get("cells") == 7.5,
+              f"source-XML tree: inherited visualSizeRange 7.5 x engine drawSize 1 = 7.5-cell quad, FALLBACK: {z.get('quad')} {z['status']}")
+        check(z["source"].startswith("FALLBACK from source XML") and "TreeBase" in z["source"],
+              f"source-XML size names its file, its chain and FALLBACK: {z['source'][:120]}")
+        n = R.size({"key": "ST_NotPlant", "defNames": ["ST_NotPlant"]})
+        check(n.get("cells") == 1.0 and "1 cell" in n["source"], "a non-plant missing from the dump keeps the 1-cell FALLBACK")
+        m = R.size({"key": "ST_Absent", "defNames": ["ST_Absent"]})
+        check(m.get("cells") == 1.0 and m["status"] == "fallback", "a def in neither dump nor src keeps the 1-cell FALLBACK")
 
 
 if __name__ == "__main__":
