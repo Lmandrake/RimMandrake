@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Lastvine.xml — the lastvine (defName RM_Mantrap, after the donor). Phase 0 P3
+  (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md §0.5.3 item 2): a donor-code creature ported as our own
+  plain XML. Invented creature, no Star Wars IP: RM_ tier.
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Mantrap.xml). Label and description
+  are the owner's lastvine (Miasma sheet 2026-10-08: "Totally rewrite description. Rename it as a Lastvine."), the
+  words the campaign's Miasma_Rename.xml patches onto the donor def. Comfy band -10..81.9 is the live value
+  AnimalTolerances_Ashkarr.xml pins on the donor def.
+
+  Owner pick "rebuild" (twitching limbs) on Transient/donor_code_creatures_sheet_2026-10-09, and on the Miasma sheet:
+  "Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared
+  up horrifying into a huge gaping maw and actively writhing tentacles."
+  REBUILT in our code: the donor's SpasticScaled twitching-tentacle render tree (donor code) is replaced by the
+  render tree RM_Lastvine below, whose body node (Source/RM_LastvineRearing.cs) draws the calm pod at rest and the
+  reared maw (the life stage's texPath + "_Reared") while the lastvine hunts, fights or has something close. Both
+  pictures are whole-body; there are no separate limb sprites. Mod Settings: "Lastvine rears up".
+  KEPT, VEF-guarded (a framework we keep): LightSustenance ("It feeds on light when it must").
+  SWAPPED, donor defs -> ours or vanilla: body AA_FlyTrap -> RM_LastvineBody (below; its donor parts and groups
+    re-declared as ours); tool capacity AA_Acid -> RM_LastvineBarbs (ours, vanilla AcidBurn damage); group AA_Mouth
+    -> vanilla Mouth; ability AA_AcidBolt -> RM_LastvineSpit (ours; "spits a burning acid at whatever it cannot
+    reach"), its donor projectile damage AA_AcidSpit (VEF acid hediffs) -> vanilla AcidBurn, its icon and sound ->
+    Biotech AcidSpray and vanilla incendiary launcher (placeholders); sounds AA_Mantrap_* -> Anomaly's bulbfreak;
+    leather Leather_Cactus (donor) -> Leather_Plain; meat AA_CactusMeat (donor) -> useMeatFrom Iguana; dessicated art
+    (donor) -> vanilla bear.
+  DROPPED: donor wildBiomes; the VEF AnimalStatExtension info-card rows.
+  ART: our renders exist and are not installed (miasma_lastvine_calm_v1 and miasma_lastvine_reared_v1, made from the
+    owner's note, not yet reviewed). Until the art ledger installs them at our path, the texPath is the donor path
+    (a placeholder, reported ART OWED by donor_plain_ports_check.py; with no _Reared texture there the creature always
+    draws its calm body) and the roster row stays MayRequire="sarg.alphaanimals".
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Mantrap</defName>
+    <label>lastvine</label>
+    <description>At rest the lastvine passes for part of the root-maze: a closed, leathery pod on a knot of roots, its heavy head hung low like fruit too ripe to hold itself up. It is not a plant. When something comes near, the pod rears up on its roots and splits into a single enormous maw ringed with hooked, fang-like thorns, a nest of tentacles writhing inside it. It has no arms. It drags itself after its prey on root-like legs, slowly and hungrily, and spits a burning acid at whatever it cannot reach. It feeds on light when it must, and on flesh when it can.</description>
+    <statBases>
+      <MoveSpeed>3.00</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>81.9</ComfyTemperatureMax>
+      <MarketValue>450</MarketValue>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>hooked thorns</label>
+        <capacities>
+          <li>RM_LastvineBarbs</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.35</cooldownTime>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.35</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>pod</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_LightSustenance" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" />
+      <li Class="VEF.AnimalBehaviours.CompProperties_InitialAbility" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <initialAbility>RM_LastvineSpit</initialAbility>
+      </li>
+    </comps>
+    <race>
+      <renderTree>RM_Lastvine</renderTree>
+      <predator>true</predator>
+      <maxPreyBodySize>1</maxPreyBodySize>
+      <body>RM_LastvineBody</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>2</baseBodySize>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <useMeatFrom>Iguana</useMeatFrom>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Fleshbeast_Bulbfreak_Wounded</soundWounded>
+          <soundDeath>Pawn_Fleshbeast_Bulbfreak_Death</soundDeath>
+          <soundCall>Pawn_Fleshbeast_Bulbfreak_Call</soundCall>
+          <soundAngry>Pawn_Fleshbeast_Bulbfreak_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Mantrap</defName>
+    <race>RM_Mantrap</race>
+    <label>lastvine</label>
+    <combatPower>200</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>
+      <min>1</min>
+      <max>4</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The reared look: one graphic state, used by RimMandrake.Miasma.RM_PawnRenderNodeWorker_Rearing. -->
+  <GraphicStateDef>
+    <defName>RM_Reared</defName>
+  </GraphicStateDef>
+
+  <!-- Core's Animal render tree with the body node swapped for the rearing body. -->
+  <PawnRenderTreeDef>
+    <defName>RM_Lastvine</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li Class="RimMandrake.Miasma.RM_PawnRenderNodeProperties_Rearing">
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <useRottenColor>true</useRottenColor>
+          <children>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Pack</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPack</nodeClass>
+              <workerClass>PawnRenderNodeWorker_AnimalPack</workerClass>
+              <rotDrawMode>Fresh, Rotting</rotDrawMode>
+              <baseLayer>5</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+  <ToolCapacityDef>
+    <defName>RM_LastvineBarbs</defName>
+    <label>acid thorns</label>
+  </ToolCapacityDef>
+
+  <ManeuverDef>
+    <defName>RM_LastvineBarbs</defName>
+    <requiredCapacity>RM_LastvineBarbs</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>AcidBurn</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Smash_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Smash_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Smash_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Smash_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+
+  <AbilityDef>
+    <defName>RM_LastvineSpit</defName>
+    <label>acid spit</label>
+    <description>Spit a glob of burning acid at something out of reach.</description>
+    <iconPath>UI/Abilities/AcidSpray</iconPath>
+    <cooldownTicksRange>180</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <writeCombatLog>true</writeCombatLog>
+    <verbProperties>
+      <verbClass>Verb_AbilityShoot</verbClass>
+      <defaultProjectile>RM_LastvineSpit</defaultProjectile>
+      <accuracyTouch>0.85</accuracyTouch>
+      <accuracyShort>0.8</accuracyShort>
+      <accuracyMedium>0.8</accuracyMedium>
+      <accuracyLong>0.7</accuracyLong>
+      <range>20</range>
+      <defaultCooldownTime>3</defaultCooldownTime>
+      <muzzleFlashScale>0</muzzleFlashScale>
+      <warmupTime>2</warmupTime>
+      <soundCast>Shot_IncendiaryLauncher</soundCast>
+      <commonality>0.6</commonality>
+      <minRange>2</minRange>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+      </targetParams>
+      <ai_IsWeapon>false</ai_IsWeapon>
+    </verbProperties>
+  </AbilityDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RM_LastvineSpit</defName>
+    <label>acid spit</label>
+    <graphicData>
+      <texPath>Things/Projectile/LauncherShot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(150,200,60)</color>
+    </graphicData>
+    <projectile>
+      <flyOverhead>false</flyOverhead>
+      <damageDef>AcidBurn</damageDef>
+      <damageAmountBase>15</damageAmountBase>
+      <armorPenetrationBase>0.35</armorPenetrationBase>
+      <stoppingPower>1.1</stoppingPower>
+      <speed>40</speed>
+    </projectile>
+  </ThingDef>
+
+  <!-- Body: Alpha Animals' AA_FlyTrap re-declared as ours, same hit points, coverage and tags. -->
+  <BodyPartDef>
+    <defName>RM_LastvinePhloem</defName>
+    <label>sap vessels</label>
+    <hitPoints>20</hitPoints>
+    <bleedRate>5</bleedRate>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>BloodPumpingSource</li>
+      <li>BloodFiltrationSource</li>
+      <li>MetabolismSource</li>
+      <li>BreathingSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_LastvinePod</defName>
+    <label>pod</label>
+    <hitPoints>30</hitPoints>
+    <frostbiteVulnerability>1</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>HearingSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_LastvineSensor</defName>
+    <label>vibration sensors</label>
+    <hitPoints>20</hitPoints>
+    <bleedRate>5</bleedRate>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>SightSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_LastvineMaw</defName>
+    <label>maw</label>
+    <hitPoints>10</hitPoints>
+    <frostbiteVulnerability>0.8</frostbiteVulnerability>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>EatingSource</li>
+      <li>TalkingSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_LastvineRootLeg</defName>
+    <label>root-leg</label>
+    <hitPoints>5</hitPoints>
+    <frostbiteVulnerability>1</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyDef>
+    <defName>RM_LastvineBody</defName>
+    <label>lastvine</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.08</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_LastvinePhloem</def>
+          <coverage>0.5</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.1</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>RM_LastvinePod</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.15</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>RM_LastvineSensor</def>
+                  <coverage>0.3</coverage>
+                </li>
+                <li>
+                  <def>RM_LastvineMaw</def>
+                  <coverage>0.4</coverage>
+                  <groups>
+                    <li>Mouth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_LastvineRootLeg</def>
+          <customLabel>first root-leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_LastvineRootLeg</def>
+          <customLabel>second root-leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_LastvineRootLeg</def>
+          <customLabel>third root-leg</customLabel>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+</Defs>

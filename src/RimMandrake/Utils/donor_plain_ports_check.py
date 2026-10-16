@@ -62,6 +62,13 @@ PORTS = [
      "donor": "AA_OcularJelly", "roster": "Defs/BiomeDefs/RM_Contagion.xml",
      "placeholder_tex": {"Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
                          "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"}},  # one file holds both
+    {"mod": "TheForge", "file": "Defs/ThingDefs_Races/RM_ColossalAerofleet.xml", "ours": "RM_ColossalAerofleet",
+     "donor": "AA_ColossalAerofleet", "roster": "Defs/BiomeDefs/RM_TheForge_Biome.xml",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal"},
+     "extern": {"RM_BlueGel": "TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml",
+                "RM_Bulloo": "TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml"}},
+    {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_Lastvine.xml", "ours": "RM_Mantrap", "donor": "AA_Mantrap",
+     "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": {"Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"}},
 ]
 
 
@@ -102,6 +109,10 @@ def check_port(p):
             bad.append("%s: VEF comp without the VEF MayRequire guard: %s" % (p["ours"], m.group(0)))
     refs = set(re.findall(r"<(?:resourceDef|initialAbility|defaultProjectile|li)>(RM_\w+)</", body))
     for r in sorted(refs - defined):
+        other = p.get("extern", {}).get(r)  # a def another port's file owns: it must be defined THERE
+        if other and os.path.exists(os.path.join(ROOT, other)) and \
+                "<defName>%s</defName>" % r in open(os.path.join(ROOT, other), encoding="utf-8").read():
+            continue
         bad.append("%s: references %s, which its file does not define" % (p["ours"], r))
     if p["roster"] is None:  # deliberately cast nowhere; the row says why
         notes.append("%s: NOT CAST - %s" % (p["ours"], p["uncast_why"]))
