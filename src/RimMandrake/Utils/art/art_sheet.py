@@ -215,6 +215,22 @@ def thumb(sha: str, imgdir: Path, src_bytes: bytes | None = None, size: int = 20
     return f"{imgdir.name}/{out.name}"
 
 
+def full_image(sha: str, imgdir: Path) -> str:
+    """The archived picture at its FULL resolution, alone, as a PNG beside the thumbs (owner, 2026-10-15: clicking
+    a candidate must open the full-resolution drawing by itself, never the 160 px thumbnail). Lossless: PNG bytes
+    are copied unchanged; anything else is re-encoded to PNG at its own size."""
+    out = imgdir / f"{sha[:20]}_full.png"
+    if not out.exists():
+        b = L.store_get(sha)
+        imgdir.mkdir(parents=True, exist_ok=True)
+        if b[:8] == b"\x89PNG\r\n\x1a\n":
+            out.write_bytes(b)
+        else:
+            from PIL import Image
+            Image.open(BytesIO(b)).save(out, "PNG")
+    return f"{imgdir.name}/{out.name}"
+
+
 # ──────────────────────────────────────────────────────────── columns ──
 
 GENERIC_DIRS = {"plant", "plants", "things", "thing", "item", "items", "building", "buildings", "animal", "animals",
@@ -1611,7 +1627,7 @@ const _itemBody = it => {
     const p = purge.has(s);
     const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="DELETE this one picture from the art store so it never appears again (deletes bytes — not the same as 'not for this slot')" data-act="purge" data-id="${esc(it.id)}" data-sha="${s}">${p ? '✕ deleting' : '✕'}</button>` : '';
     const ab = faceAbbr(f);
-    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${(it.fulls || {})[s] || t}" data-cap="${esc(it.label)} · ${c.letter} · ${f} · full resolution"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
   };
   /* flip-book (wing-beat) sets: one grid row per facing, a looping playback cell first, then frames 1..N */
   const faces = (c, g) => {
@@ -1751,6 +1767,16 @@ window.artAsksHtml = (it, d) => {
     </div></details>`;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
+/* Click-to-zoom shows the FULL-RESOLUTION file (owner, 2026-10-15), at its own pixel size up to the window, with its
+   dimensions and a link that opens it alone in a new tab. Overrides the template's openZoom by global name. */
+openZoom = function (src, cap) {
+  const z = document.getElementById('zoom'), im = document.getElementById('zimg'), zc = document.getElementById('zcap');
+  im.style.maxWidth = '94vw'; im.style.maxHeight = '86vh';
+  im.onload = () => { zc.innerHTML = ''; zc.append(cap + ` · ${im.naturalWidth}×${im.naturalHeight} px `);
+    const a = document.createElement('a'); a.href = src; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'open alone ↗';
+    a.onclick = e => e.stopPropagation(); zc.append(a); };
+  im.src = src; zc.textContent = cap; z.classList.add('on');
+};
 function scaleBlock(it) {
   const s = it.scale; if (!s) return '';
   if (s.status === 'none') return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>none — drawn only in the UI</span></div><div class="bs-scsrc" title="${esc(s.source)}">MEASURED · ${esc(s.source)}</div></div>`;
@@ -2696,7 +2722,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         keys = {L.subject_key(x) for x in [key] + list(r.get("defNames") or []) + [_stem(key)] if x}
         rul = idx.subject_rulings(keys)
         gitems, picks, prim_pf = [], {}, ("", "", "none")
-        thumbs, missing = {}, 0
+        thumbs, fulls, missing = {}, {}, 0
         for gi, g in enumerate(graphics):
             g["prior"] = g.pop("prior_raw", None)
             pf = _graphic_prefill(g, rul)
@@ -2720,6 +2746,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                         missing += 1
                         continue
                     thumbs[s] = thumb(s, imgdir, size=thumb_size)
+                    fulls[s] = full_image(s, imgdir)
             pr = g["prior"]
             prior = None
             if pr:
@@ -2857,7 +2884,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "prefillShort": _prefill_short(source, why),
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
-            "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "canon": canon,
+            "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "fulls": fulls, "canon": canon,
             "letters": [c["letter"] for g in gitems if g["primary"] for c in g["cols"]
                         if not c.get("purgedLive") and not c.get("noSelect")],
             "dependsOn": (key[:-len("Catch")] if key.endswith("Catch") and key[:-len("Catch")] in {x["key"] for x in rows}
