@@ -703,6 +703,22 @@ class Round(object):
             want = set(self.args.only_kinds.split(","))
             species = [s for s in species if s["kind"] in want or s["race"] in want]
         instrument = {"graphicReadable": 0, "graphicUnreadable": 0}
+        # SANITY PROBE (2026-10-16 night): jawa/thing_graphic reads Pawn.Graphic, which is UI/Misc/BadTexture for EVERY pawn
+        # until it has been drawn: a vanilla Muffalo read badTex=true and 144 of 144 spawn rows failed on it. A control
+        # pawn decides whether badTex means anything on this map; if the control is bad, pawn badTex is not evidence.
+        pawn_badtex_blind = False
+        rect0 = self.site(6, 6, "SPAWN_CONTROL")
+        if rect0 is not None:
+            c = self.call("jawa/spawn_pawn", kindDef="Muffalo", x=rect0[0] + 2, z=rect0[1] + 2, faction="none", count=1)
+            cids = [p.get("id") for p in (c.get("pawns") or []) if p.get("ok")]
+            if cids:
+                cg = self.call("jawa/thing_graphic", thing=",".join(cids))
+                pawn_badtex_blind = any(x.get("badTex") for x in (cg.get("things") or []) if isinstance(x, dict))
+            self.call("jawa/destroy_bulk", filter="factionlessAnimals", dryRun=False)
+        if pawn_badtex_blind:
+            self.row("SPAWN_BADTEX_CONTROL", "UNMEASURED", "HARNESS",
+                     {"note": "a vanilla Muffalo reads badTex=true: Pawn.Graphic is not drawn yet; pawn badTex is ignored, "
+                              "texture grading rests on the Player.log rows (L03/L04)"})
         for i in range(0, len(species), batch):
             chunk = species[i:i + batch]
             rect = self.site(4 * batch + 4, 10, "SPAWN_BATCH_%d" % (i // batch))
@@ -736,7 +752,7 @@ class Round(object):
                 alive = [p for p in mine if not p.get("dead")]
                 g = self.call("jawa/thing_graphic", thing=",".join(ids)) if ids else {}
                 grows = [x for x in (g.get("things") or []) if isinstance(x, dict)]
-                bad = [x.get("id") for x in grows if x.get("badTex")]
+                bad = [] if pawn_badtex_blind else [x.get("id") for x in grows if x.get("badTex")]
                 readable = [x for x in grows if x.get("resolvedPath") or x.get("textureName")]
                 instrument["graphicReadable" if readable else "graphicUnreadable"] += 1
                 needles = [s["kind"], s["race"]] + s.get("texPaths", [])
