@@ -160,6 +160,30 @@ def store_put_file(p: Path) -> str:
     return store_put_bytes(Path(p).read_bytes())
 
 
+PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+
+
+def put_file_checked(p) -> str:
+    """`art.py put` / `install --file`: a supported way to get bytes into the store. The file must be a regular
+    file (not a symlink), resolve inside this clone, and be a PNG. Returns the sha."""
+    raw = Path(p)
+    root = src_root().resolve().parent        # this clone (a fixture's root under ART_SRC_ROOT)
+    if raw.is_symlink():
+        raise Refused(f"{p} is a symlink — put the real file")
+    rp = raw.resolve()
+    try:
+        rp.relative_to(root)
+    except ValueError:
+        raise Refused(f"{p} resolves to {rp}, outside this clone ({root}) — copy it into the clone first "
+                      f"(Transient/ is fine)") from None
+    if not rp.is_file():
+        raise Refused(f"{p} is not a file")
+    b = rp.read_bytes()
+    if not b.startswith(PNG_MAGIC):
+        raise Refused(f"{p} is not a PNG")
+    return store_put_bytes(b)
+
+
 def store_get(sha: str) -> bytes:
     return store_path(sha).read_bytes()
 
@@ -387,6 +411,98 @@ def parse_texfile(rel: str) -> dict:
     return {"res": base, "facing": "single", "mask": False}
 
 
+# ── mod / rel spelling (ART_LEDGER_REVIEW 2026-10-15 fix B) ──
+# 58 `live` events were keyed under 17 non-canonical mod spellings ('SWBestiary', 'RimMandrake/FlowWorks', an
+# absolute BENCH path …): the guard could not find them, `status` printed false SHADOWED flags. History is never
+# rewritten: every READER folds keys through mod_key()/rel_key() (string rules + the explicit alias file), and every
+# WRITER goes through canonical_mod(), which resolves on disk and refuses anything outside this clone's src/.
+MOD_ALIASES_FILE = "mod_aliases.json"
+_MOD_ALIASES: dict = {"sig": None, "map": {}}
+TIERS = ("RimMandrake", "RimStarWars", "RimUtinni", "Jawa")
+
+
+def mod_aliases() -> dict:
+    p = ledger_dir() / MOD_ALIASES_FILE
+    try:
+        sig = (str(p), p.stat().st_mtime_ns)
+    except OSError:
+        return {}
+    if _MOD_ALIASES["sig"] != sig:
+        _MOD_ALIASES.update(sig=sig, map=dict(json.loads(p.read_text()).get("aliases", {})))
+    return _MOD_ALIASES["map"]
+
+
+def mod_key(mod) -> str:
+    """READ-side canonical key of a mod as written in any event: pure string rules plus the alias file.
+    'SWBestiary' -> 'src/RimStarWars/SWBestiary' (alias), 'RimMandrake/FlowWorks' -> 'src/RimMandrake/FlowWorks',
+    '/home/mandrake/rm/bench/src/RimMandrake/Abyss' -> 'src/RimMandrake/Abyss'."""
+    m = str(mod or "").replace("\\", "/").rstrip("/")
+    while m.startswith("./"):
+        m = m[2:]
+    if m.endswith("/Textures"):
+        m = m[: -len("/Textures")]
+    al = mod_aliases()
+    if m in al:
+        return al[m]
+    if m.startswith("/"):
+        i = m.rfind("/src/")
+        if i >= 0:
+            m = m[i + 1:]
+    if m.split("/", 1)[0] in TIERS:
+        m = "src/" + m
+    return al.get(m, m)
+
+
+def rel_key(rel) -> str:
+    """READ-side canonical rel: forward slashes, no './', no leading 'Textures/'."""
+    r = str(rel or "").replace("\\", "/")
+    while r.startswith("./"):
+        r = r[2:]
+    if r.startswith("Textures/"):
+        r = r[len("Textures/"):]
+    return r
+
+
+def canonical_mod(mod) -> str:
+    """WRITE-side: any accepted spelling of a mod -> 'src/<Tier>/<Mod>' as the ledger keys it, resolved on disk.
+    Accepts 'SWBestiary', 'RimStarWars/SWBestiary', 'src/RimStarWars/SWBestiary', a known alias, or an absolute
+    path INSIDE this clone's src/. Refuses traversal, symlink escapes, other clones' paths and unknown mods."""
+    raw = str(mod or "").strip()
+    if not raw:
+        raise Refused("no mod given")
+    sroot = src_root().resolve()
+    p = Path(raw.replace("\\", "/"))
+    if p.is_absolute():
+        cand = p.resolve()
+    else:
+        key = mod_key(raw)
+        if key.startswith("src/"):
+            cand = (sroot.parent / key).resolve()
+        else:                                     # a bare mod name: exactly one src/<Tier>/<name> (or src/<name>)
+            hits = [d for d in list(sroot.glob(f"*/{key}")) + [sroot / key] if d.is_dir()]
+            if len(hits) != 1:
+                raise Refused(f"mod {raw!r}: {len(hits)} folders under {sroot} match "
+                              f"({', '.join(str(h) for h in hits[:4]) or 'none'}) — give src/<Tier>/<Mod>")
+            cand = hits[0].resolve()
+    if cand.name == "Textures":
+        cand = cand.parent
+    try:
+        relp = cand.relative_to(sroot)
+    except ValueError:
+        raise Refused(f"mod {raw!r} resolves to {cand}, outside this clone's {sroot}") from None
+    if not relp.parts or (cand.exists() and not cand.is_dir()):
+        raise Refused(f"mod {raw!r} is not a mod folder under {sroot}")
+    return f"{sroot.name}/{relp.as_posix()}"
+
+
+def canonical_rel(rel) -> str:
+    """WRITE-side rel: accepts 'a/b.png' or 'Textures/a/b.png'; refuses absolute paths and '..'."""
+    r = rel_key(rel)
+    if not r or r.startswith("/") or "/Textures/" in "/" + r or ".." in r.split("/"):
+        raise Refused(f"rel must be the path UNDER Textures/, got {rel}")
+    return r
+
+
 def split_texture_path(path: str) -> tuple[str, str] | None:
     """'src/RimStarWars/SWBestiary/Textures/x/y.png' -> ('src/RimStarWars/SWBestiary', 'x/y.png')."""
     p = path.replace("\\", "/")
@@ -529,7 +645,7 @@ class Index:
             self.bindings_by_subject[ev["subject"]].append(ev)
 
     def _fold_live(self, ev):
-        key = (ev["mod"], ev["rel"])
+        key = (mod_key(ev["mod"]), rel_key(ev["rel"]))      # history keeps its spelling; the fold does not
         # a retired slot keeps its retire as a tombstone: shards fold one seat after another, so an older install
         # read from a later shard must not resurrect a slot a newer retire emptied (BENCH retired Brightbell_p3a,
         # FOUNDRY's 01:00 install of it folded afterwards and read it live again, 2026-10-10)
@@ -718,13 +834,17 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged by the owner — it cannot be installed")
     if not store_has(sha):
-        raise Refused(f"{sha[:12]} is not in the art store ({store_dir()}) — put it there first")
-    if "/Textures/" in "/" + rel.replace("\\", "/") or rel.startswith("/"):
-        raise Refused(f"rel must be the path UNDER Textures/, got {rel}")
+        raise Refused(f"{sha[:12]} is not in the art store ({store_dir()}) — put it there first "
+                      f"(art.py put <png>, or art.py install ... --file <png>)")
+    mod, rel = canonical_mod(mod), canonical_rel(rel)
     why_ph = placeholder_refusal(rel, store_get(sha))
     if why_ph:
         raise Refused(why_ph)
-    target = src_root().parent / mod / "Textures" / rel if not Path(mod).is_absolute() else Path(mod) / "Textures" / rel
+    target = src_root().resolve().parent / mod / "Textures" / rel
+    try:
+        target.parent.resolve().relative_to((src_root().resolve().parent / mod).resolve())
+    except ValueError:
+        raise Refused(f"{target} resolves outside {mod} (a symlinked folder?) — refusing to write through it") from None
     ruling = None
     if ruling_id:
         ruling = next((r for r in idx.rulings if r["id"] == ruling_id), None)
@@ -787,7 +907,7 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     with os.fdopen(fd, "wb") as fh:
         fh.write(store_get(sha))
     os.replace(tmp, target)
-    live = {"type": "live", "mod": str(Path(mod)), "rel": rel, "sha": sha, "prev": old_sha}
+    live = {"type": "live", "mod": mod, "rel": rel, "sha": sha, "prev": old_sha}
     if ruling:
         live.update(ruling_id=ruling["id"], reason="install")
     else:

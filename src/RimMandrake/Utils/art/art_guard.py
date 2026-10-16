@@ -118,7 +118,7 @@ def check(changes, events: list[dict]) -> list[tuple[str, str]]:
     lives: dict = {}
     for ev in idx.events:
         if ev.get("type") == "live":
-            lives.setdefault((ev["mod"], ev["rel"]), []).append(ev)
+            lives.setdefault((L.mod_key(ev["mod"]), L.rel_key(ev["rel"])), []).append(ev)
     out = []
     for path, old, new in changes:
         why = check_change(idx, lives, path, old, new)

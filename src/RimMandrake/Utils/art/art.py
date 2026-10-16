@@ -7,7 +7,11 @@
                                             canon | rulings  (idempotent: deterministic ids)
     art.py status    <subject|texPath>      live picture(s), protections, rulings, flags
     art.py variants  <subject|texPath>      every known picture of it, with provenance
-    art.py install   <mod> <rel> <sha> (--ruling ID | --owner-said "..." | --reason TAG) [--dry-run]
+    art.py put       <png>...                put files into the art store (regular files inside this clone,
+                                            no symlinks); prints each sha
+    art.py install   <mod> <rel> (<sha> | --file PNG) (--ruling ID | --owner-said "..." | --reason TAG) [--dry-run]
+                                            mod: SWBestiary | RimStarWars/SWBestiary | src/RimStarWars/SWBestiary;
+                                            rel: with or without a leading Textures/.
                                             TAG: artpipe-collect | script:<writer path>; a mechanical
                                             install is refused over an owner-kept picture
     art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make
@@ -169,9 +173,27 @@ def cmd_status(a, verbose=False):
     return 0
 
 
+def cmd_put(a):
+    rc = 0
+    for f in a.files:
+        try:
+            print(f"{L.put_file_checked(f)}  {f}")
+        except L.Refused as e:
+            print(f"REFUSED: {e}")
+            rc = 2
+    return rc
+
+
 def cmd_install(a):
     try:
-        r = L.install(a.mod, a.rel, a.sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
+        if bool(a.sha) == bool(a.file):
+            raise L.Refused("give exactly one of <sha> or --file <png>")
+        sha = a.sha
+        if a.file:
+            sha = L.put_file_checked(a.file)
+            if a.dry_run:
+                print(f"put {a.file} -> {sha}")
+        r = L.install(a.mod, a.rel, sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
                       dry_run=a.dry_run)
     except L.Refused as e:
         print(f"REFUSED: {e}")
@@ -179,7 +201,7 @@ def cmd_install(a):
     print(json.dumps(r))
     if not a.dry_run:          # the install-side hook: name every sheet this install just made stale (they refuse to serve)
         import sheet_freshness as FR
-        res = L.parse_texfile(a.rel)["res"]
+        res = L.parse_texfile(L.rel_key(a.rel))["res"]
         FR.after_install([res, res.rpartition("/")[0]])
     return 0
 
@@ -267,7 +289,9 @@ def main(argv=None):
     p = sp.add_parser("backfill"); p.add_argument("step"); p.add_argument("--budget", type=float, default=480)
     p = sp.add_parser("status"); p.add_argument("query")
     p = sp.add_parser("variants"); p.add_argument("query")
-    p = sp.add_parser("install"); p.add_argument("mod"); p.add_argument("rel"); p.add_argument("sha")
+    p = sp.add_parser("put"); p.add_argument("files", nargs="+")
+    p = sp.add_parser("install"); p.add_argument("mod"); p.add_argument("rel"); p.add_argument("sha", nargs="?")
+    p.add_argument("--file", help="a PNG inside this clone: put it in the store, then install its sha")
     p.add_argument("--ruling"); p.add_argument("--owner-said"); p.add_argument("--reason")
     p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
@@ -294,7 +318,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "put": cmd_put, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 
