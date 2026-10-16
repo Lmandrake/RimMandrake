@@ -69,7 +69,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public override void ExposeData()
         {
             base.ExposeData();
-            RimMandrake.Shared.PatchApplier.BeforeExpose();   // a feature forced off by a failed patch is never SAVED as off
+            RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());   // a feature forced off by a failed patch is never SAVED as off
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref maxSpan, "maxSpan", 20f);
             Scribe_Values.Look(ref sag, "sag", 0.06f);
@@ -92,7 +92,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
             Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
             Scribe_Values.Look(ref dripLoops, "dripLoops", true);
-            RimMandrake.Shared.PatchApplier.AfterExpose();
+            RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
         }
 
         public static void ResetToDefaults()
