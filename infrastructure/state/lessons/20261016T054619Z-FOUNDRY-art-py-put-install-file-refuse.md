@@ -1,0 +1,1 @@
+art.py put/install --file refuse files outside the clone; to install a render from artpipe _artsrc use artledger.store_put_file(Path) then art.py install <mod path> <rel under Textures/> <sha> --owner-said; a purged sha cannot install until art.py unpurge (75ff5157a) with his newer words.

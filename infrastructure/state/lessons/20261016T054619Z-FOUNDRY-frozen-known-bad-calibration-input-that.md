@@ -1,0 +1,1 @@
+A frozen 'known-bad' calibration input that is a LIVE sprite decays the moment someone fixes the sprite: selftest_art_checks failed 2026-10-15 because Anooba_m/FireWasp were rescaled by owner words; freeze pre-fix bytes as fixtures (887a7f76f), never loosen the threshold.
