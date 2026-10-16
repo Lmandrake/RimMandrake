@@ -11,7 +11,8 @@ namespace RimMandrake.TheForge
     // take advantage of some of the old Crescendo anole concept: if you mess with it, it swells with violent chemical
     // reactions that make it three times as big and spewing fire (firespit). Stays that way for 1/3 of a day, then it
     // can't do it again for another day. Super aggressive when angered, but otherwise totally docile and placid while
-    // foraging." By card: trigger = ONLY taking damage; cooldown = one day from the moment the swell ENDS; size is REAL
+    // foraging." By card: trigger = ONLY taking damage, and only damage from an attack (a pawn, a turret or a trap; card
+    // 2026-10-16 "Only attacks and your colonists": rain scald, fire and melt-back do not provoke it); cooldown = one day from the moment the swell ENDS; size is REAL
     // (body size, health and melee damage all x3 while swollen, sprite drawn 3x). Owner: "Needs new angry art too... it
     // should be very scary." — the swollen texture (<body texPath>_Swollen) is drawn while swollen once installed.
     //
@@ -52,6 +53,7 @@ namespace RimMandrake.TheForge
     public class RM_CompDhoggurSwell : ThingComp
     {
         private SwellState state = new SwellState { swellEndTick = -1, cooldownUntilTick = 0 };
+        private string lastSource = "none";   // the last damage's classified source, for the report line only
 
         public CompProperties_DhoggurSwell Props => (CompProperties_DhoggurSwell)props;
         private Pawn Pawn => parent as Pawn;
@@ -82,9 +84,27 @@ namespace RimMandrake.TheForge
             Pawn p = Pawn;
             if (p == null || !p.Spawned)
                 return;
+            RM_SwellKernel.SwellSource src = SourceOf(dinfo);
+            lastSource = src.ToString();
             if (!RM_SwellKernel.CanSwell(state, On, p.Dead, totalDamageDealt, Now))
                 return;
+            if (!RM_SwellKernel.SourceProvokes(src, RM_TheForgeSettings.dhoggurSwellEnvironmentTriggers))
+                return;
             BeginSwell(dinfo.Instigator);
+        }
+
+        // Who hurt it. A pawn's attack reaches here with the pawn as instigator (melee, a shot, a thrown grenade); a
+        // turret's shell or a trap's spike names the building. Weather scald, the melt-back's burn and other hazards
+        // build their DamageInfo with no instigator; a Fire, a gas cloud or a vortex names itself (not a pawn or a
+        // weapon), so all of those are the environment.
+        public static RM_SwellKernel.SwellSource SourceOf(DamageInfo dinfo)
+        {
+            Thing inst = dinfo.Instigator;
+            if (inst is Pawn)
+                return RM_SwellKernel.SwellSource.Pawn;
+            if (inst is Building_Turret || inst is Building_Trap)
+                return RM_SwellKernel.SwellSource.WeaponBuilding;
+            return RM_SwellKernel.SwellSource.Environment;
         }
 
         public void BeginSwell(Thing instigator)
@@ -103,6 +123,8 @@ namespace RimMandrake.TheForge
                 Messages.Message("The dhoggur swells with a violent chemical reaction!", p, MessageTypeDefOf.ThreatSmall, false);
         }
 
+        // Shrinking divides HealthScale by the scale again, so wounds taken while swollen can kill it as it shrinks. Owner
+        // card 2026-10-16: "Keep it, it is the price of the swell." Do not add a guard.
         public void EndSwell()
         {
             Pawn p = Pawn;
@@ -195,7 +217,7 @@ namespace RimMandrake.TheForge
                     if (a.def.defName == "RM_FireSpit") fire = true;
             Hediff h = p.health.hediffSet.GetFirstHediffOfDef(Props.swellHediff);
             float dmg = p.GetStatValue(StatDefOf.MeleeDamageFactor);
-            return "dhoggur id=" + p.ThingID + " swollen=" + Swollen + " hediff=" + (h != null) + " ticksLeft=" + RM_SwellKernel.TicksLeft(state, now)
+            return "dhoggur id=" + p.ThingID + " swollen=" + Swollen + " lastSource=" + lastSource + " hediff=" + (h != null) + " ticksLeft=" + RM_SwellKernel.TicksLeft(state, now)
                 + " cooldownLeft=" + RM_SwellKernel.CooldownLeft(state, now) + " bodySize=" + p.BodySize.ToString("0.###")
                 + " healthScale=" + p.HealthScale.ToString("0.###") + " meleeFactor=" + dmg.ToString("0.###")
                 + " fireSpit=" + fire + " manhunter=" + (p.MentalStateDef == MentalStateDefOf.Manhunter)

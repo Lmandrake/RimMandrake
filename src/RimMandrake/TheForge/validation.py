@@ -239,7 +239,8 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
          "floatstoneDoorEnabled", "spunstoneHullEnabled",
          # DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB: driven by the dhoggur_swell chain
-         "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale"]
+         "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale",
+         "dhoggurSwellEnvironmentTriggers"]
 # FORGE_DHOKKUR_WAYS_1 (RM_ForgeDhokkurWays.cs): wired in the C#, but NO component of this suite drives them yet, so
 # they are neither WIRED (the toggle floor would demand a component) nor scaffolding (they do change something).
 UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade",
@@ -2062,7 +2063,12 @@ def sky_pastures(t):
 
 DHOGGUR = "RM_Dhoggur"
 SWELL_HEDIFF = "RM_DhoggurSwell"
-DHOGGUR_TOKENS = ("swollen", "hediff", "ticksLeft", "cooldownLeft", "bodySize", "healthScale", "meleeFactor", "fireSpit",
+# Card 2026-10-16 "Only attacks and your colonists": the swell's source filter. The instigator of every provoking hit is
+# a wild non-humanlike decoy (a manhunter never targets one: MentalState_Manhunter.ForceHostileTo), so it stays put.
+DHOGGUR_DECOY = "Muffalo"
+# The boiling rain's scald: RM_ForgePulse's scaldDamageDef, applied by RM_GameCondition_WeatherPulse with NO instigator.
+RAIN_SCALD = "RUT_Scald"
+DHOGGUR_TOKENS = ("swollen", "lastSource", "hediff", "ticksLeft", "cooldownLeft", "bodySize", "healthScale", "meleeFactor", "fireSpit",
                   "manhunter", "drawScale", "swollenArt")
 
 
@@ -2079,18 +2085,24 @@ def _dhoggur(t):
     return d
 
 
-def _hit(t, pid, amount=10):
+def _hit(t, pid, amount=10, by=None, damage="Blunt"):
     """The swell triggers only on damage actually DEALT. LIVE 2026-10-16: Blunt 3 is deflected by the hide
     (ArmorRating_Blunt 0.25, totalDamageDealt 0.0), which read as 'one hit did not swell it'. Hit for 10 and retry a
-    deflection; a hit that never lands is UNMEASURED (harness), never a mod FAIL."""
+    deflection; a hit that never lands is UNMEASURED (harness), never a mod FAIL. `by` = the instigator's thing id
+    (an attack); None = an instigator-less hit, the DamageInfo weather, fire and melt-back build."""
+    kw = {"instigatorId": by} if by else {}
     for _ in range(4):
-        r = t.bridge_call("jawa/damage", damageDef="Blunt", amount=amount, thingId=pid, allowColonists=True)
+        r = t.bridge_call("jawa/damage", damageDef=damage, amount=amount, thingId=pid, allowColonists=True, **kw)
         if not _live(t):
             return
-        _ok(r, "damage(%s)" % pid)
-        if any(float(x.get("totalDamageDealt") or 0) > 0 for x in (r.get("results") or [])):
+        _ok(r, "damage(%s, %s)" % (pid, damage))
+        res = r.get("results") or []
+        if by and not any(x.get("instigatorId") == by for x in res):
+            _unmeasured(t, "jawa/damage did not echo instigatorId=%s: the companion predates the parameter, so the hit "
+                           "was instigator-less (redeploy BridgeTools): %r" % (by, res))
+        if any(float(x.get("totalDamageDealt") or 0) > 0 for x in res):
             return
-    _unmeasured(t, "four Blunt %s hits on %s all deflected (totalDamageDealt 0): the trigger was never offered" % (amount, pid))
+    _unmeasured(t, "four %s %s hits on %s all deflected (totalDamageDealt 0): the trigger was never offered" % (damage, amount, pid))
 
 
 def _near(a, b, tol=0.02):
@@ -2127,6 +2139,7 @@ def dhoggur_swell(t):
                 _reset_pad(t)
                 yx, yz, _, _ = _yard(t)
                 box["id"] = _spawn_wild(t, DHOGGUR, yx + 3, yz + 3)
+                box["by"] = _spawn_wild(t, DHOGGUR_DECOY, yx + 1, yz + 1)
                 t.wait_ticks(120)
 
             with _comp(t, "dhoggur_placid_before_harm", independent=True):
@@ -2138,15 +2151,36 @@ def dhoggur_swell(t):
                         _fail("an unharmed dhoggur draws at %s, not 1x" % d["drawScale"])
                     box["calm"] = d
 
+            # Card 2026-10-16 "Only attacks and your colonists": the boiling rain's scald and fire nobody set hurt it
+            # without swelling it. Same DamageInfo the pulse / a Fire / the melt-back build: the def, no instigator.
+            with _comp(t, "rain_scald_does_not_swell", toggle="dhoggurSwellEnvironmentTriggers"):
+                _hit(t, box.get("id"), damage=RAIN_SCALD)
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t):
+                    if d["lastSource"] != "Environment":
+                        _fail("an instigator-less scald was classed %s, not Environment: %s" % (d["lastSource"], d["_line"]))
+                    if d["swollen"] or d["hediff"] or d["cooldownLeft"]:
+                        _fail("the boiling rain's scald set off (or spent) the swell: %s" % d["_line"])
+
+            with _comp(t, "unattended_fire_does_not_swell", toggle="dhoggurSwellEnvironmentTriggers"):
+                _hit(t, box.get("id"), damage="Flame")
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t) and (d["swollen"] or d["hediff"] or d["lastSource"] != "Environment"):
+                    _fail("fire with no attacker set off the swell (or was not classed Environment): %s" % d["_line"])
+
             with _comp(t, "provoked_dhoggur_swells_x3", toggle="dhoggurSwellEnabled"):
-                _hit(t, box.get("id"))
+                _hit(t, box.get("id"), by=box.get("by"))
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 rows = _pawns(t, _rs(_pad(t)), DHOGGUR, health=True) if _live(t) else []
                 if _live(t):
                     calm = box["calm"]
                     if not (d["swollen"] and d["hediff"]):
-                        _fail("one hit did not swell it: %s" % d["_line"])
+                        _fail("one instigated hit did not swell it: %s" % d["_line"])
+                    if d["lastSource"] != "Pawn":
+                        _fail("a hit instigated by a pawn was classed %s: %s" % (d["lastSource"], d["_line"]))
                     if not _near(d["bodySize"], 3 * calm["bodySize"]) or not _near(d["healthScale"], 3 * calm["healthScale"]):
                         _fail("body size / health scale not x3 (calm %s/%s): %s" % (calm["bodySize"], calm["healthScale"], d["_line"]))
                     if not _near(d["meleeFactor"], 3 * calm["meleeFactor"]) or not _near(d["drawScale"], 3.0):
@@ -2180,7 +2214,7 @@ def dhoggur_swell(t):
                         _fail("dhoggurSwellScale=2 but size/bite are not x2: %s" % d["_line"])
 
             with _comp(t, "second_hit_does_not_refresh"):
-                _hit(t, box.get("id"))
+                _hit(t, box.get("id"), by=box.get("by"))
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 if _live(t):
@@ -2208,7 +2242,7 @@ def dhoggur_swell(t):
                         _fail("list_pawns still shows %s after the swell ended" % SWELL_HEDIFF)
 
             with _comp(t, "cooldown_blocks_a_new_swell", toggle="dhoggurCooldownDays"):
-                _hit(t, box.get("id"))
+                _hit(t, box.get("id"), by=box.get("by"))
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 if _live(t) and d["swollen"]:
@@ -2218,7 +2252,7 @@ def dhoggur_swell(t):
                 d = _dhoggur(t)
                 if _live(t):
                     _jump(t, d["cooldownLeft"] + 10)
-                _hit(t, box.get("id"))
+                _hit(t, box.get("id"), by=box.get("by"))
                 t.wait_ticks(60)
                 d = _dhoggur(t)
                 if _live(t) and not d["swollen"]:
@@ -2230,13 +2264,26 @@ def dhoggur_swell(t):
                     d = _dhoggur(t)
                 if _live(t) and (d["swollen"] or d["hediff"] or not _near(d["drawScale"], 1.0)):
                     _fail("dhoggurSwellEnabled=false but it is still swollen: %s" % d["_line"])
+
+            # The opt-in: "environment also triggers" on, and the same rain scald now swells a rested dhoggur.
+            with _comp(t, "environment_opt_in_swells", toggle="dhoggurSwellEnvironmentTriggers"):
+                d = _dhoggur(t)
+                if _live(t) and d["cooldownLeft"]:
+                    _jump(t, d["cooldownLeft"] + 10)
+                with _settings(t, dhoggurSwellEnvironmentTriggers=True):
+                    _hit(t, box.get("id"), damage=RAIN_SCALD)
+                    t.wait_ticks(60)
+                    d = _dhoggur(t)
+                if _live(t) and not d["swollen"]:
+                    _fail("dhoggurSwellEnvironmentTriggers=true but a rain scald did not swell a rested dhoggur: %s" % d["_line"])
     finally:
         # a manhunting dhoggur leaves the pad: vanish it by id (no corpse), then the usual pad teardown
-        if t.session is not None and box.get("id"):
-            try:
-                t.session.call("jawa/pawn_force_incapacitate", pawn=box["id"], action="vanish")
-            except Exception as ex:
-                print("[forge] dhoggur vanish failed: %s" % ex, file=sys.stderr, flush=True)
+        for key in ("id", "by"):
+            if t.session is not None and box.get(key):
+                try:
+                    t.session.call("jawa/pawn_force_incapacitate", pawn=box[key], action="vanish")
+                except Exception as ex:
+                    print("[forge] dhoggur-chain vanish of %s failed: %s" % (box[key], ex), file=sys.stderr, flush=True)
         _teardown(t)
 
     src = _read_cs("RM_ForgeDhoggurSwell.cs")
@@ -2257,6 +2304,8 @@ def dhoggur_swell(t):
         need("<manhunterOnDamageChance>0</manhunterOnDamageChance>" in race, "the dhoggur must be docile unless swollen")
         need("<li>RM_FireSpit</li>" in hed and os.path.exists(spit), "the swell hediff does not grant RM_FireSpit, or the def moved")
         need("PostPostApplyDamage" in src and "dhoggurSwellEnabled" in src, "the damage-only trigger is not wired or not gated")
+        need("SourceProvokes(" in src and "dhoggurSwellEnvironmentTriggers" in src,
+             "the attack-only source filter (card 2026-10-16) is not wired or not gated")
 
 
 # Chain order = registration order, kept explicit: the dormancy chain runs after every chain that steps a cycle, because

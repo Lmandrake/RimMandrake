@@ -524,9 +524,29 @@ class FGame(MockGame):
         pw = next((q for q in self.pawns if q["id"] == p.get("thingId")), None)
         if pw is None:
             return {"success": False, "message": "no such thing"}
+        by = p.get("instigatorId")
+        inst = next((q for q in self.pawns if q["id"] == by), None) if by else None
+        if by and inst is None:
+            return {"success": False, "message": "No instigator with id '%s' on this map." % by}
         # live shape (MEASURED 2026-10-16): results[].totalDamageDealt; the fake's hide never deflects
-        landed = {"success": True, "results": [{"id": pw["id"], "totalDamageDealt": float(p.get("amount") or 0)}]}
-        if pw["kindDef"] != V.DHOGGUR or "dhoggur_no_swell" in self.brk or not self.dhog_on():
+        landed = {"success": True, "results": [{"id": pw["id"], "totalDamageDealt": float(p.get("amount") or 0),
+                                                "instigatorId": by}]}
+        if "dhoggur_instigator_dropped" in self.brk:
+            landed["results"][0]["instigatorId"] = None
+            inst = None
+        if pw["kindDef"] != V.DHOGGUR:
+            return landed
+        src = "Pawn" if inst is not None else "Environment"
+        if "dhoggur_source_misread" in self.brk:
+            src = "Pawn"
+        pw["last_src"] = src
+        if "dhoggur_no_swell" in self.brk or not self.dhog_on():
+            return landed
+        env_ok = (self.S("dhoggurSwellEnvironmentTriggers") and "dhoggur_env_optin_ignored" not in self.brk) \
+            or "dhoggur_env_swells" in self.brk
+        if src == "Environment" and not env_ok:
+            return landed
+        if src == "Pawn" and "dhoggur_attack_ignored" in self.brk:
             return landed
         swollen = pw.get("swell_end", -1) >= 0
         rested = self.ticks >= pw.get("cd_until", 0) or "dhoggur_cooldown_ignored" in self.brk
@@ -548,9 +568,9 @@ class FGame(MockGame):
         if "dhoggur_scale_ignored" in self.brk and sw:
             k = 3.0
         size = 1.0 if "dhoggur_not_x3" in self.brk else k
-        return ("dhoggur id=%s swollen=%s hediff=%s ticksLeft=%d cooldownLeft=%d bodySize=%.3f healthScale=%.3f "
+        return ("dhoggur id=%s swollen=%s lastSource=%s hediff=%s ticksLeft=%d cooldownLeft=%d bodySize=%.3f healthScale=%.3f "
                 "meleeFactor=%.3f fireSpit=%s manhunter=%s drawScale=%.3f swollenArt=False" % (
-                    pw["id"], sw, V.SWELL_HEDIFF in pw["hediffs"], max(0, pw["swell_end"] - now) if sw else 0,
+                    pw["id"], sw, pw.get("last_src", "none"), V.SWELL_HEDIFF in pw["hediffs"], max(0, pw["swell_end"] - now) if sw else 0,
                     0 if sw else max(0, pw.get("cd_until", 0) - now), 0.45 * size, 0.9 * size, k,
                     sw and "dhoggur_no_fire" not in self.brk,
                     sw and self.S("dhoggurSwellManhunts") and "dhoggur_not_angry" not in self.brk, k))
@@ -819,7 +839,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("49 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 49, sorted(V.SETTINGS_DEFAULTS))
+    check("50 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 50, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -924,6 +944,11 @@ def main():
         ("dhoggur_never_ends", {"dhoggur_swell.swell_reverts_after_a_third_of_a_day"}),
         ("dhoggur_cooldown_ignored", {"dhoggur_swell.cooldown_blocks_a_new_swell"}),
         ("dhoggur_off_ignored", {"dhoggur_swell.switched_off_it_shrinks_at_once"}),
+        # card 2026-10-16 "Only attacks and your colonists": the source filter
+        ("dhoggur_env_swells", {"dhoggur_swell.rain_scald_does_not_swell"}),
+        ("dhoggur_attack_ignored", {"dhoggur_swell.provoked_dhoggur_swells_x3"}),
+        ("dhoggur_source_misread", {"dhoggur_swell.rain_scald_does_not_swell"}),
+        ("dhoggur_env_optin_ignored", {"dhoggur_swell.environment_opt_in_swells"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))
@@ -978,6 +1003,9 @@ def main():
           set(bad) == {"dhoggur_swell.dhoggur_source_wiring"}, bad)
 
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
+    dropped = run(("dhoggur_instigator_dropped",))
+    check("break dhoggur_instigator_dropped (companion without instigatorId): the provoked arm is UNMEASURED, no red",
+          dropped["dhoggur_swell.provoked_dhoggur_swells_x3"][0] == "UNMEASURED" and not reds(dropped), reds(dropped))
     un = unmeasured(run(("log_cap",)))
     check("break log_cap: every debug-action component is UNMEASURED, none PASS",
           "cycle_walk.cycle_starts_in_still_heat" in un and not reds(run(("log_cap",))), un[:6])

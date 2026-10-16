@@ -870,6 +870,11 @@ namespace RimMandrake.TheForge.SelfTest
                 Check(!RM_SwellKernel.Swollen(sw) && sw.cooldownUntilTick == 80100, "cooldown counted from the swell's end");
                 Check(!RM_SwellKernel.CanSwell(sw, true, false, 5f, 80099) && RM_SwellKernel.CanSwell(sw, true, false, 5f, 80100), "rested again exactly a day after the end");
                 Check(RM_SwellKernel.CooldownLeft(sw, 50100) == 30000, "cooldown left");
+                // card 2026-10-16 "Only attacks and your colonists": the source decides, environment only by the opt-in
+                Check(RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.Pawn, false)
+                      && RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.WeaponBuilding, false), "a pawn's attack, a turret or a trap provokes it");
+                Check(!RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.Environment, false), "rain scald / fire / melt-back must not provoke it (shipped)");
+                Check(RM_SwellKernel.SourceProvokes(RM_SwellKernel.SwellSource.Environment, true), "'environment also triggers' on: the environment provokes it");
                 Steps++;
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
