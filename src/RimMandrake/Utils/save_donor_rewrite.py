@@ -258,6 +258,10 @@ def main():
     ours, our_bodies = our_defs()
     dbodies = donor_bodies()
     donor_b = {n.encode() for n, v in names.items() if v[0] in RETIRE}
+    if not donor_b:   # donor folders missing/unreadable: zero hits would read as a clean save
+        sys.exit("no retired-donor defs found under %s (is the workshop folder there?) - refusing" % census.WS)
+    if len(ours) < 100:
+        sys.exit("only %d owned defs found under src/ (SRC=%s) - refusing: every port lookup would miss" % (len(ours), SRC))
     # every possible port name, for sibling-duplicate checks
     port_b = set()
     for n, (pkg, _) in names.items():
