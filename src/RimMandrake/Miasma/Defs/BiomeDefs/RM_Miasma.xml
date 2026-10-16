@@ -258,7 +258,7 @@
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
       <RM_Ondrukka>0.5</RM_Ondrukka>  <!-- ondrukka (renamed from black swarmlings, Miasma sheet 2026-10-08) - vermin; our port of VFEI2_BlackSwarmling without the cocoon (Phase 0 P3 Q4, Defs/ThingDefs_Races/RM_Ondrukka.xml) -->
       <RM_Siezer>0.2</RM_Siezer>  <!-- siezer (renamed from lockjaw, Miasma sheet 2026-10-08) - channel-predator -->
-      <RM_Mantrap MayRequire="sarg.alphaanimals">0.2</RM_Mantrap>  <!-- lastvine (renamed from mantrap, Miasma sheet 2026-10-08) - root-ambush; our port of AA_Mantrap (Phase 0 P3, Defs/ThingDefs_Races/RM_Lastvine.xml); MayRequire only until our art is installed at our own path -->
+      <RM_Mantrap>0.2</RM_Mantrap>  <!-- lastvine (renamed from mantrap, Miasma sheet 2026-10-08) - root-ambush; our port of AA_Mantrap (Phase 0 P3, Defs/ThingDefs_Races/RM_Lastvine.xml); art installed at our own path -->
       <RM_Sharpshrimp>0.2</RM_Sharpshrimp>  <!-- sharpshrimp (renamed from raptor shrimp, Miasma sheet 2026-10-08) - channel-predator -->
       <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis - composter; our port of AA_DecayDrake (DONOR_CODE_PLAIN_PORTS_1) -->
       <RM_Bileworm MayRequire="mandrake.rm.scarlands">0.1</RM_Bileworm>  <!-- helixien - strange -->

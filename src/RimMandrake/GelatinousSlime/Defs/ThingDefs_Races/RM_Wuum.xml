@@ -20,8 +20,8 @@
   DROPPED: the donor's poison-bolt ability AA_PoisonBolt (a donor ability, named in neither description); the
     Odyssey trainable; donor wildBiomes; the VEF AnimalStatExtension info-card rows; the donor dessicated picture
     (a goo leaves no skeleton; RM_Meltgut precedent).
-  ART: our render exists (artpipe slime_wuum, 3 facings) and is not installed in this mod. Until the art ledger
-    installs it, the texPath is the donor path (a placeholder, reported ART OWED by donor_plain_ports_check.py).
+  ART: installed through the art ledger (artpipe slime_wuum, 3 facings, owner accepted 2026-10-15) at
+    Things/Pawn/Animal/RM_Wuum/RM_Wuum; the roster row no longer needs MayRequire on Alpha Animals.
 -->
 <Defs>
 
@@ -120,21 +120,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Wuum/RM_Wuum</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Wuum/RM_Wuum</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.8</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Wuum/RM_Wuum</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.5</drawSize>
         </bodyGraphicData>
