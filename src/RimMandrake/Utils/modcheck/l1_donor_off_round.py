@@ -1161,18 +1161,35 @@ class Round(object):
         logged = self.log_since(mark, ["Could not load reference", "Could not resolve cross-reference",
                                        "Could not find class"])
         refs = list(logged or [])
-        donor_refs = [e for e in refs if any(re.search(r"\b%s\b" % re.escape(n), e) for n in needles)]
+
+        def _named(e):
+            # Grade only the NAME the error is about: "Could not find class X ... Full node: <...>" carries the
+            # save's whole node, and a needle such as FeedCorpse matched inside other mods' WorkTab data (live
+            # 2026-10-16: 3 false donor hits).
+            m = re.search(r"named (\S+)|find class (\S+)", e)
+            return (m.group(1) or m.group(2)) if m else e
+        donor_refs = [e for e in refs if any(re.search(r"\b%s\b" % re.escape(n), _named(e)) for n in needles)]
         mm = self.call("jawa/savegame_mod_match")
+        lost = getattr(self.tap, "lost", None)
         detail = {"save": name, "playing": ok, "waited": waited, "referenceErrors": len(refs),
-                  "donorReferenceErrors": donor_refs[:10], "modMatch": str(mm.get("loadedModsSummary"))[:200]}
-        if ok and logged is None:
-            self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, note="no journal tap: reference errors were not observable"))
-        elif not ok:
+                  "donorReferenceErrors": donor_refs[:10], "tapLost": lost,
+                  "modMatch": str(mm.get("loadedModsSummary"))[:200]}
+        if not ok:
             ui = self.call("rimworld/get_ui_state")
             self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, uiState={
                 k: ui.get(k) for k in ("programState", "topWindowType", "topWindowTitle")}))
+            return
+        # The load itself is a state read (programState Playing), independent of the log.
+        self.row("SAVE_LOAD", "PASS", "MOD", detail)
+        # The donor-reference grade is log-based. A ~600-mod save on a ~20-mod tier logs thousands of reference
+        # errors: the journal ring drops entries (tapLost) and Verse.Log hits "Reached max messages limit", so
+        # a clean list can be blindness. Then the grade is the offline save grep (P6), not this row.
+        if logged is None or lost:
+            self.row("SAVE_DONOR_REFS", "FAIL" if donor_refs else "UNMEASURED", "HARNESS" if not donor_refs else "MOD",
+                     dict(detail, note="log tap incomplete (tapLost or no tap): absence of donor refs is not observable; "
+                                       "use the offline save grep"))
         else:
-            self.row("SAVE_LOAD", "FAIL" if donor_refs else "PASS", "MOD", detail)
+            self.row("SAVE_DONOR_REFS", "FAIL" if donor_refs else "PASS", "MOD", detail)
 
 
 PHASES = ("pre", "log", "spawn", "plants", "burst", "oomb", "haze", "portal", "mapgen", "flight", "save")
