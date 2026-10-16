@@ -16,10 +16,11 @@
   rig's scale shrinks the tentacles AND their attach offsets about the body centre: a baby wears baby-sized tentacles at
   baby-sized attach points. The numbers below are the ADULT's.
 
-  INERT UNTIL THE ART LANDS. Nothing names this tree yet; an unnamed tree resolves no texture (textures load at render
-  time). The race keeps vanilla's Animal tree and its one whole-body picture. Patches/RM_OcularJelly_TwitchWiring.xml
-  switches the race to this tree and the body to the tentacle-less bell; it sits in src/DEPLOY_HOLD.txt until the owner
-  accepts the split art.
+  STAGED UNTIL THE ART LANDS (this file sits in Staged/TentacleTwitch/, which the game never loads and
+  texture_gap_lint never scans: shipping a texPath with no picture is a frozen-allowlist gap). The race keeps vanilla's
+  Animal tree and its one whole-body picture. Go-live, once the owner accepts the split art and art.py installs it:
+  move this file into Defs/PawnRenderTreeDefs/, fold the two operations of Staged/TentacleTwitch/Patches/RM_OcularJelly_TwitchWiring.xml
+  into the race def, delete that patch and the Staged hold line in src/DEPLOY_HOLD.txt, then deploy.
 
   GEOMETRY (cells from the pawn centre, z up, ADULT; PROVISIONAL, tune live in Dialog_DebugRenderTree):
     Tentacles: mesh 1x1 (drawSize 1). Art contract: ROOT at the TOP CENTRE of the canvas, hanging straight down.

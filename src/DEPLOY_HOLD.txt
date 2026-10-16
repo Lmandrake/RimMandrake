@@ -446,8 +446,8 @@ FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside th
 # --- FlowWorks review MAP data: read by review_map.py on the Windows side, never game content (2026-10-05) ---
 FlowWorks/review_map_stations_visuals.json   # visuals station data for the review map builder; not game content
 # --- Tentacle twitch wiring: held until the owner accepts the split art (owner "Both twitch", by card 2026-10-15) ---
-# Each patch switches its creature to its Spastic render tree and its body to the tentacle-less bell. Without the art
-# installed at those texPaths it draws pink squares. Lift a line only after art.py installs that creature's pieces.
+# Staged/TentacleTwitch/ holds each creature's Spastic render tree and the wiring that switches it on. Without the art
+# installed at those texPaths it draws pink squares. Go live (see the design) only after art.py installs that creature's pieces.
 # Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md
-TheForge/Patches/RM_ColossalAerofleet_TwitchWiring.xml   # split art not yet accepted (owner by card 2026-10-15: "Both twitch")
-Contagion/Patches/RM_OcularJelly_TwitchWiring.xml        # split art not yet accepted (owner by card 2026-10-15: "Both twitch")
+TheForge/Staged/*   # split art not yet accepted (owner by card 2026-10-15: "Both twitch")
+Contagion/Staged/*  # split art not yet accepted (owner by card 2026-10-15: "Both twitch")

@@ -47,7 +47,7 @@ mirror on their own (`DrawData.OffsetForRot`), while flip and rotation are given
 piece carries `linkedBodyPartsGroup Arms`, so the tentacles vanish once every feeler is lost. `rotDrawMode Fresh, Rotting`
 hides them on the desiccated corpse, which uses vanilla art.
 
-### Greater bulloo (`RM_ColossalAerofleet_Twitch`; body drawSize 2.5, one stage)
+### Greater bulloo (`RM_ColossalAerofleet_Twitch`, staged; body drawSize 2.5, one stage)
 
 | picture | look | nodes | attach (south, cells) | length |
 |---|---|---|---|---|
@@ -60,7 +60,7 @@ hides them on the desiccated corpse, which uses vanilla art.
 East: the roots run along the underside from -0.95 (back) to +0.45 (front) and trail back 6 to 28 degrees. The twitch is
 slow and gentle for a creature this size: ±10 to 16 degrees, 25 to 90 ticks per move.
 
-### Zhool (`RM_OcularJelly_Twitch`; body drawSize 0.5 / 1.25 / 1.75, numbers are the adult's)
+### Zhool (`RM_OcularJelly_Twitch`, staged; body drawSize 0.5 / 1.25 / 1.75, numbers are the adult's)
 
 | picture | look | nodes | attach (south, cells) | length |
 |---|---|---|---|---|
@@ -78,17 +78,23 @@ work, Q2), and a painted puff would double it and would turn with the body.
 
 ## 3. Fallback until the art lands
 
-- The trees (`src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml`,
-  `src/RimMandrake/Contagion/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml`) deploy now and are **inert**. Nothing
-  names them, and a render tree resolves textures only when a pawn draws (`PawnRenderNode.GraphicFor`).
-  `PawnRenderNodeProperties.ConfigErrors` checks classes, never textures.
-- The race defs are untouched. Both creatures keep vanilla's Animal tree and their one whole-body picture.
-- The switch is one patch per creature (`src/RimMandrake/TheForge/Patches/RM_ColossalAerofleet_TwitchWiring.xml`,
-  `src/RimMandrake/Contagion/Patches/RM_OcularJelly_TwitchWiring.xml`). Each adds `race/renderTree` and repoints the body
-  `texPath` to the bell. Both patches are **held in `src/DEPLOY_HOLD.txt`**, so the deploy plan reports them as HELD.
-- **To turn it on:** once the owner accepts a creature's split art and `art.py install` has placed it at the `install_to`
-  paths, move that patch's two operations into the race def and delete the patch and its hold line. Then deploy. With the
-  art missing, the patch would draw pink squares.
+- Everything for the twitch is **staged** in `src/RimMandrake/TheForge/Staged/TentacleTwitch/` and
+  `src/RimMandrake/Contagion/Staged/TentacleTwitch/`. Each holds the tree (`Defs/PawnRenderTreeDefs/<creature>_Twitch.xml`)
+  and the wiring patch (`Patches/<creature>_TwitchWiring.xml`, which adds `race/renderTree` and repoints the body `texPath`
+  to the bell). The game never loads a `Staged/` folder, and both are held in `src/DEPLOY_HOLD.txt`.
+- **Why staged and not just unreferenced:** `texture_gap_lint.py` fails every shipped texPath with no picture, and its
+  allowlist is frozen and shrink-only. A tree in `Defs/` naming ten undrawn pictures would be ten new gaps. The first
+  filing (commit 5c28d32a8) put them in `Defs/` and `Patches/`; the same day they moved here.
+- The race defs are untouched, so both creatures keep vanilla's Animal tree and their one whole-body picture.
+- **Go-live, per creature,** once the owner accepts its split art and `art.py install` has placed it at the `install_to`
+  paths:
+  1. Move the tree into the mod's `Defs/PawnRenderTreeDefs/`.
+  2. Fold the wiring patch's two operations into the race def (`renderTree` in `race`; the bell `texPath` in every life
+     stage), then delete the patch.
+  3. Delete that mod's `Staged/*` hold line, and deploy.
+
+  The zhool also needs the EnvironmentalHazards DLL carrying the subworker, which is already committed. With the art
+  missing, the wiring would draw pink squares.
 
 ## 4. Art rows
 
