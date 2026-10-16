@@ -99,6 +99,7 @@
     <description>Raw tooke-trap root. Can be used to make a shiro-trap symbiote or as emergency animal feed.</description>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/TookeTrapRoot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
   <ThingDef ParentName="ResourceVerbBase">

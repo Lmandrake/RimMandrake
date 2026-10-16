@@ -117,15 +117,6 @@
    "defs": [
     "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
    ]
-  },
-  {
-   "texPath": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
-   "class": "MISSING",
-   "owed": "sheet row decision is pick A (prefill only, no typed note); miasma_ismerrow_a render exists, not installed: needs his confirmation",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimMandrake/Miasma/Defs/ThingDefs_Plants/RM_Miasma_RainbowBlooms.xml"
-   ]
   }
  ]
 }

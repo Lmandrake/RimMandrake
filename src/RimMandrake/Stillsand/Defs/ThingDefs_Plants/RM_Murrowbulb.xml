@@ -18,7 +18,7 @@
     </statBases>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/RM_Murrowbulb/RM_Murrowbulb</texPath>
+      <texPath>Things/RM_Murrowbulb</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>

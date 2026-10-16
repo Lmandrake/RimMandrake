@@ -109,6 +109,7 @@
     <description>Raw nysyllin pods plant. Can be refined into large quantities of primitive medicine.</description>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/Nysyllin</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
 </Defs>

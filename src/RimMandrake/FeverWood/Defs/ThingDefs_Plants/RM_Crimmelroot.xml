@@ -17,7 +17,7 @@
     </statBases>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/RM_Crimmelroot/RM_Crimmelroot</texPath>
+      <texPath>Things/RM_Crimmelroot</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>

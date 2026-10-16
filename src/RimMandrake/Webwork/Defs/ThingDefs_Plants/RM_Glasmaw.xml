@@ -18,8 +18,8 @@
       <Nutrition>0.25</Nutrition>
     </statBases>
     <graphicData>
-      <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/RM_Glasmaw/RM_Glasmaw</texPath>
+      <!-- own art: folder texPath (Graphic_Random reads a folder) -->
+      <texPath>Things/RM_Glasmaw</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -54,6 +54,7 @@
     <graphicData>
       <!-- TEMP placeholder (vanilla) -->
       <texPath>Things/Item/Resource/PlantFoodRaw/Hay</texPath>
+    <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>1.3</MarketValue>

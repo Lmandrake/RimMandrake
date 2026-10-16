@@ -44,7 +44,7 @@ result is behaviourally identical, without porting the abstract chain.
 		<!-- TEMP PLACEHOLDER: donor VFE - Insectoids 2 texture -->
 		<graphicData>
 			<texPath>Things/Item/VFEI_Chitin</texPath>
-			<graphicClass>Graphic_StackCount</graphicClass>
+			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<statBases>
 			<MarketValue>3.2</MarketValue>

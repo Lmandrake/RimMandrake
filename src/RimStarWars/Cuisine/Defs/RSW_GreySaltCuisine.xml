@@ -69,7 +69,7 @@
 
   <ThingDef Name="RSW_SaltCuredRationBase" ParentName="MealBase" Abstract="True" MayRequire="mandrake.rm.biomes">
     <graphicData>
-      <texPath>Things/Item/Meal/RSW_SaltCured/RSW_SaltCured</texPath>
+      <texPath>Things/Item/Meal/RSW_SaltCured</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

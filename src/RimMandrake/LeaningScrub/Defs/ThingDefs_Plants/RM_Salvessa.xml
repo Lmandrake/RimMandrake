@@ -18,7 +18,7 @@
     </statBases>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/RM_Salvessa/RM_Salvessa</texPath>
+      <texPath>Things/RM_Salvessa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -57,6 +57,7 @@
     <graphicData>
       <!-- TEMP placeholder (vanilla) -->
       <texPath>Things/Item/Resource/PlantFoodRaw/Hay</texPath>
+    <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>10</MarketValue>
