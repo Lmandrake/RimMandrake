@@ -269,11 +269,12 @@ def _real_option(t, value):
         yield _rebuild(t)
     finally:
         if t.session is not None:
-            try:
-                _put(t, "soakOtherModsPlants", DEFAULT_OF["soakOtherModsPlants"])
-                _rebuild(t)
-            except Exception as e:      # never mask the body's own exception
-                print("[eg] RESTORE FAILED soakOtherModsPlants: %s" % e, file=sys.stderr, flush=True)
+            for what, step in (("put", lambda: _put(t, "soakOtherModsPlants", DEFAULT_OF["soakOtherModsPlants"])),
+                               ("rebuild", lambda: _rebuild(t))):
+                try:                        # each step on its own: a failed put must not skip the rebuild
+                    step()
+                except Exception as e:      # never mask the body's own exception
+                    print("[eg] RESTORE FAILED soakOtherModsPlants (%s): %s" % (what, e), file=sys.stderr, flush=True)
 
 
 # ---- site

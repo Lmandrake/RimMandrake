@@ -80,7 +80,6 @@ namespace RimMandrake.ExplosiveGrowth
         /// (and Ready) in force. Callers after startup use TryRebuild.</summary>
         public static void Rebuild()
         {
-
             var rows = new Dictionary<string, RM_ExplosiveGrowthRosterEntry>();
             var optInRows = new HashSet<string>();
             string forcedBy = null;
@@ -146,7 +145,7 @@ namespace RimMandrake.ExplosiveGrowth
             int sOpt = 0, sPack = 0, sBiome = 0, sAll = 0, sOut = 0;
 
             var table = new RM_PlantProfile[DefDatabase<ThingDef>.DefCount];
-            for (int t = 0; t < CountByTop.Length; t++) CountByTop[t] = 0;
+            var byTop = new int[CountByTop.Length];
             int soaking = 0, none = 0;
 
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -202,7 +201,7 @@ namespace RimMandrake.ExplosiveGrowth
                 }
 
                 table[def.index] = p;
-                CountByTop[(int)p.top]++;
+                byTop[(int)p.top]++;
                 if (p.Soaks) soaking++; else none++;
             }
 
@@ -218,6 +217,7 @@ namespace RimMandrake.ExplosiveGrowth
             RuptureMutationHediffs = hediffs;
             IrrigationFluids = fluids;
             SoakWeathers = weathers;
+            System.Array.Copy(byTop, CountByTop, byTop.Length);
             CountSoaking = soaking;
             CountNone = none;
             RosterResolved = resolved;
