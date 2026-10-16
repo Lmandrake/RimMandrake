@@ -1,0 +1,1 @@
+CANONICAL_ASHKARR_START_2026-09-12_donorfree carries Deep Orbit's PlanetLayerDef Orbit2: without broms.deeporbit the load NREs in WorldGrid.CreateRequiredLayers and drops back to Entry. It is now in donor_off_phase0.

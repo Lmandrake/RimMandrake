@@ -1,0 +1,1 @@
+Loading the ~614-mod canonical save on a ~20-mod tier logs thousands of reference errors: Verse.Log hits 'Reached max messages limit' and the journal tap loses entries, so a clean donor-ref list from the log is blindness; grade donor refs by the offline save grep.

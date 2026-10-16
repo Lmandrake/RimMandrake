@@ -1,0 +1,1 @@
+jawa/thing_graphic reads UI/Misc/BadTexture for EVERY pawn, vanilla Muffalo included: it cannot judge creature textures. jawa/texture_audit missed the known RM_Glasmaw miss too; Player.log texture lines are the instrument.

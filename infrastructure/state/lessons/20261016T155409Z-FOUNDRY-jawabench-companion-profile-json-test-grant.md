@@ -1,0 +1,1 @@
+JawaBench companion_profile.json test grant expires (expiresUtc); once lapsed, P03_LOG_ALIVE is refused as CAMPAIGN and the L1 log tap goes blind. Renew with the same keys and a new expiry before a round.
