@@ -4,8 +4,8 @@
   §0.5.3 item 2). Ported from Alpha Animals' AA_JellyfishBody and AA_OcularJellyBody (1.6/Defs/Bodies/
   Bodies_Animal_Jellyfish.xml, Bodies_Ocular_Jelly.xml) with the donor BodyPartDefs (AA_JellyfishMainBody,
   AA_HydrogenSac, AA_JellyfishTentacle) re-declared as ours below, same hit points and tags.
-  Used by RM_InfectedAerofleet (blistered bulloo) and RM_OcularJelly (zhool) in this member, and by
-  RM_ColossalAerofleet (greater bulloo) in TheForge; all are members of the one composed Baroque Biomes mod.
+  Used by RM_InfectedAerofleet (blistered bulloo) and RM_OcularJelly (zhool) in this member. TheForge's bulloos
+  use that mod's own copy, RM_JellyfishBody, so each biome mod loads alone.
   The feelers keep the vanilla Arms group: the twitching limb render nodes link to it, so a severed feeler
   stops being drawn.
 -->

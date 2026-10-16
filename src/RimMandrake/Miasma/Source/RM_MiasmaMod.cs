@@ -64,6 +64,9 @@ namespace RimMandrake.Miasma
         public static float strandedDeformationChance = 0.25f;
         // MIASMA_AMBUSH_FROG_REMAKE_1: the bozzuga hunts scuttlers and stranded young (race.predator).
         public static bool ambushFrogHunts = true;
+        // Phase 0 P3: the lastvine rears up into its open-maw picture while engaged (RM_LastvineRearing.cs).
+        // Off: it always draws its calm, closed pod.
+        public static bool lastvineRearingEnabled = true;
         // MIASMA_ATTAR_STILL_1: the attar still's recipe, glazing artworks and balming scars.
         public static bool attarEnabled = true;
 
@@ -104,6 +107,7 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref strandedDeformationEnabled, "strandedDeformationEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationChance, "strandedDeformationChance", 0.25f, true);
             Scribe_Values.Look(ref ambushFrogHunts, "ambushFrogHunts", true, true);
+            Scribe_Values.Look(ref lastvineRearingEnabled, "lastvineRearingEnabled", true, true);
             Scribe_Values.Look(ref attarEnabled, "attarEnabled", true, true);
         }
 
@@ -208,7 +212,7 @@ namespace RimMandrake.Miasma
                 list.GapLine();
             }
 
-            if (Group(list, "Predators and pollination", RimMandrake.Shared.SettingScope.Now, new[] { "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "ambushFrogHunts", "strandedDeformationChance" }))
+            if (Group(list, "Predators and pollination", RimMandrake.Shared.SettingScope.Now, new[] { "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "ambushFrogHunts", "lastvineRearingEnabled", "strandedDeformationChance" }))
             {
                 list.CheckboxLabeled("Predatory plants feed on wild scuttlers",
                     ref plantPredationEnabled,
@@ -231,6 +235,10 @@ namespace RimMandrake.Miasma
                     ref ambushFrogHunts,
                     "The bozzuga, the root-maze's ambush frog, lies in wait and eats scuttlers and stranded young. "
                     + "Off: it is a placid animal that hunts nothing. Takes effect after the settings window closes.");
+                list.CheckboxLabeled("Lastvine rears up",
+                    ref lastvineRearingEnabled,
+                    "The lastvine rests as a closed pod hung on its roots, and rears up into its open, thorn-ringed maw "
+                    + "while it hunts, fights or has something close. Off: it always looks like the closed pod.");
                 list.GapLine();
             }
 

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ColossalAerofleet.xml — the greater bulloo. Phase 0 P3 (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md
+  §0.5.3 item 2): a donor-code creature ported as our own plain XML. Invented creature, no Star Wars IP: RM_ tier.
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Aerofleet.xml). Label and
+  description are ours, the words the campaign's Contagion_Rename.xml patches onto the donor def. Comfy band
+  -25..71.8 is the live value AnimalTolerances_Ashkarr.xml pins on the donor def.
+
+  Owner pick "rebuild" (twitching limbs) on Transient/donor_code_creatures_sheet_2026-10-09.
+  PLAIN GRAPHIC for now: the donor drew four twitching feeler sprites with its own SpasticScaled render tree
+  (donor code). Our render (gapall_AA_ColossalAerofleet_v1) bakes the feelers into one whole-body sprite, so the
+  creature gets the vanilla animal render tree and one fixed graphic. Rebuilding the twitch needs new body-only and
+  limb art: the owner's call, Transient/phase0_p3_questions.md Q1. It is not flight and not a wing tree.
+  KEPT: vanilla DeathActionWorker_BigExplosion (Core, not donor code). VEF-guarded (a framework we keep): Floating
+    (drifts, ignores terrain; kept rather than MaxFlightTime flight, because a bulloo drifts permanently rather than
+    flying in bursts from the ground) and the gel product, now our RM_BlueGel (defined with RM_Bulloo in
+    Defs/ThingDefs_Races/RM_Bulloo.xml, the P2 port of the base bulloo).
+  KEPT, VEF-guarded: asexual fission into the small bulloo, now our RM_Bulloo (the "little escort of smaller ones").
+  SWAPPED: body AA_JellyfishBody -> RM_JellyfishBody (this mod's copy, in RM_Bulloo.xml, so the mod loads alone); leather
+    AA_Leather_Aerofleet -> Leather_Light; meat AA_AerofleetMeat -> useMeatFrom Pig; dessicated art (donor) ->
+    vanilla elephant.
+  DROPPED: the VEF ControlledDetonation PawnKind
+    ability and Odyssey trainables (donor-specific); the VEF AnimalStatExtension info-card rows.
+  ART: our render exists and is not installed (gapall_AA_ColossalAerofleet_v1, The Forge sheet "A"). Until the art
+    ledger installs it at our path, the texPath is the donor path (a placeholder, reported ART OWED by
+    donor_plain_ports_check.py) and the roster row stays MayRequire="sarg.alphaanimals".
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ColossalAerofleet</defName>
+    <label>greater bulloo</label>
+    <description>A bulloo grown to enormous size, trailing a little escort of smaller ones that seem to follow it everywhere it drifts. It sheds the same thick gel as its kin, just far more of it.</description>
+    <statBases>
+      <MoveSpeed>2.84</MoveSpeed>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>71.8</ComfyTemperatureMax>
+      <MarketValue>400</MarketValue>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core" />
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RM_BlueGel</resourceDef>
+        <gatheringIntervalDays>5</gatheringIntervalDays>
+        <resourceAmount>100</resourceAmount>
+        <customResourceString>blue gel</customResourceString>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>25</reproductionIntervalDays>
+        <customString>Asexual fission in: </customString>
+        <convertsIntoAnotherDef>true</convertsIntoAnotherDef>
+        <newDef>RM_Bulloo</newDef>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>feelers</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <deathAction>
+        <workerClass>DeathActionWorker_BigExplosion</workerClass>
+      </deathAction>
+      <executionRange>6</executionRange>
+      <herdAnimal>true</herdAnimal>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <body>RM_JellyfishBody</body>
+      <baseBodySize>2</baseBodySize>
+      <baseHealthScale>2</baseHealthScale>
+      <baseHungerRate>1.5</baseHungerRate>
+      <hasGenders>false</hasGenders>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <useMeatFrom>Pig</useMeatFrom>
+      <lifeExpectancy>110</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ColossalAerofleet</defName>
+    <label>greater bulloo</label>
+    <race>RM_ColossalAerofleet</race>
+    <canArriveManhunter>false</canArriveManhunter>
+    <combatPower>120</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal</texPath>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
