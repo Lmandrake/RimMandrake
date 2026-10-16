@@ -27,18 +27,24 @@
   chase` mechanics are otherwise vanilla `AnimalThingBase` defaults.
 
   `useMeatFrom AA_ArcticLion` (unported donor creature) substituted with
-  vanilla `Cougar` — same substitute already used for this batch's sibling
-  big-cat predator port, `RSW_Vosska` (AA_SandProwler). `leatherDef
-  AA_SandLion_Leather` substituted with vanilla `Leather_Panthera` (a big-cat
-  leather already shipped in Core). Donor life-stage sounds
+  vanilla `Cougar` and `leatherDef AA_SandLion_Leather` with vanilla
+  `Leather_Panthera` — stand-in products only (same meat substitute as
+  `RSW_Vosska`); they say nothing about what the creature is.
+
+  WHAT IT IS (owner, 2026-10-15): "This is supposed to be a VERY alien
+  creature, burrowing under the sand with terrifying speed. Not an actual
+  lion." A scaled, sand-swimming ambush predator — NOT a big cat, not a lion,
+  no fur or mane; "sand lion" is only the donor's name. Body def stays vanilla
+  QuadrupedAnimalWithPawsAndTail (four limbs, clawed digging feet, tail). Donor life-stage sounds
   (`AA_ArcticLion_Wounded/Death/Angry/Call`) are not ported (unported donor
   sound defs); omitted, matching the sibling ports in this same wave
   (`RSW_Vosska`/`RSW_Ossik`) which also ship with no custom vocal
   set.
 
   Art: donor's own texture used as a loud TEMP PLACEHOLDER (round2 disposition
-  for this species is `"art": "improve"`, not "keep" — a fresh render remains
-  owed, not commissioned in this pass). Label "vekka" is a DRAFTED
+  for this species is `"art": "improve"`, not "keep"; v1 (a literal lion) was
+  rejected by the owner 2026-10-15, v2 commissioned in
+  `design/RimMandrake/donor_pack_art_commission4_2026-10-15.json`). Label "vekka" is a DRAFTED
   pseudo-Star-Wars name (`NONCANON_BEAST_RENAME_1` process — agent drafts,
   owner reacts), not yet owner-ruled; "sand lion" is the donor's own plain
   Earth-animal name and is not carried over as the shipped label.
@@ -48,7 +54,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_SandLion</defName>
     <label>vekka</label>
-    <description>A heavy, big-cat predator bred for the deep desert, able to work its whole body down into loose sand to close on prey unseen. It surfaces claws-first, and the strike is usually over before anything has time to run. Guns are a poor answer to something that was never on the surface to begin with.</description>
+    <description>Something that does not belong to any family of surface animals: a long, low, armour-scaled hunter that swims through loose sand the way a fish moves through water, faster than anything above it can run. The only warning is a faint ripple racing across the dune. It surfaces claws-first beneath its prey, and the strike is usually over before anything has time to run. Guns are a poor answer to something that was never on the surface to begin with.</description>
     <statBases>
       <MoveSpeed>6</MoveSpeed>
       <ComfyTemperatureMin>10</ComfyTemperatureMin>
