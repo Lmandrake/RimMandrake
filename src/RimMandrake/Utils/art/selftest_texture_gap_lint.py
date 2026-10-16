@@ -7,7 +7,7 @@ bundle, one nowhere; src resolves a Graphic_Random folder and a Graphic_Multi fi
 (inactive-only, nowhere) must be flagged, every good path must not be; lint() fails an unlisted gap, a stale entry, an entry
 added after the freeze.
 Part 2, the REAL repo (skipped as UNMEASURED without the gametex cache): the lint passes, and SANITY PROBE: a texPath known to
-resolve in src is OK_SRC and the known-owed RM_Ismerrow is a gap, so the scan is demonstrably looking.
+resolve in src is OK_SRC and at least one genuine MISSING gap is seen (none named: owed art gets installed), so the scan is demonstrably looking.
 """
 from __future__ import annotations
 
@@ -69,7 +69,8 @@ def main() -> int:
         print("UNMEASURED part 2: no gametex cache on this machine")
     else:
         real = T.census()
-        check(real.get("Things/Plant/RM_Ismerrow/RM_Ismerrow", {}).get("class") == "MISSING", "probe: RM_Ismerrow is seen and is a gap")
+        gaps = [k for k, v in real.items() if v["class"] == "MISSING"]
+        check(len(gaps) > 0, "probe: the scan sees at least one genuine MISSING gap", gaps)
         check(sum(1 for v in real.values() if v["class"] == "OK_SRC") > 1000, "probe: thousands of real texPaths resolve in src")
         allow = T.json.loads(T.ALLOWLIST.read_text())
         fails = T.lint(real, allow)

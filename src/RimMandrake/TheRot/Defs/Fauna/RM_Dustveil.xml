@@ -229,7 +229,7 @@
     <label>butterfly egg (unfert.)</label>
     <description>Unfertilized butterfly egg. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_DustveilEgg</texPath>
+      <texPath>Things/Item/RM_AngelMothEggFertilized</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

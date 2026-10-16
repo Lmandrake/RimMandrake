@@ -188,7 +188,7 @@
     <label>bedbug egg (unfert.)</label>
     <description>Unfertilized bedbug egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a beetle egg, it is disgusting either way...</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_BedBugEgg</texPath>
+      <texPath>Things/Item/RM_BedBugEggFertilized</texPath>
       <color>(99,45,40)</color>
     </graphicData>
     <tradeability>Sellable</tradeability>
