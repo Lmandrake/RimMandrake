@@ -1259,6 +1259,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_DigDiscoveryMath.Budget(1200f, 5f), 60f, "5% of the rock's units");
                 AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
             });
+            // ── DIG_ROCK_TUNE_STONE_FIGHTS_BACK: rock ground, chunks, work ──
+            Case("DigRock_chunk_chance_and_work", () =>
+            {
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(RM_DigDiscoveryMath.VanillaRockDropChance, 1f), 0.25f, "rock ground: vanilla wall-mining rate (25%)");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 2f), 0.5f, "multiplier scales the rate");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 0f), 0f, "multiplier 0 = never");
+                AssertClose(RM_DigDiscoveryMath.RockChunkChance(0.25f, 99f), 1f, "capped at certainty");
+                AssertClose(RM_DigDiscoveryMath.SoilChunkChance(0.5f), 0.005f, "non-rock ground: 0.5% per cut");
+                AssertClose(RM_DigDiscoveryMath.SoilChunkChance(-1f), 0f, "negative = never");
+                Assert(RM_DigDiscoveryMath.SoilChunkChance(0.5f) < RM_DigDiscoveryMath.Chance(1f), "a soil chunk is rarer than a mineral find");
+                Assert(RM_DigDiscoveryMath.RockWork(3200, 4f) == 12800, "rock level 1 = 4x soft ground");
+                Assert(RM_DigDiscoveryMath.RockWork(3200, 0.2f) == 3200, "never easier than soft ground");
+                Assert(RM_DigDiscoveryMath.RockWork(12800, 4f) == 51200, "scales with the level cut");
+            });
 
             // ── FLOWWORKS_QUARRY_DIGGING_1, river half: sluice box and panning ──
             Case("Placer_stock_sluice_pan", () =>
@@ -1536,6 +1550,26 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.CutCoverSpan(5.2f, 5.8f, 5f, 6f, out _, out _, out _, out _) == 0, "a piece wholly inside the window vanishes (occupant uncovered)");
                 Assert(RM_WallFaceMath.CutCoverSpan(7f, 8f, 5f, 6f, out float a, out float b, out _, out _) == 1 && a == 7f && b == 8f, "a piece clear of the window stays whole");
                 Assert(RM_WallFaceMath.CutCoverSpan(5.5f, 7f, 5f, 6f, out float c, out float d, out _, out _) == 1 && c == 6f && d == 7f, "a piece half in the window keeps its far side");
+            });
+
+            Case("LipOcclusion_boar_hangs_out", () =>
+            {
+                // PIT_LIP_FIX_BOAR_HANGS_OUT: south-row cell z=10 (lip at 10), clamp on: centre held at the lip, so a
+                // 1.6-tall sprite spans 9.2..10.8 -> exactly half in the opening -> no window, the lip hides the rest.
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 9.2f, 10.8f), "clamped occupant: no window, part below the rim hidden");
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 9.6f, 11.2f), "D1 sink (centre north of lip): no window");
+                Assert(RM_WallFaceMath.OccupantCutNeeded(10f, 8.0f, 9.6f), "clamp off, sprite wholly below the lip: window opens");
+                Assert(RM_WallFaceMath.OccupantCutNeeded(10f, 8.6f, 10.2f), "clamp off, mostly hidden: window opens");
+                Assert(!RM_WallFaceMath.OccupantCutNeeded(10f, 10f, 10f), "degenerate sprite: no window");
+                // a lying pawn's cover spans the rotated sprite
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 90f, out float rx, out float ry);
+                AssertClose(rx, 0.5f, "90 deg swaps width"); AssertClose(ry, 0.8f, "90 deg swaps height");
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 270f, out rx, out ry);
+                AssertClose(ry, 0.8f, "270 deg (sleeping animal facing west) swaps too");
+                RM_WallFaceMath.RotatedHalfExtent(0.5f, 0.5f, 45f, out rx, out ry);
+                AssertClose(ry, 0.70710678f, "a downed pawn at 45 deg reaches its corners");
+                RM_WallFaceMath.RotatedHalfExtent(0.8f, 0.5f, 0f, out rx, out ry);
+                AssertClose(rx, 0.8f, "upright unchanged"); AssertClose(ry, 0.5f, "upright unchanged");
             });
 
             Case("StockReload_index_rebuild_rule", () =>

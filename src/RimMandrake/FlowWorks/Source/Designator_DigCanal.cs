@@ -19,7 +19,8 @@ namespace RimMandrake.FlowWorks
 				+ "already dug deepens it again — shallow, mid, deep, then SUPERDEEP. "
 				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
-				+ "it leaves the map, which is how you empty a canal on purpose.";
+				+ "it leaves the map, which is how you empty a canal on purpose. Bare rock ground "
+				+ "can be dug too, but is much slower work, and may turn up chunks of that rock.";
 			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_DigCanal", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;
@@ -88,9 +89,9 @@ namespace RimMandrake.FlowWorks
 				}
 				return AcceptanceReport.WasAccepted;
 			}
-			if (!terrain.IsSoil)
+			if (!terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
 			{
-				return "Must designate diggable soil.";
+				return "Must designate diggable soil or bare rock ground.";
 			}
 			// POND_BED (owner by card 2026-10-14): a dry pond bed is dug from its own depth, one deeper.
 			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
@@ -109,6 +110,28 @@ namespace RimMandrake.FlowWorks
 			// fill in would have pawns dig a level and fill it back for no net change.
 			Map.designationManager.TryRemoveDesignation(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal);
 			Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
+		}
+
+		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK: say, beside the cursor, that the ground under it is rock and slow.</summary>
+		public override void DrawMouseAttachments()
+		{
+			base.DrawMouseAttachments();
+			Map map = Find.CurrentMap;
+			IntVec3 c = UI.MouseCell();
+			if (map == null || !RimMandrakeFlowWorksSettings.digRockGroundEnabled || !c.InBounds(map))
+			{
+				return;
+			}
+			if (RM_DigDiscovery.RockGroundAt(map, c) == null)
+			{
+				return;
+			}
+			string text = "Rock ground: slow to dig (x" + RimMandrakeFlowWorksSettings.digRockWorkMultiplier.ToString("0.#") + " work)";
+			Vector2 m = UI.MousePositionOnUIInverted;
+			Text.Font = GameFont.Small;
+			Rect r = new Rect(m.x + 24f, m.y + 24f, 300f, 24f);
+			Widgets.DrawBoxSolid(r, new Color(0f, 0f, 0f, 0.6f));
+			Widgets.Label(r, " " + text);
 		}
 
 		public override void SelectedUpdate()

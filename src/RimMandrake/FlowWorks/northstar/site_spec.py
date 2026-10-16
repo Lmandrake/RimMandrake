@@ -97,7 +97,10 @@ SETTINGS = {
         "bottleRevertEnabled": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer
         "liquidPumpEnabled": True,                              # Phase 8 slice 1 (universal pump)
         "digFindsEnabled": True, "digFindsLocalOnly": True, "digFindChanceMultiplier": 1.0,
-        "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,   # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
+        "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,
+        "digRockGroundEnabled": True, "digRockWorkMultiplier": 4.0, "digRockChunksEnabled": True,
+        "digRockChunkMultiplier": 1.0, "digSoilChunkPercent": 0.5,   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK
+          # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
         "excavationWallMaterialEnabled": True, "pitLipOcclusionEnabled": True, "pitLipOcclusion": 0.85, "pitLipOccupantCutEnabled": True, "pitLipOccupantCutWidth": 1.0, "pitSinkClampEnabled": True,
         "liquidSurfaceMotionEnabled": True, "liquidWakesEnabled": True, "pitScorchEnabled": True,
         "pitScorchFadeDays": 20.0,                              # visual principles 1-5 (belt_fwvisuals 2026-10-05)
