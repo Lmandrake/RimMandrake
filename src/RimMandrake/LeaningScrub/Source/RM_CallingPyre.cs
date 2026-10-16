@@ -263,6 +263,7 @@ namespace RimMandrake.LeaningScrub
                 if (hint.IsValid)
                 {
                     if (!hint.InBounds(map) || hint.Roofed(map)) return "UNMEASURED: the crop patch centre " + hint + " is out of bounds or roofed";
+                    if (FireUtility.ChanceToStartFireIn(hint, map) <= 0f) return "UNMEASURED: nothing flammable at the crop patch centre " + hint + " (the patch did not take)";
                     spot = hint;
                 }
                 else
