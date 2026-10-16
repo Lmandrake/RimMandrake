@@ -1758,6 +1758,20 @@ def _vc():
     return validation_core
 
 
+def _keyed(key):
+    """The English text of a FlowWorks Keyed string, read from the mod's own Languages folder. P4b compares the ladder's
+    inspect line against this, not a hard-coded prefix: the 2026-10-16 wall-ladder rewording (5dbe8bdae2) turned the old
+    `ladder_up`/`ladder_down` prefix test into a HARNESS FAIL while every behavioural half was right."""
+    import xml.etree.ElementTree as ET
+    kdir = os.path.join(MOD, "Languages", "English", "Keyed")
+    for fn in sorted(os.listdir(kdir)):
+        if fn.endswith(".xml"):
+            el = ET.parse(os.path.join(kdir, fn)).getroot().find(key)
+            if el is not None:
+                return (el.text or "").strip()
+    raise KeyError("Keyed string %s not in %s" % (key, kdir))
+
+
 def _load_site_spec():
     sys.path.insert(0, HERE)
     import site_spec as S          # noqa: E402
@@ -2702,9 +2716,12 @@ def phase_P(L, args):
                 L.row("P4b_ladder_raised_strands", False, "HARNESS", "ladder proof %s/%s (%s / %s); back in %s; %s" % (
                     ok_r, ok_l, lr, ll, o_back.get("arrived"), alive(r_up, a)), status="UNMEASURED")
             else:
-                L.row("P4b_ladder_raised_strands", lr.get("raised") == "True" and lr.get("inspect", "").lower().startswith("ladder_up")
+                # ProofLadder writes the inspect line with spaces as underscores (one kv token)
+                lad_up = tuple(_keyed(k).replace(" ", "_") for k in ("RMFlow_LadderRaisedInspect",))
+                lad_dn = tuple(_keyed(k).replace(" ", "_") for k in ("RMFlow_LadderLoweredInspect", "RMFlow_LadderLoweredPrisonInspect"))
+                L.row("P4b_ladder_raised_strands", lr.get("raised") == "True" and lr.get("inspect", "") in lad_up
                       and pu.get("held") is True and pu.get("lipReachable") == 0 and o_up.get("canReach") is False
-                      and ll.get("raised") == "False" and ll.get("inspect", "").lower().startswith("ladder_down") and pd.get("held") is False
+                      and ll.get("raised") == "False" and ll.get("inspect", "") in lad_dn and pd.get("held") is False
                       and (pd.get("lipReachable") or 0) > 0, "MOD",
                       "raised %s (%s): held %s lip %s/%s, ordered out canReach %s | lowered %s (%s): held %s lip %s/%s; %s" % (
                           lr.get("raised"), lr.get("inspect"), pu.get("held"), pu.get("lipReachable"), pu.get("lipCells"),
@@ -3707,7 +3724,7 @@ class MockBridge(object):
                 (self.raised.add if op == "raise" else self.raised.discard if op == "lower" else (lambda _: None))(c)
                 up = c in self.raised
                 res = "LADDER cell=%d,%d present=True raised=%s inspect=%s" % (
-                    c[0], c[1], up, "Ladder_up:_nobody_can_climb_down_or_out." if up else "Ladder_down:_anyone_can_climb.")
+                    c[0], c[1], up, _keyed("RMFlow_LadderRaisedInspect" if up else "RMFlow_LadderLoweredInspect").replace(" ", "_"))
         elif method == "ProofForcedFlyer":
             pid, x, z = args.split(",")
             p, c = self.mp.get(pid), (int(x), int(z))
