@@ -101,6 +101,58 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None):
     return "started"
 
 
+PROFILE_MIN_MINUTES = 45      # a suite is ~5 min; a grant this close to lapsing would lapse mid-batch
+
+
+def ensure_test_profile(_client=None, _now=None, min_minutes=PROFILE_MIN_MINUTES):
+    """Refuse to run when the companion is not in the TEST profile, or its grant lapses within `min_minutes`.
+    Night 2026-10-16: companion_profile.json expired at 09:00Z between two rounds; every safe_advance came back
+    `refused` (CAMPAIGN profile) and three suites recorded every time-advancing chain UNMEASURED as a 'surprise'.
+    That is the harness's own state, not a disturbance, so the run stops before any chain with the companion's reason.
+    Returns the effective profile; raises RuntimeError otherwise."""
+    try:
+        if _client is None:
+            import rimbridge_client as rb
+            host, port, token = rb.resolve_endpoint()
+            _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
+            _client.connect()
+        r = _client.call("jawa/companion_handshake", {}) or {}
+        if isinstance(r, dict) and r.get("content"):
+            r = json.loads(r["content"][0]["text"])
+        if not isinstance(r, dict):
+            raise TypeError("handshake body is %s" % type(r).__name__)
+    except Exception as e:  # noqa: BLE001
+        raise RuntimeError("ensure_test_profile: cannot read jawa/companion_handshake (%s: %s)" % (type(e).__name__, e))
+    finally:
+        try:
+            getattr(_client, "close", lambda: None)()
+        except Exception:  # noqa: BLE001
+            pass
+    eff = r.get("effectiveProfile")
+    if eff != "test":
+        raise RuntimeError("companion profile is %r, not 'test' (%s); test-only tools such as jawa/safe_advance are "
+                           "refused. Renew %s with a later expiresUtc." % (eff, r.get("profileWhy"), r.get("profileFile")))
+    exp = None
+    try:
+        with open(r.get("profileFile") or "", encoding="utf-8") as fh:
+            exp = json.load(fh).get("expiresUtc")
+    except Exception:  # noqa: BLE001 - unreadable from this interpreter: the handshake's 'test' still stands
+        pass
+    if exp:
+        import datetime as _dt
+        try:
+            t = _dt.datetime.fromisoformat(str(exp).strip().replace("Z", "+00:00"))
+            if t.tzinfo is None:
+                t = t.replace(tzinfo=_dt.timezone.utc)
+        except ValueError:
+            raise RuntimeError("companion profile expiresUtc %r is unparseable; fix %s" % (exp, r.get("profileFile")))
+        now = _now or _dt.datetime.now(_dt.timezone.utc)
+        if t is not None and (t - now).total_seconds() < min_minutes * 60:
+            raise RuntimeError("companion test profile expires at %s, under %d min from now; renew %s first"
+                               % (exp, min_minutes, r.get("profileFile")))
+    return eff
+
+
 def find_mod_dir(mod_folder_name):
     """A mod's source folder, by its repo folder name (not packageId) --
     `src/RimMandrake/<Folder>` or `src/RimStarWars/<Folder>` or
@@ -720,6 +772,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                           False, walk=walk, refused=why)
                 continue
             ensure_playing_map()
+            ensure_test_profile()
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(suite, s, debug=debug, mod=mod_folder,

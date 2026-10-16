@@ -74,7 +74,10 @@ class GovernorStop(Exception):
         self.result = result if isinstance(result, dict) else {"raw": result}
         r = self.result
         sb = r.get("stopBy") or {}
-        why = sb.get("detail") or r.get("refused") or r.get("abortWhy") or r.get("message") or r.get("error") or ""
+        # `refused` is a reason string from safe_advance itself but a bare True from the companion's profile gate,
+        # whose reason is in `error` (night 2026-10-16: an expired test profile printed "...: True" on every chain)
+        refused = r.get("refused") if isinstance(r.get("refused"), str) else None
+        why = sb.get("detail") or refused or r.get("abortWhy") or r.get("message") or r.get("error") or ""
         Exception.__init__(self, "safe_advance %s after %s of %s tick(s): %s%s" % (
             r.get("state"), r.get("executed"), r.get("requested"),
             ("%s: " % sb.get("kind")) if sb.get("kind") else "", why))
