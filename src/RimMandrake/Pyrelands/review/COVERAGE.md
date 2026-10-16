@@ -11,7 +11,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 ```
 
 - **The map must be a Pyrelands map.** A quicktest map is not the biome. `--load <save>` loads a `NS_Pyrelands_site_*` fixture from the main menu (the newest is `NS_Pyrelands_site_1_417df172fdb5_r7`, 2026-10-15 01:31, 250x250; its name carries the def fingerprint it was made under). If it is missing or will not load, make a fresh one with `python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp>` (it saves and reloads the fixture), then run the build without `--load`. Without `--load` the build uses the current map and refuses one that is not RM_Pyrelands or not 250x250.
-- **Expected runtime: about 6-8 minutes** after the game is up (an ESTIMATE; no live build has run): save load ~2-3 min on the 22-mod tier, ~400 bridge calls ~2 min, 8300 ticks of burn at the ~60 ticks/s MEASURED for short waits (northstar_plan.py) ~70 s, verify + labels ~1 min. Then `--save` (~30 s) writes the keeper `RM_pyre_review_YYYYMMDD`.
+- **Expected runtime: about 6-8 minutes** after the game is up (an ESTIMATE; no live build has run): save load ~2-3 min on the 22-mod tier, ~400 bridge calls ~2 min, 8300 ticks of burn at the ~60 ticks/s MEASURED for short waits (northstar_plan.py) ~2.5 min, verify + labels ~1 min. Then `--save` (~30 s) writes the keeper `RM_pyre_review_YYYYMMDD`.
 - Exit code 0 only when every station verified as built; refusals land in `Transient/pyre_review_map_state.json` and the key sheet's agent block.
 
 ## Feature inventory -> station
@@ -62,7 +62,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | animal | Furnace-beast warmth aura (felt temperature near it) | CompFurnaceWarmthAura.cs | 23 |  |
 | animal | Furnace-beast bed-down ignition | CompFurnaceBedIgnition.cs | 23 |  |
 | animal | Furnace-beast thermal cycle: walks into fire to charge | JobGiver_RUT_FurnaceThermalCycle.cs | none | needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row |
-| animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | 23 | visible only as it surviving its own fire; the card says how |
+| animal | Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs) | Source | none | visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns |
 | animal | Furnace-beast herd world migration (WorldObject RM_FurnaceHerd) | WorldObject_RM_FurnaceHerd.cs | W |  |
 | animal | Ullai herd: three facings, herd size | RM_Ullai.xml | 25 |  |
 | animal | Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn) | RM_Ullai.xml | none | needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet) |
@@ -94,7 +94,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | setting | Mechanics gate: 'Mod enabled' and the Baroque Biomes 'Pyrelands' toggle | PyrelandsMechanicsGate.cs | S |  |
 | rite | Struck Glass rite (PYRELANDS_STRUCK_GLASS_RITE_BUILD_1) | item only | none | NOT BUILT: no def or code exists yet (grep finds none); it gets a station when it is built |
 
-## Features with no station (14)
+## Features with no station (15)
 
 - **Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)**: they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none remain. Their three PNGs are orphaned (named on station 1's card).
 - **Thornvine made edible for the furnace-beast (RUT_Thornvine_Edible.xml)**: thornvine is another mod's plant and the beast must roam free to eat it; no review map can pen both
@@ -105,6 +105,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 - **Fire-wasp fly frames (8)**: a flight: owner-present only
 - **Furnace-beast classic (non-giant) art**: only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here
 - **Furnace-beast thermal cycle: walks into fire to charge**: needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row
+- **Furnace-beast heat immunity (Patch_FurnaceBeastHeatImmunity.cs)**: visible only as it surviving its own fire (a bed it smoulders); not staged: nothing on the ash floor burns
 - **Ullai follow a two-day-old burn (RM_JobGiver_FollowBurn)**: needs days of free roaming after a burn; UNMEASURED in the matrix too (no drive yet)
 - **Barbslinger tail gun and spike projectile art**: a fight, not a look: draft a colonist at 29 in god mode to see it
 - **Flamefang venom bite (RM_FlamefangVenom)**: a fight, not a look: let it bite a god-mode colonist at 30
