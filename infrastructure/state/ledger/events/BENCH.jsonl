@@ -2796,3 +2796,4 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T06:20:57Z","tsn":1792131657542104116}
 {"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"BENCH.pid36386.386ef534","expires":"2026-10-16T07:06:31Z","ts":"2026-10-16T06:21:31Z","tsn":1792131691267428385}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-16T11:52:03Z","tsn":1792151523777822665}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner FW walk tour","ts":"2026-10-16T12:19:07Z","tsn":1792153147944459688}
