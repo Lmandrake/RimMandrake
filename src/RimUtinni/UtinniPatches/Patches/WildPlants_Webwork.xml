@@ -4,6 +4,8 @@
   WildPlants_Webwork.xml                    UtinniPatches — new file 2026-09-25
   ============================================================================
 
+  SWAC PHASE 0 (2026-10-15): the row now injects our own port `RSW_Plant_TookeTrap_Wild` (SWBestiary).
+
   WEBWORK_FLORA_ROSTER_1. Injects the genuine canon Star Wars plant
   `Plant_TookeTrap_Wild` onto RM_Webwork's wildPlants, additively and kept at
   low commonality, per the biome's own sitting record
@@ -33,16 +35,15 @@
 -->
 <Patch>
 
-  <!-- Star Wars Animal Collection (Continued)'s own bare defName — same donor
-       mod as the Webwork's canon fauna cast (WildAnimals_Webwork.xml). -->
+  <!-- Our own RSW_ port of the canon tooke-trap plant (SWAC Phase 0 P1, RSW_DonorPack_P1_Plants.xml). -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars Animal Collection (Continued)</li></mods>
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
     <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
         <value>
-          <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.3</Plant_TookeTrap_Wild>
+          <RSW_Plant_TookeTrap_Wild>0.3</RSW_Plant_TookeTrap_Wild>
         </value>
       </match>
     </match>

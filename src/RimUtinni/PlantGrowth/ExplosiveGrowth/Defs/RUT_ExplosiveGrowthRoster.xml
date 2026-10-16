@@ -29,7 +29,6 @@
       <li><plant>RM_TwistingThorngrass</plant><top>Burst</top></li>
 
       <!-- FLUSH — the Fever Wood giant. -->
-      <li><plant>Plant_HydenockTree_Wild</plant><top>Flush</top></li>
       <li><plant>RSW_Plant_HydenockTree_Wild</plant><top>Flush</top></li>
 
       <!-- RUPTURE — the RustPuff under its old RUT_ name (RM_ row is in the RM roster). -->
@@ -38,7 +37,6 @@
       <!-- CHURN, heavy produce — former GLUT rows. 🄸 produceFactor 2.5. -->
       <li><plant>Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>RSW_Plant_MujaFruit_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
-      <li><plant>Plant_JoganTree_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>RSW_Plant_JoganTree_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>RUT_GiantLeaf</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>Plant_FelucianGlowspore_Wild</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
