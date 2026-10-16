@@ -7686,68 +7686,184 @@
    "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/gappo/rm_gappolesser": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_GappoLesser/candidates/RM_GappoLesser_north.png"
+   },
+   "canon": {},
    "def": "RM_GappoLesser",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "26468b7c365a085f4a27af744278529baaf0b2dded1bc9c05dee8ef18b81f966"
+   },
+   "jobs": [
+    "standtall_b1_rm_gappolesser_east",
+    "standtall_b1_rm_gappolesser_south",
+    "standtall_b1_rm_gappolesser_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.059,
+     "d_south": 1.207,
+     "e_north": 1.059,
+     "e_south": 1.207,
+     "ns": 0.877,
+     "nsw": 0.817,
+     "w_north": 0.785,
+     "w_south": 0.96
+    }
+   },
    "live_sha": {
     "north": "736bc145228864a9b92b0d6d85b7032e472e2d13ecdd9b6e54d64637445b1324"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 95,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_GappoLesser",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/kurreth/kurreth": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kurreth/candidates/Kurreth_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kurreth/candidates/Kurreth_south.png"
+   },
+   "canon": {},
    "def": "RM_Kurreth",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "7d5ed1137cba7d6961f8b7a4f82bbfb5d02c71c206bed390aa06c448687b61ca",
+    "south": "2cf85f0f1b0c4ffe0df472c40a4ec2169a88687ae122db0448dc66025d276bea"
+   },
+   "jobs": [
+    "standtall_b1_kurreth_east",
+    "standtall_b1_kurreth_south",
+    "standtall_b1_kurreth_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.121,
+     "e_north": 1.081,
+     "e_south": 1.121,
+     "ns": 0.964,
+     "nsw": 1.114,
+     "w_north": 0.844,
+     "w_south": 0.757
+    }
+   },
    "live_sha": {
     "north": "e79a79cebfce5fad4b359773390f87d1caec9bb6e684d7c2a2f2298a24d46184",
     "south": "bd8f9b71f9cbc68f3322fb8b765010d5d16ebbdbccf88ecb2b07faf27cfe32e8"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 170,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Kurreth/Kurreth",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kurreth",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/megatardi/megatardi": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megatardi/candidates/Megatardi_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megatardi/candidates/Megatardi_south.png"
+   },
+   "canon": {},
    "def": "VAEWaste_Megatardi",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "ad4d54079c2956a450ec3c8e2ff6970c4b6fce8cd580309164dc163f8c47ec22",
+    "south": "d1362370cf1c095a11e6c055cc6bbb2b941e2e9e1adf0ab2b29602e59e71b696"
+   },
+   "jobs": [
+    "standtall_b1_megatardi_east",
+    "standtall_b1_megatardi_south",
+    "standtall_b1_megatardi_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.119,
+     "e_north": 1.081,
+     "e_south": 1.119,
+     "ns": 0.966,
+     "nsw": 0.886,
+     "w_north": 0.725,
+     "w_south": 0.819
+    }
+   },
    "live_sha": {
     "north": "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7",
     "south": "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee"
    },
    "mod": "RimUtinni Patches (Jawa campaign)",
-   "status": "pending",
+   "seconds": 148,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Megatardi/Megatardi",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megatardi",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/miasma/wardenmother/wardenmother": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/WardenMother/candidates/WardenMother_north.png"
+   },
+   "canon": {},
    "def": "RM_WardenMother",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "365d04cf4a9bb7ef7c5b096e845fda77ac73023b091a46a83a5aeacb5b59c282"
+   },
+   "jobs": [
+    "standtall_b1_wardenmother_east",
+    "standtall_b1_wardenmother_south",
+    "standtall_b1_wardenmother_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.183,
+     "e_north": 1.057,
+     "e_south": 1.183,
+     "ns": 0.893,
+     "nsw": 0.953,
+     "w_north": 0.923,
+     "w_south": 0.968
+    }
+   },
    "live_sha": {
     "north": "fac21ad8d15c5284d45328a4d8023bbbe993927222b84485443198d8385f632d"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 80,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/WardenMother",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/monkey/dessicated_monkey": {
    "attempts": 0,
@@ -7774,70 +7890,188 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/pyrelands/ashwallow/ashwallow": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Ashwallow/candidates/Ashwallow_north.png"
+   },
+   "canon": {},
    "def": "RM_Ashwallow",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "798f875bf76fa3d6bfee6440617c4647e6dbfb774bf47a2b1160455801426713"
+   },
+   "jobs": [
+    "standtall_b1_ashwallow_east",
+    "standtall_b1_ashwallow_south",
+    "standtall_b1_ashwallow_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.059,
+     "d_south": 1.345,
+     "e_north": 1.059,
+     "e_south": 1.345,
+     "ns": 0.787,
+     "nsw": 0.833,
+     "w_north": 0.795,
+     "w_south": 0.955
+    }
+   },
    "live_sha": {
     "north": "bc8778aa5b71cc94821a94aafabf5780f6296e79c451da71d3046ec97b25052d"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 68,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Ashwallow",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/pyrelands/firewasp/dessicated_firewasp": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_FireWasp/candidates/Dessicated_FireWasp_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_FireWasp/candidates/Dessicated_FireWasp_south.png"
+   },
+   "canon": {},
    "def": "RM_FireWasp",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "09b97db85f9c0779897f6242b96ba408fea2bb56a49193ce036eb64cfaeb102f",
+    "south": "bc6c88c8ec0d2904fe3028688580349c8b692467aca292437253221adb4068f3"
+   },
+   "jobs": [
+    "standtall_b1_dessicated_firewasp_east",
+    "standtall_b1_dessicated_firewasp_south",
+    "standtall_b1_dessicated_firewasp_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.118,
+     "e_north": 1.082,
+     "e_south": 1.118,
+     "ns": 0.968,
+     "nsw": 0.818,
+     "w_north": 0.466,
+     "w_south": 0.569
+    }
+   },
    "live_sha": {
     "north": "5da84b93099b75dfd10286bc83acf2c8ac5cab86a3c1abd26f3c3e893796c190",
     "south": "0cdf09cf71c27184f8f368f4570e65605fdd5346ca3c142c4e3885559a145900"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 143,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_FireWasp",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/pyrelands/flamefang/dessicated_flamefang": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_Flamefang/candidates/Dessicated_Flamefang_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_Flamefang/candidates/Dessicated_Flamefang_south.png"
+   },
+   "canon": {},
    "def": "RM_Flamefang",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "5fb6b8744e0182fc63664b223629aa87d871ec3beb69bee4ce8d2b709542cff2",
+    "south": "276f977a3f34c47775fda181d3998983bde91cae61b16faf4f92a4d81f5ba110"
+   },
+   "jobs": [
+    "standtall_b1_dessicated_flamefang_east",
+    "standtall_b1_dessicated_flamefang_south",
+    "standtall_b1_dessicated_flamefang_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.123,
+     "e_north": 1.081,
+     "e_south": 1.123,
+     "ns": 0.962,
+     "nsw": 0.877,
+     "w_north": 0.547,
+     "w_south": 0.624
+    }
+   },
    "live_sha": {
     "north": "9e2ceca1d1fb0e960ca80c55544f110251bd0f6bea27c5bf902dd8768aceb4f5",
     "south": "994573df1bb31e6390d59a2c45308fb1f900b06928800884e34289d34bc10ac2"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 122,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Pyrelands/Flamefang/Dessicated_Flamefang",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Dessicated_Flamefang",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/pyrelands/flamefang/flamefang": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Flamefang/candidates/Flamefang_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Flamefang/candidates/Flamefang_south.png"
+   },
+   "canon": {},
    "def": "RM_Flamefang",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "3ab5cad01d7017e01e1f8d84bdd22586c2e424ffa5d06b13f8d5c2e277fccee2",
+    "south": "ce7e780b3d98faa990545028f0042a8c27d64ee4a1a8f2db4e20a99914dfb5ed"
+   },
+   "jobs": [
+    "standtall_b1_flamefang_east",
+    "standtall_b1_flamefang_south",
+    "standtall_b1_flamefang_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.123,
+     "e_north": 1.081,
+     "e_south": 1.123,
+     "ns": 0.962,
+     "nsw": 0.893,
+     "w_north": 0.555,
+     "w_south": 0.621
+    }
+   },
    "live_sha": {
     "north": "675a463db3560beee149e10650f28a8d48d01d0a54ea50d655f3caa65e4908b3",
     "south": "100fcd1a7622807308107f156095d4c15e0b191c171d3fbd1ccdda5611b60018"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 129,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Flamefang",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rat/dessicated_rat": {
    "attempts": 0,
@@ -7852,21 +8086,51 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/rm_bedbug/rm_bedbug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_BedBug/candidates/RM_BedBug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_BedBug/candidates/RM_BedBug_south.png"
+   },
+   "canon": {},
    "def": "RM_BedBug",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "dc5952fbeb5cc8e2a105030f3d8296023e06a4bd9eb65731b1609ebb1ad7d2da",
+    "south": "8a78ca5f2891954c43e951f7912e7e630cc92de0d7a0b4402825d55b1ae7224c"
+   },
+   "jobs": [
+    "standtall_b1_rm_bedbug_east",
+    "standtall_b1_rm_bedbug_south",
+    "standtall_b1_rm_bedbug_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.117,
+     "e_north": 1.08,
+     "e_south": 1.117,
+     "ns": 0.967,
+     "nsw": 0.936,
+     "w_north": 0.762,
+     "w_south": 0.815
+    }
+   },
    "live_sha": {
     "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
     "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 114,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_BedBug/RM_BedBug",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_BedBug",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_bileworm/rm_bileworm": {
    "attempts": 0,
@@ -7881,68 +8145,184 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/rm_bladderboil/rm_bladderboil": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Bladderboil/candidates/RM_Bladderboil_north.png"
+   },
+   "canon": {},
    "def": "RM_Bladderboil",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "66a28004fa1a26ee5f17d58b87459e3ce0dd8528957b5017a621425f68a4c6c4"
+   },
+   "jobs": [
+    "standtall_b1_rm_bladderboil_east",
+    "standtall_b1_rm_bladderboil_south",
+    "standtall_b1_rm_bladderboil_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.375,
+     "e_north": 1.082,
+     "e_south": 1.375,
+     "ns": 0.787,
+     "nsw": 0.755,
+     "w_north": 0.785,
+     "w_south": 1.039
+    }
+   },
    "live_sha": {
     "north": "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 60,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Bladderboil",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_bokka/rm_bokka": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Bokka/candidates/RM_Bokka_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Bokka/candidates/RM_Bokka_south.png"
+   },
+   "canon": {},
    "def": "RM_Bokka",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "ebb9e4aacdd9b72b04b7bd3096ee6ecd2f2461a895893c4878c7333d6a21bc80",
+    "south": "32552e1ed0777adbd3c580236e92d209b38370bdb9f8a49e8315a35ef58ce89c"
+   },
+   "jobs": [
+    "standtall_b1_rm_bokka_east",
+    "standtall_b1_rm_bokka_south",
+    "standtall_b1_rm_bokka_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.077,
+     "d_south": 1.12,
+     "e_north": 1.077,
+     "e_south": 1.12,
+     "ns": 0.962,
+     "nsw": 0.821,
+     "w_north": 0.462,
+     "w_south": 0.562
+    }
+   },
    "live_sha": {
     "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
     "south": "9225dd365647e53b48cdadbd2c8c25eb2950f5b5e030a02900b6e3de95f6d2f7"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 232,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Bokka/RM_Bokka",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Bokka",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_brathek/rm_brathek": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Brathek/candidates/RM_Brathek_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Brathek/candidates/RM_Brathek_south.png"
+   },
+   "canon": {},
    "def": "RM_Brathek",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "dbeca5344bcb3381c4cb1e271b2bca66c25a73111db653415084411d389a211a",
+    "south": "5ed64c6a930996d18077e9ddde4503afc1d35c63626ac56d9fca8b8223b67988"
+   },
+   "jobs": [
+    "standtall_b1_rm_brathek_east",
+    "standtall_b1_rm_brathek_south",
+    "standtall_b1_rm_brathek_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.126,
+     "e_north": 1.081,
+     "e_south": 1.126,
+     "ns": 0.96,
+     "nsw": 0.891,
+     "w_north": 0.328,
+     "w_south": 0.368
+    }
+   },
    "live_sha": {
     "north": "eb00abd90e594ba3d5d203372283e769b70c6728622d2a45fdac10502db8af26",
     "south": "c8407c3382a4bc859263f703eda2e20c811aafa6cefa359574dc93edcdec47ff"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 121,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Brathek/RM_Brathek",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Brathek",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_canopyswinger/rm_canopyswinger": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_CanopySwinger/candidates/RM_CanopySwinger_north.png"
+   },
+   "canon": {},
    "def": "RM_CanopySwinger",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "0ccb320bd2dc617a04afe3fcb5dfa5580c10b1a9e1064221214b2d25a1ac4a61"
+   },
+   "jobs": [
+    "standtall_b1_rm_canopyswinger_east",
+    "standtall_b1_rm_canopyswinger_south",
+    "standtall_b1_rm_canopyswinger_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.423,
+     "e_north": 1.08,
+     "e_south": 1.423,
+     "ns": 0.759,
+     "nsw": 1.516,
+     "w_north": 0.588,
+     "w_south": 0.388
+    }
+   },
    "live_sha": {
     "north": "c99139294062ea02875ac9dfa013697acaeb606ea8ab2e5e391efc283b8ac335"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 82,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_CanopySwinger",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_chatrak/rm_chatrak": {
    "attempts": 0,
@@ -7971,83 +8351,227 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/rm_coolanteel/rm_coolanteel": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_CoolantEel/candidates/RM_CoolantEel_north.png"
+   },
+   "canon": {},
    "def": "RM_CoolantEel",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "4ccb2beecc02030138a17535cf5087a5de34135c5c783c5aef0b4fefff811db4"
+   },
+   "jobs": [
+    "standtall_b1_rm_coolanteel_east",
+    "standtall_b1_rm_coolanteel_south",
+    "standtall_b1_rm_coolanteel_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.073,
+     "d_south": 1.344,
+     "e_north": 1.073,
+     "e_south": 1.344,
+     "ns": 0.798,
+     "nsw": 0.548,
+     "w_north": 0.281,
+     "w_south": 0.512
+    }
+   },
    "live_sha": {
     "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 48,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_CoolantEel",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_dakkra/rm_dakkra": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Dakkra/candidates/RM_Dakkra_north.png"
+   },
+   "canon": {},
    "def": "RM_Dakkra",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "36e2479a5b26a1d4405d6ab18fa4cea968e43a601f286291f3d72b7a327ec8a6"
+   },
+   "jobs": [
+    "standtall_b1_rm_dakkra_east",
+    "standtall_b1_rm_dakkra_south",
+    "standtall_b1_rm_dakkra_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.216,
+     "e_north": 1.054,
+     "e_south": 1.216,
+     "ns": 0.867,
+     "nsw": 0.637,
+     "w_north": 0.504,
+     "w_south": 0.791
+    }
+   },
    "live_sha": {
     "north": "dbad53fabf1262d9b2c10690dcde32bcc550122601a2a4fc6b1e0652ee33c7ee"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 56,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Dakkra",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_dhollock/rm_dhollock": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Dhollock/candidates/RM_Dhollock_south.png"
+   },
+   "canon": {},
    "def": "RM_Dhollock",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "adab056e158af44e3f28b2f53bc225f377511f7bef68a091e09fcdaf068d271a"
+   },
+   "jobs": [
+    "standtall_b1_rm_dhollock_east",
+    "standtall_b1_rm_dhollock_south",
+    "standtall_b1_rm_dhollock_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.397,
+     "d_south": 1.123,
+     "e_north": 1.397,
+     "e_south": 1.123,
+     "ns": 1.244,
+     "nsw": 1.243,
+     "w_north": 0.883,
+     "w_south": 0.711
+    }
+   },
    "live_sha": {
     "south": "4abf1cd6ba95c94b58e2375bb9c3b90e1cd9635308bb2159e6f490663b5d98f6"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 53,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Dhollock/RM_Dhollock",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Dhollock",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_dustveillarva/rm_dustveillarva": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_DustveilLarva/candidates/RM_DustveilLarva_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_DustveilLarva/candidates/RM_DustveilLarva_south.png"
+   },
+   "canon": {},
    "def": "RM_DustveilLarva",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "87b298083a94df096f33b16f4c9f911e036512cbef4c4b244ee8ef2dada54ee2",
+    "south": "28a30123dfd2f03921ee228edafa027c0aa7d042466de5f85dccbe6a0039ed13"
+   },
+   "jobs": [
+    "standtall_b1_rm_dustveillarva_east",
+    "standtall_b1_rm_dustveillarva_south",
+    "standtall_b1_rm_dustveillarva_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.075,
+     "d_south": 1.117,
+     "e_north": 1.075,
+     "e_south": 1.117,
+     "ns": 0.962,
+     "nsw": 0.727,
+     "w_north": 0.356,
+     "w_south": 0.49
+    }
+   },
    "live_sha": {
     "north": "b410fe8152e0e1879e629ea342754a63b0c135430a30658bdda3d69d3163676a",
     "south": "a8cea57a8a0761364830a74a16376782a34ef3bf3d621dd2b6c837d63f182a14"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 196,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_DustveilLarva",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_eesh/rm_eesh": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Eesh/candidates/RM_Eesh_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Eesh/candidates/RM_Eesh_south.png"
+   },
+   "canon": {},
    "def": "RM_Eesh",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "512b36294b63eb31d70c4da0c9cd1849c4e5d27c3304cd2bd1f708f0bf52ffa7",
+    "south": "9991625f8cf03c92c581d0bca49b0ca8f42fd92e24a49ba5a7b8b0dbe0e09a70"
+   },
+   "jobs": [
+    "standtall_b1_rm_eesh_east",
+    "standtall_b1_rm_eesh_south",
+    "standtall_b1_rm_eesh_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.075,
+     "d_south": 1.119,
+     "e_north": 1.075,
+     "e_south": 1.119,
+     "ns": 0.96,
+     "nsw": 0.809,
+     "w_north": 0.131,
+     "w_south": 0.162
+    }
+   },
    "live_sha": {
     "north": "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268",
     "south": "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 132,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Eesh",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_electricgryllotalpa/rm_electricgryllotalpa": {
    "attempts": 0,
@@ -8063,38 +8587,98 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/rm_essarn/rm_essarn": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Essarn/candidates/RM_Essarn_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Essarn/candidates/RM_Essarn_south.png"
+   },
+   "canon": {},
    "def": "RM_Essarn",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "4c1eb201b00c7b80e0a2481e2d2e742f4a4669037dbc44aebddb120472338d40",
+    "south": "f3c5c70ad10297de4daf28f174fa7cb0df42345ee005108d021981bb83af9a1f"
+   },
+   "jobs": [
+    "standtall_b1_rm_essarn_east",
+    "standtall_b1_rm_essarn_south",
+    "standtall_b1_rm_essarn_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.084,
+     "d_south": 1.121,
+     "e_north": 1.084,
+     "e_south": 1.121,
+     "ns": 0.967,
+     "nsw": 0.938,
+     "w_north": 0.313,
+     "w_south": 0.333
+    }
+   },
    "live_sha": {
     "north": "b4e7d5b6dd5244d3e16a40b23c70ef326d4c98558d3db6f1134d06e4fe84bfb6",
     "south": "26701bb3ba801aa4001f090ac35fdc7f86b2cd98a179d3058e2b0e40dac5ebb1"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 141,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Essarn",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_fuzzrunner/rm_fuzzrunner": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Fuzzrunner/candidates/RM_Fuzzrunner_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Fuzzrunner/candidates/RM_Fuzzrunner_south.png"
+   },
+   "canon": {},
    "def": "RM_Fuzzrunner",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "4eec55e783afb44ace15bc479cce2134973b5efbe26f2e169960b270d0bb6992",
+    "south": "64f9cea9cf00ce4f17af472fbdc346b26e4e621feb7bfdf74d46aa8f31fd7484"
+   },
+   "jobs": [
+    "standtall_b1_rm_fuzzrunner_east",
+    "standtall_b1_rm_fuzzrunner_south",
+    "standtall_b1_rm_fuzzrunner_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.12,
+     "e_north": 1.056,
+     "e_south": 1.12,
+     "ns": 0.943,
+     "nsw": 1.02,
+     "w_north": 0.402,
+     "w_south": 0.394
+    }
+   },
    "live_sha": {
     "north": "3be3e066f4c459ae98fdaa68227002f9625761697aa96564836ac61551672d79",
     "south": "90099fd69d82e72f24ec0d03a63897fe871f16e4775fe2d65aee88fccffb7ec7"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 112,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Fuzzrunner",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rm_fuzzviper/rm_fuzzviper": {
    "attempts": 0,
