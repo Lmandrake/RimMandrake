@@ -76,13 +76,15 @@ PORTS = [
     {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Oomb.xml", "ours": "RM_Oomb",
      "donor": "AA_AcanthamoebaGiganteaLarge", "roster": "Defs/BiomeDefs/GelatinousSlime.xml",
      "placeholder_tex": {"Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea"}},  # one file holds both
+    # homes by card 2026-10-15 (Transient/phase0_twin_only_questions.md Q1 wuum, Q2 lesser oomb, Q4 greater oomb)
     {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Oomb.xml", "ours": "RM_LesserOomb",
-     "donor": "AA_AcanthamoebaGiganteaSmall", "roster": None,
-     "uncast_why": "home undecided (twin Wasteland vs round-2 Scarlands), Transient/phase0_twin_only_questions.md Q2",
+     "donor": "AA_AcanthamoebaGiganteaSmall", "roster": "Defs/BiomeDefs/GelatinousSlime.xml",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea"}},
+    {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Oomb.xml", "ours": "RM_GreaterOomb",
+     "donor": "AA_AcanthamoebaGiganteaHuge", "roster": "Defs/BiomeDefs/GelatinousSlime.xml",
      "placeholder_tex": {"Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea"}},
     {"mod": "GelatinousSlime", "file": "Defs/ThingDefs_Races/RM_Wuum.xml", "ours": "RM_Wuum",
-     "donor": "AA_GreenGoo", "roster": None,
-     "uncast_why": "RM_Gelatid already holds the Slime's substrate slot, Transient/phase0_twin_only_questions.md Q1",
+     "donor": "AA_GreenGoo", "roster": "Defs/BiomeDefs/GelatinousSlime.xml",
      "placeholder_tex": {"Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo"}},
 ]
 

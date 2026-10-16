@@ -192,10 +192,18 @@
       <RM_Fubbum>0.15</RM_Fubbum>
       <!-- GELATINOUSSLIME_DWOMMO_FLIER_1, // INVENTED: the flying aristocracy, low commonality -->
       <RM_Dwommo>0.2</RM_Dwommo>
-      <!-- Phase 0 twin-only ports (owner 2026-10-15, "port all"): the oomb, the resistant trash-eating native of
-           the_slime.md §4, at the twin's 0.15. Guarded on the donor until our art is installed at our own path
-           (the P3 convention); the wuum is NOT cast here (Transient/phase0_twin_only_questions.md Q1). -->
+      <!-- Phase 0 twin-only ports (owner 2026-10-15, "port all"; homes by card the same day,
+           Transient/phase0_twin_only_questions.md). Each row is guarded on the donor until our art is installed at
+           our own path (the P3 convention).
+           The oomb family, the resistant trash-eating native of the_slime.md §4: the oomb at the twin's 0.15; the
+           lesser oomb beside it (Q2 "The Slime, beside the oomb") at 0.2 and the greater oomb (Q4 "Port the greater
+           oomb too") at 0.05 - the Gappo family's lesser > middle > greater shape (RM_Oomb.xml has the arithmetic). -->
+      <RM_LesserOomb MayRequire="sarg.alphaanimals">0.2</RM_LesserOomb>
       <RM_Oomb MayRequire="sarg.alphaanimals">0.15</RM_Oomb>
+      <RM_GreaterOomb MayRequire="sarg.alphaanimals">0.05</RM_GreaterOomb>
+      <!-- The wuum (Q1 "Both, wuum rarer"): the part of the body that bites, beside the gelatid, which stays the
+           common harmless substrate. -->
+      <RM_Wuum MayRequire="sarg.alphaanimals">0.5</RM_Wuum>
       <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
            ecoSystemWeight of 6 means one titanoslime costs the map's animal
            budget what six gelatids would, so the spawner stops adding animals

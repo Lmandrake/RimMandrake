@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Phase 0 twin-only ports (owner 2026-10-15): the oomb and the lesser oomb eat filth, trash and grass off the
+<!-- Phase 0 twin-only ports (owner 2026-10-15): the lesser oomb, the oomb and the greater oomb eat filth, trash and grass off the
      ground through VEF's weird-eater think tree, as the donor did. Added only when that ThinkTreeDef exists in the
      loaded defs, so a load without the Vanilla Expanded Framework keeps the vanilla animal think tree (and the VEF
      comps on the defs are skipped by their own MayRequire). Same shape as Miasma/Patches/RM_DecayDrake_VEFThinkTree.xml. -->
@@ -16,6 +16,12 @@
         </li>
         <li Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_LesserOomb"]/race</xpath>
+          <value>
+            <thinkTreeMain>VEF_AnimalWeirdEater</thinkTreeMain>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_GreaterOomb"]/race</xpath>
           <value>
             <thinkTreeMain>VEF_AnimalWeirdEater</thinkTreeMain>
           </value>
