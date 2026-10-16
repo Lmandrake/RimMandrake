@@ -68,3 +68,6 @@ left behind: `RM_L2_deeplake_reload_check.rws`.
   `D:\Luke\dev\_rmscratch\bench_live_20261015_l2\saves_backup_pre_review`. `RM_L2_deeplake_reload_check.rws` is deleted
   from Saves.
 - KEYSHEET.md regenerated. ModsConfig restored (ee01dae9, verified); companion profile restored; game down; bridge released.
+
+## Owner review walk (2026-10-15)
+OWNER MODSCONFIG BACKUP (md5 ee01dae9) is at `/home/mandrake/rm/bench/Transient/bench_live_20261015_l2/ModsConfig.OWNER_BACKUP_before_review_walk.xml` and MUST be restored after his walk (live ModsConfig is the 23-mod ratchet_pilot+EP tier, game left running with the save loaded, paused).

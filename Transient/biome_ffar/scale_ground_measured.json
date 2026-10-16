@@ -266,5 +266,13 @@
    62
   ],
   "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_three_picks": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
  }
 }
