@@ -78,6 +78,11 @@ namespace RimMandrake.FloodedCanyon
         // canyon flood from a random seed. While it is valid the flood runs on ANY biome (the trigger is the map
         // maker's explicit choice), so a standing aimed flood is never torn down next tick by the biome gate.
         private IntVec3 aimedAt = IntVec3.Invalid;
+
+        // Last tick's Active (not saved: a load is not a switch-on). Off the canyon the clock idles while no trigger
+        // lifts the gate, so its next flood ages into the past; on the switch-on edge it gets a fresh period instead of
+        // playing the whole warning and the wall within a few ticks.
+        private bool wasActive = true;
         private IntVec3 roarCell = IntVec3.Invalid;
         private Sustainer roar;
 
@@ -177,15 +182,6 @@ namespace RimMandrake.FloodedCanyon
             return "OK flooding " + flooded + " cells from " + at + " until tick " + st.FloodEndTick;
         }
 
-        // A trigger placed on a map whose clock has idled (no canyon here, so nothing rescheduled it) would otherwise
-        // fire the instant it is placed. Give it a fresh period instead.
-        public void OnTriggerPlaced()
-        {
-            if (!CanyonGate && st.Phase == FloodPhase.Dry && st.NextFloodTick <= Find.TickManager.TicksGame)
-            {
-                ScheduleNextFlood();
-            }
-        }
 
         // Test surface: end a standing flood on the next tick, so the recede
         // (soil conversion + CRACKEDLANDS_MECHANICS_BUILD_1's fresh fossil
@@ -258,9 +254,15 @@ namespace RimMandrake.FloodedCanyon
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
+            bool active = Active;
+            if (active && !wasActive && !CanyonGate && st.Phase == FloodPhase.Dry && st.NextFloodTick <= now)
+            {
+                ScheduleNextFlood();
+            }
+            wasActive = active;
             FloodCfg cfg = new FloodCfg
             {
-                Active = Active,
+                Active = active,
                 FiveBeats = RM_FloodedCanyonSettings.fiveBeatsEnabled,
                 ChimeStaging = RM_FloodedCanyonSettings.chimeStagingEnabled,
                 PeakstormBias = RM_FloodedCanyonSettings.peakstormBiasEnabled,

@@ -33,15 +33,6 @@ namespace RimMandrake.FloodedCanyon.MapControls
 			// The flood clock (RM_MapComponent_CanyonFlood) drives a trigger; the flow pulse has nothing for it to do.
 		}
 
-		public override void SpawnSetup(Map map, bool respawningAfterLoad)
-		{
-			base.SpawnSetup(map, respawningAfterLoad);
-			if (!respawningAfterLoad)
-			{
-				map.GetComponent<RM_MapComponent_CanyonFlood>()?.OnTriggerPlaced();
-			}
-		}
-
 		private RM_MapComponent_CanyonFlood Flood => Map?.GetComponent<RM_MapComponent_CanyonFlood>();
 
 		public string Fire(bool warn)
