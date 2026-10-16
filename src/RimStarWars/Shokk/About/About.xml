@@ -36,9 +36,9 @@ mod's mechanics.
   `RSW_Shokk_FeraliskBrood.xml` (a DIFFERENT item, `FEVERWOOD_TWO_FRONT_LURE_1`
   — see that file's own header) — a hidden FactionDef the Fever Wood's
   `RM_MapComponent_TwoFrontLure` looks up by defName for its second raid
-  front. It lives in this mod, not `RM_FeverWood`, because it references the
-  donor `Wyyyschokk` PawnKindDef directly (genuine Star Wars IP, routed
-  through this RSW-tier mod per Q11a) — unrelated to the skin/mechanism split
+  front. It lives in this mod, not `RM_FeverWood`, because the Feralisk is the
+  canon Wyyyschokk name (genuine Star Wars IP, routed through this RSW-tier
+  mod per Q11a); it fields `RM_Ollathrix`, the donor is no longer referenced — unrelated to the skin/mechanism split
   above and untouched by `SHOKK_SKIN_SHRINK_1`.
 
 `RM_Ollathrix` is THE wyyyschokk (owner ruling 2026-10-03, `WYYYSCHOKK_IDENTITY_COLLISION_1`); no second

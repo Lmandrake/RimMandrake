@@ -6,11 +6,11 @@ RM_Ollathrix as the canon wyyyschokk, and one hidden FactionDef (RSW_Shokk_Feral
 looks up by defName. It has NO C# and NO Mod Settings class.
 
 CHAINS
-  defs_resolve     the FactionDef resolves live (parsed from the XML); the donor Wyyyschokk PawnKindDef it fields resolves;
+  defs_resolve     the FactionDef resolves live (parsed from the XML); the RM_Ollathrix PawnKindDef it fields resolves;
                    a control name reads notFound.
   skin_patch       RM_Ollathrix's ThingDef and PawnKindDef carry the wyyyschokk label and plural after the patch; a
                    never-patched control def reads a different label (the reader can say "different").
-  feralisk_brood   the faction is hidden, a permanent enemy, animal tech and fields the Wyyyschokk in its Combat group.
+  feralisk_brood   the faction is hidden, a permanent enemy, animal tech and fields RM_Ollathrix (THE wyyyschokk) in its Combat group.
   settings         there is no settings class by design: asserted from the folder, not assumed.
   two_front_lure   the Fever Wood second raid front firing this faction: UNMEASURED (needs a Fever Wood raid).
 
@@ -81,14 +81,14 @@ def static_checks():
     for k, v in (("hidden", "true"), ("permanentEnemy", "true"), ("techLevel", "Animal"), ("categoryTag", "FeverWoodTwoFrontRaiders")):
         if fac.findtext(k) != v:
             bad.append("faction %s is %r, expected %r" % (k, fac.findtext(k), v))
-    if fac.find("pawnGroupMakers/li/options/Wyyyschokk") is None:
-        bad.append("faction does not field the Wyyyschokk")
+    if fac.find("pawnGroupMakers/li/options/RM_Ollathrix") is None:
+        bad.append("faction does not field RM_Ollathrix")
     # the lure component looks the faction up by this exact name
     lure = os.path.join(SRC, "RimMandrake", "FeverWood", "Source", "RM_MapComponent_TwoFrontLure.cs")
     if os.path.isfile(lure) and '"%s"' % FACTION not in open(lure, encoding="utf-8").read():
         bad.append("the Fever Wood lure no longer names %s" % FACTION)
     about = open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8").read()
-    for pid in ("mandrake.rm.biomes", "mlie.starwarsanimalcollection"):
+    for pid in ("mandrake.rm.biomes",):
         if "<packageId>%s</packageId>" % pid not in about:
             bad.append("About.xml lost dependency %s" % pid)
     if not os.path.isfile(os.path.join(SRC, "..", "design", "validation_walks", "RimStarWars", "Shokk.md")):
@@ -154,12 +154,12 @@ def _build_suite():
                 if not isinstance(r, dict) or r.get("success") is False:
                     raise ExpectationFailed("get_defs failed: %r" % r)
                 if r.get("notFound") or int(r.get("foundCount", 0)) != len(names):
-                    raise ExpectationFailed("shipped defs did not resolve (is mlie.starwarsanimalcollection loaded? the "
+                    raise ExpectationFailed("shipped defs did not resolve (is mandrake.rm.webwork loaded? the "
                                             "FactionDef is MayRequire it): %r" % r)
-        with t.component("donor_wyyyschokk_kind_resolves", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/Wyyyschokk;ThingDef/RM_Ollathrix", fields="defName", limit=4)
+        with t.component("ollathrix_kind_resolves", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/RM_Ollathrix;ThingDef/RM_Ollathrix", fields="defName", limit=4)
             if _live(t) and (not isinstance(r, dict) or r.get("notFound") or int(r.get("foundCount", 0)) != 2):
-                raise ExpectationFailed("the donor Wyyyschokk kind or the RM_Ollathrix race is absent: %r" % r)
+                raise ExpectationFailed("the RM_Ollathrix kind or race is absent: %r" % r)
 
     @suite.chain("skin_patch")
     def skin_patch(t):

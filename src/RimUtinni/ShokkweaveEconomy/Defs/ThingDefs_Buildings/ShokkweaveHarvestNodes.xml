@@ -83,11 +83,11 @@
        a base-game/Anomaly asset, always present) as placeholder art, flagged;
        real bespoke silk-lair art is owed.
 
-       MayRequire guards the WHOLE def: it references the donor mod's own
-       Wyyyschokk PawnKindDef as its guardian, so if
-       mlie.starwarsanimalcollection is absent this def (and its cross-refs)
-       must not exist at all, not merely fail to resolve one field. -->
-  <ThingDef ParentName="BuildingNaturalBase" MayRequire="mlie.starwarsanimalcollection">
+       MayRequire guards the WHOLE def: its guardian is RM_Ollathrix (mandrake.rm.webwork),
+       so if that mod is absent this def (and its cross-refs) must not exist at all.
+       SWAC PHASE 0 (2026-10-15): the guardian was the donor Wyyyschokk; RM_Ollathrix IS
+       the wyyyschokk (owner ruling 2026-10-03, WYYYSCHOKK_IDENTITY_COLLISION_1). -->
+  <ThingDef ParentName="BuildingNaturalBase" MayRequire="mandrake.rm.webwork">
     <defName>RUT_Webwork_Nest</defName>
     <label>shokkweave nest</label>
     <description>The heart of a Wyyyschokk's territory: silk and old kills, packed and hardened into something like a wall. Breaking it open is a fight, and a fortune - the mother does not leave a nest undefended.</description>
@@ -161,7 +161,7 @@
       </li>
       <li Class="CompProperties_SpawnerPawn">
         <spawnablePawnKinds>
-          <li>Wyyyschokk</li>
+          <li>RM_Ollathrix</li>
         </spawnablePawnKinds>
         <!-- LordJob_DefendAndExpandHive (RimSage-verified constructor takes
              SpawnedPawnParams) is used for its DEFEND half only - no
@@ -170,13 +170,14 @@
              point that escalates to aggressive/assault when harmed, which is
              exactly the "defensive creature response" this route needs. -->
         <lordJob>LordJob_DefendAndExpandHive</lordJob>
-        <!-- Wyyyschokk PawnKindDef combatPower is 600 (vendor source,
-             mlie.starwarsanimalcollection) - initialPawnsPoints spawns one
-             guardian immediately; maxSpawnedPawnsPoints leaves room for a
-             second if the first falls. INVENTED point budget, not a
-             balance ruling. -->
-        <initialPawnsPoints>600</initialPawnsPoints>
-        <maxSpawnedPawnsPoints>1200</maxSpawnedPawnsPoints>
+        <!-- RM_Ollathrix PawnKindDef combatPower is 160 (the donor Wyyyschokk's was 600) -
+             initialPawnsPoints spawns one guardian immediately; maxSpawnedPawnsPoints
+             leaves room for a second if the first falls. The budget was rescaled
+             600/1200 -> 160/320 so the nest keeps the SAME shape (one guardian, room
+             for one more) after the repoint. INVENTED point budget, not a balance
+             ruling. -->
+        <initialPawnsPoints>160</initialPawnsPoints>
+        <maxSpawnedPawnsPoints>320</maxSpawnedPawnsPoints>
         <lordJoinRadius>10</lordJoinRadius>
       </li>
     </comps>

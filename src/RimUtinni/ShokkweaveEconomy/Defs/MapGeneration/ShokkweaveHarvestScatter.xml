@@ -38,7 +38,7 @@
     </genStep>
   </GenStepDef>
 
-  <GenStepDef MayRequire="mlie.starwarsanimalcollection">
+  <GenStepDef MayRequire="mandrake.rm.webwork">
     <defName>RUT_WebworkNestScatter</defName>
     <order>324</order>
     <genStep Class="RimMandrake.Utinni.ShokkweaveEconomy.GenStep_ScatterWebworkSilk">
