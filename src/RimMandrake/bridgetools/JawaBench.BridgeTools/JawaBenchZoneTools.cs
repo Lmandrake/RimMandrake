@@ -307,6 +307,40 @@ namespace JawaBench.BridgeTools
                 if (stack.Count >= BillStack.MaxCount)
                     return Fail($"'{giverId}' already has {stack.Count}/{BillStack.MaxCount} bills - the stack is full.");
 
+                // A SURGERY on a pawn must be a Bill_Medical, made the way the health tab makes it
+                // (HealthCardUtility.CreateSurgeryBill). LIVE modcheck6 2026-10-16: a Bill_Production
+                // for RM_ExtractGenomeSample was worked to the end by a doctor, but only
+                // Bill_Medical.Notify_IterationCompleted calls RecipeWorker.ApplyOnPawn, so the
+                // surgery never applied (no BloodLoss, no sample) and the bill stayed on the stack.
+                if (thing is Pawn patient && rd.IsSurgery)
+                {
+                    if (repeatMode != null || repeatCount.HasValue || targetCount.HasValue || storeMode != null
+                        || qualityMin != null || qualityMax != null)
+                        return Fail($"'{rd.defName}' is a surgery: it makes a Bill_Medical, which has no " +
+                                    "repeat/store/quality fields. Omit them and retry. Nothing changed.");
+                    BodyPartRecord part = null;
+                    if (rd.targetsBodyPart)
+                    {
+                        part = rd.Worker.GetPartsToApplyOn(patient, rd).FirstOrDefault();
+                        if (part == null)
+                            return Fail($"'{rd.defName}' targets a body part and '{giverId}' has none it applies to. Nothing changed.");
+                    }
+                    var med = HealthCardUtility.CreateSurgeryBill(patient, rd, part, null, false);
+                    med.suspended = suspended;
+                    return new
+                    {
+                        success = true,
+                        message = $"Surgery bill (Bill_Medical) for '{rd.defName}' added to '{giverId}' at index {stack.IndexOf(med)}.",
+                        giverId,
+                        recipe = rd.defName,
+                        billClass = med.GetType().Name,
+                        part = part?.Label,
+                        billIndex = stack.IndexOf(med),
+                        billCount = stack.Count,
+                        suspended = med.suspended
+                    };
+                }
+
                 var bill = new Bill_Production(rd);
                 bill.suspended = suspended;
 
