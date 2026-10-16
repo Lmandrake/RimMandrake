@@ -48,6 +48,62 @@ def slug(s: str) -> str:
 
 # ─────────────────────────────────────────────────────────────── inputs ──
 
+def _src_size(defname: str):
+    """Size for a def the live dump does not have (every new RM_/RSW_ port): read it from the def's own XML in src/.
+    Plant: drawSize x visualSizeRange MAX (the mature draw). Building/item: size + drawSize. Animal: the PawnKindDef's
+    last lifeStage bodyGraphicData drawSize. None when the XML cannot say (the caller keeps the loud FALLBACK)."""
+    import subprocess
+    import xml.etree.ElementTree as ET
+    root = Path(__file__).resolve().parents[4]
+    hits = subprocess.run(["grep", "-rlF", f"<defName>{defname}</defName>", str(root / "src"), "--include=*.xml"],
+                          capture_output=True, text=True).stdout.split()
+
+    def vec(t, default=None):
+        try:
+            a = [float(x) for x in re.findall(r"-?\d+\.?\d*", t or "")]
+            return [a[0], a[1]] if len(a) >= 2 else default
+        except Exception:
+            return default
+    for h in hits:
+        try:
+            tree = ET.parse(h)
+        except ET.ParseError:
+            continue
+        for td in tree.getroot().iter("ThingDef"):
+            if (td.findtext("defName") or "").strip() != defname:
+                continue
+            rel = h.split("/rm/foundry/")[-1]
+            ds = vec(td.findtext("graphicData/drawSize"))
+            if td.find("race") is not None:
+                for kd in tree.getroot().iter("PawnKindDef"):
+                    if (kd.findtext("race") or "").strip() == defname:
+                        for li in reversed(list(kd.find("lifeStages") or [])):
+                            d = vec(li.findtext("bodyGraphicData/drawSize"))
+                            if d:
+                                return {"status": "authored-from-src", "kind": "animal", "def": defname, "drawSize": d,
+                                        "bodySize": None, "cells": max(d), "mesh": 1, "quad": max(d), "color": [1, 1, 1],
+                                        "source": f"SRC XML {rel} PawnKindDef {kd.findtext('defName')} last lifeStage drawSize (not in the live dump)"}
+                return None
+            vr = td.findtext("plant/visualSizeRange")
+            if td.find("plant") is not None and vr:
+                v = [float(x) for x in re.findall(r"\d+\.?\d*", vr)]
+                vmax = max(v)
+                d = ds or [1.0, 1.0]
+                q = d[0] * vmax
+                return {"status": "authored-from-src", "kind": "plant", "def": defname, "drawSize": d, "visualMax": vmax,
+                        "mesh": 1, "color": [1, 1, 1], "quad": q, "cells": q,
+                        "source": f"SRC XML {rel}: drawSize {d[0]:g} x visualSizeRange {vr.strip()} (drawn at the MAX {vmax:g}; "
+                                  f"smaller plants draw down to {min(v):g}); not in the live dump"}
+            sz = vec(td.findtext("size"), [1, 1])
+            d = ds or [1.0, 1.0]
+            return {"status": "authored-from-src", "kind": "thing", "category": "Building", "def": defname,
+                    "drawSize": d, "footprint": [int(sz[0]), int(sz[1])], "offset": [0.0, 0.0],
+                    "graphicClass": (td.findtext("graphicData/graphicClass") or "").rsplit(".", 1)[-1], "color": [1, 1, 1],
+                    "quad": d[0], "cells": float(max(sz)), "mesh": 1,
+                    "source": f"SRC XML {rel}: size {int(sz[0])}x{int(sz[1])}, drawSize {d[0]:g}x{d[1]:g} (not in the live dump)"}
+    return None
+
+
 def _job_or_none(jid: str):
     try:
         return AS._job(jid)
@@ -145,6 +201,8 @@ def questions(args, R, idx, order, slots) -> list[dict]:
         td = R._def(q["def"], "ThingDef") or {}
         q["label"] = td.get("label") or q["def"]
         q["size"] = R.size(AS.subject_row(R, q["def"]))
+        if q["size"].get("status") == "fallback":
+            q["size"] = _src_size(q["def"]) or q["size"]
         # installed now: the picture at the job's target texPath, else what the def draws today (its own texPath —
         # a port may have renamed it, so the donor texPath the render replaces has no file of ours)
         own = [r["res"] for r in AS.subject_row(R, q["def"])["art"]["resources"] if r["role"] == "body"]
