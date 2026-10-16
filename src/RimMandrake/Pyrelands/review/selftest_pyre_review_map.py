@@ -68,6 +68,13 @@ check(any("has no sign" in p for p in H.layout_check(bad)), "can fail: a station
 ops = H.label_ops(S).split("\n")
 signed = [o for o in ops if o.split("|")[2].split("  ")[0].isdigit() and "DECIDE:" in o.split("|")[3]]
 check(len(signed) == len(S), "every station's title label carries its LOOK/DO/DECIDE sign (%d of %d)" % (len(signed), len(S)))
+books = H.sign_ops(S)
+cells = [tuple(int(v) for v in b.split("|")[:2]) for b in books]
+inside = [c for c in cells if any(H._overlap(H.footprint(t), (c[0], c[1], 1, 1)) for t in S)]
+check(len(books) == len(S) + 6 and all(b.split("|")[2].startswith("SIGN ") for b in books) and not inside
+      and len(set(cells)) == len(cells) and all(0 <= x < H.MAP_SIZE and 0 <= z < H.MAP_SIZE for x, z in cells),
+      "one SIGN book a station + 6 boards, each on its own free cell outside every station (inside: %s)" % inside)
+check(all("DECIDE:" in b.split("|")[3] for b in books), "every sign book carries LOOK/DO/DECIDE in its body")
 fur = [s for s in S if s["setup"].get("chill") is not None]
 check(len(fur) == 2 and any(s["setup"].get("pawns") for s in fur) and any(not s["setup"].get("pawns") for s in fur),
       "the furnace-beast pen and its empty control pen are both chilled (got %s)" % [s["n"] for s in fur])
