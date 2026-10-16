@@ -1156,11 +1156,27 @@ def label_ops(S, st, doc, m=None):
     return "\n".join(L)
 
 
-def sign_ops(S):
+def vis_sign_ops(doc):
+    """One sign book per VISUALS plot (keys V1..Vn, walking order), on the gap row just north of the plot's west corner,
+    where its tiny label already sits. The standard (biome_review_save_standard.md §7) wants a book at every station."""
+    L = []
+    for i, v in enumerate((doc or {}).get("stations", []), 1):
+        ox, oz = VIS.origin_of(v, *VIS_BASE)
+        s = v["setup"]
+        name = "Pit D%d %s %s" % (s["pit"]["depth"], VIS.GROUNDS[s["ground_kind"]]["words"], v["id"].split("_")[1])
+        L.append(RM.sign_book(ox, oz + VIS.PLOT_H, "V%d" % i, name[:24], v["title"], v["what_to_notice"],
+                              "zoom in and compare this pit with its row neighbours",
+                              "does this pit read right for its depth, ground and fill?",
+                              more="Key sheet: visuals block V (%s)." % v["id"]))
+    return L
+
+
+def sign_ops(S, doc=None):
     """The signs that live IN the save (BENCH 2026-10-15: they must survive a plain load with no agent): one vanilla
     Novel a built station on the gap cell north of its NW corner (modcheck/reviewmap.sign_book; jawa/review_sign).
-    Mouse over it for the DO line, press i for the whole sign. NOT BUILT placeholders get none."""
-    L = []
+    Mouse over it for the DO line, press i for the whole sign. NOT BUILT placeholders get none. With `doc`, the
+    visuals block's plots get theirs too (vis_sign_ops)."""
+    L = vis_sign_ops(doc)
     for s in S:
         if s["placeholder"]:
             continue
@@ -1895,8 +1911,8 @@ def main(argv=None):
         vis_ok = R.verify_visuals(doc) if a.only in (None, "visuals") and doc else None
         gal_ok = R.verify_gallery(S) if a.only in (None, "gallery") else None
         R.labels(S, st, doc)
-        sg = RM.place_signs(R.B, sign_ops(S))
-        if sg.get("count") != len(sign_ops(S)):
+        sg = RM.place_signs(R.B, sign_ops(S, doc if a.only in (None, "visuals") else None))
+        if sg.get("count") != len(sign_ops(S, doc if a.only in (None, "visuals") else None)):
             R.notes.append("sign books: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
         R.B.call("jawa/clear_ui", all=True)          # the debug log auto-opens on a fresh map
         R.goto(S, "V")

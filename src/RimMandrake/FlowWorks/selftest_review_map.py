@@ -214,6 +214,14 @@ inside = [c for c in bc if any(t["origin"][0] <= c[0] < t["origin"][0] + R.SW an
                                for t in S)]
 check(len(books) == len(built) and not inside and len(set(bc)) == len(bc) and all(b.split("|")[2].startswith("SIGN ") for b in books),
       "sign books: %d for %d built stations; inside a footprint: %s" % (len(books), len(built), inside[:5]))
+vdoc = {"stations": R.VIS.stations()}
+vb = R.vis_sign_ops(vdoc)
+vc = [tuple(int(v) for v in b.split("|")[:2]) for b in vb]
+vin = [c for c in vc for v in vdoc["stations"] for o in [R.VIS.origin_of(v, *R.VIS_BASE)]
+       if o[0] <= c[0] < o[0] + R.VIS.PLOT_W and o[1] <= c[1] < o[1] + R.VIS.PLOT_H]
+check(len(vb) == len(vdoc["stations"]) and not vin and len(set(vc + bc)) == len(vc) + len(bc)
+      and all(len(b.split("|")[2]) > 0 for b in vb), "visuals sign books: %d for %d plots; inside a plot: %s"
+      % (len(vb), len(vdoc["stations"]), vin[:5]))
 pl = [(st_, None, dict(label=(20 + 30 * i, 40))) for i, st_ in enumerate(RV.STATIONS)]
 check(len(RV.sign_ops(pl)) == len(RV.STATIONS), "map R: one sign book a river station")
 
