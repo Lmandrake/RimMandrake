@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Glasmaw - PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner 2026-10-16: "Star Wars will have a very few canon plants, and those can just be reskins of non-canon versions we create in the Baroque Biomes"; by card "Invent 7 new Baroque bases").
+  Invented, franchise-free base whose growth, harvest and stats are copied 1:1 from the canon RSW_Plant_TookeTrap_Wild
+  (SWBestiary RSW_DonorPack_P1_Plants.xml), which is now a pure reskin of this def (ParentName="RM_Glasmaw").
+  Home: RM_Webwork, beside (not replacing) RM_Kessaroth, the free tier snap-trap. TEMP ART: vanilla placeholders.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase" Name="RM_Glasmaw">
+    <defName>RM_Glasmaw</defName>
+    <label>wild glasmaw</label>
+    <description>A small carnivorous plant: a rosette of translucent, glassy cup-traps on short stalks, toothed at the rims and faintly lit green-amber from within. It eats insects, and is grown for its looks - though people who live near the thickets say there are bigger ones that do not stop at insects.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Beauty>20</Beauty>
+      <BeautyOutdoors>20</BeautyOutdoors>
+      <Nutrition>0.25</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP placeholder (vanilla); base art pending owner review -->
+      <texPath>Things/Plant/BerryPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <ingestible />
+    <plant>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>150</wildClusterWeight>
+      <sowTags Inherit="False" />
+      <sowResearchPrerequisites Inherit="False" />
+      <growDays>3</growDays>
+      <growMinGlow>0.1</growMinGlow>
+      <growOptimalGlow>1.0</growOptimalGlow>
+      <allowAutoCut>false</allowAutoCut>
+      <immatureGraphicPath>Things/Plant/BerryPlant</immatureGraphicPath>
+      <harvestTag>Standard</harvestTag>
+      <drugForHarvestPurposes>True</drugForHarvestPurposes>
+      <harvestedThingDef>RM_RawGlasmawRoot</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <visualSizeRange>0.3~1.0</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Beauty</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase" Name="RM_RawGlasmawRoot">
+    <defName>RM_RawGlasmawRoot</defName>
+    <label>glasmaw root</label>
+    <description>Raw glasmaw root. Emergency animal feed, and little else.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <!-- TEMP placeholder (vanilla) -->
+      <texPath>Things/Item/Resource/PlantFoodRaw/Hay</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.3</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>1.3</Flammability>
+      <Nutrition>1.0</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>PlantMatter</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <optimalityOffsetFeedingAnimals>7</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+
+</Defs>
