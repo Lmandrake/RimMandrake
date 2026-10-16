@@ -295,16 +295,18 @@ SETUPS = {
                         dig=[(1, 6, 14, 1, 2)], try_=["dev: start a canyon flood upstream: it runs down the canal"],
                         look="weak spot: the flood wiping the canal flat instead of running in it"),
     "flow_slime": dict(short="Slime is nearly uncrossable", notice="a canal three wide, brim-full of green slime; one "
-                       "colonist waits on the south bank, another stands stuck in the middle of it",
-                       dig=[(0, 5, 16, 3, 2)], fluid=[(0, 5, 16, 3, 2, "RM_Fluid_SlimeGreen")],
+                       "colonist waits on the south bank, another stands stuck in the middle of it; a natural slime pool, undug, top right",
+                       terrain=[("RM_SlimeGreenShallow", 11, 10, 5, 3)], dig=[(0, 5, 16, 3, 2)], fluid=[(0, 5, 16, 3, 2, "RM_Fluid_SlimeGreen")],
                        pawns=[("Colonist", 8, 2, "player", "drafted"), ("Colonist", 4, 6, "player", "drafted")],
-                       marks=[(8, 1, "cross"), (8, 11, "to here"), (4, 9, "stuck")],
+                       marks=[(8, 1, "cross"), (8, 11, "to here"), (4, 9, "stuck"), (13, 13, "natural")],
                        try_=["unpause, order the bank colonist to the far mark: he walks round the canal's end rather "
                              "than wade three cells of slime",
                              "order him onto a slime cell instead: he wades in and keeps stopping, 'Slipped in the green "
                              "slime' over his head each time",
                              "undraft the stuck one: every slip on the climb out says 'Slid back into the green slime' and "
                              "he starts the climb again; getting out takes many seconds",
+                             "order the bank colonist into the natural pool (owner 2026-10-16: \"Natural slime should also be "
+                             "slippery.\"): he slips there too, but never slides back (no climb out of undug ground)",
                              "Mod Settings > Slime is so slippery it is nearly impossible to cross OFF: both just wade"],
                        look="weak spot: a colonist who stops with no text over him; one who walks across at tar speed; "
                             "a climb out that never ends"),

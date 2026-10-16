@@ -453,8 +453,8 @@ LIQUID_ROWS = {
             "skin so much as insist on it."
         ),
         "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
-        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] Heavy (water's shallow is 30; tar's 300 is far thicker)
-        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "native_overrides_shallow": {"pathCost": 200},  # SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: the canal slime trace's cost; deep = its brim 450
+        "native_overrides_deep": {"pathCost": 450, "passability": "Standable"},
         "extension": {
             "viscosityClass": "heavy",
             "pH": 4,
@@ -474,8 +474,8 @@ LIQUID_ROWS = {
             "immersed in it for long comes out the way it went in."
         ),
         "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
-        "native_overrides_shallow": {"pathCost": 40},
-        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "native_overrides_shallow": {"pathCost": 200},
+        "native_overrides_deep": {"pathCost": 450, "passability": "Standable"},
         "extension": {
             "viscosityClass": "heavy",
             "pH": 9,  # [INVENTED] basic-leaning, below the >10 corrosion threshold — irritant, not corrosive
@@ -500,8 +500,8 @@ LIQUID_ROWS = {
         # and LiquidIgnitionMapComponent's trigger-gated ignition is meant
         # to be the only route in.
         "native_overrides": {"canFreeze": False, "extinguishesFire": False, "waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
-        "native_overrides_shallow": {"pathCost": 40},
-        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "native_overrides_shallow": {"pathCost": 200},
+        "native_overrides_deep": {"pathCost": 450, "passability": "Standable"},
         "extension": {
             "viscosityClass": "heavy",
             "pH": 7,
@@ -530,8 +530,8 @@ LIQUID_ROWS = {
         # deliberately touches nothing else, so a copy of this block that
         # changes only description/color/extension is a complete new row.
         "native_overrides": {"waterBodyType": "None"},  # not water: None keeps it out of WaterBodyTracker/fishing (the tar fix, 2026-10-11)
-        "native_overrides_shallow": {"pathCost": 40},  # [INVENTED] matches RED/GREEN/WHITE's own shallow tier
-        "native_overrides_deep": {"pathCost": 300, "passability": "Standable"},
+        "native_overrides_shallow": {"pathCost": 200},  # [INVENTED] matches RED/GREEN/WHITE's own shallow tier
+        "native_overrides_deep": {"pathCost": 450, "passability": "Standable"},
         "extension": {
             "viscosityClass": "heavy",  # documents viscosity even though nothing else on this row is hazardous
             "pH": 6,  # [INVENTED] mildly acidic, mucus-typical, well inside the neutral 4..10 band

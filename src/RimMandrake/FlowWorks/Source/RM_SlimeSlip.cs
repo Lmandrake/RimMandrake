@@ -12,7 +12,9 @@ namespace RimMandrake.FlowWorks
 	/// text mote over it, so nobody is ever slowed without a readable sign. A slip on a step toward shallower ground (the
 	/// climb out) also slides it back to the start of that step. Route planning avoids slime through the fill terrains'
 	/// own pathCost (FlowWorks_SlimeTerrain.xml). Mod Setting slimeSlipEnabled (off: slime is just a thick liquid).
-	/// Scope: dug cells holding a slippery fill (canals, pits). Natural slime pools are not excavated cells and do not slip.
+	/// Scope: dug cells holding a slippery fill (canals, pits), and natural slime ground (owner, 2026-10-16: "Natural slime
+	/// should also be slippery."): any TerrainDef carrying <see cref="RM_SlipperyTerrain"/> (Patches/Canals/
+	/// RM_SlipperySlimeGround.xml). Natural ground has no climb, so there a slip only stuns.
 	/// </summary>
 	public static class RM_SlimeSlip
 	{
@@ -38,13 +40,20 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				IntVec3 c = p.Position;
-				if (!ex.IsExcavated(c))
+				if (Pits.RM_PitCoverUtility.IsCovered(map, c))
 				{
 					continue;
 				}
-				int fill = ex.FillAt(c);
-				if (fill <= 0 || Pits.RM_PitCoverUtility.IsCovered(map, c))
+				int fill = ex.IsExcavated(c) ? ex.FillAt(c) : 0;
+				if (fill <= 0)
 				{
+					// natural slime ground: no fill, no climb
+					RM_SlipperyTerrain ground = NaturalSlime(map, c);
+					if (ground != null && Rand.Chance(RM_SlimeMath.SlipChance(ground.slipperiness, 1, 1, false, false,
+						RimMandrakeFlowWorksSettings.slimeSlipChanceMultiplier, 1f)))
+					{
+						Slip(p, map, (map.terrainGrid.TerrainAt(c).label ?? "slime").Split(',')[0], false);
+					}
 					continue;
 				}
 				FluidDef fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
@@ -61,11 +70,18 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				Slip(p, map, fluid, climbingOut);
+				Slip(p, map, fluid.label ?? "slime", climbingOut);
 			}
 		}
 
-		private static void Slip(Pawn p, Map map, FluidDef fluid, bool climbingOut)
+		/// <summary>The natural slime ground at <paramref name="c"/>, or null (dry, or not slime).</summary>
+		public static RM_SlipperyTerrain NaturalSlime(Map map, IntVec3 c)
+		{
+			RM_SlipperyTerrain e = map.terrainGrid.TerrainAt(c)?.GetModExtension<RM_SlipperyTerrain>();
+			return e != null && e.slipperiness > 0f ? e : null;
+		}
+
+		private static void Slip(Pawn p, Map map, string what, bool climbingOut)
 		{
 			p.stances.stunner.StunFor(RM_SlimeMath.StunTicks(RimMandrakeFlowWorksSettings.slimeSlipStunSeconds), null,
 				addBattleLog: false, showMote: false);
@@ -73,7 +89,6 @@ namespace RimMandrake.FlowWorks
 			{
 				p.pather.nextCellCostLeft = p.pather.nextCellCostTotal;   // slid back to the start of the climb
 			}
-			string what = fluid.label ?? "slime";
 			MoteMaker.ThrowText(p.DrawPos + new Vector3(0f, 0f, 0.5f), map,
 				climbingOut ? "Slid back into the " + what : "Slipped in the " + what, SlipText, 3.5f);
 			int id = p.thingIDNumber;
@@ -102,10 +117,13 @@ namespace RimMandrake.FlowWorks
 				IntVec3 c = p.Position;
 				int id = p.thingIDNumber;
 				bool inLiquid = ex.IsExcavated(c) && ex.FillAt(c) > 0;
-				if (!inLiquid && !slips.ContainsKey(id)) continue;
+				RM_SlipperyTerrain ground = inLiquid ? null : NaturalSlime(map, c);
+				if (!inLiquid && ground == null && !slips.ContainsKey(id)) continue;
 				FluidDef f = inLiquid ? (ex.FluidAt(c) ?? ex.ActiveFluid) : null;
+				float slip = f?.slipperiness ?? ground?.slipperiness ?? 0f;
 				rows.Add(p.ThingID + "@" + c.x + "," + c.z + " D=" + ex.DepthAt(c) + " F=" + ex.FillAt(c)
-					+ " fluid=" + (f?.defName ?? "none") + " slip=" + (f?.slipperiness ?? 0f).ToString("F2")
+					+ " fluid=" + (f?.defName ?? "none") + " ground=" + (ground != null ? map.terrainGrid.TerrainAt(c).defName : "none")
+					+ " slip=" + slip.ToString("F2")
 					+ " slips=" + (slips.TryGetValue(id, out int n) ? n : 0)
 					+ " climbSlips=" + (climbSlips.TryGetValue(id, out int m) ? m : 0)
 					+ " moving=" + (p.pather?.Moving ?? false));
@@ -113,5 +131,12 @@ namespace RimMandrake.FlowWorks
 			return "SLIME " + rows.Count + " enabled=" + RimMandrakeFlowWorksSettings.slimeSlipEnabled + " | "
 				+ string.Join(" | ", rows);
 		}
+	}
+
+	/// <summary>SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (owner 2026-10-16: "Natural slime should also be slippery."): marks a natural
+	/// TerrainDef as slime that slips, 0..1. Added by Patches/Canals/RM_SlipperySlimeGround.xml.</summary>
+	public class RM_SlipperyTerrain : DefModExtension
+	{
+		public float slipperiness = 1f;
 	}
 }

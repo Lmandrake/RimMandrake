@@ -1643,7 +1643,8 @@ def slime_slip(t):
     """SLIME_CROSSING_BUILD_SLIPPERY_SLOPE first script. Owner: "Slime has the particular property of being so slippery
     that it is nearly impossible to cross, and escape from the pit takes a great deal of time." A colonist ordered along a
     slime-filled canal slips (counted by RM_SlimeSlip's census; every slip also throws a "Slipped in the ..." text mote);
-    the same walk in a water canal never slips. OFF: no slip."""
+    natural (undug) slime ground slips too (owner 2026-10-16: "Natural slime should also be slippery."), never with a
+    climb-out slide. OFF: no slip."""
     x0, z0 = _prep_plot(t, "G")
     cells, pid = _slime_canal(t, x0, z0)
     with t.component("slime_slips_the_wader", toggle="slimeSlipEnabled"):
@@ -1663,7 +1664,22 @@ def slime_slip(t):
             if t._guard():
                 _expect("enabled=False" in rep, "setting not off in the census: %r" % rep[:120])
                 _expect(int(row.get("slips", 0)) == 0, "slipped with slimeSlipEnabled OFF: %r" % row)
+    with t.component("natural_slime_slips", toggle="slimeSlipEnabled"):
+        # owner 2026-10-16: "Natural slime should also be slippery." A natural (undug) green slime pool strip, painted.
+        strip = [(x0 + 4 + i, z0 + 10) for i in range(8)]
+        t.bridge_call("jawa/set_terrain_batch", ops="RM_SlimeGreenShallow:%d,%d,8,1" % (strip[0][0], strip[0][1]))
+        pn = _spawn_pawn_at(t, "Colonist", strip[0][0], strip[0][1])
+        t.bridge_call("jawa/pawn_gear", pawn=pn, action="clear")
+        _slime_report(t, "reset")
+        _march(t, pn, strip[-1][0], strip[-1][1], 20 * 60)
+        row = _fx_row(_slime_report(t), pn)
+        if t._guard():
+            _expect(row.get("ground") == "RM_SlimeGreenShallow" or int(row.get("slips", 0)) > 0,
+                    "colonist not on the natural slime in the census: %r" % row)
+            _expect(int(row.get("slips", 0)) > 0, "20 s of walking on natural slime and no slip: %r" % row)
+            _expect(int(row.get("climbSlips", 0)) == 0, "a climb-out slip on natural ground (no climb there): %r" % row)
     t.bridge_call("jawa/destroy_batch", rects=_rect(x0, z0, PW, PH), categories="All")
+
 
 def _count(t, def_name, x, z, w, h):
     """Spawned things of `def_name` in a rect (jawa/list_things); None offline / unanswered."""
