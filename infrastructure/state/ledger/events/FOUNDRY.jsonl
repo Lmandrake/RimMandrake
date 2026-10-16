@@ -5832,3 +5832,24 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-16T11:57:40Z","tsn":1792151860159999251}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-16T11:57:41Z","tsn":1792151861473407655}
 {"seat":"FOUNDRY","event":"file","id":"FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION","title":"Dhoggur: he says 'seems cool' but it has no description or way to assign/use it; Jobbosh insufficiently alien (drop if not needed); ask which fills the forge slot","kind":"task","target":"v1","needs":"owner","spec":"Transient/biome_ffar/phase0_remaining_art_sheet_2026-10-16.decisions.json","for":"BENCH","why":"Owner's sheet notes on Dhoggur and Jobbosh 2026-10-16 are comments, not instructions; needs his pick","ts":"2026-10-16T12:17:00Z","tsn":1792153020101079765}
+{"seat":"FOUNDRY","event":"lease","id":"BEZZUL_DELETE_NOT_NEEDED_ANYMORE","action":"take","token":"FOUNDRY.pid39464.910b7fe8","expires":"2026-10-16T13:05:16Z","ts":"2026-10-16T12:20:16Z","tsn":1792153216631220710}
+{"seat":"FOUNDRY","event":"claim","id":"BEZZUL_DELETE_NOT_NEEDED_ANYMORE","ts":"2026-10-16T12:20:16Z","tsn":1792153216996190549}
+{"seat":"FOUNDRY","event":"start","id":"BEZZUL_DELETE_NOT_NEEDED_ANYMORE","ts":"2026-10-16T12:20:17Z","tsn":1792153217297264388}
+{"seat":"FOUNDRY","event":"lease","id":"PLUURVA_DECIDE_OLD_DUPLICATE","action":"take","token":"FOUNDRY.pid39466.14c6761e","expires":"2026-10-16T13:05:18Z","ts":"2026-10-16T12:20:18Z","tsn":1792153218593743278}
+{"seat":"FOUNDRY","event":"claim","id":"PLUURVA_DECIDE_OLD_DUPLICATE","ts":"2026-10-16T12:20:18Z","tsn":1792153218896499880}
+{"seat":"FOUNDRY","event":"start","id":"PLUURVA_DECIDE_OLD_DUPLICATE","ts":"2026-10-16T12:20:19Z","tsn":1792153219237080513}
+{"seat":"FOUNDRY","event":"lease","id":"FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW","action":"take","token":"FOUNDRY.pid39467.dcdea56c","expires":"2026-10-16T13:05:20Z","ts":"2026-10-16T12:20:20Z","tsn":1792153220551767256}
+{"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW","ts":"2026-10-16T12:20:20Z","tsn":1792153220891098681}
+{"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW","ts":"2026-10-16T12:20:21Z","tsn":1792153221209204975}
+{"seat":"FOUNDRY","event":"lease","id":"ISMERROW_INSTALL_SEVEN_VARIANTS","action":"take","token":"FOUNDRY.pid39491.9eedcb5f","expires":"2026-10-16T13:06:17Z","ts":"2026-10-16T12:21:17Z","tsn":1792153277627266629}
+{"seat":"FOUNDRY","event":"claim","id":"ISMERROW_INSTALL_SEVEN_VARIANTS","ts":"2026-10-16T12:21:17Z","tsn":1792153277889707661}
+{"seat":"FOUNDRY","event":"start","id":"ISMERROW_INSTALL_SEVEN_VARIANTS","ts":"2026-10-16T12:21:18Z","tsn":1792153278142186097}
+{"seat":"FOUNDRY","event":"lease","id":"SIKKA_SIKKA_RENAME_AND_INSTALL","action":"take","token":"FOUNDRY.pid39493.81f086b5","expires":"2026-10-16T13:06:19Z","ts":"2026-10-16T12:21:19Z","tsn":1792153279336260873}
+{"seat":"FOUNDRY","event":"claim","id":"SIKKA_SIKKA_RENAME_AND_INSTALL","ts":"2026-10-16T12:21:19Z","tsn":1792153279623485478}
+{"seat":"FOUNDRY","event":"start","id":"SIKKA_SIKKA_RENAME_AND_INSTALL","ts":"2026-10-16T12:21:19Z","tsn":1792153279893718986}
+{"seat":"FOUNDRY","event":"lease","id":"IDEOICONS_INSTALL_SIX_REPOINT","action":"take","token":"FOUNDRY.pid39493.2805a18a","expires":"2026-10-16T13:06:20Z","ts":"2026-10-16T12:21:20Z","tsn":1792153280939154955}
+{"seat":"FOUNDRY","event":"claim","id":"IDEOICONS_INSTALL_SIX_REPOINT","ts":"2026-10-16T12:21:21Z","tsn":1792153281191423487}
+{"seat":"FOUNDRY","event":"start","id":"IDEOICONS_INSTALL_SIX_REPOINT","ts":"2026-10-16T12:21:21Z","tsn":1792153281456574107}
+{"seat":"FOUNDRY","event":"close","id":"BEZZUL_DELETE_NOT_NEEDED_ANYMORE","sha":"9c02a72fd","why":"def, roster row, tolerance patch, port tables removed; cauldron selftest green; donor AA_Plasmorph rename patch left (donor, not ours)","ts":"2026-10-16T12:21:49Z","tsn":1792153309575972105}
+{"seat":"FOUNDRY","event":"close","id":"PLUURVA_DECIDE_OLD_DUPLICATE","sha":"15de5d964","why":"Rot giant slot already held by RM_MycoidColossus + RM_Hwelgrue; dropped def, roster, yield and tolerance patches","ts":"2026-10-16T12:21:50Z","tsn":1792153310919296252}
+{"seat":"FOUNDRY","event":"block","id":"FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW","reason":"no stack on disk (Player.log is 05:21, predates the 08:31 run; modcheck log has none); needs a live Contagion soil-lay repro to capture it","ts":"2026-10-16T12:22:06Z","tsn":1792153326873345120}
