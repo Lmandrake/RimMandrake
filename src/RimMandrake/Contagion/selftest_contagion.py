@@ -741,8 +741,8 @@ BREAKS = {
     "log_error": ["log.log_clean"],
     "xref_error": ["log.log_clean"],
     "xref_flood": [],                         # a full page of other mods' errors: UNMEASURED (SITE_EXPECT)
-    "jump_noop": None,
-    "roof_patch_fails": [],                   # SITE: the shelter fixture never landed -> UNMEASURED (SITE_EXPECT)                        # harness instrument: a jump that did not take (SITE_EXPECT)
+    "jump_noop": None,                        # harness instrument: a jump that did not take (SITE_EXPECT)
+    "roof_patch_fails": [],                   # SITE: the shelter fixture never landed -> UNMEASURED (SITE_EXPECT)
     "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
     "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
     "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
@@ -760,6 +760,8 @@ BREAKS = {
 
 # SITE breaks whose point is a verdict other than FAIL: {break: {component: verdict}}
 SITE_EXPECT = {
+    "patient_wont_lie": {"genome.extraction_surgery_yields_sample": "UNMEASURED"},
+    "slow_walkers": {"coalescence.coalescence_absorbs_and_grows_a_stage": "PASS"},
     "armored_wanders_off": {"burn_forced.burn_hurts_native_spares_armored": "UNMEASURED"},
     "roof_patch_fails": {"burn_forced.burn_site_ready": "UNMEASURED",
                          "burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
