@@ -1132,8 +1132,10 @@ def burn_forced(t):
                 if "Burn" not in _hdefs(nat):
                     _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
                           % sorted(_hdefs(nat)))
-                if any(_under_patch(t, px, pz) for px, pz in (b.get("armored_track") or [])):
-                    _unmeasured(t, "the armored control stood under the roof patch: 'spared' could be shelter")
+                apos = list(b.get("armored_track") or []) + [(arm.get("x"), arm.get("z"))]
+                if not all(_on_open_pad(t, px, pz) for px, pz in apos):
+                    _unmeasured(t, "the armored control left the open pad (positions %s): 'spared' could be shelter"
+                                % apos)
                 if "Burn" in _hdefs(arm):
                     _fail("the ARMORED native took Burn damage: %s" % sorted(_hdefs(arm)))
 
@@ -1370,6 +1372,15 @@ def touched(t):
                 pid = _STATE["touched"]["near"]
                 if TOUCHED not in _hdefs(_rows(t, _rs(_rect(t))).get(pid)):
                     _unmeasured(t, "the colonist carries no %s before the hit: nothing to arrest" % TOUCHED)
+                # off arm first: with sunbeamArrestEnabled off a landed hit must leave Contagion-touched in place
+                with _setting(t, "sunbeamArrestEnabled", False):
+                    _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
+                        "damage(RM_UVBeam, arrest off)")
+                    hd0 = _hdefs(_rows(t, _rs(_rect(t))).get(pid))
+                    if "RM_UVSunburn" not in hd0:
+                        _unmeasured(t, "the toggle-off Sunbeam hit left no RM_UVSunburn: it did not land (%s)" % sorted(hd0))
+                    if TOUCHED not in hd0:
+                        _fail("a Sunbeam hit arrested %s with sunbeamArrestEnabled off" % TOUCHED)
                 _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
                     "damage(RM_UVBeam)")
                 row = _rows(t, _rs(_rect(t))).get(pid)
@@ -1908,6 +1919,10 @@ def _monstrous_components(t):
                 host = _spawn(t, HOST, m["x"] + 8, m["z"] + 4)
                 _give(t, m["doer"], m["samples"][1])
                 _inject(t, m["doer"], host)
+                # _finish_gestation's severity push can CREATE the hediff, so the inject must be seen to start it
+                if "RM_AmoebaGestation" not in _hdefs(_rows(t).get(host)):
+                    _unmeasured(t, "no gestation after injecting the second Monstrous sample: the toggle arm has "
+                                   "nothing to grow")
                 new = _finish_gestation(t, host, m["rect"])
                 limbs = [d for d in new if d in LIMB_ITEMS]
                 organs = [d for d in new if d in ORGANS]
