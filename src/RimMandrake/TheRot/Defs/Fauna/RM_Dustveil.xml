@@ -6,9 +6,10 @@
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
     - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
-    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
-      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
-    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - adult art: three owned looks (artpipe angelmoth_option_a/b/c_v1) installed through the art ledger, A at
+      RotSpecies/AngelMoth/AngelMoth, B and C as alternateGraphics; larva art from donorart_p2_dustveil_larva_v1.
+      No donor picture is reused.
+    - dessicated donor art dropped (vanilla fallback).
     - folded 5 op(s) from src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
     - folded 3 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
@@ -175,6 +176,19 @@
     <race>RM_Dustveil</race>
     <combatPower>75</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>
+    <!-- Owner 2026-10-15, by card: "Accept Option A, B, C as all live variants. Drop the donor."
+         Option A is the base texPath; B and C are vanilla alternateGraphics (equal weight 0.5 each).
+         Chance 0.667 gives A, B and C one third each. The pick is seeded by thingIDNumber
+         (PawnGraphicUtils.TryGetAlternate), so each moth keeps its look; nothing is re-rolled. -->
+    <alternateGraphicChance>0.667</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>RotSpecies/AngelMoth/AngelMoth_B</texPath>
+      </li>
+      <li>
+        <texPath>RotSpecies/AngelMoth/AngelMoth_C</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
