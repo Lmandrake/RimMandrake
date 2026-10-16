@@ -82,3 +82,27 @@ PASS means the game was asked, answered, and met the bar. FAIL means it answered
 | (mechanisms this round also proves) | `BURST_*` x5 (Bloody Mess killed vs gestation, bulloo, blistered bulloo, scorchpod), `OOMB_GROWTH`, `OOMB_SPLIT`, `HAZE_ZHOOL`, `PORTAL_ENTER`/`PORTAL_EXIT` |
 
 Record a green round with `rimflow verify DONOR_OFF_LOAD_PROVE_AFTER_BENCH --result pass --config donor_off_phase0 --level L1 --evidence Transient/phase0_L1_result_<stamp>.json`. P7 then removes the donors from the full list.
+
+## 6. ⭐ STEP: replace the ikee in the donor-free save with our `RSW_Ikee` (owner ruling 2026-10-15, by card)
+
+Owner decided on the P6 census: the ikee world pawn and the ikee map animal are **replaced at the live round (L1)**, not
+hand-edited offline (`AA_Eyeling` has the donor `AA_EyeBody`; `RSW_Ikee` uses the vanilla Monkey body, so the save cannot
+be re-pointed). Measured offline 2026-10-15 in
+`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_START_2026-09-12_donorfree.rws`:
+
+| what | id | where | notes |
+|---|---|---|---|
+| map animal | `Thing_AA_Eyeling669122`, named **Marquee** | map 0, cell (175, 0, 134), faction `Faction_21` (the player colony) | **bonded** to colonist Yeku "First-Hatched" (`Thing_Human470530`, at 173,0,133) |
+| world pawn | `Thing_AA_Eyeling657692`, unnamed, no faction | `worldPawns/pawnsAlive` | referenced only by its own duty and a `store` row; nobody's relation |
+
+1. **Back up first**: copy the donor-free save byte-exact to `D:\Luke\dev\_rmscratch\save_backups\` with a dated
+   `.bak-pre-ikee-swap-<stamp>` suffix and record its sha256.
+2. Load the donor-free save on the `donor_off_phase0` tier (this is the `SAVE_LOAD` row). With `sarg.alphaanimals` off,
+   Scribe drops both `AA_Eyeling` pawns and logs `Could not load reference to`/missing-def lines naming `AA_Eyeling` /
+   `AA_EyeBody` — **expected, from the save, not a mod defect**; list them as known in the `L01_FIRST_EXCEPTION` verdict.
+3. Spawn one `RSW_Ikee` at (175, 0, 134), faction = player, name it **Marquee**, tame, and re-create the **Bond** relation
+   with Yeku (bridge pawn tools; verify with a state read of both pawns' `directRelations`, not a screenshot).
+4. The world pawn is not re-created (it had no relations and no faction; a wild world pawn regenerates on demand).
+5. Save over the donor-free name. Offline check after: `MEASURE_ALLOW_SCAN=1 grep -c '<def>AA_Eyeling</def>'` = 0,
+   `<def>RSW_Ikee</def>` ≥ 1, `<def>Human</def>` = 75, and the world grid still has 0 donor mutators
+   (`design/RimMandrake/phase0_save_mutators_restore_NOTE.md`).
