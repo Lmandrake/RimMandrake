@@ -53,7 +53,7 @@
         </capacities>
         <power>6</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
       </li>
       <li>
         <label>right claw</label>
@@ -62,7 +62,7 @@
         </capacities>
         <power>6</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
