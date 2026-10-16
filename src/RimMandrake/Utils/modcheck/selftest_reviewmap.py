@@ -103,6 +103,17 @@ pth = RM.write_signs("RM_x", [ln, "", RM.label_line(3, 4, "U")], folder=d)
 rows = open(pth, encoding="utf-8").read().splitlines()
 check(rows[0] == "# map ?" and rows[1] == ln and len(rows) == 3, "write_signs file: %r" % rows)
 
+# sign_book: 'x|z|title|body', title SIGN + DO line, body LOOK/DO/DECIDE, no stray separator or real newline
+sb = RM.sign_book(3, 4, 7, "PEN|A", "a clause", "look", "hover\nit", RM.weak_decide("weak spot: pool"))
+f4 = sb.split("|")
+check(len(f4) == 4 and f4[:3] == ["3", "4", "SIGN 7 PEN/A - DO: hover it"] and "\n" not in sb
+      and f4[3].split(RM.SIGN_BREAK)[-1] == "DECIDE: is this fault there? pool", "sign_book: %r" % sb)
+check(RM.weak_decide("") == "does it work and look right?", "weak_decide with no weak spot")
+B = FakeB()
+RM.place_signs(B, [sb, sb])
+check([(t, kw.get("action")) for t, kw in B.calls] == [("jawa/review_sign", "clear"), ("jawa/review_sign", "place")]
+      and B.calls[1][1]["ops"] == sb + "\n" + sb, "place_signs clears then places: %s" % B.calls)
+
 # save_keeper(signs=): an ok save writes the sidecar beside the Saves folder; a failed save writes none
 dd = tempfile.mkdtemp()
 sv = os.path.join(dd, "Saves")

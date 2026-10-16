@@ -46,6 +46,7 @@ USAGE
   python src/RimMandrake/bridgetools/build.py --apply         # build + verify + deploy
   python src/RimMandrake/bridgetools/build.py --gm --apply    # ...including the GM pair
   python src/RimMandrake/bridgetools/build.py --apply --clean
+  (--apply refuses uncommitted companion sources unless --allow-dirty: deploy from a `git archive HEAD` export)
 """
 
 import argparse
@@ -450,6 +451,34 @@ def plan_deploy(dll, apply_it, allow_removal=False):
     return True
 
 
+def source_dirty():
+    """-> the `git status --porcelain` lines for the companion's sources (its project folder plus any repo-local
+    *_MOD_DIR it stages), [] when they are clean, or None when this tree is not a git checkout (a `git archive`
+    export of one commit, which is clean by construction). A shared seat clone carries peers' uncommitted edits, and
+    the build compiles whatever is on disk (BENCH 2026-10-15: never build the companion from the dirty tree)."""
+    dirs = [os.path.relpath(os.path.dirname(PROJECT), REPO_ROOT)]
+    for env in ("ORACLE_MOD_DIR", "INHABITED_MOD_DIR", "GSS_MOD_DIR", "FLOWWORKS_MOD_DIR"):
+        v = os.environ.get(env)
+        if v and os.path.realpath(v).startswith(os.path.realpath(REPO_ROOT) + os.sep):
+            dirs.append(os.path.relpath(v, REPO_ROOT))
+    try:
+        r = subprocess.run(["git", "-C", REPO_ROOT, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+        if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(REPO_ROOT):
+            return None
+        r = subprocess.run(["git", "-C", REPO_ROOT, "status", "--porcelain", "--untracked-files=normal", "--"] + dirs,
+                           capture_output=True, text=True)
+    except OSError:
+        return None
+    if r.returncode != 0:
+        return None
+    return [ln for ln in r.stdout.splitlines() if ln.strip()]
+
+
+EXPORT_HINT = ("build from a clean export of committed HEAD instead:\n"
+               "    git -C <clone> archive --format=tar HEAD | tar -x -C <empty dir>\n"
+               "    python3 <empty dir>/src/RimMandrake/bridgetools/build.py --gm --apply")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -464,7 +493,19 @@ def main(argv=None):
                          "already has. Refused by default, because the usual "
                          "cause is a forgotten --gm rather than an intent to "
                          "reduce the companion.")
+    ap.add_argument("--allow-dirty", action="store_true",
+                    help="permit --apply from a checkout whose companion sources have uncommitted changes. "
+                         "Refused by default: in a shared seat clone those are usually a peer's edits.")
     args = ap.parse_args(argv)
+
+    dirty = source_dirty()
+    if dirty:
+        print("*** companion sources are DIRTY in %s:\n  %s" % (REPO_ROOT, "\n  ".join(dirty)))
+        if args.apply and not args.allow_dirty:
+            sys.exit("\nREFUSING TO DEPLOY a build of uncommitted sources; " + EXPORT_HINT +
+                     "\n(or --allow-dirty if every listed change is yours and intended)")
+    elif dirty is None:
+        print("source: not a git checkout (an export of one commit): treated as clean")
 
     dll = build(args.clean, args.gm)
     verify_bundle(dll)

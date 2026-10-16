@@ -225,6 +225,10 @@ def build(R, label_line):
         # nothing built to read (the current, the ford): None, never "as built"
         verify["R%d" % (k + 1)] = dict(id=st["id"], ok=(not miss) if need else None, missing=miss, at=cr[0], width=cr[2])
     labels(B, placed, label_line)
+    from modcheck import reviewmap as RMH
+    sg = RMH.place_signs(B, sign_ops(placed))
+    if sg.get("count") != len(placed):
+        R.notes.append("map R sign books: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
     R.say("map R: %d of %d river stations placed, %d read as built, %d with nothing built to read" % (
         len(placed), len(STATIONS), sum(1 for v in verify.values() if v["ok"]),
         sum(1 for v in verify.values() if v["ok"] is None)))
@@ -241,6 +245,17 @@ def label_ops(placed, label_line):
         sign = RMH.weak_spot_sign(st["notice"], "", (st.get("try_") or [""])[0], st.get("look", ""))
         L.append(label_line(x, z, "R%d  %s" % (k + 1, st["short"]), sign, "#ffd27f", "small", TAG))
     return "\n".join(L)
+
+
+def sign_ops(placed):
+    """In-save sign books (vanilla Novels, readable on a plain load) one cell south of each station's label."""
+    from modcheck import reviewmap as RMH
+    L = []
+    for k, (st, cr, o) in enumerate(placed):
+        x, z = o["label"]
+        L.append(RMH.sign_book(x, z - 1, "R%d" % (k + 1), st["short"], st["notice"], "", (st.get("try_") or [""])[0],
+                               RMH.weak_decide(st.get("look", ""))))
+    return L
 
 
 def labels(B, placed, label_line):

@@ -342,5 +342,98 @@ namespace JawaBench.BridgeTools
                 };
             });
         }
+
+        // ---------------------------------------------------------------------------------------- review signs
+        // SIGNS IN THE SAVE ITSELF (BENCH, 2026-10-15: the signs "must survive a plain load by the owner with no agent
+        // tool touching the game first"). The overlay labels above cannot: this assembly is loaded by RimBridgeServer
+        // from BridgeTools/, NOT as a mod, so GenTypes (Assembly-CSharp + RunningMods' assemblies, decompiled 1.6
+        // GenTypes.AllActiveAssemblies) never sees its classes - a MapComponent here would never be constructed and a
+        // save naming it would log "Could not find class" - and none of its code runs before the first jawa/ call.
+        // So a sign is a VANILLA object: a Core 1.5+ Novel (Verse.Book) whose own scribed fields carry the text -
+        // title (its label: shown when the mouse is over it and on the inspect pane) and descriptionFlavor + description
+        // (its info card, the i button). Forbidden, so no colonist reads or hauls it. Nothing of ours is in the save.
+        private const string SignDef = "Novel";
+
+        [Tool(
+            "jawa/review_sign",
+            Description = "DEV ONLY (human review maps). In-save signs that need no mod and no bridge to read: each is a " +
+                "vanilla Novel (Verse.Book) whose title and description ARE the sign, spawned forbidden. action=place: " +
+                "ops = newline-separated 'x|z|title|body' (body may hold the escape \\n for line breaks). action=clear: " +
+                "destroys every Book on the current map whose title starts with 'prefix' (default 'SIGN '). action=list: " +
+                "returns them. Mouse-over shows the title; the info card shows the body.",
+            ResultDescription = "success, placed[] {id,x,z}, refused[], removed, count, signs[] for list.")]
+        public static async Task<object> ReviewSign(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "place | clear | list")] string action = "list",
+            [ToolParameter(Description = "place: newline-separated 'x|z|title|body'")] string ops = null,
+            [ToolParameter(Description = "clear/list: title prefix that marks a sign (default 'SIGN ')")] string prefix = "SIGN ")
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                Map map = Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(SignDef);
+                if (def == null) return Fail("ThingDef " + SignDef + " not found (Core 1.5+).");
+                var fTitle = AccessTools.Field(typeof(Book), "title");
+                var fFlavor = AccessTools.Field(typeof(Book), "descriptionFlavor");
+                var fDesc = AccessTools.Field(typeof(Book), "description");
+                var fInval = AccessTools.Field(typeof(Book), "descCanBeInvalidated");
+                if (fTitle == null || fFlavor == null || fDesc == null || fInval == null)
+                    return Fail("Verse.Book fields title/descriptionFlavor/description/descCanBeInvalidated not found.");
+                string pre = prefix ?? "SIGN ";
+                string act = (action ?? "list").Trim().ToLowerInvariant();
+                var placed = new List<object>();
+                var refused = new List<string>();
+                int removed = 0;
+                Func<List<Book>> mine = () => map.listerThings.ThingsOfDef(def).OfType<Book>()
+                    .Where(b => (b.Title ?? "").StartsWith(pre, StringComparison.Ordinal)).ToList();
+                if (act == "place")
+                {
+                    if (string.IsNullOrEmpty(ops)) return Fail("action=place needs ops.");
+                    foreach (string raw in ops.Split('\n'))
+                    {
+                        string line = raw.Trim('\r', ' ');
+                        if (line.Length == 0) continue;
+                        string[] f = line.Split(new[] { '|' }, 4);
+                        if (f.Length < 3 || !int.TryParse(f[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int x)
+                            || !int.TryParse(f[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int z))
+                        { refused.Add(line + " -> need x|z|title|body"); continue; }
+                        var cell = new IntVec3(x, 0, z);
+                        if (!cell.InBounds(map)) { refused.Add(line + " -> cell out of bounds"); continue; }
+                        string title = f[2];
+                        string body = (f.Length > 3 ? f[3] : "").Replace("\\n", "\n");
+                        var book = (Book)ThingMaker.MakeThing(def);     // PostMake -> quality -> GenerateBook: overwritten below
+                        fTitle.SetValue(book, title);
+                        fFlavor.SetValue(book, body);
+                        fDesc.SetValue(book, title + "\n\n" + body);
+                        fInval.SetValue(book, false);
+                        if (!GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Direct) &&
+                            !GenPlace.TryPlaceThing(book, cell, map, ThingPlaceMode.Near))
+                        { refused.Add(line + " -> could not place"); continue; }
+                        RimWorld.ForbidUtility.SetForbidden(book, true, warnOnFail: false);
+                        placed.Add(new { id = book.ThingID, x = book.Position.x, z = book.Position.z, moved = book.Position != cell });
+                    }
+                }
+                else if (act == "clear")
+                {
+                    foreach (Book b in mine()) { b.Destroy(DestroyMode.Vanish); removed++; }
+                }
+                else if (act != "list")
+                {
+                    return Fail("Unknown action '" + action + "'. Use place, clear or list.");
+                }
+                var now = mine();
+                return (object)new
+                {
+                    success = refused.Count == 0,
+                    action = act,
+                    placed, refused, removed,
+                    count = now.Count,
+                    signs = act == "list" ? now.Select(b => new { id = b.ThingID, x = b.Position.x, z = b.Position.z, title = b.Title }).ToList() : null,
+                    ticksGame = TicksGameSafe()
+                };
+            });
+        }
     }
 }

@@ -27,9 +27,10 @@ gallery follows.
 
 Copies the GimmeSomeSlack pattern (src/RimMandrake/GimmeSomeSlack/human_review.py): one quicktest map on the flowworks
 tier; calm world (weather Clear locked, clock pinned noon, incident queue cleared, Peaceful, non-colonists swept,
-research finished, god mode ON, game PAUSED, screenshot mode OFF); labelled stations by jawa/review_label, each title
-carrying its sign (status, DO, DECIDE; the labels come back with the save through the companion's sign sidecar, and
---labels re-pins them); a FREE AREA round the quicktest colonists with material stacks;
+research finished, god mode ON, game PAUSED, screenshot mode OFF); a SIGN BOOK in the save at every built station (a
+vanilla Novel: mouse-over shows the DO line, its info card the whole sign; readable on a plain load, sign_ops); labelled
+stations by jawa/review_label, each title carrying the same sign (the labels come back with the save through the
+companion's sidecar once it is awake, and --labels re-pins them); a FREE AREA round the quicktest colonists with material stacks;
 idempotent --build (clears its rects first, filling dug cells back in); --save writes the keeper with the before/after
 Saves stat (modcheck/reviewmap.save_keeper).
 
@@ -992,6 +993,21 @@ def label_ops(S, st, doc, m=None):
     return "\n".join(L)
 
 
+def sign_ops(S):
+    """The signs that live IN the save (BENCH 2026-10-15: they must survive a plain load with no agent): one vanilla
+    Novel a built station on the gap cell north of its NW corner (modcheck/reviewmap.sign_book; jawa/review_sign).
+    Mouse over it for the DO line, press i for the whole sign. NOT BUILT placeholders get none."""
+    L = []
+    for s in S:
+        if s["placeholder"]:
+            continue
+        x, z = s["origin"]
+        L.append(RM.sign_book(x, z + SH, s["n"], s["short"], "%s. %s" % (STATUS_WORD[s["status"]], s["notice"]),
+                              "", (s["try_"] or [""])[0], RM.weak_decide(s["look"]),
+                              more="Key sheet: station %d." % s["n"]))
+    return L
+
+
 # ------------------------------------------------------------------------------------------------ live build
 def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns):
     """One visuals station: True / False, or None when the scorch read was blind (ProofScorchAt refused or gave no
@@ -1636,6 +1652,9 @@ def main(argv=None):
         vis_ok = R.verify_visuals(doc) if a.only in (None, "visuals") and doc else None
         gal_ok = R.verify_gallery(S) if a.only in (None, "gallery") else None
         R.labels(S, st, doc)
+        sg = RM.place_signs(R.B, sign_ops(S))
+        if sg.get("count") != len(sign_ops(S)):
+            R.notes.append("sign books: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
         R.B.call("jawa/clear_ui", all=True)          # the debug log auto-opens on a fresh map
         R.goto(S, "V")
         live = dict(visuals_ok=vis_ok, gallery_ok=gal_ok, verify=R.verify, notes=R.notes, wall_s=round(time.time() - t0, 1))

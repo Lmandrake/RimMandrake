@@ -16,6 +16,11 @@ Used by src/RimMandrake/GimmeSomeSlack/save_review_map.py and src/RimMandrake/Fl
     <SaveDataFolder>/JawaBenchReviewSigns/<save>.txt: the companion writes it on every SaveGame and reads it back on
     load; write_signs writes the same file offline (and save_keeper does when given the label ops), so a keeper made
     before the companion learned this still gets its signs.
+  * sign_book / place_signs -- THE SIGNS THAT ARE IN THE SAVE (BENCH, 2026-10-15: they "must survive a plain load by
+    the owner with no agent tool touching the game first"). One vanilla Novel per station, placed by jawa/review_sign:
+    its title (shown on mouse-over and the inspect pane) is "SIGN <n> <name> - DO: ...", its info card (the i button)
+    holds the whole sign. Vanilla fields only, so any plain load shows them. The overlay labels above are the extra
+    that draws every sign at once whenever the companion is awake.
   * LiveBridge -- a plain socket to the bridge (python.exe on the Windows side; WSL cannot reach it).
 
 Selftest: selftest_reviewmap.py (fake bridge, 0 game).
@@ -163,11 +168,15 @@ def weak_spot_sign(first, look, do, weak, width=SIGN_WIDTH, max_lines=6):
     """A sign from a station card that names its SUSPECTED WEAK SPOT (the GSS and FlowWorks cards): LOOK = what is
     staged (may be empty when another label already says it), DO = the first poke, DECIDE = whether that weak spot
     shows, in the card's own words."""
+    return sign_sub(first, look, do, weak_decide(weak), width, max_lines)
+
+
+def weak_decide(weak):
+    """A card's suspected weak spot as the sign's DECIDE question ('weak spot:' prefix dropped)."""
     w = str(weak or "").strip()
     if w.lower().startswith("weak spot:"):
         w = w[len("weak spot:"):].strip()
-    return sign_sub(first, look, do, ("is this fault there? " + w) if w else "does it work and look right?",
-                    width, max_lines)
+    return ("is this fault there? " + w) if w else "does it work and look right?"
 
 
 def signs_path(save, folder=None):
@@ -184,6 +193,29 @@ def write_signs(save, ops, folder=None, map_id=None):
         f.write("# map %s\n" % ("?" if map_id is None else map_id))
         f.write("\n".join(ln for ln in lines if ln) + "\n")
     return path
+
+
+SIGN_PREFIX = "SIGN "        # jawa/review_sign clears and lists Books whose title starts with this
+
+
+def sign_book(x, z, key, name, clause="", look="", do="", decide="", more=""):
+    """-> one jawa/review_sign place op 'x|z|title|body'. Title: 'SIGN <key> <name> - DO: <do>' (one line: what the
+    owner sees on mouse-over); body: name, clause, LOOK / DO / DECIDE, then `more`, joined by the \\n escape."""
+    clean = lambda t: " ".join(str(t).replace("|", "/").split())  # noqa: E731
+    title = "%s%s %s" % (SIGN_PREFIX, key, clean(name)) + (" - DO: %s" % clean(do) if do else "")
+    body = ["%s  %s" % (key, clean(name))] + ([clean(clause)] if clause else []) + [""]
+    body += ["%s: %s" % (h, clean(t)) for h, t in (("LOOK", look), ("DO", do), ("DECIDE", decide)) if t]
+    if more:
+        body += ["", clean(more)]
+    return "%d|%d|%s|%s" % (x, z, title, SIGN_BREAK.join(body))
+
+
+def place_signs(B, ops):
+    """Replace this map's sign books: clear every 'SIGN ' book, place `ops` (a list or newline string). -> the place
+    result (success, placed[], refused[], count)."""
+    B.call("jawa/review_sign", action="clear", prefix=SIGN_PREFIX)
+    text = ops if isinstance(ops, str) else "\n".join(ops)
+    return B.call("jawa/review_sign", action="place", ops=text)
 
 
 class LiveBridge(object):

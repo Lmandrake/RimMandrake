@@ -206,5 +206,16 @@ with tempfile.TemporaryDirectory() as d:
     txt = open(cv["path"], encoding="utf-8").read()
 check(cv["uncovered"] == 0 and "python.exe src/RimMandrake/FlowWorks/review_map.py --build" in txt, "coverage file")
 
-print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  review_map: %d stations, layout, derived statuses, labels, plain key sheet" % len(S))
+# in-save sign books: one per built station, own cell outside every station footprint
+books = R.sign_ops(S)
+bc = [tuple(int(v) for v in b.split("|")[:2]) for b in books]
+built = [t for t in S if not t["placeholder"]]
+inside = [c for c in bc if any(t["origin"][0] <= c[0] < t["origin"][0] + R.SW and t["origin"][1] <= c[1] < t["origin"][1] + R.SH
+                               for t in S)]
+check(len(books) == len(built) and not inside and len(set(bc)) == len(bc) and all(b.split("|")[2].startswith("SIGN ") for b in books),
+      "sign books: %d for %d built stations; inside a footprint: %s" % (len(books), len(built), inside[:5]))
+pl = [(st_, None, dict(label=(20 + 30 * i, 40))) for i, st_ in enumerate(RV.STATIONS)]
+check(len(RV.sign_ops(pl)) == len(RV.STATIONS), "map R: one sign book a river station")
+
+print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  review_map: %d stations, layout, derived statuses, labels, signs, plain key sheet" % len(S))
 sys.exit(1 if fails else 0)

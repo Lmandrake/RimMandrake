@@ -54,8 +54,10 @@ a wall stub (for brackets). The hose stations (11, 16, 17, 21, 22, 29-33 and 12'
 there 2026-10-11; they stay here as cross-mod stations because the FlowWorks map shows the hose only as one station.
 Build tier: ratchet_pilot (carries GSS and FlowWorks).
 
-Idempotent: --build always clears the region first. Labels are not in the save itself: every SaveGame writes them to a
-sign sidecar the JawaBench companion reads back on load (modcheck/reviewmap.py, REVIEW SIGNS); --labels re-pins them.
+Idempotent: --build always clears the region first. Every station has a SIGN BOOK in the save itself (a vanilla Novel
+whose title is the DO line and whose info card is the whole sign: sign_ops, modcheck/reviewmap.py), readable on a plain
+load. The floating labels are not in the save: every SaveGame writes them to a sidecar the JawaBench companion reads
+back on load once it is awake; --labels re-pins them.
 Reuses run_live.LiveBridge (the probe protocol) and placer._ops (the op-string shape).
 """
 import argparse
@@ -1204,6 +1206,20 @@ def label_ops(S, style):
     return "\n".join(L)
 
 
+def sign_ops(S):
+    """The signs that live IN the save (BENCH 2026-10-15: they must survive a plain load with no agent): one vanilla
+    Novel a station, by its title label's corner (modcheck/reviewmap.sign_book; jawa/review_sign places it). Mouse
+    over it for the DO line, press i for the whole sign."""
+    L = []
+    for s in S:
+        x, z = s["origin"]
+        w, h = s["size"]
+        poke, weak = CARD[s["n"]]
+        L.append(RM.sign_book(x, z - 1 if s.get("label_below") else z + h, s["n"], s["title"], SHORT[s["n"]], "",
+                              poke, RM.weak_decide(weak), more="Key sheet: station %d." % s["n"]))
+    return L
+
+
 STUFFED = {"Turret_MiniTurret": "Steel", "HiTechResearchBench": "Steel"}   # MadeFromStuff (Metallic), RimSage 2026-10-04
 
 
@@ -1916,6 +1932,10 @@ def main(argv=None):
         R.say("stations built; hose states %s" % R.hose_states)
         lab = R.labels(S, style)
         R.say("labels: added %s, refused %s" % (lab.get("added"), lab.get("refused")))
+        sg = RM.place_signs(R.B, sign_ops(S))
+        R.say("sign books: %s placed, refused %s" % (sg.get("count"), sg.get("refused")))
+        if sg.get("count") != len(S):
+            R.notes.append("sign books: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
         R.goto(S, "S0")
         live = {"default_style": style, "style_reads": getattr(R, "style_reads", None), "merge_actions": getattr(R, "action_reads", None),
                 "styled_refused": getattr(R, "styled_fail", None), "builds": R.builds, "hose_states": R.hose_states, "peaceful": R.peaceful,
