@@ -60,6 +60,17 @@ SITES = {
     "cauldron": {"save": "RM_TestSite_cauldron_v1", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
                  "minColonists": 3, "biome": "RM_Cauldron", "builder": "Cauldron/prep_site.py",
                  "suites": ["northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py"]},
+    # Same recipe, shared in biome_site.py. Single sources: <Biome>/site_spec.py site_entry() (each biome's
+    # selftest_<biome>_site.py compares). Contagion: no Burn at save/reload. LeaningScrub: the Lean heading is locked
+    # before the save and must come back unchanged off it (LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY).
+    "contagion": {"save": "RM_TestSite_contagion_v1", "profile": "danger", "size": 250, "temp": (0.0, 38.0),
+                  "minColonists": 3, "biome": "RM_Contagion", "builder": "Contagion/prep_site.py",
+                  "suites": ["northstar_driver/cli.py run --mod Contagion --plan src/RimMandrake/Contagion/northstar_plan.py"
+                             " (on-Contagion arm only; needs the arm split first)"]},
+    "leaningscrub": {"save": "RM_TestSite_leaningscrub_v1", "profile": "danger", "size": 250, "temp": (0.0, 32.0),
+                     "minColonists": 3, "biome": "RM_LeaningScrub", "builder": "LeaningScrub/prep_site.py",
+                     "suites": ["northstar_driver/cli.py run --mod LeaningScrub --plan "
+                                "src/RimMandrake/LeaningScrub/northstar_plan.py"]},
 }
 
 # Ancient-danger containers and map-gen threats (r8 spawner probe, 4 maps: every released group sat in a shrine with
