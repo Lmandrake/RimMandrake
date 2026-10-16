@@ -37,6 +37,9 @@ namespace RimMandrake.FlowWorks.Hose
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
         public static float plumpAmount = 1f;
+        /// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: hose thickness, x the shipped width (HoseMath.WidthScale). 1 until the owner
+        /// rules on design/RimMandrake/liquid_connections_visuals_2026-10-16.md (proposal 0.65).</summary>
+        public static float thickness = 1f;
         /// <summary>Flat-to-plump blend time, ticks.</summary>
         public static int transitionTicks = 30;
         /// <summary>Hysteresis: ticks without flow before a plump hose drains (two FlowWorks pulses).</summary>
@@ -85,6 +88,8 @@ namespace RimMandrake.FlowWorks.Hose
             }
             Scribe_Values.Look(ref minBendRadius, "hose_minBendRadius", 1.2f);
             Scribe_Values.Look(ref plumpAmount, "hose_plumpAmount", 1f);
+            Scribe_Values.Look(ref thickness, "hose_thickness", 1f);
+            ApplyThickness();
             Scribe_Values.Look(ref transitionTicks, "hose_transitionTicks", 30);
             Scribe_Values.Look(ref releaseTicks, "hose_releaseTicks", 500);
             Scribe_Values.Look(ref minPlumpDwell, "hose_minPlumpDwell", 600);
@@ -110,6 +115,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// here; a hand-kept copy of every default used to sit here).</summary>
         public static void ResetToDefaults() => ResetAllFields();
 
+        /// <summary>Push the thickness setting into HoseMath (clamped 0.5-1).</summary>
+        public static void ApplyThickness() => HoseMath.WidthScale = Mathf.Clamp(thickness, 0.5f, 1f);
+
         public static HoseTuning Tuning() => new HoseTuning
         {
             TransitionTicks = Mathf.Clamp(transitionTicks, 1, 600),
@@ -127,7 +135,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Everything the laid geometry depends on: a change re-lays every hose.</summary>
         public static string ShapeFingerprint() => minBendRadius.ToString("0.###") + "|" + slack.ToString("0.###") + "|" +
-                                                   plumpAmount.ToString("0.###") + "|" + couplingSpacing +
+                                                   plumpAmount.ToString("0.###") + "|" + couplingSpacing + "|T" + thickness.ToString("0.###") +
                                                    "|L" + maxLength.ToString("0.###");   // GPT source read B8: a new hose length re-lays (and re-checks) every hose
 
         /// <summary>The "Hoses and pipes" part of FlowWorks' settings window: four collapsible groups (design v2 §8).</summary>
@@ -140,7 +148,7 @@ namespace RimMandrake.FlowWorks.Hose
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works hose", ResetAllFields);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "hoseHoldsLiquid", "hoseUnitsPerCell", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "hoseHoldsLiquid", "hoseUnitsPerCell", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
@@ -168,6 +176,9 @@ namespace RimMandrake.FlowWorks.Hose
             dumpUnitsPerCycle = Mathf.RoundToInt(list.Slider(dumpUnitsPerCycle, 1f, 25f));
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
             plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
+            list.Label("Hose thickness: " + thickness.ToString("0.00") + "x (art only; 1 = the standard hose)");
+            thickness = Mathf.Round(list.Slider(thickness, 0.5f, 1f) * 20f) / 20f;
+            ApplyThickness();
             list.Label("Flat/plump transition: " + transitionTicks + " ticks");
             transitionTicks = Mathf.RoundToInt(list.Slider(transitionTicks, 10f, 120f));
             list.Label("Collapse after no flow for: " + releaseTicks + " ticks (keeps a stalling pump from flickering the hose)");
@@ -239,7 +250,7 @@ namespace RimMandrake.FlowWorks.Hose
             .Declare("enabled", "tintByContents", "fillWobble", "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose")
             .Declare("tankModesEnabled", "tankUnitsPerCycle")
             .Declare("hoseHoldsLiquid", "hoseUnitsPerCell")
-            .Independent("freeEndRolesEnabled", "dumpUnitsPerCycle", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell",
+            .Independent("freeEndRolesEnabled", "dumpUnitsPerCycle", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell",
                          "minBendRadius", "maxLength", "maxLengthDefaults", "couplingSpacing", "slack", "defaultLook")
             .Name("enabled", "Flexible hoses (master switch)").Name("tankModesEnabled", "Tank jobs: Store / Fill / Empty / Dump")
             .Name("hoseHoldsLiquid", "Hoses hold liquid and spill it when they stop");

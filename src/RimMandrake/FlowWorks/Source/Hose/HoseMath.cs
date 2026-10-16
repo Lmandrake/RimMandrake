@@ -163,7 +163,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// extra a full plump adds at plump amount 1 (0.465 cell).</summary>
         public const double FlatVisible = 0.38, PlumpExtra = 0.085;
 
-        public static double VisibleWidth(double eased, double plumpAmount) => FlatVisible + PlumpExtra * Math.Max(0, plumpAmount) * Geo.Clamp(eased, 0, 1);
+        /// <summary>HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16: "shrink the tube diameter a bit to make it less
+        /// fire-hydrant-thick"): every visible width (and so every fitting, wrap and clearance sized from it) times this. Set from
+        /// RM_HoseSettings.thickness; 1 = the shipped width until he rules (the proposal is LiquidJoinRule.ProposedHoseThickness).</summary>
+        public static double WidthScale = 1.0;
+
+        public static double VisibleWidth(double eased, double plumpAmount) => WidthScale * (FlatVisible + PlumpExtra * Math.Max(0, plumpAmount) * Geo.Clamp(eased, 0, 1));
         public static double MeshWidthFlat(double visible) => visible / FlatBand;
         public static double MeshWidthPlump(double visible) => visible / PlumpBand;
 
