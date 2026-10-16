@@ -47,3 +47,12 @@ growth below its light threshold; our factor must not bypass that, and dark-side
 | churn | card: **Yes, endlessly while wet and lit** | a dry-biome native on wet, lit ground cycles forever: ×10 to maturity, then fruit + sprouts, or rupture (1 in 3) |
 | EC1 wood plants | *"(1) but we need to renormalize EVERYTHING anyway"* | anything yielding logs grows at the slower tree rate; AND a planet-wide yield/growth renormalization is owed (filed `PLANT_ECONOMY_RENORMALIZE_EVERYTHING_AT_ONCE`) |
 | PF1 whole-map wave | *"Try (2) then fallback to (3) if we have to "* | first build: every plant on the map puts on the show; if it misses the perf bar, stagger it over about a day |
+
+## Round 5 (12:45 PDT)
+
+| card | his answer | means |
+|---|---|---|
+| EC3 crop fruit drop | *"A full harvest but the water gets used up. That's the cost."* | a self-fruiting watered crop drops a full harvest, and the cycle CONSUMES the water on its cell; water, not yield, is the price |
+| GM1 seeing wet ground | *"Nothing stays wet for long without an obvious reason."* | no overlay and no wet-soil terrain: wet ground is always explained by visible water (a pipe, hose, spill, channel, river, flood); water is used up, so wetness does not linger unexplained |
+| T2 other liquids | card: **Only for adapted plants** | clean water works for all; slime, red water etc. only for plants marked to use them, declared per biome at its review sheet |
+| C5 Pyrelands refuel | card: **A burnt cell counts as fresh** | ash flush: fire-adapted plants run as freshly watered on burnt ground for a few days |
