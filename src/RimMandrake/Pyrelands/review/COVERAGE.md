@@ -11,7 +11,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 ```
 
 - **The map must be a Pyrelands map.** A quicktest map is not the biome. `--load <save>` loads a `NS_Pyrelands_site_*` fixture from the main menu (the newest is `NS_Pyrelands_site_1_417df172fdb5_r7`, 2026-10-15 01:31, 250x250; its name carries the def fingerprint it was made under). If it is missing or will not load, make a fresh one with `python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp>` (it saves and reloads the fixture), then run the build without `--load`. Without `--load` the build uses the current map and refuses one that is not RM_Pyrelands or not 250x250.
-- **Expected runtime: about 6-8 minutes** after the game is up (an ESTIMATE; no live build has run): save load ~2-3 min on the 22-mod tier, ~400 bridge calls ~2 min, 4300 ticks of burn at the ~60 ticks/s MEASURED for short waits (northstar_plan.py) ~70 s, verify + labels ~1 min. Then `--save` (~30 s) writes the keeper `RM_pyre_review_YYYYMMDD`.
+- **Expected runtime: about 6-8 minutes** after the game is up (an ESTIMATE; no live build has run): save load ~2-3 min on the 22-mod tier, ~400 bridge calls ~2 min, 8300 ticks of burn at the ~60 ticks/s MEASURED for short waits (northstar_plan.py) ~70 s, verify + labels ~1 min. Then `--save` (~30 s) writes the keeper `RM_pyre_review_YYYYMMDD`.
 - Exit code 0 only when every station verified as built; refusals land in `Transient/pyre_review_map_state.json` and the key sheet's agent block.
 
 ## Feature inventory -> station
@@ -59,7 +59,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | animal | Fire-wasp fly frames (8) | RM_PyrelandsPortedFauna.xml | none | a flight: owner-present only |
 | animal | Furnace-beast, giant art (setting furnaceBeastGiant, default on) | RM_PyrelandsGiants.cs | 27 |  |
 | animal | Furnace-beast classic (non-giant) art | RM_PyrelandsFauna.xml | none | only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here |
-| animal | Furnace-beast heats an enclosed room | CompFurnaceThermalCharge.cs | 27 28 |  |
+| animal | Furnace-beast heats an enclosed room (vanilla heat pusher, to 24 C, + its charged radiant push) | RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs | 27 28 |  |
 | animal | Furnace-beast warmth aura (felt temperature near it) | CompFurnaceWarmthAura.cs | 27 |  |
 | animal | Furnace-beast bed-down ignition | CompFurnaceBedIgnition.cs | 27 |  |
 | animal | Furnace-beast thermal cycle: walks into fire to charge | JobGiver_RUT_FurnaceThermalCycle.cs | none | needs a free beast and a live fire for hours; penned here (fire row is 36+ cells away); matrix row |
@@ -125,6 +125,6 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 - **B FIRE:** 8 BEFORE THE BURN, 9 AFTER THE BURN, 10 BURNING NOW, 11 BURN BONUS VS CONTROL, 12 BURROWER, 13 FIREBREAK AND FOAM
 - **C PLANTS:** 14 EMBER GRASS: GROWTH, 15 QUICKGRASS: 3 STAGES, 16 GROUND COVER MIX, 17 SCORCH-FRUIT PODS, 18 SCORCH-FRUIT HARVEST, 19 ASH + WATER
 - **D BUILD AND CRAFT:** 20 BREAKER: ARMED, 21 BREAKER: NO GLASS, 22 BREAKER CORE: SMITHY, 23 SHOVEL SAND, 24 PYRELANDS ITEMS
-- **E CREATURES:** 25 FIRE-HAWK, 26 FIRE-WASP, 27 FURNACE-BEAST (GIANT), 28 EMPTY TWIN PEN, 29 ULLAI HERD, 30 ASHWALLOW, 31 EMBERSCYTHE, 32 SYTHECLAW, 33 BARBSLINGER, 34 FLAMEFANG
+- **E CREATURES:** 25 FIRE-HAWK, 26 FIRE-WASP, 27 FURNACE-BEAST (GIANT), 28 CONTROL PEN: NO BEAST, 29 ULLAI HERD, 30 ASHWALLOW, 31 EMBERSCYTHE, 32 SYTHECLAW, 33 BARBSLINGER, 34 FLAMEFANG
 - **F CAMPAIGN CAST:** 35 ANOOBA, 36 IRIAZ, 37 NUNA, 38 ORRAY, 39 ZEER, 40 DALGO, 41 GIZKA
 - **Boards:** N0 NATURAL GROUND, R SCORCHED RUIN, G WEATHER SWITCH, S MOD SETTINGS, W WORLD MAP, E FIRE-CLOCK EVENTS, L BURN LINE AND FIRE FRONT, F free area + shelter

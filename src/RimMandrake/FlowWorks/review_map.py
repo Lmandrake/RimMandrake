@@ -27,8 +27,9 @@ gallery follows.
 
 Copies the GimmeSomeSlack pattern (src/RimMandrake/GimmeSomeSlack/human_review.py): one quicktest map on the flowworks
 tier; calm world (weather Clear locked, clock pinned noon, incident queue cleared, Peaceful, non-colonists swept,
-research finished, god mode ON, game PAUSED, screenshot mode OFF); labelled stations by jawa/review_label (labels are
-process memory: --labels re-pins them after a load); a FREE AREA round the quicktest colonists with material stacks;
+research finished, god mode ON, game PAUSED, screenshot mode OFF); labelled stations by jawa/review_label, each title
+carrying its sign (status, DO, DECIDE; the labels come back with the save through the companion's sign sidecar, and
+--labels re-pins them); a FREE AREA round the quicktest colonists with material stacks;
 idempotent --build (clears its rects first, filling dug cells back in); --save writes the keeper with the before/after
 Saves stat (modcheck/reviewmap.save_keeper).
 
@@ -955,7 +956,11 @@ def label_ops(S, st, doc, m=None):
         x, z = s["origin"]
         # title + status above the station; the what-to-notice line below it (tiny): one line each never runs into the
         # neighbouring station's label (live look 2026-10-05: a 170-char sub line overran three stations)
-        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), STATUS_WORD[s["status"]], col[s["status"]], "small")
+        # REVIEW SIGNS (owner 2026-10-15: "text signs ... to tell me what to DO at each station"): the first poke and
+        # the weak spot under the status word; zoomed out only the status word draws (modcheck/reviewmap)
+        sign = STATUS_WORD[s["status"]] if s["placeholder"] else RM.weak_spot_sign(
+            STATUS_WORD[s["status"]], "", (s["try_"] or [""])[0], s["look"])
+        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), sign, col[s["status"]], "small")
         low = ("NOT BUILT yet: " + (s["say"] or s["title"])) if s["placeholder"] else s["notice"]
         if low:
             for k, part in enumerate(wrap(low, 46)[:3]):
@@ -1556,8 +1561,9 @@ def rivers_main(R, a):
         R.call("rimworld/pause_game", pause=True)
         R.B.call("jawa/clear_ui", all=True)
         name = RM.free_save_name(a.name or "RM_fw_review_rivers_%s" % time.strftime("%Y%m%d"), RM.saves_stat())
-        r = RM.save_keeper(R.B, name)
-        print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
+        r = RM.save_keeper(R.B, name, signs=RV.label_ops(RV.load_placed(RIVERS_PLACED), RM.label_line))
+        print("save %s: ok=%s new=%s changed=%s gone=%s signs=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"],
+                                                                     r.get("signs")))
         return rc if r["ok"] else 1
     placed = RV.load_placed(RIVERS_PLACED)
     if a.labels:
@@ -1646,8 +1652,9 @@ def main(argv=None):
         R.call("rimworld/pause_game", pause=True)
         R.B.call("jawa/clear_ui", all=True)
         name = RM.free_save_name(a.name or "RM_fw_review_%s" % time.strftime("%Y%m%d"), RM.saves_stat())
-        r = RM.save_keeper(R.B, name)
-        print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
+        r = RM.save_keeper(R.B, name, signs=label_ops(S, st, doc, m))
+        print("save %s: ok=%s new=%s changed=%s gone=%s signs=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"],
+                                                                     r.get("signs")))
         if r["ok"]:
             keysheet(S, st, doc, m, live, save=name)     # keep the agent block --build just wrote
             print("key sheet -> %s" % OUT)

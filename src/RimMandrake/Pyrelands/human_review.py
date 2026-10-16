@@ -6,6 +6,7 @@
                                                     # N0 natural ground, R scorched ruin, 0 overview
     python.exe src/RimMandrake/Pyrelands/human_review.py --weather RM_FE_BlackRain | tr -d '\\r'   # the one weather switch
     python.exe src/RimMandrake/Pyrelands/human_review.py --labels | tr -d '\\r'     # re-pin labels after a load
+    python3    src/RimMandrake/Pyrelands/human_review.py --signs-for RM_pyre_review_YYYYMMDD  # offline: sign sidecar
     python.exe src/RimMandrake/Pyrelands/human_review.py --clear | tr -d '\\r'
     python.exe src/RimMandrake/Pyrelands/human_review.py --save [--name RM_pyre_review_YYYYMMDD] | tr -d '\\r'
 
@@ -72,6 +73,7 @@ WEATHERS = ("Clear", "RM_FE_Weather_AshDrift", "RM_FE_Weather_AshFall", "RM_FE_W
             "DryThunderstorm")
 GOLD, CREAM, TEAL, RUST = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b"
 EMBER, QUICK, POD = "RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass", "RM_FE_Plant_ScorchFruit"
+CHILL_C = 10                         # stations 27-28 start here (the heat pusher works below 24 C; outside is ~55 C)
 CAMPAIGN = ["RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka"]
 
 
@@ -296,17 +298,24 @@ def station_defs():
         "Standing art only; its eight fly frames are a flight (owner-present only).",
         ["Look at all three facings."], "It stays in its roofed pen.", **_pen("RM_FireWasp", flyer=True))
     s = _pen("RM_FurnaceBeast")
-    s.update(probes=[("temp", 3, 3, "room")])
-    add("E", "FURNACE-BEAST (GIANT)", "the walking hearth; its pen is a hot room",
-        "The giant (setting on by default; body size 6). Its pen is an enclosed room: compare the temperature with "
-        "the empty twin pen east of it. Weak spot: its warmth/thermal comps attach by a patch that only applies when "
-        "RimUtinni Patches is loaded (RM_PyrelandsIgniters_Comps.xml); standalone Pyrelands ships a plain beast.",
-        ["Hover the floor of both pens: room temperature.", "Draft a colonist beside the pen and read his felt "
-         "temperature (it adds heat: terrible company in the dry)."],
-        "The room heats further; when it lies down it may smoulder its bed (the ash floor has nothing to burn).", **s)
-    add("E", "EMPTY TWIN PEN", "the control room for the furnace-beast",
-        "Same walls, roof and floor, no beast.", ["Hover the floor: room temperature."], "Drifts to outdoor heat.",
-        room=(1, 1, 10, 10), probes=[("temp", 3, 3, "room")], expect_things=["Wall", "Door"])
+    s.update(probes=[("temp", 3, 3, "room")], chill=CHILL_C)
+    add("E", "FURNACE-BEAST (GIANT)", "the walking hearth: it warms a cold room",
+        "The giant (setting on by default; body size 6). Its pen and the CONTROL PEN east of it are the same room; the "
+        "build chilled both to %d C, because outside is ~55 C and the beast's heat pusher stops at 24 C (a pen at the "
+        "outdoor 56 C can never read warmer: the 2026-10-15 build measured 56.75 vs 56.68). Weak spot: its warmth/"
+        "thermal comps attach by a patch that only applies when RimUtinni Patches is loaded "
+        "(RM_PyrelandsIgniters_Comps.xml); standalone Pyrelands ships a plain beast." % CHILL_C,
+        ["Hover the floor of both pens: room temperature.", "Unpause at 1x for an in-game hour: this pen should "
+         "climb clearly faster than the control pen (both drift back toward the outdoor heat through the walls).",
+         "Select the beast: 'Heat charge' in its inspect pane (it charges in heat above 35 C)."],
+        "Its pen warms faster than the control pen; when it lies down it may smoulder its bed (the ash floor has "
+        "nothing to burn).", **s)
+    add("E", "CONTROL PEN: NO BEAST", "the same room with no beast in it",
+        "Same walls, roof, floor and starting chill as the furnace-beast pen west of it, and nothing inside: it is the "
+        "yardstick for the beast's heat, not a missing animal.", ["Hover the floor: room temperature, against the "
+                                                                   "beast's pen."],
+        "Warms only from the outdoor heat through its walls, slower than the beast's pen.",
+        room=(1, 1, 10, 10), probes=[("temp", 3, 3, "room")], chill=CHILL_C, expect_things=["Wall", "Door"])
     add("E", "ULLAI HERD", "the ash grazer, three of a herd",
         "Three facings, herd look. Its burn-following walk (to a two-day-old burn) needs days of roaming: the "
         "matrix's row, not this pen.", ["Look at the three facings and its size beside the others."],
@@ -332,6 +341,136 @@ def station_defs():
             "SWBestiary's, not this mod's. Here so the whole roster stands in one place.", ["Facings."], "It stays.",
             **_pen(k))
     return S
+
+
+# ------------------------------------------------------------------------------------------------ signs
+# What the in-world sign at each station says (owner, 2026-10-15: "I need text signs added to the savegame to tell me
+# what to DO at each station"). Keyed by the station's short title: (look, do, decide), plain words, imperative. Drawn
+# under the station's title by the JawaBench labeller and saved beside the save (modcheck/reviewmap.sign_sub /
+# write_signs); also printed per station on the key sheet. layout_check refuses a station without one, or one too
+# long for the sign (SIGN_MAX_LINES lines of SIGN_WIDTH).
+SIGN_MAX_LINES = 5
+SIGNS = {
+    "DEEP ASH": ("grey-black ash ground, not dirt or concrete",
+                 "hover a cell: it should say deep ash, 40%",
+                 "does it read as ash? any ugly edge?"),
+    "UNBURNED POCKETS": ("four pockets: soil, rich soil, gravel, sand",
+                         "light one with Dev > Debug actions > Fire",
+                         "does it turn to deep ash in one step?"),
+    "WATER RING": ("water ringed with mud, then rich soil",
+                   "hover the rich soil (140%); compare N0's pond",
+                   "does it look like the biome's own pond?"),
+    "FIREBREAK LINE": ("a stone firebreak strip beside grass",
+                       "light the grass (Dev > Debug actions > Fire)",
+                       "does the fire stop at the line? does it look deliberate?"),
+    "LOOSE ASH DRIFTS": ("loose ash, 1 to 4 layers, west to east",
+                         "select a drift; clean it if you like",
+                         "do thick drifts read as ash, or as dirt?"),
+    "FULGURITE ON SAND": ("three lumps of lightning glass on sand",
+                          "zoom to play distance; haul one",
+                          "do the lumps read as glass at play zoom?"),
+    "HEAT: SUN VS SHADE": ("west pad open sky, east pad under a roof",
+                           "walk a colonist onto each pad; watch his heatstroke",
+                           "does the roofed pad clearly slow heatstroke?"),
+    "BEFORE THE BURN": ("unburned grass on soil",
+                        "light it (Dev > Debug actions > Fire), unpause at 1x",
+                        "does it end up like the AFTER pad next door?"),
+    "AFTER THE BURN": ("the same pad, burned during the build",
+                       "hover a cell: fertility shows +50% burn bonus",
+                       "ash, loose ash, maybe a pod: does it look burned?"),
+    "BURNING NOW": ("a live fire, paused mid-burn",
+                    "unpause at 1x and watch it walk",
+                    "do fire and smoke look right on ash ground?"),
+    "BURN BONUS VS CONTROL": ("west half burned, east half not",
+                              "hover both halves: about 90% vs 40%",
+                              "is the burned half visibly better?"),
+    "BURROWER": ("an ashwallow in grass",
+                 "light the west edge, unpause at 1x, select it",
+                 "can you SEE that it has burrowed, and that it survives?"),
+    "FIREBREAK AND FOAM": ("an open grass pad: your tools vs fire",
+                           "lay a firebreak, light one side, spray firefoam",
+                           "do the firebreak and the foam both stop it?"),
+    "EMBER GRASS: GROWTH": ("ember grass at 5, 25, 50, 75, 100%",
+                            "hover each strip for its growth",
+                            "does young grass read as young, or just small?"),
+    "QUICKGRASS: 3 STAGES": ("three drawings: sprout, half, tall",
+                             "hover each strip for its growth",
+                             "are the three stages clearly different?"),
+    "GROUND COVER MIX": ("the two grasses mixed, 3 ember to 1 quick",
+                         "compare with N0, the site's own ground",
+                         "grass everywhere, ash where burned, no bare dirt?"),
+    "SCORCH-FRUIT PODS": ("pods unripe, growing, ripe",
+                          "hover each: growth and 'harvestable'",
+                          "can you tell a ripe pod from an unripe one?"),
+    "SCORCH-FRUIT HARVEST": ("ripe pods and a stack of fruit",
+                             "designate harvest; hover the stack for spoil time",
+                             "does it harvest, show as food, and rot in ~4 days?"),
+    "ASH + WATER": ("ash strip, water at the west end, potatoes",
+                    "hover beside the water, then the dry end",
+                    "140% by water, 40% dry: do the crops show it?"),
+    "BREAKER: ARMED": ("breaker between two charged batteries",
+                       "Dev > Incidents > Zzzt, then read both batteries",
+                       "did it trip and save one side? does tripped look tripped?"),
+    "BREAKER: NO GLASS": ("the same chain, hopper empty",
+                          "select the breaker: 'Not armed'",
+                          "does an unarmed breaker look different at all?"),
+    "BREAKER CORE: SMITHY": ("smithy, steel, glass sand, one finished core",
+                             "Smithy > Bills > Make lightning breaker core",
+                             "is the bill there? does the core look right?"),
+    "SHOVEL SAND": ("a patch of Pyrelands sand",
+                    "Orders > Shovel sand; undraft a miner; unpause",
+                    "does he dig glass sand and leave gravel?"),
+    "PYRELANDS ITEMS": ("hide, glass, fruit, core, sprayer, glass sand",
+                        "hover each item for its label and text",
+                        "does each have its own look? (hide borrows leather)"),
+    "FIRE-HAWK": ("a flyer, shown standing only",
+                  "look at all three facings",
+                  "standing art right? (flight is judged with you live)"),
+    "FIRE-WASP": ("a flyer, shown standing only",
+                  "look at all three facings",
+                  "standing art right? (flight is judged with you live)"),
+    "FURNACE-BEAST (GIANT)": ("this pen and the control pen east both start cold",
+                              "hover both floors; unpause 1 hour at 1x; hover again",
+                              "is this pen clearly warmer than the control pen?"),
+    "CONTROL PEN: NO BEAST": ("EMPTY ON PURPOSE: the yardstick for the beast",
+                              "hover its floor, then the furnace-beast pen west",
+                              "after an hour unpaused, is this pen the cooler one?"),
+    "ULLAI HERD": ("three ullai, the ash grazer",
+                   "look at facings and size beside the others",
+                   "does it read as a herd grazer?"),
+    "ASHWALLOW": ("the burrowing grazer, standing",
+                  "look at all three facings",
+                  "is the art right? (its burrow is at BURROWER)"),
+    "EMBERSCYTHE": ("a predator", "look at all three facings",
+                    "is the art right? (only its rotted corpse borrows)"),
+    "SYTHECLAW": ("a predator", "look at all three facings", "is the art right?"),
+    "BARBSLINGER": ("a predator with a tail gun", "look at all three facings",
+                    "is the art right? (the spike shows only in a fight)"),
+    "FLAMEFANG": ("a venomous predator", "look at all three facings",
+                  "is the art right? (the venom shows only after a bite)"),
+}
+CAMPAIGN_SIGN = ("a canon animal the campaign adds here", "look at all three facings",
+                 "does it belong in the Pyrelands?")
+BOARD_SIGNS = {
+    "N0": ("what the biome grew by itself", "walk it; compare station 16",
+           "grass everywhere, ash where burned, no bare dirt?"),
+    "R": ("the nearest ruin on the map", "look at the ground under and round it",
+          "is the ruin blackened, or pristine?"),
+    "G": ("weather is one switch for the map", "ask the agent: --weather NAME, then unpause",
+          "does each weather read as itself?"),
+    "S": ("every setting at its default", "Options > Mod Settings > Pyrelands",
+          "are the toggles clear? anything missing?"),
+    "E": ("fire-clock events (Peaceful keeps them off)", "save first; Dev > Incidents > RUT_FireRaid etc",
+          "does each event make sense?"),
+    "L": ("the burn line was put out for the calm", "unpause at 3x for ~2 days",
+          "does a fire come back on its own?"),
+    "W": ("the biome on the world map", "press the World tab",
+          "does the Pyrelands patch look right?"),
+}
+
+
+def sign_of(s):
+    return SIGNS.get(s["short"]) or (CAMPAIGN_SIGN if s["row"] == "F" else None)
 
 
 def station_list():
@@ -410,7 +549,8 @@ FEATURES = [
     ("animal", "Furnace-beast, giant art (setting furnaceBeastGiant, default on)", "RM_PyrelandsGiants.cs", "27"),
     ("animal", "Furnace-beast classic (non-giant) art", "RM_PyrelandsFauna.xml", None,
      "only with furnaceBeastGiant off and a restart; settings stay at shipped defaults here"),
-    ("animal", "Furnace-beast heats an enclosed room", "CompFurnaceThermalCharge.cs", "27 28"),
+    ("animal", "Furnace-beast heats an enclosed room (vanilla heat pusher, to 24 C, + its charged radiant push)",
+     "RM_PyrelandsIgniters_Comps.xml + CompFurnaceThermalCharge.cs", "27 28"),
     ("animal", "Furnace-beast warmth aura (felt temperature near it)", "CompFurnaceWarmthAura.cs", "27"),
     ("animal", "Furnace-beast bed-down ignition", "CompFurnaceBedIgnition.cs", "27"),
     ("animal", "Furnace-beast thermal cycle: walks into fire to charge", "JobGiver_RUT_FurnaceThermalCycle.cs", None,
@@ -562,6 +702,11 @@ def layout_check(S, defs_known=None):
         for k in ("look", "poke", "unpause"):
             if not s.get(k):
                 P.append("station %d has no %s" % (s["n"], k))
+        sg = sign_of(s)
+        if not sg:
+            P.append("station %d (%s) has no sign in SIGNS" % (s["n"], s["short"]))
+        elif RM.sign_sub(s["sub"], *sg, max_lines=99).count(RM.SIGN_BREAK) + 1 > SIGN_MAX_LINES:
+            P.append("station %d sign runs past %d lines" % (s["n"], SIGN_MAX_LINES))
         u = s["setup"]
         for key in ("terrain", "plants", "roof"):
             for op in u.get(key, []):
@@ -589,6 +734,9 @@ def layout_check(S, defs_known=None):
             P.append("station %d holds animals with no pen" % s["n"])
         if u.get("flyer") and not u.get("room"):
             P.append("station %d flyer without a roofed pen" % s["n"])
+    for k in BOARDS:
+        if k not in BOARD_SIGNS:
+            P.append("board %s has no sign in BOARD_SIGNS" % k)
     reg = region_rect(S)
     for name, rect in (("free area", FREE["rect"]), ("natural window", NATURAL["rect"])):
         if _overlap(reg, rect, pad=2):
@@ -750,18 +898,19 @@ def label_ops(S, weather="Clear", ruin=None):
     for s in S:
         x, z = s["origin"]
         u = s["setup"]
-        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), s["sub"], RUST if u.get("flyer") else GOLD)
+        add(x + SW // 2, z + SH + 2, "%d  %s" % (s["n"], s["short"]), RM.sign_sub(s["sub"], *sign_of(s)),
+            RUST if u.get("flyer") else GOLD)
         for dx, dz, text in u.get("marks", []):
             add(x + dx, z + dz, text, "", CREAM, "tiny")
     fx, fz, fw, fh = FREE["rect"]
     add(fx + fw // 2, fz + fh + 1, "F  FREE AREA + COOL SHELTER", "colonists drafted in the shelter; stock on the "
         "south edge; outside is ~50 C", RUST)
     nx, nz, nw, nh = NATURAL["rect"]
-    add(nx + nw // 2, nz + nh + 1, "N0  " + BOARDS["N0"][0], BOARDS["N0"][1], TEAL)
+    add(nx + nw // 2, nz + nh + 1, "N0  " + BOARDS["N0"][0], RM.sign_sub(BOARDS["N0"][1], *BOARD_SIGNS["N0"]), TEAL)
     if ruin:
-        add(ruin[0], ruin[1] + 3, "R  " + BOARDS["R"][0], BOARDS["R"][1], TEAL)
+        add(ruin[0], ruin[1] + 3, "R  " + BOARDS["R"][0], RM.sign_sub(BOARDS["R"][1], *BOARD_SIGNS["R"]), TEAL)
     for i, k in enumerate(("G", "S", "E", "L", "W")):
-        add(20 + 30 * i, 108, "%s  %s" % (k, BOARDS[k][0]), BOARDS[k][1], CREAM, "tiny")
+        add(20 + 30 * i, 108, "%s  %s" % (k, BOARDS[k][0]), RM.sign_sub(BOARDS[k][1], *BOARD_SIGNS[k]), CREAM, "small")
     return "\n".join(L)
 
 
@@ -775,20 +924,26 @@ def keysheet(S, live=None, save=None, weather="Clear"):
     E = html.escape
     md = ["# Pyrelands review map - key sheet", "",
           "Load %s in RimWorld. Paused, god mode on, research finished, %s weather locked, noon, Peaceful. Mod "
-          "Settings are the shipped defaults. Every station is labelled in the world with its number, a short name "
-          "and one clause; this sheet has the rest. Colonists are drafted inside the cool shelter at F: outside is "
+          "Settings are the shipped defaults. Every station carries an in-world sign: its number, a short name, one "
+          "clause, then LOOK / DO / DECIDE (zoom in to read the last three); this sheet repeats each sign and has the "
+          "rest. The signs come back with the save (a sidecar the JawaBench companion reads on load); if they are "
+          "missing, `--labels` re-pins them. Colonists are drafted inside the cool shelter at F: outside is "
           "~50 C, so anything that sends a colonist out costs Heatstroke." % (save or NO_SAVE, weather), "",
           "Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`. Rows run north to south: "
           + ", ".join("%s %s" % (r, n.lower()) for r, n, _ in ROWS) + ".", ""]
     for r, name, _ in ROWS:
         md += ["## %s - %s" % (r, name.capitalize()), ""]
         for s in [s for s in S if s["row"] == r]:
+            lk, do, dec = sign_of(s)
             md += ["### %d. %s" % (s["n"], s["short"].capitalize()), "", "*%s.*" % s["sub"].capitalize(), "",
+                   "**Sign:** LOOK: %s. DO: %s. DECIDE: %s" % (lk, do, dec), "",
                    "**Look for:** " + s["look"], "", "**Poke it:**", ""] + ["- " + p for p in s["poke"]] + [
                    "", "**If you unpause:** " + s["unpause"], ""]
     md += ["## Boards (labels, no build)", ""]
     for k, (t, sub, body) in BOARDS.items():
-        md += ["### %s. %s" % (k, t.capitalize()), "", "*%s.*" % sub, "", body, ""]
+        lk, do, dec = BOARD_SIGNS[k]
+        md += ["### %s. %s" % (k, t.capitalize()), "", "*%s.*" % sub, "",
+               "**Sign:** LOOK: %s. DO: %s. DECIDE: %s" % (lk, do, dec), "", body, ""]
     md += ["### F. Free area and shelter", "", "A roofed granite shelter with two coolers on a solar + battery net "
            "(no conduits, so a short circuit can only hit station 20). Colonists stand drafted inside; undraft one to "
            "use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, "
@@ -802,9 +957,11 @@ def keysheet(S, live=None, save=None, weather="Clear"):
     for r, name, _ in ROWS:
         cs = []
         for s in [s for s in S if s["row"] == r]:
+            sg = "LOOK: %s. DO: %s. DECIDE: %s" % sign_of(s)
             cs.append("<section class='st'><div class='num'>%d</div><div><h3>%s</h3><p class='sub'>%s</p>"
+                      "<p class='sign'><b>Sign:</b> %s</p>"
                       "<p><b>Look for:</b> %s</p><p><b>Poke it:</b></p><ul>%s</ul><p><b>If you unpause:</b> %s</p>"
-                      "</div></section>" % (s["n"], E(s["short"]), E(s["sub"]), E(s["look"]),
+                      "</div></section>" % (s["n"], E(s["short"]), E(s["sub"]), E(sg), E(s["look"]),
                                             "".join("<li>%s</li>" % E(p) for p in s["poke"]), E(s["unpause"])))
         cards.append("<h2>%s &mdash; %s</h2><div class='grid'>%s</div>" % (r, E(name.capitalize()), "".join(cs)))
     boards = "".join("<section class='st'><div class='num'>%s</div><div><h3>%s</h3><p class='sub'>%s</p><p>%s</p>"
@@ -818,7 +975,7 @@ h1{color:var(--gold);margin:0 0 6px;font-size:28px}h2{color:var(--teal);border-b
 .st{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;gap:12px}
 .num{font-size:28px;color:var(--gold);min-width:42px;text-align:center;font-weight:bold}
 h3{margin:0 0 4px;color:var(--gold);font-size:20px}.sub{color:var(--muted);margin:4px 0;font-style:italic}
-.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}ul{margin:4px 0;padding-left:20px}
+.sign{color:var(--teal)}.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}ul{margin:4px 0;padding-left:20px}
 </style></head><body>
 <h1>Pyrelands &mdash; review map</h1>
 <div class="box">Load <b>%s</b>. Paused, god mode on, %s weather locked, noon, Peaceful, Mod Settings at shipped defaults.
@@ -1193,6 +1350,14 @@ class Review(object):
             self.notes.append("labels: %s" % json.dumps(r)[:300])
         return r
 
+    def chill(self, S):
+        """Set the room temperature of every station with setup 'chill' (the furnace-beast pen and its control pen)."""
+        for s in S:
+            c = s["setup"].get("chill")
+            if c is not None:
+                ox, oz = s["origin"]
+                self.call("jawa/room_heat", x=ox + 3, z=oz + 3, mode="set", value=float(c))
+
     def goto(self, S, which, ruin=None):
         w = which.upper()
         if w == "F":
@@ -1238,6 +1403,8 @@ def main(argv=None):
     ap.add_argument("--clear", action="store_true")
     ap.add_argument("--weather", choices=WEATHERS, default=None)
     ap.add_argument("--save", action="store_true")
+    ap.add_argument("--signs-for", default=None, metavar="SAVE",
+                    help="offline: write the sign sidecar for an existing keeper SAVE (no game needed)")
     ap.add_argument("--name", default="RM_pyre_review_%s" % time.strftime("%Y%m%d"))
     ap.add_argument("--log", default=os.path.join(REPO, "Transient", "pyre_review_map_build_log.md"))
     a = ap.parse_args(argv)
@@ -1246,6 +1413,10 @@ def main(argv=None):
     if probs:
         print("LAYOUT PROBLEMS:\n  " + "\n  ".join(probs))
         return 2
+    if a.signs_for:
+        st = read_state()
+        print("signs -> %s" % RM.write_signs(a.signs_for, label_ops(S, st.get("weather", "Clear"), st.get("ruin"))))
+        return 0
     if a.plan:
         keysheet(S)
         write_coverage(S)
@@ -1284,6 +1455,7 @@ def main(argv=None):
         R.sweep_keep = RM.sweep_pawns(R.B, R.keep_rects(S))
         inside = R.draft_in(ids)
         R.call("jawa/room_heat", x=FREE["shelter"][0] + 5, z=FREE["shelter"][1] + 4, mode="set", value=21.0)
+        R.chill(S)
         now = R.burn(S, "now")
         R.ticks(NOW_TICKS)
         R.call("rimworld/pause_game", pause=True)
@@ -1293,7 +1465,11 @@ def main(argv=None):
         R.labels(S, weather, ruin)
         R.B.call("jawa/clear_ui", all=True)
         R.goto(S, "0")
+        chilled = {s["n"]: R.verify.get(s["n"], {}).get("probes", {}).get("room") for s in S
+                   if s["setup"].get("chill") is not None}
+        R.say("chilled pens after %d ticks (station: C): %s" % (NOW_TICKS, chilled))
         live = dict(stations_ok=n_ok, verify=R.verify, notes=R.notes, ruin=ruin, colonists=ids, in_shelter=inside,
+                    chilled_pens_c=chilled,
                     burned=lit, burning_now=now, wall_s=round(time.time() - t0, 1))
         st.update(ruin=ruin, weather=weather, live=live)
         write_state(st)
@@ -1313,8 +1489,9 @@ def main(argv=None):
         R.call("rimworld/pause_game", pause=True)
         R.B.call("jawa/clear_ui", all=True)
         name = RM.free_save_name(a.name, RM.saves_stat())
-        r = RM.save_keeper(R.B, name)
-        print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
+        r = RM.save_keeper(R.B, name, signs=label_ops(S, st.get("weather", "Clear"), st.get("ruin")))
+        print("save %s: ok=%s new=%s changed=%s gone=%s signs=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"],
+                                                                     r.get("signs")))
         if r["ok"]:
             keysheet(S, st.get("live"), save=name, weather=st.get("weather", "Clear"))
         return rc if r["ok"] else 1

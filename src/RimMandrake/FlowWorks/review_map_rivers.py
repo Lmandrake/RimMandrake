@@ -231,13 +231,20 @@ def build(R, label_line):
     return placed, verify
 
 
-def labels(B, placed, label_line):
+def label_ops(placed, label_line):
+    """One label a station: its title, then its sign (the notice, the only line drawn zoomed out; DO; DECIDE) --
+    owner 2026-10-15: "text signs ... to tell me what to DO at each station" (modcheck/reviewmap.weak_spot_sign)."""
+    from modcheck import reviewmap as RMH
     L = []
     for k, (st, cr, o) in enumerate(placed):
         x, z = o["label"]
-        L.append(label_line(x, z + 1, "R%d  %s" % (k + 1, st["short"]), "", "#ffd27f", "small", TAG))
-        L.append(label_line(x, z - 1, st["notice"][:60], "", "#f2e6cf", "tiny", TAG))
-    return B.call("jawa/review_label", action="add", ops="\n".join(L), tag=TAG)
+        sign = RMH.weak_spot_sign(st["notice"], "", (st.get("try_") or [""])[0], st.get("look", ""))
+        L.append(label_line(x, z, "R%d  %s" % (k + 1, st["short"]), sign, "#ffd27f", "small", TAG))
+    return "\n".join(L)
+
+
+def labels(B, placed, label_line):
+    return B.call("jawa/review_label", action="add", ops=label_ops(placed, label_line), tag=TAG)
 
 
 def goto(B, placed, which):

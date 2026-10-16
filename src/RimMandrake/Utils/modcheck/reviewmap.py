@@ -10,6 +10,12 @@ Used by src/RimMandrake/GimmeSomeSlack/save_review_map.py and src/RimMandrake/Fl
     (jawa/destroy_bulk nonColonists + incident queue cleared). With keep rects (stations that HOLD animals or
     prisoners on purpose) every non-colonist outside them is removed and the ones inside are kept.
   * label_line -- one jawa/review_label op line, with the separator and newlines made safe.
+  * sign_sub / write_signs -- REVIEW SIGNS (owner, 2026-10-15: "I need text signs added to the savegame to tell me
+    what to DO at each station"). sign_sub makes a station label's multi-line sub (LOOK / DO / DECIDE, joined by the
+    two-character escape \\n the JawaBench drawer breaks on). The labels travel with a save as a sidecar,
+    <SaveDataFolder>/JawaBenchReviewSigns/<save>.txt: the companion writes it on every SaveGame and reads it back on
+    load; write_signs writes the same file offline (and save_keeper does when given the label ops), so a keeper made
+    before the companion learned this still gets its signs.
   * LiveBridge -- a plain socket to the bridge (python.exe on the Windows side; WSL cannot reach it).
 
 Selftest: selftest_reviewmap.py (fake bridge, 0 game).
@@ -18,8 +24,11 @@ import json
 import os
 import time
 
-SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "Ludeon Studios",
-                     "RimWorld by Ludeon Studios", "Saves")
+_PROFILE = os.environ.get("USERPROFILE") or ("/mnt/c/Users/Mandrake" if os.path.isdir("/mnt/c/Users/Mandrake") else "")
+SAVES = os.path.join(_PROFILE, "AppData", "LocalLow", "Ludeon Studios", "RimWorld by Ludeon Studios", "Saves")
+SIGNS = os.path.join(os.path.dirname(SAVES), "JawaBenchReviewSigns")   # the companion's sidecar folder
+SIGN_BREAK = "\\n"          # the two characters backslash + n: one line break in a drawn sub
+SIGN_WIDTH = 60
 
 
 def saves_stat(saves=None):
@@ -45,9 +54,10 @@ def judge_save(before, after, name):
     return dict(ok=(new == [name + ".rws"] and not changed and not gone), new=new, changed=changed, gone=gone)
 
 
-def save_keeper(B, name, saves=None, wait_s=30.0, poll_s=1.0, stat=saves_stat, sleep=time.sleep):
-    """Save the live game as <name>.rws and prove it: -> dict(ok, name, new, changed, gone, tool). Refuses (ok False,
-    refused=...) when <name>.rws already exists; never overwrites."""
+def save_keeper(B, name, saves=None, wait_s=30.0, poll_s=1.0, stat=saves_stat, sleep=time.sleep, signs=None):
+    """Save the live game as <name>.rws and prove it: -> dict(ok, name, new, changed, gone, tool, signs). Refuses (ok
+    False, refused=...) when <name>.rws already exists; never overwrites. `signs` = the label ops pinned on the map:
+    on an ok save they are written to the save's sign sidecar (write_signs)."""
     before = stat(saves)
     if name + ".rws" in before:
         return dict(ok=False, name=name, refused="%s.rws already exists" % name, new=[], changed=[], gone=[], tool=None)
@@ -63,6 +73,9 @@ def save_keeper(B, name, saves=None, wait_s=30.0, poll_s=1.0, stat=saves_stat, s
     after = stat(saves)
     out = judge_save(before, after, name)
     out.update(name=name, tool=r.get("success") if isinstance(r, dict) else r)
+    if signs and out["ok"]:
+        out["signs"] = write_signs(name, signs, folder=os.path.join(os.path.dirname(saves), "JawaBenchReviewSigns")
+                                   if saves else None)
     return out
 
 
@@ -120,6 +133,57 @@ def pawn_xz(p):
 def label_line(x, z, text, sub="", col="#ffd27f", size="medium", tag=""):
     clean = lambda s: str(s).replace("|", "/").replace("\n", " ").replace("\r", " ")
     return "%d|%d|%s|%s|%s|%s|%s" % (x, z, clean(text), clean(sub), col, size, tag)
+
+
+def _wrap(text, width):
+    out, cur = [], ""
+    for w in str(text).split():
+        if cur and len(cur) + 1 + len(w) > width:
+            out.append(cur)
+            cur = w
+        else:
+            cur = (cur + " " + w).strip()
+    return out + ([cur] if cur else [])
+
+
+def sign_sub(first="", look="", do="", decide="", width=SIGN_WIDTH, max_lines=6):
+    """-> one label sub: `first` (the station's clause, the only line drawn zoomed out), then LOOK / DO / DECIDE, each
+    wrapped to `width`, at most `max_lines` lines in all (the last one ends '...' when cut)."""
+    lines = _wrap(first, width) if first else []
+    for head, body in (("LOOK", look), ("DO", do), ("DECIDE", decide)):
+        if body:
+            lines += _wrap("%s: %s" % (head, body), width)
+    if len(lines) > max_lines:
+        lines = lines[:max_lines]
+        lines[-1] = lines[-1][:width - 3].rstrip() + "..."
+    return SIGN_BREAK.join(l.replace("|", "/") for l in lines)
+
+
+def weak_spot_sign(first, look, do, weak, width=SIGN_WIDTH, max_lines=6):
+    """A sign from a station card that names its SUSPECTED WEAK SPOT (the GSS and FlowWorks cards): LOOK = what is
+    staged (may be empty when another label already says it), DO = the first poke, DECIDE = whether that weak spot
+    shows, in the card's own words."""
+    w = str(weak or "").strip()
+    if w.lower().startswith("weak spot:"):
+        w = w[len("weak spot:"):].strip()
+    return sign_sub(first, look, do, ("is this fault there? " + w) if w else "does it work and look right?",
+                    width, max_lines)
+
+
+def signs_path(save, folder=None):
+    return os.path.join(folder or SIGNS, "%s.txt" % save)
+
+
+def write_signs(save, ops, folder=None, map_id=None):
+    """Write a save's sign sidecar from label ops ('x|z|text|sub|col|size|tag' lines, as jawa/review_label add takes).
+    map_id None = the header names no map and the companion puts them on the current map. -> the path written."""
+    path = signs_path(save, folder)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    lines = [ln.strip("\r ") for ln in (ops if isinstance(ops, str) else "\n".join(ops)).split("\n")]
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("# map %s\n" % ("?" if map_id is None else map_id))
+        f.write("\n".join(ln for ln in lines if ln) + "\n")
+    return path
 
 
 class LiveBridge(object):
