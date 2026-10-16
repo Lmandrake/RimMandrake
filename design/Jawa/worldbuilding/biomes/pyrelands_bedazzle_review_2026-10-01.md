@@ -256,7 +256,7 @@ randomly on the map (maybe even the ship) and utter delight within the god."*
   is the spark caught in the ground; breaking it lets the spark loose again.
 - **Found:** a rough ring of old lightning-glass shards on bare ash, every piece stamped to splinters,
   with a scorched crater somewhere off across the plain.
-- **Asks:** lay a rough ring of lightning glass (`RM_FE_Fulgurite`, consumed) anywhere. During **any**
+- **Asks:** lay a rough ring of glass sand (`RM_GlassSand`, the Stillsand item; consumed; owner by card 2026-10-15, replacing the removed fulgurite) anywhere. During **any**
   lightning storm (dry thunderstorm or ordinary thunderstorm, on any map), the participants stamp the
   pieces to break them.
 - **The blast:** the rite triggers a **really powerful** lightning strike at a **random** cell on the
@@ -265,7 +265,7 @@ randomly on the map (maybe even the ship) and utter delight within the god."*
 - **Outcomes (cohesion only):** shared memories by quality (the stamping as a wild, joyous act). The
   god's **utter delight** is told by the Narrator vividly and shows only through events and odds,
   never as a buff.
-- **Readable sign:** the shattered ring, the strike and its crater (with new fulgurite), a letter
+- **Readable sign:** the scattered ring, the strike and its crater, a letter
   naming where it fell and what it hit.
 - **Collision check:** the Calling-Pyre (Zizzik, settlement) fires the colony's own field on purpose;
   Nine Faults (Zizzik, feeding) is a favour transfer on a found machine. Here a found mineral is

@@ -27,7 +27,7 @@ X. [S] (human pass) ash-ladder terrain visual ramp (Trace→Deep) and Black Rain
 
 ## north star
 state: VALIDATED
-validated-hash: a26f0d098282786e4db91d6515e589ad29360fd37661fb7dbe7a147f5e63ca59
+validated-hash: f86bb75dc22c0a8e962200be69ac4e710f4e5fe30b8a9cfee715d0dec760b01e
 
 Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
 `## must be true` and the mod's shipped sprites, defs and settings, on the owner's

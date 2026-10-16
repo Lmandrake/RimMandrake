@@ -180,7 +180,7 @@ condition, inscription site, outcomes and draft inscription. Every row accepted 
 
 | Rite | God | Kind | Condition | Found | Status | Source |
 |---|---|---|---|---|---|---|
-| The Struck Glass | Zizzik | feeding, by breakage | a rough ring of lightning glass, stamped to pieces during any lightning storm; triggers a really powerful lightning blast at a random cell (the ship included) | Pyrelands, an old stamped ring on bare ash with a crater off across the plain | RULED (owner, 2026-10-01, revised by him, typed) | `design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md` §6 R1 |
+| The Struck Glass | Zizzik | feeding, by breakage | a rough ring of glass sand (`RM_GlassSand`; owner by card 2026-10-15, fulgurite removed), stamped to scatter during any lightning storm; triggers a really powerful lightning blast at a random cell (the ship included) | Pyrelands, an old stamped ring on bare ash with a crater off across the plain | RULED (owner, 2026-10-01, revised by him, typed) | `design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md` §6 R1 |
 
 ### B10. Found rites of the Webwork (RULED)
 
