@@ -102,7 +102,17 @@ namespace RimMandrake.GimmeSomeSlack
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
                 ArtInsets(th.def, m);
                 SetWallHome(th, m);
-                if (how == HookupDraw.ConduitCell)
+                PowerNet cnet = c.PowerNet;
+                Cell? parentCell = how == HookupDraw.ConduitCell ? C(pt.Position) : (Cell?)null;
+                List<Cell> near = HookupPick.Pick(world, m, parentCell,
+                    cell => cnet != null && map.powerNetGrid.TransmittedPowerNetAt(I(cell)) == cnet);
+                if (near != null)
+                {
+                    // GSS_CORD_SILENCE_PHANTOM_SPARK: a same-net conduit end beside the device is its one cord
+                    foreach (Cell h in near) if (world.IsConduit(h) && !m.Hookups.Contains(h)) m.Hookups.Add(h);
+                    world.Machines.Add(m);
+                }
+                else if (how == HookupDraw.ConduitCell)
                 {
                     if (!world.IsConduit(C(pt.Position))) continue;     // a fogged conduit cell is not in the snapshot
                     m.Hookups.Add(C(pt.Position));

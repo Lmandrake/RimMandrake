@@ -87,6 +87,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             SwitchFlipChecks.Run();        // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED aerial half: SwitchFlipChecks.cs
             MotionBucketChecks.Run();      // CORD_GRAPH_TOPOLOGY_REVISION_1 perf half: MotionBucketChecks.cs
             ConduitTargetChecks.Run();     // design 5 per-def conduit toggles (MotionBucketChecks.cs)
+            PhantomSparkChecks.Run();      // GSS_CORD_SILENCE_PHANTOM_SPARK (owner 2026-10-16): PhantomSparkChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             GptPreReleaseChecks.Run();     // GSS pre-release GPT consult 2026-10-15: GptPreReleaseChecks.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)

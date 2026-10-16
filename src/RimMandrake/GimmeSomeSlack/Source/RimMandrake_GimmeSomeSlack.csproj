@@ -43,6 +43,7 @@
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />
+    <Compile Include="Core\HookupPick.cs" />
     <Compile Include="Core\WallMount.cs" />
     <Compile Include="Core\SettingsPrint.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
