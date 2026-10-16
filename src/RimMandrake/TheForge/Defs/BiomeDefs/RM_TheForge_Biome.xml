@@ -248,7 +248,7 @@
       <RM_Bulloo>0.4</RM_Bulloo>  <!-- aerofleet - sky -->
       <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow -->
       <RM_Metallovore>0.15</RM_Metallovore>  <!-- metallovore - ground-slow -->
-      <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ECOSYSTEM_PYRAMID_LAW_1 -->
+      <RM_Dhoggur>0.5</RM_Dhoggur>  <!-- dhoggur - small ground, fills the crescendo anole's slot (owner by card 2026-10-16), ECOSYSTEM_PYRAMID_LAW_1 -->
       <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
       <!-- FORGE_RULED_CONTENT_1 (FORGE_BEDAZZLE_SITTING_1, owner turn 2 "Wire in all
            waiting."): the roster's greater bulloo row, weight from

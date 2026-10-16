@@ -74,15 +74,6 @@
    ]
   },
   {
-   "texPath": "Things/Plant/RM_Braskeen/RM_Braskeen",
-   "class": "MISSING",
-   "owed": "owner ruled REDO (\"less cartoonish\"): new render owed; v2 renders await his pick",
-   "added": "2026-10-10",
-   "defs": [
-    "src/RimMandrake/Miasma/Defs/ThingDefs_Plants/RM_Miasma_Predators.xml"
-   ]
-  },
-  {
    "texPath": "Things/Plant/RM_Dewfall/RM_BloodBouquet_dew",
    "class": "MISSING",
    "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
