@@ -78,17 +78,17 @@
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="Wasteland"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
-          <value><AA_Eyeling>1.2</AA_Eyeling></value>
+          <value><RSW_Ikee>1.2</RSW_Ikee></value>
         </match></li>
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ExtremeDesert"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ExtremeDesert"]/wildAnimals</xpath>
-          <value><AA_Eyeling>0.5</AA_Eyeling></value>
+          <value><RSW_Ikee>0.5</RSW_Ikee></value>
         </match></li>
 
         <li Class="PatchOperationConditional"><xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]</xpath><match Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-          <value><AA_Eyeling>0.8</AA_Eyeling></value>
+          <value><RSW_Ikee>0.8</RSW_Ikee></value>
         </match></li>
 
       </operations>

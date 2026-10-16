@@ -168,7 +168,7 @@
              field resolves the PawnKindDef, which is the correct one. -->
         <li Class="ScenPart_StartingAnimal">
           <def>StartingAnimal</def>
-          <animalKind>AA_Eyeling</animalKind>
+          <animalKind>RSW_Ikee</animalKind>
           <count>1</count>
           <bondToRandomPlayerPawnChance>1.0</bondToRandomPlayerPawnChance>
         </li>
