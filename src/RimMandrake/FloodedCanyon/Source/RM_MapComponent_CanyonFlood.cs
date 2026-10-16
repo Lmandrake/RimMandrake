@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimMandrake.FlowWorks;
+using RimMandrake.FloodedCanyon.MapControls;
 using RimWorld;
 using Verse;
 using Verse.Sound;
@@ -71,6 +72,12 @@ namespace RimMandrake.FloodedCanyon
         private readonly FloodState st = new FloodState();
 
         private IntVec3 pendingSeed = IntVec3.Invalid;
+
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: the cell of the flood trigger this cycle's flood enters at, from
+        // the moment a trigger is chosen (clock) or pressed (button) until the water recedes. Invalid = an ordinary
+        // canyon flood from a random seed. While it is valid the flood runs on ANY biome (the trigger is the map
+        // maker's explicit choice), so a standing aimed flood is never torn down next tick by the biome gate.
+        private IntVec3 aimedAt = IntVec3.Invalid;
         private IntVec3 roarCell = IntVec3.Invalid;
         private Sustainer roar;
 
@@ -101,9 +108,18 @@ namespace RimMandrake.FloodedCanyon
             Active && RM_FloodedCanyonSettings.fiveBeatsEnabled
             && ((st.Phase == FloodPhase.Herald && st.HeraldBeat > 3) || st.Phase == FloodPhase.Warned || st.Phase == FloodPhase.Flooding);
 
+        // The canyon's own gate: this biome, or the cross-biome option.
+        private bool CanyonGate =>
+            map.Biome == RM_FloodedCanyonDefOf.RM_FloodedCanyon || RM_FloodedCanyonSettings.featureInOtherBiomes;
+
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a flood trigger lifts the biome gate for ITS flood only -- while
+        // one stands on the clock, or while a flood it started is pending or standing.
         private bool Active =>
             RM_FloodedCanyonSettings.floodCycleEnabled
-            && (map.Biome == RM_FloodedCanyonDefOf.RM_FloodedCanyon || RM_FloodedCanyonSettings.featureInOtherBiomes);
+            && (CanyonGate || (RM_BiomeMapControls.FloodTriggersOn && (aimedAt.IsValid || RM_BiomeMapControls.AnyClockTrigger(map))));
+
+        public FloodPhase Phase => st.Phase;
+        public IntVec3 AimedAt => aimedAt;
 
         // Test surface for RM_FloodedCanyonDebugActions — schedules the
         // chime to ring on the very next tick, so the full sequence (chime
@@ -118,8 +134,57 @@ namespace RimMandrake.FloodedCanyon
         // Test surface: skip straight past the chime to the wall itself.
         public void DebugStartFloodNow()
         {
+            if (!pendingSeed.IsValid)
+            {
+                ChooseSeed();   // a clock flood trigger on the map aims it (FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS)
+            }
             st.Phase = FloodPhase.Flooding;
             StartFlood(Find.TickManager.TicksGame);
+        }
+
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a flood trigger's button. warn=false: the wall now, at the trigger.
+        // warn=true: the whole warning (beats, staged chimes) from the next tick, then the wall at the trigger.
+        public string FireTrigger(IntVec3 at, bool warn)
+        {
+            if (!RM_FloodedCanyonSettings.floodCycleEnabled)
+            {
+                return "REFUSED: the flood cycle is off in Mod Settings (Flooded Canyon > Flood cycle)";
+            }
+            if (!RM_BiomeMapControls.FloodTriggersOn)
+            {
+                return "REFUSED: flood triggers are off in Mod Settings (Flooded Canyon > Map controls, or FlowWorks' map controls switch)";
+            }
+            if (st.Phase == FloodPhase.Flooding)
+            {
+                return "REFUSED: a flood is already standing on this map (it recedes at tick " + st.FloodEndTick + ")";
+            }
+            int n = AimedCells(at).Count;
+            if (n == 0)
+            {
+                return "REFUSED: no dug channel at or beside " + at + " for the water to run into";
+            }
+            aimedAt = at;
+            pendingSeed = at;
+            int now = Find.TickManager.TicksGame;
+            if (warn)
+            {
+                st.Phase = FloodPhase.Dry;
+                st.NextFloodTick = now + 1;
+                return "OK armed: warning from the next tick, then " + n + " cells from " + at;
+            }
+            st.Phase = FloodPhase.Flooding;
+            int flooded = StartFlood(now);
+            return "OK flooding " + flooded + " cells from " + at + " until tick " + st.FloodEndTick;
+        }
+
+        // A trigger placed on a map whose clock has idled (no canyon here, so nothing rescheduled it) would otherwise
+        // fire the instant it is placed. Give it a fresh period instead.
+        public void OnTriggerPlaced()
+        {
+            if (!CanyonGate && st.Phase == FloodPhase.Dry && st.NextFloodTick <= Find.TickManager.TicksGame)
+            {
+                ScheduleNextFlood();
+            }
         }
 
         // Test surface: end a standing flood on the next tick, so the recede
@@ -139,7 +204,7 @@ namespace RimMandrake.FloodedCanyon
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
                 + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
                 + "chimeStage={9} lastRecedeTick={10} peakstormConsidered={11} weather={12} "
-                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17}",
+                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17} aimedAt={18}",
                 st.Phase, st.NextFloodTick, st.FloodEndTick, Find.TickManager.TicksGame,
                 ledger.Active.Count, ledger.RaisedCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
@@ -147,7 +212,7 @@ namespace RimMandrake.FloodedCanyon
                 st.ChimeStage, st.LastRecedeTick, st.PeakstormPulled,
                 map.weatherManager.curWeather?.defName ?? "null",
                 st.HeraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
-                RefugeFloodedCount());
+                RefugeFloodedCount(), aimedAt.IsValid ? aimedAt.x + "," + aimedAt.z : "none");
         }
 
         // Ledges of Mercy verify: footprint cells that are refuge cells. Must
@@ -272,6 +337,20 @@ namespace RimMandrake.FloodedCanyon
         private void ChooseSeed()
         {
             Refuge?.RefreshCells();
+            // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a flood trigger on the clock is where the water enters.
+            if (!aimedAt.IsValid && RM_BiomeMapControls.FloodTriggersOn)
+            {
+                Thing t = RM_BiomeMapControls.PickClockTrigger(map);
+                if (t != null)
+                {
+                    aimedAt = t.Position;
+                }
+            }
+            if (aimedAt.IsValid)
+            {
+                pendingSeed = aimedAt;
+                return;
+            }
             pendingSeed = CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out IntVec3 seed) ? seed : IntVec3.Invalid;
         }
 
@@ -385,11 +464,16 @@ namespace RimMandrake.FloodedCanyon
             }
         }
 
-        private void StartFlood(int now)
+        private int StartFlood(int now)
         {
             int target = RM_FloodKernel.TargetCells(map.Area);
             Refuge?.RefreshCells();
-            List<IntVec3> cells = ComputeFloodCells(target, pendingSeed);
+            List<IntVec3> cells = aimedAt.IsValid ? AimedCells(aimedAt) : ComputeFloodCells(target, pendingSeed);
+            if (aimedAt.IsValid && cells.Count == 0)
+            {
+                Messages.Message("The flood came down to the flood trigger at " + aimedAt + ", but no dug channel beside it took the water.",
+                    new TargetInfo(aimedAt, map), MessageTypeDefOf.NeutralEvent);
+            }
             roarCell = cells.Count > 0 ? cells[0] : IntVec3.Invalid;
             pendingSeed = IntVec3.Invalid;
 
@@ -420,6 +504,50 @@ namespace RimMandrake.FloodedCanyon
 
             GameCondition cond = GameConditionMaker.MakeCondition(RM_FloodedCanyonDefOf.RM_CanyonFlood, durationTicks);
             map.gameConditionManager.RegisterCondition(cond);
+            return cells.Count;
+        }
+
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: the footprint of a flood entering at a trigger. Canal only (the
+        // default): the dug channel joined to the trigger, no terrain write anywhere. Spill: an ordinary canyon flood
+        // seeded at the trigger (or the first open cell beside it). Size: the trigger's cap, else the map's flood size.
+        public List<IntVec3> AimedCells(IntVec3 at)
+        {
+            Building_RM_FloodTrigger trig = RM_BiomeMapControls.TriggerAt(map, at);
+            int cap = trig != null && trig.maxCells > 0 ? trig.maxCells : RM_FloodKernel.TargetCells(map.Area);
+            if (!at.InBounds(map))
+            {
+                return new List<IntVec3>();
+            }
+            if (trig != null && trig.spill)
+            {
+                IntVec3 seed = Eligible(at) ? at : IntVec3.Invalid;
+                for (int i = 0; i < 4 && !seed.IsValid; i++)
+                {
+                    IntVec3 n = at + GenAdj.CardinalDirections[i];
+                    if (Eligible(n)) seed = n;
+                }
+                if (!seed.IsValid)
+                {
+                    return new List<IntVec3>();
+                }
+                return RM_FloodKernel.FloodCells(cap, seed.x, seed.z, true, (x, z) => new IntVec3(x, 0, z).InBounds(map),
+                    (x, z) => Eligible(new IntVec3(x, 0, z)), () => Rand.Value).ConvertAll(Cell);
+            }
+            RM_MapComponent_Excavation ex = Excavation;
+            if (ex == null)
+            {
+                return new List<IntVec3>();
+            }
+            return RM_FloodKernel.FloodCellsAimed(cap, at.x, at.z, (x, z) => new IntVec3(x, 0, z).InBounds(map),
+                (x, z) => Channel(ex, new IntVec3(x, 0, z))).ConvertAll(Cell);
+        }
+
+        // A dug cell the water may run along: not behind a shut sluice, not a refuge ledge. Roofed or already wet
+        // is fine -- the engine raises a channel cell to its brim, whatever it held.
+        private bool Channel(RM_MapComponent_Excavation ex, IntVec3 c)
+        {
+            return ex.IsExcavated(c) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c])
+                && (Refuge == null || !Refuge.IsRefugeCell(c));
         }
 
         private void RecedeFlood()
@@ -428,7 +556,11 @@ namespace RimMandrake.FloodedCanyon
             TerrainDef soilTerrain = TerrainDefOf.SoilRich;
 
             List<IntVec3> wetted = ledger.Wetted().ConvertAll(Cell);
-            if (RM_FloodedCanyonSettings.floodRecutSeamsEnabled)
+            // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a trigger's flood outside the canyon brings the water and its
+            // soak only; the canyon's ecology (fresh fossil seams, the feast, migrants, floodline salvage) stays canyon.
+            bool ecology = !aimedAt.IsValid || CanyonGate;
+            aimedAt = IntVec3.Invalid;
+            if (ecology && RM_FloodedCanyonSettings.floodRecutSeamsEnabled)
             {
                 RM_FossilStrata.RecutAlong(map, wetted, RM_FloodedCanyonSettings.floodRecutSeamCount);
             }
@@ -445,7 +577,10 @@ namespace RimMandrake.FloodedCanyon
             roar = null;
             roarCell = IntVec3.Invalid;
 
-            map.GetComponent<RM_MapComponent_RecedeAftermath>()?.OnRecede(wetted);
+            if (ecology)
+            {
+                map.GetComponent<RM_MapComponent_RecedeAftermath>()?.OnRecede(wetted);
+            }
         }
 
         private List<IntVec3> ComputeFloodCells(int target, IntVec3 preferredSeed)
@@ -526,6 +661,7 @@ namespace RimMandrake.FloodedCanyon
             st.ChimeStage = chimeStage; st.HeraldBeat = heraldBeat; st.PeakstormPulled = peakstormPulledThisCycle;
             Scribe_Values.Look(ref pendingSeed, "pendingSeed", IntVec3.Invalid);
             Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref aimedAt, "aimedAt", IntVec3.Invalid);
             // ExposeData runs once per load phase (LoadingVars, ResolveCrossRefs, PostLoadInit); the loaded lists must live in FIELDS so
             // the LoadingVars read survives to PostLoadInit. Same labels as before the kernel extraction, so old saves load.
             if (Scribe.mode == LoadSaveMode.Saving)

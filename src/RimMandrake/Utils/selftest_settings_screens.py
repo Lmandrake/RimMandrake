@@ -50,6 +50,7 @@ MODS = {
         "Zennaq and lightning": "Now",
         "Refuge ledges and carvings": "Now",
         "Cliff ledges (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Map controls (placed in development mode)": "Now",   # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: read per tick/press
     }, ()),
     "HugeThings": ("RM_HugeThingsSettings.cs", "RM_HugeThings.csproj", {
         "Giant plants": "Now",

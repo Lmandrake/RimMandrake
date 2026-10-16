@@ -191,6 +191,7 @@ MAZE = _perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + _pe
     [(x, 5) for x in range(9, 12)]
 HOSE_TRANSITION_TICKS = 30          # HoseSettings.transitionTicks default (GimmeSomeSlack/northstar_matrix/placer.py, same value)
 TANK = "RimMandrake.FlowWorks.RM_NorthstarProofs"
+BIOME_MC = "RimMandrake.FloodedCanyon.MapControls.RM_BiomeMapControls"   # Baroque Biomes' flood trigger / soak zone
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
 
@@ -291,9 +292,17 @@ SETUPS = {
                       dig=[(1, 3, 5, 6, 2), (9, 3, 5, 6, 2)], roof=[("RoofConstructed", 9, 3, 5, 6)],
                       try_=["dev: Change weather > Rain, unpause: the open trench fills, the roofed one stays dry"],
                       look="weak spot: the roofed trench filling; rain filling undug ground"),
-    "flow_canyon": dict(short="Canyon floods run through canals", notice="a dry canal waiting for a canyon flood",
-                        dig=[(1, 6, 14, 1, 2)], try_=["dev: start a canyon flood upstream: it runs down the canal"],
-                        look="weak spot: the flood wiping the canal flat instead of running in it"),
+    # FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a flood trigger (Baroque Biomes map control, button only so the paused map
+    # never floods by itself) at the canal's west end aims the canyon flood into it; this map is not a canyon biome, and
+    # the trigger lifts that gate for its own flood (the forced map-wide flood ran 393 cells elsewhere, 2026-10-16).
+    "flow_canyon": dict(short="Canyon floods run through canals", notice="a dry canal waiting for a canyon flood; the small "
+                        "marker at its west end is a flood trigger",
+                        dig=[(1, 6, 14, 1, 2)], flood_trigger=[(0, 6, False, False, 0)],
+                        try_=["dev: select the flood trigger at the canal's west end, press Flood now: the water enters "
+                              "there and runs down the whole canal, and nowhere else",
+                              "dev: Flood after warning plays the signs and chimes first"],
+                        look="weak spot: the flood wiping the canal flat instead of running in it; water outside the "
+                             "canal; the flood vanishing on the next tick (this is not a canyon biome)"),
     "flow_slime": dict(short="Slime is nearly uncrossable", notice="a canal three wide, brim-full of green slime; one "
                        "colonist waits on the south bank, another stands stuck in the middle of it; a natural slime pool, undug, top right",
                        terrain=[("RM_SlimeGreenShallow", 11, 10, 5, 3)], dig=[(0, 5, 16, 3, 2)], fluid=[(0, 5, 16, 3, 2, "RM_Fluid_SlimeGreen")],
@@ -1077,8 +1086,13 @@ def layout_check(S, doc=None):
             cells += [(r[0], r[1]) for r in u.get(k, [])]
         cells += [c for r in u.get("hose_order", []) for c in ((r[0], r[1]), (r[2], r[3]))]
         cells += [c for r in u.get("hose_trail", []) for c in [(r[0], r[1])] + list(r[2])]
-        for k in ("tank", "pump", "ladder"):
+        for k in ("tank", "pump", "ladder", "flood_trigger"):
             cells += [(r[0], r[1]) for r in u.get(k, [])]
+        dug = {(x, z) for r in u.get("dig", []) for x in range(r[0], r[0] + r[2]) for z in range(r[1], r[1] + r[3])}
+        for r in u.get("flood_trigger", []):
+            if not any((r[0] + dx, r[1] + dz) in dug for dx, dz in ((0, 0), (0, 1), (1, 0), (0, -1), (-1, 0))):
+                probs.append("station %d (%s): flood trigger at %s has no dug cell at or beside it (aimed at nothing)"
+                             % (s["n"], s["id"], (r[0], r[1])))
         cells += [c for r in u.get("hose", []) for c in ((r[0], r[1]), (r[2], r[3]))]
         cells += [(r[2], r[3]) for r in u.get("items", [])] + [(r[1], r[2]) for r in u.get("pawns", [])]
         cells += [(r[0], r[1]) for r in u.get("beds", [])] + [(r[0], r[1]) for r in u.get("marks", [])]
@@ -1568,6 +1582,8 @@ class Review(object):
             self.static(n, TANK, "ProofTank", "%d,%d;Store;%s;%d" % (g(x, z) + (liquid, units)))
             if mode != "Store":
                 self.gizmo_cycle(n, g(x, z), "Job:", "Job: " + mode)
+        for x, z, on_clock, spill, cap in u.get("flood_trigger", []):
+            self.static(n, BIOME_MC, "PlaceFloodTrigger", "%d,%d|%s|%s|%d" % (g(x, z) + (on_clock, spill, cap)))
         for x, z, mode in u.get("pump", []):
             self.gizmo_cycle(n, g(x, z), ("Pouring", "Drawing"),
                              "Pouring into the channel" if mode == "pour" else "Drawing into the tank")

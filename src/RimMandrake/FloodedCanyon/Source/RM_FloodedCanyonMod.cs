@@ -128,6 +128,10 @@ namespace RimMandrake.FloodedCanyon
         // Reading a ledge carving gives a one-shot mood memory, once per
         // person per carving. Off = carvings are inspect text only.
         public static bool carvingMemoryEnabled = true;
+        // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: the two dev-placed map controls (Source/MapControls/). Off: every
+        // placed flood trigger / soak zone stays on the map as an inert marker; switching back on resumes them.
+        public static bool floodTriggersEnabled = true;
+        public static bool soakZonesEnabled = true;
 
         public override void ExposeData()
         {
@@ -165,6 +169,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
             Scribe_Values.Look(ref mercyLedgesEnabled, "mercyLedgesEnabled", true, true);
             Scribe_Values.Look(ref carvingMemoryEnabled, "carvingMemoryEnabled", true, true);
+            Scribe_Values.Look(ref floodTriggersEnabled, "floodTriggersEnabled", true, true);
+            Scribe_Values.Look(ref soakZonesEnabled, "soakZonesEnabled", true, true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -340,6 +346,20 @@ namespace RimMandrake.FloodedCanyon
                 list.GapLine();
             }
 
+            if (Group(list, "Map controls (placed in development mode)", RimMandrake.Shared.SettingScope.Now, new[] { "floodTriggersEnabled", "soakZonesEnabled" }))
+            {
+                list.CheckboxLabeled("Flood triggers work", ref floodTriggersEnabled,
+                    "A flood trigger is a small marker a map maker places in development mode (it cannot be built). The canyon "
+                    + "flood enters at it and runs along the dug channel beside it, on the flood clock or from its button, on "
+                    + "any biome. Off: every placed trigger stays on the map but starts nothing. Also needs FlowWorks' map "
+                    + "controls switch on.");
+                list.CheckboxLabeled("Soak zones work", ref soakZonesEnabled,
+                    "A soak zone is a small marker a map maker places in development mode. It keeps the ground around it soaked "
+                    + "for a set number of hours a day, so plants there grow as after a flood. It works only where Plant Growth "
+                    + "runs (Baroque Biomes' own biomes). Off: every placed zone stays on the map but soaks nothing.");
+                list.GapLine();
+            }
+
             viewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
@@ -384,7 +404,7 @@ namespace RimMandrake.FloodedCanyon
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the biome rarity, the fossil seam seeding and the cliff ledges run once when a map is generated, so [new maps only]; the flood schedule (days between floods), the flood duration, and everything the receding water does (soak, fresh seams, the feast, salvage) are rolled when the next flood is scheduled, begins or recedes, so [next pulse]; the six extra plants are removed from the wild roster at startup (their own label says restart), so [next game start]; the warning beats, the flood cycle switches, the muttavaq, ledge seeking and carving memory are read each tick by the map component, comp or job, so [now].</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the biome rarity, the fossil seam seeding and the cliff ledges run once when a map is generated, so [new maps only]; the flood schedule (days between floods), the flood duration, and everything the receding water does (soak, fresh seams, the feast, salvage) are rolled when the next flood is scheduled, begins or recedes, so [next pulse]; the six extra plants are removed from the wild roster at startup (their own label says restart), so [next game start]; the warning beats, the flood cycle switches, the muttavaq, ledge seeking and carving memory are read each tick by the map component, comp or job, so [now]; the flood trigger and soak zone switches (map controls, 2026-10-16) are read by the flood clock every tick, the trigger's button and the zone's rare tick, so [now].</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
