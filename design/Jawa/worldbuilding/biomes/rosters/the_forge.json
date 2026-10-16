@@ -514,8 +514,8 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "AA_CrescendoAnole",
-      "law": "owner review 2026-09 (round2 move mapping): volcanic biomes"
+      "def": "RM_Dhoggur",
+      "law": "owner by card 2026-10-16 (FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION): the dhoggur fills the crescendo anole's small-ground slot; jobbosh dropped"
     },
     {
       "action": "import",

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION. The dhoggur fills the Forge's small ground-animal slot that the crescendo
+  anole (AA_CrescendoAnole) leaves; owner by card 2026-10-16, his description verbatim: "a bizarre creature that
+  constantly snuffles and digs at the ashy minerals freshly deposited by volcanic sputter. Very tough heat resistant
+  hide." Invented name, free RM_ tier, ONE HOME: the Forge (row in RM_TheForge_Biome.xml at the anole's 0.5).
+  Art installed through the art ledger at the texPath below (east/south/north, artpipe forgeslot_dhoggur_v1).
+  Plain vanilla animal: no comps, no custom diet. How it is used or assigned is an OPEN QUESTION for the owner
+  (item FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION); nothing here pre-empts it. Numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dhoggur</defName>
+    <label>dhoggur</label>
+    <description>A bizarre creature that constantly snuffles and digs at the ashy minerals freshly deposited by volcanic sputter. Its hide is very tough and heat resistant.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <Mass>30</Mass>
+      <MarketValue>180</MarketValue>
+      <Wildness>0.8</Wildness>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>1.0</ArmorRating_Heat>
+      <Flammability>0.2</Flammability>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>120</ComfyTemperatureMax>
+      <LeatherAmount>14</LeatherAmount>
+      <MeatAmount>20</MeatAmount>
+    </statBases>
+    <tools>
+      <li>
+        <label>snout</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <predator>false</predator>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>12</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Wildboar_Wounded</soundWounded>
+          <soundDeath>Pawn_Wildboar_Death</soundDeath>
+          <soundCall>Pawn_Wildboar_Call</soundCall>
+          <soundAngry>Pawn_Wildboar_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dhoggur</defName>
+    <label>dhoggur</label>
+    <race>RM_Dhoggur</race>
+    <combatPower>40</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.45</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
