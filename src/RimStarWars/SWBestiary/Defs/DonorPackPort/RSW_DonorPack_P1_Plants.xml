@@ -41,7 +41,7 @@
       <sowResearchPrerequisites Inherit="False" />
       <dieIfLeafless>true</dieIfLeafless>
       <growDays>10</growDays>
-      <visualSizeRange>1~2</visualSizeRange>
+      <visualSizeRange>4~6</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
       <immatureGraphicPath>Things/Plant/RSW_Plant_HydenockTree_Wild</immatureGraphicPath>
