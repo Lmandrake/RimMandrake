@@ -47,5 +47,30 @@ namespace RimMandrake.FlowWorks
 			if (rockUnits <= 0f || percent <= 0f) return 0f;
 			return rockUnits * percent / 100f;
 		}
+
+		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK: vanilla's chance that mining a standing rock wall drops its chunk
+		/// (MEASURED 2026-10-16: BuildingProperties.mineableDropChance = 0.25 on all five Core rocks (Various_Stone.xml);
+		/// Mineable.TrySpawnYield rolls it once per wall) times the setting's multiplier.</summary>
+		public const float VanillaRockDropChance = 0.25f;
+
+		public static float RockChunkChance(float dropChance, float multiplier)
+		{
+			float c = dropChance * (multiplier < 0f ? 0f : multiplier);
+			return c < 0f ? 0f : (c > 1f ? 1f : c);
+		}
+
+		/// <summary>Very rare chunk through non-rock ground: <paramref name="percent"/> % per cut (default 0.5).</summary>
+		public static float SoilChunkChance(float percent)
+		{
+			float c = percent / 100f;
+			return c < 0f ? 0f : (c > 1f ? 1f : c);
+		}
+
+		/// <summary>Dig work through rock ground: the soft-ground work times the multiplier (never below 1x).</summary>
+		public static int RockWork(int baseWork, float multiplier)
+		{
+			if (multiplier < 1f) multiplier = 1f;
+			return (int)(baseWork * multiplier + 0.5f);
+		}
 	}
 }

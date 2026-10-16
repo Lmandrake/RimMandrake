@@ -37,7 +37,13 @@ namespace RimMandrake.FlowWorks
 						current = (byte)(first - 1);
 					}
 				}
-				return RM_ExcavationDepth.WorkToDeepen(current);
+				int work = RM_ExcavationDepth.WorkToDeepen(current);
+				// DIG_ROCK_TUNE_STONE_FIGHTS_BACK: digging through rock is much harder than soft ground.
+				if (RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockGroundAt(map, c) != null)
+				{
+					work = RM_DigDiscoveryMath.RockWork(work, RimMandrakeFlowWorksSettings.digRockWorkMultiplier);
+				}
+				return work;
 			}
 		}
 

@@ -89,7 +89,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Called after a cut lands at <paramref name="newDepth"/>.</summary>
 		public void OnCut(Map map, IntVec3 c, int newDepth, Pawn digger)
 		{
-			if (!RimMandrakeFlowWorksSettings.digFindsEnabled || map == null || !c.InBounds(map))
+			if ((!RimMandrakeFlowWorksSettings.digFindsEnabled && !RimMandrakeFlowWorksSettings.digRockChunksEnabled) || map == null || !c.InBounds(map))
 			{
 				// a cut happened: an armed debug force is spent on it, never carried into a later, unrelated cut
 				ForceNextRoll = false;
@@ -105,6 +105,12 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			rolledDepth[i] = (byte)newDepth;
+			// DIG_ROCK_TUNE_STONE_FIGHTS_BACK: the chunk roll is its own roll, under the same rolled-depth guard.
+			RollRockChunk(map, c, newDepth, digger);
+			if (!RimMandrakeFlowWorksSettings.digFindsEnabled)
+			{
+				return;
+			}
 			if (!forced && !Rand.Chance(RM_DigDiscoveryMath.Chance(RimMandrakeFlowWorksSettings.digFindChanceMultiplier)))
 			{
 				return;
@@ -165,6 +171,48 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK (owner 2026-10-16): a cut through ROCK ground rolls a chunk of that rock at
+		/// vanilla's wall-mining rate; a cut through anything else very rarely rolls a chunk of the local rock. Not budgeted:
+		/// a chunk is the land itself, as the mineral roll's own rock fallback is.</summary>
+		private void RollRockChunk(Map map, IntVec3 c, int newDepth, Pawn digger)
+		{
+			if (!RimMandrakeFlowWorksSettings.digRockChunksEnabled)
+			{
+				return;
+			}
+			ThingDef chunk;
+			float chance;
+			ThingDef rock = RM_DigDiscovery.RockGroundAt(map, c);
+			if (rock != null)
+			{
+				chunk = rock.building.mineableThing;
+				chance = RM_DigDiscoveryMath.RockChunkChance(rock.building.mineableDropChance, RimMandrakeFlowWorksSettings.digRockChunkMultiplier);
+			}
+			else
+			{
+				chunk = RM_DigDiscovery.LocalRockChunk(map);
+				chance = RM_DigDiscoveryMath.SoilChunkChance(RimMandrakeFlowWorksSettings.digSoilChunkPercent);
+			}
+			if (chunk == null || !Rand.Chance(chance))
+			{
+				return;
+			}
+			Thing made = ThingMaker.MakeThing(chunk);
+			made.stackCount = 1;
+			if (!GenPlace.TryPlaceThing(made, RM_DigDiscovery.LipCellNear(map, c), map, ThingPlaceMode.Near, out Thing placed))
+			{
+				if (!made.Destroyed)
+				{
+					made.Destroy();
+				}
+				return;
+			}
+			Finds++;
+			LastFind = chunk.defName + " x1 @" + c.x + "," + c.z + " D=" + newDepth + (rock != null ? " (rock ground)" : " (chunk, non-rock)");
+			Messages.Message("RMFlow_DigFindMessage".Translate(digger?.LabelShort ?? "", 1, chunk.label),
+				placed != null && !placed.Destroyed ? placed : made, MessageTypeDefOf.PositiveEvent, false);
+		}
+
 		public string Report(Map map)
 		{
 			return "DIGFINDS finds " + Finds + " | budget " + (budgetLeft < 0 ? "unset" : budgetLeft.ToString("F0"))
@@ -197,6 +245,51 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return true;
+		}
+
+		private static Dictionary<TerrainDef, ThingDef> rockByTerrain;
+
+		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK: the natural rock a terrain is the ground of, or null. Read from the defs,
+		/// never by name: each non-resource natural rock's naturalTerrain (rough), leaveTerrain (rough-hewn) and the
+		/// smoothedTerrain of either (smoothed) -- the same links TerrainDefGenerator_Stone builds.</summary>
+		public static ThingDef RockOfTerrain(TerrainDef t)
+		{
+			if (t == null)
+			{
+				return null;
+			}
+			if (rockByTerrain == null)
+			{
+				Dictionary<TerrainDef, ThingDef> m = new Dictionary<TerrainDef, ThingDef>();
+				foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+				{
+					if (d.building == null || !d.IsNonResourceNaturalRock)
+					{
+						continue;
+					}
+					foreach (TerrainDef g in new[] { d.building.naturalTerrain, d.building.leaveTerrain })
+					{
+						if (g == null)
+						{
+							continue;
+						}
+						if (!m.ContainsKey(g)) m[g] = d;
+						if (g.smoothedTerrain != null && !m.ContainsKey(g.smoothedTerrain)) m[g.smoothedTerrain] = d;
+					}
+				}
+				rockByTerrain = m;
+			}
+			ThingDef r;
+			return rockByTerrain.TryGetValue(t, out r) ? r : null;
+		}
+
+		/// <summary>The rock a cut at <paramref name="c"/> goes through: the terrain it had before FlowWorks first dug it, else
+		/// what is on top now. Null for soil, sand, gravel, a player floor or anything else.</summary>
+		public static ThingDef RockGroundAt(Map map, IntVec3 c)
+		{
+			TerrainDef t = map.GetComponent<RM_MapComponent_Excavation>()?.OriginalTerrainAt(c)
+				?? (map.terrainGrid.FoundationAt(c) ?? map.terrainGrid.TopTerrainAt(c));
+			return RockOfTerrain(t);
 		}
 
 		/// <summary>The weighted local pool: every resource rock on the map counted by cells (cached per map

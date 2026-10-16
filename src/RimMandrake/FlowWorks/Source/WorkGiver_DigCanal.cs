@@ -53,7 +53,7 @@ namespace RimMandrake.FlowWorks
 			bool stale = terrain.IsWater
 				|| c.GetEdifice(pawn.Map) != null
 				|| depth >= RM_ExcavationDepth.MaxDepth
-				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil)
+				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
 				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
 				// POND_BED (owner by card 2026-10-14): a dry bed already as deep as digging goes is never dug.
 				|| (depth == RM_ExcavationDepth.Surface && pawn.Map.GetComponent<RM_MapComponent_Excavation>()?.FirstCutDepthAt(c) < 0);
