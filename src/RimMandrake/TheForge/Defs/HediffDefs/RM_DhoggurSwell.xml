@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB. The dhoggur's chemical swell. Owner 2026-10-16: "if you mess with it, it swells
+  with violent chemical reactions that make it three times as big and spewing fire (firespit). Stays that way for 1/3 of
+  a day, then it can't do it again for another day." Added and removed ONLY by RimMandrake.TheForge.RM_CompDhoggurSwell
+  (Source/RM_ForgeDhoggurSwell.cs), which owns the timing; no Disappears comp here.
+  - MeleeDamageFactor is set by RM_Hediff_DhoggurSwell.CurStage from the Mod Settings scale (shipped x3); body size and
+    health scale x3 are Harmony postfixes on Pawn.BodySize / Pawn.HealthScale, keyed on the same comp.
+  - <abilities>: vanilla HediffDef.abilities grants RM_FireSpit (src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml,
+    also the Zisska's) while the hediff stands; the comp gives the animal the ability tracker vanilla withholds from
+    animals. A manhunter uses it through JobGiver_Manhunter -> JobGiver_AIFightEnemy.GetAbilityJob. Both defs ship in
+    the same composed mod (mandrake.rm.biomes, Biomes.compose.json: Cauldron and TheForge are both wave 0), and a def
+    cross-reference resolves after every def is loaded, so the Cauldron keeping ownership costs nothing here.
+-->
+<Defs>
+  <HediffDef>
+    <defName>RM_DhoggurSwell</defName>
+    <label>chemical swell</label>
+    <description>A runaway chemical reaction under the hide: the creature has swollen to several times its size, its seams glow and smoke, and it spits burning fluid. It will burn itself out in a few hours, and cannot happen again for a day after.</description>
+    <hediffClass>RimMandrake.TheForge.RM_Hediff_DhoggurSwell</hediffClass>
+    <defaultLabelColor>(1.0, 0.45, 0.15)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <abilities>
+      <li>RM_FireSpit</li>
+    </abilities>
+    <stages>
+      <li>
+        <painFactor>0.5</painFactor>
+        <statFactors>
+          <MeleeDamageFactor>3</MeleeDamageFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

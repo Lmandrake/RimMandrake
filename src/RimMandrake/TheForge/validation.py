@@ -237,7 +237,9 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
          "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
-         "floatstoneDoorEnabled", "spunstoneHullEnabled"]
+         "floatstoneDoorEnabled", "spunstoneHullEnabled",
+         # DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB: driven by the dhoggur_swell chain
+         "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale"]
 # FORGE_DHOKKUR_WAYS_1 (RM_ForgeDhokkurWays.cs): wired in the C#, but NO component of this suite drives them yet, so
 # they are neither WIRED (the toggle floor would demand a component) nor scaffolding (they do change something).
 UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade",
@@ -603,7 +605,8 @@ def _tokens(line):
     for k, v in re.findall(r"(\w+)=(-?[A-Za-z0-9_.]+)", line):
         if k == "phase":
             out[k] = v
-        elif k in ("inBurst", "projectHidden", "revealed", "canStart"):
+        elif k in ("inBurst", "projectHidden", "revealed", "canStart", "swollen", "hediff", "fireSpit", "manhunter",
+                   "swollenArt"):
             out[k] = (v == "True")
         else:
             try:
@@ -2046,8 +2049,191 @@ def sky_pastures(t):
               "tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters")
 
 
+# --------------------------------------------------------------------------------- the dhoggur's chemical swell
+
+DHOGGUR = "RM_Dhoggur"
+SWELL_HEDIFF = "RM_DhoggurSwell"
+DHOGGUR_TOKENS = ("swollen", "hediff", "ticksLeft", "cooldownLeft", "bodySize", "healthScale", "meleeFactor", "fireSpit",
+                  "manhunter", "drawScale", "swollenArt")
+
+
+def _dhoggur(t):
+    """The newest dhoggur's swell state (RM_CompDhoggurSwell.DebugStateReport). FAILS when the map has none."""
+    d = _act(t, "Dhoggur swell: report")
+    if not _live(t):
+        return {}
+    if "no dhoggur" in d.get("_line", ""):
+        _fail("no dhoggur on the current map: %s" % d["_line"])
+    miss = [k for k in DHOGGUR_TOKENS if k not in d]
+    if miss:
+        _unmeasured(t, "dhoggur report lacks %s: DebugStateReport changed? %s" % (miss, d["_line"]))
+    return d
+
+
+def _hit(t, pid, amount=3):
+    r = t.bridge_call("jawa/damage", damageDef="Blunt", amount=amount, thingId=pid, allowColonists=True)
+    if _live(t):
+        _ok(r, "damage(%s)" % pid)
+
+
+def _near(a, b, tol=0.02):
+    return a is not None and b is not None and abs(float(a) - float(b)) <= tol * max(1.0, abs(float(b)))
+
+
+@suite.chain("dhoggur_swell")
+def dhoggur_swell(t):
+    """DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB. Owner 2026-10-16: "if you mess with it, it swells with violent chemical
+    reactions that make it three times as big and spewing fire (firespit). Stays that way for 1/3 of a day, then it
+    can't do it again for another day. Super aggressive when angered, but otherwise totally docile and placid while
+    foraging." Cards: trigger = ONLY damage; cooldown counted from the END of the swell; size is REAL (body size, health,
+    melee damage x3, drawn 3x). Arms: placid before harm -> provoke -> swollen (size/health/bite x3, fire spit granted,
+    manhunter) -> a second hit does not refresh -> reverts after 1/3 day -> the day's cooldown blocks a new swell ->
+    rested, it swells again -> switched off, it shrinks at once. State reads come from the mod's own report line AND
+    list_pawns' health block (the hediff), so a report that lies about the hediff cannot green the arm alone.
+    NOT measurable here: the swollen sprite on screen (visual: a joint look, or the review sheet) and a fire spit
+    actually cast (needs a target in range and the AI's choice; the ability's presence is what is read)."""
+    _enter(t)
+    box = {}
+    try:
+        with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
+            with _comp(t, "site_ready_dhoggur"):
+                _reset_pad(t)
+                yx, yz, _, _ = _yard(t)
+                box["id"] = _spawn_wild(t, DHOGGUR, yx + 3, yz + 3)
+                t.wait_ticks(120)
+
+            with _comp(t, "dhoggur_placid_before_harm", independent=True):
+                d = _dhoggur(t)
+                if _live(t):
+                    if d["swollen"] or d["hediff"] or d["fireSpit"] or d["manhunter"]:
+                        _fail("an unharmed dhoggur is already swollen/armed/angry: %s" % d["_line"])
+                    if not _near(d["drawScale"], 1.0):
+                        _fail("an unharmed dhoggur draws at %s, not 1x" % d["drawScale"])
+                    box["calm"] = d
+
+            with _comp(t, "provoked_dhoggur_swells_x3", toggle="dhoggurSwellEnabled"):
+                _hit(t, box.get("id"))
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                rows = _pawns(t, _rs(_pad(t)), DHOGGUR, health=True) if _live(t) else []
+                if _live(t):
+                    calm = box["calm"]
+                    if not (d["swollen"] and d["hediff"]):
+                        _fail("one hit did not swell it: %s" % d["_line"])
+                    if not _near(d["bodySize"], 3 * calm["bodySize"]) or not _near(d["healthScale"], 3 * calm["healthScale"]):
+                        _fail("body size / health scale not x3 (calm %s/%s): %s" % (calm["bodySize"], calm["healthScale"], d["_line"]))
+                    if not _near(d["meleeFactor"], 3 * calm["meleeFactor"]) or not _near(d["drawScale"], 3.0):
+                        _fail("melee damage factor / draw scale not x3: %s" % d["_line"])
+                    if not 19000 <= d["ticksLeft"] <= 20000:
+                        _fail("swell should last 20000 ticks (1/3 day), %s left: %s" % (d["ticksLeft"], d["_line"]))
+                    row = next((p for p in rows if p.get("id") == box.get("id")), None)
+                    if row is not None and SWELL_HEDIFF not in set(_flat(row.get("health"))):
+                        _fail("list_pawns' health block lacks %s although the report says hediff=True" % SWELL_HEDIFF)
+                    box["swell_tick"] = _ticks(t)
+                    box["left0"] = d["ticksLeft"]
+                    _note(t, "swollen art installed", d["swollenArt"])
+
+            with _comp(t, "swollen_dhoggur_spits_fire", independent=True, toggle="dhoggurSwellEnabled"):
+                d = _dhoggur(t)
+                if _live(t) and not d["fireSpit"]:
+                    _fail("swollen, but RM_FireSpit is not among its abilities (hediff <abilities> / ability tracker): %s" % d["_line"])
+
+            with _comp(t, "swollen_wild_dhoggur_is_manhunter", independent=True, toggle="dhoggurSwellManhunts"):
+                d = _dhoggur(t)
+                if _live(t) and not d["manhunter"]:
+                    _fail("a swollen wild dhoggur is not manhunter: %s" % d["_line"])
+
+            with _comp(t, "scale_setting_is_read_live", independent=True, toggle="dhoggurSwellScale"):
+                with _settings(t, dhoggurSwellScale=2.0):
+                    t.wait_ticks(30)
+                    d = _dhoggur(t)
+                if _live(t):
+                    calm = box["calm"]
+                    if not _near(d["bodySize"], 2 * calm["bodySize"]) or not _near(d["meleeFactor"], 2 * calm["meleeFactor"]):
+                        _fail("dhoggurSwellScale=2 but size/bite are not x2: %s" % d["_line"])
+
+            with _comp(t, "second_hit_does_not_refresh"):
+                _hit(t, box.get("id"))
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t):
+                    elapsed = _ticks(t) - box["swell_tick"]
+                    if d["ticksLeft"] > box["left0"] - elapsed + 5:
+                        _fail("a second hit refreshed the swell (%s left, expected <= %s)" % (d["ticksLeft"], box["left0"] - elapsed))
+
+            with _comp(t, "swell_reverts_after_a_third_of_a_day", toggle="dhoggurSwellHours"):
+                d = _dhoggur(t)
+                if _live(t):
+                    _jump(t, d["ticksLeft"] + 10)
+                t.wait_ticks(300)
+                d = _dhoggur(t)
+                rows = _pawns(t, _rs(_pad(t)), DHOGGUR, health=True) if _live(t) else []
+                if _live(t):
+                    calm = box["calm"]
+                    if d["swollen"] or d["hediff"] or d["fireSpit"] or d["manhunter"]:
+                        _fail("still swollen/armed/angry after its third of a day: %s" % d["_line"])
+                    if not _near(d["bodySize"], calm["bodySize"]) or not _near(d["drawScale"], 1.0):
+                        _fail("did not shrink back: %s" % d["_line"])
+                    if not 59000 <= d["cooldownLeft"] <= 60000:
+                        _fail("cooldown should be ~60000 ticks counted from the swell's end, is %s" % d["cooldownLeft"])
+                    row = next((p for p in rows if p.get("id") == box.get("id")), None)
+                    if row is not None and SWELL_HEDIFF in set(_flat(row.get("health"))):
+                        _fail("list_pawns still shows %s after the swell ended" % SWELL_HEDIFF)
+
+            with _comp(t, "cooldown_blocks_a_new_swell", toggle="dhoggurCooldownDays"):
+                _hit(t, box.get("id"))
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t) and d["swollen"]:
+                    _fail("swelled again inside its day of cooldown: %s" % d["_line"])
+
+            with _comp(t, "rested_dhoggur_swells_again", toggle="dhoggurCooldownDays"):
+                d = _dhoggur(t)
+                if _live(t):
+                    _jump(t, d["cooldownLeft"] + 10)
+                _hit(t, box.get("id"))
+                t.wait_ticks(60)
+                d = _dhoggur(t)
+                if _live(t) and not d["swollen"]:
+                    _fail("a rested dhoggur did not swell when hit: %s" % d["_line"])
+
+            with _comp(t, "switched_off_it_shrinks_at_once", toggle="dhoggurSwellEnabled"):
+                with _settings(t, dhoggurSwellEnabled=False):
+                    t.wait_ticks(300)
+                    d = _dhoggur(t)
+                if _live(t) and (d["swollen"] or d["hediff"] or not _near(d["drawScale"], 1.0)):
+                    _fail("dhoggurSwellEnabled=false but it is still swollen: %s" % d["_line"])
+    finally:
+        # a manhunting dhoggur leaves the pad: vanish it by id (no corpse), then the usual pad teardown
+        if t.session is not None and box.get("id"):
+            try:
+                t.session.call("jawa/pawn_force_incapacitate", pawn=box["id"], action="vanish")
+            except Exception as ex:
+                print("[forge] dhoggur vanish failed: %s" % ex, file=sys.stderr, flush=True)
+        _teardown(t)
+
+    src = _read_cs("RM_ForgeDhoggurSwell.cs")
+    prj = _read_cs("RM_TheForge.csproj")
+    race = _read_text(os.path.join("Defs", "ThingDefs_Races", "RM_Dhoggur.xml"))
+    hed = _read_text(os.path.join("Defs", "HediffDefs", "RM_DhoggurSwell.xml"))
+    spit = os.path.join(_HERE, "..", "Cauldron", "Defs", "AbilityDefs", "RM_FireSpit.xml")
+
+    def need(cond, msg):
+        if _live(t) or t.session is None:
+            if not cond:
+                _fail(msg)
+
+    with _comp(t, "dhoggur_source_wiring", independent=True, toggle="dhoggurSwellEnabled"):
+        need('Compile Include="RM_ForgeDhoggurSwell.cs"' in prj, "the csproj does not compile RM_ForgeDhoggurSwell.cs (a silent no-op)")
+        need("RimMandrake.TheForge.CompProperties_DhoggurSwell" in race and "<renderTree>RM_DhoggurSwellBody</renderTree>" in race,
+             "RM_Dhoggur lacks the swell comp or its render tree")
+        need("<manhunterOnDamageChance>0</manhunterOnDamageChance>" in race, "the dhoggur must be docile unless swollen")
+        need("<li>RM_FireSpit</li>" in hed and os.path.exists(spit), "the swell hediff does not grant RM_FireSpit, or the def moved")
+        need("PostPostApplyDamage" in src and "dhoggurSwellEnabled" in src, "the damage-only trigger is not wired or not gated")
+
+
 # Chain order = registration order, kept explicit: the dormancy chain runs after every chain that steps a cycle, because
 # it must move the clock past the stale flash window / burst those leave behind (see its site_ready).
 _ORDER = ["log_clean", "defs_resolve", "def_wiring", "biome_wiring", "settings", "spunstone", "keelwork",
-          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest", "plume_fronts", "sky_pastures"]
+          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest", "plume_fronts", "sky_pastures", "dhoggur_swell"]
 suite.chains.sort(key=lambda c: _ORDER.index(c[0]))

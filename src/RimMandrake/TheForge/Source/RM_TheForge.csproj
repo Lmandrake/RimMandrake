@@ -69,6 +69,9 @@
     <Compile Include="Kernel\RM_DhokkurKernel.cs" />
     <Compile Include="Kernel\RM_DormancyKernel.cs" />
     <Compile Include="Kernel\RM_SkyKernel.cs" />
+    <!-- DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB -->
+    <Compile Include="RM_ForgeDhoggurSwell.cs" />
+    <Compile Include="Kernel\RM_SwellKernel.cs" />
   </ItemGroup>
 
   <!-- FORGE_CYCLE_MECHANICS_1: the cycle subclasses the F1 pulse

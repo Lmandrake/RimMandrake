@@ -27,6 +27,7 @@
     <Compile Include="..\Kernel\RM_DhokkurKernel.cs" />
     <Compile Include="..\Kernel\RM_DormancyKernel.cs" />
     <Compile Include="..\Kernel\RM_SkyKernel.cs" />
+    <Compile Include="..\Kernel\RM_SwellKernel.cs" />
     <Compile Include="TheForgeFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

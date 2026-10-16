@@ -89,6 +89,14 @@ namespace RimMandrake.TheForge
         public static bool dhokkurWallShoveEnabled = true;
         public static int dhokkurShoveMode = 0;
         public static float dhokkurShoveDamagePct = 0.25f;
+
+        // DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB — the dhoggur's chemical swell (RM_ForgeDhoggurSwell.cs). Read live.
+        // Shipped values are the owner's (2026-10-16 + cards): 1/3 day = 8 h, one day of cooldown from the swell's end, x3.
+        public static bool dhoggurSwellEnabled = true;
+        public static bool dhoggurSwellManhunts = true;
+        public static float dhoggurSwellHours = 8f;
+        public static float dhoggurCooldownDays = 1f;
+        public static float dhoggurSwellScale = 3f;
         // A cell gains at most one pass per half day, so only a path walked
         // on separate rains wears in.
         public const int DhokkurWearCooldownTicks = 30000;
@@ -156,6 +164,11 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref dhokkurWallShoveEnabled, "dhokkurWallShoveEnabled", true);
             Scribe_Values.Look(ref dhokkurShoveMode, "dhokkurShoveMode", 0);
             Scribe_Values.Look(ref dhokkurShoveDamagePct, "dhokkurShoveDamagePct", 0.25f);
+            Scribe_Values.Look(ref dhoggurSwellEnabled, "dhoggurSwellEnabled", true);
+            Scribe_Values.Look(ref dhoggurSwellManhunts, "dhoggurSwellManhunts", true);
+            Scribe_Values.Look(ref dhoggurSwellHours, "dhoggurSwellHours", 8f);
+            Scribe_Values.Look(ref dhoggurCooldownDays, "dhoggurCooldownDays", 1f);
+            Scribe_Values.Look(ref dhoggurSwellScale, "dhoggurSwellScale", 3f);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -370,6 +383,24 @@ namespace RimMandrake.TheForge
                 dhokkurShoveMode = Mathf.RoundToInt(list.Slider(dhokkurShoveMode, 0f, 2f));
                 list.Label("  Damage when it cannot be moved: " + dhokkurShoveDamagePct.ToStringPercent());
                 dhokkurShoveDamagePct = list.Slider(dhokkurShoveDamagePct, 0f, 1f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The dhoggur", RimMandrake.Shared.SettingScope.Now, new[] { "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale" }))
+            {
+                list.CheckboxLabeled("Dhoggur swells when harmed", ref dhoggurSwellEnabled,
+                    "Damage a dhoggur and it swells with a violent chemical reaction: bigger, tougher, harder-hitting, "
+                  + "and spitting fire, until the swell passes. Off: it stays a plain placid forager that flees when "
+                  + "hurt, and one already swollen shrinks back at once.");
+                list.CheckboxLabeled("  A swollen wild dhoggur hunts its attackers", ref dhoggurSwellManhunts,
+                    "While swollen, a wild dhoggur goes manhunter and calms down when the swell ends. A tamed one never "
+                  + "turns. Off: it swells but does not hunt.");
+                list.Label("  Swell lasts: " + dhoggurSwellHours.ToString("0.#") + " hours");
+                dhoggurSwellHours = list.Slider(dhoggurSwellHours, 1f, 24f);
+                list.Label("  Rest before it can swell again (counted from the swell's end): " + dhoggurCooldownDays.ToString("0.##") + " days");
+                dhoggurCooldownDays = list.Slider(dhoggurCooldownDays, 0f, 5f);
+                list.Label("  Swollen size, health and bite: " + dhoggurSwellScale.ToString("0.0") + "x");
+                dhoggurSwellScale = list.Slider(dhoggurSwellScale, 1f, 5f);
                 list.GapLine();
             }
 

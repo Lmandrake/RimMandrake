@@ -64,6 +64,34 @@ namespace RimMandrake.TheForge
         }
 
         // FORGE_SKY_PASTURES_1 quicktest surface (state reads only, no flight hunting).
+        // DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB quicktest surface: the newest dhoggur on the map (highest thing id), so a
+        // test that spawns one reads that one even when the map has wild dhoggurs of its own.
+        [DebugAction(CAT, "Dhoggur swell: report (newest dhoggur, current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DhoggurReport()
+        {
+            RM_CompDhoggurSwell c = NewestDhoggur(Find.CurrentMap);
+            Log.Message("[RMTheForgeDebug] " + (c == null ? "no dhoggur on this map" : c.DebugStateReport()));
+        }
+
+        private static RM_CompDhoggurSwell NewestDhoggur(Map map)
+        {
+            RM_CompDhoggurSwell best = null;
+            int bestId = -1;
+            if (map == null)
+                return null;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                RM_CompDhoggurSwell c = p.TryGetComp<RM_CompDhoggurSwell>();
+                if (c != null && p.thingIDNumber > bestId)
+                {
+                    best = c;
+                    bestId = p.thingIDNumber;
+                }
+            }
+            return best;
+        }
+
         [DebugAction(CAT, "Forge sky: report (current map)",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void SkyReport()
