@@ -134,6 +134,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 	internal static class FlowKernelFuzz
 	{
 		public static long Cases, Pulses;
+		/// <summary>WATER_LEVELSET_SOLVE: the WATER_SURFACE_REWIRE cases run once with the unit-at-a-time pass and once with the solve.</summary>
+		public static bool LevelSet;
 
 		// ── a generated scene: grid, liquids, dig list (seed order = dig order), sinks, pulses ──
 		internal struct Scene
@@ -580,6 +582,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.k.viscosityEnabled = true;
 			w.k.creepWaterEnabled = true;
 			w.k.levelBySurfaceEnabled = surface;
+			w.k.levelSetEnabled = surface && LevelSet;
 			return w;
 		}
 
@@ -683,7 +686,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			w.AddBody(true, 0f, new[] { 0 });
 			var digs = Enumerable.Range(1, 10).ToList();
 			foreach (int c in digs) w.k.depth[c] = 2;
-			w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true;
+			w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
 			float worst = 0f;
 			w.Pulse(digs);
 			string first = string.Join("", digs.Select(c => w.k.fill[c]));
@@ -721,7 +724,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					w.cellFluid[c] = w.k.fill[c] > 0 ? ArrayWorld.Water : null;
 				}
 				for (int i = 0; i < 64; i++) { int x = i % 8, z = i / 8; w.sink[i] = band > 0 && (x < band || z < band || x >= 8 - band || z >= 8 - band); }
-				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true;
+				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
 				float startTotal = w.k.fill.Sum(f => f) + (pond?.stock ?? 0f);
 				var digs = Enumerable.Range(0, 64).Where(i => w.k.depth[i] > 0).ToList();
 				string prev = null; int lastChange = 0; float worst = 0f, drained = 0f;
@@ -866,7 +869,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 	/// pulse, then each body's final stock.</summary>
 	internal static class OracleScenes
 	{
-		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false)
+		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -898,6 +901,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 				world.k.viscosityEnabled = true;
 				world.k.levelBySurfaceEnabled = levelBySurface;
+				world.k.levelSetEnabled = levelBySurface && levelSet;
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{

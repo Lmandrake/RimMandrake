@@ -133,7 +133,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND).
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
-                    return OracleScenes.Run(reader, Console.Out, args.Length > 2 && args[2] == "surface");
+                    return OracleScenes.Run(reader, Console.Out, args.Length > 2 && (args[2] == "surface" || args[2] == "levelset"),
+                        args.Length > 2 && args[2] == "levelset");
                 }
             }
 
@@ -1801,6 +1802,38 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            // WATER_LEVELSET_SOLVE (owner 2026-10-16, station 1: "levelset down to a smooth 0 or 1 ... not 0, deep, 0").
+            foreach (var (name, fn) in new (string, Func<string>)[] {
+                ("low_volume_wide_basin_one_patch", LevelSetChecks.LowVolumeWideBasinOnePatch),
+                ("enough_volume_flat_sheet", LevelSetChecks.EnoughVolumeFlatSheet),
+                ("stepped_floor_flat_surface", LevelSetChecks.SteppedFloorFlatSurface),
+                ("conserves_and_edge_drains", LevelSetChecks.ConservesAndDrains),
+                ("wide_basin_cost", LevelSetChecks.WideBasinCost) })
+            {
+                Case("WATER_LEVELSET_" + name, () =>
+                {
+                    string r = fn();
+                    Console.WriteLine("      " + r);
+                    Assert(r.StartsWith("OK"), r);
+                });
+            }
+            // The WATER_SURFACE_REWIRE cases again with the solve (shipped ON).
+            FlowKernelFuzz.LevelSet = true;
+            foreach (var (name, fn) in new (string, Func<string>)[] {
+                ("flat_channel_levels", FlowKernelFuzz.SurfaceFlatChannelLevels),
+                ("edge_drained_channel_empties", FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties),
+                ("deep_hole_beside_shallow_trench", FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench),
+                ("source_still_fills_channel", FlowKernelFuzz.SurfaceSourceStillFillsChannel),
+                ("random_scenes_settle_and_conserve", FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve) })
+            {
+                Case("WATER_LEVELSET_rewire_" + name, () =>
+                {
+                    string r = fn();
+                    Console.WriteLine("      " + r);
+                    Assert(r.StartsWith("OK"), r);
+                });
+            }
+            FlowKernelFuzz.LevelSet = false;
             Case("CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY_dead_end_fills_from_far_end", () =>
             {
                 string r = FlowKernelFuzz.CanalMouthDeadEndFillsFromFarEnd();

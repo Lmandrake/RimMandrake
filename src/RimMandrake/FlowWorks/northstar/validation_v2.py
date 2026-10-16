@@ -107,7 +107,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, levelSetEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -164,7 +164,7 @@ def _ticks_per_tile(fluid):
 
 
 # The shipped creep switches (waterFrontCreepEnabled, thickCreepEnabled; both default ON), as PulseOracle kwargs.
-CREEP_LIVE = dict(creep_water=True, creep_thick=True, level_surface=True)   # + levelBySurfaceEnabled (default ON)
+CREEP_LIVE = dict(creep_water=True, creep_thick=True, level_surface=True, level_set=True)   # + levelBySurfaceEnabled, levelSetEnabled (default ON)
 
 
 def fluid_moves(pulse, fluid):
@@ -197,7 +197,8 @@ class PulseOracle(object):
     2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
-                 recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False):
+                 recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False,
+                 level_set=False):
         self.w, self.h = w, h
         # RM_FlowKernel creepWaterEnabled (CANAL_FRONT_FIX_WRONG_END_WETS_FIRST, shipped ON as
         # waterFrontCreepEnabled) / creepEnabled (THICK_LIQUID_CREEP_1, thickCreepEnabled): a NON-source donor that
@@ -210,6 +211,10 @@ class PulseOracle(object):
         # the older offline bounds stay the pre-surface engine; the LIVE oracles pass CREEP_LIVE, which carries it.
         self.low = {}
         self.level_surface = level_surface and algo == "fixed"   # the "old" engine predates it (fault mock included)
+        # RM_FlowKernel levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON, needs level_surface): each wet region + dry rim is
+        # SOLVED to its flat level (_levelset_regions); a drop of exactly 1 between two dug cells no longer moves in _pick.
+        self.level_set = level_set and self.level_surface
+        self.ds, self.dk = {}, {}
         self.received = {}                # cell -> pulse_n it last received a level
         # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
         # marked in the visited set SHARED across components, so the first-seeded channel claims it).
@@ -309,7 +314,7 @@ class PulseOracle(object):
                     continue                                 # creep: filled THIS pulse, passes nothing on until the next
             if self.level_surface:
                 drop = (fn - dn) - (self.F.get(r, 0) - dr)
-                if drop < 1:
+                if drop < 1 or (drop == 1 and not src and self.level_set):
                     continue
                 if not src and (self.key.get(n) is None or self.key.get(r) is None
                                 or (drop == 1 and not self._downstream(n, r, dn, dr))):
@@ -366,6 +371,7 @@ class PulseOracle(object):
         ds = bfs(src, False)
         dk = bfs(snk, True)
         self.key = {c: (ds.get(c, 0), -dk.get(c, 0)) for c in exc}
+        self.ds, self.dk = ds, dk
         # levelBySurfaceEnabled: hops to the component's deepest bed (RM_FlowKernel.lowHops).
         deepest = max((self.D[c] for c in exc), default=0)
         self.low = bfs([c for c in exc if self.D[c] == deepest], True) if self.level_surface else {}
@@ -495,7 +501,9 @@ class PulseOracle(object):
                     self.F[r] += 1
                     self.received[r] = self.pulse_n
                     moved += 1
-            if self.level_surface:
+            if self.level_set:
+                self._levelset_regions(comp)
+            elif self.level_surface:
                 self._level_regions(comp)
         for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
             del self.fluid[c]
@@ -562,6 +570,128 @@ class PulseOracle(object):
                 self.F[t] += 1
                 gave[d] = gave.get(d, 0) + 1
                 got[t] = got.get(t, 0) + 1
+
+    def _ls_key(self, c, drains):
+        """RM_FlowKernel.CellKey: the part-filled band's priority (lowest first)."""
+        far = 1 << 20
+        wet = 0 if self.F.get(c, 0) > 0 else 1
+        if drains:
+            return (self.dk.get(c, far), wet, self.idx(c))
+        src = 0 if not self.ds else (far - self.ds[c] if c in self.ds else 2 * far)
+        return (self.low.get(c, far), wet, src, self.idx(c))
+
+    def _levelset_regions(self, comp):
+        """RM_FlowKernel.LevelSetWetRegions / SolveRegion / Assign / PickBand (WATER_LEVELSET_SOLVE): per wet region of one
+        fluid (not held by creep) plus its DRY dug rim, the region's volume is re-laid at its flat level. Band L (the layer
+        between surface -L and -L+1) splits the domain into connected pieces of squares dug >= L; bottom up each piece counts
+        the water already at or below its band (trapped behind its sill), top down it fills its deeper pieces (in key order)
+        before its own band, and a part-filled band is grown best-first by _ls_key from the piece's best square."""
+        compset = set(comp)
+        flu = lambda c: self.fluid.get(c, "RM_Fluid_Water")
+        drains = len(self.dk) > 0
+        member = set()
+        seeds = sorted((c for c in comp if self.exc(c) and self.F[c] > 0), key=self.idx)
+        for seed in seeds:
+            if seed in member or self.F[seed] == 0:
+                continue
+            fl = flu(seed)
+            if self._held(seed, fl):
+                continue
+            region, i = [seed], 0
+            member.add(seed)
+            while i < len(region):
+                c = region[i]
+                i += 1
+                for dx, dz in CARDINAL:
+                    n = (c[0] + dx, c[1] + dz)
+                    if n in member or n not in compset or not self.exc(n) or self.F[n] == 0 or flu(n) != fl or self._held(n, fl):
+                        continue
+                    member.add(n)
+                    region.append(n)
+            if self.viscosity and not fluid_moves(self.pulse_n, fl):
+                continue
+            domain = list(region)
+            dset = set(region)
+            for c in region:
+                for dx, dz in CARDINAL:
+                    n = (c[0] + dx, c[1] + dz)
+                    if n in dset or n not in compset or not self.exc(n) or self.F[n] != 0:
+                        continue
+                    dset.add(n)
+                    domain.append(n)
+            volume = sum(self.F[c] for c in region)
+            maxband = max(self.D[c] for c in domain)
+            comps, comp_of = [], {}             # comp: dict(band, cells, children); comp_of[(band, cell)] = comp index
+            for band in range(1, maxband + 1):
+                for c0 in domain:
+                    if self.D[c0] < band or (band, c0) in comp_of:
+                        continue
+                    k = len(comps)
+                    comps.append(dict(band=band, cells=[c0], children=[]))
+                    if band > 1:
+                        comps[comp_of[(band - 1, c0)]]["children"].append(k)
+                    comp_of[(band, c0)] = k
+                    j = 0
+                    cells = comps[k]["cells"]
+                    while j < len(cells):
+                        c = cells[j]
+                        j += 1
+                        for dx, dz in CARDINAL:
+                            n = (c[0] + dx, c[1] + dz)
+                            if n in dset and self.D[n] >= band and (band, n) not in comp_of:
+                                comp_of[(band, n)] = k
+                                cells.append(n)
+            for k in range(len(comps) - 1, -1, -1):
+                cp = comps[k]
+                cp["water"] = sum(1 for c in cp["cells"] if self.F[c] > self.D[c] - cp["band"]) + sum(comps[ch]["water"] for ch in cp["children"])
+                cp["cap"] = len(cp["cells"]) + sum(comps[ch]["cap"] for ch in cp["children"])
+                cp["key"] = min(self._ls_key(c, drains) for c in cp["cells"])
+                cp["children"].sort(key=lambda ch: comps[ch]["key"])
+            new = {c: 0 for c in domain}
+
+            def pick(cp, r):
+                if r >= len(cp["cells"]):
+                    return list(cp["cells"])
+                band, k = cp["band"], comp_of[(cp["band"], cp["cells"][0])]
+                start = min(cp["cells"], key=lambda c: self._ls_key(c, drains))
+                frontier, seen, out = [(self._ls_key(start, drains), start)], {start}, []
+                while len(out) < r and frontier:
+                    frontier.sort()
+                    _, c = frontier.pop(0)
+                    out.append(c)
+                    for dx, dz in CARDINAL:
+                        n = (c[0] + dx, c[1] + dz)
+                        if comp_of.get((band, n)) == k and n not in seen:
+                            seen.add(n)
+                            frontier.append((self._ls_key(n, drains), n))
+                return out
+
+            def assign(k, amount):
+                cp = comps[k]
+                free = amount - sum(comps[ch]["water"] for ch in cp["children"])
+                laid = 0
+                for ch in cp["children"]:
+                    give = max(0, min(free, comps[ch]["cap"] - comps[ch]["water"]))
+                    free -= give
+                    laid += assign(ch, comps[ch]["water"] + give)
+                r = max(0, min(free, len(cp["cells"])))
+                if r > 0:
+                    for c in pick(cp, r):
+                        new[c] += 1
+                        laid += 1
+                return laid
+
+            laid = sum(assign(k, comps[k]["water"]) for k in range(len(comps)) if comps[k]["band"] == 1)
+            if laid != volume:
+                continue
+            for c in domain:
+                if new[c] != self.F[c]:
+                    if self.F[c] == 0 and new[c] > 0:
+                        if fl == "RM_Fluid_Water":
+                            self.fluid.pop(c, None)
+                        else:
+                            self.fluid[c] = fl
+                    self.F[c] = new[c]
 
     def run(self, cells, pulses):
         out = []

@@ -1828,6 +1828,7 @@ namespace RimMandrake.FlowWorks
 			flowKernel.creepEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled && RimMandrakeFlowWorksSettings.thickCreepEnabled;
 			flowKernel.creepWaterEnabled = RimMandrakeFlowWorksSettings.waterFrontCreepEnabled;
 			flowKernel.levelBySurfaceEnabled = RimMandrakeFlowWorksSettings.levelBySurfaceEnabled;
+			flowKernel.levelSetEnabled = RimMandrakeFlowWorksSettings.levelBySurfaceEnabled && RimMandrakeFlowWorksSettings.levelSetEnabled;
 			// FLOW_ORDER_EXTERNAL_INPUT_1 part 2: the per-partition cap, and moving seams for a network bigger than it.
 			flowKernel.maxComponentCells = RimMandrakeFlowWorksSettings.MaxNetworkCells;
 			flowKernel.seamRotationEnabled = RimMandrakeFlowWorksSettings.networkSeamsMoveEnabled;

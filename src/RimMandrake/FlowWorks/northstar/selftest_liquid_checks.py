@@ -59,6 +59,24 @@ case(LC.filth_thickness("Spilled liquid x4"), 4, "FilthLabel thickness")
 case(LC.filth_thickness("Spilled liquid of hose x2"), 2, "FilthLabelWithSource thickness")
 case(LC.filth_thickness("Spilled liquid"), None, "no thickness is unreadable, never 0")
 case(LC.FILL_UNITS >= 4 * L, True, "staging is level-scale, not the pre-litres 100")
+
+
+def _rows(fills, depth=2, z=0, x0=0, sink_upto=-1, source_at=None):
+    out = [{"x": x0 + i, "z": z, "d": depth, "f": f, "isExcavated": True, "isSink": x0 + i <= sink_upto, "isSource": False}
+           for i, f in enumerate(fills)]
+    if source_at is not None:
+        out.append({"x": source_at, "z": z, "d": 0, "f": 0, "isExcavated": False, "isSink": False, "isSource": True})
+    return out
+
+
+case(LC.levelset_verdict(_rows([1, 1, 1, 1, 0, 0]))[0], "PASS", "L7: one patch at depth 1, rest dry")
+case(LC.levelset_verdict(_rows([1, 0, 1, 0, 1, 0]))[0], "FAIL", "L7: the walk save's 1,0,1,0 stripe")
+case(LC.levelset_verdict(_rows([1, 0, 1, 0, 1, 0]))[2]["stripes"], 2, "L7: two stripes counted")
+case(LC.levelset_verdict(_rows([0, 2, 2, 0]))[0], "FAIL", "L7: 0, deep, 0 (a brim blob beside dry D2)")
+case(LC.levelset_verdict(_rows([2, 2, 2, 2]))[0], "PASS", "L7: brim-full canal")
+case(LC.levelset_verdict(_rows([0, 0, 0]))[0], "UNMEASURED", "L7: no water is unreadable, not a pass")
+case(LC.levelset_verdict(_rows([1, 0, 1, 1], sink_upto=1))[0], "PASS", "L7: sink-band squares are in flux and not read")
+case(LC.levelset_verdict(_rows([2, 0, 0], x0=1, source_at=0))[0], "PASS", "L7: the mouth beside the pond is not a step")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)
