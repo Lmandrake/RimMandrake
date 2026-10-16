@@ -331,6 +331,24 @@ def _prep(t, name, size=PAD_SIZE):
     _open_sky(t, r)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(r)), layer="top")
     _settle_bystanders(t)
+    _clear_wildlife(t)
+
+
+def _clear_wildlife(t):
+    """SITE, LIVE modcheck6 2026-10-16: the map's own wildlife fought (a mink and a toughspike) and then hurt drafted
+    site colonist Mullen (BloodLoss), and that hurt stopped the gas chain's safe_advance, so vent_gas_burns_toxic and
+    the rest of the chain went UNMEASURED. No Cauldron row reads an animal it did not spawn, and every chain spawns its
+    fixtures after _prep, so the factionless animals are removed (no death, no corpse, no detonation) here, as
+    Contagion does (helpers.kill_wildlife)."""
+    if not _live(t):
+        return
+    try:
+        res = H.kill_wildlife(t.session)
+        if res.acted or res.residue:
+            _note(t, "mapgen wildlife removed", {"removed": res.acted, "verified": res.verified,
+                                                 "residue": res.residue[:8]})
+    except Exception as ex:    # upkeep: a failure is evidence, never a verdict
+        _note(t, "wildlife not cleared", str(ex)[:200])
 
 
 def _open_sky(t, rect, raw=False):
@@ -1202,17 +1220,27 @@ def flora_chain(t):
             if _live(t):
                 if len(FLORA) < 11:
                     _fail("parsed %d plant defs, expected 11" % len(FLORA))
-                cells = {}
+                cells, answers = {}, {}
                 for i, d in enumerate(FLORA):
                     cx, cz = rect[0] + 2 + (i % 4) * 3, rect[1] + 2 + (i // 4) * 3 + 8
                     cells[d] = (cx, cz)
                     if d in SOIL_FORBIDDEN:
                         t.bridge_call("jawa/set_terrain_batch", ops="%s:%d,%d,1,1" % (ROCK, cx, cz), layer="top")
-                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
+                    answers[d] = t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
                 lost = [d for d, (cx, cz) in cells.items() if _count(t, d, "%d,%d,1,1" % (cx, cz)) < 1]
-                _note(t, "flora set", {"asked": len(FLORA), "lost": lost})
+                # A lost def carries its own set_plants answer (planted / rejected + reason) and what stands on its cell,
+                # so 'refused by the cell' (SITE: a leftover on the pad) and 'planted then gone' (MOD) are told apart.
+                why = {}
+                for d in lost:
+                    cx, cz = cells[d]
+                    a = answers.get(d) or {}
+                    on = t.bridge_call("jawa/list_things", limit=10, rect="%d,%d,1,1" % (cx, cz))
+                    why[d] = {"planted": a.get("planted"), "rejected": a.get("rejected"), "reasons": a.get("reasons"),
+                              "errors": a.get("errors"), "cell": [cx, cz],
+                              "onCell": [th.get("def") for th in ((on or {}).get("things") or [])]}
+                _note(t, "flora set", {"asked": len(FLORA), "lost": lost, "why": why})
                 if lost:
-                    _fail("plant def(s) did not stand after set_plants: %s" % lost)
+                    _fail("plant def(s) did not stand after set_plants: %s (%s)" % (lost, json.dumps(why)[:600]))
         # Three thornwoods at three growths for the assay line (harvestMinGrowth 0.2).
         with _comp(t, "assay_grades", toggle="assayGradeEnabled"):
             if _live(t):
@@ -1278,7 +1306,18 @@ def _harvest_one(t, col, tree, rect):
         t.wait_ticks(1000)
         if _stack_total(t, "WoodLog", _rs(rect)) > before:
             break
-    return _stack_total(t, "WoodLog", _rs(rect)) - before
+    got = _stack_total(t, "WoodLog", _rs(rect)) - before
+    if got < 1 and _live(t):
+        # LIVE modcheck5 2026-10-16: 'no wood in 5000 ticks' with nothing else read. Evidence for the next round: is the
+        # tree still standing, what is the harvester doing, and where is it (a haul off the pad vs a job never done).
+        try:    # evidence only: a failed read must not turn the caller's UNMEASURED into a FAIL
+            rows = _rows(t)
+            _note(t, "harvest gave no wood: tree still standing / harvester job / harvester at",
+                  [bool(_things(t, MARTYR, "%d,%d,1,1" % (x, z))), _jobs(t).get(col),
+                   [(rows.get(col) or {}).get(k) for k in ("x", "z", "drafted", "downed")]])
+        except Exception as ex:
+            _note(t, "harvest evidence unread", str(ex)[:200])
+    return got
 
 
 @suite.chain("yield")
@@ -1811,11 +1850,26 @@ def vents_chain(t):
                 _note(t, "wild vexxiss took %s" % DRINK_JOB, seen)
                 if not seen:
                     _fail("a wild vexxiss 9 cells from a breathing vent never took %s in 1800 ticks (toggle ON)" % DRINK_JOB)
-                t.wait_ticks(300)
-                _o, st = vent()
-                if "drunk" not in _STATE.get("vent_text", "") and st != "silenced":
-                    _fail("the vexxiss drank but the vent shows no suppression: %r" % _STATE.get("vent_text"))
+                # The job is seen from its first toil (the walk to the vent); suppression starts only once it drinks.
+                # LIVE modcheck5 2026-10-16: one read 300 ticks after the job was seen found no suppression. Poll up to
+                # 1500 ticks, recording where the vexxiss is and what it does, so a slow walk and a drink that suppresses
+                # nothing are told apart.
+                trail, drunk = [], False
+                for _ in range(10):
+                    t.wait_ticks(150)
+                    _o, st = vent()
+                    vr = _rows(t).get(ids["v1"]) or {}
+                    trail.append([_jobs(t).get(ids["v1"]), vr.get("x"), vr.get("z"), st])
+                    if "drunk" in _STATE.get("vent_text", "") or st == "silenced":
+                        drunk = True
+                        break
+                _note(t, "vexxiss job / x / z / vent state per 150 ticks", trail)
+                if not drunk:
+                    _fail("the vexxiss took %s but the vent shows no suppression after 1500 ticks: %r (vent at %d,%d)"
+                          % (DRINK_JOB, _STATE.get("vent_text"), x, z))
                 kill_pawns()
+                if vent()[1] == "silenced":    # a silenced vent is drunk by nobody: the OFF arm would pass for nothing
+                    _unmeasured(t, "OFF arm: the vent is already silenced, so no drink job is a meaningful 'no'")
                 with _setting(t, "vexxissDrinksVentsEnabled", False):
                     ids["v2"] = _spawn(t, VEXXISS, x + 9, z)
                     _full(t, ids["v2"])
@@ -1951,8 +2005,17 @@ def gas_chain(t):
                     r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (fx, fz), fireSize=1.0)
                     if not (r or {}).get("firesStarted"):
                         _unmeasured(t, "map_fire lit nothing beside the vent: %r" % r)
-                    _wait(t, ticks)
-                    after = gas()
+                    # LIVE modcheck5 2026-10-16: the burn's tox gas is a small puff (4 thin cells -> ~16 density each)
+                    # that vanilla diffuses and dissipates; one read 600 ticks later found it gone (round 1 caught 3 cells
+                    # left). So the window is read every 60 ticks and `tox` is the most smoke seen at any read.
+                    after, tox_max, step = None, 0, 60
+                    for _ in range(max(1, ticks // step)):
+                        _wait(t, step)
+                        after = gas()
+                        if after.get("capped"):
+                            _unmeasured(t, "the vent reads capped during the burn window: no gas line to read")
+                        tox_max = max(tox_max, after.get("tox") or 0)
+                    after = dict(after, tox=tox_max)
                     t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t)))
                     return after
 

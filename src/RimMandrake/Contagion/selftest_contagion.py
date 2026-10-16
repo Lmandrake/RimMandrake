@@ -596,7 +596,11 @@ class Fake(object):
 
     def t_bill_add(self, giverId=None, recipe=None, **k):
         self.bills.add(giverId)
-        return {"success": True}
+        # live (2026-10-16): a surgery on a pawn is made as a Bill_Medical
+        return {"success": True, "billClass": "Bill_Medical"}
+
+    def t_bill_list(self, thingId=None, **k):
+        return {"success": True, "bills": [{"recipeDefName": "RM_ExtractGenomeSample"}] if thingId in self.bills else []}
 
     def t_do_bill_now(self, billGiverId=None, pawnId=None, **k):
         pat = self.pawns.get(billGiverId)
