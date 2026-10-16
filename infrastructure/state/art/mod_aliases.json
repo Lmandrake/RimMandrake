@@ -1,0 +1,12 @@
+{
+ "_doc": "Bare or mis-spelled mod names found as `mod` in historical art-ledger events -> the canonical src/<Tier>/<Mod> key. Applied at READ (artledger.mod_key) and WRITE (canonical_mod); events are never rewritten. Tier-relative ('RimMandrake/X') and absolute clone paths are normalised by rule and need no entry here.",
+ "aliases": {
+  "SWBestiary": "src/RimStarWars/SWBestiary",
+  "FlowWorks": "src/RimMandrake/FlowWorks",
+  "TerminalBiomes": "src/RimMandrake/TerminalBiomes",
+  "WeepingStones": "src/RimMandrake/WeepingStones",
+  "GelatinousSlime": "src/RimMandrake/GelatinousSlime",
+  "LongShade": "src/RimMandrake/LongShade",
+  "FloodedCanyon": "src/RimMandrake/FloodedCanyon"
+ }
+}
