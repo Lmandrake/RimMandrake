@@ -1140,7 +1140,12 @@ namespace JawaBench.BridgeTools
                                 label = h.Label,
                                 severity = h.Severity,
                                 part = h.Part?.def?.defName,
-                                partLabel = h.Part?.Label
+                                partLabel = h.Part?.Label,
+                                // A part destroyed outright becomes MissingBodyPart and leaves NO injury
+                                // hediff of the damage that took it (LIVE modcheck7 2026-10-16: a UV-shy
+                                // native burned under open sky read only 'MissingBodyPart'). lastInjury
+                                // names that damage's injury def (Burn, Cut, ...); null on other hediffs.
+                                lastInjury = (h as Hediff_MissingPart)?.lastInjury?.defName
                             });
                         var caps = new Dictionary<string, float>();
                         // Finding #30 (COMPANION_HARDENING_AUDIT_2026-09-09): a bare
