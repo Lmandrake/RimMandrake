@@ -618,6 +618,13 @@ namespace RimMandrake.Contagion.SelfTest
                 if (f >= 1f) VSettled++;
                 Check(RM_TellRenderKernel.Shaking(on, true, false) == on, "shaking disagrees with tells on/off");
             }
+            // off-poll gaps: tells begun at a poll mid-window ramp up from 0 (no pop), and past the scheduled tick the sinker stays down
+            int began = next - lead + r.Next(0, Math.Max(1, Math.Min(lead, 250)));
+            if (on && began < next)
+            {
+                Check(RM_TellRenderKernel.SinkFraction(on, true, began, next, lead, false, -1, ramp, began) == 0f, "settle did not start from the poll that saw the tell");
+                Check(RM_TellRenderKernel.SinkFraction(on, true, next + r.Next(0, 250), next, lead, false, -1, ramp, began) == 1f, "popped back up between the scheduled Burn and the poll that starts it");
+            }
             Check(RM_TellRenderKernel.SinkFraction(on, false, next, -1, lead, true, -1, ramp) == (on ? 1f : 0f), "a Burn must hold it fully down");
             Check(!RM_TellRenderKernel.Shaking(on, true, true), "shaking during the Burn: the rattle stops when the light arrives");
             // the rise after the Burn: falls from 1 to 0 over ramp and stays 0 after

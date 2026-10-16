@@ -27,14 +27,15 @@ namespace RimMandrake.Contagion
             RM_MapComponent_ContagionSky sky = map.GetComponent<RM_MapComponent_ContagionSky>();
             if (sky == null) return 0f;
             return RM_TellRenderKernel.SinkFraction(RM_ContagionSettings.burnTellsEnabled, sky.TellsBegun, Find.TickManager.TicksGame,
-                sky.NextBurnTick, ext.tellLeadTicks, sky.BurnActive, sky.LastBurnEndTick, RampTicks);
+                sky.NextBurnTick, ext.tellLeadTicks, sky.BurnActive, sky.LastBurnEndTick, RampTicks, sky.TellsBeganTick);
         }
 
+        // The state the rattlers' mesh was last built for (see ShakeDrawn), polled with the sky clock.
         public static bool Shaking(Map map)
         {
-            if (map == null || RM_ContagionSky.ExtFor(map) == null) return false;
+            if (map == null) return false;
             RM_MapComponent_ContagionSky sky = map.GetComponent<RM_MapComponent_ContagionSky>();
-            return sky != null && RM_TellRenderKernel.Shaking(RM_ContagionSettings.burnTellsEnabled, sky.TellsBegun, sky.BurnActive);
+            return sky != null && sky.ShakeDrawn;
         }
     }
 

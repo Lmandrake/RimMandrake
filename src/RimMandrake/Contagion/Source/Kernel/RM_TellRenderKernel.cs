@@ -10,15 +10,21 @@ namespace RimMandrake.Contagion
     {
         // 0 = floating as normal, 1 = fully settled. Settles over rampTicks from the first tell, stays down through the
         // Burn, and rises over rampTicks after the Burn ends (lastBurnEndTick, -1 = none seen). Tells off: never moves.
+        // The sky clock polls only every 250 ticks, so tellsBegun lands up to a poll after the window opens: the settle runs
+        // from tellsBeganTick (the poll that saw it; -1 = unknown, e.g. after a load, then from the window's start) so it
+        // never pops. Between the Burn's scheduled tick and the poll that starts it the sinker stays down.
         public static float SinkFraction(bool tellsOn, bool tellsBegun, int now, int nextBurnTick, int tellLeadTicks,
-            bool burnActive, int lastBurnEndTick, int rampTicks)
+            bool burnActive, int lastBurnEndTick, int rampTicks, int tellsBeganTick = -1)
         {
             if (!tellsOn) return 0f;
             if (burnActive) return 1f;
             int ramp = Math.Max(1, rampTicks);
-            if (tellsBegun && nextBurnTick > now)
+            if (tellsBegun && nextBurnTick >= 0)
             {
-                float elapsed = Math.Max(0, tellLeadTicks) - (nextBurnTick - now);
+                if (nextBurnTick <= now) return 1f;
+                float elapsed = tellsBeganTick >= 0 && tellsBeganTick <= now
+                    ? now - tellsBeganTick
+                    : Math.Max(0, tellLeadTicks) - (nextBurnTick - now);
                 return Clamp01(elapsed / ramp);
             }
             if (lastBurnEndTick >= 0 && now >= lastBurnEndTick && now - lastBurnEndTick < ramp)
