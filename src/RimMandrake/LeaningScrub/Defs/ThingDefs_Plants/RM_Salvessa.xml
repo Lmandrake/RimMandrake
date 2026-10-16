@@ -4,7 +4,7 @@
   Invented, franchise-free base whose growth, harvest and stats are copied 1:1 from the canon RSW_Plant_Nysyllin_Wild
   (SWBestiary RSW_DesertPortB_Plants.xml), which is now a pure reskin of this def (ParentName="RM_Salvessa").
   Home: RM_LeaningScrub. Not RM_WildHealroot: that plant grows and harvests differently (owner chose a new base).
-  TEMP ART: vanilla placeholders until the base art is ruled and installed.
+  ART: own folder Things/Plant/RM_Salvessa, empty until the base art is ruled and installed (raw item keeps a vanilla placeholder).
 -->
 <Defs>
 
@@ -17,8 +17,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP placeholder (vanilla); base art pending owner review -->
-      <texPath>Things/Plant/BerryPlant</texPath>
+      <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
+      <texPath>Things/Plant/RM_Salvessa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -31,7 +31,7 @@
       <fertilityMin>0.8</fertilityMin>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <maxMeshCount>9</maxMeshCount>
-      <immatureGraphicPath>Things/Plant/BerryPlant</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plant/RM_Salvessa</immatureGraphicPath>
       <growDays>10</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>

@@ -3,7 +3,7 @@
   RM_CorriskTree - PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner 2026-10-16: "Star Wars will have a very few canon plants, and those can just be reskins of non-canon versions we create in the Baroque Biomes"; by card "Invent 7 new Baroque bases").
   Invented, franchise-free base whose growth, harvest and stats are copied 1:1 from the canon RSW_Plant_HydenockTree_Wild
   (SWBestiary RSW_DonorPack_P1_Plants.xml), which is now a pure reskin of this def (ParentName="RM_CorriskTree").
-  Harvest is vanilla Dye, as the canon tree. Home: RM_FeverWood. TEMP ART: vanilla placeholder until ruled and installed.
+  Harvest is vanilla Dye, as the canon tree. Home: RM_FeverWood. ART: own folder Things/Plant/RM_CorriskTree, empty until ruled and installed.
 -->
 <Defs>
 
@@ -12,8 +12,8 @@
     <label>wild corrisk tree</label>
     <description>A tall tree whose trunk splits into twisting, rope-braided limbs under a sparse crown of hanging blade-leaves. Its bark weeps a resin that stains everything it touches rust-orange; stripped and boiled, it gives dye in quantity.</description>
     <graphicData>
-      <!-- TEMP placeholder (vanilla); base art pending owner review -->
-      <texPath>Things/Plant/TreeOak</texPath>
+      <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
+      <texPath>Things/Plant/RM_CorriskTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.15, 0.3, 0.1)</volume>
@@ -39,7 +39,7 @@
       <visualSizeRange>5~10</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
-      <immatureGraphicPath>Things/Plant/TreeOak</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plant/RM_CorriskTree</immatureGraphicPath>
       <harvestWork>310</harvestWork>
       <harvestTag>Standard</harvestTag>
       <forceIsTree>true</forceIsTree>

@@ -3,7 +3,7 @@
   RM_Thrannagourd - PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner 2026-10-16: "Star Wars will have a very few canon plants, and those can just be reskins of non-canon versions we create in the Baroque Biomes"; by card "Invent 7 new Baroque bases").
   Invented, franchise-free base whose growth, harvest and stats are copied 1:1 from the canon RSW_Plant_HubbaGourd_Wild
   (SWBestiary RSW_DesertPortB_Plants.xml), which is now a pure reskin of this def (ParentName="RM_Thrannagourd").
-  Home: RM_LongShade. TEMP ART: vanilla placeholders until the base art is ruled and installed.
+  Home: RM_LongShade. ART: own folder Things/Plant/RM_Thrannagourd, empty until the base art is ruled and installed (raw item keeps a vanilla placeholder).
 -->
 <Defs>
 
@@ -16,8 +16,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP placeholder (vanilla); base art pending owner review -->
-      <texPath>Things/Plant/BerryPlant</texPath>
+      <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
+      <texPath>Things/Plant/RM_Thrannagourd</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -27,7 +27,7 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <sowTags Inherit="False" />
-      <immatureGraphicPath>Things/Plant/BerryPlant</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plant/RM_Thrannagourd</immatureGraphicPath>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>
