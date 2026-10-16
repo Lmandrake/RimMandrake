@@ -46,10 +46,10 @@ def scene(seed):
     return w, h, pulses, band, bodies, src, digs
 
 
-def oracle(sc, surface=False):
+def oracle(sc, surface=False, level_set=False):
     w, h, pulses, band, bodies, src, digs = sc
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
-                      sink_band=band or None, algo="fixed", level_surface=surface)
+                      sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -99,12 +99,13 @@ def main():
         with open(scene_file, "w") as f:
             f.write("\n".join(encode(sc) for sc in scenes) + "\n")
         failed = []
-        # Both engines: the pre-surface rule, and levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, shipped ON).
-        for mode in ("depth", "surface"):
+        # Three engines: the pre-surface rule, levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND), and that plus
+        # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON).
+        for mode in ("depth", "surface", "levelset"):
             t0 = time.time()
-            want = [oracle(sc, mode == "surface") for sc in scenes]
+            want = [oracle(sc, mode != "depth", mode == "levelset") for sc in scenes]
             t1 = time.time()
-            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + (["surface"] if mode == "surface" else [])
+            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([mode] if mode != "depth" else [])
             res = subprocess.run(args, capture_output=True, text=True, timeout=300)
             t2 = time.time()
             if res.returncode != 0:

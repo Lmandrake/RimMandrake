@@ -78,6 +78,13 @@ namespace RimMandrake.FlowWorks
 		/// Off = the old GRAVITY / OVERFLOW rule, which stranded partly filled same-depth cells. Off by default here; the
 		/// adapter sets it (shipped ON).</summary>
 		public bool levelBySurfaceEnabled;
+		/// <summary>WATER_LEVELSET_SOLVE (owner 2026-10-16 at review station 1: "Please select an algorithm that will allow the
+		/// fluid to levelset down to a smooth 0 or 1 across a too-wide field like this, not 0, deep, 0"). Only with
+		/// <see cref="levelBySurfaceEnabled"/>: each wet region (plus its dry dug rim) is SOLVED to its flat water level instead
+		/// of levelled one unit at a time (<see cref="LevelSetWetRegions"/>), and a drop of exactly one between two dug cells
+		/// no longer moves in the neighbour pass (that swap walked puddles and striped wide basins 0,1,0,1). Off by default
+		/// here; the adapter sets it (shipped ON).</summary>
+		public bool levelSetEnabled;
 		public int maxComponentCells = 6000;
 		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a connected network bigger than <see cref="maxComponentCells"/> is
 		/// resolved as several capped partitions, and liquid never crosses a partition seam inside one pulse. With the
@@ -386,7 +393,14 @@ namespace RimMandrake.FlowWorks
 
 			if (levelBySurfaceEnabled)
 			{
-				LevelWetRegions(pulseCount);
+				if (levelSetEnabled)
+				{
+					LevelSetWetRegions(pulseCount);
+				}
+				else
+				{
+					LevelWetRegions(pulseCount);
+				}
 			}
 
 			float after = 0f;
@@ -594,6 +608,365 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		// ── WATER_LEVELSET_SOLVE: per-region flat-level solve ─────────────────────────────────────────────
+
+		private sealed class LsComp
+		{
+			public int band;
+			public readonly List<int> cells = new List<int>();
+			public readonly List<int> children = new List<int>();
+			public int water;
+			public int cap;
+			public long key;
+		}
+
+		private readonly List<LsComp> lsComps = new List<LsComp>();
+		private int lsCompCount;
+		private int[] lsCompId;      // (band - 1) * N + cell -> comp index + 1 (valid only under lsStamp)
+		private int[] lsCompStamp;
+		private int[] lsDomainStamp;
+		private int[] lsNewFill;
+		private int lsStampValue;
+		private readonly List<int> lsDomain = new List<int>();
+		private readonly List<int> lsPick = new List<int>();
+		private readonly HashSet<int> lsPicked = new HashSet<int>();
+		private const int LsMaxBands = 8;
+
+		/// <summary>WATER_LEVELSET_SOLVE. Per connected WET region of one fluid (as <see cref="LevelWetRegions"/> builds it:
+		/// wet, same fluid, in this partition, not sealed, not held by creep) plus its DRY dug rim (one ring, so the wet
+		/// front still advances one square a pulse), the region's whole volume V is re-laid at the flat level it would
+		/// settle to — communicating vessels — and the result is exact in whole units:
+		/// <list type="bullet">
+		/// <item>Water is counted in BANDS: band L is the layer between surface -L and -L+1; a square of dug depth d owns
+		/// bands 1..d and its fill f occupies its lowest f bands. At each band the domain splits into the connected pieces of
+		/// squares deep enough to own it (a merge tree, at most 4 levels deep).</item>
+		/// <item>Bottom up, each piece counts the water already below its band (trapped: it cannot climb a sill to another
+		/// piece). Top down, the piece hands its FREE water to its deeper pieces until they are full, and only then lays
+		/// the rest on its own band. So a pit never drains through a dry sill, and a stepped floor ends flat.</item>
+		/// <item>The last part-filled band takes r squares, grown best-first as ONE contiguous patch inside the piece (see
+		/// <see cref="CellKey"/>: toward a sink, else toward the deepest bed, keeping to squares already wet, and away from a
+		/// live inflow so the mouth keeps room). So too little water for a sheet is a single patch at the minimum depth,
+		/// never 0, deep, 0 and never 0,1,0,1.</item>
+		/// </list>
+		/// Moves liquid only inside the component (the ledger is untouched); a state the solve produces solves to itself,
+		/// so it settles. O(domain x bands) per region per pulse.</summary>
+		private void LevelSetWetRegions(long pulseCount)
+		{
+			int n = width * height;
+			if (lsDomainStamp == null || lsDomainStamp.Length != n)
+			{
+				lsDomainStamp = new int[n];
+				lsCompStamp = new int[n * LsMaxBands];
+				lsCompId = new int[n * LsMaxBands];
+				lsNewFill = new int[n];
+				lsStampValue = 0;
+			}
+			inRegion.Clear();
+			regionSeeds.Clear();
+			for (int i = 0; i < component.Count; i++)
+			{
+				int c = component[i];
+				if (IsExcavated(c) && fill[c] > 0 && !IsSealed(c) && componentSet.Contains(c))
+				{
+					regionSeeds.Add(c);
+				}
+			}
+			regionSeeds.Sort();
+			for (int s = 0; s < regionSeeds.Count; s++)
+			{
+				int seed = regionSeeds[s];
+				if (inRegion.Contains(seed) || fill[seed] == 0)
+				{
+					continue;
+				}
+				object fluid = world.CellFluid(seed);
+				if (HeldByCreep(seed, fluid, pulseCount))
+				{
+					continue;
+				}
+				regionCells.Clear();
+				regionCells.Add(seed);
+				inRegion.Add(seed);
+				for (int head = 0; head < regionCells.Count; head++)
+				{
+					int c = regionCells[head];
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || inRegion.Contains(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb)
+							|| fill[nb] == 0 || !ReferenceEquals(world.CellFluid(nb), fluid) || HeldByCreep(nb, fluid, pulseCount))
+						{
+							continue;
+						}
+						inRegion.Add(nb);
+						regionCells.Add(nb);
+					}
+				}
+				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fluid)))
+				{
+					continue;
+				}
+				SolveRegion(fluid);
+			}
+		}
+
+		private void SolveRegion(object fluid)
+		{
+			int n = width * height;
+			bool drains = sinkHops.Count > 0;
+			if (++lsStampValue == int.MaxValue)
+			{
+				Array.Clear(lsDomainStamp, 0, lsDomainStamp.Length);
+				Array.Clear(lsCompStamp, 0, lsCompStamp.Length);
+				lsStampValue = 1;
+			}
+			int stamp = lsStampValue;
+			lsDomain.Clear();
+			int volume = 0;
+			int maxBand = 0;
+			for (int i = 0; i < regionCells.Count; i++)
+			{
+				int c = regionCells[i];
+				lsDomainStamp[c] = stamp;
+				lsDomain.Add(c);
+				volume += fill[c];
+			}
+			// The dry rim: a dug, unsealed, dry square of this partition beside the region, that may record the fluid.
+			bool canClaim = world.CanClaim(fluid);
+			if (canClaim)
+			{
+				for (int i = 0; i < regionCells.Count; i++)
+				{
+					int c = regionCells[i];
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || lsDomainStamp[nb] == stamp || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb)
+							|| fill[nb] != 0)
+						{
+							continue;
+						}
+						lsDomainStamp[nb] = stamp;
+						lsDomain.Add(nb);
+					}
+				}
+			}
+			for (int i = 0; i < lsDomain.Count; i++)
+			{
+				int dep = Math.Min((int)depth[lsDomain[i]], LsMaxBands);
+				if (dep > maxBand)
+				{
+					maxBand = dep;
+				}
+				lsNewFill[lsDomain[i]] = 0;
+			}
+			// Merge tree: the connected pieces of each band, shallow band first (a deeper piece's parent is created first).
+			lsCompCount = 0;
+			for (int band = 1; band <= maxBand; band++)
+			{
+				int off = (band - 1) * n;
+				for (int i = 0; i < lsDomain.Count; i++)
+				{
+					int c0 = lsDomain[i];
+					if (depth[c0] < band || lsCompStamp[off + c0] == stamp)
+					{
+						continue;
+					}
+					LsComp comp = NewComp(band);
+					int id = lsCompCount;   // 1-based id of the comp just made
+					if (band > 1)
+					{
+						lsComps[lsCompId[off - n + c0] - 1].children.Add(id - 1);
+					}
+					lsCompStamp[off + c0] = stamp;
+					lsCompId[off + c0] = id;
+					comp.cells.Add(c0);
+					for (int head = 0; head < comp.cells.Count; head++)
+					{
+						int c = comp.cells[head];
+						for (int d = 0; d < 4; d++)
+						{
+							int nb = Cardinal(c, d);
+							if (nb < 0 || lsDomainStamp[nb] != stamp || depth[nb] < band || lsCompStamp[off + nb] == stamp)
+							{
+								continue;
+							}
+							lsCompStamp[off + nb] = stamp;
+							lsCompId[off + nb] = id;
+							comp.cells.Add(nb);
+						}
+					}
+				}
+			}
+			// Bottom up: water already at or below each piece's band, capacity, and the piece's priority key.
+			for (int k = lsCompCount - 1; k >= 0; k--)
+			{
+				LsComp comp = lsComps[k];
+				int present = 0;
+				long key = long.MaxValue;
+				for (int i = 0; i < comp.cells.Count; i++)
+				{
+					int c = comp.cells[i];
+					if (fill[c] > depth[c] - comp.band)
+					{
+						present++;
+					}
+					long ck = CellKey(c, drains);
+					if (ck < key)
+					{
+						key = ck;
+					}
+				}
+				comp.water = present;
+				comp.cap = comp.cells.Count;
+				for (int j = 0; j < comp.children.Count; j++)
+				{
+					LsComp ch = lsComps[comp.children[j]];
+					comp.water += ch.water;
+					comp.cap += ch.cap;
+				}
+				comp.key = key;
+				comp.children.Sort((a, b) => lsComps[a].key.CompareTo(lsComps[b].key));
+			}
+			// Top down from each band-1 piece (the domain is connected, so there is one; a guard keeps any other honest).
+			int laid = 0;
+			for (int k = 0; k < lsCompCount; k++)
+			{
+				if (lsComps[k].band == 1)
+				{
+					laid += Assign(k, lsComps[k].water, drains);
+				}
+			}
+			if (laid != volume)
+			{
+				return;   // cannot happen (every unit is counted once); never write a solve that would not conserve
+			}
+			for (int i = 0; i < lsDomain.Count; i++)
+			{
+				int c = lsDomain[i];
+				int f = lsNewFill[c];
+				if (f == fill[c])
+				{
+					continue;
+				}
+				if (fill[c] == 0 && f > 0)
+				{
+					world.Claim(c, fluid);
+				}
+				fill[c] = (byte)f;
+			}
+		}
+
+		private LsComp NewComp(int band)
+		{
+			if (lsCompCount == lsComps.Count)
+			{
+				lsComps.Add(new LsComp());
+			}
+			LsComp comp = lsComps[lsCompCount++];
+			comp.band = band;
+			comp.cells.Clear();
+			comp.children.Clear();
+			comp.water = 0;
+			comp.cap = 0;
+			comp.key = 0;
+			return comp;
+		}
+
+		/// <summary>Priority of a square for the part-filled band (lowest first; the cell index makes it unique), from this
+		/// pulse's static flow order. A draining component: nearest a sink, then already wet. Otherwise nearest the
+		/// component's deepest bed, then already wet, then (while a source or input still feeds the component) FARTHEST
+		/// from the inflow, so the mouth keeps room and the inflow keeps coming.</summary>
+		private long CellKey(int c, bool drains)
+		{
+			const long Far = 1 << 20;
+			long n = width * height;
+			long wet = fill[c] > 0 ? 0 : 1;
+			if (drains)
+			{
+				return ((sinkHops.TryGetValue(c, out int k) ? k : Far) * 2 + wet) * n + c;
+			}
+			long low = lowHops.TryGetValue(c, out int lh) ? lh : Far;
+			long src = sourceHops.Count == 0 ? 0 : sourceHops.TryGetValue(c, out int h) ? Far - h : 2 * Far;
+			return ((low * 2 + wet) * (2 * Far + 1) + src) * n + c;
+		}
+
+		/// <summary>Lays <paramref name="amount"/> units into piece <paramref name="k"/> and its deeper pieces. Returns the units laid.</summary>
+		private int Assign(int k, int amount, bool drains)
+		{
+			LsComp comp = lsComps[k];
+			int free = amount;
+			for (int j = 0; j < comp.children.Count; j++)
+			{
+				free -= lsComps[comp.children[j]].water;
+			}
+			int laid = 0;
+			for (int j = 0; j < comp.children.Count; j++)
+			{
+				LsComp ch = lsComps[comp.children[j]];
+				int give = Math.Max(0, Math.Min(free, ch.cap - ch.water));
+				free -= give;
+				laid += Assign(comp.children[j], ch.water + give, drains);
+			}
+			int r = Math.Max(0, Math.Min(free, comp.cells.Count));
+			if (r > 0)
+			{
+				PickBand(comp, r, drains);
+				for (int i = 0; i < lsPick.Count; i++)
+				{
+					lsNewFill[lsPick[i]]++;
+				}
+				laid += lsPick.Count;
+			}
+			return laid;
+		}
+
+		private readonly SortedSet<long> lsFrontier = new SortedSet<long>();
+
+		/// <summary>The r squares of <paramref name="comp"/> that hold its band: grown best-first (by <see cref="CellKey"/>)
+		/// from the comp's best square through its own squares, so the part-filled band is always ONE contiguous patch.</summary>
+		private void PickBand(LsComp comp, int r, bool drains)
+		{
+			lsPick.Clear();
+			if (r >= comp.cells.Count)
+			{
+				lsPick.AddRange(comp.cells);
+				return;
+			}
+			int n = width * height;
+			int off = (comp.band - 1) * n;
+			int id = lsCompId[off + comp.cells[0]];
+			long best = long.MaxValue;
+			for (int i = 0; i < comp.cells.Count; i++)
+			{
+				long k = CellKey(comp.cells[i], drains);
+				if (k < best)
+				{
+					best = k;
+				}
+			}
+			lsPicked.Clear();
+			lsFrontier.Clear();
+			lsFrontier.Add(best);
+			lsPicked.Add((int)(best % n));
+			while (lsPick.Count < r && lsFrontier.Count > 0)
+			{
+				long top = lsFrontier.Min;
+				lsFrontier.Remove(top);
+				int c = (int)(top % n);
+				lsPick.Add(c);
+				for (int d = 0; d < 4; d++)
+				{
+					int nb = Cardinal(c, d);
+					if (nb < 0 || lsCompStamp[off + nb] != lsStampValue || lsCompId[off + nb] != id || !lsPicked.Add(nb))
+					{
+						continue;
+					}
+					lsFrontier.Add(CellKey(nb, drains));
+				}
+			}
+		}
+
 		/// <summary>Surface bucket 0..4 for surface fill - depth in -4..0.</summary>
 		private int Bucket(int c)
 		{
@@ -797,7 +1170,7 @@ namespace RimMandrake.FlowWorks
 				{
 					// Surfaces relative to ground: a source is brim-full (0); a dug cell is fill - depth (-4..0).
 					int drop = (fn - dn) - (fill[r] - depthR);
-					if (drop < 1)
+					if (drop < 1 || (drop == 1 && !source && levelSetEnabled))
 					{
 						continue;
 					}

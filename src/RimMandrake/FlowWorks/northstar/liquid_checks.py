@@ -1,4 +1,5 @@
-"""FlowWorks liquid live checks L2 (Dump drains: slow without a pump, fast with a pump on Pour), L4 (a ship/cargo tank on Fill
+"""FlowWorks liquid live checks L7 (WATER_LEVELSET_SOLVE: review-map stations 1-2 settle flat, no 1,0,1 stripe, no deep blob
+beside dry ground; run on the review map with --only L7, NEVER with --fresh-map), L2 (Dump drains: slow without a pump, fast with a pump on Pour), L4 (a ship/cargo tank on Fill
 loads from our tank over a hose, then on Empty unloads), L5 (a capped Outflow hose spills its held liquid as filth at the open
 end; a colonist cleans it) and L6 (liquid theft: a witness catches our Fill tank drawing a neutral faction's tank; the free end
 names the faction; --theft-day: goodwill falls).
@@ -53,6 +54,8 @@ MAX_WITNESS_CYCLES = 4      # theft attempts (one fresh witness pair per cycle) 
 THEFT = "RimMandrake.FlowWorks.Machinery.RM_LiquidTheft"
 S_HOSE = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
 S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
+S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+L7_STATIONS = ("flow_drains", "flow_spreads")   # review-map stations 1 and 2 (review_map.station_list)
 SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
 SPILL_FILTH = "RM_Filth_LiquidSpill"   # FreshWater has no LiquidDef.spillFilth of its own
 UNITS_PER_LITRE = 10                   # RM_Volume.UnitsPerLitre (tank units are decilitres)
@@ -190,10 +193,50 @@ def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, p
 
 
 # ============================================================================ live driver
+def levelset_verdict(rows):
+    """L7 (WATER_LEVELSET_SOLVE; owner 2026-10-16 at station 1: "levelset down to a smooth 0 or 1 ... not 0, deep, 0").
+    rows = jawa/flowworks_excavation_rect rows of one station. Over dug, non-sink squares: a STRIPE is a dry square with wet
+    squares of one surface on both sides of it in a line (the 1,0,1 the walk save showed); a STEP is two touching squares,
+    at least one wet, whose surfaces (f - d) differ by 2 or more (a deep blob beside dry or shallow ground), not counting a
+    square touching a natural source (the mouth, which the pond refills every pulse). PASS = water present, no stripe,
+    no step. Returns (status, class, detail)."""
+    src, dug = set(), {}
+    for r in rows or []:
+        c = (r.get("x"), r.get("z"))
+        if r.get("isSource"):
+            src.add(c)
+        elif r.get("isExcavated") and not r.get("isSink"):
+            dug[c] = (int(r.get("d") or 0), min(int(r.get("f") or 0), int(r.get("d") or 0)))
+    surf = {c: f - d for c, (d, f) in dug.items()}
+    wet = [c for c, (d, f) in dug.items() if f > 0]
+    det = {"dug": len(dug), "wet": len(wet)}
+    if not wet:
+        return "UNMEASURED", "SITE", dict(det, why="no water standing in the station's dug squares")
+    stripes, steps = [], []
+    for c, (d, f) in dug.items():
+        if f == 0:
+            for dx, dz in ((1, 0), (0, 1)):
+                a, b = (c[0] - dx, c[1] - dz), (c[0] + dx, c[1] + dz)
+                if a in dug and b in dug and dug[a][1] > 0 and dug[b][1] > 0 and surf[a] == surf[b]:
+                    stripes.append(c)
+                    break
+        for dx, dz in ((1, 0), (0, 1)):
+            n = (c[0] + dx, c[1] + dz)
+            if n not in dug or (f == 0 and dug[n][1] == 0) or abs(surf[c] - surf[n]) < 2:
+                continue
+            if any((p[0] + ex, p[1] + ez) in src for p in (c, n) for ex, ez in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                continue
+            steps.append([c, n])
+    det.update(stripes=len(stripes), steps=len(steps), firstStripes=stripes[:6], firstSteps=steps[:4],
+               wetSurfaces=sorted(set(surf[c] for c in wet)))
+    return ("PASS" if not stripes and not steps else "FAIL"), "MOD", det
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
-    ap.add_argument("--only", default="", help="comma list: L2,L4,L5,L6")
+    ap.add_argument("--only", default="", help="comma list: L2,L4,L5,L6,L7 (L7 reads review-map stations 1-2; never with --fresh-map)")
+    ap.add_argument("--l7-pulses", type=int, default=16, help="L7: flow pulses to run before reading (the save holds old-kernel state)")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--theft-day", action="store_true", help="L6: also run one in-game day for the goodwill charge")
     ap.add_argument("--origin-l2", default="60,150")
@@ -628,8 +671,37 @@ def main(argv=None):
         if cid:
             B.hp("pawn:%d=draft" % int(re.search(r"(\d+)$", str(cid)).group(1)))
 
+    def blk_L7():
+        """Review map stations 1-2 (flow_drains, flow_spreads), read in place: the setting is on, then after --l7-pulses
+        flow pulses each station's dug squares hold no 1,0,1 stripe and no 2+ step (levelset_verdict)."""
+        on = sget(S_FW, "levelSetEnabled")
+        if str(on).strip().lower() != "true":
+            row("L7_levelset_setting_on", "UNMEASURED" if on is None else "FAIL", "HARNESS" if on is None else "MOD",
+                {"levelSetEnabled": on, "why": "field missing: the deployed DLL predates WATER_LEVELSET_SOLVE" if on is None else "switched off"})
+            return
+        row("L7_levelset_setting_on", "PASS", "MOD", {"levelSetEnabled": on})
+        sys.path.insert(0, os.path.dirname(HERE))
+        import review_map as RMAP
+        st = {x["id"]: x for x in RMAP.station_list()}
+        pulse = int(float(B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="pulseIntervalTicks").get("value") or 250))
+        B.ticks(max(1, a.l7_pulses) * pulse)
+        for sid in L7_STATIONS:
+            s_ = st.get(sid)
+            if not s_:
+                row("L7_%s_levels_flat" % sid, "UNMEASURED", "HARNESS", {"why": "station not in review_map.station_list"})
+                continue
+            (ox, oz), (sw, sh) = s_["origin"], s_["size"]
+            x0 = 0 if s_["setup"].get("west_edge") else ox
+            ex = B.call("jawa/flowworks_excavation_rect", x=x0, z=oz, w=ox + sw - x0, h=sh, onlyNonZero=True, includeTerrain=False)
+            if "rows" not in ex:
+                row("L7_%s_levels_flat" % sid, "UNMEASURED", "HARNESS", {"reply": str(ex)[:300]})
+                continue
+            st_, cls, det = levelset_verdict(ex["rows"])
+            row("L7_%s_levels_flat" % sid, st_, cls, dict(det, station=s_["n"], rect=[x0, oz, ox + sw - x0, sh],
+                                                          pulses=a.l7_pulses, ticksGame=ex.get("ticksGame")))
+
     try:
-        for nm, fn in (("L2", blk_L2), ("L4", blk_L4), ("L5", blk_L5), ("L6", blk_L6)):
+        for nm, fn in (("L2", blk_L2), ("L4", blk_L4), ("L5", blk_L5), ("L6", blk_L6), ("L7", blk_L7)):
             if only and nm not in only:
                 continue
             print("== %s" % nm, flush=True)

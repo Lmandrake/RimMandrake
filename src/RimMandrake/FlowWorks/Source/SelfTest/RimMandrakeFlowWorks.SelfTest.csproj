@@ -123,6 +123,7 @@
     <Compile Include="ReviewFixChecks.cs" />
     <Compile Include="ReviewBatch56Checks.cs" />
     <Compile Include="ReviewFixBatch01Checks.cs" />
+    <Compile Include="LevelSetChecks.cs" />
     <Compile Include="RulingsWetDoorWakeBottleChecks.cs" />
     <Compile Include="HoseLegacyChecks.cs" />
     <Compile Include="HoseFuzz.cs" />
