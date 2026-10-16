@@ -3,6 +3,7 @@
 //           recovery, habitat), the exposure weight, generation counts and the stable/leaking mix, and which vent a vexxiss drinks
 //   yield   the growth-scaled metal yield, assay grade and fleck band, the bloom's metal-load dose and eligibility, dewfall beads
 //   prints  the vexxiss print ledger (order, cap, expiry, newest-per-cell, grid clearing) and the fire-warden / water-letter choices
+//   gas     the vent-gas grid (conservation, walls, NonZero, dissipation, burns) over random small maps
 //   units   exhaustive truth tables for the small decisions
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -557,6 +558,135 @@ namespace RimMandrake.Cauldron.SelfTest
             Check(RM_VexxissKernel.PrintAllowed(false, false) && !RM_VexxissKernel.PrintAllowed(true, false) && !RM_VexxissKernel.PrintAllowed(false, true), "PrintAllowed");
         }
 
+
+        // ════════════════════════ gas ════════════════════════
+        // The vent-gas grid (RM_VentGasCells) over a random small map with random walls: diffusion and drift conserve gas
+        // and never put it into a wall, every density stays 0..255, NonZero always equals the real count, dissipation
+        // never raises a cell, a burn empties exactly the cell it names. Plus the kernel's small decisions.
+        public static long GasSweeps, GasDrifts, GasBurns, GasOverflows;
+        private static readonly string[] GasNames = { "Add", "Diffuse", "Drift", "Dissipate", "Burn", "Wall" };
+
+        private static List<Act> GenGas(Random r, int len)
+        {
+            var acts = new List<Act>();
+            for (int i = 0; i < len; i++)
+                acts.Add(new Act { kind = r.Next(GasNames.Length), a = r.Next(0, 400), b = r.Next(0, 300), c = r.Next(0, 8), names = GasNames });
+            return acts;
+        }
+
+        private static string RunGas(int seed, List<Act> acts)
+        {
+            try
+            {
+                var rr = new Random(seed);
+                int w = 3 + rr.Next(10), h = 3 + rr.Next(10);
+                var g = new RM_VentGasCells(w, h);
+                var wall = new bool[w * h];
+                for (int i = 0; i < wall.Length; i++) wall[i] = rr.Next(6) == 0;
+                Func<int, bool> can = i => !wall[i];
+                var order = new[] { 0, 1, 2, 3 };
+                foreach (var a in acts)
+                {
+                    int i = a.a % g.Count;
+                    long before = g.Total();
+                    var wallGas = new int[g.Count];
+                    for (int k = 0; k < g.Count; k++) wallGas[k] = wall[k] ? g.Density[k] : -1;
+                    switch (a.kind)
+                    {
+                        case 0:
+                            int over = g.Add(i, a.b);
+                            Check(before + a.b - over == g.Total(), "Add: total + amount - overflow");
+                            Check(over >= 0 && (over == 0 || g.Density[i] == 255), "overflow only from a full cell");
+                            if (over > 0) GasOverflows++;
+                            break;
+                        case 1:
+                            for (int k = 0; k < g.Count; k++)
+                            {
+                                if (wall[k]) continue;
+                                for (int s2 = 3; s2 > 0; s2--) { int j = a.c % (s2 + 1); int t = order[s2]; order[s2] = order[j]; order[j] = t; }
+                                int a0 = g.Density[k];
+                                g.DiffuseFrom(k, order, can, null);
+                                Check(g.Density[k] <= a0, "diffusion raised the source cell");
+                            }
+                            Check(g.Total() == before, $"diffusion changed the total {before} -> {g.Total()}");
+                            GasSweeps++;
+                            break;
+                        case 2:
+                            for (int k = 0; k < g.Count; k++) if (!wall[k] && g.Drift(k, a.c, can, null)) GasDrifts++;
+                            Check(g.Total() == before, "drift changed the total");
+                            break;
+                        case 3:
+                            for (int k = 0; k < g.Count; k++)
+                            {
+                                int d0 = g.Density[k];
+                                bool emptied = g.Dissipate(k, a.c % 3);
+                                Check(g.Density[k] <= d0, "dissipation raised a cell");
+                                Check(emptied == (d0 > 0 && g.Density[k] == 0 && a.c % 3 > 0), "Dissipate reports emptied exactly when it emptied");
+                            }
+                            break;
+                        case 4:
+                            int d = g.Density[i];
+                            int burned = g.Burn(i);
+                            Check(burned == d && g.Density[i] == 0 && g.Total() == before - d, "a burn empties exactly its cell");
+                            if (burned > 0) GasBurns++;
+                            break;
+                        case 5:
+                            wall[i] = !wall[i];
+                            break;
+                    }
+                    if (a.kind == 1 || a.kind == 2)
+                        for (int k = 0; k < g.Count; k++)
+                            if (wallGas[k] >= 0 && wall[k]) Check(g.Density[k] <= wallGas[k], "gas moved INTO a wall");
+                    int nz = 0;
+                    for (int k = 0; k < g.Count; k++) { if (g.Density[k] != 0) nz++; }
+                    Check(nz == g.NonZero, $"NonZero {g.NonZero} but {nz} cells hold gas");
+                    Steps++;
+                }
+            }
+            catch (Exception e) { return e.Message; }
+            return null;
+        }
+
+        public static List<string> Gas(int n, int baseSeed)
+        {
+            return RunFamily("gas", n, baseSeed, s => GenGas(new Random(s), 10 + new Random(s ^ 77).Next(40)), RunGas);
+        }
+
+        private static void GasUnits()
+        {
+            int a = 100, b = 0; Check(RM_VentGasKernel.TryDiffuse(ref a, ref b) && a == 50 && b == 50, "TryDiffuse halves the difference");
+            a = 30; b = 0; Check(!RM_VentGasKernel.TryDiffuse(ref a, ref b) && a == 30, "a half-difference under 17 does not move");
+            a = 16; b = 0; Check(!RM_VentGasKernel.TryDiffuse(ref a, ref b), "a source under 17 never diffuses");
+            Check(RM_VentGasKernel.Adjusted(300, out int o) == 255 && o == 45 && RM_VentGasKernel.Adjusted(-5, out o) == 0 && o == 0, "Adjusted clamps");
+            Check(RM_VentGasKernel.DissipateStep(false, 0f) == 2 && RM_VentGasKernel.DissipateStep(true, 0f) == 1 && RM_VentGasKernel.DissipateStep(false, 1f) == 52, "dissipation: open 2, roofed 1, vacuum x25");
+            Check(RM_VentGasKernel.EmitAmount(true, false, 1f, false, 1f) == 12 && RM_VentGasKernel.EmitAmount(true, false, 1f, true, 1f) == 24 && RM_VentGasKernel.EmitAmount(true, false, 2.5f, false, 1f) == 30, "emission: 12 at 1x, a leak doubles, a bloom raises");
+            Check(RM_VentGasKernel.EmitAmount(false, false, 1f, false, 1f) == 0 && RM_VentGasKernel.EmitAmount(true, true, 1f, false, 1f) == 0 && RM_VentGasKernel.EmitAmount(true, false, 0.05f, false, 1f) == 0 && RM_VentGasKernel.EmitAmount(true, false, 0.1f, false, 1f) == 1 && RM_VentGasKernel.EmitAmount(true, false, 1f, false, 0f) == 0, "emission gates: setting, cap, hush, factor");
+            Check(RM_VentGasKernel.DriftChance(0f) == 0f && RM_VentGasKernel.DriftChance(1f) == 0.4f && RM_VentGasKernel.DriftChance(9f) == 0.75f && RM_VentGasKernel.DriftChance(-1f) == 0f, "DriftChance clamps");
+            Check(RM_VentGasKernel.DriftAmount(16) == 0 && RM_VentGasKernel.DriftAmount(17) == 4 && RM_VentGasKernel.DriftAmount(255) == 63, "DriftAmount");
+            for (int day = 0; day < 50; day++)
+            {
+                int h0 = RM_VentGasKernel.Heading(day * 60000, 1234), h1 = RM_VentGasKernel.Heading(day * 60000 + 59999, 1234);
+                Check(h0 == h1 && h0 >= 0 && h0 < 8, "heading is stable within a day and in 0..7");
+            }
+            var seen = new HashSet<int>(); for (int day = 0; day < 200; day++) seen.Add(RM_VentGasKernel.Heading(day * 60000, 99));
+            Check(seen.Count == 8, $"the heading visits all eight directions over 200 days (saw {seen.Count})");
+            Check(RM_VentGasKernel.Heading(-5, 1) == RM_VentGasKernel.Heading(0, 1), "negative ticks clamp to day 0");
+            Check(!RM_VentGasKernel.Ignites(true, 23) && RM_VentGasKernel.Ignites(true, 24) && !RM_VentGasKernel.Ignites(false, 255), "ignition threshold and switch");
+            Check(RM_VentGasKernel.ToxFromBurn(100, true) == 60 && RM_VentGasKernel.ToxFromBurn(100, false) == 0 && RM_VentGasKernel.ToxFromBurn(0, true) == 0, "ToxFromBurn");
+            Check(RM_VentGasKernel.FireSize(0) == 0.2f && Near(RM_VentGasKernel.FireSize(255), 1.0) && RM_VentGasKernel.FireSize(500) == 1f, "FireSize 0.2..1");
+            float bank = 0f;
+            for (int k = 0; k < 240; k++) bank = RM_VentGasKernel.TapAccrue(bank, true, 1f, false);
+            Check(Near(bank, 12f, 1e-3), $"a 1x tapped vent banks 12 units a day (got {bank})");
+            for (int k = 0; k < 2400; k++) bank = RM_VentGasKernel.TapAccrue(bank, true, 2.5f, true);
+            Check(bank == RM_VentGasKernel.TapBankCap, "the bank stops at its cap");
+            Check(RM_VentGasKernel.TapAccrue(5f, false, 3f, true) == 5f && RM_VentGasKernel.TapAccrue(5f, true, 0f, false) == 5f && RM_VentGasKernel.TapAccrue(-3f, true, 0f, false) == 0f, "an off switch or a silent vent banks nothing");
+            Check(RM_VentGasKernel.TapReady(0.99f) == 0 && RM_VentGasKernel.TapReady(3.7f) == 3, "TapReady floors");
+            var cells = new RM_VentGasCells(4, 3);
+            Check(cells.Neighbour(0, -1, 0) == -1 && cells.Neighbour(3, 1, 0) == -1 && cells.Neighbour(0, 1, 1) == 5 && cells.Neighbour(11, 0, 1) == -1, "Neighbour bounds and indexing (z * width + x)");
+            cells.Add(5, 10); cells.Density[6] = 0; cells.Recount(); Check(cells.NonZero == 1, "Recount");
+            cells.Clear(); Check(cells.NonZero == 0 && cells.Total() == 0, "Clear");
+        }
+
         // ════════════════════════ units ════════════════════════
         public static List<string> Units()
         {
@@ -593,6 +723,7 @@ namespace RimMandrake.Cauldron.SelfTest
                 Check(RM_YieldKernel.GradeTier(0.95f) == 3 && RM_YieldKernel.GradeTier(0.949f) == 2 && RM_YieldKernel.GradeTier(2f / 3f) == 2 && RM_YieldKernel.GradeTier(0.66f) == 1 && RM_YieldKernel.GradeTier(1f / 3f) == 1 && RM_YieldKernel.GradeTier(0.33f) == 0, "grade tier cut points");
                 Check(RM_YieldKernel.IsShore(false, true) && !RM_YieldKernel.IsShore(true, true) && !RM_YieldKernel.IsShore(false, false) && !RM_YieldKernel.IsShore(true, false), "a shore is land beside the named terrain");
                 Check(RM_YieldKernel.PlantAllowed(false, false, true) && !RM_YieldKernel.PlantAllowed(true, false, true) && !RM_YieldKernel.PlantAllowed(false, true, true) && !RM_YieldKernel.PlantAllowed(false, false, false), "PlantAllowed");
+                GasUnits();
                 Check(RM_YieldKernel.RoundRandom(2.5f, 0.49f) == 3 && RM_YieldKernel.RoundRandom(2.5f, 0.5f) == 2 && RM_YieldKernel.RoundRandom(3f, 0.99f) == 3, "RoundRandom");
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
@@ -610,6 +741,7 @@ namespace RimMandrake.Cauldron.SelfTest
                 ("vent", () => Vent(N(4000), S(1))),
                 ("yield", () => Yield(N(3000), S(1))),
                 ("prints", () => Prints(N(4000), S(1))),
+                ("gas", () => Gas(N(3000), S(1))),
                 ("units", () => Units()),
             };
             foreach (var f in fam)
@@ -631,8 +763,10 @@ namespace RimMandrake.Cauldron.SelfTest
                 if (Blowouts == 0 || Falters == 0 || Silences == 0 || Recoveries == 0 || Generations == 0 || Picks == 0) blind.Add("vent never blew out/faltered/silenced/recovered/generated/picked");
                 if (YieldProbes == 0 || DoseProbes == 0 || BeadFlips == 0 || Remeshes == 0) blind.Add("yield never swept/dosed/flipped/remeshed");
                 if (PrintsEvicted == 0 || PrintsExpired == 0 || GridCleared == 0 || GridKept == 0) blind.Add("prints never evicted/expired/cleared/kept a grid record");
+                if (GasSweeps == 0 || GasDrifts == 0 || GasBurns == 0 || GasOverflows == 0) blind.Add("gas never swept/drifted/burned/overflowed");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }
+            Console.WriteLine($"gas: sweeps {GasSweeps}, drifts {GasDrifts}, burns {GasBurns}, overflows {GasOverflows}");
             Console.WriteLine($"cauldron fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;
         }

@@ -39,6 +39,12 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <!-- CAULDRON_MECHANICS_BUILD_1 part 3/4: the gas tap pours into FlowWorks tanks and the ruin kit stocks one, so this
+       mod references FlowWorks' assembly (never copied; About.xml depends on mandrake.rm.flowworks). -->
+  <PropertyGroup Condition="'$(FlowWorksDll)' == ''">
+    <FlowWorksDll>$(MSBuildThisFileDirectory)..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</FlowWorksDll>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
@@ -61,6 +67,10 @@
     <Compile Include="Kernel\RM_VentKernel.cs" />
     <Compile Include="Kernel\RM_YieldKernel.cs" />
     <Compile Include="Kernel\RM_VexxissKernel.cs" />
+    <Compile Include="Kernel\RM_VentGasKernel.cs" />
+    <Compile Include="RM_VentGas.cs" />
+    <Compile Include="RM_GasTap.cs" />
+    <Compile Include="RM_CauldronRuinKit.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +80,10 @@
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>$(FlowWorksDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">

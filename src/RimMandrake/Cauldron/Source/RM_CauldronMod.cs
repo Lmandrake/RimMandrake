@@ -67,6 +67,17 @@ namespace RimMandrake.Cauldron
         public static bool dewfallSaturationEnabled = true;
         public static bool assayFlecksEnabled = true;
         public static bool vexxissPrintsEnabled = true;
+        // CAULDRON_MECHANICS_BUILD_1 part 3/4/5: the vent gas (a new gas type on its own grid), its burning into toxic
+        // smoke, the gas-tap scaffold, the vexxiss prying at scaffolds, and the corroded ruin kit (WORLDGEN-affecting).
+        public static bool ventGasEnabled = true;
+        public static float ventGasEmissionFactor = 1f;
+        public static bool ventGasDrifts = true;
+        public static bool ventGasIgnites = true;
+        public static bool ventGasToxicSmoke = true;
+        public static bool gasTapBanksCondensate = true;
+        public static bool vexxissPriesTaps = true;
+        public static bool ruinKitEnabled = true;
+        public static bool faunaHushEnabled = true;
 
         public override void ExposeData()
         {
@@ -99,6 +110,15 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref dewfallSaturationEnabled, "dewfallSaturationEnabled", true, true);
             Scribe_Values.Look(ref assayFlecksEnabled, "assayFlecksEnabled", true, true);
             Scribe_Values.Look(ref vexxissPrintsEnabled, "vexxissPrintsEnabled", true, true);
+            Scribe_Values.Look(ref ventGasEnabled, "ventGasEnabled", true, true);
+            Scribe_Values.Look(ref ventGasEmissionFactor, "ventGasEmissionFactor", 1f, true);
+            Scribe_Values.Look(ref ventGasDrifts, "ventGasDrifts", true, true);
+            Scribe_Values.Look(ref ventGasIgnites, "ventGasIgnites", true, true);
+            Scribe_Values.Look(ref ventGasToxicSmoke, "ventGasToxicSmoke", true, true);
+            Scribe_Values.Look(ref gasTapBanksCondensate, "gasTapBanksCondensate", true, true);
+            Scribe_Values.Look(ref vexxissPriesTaps, "vexxissPriesTaps", true, true);
+            Scribe_Values.Look(ref ruinKitEnabled, "ruinKitEnabled", true, true);
+            Scribe_Values.Look(ref faunaHushEnabled, "faunaHushEnabled", true, true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -217,7 +237,7 @@ namespace RimMandrake.Cauldron
                 list.GapLine();
             }
 
-            if (Group(list, "Vents and what hangs on them", RimMandrake.Shared.SettingScope.Now, new[] { "ventWeatherEnabled", "ventFalterMessage", "ventLocalExposureEnabled", "vexxissDrinksVentsEnabled", "ventGardensEnabled" }))
+            if (Group(list, "Vents and what hangs on them", RimMandrake.Shared.SettingScope.Now, new[] { "ventWeatherEnabled", "ventFalterMessage", "faunaHushEnabled", "ventLocalExposureEnabled", "vexxissDrinksVentsEnabled", "ventGardensEnabled" }))
             {
                 list.CheckboxLabeled("Vents follow the weather",
                     ref ventWeatherEnabled,
@@ -226,6 +246,10 @@ namespace RimMandrake.Cauldron
                 list.CheckboxLabeled("  ...and warn me when the vents go quiet",
                     ref ventFalterMessage,
                     "A message when the vents hush ahead of a vent bloom.");
+                list.CheckboxLabeled("  ...and the native animals fall still",
+                    ref faunaHushEnabled,
+                    "While the vents falter, wild suush, zisska and eskith stop and hold still until the bloom arrives: "
+                    + "the forest goes quiet before it breathes out. Off: they carry on as usual.");
                 list.CheckboxLabeled("Bloom exposure is strongest near vents",
                     ref ventLocalExposureEnabled,
                     "The bloom's metal load is full strength beside a live vent and fades to a tenth far from "
@@ -238,6 +262,45 @@ namespace RimMandrake.Cauldron
                     ref ventGardensEnabled,
                     "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
                     + "favour vents that blew out recently. Needs nettle gardens above to be on.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Vent gas", RimMandrake.Shared.SettingScope.Now, new[] { "ventGasEnabled", "ventGasEmissionFactor", "ventGasDrifts", "ventGasIgnites", "ventGasToxicSmoke", "gasTapBanksCondensate", "vexxissPriesTaps" }))
+            {
+                list.CheckboxLabeled("Vents leak flammable gas",
+                    ref ventGasEnabled,
+                    "Each vent breathes a drifting cloud of vent gas, more in a vent bloom and from a chronic leak, none "
+                    + "while it is hushed, silenced or capped. Off: no new gas is made (what is already there thins away).");
+                list.Label("Gas output: " + ventGasEmissionFactor.ToString("0.00") + "x (default 1.00, PROVISIONAL)");
+                ventGasEmissionFactor = list.Slider(ventGasEmissionFactor, 0.25f, 3f);
+                list.CheckboxLabeled("  ...the wind carries it",
+                    ref ventGasDrifts,
+                    "The cloud drifts with the wind along a heading that changes once a day. Off: it only spreads evenly.");
+                list.CheckboxLabeled("  ...fire lights it",
+                    ref ventGasIgnites,
+                    "Any fire touching thick vent gas sets it burning, and the burn runs through the cloud. Off: the gas "
+                    + "never burns.");
+                list.CheckboxLabeled("  ...and it burns into toxic smoke",
+                    ref ventGasToxicSmoke,
+                    "Burning vent gas leaves tox gas behind. Off: it burns clean.");
+                list.CheckboxLabeled("Gas taps bank condensate",
+                    ref gasTapBanksCondensate,
+                    "A gas-tap scaffold over a vent always stops the leak; on, it also banks the flow as condensate and "
+                    + "pours it into a liquid tank standing beside it, for the Filter-Works to refine. Off: it only caps.");
+                list.CheckboxLabeled("Vexxiss pry at gas taps",
+                    ref vexxissPriesTaps,
+                    "A vexxiss drinking from a capped vent damages the scaffold while it drinks; a broken scaffold uncaps "
+                    + "the vent. Off: it drinks without harming the scaffold.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Corroded ruins (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "ruinKitEnabled" }))
+            {
+                list.CheckboxLabeled("Corroded filter ruins (new maps only)",
+                    ref ruinKitEnabled,
+                    "WORLDGEN: a Cauldron map made from now on gets one corroded filter rig with its wrecked tanks. "
+                    + "Studying the rig teaches the Filter-Works research. Off: no ruin, and the Filter-Works cannot be "
+                    + "learned on that map (a rig on another map still teaches it).");
                 list.GapLine();
             }
 

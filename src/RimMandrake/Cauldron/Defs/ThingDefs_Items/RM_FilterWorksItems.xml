@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 4: what the Filter-Works makes and what it burns.
+
+  RM_VentReagent   the "valuable liquid reagent" the owner named: sealed vials strained out of vent condensate. A trade
+                   good (Manufactured, tradeable through ResourceBase). PROVISIONAL value 14.
+  RM_FilterCartridge  the consumable cartridge: the Filter-Works' CompRefuelable fuel, one cartridge per working day
+                   (fuelPerDay on its converter). Made at a machining table once RM_FilterWorksResearch is done.
+                   PROVISIONAL cost and work.
+
+  ART OWED: both borrow vanilla textures as placeholders (Neutroamine vials, the industrial component) until their own
+  renders exist; filed on CAULDRON_MECHANICS_BUILD_1.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_VentReagent</defName>
+    <label>vent reagent</label>
+    <description>Sealed vials of a clear, faintly green reagent strained out of the Cauldron's vent condensate. Laboratories and drug-makers pay well for it; nobody is quite sure what else it is good for.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Neutroamine</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(0.78,0.92,0.62)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>14</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>1.0</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FilterCartridge</defName>
+    <label>filter cartridge</label>
+    <description>A packed steel cylinder of woven cloth, charcoal grit and wire mesh that slots into a Filter-Works. One clogs in about a day of work.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.85</drawSize>
+      <color>(0.62,0.6,0.52)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>12</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+      <WorkToMake>900</WorkToMake>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <costList>
+      <Steel>6</Steel>
+      <Cloth>8</Cloth>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <researchPrerequisite>RM_FilterWorksResearch</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>4</Crafting>
+      </skillRequirements>
+      <bulkRecipeCount>5</bulkRecipeCount>
+    </recipeMaker>
+  </ThingDef>
+
+</Defs>

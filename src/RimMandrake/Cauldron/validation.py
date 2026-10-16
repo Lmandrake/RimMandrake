@@ -45,6 +45,12 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
   * Vents are spawned by the driver here (jawa/spawn_batch). That mapgen places 4-5 on a new Cauldron map, with
     both temperaments and a recent blowout, is NOT read: it needs a freshly generated Cauldron map.
   * Appearance (dusk light, the vent-bloom overlay, art): visual, left to the judge pass.
+  * CAULDRON_MECHANICS_BUILD_1 parts 3/4/6 (gas chain): the vent-gas cloud, its burn and the tap are read as STATE off
+    the vent's and the tap's own inspect lines ('Vent gas: N cells, peak P; toxic smoke: T cells; burned: B',
+    'Gas tap: ... banked X / 60', 'Delivered D units', 'Scaffold: H / M HP'). NOT driven: the cloud's drift heading
+    (no tool reads it), its look, the Filter-Works converting (needs power, a researched build, cartridges and two tanks:
+    a live row is owed, CAULDRON_MECHANICS_BUILD_1), studying the rig (an analysis job the bridge cannot order), the
+    ruin scatter at mapgen (a fresh Cauldron map), and Oomo's shrine (Utinni layer, patched into the kit).
 
 Settings fields are `public static` (RimMandrake.Cauldron.RM_CauldronSettings). Every arm that
 changes one restores it in a `finally`. `jawa/mod_settings_field` never writes ModSettings.xml.
@@ -99,7 +105,11 @@ TYPES = tuple(NS + n for n in (
     "RM_VentExtension", "RM_AcidDamageExtension", "RM_AcidImmuneExtension",
     # CAULDRON_ENRICHMENT_VISUALS_1
     "RM_MapComponent_CauldronDewfall", "RM_MapComponent_VexxissPrints", "RM_DewfallGraphicExtension",
-    "RM_AssayFlecksExtension"))
+    "RM_AssayFlecksExtension",
+    # CAULDRON_MECHANICS_BUILD_1 parts 3/4: the vent gas, the gas tap, the ruin kit
+    "RM_MapComponent_VentGas", "RM_SectionLayer_VentGas", "RM_CompGasTap", "RM_CompProperties_GasTap",
+    "RM_PlaceWorker_OnCauldronVent", "RM_CompCauldronRuinKit", "RM_CompProperties_CauldronRuinKit",
+    "RM_ScattererValidator_CauldronRuinSite"))
 
 BIOME = "RM_Cauldron"
 WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
@@ -121,7 +131,8 @@ VEXXITH, VDOOR, ACID = "RM_Vexxith", "RM_VexxithDoor", "AcidBurn"     # VEXXITH_
 VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak",
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
-        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45)}
+        "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45), "gas": (-85, -85)}
+GAS_TAP, TANK, RIG = "RM_VentGasTap", "RM_LiquidTank", "RM_CorrodedFilterRig"     # CAULDRON_MECHANICS_BUILD_1 parts 3/4
 PAD_SIZE = 24
 SOIL = "Soil"
 
@@ -151,7 +162,8 @@ def _patch_text(rel):
 def _read_defs():
     """({defType: [defName]}, {defName: source folder}) for every concrete def in this mod's Defs/,
     parsed per top-level element (never a fixed line number). Comments are stripped first."""
-    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef", "JobDef", "RecipeDef", "DamageDef")
+    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef", "JobDef", "RecipeDef", "DamageDef",
+              "ResearchProjectDef", "GenStepDef")
     by_type, where = {}, {}
     for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
         with open(path, encoding="utf-8") as fh:
@@ -281,6 +293,20 @@ def _kill_pawns_in(t, rect):
     n = 0
     for p in ((r or {}).get("pawns") or []):
         if p.get("dead") or not p.get("id"):
+            continue
+        t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True)
+        n += 1
+    return n
+
+
+def _kill_kind_near(t, kind, radius=60):
+    """Kill every living `kind` pawn within `radius` of the anchor: a stray (a wild native, or one an earlier failed chain
+    left behind) drinks the vent first and silences it, which reads as the vent ignoring the test's own animal."""
+    x, z = t.anchor
+    r = t.bridge_call("jawa/list_pawns", limit=500, rect=_rs((x - radius, z - radius, 2 * radius, 2 * radius)))
+    n = 0
+    for p in ((r or {}).get("pawns") or []):
+        if p.get("dead") or not p.get("id") or p.get("kindDef") != kind:
             continue
         t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True)
         n += 1
@@ -901,7 +927,11 @@ def settings_chain(t):
                   # CAULDRON_ENRICHMENT_VISUALS_1: beads need hours of locked dewfall on unroofed non-home ground;
                   # saturation and flecks are dormant until their art is installed (and are appearance anyway);
                   # prints live on CreatureBehaviors' grid, which no bridge tool reads.
-                  "dewfallBeadsEnabled", "dewfallSaturationEnabled", "assayFlecksEnabled", "vexxissPrintsEnabled"):
+                  "dewfallBeadsEnabled", "dewfallSaturationEnabled", "assayFlecksEnabled", "vexxissPrintsEnabled",
+                  # CAULDRON_MECHANICS_BUILD_1: the drift heading is not readable through any bridge tool; the toxic-smoke
+                  # OFF arm is masked by the ON arm's vanilla tox residue unless the suite waits it out (the ON arm is
+                  # gas.vent_gas_burns_toxic); the ruin kit is worldgen (a fresh Cauldron map).
+                  "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -1618,6 +1648,7 @@ def vents_chain(t):
         with _comp(t, "vents_site_ready", poison=True):
             if _live(t):
                 _lock_weather(t, "RM_ScatterDusk")
+                _kill_kind_near(t, VEXXISS)       # a stray vexxiss would drink this vent silent before the drink rows
                 _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (VENT, x, z)), "spawn_batch(vent)")
                 rows = _things(t, VENT, _rs(_rect(t)))
                 if not rows:
@@ -1640,6 +1671,39 @@ def vents_chain(t):
                     o2, _s = vent()
                 if abs(o2 - 1.0) > 0.05:
                     _fail("ventWeatherEnabled OFF but the vent still follows the weather (%.2fx under vapour bank)" % o2)
+        with _comp(t, "fauna_hush_in_falter", toggle="faunaHushEnabled"):
+            # CAULDRON_MECHANICS_BUILD_1 part 1: while the vents falter, wild natives hold still (Wait_MaintainPosture).
+            if _live(t):
+                def falter_job(on):
+                    _lock_weather(t, "RM_ScatterDusk")
+                    if _transition_done(t) is None:
+                        _unmeasured(t, "the weather never settled on scatter-dusk")
+                    with _setting(t, "faunaHushEnabled", on):
+                        pid = _spawn(t, ESKITH, x + 6, z + 6)
+                        _full(t, pid)
+                        _lock_weather(t, BLOOM)
+                        t.wait_ticks(480)
+                        _o, st = vent()
+                        jobs = _jobs(t)
+                        if pid not in jobs:
+                            _unmeasured(t, "the spawned eskith %s is not on the map" % pid)
+                        job = jobs.get(pid)
+                        kill_pawns()
+                    return st, job
+                st1, job1 = falter_job(True)
+                _note(t, "ON: vent state / eskith job in the falter", [st1, job1])
+                if st1 != "faltering":
+                    _unmeasured(t, "the vents were not faltering when the eskith was read (%r)" % st1)
+                if job1 != "Wait_MaintainPosture":
+                    _fail("the vents falter but a wild eskith is not holding still (job %r)" % job1)
+                st2, job2 = falter_job(False)
+                _note(t, "OFF: vent state / eskith job in the falter", [st2, job2])
+                if st2 != "faltering":
+                    _unmeasured(t, "OFF arm: the vents were not faltering (%r)" % st2)
+                if job2 == "Wait_MaintainPosture":
+                    _fail("faunaHushEnabled OFF but the eskith still holds still in the falter")
+                _lock_weather(t, "RM_ScatterDusk")
+                _transition_done(t)
         with _comp(t, "vent_falter_precedes_bloom"):
             if _live(t):
                 _lock_weather(t, BLOOM)
@@ -1676,6 +1740,7 @@ def vents_chain(t):
                     _fail("ventLocalExposureEnabled OFF but near %.4f vs far %.4f still differ" % (near2, far2))
         with _comp(t, "vexxiss_drinks_vent", toggle="vexxissDrinksVentsEnabled"):
             if _live(t):
+                _kill_kind_near(t, VEXXISS)
                 _lock_weather(t, "RM_ScatterDusk")
                 t.wait_ticks(60)
                 ids["v1"] = _spawn(t, VEXXISS, x + 9, z)
@@ -1729,6 +1794,184 @@ def vents_chain(t):
                 _note(t, "recovery output first / 3000 ticks later", [recovering, o_b])
                 if not (0 < o_b < 0.9) or o_b <= recovering:
                     _fail("the vent is not visibly recovering: %.3fx then %.3fx" % (recovering, o_b))
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: the vent gas (part 3/4)
+
+def _gas_read(t, vid):
+    """The vent's gas line as a dict: cells, peak, tox, burned, capped. Unreadable is UNMEASURED, never a number."""
+    _label, lines = _inspect(t, vid)
+    if not _live(t):
+        return {}
+    txt = " | ".join(str(l) for l in lines)
+    if "Vent gas: capped by a gas tap" in txt:
+        return {"capped": True}
+    m = re.search(r"Vent gas:\s*(\d+) cells, peak (\d+); toxic smoke:\s*(\d+) cells; burned:\s*(\d+)", txt)
+    if not m:
+        _unmeasured(t, "the vent's inspect lines carry no 'Vent gas' line: %r" % lines)
+    return {"capped": False, "cells": int(m.group(1)), "peak": int(m.group(2)), "tox": int(m.group(3)),
+            "burned": int(m.group(4))}
+
+
+def _tap_read(t, tid):
+    """(banked, delivered, hp) from the gas tap's inspect lines."""
+    _label, lines = _inspect(t, tid)
+    if not _live(t):
+        return None, None, None
+    txt = " | ".join(str(l) for l in lines)
+    b = re.search(r"condensate banked\s*([0-9.]+)", txt)
+    d = re.search(r"Delivered\s*(\d+) units", txt)
+    h = re.search(r"Scaffold:\s*(\d+)\s*/", txt)
+    if not b or not d or not h:
+        _unmeasured(t, "the gas tap's inspect lines carry no banked / delivered / HP: %r" % lines)
+    return float(b.group(1)), int(d.group(1)), int(h.group(1))
+
+
+@suite.chain("gas")
+def gas_chain(t):
+    """CAULDRON_MECHANICS_BUILD_1 part 3/4/5: the new vent-gas type, its burn into vanilla tox gas, the gas-tap scaffold, a
+    vexxiss prying at it, and the corroded ruin kit dressing its site. State reads only (inspect lines, thing counts)."""
+    _prep(t, "gas")
+    x, z = t.anchor
+    ids = {}
+
+    def gas():
+        return _gas_read(t, ids["vent"])
+
+    def body():
+        with _comp(t, "gas_site_ready", poison=True):
+            if _live(t):
+                _lock_weather(t, "RM_ScatterDusk")
+                _kill_kind_near(t, VEXXISS)
+                _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (VENT, x, z)), "spawn_batch(vent)")
+                rows = _things(t, VENT, _rs(_rect(t)))
+                if not rows:
+                    _unmeasured(t, "the spawned %s is not on the map" % VENT)
+                ids["vent"] = rows[0]["id"]
+                _wait(t, 1500)
+                _note(t, "vent gas after 1500 ticks", gas())
+        with _comp(t, "vent_gas_emits", toggle="ventGasEnabled"):
+            if _live(t):
+                g = gas()
+                if g.get("capped"):
+                    _unmeasured(t, "the fresh vent reads capped")
+                if g["cells"] <= 0 or g["peak"] <= 0:
+                    _fail("a breathing vent made no gas in 1500 ticks: %r" % g)
+                # isolation guard: unburned vent gas is its own type, never vanilla tox gas
+                if g["tox"] != 0:
+                    _fail("vanilla tox gas around a vent that never burned (%d cells): the new type leaks into the old" % g["tox"])
+                with _setting(t, "ventGasEnabled", False):
+                    _wait(t, 1500)
+                    g_off = gas()
+                _note(t, "ON / OFF arm", [g, g_off])
+                if g_off["peak"] >= g["peak"]:
+                    _fail("ventGasEnabled OFF but the cloud kept its peak (%d -> %d)" % (g["peak"], g_off["peak"]))
+        with _comp(t, "vent_gas_burns_toxic", toggle="ventGasIgnites"):
+            if _live(t):
+                _wait(t, 1500)                                   # let the cloud rebuild after the OFF arm
+                g0 = gas()
+                if g0["peak"] < 24:
+                    _unmeasured(t, "the cloud is too thin to ignite (peak %d)" % g0["peak"])
+                with _setting(t, "ventGasIgnites", False):
+                    _ok(t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d,10" % (x + 2, z)), "spawn_batch(wood)")
+                    r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x + 2, z), fireSize=1.0)
+                    if not (r or {}).get("firesStarted"):
+                        _unmeasured(t, "map_fire lit nothing beside the vent: %r" % r)
+                    _wait(t, 240)
+                    g_off = gas()
+                    t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t)))
+                _note(t, "OFF arm: burned before / after", [g0["burned"], g_off["burned"]])
+                if g_off["burned"] != g0["burned"]:
+                    _fail("ventGasIgnites OFF but the gas still burned (%d -> %d)" % (g0["burned"], g_off["burned"]))
+                _wait(t, 600)
+                g1 = gas()
+                _ok(t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d,10" % (x - 1, z)), "spawn_batch(wood)")
+                r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x - 1, z), fireSize=1.0)
+                if not (r or {}).get("firesStarted"):
+                    _unmeasured(t, "map_fire lit nothing beside the vent: %r" % r)
+                _wait(t, 240)
+                g2 = gas()
+                t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t)))
+                _note(t, "ON arm: before / after the fire", [g1, g2])
+                if g2["burned"] <= g1["burned"]:
+                    _fail("a fire beside a thick cloud (peak %d) burned no gas" % g1["peak"])
+                if g2["tox"] <= 0:
+                    _fail("the gas burned (%d cells) but left no tox gas: no toxic smoke" % (g2["burned"] - g1["burned"]))
+        with _comp(t, "gas_tap_caps_and_banks", toggle="gasTapBanksCondensate"):
+            if _live(t):
+                _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1;%s:%d,%d,1" % (GAS_TAP, x, z, TANK, x + 2, z)),
+                    "spawn_batch(tap, tank)")
+                rows = _things(t, GAS_TAP, _rs(_rect(t)))
+                if not rows:
+                    _unmeasured(t, "the spawned %s is not on the map" % GAS_TAP)
+                ids["tap"] = rows[0]["id"]
+                if not gas().get("capped"):
+                    _fail("a gas tap stands on the vent but the vent does not read capped")
+                _wait(t, 6000)
+                b1, d1, _h = _tap_read(t, ids["tap"])
+                _note(t, "tap banked / delivered after 6000 ticks", [b1, d1])
+                if b1 + d1 <= 0.05:
+                    _fail("a tapped breathing vent banked nothing in 6000 ticks")
+                with _setting(t, "gasTapBanksCondensate", False):
+                    b2, d2, _h = _tap_read(t, ids["tap"])
+                    _wait(t, 3000)
+                    b3, d3, _h = _tap_read(t, ids["tap"])
+                _note(t, "OFF arm: banked+delivered before / after", [b2 + d2, b3 + d3])
+                if b3 + d3 > b2 + d2 + 0.01:
+                    _fail("gasTapBanksCondensate OFF but the tap still banked (%.2f -> %.2f)" % (b2 + d2, b3 + d3))
+        with _comp(t, "vexxiss_pries_tap", toggle="vexxissPriesTaps"):
+            if _live(t):
+                _kill_kind_near(t, VEXXISS)
+                if "tap" not in ids:
+                    _unmeasured(t, "no tap from the previous component")
+                _b, _d, h0 = _tap_read(t, ids["tap"])
+                pid = _spawn(t, VEXXISS, x + 8, z)
+                _full(t, pid)
+                drank = False
+                for _ in range(16):
+                    t.wait_ticks(150)
+                    if _jobs(t).get(pid) == DRINK_JOB:
+                        drank = True
+                        break
+                if not drank:
+                    _unmeasured(t, "the vexxiss never took %s at the capped vent" % DRINK_JOB)
+                _wait(t, 900)
+                _b, _d, h1 = _tap_read(t, ids["tap"])
+                _kill_pawns_in(t, _rect(t, PAD_SIZE + 8))
+                _note(t, "tap HP before / after a drink", [h0, h1])
+                if h1 >= h0:
+                    _fail("a vexxiss drank at the capped vent and the scaffold took no damage (%d -> %d)" % (h0, h1))
+                with _setting(t, "vexxissPriesTaps", False):
+                    pid2 = _spawn(t, VEXXISS, x + 8, z)
+                    _full(t, pid2)
+                    seen = False
+                    for _ in range(16):
+                        t.wait_ticks(150)
+                        if _jobs(t).get(pid2) == DRINK_JOB:
+                            seen = True
+                            break
+                    _wait(t, 900)
+                    _b, _d, h2 = _tap_read(t, ids["tap"])
+                    _kill_pawns_in(t, _rect(t, PAD_SIZE + 8))
+                _note(t, "OFF arm: drank / HP before / after", [seen, h1, h2])
+                if not seen:
+                    _unmeasured(t, "OFF arm: the vexxiss never drank, so nothing was tested")
+                if h2 < h1:
+                    _fail("vexxissPriesTaps OFF but the scaffold still took damage (%d -> %d)" % (h1, h2))
+        with _comp(t, "ruin_kit_dresses"):
+            if _live(t):
+                rx, rz = x - 8, z - 8
+                before = _count(t, TANK, _rs((rx - 6, rz - 6, 14, 14)))
+                _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (RIG, rx, rz)), "spawn_batch(rig)")
+                t.wait_ticks(5)
+                if not _things(t, RIG, _rs((rx - 1, rz - 1, 4, 4))):
+                    _unmeasured(t, "the spawned %s is not on the map" % RIG)
+                tanks = _count(t, TANK, _rs((rx - 6, rz - 6, 14, 14))) - before
+                pipes = _count(t, "AncientPipe", _rs((rx - 6, rz - 6, 14, 14)))
+                _note(t, "ruin pieces beside the rig: tanks / pipes", [tanks, pipes])
+                if tanks < 1 or pipes < 1:
+                    _fail("the corroded filter rig did not dress its site (tanks %d, pipes %d)" % (tanks, pipes))
     _stable(t, body)
 
 

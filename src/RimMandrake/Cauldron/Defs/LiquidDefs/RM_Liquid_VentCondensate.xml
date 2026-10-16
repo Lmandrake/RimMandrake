@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 4, the Filter-Works ("the discoverable tech is about conversion of one fluid to
+  another via filtering" — one mechanic on the canon LiquidDef/FlowWorks registry).
+
+  RM_Liquid_VentCondensate is a row on the SAME registry as every FlowWorks liquid (a LiquidDef in the DefDatabase),
+  hand-authored here beside the biome that makes it rather than in FlowWorks' generated table, because only the Cauldron's
+  gas taps produce it. Its one form is a conversion: the Filter-Works ("refine", Industrial) turns 4 units into 1 vent
+  reagent ITEM (productThing; no liquid product, so CompLiquidConverter drops the item beside the machine). No terrain,
+  canal or bottle form: it moves tank to tank only.
+
+  The other launch recipe, toxic water to potable water, needs no row here: RM_Liquid_ToxicWater already carries
+  "filter" (Crude) and "detox" (Industrial) steps to fresh water, and the Filter-Works lists both processes.
+  PROVISIONAL: 4:1 ratio.
+-->
+<Defs>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_VentCondensate</defName>
+    <label>vent condensate</label>
+    <description>The Cauldron's vent gas, tapped under pressure and cooled until it runs: a heavy, metal-bitter liquor that fumes when the lid comes off. Worthless as it stands; a Filter-Works strains a valuable reagent out of it.</description>
+    <viscosityClass>Thin</viscosityClass>
+    <pH>5</pH>
+    <flammable>true</flammable>
+    <igniteTemp>60</igniteTemp>
+    <color>(0.62,0.66,0.38)</color>
+    <conversions>
+      <li>
+        <tier>Industrial</tier>
+        <process>refine</process>
+        <productThing>RM_VentReagent</productThing>
+        <inputUnits>4</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+</Defs>

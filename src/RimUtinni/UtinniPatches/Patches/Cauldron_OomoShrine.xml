@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 6: put Oomo's grudging shrine (Defs/ThingDefs_Buildings/RUT_OomoGrudgingShrine.xml)
+  into the RM Cauldron ruin kit's shrine slot. The kit lives in the RM tier (src/RimMandrake/Cauldron, composed into
+  mandrake.rm.biomes, which this mod depends on); the slot is empty there so the RM tier names no god.
+  Conditional: if the rig def is ever absent, nothing is added and nothing errors.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_CorrodedFilterRig"]/comps/li[@Class="RimMandrake.Cauldron.RM_CompProperties_CauldronRuinKit"]/shrineDefs</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_CorrodedFilterRig"]/comps/li[@Class="RimMandrake.Cauldron.RM_CompProperties_CauldronRuinKit"]/shrineDefs</xpath>
+      <value>
+        <li>RUT_OomoGrudgingShrine</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

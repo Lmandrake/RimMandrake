@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 4: the Filter-Works is "taught by studying the corroded ruin kit". Vanilla's own route:
+  requiredAnalyzed names RM_CorrodedFilterRig, whose CompAnalyzableUnlockResearch is studied in place by a colonist
+  (the Biotech signal-chip pattern); once studied, this becomes an ordinary bench project. PROVISIONAL cost.
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_FilterWorksResearch</defName>
+    <label>Filter-Works</label>
+    <description>Learned from the corroded filter rigs in the Cauldron: how to build a works that strains one liquid into another through packed cartridges. It refines tapped vent condensate into a valuable reagent and filters toxic water fit to drink.\n\nIt must first be worked out by studying a corroded filter rig.</description>
+    <baseCost>900</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_CorrodedFilterRig</li>
+    </requiredAnalyzed>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>13.37</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>
