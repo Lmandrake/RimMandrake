@@ -1010,7 +1010,7 @@ def _build_suite():
             if step["tool"] == "jawa/comp_read":
                 r = t.bridge_call("jawa/comp_read", thing=step["thing"], comp=step["comp"], members=",".join(step["members"]))
                 return dict((r or {}).get("values") or {}), (r or {}).get("missing") or []
-            lt = t.bridge_call("jawa/list_things", defs=step["thing"], limit=1)
+            lt = t.bridge_call("jawa/list_things", defName=step["thing"], limit=1)  # param is defName; `defs` is ignored and matches any thing
             rows = (lt or {}).get("things") or []
             if not rows:
                 return {}, ["no %s on the current map" % step["thing"]]
@@ -1019,7 +1019,7 @@ def _build_suite():
         def _components(step):
             if step["key"] != "ring_repair_parts_in_hauler":
                 return None
-            r = t.bridge_call("jawa/list_things", defs="ComponentIndustrial", limit=100)
+            r = t.bridge_call("jawa/list_things", defName="ComponentIndustrial", limit=1000)
             return sum(int(x.get("stackCount", 1) or 1) for x in (r or {}).get("things") or [])
 
         def _reload(name):
@@ -1042,6 +1042,9 @@ def _build_suite():
                     _unmeasured(t, "%s: could not read the state before the save (%s); arrange %s" % (step["key"], missing, step["arrange"]))
                     continue
                 key, want = step["mid"]
+                if step["members"] and key not in before:
+                    _unmeasured(t, "%s: the read returned no %s, so mid-flight cannot be judged (%s)" % (step["key"], key, sorted(before)))
+                    continue
                 if key in before and want is not None and str(before[key]) != want:
                     _unmeasured(t, "%s is not mid-flight (%s = %s, want %s); arrange %s" % (step["key"], key, before[key], want, step["arrange"]))
                     continue

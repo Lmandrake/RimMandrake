@@ -389,10 +389,42 @@ def main():
     p = sub.add_parser("repoint")
     p.add_argument("--apply", action="store_true")
     p.set_defaults(fn=cmd_repoint)
+    p = sub.add_parser("check")
+    p.set_defaults(fn=cmd_check)
     a = ap.parse_args()
     return a.fn(a)
 
 
+
+
+OWNED_AA_NAMED = {"AA_Aerofleet_TwilightSea"}   # OUR accepted render (TerminalBiomes), named after the donor; RM_Bulloo's TEMP placeholder texPath
+
+
+def cmd_check(a):
+    """Every ported file: no donor AA_ name in its defs, no donor-served texPath. Zero files found is a failure."""
+    bad, n = [], 0
+    have_donor = os.path.isdir(DONOR)
+    for dn, (ours, mod, _) in PORTS.items():
+        path = os.path.join(SRC, "RimMandrake", mod, "Defs", FOLDER.get(mod, "ThingDefs_Races"), ours + ".xml")
+        rel = os.path.relpath(path, REPO)
+        if not os.path.exists(path):
+            bad.append(f"{rel}: ported file missing")
+            continue
+        n += 1
+        root = ET.parse(path).getroot()          # comments (the header names the donor) are not parsed
+        txt = ET.tostring(root, encoding="unicode")
+        for name in sorted(set(re.findall(r"\bAA_\w+", txt)) - OWNED_AA_NAMED):
+            bad.append(f"{rel}: names donor {name}")
+        if have_donor:
+            for tag in ("texPath", "iconPath", "uiIconPath"):
+                for el in root.iter(tag):
+                    tp = (el.text or "").strip()
+                    if tp and donor_served(tp):
+                        bad.append(f"{rel}: {tag} {tp} is donor art")
+    print(f"checked {n} of {len(PORTS)} ported files" + ("" if have_donor else "; UNMEASURED: donor texture check (donor folder absent)"))
+    for b in bad:
+        print("  - " + b)
+    return 1 if bad or n == 0 else 0
 
 
 # ---- roster repoint -------------------------------------------------------------------------------------------
@@ -438,7 +470,7 @@ def cmd_repoint(a):
                 todo.setdefault(os.path.join(REPO, f), set()).add(dn)
     n = 0
     for path, names in sorted(todo.items()):
-        txt = open(path, encoding="utf-8").read()
+        txt = open(path, encoding="utf-8", newline="").read()     # newline="": a CRLF file must not be rewritten as LF
         here = row_mod_pkg(path)
         for dn in sorted(names):
             ours, pkg = REPOINT[dn]

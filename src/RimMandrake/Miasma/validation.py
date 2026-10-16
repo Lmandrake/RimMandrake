@@ -288,6 +288,8 @@ def _build_suite():
         missing = r.get("notFound") or [d.get("defName") for d in (r.get("defs") or []) if not d.get("found")]
         if missing:
             raise ExpectationFailed("defs discarded or absent live: %s" % missing)
+        if len([d for d in (r.get("defs") or []) if d.get("found", True)]) < len(pairs):
+            raise ExpectationFailed("get_defs returned fewer rows than asked (%d of %d): %s" % (len(r.get("defs") or []), len(pairs), str(r)[:160]))
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL) via the harness's upstream_failed route."""

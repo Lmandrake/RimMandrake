@@ -108,7 +108,7 @@ def static_checks():
     for body in ("AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn"):
         if 'defName="%s"' % body not in ws:
             bad.append("wound-sharing patch does not target %s" % body)
-    if "<tag>RotNetwork</tag>" not in ws or ws.count("CompProperties_WoundLink") < 5 or "mandrake.rm.therot" in ws and False:
+    if "<tag>RotNetwork</tag>" not in ws or ws.count("CompProperties_WoundLink") < 5:
         bad.append("wound-sharing patch lacks the shared RotNetwork tag or a wound link per body")
     if "<mods>" not in ws or re.search(r"<Operation[^>]*MayRequire", ws):
         bad.append("wound-sharing patch must be gated by PatchOperationFindMod, never a top-level MayRequire")
