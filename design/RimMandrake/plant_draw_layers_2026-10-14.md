@@ -9,7 +9,7 @@
 Measured from decompiled 1.6 (`Verse/AltitudeLayer.cs`, `RimWorld/Plant.cs` `Print`):
 
 - A plant draws at its def's `altitudeLayer`: FloorEmplacement 7 · Filth 8 · Zone 9 · SmallWire 10 · **LowPlant 11** · Building 15 · Item 18 (the default when a def names none).
-- `Plant.Print` lifts the top edge of every plant quad by **0.1** in altitude (`topVerticesAltitudeBias`). Layers sit **0.0366** apart. So a plant only stays *guaranteed* under a LowPlant plant when it sits **at least 3 layers lower** (layer 8 or below). Top edge of a layer-7 plant: 7 × 0.0366 + 0.1 = 0.356, under the LowPlant bottom edge 0.403.
+- `Plant.Print` lifts the top edge of every plant quad by **0.1** in altitude (`topVerticesAltitudeBias`). Layers sit **0.366** apart (`Altitudes.LayerSpacing`; `AltInc` 0.0366 is a tenth of a layer), so the tilt never crosses a layer: any lower layer keeps a plant under every LowPlant plant. Top edge of a layer-7 plant: 7 × 0.366 + 0.1 = 2.66, under the LowPlant bottom edge 4.02. (The same fact makes a higher-layer plant cover a lower-layer one wherever they stand: `GIANT_MUSHROOM_DRAW_FIX_SOUTH_GOES_FRONT`, `src/RimMandrake/BiomesShell/Source/RM_PlantDrawOrder.cs`.)
 - Within one layer, which plant draws on top depends on a position hash. That is the reported "the moss is sometimes in front".
 - No game logic reads a plant's `altitudeLayer` except drawing (source search for `altitudeLayer ==/</>` and `AltitudeLayer.LowPlant` found no hits outside drawing). Moving a plant changes **draw order only**: size, food, fertility and growth are untouched.
 

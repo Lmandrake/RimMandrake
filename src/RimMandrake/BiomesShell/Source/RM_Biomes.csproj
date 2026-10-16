@@ -8,7 +8,8 @@
     copies ../Assemblies/RimMandrake.Biomes.dll (+ .srchash) into the composed
     mod's ROOT Assemblies/, the only DLL that lives there.
 
-    NO HARMONY: the one gate it applies is a def field
+    HARMONY: one transpiler, RM_PlantDrawOrder.cs (Plant.Print draw order on
+    our biomes' maps). The biome gate itself is still a def field
     (BiomeDef.generatesNaturally), set at startup and on settings write.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
@@ -40,13 +41,22 @@
 
   <ItemGroup>
     <Compile Include="RM_BiomesMod.cs" />
+    <Compile Include="RM_PlantDrawOrder.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>

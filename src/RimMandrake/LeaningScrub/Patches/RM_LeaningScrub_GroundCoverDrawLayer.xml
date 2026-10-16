@@ -5,8 +5,8 @@
   appropriate layer."  Item: ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS.
 
   Donor-owned ground cover spawned by RM_LeaningScrub / RUT_AridShrubland, moved from LowPlant (11)
-  to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude against 0.0366
-  between layers, so cover must sit >= 3 layers under the LowPlant plants it has to stay beneath;
+  to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude and layers sit
+  0.366 apart (Altitudes.LayerSpacing), so any lower layer is enough to keep cover under LowPlant plants;
   inside one layer the order is hash-random (the "moss sometimes in front" report). Draw order only:
   size, food, fertility and growth are untouched. The change is global to the def (all biomes).
   Census and criteria: design/RimMandrake/plant_draw_layers_2026-10-14.md
