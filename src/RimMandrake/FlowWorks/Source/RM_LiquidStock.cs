@@ -149,10 +149,24 @@ namespace RimMandrake.FlowWorks
 			// POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.3): the ocean cap was hit inland. Walk on up to the drainable-lake cap; a
 			// complete body that never touches the edge is a lake, kept whole and limited. Anything else keeps the first walk.
 			int lakeCap = RimMandrakeFlowWorksSettings.DrainableLakeMaxCells;
+			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: with a map-edge setter, "touches the edge" means an edge that is not
+			// sealed (a drain edge forces limitless below), here and for the lake walk, so a lake on sealed edges walks on
+			// whole and comes out LIMITED. A body still bigger than the drainable-lake cap stays limitless (truncated).
+			bool drainEdge = false;
+			int[] edgeModes = MapControls.RM_MapControls.EdgeModes(map);
+			if (edgeModes != null && ownedId < 0)
+			{
+				MapControls.RM_MapControls.BodyEdgeContact(map, edgeModes, fillFound, out touchesEdge, out drainEdge);
+			}
 			if (ownedId < 0 && truncated && !touchesEdge && lakeCap > MaxBodyCells)
 			{
 				int lakeOwned = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed), isSource, ownedBody,
 					lakeCap, lakeFound, lakeQueue, lakeSeen, out bool lakeEdge, out bool lakeTruncated, sameFluid);
+				if (edgeModes != null && lakeOwned < 0)
+				{
+					MapControls.RM_MapControls.BodyEdgeContact(map, edgeModes, lakeFound, out lakeEdge, out bool lakeDrain);
+					lakeEdge |= lakeDrain;
+				}
 				if (lakeOwned < 0 && !lakeEdge && !lakeTruncated)
 				{
 					fillFound.Clear();
@@ -195,14 +209,8 @@ namespace RimMandrake.FlowWorks
 			RM_LiquidBody body = new RM_LiquidBody(nextBodyId++);
 			body.cells = found;
 			body.truncated = truncated;
-			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: a map-edge setter rules which edges count. A sealed edge is no
-			// off-map reservoir (contact with it alone is not edge contact); a drain edge makes the body limitless.
-			bool drainEdge = false;
-			int[] edgeModes = MapControls.RM_MapControls.EdgeModes(map);
-			if (edgeModes != null)
-			{
-				MapControls.RM_MapControls.BodyEdgeContact(map, edgeModes, fillFound, out touchesEdge, out drainEdge);
-			}
+			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: touchesEdge / drainEdge were ruled by the map-edge setter above (a sealed
+			// edge is no off-map reservoir; a drain edge makes the body limitless).
 			// Ruling 16: edge contact AND a minimum size. Both, and only here.
 			body.limitless = drainEdge || RM_StockMath.IsLimitless(
 				RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,

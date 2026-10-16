@@ -67,7 +67,7 @@ namespace RimMandrake.FlowWorks.MapControls
 					}
 					if (t is Building_RM_MapControl mc && mc.TimerSwitchable)
 					{
-						mc.active = on;
+						mc.SetActive(on);
 						lastControls++;
 					}
 					else if (t is Building_Door door && RM_FlowDoorRules.IsFlowDoor(door))
@@ -75,7 +75,7 @@ namespace RimMandrake.FlowWorks.MapControls
 						HoldOpenRef(door) = on;
 						if (on && !door.Open)
 						{
-							door.StartManualOpenBy(null);
+							door.StartManualOpenBy(null);   // vanilla 1.6: just DoorOpen(), opener unused
 						}
 						lastDoors++;
 					}
