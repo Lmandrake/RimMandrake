@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 — owner Q5 (2026-10-15, by card: "Who sells the Repulsor and Sunbeam -> Quests plus a
+  visiting Helix trader"; agents to find whether a Helix trader exists and add one if not).
+
+  FOUND: none. The Ascendant Helix faction (RUT_Jawa_AscendantHelix, UtinniPatches) inherited only
+  OutlanderFactionBase's vanilla caravans, and no TraderKindDef anywhere stocked RM_Sunbeam or RM_CloudRepulsor.
+  ADDED: this caravan kind. It is franchise-free, so it lives here in the RM tier; the Utinni layer, which owns the
+  faction, hangs it on the Helix's caravanTraderKinds (src/RimUtinni/UtinniPatches/Patches/HelixCurators_Contagion.xml),
+  guarded on this def existing. The quest half of Q5 is the Helix draftprint contract's device reward
+  (QuestNode_RM_HelixDraftprintContract) plus RM_CloudRepulsor joining the standard reward pool.
+
+  Stock: the two devices, the Helix's own trade goods; it BUYS draftprints and Contagion mulch (they study both).
+  The minifiable Repulsor arrives crated: ThingSetMaker.Generate minifies stock after the generators run.
+  Counts and commonality are this build's INVENTED tuning.
+-->
+<Defs>
+
+  <TraderKindDef>
+    <defName>RM_Caravan_HelixCurators</defName>
+    <label>Helix curators</label>
+    <commonality>2</commonality>
+    <stockGenerators>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>900~1600</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RM_Sunbeam</thingDef>
+        <countRange>1~2</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>RM_CloudRepulsor</thingDef>
+        <countRange>0~1</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>MedicineIndustrial</thingDef>
+        <countRange>6~14</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>ComponentIndustrial</thingDef>
+        <countRange>4~10</countRange>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RM_Draftprint</thingDef>
+      </li>
+      <li Class="StockGenerator_BuySingleDef">
+        <thingDef>RM_ContagionMulch</thingDef>
+      </li>
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>

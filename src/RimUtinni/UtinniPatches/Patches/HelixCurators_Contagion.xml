@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  HelixCurators_Contagion.xml        UtinniPatches — CONTAGION_MECHANICS_BUILD_1, owner Q5 (2026-10-15, by card:
+  "Quests plus a visiting Helix trader").
+
+  Hangs the RM-tier caravan kind RM_Caravan_HelixCurators (src/RimMandrake/Contagion/Defs/TraderKindDefs/) on the
+  Ascendant Helix, so their trade caravans can arrive selling the Sunbeam and the Cloud Repulsor.
+
+  Guards (no inert Operation-level MayRequire):
+    * Conditional on the TraderKindDef: absent when the Contagion mod is not loaded, and then nothing is added (a
+      dangling caravanTraderKinds entry would be a cross-reference error);
+    * Conditional on the faction def;
+    * the faction ships no caravanTraderKinds of its own (it inherits OutlanderFactionBase's), so the node is ADDED
+      when missing; a child list appends to the inherited one, keeping the vanilla caravans. If a later edit gives the
+      faction its own list, the inner branch appends to it instead.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TraderKindDef[defName="RM_Caravan_HelixCurators"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]/caravanTraderKinds</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]/caravanTraderKinds</xpath>
+          <value>
+            <li>RM_Caravan_HelixCurators</li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_AscendantHelix"]</xpath>
+          <value>
+            <caravanTraderKinds>
+              <li>RM_Caravan_HelixCurators</li>
+            </caravanTraderKinds>
+          </value>
+        </nomatch>
+      </match>
+    </match>
+  </Operation>
+</Patch>
