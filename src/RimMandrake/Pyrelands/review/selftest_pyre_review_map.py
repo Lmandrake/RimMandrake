@@ -14,6 +14,7 @@
   8. ops_counts reads get_terrain_batch's 'Def:x,z,w,h' ops; parse_kv reads ProbeCell's 'k=v;' text
   9. the in-world labels carry each station number exactly once; the ruin label appears only when a ruin is known
  10. COVERAGE text carries the build command, every feature, and the no-station list with reasons
+ 11. pens: pen_rects gives one footprint per pen holding every specimen cell; pens() calls pen_release / pen_pin
 """
 import copy
 import os
@@ -162,6 +163,50 @@ nost = [f for f in H.FEATURES if not f[3]]
 check(H.build_command() in md and all(f[1].replace("|", "/") in md for f in H.FEATURES)
       and "Features with no station (%d)" % len(nost) in md and all(f[4] in md for f in nost),
       "COVERAGE carries the build command, all %d features and the %d no-station reasons" % (len(H.FEATURES), len(nost)))
+
+# 11 pens: --release-pens / --pin-pens hand the companion one footprint per pen, and every pinned specimen is inside
+pens = H.pen_stations(S)
+faced = [s for s in S if s["setup"].get("facings")]
+check(pens and all(s in pens for s in faced), "every facings pen is a pen station (%d pens, %d with facings)"
+      % (len(pens), len(faced)))
+rects = [tuple(int(v) for v in r.split(",")) for r in H.pen_rects(S).split(";")]
+check(len(rects) == len(pens) and all(len(r) == 4 and r[2] > 0 and r[3] > 0 for r in rects),
+      "pen_rects: %d well-formed x,z,w,h rects" % len(rects))
+outside = []
+for s, (rx, rz, rw, rh) in zip(pens, rects):
+    ox, oz = s["origin"]
+    spots = [(ox + fx, oz + fz) for fx, fz in H.FACING_SPOTS] if s["setup"].get("facings") else \
+        [(ox + x, oz + z) for _, x, z, _ in s["setup"]["pawns"]]
+    outside += [(s["n"], c) for c in spots if not (rx <= c[0] < rx + rw and rz <= c[1] < rz + rh)]
+check(not outside, "every specimen cell lies in its pen's rect (outside: %s)" % outside[:3])
+
+
+class FakeBridge:
+    def __init__(self, reply):
+        self.reply, self.calls = reply, []
+
+    def call(self, tool, **kw):
+        self.calls.append((tool, kw))
+        return self.reply
+
+
+fb = FakeBridge({"success": True, "selected": 4, "released": 4})
+H.Review(fb).pens(S, True)
+fb2 = FakeBridge({"success": False, "selected": 0, "message": "selection matched no eligible pawn"})
+R2 = H.Review(fb2)
+R2.pens(S, False)
+check(fb.calls == [("jawa/pen_release", {"rects": H.pen_rects(S)})] and fb2.calls[0][0] == "jawa/pen_pin"
+      and fb2.calls[0][1].get("restore") is True, "pens() routes release/pin to the two companion tools with the rects")
+check(any("pen_pin" in n for n in R2.notes), "can fail: a pin that changed nobody is noted, not passed silently")
+try:
+    import contextlib
+    import io
+    with contextlib.redirect_stderr(io.StringIO()):
+        H.main(["--release-pens", "--pin-pens"])
+    both = None
+except SystemExit as e:
+    both = e.code
+check(both == 2, "main refuses --release-pens with --pin-pens before touching a bridge (exit %s)" % both)
 
 print("\n%d FAIL" % len(fails) if fails else "\nALL PASS")
 sys.exit(1 if fails else 0)
