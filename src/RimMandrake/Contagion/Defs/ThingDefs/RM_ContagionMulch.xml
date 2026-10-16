@@ -21,7 +21,7 @@
     <description>Dead goo: what is left when the Contagion's flesh dies and stops trying to become anything. Sterile, black-red and rich, it is what made the green valleys below the storm green. Spread on soil it makes the best growing ground on the planet. Not food.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Kibble</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(0.42, 0.13, 0.14)</color>
     </graphicData>
     <stackLimit>75</stackLimit>
