@@ -2812,3 +2812,6 @@
 {"seat":"BENCH","event":"claim","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","ts":"2026-10-16T13:06:04Z","tsn":1792155964829045662}
 {"seat":"BENCH","event":"start","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","ts":"2026-10-16T13:06:05Z","tsn":1792155965110128066}
 {"seat":"BENCH","event":"note","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","text":"Built: bills RM_LacquerApparel/RM_LacquerWeapon (two, since cost differs by class), right-click provider, gizmo removed; offline selftests green. Live check owed: bill on press returns same item +1 coat; right-click press with colonist selected lists options; press unpowered disabled reason.","ts":"2026-10-16T13:06:19Z","tsn":1792155979713094785}
+{"seat":"BENCH","event":"lease","id":"PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE","action":"take","token":"BENCH.pid41052.355ae2d5","expires":"2026-10-16T14:10:14Z","ts":"2026-10-16T13:25:14Z","tsn":1792157114759035917}
+{"seat":"BENCH","event":"claim","id":"PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE","ts":"2026-10-16T13:25:15Z","tsn":1792157115013131840}
+{"seat":"BENCH","event":"start","id":"PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE","ts":"2026-10-16T13:25:15Z","tsn":1792157115277544234}
