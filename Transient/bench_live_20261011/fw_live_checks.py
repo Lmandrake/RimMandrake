@@ -1128,8 +1128,18 @@ def blk_T1():
 
 
 # ============================================================================ run
+# 2026-10-16: this copy stages filltank 100 (= 10 L since the litres re-base cf4f24213d, a hundredth of one level), so L2/L4
+# move nothing and read as MOD FAILs; its L6 spawns walk-off witnesses (THEFT_ROW_REPAIR_WITNESS_WALKS_OFF). Those blocks live
+# in src/RimMandrake/FlowWorks/northstar/liquid_checks.py (--only L2,L4,L5,L6), litres-scaled. Here they refuse, UNMEASURED.
+SUPERSEDED = {"L2", "L4", "L5", "L6"}
+
+
 def run_block(name, fn):
     if ONLY and name not in ONLY and not (name == "R1S" and "R1" in ONLY):
+        return
+    if name in SUPERSEDED:
+        row("%s_block" % name, "UNMEASURED", "HARNESS",
+            "superseded: run src/RimMandrake/FlowWorks/northstar/liquid_checks.py --only %s (litres-scaled)" % name)
         return
     CUR["block"] = name
     t0 = time.time()

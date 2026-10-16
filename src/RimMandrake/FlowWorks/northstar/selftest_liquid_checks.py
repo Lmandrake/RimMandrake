@@ -36,6 +36,21 @@ case(LC.dump_no_pump_verdict([0, 0], 0, 0)[0], "UNMEASURED", "tank never held li
 case(LC.dump_pump_verdict([100, 50], 0, 5, 4)[0], "PASS", "pump faster than no-pump")
 case(LC.dump_pump_verdict([100, 97], 0, 5, 4)[0], "FAIL", "pump not faster")
 case(LC.dump_pump_verdict([100, 50], 0, 5, None)[0], "UNMEASURED", "no slow rate to compare")
+L = LC.LEVEL
+case(LC.ship_fill_verdict([[120000, 0], [100000, 19300]])[0], "PASS", "ship gains a level-scale amount, base falls")
+case(LC.ship_fill_verdict([[100, 0], [0, 0]])[0], "FAIL", "base drained into the hose only: ship gained 0 (the 2026-10-16 trace)")
+case(LC.ship_fill_verdict([[120000, 0], [119000, 700]])[0], "FAIL", "a hose prime is not a load (< half a level)")
+case(LC.ship_fill_verdict([[120000, None], [0, 0]])[0], "UNMEASURED", "unreadable tank")
+case(LC.ship_fill_verdict([[1, 0]], "lay failed")[0], "UNMEASURED", "precondition")
+case(LC.ship_empty_verdict([[0, 40000], [20000, 20000]])[0], "PASS", "ship falls, base rises")
+case(LC.ship_empty_verdict([[0, 0], [0, 0]])[0], "FAIL", "nothing unloads")
+case(LC.spill_verdict(L, 0, L, 0, 3, 0, 0)[0], "PASS", "hose emptied and filth appeared")
+v = LC.spill_verdict(L, 0, L, 0, 0, 0, 1)
+case((v[0], "no cell" in v[2].get("why", "")), ("FAIL", True), "counted but unplaced spill is a FAIL that names Unplaced")
+case(LC.spill_verdict(L, L, 0, 0, 0, 0, 0)[0], "FAIL", "hose kept its liquid after the cap")
+case(LC.spill_verdict(0, 0, 0, 0, 0, 0, 0)[0], "UNMEASURED", "hose held nothing before the cap")
+case(LC.spill_verdict(L, 0, L, None, 3, 0, 0)[0], "UNMEASURED", "filth unreadable")
+case(LC.FILL_UNITS >= 4 * L, True, "staging is level-scale, not the pre-litres 100")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)
