@@ -263,8 +263,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(checkedFiles >= 19, "instrument: read " + checkedFiles + " liquid terrain files");
                 foreach (string pf in new[] { "RM_DBH_WaterTerrainTag.xml", "RM_DBH_FreshWaterDrinkables.xml" })
                     Assert(System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Patches", "LiquidTypes", pf)).Contains("<li>Dubs Bad Hygiene</li>"), pf + " fires for full DBH too");
-                string bottles = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Defs", "ManyWaters", "ThingDefs", "RM_ColoredWaterBottles.xml"));
-                Assert(!bottles.Contains("MayRequire=\"Dubwise.DubsBadHygiene.Lite\"") && bottles.Contains("MayRequireAnyOf=\"Dubwise.DubsBadHygiene.Lite,Dubwise.DubsBadHygiene\""), "coloured bottles load with either DBH");
+                // moved from Defs/ManyWaters/ThingDefs (cdaf6934d1): ParentName resolves before MayRequire drops a def, so the bottles are patch-added, only where ResourceBasedMom exists (Lite or full DBH)
+                string bottles = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Patches", "RM_ColoredWaterBottles_Patch.xml"));
+                Assert(!bottles.Contains("MayRequire=\"Dubwise.DubsBadHygiene.Lite\"") && bottles.Contains("<xpath>/Defs/ThingDef[@Name=\"ResourceBasedMom\"]</xpath>") && bottles.Contains("PatchOperationConditional"), "coloured bottles load with either DBH (added only where ResourceBasedMom exists)");
                 string gen = System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Tools", "generate_liquid_suite.py"));
                 Assert(gen.Contains("DBH_WATER_PREFIXES = {\"RM_WaterFrigid\", \"RM_WaterBrackish\", \"RM_WaterBrine\", \"RM_WaterMineral\"}"), "the generator keeps the same list, so a regeneration does not put the tag back");
             });
