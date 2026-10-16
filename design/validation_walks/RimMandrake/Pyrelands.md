@@ -55,7 +55,7 @@ X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
 
 ## north star
 state: VALIDATED
-validated-hash: 0642b3461fef58fe40a64de1570bac90d5c23f081967bfb226b7e706a2cfc878
+validated-hash: 2865b4cfed726679c011ea6dbce31ca339417f335fc50c79e4e71d5d8d41ffc1
 
 Owner, 2026-09-17 (verbatim): *"Any wrong animals present? Btw these are two
 validation script bars you should add for pyrelands. Correct animal and plant
