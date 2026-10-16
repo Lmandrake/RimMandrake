@@ -181,7 +181,7 @@ class Fake(object):
             for c in self.of(V.COALESCENCE):
                 for p in self.pawns.values():
                     if p["kind"] == "Colonist" and not p["dead"] and not p["vanished"] \
-                            and abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2:
+                            and (("touched_bloom_only" in b) or (abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2)):
                         self.addh(p, V.TOUCHED, 0.01)
         # --- the zhool's haze (CompZhoolHaze): one grass in reach turns per 250-tick step, on our biome only
         for z in [q for q in self.pawns.values() if q["kind"] == V.ZHOOL and not q["dead"] and not q["vanished"]]:
@@ -740,6 +740,7 @@ BREAKS = {
     "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
     "touched_ignores_toggle": ["touched.touched_off_doses_nothing"],
     "touched_no_contact": ["touched.touched_contact_doses"],
+    "touched_bloom_only": ["touched.touched_contact_doses"],   # dosed everywhere alike: contact adds nothing
     "arrest_ignored": ["touched.sunbeam_hit_arrests"],
     "mulch_none": ["spawner.unfinished_leaves_mulch"],
     "helix_trader_unwired": ["defs.helix_trader_wired"],
