@@ -347,9 +347,12 @@ def _open_sky(t, rect, raw=False):
         return
     try:
         if raw:
-            t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+            r = t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
         else:
-            t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+            r = t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+        # the bridge answers a refusal, it does not raise: a strip that did not take is said out loud
+        if isinstance(r, dict) and (r.get("success") is False or r.get("cellsFailedVerify")):
+            print("ROOFSTRIP roof strip incomplete over %s: %s" % (_rs(rect), str(r)[:300]), file=sys.stderr, flush=True)
     except Exception as ex:    # upkeep, never a verdict: a missed strip shows up as the collapse it was meant to stop
         print("%s roof strip failed over %s: %s" % (TAG, _rs(rect), ex), file=sys.stderr, flush=True)
 
@@ -611,9 +614,9 @@ def _stable(t, fn):
                 _kill_pawns_in(t, _rect(t, PAD_SIZE + 24))
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 24)),
                                categories="All")
-                _open_sky(t, _rect(t, PAD_SIZE + 24), raw=True)   # the teardown takes rock (and the bloom room's walls) too
             except Exception as ex:
                 print("%s pad cleanup failed: %s" % (TAG, ex), file=sys.stderr, flush=True)
+            _open_sky(t, _rect(t, PAD_SIZE + 24), raw=True)   # its own guard: the teardown takes rock and the bloom room's walls
 
 
 def _terrain(t, rect):

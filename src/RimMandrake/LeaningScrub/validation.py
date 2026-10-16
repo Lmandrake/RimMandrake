@@ -289,9 +289,12 @@ def _open_sky(t, rect, raw=False):
         return
     try:
         if raw:
-            t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+            r = t.session.call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
         else:
-            t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+            r = t.bridge_call("jawa/set_roof_batch", ops="None:%s" % _rs(rect))
+        # the bridge answers a refusal, it does not raise: a strip that did not take is said out loud
+        if isinstance(r, dict) and (r.get("success") is False or r.get("cellsFailedVerify")):
+            print("ROOFSTRIP roof strip incomplete over %s: %s" % (_rs(rect), str(r)[:300]), file=sys.stderr, flush=True)
     except Exception as ex:    # upkeep, never a verdict: a missed strip shows up as the collapse it was meant to stop
         print("[lscrub] roof strip failed over %s: %s" % (_rs(rect), ex), file=sys.stderr, flush=True)
 
@@ -559,9 +562,9 @@ def _stable(t, fn):
             try:
                 t.session.call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)),
                                categories="All")
-                _open_sky(t, _rect(t, PAD_SIZE + 8), raw=True)   # the gale room's walls go here: its roof must not fall
             except Exception as ex:
                 print("[lscrub] pad cleanup failed: %s" % ex, file=sys.stderr, flush=True)
+            _open_sky(t, _rect(t, PAD_SIZE + 8), raw=True)   # its own guard: the gale room's walls go here, its roof must not fall
 
 
 # --------------------------------------------------------------------------- chain: defs
@@ -1414,7 +1417,7 @@ def bloom_chain(t):
 # --------------------------------------------------------------------------- chain: stamp
 
 STAMP_DISC = 22     # RM_FireStampProof.DiscClear: radius the proof needs standable, unroofed, pawn- and fire-free
-PADS["stamp"] = (0, 0)    # the map centre: the 46-cell square sits between the +-45 pads
+PADS["stamp"] = (0, 0)    # the map centre: the 46-cell square overlaps the fuel/spawn pads (chains run in turn, each clears its own)
 
 
 @suite.chain("stamp")
@@ -1424,18 +1427,22 @@ def stamp_chain(t):
     LIVE 2026-10-16 the hook scanned the map for an ambient clear 22-cell disc and found none on the wooded run map,
     so both rows were UNMEASURED whatever the mod did: the chain now clears a disc-sized pad and names its centre."""
     _prep(t, "stamp", size=2 * STAMP_DISC - 6)      # _prep clears size + 8 = a 46-cell square, the disc's diameter
-    for mode, name in (("on", "stamp_answers_a_blaze"), ("off", "stamp_toggle_off_ignores_fire")):
-        with _comp(t, name, toggle="fireStampEnabled"):
-            x, z = t.anchor
-            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FireStampProof",
-                              method="ProofStamp", args="%s@%d,%d" % (mode, x, z))
-            if _live(t):
-                txt = str((r or {}).get("result") or (r or {}).get("value") or r)
-                _note(t, "fire stamp proof (%s)" % mode, txt[:300])
-                if txt.startswith("FAIL"):
-                    _fail("fire stamp (%s): %s" % (mode, txt[:400]))
-                if not txt.startswith("PASS"):
-                    _unmeasured(t, "fire stamp proof did not answer PASS/FAIL: %s" % txt[:200])
+    try:
+        for mode, name in (("on", "stamp_answers_a_blaze"), ("off", "stamp_toggle_off_ignores_fire")):
+            with _comp(t, name, toggle="fireStampEnabled"):
+                x, z = t.anchor
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FireStampProof",
+                                  method="ProofStamp", args="%s@%d,%d" % (mode, x, z))
+                if _live(t):
+                    txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                    _note(t, "fire stamp proof (%s)" % mode, txt[:300])
+                    if txt.startswith("FAIL"):
+                        _fail("fire stamp (%s): %s" % (mode, txt[:400]))
+                    if not txt.startswith("PASS"):
+                        _unmeasured(t, "fire stamp proof did not answer PASS/FAIL: %s" % txt[:200])
+
+    finally:
+        _unlock_weather(t)    # _prep locked Clear: never let it leak into the next chain
 
 
 def _proof(t, name, typ, method, args, label, toggle=None):
