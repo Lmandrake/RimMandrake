@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 6, Oomo's Grimace (gods, biome-local per the Blue Desert precedent: content only, no
+  precept defs). Owner: "Oomo will dislike it but not refuse to go."
+
+  The RM-tier Cauldron names no god, so this lives in the Utinni layer and is patched INTO the RM ruin kit's empty
+  shrineDefs slot (Patches/Cauldron_OomoShrine.xml): every corroded filter rig on a Cauldron map gets one grudging shrine
+  beside it. Usable: a meditation focus (Natural, the tribal shrine family), deliberately weaker than a small nature
+  shrine (0.12 against 0.22) — the god comes, sulking. Unclaimed when found; colonists may meditate at it as at a wild
+  animus stone, and may carve one themselves at a stonecutter's-grade build.
+
+  PROVISIONAL: focus strength, cost. ART OWED: placeholder is vanilla's animus stone tinted water-blue.
+  NOT BUILT: the "sour flavor tint on water rites here" (RUT_JoiningWater) needs a biome-aware outcome text, and the
+  Rites mod is XML-only with no code seam; recorded on CAULDRON_MECHANICS_BUILD_1.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_OomoGrudgingShrine</defName>
+    <label>Oomo's grudging shrine</label>
+    <description>A cracked stone dish on a squat plinth, its carved droplet worn dull, set down in the Cauldron by someone who wanted Oomo the Unspilled to come here anyway. The wettest-looking land on the planet, and not one drop of it can be kept: Oomo dislikes this place. But the dish is still here, so Oomo still comes, sulking.\n\nA colonist can meditate at it, though the god's attention here is thin.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/AnimusStone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(92,128,150)</color>
+      <shadowData>
+        <volume>(0.45,0.8,0.45)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <fillPercent>0.35</fillPercent>
+    <pathCost>30</pathCost>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Ideology</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>12</Mass>
+      <Beauty>4</Beauty>
+      <Flammability>0</Flammability>
+      <MeditationFocusStrength>0.12</MeditationFocusStrength>
+    </statBases>
+    <costList>
+      <BlocksGranite>40</BlocksGranite>
+    </costList>
+    <building>
+      <ai_neverTrashThis>true</ai_neverTrashThis>
+      <ai_chillDestination>false</ai_chillDestination>
+      <destroySound>BuildingDestroyed_Stone_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Natural</li>
+        </focusTypes>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

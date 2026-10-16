@@ -13,6 +13,11 @@
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
     <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards Kit</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
@@ -20,6 +25,7 @@
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>sarg.alphamemes</li>
     <li>vanillaexpanded.vgeneticse</li>
@@ -64,6 +70,17 @@ bank, dewfall, vent bloom) replace the donor fog; a vent bloom builds a slow
 metal-load condition on anyone outdoors under open sky. The vexxiss puts out
 fires, goes for whoever started them, and turns the water it wades through
 toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear job.
+
+The vents leak a NEW gas type: flammable vent gas, a drifting cloud on its own grid
+(the engine's gas grid has no room for a fifth gas, so vanilla and other mods' gases
+are never touched). Fire lights it, the burn runs through the cloud and leaves
+vanilla tox gas behind, and the fire carries whoever lit the first spark, so the
+vexxiss goes for them. A gas-tap scaffold built over a vent stops the leak and
+banks the flow as vent condensate (a FlowWorks liquid) into a tank beside it; a
+drinking vexxiss pries at the scaffold. Each Cauldron map holds one corroded
+filter rig with its wrecked tanks: studying it unlocks the Filter-Works, a powered
+FlowWorks converter fed with filter cartridges that refines condensate into vent
+reagent and filters toxic water into fresh. All of it is Mod Settings-gated.
 
 VEXXITH_CLOSED_LOOP_BUILD_1: anything made of vexxith, and the plate-only
 acid-proof vexxith door, takes no acid damage (vanilla acid burn, and the

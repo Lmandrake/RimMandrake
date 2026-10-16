@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 3: the gas-tap scaffold (Source/RM_GasTap.cs). "Caps a vent: stops the leak AND banks
+  flow for refining — safety and industry as one act." Built exactly over a vent (RM_PlaceWorker_OnCauldronVent, the
+  geothermal-on-geyser shape). No research: capping a leak is the safety half and needs no learning; what it banks is
+  only useful once the Filter-Works is researched. A FlowWorks liquid tank standing beside it receives the condensate.
+
+  PROVISIONAL: cost, work, hit points. ART OWED: it borrows FlowWorks' liquid-tap texture as a placeholder.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_VentGasTap</defName>
+    <label>gas-tap scaffold</label>
+    <description>A riveted steel collar bolted down over a Cauldron vent, with a pressure cap, a cold coil and a drain cock. It stops the vent's gas leaking into the air and bleeds the flow off as vent condensate, which runs into any liquid tank standing beside it. Must be built exactly over a vent. A drinking vexxiss will pry at it.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <shadowData>
+        <volume>(1.6, 0.5, 1.6)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(2,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>false</rotatable>
+    <tickerType>Rare</tickerType>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Production</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>40</Mass>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <placeWorkers>
+      <li>RimMandrake.Cauldron.RM_PlaceWorker_OnCauldronVent</li>
+    </placeWorkers>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Cauldron.RM_CompProperties_GasTap">
+        <condensate>RM_Liquid_VentCondensate</condensate>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

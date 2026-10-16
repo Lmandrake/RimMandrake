@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 4: the corroded ruin kit (Source/RM_CauldronRuinKit.cs).
+
+  RM_CorrodedFilterRig is the set-piece's anchor and its teacher. Studied in place by a colonist
+  (CompAnalyzableUnlockResearch, canStudyInPlace) it unlocks RM_FilterWorksResearch (requiredAnalyzed). On its first
+  spawn it dresses its own site (RM_CompProperties_CauldronRuinKit):
+    - 1-2 FlowWorks liquid tanks, battered, still holding some toxic water: the water hauled in as offerings that failed;
+    - an ancient storage cylinder, a run of corroded pipe, steel slag;
+    - shrineDefs: EMPTY in this tier. The RM tier names no god; the Utinni layer patches in Oomo's grudging shrine
+      (src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml).
+  Unclaimable, deconstructible for scrap. analysisID 731450118 is this rig's own (unique, never reuse).
+
+  ART OWED: the rig borrows FlowWorks' wrecked-detox-works texture as a placeholder.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_CorrodedFilterRig</defName>
+    <label>corroded filter rig</label>
+    <description>The rusted carcass of a filter works someone built here long ago to wring something drinkable out of the Cauldron: split filter housings caked in green crust, a seized pump, cartridge racks eaten through. Nothing on it will run again, but a careful colonist could work out how it was meant to.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.6,2.6)</drawSize>
+      <shadowData>
+        <volume>(1.8, 0.6, 1.8)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(2,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <tickerType>Never</tickerType>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <analysisID>731450118</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisDurationHours>2</analysisDurationHours>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <completedLetterLabel>Filter rig studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By tracing the corroded filter rig's housings and manifold, {PAWN_labelShort} has worked out how it was meant to strain one liquid into another.\n\nYour researchers can now research {RESEARCH} at a research bench.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Study...</activateLabelString>
+        <activateDescString>Study the corroded filter rig.</activateDescString>
+        <jobString>Study corroded filter rig</jobString>
+        <guiLabelString>Choose who should study this</guiLabelString>
+        <inspectString>Can be studied by a colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.Cauldron.RM_CompProperties_CauldronRuinKit">
+        <radius>5</radius>
+        <pieces>
+          <li>
+            <def>RM_LiquidTank</def>
+            <count>1~2</count>
+            <liquid>RM_Liquid_ToxicWater</liquid>
+            <liquidFraction>0.1~0.4</liquidFraction>
+            <hitPoints>0.2~0.5</hitPoints>
+          </li>
+          <li>
+            <def>AncientStorageCylinder</def>
+            <count>1</count>
+          </li>
+          <li>
+            <def>AncientPipe</def>
+            <count>3~6</count>
+          </li>
+          <li>
+            <def>ChunkSlagSteel</def>
+            <count>2~4</count>
+          </li>
+        </pieces>
+        <shrineDefs />
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

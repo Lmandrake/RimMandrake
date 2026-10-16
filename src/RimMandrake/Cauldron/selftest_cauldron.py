@@ -61,6 +61,7 @@ class Fake(object):
         self.things, self.pawns, self.terrain = {}, {}, {}
         self.rooms, self.letters, self.fires, self.jobs = [], [], [], {}
         self.last_letter = {}
+        self.burned = 0                                   # vent-gas cells burned, map-wide (CAULDRON_MECHANICS_BUILD_1)
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -87,8 +88,13 @@ class Fake(object):
         row = dict(id=tid, **dict(kw, x=x, z=z))
         row["def"] = d
         if d == V.VENT:
-            row.update(supp=0.0, sil=-1)
+            row.update(supp=0.0, sil=-1, gas=0.0, tox=0.0)
+        if d == V.GAS_TAP:
+            row.update(bank=0.0, deliv=0, hp=180)
         self.things[tid] = row
+        if d == V.RIG and "ruin_undressed" not in self.broken:      # the kit dresses its own site on first spawn
+            self.new(V.TANK, x + 3, z)
+            self.new("AncientPipe", x - 2, z)
         return tid
 
     def of(self, d):
@@ -150,6 +156,41 @@ class Fake(object):
             best = max(best, prox * self.vent_recovery(v))
         return 0.1 + 0.9 * best
 
+    # ------------------------------------------------------------ the vent gas, the tap (CAULDRON_MECHANICS_BUILD_1 3/4/5)
+    def tap_on(self, v):
+        if "tap_no_cap" in self.broken:
+            return None
+        for t in self.of(V.GAS_TAP):
+            if t["x"] == v["x"] and t["z"] == v["z"]:
+                return t
+        return None
+
+    def gas_tick(self, d):
+        b = self.broken
+        for v in self.of(V.VENT):
+            out = self.vent_output(v)
+            tap = self.tap_on(v)
+            emitting = tap is None and out > 0.05 and "no_gas" not in b and self.on("ventGasEnabled", "gas_ignores_toggle")
+            if emitting:
+                v["gas"] = min(255.0, v["gas"] + d / 60.0 * 12 * out)
+                if "gas_is_tox" in b:
+                    v["tox"] = max(v["tox"], 5.0)
+            else:
+                v["gas"] = max(0.0, v["gas"] - d / 128.0 * 8)
+            v["tox"] = max(0.0, v["tox"] - d / 64.0 * 3) if "gas_is_tox" not in b else v["tox"]
+            near_fire = any(abs(f[0] - v["x"]) <= 3 and abs(f[1] - v["z"]) <= 3 for f in self.fires)
+            if near_fire and v["gas"] >= 24 and "no_ignite" not in b and self.on("ventGasIgnites", "ignite_ignores_toggle"):
+                self.burned += int(v["gas"] / 4) + 1
+                if "no_tox" not in b:
+                    v["tox"] += v["gas"] * 0.6
+                v["gas"] = 0.0
+            if tap is not None and "tap_no_bank" not in b and self.on("gasTapBanksCondensate", "bank_ignores_toggle"):
+                tap["bank"] = min(60.0, tap["bank"] + d / 250.0 * 12 / 240.0 * out)
+                if any(abs(t["x"] - tap["x"]) <= 3 and abs(t["z"] - tap["z"]) <= 3 for t in self.of(V.TANK)):
+                    whole = int(tap["bank"])
+                    tap["bank"] -= whole
+                    tap["deliv"] += whole
+
     def drink_vents(self, d):
         for v in self.of(V.VENT):
             v["supp"] = max(0.0, v["supp"] - d * 0.5 / 60000.0)
@@ -167,6 +208,9 @@ class Fake(object):
                     continue
                 self.jobs[p["id"]] = (V.DRINK_JOB, self.ticks + 900)
                 p["nd"] = self.ticks + 2750
+                tap = self.tap_on(v)
+                if tap is not None and "no_pry" not in self.broken and self.on("vexxissPriesTaps", "pry_ignores_toggle"):
+                    tap["hp"] = max(0, tap["hp"] - 60)
                 v["supp"] += 900 / 6000.0
                 if "never_silences" in self.broken:
                     v["supp"] = min(v["supp"], 0.9)
@@ -225,6 +269,13 @@ class Fake(object):
                 if any(abs(f[0] - p["x"]) <= 14 and abs(f[1] - p["z"]) <= 14 for f in self.fires):
                     self.jobs[p["id"]] = ("BeatFire", self.ticks + 300)
         self.drink_vents(d)
+        self.gas_tick(d)
+        # --- the falter hush: wild natives hold still while the vents falter
+        if self.vent_mult() == self.FALTER and self.of(V.VENT) and "no_hush" not in b \
+                and self.on("faunaHushEnabled", "hush_ignores_toggle"):
+            for p in self.pawns.values():
+                if p["kind"] in (V.ESKITH, V.ZISSKA, V.SUUSH) and p["faction"] == "none" and not p["dead"]:
+                    self.jobs[p["id"]] = ("Wait_MaintainPosture", self.ticks + 300)
         # --- the suush's wick
         for pid, p in list(self.pawns.items()):
             if p.get("wick") and self.ticks >= p["wick"]:
@@ -572,6 +623,15 @@ class Fake(object):
             lines = ["Vent: stable", "Vent state: %s" % st, "Vent output: %.2fx" % out]
             if t["supp"] > 0.01 and st != "silenced":
                 lines[-1] += "  (drunk %d%% of the way quiet)" % int(t["supp"] * 100)
+            if self.tap_on(t) is not None:
+                lines.append("Vent gas: capped by a gas tap")
+            else:
+                lines.append("Vent gas: %d cells, peak %d; toxic smoke: %d cells; burned: %d"
+                             % (int(t["gas"] / 4), int(t["gas"]), int(t["tox"] / 4), self.burned))
+        if t["def"] == V.GAS_TAP:
+            lines = ["Gas tap: vent capped; condensate banked %.1f / 60" % t["bank"],
+                     "Delivered %d units; 1 tank(s) touching it" % t["deliv"],
+                     "Scaffold: %d / 180 HP" % t["hp"]]
         return {"success": True, "things": [{"id": t["id"], "label": t["def"], "inspect": lines}]}
 
 
@@ -667,6 +727,20 @@ BREAKS = {
     "acid_ext_missing": "load.acid_wiring_shape",
     "acid_burns_vexxith": "acid.vexxith_acid_proof",
     "acid_ignores_toggle": "acid.vexxith_acid_toggle_off",
+    "no_gas": "gas.vent_gas_emits",
+    "gas_ignores_toggle": "gas.vent_gas_emits",
+    "gas_is_tox": "gas.vent_gas_emits",
+    "no_ignite": "gas.vent_gas_burns_toxic",
+    "ignite_ignores_toggle": "gas.vent_gas_burns_toxic",
+    "no_tox": "gas.vent_gas_burns_toxic",
+    "tap_no_cap": "gas.gas_tap_caps_and_banks",
+    "tap_no_bank": "gas.gas_tap_caps_and_banks",
+    "bank_ignores_toggle": "gas.gas_tap_caps_and_banks",
+    "no_pry": "gas.vexxiss_pries_tap",
+    "pry_ignores_toggle": "gas.vexxiss_pries_tap",
+    "ruin_undressed": "gas.ruin_kit_dresses",
+    "no_hush": "vents.fauna_hush_in_falter",
+    "hush_ignores_toggle": "vents.fauna_hush_in_falter",
 }
 
 # A few breaks cascade by design: the component named is the FIRST red, later ones are UNMEASURED
@@ -686,8 +760,9 @@ def source_checks():
         short = typ.rsplit(".", 1)[1]
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
-    if len(V.DEFAULTS) != 27 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 22:
-        bad.append("parsed %d defaults / %d bools, expected 27 / 22" %
+    # 36/30 since CAULDRON_MECHANICS_BUILD_1 parts 1/3/4/5 (2026-10-16): + 8 vent-gas / tap / ruin / hush toggles and the gas factor.
+    if len(V.DEFAULTS) != 36 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 30:
+        bad.append("parsed %d defaults / %d bools, expected 36 / 30" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
@@ -696,8 +771,10 @@ def source_checks():
     # The walk's wild-kinds step spawns every KIND.
     # 64/9 since Phase 0 P2 (2026-10-15): + RM_BedBug, RM_CrystalMit, RM_GiantCrownedSilkie, RM_Bezzul (owned ports of the
     # Alpha Animals rows; src/RimMandrake/Utils/aa_port.py), with their eggs, silk, bricks, bodies, bite, ability, projectile.
-    if len(V.SHIPPED) != 64 or len(V.FLORA) != 17 or len(V.KINDS) != 9:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 64 / 17 / 9); update "
+    # 71 since CAULDRON_MECHANICS_BUILD_1 parts 3/4 (2026-10-16): + the gas tap, Filter-Works, corroded rig, vent reagent,
+    # filter cartridge, RM_FilterWorksResearch and RM_CauldronRuinScatter (ResearchProjectDef/GenStepDef now parsed too).
+    if len(V.SHIPPED) != 71 or len(V.FLORA) != 17 or len(V.KINDS) != 9:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 71 / 17 / 9); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

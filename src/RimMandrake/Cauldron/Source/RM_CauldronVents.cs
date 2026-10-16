@@ -13,9 +13,9 @@ namespace RimMandrake.Cauldron
     // WHAT A VENT IS HERE. A 2x2 natural building (RM_CauldronVent, Building_SteamGeyser-shaped) that
     // CAULDRON_MECHANICS_BUILD_1 part 3 never got to build. It holds STATE, not gas: a temperament
     // (Stable | Leaking), the tick of its last blowout, a suppression meter and a silenced-until tick.
-    // It emits air puffs scaled by output. There is NO gas, NO GasType and NO heat here: part 3 still
-    // owns the flammable gas and the gap is stated, not papered over. Heat law: nothing in this file
-    // adds heat or a hediff; the existing RM_VentMetalLoad is the only effect on pawns.
+    // It emits air puffs scaled by output and, since part 3, real flammable vent gas into the map's own vent-gas grid
+    // (RM_VentGas.cs) unless a gas-tap scaffold caps it (RM_GasTap.cs). Heat law: nothing in this file adds heat or a
+    // hediff; the existing RM_VentMetalLoad is the only effect on pawns (burning gas makes vanilla ToxGas).
     //
     // Spawned at map generation on RM_Cauldron maps only (RM_MapComponent_CauldronVents). Maps made
     // before this existed have no vents and keep the old map-wide bloom exposure.
@@ -43,6 +43,10 @@ namespace RimMandrake.Cauldron
         public int recentBlowoutTicks = 600000;   // "recent" for the giant-toxic-flower habitat: 10 days
         public float suppressionNeeded = 6000f;   // drink-ticks to silence one
         public float suppressionDecayPerDay = 0.5f;
+        // CAULDRON_MECHANICS_BUILD_1 part 1, the falter tell's other half: "ahead of a vent bloom the ambient drops out and
+        // native fauna hush". Wild animals of these races hold still (Wait_MaintainPosture) while the vents falter.
+        public List<ThingDef> hushRaces = new List<ThingDef>();
+        public int hushJobTicks = 300;
 
         // Weather identity per row, built once (WeatherDef.shortHash; no weather = -1, matching a null current weather).
         private int[] rowIds;
@@ -162,7 +166,16 @@ namespace RimMandrake.Cauldron
             if (this.IsHashIntervalTick(250) && suppression > 0f && Ext != null)
                 suppression = RM_VentKernel.Decay(suppression, Ext.suppressionDecayPerDay);
 
-            if (this.IsHashIntervalTick(20))
+            // Part 3: the vent breathes real gas (RM_VentGas.cs) unless a gas-tap scaffold caps it.
+            bool capped = IsCapped;
+            if (this.IsHashIntervalTick(RM_VentGasKernel.EmitIntervalTicks))
+            {
+                int amt = RM_VentGasKernel.EmitAmount(RM_CauldronSettings.ventGasEnabled, capped, Output,
+                    temperament == RM_VentTemperament.Leaking, RM_CauldronSettings.ventGasEmissionFactor);
+                if (amt > 0) RM_MapComponent_VentGas.For(Map)?.AddGas(this.OccupiedRect().RandomCell, amt);
+            }
+
+            if (!capped && this.IsHashIntervalTick(20))
             {
                 float o = Output;
                 if (RM_VentKernel.PuffsAt(o) && Rand.Chance(RM_VentKernel.PuffChance(o)))
@@ -173,6 +186,26 @@ namespace RimMandrake.Cauldron
                 }
             }
         }
+
+        // The gas-tap scaffold standing on this vent, if any (RM_GasTap.cs). Looked up, never cached: the tap and the vent
+        // spawn in either order on load, and a destroyed tap must uncap the vent at once.
+        public RM_CompGasTap CappingTap
+        {
+            get
+            {
+                if (!Spawned) return null;
+                List<Thing> things = Position.GetThingList(Map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    if (things[i] == this || !(things[i] is ThingWithComps tw)) continue;
+                    RM_CompGasTap tap = tw.GetComp<RM_CompGasTap>();
+                    if (tap != null) return tap;
+                }
+                return null;
+            }
+        }
+
+        public bool IsCapped => CappingTap != null;
 
         public override string GetInspectString()
         {
@@ -186,13 +219,26 @@ namespace RimMandrake.Cauldron
             else if (Recovery01 < 1f)
                 state = "recovering, " + Recovery01.ToStringPercent();
             else if (IsFaltering(Map))
-                state = "faltering";
+                state = "faltering (" + (Map.GetComponent<RM_MapComponent_CauldronVents>()?.hushedThisFalter ?? 0) + " natives hushed)";
             else
                 state = "breathing";
             sb.AppendLine("Vent state: " + state);
             sb.Append("Vent output: " + Output.ToString("0.00") + "x");
             if (suppression > 0.01f && !IsSilenced)
                 sb.Append("  (drunk " + suppression.ToStringPercent() + " of the way quiet)");
+            // Part 3 state line, read by validation.py (vents.vent_gas_*): "Vent gas: capped" or "Vent gas: N cells, peak D;
+            // toxic smoke: M cells; burned: B".
+            var gas = RM_MapComponent_VentGas.For(Map);
+            if (gas != null)
+            {
+                sb.AppendLine();
+                if (IsCapped) sb.Append("Vent gas: capped by a gas tap");
+                else
+                {
+                    gas.Survey(Position, 12f, out int cells, out int peak, out int tox);
+                    sb.Append("Vent gas: " + cells + " cells, peak " + peak + "; toxic smoke: " + tox + " cells; burned: " + gas.IgnitionsTotal);
+                }
+            }
             return sb.ToString();
         }
 
@@ -275,6 +321,27 @@ namespace RimMandrake.Cauldron
             }
         }
 
+        // The natives fall silent: every wild, awake, idle-able pawn of a hush race holds still for a few seconds, renewed
+        // every 240 ticks until the falter ends. Never a pawn in a mental state, downed, asleep, owned, or already fighting.
+        private void HushFauna()
+        {
+            RM_VentExtension ext = RM_CauldronDefOf.RM_CauldronVent?.GetModExtension<RM_VentExtension>();
+            if (ext == null || ext.hushRaces.NullOrEmpty() || Vents().Count == 0) return;
+            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                Pawn p = pawns[i];
+                if (p.Faction != null || p.Dead || p.Downed || !p.Awake() || p.InMentalState || p.jobs == null) continue;
+                if (!ext.hushRaces.Contains(p.def)) continue;
+                JobDef cur = p.CurJobDef;
+                if (cur == JobDefOf.AttackMelee || cur == JobDefOf.BeatFire || cur == JobDefOf.Flee || cur == JobDefOf.FleeAndCower) continue;
+                if (cur != JobDefOf.Wait_MaintainPosture) hushedThisFalter++;
+                Job hush = JobMaker.MakeJob(JobDefOf.Wait_MaintainPosture);
+                hush.expiryInterval = ext.hushJobTicks;
+                p.jobs.StartJob(hush, JobCondition.InterruptForced);
+            }
+        }
+
         private bool FootprintFree(CellRect rect)
         {
             foreach (IntVec3 c in rect)
@@ -292,11 +359,15 @@ namespace RimMandrake.Cauldron
             return true;
         }
 
+        // Wild natives hushed this falter (read by the vent's inspect line; reset when the falter ends).
+        public int hushedThisFalter;
+
         public override void MapComponentTick()
         {
             if (Find.TickManager.TicksGame % 60 != 0) return;
             bool faltering = RM_Building_CauldronVent.IsFaltering(map);
-            if (!faltering) { falterNotified = false; return; }
+            if (!faltering) { falterNotified = false; hushedThisFalter = 0; return; }
+            if (RM_CauldronSettings.faunaHushEnabled && Find.TickManager.TicksGame % 240 == 0) HushFauna();
             if (falterNotified || !RM_CauldronSettings.ventFalterMessage || !map.mapPawns.AnyColonistSpawned) return;
             List<Thing> vents = Vents();
             if (vents.Count == 0) return;
@@ -347,6 +418,14 @@ namespace RimMandrake.Cauldron
             {
                 var vent = job.targetA.Thing as RM_Building_CauldronVent;
                 if (vent == null) return;
+                // Part 5: a capped vent is pried at. The vexxiss works the scaffold loose while it drinks (industry's
+                // living rival); a destroyed scaffold uncaps the vent.
+                if (RM_CauldronSettings.vexxissPriesTaps && pawn.IsHashIntervalTick(RM_VentGasKernel.PryIntervalTicks))
+                {
+                    RM_CompGasTap tap = vent.CappingTap;
+                    if (tap != null)
+                        tap.parent.TakeDamage(new DamageInfo(DamageDefOf.Blunt, RM_VentGasKernel.PryDamage, 0f, -1f, pawn));
+                }
                 float need = vent.def.GetModExtension<RM_VentExtension>()?.suppressionNeeded ?? 6000f;
                 vent.Inhale(RM_VentKernel.DrinkPerTick(need));
             };

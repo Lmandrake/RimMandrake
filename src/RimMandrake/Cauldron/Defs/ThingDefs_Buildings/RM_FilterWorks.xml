@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAULDRON_MECHANICS_BUILD_1 part 4: the Filter-Works. "One mechanic on the canon LiquidDef/FlowWorks registry: filter
+  building + consumable cartridges converts input fluid -> output fluid."
+
+  It IS FlowWorks' converter kit (CompLiquidConverter), so what it converts is registry DATA: every LiquidDef step whose
+  process is filter / detox / refine at Industrial tier or below. Today that is
+    RM_Liquid_VentCondensate (refine) to RM_VentReagent (item, dropped beside it)   (Defs/LiquidDefs, this mod)
+    RM_Liquid_ToxicWater     (filter, detox) to RM_Liquid_FreshWater (into a tank)   (FlowWorks registry)
+    RM_Liquid_AcidWater      (detox) to RM_Liquid_FreshWater                         (FlowWorks registry)
+  Input from a tank on its liquid line, liquid product into another tank. Cartridges are its fuel (CompRefuelable,
+  RM_FilterCartridge, consumed only while working: fuelPerDay 1 = one cartridge per working day). Needs power.
+  Research: RM_FilterWorksResearch, which needs a corroded filter rig studied first.
+  Mod Setting: FlowWorks' per-machine toggle (RM_MachineToggleExtension), like every other converter.
+
+  PROVISIONAL: rates, power, cost, fuel use. ART OWED: placeholder is FlowWorks' repaired detox works drawn 3x3.
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_LiquidConverterBase">
+    <defName>RM_FilterWorks</defName>
+    <label>Filter-Works</label>
+    <description>Stacked filter housings, a pressure pump and a drip manifold, built from what the corroded rigs in the Cauldron taught. Liquid pumped through its packed cartridges comes out as something else: tapped vent condensate gives up a valuable reagent, toxic and acid water come out fit to drink. Needs power, filter cartridges, a tank of its input on its line and, for water, another tank to take the product.</description>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Repaired</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <statBases>
+      <WorkToBuild>4500</WorkToBuild>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>70</Mass>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>RM_FilterWorksResearch</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>350</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Filter cartridges</fuelLabel>
+        <fuelGizmoLabel>Cartridges</fuelGizmoLabel>
+        <fuelConsumptionRate>1</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelCapacity>5</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_FilterCartridge</li>
+          </thingDefs>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+        <tier>Industrial</tier>
+        <processes>
+          <li>refine</li>
+          <li>filter</li>
+          <li>detox</li>
+        </processes>
+        <inputUnitsPerDay>80</inputUnitsPerDay>
+        <fuelPerDay>1</fuelPerDay>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Filter-Works (Cauldron)</label>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

@@ -64,7 +64,7 @@ The suush, zisska, eskith
 - The suush is docile and tamable. → UNCOVERED: taming is a work-job chain against Wildness 0.5 (statistical); defs only
 - A zisska butchers into steel and its meat is `RM_ZisskaMeat`, which gives `ToxicBuildup` when eaten. → items.zisska_yields_and_toxic_meat
 - A real butchering of a zisska pays that steel. → UNCOVERED: needs a built butcher table + bill (no cheap fixture yet)
-- The eskith hushes before a vent bloom. → UNCOVERED: not built (the item `CAULDRON_MECHANICS_BUILD_1` owes the falter tell)
+- While the vents falter ahead of a vent bloom, a wild eskith holds still (`Wait_MaintainPosture`); with `faunaHushEnabled` off it does not. → vents.fauna_hush_in_falter
 
 Vexxith ignores acid (VEXXITH_CLOSED_LOOP_BUILD_1)
 - `RM_Vexxith` carries `RM_AcidImmuneExtension` and is both Metallic and `RM_VexxithPlate`; `RM_VexxithDoor` accepts `RM_VexxithPlate` and nothing else; the mod's patch marks vanilla `AcidBurn` as acid. → load.acid_wiring_shape
@@ -83,6 +83,18 @@ Enrichment visuals (CAULDRON_ENRICHMENT_VISUALS_1)
 - During dewfall, accent plants with an installed dew variant swap to it and swap back when it lifts. → UNCOVERED: dormant until dew-variant art exists (none installed), and appearance. `dewfallSaturationEnabled` exists, defaults on and is writable. → settings.dewfallSaturationEnabled_roundtrip
 - Fair, rich and lode thornwood and martyr trees carry light or heavy metal flecks. → UNCOVERED: dormant until the two fleck overlays exist (none installed), and appearance. `assayFlecksEnabled` exists, defaults on and is writable. → settings.assayFlecksEnabled_roundtrip
 - A walking vexxiss lays prints on the CreatureBehaviors footprint grid that clear after about a day and name their maker on hover. → UNCOVERED: no bridge tool reads the grid's records or the Cauldron print ledger. `vexxissPrintsEnabled` exists, defaults on and is writable. → settings.vexxissPrintsEnabled_roundtrip
+
+Vent gas, the gas tap and the ruin kit (CAULDRON_MECHANICS_BUILD_1 parts 3/4/5)
+- A breathing vent fills the air around it with vent gas (its own gas type: the vent's line reads cells and a peak), and none of it reads as vanilla tox gas until it burns; with `ventGasEnabled` off the cloud thins. → gas.vent_gas_emits
+- A fire beside a thick cloud burns it (the vent's burned count rises) and leaves vanilla tox gas behind; with `ventGasIgnites` off the same fire burns none. → gas.vent_gas_burns_toxic
+- A gas-tap scaffold on a vent caps it (the vent reads capped) and banks condensate into a tank touching it; with `gasTapBanksCondensate` off it banks nothing more. → gas.gas_tap_caps_and_banks
+- A wild vexxiss drinking at a capped vent damages the scaffold; with `vexxissPriesTaps` off it drinks without harming it. → gas.vexxiss_pries_tap
+- A corroded filter rig dresses its own site on first spawn: battered tanks and corroded pipe beside it. → gas.ruin_kit_dresses
+- The cloud drifts with the wind on a daily heading. → UNCOVERED: no bridge tool reads the drift heading or the vent-gas grid cell by cell. `ventGasDrifts` exists, defaults on and is writable. → settings.ventGasDrifts_roundtrip
+- With `ventGasToxicSmoke` off the gas burns clean. → UNCOVERED: the ON arm's vanilla tox residue masks the OFF arm unless the suite waits it out. → settings.ventGasToxicSmoke_roundtrip
+- One corroded filter rig is scattered on a new Cauldron map. → UNCOVERED: worldgen, needs a freshly generated Cauldron map. `ruinKitEnabled` exists, defaults on and is writable. → settings.ruinKitEnabled_roundtrip
+- Studying the rig unlocks `RM_FilterWorksResearch`; a powered, cartridge-fed Filter-Works between two tanks refines vent condensate into vent reagent and toxic water into fresh water. → UNCOVERED: the study is an analysis job the bridge cannot order, and the Filter-Works needs a researched build, power, cartridges and two stocked tanks (a live row is owed on `CAULDRON_MECHANICS_BUILD_1`). The defs resolve under load (load.defs_resolve).
+- Oomo's grudging shrine stands beside the rig. → UNCOVERED: Utinni layer (`RUT_OomoGrudgingShrine`, patched into the kit's shrine slot); this RM-tier suite does not load it.
 
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), deploy the composed mod (`deploy_custom_mods.py --compose biomes --apply`), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger). One command does all of it: `python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod Cauldron --tier baroque_wave0 --plan src/RimMandrake/Cauldron/northstar_plan.py --compose`.
