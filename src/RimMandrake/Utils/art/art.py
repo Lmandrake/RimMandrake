@@ -20,6 +20,9 @@
                                             (default HEAD) disagree, with the worktree bytes; read-only
     art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only); a kept picture is
                                             refused unless --release-keep names his words for releasing it
+    art.py unpurge   <sha> --owner-said "..."   reverse the latest purge of that picture on his newer, explicit
+                                            words (owner only; append-only `unpurge` event, history kept). Restores
+                                            no bytes (put them first) and no keep; a mechanical install stays refused
     art.py kept-purged [--out FILE]         pictures purged while an owner keep on them is still active —
                                             REPORTED for his reconciliation, never auto-released
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
@@ -161,11 +164,13 @@ def cmd_status(a, verbose=False):
             for v in idx.variants[s]:
                 kinds[v.get("kind")] = kinds.get(v.get("kind"), 0) + 1
         print(f"   variants: {len(shas)} distinct pictures ({', '.join(f'{k} {n}' for k, n in sorted(kinds.items()))}); "
-              f"purged {sum(1 for s in shas if idx.is_purged(s))}")
+              f"purged {sum(1 for s in shas if idx.is_purged(s))}"
+              + (f", unpurged by the owner {n_un}" if (n_un := sum(1 for s in shas if s in idx.unpurged)) else ""))
         if verbose:
             for s in sorted(shas, key=lambda s: min(v.get("date", "") for v in idx.variants[s])):
                 vs = idx.variants[s]
-                tag = "LIVE " if s in live_shas else ("PURGED " if idx.is_purged(s) else "")
+                tag = "LIVE " if s in live_shas else ("PURGED " if idx.is_purged(s) else
+                                                      "UNPURGED " if s in idx.unpurged else "")
                 v0 = vs[0]
                 print(f"     {tag}{s[:12]} {v0.get('facing','?'):<6} {v0.get('role','?'):<10} "
                       + "; ".join(f"{v.get('kind')}:{v.get('date','')}:{(v.get('loc') or '')[-60:]}" for v in vs[:3]))
@@ -233,6 +238,11 @@ def cmd_doctor(a):
                   f"worktree={str(r['worktree'])[:12]}")
         if len(rows) > 40:
             print(f"  … {len(rows) - 40} more (--out FILE for all)")
+    un = L.Index().unpurged
+    if un:
+        nob = [s for s in un if not L.store_has(s)]
+        print(f"unpurged by the owner: {len(un)} picture(s)" + (f"; {len(nob)} have no bytes in the store (put them "
+              f"before installing): {', '.join(s[:12] for s in nob[:8])}" if nob else ""))
     return 1 if rows else 0
 
 
@@ -283,6 +293,23 @@ def cmd_purge(a):
         print(f"REFUSED: {e}")
         return 2
     print(json.dumps(r))
+    return 0
+
+
+def cmd_unpurge(a):
+    idx = L.Index()
+    full = [s for s in idx.purge_history if s.startswith(a.sha)]
+    if len(full) != 1:
+        print(f"REFUSED: {a.sha} matches {len(full)} purged pictures")
+        return 2
+    try:
+        r = L.unpurge(full[0], owner_said=a.owner_said)
+    except L.Refused as e:
+        print(f"REFUSED: {e}")
+        return 2
+    print(json.dumps(r))
+    if not r["bytes_in_store"]:
+        print(f"  note: no bytes in the store for {full[0][:12]} — put the PNG there before installing it")
     return 0
 
 
@@ -361,6 +388,7 @@ def main(argv=None):
     p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
     p.add_argument("--release-keep", action="store_true")
+    p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
     p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")
@@ -385,7 +413,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 
