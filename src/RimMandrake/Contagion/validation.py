@@ -721,7 +721,8 @@ def defs_chain(t):
             if not isinstance(wa, (list, dict)):
                 _unmeasured(t, "wildAnimals is not serialisable by get_defs (non-public field): %r; the "
                                "roster is checked statically from the XML" % (wa,))
-            missing = [a for a in WILD_ANIMALS if a not in json.dumps(wa)]
+            blob = json.dumps(wa)
+            missing = [a for a in WILD_ANIMALS if '"%s"' % a not in blob]   # exact quoted name, never a prefix
             if missing:
                 _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
 
@@ -1066,6 +1067,10 @@ def burn_forced(t):
                 x, z = t.anchor
                 b["native_fixture"] = b["native"]
                 b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
+                # Same for the armored control: the fixture one wandered too, and off the unroofed pad (a mountain
+                # tile keeps its roof there) "spared" would mean sheltered, not armored. Spawned on the open pad here.
+                b["armored_fixture"] = b["armored"]
+                b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
                 track = []
                 for _ in range(4):                   # 4 x 200 = the same 800 ticks, sampling the dive
@@ -1454,7 +1459,9 @@ def coalescence(t):
                 x, z = _STATE["coal_xz"]
                 with _setting(t, "coalescenceEnabled", False):
                     kid = _spawn(t, UNFINISHED, x + 3, z)
-                    _wait(t, 400)
+                    # >= 5 absorb passes (the on arm needs one to order the walk and a later one to eat), still far
+                    # under passiveGrowthTicks 6000
+                    _wait(t, 1500)
                     if not _things(t, COALESCENCE, _rs(_rect(t, 24))):
                         # the thing is GONE. A Burn collapses a Coalescence regardless of the toggle
                         # (Building_RM_Coalescence.Tick), and leaves monstrous samples; an idle toggle-off
