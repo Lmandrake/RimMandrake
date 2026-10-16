@@ -1,0 +1,64 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T07:04:11-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_dewback_reconcile"
+ ],
+ "biomes": {
+  "SUBJECTS_dewback_reconcile": {
+   "label": "Dewback: one lizard, one set",
+   "slug": "dewback_reconcile",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Dewback: one lizard, one set \u2014 game art",
+   "lead_html": "<p>The dewback's art was split across cards: every render job showed only the facings it drew (east-only, north+south-only, south-only), so no card ever held a whole lizard. The <b>reconcile_v1_dewback</b> column joins the east regen of your picked longshade (your 10-09 note: <i>make North and South versions of that creature</i>) with the north/south you picked today (D). The IN GAME column is what is installed now. canon_dewback_v1 is the only other complete three-facing set (September, outlined style). Pick the set to install; nothing is installed until you rule.</p>",
+   "rows": [
+    {
+     "key": "RSW_Dewback",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "dewback",
+     "defNames": [
+      "RSW_Dewback"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "canon_dewback_v1_east",
+      "canon_dewback_v1_north",
+      "canon_dewback_v1_south",
+      "reconcile_v1_dewback_east",
+      "reconcile_v1_dewback_north",
+      "reconcile_v1_dewback_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/dewback",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Dewback/Dewback",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Dewback"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Dewback found"
+     }
+    }
+   ]
+  }
+ }
+}
