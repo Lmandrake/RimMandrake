@@ -4,9 +4,10 @@
   rev 2 §3.5, §3.7). The spill any liquid without its own LiquidDef.spillFilth leaves on open ground: an outflow hose end on
   dry ground, a Dump tank draining onto it, a stopped hose emptying out of its free end. Owner, Q2: "you have to have colonists
   "clean it up" if it's in a cleanable area": an ordinary cleanable filth (vanilla Clean jobs in the home area); outside it, rain
-  and time take it. Shape taken from vanilla Filth_Slime (BaseFilth, Things/Filth/Spatter). placementMask Natural so it lands on
-  soil and on floors alike (FilthMaker.TerrainAcceptsFilth needs every placement flag in the terrain's mask). Every number
-  PROVISIONAL.
+  and time take it. Shape taken from vanilla Filth_Slime (BaseFilth, Things/Filth/Spatter). placementMask Unnatural so it lands on
+  soil, sand, rough stone and floors alike: FilthMaker.TerrainAcceptsFilth needs every placement flag in the terrain's mask, and
+  vanilla NaturalTerrainBase accepts only Unnatural (smooth stone and floors accept Any). Natural was refused on every natural
+  terrain (SPILL_FILTH_FIX_SOIL_SAYS_NO, live 2026-10-15/16: L5 spilled 10,000 units, 0 filth). Every number PROVISIONAL.
 -->
 <Defs>
   <ThingDef ParentName="BaseFilth">
@@ -28,7 +29,7 @@
       <canFilthAttach>true</canFilthAttach>
       <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
       <placementMask>
-        <li>Natural</li>
+        <li>Unnatural</li>
       </placementMask>
     </filth>
   </ThingDef>
