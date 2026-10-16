@@ -69,6 +69,9 @@ PORTS = [
                 "RM_Bulloo": "TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml"}},
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_Lastvine.xml", "ours": "RM_Mantrap", "donor": "AA_Mantrap",
      "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": {"Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"}},
+    # Phase 0 P3 Q4 (owner by card 2026-10-15): the ondrukka kept as ours, without the cocoon
+    {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_Ondrukka.xml", "ours": "RM_Ondrukka",
+     "donor": "VFEI2_BlackSwarmling", "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
 ]
 
 
