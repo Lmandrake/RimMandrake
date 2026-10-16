@@ -693,8 +693,30 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4; d++)
 					{
 						int nb = Cardinal(c, d);
-						if (nb < 0 || inRegion.Contains(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb)
-							|| fill[nb] == 0 || !ReferenceEquals(world.CellFluid(nb), fluid) || HeldByCreep(nb, fluid, pulseCount))
+						if (nb < 0 || inRegion.Contains(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+						{
+							continue;
+						}
+						if (fill[nb] == 0)
+						{
+							// L7 live 2026-10-16 (1,0,1,0 loaded from a save): a lone unit with dry squares on both sides was
+							// its own region, solved to itself, and never met its neighbour. A dry gap of ONE dug square joins
+							// the wet squares beyond it (the gap is the rim of both), so striped water gathers into one patch.
+							for (int d2 = 0; d2 < 4; d2++)
+							{
+								int far = Cardinal(nb, d2);
+								if (far < 0 || far == c || inRegion.Contains(far) || !componentSet.Contains(far) || !IsExcavated(far)
+									|| IsSealed(far) || fill[far] == 0 || !ReferenceEquals(world.CellFluid(far), fluid)
+									|| HeldByCreep(far, fluid, pulseCount))
+								{
+									continue;
+								}
+								inRegion.Add(far);
+								regionCells.Add(far);
+							}
+							continue;
+						}
+						if (!ReferenceEquals(world.CellFluid(nb), fluid) || HeldByCreep(nb, fluid, pulseCount))
 						{
 							continue;
 						}

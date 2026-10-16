@@ -193,13 +193,19 @@ def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, p
 
 
 # ============================================================================ live driver
-def levelset_verdict(rows):
+def levelset_verdict(rows, rows_before=None):
     """L7 (WATER_LEVELSET_SOLVE; owner 2026-10-16 at station 1: "levelset down to a smooth 0 or 1 ... not 0, deep, 0").
     rows = jawa/flowworks_excavation_rect rows of one station. Over dug, non-sink squares: a STRIPE is a dry square with wet
     squares of one surface on both sides of it in a line (the 1,0,1 the walk save showed); a STEP is two touching squares,
     at least one wet, whose surfaces (f - d) differ by 2 or more (a deep blob beside dry or shallow ground), not counting a
     square touching a natural source (the mouth, which the pond refills every pulse). PASS = water present, no stripe,
-    no step. Returns (status, class, detail)."""
+    no step. rows_before (the same rect one pulse earlier): a stripe counts only if it stood on the same square in both
+    reads -- a one-square gap moving down a canal the pond still pays into is flow in transit, not unsettled water
+    (LevelSetChecks.StripedSaveGathers: at most 1 while fed, standing on one square two pulses running: 0).
+    Returns (status, class, detail)."""
+    before = None
+    if rows_before is not None:
+        before = set(map(tuple, levelset_verdict(rows_before)[2].get("allStripes", [])))
     src, dug = set(), {}
     for r in rows or []:
         c = (r.get("x"), r.get("z"))
@@ -227,8 +233,12 @@ def levelset_verdict(rows):
             if any((p[0] + ex, p[1] + ez) in src for p in (c, n) for ex, ez in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                 continue
             steps.append([c, n])
+    moving = []
+    if before is not None:
+        moving = [c for c in stripes if c not in before]
+        stripes = [c for c in stripes if c in before]
     det.update(stripes=len(stripes), steps=len(steps), firstStripes=stripes[:6], firstSteps=steps[:4],
-               wetSurfaces=sorted(set(surf[c] for c in wet)))
+               wetSurfaces=sorted(set(surf[c] for c in wet)), allStripes=stripes, movingStripes=moving)
     return ("PASS" if not stripes and not steps else "FAIL"), "MOD", det
 
 
@@ -692,11 +702,14 @@ def main(argv=None):
                 continue
             (ox, oz), (sw, sh) = s_["origin"], s_["size"]
             x0 = 0 if s_["setup"].get("west_edge") else ox
-            ex = B.call("jawa/flowworks_excavation_rect", x=x0, z=oz, w=ox + sw - x0, h=sh, onlyNonZero=True, includeTerrain=False)
-            if "rows" not in ex:
+            rect = dict(x=x0, z=oz, w=ox + sw - x0, h=sh, onlyNonZero=True, includeTerrain=False)
+            ex0 = B.call("jawa/flowworks_excavation_rect", **rect)
+            B.ticks(pulse)                     # second read one pulse later: a stripe must STAND to count
+            ex = B.call("jawa/flowworks_excavation_rect", **rect)
+            if "rows" not in ex or "rows" not in ex0:
                 row("L7_%s_levels_flat" % sid, "UNMEASURED", "HARNESS", {"reply": str(ex)[:300]})
                 continue
-            st_, cls, det = levelset_verdict(ex["rows"])
+            st_, cls, det = levelset_verdict(ex["rows"], ex0["rows"])
             row("L7_%s_levels_flat" % sid, st_, cls, dict(det, station=s_["n"], rect=[x0, oz, ox + sw - x0, sh],
                                                           pulses=a.l7_pulses, ticksGame=ex.get("ticksGame")))
 
