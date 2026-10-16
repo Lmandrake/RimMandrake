@@ -2832,275 +2832,949 @@
    "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_caverns/things/animal/maguana/maguana": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Maguana/candidates/Maguana_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Maguana/candidates/Maguana_south.png"
+   },
+   "canon": {
+    "standtall_b1_maguana_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_maguana_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Maguana",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "c0890c660c9341364ad1478c46e55f302899fc0a88cbb5d2d5a3e91717dbed6e",
+    "south": "ab277f93d0efd60c5915a0b497be6274dd14e69eca88d9ddb5546a8e64e71927"
+   },
+   "jobs": [
+    "standtall_b1_maguana_east",
+    "standtall_b1_maguana_south",
+    "standtall_b1_maguana_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.125,
+     "e_north": 1.083,
+     "e_south": 1.125,
+     "ns": 0.963,
+     "nsw": 0.89,
+     "w_north": 0.37,
+     "w_south": 0.415
+    }
+   },
    "live_sha": {
     "north": "127ec9168d5edfc60b3349fd0657d6ad5cf8168f8b06b63bda02c82e87dc44f3",
     "south": "28b3868ef16e5a94947a5a8b08b526cf416055c2eba62b8bc704d5eecdb34cfd"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 109,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Maguana",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalgrub": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RoyalGrub/candidates/RoyalGrub_north.png"
+   },
+   "canon": {
+    "standtall_b1_royalgrub_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_RoyalRhinoLarvae",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "c5910047a1bff1e673008c3f6325b5c6469de2459a510f663016005a828a69a3"
+   },
+   "jobs": [
+    "standtall_b1_royalgrub_east",
+    "standtall_b1_royalgrub_south",
+    "standtall_b1_royalgrub_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.432,
+     "e_north": 1.081,
+     "e_south": 1.432,
+     "ns": 0.754,
+     "nsw": 0.857,
+     "w_north": 0.441,
+     "w_south": 0.515
+    }
+   },
    "live_sha": {
     "north": "2579ba23b93b47f355c4ef876fe3f46b2561eb017225dc2e55bed05959a5c810"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 56,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalGrub",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RoyalGrub",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalrhino": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RoyalRhino/candidates/RoyalRhino_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RoyalRhino/candidates/RoyalRhino_south.png"
+   },
+   "canon": {
+    "standtall_b1_royalrhino_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_royalrhino_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_RoyalRhino",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "e1fc57ad55e64011b4d102178e903bbc75e9cb290a978caec4c410c3ad2abb1a",
+    "south": "9b93d9ddb63a590a6eb7ac10cd8498bcbcc754bed4609b281e33a4e371684f55"
+   },
+   "jobs": [
+    "standtall_b1_royalrhino_east",
+    "standtall_b1_royalrhino_south",
+    "standtall_b1_royalrhino_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.118,
+     "e_north": 1.083,
+     "e_south": 1.118,
+     "ns": 0.969,
+     "nsw": 0.871,
+     "w_north": 0.435,
+     "w_south": 0.499
+    }
+   },
    "live_sha": {
     "north": "1369ab5cc6b34b74c373ab1a30909f1e4c08ef849850cd1e913e29901e82dca9",
     "south": "bdbf68b522e752dcb6dd0ddb3946ac21732feffe2ca2c0317ea8e051663e15e1"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 113,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/RoyalRhinoBeetle/RoyalRhino",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RoyalRhino",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_caverns/things/animal/sandpillar/sandpillar": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SandPillar/candidates/SandPillar_north.png"
+   },
+   "canon": {
+    "standtall_b1_sandpillar_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_SandPillar",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "c3cf853c655a06112072a66e16e5ec18be8424179485b3567a9a7416fb4c549d"
+   },
+   "jobs": [
+    "standtall_b1_sandpillar_east",
+    "standtall_b1_sandpillar_south",
+    "standtall_b1_sandpillar_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.222,
+     "e_north": 1.081,
+     "e_south": 1.222,
+     "ns": 0.885,
+     "nsw": 1.267,
+     "w_north": 0.623,
+     "w_south": 0.492
+    }
+   },
    "live_sha": {
     "north": "b7bd88a93528091ce425dd60112b75d3bbab49c28a0d82ea047224d46cb51976"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 101,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SandPillar",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_caverns/things/animal/yooka/yooka": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yooka/candidates/Yooka_north.png"
+   },
+   "canon": {
+    "standtall_b1_yooka_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Yooka",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "a12ab74949ba1561d3d127a3fe1447db4331674b8edc84e710f0daa8eb61f3d1"
+   },
+   "jobs": [
+    "standtall_b1_yooka_east",
+    "standtall_b1_yooka_south",
+    "standtall_b1_yooka_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.232,
+     "e_north": 1.058,
+     "e_south": 1.232,
+     "ns": 0.859,
+     "nsw": 0.942,
+     "w_north": 0.458,
+     "w_south": 0.486
+    }
+   },
    "live_sha": {
     "north": "cef12bda5878966f2bbfdf32b92e26f83892e19750996b4295985bba41c291a4"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 56,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Yooka/Yooka",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yooka",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/bloodletterpetrel/bloodletterpetrel": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_BloodletterPetrel",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.821886138136981,
+       1.173393700028899
+      ],
+      "facing": "north",
+      "key": "d_north",
+      "value": 0.644
+     }
+    ],
+    "ratios": {
+     "d_north": 0.644,
+     "d_south": 0.759,
+     "e_north": 0.644,
+     "e_south": 0.66,
+     "ns": 0.975,
+     "nsw": 1.014,
+     "w_north": 1.353,
+     "w_south": 1.334
+    }
+   },
    "live_sha": {
     "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 110,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
-   "why": ""
+   "why": "lint: north d_north=0.644",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/BloodletterPetrel",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/bunkerbug/bunkerbug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/BunkerBug/candidates/BunkerBug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/BunkerBug/candidates/BunkerBug_south.png"
+   },
+   "canon": {
+    "standtall_b1_bunkerbug_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_bunkerbug_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_BunkerBug",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "c6564603863e4be1f573d0ee0e49a296d4fb56b61018c7bf5ac21fb99bcbae38",
+    "south": "80c4e6b79c0b7ca29dd60ee51e2bf0038d0e85630dff623ea719d0c616a8e159"
+   },
+   "jobs": [
+    "standtall_b1_bunkerbug_east",
+    "standtall_b1_bunkerbug_south",
+    "standtall_b1_bunkerbug_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.116,
+     "e_north": 1.08,
+     "e_south": 1.116,
+     "ns": 0.968,
+     "nsw": 0.672,
+     "w_north": 0.52,
+     "w_south": 0.774
+    }
+   },
    "live_sha": {
     "north": "52fb3bd50ca63189134abccb02ce590ead0ce98f94c49f2095979a8afa7c4f64",
     "south": "af4e9f88846ddf8bd34217cae71c26be14ae37f323d14c4addcf25697de0a95d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 207,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/BunkerBug",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/gastrotoad/polluwog": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Polluwog/candidates/Polluwog_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Polluwog/candidates/Polluwog_south.png"
+   },
+   "canon": {
+    "standtall_b1_polluwog_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_polluwog_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Polluwog",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "4def93db70ed6e50af609bb3d15f34a1113b70b13291f61aebbf31ce5ceb531f",
+    "south": "88fa229287c8621888266c250fe530237e8cb7500815476ce9369f563d263e13"
+   },
+   "jobs": [
+    "standtall_b1_polluwog_east",
+    "standtall_b1_polluwog_south",
+    "standtall_b1_polluwog_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.132,
+     "e_north": 1.079,
+     "e_south": 1.132,
+     "ns": 0.954,
+     "nsw": 0.882,
+     "w_north": 0.263,
+     "w_south": 0.298
+    }
+   },
    "live_sha": {
     "north": "74ac30f1b4184a407e56f894742cba183cf8adf10ddc0e3cb468e02f6485fe6b",
     "south": "750095d5f5b93914e68977cb3e2c313102c76eb202b69522dfc74ed148217d17"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 105,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/GastroToad/Polluwog",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Polluwog",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtail": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Glowtail/candidates/Glowtail_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Glowtail/candidates/Glowtail_south.png"
+   },
+   "canon": {
+    "standtall_b1_glowtail_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_glowtail_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Glowtail",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "f2b1decf0a0ad2ba9c3fc186cc0f10fa094829a7b15d2888f8f2ed4c80b28e74",
+    "south": "cd5b169430318df60631a54e88894da5c9d5afe4bbfbeb4953180afd3cfc6cca"
+   },
+   "jobs": [
+    "standtall_b1_glowtail_east",
+    "standtall_b1_glowtail_south",
+    "standtall_b1_glowtail_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.131,
+     "e_north": 1.082,
+     "e_south": 1.131,
+     "ns": 0.957,
+     "nsw": 0.905,
+     "w_north": 0.238,
+     "w_south": 0.264
+    }
+   },
    "live_sha": {
     "north": "4d55049b5bf9c3061cf952d2bec14f1a521a527ba166bd18232de2c65ca54cb4",
     "south": "97d6b40c43f4c83e8ba3e9e3b32854effe4bd69ef7b22a643a2494d3154c00fb"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 155,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/Glowtail",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Glowtail",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtailbaby": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GlowtailBaby/candidates/GlowtailBaby_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GlowtailBaby/candidates/GlowtailBaby_south.png"
+   },
+   "canon": {
+    "standtall_b1_glowtailbaby_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_glowtailbaby_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Glowtail",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "0dcffec713ea95fc11703ea8bc780a67c60c12c72869dddfafad9c8a7f7a5d24",
+    "south": "8912318f898db1e5940c66c538f97108294f78fbcb65df4d0cd2e29a3e4e2827"
+   },
+   "jobs": [
+    "standtall_b1_glowtailbaby_east",
+    "standtall_b1_glowtailbaby_south",
+    "standtall_b1_glowtailbaby_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.085,
+     "d_south": 1.128,
+     "e_north": 1.085,
+     "e_south": 1.128,
+     "ns": 0.962,
+     "nsw": 0.783,
+     "w_north": 0.226,
+     "w_south": 0.289
+    }
+   },
    "live_sha": {
     "north": "f100f0006694b848c174b164ea35c2c6940edd86c33da1adf1d07114b3e76d9f",
     "south": "99d68326a13ef774595418cb62695415a1a004b4d6859862a9eb2b84d6718649"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 104,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/GlowtailBaby",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GlowtailBaby",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatfemale": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MaligoatFemale/candidates/MaligoatFemale_north.png"
+   },
+   "canon": {
+    "standtall_b1_maligoatfemale_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Maligoat",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "bf6e6b45bd9a89c30f76ff9a93f4a5bf3438bdaf83dcbf57f75c1d677969c1e9"
+   },
+   "jobs": [
+    "standtall_b1_maligoatfemale_east",
+    "standtall_b1_maligoatfemale_south",
+    "standtall_b1_maligoatfemale_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.267,
+     "e_north": 1.055,
+     "e_south": 1.267,
+     "ns": 0.833,
+     "nsw": 0.759,
+     "w_north": 0.608,
+     "w_south": 0.801
+    }
+   },
    "live_sha": {
     "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 61,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MaligoatFemale",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatmale": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MaligoatMale/candidates/MaligoatMale_north.png"
+   },
+   "canon": {
+    "standtall_b1_maligoatmale_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Maligoat",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "4c64f96f23be0216b84be067f4dba9071ce648d8e40805a0dc25d05061c04bb9"
+   },
+   "jobs": [
+    "standtall_b1_maligoatmale_east",
+    "standtall_b1_maligoatmale_south",
+    "standtall_b1_maligoatmale_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.267,
+     "e_north": 1.055,
+     "e_south": 1.267,
+     "ns": 0.833,
+     "nsw": 0.738,
+     "w_north": 0.591,
+     "w_south": 0.801
+    }
+   },
    "live_sha": {
     "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 72,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MaligoatMale",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/megakrill/megakrill": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megakrill/candidates/Megakrill_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megakrill/candidates/Megakrill_south.png"
+   },
+   "canon": {
+    "standtall_b1_megakrill_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_megakrill_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Megakrill",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "65780f56b2d245e90bfbca75d3660f271cf4d509bee91826ea199a56f038e350",
+    "south": "791ca3934e7d1371e127df1d30fe7bfcfda17386d352c9f486cd0677ab4eb66b"
+   },
+   "jobs": [
+    "standtall_b1_megakrill_east",
+    "standtall_b1_megakrill_south",
+    "standtall_b1_megakrill_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.073,
+     "d_south": 1.109,
+     "e_north": 1.073,
+     "e_south": 1.109,
+     "ns": 0.967,
+     "nsw": 0.933,
+     "w_north": 0.135,
+     "w_south": 0.144
+    }
+   },
    "live_sha": {
     "north": "a429efcd51cc9676d15408c270f7bfbf94f617542f412afe8e47e781c96fcf46",
     "south": "1d5b627d4142640e1f5b2927e48d734536cd73e749b0a9df5a38e3b8fc2d65c2"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 101,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megakrill/Megakrill",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megakrill",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutagenicnorphea/mutagenicnorphea": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutagenicNorphea/candidates/MutagenicNorphea_south.png"
+   },
+   "canon": {
+    "standtall_b1_mutagenicnorphea_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_MutagenicNorphea",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "f0d2b9b06684c2fbc84be900dbd9402f1022657ebe066a34ffb5722389b86c53"
+   },
+   "jobs": [
+    "standtall_b1_mutagenicnorphea_east",
+    "standtall_b1_mutagenicnorphea_south",
+    "standtall_b1_mutagenicnorphea_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.286,
+     "d_south": 1.114,
+     "e_north": 1.286,
+     "e_south": 1.114,
+     "ns": 1.154,
+     "nsw": 0.823,
+     "w_north": 0.613,
+     "w_south": 0.745
+    }
+   },
    "live_sha": {
     "south": "406f7891285e5de327b092ae1401f6b87a7762fa0d692be87a358980c76ed905"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 53,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutagenicNorphea",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage1": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutatingTumorfish_Stage1/candidates/MutatingTumorfish_Stage1_north.png"
+   },
+   "canon": {
+    "standtall_b1_mutatingtumorfish_stage1_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_MutatingTumorfishSpawn",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "c77290197f6cd43a78bb8714732401df49d50b9cc43fc4f8d36f8918821c70e8"
+   },
+   "jobs": [
+    "standtall_b1_mutatingtumorfish_stage1_east",
+    "standtall_b1_mutatingtumorfish_stage1_south",
+    "standtall_b1_mutatingtumorfish_stage1_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.167,
+     "e_north": 1.083,
+     "e_south": 1.167,
+     "ns": 0.929,
+     "nsw": 1.067,
+     "w_north": 0.722,
+     "w_south": 0.677
+    }
+   },
    "live_sha": {
     "north": "5e54841dee2ea6e9c7f40a8037788f8153352a28ce0f638f5303d234996f8d32"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 53,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage1",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutatingTumorfish_Stage1",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage3": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutatingTumorfish_Stage3/candidates/MutatingTumorfish_Stage3_north.png"
+   },
+   "canon": {
+    "standtall_b1_mutatingtumorfish_stage3_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_MutatingTumorfishAdult",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "ef0620481722fd6b80f59caf9fcd84554732f2c215c5329f61241a2b27eea3ed"
+   },
+   "jobs": [
+    "standtall_b1_mutatingtumorfish_stage3_east",
+    "standtall_b1_mutatingtumorfish_stage3_south",
+    "standtall_b1_mutatingtumorfish_stage3_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.077,
+     "d_south": 1.308,
+     "e_north": 1.077,
+     "e_south": 1.308,
+     "ns": 0.824,
+     "nsw": 0.908,
+     "w_north": 0.437,
+     "w_south": 0.482
+    }
+   },
    "live_sha": {
     "north": "5fac3b4a7621ac1f49f451d97bdc1507d0a96b9ca6cc218f51cfa9942f8608d6"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 102,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage3",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MutatingTumorfish_Stage3",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/sacapillar/sacapillar": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SacaPillar/candidates/SacaPillar_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SacaPillar/candidates/SacaPillar_south.png"
+   },
+   "canon": {
+    "standtall_b1_sacapillar_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_sacapillar_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Sacapillar",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "97e9a07ac6fd4975823deddb99ac6cdd9bb08ecd590be77f0ab2223f0b5a8b23",
+    "south": "aae3bb2473d6091167bbfab82aa5cd518d2ea5236e203fdd17942bad5f2227eb"
+   },
+   "jobs": [
+    "standtall_b1_sacapillar_east",
+    "standtall_b1_sacapillar_south",
+    "standtall_b1_sacapillar_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.121,
+     "e_north": 1.079,
+     "e_south": 1.121,
+     "ns": 0.963,
+     "nsw": 0.979,
+     "w_north": 0.47,
+     "w_south": 0.48
+    }
+   },
    "live_sha": {
     "north": "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3",
     "south": "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 166,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SacaPillar",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogapillar": {
    "attempts": 0,
@@ -3132,51 +3806,158 @@
    "why": "lint asks to regenerate ['east']: east is the anchor, never redrawn"
   },
   "swanimals/blarth/blarth": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Blarth",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6319,
+       1.3325
+      ],
+      "facing": "south",
+      "key": "d_south",
+      "value": 0.46
+     }
+    ],
+    "ratios": {
+     "d_north": 0.727,
+     "d_south": 0.46,
+     "e_north": 1.411,
+     "e_south": 0.856,
+     "ns": 1.649,
+     "nsw": 1.139,
+     "w_north": 0.312,
+     "w_south": 0.274
+    }
+   },
    "live_sha": {
     "south": "1f2c6d18e39de1f8a45f8ecdd2c5444080232a509a679a969dd44aea4d83f777"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 158,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Blarth/Blarth",
-   "why": ""
+   "why": "lint: south d_south=0.46",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Blarth",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/boarwolf/boarwolf": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Boarwolf/candidates/Boarwolf_north.png"
+   },
+   "canon": {
+    "standtall_b1_boarwolf_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Boarwolf",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "053412a43003d2f917602cb4bb0d01626e0b4f5aed769d21b8c955803193c84d"
+   },
+   "jobs": [
+    "standtall_b1_boarwolf_east",
+    "standtall_b1_boarwolf_south",
+    "standtall_b1_boarwolf_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.05,
+     "d_south": 1.264,
+     "e_north": 1.05,
+     "e_south": 1.264,
+     "ns": 0.831,
+     "nsw": 0.81,
+     "w_north": 0.528,
+     "w_south": 0.652
+    }
+   },
    "live_sha": {
     "north": "01ca8ee722096403f14d4175249e17942a6a93270ae6090ff2ab68e024d9bc75"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Boarwolf/Boarwolf",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Boarwolf",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/bolotaur/bolotaur": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Bolotaur/candidates/Bolotaur_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Bolotaur/candidates/Bolotaur_south.png"
+   },
+   "canon": {
+    "standtall_b1_bolotaur_north": {
+     "flags": [],
+     "note": "",
+     "score": "6/6",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_bolotaur_south": {
+     "flags": [
+      {
+       "line": "Crest of short pale spikes running from the head back over the neck",
+       "reason": "Large spikes radiate around the skull as a horned crown rather than forming a short crest running back over the neck."
+      },
+      {
+       "line": "Wide flat mouth with reddish lips/gums under a heavy brow",
+       "reason": "Reddish gums and a heavy brow are present, but the mouth is a pointed, prominently fanged snarl rather than a wide flat turtle-like mouth."
+      }
+     ],
+     "note": "",
+     "score": "5/7",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Bolotaur",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.125,
+     "e_north": 1.082,
+     "e_south": 1.125,
+     "ns": 0.962,
+     "nsw": 0.966,
+     "w_north": 0.504,
+     "w_south": 0.522
+    }
+   },
    "live_sha": {
     "north": "a47592f78c40e079cce681b721a52b6ad81e9641127f5553eb248168db9becb3",
     "south": "ad9c0c32664157500524be460e4bb074cf8753469f522888735423b3c1ef7ab2"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 214,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Bolotaur/Bolotaur",
-   "why": ""
+   "why": "canon Must-show FAIL: south: Crest of short pale spikes running from the head back over the neck; south: Wide flat mouth with reddish lips/gums under a heavy brow",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Bolotaur",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/borcatu/borcatu": {
    "attempts": 0,
@@ -3191,66 +3972,228 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "swanimals/cancell/cancell": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/CanCell/candidates/CanCell_north.png"
+   },
+   "canon": {
+    "standtall_b1_cancell_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a large (over 3 m long) flying insect: small head on a long, slender, upright body/neck, two pairs (four wings) of very long narrow dragonfly wings, several long thin jointed legs hanging beneath, and a long thin segmented tail ending in a spreading plume fan \u2014 the realistic ROTS design the owner said to follow",
+       "reason": "Four long wings and a tail fan are present, but the visible legs are thick and fleshy rather than long, thin, jointed insect legs."
+      },
+      {
+       "line": "COLOUR LAYOUT: body rust/reddish-brown and mottled, with a paler pinkish-cream underside; a smooth domed teal/turquoise cap over the top of the small head; wings translucent pale yellow-green with darker edges; legs dark; tail banded blue-grey to rust; tail-tip plumes pale orange",
+       "reason": "Pink-tan limbs, ivory wings and a cream-yellow tail fan dominate; the required rust body, dark legs and pale-orange plumes are missing."
+      },
+      {
+       "line": "Tail ends in a large spreading fan of pale orange feather-like plumes",
+       "reason": "The tail ends in a cream-yellow lobed fan rather than pale-orange feather-like plumes."
+      },
+      {
+       "line": "NEGATIVE: not the Clone Wars can-cell (no stubby red thorax with bright green bug-eyes), not a plain dragonfly (no plumed tail fan, no teal head cap), not small bug-sized, not the donor's washed-out pink-tan palette",
+       "reason": "The creature retains the donor's washed-out pink-tan palette rather than the realistic design's rust-brown coloration."
+      }
+     ],
+     "note": "",
+     "score": "3/7",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_CanCell",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.121,
+     "e_north": 1.081,
+     "e_south": 1.121,
+     "ns": 0.964,
+     "nsw": 1.399,
+     "w_north": 0.756,
+     "w_south": 0.541
+    }
+   },
    "live_sha": {
     "north": "5b23c42aad8a407ecf29e7948a69b2d52a42cd8106ad4a81c62f356e825bd430"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 146,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/CanCell/CanCell",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a large (over 3 m long) flying insect: small head on a long, slender,; north: COLOUR LAYOUT: body rust/reddish-brown and mottled, with a paler pinkish-cream u",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/CanCell",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/corellianhound/corellianhound": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/CorellianHound/candidates/CorellianHound_north.png"
+   },
+   "canon": {
+    "standtall_b1_corellianhound_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_CorellianHound",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "a89aa446565ec9b5bebc932ac379edb63070502d85c665d73fd5a25b9d97661b"
+   },
+   "jobs": [
+    "standtall_b1_corellianhound_east",
+    "standtall_b1_corellianhound_south",
+    "standtall_b1_corellianhound_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.3,
+     "e_north": 1.057,
+     "e_south": 1.3,
+     "ns": 0.813,
+     "nsw": 0.74,
+     "w_north": 0.493,
+     "w_south": 0.666
+    }
+   },
    "live_sha": {
     "north": "7ac76bc65e5fe2de72f34e60c7484c825386c263786c6d7f6690807317d071a7"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 76,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/CorellianHound/CorellianHound",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/CorellianHound",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/desertport/zakkro/zakkro": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkro/candidates/Zakkro_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkro/candidates/Zakkro_south.png"
+   },
+   "canon": {
+    "standtall_b1_zakkro_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_zakkro_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Zakkro",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "56e6bda526e61f0c555c1f68d1d43bad4d1f24bb25781ba3e3ab63f87ddb6af8",
+    "south": "bc05ff1aa1b64e9e5ffacef00844535906c2b184287467eb73f5386b268d798c"
+   },
+   "jobs": [
+    "standtall_b1_zakkro_east",
+    "standtall_b1_zakkro_south",
+    "standtall_b1_zakkro_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.118,
+     "e_north": 1.056,
+     "e_south": 1.118,
+     "ns": 0.945,
+     "nsw": 0.929,
+     "w_north": 0.654,
+     "w_south": 0.704
+    }
+   },
    "live_sha": {
     "north": "f4bbb0ec200e8a2aabf88988e5190b11599cb3bd8455e0ce18bf65a83a3596dc",
     "south": "18229ca13b25d4d3990006387707ca91ff2b425eac9d15c12c9087d79db2b681"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 140,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/DesertPort/Zakkro/Zakkro",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkro",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/eopie/eopie": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Eopie/candidates/Eopie_north.png"
+   },
+   "canon": {
+    "standtall_b1_eopie_north": {
+     "flags": [],
+     "note": "",
+     "score": "6/6",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Eopie",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "04fcaed5100b025bb00b1ba02ca8da552ff791fb2cce56e1e52479924fcdecff"
+   },
+   "jobs": [
+    "standtall_b1_eopie_east",
+    "standtall_b1_eopie_south",
+    "standtall_b1_eopie_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.205,
+     "e_north": 1.058,
+     "e_south": 1.205,
+     "ns": 0.878,
+     "nsw": 0.937,
+     "w_north": 0.488,
+     "w_south": 0.52
+    }
+   },
    "live_sha": {
     "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Eopie/Eopie",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Eopie",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/frilledgorg/frilledgorg_j": {
    "attempts": 0,
