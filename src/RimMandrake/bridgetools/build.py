@@ -456,21 +456,26 @@ def source_dirty():
     *_MOD_DIR it stages), [] when they are clean, or None when this tree is not a git checkout (a `git archive`
     export of one commit, which is clean by construction). A shared seat clone carries peers' uncommitted edits, and
     the build compiles whatever is on disk (BENCH 2026-10-15: never build the companion from the dirty tree)."""
-    dirs = [os.path.relpath(os.path.dirname(PROJECT), REPO_ROOT)]
+    root = os.path.realpath(REPO_ROOT)
+    dirs = [os.path.relpath(os.path.realpath(os.path.dirname(PROJECT)), root)]
     for env in ("ORACLE_MOD_DIR", "INHABITED_MOD_DIR", "GSS_MOD_DIR", "FLOWWORKS_MOD_DIR"):
         v = os.environ.get(env)
-        if v and os.path.realpath(v).startswith(os.path.realpath(REPO_ROOT) + os.sep):
-            dirs.append(os.path.relpath(v, REPO_ROOT))
+        if v and os.path.realpath(v).startswith(root + os.sep):
+            dirs.append(os.path.relpath(os.path.realpath(v), root))
     try:
-        r = subprocess.run(["git", "-C", REPO_ROOT, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
-        if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(REPO_ROOT):
-            return None
-        r = subprocess.run(["git", "-C", REPO_ROOT, "status", "--porcelain", "--untracked-files=normal", "--"] + dirs,
-                           capture_output=True, text=True)
-    except OSError:
-        return None
+        r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    except OSError as e:
+        return ["?? git could not run (%s): refusing rather than guessing clean" % e]
     if r.returncode != 0:
-        return None
+        if "not a git repository" in (r.stderr or ""):
+            return None                          # an export: no .git anywhere above it
+        return ["?? git rev-parse failed: %s" % (r.stderr or "").strip()[:200]]
+    if os.path.realpath(r.stdout.strip()) != root:
+        return None                              # an export unpacked inside some other checkout
+    r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=normal", "--"] + dirs,
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        return ["?? git status failed: %s" % (r.stderr or "").strip()[:200]]   # fail closed
     return [ln for ln in r.stdout.splitlines() if ln.strip()]
 
 
