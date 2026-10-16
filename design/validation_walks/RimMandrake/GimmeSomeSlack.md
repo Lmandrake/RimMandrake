@@ -33,8 +33,8 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: c1c7124cf298bf8ea24a161f5d0422e0a7cb644c51999d3aa7e46b8d1ce47bc1
 
 The `state:` line above is authoritative; `design/RimMandrake/north_star_validation_spec.md` defines what each
 state means, and a checklist binds only while that line reads VALIDATED. The hash recorded on validation covers
