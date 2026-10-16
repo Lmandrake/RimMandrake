@@ -1,0 +1,67 @@
+{
+ "biome": "SUBJECTS_firespit_with_bezzul",
+ "built": "2026-10-16T07:17:12-0700",
+ "census": "Transient/biome_ffar/firespit_with_bezzul.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_Bezzul": {
+   "columns": {
+    "A": {
+     "east": "93f8bf0a36d5cb39b0c2ad03ecbf5d8d0c2f5b2d65800d91d5a6b46b8536d32b",
+     "north": "f40a8604d2b6ead4373bc594047cc556207abc15f765bfd1861ef375daf2502c",
+     "south": "7bd8d45eec0c69096d359208d50fac556056a990381ee5294e6e09392da54218"
+    },
+    "B": {
+     "east": "cd3d23de97393e6be53ac1d25dd16b09b21a76e6d5299511ea427fd55d985c19",
+     "north": "891d5aae792081a2486f25ed2b502acafd201426a22089b3f19014b8d5496876",
+     "south": "53f29b52aa0cf095abfa88f88e7766a5784dc0bd1f14feead13e3be2cb14038a"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render b07_bezzul",
+    "B": "render slime_bezzul"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bezzul"
+  },
+  "RM_FireSpit": {
+   "columns": {
+    "A": {
+     "single": "66bf71ad6509a706cba3523f665703269d51bc1f7234525b43514c12ae607bcc"
+    },
+    "B": {
+     "single": "1fa6f5eec50ec3d61c7bd2dddd3ba4cf48482fca49687012aa3120de401922bf"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render donorart_p2_firespit_icon_v1",
+    "B": "render donorart_p2_firespit_projectile_v1"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "firespit"
+  }
+ },
+ "sheetId": "firespit_with_bezzul_sheet_2026-10-16",
+ "snapshotId": "8ba0bb6ad8740947"
+}

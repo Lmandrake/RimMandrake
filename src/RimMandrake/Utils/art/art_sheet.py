@@ -2981,6 +2981,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             set().union(*[_subject_names(x) for x in [key] + list(r.get("defNames") or []) if x]), _elsewhere)
         if _re and b.get("subjects") and ruling_predates_jobs(_re, r.get("artpipe_state_jobs") or []):
             _re = None                    # a named render newer than his ruling: this sheet exists to judge it
+        if _re and r.get("reopen"):
+            _re = None                    # --reopen: re-shown on purpose (he asked for the row explained before judging)
         if _re and new_sets_since(gitems, idx, _re.get("at") or ""):
             _re = None                    # pictures he has never ruled on (a redraw landed): the row is open work
             item["reopenedByNewSets"] = True   # the gate (req 7) must agree this row is deliberately live
@@ -3242,7 +3244,7 @@ def subject_row(R, name: str, jobs=()) -> dict:
             "art": {"resources": res, "searched": f"live def dump: {name} " + ("found" if (td or res) else "NOT in the dump")}}
 
 
-def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "") -> tuple[Path, str]:
+def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "", reopen=()) -> tuple[Path, str]:
     """Write Transient/biome_ffar/<name>.subjects.json: a one-entry census (key SUBJECTS_<name>) holding a row per def,
     plus a row per artpipe job's target_def carrying that job. `lead_html` (--lead) is the sheet's purpose paragraph:
     what he is judging and what skipping does; it is kept in the census, so refresh_sheets rebuilds keep it.
@@ -3260,6 +3262,9 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
             raise SystemExit(f"artpipe job {j} names no target_def — bind it as --jobs {j}=<DefName>")
         by_def.setdefault(td, []).append(j)
     rows = [subject_row(R, d, js) for d, js in by_def.items()]
+    for _r in rows:                       # --reopen: his earlier ruling could not judge it; show the row open, not collapsed
+        if _r["key"] in set(reopen):
+            _r["reopen"] = True
     key = f"SUBJECTS_{name}"
     path = BIOME_OUT / f"{name}.subjects.json"
     # the census is exactly the subjects named now; a row the owner already ruled on that is left out keeps its
@@ -3359,6 +3364,7 @@ def main(argv=None):
     ap.add_argument("--label", help="with --subjects/--jobs: the sheet's human title")
     ap.add_argument("--lead", default="", help="with --subjects/--jobs: purpose paragraph (HTML) shown above the rows — "
                     "what he is judging and what skipping does")
+    ap.add_argument("--reopen", nargs="*", default=[], metavar="DEF", help="with --subjects: rows to show OPEN even though he ruled them on another sheet (he asked to see them again)")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
@@ -3375,7 +3381,7 @@ def main(argv=None):
             RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
         if not a.name:
             ap.error("--subjects/--jobs need --name")
-        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead)
+        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen)
         a.biome, a.census = [key], str(cpath)
     if a.biome:
         if a.refresh:
