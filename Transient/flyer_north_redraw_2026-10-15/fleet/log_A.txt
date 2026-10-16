@@ -1,0 +1,2 @@
+OK  /home/mandrake/rm/bench/Transient/flyer_north_redraw_2026-10-15/fleet/raw_A.png
+    1024x1024  rgba  438,078 bytes  (246s)
