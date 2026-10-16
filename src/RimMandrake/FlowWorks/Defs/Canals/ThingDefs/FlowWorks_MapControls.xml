@@ -4,17 +4,22 @@
   <!-- FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): map controls, plain markers a map maker places in
        development mode (debug actions "Place flow source..." / "Place flow sink", or the bridge's
        RimMandrake.FlowWorks.MapControls.RM_MapControls). NOT buildable: no designationCategory, no cost. Owner: "They
-       should not have any fancy graphics, just a minimal appearance that can be overlooked." The look is vanilla's pen
-       marker stake, small and tinted (blue-grey source, rust-grey sink): no new art. Not an edifice, no faction, no hit
+       should not have any fancy graphics, just a minimal appearance that can be overlooked." Owner 2026-10-16 (card, the
+       eight controls): "You should make the graphics for these just be a small rock or other insignificant-looking object,
+       not even a stake like an animal pen, so players will overlook them". So every map control is a PEBBLE: vanilla's
+       stone-chunk art (Things/Item/Chunk/ChunkStone, Graphic_Random) drawn tiny at item height, each kind a barely-off
+       stone grey; no new art, no shadow. Still selectable, so dev mode can click it. Not an edifice, no faction, no hit
        points, so it never blocks digging, a sluice, a pawn or a raid. C#: Source/MapControls/. -->
   <ThingDef Name="RM_MapControlBase" ParentName="BuildingBase" Abstract="True">
     <category>Building</category>
     <graphicData>
-      <texPath>Things/Building/Furniture/PenMarker</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(0.6,0.6)</drawSize>
+      <texPath>Things/Item/Chunk/ChunkStone</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(0.38,0.38)</drawSize>
+      <color>(0.56,0.55,0.53)</color>
+      <shadowData IsNull="True" />
     </graphicData>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <altitudeLayer>Item</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0</fillPercent>
     <pathCost>0</pathCost>
@@ -44,7 +49,7 @@
     <description>A map maker's marker. Every flow pulse it pours a chosen liquid, at a set rate, into the dug channel it stands on or beside, as if a spring fed it from nowhere. Placed in development mode only; it cannot be built. Its liquid, rate and on/off are set from its buttons in development mode.</description>
     <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowSource</thingClass>
     <graphicData>
-      <color>(0.55,0.68,0.85)</color>
+      <color>(0.54,0.56,0.60)</color>
     </graphicData>
   </ThingDef>
 
@@ -54,7 +59,7 @@
     <description>A map maker's marker. Every flow pulse it takes liquid out of the dug channel it stands on or beside, at a set rate or as much as there is, and the liquid leaves the map. Placed in development mode only; it cannot be built. Its rate, which liquid it takes, and on/off are set from its buttons in development mode.</description>
     <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowSink</thingClass>
     <graphicData>
-      <color>(0.72,0.55,0.48)</color>
+      <color>(0.60,0.55,0.52)</color>
     </graphicData>
   </ThingDef>
 
