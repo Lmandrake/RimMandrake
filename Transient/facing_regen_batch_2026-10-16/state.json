@@ -13,7 +13,7 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "rimstarwars/swbestiary/gizka/gizka": {
-   "attempts": 1,
+   "attempts": 2,
    "def": "RSW_Gizka",
    "facings": [
     "south",
@@ -24,307 +24,1019 @@
     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "seconds": 394,
-   "status": "pending",
+   "seconds": 286,
+   "status": "retryable_failure",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/Gizka",
-   "why": "RuntimeError: STOP: sandbox setup required in /mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen/.sandbox",
+   "why": "codex gen failed 3x on north: f)!r} is not in the subpath of {str(other)!r}\")\nValueError: '/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gizka/raw/Gizka_north_raw_1792175520.png' is not in the subpath of '/home/mandrake/rm/bench'\n",
    "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/gizka/gizkaw": {
-   "attempts": 0,
+   "attempts": 2,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GizkaW/candidates/GizkaW_north.png"
+   },
+   "canon": {
+    "standtall_b1_gizkaw_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body held HORIZONTAL over two strong hind legs, a thick tapering TAIL extending behind for balance (part of the silhouette in every facing), tiny vestigial forelimbs tucked against the chest and never weight-bearing (owner ruling 2026-09-16: \"I see clear references to bipedal and no mention of four legs.\")",
+       "reason": "Two strong hind legs support the body, but the short central tail taper stays within the hindquarters rather than forming a prominent balancing-tail silhouette."
+      },
+      {
+       "line": "NEGATIVE: not a frog, not a toad, not an upright hopper (owner ruling 2026-09-16: \"You just made a frog. I don't want a frog.\"); not a four-legged sprawling lizard",
+       "reason": "The squat rump, splayed bent hind legs and inconspicuous tail produce a frog-like rear silhouette."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Gizka",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.085,
+     "d_south": 1.137,
+     "e_north": 1.085,
+     "e_south": 1.137,
+     "ns": 0.954,
+     "nsw": 0.616,
+     "w_north": 0.324,
+     "w_south": 0.525
+    }
+   },
    "live_sha": {
     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/GizkaW",
-   "why": "",
-   "worker": "codex_home_facing_regen_w2"
+   "why": "canon Must-show FAIL: north: BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body hel; north: NEGATIVE: not a frog, not a toad, not an upright hopper (owner ruling 2026-09-16",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GizkaW",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/grank/grank": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grank/candidates/Grank_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grank/candidates/Grank_south.png"
+   },
+   "canon": {
+    "standtall_b1_grank_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a heavy, low-slung, deep-chested digitigrade quadruped with a big, heavy head on an elongated snout and a long, tapering, rat-like tail",
+       "reason": "Bulky hindquarters fit, but the visible tail is thick and shaggy rather than rat-like; head and chest are obscured."
+      },
+      {
+       "line": "Realistic rendering: natural leathery hide with coarse bristles and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Natural shading is present, but dense shaggy fur replaces the required leathery hide with sparse coarse bristles."
+      },
+      {
+       "line": "NEGATIVE: not a rat or dog (no full fur coat, no short muzzle with hidden teeth), not a crocodile (no sprawling legs, no armoured scutes)",
+       "reason": "The back, hindquarters and tail carry a full fur coat, contradicting the explicit exclusion."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_grank_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a heavy, low-slung, deep-chested digitigrade quadruped with a big, heavy head on an elongated snout and a long, tapering, rat-like tail",
+       "reason": "Heavy quadrupedal build is present, but the muzzle appears short and tucked rather than elongated; tail is obscured by this facing."
+      },
+      {
+       "line": "A pair of short, blunt, horn-like spikes near the nose",
+       "reason": "No pair of short horn-like spikes is visible near the nose."
+      },
+      {
+       "line": "Realistic rendering: natural leathery hide with coarse bristles and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Dense fur-like strokes and shaggy cheek and chest hair dominate instead of leathery hide with sparse coarse bristles."
+      },
+      {
+       "line": "NEGATIVE: not a rat or dog (no full fur coat, no short muzzle with hidden teeth), not a crocodile (no sprawling legs, no armoured scutes)",
+       "reason": "The shaggy coat, short muzzle and broad paws give the creature a dog-like appearance despite its exposed teeth."
+      }
+     ],
+     "note": "",
+     "score": "2/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Grank",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.051,
+     "d_south": 1.12,
+     "e_north": 1.051,
+     "e_south": 1.12,
+     "ns": 0.938,
+     "nsw": 0.882,
+     "w_north": 0.275,
+     "w_south": 0.311
+    }
+   },
    "live_sha": {
     "north": "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
     "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "seconds": 370,
-   "status": "pending",
+   "seconds": 153,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Grank/Grank",
-   "why": "",
-   "worker": "codex_home_facing_regen_w1"
+   "why": "canon Must-show FAIL: south: BODY PLAN: a heavy, low-slung, deep-chested digitigrade quadruped with a big, he; south: A pair of short, blunt, horn-like spikes near the nose; north: BODY PLAN: a heavy, low-slung, deep-chested digitigrade quadruped with a big, he; north: Realistic rendering: natural leathery hide with coarse bristles and lighting, no",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grank",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/horax/horax": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Horax/candidates/Horax_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Horax/candidates/Horax_south.png"
+   },
+   "canon": {
+    "standtall_b1_horax_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_horax_south": {
+     "flags": [],
+     "note": "",
+     "score": "6/6",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Horax",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "1cffc124a9be3ee5aa31d0a035ca92f3ecd6c16fcf57980806e9c2f706e55e9e",
+    "south": "48ff77befa0da6832c54bfb36b119545269d599da83a1358bc2f57d9cbfd640f"
+   },
+   "jobs": [
+    "standtall_b1_horax_east",
+    "standtall_b1_horax_south",
+    "standtall_b1_horax_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.117,
+     "e_north": 1.057,
+     "e_south": 1.117,
+     "ns": 0.946,
+     "nsw": 1.009,
+     "w_north": 0.788,
+     "w_south": 0.781
+    }
+   },
    "live_sha": {
     "north": "84e90569c6c8798c68afff4460c0a0a8b3e54db15ab21a4b50ba0e4611bd1f0a",
     "south": "e2a8ea985523610c7592f8e89974dd7f011f2c37013eab0b6f8ab0c1c6e2587c"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 156,
+   "status": "installed",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Horax/Horax",
    "why": "",
-   "worker": "codex_home_facing_regen_w1"
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Horax",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/kreetle/kreetle": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kreetle/candidates/Kreetle_north.png"
+   },
+   "canon": {
+    "standtall_b1_kreetle_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed shell (pillbug or hermit-crab silhouette); head at the front; many short jointed legs along both sides of the body (five pairs per the text)",
+       "reason": "The low, domed, ribbed body fits, but only about three leg pairs are discernible rather than the specified five."
+      },
+      {
+       "line": "Realistic rendering: natural glossy chitin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Strong dark outlines trace the shell plates and legs, contradicting the explicit no-outlines requirement."
+      }
+     ],
+     "note": "",
+     "score": "2/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Kreetle",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.184,
+     "e_north": 1.081,
+     "e_south": 1.184,
+     "ns": 0.913,
+     "nsw": 0.938,
+     "w_north": 0.868,
+     "w_south": 0.926
+    }
+   },
    "live_sha": {
     "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 70,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Kreetle/Kreetle",
-   "why": "",
-   "worker": "codex_home_facing_regen_w3"
+   "why": "canon Must-show FAIL: north: BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed; north: Realistic rendering: natural glossy chitin texture and lighting, no outlines, no",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kreetle",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/ollopom/ollopom": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Ollopom/candidates/Ollopom_north.png"
+   },
+   "canon": {
+    "standtall_b1_ollopom_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Ollopom",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "f27c02d9d4d932aaf01b10c06182526b0dddf2faa843974fab22db38930b50cf"
+   },
+   "jobs": [
+    "standtall_b1_ollopom_east",
+    "standtall_b1_ollopom_south",
+    "standtall_b1_ollopom_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.19,
+     "e_north": 1.081,
+     "e_south": 1.19,
+     "ns": 0.908,
+     "nsw": 0.937,
+     "w_north": 0.863,
+     "w_south": 0.92
+    }
+   },
    "live_sha": {
     "north": "19f3d7a408b69a1bd7b745518ccdbb25b67bd69d65c896ff54b12eed06c35d0d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 88,
+   "status": "installed",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Ollopom/Ollopom",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Ollopom",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/orray/orray": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Orray/candidates/Orray_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Orray/candidates/Orray_south.png"
+   },
+   "canon": {
+    "standtall_b1_orray_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_orray_south": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Orray",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "8125c5454b506d17ac0250d27f770113a42665c4ad006053fa09790a443e8fed",
+    "south": "5eaa1e27ac2b72c136d060de0b5a4fec3053f9abb89b49063d4ea4466d29e2fb"
+   },
+   "jobs": [
+    "standtall_b1_orray_east",
+    "standtall_b1_orray_south",
+    "standtall_b1_orray_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.116,
+     "e_north": 1.056,
+     "e_south": 1.116,
+     "ns": 0.946,
+     "nsw": 0.938,
+     "w_north": 0.481,
+     "w_south": 0.513
+    }
+   },
    "live_sha": {
     "north": "2302a7e0d2f999ded0290a179bc3d5564d98d13f07fdde5caef1c9764c1101d7",
     "south": "206aaad1c3823f65cdecc8886623e9f706cb1f74f2d6c12a2430c0caa5798f1a"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 129,
+   "status": "installed",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Orray/Orray",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Orray",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/shiro/shirob": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ShiroB/candidates/ShiroB_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ShiroB/candidates/ShiroB_south.png"
+   },
+   "canon": {
+    "standtall_b1_shirob_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a shelled four-legged reptile standing high on four thick columnar elephant-like wrinkled legs, body well clear of the ground, not stubby turtle legs; long thick horizontal neck in front, long level tail behind",
+       "reason": "The body sits low on short, outward-splayed legs rather than standing high on long, columnar legs; the neck is hidden."
+      },
+      {
+       "line": "NEGATIVE: not a turtle or tortoise (no low stubby legs, no smooth round shell, no beaked turtle head), not the bright clean-green *Disney Infinity* toy, and not a shiro-trap (no plant rosette in the shell \u2014 owner ruling 2026-09-14: the Shiro-Trap \"could be its own creature\")",
+       "reason": "The squat stance and short, splayed legs retain the prohibited low turtle-like proportions."
+      }
+     ],
+     "note": "",
+     "score": "4/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_shirob_south": {
+     "flags": [
+      {
+       "line": "Head: long flat duck-billed snout at the end of the neck, with small raised red eyes on top",
+       "reason": "The eyes are raised, but the muzzle is rounded and heavily folded rather than a broad, flat duck bill."
+      },
+      {
+       "line": "COLOUR LAYOUT: muted olive-to-moss-green shell and neck with yellow-green ridge highlights; yellow-green and olive stripes along the neck; greyer, wrinkled legs",
+       "reason": "The palette is predominantly golden ochre, including the legs, without the distinct greyer legs and striped olive neck."
+      }
+     ],
+     "note": "",
+     "score": "4/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Shiro",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.125,
+     "e_north": 1.082,
+     "e_south": 1.125,
+     "ns": 0.962,
+     "nsw": 0.936,
+     "w_north": 0.589,
+     "w_south": 0.63
+    }
+   },
    "live_sha": {
     "north": "49b00d1439c2b9e5b744df3e9fd322ae53eb1d74aa583e3aba6707fb86a12265",
     "south": "ef9a7cffd35a1a4d7758b8204cbbc831a707f630188eb0cc52470096c92c5a7d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 181,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Shiro/ShiroB",
-   "why": ""
+   "why": "canon Must-show FAIL: south: Head: long flat duck-billed snout at the end of the neck, with small raised red ; south: COLOUR LAYOUT: muted olive-to-moss-green shell and neck with yellow-green ridge ; north: BODY PLAN: a shelled four-legged reptile standing high on four thick columnar el; north: NEGATIVE: not a turtle or tortoise (no low stubby legs, no smooth round shell, n",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ShiroB",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/vornskyr/vornskyr": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Vornskyr/candidates/Vornskyr_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Vornskyr/candidates/Vornskyr_south.png"
+   },
+   "canon": {
+    "standtall_b1_vornskyr_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a lean four-legged canine/reptile-hybrid predator, small (about 0.8 m tall), with tall pointed bat-like or curved horn-like ears and a long whip-thin tail ending in a distinct dark bushy tuft",
+       "reason": "Bulky, spined reptilian anatomy with a thick tapering tail; no whip-thin tail, bushy tuft, or recognizable tall pointed ears."
+      },
+      {
+       "line": "COLOUR LAYOUT: smooth dark-grey to near-black hide over the whole body, the tail tuft black; red eyes the brightest point on the head (infobox and ruled image #1; the yellow-glowing eyes of ruled image #3 are tolerated, not the target)",
+       "reason": "Hide is olive-grey with yellowish mottling, and the black tail tuft is absent; eyes are hidden by the rear facing."
+      },
+      {
+       "line": "Narrow snarling muzzle with prominent visible fangs; four clawed digits per paw",
+       "reason": "Visible hind paws appear three-toed rather than four-digit; the muzzle and fangs cannot be assessed from behind."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_vornskyr_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a lean four-legged canine/reptile-hybrid predator, small (about 0.8 m tall), with tall pointed bat-like or curved horn-like ears and a long whip-thin tail ending in a distinct dark bushy tuft",
+       "reason": "Broad, heavily muscled reptilian body with large dorsal spikes lacks the lean canine proportions and tall pointed ears; tail is obscured in this facing."
+      },
+      {
+       "line": "COLOUR LAYOUT: smooth dark-grey to near-black hide over the whole body, the tail tuft black; red eyes the brightest point on the head (infobox and ruled image #1; the yellow-glowing eyes of ruled image #3 are tolerated, not the target)",
+       "reason": "Olive-grey hide with extensive yellow mottling and ivory spikes contradicts the dark-grey to near-black colour layout; yellow eyes are tolerated."
+      },
+      {
+       "line": "Narrow snarling muzzle with prominent visible fangs; four clawed digits per paw",
+       "reason": "Narrow snarling muzzle and prominent fangs are present, but the paws show three clawed digits rather than four."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Vornskyr",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.074,
+     "d_south": 1.126,
+     "e_north": 1.074,
+     "e_south": 1.126,
+     "ns": 0.955,
+     "nsw": 0.888,
+     "w_north": 0.432,
+     "w_south": 0.486
+    }
+   },
    "live_sha": {
     "north": "423e80ceb91d4b9cbbf1d76e70b531f8a9a634eb65d31feb0274b4b48f2d08d2",
     "south": "14247714a6dcc0bdd94bae619c1ce7a990defaa03aed778fb781c1faac51e527"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 173,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Vornskyr/Vornskyr",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a lean four-legged canine/reptile-hybrid predator, small (about 0.8 m; south: COLOUR LAYOUT: smooth dark-grey to near-black hide over the whole body, the tail; north: BODY PLAN: a lean four-legged canine/reptile-hybrid predator, small (about 0.8 m; north: COLOUR LAYOUT: smooth dark-grey to near-black hide over the whole body, the tail",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Vornskyr",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/whisperbird/whisperbird": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Whisperbird/candidates/Whisperbird_north.png"
+   },
+   "canon": {
+    "standtall_b1_whisperbird_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a lean, long-necked, long-winged soaring bird, heron/crane-like rather than a stocky raptor: long broad feathered wings, a long thin bare neck held stretched forward, and a very long, thin trailing tail streamer longer than the body",
+       "reason": "Stocky raptor-like body with broad wings and a broad layered tail; no thin tail streamer is apparent, even allowing for rear-view foreshortening."
+      },
+      {
+       "line": "COLOUR LAYOUT: warm golden-tan to honey-brown feathers over body and wings, soft darker brown along the feather tracts and paler tips, no heavy black barring and no dark belly patch; the bald head and bare neck blue-grey, contrasting with the golden body; tail streamer golden",
+       "reason": "Golden plumage is interrupted by heavy charcoal bands across the wings and back, with dark flight-feather tips."
+      },
+      {
+       "line": "NEGATIVE: not an eagle or hawk (no stocky build, no hooked beak, no big talons on show), not a vulture (long thin neck and golden coat, long tail streamer), not the Legends membrane-winged orange creature",
+       "reason": "The stocky eagle-like silhouette and large exposed talons contradict the required lean soaring bird."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Whisperbird",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.959,
+     "d_south": 0.812,
+     "e_north": 0.959,
+     "e_south": 0.812,
+     "ns": 1.181,
+     "nsw": 1.014,
+     "w_north": 1.037,
+     "w_south": 1.022
+    }
+   },
    "live_sha": {
     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 128,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a lean, long-necked, long-winged soaring bird, heron/crane-like rathe; north: COLOUR LAYOUT: warm golden-tan to honey-brown feathers over body and wings, soft",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Whisperbird",
+   "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/zakkeg/zakkeg": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkeg/candidates/Zakkeg_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkeg/candidates/Zakkeg_south.png"
+   },
+   "canon": {
+    "standtall_b1_zakkeg_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a huge, low-slung, stocky reptilian quadruped (\"built like a Baragwin battle tank\"), stegosaur-like, on four heavy, thick taloned/clawed legs; low head carried forward; a tapered tail",
+       "reason": "Four clawed legs and a tapered tail are present, but the narrow, elongated torso and relatively slender limbs lack the references\u2019 broad, stocky, tank-like bulk."
+      },
+      {
+       "line": "COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (owner ruling 2026-09-14 chose `wookieepedia_kotor2_juvenile.png`, the rust-red render, matching the sourced \"huge, red lizard\"); a darker brown-black variant is attested but unconfirmed as a separate life stage",
+       "reason": "Dark brown and pale ivory dominate the body; the required primary rust-red/copper-brown coloration is absent."
+      },
+      {
+       "line": "Thick, knobbed/bumpy armoured hide over the whole body",
+       "reason": "The hide consists mainly of smooth overlapping bone-like plates and grooved surfaces, lacking thick knobbly armor across the body."
+      },
+      {
+       "line": "NEGATIVE: not a smooth-skinned lizard or crocodile (no smooth scales, no missing dorsal spikes), not a slim long-legged predator; not a low-poly game model",
+       "reason": "Dorsal spikes are present, but the slim torso and elongated limbs contradict the required heavy, stocky creature."
+      }
+     ],
+     "note": "",
+     "score": "2/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_zakkeg_south": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (owner ruling 2026-09-14 chose `wookieepedia_kotor2_juvenile.png`, the rust-red render, matching the sourced \"huge, red lizard\"); a darker brown-black variant is attested but unconfirmed as a separate life stage",
+       "reason": "Ivory-beige armor and dark brown limbs dominate; rust-red/copper-brown is absent as the primary body color."
+      },
+      {
+       "line": "Thick, knobbed/bumpy armoured hide over the whole body",
+       "reason": "Large overlapping blade-shaped plates dominate the body instead of thick, rounded knobs and bumpy armored hide."
+      }
+     ],
+     "note": "",
+     "score": "5/7",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Zakkeg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.122,
+     "e_north": 1.08,
+     "e_south": 1.122,
+     "ns": 0.963,
+     "nsw": 0.817,
+     "w_north": 0.404,
+     "w_south": 0.495
+    }
+   },
    "live_sha": {
     "north": "ded48e738e7c051f7b667eb2944cc7fba39257b7fe1ae8f76697e2df9131115c",
     "south": "fc41903ec644ef7beccc6b3e9d8ed8eb85a23da800c703381e58e06294beeb9b"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 164,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Zakkeg/Zakkeg",
-   "why": ""
+   "why": "canon Must-show FAIL: south: COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (; south: Thick, knobbed/bumpy armoured hide over the whole body; north: BODY PLAN: a huge, low-slung, stocky reptilian quadruped (\"built like a Baragwin; north: COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Zakkeg",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_lirrith/rm_lirrith": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Lirrith/candidates/RM_Lirrith_north.png"
+   },
+   "canon": {},
    "def": "RM_Lirrith",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "a7eebeb871bf5cb055ee4331cb5af2c2549e21aa98b8c8510452b7abe5078f72"
+   },
+   "jobs": [
+    "standtall_b1_rm_lirrith_east",
+    "standtall_b1_rm_lirrith_south",
+    "standtall_b1_rm_lirrith_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.323,
+     "e_north": 1.057,
+     "e_south": 1.323,
+     "ns": 0.799,
+     "nsw": 0.493,
+     "w_north": 0.29,
+     "w_south": 0.588
+    }
+   },
    "live_sha": {
     "north": "8e9057d935ab2db956b6e4f504c7a784f65d5eeb9f8b7bcb18916727fcdb71e6"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 63,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Lirrith",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_moravatha/rm_moravatha": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Moravatha/candidates/RM_Moravatha_south.png"
+   },
+   "canon": {},
    "def": "RM_Moravatha",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "ee59dc494fdfee60210d34901ac17da80dd26f672749639f020ab50be86917b0"
+   },
+   "jobs": [
+    "standtall_b1_rm_moravatha_east",
+    "standtall_b1_rm_moravatha_south",
+    "standtall_b1_rm_moravatha_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.262,
+     "d_south": 1.117,
+     "e_north": 1.262,
+     "e_south": 1.117,
+     "ns": 1.13,
+     "nsw": 1.016,
+     "w_north": 0.978,
+     "w_south": 0.962
+    }
+   },
    "live_sha": {
     "south": "d27738dd988ecd693dad4daebee9cf375420b327265699d21eec477cfd6e5ea0"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 64,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Moravatha",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_ossumatha/rm_ossumatha": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Ossumatha/candidates/RM_Ossumatha_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Ossumatha/candidates/RM_Ossumatha_south.png"
+   },
+   "canon": {},
    "def": "RM_Ossumatha",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "b5886b5f69488cfa4927c69b0164b3afb2dd5ba37f0cd898eb61a92a7bfb47d0",
+    "south": "a6cbc284e18e2d5c4beaf656e694e64aa254de883efdb0e22cc7c96632ffaae2"
+   },
+   "jobs": [
+    "standtall_b1_rm_ossumatha_east",
+    "standtall_b1_rm_ossumatha_south",
+    "standtall_b1_rm_ossumatha_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.053,
+     "d_south": 1.121,
+     "e_north": 1.053,
+     "e_south": 1.121,
+     "ns": 0.939,
+     "nsw": 0.844,
+     "w_north": 0.606,
+     "w_south": 0.717
+    }
+   },
    "live_sha": {
     "north": "fa4473d514362e6a350b01479a69778de9fc6974ba0fb529c88158966e94b1bf",
     "south": "18bd0b2b8fac38d6608bc7f7666c7906aa67f805d50c4c958245dd7c633fde29"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 110,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Ossumatha",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_sesserith/rm_sesserith": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Sesserith/candidates/RM_Sesserith_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Sesserith/candidates/RM_Sesserith_south.png"
+   },
+   "canon": {},
    "def": "RM_Sesserith",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "6966adc47f65a3aad1e028213ab2f1ca920050c2a68bb183b1fd6faab8a6a57c",
+    "south": "81f262c9cf51d63bdfda68a4a1a5a6d7d2ff9f3730fb3addafbcb6d5e60766ca"
+   },
+   "jobs": [
+    "standtall_b1_rm_sesserith_east",
+    "standtall_b1_rm_sesserith_south",
+    "standtall_b1_rm_sesserith_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.059,
+     "d_south": 1.11,
+     "e_north": 1.059,
+     "e_south": 1.11,
+     "ns": 0.954,
+     "nsw": 0.976,
+     "w_north": 0.484,
+     "w_south": 0.496
+    }
+   },
    "live_sha": {
     "north": "5e587c3be4e2b0e92a44540a6cfe2e02248a6231342106f94f66aefe52babf7a",
     "south": "bdb434d1b63ce0a5d52929f58b58b93f15d5ffa6ca466cb30c83877f24ed19d8"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 123,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Sesserith",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_skarnix/rm_skarnix": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Skarnix/candidates/RM_Skarnix_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Skarnix/candidates/RM_Skarnix_south.png"
+   },
+   "canon": {},
    "def": "RM_Skarnix",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "672b4252f3b97bedb380313847d9998e4526d9462878257fc0e5d417995bfa3f",
+    "south": "a917751135ca01e5407478c4d2f3ee6549ce8f56540df8504ab41d974e0554cc"
+   },
+   "jobs": [
+    "standtall_b1_rm_skarnix_east",
+    "standtall_b1_rm_skarnix_south",
+    "standtall_b1_rm_skarnix_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.121,
+     "e_north": 1.055,
+     "e_south": 1.121,
+     "ns": 0.941,
+     "nsw": 0.822,
+     "w_north": 0.297,
+     "w_south": 0.361
+    }
+   },
    "live_sha": {
     "north": "23489a7245ee28e56c2f707d1a594a92fe9fd540b6914d125bd996edd9fd51cf",
     "south": "33f08a1c23d094647960e193bd16d8ecefca82be6de7214a4acb80c338a5f7ab"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 123,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Skarnix",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_summ/rm_summ": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Summ/candidates/RM_Summ_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Summ/candidates/RM_Summ_south.png"
+   },
+   "canon": {},
    "def": "RM_Summ",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "0438f450b3393911a2da7b97d655ef77eebe7daa73f2cb5f607076e02c6310ee",
+    "south": "a66c9ea0a5afdd505b2a8a1896522b52b06c74af4c7fc2747174db1c246a03ae"
+   },
+   "jobs": [
+    "standtall_b1_rm_summ_east",
+    "standtall_b1_rm_summ_south",
+    "standtall_b1_rm_summ_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.118,
+     "e_north": 1.057,
+     "e_south": 1.118,
+     "ns": 0.945,
+     "nsw": 0.913,
+     "w_north": 0.642,
+     "w_south": 0.703
+    }
+   },
    "live_sha": {
     "north": "058d0ad960125179a2a807aee802278fe1851ecb86597caa815a9e62af9a6131",
     "south": "28c188dd04beeafe6b3fbed1639d4a58c7c43c2e3124dcfee321a707c09763b0"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 147,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Summ",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_summing/rm_summing": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Summing/candidates/RM_Summing_north.png"
+   },
+   "canon": {},
    "def": "RM_Summ",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "f33cb3c127f8ff96d15f9ec1f856970843c29a1c4b30e87c203cf126a4903ff7"
+   },
+   "jobs": [
+    "standtall_b1_rm_summing_east",
+    "standtall_b1_rm_summing_south",
+    "standtall_b1_rm_summing_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.216,
+     "e_north": 1.056,
+     "e_south": 1.216,
+     "ns": 0.868,
+     "nsw": 0.94,
+     "w_north": 0.806,
+     "w_south": 0.858
+    }
+   },
    "live_sha": {
     "north": "2aa5553dbc53729d14abfbc80e2e916b08f52663eda3658abc84255a822050eb"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 64,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Summing",
+   "worker": "codex_home_facing_regen"
   },
   "rm_abyss/things/pawn/animal/rm_ysvaltha/rm_ysvaltha": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Ysvaltha/candidates/RM_Ysvaltha_north.png"
+   },
+   "canon": {},
    "def": "RM_Ysvaltha",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "aa95ffcdb3e369baa0354a489e267fe36605f90dd1763b29f60ec063279c7b11"
+   },
+   "jobs": [
+    "standtall_b1_rm_ysvaltha_east",
+    "standtall_b1_rm_ysvaltha_south",
+    "standtall_b1_rm_ysvaltha_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.049,
+     "d_south": 1.259,
+     "e_north": 1.049,
+     "e_south": 1.259,
+     "ns": 0.833,
+     "nsw": 0.787,
+     "w_north": 0.576,
+     "w_south": 0.732
+    }
+   },
    "live_sha": {
     "north": "afd0efd5d02fc1da3fdfac7630e8454820d83c135ac66b5fe03fa71659f3209a"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 50,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Ysvaltha",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/green/jewelbug": {
    "attempts": 0,
@@ -344,21 +1056,51 @@
    "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug/candidates/Jewelbug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug/candidates/Jewelbug_south.png"
+   },
+   "canon": {},
    "def": "RM_Gembug",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "11d62aa0ead3784c1834eccc7a46ac30e108b880c6a808b65478ef5f4a820c9d",
+    "south": "d1a4cc2b5da5bdcea1bfc0e9d4b02fc7839f3b129420dd1bc3e51056ed74d7f3"
+   },
+   "jobs": [
+    "standtall_b1_jewelbug_east",
+    "standtall_b1_jewelbug_south",
+    "standtall_b1_jewelbug_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.084,
+     "d_south": 1.119,
+     "e_north": 1.084,
+     "e_south": 1.119,
+     "ns": 0.969,
+     "nsw": 0.846,
+     "w_north": 0.36,
+     "w_south": 0.426
+    }
+   },
    "live_sha": {
     "north": "fb9c3dec3d7fdba503419418f3c82df44e1d288c323b29b6d3d2b0f10fbbd580",
     "south": "858704b6081e8e46408a4edc7571187cc694be3a15a3ff0f3f7c01cfe50522ca"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 123,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Red/Jewelbug",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/yellow/jewelbug": {
    "attempts": 0,
@@ -378,136 +1120,372 @@
    "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/megapleura/megapleura": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megapleura/candidates/Megapleura_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megapleura/candidates/Megapleura_south.png"
+   },
+   "canon": {},
    "def": "RM_Megapleura",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "6aa1e23f7ed91680367e628b71239d982f1999525726f0b5df9b39b00a2d39ae",
+    "south": "e3e16342f0c8c9d588f49d78162bdf5af626eca798d3c3701022b26672df63f9"
+   },
+   "jobs": [
+    "standtall_b1_megapleura_east",
+    "standtall_b1_megapleura_south",
+    "standtall_b1_megapleura_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.119,
+     "e_north": 1.081,
+     "e_south": 1.119,
+     "ns": 0.967,
+     "nsw": 0.746,
+     "w_north": 0.267,
+     "w_south": 0.358
+    }
+   },
    "live_sha": {
     "north": "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
     "south": "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 124,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Megapleura",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/mossbeetle/mossgrub": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MossGrub/candidates/MossGrub_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MossGrub/candidates/MossGrub_south.png"
+   },
+   "canon": {},
    "def": "RM_MossBeetleLarvae",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "56be1bd3d02502a0501aa150e7e63a330ae05e5328083d7e333fb034b50a0510",
+    "south": "66d909dd6a4cdce10ae7440c7c94647c34137dee626211b0339f4ee438f3c508"
+   },
+   "jobs": [
+    "standtall_b1_mossgrub_east",
+    "standtall_b1_mossgrub_south",
+    "standtall_b1_mossgrub_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.125,
+     "e_north": 1.08,
+     "e_south": 1.125,
+     "ns": 0.96,
+     "nsw": 0.944,
+     "w_north": 0.488,
+     "w_south": 0.516
+    }
+   },
    "live_sha": {
     "north": "2bc110c105922848c01b5f12138342cb5121349bfae29538fe0eb1a2af95ac53",
     "south": "76a5e1619812f504d0fb6c1ce28e99cddd47c68e6424756c1c6dded28339aa9d"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 141,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MossGrub",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/hydrocarbon/candler/candler": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Candler/candidates/Candler_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Candler/candidates/Candler_south.png"
+   },
+   "canon": {},
    "def": "RM_Candler",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "0a0fb31522e800dcf19aa451768e3708c0aa332896ef5fc97b3b1984827cb4a5",
+    "south": "dbfb11c458a7ee63ea13db99d299ea5898a8665108fc6170383466047222041a"
+   },
+   "jobs": [
+    "standtall_b1_candler_east",
+    "standtall_b1_candler_south",
+    "standtall_b1_candler_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.085,
+     "d_south": 1.117,
+     "e_north": 1.085,
+     "e_south": 1.117,
+     "ns": 0.971,
+     "nsw": 0.875,
+     "w_north": 0.536,
+     "w_south": 0.613
+    }
+   },
    "live_sha": {
     "north": "673d5a57df31af1e2135b378ea66ba27576468a7de0d42dec327344941581b4e",
     "south": "4fd0431f42079449aa5b60cbde97fbd78e4cec7fd222d8d9de807b4d51cb450f"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 116,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Candler",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/hydrocarbon/shoal/shoal": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Shoal/candidates/Shoal_north.png"
+   },
+   "canon": {},
    "def": "RM_Shoal",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "6383ec9d4e085253291cd6d59575ca7ba95b32954c3fcd10675235184ba70817"
+   },
+   "jobs": [
+    "standtall_b1_shoal_east",
+    "standtall_b1_shoal_south",
+    "standtall_b1_shoal_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.085,
+     "d_south": 1.085,
+     "e_north": 1.085,
+     "e_south": 1.085,
+     "ns": 1.0,
+     "nsw": 1.035,
+     "w_north": 1.022,
+     "w_south": 0.987
+    }
+   },
    "live_sha": {
     "north": "cd392214f9c489d87e35ba09f3378c7d9f772b9b578ca3e25c78c64c890b83c7"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 47,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Shoal",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/hydrocarbon/slick/slick": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Slick/candidates/Slick_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Slick/candidates/Slick_south.png"
+   },
+   "canon": {},
    "def": "RM_Slick",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "168dd083f0fc0253a82ee68d3e55ec3964d7c62d12026234e4e3fd9138eb563b",
+    "south": "ebb7d3c9a73655ee78b261563b80f0767ccb6efab485c44960eb8c5a2aa012e4"
+   },
+   "jobs": [
+    "standtall_b1_slick_east",
+    "standtall_b1_slick_south",
+    "standtall_b1_slick_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.125,
+     "e_north": 1.083,
+     "e_south": 1.125,
+     "ns": 0.963,
+     "nsw": 0.841,
+     "w_north": 0.154,
+     "w_south": 0.183
+    }
+   },
    "live_sha": {
     "north": "c66883a5e478ce7eb329f2d4494adda4939250405f83aa2219f02e39f6a11ab3",
     "south": "176cb5443e0cecd888ac1cf4e0c08f782f7b4898c284fe60a35a4504f86fdba9"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 161,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/Hydrocarbon/Slick/Slick",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Slick",
+   "worker": "codex_home_facing_regen"
   },
   "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar/candidates/Smogapillar_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar/candidates/Smogapillar_south.png"
+   },
+   "canon": {},
    "def": "RM_IllothLarvae",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "b87d9bee33da9be799facb2af6701589d9bab82e47842ca46537dbaec0fa48b9",
+    "south": "5b7548c396e3d99a82dcc6d37e21ee84cebb866561e24db3ac3c7813051b7722"
+   },
+   "jobs": [
+    "standtall_b1_smogapillar_east",
+    "standtall_b1_smogapillar_south",
+    "standtall_b1_smogapillar_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.076,
+     "d_south": 1.123,
+     "e_north": 1.076,
+     "e_south": 1.123,
+     "ns": 0.958,
+     "nsw": 0.713,
+     "w_north": 0.473,
+     "w_south": 0.663
+    }
+   },
    "live_sha": {
     "north": "37fec96c9af85a3a4d2ac7bfd0e7ea5ea1af03d22c6222e98ea6bcdbff1afad9",
     "south": "07c4fc955e9740167bc8e2159fb52ab6b045cdfaffeb6e69b7e52089936de7ee"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 121,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar",
+   "worker": "codex_home_facing_regen"
   },
   "rm_therot/fauna/hwelgrue/rm_hwelgrue": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Hwelgrue/candidates/RM_Hwelgrue_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Hwelgrue/candidates/RM_Hwelgrue_south.png"
+   },
+   "canon": {},
    "def": "RM_Hwelgrue",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "35e207ee196635551a391adf3b7d6687189c233f21d1b9d4db1fe599c7a23377",
+    "south": "2747c77961f2abdd697ec41526beb40678be0d9eac1940b87910f35a5299a829"
+   },
+   "jobs": [
+    "standtall_b1_rm_hwelgrue_east",
+    "standtall_b1_rm_hwelgrue_south",
+    "standtall_b1_rm_hwelgrue_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.125,
+     "e_north": 1.079,
+     "e_south": 1.125,
+     "ns": 0.959,
+     "nsw": 0.979,
+     "w_north": 0.653,
+     "w_south": 0.667
+    }
+   },
    "live_sha": {
     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 130,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Hwelgrue",
+   "worker": "codex_home_facing_regen"
   },
   "rm_therot/fauna/redrawn/brogg/brogg": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Brogg/candidates/Brogg_north.png"
+   },
+   "canon": {},
    "def": "RM_Brogg",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "fa5a55af0cfe398f1b2080585e1e6179b0b383b22a5ddf9b27905e89200c4044"
+   },
+   "jobs": [
+    "standtall_b1_brogg_east",
+    "standtall_b1_brogg_south",
+    "standtall_b1_brogg_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.311,
+     "e_north": 1.055,
+     "e_south": 1.311,
+     "ns": 0.805,
+     "nsw": 0.918,
+     "w_north": 0.772,
+     "w_south": 0.841
+    }
+   },
    "live_sha": {
     "north": "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 67,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Brogg",
+   "worker": "codex_home_facing_regen"
   },
   "rm_therot/fauna/redrawn/grellik/grellik": {
    "attempts": 0,
