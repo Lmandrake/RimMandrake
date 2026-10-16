@@ -440,4 +440,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return __exception;
         }
     }
+    /// <summary>GSS D4 (live 2026-10-15, validation_style S12d FAIL: a member saved while still in the pending queue came
+    /// back as a second look on its run, because the queue is not saved and loading never runs the rule). Every save
+    /// (manual, autosave, the probe's csavenow) goes through GameDataSaveLoader.SaveGame, so the queue is drained first.</summary>
+    [HarmonyLib.HarmonyPatch(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) })]
+    internal static class Patch_GameDataSaveLoader_SaveGame_DrainConduitRuns
+    {
+        private static void Prefix()
+        {
+            if (Current.Game?.Maps == null) return;
+            foreach (Map m in Current.Game.Maps)
+            {
+                try { m.GetComponent<RM_MapComponent_ConduitRuns>()?.ProcessPending(); }
+                catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] draining the conduit-run queue before a save failed: " + ex, 0x6D2D4A31); }
+            }
+        }
+    }
 }
