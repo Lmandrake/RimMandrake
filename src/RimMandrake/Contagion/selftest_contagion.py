@@ -368,6 +368,10 @@ class Fake(object):
                 "baseWeatherCommonalities": tab, "animalDensity": 3.0, "modExtensions": ext,
                 "wildAnimals": [{"animal": a, "commonality": 1} for a in V.WILD_ANIMALS],
                 "wildPlants": [{"plant": a, "commonality": 1} for a in V.WILD_PLANTS]}}]}
+        if want == ["FactionDef/" + V.HELIX_FACTION]:
+            kinds = ["Caravan_Outlander_BulkGoods"] + ([] if "helix_trader_unwired" in self.broken else [V.HELIX_TRADER])
+            return {"success": True, "foundCount": 1, "notFound": [], "defs": [{"defName": V.HELIX_FACTION,
+                                                                                 "fields": {"caravanTraderKinds": kinds}}]}
         missing = [d for d in want if d.endswith("NoSuchDef_Probe")]
         if "missing_def" in self.broken and want and want[0] in V.SHIPPED:
             missing.append(want[3])
@@ -655,6 +659,7 @@ BREAKS = {
     "touched_no_contact": ["touched.touched_contact_doses"],
     "arrest_ignored": ["touched.sunbeam_hit_arrests"],
     "mulch_none": ["spawner.unfinished_leaves_mulch"],
+    "helix_trader_unwired": ["defs.helix_trader_wired"],
 }
 
 

@@ -75,6 +75,7 @@ PAD_SIZE = 30
 SOIL = "Soil"
 REPULSOR, COALESCENCE, SAMPLE = "RM_CloudRepulsor", "RM_Coalescence", "RM_GenomeSample"
 TOUCHED, MULCH = "RM_ContagionTouched", "RM_ContagionMulch"   # owner N4/Q3/Q4, 2026-10-15
+HELIX_FACTION, HELIX_TRADER = "RUT_Jawa_AscendantHelix", "RM_Caravan_HelixCurators"   # owner Q5, 2026-10-15
 HOST, UNFINISHED = "RM_BloodyMess", "RM_TheUnfinished"
 BURN_COND, CLEAR_COND = "RM_ContagionBurnCondition", "RM_RepulsorClearSky"
 BURN_WEATHER = "RM_ContagionBurn"
@@ -615,6 +616,21 @@ def defs_chain(t):
             missing = [a for a in WILD_ANIMALS if a not in json.dumps(wa)]
             if missing:
                 _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
+
+    # Owner Q5 (2026-10-15, by card: "Quests plus a visiting Helix trader"): the Utinni layer hangs RM_Caravan_HelixCurators
+    # on the Ascendant Helix (UtinniPatches/Patches/HelixCurators_Contagion.xml). On a list without the campaign layer
+    # the faction is absent: UNMEASURED, never a pass.
+    with _comp(t, "helix_trader_wired"):
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs="FactionDef/" + HELIX_FACTION, fields="caravanTraderKinds", deep=True)
+            _ok(r, "get_defs(Helix faction)")
+            if r.get("foundCount") != 1:
+                _unmeasured(t, "%s is not loaded (no campaign layer on this list): %r" % (HELIX_FACTION, r.get("notFound")))
+            kinds = (((r.get("defs") or [{}])[0].get("fields")) or {}).get("caravanTraderKinds")
+            if not isinstance(kinds, list):
+                _unmeasured(t, "caravanTraderKinds unreadable: %r" % (kinds,))
+            if HELIX_TRADER not in json.dumps(kinds):
+                _fail("the Helix caravans do not include %s: %s" % (HELIX_TRADER, json.dumps(kinds)[:300]))
 
     with _comp(t, "organ_patch_comps"):
         if _live(t):

@@ -5,8 +5,11 @@
   Helix trade device (item §3): warmup, then while powered it forces the Burn
   on a Contagion map and holds plain Clear weather on any other surface map
   (CompCloudRepulsor). Not player-constructible — acquired by trade or quest
-  and installed (minifiable). Trade tables and quest rewards are BENCH's to
-  wire; no tradeTags are set here so no vanilla trader stocks it by accident.
+  and installed (minifiable). Owner Q5 (2026-10-15, by card: "Quests plus a
+  visiting Helix trader"): the Helix curators caravan stocks it
+  (Defs/TraderKindDefs/RM_HelixCurators.xml), the Helix draftprint contract can
+  pay with it, and RM_CloudRepulsor sits in the standard quest reward pool
+  (RewardStandardLowFreq). Still no tradeTags, so no vanilla trader stocks it.
 
   RM_CloudRepulsorShip — "the gravship hardpoint variant is the ship touch":
   the same device and beam, but it installs only on gravship substructure
@@ -88,6 +91,9 @@
     <label>cloud repulsor</label>
     <description>A squat Helix field device that, once warmed up and powered, throws a brilliant violet beam straight up and punches a hole in the sky. Over the Contagion it tears the storm open and holds it open: a man-made Burn, with everything the Burn does to what stands under it. Anywhere else it simply holds the sky clear of rain and fog.</description>
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <thingSetMakerTags>
+      <li>RewardStandardLowFreq</li>
+    </thingSetMakerTags>
   </ThingDef>
 
   <ThingDef ParentName="RM_CloudRepulsorBase">

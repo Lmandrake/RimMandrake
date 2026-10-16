@@ -32,6 +32,10 @@ namespace RimMandrake.Contagion
         public float monstrousChance = 0.2f;
         public int silverPerFeature = 120;
         public float monstrousRewardFactor = 2f;
+        // Owner Q5 (2026-10-15, by card: "Quests plus a visiting Helix trader"): sometimes the Helix add one of their
+        // devices to the pay. deviceChance per contract, doubled for a Monstrous one; empty list = silver only.
+        public List<ThingDef> deviceRewards;
+        public float deviceChance = 0.25f;
 
         [NoTranslate]
         public SlateRef<string> outSignalFulfilled;
@@ -41,6 +45,10 @@ namespace RimMandrake.Contagion
 
         [NoTranslate]
         public SlateRef<string> storeRewardAs;
+
+        // Slate key for the description's pay clause: " and nothing more" or " and a <device>".
+        [NoTranslate]
+        public SlateRef<string> storeDeviceLineAs;
 
         protected override bool TestRunInt(Slate slate)
         {
@@ -62,6 +70,10 @@ namespace RimMandrake.Contagion
             part.requireMonstrous = monstrousHediff != null && Rand.Chance(monstrousChance);
             part.reward = RM_DraftprintKernel.Reward(silverPerFeature, part.requiredLimbs.Count, part.requireMonstrous,
                 monstrousRewardFactor, RM_ContagionSettings.helixContractRewardFactor);
+            if (!deviceRewards.NullOrEmpty() && Rand.Chance(Mathf.Clamp01(deviceChance * (part.requireMonstrous ? 2f : 1f))))
+            {
+                part.deviceReward = deviceRewards.RandomElement();
+            }
             part.inSignalEnable = QuestGen.slate.Get<string>("inSignal");
             string done = outSignalFulfilled.GetValue(slate);
             if (!done.NullOrEmpty())
@@ -80,6 +92,11 @@ namespace RimMandrake.Contagion
             {
                 slate.Set(rewardKey, part.reward);
             }
+            string deviceKey = storeDeviceLineAs.GetValue(slate);
+            if (!deviceKey.NullOrEmpty())
+            {
+                slate.Set(deviceKey, part.deviceReward != null ? " and a Helix " + part.deviceReward.label : " and nothing more");
+            }
         }
     }
 
@@ -88,6 +105,7 @@ namespace RimMandrake.Contagion
         public List<HediffDef> requiredLimbs = new List<HediffDef>();
         public bool requireMonstrous;
         public int reward;
+        public ThingDef deviceReward;
 
         public string TraitsLabel()
         {
@@ -145,14 +163,25 @@ namespace RimMandrake.Contagion
             Map map = dp.parent.Map;
             IntVec3 cell = dp.parent.Position;
             dp.parent.Destroy();
+            List<Thing> pay = new List<Thing>();
             if (reward > 0)
             {
                 Thing silver = ThingMaker.MakeThing(ThingDefOf.Silver);
                 silver.stackCount = reward;
-                DropPodUtility.DropThingsNear(cell, map, new List<Thing> { silver }, forbid: false);
+                pay.Add(silver);
+            }
+            if (deviceReward != null)
+            {
+                // A building (the Cloud Repulsor) arrives crated, as vanilla reward buildings do.
+                pay.Add(ThingMaker.MakeThing(deviceReward, GenStuff.DefaultStuffFor(deviceReward)).TryMakeMinified());
+            }
+            if (pay.Count > 0)
+            {
+                DropPodUtility.DropThingsNear(cell, map, pay, forbid: false);
             }
             Messages.Message(
-                "The Helix took the draftprint (" + TraitsLabel() + ") and paid " + reward + " silver.",
+                "The Helix took the draftprint (" + TraitsLabel() + ") and paid " + reward + " silver"
+                + (deviceReward != null ? " and a " + deviceReward.label : "") + ".",
                 new TargetInfo(cell, map), MessageTypeDefOf.PositiveEvent);
             Complete();
         }
@@ -163,6 +192,7 @@ namespace RimMandrake.Contagion
             Scribe_Collections.Look(ref requiredLimbs, "requiredLimbs", LookMode.Def);
             Scribe_Values.Look(ref requireMonstrous, "requireMonstrous", false);
             Scribe_Values.Look(ref reward, "reward", 0);
+            Scribe_Defs.Look(ref deviceReward, "deviceReward");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && requiredLimbs == null)
             {
                 requiredLimbs = new List<HediffDef>();
