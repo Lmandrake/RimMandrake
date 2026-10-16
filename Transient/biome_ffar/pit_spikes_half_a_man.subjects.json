@@ -1,0 +1,61 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T07:05:59-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_pit_spikes_half_a_man"
+ ],
+ "biomes": {
+  "SUBJECTS_pit_spikes_half_a_man": {
+   "label": "Pit spikes \u2014 half a man tall",
+   "slug": "pit_spikes_half_a_man",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Pit spikes \u2014 half a man tall \u2014 game art",
+   "lead_html": "<p>Your station-45 note: the pit spikes fill the whole cell and should be <b>half as tall as a man and mostly pointed up</b>. A vanilla human draws <b>1.20 cells</b> tall, so the target is <b>0.60 cells</b>. <b>v6</b> (recommended): nine upright stakes in a dirt mound, <b>0.62 cells</b> tall, standing on the lower part of the cell, same charred timber/rope/iron material. <b>v2</b>: a two-row palisade, 0.51 cells tall, nearly full cell width. <b>v1</b>: a small five-stake fan, 0.35 cells \u2014 likely too short. <b>v3/v4</b> are the raw renders that v5/v6 were shrunk from (0.72 cells, too tall); <b>v5</b> failed the sprite validator (drifted taller). All keep drawSize 1\u00d71, so only the PNG changes. Shown on plain ground (the sheet tool cannot stage a pit); in game the spikes stand on the pit floor.</p>",
+   "rows": [
+    {
+     "key": "RM_Spikes",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pit spikes",
+     "defNames": [
+      "RM_Spikes"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Spikes_halfman_v1",
+      "RM_Spikes_halfman_v2",
+      "RM_Spikes_halfman_v6"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Canals/RM_Spikes",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Spikes"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Spikes found"
+     }
+    }
+   ]
+  }
+ }
+}
