@@ -66,6 +66,18 @@ namespace RimMandrake.FlowWorks
 		/// Off by default; the adapter sets it.</summary>
 		public bool creepWaterEnabled;
 		private long[] receivedStamp;
+		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND (owner 2026-10-16, by card "Level by water surface": "Shouldn't
+		/// each square of the channel have 'units of water' in it, and they will try to spread out evenly"): a neighbour
+		/// gives a unit when its water SURFACE (fill - dug depth; a source reads 0) stands above the recipient's, whatever
+		/// either square's dug depth. A drop of two or more always moves; a drop of exactly one moves only down the
+		/// component's static flow order (<see cref="RM_StockMath.MayFlowBetween"/>), because one unit across a drop of one
+		/// just swaps the two surfaces. That order gains a third tier here, hops to the component's deepest bed
+		/// (<see cref="lowHops"/>), so a unit held one above a dry neighbour still walks toward a dug hole instead of
+		/// standing on a terrace beside it. Every move lowers sum(surface^2) or keeps it and steps down the acyclic order, so a
+		/// closed run settles (no period-2 shuttle) with neighbours at most one unit apart, and a sink drains a run to empty.
+		/// Off = the old GRAVITY / OVERFLOW rule, which stranded partly filled same-depth cells. Off by default here; the
+		/// adapter sets it (shipped ON).</summary>
+		public bool levelBySurfaceEnabled;
 		public int maxComponentCells = 6000;
 		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1 part 2: a connected network bigger than <see cref="maxComponentCells"/> is
 		/// resolved as several capped partitions, and liquid never crosses a partition seam inside one pulse. With the
@@ -110,6 +122,8 @@ namespace RimMandrake.FlowWorks
 		private readonly List<int> recipients = new List<int>();
 		private readonly Dictionary<int, int> sourceHops = new Dictionary<int, int>();
 		private readonly Dictionary<int, int> sinkHops = new Dictionary<int, int>();
+		/// <summary>levelBySurfaceEnabled only: hops to the nearest cell dug to the component's deepest bed.</summary>
+		private readonly Dictionary<int, int> lowHops = new Dictionary<int, int>();
 		private readonly List<int> hopFrontier = new List<int>();
 		private readonly HashSet<int> componentSet = new HashSet<int>();
 		private readonly Predicate<int> isSourcePred;
@@ -370,6 +384,11 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 
+			if (levelBySurfaceEnabled)
+			{
+				LevelWetRegions(pulseCount);
+			}
+
 			float after = 0f;
 			for (int i = 0; i < component.Count; i++)
 			{
@@ -388,6 +407,213 @@ namespace RimMandrake.FlowWorks
 					" imbalance=" + imbalance.ToString("F1"));
 			}
 			world.ComponentResolved(component);
+		}
+
+		private readonly List<int> regionSeeds = new List<int>();
+		private readonly HashSet<int> inRegion = new HashSet<int>();
+		private readonly List<int> regionCells = new List<int>();
+		private readonly List<int> regionRim = new List<int>();
+		private readonly HashSet<int> rimSet = new HashSet<int>();
+		private readonly Dictionary<int, int> gaveThisPulse = new Dictionary<int, int>();
+		private readonly Dictionary<int, int> gotThisPulse = new Dictionary<int, int>();
+		private readonly SortedSet<int>[] donorsBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
+		private readonly SortedSet<int>[] takersBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
+
+		/// <summary>True when the creep rule holds this cell's level back this pulse (it received a level of a fluid
+		/// whose creep switch is on).</summary>
+		private bool HeldByCreep(int c, object fluid, long pulseCount)
+		{
+			return (creepEnabled || creepWaterEnabled) && receivedStamp != null && receivedStamp[c] == pulseCount + 1
+				&& (RM_StockMath.ViscosityStride(world.TicksPerTile(fluid)) > 1 ? creepEnabled : creepWaterEnabled);
+		}
+
+		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, communicating vessels: the neighbour-to-neighbour pass above
+		/// can leave a terrace (2,2,1,1,0 in a flat D=2 run) where every step is one unit, so no single neighbour may give.
+		/// Real water connected through wet squares levels anyway. So, per connected WET region of one fluid (cells wet
+		/// before this pulse's creep, in this partition, not sealed), a unit moves from the region's highest surface to the
+		/// lowest surface among the region and its dug rim (a rim cell must accept the fluid), while those differ by two or
+		/// more. Each cell gives at most, and takes at most, flowPerPulse in this pass. Ties: donor = highest surface then
+		/// lowest cell index; taker = lowest surface, then deepest bed, then lowest index. Regions in order of their lowest
+		/// cell index. Every move lowers sum(surface^2) by at least 2, so this cannot oscillate; it moves liquid only inside
+		/// the component, so the ledger is untouched. A rim cell joins the region next pulse, so the wet front still
+		/// advances one cell a pulse.</summary>
+		private void LevelWetRegions(long pulseCount)
+		{
+			int per = flowPerPulse;
+			if (per <= 0)
+			{
+				return;
+			}
+			gaveThisPulse.Clear();
+			gotThisPulse.Clear();
+			inRegion.Clear();
+			regionSeeds.Clear();
+			for (int i = 0; i < component.Count; i++)
+			{
+				int c = component[i];
+				if (IsExcavated(c) && fill[c] > 0 && !IsSealed(c) && componentSet.Contains(c))
+				{
+					regionSeeds.Add(c);
+				}
+			}
+			regionSeeds.Sort();
+			for (int s = 0; s < regionSeeds.Count; s++)
+			{
+				int seed = regionSeeds[s];
+				if (inRegion.Contains(seed))
+				{
+					continue;
+				}
+				object fluid = world.CellFluid(seed);
+				if (HeldByCreep(seed, fluid, pulseCount))
+				{
+					continue;
+				}
+				// The region: 4-way, wet, same recorded fluid, not held by creep.
+				regionCells.Clear();
+				regionCells.Add(seed);
+				inRegion.Add(seed);
+				for (int head = 0; head < regionCells.Count; head++)
+				{
+					int c = regionCells[head];
+					for (int d = 0; d < 4; d++)
+					{
+						int n = Cardinal(c, d);
+						if (n < 0 || inRegion.Contains(n) || !componentSet.Contains(n) || !IsExcavated(n) || IsSealed(n)
+							|| fill[n] == 0 || !ReferenceEquals(world.CellFluid(n), fluid) || HeldByCreep(n, fluid, pulseCount))
+						{
+							continue;
+						}
+						inRegion.Add(n);
+						regionCells.Add(n);
+					}
+				}
+				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fluid)))
+				{
+					continue;
+				}
+				regionRim.Clear();
+				rimSet.Clear();
+				for (int i = 0; i < regionCells.Count; i++)
+				{
+					int c = regionCells[i];
+					for (int d = 0; d < 4; d++)
+					{
+						int n = Cardinal(c, d);
+						if (n < 0 || inRegion.Contains(n) || rimSet.Contains(n) || !componentSet.Contains(n) || !IsExcavated(n)
+							|| IsSealed(n) || fill[n] >= depth[n] || !RM_StockMath.FluidsCompatible(fill[n] > 0, world.CellFluid(n), fluid))
+						{
+							continue;
+						}
+						rimSet.Add(n);
+						regionRim.Add(n);
+					}
+				}
+				for (int b = 0; b < 5; b++)
+				{
+					donorsBySurface[b].Clear();
+					takersBySurface[b].Clear();
+				}
+				for (int i = 0; i < regionCells.Count; i++)
+				{
+					int c = regionCells[i];
+					if (GotOrGave(gaveThisPulse, c) < per)
+					{
+						donorsBySurface[Bucket(c)].Add(c);
+					}
+					if (fill[c] < depth[c] && GotOrGave(gotThisPulse, c) < per)
+					{
+						takersBySurface[Bucket(c)].Add(c);
+					}
+				}
+				for (int i = 0; i < regionRim.Count; i++)
+				{
+					int c = regionRim[i];
+					if (GotOrGave(gotThisPulse, c) < per)
+					{
+						takersBySurface[Bucket(c)].Add(c);
+					}
+				}
+				while (true)
+				{
+					int db = 4;
+					while (db >= 0 && donorsBySurface[db].Count == 0)
+					{
+						db--;
+					}
+					int tb = 0;
+					while (tb < 5 && takersBySurface[tb].Count == 0)
+					{
+						tb++;
+					}
+					if (db < 0 || tb >= 5 || db - tb < 2)
+					{
+						break;
+					}
+					int donor = donorsBySurface[db].Min;
+					int taker = BestTaker(takersBySurface[tb]);
+					if (fill[taker] == 0 && !world.CanClaim(fluid))
+					{
+						takersBySurface[tb].Remove(taker);   // P7: no identity key free for a dry rim cell
+						continue;
+					}
+					donorsBySurface[db].Remove(donor);
+					takersBySurface[db].Remove(donor);
+					takersBySurface[tb].Remove(taker);
+					donorsBySurface[tb].Remove(taker);
+					fill[donor] -= 1;
+					if (fill[taker] == 0)
+					{
+						world.Claim(taker, fluid);
+					}
+					fill[taker] += 1;
+					int gave = GotOrGave(gaveThisPulse, donor) + 1;
+					gaveThisPulse[donor] = gave;
+					int got = GotOrGave(gotThisPulse, taker) + 1;
+					gotThisPulse[taker] = got;
+					if (fill[donor] > 0 && gave < per)
+					{
+						donorsBySurface[Bucket(donor)].Add(donor);
+					}
+					if (fill[donor] < depth[donor] && GotOrGave(gotThisPulse, donor) < per)
+					{
+						takersBySurface[Bucket(donor)].Add(donor);
+					}
+					if (fill[taker] < depth[taker] && got < per)
+					{
+						takersBySurface[Bucket(taker)].Add(taker);
+					}
+					if (inRegion.Contains(taker) && GotOrGave(gaveThisPulse, taker) < per)
+					{
+						donorsBySurface[Bucket(taker)].Add(taker);
+					}
+				}
+			}
+		}
+
+		/// <summary>Surface bucket 0..4 for surface fill - depth in -4..0.</summary>
+		private int Bucket(int c)
+		{
+			return fill[c] - depth[c] + Superdeep;
+		}
+
+		private static int GotOrGave(Dictionary<int, int> counts, int c)
+		{
+			return counts.TryGetValue(c, out int v) ? v : 0;
+		}
+
+		/// <summary>Among takers at one surface: the deepest bed, then the lowest cell index.</summary>
+		private int BestTaker(SortedSet<int> takers)
+		{
+			int best = -1;
+			foreach (int c in takers)
+			{
+				if (best < 0 || depth[c] > depth[best])
+				{
+					best = c;
+				}
+			}
+			return best;
 		}
 
 		private int CompareDeepestFirst(int a, int b)
@@ -461,6 +687,29 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			HopsFrom(sinkHops, true);
+			lowHops.Clear();
+			hopFrontier.Clear();
+			if (levelBySurfaceEnabled)
+			{
+				int deepest = 0;
+				for (int i = 0; i < component.Count; i++)
+				{
+					int c = component[i];
+					if (IsExcavated(c) && !IsSealed(c) && depth[c] > deepest)
+					{
+						deepest = depth[c];
+					}
+				}
+				for (int i = 0; i < component.Count; i++)
+				{
+					int c = component[i];
+					if (IsExcavated(c) && !IsSealed(c) && depth[c] == deepest)
+					{
+						hopFrontier.Add(c);
+					}
+				}
+				HopsFrom(lowHops, true);
+			}
 		}
 
 		private void HopsFrom(Dictionary<int, int> hops, bool seedsAreExcavated)
@@ -494,8 +743,8 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>GRAVITY (a neighbour gives to a deeper cell) or OVERFLOW (a brimming neighbour gives to any cell
-		/// with room), filtered by budget, no-mix, viscosity and the flow order. Fixed direction order, strict &gt;
+		/// <summary>LEVEL BY SURFACE (<see cref="levelBySurfaceEnabled"/>), or else GRAVITY (a neighbour gives to a deeper
+		/// cell) or OVERFLOW (a brimming neighbour gives to any cell with room); filtered by budget, no-mix, viscosity and the flow order. Fixed direction order, strict &gt;
 		/// on the score. Returns -1 for no donor.</summary>
 		private int PickDonor(int r, byte depthR, long pulseCount)
 		{
@@ -547,18 +796,40 @@ namespace RimMandrake.FlowWorks
 				{
 					continue; // THICK_LIQUID_CREEP_1: filled this pulse, so it cannot pass a thick liquid on until the next
 				}
-				if (depthR <= dn && fn < dn)
+				int score;
+				if (levelBySurfaceEnabled)
 				{
-					continue;
+					// Surfaces relative to ground: a source is brim-full (0); a dug cell is fill - depth (-4..0).
+					int drop = (fn - dn) - (fill[r] - depthR);
+					if (drop < 1)
+					{
+						continue;
+					}
+					if (!source && (!componentSet.Contains(n)
+							|| (drop == 1 && !RM_StockMath.MayFlowBetween(
+								HopsOf(sourceHops, n), HopsOf(sinkHops, n), HopsOf(lowHops, n), dn,
+								HopsOf(sourceHops, r), HopsOf(sinkHops, r), HopsOf(lowHops, r), depthR))))
+					{
+						continue;
+					}
+					// Highest surface gives first; ties to the deeper bed, then the fixed direction order.
+					score = source ? 1000 : ((fn - dn + Superdeep + 1) * 10 + dn);
 				}
-				if (!source && (!componentSet.Contains(n)
-						|| !RM_StockMath.MayFlowBetween(
-							HopsOf(sourceHops, n), HopsOf(sinkHops, n), dn,
-							HopsOf(sourceHops, r), HopsOf(sinkHops, r), depthR)))
+				else
 				{
-					continue;
+					if (depthR <= dn && fn < dn)
+					{
+						continue;
+					}
+					if (!source && (!componentSet.Contains(n)
+							|| !RM_StockMath.MayFlowBetween(
+								HopsOf(sourceHops, n), HopsOf(sinkHops, n), dn,
+								HopsOf(sourceHops, r), HopsOf(sinkHops, r), depthR)))
+					{
+						continue;
+					}
+					score = source ? 1000 : (fn * 10 + dn);
 				}
-				int score = source ? 1000 : (fn * 10 + dn);
 				if (score > bestScore)
 				{
 					bestScore = score;

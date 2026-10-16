@@ -447,7 +447,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "liquidWakesEnabled", "networkSeamsMoveEnabled", "pitHidesShadowEnabled", "pitLipOcclusionEnabled",
                         "pitLipOccupantCutEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitSinkClampEnabled",
                         "pitWalkNormalEnabled", "pumpFedSpreadEnabled", "recedeKeepsLastCell", "recedeSparesOutflow",
-                        "thickCreepEnabled", "waterFrontCreepEnabled",
+                        "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled",
                         # POND_RETURN_LEG_BUILD_WATER_GOES_HOME (2026-10-13): their live rows (L3 return leg, L6 refill
                         # over things) are owed on the item, not yet a toggle chain
                         "dugBedLeavesPondEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants",

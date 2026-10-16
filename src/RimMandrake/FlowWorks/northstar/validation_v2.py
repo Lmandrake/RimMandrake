@@ -107,7 +107,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -164,7 +164,7 @@ def _ticks_per_tile(fluid):
 
 
 # The shipped creep switches (waterFrontCreepEnabled, thickCreepEnabled; both default ON), as PulseOracle kwargs.
-CREEP_LIVE = dict(creep_water=True, creep_thick=True)
+CREEP_LIVE = dict(creep_water=True, creep_thick=True, level_surface=True)   # + levelBySurfaceEnabled (default ON)
 
 
 def fluid_moves(pulse, fluid):
@@ -197,7 +197,7 @@ class PulseOracle(object):
     2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
-                 recession=False, claim_sources=None, creep_water=False, creep_thick=False):
+                 recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False):
         self.w, self.h = w, h
         # RM_FlowKernel creepWaterEnabled (CANAL_FRONT_FIX_WRONG_END_WETS_FIRST, shipped ON as
         # waterFrontCreepEnabled) / creepEnabled (THICK_LIQUID_CREEP_1, thickCreepEnabled): a NON-source donor that
@@ -205,6 +205,11 @@ class PulseOracle(object):
         # fluid, stride > 1, the thick flag). Both default False so the offline INT/O6 bounds (n*D brigade) are the
         # pre-creep engine; the LIVE oracles (oracle_for, the live tier, the mock) pass CREEP_LIVE.
         self.creep_water, self.creep_thick = creep_water, creep_thick
+        # RM_FlowKernel levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, shipped ON): a donor gives when its
+        # surface (F - D; a source 0) stands above the recipient's, a drop of 1 only down the flow order. Default False so
+        # the older offline bounds stay the pre-surface engine; the LIVE oracles pass CREEP_LIVE, which carries it.
+        self.low = {}
+        self.level_surface = level_surface and algo == "fixed"   # the "old" engine predates it (fault mock included)
         self.received = {}                # cell -> pulse_n it last received a level
         # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
         # marked in the visited set SHARED across components, so the first-seeded channel claims it).
@@ -302,11 +307,20 @@ class PulseOracle(object):
                 thick = viscosity_stride(_ticks_per_tile(fl_n)) > 1
                 if self.creep_thick if thick else self.creep_water:
                     continue                                 # creep: filled THIS pulse, passes nothing on until the next
-            if dr <= dn and fn < dn:
-                continue
-            if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
-                continue
-            score = 1000 if src else fn * 10 + dn
+            if self.level_surface:
+                drop = (fn - dn) - (self.F.get(r, 0) - dr)
+                if drop < 1:
+                    continue
+                if not src and (self.key.get(n) is None or self.key.get(r) is None
+                                or (drop == 1 and not self._downstream(n, r, dn, dr))):
+                    continue
+                score = 1000 if src else (fn - dn + 5) * 10 + dn
+            else:
+                if dr <= dn and fn < dn:
+                    continue
+                if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
+                    continue
+                score = 1000 if src else fn * 10 + dn
             if score > best_score:
                 best_score, best = score, n
         return best
@@ -324,6 +338,8 @@ class PulseOracle(object):
             return False
         if kn < kr:
             return True
+        if kn == kr and self.level_surface and self.low.get(n, 0) != self.low.get(r, 0):
+            return self.low.get(n, 0) > self.low.get(r, 0)   # third tier: farther from the deepest bed gives to nearer
         return kn == kr and dr > dn
 
     def _keys(self, comp):
@@ -350,6 +366,9 @@ class PulseOracle(object):
         ds = bfs(src, False)
         dk = bfs(snk, True)
         self.key = {c: (ds.get(c, 0), -dk.get(c, 0)) for c in exc}
+        # levelBySurfaceEnabled: hops to the component's deepest bed (RM_FlowKernel.lowHops).
+        deepest = max((self.D[c] for c in exc), default=0)
+        self.low = bfs([c for c in exc if self.D[c] == deepest], True) if self.level_surface else {}
 
     def set_cell(self, c, d, f):
         """Mirror a live cell the oracle did not drive (a pawn job's result)."""
@@ -476,8 +495,72 @@ class PulseOracle(object):
                     self.F[r] += 1
                     self.received[r] = self.pulse_n
                     moved += 1
+            if self.level_surface:
+                self._level_regions(comp)
         for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
             del self.fluid[c]
+
+    def _held(self, c, fl):
+        if self.received.get(c) != self.pulse_n:
+            return False
+        return self.creep_thick if viscosity_stride(_ticks_per_tile(fl)) > 1 else self.creep_water
+
+    def _level_regions(self, comp):
+        """RM_FlowKernel.LevelWetRegions (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND): per connected wet region of one
+        fluid (not held by creep), move a unit from the highest surface to the lowest surface among the region and its
+        dug rim while they differ by 2+; each cell gives <= per and takes <= per in this pass. Donor ties: lowest
+        index; taker ties: deepest bed, then lowest index. Regions in order of their lowest cell index."""
+        per = self.per
+        surf = lambda c: self.F[c] - self.D[c]
+        flu = lambda c: self.fluid.get(c, "RM_Fluid_Water")
+        gave, got, member = {}, {}, set()
+        seeds = sorted((c for c in comp if self.exc(c) and self.F[c] > 0), key=self.idx)
+        for seed in seeds:
+            if seed in member:
+                continue
+            fl = flu(seed)
+            if self._held(seed, fl):
+                continue
+            region, i = [seed], 0
+            member.add(seed)
+            while i < len(region):
+                c = region[i]
+                i += 1
+                for dx, dz in CARDINAL:
+                    n = (c[0] + dx, c[1] + dz)
+                    if n in member or not self.exc(n) or self.F[n] == 0 or flu(n) != fl or self._held(n, fl):
+                        continue
+                    member.add(n)
+                    region.append(n)
+            if self.viscosity and not fluid_moves(self.pulse_n, fl):
+                continue
+            rim = set()
+            for c in region:
+                for dx, dz in CARDINAL:
+                    n = (c[0] + dx, c[1] + dz)
+                    if n in member or not self.exc(n) or self.F[n] >= self.D[n] or (self.F[n] > 0 and flu(n) != fl):
+                        continue
+                    rim.add(n)
+            rset = set(region)
+            while True:
+                donors = [c for c in region if self.F[c] > 0 and gave.get(c, 0) < per]
+                takers = [c for c in list(rset) + sorted(rim, key=self.idx)
+                          if self.F[c] < self.D[c] and got.get(c, 0) < per]
+                if not donors or not takers:
+                    break
+                d = min(donors, key=lambda c: (-surf(c), self.idx(c)))
+                t = min(takers, key=lambda c: (surf(c), -self.D[c], self.idx(c)))
+                if surf(d) - surf(t) < 2:
+                    break
+                self.F[d] -= 1
+                if self.F[t] == 0:
+                    if fl == "RM_Fluid_Water":
+                        self.fluid.pop(t, None)
+                    else:
+                        self.fluid[t] = fl
+                self.F[t] += 1
+                gave[d] = gave.get(d, 0) + 1
+                got[t] = got.get(t, 0) + 1
 
     def run(self, cells, pulses):
         out = []
@@ -2826,10 +2909,10 @@ def phase_X(L, args):
         wt = {rows[c]["terrain"] for c in water_row if rows.get(c, {}).get("f")}
         j = rows.get(X_JUNCTION, {})
         L.row("X6_two_fluids_distinct", okr and not wrong and tar_f == 4 and wat_f == 4 and j.get("fluid") == WATER
-              and j.get("f") == 1 and len(tt) == 1 and len(wt) == 1 and not (tt & wt)
+              and j.get("f") == 2 and len(tt) == 1 and len(wt) == 1 and not (tt & wt)
               and not any(t.startswith("RM_Channel") for t in tt | wt), "MOD",
               "tar row %s levels drawn %s | water row+junction %s levels drawn %s | junction %s F=%s (water reached it "
-              "first, one level by gravity; tar refused: no-mix) | wrong-fluid cells %s" % (tar_f, sorted(tt), wat_f, sorted(wt), j.get("fluid"),
+              "first and, levelling by surface, filled the D=2 junction to the brim; tar refused: no-mix) | wrong-fluid cells %s" % (tar_f, sorted(tt), wat_f, sorted(wt), j.get("fluid"),
                                                                        j.get("f"), wrong[:3]))
         okf, tf = _fill_fluid(L, ro[0], 1, TAR)      # filled only now: ON it would still sit at step 0..1
         L.sset(S_FW, "viscosityEnabled", False)

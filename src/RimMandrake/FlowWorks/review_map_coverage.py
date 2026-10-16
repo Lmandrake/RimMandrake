@@ -46,7 +46,7 @@ FEATURES = [
     ("set", r"^digFind", "Digging turns up minerals", "dig_finds"),
     # ---- flow
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
-    ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled)$", "Viscosity: tar crawls", "flow_identity"),
+    ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled)$", "Viscosity: tar crawls", "flow_identity"),
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|sourceBudgetMultiplier|minLimitlessBodyCells)$",
      "Ponds pay out; map-edge lakes never run dry", "flow_ponds"),
     ("set", r"^(recessionEnabled|recedeKeepsLastCell|recedeSparesOutflow)$", "A pond visibly recedes", "flow_shrinks"),
