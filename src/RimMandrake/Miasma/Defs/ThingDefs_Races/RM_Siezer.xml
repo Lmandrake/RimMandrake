@@ -354,9 +354,7 @@
         <baseTendDurationHours>48</baseTendDurationHours>
         <disappearsAtTotalTendQuality>3</disappearsAtTotalTendQuality>
       </li>
-      <li Class="AlphaBehavioursAndEvents.HediffCompProperties_RemoveFromMechsAndGhouls">
-				
-			</li>
+      <li Class="RimMandrake.Miasma.RM_HediffCompProperties_NotOnMechsOrGhouls" />
     </comps>
   </HediffDef>
   <BodyPartDef>

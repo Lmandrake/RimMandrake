@@ -295,14 +295,11 @@
         <baseTendDurationHours>24</baseTendDurationHours>
         <severityPerDayTended>-0.53</severityPerDayTended>
       </li>
-      <li Class="AlphaBehavioursAndEvents.HediffCompProperties_TurnWhenDead">
-        <thingToTurnTo>RM_Chittik</thingToTurnTo>
-        <numberOfSpawn>
-          <li>1</li>
-          <li>3</li>
-        </numberOfSpawn>
-        <severityToTurn>0.15</severityToTurn>
-        <isHostile>false</isHostile>
+      <li Class="RimMandrake.TheRot.RM_HediffCompProperties_SpawnOnDeath">
+        <pawnKind>RM_Chittik</pawnKind>
+        <count>1~3</count>
+        <minSeverity>0.15</minSeverity>
+        <hostile>false</hostile>
         <keepGender>false</keepGender>
       </li>
       <li Class="HediffCompProperties_Immunizable">
@@ -311,9 +308,7 @@
         <severityPerDayImmune>-0.70</severityPerDayImmune>
         <immunityPerDayNotSick>-0.40</immunityPerDayNotSick>
       </li>
-      <li Class="AlphaBehavioursAndEvents.HediffCompProperties_RemoveFromMechsAndGhouls">
-				
-			</li>
+      <li Class="RimMandrake.TheRot.RM_HediffCompProperties_NotOnMechsOrGhouls" />
     </comps>
     <stages>
       <li>

@@ -254,6 +254,16 @@ def static_checks():
     sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
     import donor_plain_ports_check  # DONOR_CODE_PLAIN_PORTS_1: the duskfire port (RM_Thermadon)
     bad += donor_plain_ports_check.static_checks("Miasma")
+    # Phase 0: RM_LockJawDisease's donor comp (AlphaBehavioursAndEvents.HediffCompProperties_RemoveFromMechsAndGhouls)
+    # is ours now. A donor Class here fails def load with the donor off and takes the hediff (and the Siezer bite) with it.
+    sz = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Siezer.xml"), encoding="utf-8").read()
+    if "AlphaBehavioursAndEvents" in sz:
+        bad.append("RM_Siezer.xml still names an AlphaBehavioursAndEvents class")
+    if "RimMandrake.Miasma.RM_HediffCompProperties_NotOnMechsOrGhouls" not in sz:
+        bad.append("RM_LockJawDisease lacks RM_HediffCompProperties_NotOnMechsOrGhouls")
+    cs = open(os.path.join(HERE, "Source", "RM_HediffComp_NotOnMechsOrGhouls.cs"), encoding="utf-8").read()
+    if "CompShouldRemove" not in cs:  # CompPostMake removal is a no-op: the hediff is not in the set yet
+        bad.append("RM_HediffComp_NotOnMechsOrGhouls no longer removes through CompShouldRemove")
     return bad
 
 
