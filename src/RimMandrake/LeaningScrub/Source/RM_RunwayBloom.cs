@@ -254,18 +254,32 @@ namespace RimMandrake.LeaningScrub
             }
             ThingDef hole = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Filth_SurrikExitHole");
             int holesBefore = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
+            // Centre the bloom on a wild swayer that has a wild surfacer within the bloom radius: the first bloom animal in
+            // spawn order is usually native fauna across the map, out of reach of the pair the proof spawned (LIVE
+            // 2026-10-16: "SWAYING 0 HOLES +0 ANSWERED 9", nine natives answered, the spawned pair never queued).
             Pawn first = null;
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < all.Count && first == null; i++)
             {
-                if (p.def.HasModExtension<RM_RunwayBloomExtension>() && p.Faction == null)
+                Pawn s = all[i];
+                if (!IsWildBloomAnimal(s, RM_RunwayBloomResponse.Sway))
                 {
-                    first = p;
-                    break;
+                    continue;
+                }
+                for (int j = 0; j < all.Count; j++)
+                {
+                    Pawn u = all[j];
+                    if (IsWildBloomAnimal(u, RM_RunwayBloomResponse.Surface)
+                        && RM_CoatKernel.InBloomRadius(u.Position.x, u.Position.z, s.Position.x, s.Position.z))
+                    {
+                        first = s;
+                        break;
+                    }
                 }
             }
             if (first == null)
             {
-                return "REFUSED: no wild bloom animal on the map (spawn a ribbonwhip and a surrik)";
+                return "REFUSED: no wild ribbonwhip with a wild surrik within the bloom radius (spawn the pair together)";
             }
             int now = Find.TickManager.TicksGame;
             comp.Bloom(first.Position, now);
@@ -273,6 +287,12 @@ namespace RimMandrake.LeaningScrub
             comp.RunPending(now + 1000);
             int holesAfter = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
             return "SWAYING " + comp.swaying.Count + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;
+        }
+
+        private static bool IsWildBloomAnimal(Pawn p, RM_RunwayBloomResponse response)
+        {
+            RM_RunwayBloomExtension ext = p?.def.GetModExtension<RM_RunwayBloomExtension>();
+            return ext != null && ext.response == response && p.Faction == null && !p.Dead && !p.Downed;
         }
 
         private Job FleeFrom(Pawn a, IntVec3 from, int distance)
