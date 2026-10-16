@@ -223,6 +223,9 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # sweep clean, RUT_Miasma's 9 dangling wildAnimals refs resolve again) owed
 # on the next full load — this hold is lifted, not superseded.
 
+# --- Pyrelands dev script: a shell harness for burrow trials, never game content (RELEASE_PACKAGING 2026-10-15) ---
+Pyrelands/diag/*   # dev harness script, not game content
+
 # --- Pyrelands flora defs hold: LIFTED 2026-09-14, same day --
 # All flora sprites landed (11 rendered, quickgrass C-variant waived at 2/3
 # variants after two gate fails); defs + art deploy together, as the hold
@@ -443,6 +446,7 @@ GimmeSomeSlack/review/*   # review sheet + key kept beside the mod for quick rev
 GimmeSomeSlack/northstar/*   # proof/validation result JSONs: evidence, not game content
 # --- FlowWorks capability review sheet: a human-review artifact, never part of the shipped mod (2026-10-05) ---
 FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside the mod; not game content
+FlowWorks/northstar/*   # RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
 # --- FlowWorks review MAP data: read by review_map.py on the Windows side, never game content (2026-10-05) ---
 FlowWorks/review_map_stations_visuals.json   # visuals station data for the review map builder; not game content
 # --- Tentacle twitch wiring: held until the owner accepts the split art (owner "Both twitch", by card 2026-10-15) ---

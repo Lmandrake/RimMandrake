@@ -3,107 +3,51 @@
   <name>RimMandrake: FlowWorks</name>
   <author>Mandrake</author>
   <packageId>mandrake.rm.flowworks</packageId>
+  <modVersion>1.0.0</modVersion>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Dig a channel, let a fluid flow into it: a species- and
-biome-agnostic engine for canals that carry water, ooze, slime, oil, tar or
-fuel from a source into the terrain a colonist chooses.
+  <description>Dig a channel and let a liquid flow into it. FlowWorks is one engine for everything liquid: canals, pits, ponds, tanks, hoses and rivers that move.
 
-Depth is the primitive. Every excavated cell carries two small integers — D,
-how far below the surface it was dug (shallow, mid, deep, SUPERDEEP), and F,
-how much liquid is in it — and everything else is a function of those two on
-one cell: what it costs to cross, how much it holds, and which liquid surface
-is drawn. We dig down; we never build up. There is no elevation model, no
-height advantage, and no fluid simulation: liquid levels itself out on a
-pulse, by sorting the deepest cells first and letting a full one overflow
-into whatever has room.
+Digging. Mark ground and a colonist digs a canal there; dig the same ground again to go one level deeper. There are four depths, and the deepest is a pit. Trenches slow people down (deeper is slower, flooded is slower still, and a pit cannot be crossed), so a dug line is a real defensive barrier. A canal can be filled back in, and the liquid in it is pushed along rather than deleted. Digging sometimes turns up chunks of local stone or minerals, with a letter the first time each one appears.
 
-A natural liquid body IS a source — deep terrain that is already full, which
-is why it spills into a shallower channel dug at its edge. Liquid stays in
-what has been excavated.
+Flow. Any pond is a source: liquid spreads along a canal dug from its edge in steady pulses and stays inside the dug channel. A lake touching the map edge never runs dry; an enclosed pond visibly shrinks as it pays out and slowly refills from rain, season and seepage. Rain fills open trenches while roofed ones stay dry, and a canal that runs off the map edge drains away. Each liquid keeps its own nature (tar crawls while water runs), and two different liquids never mix: where their fronts meet, both stop. Canyon floods run through your canals instead of wiping them out.
 
-Shipped: the depth/fill grid and its pulse engine
-(`RM_MapComponent_Excavation`), a dig designator that deepens a cell each
-time it is used, depth-derived movement cost, a three-tier fill ladder on
-vanilla's own edge-aware water ramps, and `FluidDef`s describing what a
-source carries — water and tar for canals, plus the wider LiquidDef
-registry (below) covering sixteen liquid types, most with their own terrain
-suites and many with bottled forms. Bottles, buckets and barrels fill and wash at a
-matching liquid's shore, and a buildable liquid tank holds a bulk stock of
-one liquid at a time, filled and drained by the same containers.
+Fire. Fire or an explosion lights tar, oil or propane, and the flame travels along the canal like a fuse you can outrun. A burning canal burns for days, spreads back into its pond and sets anyone standing in it alight. Firefoam puts it out, and rain has a chance to. Corrosive liquids can eat whatever stands in them (off by default).
 
-Flexible hoses (moved in from Gimme Some Slack): a hose reel a colonist
-carries out and winds back, a thick stiff hose that lies flat when empty and
-plumps while liquid flows, relay reels to reach further, and four looks
-(Scrapper, Industrial, Modern, Futuristic) picked on the build button.
+Pits. Anything that falls into a pit at least as wide as it is cannot climb out; a creature too wide for the pit simply walks out. Colonists never walk into an open pit; being pushed in or jumping in on purpose is what puts someone down there, and the fall hurts. Someone in a pit can only trade fire with whoever stands at its edge. A pit cover hides the hole and gives way underfoot (three builds bear different weights), spikes at the bottom wound whoever falls on them, and opening a gate floods an occupied pit to drown, poison or burn whoever is in it. Lower a ladder and people climb out; raise it and they are stranded. Wall a pit in and add a prisoner bed and it becomes a prison wardens run from the lip; an open pit bakes by day and freezes by night, wearing down a prisoner's resistance. Sluice gates and security grates let liquid through but hold creatures and prisoners.
 
-A SUPERDEEP excavation is the trapping level and the only one: anything that
-walks into one falls in, and if the hole is as wide as it is, it is held there
-whether the hole is dry or brimming, and gets out only by climbing a ladder
-somebody built down there. Pull or raise the ladder and they stay. Depth touches shooting in exactly one way, and it is a
-restriction rather than an advantage — whoever is in a superdeep hole can only
-trade fire with whoever is standing right at its lip, both directions.
+Carry and store. Bottles, buckets and barrels fill at a matching shore or tank and wash out for reuse. Tanks hold a bulk stock of one liquid at a time, pumps move liquid out of ponds and canals, and hose reels (moved here from Gimme Some Slack) lay a hose a colonist carries out and winds back, lying flat when empty and plumping while liquid flows, with relay reels to reach further and four looks to pick from on the build button. Drills and taps bring underground liquids up, cleaned water feeds thirst, and ruined industrial liquid plants (desalination, tar refinery, pumping station) can be found and repaired.
 
-Canal pieces: a sluice (sealed while shut, passes liquid open), a security
-grate (passes liquid, holds prisoners), a swale (turns nearby ground more
-fertile while water stands in it), ladders down into a dug cell, and pit
-spikes.
+The land. Many liquids exist as ground (brine, boiling water, propane, acid, tar and more), each with its own terrain. Newly generated maps get shores of the local liquid, and hot rivers steam in colour. A swale turns nearby sand into soil while water stands in it. Rivers move: the current shoves pawns, corpses and loose items downstream, and anyone swept off the map edge walks home a few days later. Ford stones, weirs that catch fish and calm the water upstream, bank stakes that hold back a spring flood, and ferry ropes let you work with the river rather than around it. Pan a river for gold, or set a sluice box to sift ore from a stream.
 
-Burning liquids are built (a fuse creeps along tar or oil once vanilla fire
-touches it) but not yet proven in a live game.
+Every mechanic has a switch in Mod Settings; with everything off, the mod still digs dry canals.
 
-The engine writes the map's temporary terrain layer, which
-is base-game machinery, and ships its own temporary terrains rather than
-naming the Odyssey-only ones. Harmony is required.
-
-MERGED IN 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1) — one mod now owns
-the whole liquid domain, per the owner's ruling that depth is the single
-primitive underneath all of it:
-
-PITS. A pit is any canal cell dug down to superdeep — there is no pit
-building. Whoever walks, is pushed or jumps in takes a fall and, if the pit is
-as wide as they are, cannot climb out until a ladder stands in their cell.
-They stay on the map, on the pit floor.
-
-WATER EFFECTS (was mandrake.rm.manywaters). The generic water-effects
-engine: animated river-steam ambience off a biome's own opt-in extension,
-RM_DeepSand (impassable, fishable sand built the way vanilla deep water is),
-and the coloured-water and coloured-slime terrain, fleck and bottle
-families. Biome-agnostic; the Ash'karr wiring lives in RimUtinni.
-
-LIQUID TYPES (was mandrake.rm.liquidtypes). The liquid registry: per-liquid
-TerrainDef suites cloned off vanilla water — tar, ooze, propane, acid,
-brine, coolant, ichor and the rest — plus the RM_LiquidProperties extension
-the C# reads for what native fields cannot say (pH/corrosion, damage on
-immersion versus contact).
-
-RIVERS (was mandrake.rm.riverworks; merged 2026-10-05 — owner: "I think river
-works needs to be part of flow works."). Rivers that move: moving river water
-shoves pawns, corpses and loose items downstream. Chest-deep water is a fast
-lane nobody wades out of, shallow water an edge lane you can still cross;
-bigger rivers shove harder and a spring or torrential-rain flood makes every
-river fiercer. Swept to the edge of the map and you are washed away — your
-people walk home a few days later, and a letter tells you so. Ford stones laid
-across shallow water cross safely, and colonists route to fords and bridges on
-their own. The bank works: a weir built on the bank edge stops what the river
-carries, calms a long stretch upstream and catches fish from the river's own
-stock plus whatever this country's rivers bring down; a continuous line of bank
-stakes holds back a spring flood like a levee, and any gap lets it in; let a
-weir wear down and a flood breaches it, washing its catch downstream and
-snapping the stake-line below it post by post. Silt-traps turn the bank soil
-rich, and two ferry posts across a river string a rope nobody is swept off.
-Every piece has a toggle in the Rivers section of FlowWorks' Mod Settings.
-
-NOT merged, and staying siblings on the owner's boundary principle —
-FlowWorks owns what a liquid IS and DOES; a machine that TRANSFORMS one
-liquid into another is technology: GelatinousSlime (registers rows, keeps
-its genes), WreckedMachines (distillation and every other conversion), and
-FloodedCanyon (a flood-driver client).</description>
+Requires Harmony and all five RimWorld expansions.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Royalty</packageId>
+      <displayName>Royalty</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Ideology</packageId>
+      <displayName>Ideology</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>Anomaly</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
     </li>
     <li>
       <packageId>brrainz.harmony</packageId>
