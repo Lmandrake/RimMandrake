@@ -540,8 +540,9 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             # A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
             # onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every chain
             # starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
+            mi = {}        # stays usable by the gas sweeps below if map_info itself fails
             try:
-                mi = session.call("jawa/map_info")
+                mi = session.call("jawa/map_info") or {}
                 session.call("jawa/set_roof_batch", ops="None:0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))),
                              refresh=False)
             except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
@@ -622,9 +623,11 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             save_fixtures(fixtures, clockgate.read_ticks(session))
         except Exception:     # noqa: BLE001
             pass
-    all_green = all(c["verdict"] == "PASS" or
-                    (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
-                    for chain in chains_out for c in chain["components"])
+    # a suite that recorded NO component at all measured nothing: never green (all() of nothing is True)
+    all_comps = [c for chain in chains_out for c in chain["components"]]
+    all_green = bool(all_comps) and all(c["verdict"] == "PASS" or
+                                        (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
+                                        for c in all_comps)
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
     if situational:

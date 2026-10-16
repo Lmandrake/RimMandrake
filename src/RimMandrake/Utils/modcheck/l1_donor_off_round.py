@@ -449,6 +449,8 @@ def derive(include_frozen=False, closure=None, commit_files=None):
     for s in species + plant_rows:
         s["inTier"] = (s.get("packageId") in in_tier) if in_tier else None
     problems = []
+    if git_err:       # without the Phase 0 commits the subject list is silently shorter
+        problems.append("Phase 0 commit def files unreadable: %s" % git_err)
     subj = {s["kind"] for s in species} | {s["race"] for s in species} | set(kinds)
     for b in BURSTS:
         if b["kind"] not in subj:
@@ -706,19 +708,21 @@ class Round(object):
         # SANITY PROBE (2026-10-16 night): jawa/thing_graphic reads Pawn.Graphic, which is UI/Misc/BadTexture for EVERY pawn
         # until it has been drawn: a vanilla Muffalo read badTex=true and 144 of 144 spawn rows failed on it. A control
         # pawn decides whether badTex means anything on this map; if the control is bad, pawn badTex is not evidence.
-        pawn_badtex_blind = False
+        pawn_badtex_blind = True       # blind until a control pawn proves the instrument can see
         rect0 = self.site(6, 6, "SPAWN_CONTROL")
         if rect0 is not None:
             c = self.call("jawa/spawn_pawn", kindDef="Muffalo", x=rect0[0] + 2, z=rect0[1] + 2, faction="none", count=1)
             cids = [p.get("id") for p in (c.get("pawns") or []) if p.get("ok")]
             if cids:
                 cg = self.call("jawa/thing_graphic", thing=",".join(cids))
-                pawn_badtex_blind = any(x.get("badTex") for x in (cg.get("things") or []) if isinstance(x, dict))
+                crows = [x for x in (cg.get("things") or []) if isinstance(x, dict)]
+                if crows:
+                    pawn_badtex_blind = any(x.get("badTex") for x in crows)
             self.call("jawa/destroy_bulk", filter="factionlessAnimals", dryRun=False)
         if pawn_badtex_blind:
             self.row("SPAWN_BADTEX_CONTROL", "UNMEASURED", "HARNESS",
-                     {"note": "a vanilla Muffalo reads badTex=true: Pawn.Graphic is not drawn yet; pawn badTex is ignored, "
-                              "texture grading rests on the Player.log rows (L03/L04)"})
+                     {"note": "no control: a vanilla Muffalo read badTex=true (Pawn.Graphic not drawn yet) or could not be "
+                              "spawned/read; pawn badTex is ignored, texture grading rests on the Player.log rows (L03/L04)"})
         for i in range(0, len(species), batch):
             chunk = species[i:i + batch]
             rect = self.site(4 * batch + 4, 10, "SPAWN_BATCH_%d" % (i // batch))
@@ -778,6 +782,7 @@ class Round(object):
             rid = "PLANT_" + p["def"]
             rect = self.site(5, 5, rid)
             if rect is None:
+                self.row(rid, "UNMEASURED", "SITE", "site would not clear")
                 continue
             r = self.call("jawa/set_plants", ops="%s:%d,%d,1,1" % (p["def"], rect[0] + 2, rect[1] + 2), growth=1.0)
             got = self.things(p["def"], rect=rect)
@@ -811,6 +816,7 @@ class Round(object):
             rid = b["id"]
             rect = self.site(11, 11, rid)
             if rect is None:
+                self.row(rid, "UNMEASURED", "SITE", "site would not clear")
                 continue
             cx, cz = rect[0] + 5, rect[1] + 5
             self.call("jawa/spawn_batch", ops="%s:%d,%d,75" % (SENTINEL, cx + 1, cz))
@@ -855,6 +861,7 @@ class Round(object):
             o = self.man["oomb"][key]
             rect = self.site(15, 15, rid)
             if rect is None:
+                self.row(rid, "UNMEASURED", "SITE", "site would not clear")
                 continue
             ops = ";".join("%s:%d,%d,1" % (OOMB_FOOD[0], x, z) for x in range(rect[0], rect[0] + 15, 2)
                            for z in range(rect[1], rect[1] + 15, 2))
@@ -900,6 +907,9 @@ class Round(object):
         rid = "HAZE_ZHOOL"
         tile = self.home.get("tile")
         was = self.home.get("mapBiome")
+        if tile is None:
+            self.row(rid, "UNMEASURED", "HARNESS", "map_info named no home tile: nothing to re-biome")
+            return
         self.call("jawa/world_tile_set", tiles=str(tile), biome=h["biome"])
         self.call("jawa/world_commit")
         now = self.call("jawa/map_info").get("mapBiome")
@@ -916,6 +926,7 @@ class Round(object):
                 return
             rect = self.site(21, 21, rid)
             if rect is None:
+                self.row(rid, "UNMEASURED", "SITE", "site would not clear")
                 return
             self.call("jawa/set_plants", ops="%s:%d,%d,21,21" % ((h["plant"],) + tuple(rect[:2])), growth=0.6)
             before = self.things(list(h["results"]))
@@ -952,6 +963,8 @@ class Round(object):
         home_id = self.home.get("mapId")
         rect = self.site(s["size"][0] + 4, s["size"][1] + 4, "PORTAL_ENTER")
         if rect is None:
+            self.row("PORTAL_ENTER", "UNMEASURED", "SITE", "site would not clear")
+            self.row("PORTAL_EXIT", "UNMEASURED", "SITE", "no pocket map to exit")
             return
         if not col:
             self.row("PORTAL_ENTER", "UNMEASURED", "SITE", "no free colonist")
@@ -973,8 +986,9 @@ class Round(object):
             new = {k: v for k, v in now.items() if k not in before}
             if new:
                 break
+        refused = oj.get("success") is False         # the order never reached a pawn: not a verdict on the portal
         if stop or not new:
-            self.row("PORTAL_ENTER", "UNMEASURED" if stop else "FAIL", "HARNESS" if stop else "MOD",
+            self.row("PORTAL_ENTER", "UNMEASURED" if (stop or refused) else "FAIL", "HARNESS" if (stop or refused) else "MOD",
                      {"orderedJob": str(oj.get("message") or oj.get("error"))[:160], "governorStop": stop,
                       "newMaps": 0})
             self.row("PORTAL_EXIT", "UNMEASURED", "HARNESS", "no pocket map to exit")
@@ -1021,6 +1035,9 @@ class Round(object):
         if self.args.only_biomes:
             want = set(self.args.only_biomes.split(","))
             biomes = [b for b in biomes if b["biome"] in want]
+        if not biomes:
+            self.row("MAPGEN_NONE", "UNMEASURED", "HARNESS", "no biome selected (manifest empty or --only-biomes matched none)")
+            return
         probe = self.call("jawa/biome_probe", biomes=",".join(b["biome"] for b in biomes),
                           find=",".join(sorted({n for b in biomes for n in b["portRows"]})) or None,
                           animals=True, plants=False, limit=80)
@@ -1046,6 +1063,8 @@ class Round(object):
                 self.row("MAPGEN_" + b["biome"], "UNMEASURED", "HARNESS", "no settleable scratch tile found")
             return
         home_id = self.home.get("mapId")
+        for b in biomes[len(tiles):]:          # zip() would drop these without a trace
+            self.row("MAPGEN_" + b["biome"], "UNMEASURED", "HARNESS", "only %d settleable scratch tile(s) found" % len(tiles))
         for b, tile in zip(biomes, tiles):
             rid = "MAPGEN_" + b["biome"]
             orig = self.call("jawa/world_tile_get", tiles=str(tile)).get("tiles") or [{}]
@@ -1080,6 +1099,8 @@ class Round(object):
                 self.row(rid, "UNMEASURED", "HARNESS", detail)
             elif exc or (not wild and not plants):
                 self.row(rid, "FAIL", "MOD", detail)
+            elif errs is None:
+                self.row(rid, "UNMEASURED", "HARNESS", dict(detail, note="no journal tap: mapgen exceptions were not observable"))
             else:
                 self.row(rid, "PASS", "MOD", detail)
             self.call("jawa/set_current_map", mapId=home_id)
@@ -1092,6 +1113,9 @@ class Round(object):
 
     def phase_flight(self):
         flyers = self.man["flyers"]
+        if not flyers:
+            self.row("FLIGHT_NONE", "UNMEASURED", "HARNESS", "manifest names no flyer")
+            return
         if not self.args.owner_present:
             for k in flyers:
                 self.row("FLIGHT_" + k, "UNMEASURED", "OWNER",
@@ -1099,6 +1123,8 @@ class Round(object):
             return
         rect = self.site(4 * max(1, len(flyers)) + 4, 8, "FLIGHT")
         if rect is None:
+            for k in flyers:
+                self.row("FLIGHT_" + k, "UNMEASURED", "SITE", "site would not clear")
             return
         for j, k in enumerate(flyers):
             self.call("jawa/spawn_pawn", kindDef=k, x=rect[0] + 2 + 4 * j, z=rect[1] + 4, faction="player", count=1)
@@ -1125,13 +1151,16 @@ class Round(object):
         mark = self.log_mark()
         self.call("rimworld/load_game", saveName=name)
         ok, waited = (self.V._wait_playing(self.B, budget_s=1200) if self.V else (False, "no harness"))
-        refs = [e for e in (self.log_since(mark, ["Could not load reference", "Could not resolve cross-reference",
-                                                    "Could not find class"]) or [])]
+        logged = self.log_since(mark, ["Could not load reference", "Could not resolve cross-reference",
+                                       "Could not find class"])
+        refs = list(logged or [])
         donor_refs = [e for e in refs if any(re.search(r"\b%s\b" % re.escape(n), e) for n in needles)]
         mm = self.call("jawa/savegame_mod_match")
         detail = {"save": name, "playing": ok, "waited": waited, "referenceErrors": len(refs),
                   "donorReferenceErrors": donor_refs[:10], "modMatch": str(mm.get("loadedModsSummary"))[:200]}
-        if not ok:
+        if ok and logged is None:
+            self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, note="no journal tap: reference errors were not observable"))
+        elif not ok:
             self.row("SAVE_LOAD", "UNMEASURED", "HARNESS", dict(detail, hint="a mod-mismatch dialog is the usual "
                      "block on a short tier: read rimworld/get_ui_state"))
         else:
@@ -1155,21 +1184,26 @@ def run(args, B=None, V=None):
     if B is None:
         B = V.Bridge()
     rd = Round(B, man, args, V)
+    unknown = [p for p in args.phase.split(",") if args.phase != "all" and p not in PHASES]
+    if unknown:
+        raise SystemExit("unknown phase(s) %s; known: %s" % (",".join(unknown), ",".join(PHASES)))
     want = PHASES if args.phase == "all" else tuple(p for p in PHASES if p in args.phase.split(","))
     if "pre" not in want:
         want = ("pre",) + want
+    aborted = False
     for ph in want:
         if ph == "save" and args.phase != "all" and "save" not in args.phase.split(","):
             continue
         if ph == "pre":
             if not rd.phase_pre() and not args.force:
                 print("preflight failed: stopping (pass --force to run the rest anyway)")
+                aborted = True
                 break
             continue
         getattr(rd, "phase_" + ph)()
     res = {"mode": "live" if args.phase == "all" else "partial", "tier": TIER, "manifestHead": man.get("head"),
            "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "phases": list(want),
-           "ownerPresent": args.owner_present, "rows": rd.rows, "summary": summarize(rd.rows),
+           "ownerPresent": args.owner_present, "aborted": aborted, "rows": rd.rows, "summary": summarize(rd.rows),
            "tapLost": getattr(rd.tap, "lost", None), "plan": PLAN}
     out = args.out or os.path.join(REPO, "Transient", "phase0_L1_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
     with open(out, "w", encoding="utf-8") as fh:
@@ -1208,7 +1242,7 @@ def main(argv=None):
         return 0 if not any(r["status"] == "FAIL" for r in man["offlineRows"] if r["id"] in ("O01_TIER_RESOLVES",
                                                                                                "O04_MANIFEST_SANE")) else 1
     res = run(a)
-    return 0 if not res["summary"].get("FAIL") else 1
+    return 0 if not res["summary"].get("FAIL") and not res["aborted"] else 1
 
 
 if __name__ == "__main__":
