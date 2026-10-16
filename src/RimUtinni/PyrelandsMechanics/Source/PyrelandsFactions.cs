@@ -22,12 +22,23 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// temporary faction cannot farm or raid anything.</summary>
         internal static Faction TribesOrNull()
         {
-            Faction f = Find.FactionManager?.FirstFactionOfDef(PyrelandsMechanicsDefOf.TribeCivil);
-            if (f == null || f.defeated || f.temporary || f.IsPlayer)
+            // Every faction of the def is considered: the FIRST one being
+            // defeated or temporary must not mask a surviving second.
+            var all = Find.FactionManager?.AllFactionsListForReading;
+            if (all == null)
             {
                 return null;
             }
-            return f;
+            for (int i = 0; i < all.Count; i++)
+            {
+                Faction f = all[i];
+                if (f != null && f.def == PyrelandsMechanicsDefOf.TribeCivil
+                    && !f.defeated && !f.temporary && !f.IsPlayer)
+                {
+                    return f;
+                }
+            }
+            return null;
         }
     }
 }
