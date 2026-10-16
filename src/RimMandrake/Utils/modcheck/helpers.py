@@ -462,6 +462,52 @@ def restore_colonists(session, baseline, resurrect=False):
                         residue=residue)
 
 
+def settle_bystanders(session, fixture_ids=(), draft=True):
+    """Bring the site's OWN colonists (every living, spawned colonist NOT in `fixture_ids`) to a sound state BEFORE a
+    chain starts: remove every INJURY_DEFS hediff they carry (harm left by earlier suites on the same saved site),
+    refill Food/Rest/Joy, end mental states and draft them in place so they stay off the test pads and out of the
+    biome's hazards. LIVE 2026-10-16 (LeaningScrub after Contagion on the same site): bystander Ray, malnourished and
+    bleeding (bleedRate 0.23, BloodLoss 0.32, eight scratches/bruises) was downed mid-chain, the vitals latch stopped
+    safe_advance and the gale breakdown row went UNMEASURED although no test pawn was touched.
+
+    It runs at SETUP, never during a row: harm the mod deals to a bystander during the row still stops the clock and
+    is still reported. It never touches a fixture (the row's own actors). Verified by re-read: residue lists any
+    injury hediff left on a bystander. Drafting is upkeep, not verified (a session without set_draft is not a defect).
+    HIDES: chronic conditions outside INJURY_DEFS are left as they are (heart artery blockage, addictions)."""
+    fix = set(str(i) for i in fixture_ids or ())
+    rows = [r for r in read_pawns(session) if is_colonist(r) and not r.get("dead") and r.get("spawned", True)
+            and str(r["id"]) not in fix]
+    acted, removed = 0, []
+    for row in rows:
+        for h in (row.get("health") or {}).get("hediffs") or []:
+            if h.get("def") not in INJURY_DEFS:
+                continue
+            r = session.call("jawa/pawn_health", pawn=row["id"], action="remove", hediff=h["def"],
+                             bodyPart=h.get("part") or "")
+            if not (r or {}).get("success") and h.get("part"):
+                session.call("jawa/pawn_health", pawn=row["id"], action="remove", hediff=h["def"])
+            acted += 1
+            removed.append((row["id"], h["def"], h.get("part")))
+    ids = [r["id"] for r in rows]
+    c = calm_colonists(session, ids)
+    n = restore_needs(session, ids)
+    drafted = []
+    if draft:
+        for pid in ids:
+            try:
+                if (session.call("jawa/set_draft", pawnId=pid, drafted=True) or {}).get("success"):
+                    drafted.append(pid)
+            except Exception:                                    # noqa: BLE001 - upkeep, never a verdict
+                pass
+    after = dict((r["id"], r) for r in read_pawns(session))
+    residue = [(pid, "hediff %s/%s" % hediff_key(h)) for pid in ids if pid in after
+               for h in (after[pid].get("health") or {}).get("hediffs") or [] if h.get("def") in INJURY_DEFS]
+    residue.extend(c.residue)
+    residue.extend(n.residue)
+    return HelperResult("settle_bystanders", acted=acted + c.acted + n.acted, verified=not residue, residue=residue,
+                        evidence={"bystanders": ids, "removed": removed, "drafted": drafted})
+
+
 # ------------------------------------------------------------------ bland map
 class BlandReport(object):
     def __init__(self):

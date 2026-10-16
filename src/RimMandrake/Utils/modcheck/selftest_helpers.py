@@ -233,6 +233,26 @@ def main():
         rep = H.prepare_bland_map(w, tx)
     check("control: without resurrect the same loss makes the map not bland", (not rep.bland) and w.pawns["Col3"]["dead"], str(rep.problems))
 
+    # --- settle_bystanders: a site colonist left bleeding by an earlier suite is mended at setup; a fixture is not
+    w = FakeWorld(pawns=[pawn_row("Ray", hediffs=[hediff("BloodLoss"), hediff("Scratch", "Leg"), hediff("Malnutrition"),
+                                                  hediff("HeartArteryBlockage", "Heart")]),
+                         pawn_row("Fix1", hediffs=[hediff("Cut", "Torso")]),
+                         pawn_row("Wolf1", kind="Wolf_Timber", faction=None, is_player=False, intelligence="Animal",
+                                  hediffs=[hediff("Bite", "Leg")])])
+    w.needs["Ray"] = {"Food": 0.05, "Rest": 0.3, "Joy": 0.2, "Mood": 0.4}
+    r = H.settle_bystanders(w, fixture_ids=["Fix1"])
+    left = set(h["def"] for h in w.pawns["Ray"]["health"]["hediffs"])
+    check("settle_bystanders mends a bystander's injuries and needs, verified, chronic conditions left",
+          r.verified and left == {"HeartArteryBlockage"} and w.needs["Ray"]["Food"] >= 0.95, str((r.residue, left)))
+    check("settle_bystanders never touches a fixture or an animal",
+          [h["def"] for h in w.pawns["Fix1"]["health"]["hediffs"]] == ["Cut"]
+          and [h["def"] for h in w.pawns["Wolf1"]["health"]["hediffs"]] == ["Bite"] and r.evidence["bystanders"] == ["Ray"])
+    w = FakeWorld(pawns=[pawn_row("Ray", hediffs=[hediff("Scratch", "Leg")])])
+    w.modes.add("part_mismatch")
+    w._t_jawa_pawn_health = lambda **p: {"success": False, "message": "refused"}
+    r = H.settle_bystanders(w)
+    check("control: a remove that does not take is residue, never verified", (not r.verified) and r.residue, str(r.residue))
+
     n_ok = sum(1 for _, c in _results if c)
     print("\n%d/%d passed" % (n_ok, len(_results)))
     return 0 if n_ok == len(_results) else 1

@@ -47,6 +47,7 @@ import sys
 import time
 
 from modcheck import Suite, ExpectationFailed
+import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
 
 # The situational runner picks the anchor FARTHEST from colonists (0.2..0.8 of the map), which on a 250 map can be
 # (50, 50); the pads below reach 45 cells from it, so spawns landed "Cell is outside the map" (LIVE 2026-10-03). The
@@ -272,6 +273,21 @@ def _prep(t, name, size=PAD_SIZE):
     t.clear_area(size=size + 8)
     r = _rect(t, size + 8)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(r)), layer="top")
+    _settle_bystanders(t)
+
+
+def _settle_bystanders(t):
+    """The site's own colonists, mended and drafted at chain setup (helpers.settle_bystanders). LIVE 2026-10-16 a
+    bystander left bleeding by the Contagion suite was downed mid gale chain and the vitals latch stopped the clock.
+    No LeaningScrub row reads a site colonist: every row spawns its own actors after this runs."""
+    if not _live(t):
+        return
+    try:
+        res = H.settle_bystanders(t.session)
+        _note(t, "bystanders settled (mended / drafted / residue)",
+              [res.evidence.get("removed"), res.evidence.get("drafted"), res.residue])
+    except Exception as ex:    # upkeep: a failure is evidence, never a verdict (the vitals latch still guards the row)
+        _note(t, "bystanders not settled", str(ex)[:200])
 
 
 def _count(t, defName, rect=None):
@@ -965,7 +981,17 @@ def gale_chain(t):
         with _comp(t, "gale_turbine_surge", toggle="galeTurbineSurgeEnabled"):
             if _live(t):
                 tx, tz = x + 4, z - 6
-                t.bridge_call("jawa/spawn_batch", ops="WindTurbine:%d,%d" % (tx, tz))
+                # The wind path (vanilla WindTurbineUtility.CalculateWindCells, rot North, 5x2): x tx-3..tx+3, z tz+2..tz+11
+                # and tz-6..tz-1. Each roofed or blockWind cell takes 20% off, so five zero the output. LIVE 2026-10-16
+                # on the Scrub site all three readings were 0.0 W (a 2026-10-07 quicktest map read 4485/3450 W); clear_area
+                # removed the things, so the path roof is opened here and the inspect lines are kept as evidence.
+                path = "%d,%d,7,10;%d,%d,7,6" % (tx - 3, tz + 2, tx - 3, tz - 6)
+                roof0 = t.bridge_call("jawa/get_roof_batch", rects=path)
+                if _roofed(roof0):
+                    t.bridge_call("jawa/set_roof_batch", ops=";".join("None:" + r for r in path.split(";")))
+                    _note(t, "turbine wind path was roofed; roof removed (before / after)",
+                          [roof0, t.bridge_call("jawa/get_roof_batch", rects=path)])
+                t.bridge_call("jawa/spawn_batch", ops="WindTurbine:%d,%d" % (tx, tz), rot=0)
                 turb = _things(t, "WindTurbine", _rs(_rect(t)))
                 if not turb:
                     _unmeasured(t, "no WindTurbine on the pad after spawn_batch")
@@ -988,8 +1014,9 @@ def gale_chain(t):
                     _restore(t, "galeTurbineBreakdownMtbDays")
                 _note(t, "turbine output W (on, off, on)", [on1, off, on2])
                 if off <= 0:
+                    _, why = _inspect(t, ids["turbine"])
                     _unmeasured(t, "turbine produces %.1f W with the surge off (obstructed or "
-                                   "unpowered): no baseline" % off)
+                                   "unpowered): no baseline; inspect %r" % (off, why))
                 ratio = (on1 + on2) / 2.0 / off
                 if not 1.2 <= ratio <= 1.4:
                     _fail("Gale turbine output ratio surge-on/off = %.3f, expected ~%.2f (%s)"
@@ -1009,6 +1036,20 @@ def gale_chain(t):
 
 
 # --------------------------------------------------------------------------- chain: the lash
+
+LASH_EXPECTED_HURT = ("Scratch", "RM_VenomvineVenom", "BloodLoss")   # RM_VenomvineScratch (parent Scratch) + its venom
+
+
+@contextlib.contextmanager
+def _expected_lash(col):
+    """clockgate.expected_disturbance for the lash victim: a 'hurt' trigger on `col` whose newest hediff is one the
+    lash deals. Downed, dead, another pawn or another hediff are not matched (testenv_guards.expected_hurt)."""
+    import clockgate
+    import testenv_guards as TG
+    preds = [TG.expected_hurt([col], h) for h in LASH_EXPECTED_HURT]
+    with clockgate.expected_disturbance("twitcher lash on its test colonist (the row's subject)",
+                                        lambda trig: any(p(trig) for p in preds)):
+        yield
 
 @suite.chain("lash")
 def lash_chain(t):
@@ -1050,11 +1091,15 @@ def lash_chain(t):
                 if "Poised to strike" not in " ".join(lines):
                     _unmeasured(t, "the stand is not poised before the arm: %s" % lines)
                 n0 = _lash_marks(_rows(t, health=True).get(ids["col"]))
-                t.wait_ticks(120)
-                n1 = _lash_marks(_rows(t, health=True).get(ids["col"]))
-                _, lines1 = _inspect(t, ids["plant"])
-                t.wait_ticks(600)
-                n2 = _lash_marks(_rows(t, health=True).get(ids["col"]))
+                # LIVE 2026-10-16: the strike IS the row ("health 1 -> 0.86; newest hediff BloodLoss"), and the vitals
+                # latch stopped the wait as undeclared harm -> UNMEASURED. Declared, bounded to THIS colonist and the
+                # lash's own marks (the scratch, its venom, the bleeding it starts); anything else still stops the clock.
+                with _expected_lash(ids["col"]):
+                    t.wait_ticks(120)
+                    n1 = _lash_marks(_rows(t, health=True).get(ids["col"]))
+                    _, lines1 = _inspect(t, ids["plant"])
+                    t.wait_ticks(600)
+                    n2 = _lash_marks(_rows(t, health=True).get(ids["col"]))
                 _note(t, "lash: hediffs before / after strike / after the hour's first 600 ticks",
                       [n0, n1, n2])
                 if n1 <= n0:
@@ -1364,12 +1409,38 @@ def _proof(t, name, typ, method, args, label, toggle=None):
 
 # --------------------------------------------------------------------------- chain: ripple
 
+FUZZ_PATCH = 15    # cells square: wider than the pyre's 6-cell ignite radius on every side of its centre
+
+
+def _fuzz_patch(t):
+    """Lay a mature RM_Fuzz patch (ripple cover) on the bloom pad, which the bloom chain leaves bare. The ripple and pyre
+    proof hooks look for cover/unroofed fuzz ON THE MAP; LIVE 2026-10-16 the run map held none ("no fuzz cover plant on
+    this map", "no unroofed fuzz on this map"), so both rows were UNMEASURED whatever the mod did. The patch is the
+    fixture the hooks need, laid by the chain itself so the rows never depend on ambient flora."""
+    _prep(t, "bloom")
+    if _live(t):
+        x, z = t.anchor
+        h = FUZZ_PATCH // 2
+        t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,%d,%d" % (x - h, z - h, FUZZ_PATCH, FUZZ_PATCH), growth=1.0)
+        try:    # evidence only: a patch that did not take shows up as the hook's own UNMEASURED, never a PASS
+            _note(t, "fuzz patch laid (cells)", _count(t, "RM_Fuzz", _rs((x - h, z - h, FUZZ_PATCH, FUZZ_PATCH))))
+        except ExpectationFailed as ex:
+            _note(t, "fuzz patch count unreadable", str(ex)[:200])
+
+
+def _clear_fuzz_patch(t):
+    if _live(t):
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
+
+
 @suite.chain("ripple")
 def ripple_chain(t):
     """Part 6 the ripple (RM_Ripple.cs; owner Q9 "Hiding with a faint shimmer"). RM_RippleProof spawns a small wild
     animal on fuzz, drives the SHIPPED pass in wind and in the Stall (still), reads IsPsychologicallyInvisible."""
+    _fuzz_patch(t)
     _proof(t, "ripple_hides_small_creatures", "RM_RippleProof", "ProofRipple", "on", "ripple proof (on)", "rippleEnabled")
     _proof(t, "ripple_toggle_off_nobody_hides", "RM_RippleProof", "ProofRipple", "off", "ripple proof (off)", "rippleEnabled")
+    _clear_fuzz_patch(t)
 
 
 # --------------------------------------------------------------------------- chain: stallhunt
@@ -1389,7 +1460,9 @@ def pyre_chain(t):
     """Part 5b the calling-pyre (RM_CallingPyre.cs; Q7 three beliefs, N3 fire/ritual memes only). Defs gated on the
     memes; the SHIPPED Ignite/CallHerd on a fuzz patch; the gate refuses with the toggle off."""
     _proof(t, "pyre_beliefs_gated_on_memes", "RM_CallingPyreProof", "ProofPyre", "defs", "pyre defs")
+    _fuzz_patch(t)
     _proof(t, "pyre_lights_fields_and_calls_herd", "RM_CallingPyreProof", "ProofPyre", "fire", "pyre fire", "callingPyreEnabled")
+    _clear_fuzz_patch(t)
     _proof(t, "pyre_toggle_off_refuses", "RM_CallingPyreProof", "ProofPyre", "off", "pyre off", "callingPyreEnabled")
 
 
