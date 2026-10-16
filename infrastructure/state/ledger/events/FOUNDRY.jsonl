@@ -5804,3 +5804,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-15T18:54:11Z","tsn":1792090451676592413}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"close game, restore ModsConfig","ts":"2026-10-15T18:54:16Z","tsn":1792090456888243420}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-15T18:54:33Z","tsn":1792090473960508608}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"take","token":"FOUNDRY.pid18001.f1afde21","expires":"2026-10-16T01:31:24Z","ts":"2026-10-16T00:46:24Z","tsn":1792111584739747337}
+{"seat":"FOUNDRY","event":"lease","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","action":"release","token":"FOUNDRY.pid18001.f1afde21","ts":"2026-10-16T00:46:27Z","tsn":1792111587582286395}
