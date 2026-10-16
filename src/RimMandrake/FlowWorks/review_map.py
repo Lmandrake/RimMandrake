@@ -583,6 +583,25 @@ SETUPS = {
                              marks=[(5, 8, "bottles"), (8, 8, "buckets"), (11, 8, "barrels")],
                              try_=["select the crafting spot: Bills lists the bottle, bucket and barrel recipes"],
                              look="weak spot: every material drawn the same; a material named but not in the label"),
+    # LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16, sheet approved; by card: material on the TRIM only): each
+    # look a 4-cell column group (empty, fresh water, toxic water, tar), bottles top, buckets, barrels bottom; all steel, so
+    # every cap/handle/hoop is the same steel trim and only the look and the window differ.
+    "containers_styles": dict(short="Containers in the four looks", notice="bottles (top), buckets, barrels (bottom) in "
+                              "scrapper, industrial, modern and futuristic; each look: empty, fresh water, toxic water, tar",
+                              s="carry", after="carry_containers", probes=["xml:defName>RM_Barrel_Futuristic<",
+                                                                         "xml:defName>RM_Bottle_Scrapper<"],
+                              stuffed=[("RM_%s%s" % (c, lq), 4 * i + k, z, n_, "Steel")
+                                       for i, _lk in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic"))
+                                       for c, z, n_ in (("Bottle", 11, 3), ("Bucket", 7, 2), ("Barrel", 3, 1))
+                                       for k, lq in enumerate(("Empty", "_FreshWater", "_ToxicWater", "_Tar"))],
+                              style=[("RM_%s%s" % (c, lq), 4 * i + k, z, "RM_%s_%s" % (c, lk))
+                                     for i, lk in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic"))
+                                     for c, z in (("Bottle", 11), ("Bucket", 7), ("Barrel", 3))
+                                     for k, lq in enumerate(("Empty", "_FreshWater", "_ToxicWater", "_Tar"))],
+                              marks=[(0, 13, "scrapper"), (4, 13, "industrial"), (8, 13, "modern"), (12, 13, "futuristic")],
+                              try_=["select a crafting spot or smithy: a container bill has a Style button (four looks)",
+                                    "hover a stack: the look shows in its info card; the cap/handle/hoops are steel"],
+                              look="weak spot: the window not taking the liquid colour; the body tinted; two looks in one stack"),
     "carry_tanks": dict(short="Tanks, pumps, hoses", notice="a pump on the pond shore piped to a tank, powered by a battery",
                         terrain=[("WaterDeep", 0, 5, 3, 4)],
                         build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),

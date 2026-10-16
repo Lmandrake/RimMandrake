@@ -567,6 +567,47 @@ def pipe_looks(t):
                                     "(TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH; review map station tank_styles)")
 
 
+# LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS (owner 2026-10-16: "They too should have the four styles of art."; sheet approved
+# 100%; by card: material colour on the TRIM only, body keeps its painted style, liquid in the masked window). Offline: the
+# style rules, the shipped style defs / ItemBases / Dubs Bad Hygiene bottles / generated filled defs, and the call sites
+# (Source/SelfTest/ContainerStyleChecks.cs); the 24 installed PNGs (12 sprites + 12 masks). OWED live: review map station
+# containers_styles -- each look drawn, the window in the liquid's colour, the trim in steel, the body untinted; a bill's
+# Style button -> Modern makes Modern bottles; fill/drink/wash keeps the look; two looks never merge on one cell.
+CONTAINER_STYLE_CASES = ["ContainerStyle_looks_and_names", "ContainerStyle_tech_default",
+                         "ContainerStyle_stacks_keep_looks_apart", "ContainerStyle_window_colours",
+                         "ContainerStyle_shipped_style_defs", "ContainerStyle_item_bases_wired",
+                         "ContainerStyle_dbh_bottles_masked", "ContainerStyle_call_sites"]
+
+
+@suite.chain("container_styles")
+def container_styles(t):
+    """Offline: bottles, buckets and barrels in the four looks (RM_ContainerStyleMath, shipped XML, call sites). 0 ticks."""
+    cases = {}
+    with t.component("container_style_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in CONTAINER_STYLE_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    with t.component("container_art_installed"):
+        if t._guard():
+            want = [os.path.join(HERE, "Textures", "Things", "Item", "Resource", "FlowWorks", look, "RM_%s%s.png" % (size, m))
+                    for look in ("Scrapper", "Industrial", "Modern", "Futuristic")
+                    for size in ("Bottle", "Bucket", "Barrel") for m in ("", "_m")]
+            missing = [os.path.relpath(w, HERE) for w in want if not os.path.isfile(w)]
+            if missing:
+                raise ExpectationFailed("container art missing (%d of 24): %s" % (len(missing), missing[:6]))
+    with t.component("container_styles_live"):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- review map station containers_styles: each look drawn, "
+                                    "window = liquid colour, trim = steel, body untinted; bill Style button -> Modern makes "
+                                    "Modern bottles; fill/drink/wash keeps the look; two looks never merge on one cell "
+                                    "(LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS)")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402

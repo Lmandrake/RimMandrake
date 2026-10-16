@@ -32,17 +32,11 @@
   quicktest of the loop (fill/drink/dirty/wash observed in-game) is OWED —
   see LIQUID_BOTTLE_LOOP_1's own notes for why this pass could not run one.
 
-  REAL ART, LIQUID_BOTTLE_LOOP_1 art pass (2026-09-18), generated against the
-  owner's own brief (rimflow note, 386d51170: "Same thing for the barrels and
-  buckets. Patched together out of patchwork metal hammered together.
-  Matching sets. Occasional dents and dings.") — one scavenged-patchwork
-  silhouette per size (bottle/bucket/barrel), sharing one palette family so
-  the three read as a matching set, shipped at
-  Textures/Things/Item/Resource/FlowWorks/RM_{Bottle,Bucket,Barrel}.png.
-  Still true, unchanged by this pass: every liquid shares its size's ONE
-  silhouette — the design's own intent (LiquidDef.color: "tint for generated
-  art, flecks and bottle fill") wants that silhouette tinted per-liquid at
-  runtime, which is real render-pipeline work, not authored here.
+  ART (LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS, owner 2026-10-16, sheet approved 100%; by card: material on
+  the TRIM only): each size comes in the four looks (Scrapper/Industrial/Modern/Futuristic) as ThingStyleDefs in
+  RM_LiquidContainerStyles.xml, art at Textures/Things/Item/Resource/FlowWorks/<Look>/RM_<Size>.png + _m mask.
+  CutoutComplex: mask red = the liquid window (the LiquidDef colour, or clear glass empty, grime dirty), green =
+  the trim (the material's colour), black = painted. Every liquid shares its size's four sprites.
 
   Buckets and barrels (the "larger bottle, same chain" siblings the item's
   spec also names): RM_BucketItemBase/RM_BucketEmpty/RM_BucketDirty and
@@ -71,13 +65,15 @@
   <!-- Shared stats for every bottle state (empty, filled, dirty). Abstract:
        never spawned itself. -->
   <ThingDef Name="RM_BottleItemBase" ParentName="ResourceBase" Abstract="True">
-    <thingClass>ThingWithComps</thingClass>
+    <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: DrawColorTwo = the material, on the mask's green trim -->
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.RM_LiquidContainer</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): the material's colour
-           multiplies over this neutral-greyscale texture (artpipe job fwart_RM_Bottle_Stuffable_v1). -->
-      <texPath>Things/Item/Resource/FlowWorks/RM_Bottle</texPath>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: an unstyled bottle draws the Industrial look; every styled one draws
+           its ThingStyleDef (RM_LiquidContainerStyles.xml). CutoutComplex: mask red = liquid window, green = trim. -->
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bottle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
       <drawSize>0.75</drawSize>
     </graphicData>
     <statBases>
@@ -130,6 +126,12 @@
       <li>
         <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
       </li>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: CompStyleable stores the look; RM_CompContainerStyle keeps looks
+           apart in stacks, carries the look through a split and gives an unstyled one its faction's look -->
+      <li Class="CompProperties_Styleable" />
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerStyle</compClass>
+      </li>
     </comps>
   </ThingDef>
 
@@ -164,14 +166,15 @@
   <!-- Bucket family: 5-unit sibling, same chain. -->
 
   <ThingDef Name="RM_BucketItemBase" ParentName="ResourceBase" Abstract="True">
-    <thingClass>ThingWithComps</thingClass>
+    <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: DrawColorTwo = the material, on the mask's green trim -->
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.RM_LiquidContainer</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): needs neutral greyscale
-           art for the material tint; regen is artpipe job
-           fwart_RM_Bucket_Stuffable_v1. -->
-      <texPath>Things/Item/Resource/FlowWorks/RM_Bucket</texPath>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: an unstyled bucket draws the Industrial look; every styled one draws
+           its ThingStyleDef (RM_LiquidContainerStyles.xml). CutoutComplex: mask red = liquid window, green = trim. -->
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bucket</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
       <drawSize>1.0</drawSize>
     </graphicData>
     <statBases>
@@ -219,6 +222,12 @@
       <li>
         <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
       </li>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: CompStyleable stores the look; RM_CompContainerStyle keeps looks
+           apart in stacks, carries the look through a split and gives an unstyled one its faction's look -->
+      <li Class="CompProperties_Styleable" />
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerStyle</compClass>
+      </li>
     </comps>
   </ThingDef>
 
@@ -256,14 +265,15 @@
        Tradeable for free via ResourceBase inheritance. -->
 
   <ThingDef Name="RM_BarrelItemBase" ParentName="ResourceBase" Abstract="True">
-    <thingClass>ThingWithComps</thingClass>
+    <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: DrawColorTwo = the material, on the mask's green trim -->
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.RM_LiquidContainer</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): needs neutral greyscale
-           art for the material tint; regen is artpipe job
-           fwart_RM_Barrel_Stuffable_v1. -->
-      <texPath>Things/Item/Resource/FlowWorks/RM_Barrel</texPath>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: an unstyled barrel draws the Industrial look; every styled one draws
+           its ThingStyleDef (RM_LiquidContainerStyles.xml). CutoutComplex: mask red = liquid window, green = trim. -->
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Barrel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
       <drawSize>1.4</drawSize>
     </graphicData>
     <statBases>
@@ -309,6 +319,12 @@
     <comps>
       <li>
         <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
+      </li>
+      <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: CompStyleable stores the look; RM_CompContainerStyle keeps looks
+           apart in stacks, carries the look through a split and gives an unstyled one its faction's look -->
+      <li Class="CompProperties_Styleable" />
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerStyle</compClass>
       </li>
     </comps>
   </ThingDef>

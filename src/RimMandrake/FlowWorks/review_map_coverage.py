@@ -157,6 +157,9 @@ FEATURES = [
      r"ThingCategoryDef/RM_LiquidBottleItems|JobDef/RM_(FillBottleJob|WashBottleJob)|"
      r"WorkGiverDef/RM_(FillBottleWorkGiver|WashBottleWorkGiver))$", "Bottles, buckets, barrels", "carry_bottles"),
     ("def", r"^ThingDef/RM_(Bottle|Bucket|Barrel)(_|Dirty)", "Every liquid in every container", "containers_all"),
+    ("def", r"^ThingStyleDef/RM_(Bottle|Bucket|Barrel)_(Scrapper|Industrial|Modern|Futuristic)$", "Containers in the four looks",
+     "containers_styles"),
+    ("tex", r"Item/Resource/FlowWorks/(Scrapper|Industrial|Modern|Futuristic)/", "Container art in the four looks", "containers_styles"),
     ("tex", r"Item/Resource/FlowWorks/RM_WaterBottle", "Coloured water bottle art", "many_waters"),
     ("tex", r"Item/Resource/FlowWorks/", "Container art", "carry_bottles"),
     ("def", r"^RecipeDef/RM_Make_", "Container recipes in each material", "carry_containers"),
