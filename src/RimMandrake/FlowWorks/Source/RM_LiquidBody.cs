@@ -158,7 +158,10 @@ namespace RimMandrake.FlowWorks
 				return "limitless — the off-map continuation is the reservoir. "
 					+ "Supply is still capped per shoreline cell you dig to.";
 			}
-			return stock.ToString("F0") + " / " + capacity.ToString("F0") + " fill-units";
+			// LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: fill-units in litres (a bed level = levelUnit fill-units = 1,000 L)
+			float lu = levelUnit > 0f ? levelUnit : (fluid != null && fluid.volumePerTile > 0f ? fluid.volumePerTile : 1f);
+			return RM_Volume.FormatLitres(stock / lu * RM_Volume.LitresPerLevel) + " / "
+				+ RM_Volume.FormatLitres(capacity / lu * RM_Volume.LitresPerLevel);
 		}
 	}
 }

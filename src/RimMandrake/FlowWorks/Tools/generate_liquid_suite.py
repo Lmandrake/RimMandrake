@@ -851,30 +851,44 @@ def build_compat_patch(out_dir: Path):
 #              (detox/filter), tar refinery (refine)
 LIQUID_CONVERSIONS = {
     "saltwater": [
-        {"tier": "Crude", "process": "distill", "product": "RM_Liquid_FreshWater", "inputUnits": 2, "outputUnits": 1},
-        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 2},
+        {"tier": "Crude", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 400, "outputLitres": 200},
+        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 400},
     ],
     "brine": [
-        {"tier": "Household", "process": "distill", "product": "RM_Liquid_FreshWater", "inputUnits": 4, "outputUnits": 1},
-        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
+        {"tier": "Household", "process": "distill", "product": "RM_Liquid_FreshWater", "inputLitres": 800, "outputLitres": 200},
+        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
     ],
     "boiling": [
-        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputUnits": 1, "outputUnits": 1},
+        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputLitres": 200, "outputLitres": 200},
     ],
     "icy": [
-        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputUnits": 1, "outputUnits": 1},
+        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputLitres": 200, "outputLitres": 200},
     ],
     "toxic": [
-        {"tier": "Crude", "process": "filter", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
-        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputUnits": 2, "outputUnits": 1},
+        {"tier": "Crude", "process": "filter", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
+        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputLitres": 400, "outputLitres": 200},
     ],
     "acid": [
-        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
+        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
     ],
     "tar": [
-        {"tier": "Industrial", "process": "refine", "product": "RM_Liquid_Chemfuel", "inputUnits": 4, "outputUnits": 1, "productThing": "Chemfuel"},
+        {"tier": "Industrial", "process": "refine", "product": "RM_Liquid_Chemfuel", "inputLitres": 800, "outputLitres": 200, "productThing": "Chemfuel"},
     ],
 }
+
+
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner 2026-10-16: "A barrel should not be able to hold the same as a 1x1
+# solid tank" / "Count in Litres"; design/RimMandrake/liquid_litres_2026-10-16.md). What one container of each size
+# holds before its material's capacityFactor. A deep square is 4,000 L (RM_Volume: 4 levels x 1,000 L).
+CONTAINER_LITRES = {"bottle": 1.5, "bucket": 15, "barrel": 208}
+# The vanilla Chemfuel item is chemfuel's "bottle". It keeps the old unit's size (200 L) so the fuel economy (tar
+# refining 4:1, the VE pipe adapter's 1 item per 200 L) is unchanged; an owner call, see the design doc.
+CHEMFUEL_ITEM_LITRES = 200
+# Conversion batches are in litres: the old per-batch units x 200 L, so every ratio and rate is unchanged.
+
+
+def _litres(v):
+    return str(int(v)) if float(v).is_integer() else repr(float(v))
 
 
 def _conversions_xml(key):
@@ -884,7 +898,7 @@ def _conversions_xml(key):
     out = ["    <conversions>"]
     for st in steps:
         out.append("      <li>")
-        for f in ("tier", "process", "product", "inputUnits", "outputUnits", "productThing"):
+        for f in ("tier", "process", "product", "inputLitres", "outputLitres", "productCount", "productThing"):
             if f in st:
                 out.append(f"        <{f}>{st[f]}</{f}>")
         out.append("      </li>")
@@ -911,11 +925,11 @@ LIQUID_DEF_ROWS = {
         # LIQUID_BOTTLE_LOOP_1: bottle defName derived from this row's own
         # defName (RM_Liquid_X -> RM_Bottle_X, see build_bottle_thingdefs's
         # own docstring for why that's computed, not retyped, everywhere
-        # else in this table). unitsPerBottle=1 matches the only other
-        # bottled row shipped so far (chemfuel: "one item IS one unit").
+        # else in this table). Container sizes come from CONTAINER_LITRES
+        # (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS) unless a row overrides one.
         # No revertsTo/rotsTo here -- fresh water is the thing everything
         # else reverts/distills TO, not a row with its own timer.
-        "bottled": {"bottle": "RM_Bottle_FreshWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_FreshWater", 
                     "bucket": "RM_Bucket_FreshWater", "barrel": "RM_Barrel_FreshWater"},
     },
     "saltwater": {
@@ -927,7 +941,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "WaterOceanShallow", "deep": "WaterOceanDeep"},
         "thirstQuality": "Fouled",
         "distillable": True,
-        "bottled": {"bottle": "RM_Bottle_SaltWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_SaltWater", 
                     "bucket": "RM_Bucket_SaltWater", "barrel": "RM_Barrel_SaltWater"},
     },
     "boiling": {
@@ -945,7 +959,7 @@ LIQUID_DEF_ROWS = {
         # revertsTo/revertTicks: bottled boiling water cools to fresh. Read by
         # RM_CompLiquidRevert (injected per container size at startup by
         # RM_LiquidRevertInjector). 2500 ticks = one in-game hour: PROVISIONAL.
-        "bottled": {"bottle": "RM_Bottle_BoilingWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_BoilingWater", 
                     "bucket": "RM_Bucket_BoilingWater", "barrel": "RM_Barrel_BoilingWater",
                     "revertsTo": "RM_Liquid_FreshWater", "revertTicks": 2500},
     },
@@ -964,7 +978,7 @@ LIQUID_DEF_ROWS = {
         # LIQUID_HEAT_PUSH_1: chills the room it stands in (RM_LiquidHeat), the cold twin of boiling's "hot".
         "cold": True,
         # Bottled icy water warms to fresh: 5000 ticks = two in-game hours, PROVISIONAL.
-        "bottled": {"bottle": "RM_Bottle_IcyWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_IcyWater", 
                     "bucket": "RM_Bucket_IcyWater", "barrel": "RM_Barrel_IcyWater",
                     "revertsTo": "RM_Liquid_FreshWater", "revertTicks": 5000},
     },
@@ -977,7 +991,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_WaterPoisonedShallow", "deep": "RM_WaterPoisonedDeep"},
         "thirstQuality": "Toxic",
         "distillable": True,
-        "bottled": {"bottle": "RM_Bottle_ToxicWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_ToxicWater", 
                     "bucket": "RM_Bucket_ToxicWater", "barrel": "RM_Barrel_ToxicWater"},
     },
     "acid": {
@@ -990,7 +1004,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 3},
         "corrodesApparel": True,
         "terrainSuite": {"shallow": "RM_AcidShallow", "deep": "RM_AcidDeep"},
-        "bottled": {"bottle": "RM_Bottle_AcidWater", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_AcidWater", 
                     "bucket": "RM_Bucket_AcidWater", "barrel": "RM_Barrel_AcidWater"},
     },
     # WARSCAR_RAINBOW_POOLS_1: the Warscar reaction-liquor pool. Adopts the
@@ -1017,7 +1031,7 @@ LIQUID_DEF_ROWS = {
         "pH": 7,
         "terrainSuite": {"shallow": "RM_TarShallow", "deep": "RM_TarDeep"},
         "canalFluid": "RM_Fluid_Tar",
-        "bottled": {"bottle": "RM_Bottle_Tar", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_Tar", 
                     "bucket": "RM_Bucket_Tar", "barrel": "RM_Barrel_Tar"},
     },
     "brine": {
@@ -1033,7 +1047,7 @@ LIQUID_DEF_ROWS = {
         "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
         "thirstQuality": "Fouled",
         "distillable": True,
-        "bottled": {"bottle": "RM_Bottle_Brine", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_Brine", 
                     "bucket": "RM_Bucket_Brine", "barrel": "RM_Barrel_Brine"},
     },
     "propane": {
@@ -1047,7 +1061,7 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_PropaneShallow", "deep": "RM_PropaneDeep"},
         # No canalFluid: RM_Fluid_Propane does not exist yet, same gap as brine.
         "worldTag": "RM_Liquid_Propane",  # frozen world's propane lake under Umbra, LIQUID_BIOMES_MAP_1
-        "bottled": {"bottle": "RM_Bottle_Propane", "unitsPerBottle": 1,
+        "bottled": {"bottle": "RM_Bottle_Propane", 
                     "bucket": "RM_Bucket_Propane", "barrel": "RM_Barrel_Propane"},
     },
     "chemfuel": {
@@ -1064,7 +1078,7 @@ LIQUID_DEF_ROWS = {
         # today"): a pump or hose pours it into a dug channel as RM_Fluid_Chemfuel, and
         # a channel cell pumps back out as this row.
         "canalFluid": "RM_Fluid_Chemfuel",
-        "bottled": {"bottle": "Chemfuel", "unitsPerBottle": 1},
+        "bottled": {"bottle": "Chemfuel", "litresPerBottle": CHEMFUEL_ITEM_LITRES},
     },
 
     # ── SLIME_STREAM_ROWS_1 ─────────────────────────────────────────────
@@ -1405,15 +1419,15 @@ def build_liquiddef_xml(row):
     if bottled:
         lines.append("    <bottled>")
         lines.append(f"      <bottle>{bottled['bottle']}</bottle>")
-        lines.append(f"      <unitsPerBottle>{bottled.get('unitsPerBottle', 1)}</unitsPerBottle>")
+        lines.append(f"      <litresPerBottle>{_litres(bottled.get('litresPerBottle', CONTAINER_LITRES['bottle']))}</litresPerBottle>")
         # LIQUID_BOTTLE_LOOP_1 third slice: bucket/barrel are optional
         # siblings, same "bottled" slot as bottle -- see LiquidBottledForm.
         if bottled.get("bucket"):
             lines.append(f"      <bucket>{bottled['bucket']}</bucket>")
-            lines.append(f"      <unitsPerBucket>{bottled.get('unitsPerBucket', 5)}</unitsPerBucket>")
+            lines.append(f"      <litresPerBucket>{_litres(bottled.get('litresPerBucket', CONTAINER_LITRES['bucket']))}</litresPerBucket>")
         if bottled.get("barrel"):
             lines.append(f"      <barrel>{bottled['barrel']}</barrel>")
-            lines.append(f"      <unitsPerBarrel>{bottled.get('unitsPerBarrel', 25)}</unitsPerBarrel>")
+            lines.append(f"      <litresPerBarrel>{_litres(bottled.get('litresPerBarrel', CONTAINER_LITRES['barrel']))}</litresPerBarrel>")
         if bottled.get("revertsTo"):
             lines.append(f"      <revertsTo>{bottled['revertsTo']}</revertsTo>")
             lines.append(f"      <revertTicks>{bottled['revertTicks']}</revertTicks>")

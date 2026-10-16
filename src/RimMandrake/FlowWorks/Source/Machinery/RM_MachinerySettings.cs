@@ -44,8 +44,12 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>VE PipeSystem adapters move liquid between a FlowWorks tank and a pipe net.</summary>
 		public static bool pipeAdaptersEnabled = true;
 
-		/// <summary>Liquid networks L7/L8 (rev 2 §3.7): units of spilled liquid per piece of spill filth (PROVISIONAL 2).</summary>
-		public static int unitsPerFilth = 2;
+		/// <summary>Liquid networks L7/L8 (rev 2 §3.7): LITRES of spilled liquid per piece of spill filth (PROVISIONAL 400 L = the
+		/// old 2 units; LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS).</summary>
+		public static int litresPerFilth = 400;
+
+		/// <summary>The filth step in tank units (decilitres), at its read site.</summary>
+		public static int UnitsPerFilth => RM_Volume.Units(litresPerFilth);
 
 		/// <summary>Liquid networks L9 (rev 2 §3.4; owner Q4: allowed, as theft, priced like power theft): another faction's tank
 		/// joins a hose or pipe network, and liquid taken from or put into it is theft: once one of theirs within
@@ -104,7 +108,13 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref pipeDefaultLook, "pipeDefaultLook", "Scrapper");
 			Scribe_Values.Look(ref pipeLinksIntoMachines, "pipeLinksIntoMachines", true);
 			Scribe_Values.Look(ref joinFittings, "joinFittings", false);
-			Scribe_Values.Look(ref unitsPerFilth, "unitsPerFilth", 2);
+			Scribe_Values.Look(ref litresPerFilth, "litresPerFilth", 400);
+			// model 2 saved this in 200 L units under "unitsPerFilth": read once when the new key was never written
+			if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["litresPerFilth"] == null
+				&& Scribe.loader.curXmlParent?["unitsPerFilth"] is System.Xml.XmlNode oldFilth && int.TryParse(oldFilth.InnerText, out int oldUnits))
+			{
+				litresPerFilth = oldUnits * RM_Volume.LegacyUnitLitres;
+			}
 			Scribe_Values.Look(ref liquidTheftEnabled, "liquidTheftEnabled", true);
 			Scribe_Values.Look(ref liquidTheftGoodwillPerDay, "liquidTheftGoodwillPerDay", 2);
 			Scribe_Values.Look(ref liquidTheftSightRange, "liquidTheftSightRange", 12f);
@@ -148,9 +158,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			list.CheckboxLabeled("Industrial works may be built anywhere (not only over a ruin)", ref industrialWorksBuildAnywhere,
 				"Off (campaign default): industrial scale is found, never built — a kludged or repaired works can only be raised over its ruin.");
 			list.CheckboxLabeled("Pipe-net adapters run (Vanilla Expanded pipe nets)", ref pipeAdaptersEnabled);
-			list.Label("Spills: one patch of mess per " + unitsPerFilth + " units of liquid run out onto the ground", -1f,
-				(TipSignal?)"Liquid leaving a hose's outflow end onto dry ground, or a stopped hose emptying, leaves a cleanable spill. Fewer units per patch = more mess.");
-			unitsPerFilth = UnityEngine.Mathf.RoundToInt(list.Slider(unitsPerFilth, 1f, 10f));
+			list.Label("Spills: one patch of mess per " + RM_Volume.FormatLitres(litresPerFilth) + " of liquid run out onto the ground", -1f,
+				(TipSignal?)"Liquid leaving a hose's outflow end onto dry ground, or a stopped hose emptying, leaves a cleanable spill. Fewer litres per patch = more mess.");
+			litresPerFilth = UnityEngine.Mathf.RoundToInt(list.Slider(litresPerFilth, 50f, 2000f) / 50f) * 50;
 			list.CheckboxLabeled("Hoses and pipes may tap other factions' tanks (theft)", ref liquidTheftEnabled,
 				"On: another faction's tank or machine joins your hose or pipe network like your own. Taking liquid from it (or putting it in) is " +
 				"theft: once one of theirs sees it, every day it goes on costs goodwill, like a power-tap clamp. Off: their tanks never join your networks.");

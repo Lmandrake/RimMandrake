@@ -61,7 +61,7 @@ FEATURES = [
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|sourceBudgetMultiplier|minLimitlessBodyCells)$",
      "Ponds pay out; map-edge lakes never run dry", "flow_ponds"),
     ("set", r"^(recessionEnabled|recedeKeepsLastCell|recedeSparesOutflow)$", "A pond visibly recedes", "flow_shrinks"),
-    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|deepBedsEnabled|deepBedMaxDepth|deepBedCellsPerLevel|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
+    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|mouseoverDepthEnabled|deepBedsEnabled|deepBedMaxDepth|deepBedCellsPerLevel|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
     ("def", r"^TerrainDef/RM_Lakebed_", "Lakebed ground", "pond_bed"),
     ("tex", r"Terrain/FlowWorks/RM_Lakebed_", "Lakebed art", "pond_bed"),
     ("set", r"^(refillEnabled|refillWaitsForOccupants|refillRateMultiplier)$", "Refill, and waiting for occupants",
@@ -173,7 +173,7 @@ FEATURES = [
     ("gizmo", r"RMFlow_PumpMode", "Pump Draw / Pour button", "pump_pour"),
     ("def", r"^(JobDef|WorkGiverDef)/RM_(EmptyIntoTank|FillFromTank)", "Tank jobs", "tank_modes"),
     ("gizmo", r"RMFlow_TankMode", "Tank mode button", "tank_modes"),
-    ("set", r"^(enabled|tankModesEnabled|tankUnitsPerCycle)$", "Hoses on; tank modes", "tank_modes"),
+    ("set", r"^(enabled|tankModesEnabled|tankLitresPerCycle)$", "Hoses on; tank modes", "tank_modes"),
     ("def", r"^ThingStyleDef/RM_(LiquidTank|LiquidTankTall)_", "Tank looks", "tank_styles"),
     ("def", r"^ThingStyleDef/RM_(UniversalCargoTank|UniversalCargoTankXTall)_", "Cargo tank looks", "tank_styles_cargo"),
     ("def", r"^ThingStyleDef/RM_HoseReel_", "Hose reel looks", "hose_styles"),
@@ -184,10 +184,10 @@ FEATURES = [
     ("tex", r"FlowWorks/Hose/", "Hose, reel and fitting art", "hose_reel"),
     ("gizmo", r"Choose style", "Choose style button", "pipe_styles"),
     ("gizmo", r"(hose|Hose|Fitting|Free end|DEV:)", "Hose reel buttons", "hose_reel"),
-    ("set", r"^(freeEndRolesEnabled|dumpUnitsPerCycle|minBendRadius|plumpAmount|transitionTicks|releaseTicks|minPlumpDwell|"
+    ("set", r"^(freeEndRolesEnabled|dumpLitresPerCycle|minBendRadius|plumpAmount|transitionTicks|releaseTicks|minPlumpDwell|"
      r"maxLength|maxLengthDefaults|couplingSpacing|handlingTime|windCellsPerSecond|autoResumeDroppedHose|slack|"
      r"tintByContents|fillWobble)$", "Hose behaviour and look", "hose_reel"),
-    ("set", r"^(hoseHoldsLiquid|hoseUnitsPerCell|unitsPerFilth)$", "A hose holds liquid and spills it", "liquid_spill"),
+    ("set", r"^(hoseHoldsLiquid|hoseLitresPerCell|litresPerFilth)$", "A hose holds liquid and spills it", "liquid_spill"),
     ("def", r"^ThingDef/RM_Filth_", "Spilled liquid and tracked tar", "liquid_spill"),
     ("tex", r"Filth/RM_FilthTar", "Tar filth art", "liquid_spill"),
     ("def", r"^(ThingDef/RM_UniversalPipe|ThingStyleDef/RM_UniversalPipe_|DesignationCategoryDef/VCHE_PipeNetworks)",

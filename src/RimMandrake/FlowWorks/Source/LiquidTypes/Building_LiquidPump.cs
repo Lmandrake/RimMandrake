@@ -28,7 +28,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 	///
 	/// One level per cycle (250 ticks) for the first-slice pump, levelsPerCycle for a station (RM_PumpExtension), while powered and switched on;
 	/// on Pour at least one level more than a Dump tank's gravity rate (RM_PumpMath.PourLevels). Unit bridge between the two ledgers: one
-	/// channel level = <see cref="RM_PumpMath.TankUnitsPerLevel"/> tank units (PROVISIONAL: a level is a bucket).
+	/// channel level = <see cref="RM_PumpMath.TankUnitsPerLevel"/> tank units (1,000 L, a cubic metre; LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS).
 	/// The pump never writes terrain or stock itself — the excavation engine and the body stock do.
 	/// Mod Setting: liquidPumpEnabled (off: a built pump sits idle and draws no power).
 	/// </summary>
@@ -116,7 +116,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			if (pourMode)
 			{
 				// Q3: pour is the FAST drain, always more than a Dump tank's gravity rate (RM_PumpMath.PourLevels, selftested)
-				levels = RM_PumpMath.PourLevels(levels, Hose.RM_HoseSettings.dumpUnitsPerCycle);
+				levels = RM_PumpMath.PourLevels(levels, Hose.RM_HoseSettings.DumpUnitsPerCycle);
 			}
 			deadSources.Clear();
 			filledPastOutflow = circle = false;

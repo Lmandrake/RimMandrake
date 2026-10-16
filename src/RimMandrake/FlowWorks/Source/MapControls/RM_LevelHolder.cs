@@ -26,6 +26,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		private int pouredTotal;
 		private int takenTotal;
 		private float bodyCreditedUnits;
+		private float lastUnit;
 		private float bodyDebitedUnits;
 
 		// Last pulse, derived.
@@ -171,6 +172,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		private void HoldBody(RM_MapComponent_Excavation ex, RM_LiquidBody body, IntVec3 at, int due)
 		{
 			float unit = RM_LiquidStock.LevelUnitOf(body, ex);
+			lastUnit = unit;
 			if (!(unit > 0f) || body.fluid != fluid)
 			{
 				lastNeed = lastHeld = lastCapacity = 0;
@@ -203,16 +205,19 @@ namespace RimMandrake.FlowWorks.MapControls
 				+ RM_MapControlMath.RateLabel(ratePerPulse, RimMandrakeFlowWorksSettings.PulseIntervalTicks));
 			if (lastMode == "channel" || lastMode == "body")
 			{
-				sb.AppendLine("Now: " + lastHeld + " of " + lastCapacity + " level(s) (" + lastMode + ")"
+				sb.AppendLine("Now: " + lastHeld + " of " + lastCapacity + " level(s), " + RM_Volume.FormatLitres(lastHeld * (double)RM_Volume.LitresPerLevel)
+					+ " of " + RM_Volume.FormatLitres(lastCapacity * (double)RM_Volume.LitresPerLevel) + " (" + lastMode + ")"
 					+ (lastNeed > 0 ? ", filling" : (lastNeed < 0 ? ", draining" : ", holding")));
 			}
 			else if (lastMode == "limitless")
 			{
 				sb.AppendLine("The body here is limitless: nothing to hold.");
 			}
+			// body counters are fill-units; a level of this body is lastUnit of them and 1,000 L (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS)
+			float perLevel = lastUnit > 0f ? lastUnit : 1f;
 			sb.Append("Poured " + pouredTotal + ", taken " + takenTotal + " level(s) in a channel; body +"
-				+ bodyCreditedUnits.ToString("0.#", CultureInfo.InvariantCulture) + " / -"
-				+ bodyDebitedUnits.ToString("0.#", CultureInfo.InvariantCulture) + " units");
+				+ RM_Volume.FormatLitres(bodyCreditedUnits / perLevel * RM_Volume.LitresPerLevel) + " / -"
+				+ RM_Volume.FormatLitres(bodyDebitedUnits / perLevel * RM_Volume.LitresPerLevel));
 		}
 
 		protected override IEnumerable<Gizmo> ControlGizmos()

@@ -11,18 +11,21 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 	/// A bill that is done IN a liquid (GELATINOUSSLIME_PIT_SOLVENT_1: the slime pit renders toxic or
 	/// indigestible food safe; any future soak, brine cure or solvent wash). Put on a RecipeDef:
 	///   liquids — any of these LiquidDefs in a tank on the bench's liquid net (touching it or hosed to it);
-	///             each completed bill draws <see cref="unitsPerCraft"/> from that tank;
+	///             each completed bill draws <see cref="litresPerCraft"/> from that tank;
 	///   terrains — OR a cell of one of these terrains within <see cref="terrainReach"/> of the bench's
 	///             footprint (a pit dug beside the liquid's own ground). Ground is not drawn down.
 	/// Without either, the bill is not started (the work giver's "cannot do" reason says what it needs).
 	/// Mod Setting: RM_KitSettings.liquidBathRecipesEnabled (off: the bill runs dry and draws nothing).
-	/// unitsPerCraft is PROVISIONAL per recipe.
+	/// litresPerCraft is PROVISIONAL per recipe (1,000 L = the old 5 units; LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS).
 	/// </summary>
 	public class RM_RecipeLiquidExtension : DefModExtension
 	{
 		public List<LiquidDef> liquids = new List<LiquidDef>();
 		public List<TerrainDef> terrains = new List<TerrainDef>();
-		public int unitsPerCraft = 5;
+		public float litresPerCraft = 1000f;
+
+		/// <summary>The craft's draw in tank units (decilitres).</summary>
+		public int UnitsPerCraft => RM_Volume.Units(litresPerCraft);
 		public int terrainReach = 1;
 
 		/// <summary>What the bill needs, for the fail reason: "green slime".</summary>
@@ -54,9 +57,9 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				yield return "RM_RecipeLiquidExtension names no liquids and no terrains: the bill could never run.";
 			}
-			if (unitsPerCraft < 0)
+			if (litresPerCraft < 0f)
 			{
-				yield return "RM_RecipeLiquidExtension unitsPerCraft is negative.";
+				yield return "RM_RecipeLiquidExtension litresPerCraft is negative.";
 			}
 		}
 	}
@@ -96,7 +99,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				foreach (LiquidDef l in ext.liquids)
 				{
 					int have = RM_LiquidNet.Available(bench, l);
-					if (have >= ext.unitsPerCraft && have > 0)
+					if (have >= ext.UnitsPerCraft && have > 0)
 					{
 						liquid = l;
 						available = have;
@@ -118,7 +121,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			LiquidDef liquid = null;
 			int have = 0;
 			bool found = bill.billStack?.billGiver is Thing bench && TryFindSource(bench, ext, out liquid, out have);
-			return RM_LiquidBathMath.Pay(RM_KitSettings.liquidBathRecipesEnabled, ext.unitsPerCraft, found && liquid == null,
+			return RM_LiquidBathMath.Pay(RM_KitSettings.liquidBathRecipesEnabled, ext.UnitsPerCraft, found && liquid == null,
 				found && liquid != null ? have : 0);
 		}
 
@@ -175,7 +178,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 		public static void Postfix(Bill_Production __instance)
 		{
 			RM_RecipeLiquidExtension ext = RM_LiquidBath.ExtOf(__instance);
-			if (ext == null || !RM_KitSettings.liquidBathRecipesEnabled || ext.unitsPerCraft <= 0)
+			if (ext == null || !RM_KitSettings.liquidBathRecipesEnabled || ext.UnitsPerCraft <= 0)
 			{
 				return;
 			}
@@ -183,12 +186,12 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				&& RM_LiquidBath.TryFindSource(bench, ext, out LiquidDef bathed, out _) && bathed != null)
 			{
 				// L1 (§4): the craft consumes the units (a sink); L3: drawn by the draw plan, emptiest tank first, split across tanks
-				List<(Building_LiquidTank tank, int units)> plan = RM_LiquidNet.DrawPlan(bench, bathed, ext.unitsPerCraft);
+				List<(Building_LiquidTank tank, int units)> plan = RM_LiquidNet.DrawPlan(bench, bathed, ext.UnitsPerCraft);
 				if (plan == null)
 				{
 					return;
 				}
-				if (RM_LiquidTransfer.Move(ext.unitsPerCraft, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.unitsPerCraft)
+				if (RM_LiquidTransfer.Move(ext.UnitsPerCraft, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanProvide(k), (i, k) => plan[i].tank.TryRemoveLiquid(k), (i, k) => plan[i].tank.TryAddLiquid(bathed, k)), RM_TransferLeg.Sink(null), out _) == ext.UnitsPerCraft)
 				{
 					// a craft is one plump pulse: the bath passes the hose release window as its cadence (design S7)
 					foreach ((Building_LiquidTank tank, int units) p in plan) RM_LiquidNet.Credit(bench, p.tank, bathed, p.units, RimMandrake.FlowWorks.Hose.RM_HoseSettings.releaseTicks);   // credit site: bath

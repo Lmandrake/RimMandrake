@@ -22,6 +22,11 @@ namespace RimMandrake.LuminousPigment
         private static MethodInfo tanksFor;
         private static FieldInfo storedLiquid;
         private static MethodInfo tryRemove;
+        // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: FlowWorks tanks count decilitres since 2026-10-16; one draw is still 200 L (the
+        // old unit), converted by FlowWorks' own RM_Volume.Units(float litres). Absent (an older FlowWorks) = 1 old unit.
+        private const string VolumeTypeName = "RimMandrake.FlowWorks.RM_Volume";
+        private const float LitresPerDraw = 200f;
+        private static int unitsPerDraw = 1;
 
         public static bool Present
         {
@@ -42,6 +47,8 @@ namespace RimMandrake.LuminousPigment
             tanksFor = AccessTools.Method(net, "TanksFor", new[] { typeof(Thing) });
             storedLiquid = AccessTools.Field(tank, "storedLiquid");
             tryRemove = AccessTools.Method(tank, "TryRemoveLiquid", new[] { typeof(int) });
+            MethodInfo toUnits = AccessTools.TypeByName(VolumeTypeName) is Type vol ? AccessTools.Method(vol, "Units", new[] { typeof(float) }) : null;
+            if (toUnits != null && toUnits.Invoke(null, new object[] { LitresPerDraw }) is int u && u > 0) unitsPerDraw = u;
             if ((tanksFor == null || storedLiquid == null || tryRemove == null) && !warned)
             {
                 warned = true;
@@ -49,7 +56,7 @@ namespace RimMandrake.LuminousPigment
             }
         }
 
-        /// <summary>Takes one unit of salt or boiling water from a tank on <paramref name="origin"/>'s net. Returns
+        /// <summary>Takes one draw (200 L) of salt or boiling water from a tank on <paramref name="origin"/>'s net. Returns
         /// the liquid's defName, or null when nothing on the net could give one.</summary>
         public static string TryDrawOceanUnit(Thing origin)
         {
@@ -61,7 +68,7 @@ namespace RimMandrake.LuminousPigment
                 {
                     string name = (storedLiquid.GetValue(t) as Def)?.defName;
                     if (!RM_GlowTankWater.IsOceanLiquid(name)) continue;
-                    if (tryRemove.Invoke(t, new object[] { 1 }) is bool ok && ok) return name;
+                    if (tryRemove.Invoke(t, new object[] { unitsPerDraw }) is bool ok && ok) return name;
                 }
             }
             catch (Exception e)

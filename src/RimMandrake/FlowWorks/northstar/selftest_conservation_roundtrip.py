@@ -53,7 +53,12 @@ def _const(text, name):
 
 VOLUME = _read("Source/RM_Volume.cs")
 DEPTH = _read("Source/RM_ExcavationDepth.cs")
-UNITS_PER_LEVEL = int(_const(VOLUME, "UnitsPerLevel"))
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: UnitsPerLevel = LitresPerLevel x UnitsPerLitre (a unit is a decilitre)
+LITRES_PER_LEVEL = int(_const(VOLUME, "LitresPerLevel"))
+UNITS_PER_LITRE = int(_const(VOLUME, "UnitsPerLitre"))
+UNITS_PER_LEVEL = LITRES_PER_LEVEL * UNITS_PER_LITRE
+LEGACY_UNITS_PER_LEVEL = int(_const(VOLUME, "LegacyUnitsPerLevel"))
+LEGACY_SCALE = UNITS_PER_LEVEL // LEGACY_UNITS_PER_LEVEL
 LEVELS_PER_SQUARE = int(_const(VOLUME, "LevelsPerSquare"))
 SHALLOW_BED = int(_const(VOLUME, "ShallowBedLevels"))
 UNITS_PER_SQUARE = LEVELS_PER_SQUARE * UNITS_PER_LEVEL
@@ -306,10 +311,10 @@ def main():
             bad.append(msg)
 
     # 0. constants the doc's numbers rest on
-    check(UNITS_PER_LEVEL == 5, "RM_Volume.UnitsPerLevel moved: %s" % UNITS_PER_LEVEL)
+    check(LITRES_PER_LEVEL == 1000 and UNITS_PER_LEVEL == 10000, "RM_Volume: a level is no longer 1,000 L = 10,000 units: %s" % UNITS_PER_LEVEL)
     check(SUPERDEEP == 4, "Superdeep moved: %s" % SUPERDEEP)
-    check(LEVELS_PER_SQUARE == SUPERDEEP == 4 and UNITS_PER_SQUARE == 20,
-          "one deep notch is no longer 4 levels = the deepest dug square = 20 units")
+    check(LEVELS_PER_SQUARE == SUPERDEEP == 4 and UNITS_PER_SQUARE == 40000,
+          "one deep notch is no longer 4 levels = the deepest dug square = 4,000 L")
 
     # 1. owner's trip, dug reservoirs: A (5x5, D4, full) -> tanks -> B (8x8, D4) -> tanks -> A
     A, B, T = Basin(5, 5, fill=SUPERDEEP), Basin(8, 8), Tanks(2)
@@ -464,12 +469,15 @@ def main():
     s13 = migrated_stock(50.0, old_cap, new_cap)
     check(abs(s13 / new_cap - 50.0 / old_cap) < 1e-9, "trip 13: the pond's fill fraction changed in migration")
     T = Tanks(1, cap=tank_capacity(4))
-    T.units[0] = 250              # an old 300-unit 2x2 tank holding 250, now 80
-    check(not T.add(UNITS_PER_LEVEL) and T.total() == 250, "trip 13: an overfull tank took input or lost units")
+    # an old 300-unit 2x2 tank holding 250 (model 1), loaded through model 3: 250 x 2,000 dL = 50 kL in a 16 kL tank
+    held = 250 * LEGACY_SCALE
+    T.units[0] = held
+    check(LEGACY_SCALE == 2000 and held % UNITS_PER_LEVEL == 0, "trip 13: a model-2 unit is no longer 200 L")
+    check(not T.add(UNITS_PER_LEVEL) and T.total() == held, "trip 13: an overfull tank took input or lost units")
     drained = 0
     while T.remove(UNITS_PER_LEVEL):
         drained += UNITS_PER_LEVEL
-    check(drained == 250 and T.total() == 0, "trip 13: an overfull tank did not drain every stored unit")
+    check(drained == held and T.total() == 0, "trip 13: an overfull tank did not drain every stored unit")
 
     print("conservation round-trip model: %d unit(s) per level, D max %d, one square = %d levels = %d units, "
           "pour-into-body %s" % (UNITS_PER_LEVEL, SUPERDEEP, LEVELS_PER_SQUARE, UNITS_PER_SQUARE,

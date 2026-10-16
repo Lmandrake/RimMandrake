@@ -95,9 +95,9 @@
               <tier>Household</tier>
               <distillsAny>true</distillsAny>
               <distillProduct>RM_Liquid_FreshWater</distillProduct>
-              <distillInputUnits>2</distillInputUnits>
-              <distillOutputUnits>1</distillOutputUnits>
-              <inputUnitsPerDay>120</inputUnitsPerDay>
+              <distillInputLitres>400</distillInputLitres>
+              <distillOutputLitres>200</distillOutputLitres>
+              <inputLitresPerDay>24000</inputLitresPerDay>
               <tierRate>0.5</tierRate>
             </li>
           </comps>
@@ -151,9 +151,9 @@
               <tier>Industrial</tier>
               <distillsAny>true</distillsAny>
               <distillProduct>RM_Liquid_FreshWater</distillProduct>
-              <distillInputUnits>2</distillInputUnits>
-              <distillOutputUnits>1</distillOutputUnits>
-              <inputUnitsPerDay>240</inputUnitsPerDay>
+              <distillInputLitres>400</distillInputLitres>
+              <distillOutputLitres>200</distillOutputLitres>
+              <inputLitresPerDay>48000</inputLitresPerDay>
               <tierRate>1</tierRate>
             </li>
           </comps>

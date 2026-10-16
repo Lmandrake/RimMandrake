@@ -28,6 +28,9 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
 CYCLE = 250                 # RM_LiquidTheft.TheftTick cadence
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the filltank probe verb takes raw tank units (decilitres). The old "100" (drums) was
+# above a 2x2 tank's 80; 120,000 = 12 kL = 75% of today's 160,000 capacity, the same "well filled" intent.
+FILL_UNITS = 120000
 CHECK_PHASE = 7             # TicksGame % 250 == 7
 WITNESS_PHASE = 4           # spawn here: 3 ticks before the check
 REFILL_EVERY = 2000
@@ -307,7 +310,7 @@ def main(argv=None):
     drafted = draft_all()                   # nobody idles into a Tantrum next to our tanks
     res["settings_before"] = {f: sget(t, f) for t, f in (
         (S_HOSE, "tankModesEnabled"), (S_HOSE, "freeEndRolesEnabled"), (S_HOSE, "hoseHoldsLiquid"),
-        (S_HOSE, "tankUnitsPerCycle"), (S_HOSE, "dumpUnitsPerCycle"), (S_MACH, "liquidTheftEnabled"),
+        (S_HOSE, "tankLitresPerCycle"), (S_HOSE, "dumpLitresPerCycle"), (S_MACH, "liquidTheftEnabled"),
         (S_MACH, "liquidTheftSightRange"), (S_MACH, "liquidTheftGoodwillPerDay"))}
     facs = B.call("jawa/list_factions").get("factions") or []
     nonhostile = [f for f in facs if not f.get("isPlayer") and not f.get("hostile") and not f.get("permanentEnemy")
@@ -330,7 +333,7 @@ def main(argv=None):
                 dig(c, 2)
             pa.build("RM_LiquidTank:%d,%d" % pa.north_tank, "RM_HoseReel:%d,%d" % pa.reel)
             B.ticks(2)
-            ft = B.hp("filltank:%d,%d=%s,100" % (pa.north_tank + (WATER,)))
+            ft = B.hp("filltank:%d,%d=%s,%d" % (pa.north_tank + (WATER, FILL_UNITS)))
             lay = pa.lay(pa.P(15, 9))
             role = set_role(pa.reel, "Outflow")
             job = set_job(pa.north_tank, "Dump")
@@ -354,7 +357,7 @@ def main(argv=None):
             B.ticks(2)
             pb.charge()
             pw = PH._powered(B, pb.pump)
-            ft = B.hp("filltank:%d,%d=%s,100" % (pb.north_tank + (WATER,)))
+            ft = B.hp("filltank:%d,%d=%s,%d" % (pb.north_tank + (WATER, FILL_UNITS)))
             job = set_job(pb.north_tank, "Dump")
             ok_p, pour = proof("RimMandrake.FlowWorks.RM_NorthstarProofs", "ProofPump", "%d,%d;pour" % pb.pump)
             f0 = fills(pb.channel)
@@ -380,7 +383,7 @@ def main(argv=None):
         s.build("RM_LiquidTank:%d,%d" % s.north_tank, "RM_HoseReel:%d,%d" % s.reel)
         build("RM_LiquidTank:%d,%d" % s.tank, faction=nf)
         B.ticks(2)
-        ft = B.hp("filltank:%d,%d=%s,100" % (s.tank + (WATER,)))
+        ft = B.hp("filltank:%d,%d=%s,%d" % (s.tank + (WATER, FILL_UNITS)))
         lay = s.lay(s.P(16, 9))
         B.ticks(70)
         fe = PH._hose(B, s.reel).get("freeEnd") or {}
@@ -423,7 +426,7 @@ def main(argv=None):
         gw0, gc0 = goodwill(nf), sget(THEFT, "goodwillCharged")
         draft_all()
         for _ in range(DAY_TICKS // REFILL_EVERY + 1):       # every cycle touched
-            B.hp("filltank:%d,%d=%s,100" % (s.tank + (WATER,)))
+            B.hp("filltank:%d,%d=%s,%d" % (s.tank + (WATER, FILL_UNITS)))
             B.hp("filltank:%d,%d=%s,0" % (s.north_tank + (WATER,)))
             B.ticks(REFILL_EVERY)
         gw1, gc1 = goodwill(nf), sget(THEFT, "goodwillCharged")

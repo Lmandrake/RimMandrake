@@ -46,8 +46,11 @@ namespace RimMandrake.FlowWorks.Hose
         public RimMandrake.FlowWorks.LiquidTypes.LiquidDef heldLiquid;
         public int heldUnits;
 
-        /// <summary>Units this hose holds when full: ceil(laid length x hoseUnitsPerCell).</summary>
-        public int HeldCap => RM_HoseSettings.hoseHoldsLiquid && lay != null ? Machinery.RM_HoseHold.Capacity(lay.FlatLen, RM_HoseSettings.hoseUnitsPerCell) : 0;
+        /// <summary>Units this hose holds when full: ceil(laid length x RM_HoseSettings.HoseUnitsPerCell), in decilitres.</summary>
+        public int HeldCap => RM_HoseSettings.hoseHoldsLiquid && lay != null ? Machinery.RM_HoseHold.Capacity(lay.FlatLen, RM_HoseSettings.HoseUnitsPerCell) : 0;
+
+        /// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the volume model heldUnits was saved under (absent = 200 L units).</summary>
+        private int volumeModel = RM_Volume.CurrentModel;
         /// <summary>The debug/test flow provider's input (gizmo in dev mode, HoseProbe "flow:").</summary>
         public bool debugFlowing;
         public HoseStateMachine sm = new HoseStateMachine();
@@ -210,6 +213,12 @@ namespace RimMandrake.FlowWorks.Hose
             Scribe_Values.Look(ref freeEndRole, "rmFreeEndRole", Machinery.RM_FreeEndRole.Capped);
             Scribe_Defs.Look(ref heldLiquid, "rmHoseHeldLiquid");
             Scribe_Values.Look(ref heldUnits, "rmHoseHeldUnits", 0);
+            Scribe_Values.Look(ref volumeModel, "rmVolumeModel", RM_Volume.LegacyModel);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && volumeModel < RM_Volume.CurrentModel)
+            {
+                heldUnits = RM_Volume.FromLegacyUnits(heldUnits);   // 200 L units -> decilitres, once
+                volumeModel = RM_Volume.CurrentModel;
+            }
             if (Scribe.mode == LoadSaveMode.PostLoadInit && heldLiquid == null && heldUnits > 0)
             {
                 // the held liquid's def is gone (mod removed): cleared with one warning, as Building_LiquidTank does
@@ -855,7 +864,7 @@ namespace RimMandrake.FlowWorks.Hose
             // the free end: what it is coupled to (another faction's tank names its faction) or "lying in <water> (no intake ...)"
             string endLine = relay == null ? "\nFree end: " + this.FreeEnd().Describe() + "." : "";
             if (relay == null && RM_HoseSettings.freeEndRolesEnabled)
-                endLine += (heldUnits > 0 ? " Holding " + heldUnits + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
+                endLine += (heldUnits > 0 ? " Holding " + RM_Volume.FormatUnits(heldUnits) + " " + heldLiquid?.label + "." : "") + " Role: " + freeEndRole + (this.FreeEnd().Port != null && freeEndRole != Machinery.RM_FreeEndRole.Capped ? " (inert while coupled)." : ".") + RoleNeed();
             return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ")." + endLine + order;
         }
     }

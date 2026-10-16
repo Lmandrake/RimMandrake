@@ -25,7 +25,7 @@
   <RMFlow_TankJobsMessage>A hose between two tanks only connects them now. To move liquid between them, set one tank's job to Empty or Fill.</RMFlow_TankJobsMessage>
   <RMFlow_LiquidTheftLetterLabel>Liquid theft discovered</RMFlow_LiquidTheftLetterLabel>
   <RMFlow_LiquidTheftLetter>{0} of {1} has seen your hose taking from their {2}. Every day it keeps happening now costs {3} goodwill with {1}, like a power-tap clamp on their grid. Uncouple the hose to stop it.</RMFlow_LiquidTheftLetter>
-  <RMFlow_ConverterTotals>Processed {0} units in, {1} out</RMFlow_ConverterTotals>
+  <RMFlow_ConverterTotals>Processed {0} in, {1} out</RMFlow_ConverterTotals>
 
   <RMFlow_MustRestoreOverRuin>Must be raised over a {0}: industrial works are found, not built.</RMFlow_MustRestoreOverRuin>
 
@@ -37,7 +37,7 @@
   <RMFlow_AdapterModeDesc>Feed: move liquid from the tanks on this adapter's line into the pipe net. Draw: move it from the pipe net into the tanks. Shut: move nothing (a new adapter starts shut, so two adapters never churn a loop through the pipe net by accident).</RMFlow_AdapterModeDesc>
   <RMFlow_AdapterModeShut>Mode: shut</RMFlow_AdapterModeShut>
   <RMFlow_AdapterShut>Shut: moves nothing (a new adapter starts shut)</RMFlow_AdapterShut>
-  <RMFlow_AdapterMoved>Moved {0} units</RMFlow_AdapterMoved>
+  <RMFlow_AdapterMoved>Moved {0}</RMFlow_AdapterMoved>
   <RMFlow_ReactorWorking>Reacting: {0} + {1} -> {2}</RMFlow_ReactorWorking>
   <RMFlow_ReactorVented>vented as gas</RMFlow_ReactorVented>
   <RMFlow_ReactorNoPair>No tanks on this line hold a pair of liquids that react</RMFlow_ReactorNoPair>

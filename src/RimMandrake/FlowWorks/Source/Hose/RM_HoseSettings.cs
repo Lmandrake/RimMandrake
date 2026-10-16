@@ -23,16 +23,39 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Liquid networks L5 (rev 2 §3.4): hose free ends take a role (Capped / Intake / Outflow). Off: every free end is
         /// Capped and the role button is hidden; saved roles stay.</summary>
         public static bool freeEndRolesEnabled = true;
-        /// <summary>PROVISIONAL (rev 2 §3.2): units an Empty tank sends, or a Fill tank takes in, per 250-tick settle.</summary>
-        public static int tankUnitsPerCycle = 10;
-        /// <summary>PROVISIONAL (rev 2 §3.2, §3.5): units a Dump tank drains out of Outflow ends per 250-tick settle with no pump
-        /// (the slow drain; a pump on Pour is the fast one). 5 = one level.</summary>
-        public static int dumpUnitsPerCycle = 5;
+        /// <summary>PROVISIONAL (rev 2 §3.2): LITRES an Empty tank sends, or a Fill tank takes in, per 250-tick settle (2,000 L =
+        /// the old 10 units; LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS).</summary>
+        public static int tankLitresPerCycle = 2000;
+        /// <summary>PROVISIONAL (rev 2 §3.2, §3.5): LITRES a Dump tank drains out of Outflow ends per 250-tick settle with no pump
+        /// (the slow drain; a pump on Pour is the fast one). 1,000 L = one level.</summary>
+        public static int dumpLitresPerCycle = 1000;
         /// <summary>Liquid networks L8 (rev 2 §3.7, owner Q2: real): a hose holds a little of what it carries and empties it out of
         /// its open end when it stops (a cleanable spill on ground). Off: hoses hold nothing (anything held drains at once).</summary>
         public static bool hoseHoldsLiquid = true;
-        /// <summary>PROVISIONAL (rev 2 §3.7): units a hose holds per cell of its length (0.2: a 30-cell hose holds 6).</summary>
-        public static float hoseUnitsPerCell = 0.2f;
+        /// <summary>PROVISIONAL (rev 2 §3.7): LITRES a hose holds per cell of its length. 5 L: a ~65 mm hose 1.46 m long holds
+        /// 4.8 L (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS; the old 0.2 units was 40 L a cell). A 40-cell hose holds 200 L.</summary>
+        public static float hoseLitresPerCell = 5f;
+
+        /// <summary>Tank units (decilitres) per settle, per Dump drain, per hose cell: the litre settings at their read sites.</summary>
+        public static int TankUnitsPerCycle => RM_Volume.Units(tankLitresPerCycle);
+        public static int DumpUnitsPerCycle => RM_Volume.Units(dumpLitresPerCycle);
+        public static float HoseUnitsPerCell => hoseLitresPerCell * RM_Volume.UnitsPerLitre;
+
+        /// <summary>Model-2 settings stored these three in 200 L units under the old keys: read once into litres when the new key
+        /// was never written. An untouched old default becomes the new default (the hose's 40 L a cell was never a ruling).</summary>
+        internal static void MigrateLegacyLitres()
+        {
+            System.Xml.XmlNode parent = Scribe.loader.curXmlParent;
+            if (parent == null) return;
+            if (parent["hose_tankLitresPerCycle"] == null && parent["hose_tankUnitsPerCycle"] is System.Xml.XmlNode t && int.TryParse(t.InnerText, out int tu))
+                tankLitresPerCycle = tu * RM_Volume.LegacyUnitLitres;
+            if (parent["hose_dumpLitresPerCycle"] == null && parent["hose_dumpUnitsPerCycle"] is System.Xml.XmlNode d && int.TryParse(d.InnerText, out int du))
+                dumpLitresPerCycle = du * RM_Volume.LegacyUnitLitres;
+            if (parent["hose_hoseLitresPerCell"] == null && parent["hose_hoseUnitsPerCell"] is System.Xml.XmlNode h
+                && float.TryParse(h.InnerText, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float hu)
+                && System.Math.Abs(hu - 0.2f) > 1e-4f)
+                hoseLitresPerCell = hu * RM_Volume.LegacyUnitLitres;
+        }
         /// <summary>Stiffness: the smallest bend radius a hose takes, cells.</summary>
         public static float minBendRadius = 1.2f;
         /// <summary>How much a charged hose swells, straightens and wobbles (0 = no visible change).</summary>
@@ -75,11 +98,12 @@ namespace RimMandrake.FlowWorks.Hose
         {
             Scribe_Values.Look(ref enabled, "hose_enabled", true);
             Scribe_Values.Look(ref tankModesEnabled, "hose_tankModesEnabled", true);
-            Scribe_Values.Look(ref tankUnitsPerCycle, "hose_tankUnitsPerCycle", 10);
+            Scribe_Values.Look(ref tankLitresPerCycle, "hose_tankLitresPerCycle", 2000);
             Scribe_Values.Look(ref freeEndRolesEnabled, "hose_freeEndRolesEnabled", true);
-            Scribe_Values.Look(ref dumpUnitsPerCycle, "hose_dumpUnitsPerCycle", 5);
+            Scribe_Values.Look(ref dumpLitresPerCycle, "hose_dumpLitresPerCycle", 1000);
             Scribe_Values.Look(ref hoseHoldsLiquid, "hose_hoseHoldsLiquid", true);
-            Scribe_Values.Look(ref hoseUnitsPerCell, "hose_hoseUnitsPerCell", 0.2f);
+            Scribe_Values.Look(ref hoseLitresPerCell, "hose_hoseLitresPerCell", 5f);
+            if (Scribe.mode == LoadSaveMode.LoadingVars) MigrateLegacyLitres();
             // §3.11: the old tank-feed switch is read once into tank jobs (only when the new key was never written)
             if (Scribe.mode == LoadSaveMode.LoadingVars && Scribe.loader.curXmlParent?["hose_tankModesEnabled"] == null
                 && Scribe.loader.curXmlParent?["hose_tanksFeedHoses"] is System.Xml.XmlNode legacyFeed && bool.TryParse(legacyFeed.InnerText, out bool fed))
@@ -148,7 +172,7 @@ namespace RimMandrake.FlowWorks.Hose
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works hose", ResetAllFields);
 
-            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankUnitsPerCycle", "freeEndRolesEnabled", "dumpUnitsPerCycle", "hoseHoldsLiquid", "hoseUnitsPerCell", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "tankModesEnabled", "tankLitresPerCycle", "freeEndRolesEnabled", "dumpLitresPerCycle", "hoseHoldsLiquid", "hoseLitresPerCell", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
             {
             list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
@@ -159,21 +183,21 @@ namespace RimMandrake.FlowWorks.Hose
             list.CheckboxLabeled("Hose free ends: Capped / Intake / Outflow", ref freeEndRolesEnabled,
                 "On: a hose's loose end has a role button. Intake lets a pump on that network draw from the water the end lies in; " +
                 "Outflow lets liquid leave the network there. Off: every loose end is capped.");
-            using (Dependent(list, "tankUnitsPerCycle"))
+            using (Dependent(list, "tankLitresPerCycle"))
             {
-                list.Label("Tank to tank: " + tankUnitsPerCycle + " units per tank per pump cycle");
-                tankUnitsPerCycle = Mathf.RoundToInt(list.Slider(tankUnitsPerCycle, 1f, 50f));
+                list.Label("Tank to tank: " + RM_Volume.FormatLitres(tankLitresPerCycle) + " per tank per pump cycle");
+                tankLitresPerCycle = Mathf.RoundToInt(list.Slider(tankLitresPerCycle, 100f, 10000f) / 100f) * 100;
             }
             list.CheckboxLabeled("Hoses hold liquid and spill it when they stop", ref hoseHoldsLiquid,
                 "On: a hose holds a little of what flows through it, and when it stops carrying (capped, wound in, dropped, unplugged) " +
                 "that liquid runs out of its open end: into a channel, or onto the ground as a spill colonists clean up. Off: hoses hold nothing.");
-            using (Dependent(list, "hoseUnitsPerCell"))
+            using (Dependent(list, "hoseLitresPerCell"))
             {
-                list.Label("Liquid held per hose cell: " + hoseUnitsPerCell.ToString("0.00") + " units");
-                hoseUnitsPerCell = Mathf.Round(list.Slider(hoseUnitsPerCell, 0f, 1f) * 20f) / 20f;
+                list.Label("Liquid held per hose cell: " + RM_Volume.FormatLitres(hoseLitresPerCell));
+                hoseLitresPerCell = Mathf.Round(list.Slider(hoseLitresPerCell, 0f, 50f) * 2f) / 2f;
             }
-            list.Label("Dump tank drain with no pump: " + dumpUnitsPerCycle + " units per pump cycle (a pump set to Pour is faster)");
-            dumpUnitsPerCycle = Mathf.RoundToInt(list.Slider(dumpUnitsPerCycle, 1f, 25f));
+            list.Label("Dump tank drain with no pump: " + RM_Volume.FormatLitres(dumpLitresPerCycle) + " per pump cycle (a pump set to Pour is faster)");
+            dumpLitresPerCycle = Mathf.RoundToInt(list.Slider(dumpLitresPerCycle, 100f, 5000f) / 100f) * 100;
             list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
             plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
             list.Label("Hose thickness: " + thickness.ToString("0.00") + "x (art only; 1 = the standard hose)");
@@ -243,14 +267,14 @@ namespace RimMandrake.FlowWorks.Hose
         // `enabled` stops the hose draw (RM_MapComponent_Hoses.MapComponentUpdate returns), the hose orders (WorkGiver_HoseOrders,
         // the float-menu provider) and the carry/retract jobs, so the draw tint/wobble and the colonist-handling numbers are inert
         // with it off. Left Independent on purpose because something still reads them with the master off: the tank rules and
-        // liquid-network numbers belong to the pipe network, not the hose draw; dumpUnitsPerCycle is also the Pour pump's cap;
+        // liquid-network numbers belong to the pipe network, not the hose draw; dumpLitresPerCycle is also the Pour pump's cap;
         // the shape numbers (bend, length, joiners, slack, plump, timings) are read by the reel's saved layout and the probe;
         // defaultLook styles a reel at build time. hoseSettingsImported is a migration flag with no control.
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("enabled", "tintByContents", "fillWobble", "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose")
-            .Declare("tankModesEnabled", "tankUnitsPerCycle")
-            .Declare("hoseHoldsLiquid", "hoseUnitsPerCell")
-            .Independent("freeEndRolesEnabled", "dumpUnitsPerCycle", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell",
+            .Declare("tankModesEnabled", "tankLitresPerCycle")
+            .Declare("hoseHoldsLiquid", "hoseLitresPerCell")
+            .Independent("freeEndRolesEnabled", "dumpLitresPerCycle", "plumpAmount", "thickness", "transitionTicks", "releaseTicks", "minPlumpDwell",
                          "minBendRadius", "maxLength", "maxLengthDefaults", "couplingSpacing", "slack", "defaultLook")
             .Name("enabled", "Flexible hoses (master switch)").Name("tankModesEnabled", "Tank jobs: Store / Fill / Empty / Dump")
             .Name("hoseHoldsLiquid", "Hoses hold liquid and spill it when they stop");

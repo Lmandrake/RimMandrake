@@ -61,10 +61,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>An empty bottle may be filled from it: Store, Empty or Dump, never Fill (bottle-loop fix).</summary>
         public bool GivesToBottles => Machinery.RM_TankBottleRules.FillsFrom(EffectiveMode);
 
+        /// <summary>Contents in tank units (decilitres, RM_Volume.UnitsPerLitre); players read litres.</summary>
         public int storedUnits;
 
+        /// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the volume model <see cref="storedUnits"/> was saved under (absent =
+        /// RM_Volume.LegacyModel, 200 L units); converted once on load.</summary>
+        private int volumeModel = RM_Volume.CurrentModel;
+
         /// <summary>One tank square = one deep canal square = one deep pond square (owner 2026-10-12): footprint area ×
-        /// RM_Volume.UnitsPerSquare × (2 if tall) × the tank slider. A 2×2 tank holds 80 units, a tall one 160.</summary>
+        /// RM_Volume.UnitsPerSquare × (2 if tall) × the tank slider. A 2×2 tank holds 16 kL, a tall one 32 kL.</summary>
         public int Capacity => RM_Volume.TankCapacity(def.size.x * def.size.z,
             def.GetModExtension<RM_LiquidTankExtension>()?.HeightFactor ?? 1f, RimMandrakeFlowWorksSettings.tankCapacityMultiplier);
 
@@ -179,7 +184,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             string baseString = base.GetInspectString();
             string content = Empty
                 ? "RM_LiquidTankEmpty".Translate()
-                : "RM_LiquidTankHolding".Translate(storedLiquid.LabelCap, storedUnits, Capacity);
+                : "RM_LiquidTankHolding".Translate(storedLiquid.LabelCap, RM_Volume.FormatUnits(storedUnits), RM_Volume.FormatUnits(Capacity));
             if (!Empty && Overfull)
             {
                 content += " " + "RM_LiquidTankOverfull".Translate();
@@ -196,6 +201,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             base.ExposeData();
             Scribe_Defs.Look(ref storedLiquid, "storedLiquid");
             Scribe_Values.Look(ref storedUnits, "storedUnits", 0);
+            Scribe_Values.Look(ref volumeModel, "rmVolumeModel", RM_Volume.LegacyModel);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && volumeModel < RM_Volume.CurrentModel)
+            {
+                storedUnits = RM_Volume.FromLegacyUnits(storedUnits);   // 200 L units -> decilitres, once
+                volumeModel = RM_Volume.CurrentModel;
+            }
             Scribe_Values.Look(ref mode, "rmTankMode", Machinery.RM_TankMode.Store);
             Scribe_References.Look(ref theftCaughtBy, "rmTheftCaughtBy");
             Scribe_Values.Look(ref theftTicks, "rmTheftTicks", 0);
@@ -205,7 +216,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 // left in place the next liquid poured in would adopt them (GPT FlowWorks review #27). Disclose
                 // and clear rather than convert silently.
                 Log.Warning("[RimMandrake.FlowWorks] " + this + " held " + storedUnits
-                    + " units of a liquid whose def is gone; cleared.");
+                    + " units (decilitres) of a liquid whose def is gone; cleared.");
                 storedUnits = 0;
             }
         }

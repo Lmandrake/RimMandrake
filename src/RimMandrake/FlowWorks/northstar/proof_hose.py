@@ -153,6 +153,11 @@ def _hose(B, reel):
 # the reel 2x2 at (3, 8) north of the pump (it couples to it: Machine kind); the hose laid east to (16, 9); a tank 2x2 at
 # (17, 9) whose west edge the hose end touches. The reel's nozzle faces west: (0..2, 8..11) is kept clear for the lead-out.
 RF_X0, RF_Z0, RF_PW, RF_PH = 158, 150, 26, 14
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: probe "units" are raw tank units = decilitres. One level = 1,000 L = 10,000 units
+# (was 5 drums); the old per-cycle bar 5 (and window 5..15) is x2000.
+UNITS_PER_LEVEL = 10000
+PER_CYCLE_CAP = 5 * 2000
+FILL_UNITS = 120000          # filltank staging: 12 kL of a 16 kL 2x2 tank (the old 100 exceeded the old 80 capacity)
 RF_WEST = 6
 # FINAL §3.6 / G6.4 contract: a new link is discovered <= 60 ticks after it is made (the reel's free-end cache), and liquid
 # moves by the NEXT pump cycle (250 ticks, at the pump's own hash phase) after that. A flat 260-tick window from the lay is
@@ -241,8 +246,8 @@ def _discover(B, reel, bound=RF_DISCOVER, step=5):
 
 
 def _moved(B, tank, u0, bound=RF_CYCLE + 10, step=10):
-    """Ticks until the tank at `tank` gained >= 5 units over u0 (<= bound); (units now, ticks)."""
-    v, w = _poll(B, lambda: (_tank(B, tank).get("units") or 0) - u0 >= 5, bound, step=step)
+    """Ticks until the tank at `tank` gained >= one level (UNITS_PER_LEVEL tank units) over u0 (<= bound); (units now, ticks)."""
+    v, w = _poll(B, lambda: (_tank(B, tank).get("units") or 0) - u0 >= UNITS_PER_LEVEL, bound, step=step)
     return _tank(B, tank).get("units") or 0, w
 
 
@@ -265,7 +270,7 @@ def realflow(B, rows):
     t1 = _tank(B, s.tank)
     h = _hose(B, s.reel)
     gained = (t1.get("units") or 0) - (t0.get("units") or 0)
-    row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained >= 5 and mt <= RF_CYCLE + 10
+    row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10
         and h.get("credits", 0) > 0 and h.get("netLink"),
         {"lay": lay, "before": t0, "after": t1, "gained": gained, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
          "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")})
@@ -312,7 +317,7 @@ def realflow(B, rows):
         b0 = _tank(B, s2.tank).get("units") or 0
         B.ticks(260)
         b1 = _tank(B, s2.tank).get("units") or 0
-        row("NS_hose_port_removed_moves", b1 - b0 >= 5, {"units": [b0, b1]})
+        row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]})
     # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2)
     s3 = Scene(B, 3)
     if s3.site(rows, "RF_site3_ready"):
@@ -372,7 +377,7 @@ def realflow(B, rows):
         e0 = _tank(B, tank5).get("units") or 0
         B.ticks(300)
         e1 = _tank(B, tank5).get("units") or 0
-        row("NS_pipe_and_hose_one_net", e1 - e0 >= 5, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)})
+        row("NS_pipe_and_hose_one_net", e1 - e0 >= UNITS_PER_LEVEL, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)})
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
         mid, v = (ox + 1, oz + 11), (ox + 1, oz + 13)
         s5.build("RM_LiquidTank:%d,%d" % mid, "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 11), "RM_UniversalPipe:%d,%d" % (ox + 0, oz + 12),
@@ -396,14 +401,14 @@ def realflow(B, rows):
         src = (ox + 3, oz + 10)
         s6.build("RM_HoseReel:%d,%d" % s6.reel, "RM_LiquidTank:%d,%d" % src, "RM_LiquidTank:%d,%d" % s6.tank)
         B.ticks(2)
-        B.hp("filltank:%d,%d=%s,100" % (src + (LIQUID_WATER,)))
+        B.hp("filltank:%d,%d=%s,%d" % (src + (LIQUID_WATER, FILL_UNITS)))
         s6.lay()
         f0 = _tank(B, s6.tank).get("units") or 0
         B.ticks(520)
         f1 = _tank(B, s6.tank).get("units") or 0
         h6 = _hose(B, s6.reel)
-        row("NS_tank_feeds_hose", 5 <= f1 - f0 <= 15 and h6.get("credits", 0) > 0,
-            {"units": [f0, f1], "perCycleCap": 5, "credits": h6.get("credits"), "netLink": h6.get("netLink")})
+        row("NS_tank_feeds_hose", PER_CYCLE_CAP <= f1 - f0 <= 3 * PER_CYCLE_CAP and h6.get("credits", 0) > 0,
+            {"units": [f0, f1], "perCycleCap": PER_CYCLE_CAP, "credits": h6.get("credits"), "netLink": h6.get("netLink")})
 
 
 # ============================================================================ the session

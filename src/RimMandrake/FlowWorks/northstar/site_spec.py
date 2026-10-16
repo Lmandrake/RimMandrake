@@ -47,6 +47,7 @@ SETTINGS = {
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,
         "pondReturnLegEnabled": True, "refillWaitsForOccupants": True, "dugBedLeavesPondEnabled": True,   # POND_RETURN_LEG
         "pondBedHollowEnabled": True,   # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2
+        "mouseoverDepthEnabled": True,   # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: depth + litres in the cell readout
         "deepBedsEnabled": True, "deepBedMaxDepth": 20.0, "deepBedCellsPerLevel": 4.0,   # POND_ELEVATION_BUILD_LAKES_RUN_DEEP
         "drainableLakeMaxCells": 40000.0,
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
@@ -127,12 +128,12 @@ SETTINGS = {
     "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": {
         "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
-        "unitsPerFilth": 2.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
+        "litresPerFilth": 400.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
     },
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": {
-        "enabled": True, "tankModesEnabled": True, "tankUnitsPerCycle": 10.0, "freeEndRolesEnabled": True, "dumpUnitsPerCycle": 5.0, "hoseHoldsLiquid": True, "hoseUnitsPerCell": 0.2, "minBendRadius": 1.2, "plumpAmount": 1.0, "transitionTicks": 30.0, "releaseTicks": 500.0,
+        "enabled": True, "tankModesEnabled": True, "tankLitresPerCycle": 2000.0, "freeEndRolesEnabled": True, "dumpLitresPerCycle": 1000.0, "hoseHoldsLiquid": True, "hoseLitresPerCell": 5.0, "minBendRadius": 1.2, "plumpAmount": 1.0, "transitionTicks": 30.0, "releaseTicks": 500.0,
         "minPlumpDwell": 600.0, "maxLength": 40.0, "maxLengthDefaults": 1.0, "couplingSpacing": 8.0, "handlingTime": 1.0,
         "windCellsPerSecond": 3.0, "autoResumeDroppedHose": True, "slack": 1.0, "tintByContents": True, "fillWobble": True,
         "hoseSettingsImported": False,

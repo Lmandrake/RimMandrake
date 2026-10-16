@@ -29,8 +29,8 @@
         <tier>Industrial</tier>
         <process>refine</process>
         <productThing>RM_VentReagent</productThing>
-        <inputUnits>4</inputUnits>
-        <outputUnits>1</outputUnits>
+        <inputLitres>800</inputLitres>
+        <productCount>1</productCount>
       </li>
     </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>

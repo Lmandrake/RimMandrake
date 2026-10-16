@@ -88,7 +88,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
                 RiverSwitchFlipChecks.Has(reel, @"Scribe_Defs\.Look\(ref heldLiquid, ""rmHoseHeldLiquid""\); Scribe_Values\.Look\(ref heldUnits, ""rmHoseHeldUnits"", 0\);", "saved as rmHoseHeldLiquid / rmHoseHeldUnits");
                 RiverSwitchFlipChecks.Has(reel, @"if \(Scribe\.mode == LoadSaveMode\.PostLoadInit && heldLiquid == null && heldUnits > 0\) \{[^}]*Log\.Warning\([^}]*heldUnits = 0;", "an unknown held liquid is cleared with one warning");
-                RiverSwitchFlipChecks.Has(reel, @"public int HeldCap => RM_HoseSettings\.hoseHoldsLiquid && lay != null \? Machinery\.RM_HoseHold\.Capacity\(lay\.FlatLen, RM_HoseSettings\.hoseUnitsPerCell\) : 0;", "capacity from the laid length");
+                RiverSwitchFlipChecks.Has(reel, @"public int HeldCap => RM_HoseSettings\.hoseHoldsLiquid && lay != null \? Machinery\.RM_HoseHold\.Capacity\(lay\.FlatLen, RM_HoseSettings\.HoseUnitsPerCell\) : 0;", "capacity from the laid length");
                 RiverSwitchFlipChecks.Has(reel, @"base\.PostDeSpawn\(map, mode\); // [^\n]*?Machinery\.RM_LiquidSpill\.DrainHeld\(this, map, parent\.Position\);", "a packed-up or destroyed reel empties where it stood");
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net, @"CreditRoute\(origin\.Map, route, liquid, units, cadence, FillFrom\(tank, liquid\)\);", "a tank-leg credit fills its hoses out of that tank");

@@ -743,11 +743,13 @@ namespace RimMandrake.FlowWorks
 				stock = new RM_LiquidStock();
 			}
 			stock.RebuildIndex(map);
+			// Model 1 -> 2 rescales ponds (one square = one square). Model 2 -> 3 (litres) changes no pond: a pond's stock is
+			// in fill-units of LEVELS, which did not change; every tank-unit holder converts itself (RM_Volume.FromLegacyUnits).
 			if (volumeModel < RM_Volume.CurrentModel)
 			{
-				int rescaled = stock.MigrateVolumeModel(this);
+				int rescaled = volumeModel < 2 ? stock.MigrateVolumeModel(this) : 0;
 				Log.Message("[RimMandrake.FlowWorks] volume model " + volumeModel + " -> " + RM_Volume.CurrentModel
-					+ ": " + rescaled + " limited pond(s) rescaled; canals unchanged; tanks keep every stored unit.");
+					+ ": " + rescaled + " limited pond(s) rescaled; canals unchanged; tanks keep every stored litre.");
 				volumeModel = RM_Volume.CurrentModel;
 			}
 			RebuildBedGrid();

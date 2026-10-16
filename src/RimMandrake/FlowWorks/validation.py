@@ -656,6 +656,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # DIG_ROCK_TUNE_STONE_FIGHTS_BACK (2026-10-16): digging rock takes longer and drops chunks; no live
                         # toggle chain yet (the rows are owed on the item)
                         "digRockGroundEnabled", "digRockChunksEnabled",
+                        # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16): the cell readout's depth/litres line is UI text
+                        # read by eye (review map station pond_bed); no live toggle chain yet
+                        "mouseoverDepthEnabled",
                         # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
                         # all along but missing from the registry): no live row flips them yet
                         "fluidResidueEnabled", "hotLiquidEnabled", "liquidBathRecipesEnabled", "liquidReactionsEnabled",

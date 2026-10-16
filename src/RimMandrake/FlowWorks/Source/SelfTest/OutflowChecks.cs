@@ -59,11 +59,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(sp, @"if \(\(ex != null && ex\.IsExcavated\(end\)\) \|\| !end\.Standable\(map\) \|\| end\.GetTerrain\(map\)\.IsWater\) \{ return RM_OutletKind\.Blocked; \}",
                     "a full or foreign channel, a wall or water is blocked");
                 RiverSwitchFlipChecks.Has(sp, @"ThingDef own = liquid\?\.spillFilth \?\? RimMandrakeFlowWorks_DefOf\.RM_Filth_LiquidSpill;", "the liquid's own spill filth, else the generic spill");
-                RiverSwitchFlipChecks.Has(sp, @"int n = RM_LiquidNetKernel\.FilthCount\(units, RM_MachinerySettings\.unitsPerFilth\);", "one piece per unitsPerFilth");
+                RiverSwitchFlipChecks.Has(sp, @"int n = RM_LiquidNetKernel\.FilthCount\(units, RM_MachinerySettings\.UnitsPerFilth\);", "one piece per unitsPerFilth");
                 RiverSwitchFlipChecks.Has(sp, @"Log\.WarningOnce\(""\[FlowWorks\] a spill of """, "a spill no cell takes is logged, never silent");
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net, @"RM_LiquidNetKernel\.DumpTake\(left, tank\.storedUnits, level, RM_LiquidSpill\.WholeLevels\(kind\)\)", "the Dump drain sizes each end's share by DumpTake (whole levels into a channel or a pond)");
-                RiverSwitchFlipChecks.Has(net, @"int left = System\.Math\.Max\(0, RM_HoseSettings\.dumpUnitsPerCycle\);", "the slow rate is dumpUnitsPerCycle per tank per settle");
+                RiverSwitchFlipChecks.Has(net, @"int left = System\.Math\.Max\(0, RM_HoseSettings\.DumpUnitsPerCycle\);", "the slow rate is dumpUnitsPerCycle per tank per settle");
                 RiverSwitchFlipChecks.Has(net, @"DumpDrain\(map, comps, dumps\);", "the settle runs the Dump drain");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
                 RiverSwitchFlipChecks.Has(pump, @": RM_LiquidSpill\.OutletLeg\(Map, ex, kind, dest, l, f\);", "a pump's outflow goes through the one outlet leg");

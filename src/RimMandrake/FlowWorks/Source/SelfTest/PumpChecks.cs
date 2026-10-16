@@ -63,11 +63,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Pump_blocked_outflow_falls_to_tanks", () =>
             {
-                int room = 100;
+                const int U0 = RM_PumpMath.TankUnitsPerLevel;
+                int room = 20 * U0;
                 List<string> m = Cycle(1, new[] { 50 }, new[] { 0 }, ref room);
-                Assert(m.SequenceEqual(new[] { "s0>tank" }) && room == 95, "a blocked (full) outflow: the level goes to the tanks (" + string.Join(",", m) + ")");
-                room = 100;
-                Assert(Cycle(1, new[] { 50 }, new[] { 5 }, ref room).SequenceEqual(new[] { "s0>o0" }) && room == 100, "an open outflow outranks the tanks");
+                Assert(m.SequenceEqual(new[] { "s0>tank" }) && room == 19 * U0, "a blocked (full) outflow: the level goes to the tanks (" + string.Join(",", m) + ")");
+                room = 20 * U0;
+                Assert(Cycle(1, new[] { 50 }, new[] { 5 }, ref room).SequenceEqual(new[] { "s0>o0" }) && room == 20 * U0, "an open outflow outranks the tanks");
             });
 
             Case("Pump_budget_is_shared_across_intakes_and_outflows", () =>
@@ -137,15 +138,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY (ruling Q3, "Keep it as faster draining"): live, the basic pump poured a
                 // Dump tank at 1 level = 5 units a cycle, exactly the 5-unit gravity drain (fw_live_checks L2b 20 vs L2a 25 / 1000 ticks)
                 const int U = RM_PumpMath.TankUnitsPerLevel;
-                for (int gravity = 0; gravity <= 25; gravity++)
+                foreach (int gravity in new[] { 0, 1, U / 5, U / 2, U - 1, U, U + 1, 2 * U, 5 * U })
                     foreach (int lv in new[] { 0, 1, 2, 4 })
                         Assert(RM_PumpMath.PourLevels(lv, gravity) * U > gravity && RM_PumpMath.PourLevels(lv, gravity) >= Math.Max(1, lv),
                             "pour beats gravity " + gravity + " and never slows a station of " + lv + " levels (" + RM_PumpMath.PourLevels(lv, gravity) + ")");
-                Assert(RM_PumpMath.PourLevels(1, 5) == 2, "the basic pump at the default 5-unit gravity rate pours 2 levels (10 units)");
-                Assert(RM_PumpMath.PourLevels(2, 5) == 2 && RM_PumpMath.PourLevels(4, 5) == 4, "the stations keep their own (already faster) budget");
+                // the default gravity drain is 1,000 L = one level (RM_HoseSettings.dumpLitresPerCycle)
+                Assert(RM_PumpMath.PourLevels(1, U) == 2, "the basic pump at the default one-level gravity rate pours 2 levels (2,000 L)");
+                Assert(RM_PumpMath.PourLevels(2, U) == 2 && RM_PumpMath.PourLevels(4, U) == 4, "the stations keep their own (already faster) budget");
                 Assert(RM_PumpMath.PourLevels(1, -3) == 1, "a negative setting never zeroes the pump");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                RiverSwitchFlipChecks.Has(pump, @"if \(pourMode\) \{[^}]*levels = RM_PumpMath\.PourLevels\(levels, Hose\.RM_HoseSettings\.dumpUnitsPerCycle\);",
+                RiverSwitchFlipChecks.Has(pump, @"if \(pourMode\) \{[^}]*levels = RM_PumpMath\.PourLevels\(levels, Hose\.RM_HoseSettings\.DumpUnitsPerCycle\);",
                     "Tick raises the Pour budget through PourLevels against the live gravity setting");
             });
 

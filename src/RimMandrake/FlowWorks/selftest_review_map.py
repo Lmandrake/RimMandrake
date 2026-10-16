@@ -155,8 +155,8 @@ pb = dict(R.SETUPS["tank_sizes"])
 check(R.extra_status(m, pb, capd, rows)[0] != "not", "tank_sizes probes should find the tall tanks on disk")
 pb["probes"] = ["xml:defName>RM_NoSuchTank_Selftest<"]
 check(R.extra_status(m, pb, capd, rows)[0] == "not", "a missing probe did not make the extra NOT BUILT")
-# staged mid-states: half-full tanks are half of 80/160/160/320; the raised ladder is raised
-caps_ = {"RM_LiquidTank": 80, "RM_LiquidTankTall": 160, "RM_UniversalCargoTank": 160, "RM_UniversalCargoTankXTall": 320}
+# staged mid-states: half-full tanks are half of 16/32/32/64 kL (litres, LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS); the raised ladder is raised
+caps_ = {"RM_LiquidTank": 16000, "RM_LiquidTankTall": 32000, "RM_UniversalCargoTank": 32000, "RM_UniversalCargoTankXTall": 64000}
 ts = R.SETUPS["tank_sizes"]
 at = {(b[1], b[2]): b[0] for b in ts["build"]}
 check(all(u * 2 == caps_[at[(x, z)]] for x, z, _, _, u in ts["tank"]), "tank_sizes not staged half full")

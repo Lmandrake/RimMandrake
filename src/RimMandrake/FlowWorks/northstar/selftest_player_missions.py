@@ -231,8 +231,15 @@ def ada(**kw):
     return row
 
 
+def fmt_litres(l):
+    """RM_Volume.FormatLitres, enough of it for the stub (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS)."""
+    if l >= 1000:
+        return ("%.1f" % (l / 1000.0)).rstrip("0").rstrip(".") + " kL"
+    return ("%.1f" % l).rstrip("0").rstrip(".") + " L"
+
+
 class TankStub(object):
-    """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, one colonist, a click -> selection."""
+    """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, units = decilitres, one colonist, a click -> selection."""
 
     def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True, pawns=None,
                  row_shape="real"):
@@ -272,7 +279,7 @@ class TankStub(object):
                 return {"selection": []}
             u = self.tanks[self.sel][2]
             return {"selection": [{"thingId": self.sel if self.names else "RM_LiquidTank999999",
-                                   "inspect": "Holding: Water (%g / 500 units)" % u}]}
+                                   "inspect": "Holding: Water (%s / 16 kL)" % fmt_litres(u / 10.0)}]}
         raise RuntimeError(tool)
 
 
@@ -285,35 +292,35 @@ def test_chain_goal(spec):
         if baseline != "absent":
             r["tank_baseline"] = baseline
         return pm.goal_check(stub, r)
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60)), {})
-    ok(v == "PASS" and ev["destTank"] == "RM_LiquidTank1", "new destination tank filled 40 -> PASS (%s)" % v)
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(70, 60)), {})
+    ok(v == "PASS" and ev["destTank"] == "RM_LiquidTank1", "new destination tank filled 4 kL -> PASS (%s)" % v)
     # the G6.5 defect: a filled tank OUTSIDE the destination rect used to pass the goal
-    v, ev = verdict(TankStub({"RM_LiquidTank2": (5, 5, 400), "RM_LiquidTank1": (50, 60, 0)}, colonist=(70, 60)), {})
+    v, ev = verdict(TankStub({"RM_LiquidTank2": (5, 5, 150000), "RM_LiquidTank1": (50, 60, 0)}, colonist=(70, 60)), {})
     ok(v == "FAIL" and all(t["id"] != "RM_LiquidTank2" for t in ev["destTanks"]),
        "a full tank elsewhere on the map does not pass the goal (%s)" % v)
     # ... and one that already held water before the mission: the delta, not the level, is the goal
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 400)}, colonist=(70, 60)), {"RM_LiquidTank1": 395.0})
-    ok(v == "FAIL" and ev["destTanks"][0]["delta"] == 5.0, "pre-filled tank +5 < min_units -> FAIL (%s)" % v)
-    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 400)}, colonist=(70, 60)), {"RM_LiquidTank1": 380.0})
-    ok(v == "PASS", "pre-filled tank +20 -> PASS (%s)" % v)
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 150000)}, colonist=(70, 60)), {"RM_LiquidTank1": 148000.0})
+    ok(v == "FAIL" and ev["destTanks"][0]["delta"] == 2000.0, "pre-filled tank +2000 dL (200 L) < min_units -> FAIL (%s)" % v)
+    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 150000)}, colonist=(70, 60)), {"RM_LiquidTank1": 130000.0})
+    ok(v == "PASS", "pre-filled tank +20000 dL (2 kL) -> PASS (%s)" % v)
     # identity: a selection that names a DIFFERENT tank does not count as this tank's units
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60), sem_names_id=False), {})
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(70, 60), sem_names_id=False), {})
     ok(unmeasured(v, ev) and ev["destTanks"][0]["units"] is None, "units read off another tank -> UNMEASURED (%s)" % v)
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60)), None)
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(70, 60)), None)
     ok(unmeasured(v, ev), "unread start baseline -> UNMEASURED, never PASS (%s)" % v)
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(70, 60), things_key=False), {})
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(70, 60), things_key=False), {})
     ok(unmeasured(v, ev), "list_things without things -> UNMEASURED (%s)" % v)
     v, _ = verdict(TankStub({}, colonist=(70, 60)), {})
     ok(v == "FAIL", "no destination tank built -> FAIL (%s)" % v)
-    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40)}, colonist=(50, 60)), {})
+    v, _ = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(50, 60)), {})
     ok(v == "FAIL", "tank filled but nobody across -> FAIL (%s)" % v)
     # a run.json written before P14 has no baseline key: deltas from 0 would let a pre-filled tank pass
-    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 400)}, colonist=(70, 60)), "absent")
+    v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 150000)}, colonist=(70, 60)), "absent")
     ok(unmeasured(v, ev) and "no tank_baseline" in ev.get("why", ""),
        "a pre-fix run.json with no baseline key -> UNMEASURED, never PASS (%s)" % v)
     # truncated listing (limit 50): 51 tanks in the destination, the 51st never listed
     many = dict(("RM_LiquidTank%d" % (100 + i), (44 + i % 32, 48 + i // 32, 0)) for i in range(51))
-    many["RM_LiquidTank100"] = (44, 48, 40)
+    many["RM_LiquidTank100"] = (44, 48, 40000)
     last = "RM_LiquidTank150"
     v, ev = verdict(TankStub(many, colonist=(70, 60)), {"RM_LiquidTank100": 0.0, last: 0.0})
     ok(unmeasured(v, ev) and last in ev.get("why", ""), "truncated page missing a tracked tank -> UNMEASURED (%s)" % v)
@@ -330,7 +337,7 @@ def test_chain_goal(spec):
     # injuries: jawa/list_pawns has no isInjury field, so the old check never saw a wound and PASSed a hurt colonist
     def hurt_pawns(hediffs, bleed=0.0):
         return {"success": True, "pawns": [ada(health={"hediffs": hediffs, "painTotal": 0.1, "bleedRate": bleed})]}
-    good = {"RM_LiquidTank1": (50, 60, 40)}
+    good = {"RM_LiquidTank1": (50, 60, 40000)}
     v, ev = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([{"def": "Cut", "label": "cut", "severity": 3}])), {})
     ok(v == "FAIL" and ev["injuredColonists"] == ["Ada"], "a cut colonist -> FAIL (%s)" % v)
     v, _ = verdict(TankStub(good, colonist=(70, 60), pawns=hurt_pawns([], bleed=0.2)), {})

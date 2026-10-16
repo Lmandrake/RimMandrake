@@ -6,12 +6,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pond_pump as PP  # noqa: E402
 
 cases = [
-    (PP.draw_verdict(0, 40, 30.0, 22.0)[0], "PASS", "8 levels: stock -8, tank +40"),
-    (PP.draw_verdict(0, 40, 30.0, 23.0)[0], "FAIL", "a unit created from nothing"),
-    (PP.draw_verdict(0, 35, 30.0, 22.0)[0], "FAIL", "a level lost on the way"),
+    (PP.draw_verdict(0, 80000, 30.0, 22.0)[0], "PASS", "8 levels: stock -8, tank +80000 dL (8 kL)"),
+    (PP.draw_verdict(0, 80000, 30.0, 23.0)[0], "FAIL", "a unit created from nothing"),
+    (PP.draw_verdict(0, 70000, 30.0, 22.0)[0], "FAIL", "a level lost on the way"),
     (PP.draw_verdict(0, 0, 30.0, 30.0)[0], "FAIL", "the pump moved nothing"),
-    (PP.draw_verdict(None, 40, 30.0, 22.0)[0], "UNMEASURED", "no tank read"),
+    (PP.draw_verdict(None, 80000, 30.0, 22.0)[0], "UNMEASURED", "no tank read"),
     (PP.draw_verdict(0, 8, 30.0, 22.0)[0], "FAIL", "raw 1:1 (stock units == tank units) is not the bridged bar"),
+    (PP.draw_verdict(0, 40, 30.0, 22.0)[0], "FAIL", "the old 5-per-level bridge is not the bar"),
     (PP.refill_verdict([{"stock": 23.0, "receded": 2}, {"stock": 25.1, "receded": 1}], 22.0, 2)[0], "PASS", "rise + re-wet"),
     (PP.refill_verdict([{"stock": 25.1, "receded": 2}], 22.0, 2)[0], "FAIL", "stock rose, nothing re-wet"),
     (PP.refill_verdict([{"stock": 22.0, "receded": 2}], 22.0, 2)[0], "FAIL", "no refill"),

@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             public RM_TransferLeg Pour(int perLevel) => RM_TransferLeg.World(k => CanSay && Room > 0, k => { Calls++; if (RefuseDo || Room <= 0) return false; Room--; Levels++; return true; });
         }
 
-        private const int Level = RM_Volume.UnitsPerLevel;
+        private const int Level = 5;   // a test level: Move and the legs are unit-agnostic (production: RM_Volume.UnitsPerLevel)
 
         public static void Run(Action<string, Action> Case)
         {
@@ -256,7 +256,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             inp.RefuseRemove = true;
             Assert(RM_LiquidTransfer.Move(3, inp.Out(2), Pending("Steel", 1), out _) == 0 && pending == 3, "input refusing: no item output (the old code made output anyway)");
             string conv = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidConverter.cs"));
-            RiverSwitchFlipChecks.Has(conv, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Split\(inPlan\.Count, i => inPlan\[i\]\.units, \(i, k\) => inPlan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryAddLiquid\(inputLiquid, k\), step\.inputUnits\), dest, out RM_MoveOutcome mv\) == n\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in inPlan\) RM_LiquidNet\.Credit\(parent, p\.tank, inputLiquid, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter input foreach \(\(Building_LiquidTank tank, int units\) p in outPlan \?\? .*?\) RM_LiquidNet\.Credit\(parent, p\.tank, step\.product, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter output",
+            RiverSwitchFlipChecks.Has(conv, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.Split\(inPlan\.Count, i => inPlan\[i\]\.units, \(i, k\) => inPlan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => inPlan\[i\]\.tank\.TryAddLiquid\(inputLiquid, k\), step\.InputUnits\), dest, out RM_MoveOutcome mv\) == n\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in inPlan\) RM_LiquidNet\.Credit\(parent, p\.tank, inputLiquid, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter input foreach \(\(Building_LiquidTank tank, int units\) p in outPlan \?\? .*?\) RM_LiquidNet\.Credit\(parent, p\.tank, step\.product, p\.units, RM_ConversionMath\.RareTick\); // credit site: converter output",
                 "converter: input and output one Move; both credits inside the committed block");
             RiverSwitchFlipChecks.Has(conv, @"new RM_TransferLeg\(""pending"", k => pendingCount == 0 \|\| pendingThing == step\.productThing,", "item output goes to the saved pending count");
             RiverSwitchFlipChecks.Has(conv, @"Scribe_Values\.Look\(ref pendingCount, ""RM_convPendingCount"", 0\);", "pending items are saved");
@@ -277,9 +277,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (s, a + "/" + b + "/" + p, m == 2 ? 2 : 0, m);
             });
             string re = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidReaction.cs"));
-            RiverSwitchFlipChecks.Has(re, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.All\(RM_TransferLeg\.Split\(pa\.Count, [^;]*?pa\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pa\[i\]\.tank\.TryAddLiquid\(r\.reactantA, k\), r\.unitsA\), RM_TransferLeg\.Split\(pb\.Count, [^;]*?pb\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pb\[i\]\.tank\.TryAddLiquid\(r\.reactantB, k\), r\.unitsB\)\), dest, out _\) == n\) \{ foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantA,[^;]*; // credit site: reactor A foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantB,[^;]*; // credit site: reactor B foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.productLiquid,[^;]*; // credit site: reactor product",
+            RiverSwitchFlipChecks.Has(re, @"if \(RM_LiquidTransfer\.Move\(n, RM_TransferLeg\.All\(RM_TransferLeg\.Split\(pa\.Count, [^;]*?pa\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pa\[i\]\.tank\.TryAddLiquid\(r\.reactantA, k\), r\.UnitsA\), RM_TransferLeg\.Split\(pb\.Count, [^;]*?pb\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => pb\[i\]\.tank\.TryAddLiquid\(r\.reactantB, k\), r\.UnitsB\)\), dest, out _\) == n\) \{ foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantA,[^;]*; // credit site: reactor A foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.reactantB,[^;]*; // credit site: reactor B foreach [^;]*RM_LiquidNet\.Credit\(parent, p\.tank, r\.productLiquid,[^;]*; // credit site: reactor product",
                 "reactor: A and B together (All), product in one Move; three credits inside the committed block");
-            RiverSwitchFlipChecks.Has(re, @"RM_TransferLeg\.Split\(pp\.Count, i => pp\[i\]\.units, \(i, k\) => pp\[i\]\.tank\.CanAccept\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryAddLiquid\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryRemoveLiquid\(k\), r\.productUnits\)",
+            RiverSwitchFlipChecks.Has(re, @"RM_TransferLeg\.Split\(pp\.Count, i => pp\[i\]\.units, \(i, k\) => pp\[i\]\.tank\.CanAccept\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryAddLiquid\(r\.productLiquid, k\), \(i, k\) => pp\[i\]\.tank\.TryRemoveLiquid\(k\), r\.ProductUnits\)",
                 "the product tank is a put-back-able leg (a refusal puts A and B back, never vents them)");
         }
 
@@ -294,7 +294,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 return (b, t.ToString(), m == 5 ? 5 : 0, m);
             });
             string bath = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "Kits", "RM_LiquidBath.cs"));
-            RiverSwitchFlipChecks.Has(bath, @"if \(RM_LiquidTransfer\.Move\(ext\.unitsPerCraft, RM_TransferLeg\.Split\(plan\.Count, i => plan\[i\]\.units, \(i, k\) => plan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(bathed, k\)\), RM_TransferLeg\.Sink\(null\), out _\) == ext\.unitsPerCraft\) \{ // [^;]*?RM_LiquidNet\.Credit\(bench, p\.tank, bathed, p\.units,",
+            RiverSwitchFlipChecks.Has(bath, @"if \(RM_LiquidTransfer\.Move\(ext\.UnitsPerCraft, RM_TransferLeg\.Split\(plan\.Count, i => plan\[i\]\.units, \(i, k\) => plan\[i\]\.tank\.CanProvide\(k\), \(i, k\) => plan\[i\]\.tank\.TryRemoveLiquid\(k\), \(i, k\) => plan\[i\]\.tank\.TryAddLiquid\(bathed, k\)\), RM_TransferLeg\.Sink\(null\), out _\) == ext\.UnitsPerCraft\) \{ // [^;]*?RM_LiquidNet\.Credit\(bench, p\.tank, bathed, p\.units,",
                 "bath: the craft is a sink; credit inside the committed block");
         }
 
