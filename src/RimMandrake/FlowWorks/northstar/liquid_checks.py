@@ -1,7 +1,15 @@
-"""FlowWorks liquid live checks L2 (Dump drains: slow without a pump, fast with a pump on Pour) and L6 (liquid theft: a witness
-catches our Fill tank drawing a neutral faction's tank; the free end names the faction; --theft-day: goodwill falls).
+"""FlowWorks liquid live checks L2 (Dump drains: slow without a pump, fast with a pump on Pour), L4 (a ship/cargo tank on Fill
+loads from our tank over a hose, then on Empty unloads), L5 (a capped Outflow hose spills its held liquid as filth at the open
+end; a colonist cleans it) and L6 (liquid theft: a witness catches our Fill tank drawing a neutral faction's tank; the free end
+names the faction; --theft-day: goodwill falls).
 
-  python.exe src/RimMandrake/FlowWorks/northstar/liquid_checks.py [out.json] [--only L2,L6] [--fresh-map] [--theft-day]
+  python.exe src/RimMandrake/FlowWorks/northstar/liquid_checks.py [out.json] [--only L2,L4,L5,L6] [--fresh-map] [--theft-day]
+
+L4/L5 PORTED 2026-10-16 from the Transient copy, which still staged filltank 100 (= 10 L since the litres re-base, a hundredth
+of one level): L2/L4 then moved nothing and read as MOD FAILs (bench_live_20261016b). Every staging here is in tank units
+(decilitres): FILL_UNITS, LEVEL. L5's 2026-10-16 FAIL (10,000 units spilled, 0 filth) was a MOD bug: RM_Filth_LiquidSpill's
+placementMask Natural is refused on every natural terrain (SPILL_FILTH_FIX_SOIL_SAYS_NO); the row now also reads
+RM_LiquidSpill.Unplaced, so a refused spill names itself instead of hiding behind the spilled-units count.
 
 Promoted out of Transient/bench_live_20261011/fw_live_checks.py (debug_process.md: the checks that found real bugs persist).
 Run from the repo root with python.exe, bridge held; map = a 250x250 FlowWorks-tier quicktest. Exit 0 = every row PASS.
@@ -31,6 +39,7 @@ CYCLE = 250                 # RM_LiquidTheft.TheftTick cadence
 # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the filltank probe verb takes raw tank units (decilitres). The old "100" (drums) was
 # above a 2x2 tank's 80; 120,000 = 12 kL = 75% of today's 160,000 capacity, the same "well filled" intent.
 FILL_UNITS = 120000
+LEVEL = 10000               # RM_Volume.UnitsPerLevel: one level = 1,000 L = 10,000 tank units
 CHECK_PHASE = 7             # TicksGame % 250 == 7
 WITNESS_PHASE = 4           # spawn here: 3 ticks before the check
 REFILL_EVERY = 2000
@@ -39,6 +48,7 @@ MAX_WITNESS_CYCLES = 4      # theft attempts (one fresh witness pair per cycle) 
 THEFT = "RimMandrake.FlowWorks.Machinery.RM_LiquidTheft"
 S_HOSE = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
 S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
+SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
 FW_PKG = "mandrake.rm.flowworks"
 
 
@@ -116,16 +126,55 @@ def dump_pump_verdict(tank_trace, reach0, reach1, no_pump_rate, precondition=Non
     return ("PASS" if drained > no_pump_rate and drained > 0 and reach1 > reach0 else "FAIL"), "MOD", det
 
 
+def ship_fill_verdict(trace, precondition=None):
+    """L4 Fill: trace = [[base, ship], ...]. PASS = the ship tank gained at least half a level AND our tank fell. (The hose
+    primes itself out of the destination first -- ~50 units a laid cell -- so the bar is level-scale, not 'any gain'.)"""
+    if precondition:
+        return "UNMEASURED", "SITE", {"base_ship": trace, "why": precondition}
+    if not trace or any(None in pair for pair in trace):
+        return "UNMEASURED", "HARNESS", {"base_ship": trace, "why": "a tank reading was unreadable"}
+    gain, fall = trace[-1][1] - trace[0][1], trace[0][0] - trace[-1][0]
+    det = {"base_ship": trace, "shipGained": gain, "baseFell": fall}
+    return ("PASS" if gain >= LEVEL // 2 and fall > 0 else "FAIL"), "MOD", det
+
+
+def ship_empty_verdict(trace, precondition=None):
+    """L4 Empty: the ship tank falls AND our tank rises."""
+    if precondition:
+        return "UNMEASURED", "SITE", {"base_ship": trace, "why": precondition}
+    if not trace or any(None in pair for pair in trace):
+        return "UNMEASURED", "HARNESS", {"base_ship": trace, "why": "a tank reading was unreadable"}
+    fall, gain = trace[0][1] - trace[-1][1], trace[-1][0] - trace[0][0]
+    det = {"base_ship": trace, "shipFell": fall, "baseGained": gain}
+    return ("PASS" if fall > 0 and gain > 0 else "FAIL"), "MOD", det
+
+
+def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, precondition=None):
+    """L5: capping an Outflow end empties the hose (held -> 0, drained >= held) AND the spill shows as filth at the end.
+    A spill the mod counted but could not place (RM_LiquidSpill.Unplaced rose) is a MOD FAIL that says so."""
+    det = {"heldUnits": [held0, held1], "drained": drained, "filthInRect": [filth0, filth1], "unplaced": [unplaced0, unplaced1]}
+    if precondition or not held0:
+        return "UNMEASURED", "SITE", dict(det, why=precondition or "the hose held nothing before the cap")
+    if None in (held1, drained, filth0, filth1):
+        return "UNMEASURED", "HARNESS", dict(det, why="a reading was unreadable")
+    ok = held1 == 0 and drained >= held0 and filth1 > filth0
+    if not ok and unplaced0 is not None and unplaced1 is not None and unplaced1 > unplaced0:
+        det["why"] = "the spill found no cell that takes the filth (RM_LiquidSpill.Unplaced %s -> %s)" % (unplaced0, unplaced1)
+    return ("PASS" if ok else "FAIL"), "MOD", det
+
+
 # ============================================================================ live driver
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
-    ap.add_argument("--only", default="", help="comma list: L2,L6")
+    ap.add_argument("--only", default="", help="comma list: L2,L4,L5,L6")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--theft-day", action="store_true", help="L6: also run one in-game day for the goodwill charge")
     ap.add_argument("--origin-l2", default="60,150")
     ap.add_argument("--origin-l2b", default="100,150")
     ap.add_argument("--origin-l6", default="60,172")
+    ap.add_argument("--origin-l4", default="180,150")
+    ap.add_argument("--origin-l5", default="20,172")
     a = ap.parse_args(argv)
     only = [b.strip().upper() for b in a.only.split(",") if b.strip()]
     import proof_hose as PH           # bridge-side imports only on a live run
@@ -434,8 +483,114 @@ def main(argv=None):
         st, cls, det = goodwill_verdict(gw0, gw1, gc0, gc1, per, (cc1 or 0) > (cc0 or 0))
         row("L6_goodwill_after_a_day", st, cls, det)
 
+    # ---------------------------------------------------------------- L4
+    def blk_L4():
+        s = Plot(xz(a.origin_l4))
+        if not s.ready("L4_site_ready"):
+            return
+        s.build("RM_LiquidTank:%d,%d" % s.north_tank, "RM_HoseReel:%d,%d" % s.reel)
+        sb = s.build("RM_UniversalCargoTank:%d,%d" % s.tank)
+        B.ticks(2)
+        ship_def = "RM_UniversalCargoTank"
+        if not PH._tank(B, s.tank):
+            s.build("RM_LiquidTank:%d,%d" % s.tank)
+            B.ticks(2)
+            ship_def = "RM_LiquidTank"
+        ft = B.hp("filltank:%d,%d=%s,%d" % (s.north_tank + (WATER, FILL_UNITS)))
+        lay = s.lay(s.P(16, 9))
+        jf = set_job(s.tank, "Fill")
+        tr1 = [[units(s.north_tank), units(s.tank)]]
+        for _ in range(4):
+            B.ticks(250)
+            tr1.append([units(s.north_tank), units(s.tank)])
+        je = set_job(s.tank, "Empty")
+        tr2 = [[units(s.north_tank), units(s.tank)]]
+        for _ in range(4):
+            B.ticks(250)
+            tr2.append([units(s.north_tank), units(s.tank)])
+        h = PH._hose(B, s.reel)
+        pre1 = None if (ft.get("success") and lay.get("success") and jf["ok"]) else \
+            "precondition: filltank %s, lay %s, job %s" % (ft.get("units"), lay.get("success"), jf)
+        st, cls, det = ship_fill_verdict(tr1, pre1)
+        row("L4_ship_tank_fill_loads", st, cls, dict(det, shipDef=ship_def, cargoBuild=sb.get("failed"), job=jf, lay=lay,
+                                                     hose={k: h.get(k) for k in ("netLink", "credits", "creditedUnits")}))
+        pre2 = pre1 or (None if je["ok"] else "precondition: Empty job %s" % je) or \
+            (None if st == "PASS" else "Fill did not load the ship tank, so there is nothing to empty")
+        st2, cls2, det2 = ship_empty_verdict(tr2, pre2)
+        row("L4_ship_tank_empty_unloads", st2, cls2, dict(det2, job=je))
+        row("L4_on_a_real_gravship", "UNMEASURED", "SITE",
+            "no gravship fixture on a quicktest map: a plain %s stands in for the ship's tank (no ship-tank def exists)" % ship_def)
+
+    # ---------------------------------------------------------------- L5
+    def blk_L5():
+        s = Plot(xz(a.origin_l5))
+        if not s.ready("L5_site_ready"):
+            return
+        s.water()
+        s.build("RM_LiquidPump:%d,%d" % s.pump, "Battery:%d,%d" % s.battery, "RM_HoseReel:%d,%d" % s.reel)
+        B.ticks(2)
+        s.charge()
+        pw = PH._powered(B, s.pump)
+        lay = s.lay(s.P(16, 9))
+        role = set_role(s.reel, "Outflow")
+        B.ticks(600)
+
+        def held():
+            hid = PH._hose(B, s.reel).get("id")
+            v = ((B.call("jawa/comp_read", thing="RM_HoseReel%d" % hid, comp="CompHoseReel", members="heldUnits,heldLiquid")
+                  or {}).get("values") or {}) if hid is not None else {}
+            u = str(v.get("heldUnits") or "")
+            return (int(u) if u.lstrip("-").isdigit() else None), v.get("heldLiquid")
+
+        def filth():
+            lt = B.call("jawa/list_things", rect="%d,%d,%d,%d" % frect, limit=200, includePawns=False) or {}
+            if lt.get("success") is False:
+                return None
+            return sum(1 for t in lt.get("things") or [] if "filth" in str(t.get("def") or t.get("defName") or "").lower())
+
+        def unplaced():
+            v = sget(SPILL, "Unplaced")
+            return int(v) if str(v).lstrip("-").isdigit() else None
+
+        frect = (s.P(14, 7)[0], s.P(14, 7)[1], 5, 5)        # the free end P(16,9) and its neighbours
+        h0, liq = held()
+        n0, u0 = filth(), unplaced()
+        net0 = B.hp("net:%d,%d" % s.pump)
+        off = set_role(s.reel, "Capped")                   # an Outflow end capped stops the hose carrying
+        B.ticks(900)                                       # lease = now+375, drain checked once per 250-tick cycle
+        h1, _ = held()
+        net1 = B.hp("net:%d,%d" % s.pump)
+        n1, u1 = filth(), unplaced()
+        d0, d1 = net0.get("hoseDrainedUnits"), net1.get("hoseDrainedUnits")
+        drained = (d1 - d0) if isinstance(d0, int) and isinstance(d1, int) else None
+        pre = None if (lay.get("success") and role["ok"] and off["ok"] and pw is not None) else \
+            "precondition: lay %s, Outflow %s, Capped %s, pump powered after %s" % (lay.get("success"), role, off, pw)
+        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre)
+        row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect,
+                                                         spilledUnits=[net0.get("spilledUnits"), net1.get("spilledUnits")]))
+        if st != "PASS":
+            row("L5_colonists_clean_spill", "UNMEASURED", "SITE", "no spill filth to clean (L5 spill row %s)" % st)
+            return
+        pa = B.call("jawa/paint_area", area="Home", ops="%d,%d,%d,%d" % frect, value=True, createIfMissing=True)
+        sp = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=s.P(12, 11)[0], z=s.P(12, 11)[1], count=1,
+                    xenotype="Baseliner")
+        cid = ((sp.get("pawns") or [{}])[0]).get("id")
+        wp = B.call("jawa/set_work_priority", pawnId=cid, workType="Cleaning", priority=1) if cid else {}
+        left, waited = n1, 0
+        while left and waited < 3000:
+            B.ticks(250)
+            waited += 250
+            left = filth()
+        pre2 = None if (cid and pa.get("success") is not False and wp.get("readBack") == 1 and left is not None) else \
+            "precondition: cleaner %s, home paint %s, Cleaning priority %s, filth read %s" % (
+                cid, pa.get("setCount"), wp.get("readBack"), left)
+        row("L5_colonists_clean_spill", "UNMEASURED" if pre2 else ("PASS" if left == 0 else "FAIL"), "SITE" if pre2 else "MOD",
+            {"filth": [n1, left], "ticks": waited, "cleaner": cid, "why": pre2})
+        if cid:
+            B.hp("pawn:%d=draft" % int(re.search(r"(\d+)$", str(cid)).group(1)))
+
     try:
-        for nm, fn in (("L2", blk_L2), ("L6", blk_L6)):
+        for nm, fn in (("L2", blk_L2), ("L4", blk_L4), ("L5", blk_L5), ("L6", blk_L6)):
             if only and nm not in only:
                 continue
             print("== %s" % nm, flush=True)
