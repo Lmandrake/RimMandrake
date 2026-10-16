@@ -426,7 +426,7 @@ def _d5_build(B, sc):
     ok.append(B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (a1[0] + 1, a1[1], a2[0] - 1, a2[1])).get("success"))
     ok.append(B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % a2).get("success"))
     ok.append(B.ap("place:RM_AerialMast:Modern:%d,%d:god" % b1).get("success"))
-    ok.append(B.ap("cplace:PowerConduit:Modern:%d,%d:god" % sc["B"][1]).get("success"))
+    ok.append(B.ap("cplace:PowerConduit:Modern_Orange:%d,%d:god" % sc["B"][1]).get("success"))
     return all(ok)
 
 
@@ -437,7 +437,7 @@ def s12c_d5_multilink(B, rows):
     cells = lambda sc: ";".join("%d,%d" % c for c in sc["anchors"])
     B.ap("set:autoLink=False")          # build-time auto-link would string these masts (and S9's) before the action under test
     try:
-        built = _d5_build(B, D5_MULTI) and _d5_build(B, D5_CTRL)
+        built = all([_d5_build(B, D5_MULTI), _d5_build(B, D5_CTRL)])   # both, always (a short-circuit hid the control)
         st0 = _cst(B)
         mem0 = _members(st0)
         split = [_looks_of_run(mem0, sc["A"], st0.get("defaultLook")) + _looks_of_run(mem0, sc["B"], st0.get("defaultLook")) for sc in (D5_MULTI, D5_CTRL)]
@@ -493,7 +493,7 @@ def s12d_stage(B):
         ok.append(B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (sc[0] + sc[2])).get("success"))
     B.ap("cprocess")
     B.ticks(2)
-    ok.append(B.ap("cplace:PowerConduit:Modern:%d,%d:god" % D4_CTRL[3]).get("success"))
+    ok.append(B.ap("cplace:PowerConduit:Modern_Orange:%d,%d:god" % D4_CTRL[3]).get("success"))
     B.ap("cprocess")
     B.ticks(2)
     return all(ok)
@@ -712,7 +712,7 @@ def _save_load(B, rows, name, before_st, stage=False):
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", "%s.rws exists" % name)
         return {}
     if stage:
-        sv = B.ap("csavenow:PowerConduit:Modern:%d,%d:%s" % (D4_STAGED[3] + (name,)), wait_s=120.0)
+        sv = B.ap("csavenow:PowerConduit:Modern_Orange:%d,%d:%s" % (D4_STAGED[3] + (name,)), wait_s=120.0)
         _D4_SAVE.clear()
         _D4_SAVE.update({k: sv.get(k) for k in ("success", "error", "pendingAtSave", "saved")})
         _D4_SAVE["before"] = _d4_read(B)        # the live session after the save (the queue drains on the next frame)
