@@ -29,6 +29,7 @@ VANILLA_TEX = {  # vanilla/DLC texPaths a port may borrow (read from RimSage, 20
     "Things/Projectile/LauncherShot", "Things/Pawn/Animal/Bear/Dessicated_Bear",
     "Things/Pawn/Animal/Elephant/Dessicated_Elephant", "Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo",
     "Things/Pawn/Animal/Warg/Dessicated_Warg", "Things/Pawn/Animal/Iguana/Dessicated_Iguana", "Things/Item/Resource/PlantFoodRaw/RawFungus",
+    "Things/Projectile/Charge_Small",  # Core charge rifle shot (RimSage, 2026-10-15)
 }
 VEF_GUARD = 'MayRequire="OskarPotocki.VanillaFactionsExpanded.Core"'
 
@@ -50,6 +51,17 @@ PORTS = [
      "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_DecayDrake.xml", "ours": "RM_DecayDrake", "donor": "AA_DecayDrake",
      "roster_mod": "Cauldron", "roster": "Defs/BiomeDefs/RM_Cauldron.xml", "placeholder_tex": set()},
+    # Phase 0 P3 (biome_sprint_kickoff_2026-10-15.md §0.5.3 item 2): the code-rider creatures, ported plain
+    {"mod": "BlueDesert", "file": "Defs/ThingDefs_Races/RM_Thunderbeast.xml", "ours": "RM_Thunderbeast",
+     "donor": "AA_Thunderbeast", "roster": "Defs/BiomeDefs/RM_BlueDesert.xml", "placeholder_tex": set()},
+    {"mod": "Contagion", "file": "Defs/ThingDefs_Races/RM_ContagionBulloos.xml", "ours": "RM_InfectedAerofleet",
+     "donor": "AA_InfectedAerofleet", "roster": "Defs/BiomeDefs/RM_Contagion.xml",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+                         "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"}},  # one file holds both
+    {"mod": "Contagion", "file": "Defs/ThingDefs_Races/RM_ContagionBulloos.xml", "ours": "RM_OcularJelly",
+     "donor": "AA_OcularJelly", "roster": "Defs/BiomeDefs/RM_Contagion.xml",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+                         "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"}},  # one file holds both
 ]
 
 

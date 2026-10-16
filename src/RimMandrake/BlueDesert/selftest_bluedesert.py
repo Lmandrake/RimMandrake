@@ -414,8 +414,6 @@ class FakeGame(MockGame):
             state = "spawning"
             if q == "RM_Zhaaz" and "roster_hole" in self.bugs:
                 state = "zeroed"
-            if q == "AA_Thunderbeast":
-                state = "absent"
             rows.append({"defName": q, "state": state, "present": state == "spawning"})
         return {"success": True, "biomes": [{"defName": "RM_BlueDesert", "findResults": rows,
                                              "animalDensity": 0.0 if "density_zero" in self.bugs else 0.5,

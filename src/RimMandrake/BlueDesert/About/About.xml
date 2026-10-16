@@ -54,17 +54,14 @@ and ice fog (half accuracy, range capped at 22.9 cells) join Clear. The vhaulk's
 cistern detonates only on a heat-family death, and any EMP hit sets a living one
 off. Every one of these has its own Mod Settings switch.
 
-`AA_Thunderbeast` (Alpha Animals, `sarg.alphaanimals`) ships inline,
-`MayRequire`-gated, matching how every other sibling RM_ biome mod ships its own
-non-Star-Wars donor rows directly (Q9).
+The thunderbeast (`RM_Thunderbeast`) is this mod's own port of an Alpha Animals
+creature, with its flashstorm-on-death rebuilt in Environmental Hazards; it
+needs no other mod.
 
 NOT in this mod: `Vapaad`, a genuinely canon Star Wars creature (Vaapad) the
 campaign roster also ratifies for this biome — that rides a Utinni patch onto
 this mod's own `RM_BlueDesert` def instead, per the Q11a naming-tier ruling.
-The def's own prior comment called both `Vapaad` and `AA_Thunderbeast` "Star
-Wars rows"; only `Vapaad` actually is (`AA_Thunderbeast` is a plain Alpha
-Animals import with no Star Wars IP content), so only `Vapaad` is routed
-through the patch layer — see `WildAnimals_BlueDesert.xml`.
+Only `Vapaad` is routed through the patch layer — see `WildAnimals_BlueDesert.xml`.
 
 Live proof (step 5, a scratch-world quicktest with all five expansions) is
 Desktop-only and OWED — see the item's own verify record.</description>

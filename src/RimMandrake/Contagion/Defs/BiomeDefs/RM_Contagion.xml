@@ -198,10 +198,11 @@
       <RM_SparkleechGrub>0.05</RM_SparkleechGrub>  <!-- sparkleech grub - the-thieves (grub) -->
       <!-- Moved here from the Cauldron by the owner's Cauldron sheet notes 2026-10-09 ("This belongs in the Contagion,
            not here... move." / "This creature should be moved to the Contagion."): two donor rows re-admitted on
-           his word, after Wave A's donor-out ruling above. Their art is ours (UtinniPatches Patches/ArtFold/OcularJelly_ArtFold.xml; the aerofleet
-           redraw is queued). -->
-      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- zhool (Contagion_Rename.xml) -->
-      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet: a floating ball of gas, an unfortunate visitor become infected -->
+           his word, after Wave A's donor-out ruling above. Both are our own ports now (Defs/ThingDefs_Races/
+           RM_ContagionBulloos.xml, Phase 0 P3). The MayRequire stays only until our art is installed at our own path:
+           until then their texPath is the donor's. -->
+      <RM_OcularJelly MayRequire="sarg.alphaanimals">0.5</RM_OcularJelly>  <!-- zhool; our port of AA_OcularJelly -->
+      <RM_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</RM_InfectedAerofleet>  <!-- blistered bulloo: a floating ball of gas, an unfortunate visitor become infected; our port of AA_InfectedAerofleet -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

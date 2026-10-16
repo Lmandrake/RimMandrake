@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Thunderbeast.xml — the Blue Desert thunderbeast (native name "yuddra"). Phase 0 P3
+  (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md §0.5.3 item 2): the donor-code creature
+  ported as our own plain XML. Owner pick "rebuild" on Transient/donor_code_creatures_sheet_2026-10-09
+  (the flashstorm on death is rebuilt in our code, DONOR_CODE_BURST_REBUILD_1).
+
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Thunderbeast.xml).
+  Invented creature, no Star Wars IP, so it is RM_ tier (NAMING_SCHEME_PLAN.md).
+  MOVED here from Patches/AA_Thunderbeast_BlueDesert.xml (deleted; owner, Blue Desert art sheet
+  2026-10-04: "Looks good, but needs its other facings. Also needs improved description. Half the
+  size."): the Blue Desert description, baseBodySize 0.75 and the halved drawSizes, and our art.
+  Comfy band -100..-11, the Blue Desert natives' own band (RM_BlueDesertFauna.xml). FIXED in the port:
+  the donor's band (-10..61.5, pinned by AnimalTolerances_Ashkarr.xml) never overlapped this biome, and
+  temperature is a hard spawn gate, so the roster row could never spawn; the owner's description has it
+  run "on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life".
+
+  REPOINTED to ours: deathAction -> RimMandrake.EnvironmentalHazards.DeathActionProperties_SummonFlashstorm
+    (same values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).
+  SWAPPED, donor defs -> ours or vanilla:
+    tool capacity AA_Electric -> RM_ThunderbeastShock (ours, below; vanilla ElectricalBurn damage);
+    ability AA_ElectricBolt -> RM_ThunderbeastArc (ours, below; the description's "long, crackling
+      arcs"), granted by VEF's InitialAbility (a framework we keep, MayRequire-guarded); its donor
+      projectile class AlphaBehavioursAndEvents.Electric_Projectile -> vanilla Bullet, the donor's
+      invisible texture -> vanilla Charge_Small, its sound -> vanilla Shot_ChargeRifle,
+      its icon -> Royalty BlindingPulse (placeholder);
+    leatherDef Leather_RaptorPlates (donor) -> Leather_Pig; dessicated art (donor) -> vanilla bear.
+  DROPPED: donor wildBiomes (a roster names it where it lives); the VEF AnimalStatExtension
+    info-card rows (donor StatDefs).
+  ART: ours, Things/Pawn/Animal/AA_Thunderbeast_BlueDesert (render v2 set, owner-picked).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Thunderbeast</defName>
+    <label>thunderbeast</label>
+    <description>A thunderbeast of the Blue Desert, and nothing like the swine-shaped beasts of warmer worlds. It is a barrel of pale, glassy plates, frosted white and veined with ice-blue, standing on thick columnar legs that flare into broad, splayed feet. A ridge of tall, brittle crests runs the length of its back and ends in a blunt, armoured wedge where a head would be: no snout, no eyes to speak of, only a low sensory prow. Thin yellow hydrocarbon fluid, which smells of solvent and never quite freezes, glows along every seam between the plates, and pale arcs of static crackle over the crests.\n\nThere is no water in it. It runs on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life, and the charge it carries is built up across stacked plates of hydrocarbon-soaked tissue rather than any nerve a terrestrial creature would recognise. It is slow and placid until provoked, then it discharges its stored current in long, crackling arcs at anything that threatens it. Predators give it a wide berth.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <MarketValue>750</MarketValue>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <Flammability>0</Flammability>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>RM_ThunderbeastShock</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>RM_ThunderbeastShock</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_InitialAbility" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <initialAbility>RM_ThunderbeastArc</initialAbility>
+      </li>
+    </comps>
+    <race>
+      <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_SummonFlashstorm">
+        <areaRadius>8~14</areaRadius>
+        <durationTicks>2500~4500</durationTicks>
+      </deathAction>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>Pig</useMeatFrom>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <leatherDef>Leather_Pig</leatherDef>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>6.66</gestationPeriodDays>
+      <manhunterOnDamageChance>0.75</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>14</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Wildboar_Wounded</soundWounded>
+          <soundDeath>Pawn_Wildboar_Death</soundDeath>
+          <soundCall>Pawn_Wildboar_Call</soundCall>
+          <soundAngry>Pawn_Wildboar_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thunderbeast</defName>
+    <label>thunderbeast</label>
+    <race>RM_Thunderbeast</race>
+    <combatPower>175</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ToolCapacityDef>
+    <defName>RM_ThunderbeastShock</defName>
+    <label>electric shock</label>
+  </ToolCapacityDef>
+
+  <ManeuverDef>
+    <defName>RM_ThunderbeastShock</defName>
+    <requiredCapacity>RM_ThunderbeastShock</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>ElectricalBurn</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Smash_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Smash_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Smash_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Smash_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+
+  <AbilityDef>
+    <defName>RM_ThunderbeastArc</defName>
+    <label>static arc</label>
+    <description>Discharge the current stored in the crest plates in one long, crackling arc that burns whatever it strikes.</description>
+    <iconPath>UI/Abilities/BlindingPulse</iconPath>
+    <cooldownTicksRange>300</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <writeCombatLog>true</writeCombatLog>
+    <verbProperties>
+      <verbClass>Verb_AbilityShoot</verbClass>
+      <defaultProjectile>RM_ThunderbeastArc</defaultProjectile>
+      <accuracyTouch>0.9</accuracyTouch>
+      <accuracyShort>0.85</accuracyShort>
+      <accuracyMedium>0.8</accuracyMedium>
+      <accuracyLong>0.75</accuracyLong>
+      <range>15</range>
+      <muzzleFlashScale>0</muzzleFlashScale>
+      <warmupTime>5</warmupTime>
+      <soundCast>Shot_ChargeRifle</soundCast>
+      <commonality>0.8</commonality>
+      <minRange>2</minRange>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+      </targetParams>
+      <ai_IsWeapon>false</ai_IsWeapon>
+    </verbProperties>
+  </AbilityDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RM_ThunderbeastArc</defName>
+    <label>static arc</label>
+    <graphicData>
+      <texPath>Things/Projectile/Charge_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(255,240,140)</color>
+    </graphicData>
+    <projectile>
+      <flyOverhead>false</flyOverhead>
+      <damageDef>ElectricalBurn</damageDef>
+      <damageAmountBase>10</damageAmountBase>
+      <speed>75</speed>
+    </projectile>
+  </ThingDef>
+
+</Defs>
