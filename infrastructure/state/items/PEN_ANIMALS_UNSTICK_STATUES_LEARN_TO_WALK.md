@@ -26,3 +26,9 @@ cannot watch them move. Progress log: `Transient/release_pens_2026-10-16/PROGRES
 3. Unpause ~600 ticks: positions change, every animal still inside its pen rect (doors hold wild animals).
 4. `--pin-pens`: `pinned` == selected, `returnedHome` == released count, rotations read back as S/E/N/W.
 5. Refusal path: `jawa/pen_release allMap=true` a second time selects 0 and says so (success false).
+
+## criteria
+
+- O1 L0: companion builds clean with both tools in the DLL tool table; `selftest_pyre_review_map.py` section 11 passes (done at a2b4a7cd22).
+- A1 L1: deployed with the game closed; on a quicktest map, animals given a Wait pin are released (`released` == selected, no `Wait` in `jobsAfter`), re-pinned with `returnedHome` and rotations read back, and a second `allMap` release selects 0 and reports it.
+- A2 L2: on a Pyrelands review keeper save, `human_review.py --release-pens` releases every pen specimen, and after ~600 unpaused ticks they have moved yet each is still inside its pen rect; `--pin-pens` restores S/E/N/W facings.
