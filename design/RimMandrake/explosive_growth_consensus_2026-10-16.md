@@ -226,8 +226,8 @@ settled-wet); and the cost.
 | **Snowmelt** | a slice of `snowGrid` per pass; depth falling while above 0 °C | 12 h | fresh | a 1/8-map slice per 250 ticks, like irrigation | not built |
 | **Players pouring water** | event-driven: the hose Outflow spill (`src/RimMandrake/FlowWorks/Source/Machinery/RM_LiquidSpill.cs:14-21`, MEASURED: a water spill on dry ground today makes filth only) calls the soak at the spill cell; a future "water plants" job calls it per cell | 1 day | fresh | zero polling | not built; no "water a plant" job exists (MEASURED: the bottle work-givers are fill, wash, empty-into-tank and fill-from-tank, `Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml:19-70`) |
 | **Irrigation channel** | today's sweep: a dug FlowWorks cell holding fresh water or slime soaks itself and 8 neighbours (`RM_SoakSources.cs:98-112`) | 1 day after the last re-read (`RM_SoakSources.cs:40`) | fresh when the channel first fills; then sustaining, so it settles after 3 days | today's 1/8-map sweep | built (permanent soak) |
-| **Permanent natural water nearby** | a bitset built at map load from terrain (open/shallow fresh water, marsh, mud: §5 classes) within **radius 2** (PROPOSED, decision W2), updated by a `TerrainGrid.SetTerrain` postfix | permanent | **sustaining only**: these cells are settled-wet from the start and never make a fresh event | one-off build; one bit read per plant | never (rivers and lakes never soak, `RM_SoakSources.cs`, per deep dive §1.3) |
-| **Wet terrain itself** (mud, marsh soil) | the same bitset (the cell's own terrain) | permanent while the terrain is there | sustaining | same | never |
+| **Permanent natural water nearby** | a bitset built at map load from each terrain's §5 moisture class (open water, shallow water, waterlogged, damp; never `IsWater`, §5.1) within **radius 2** (PROPOSED, decision W2), updated by a `TerrainGrid.SetTerrain` postfix | permanent | **sustaining only**: these cells are settled-wet from the start and never make a fresh event | one-off build; one bit read per plant | never (rivers and lakes never soak, `RM_SoakSources.cs`, per deep dive §1.3) |
+| **Wet terrain itself** (waterlogged and damp classes, §5.3) | the same bitset (the cell's own terrain) | permanent while the terrain is there | sustaining | same | never |
 | **Canyon flood** | today's kernel (`src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs:163-166`) | flood + 4 days (MEASURED, deep dive §1.3) | fresh | today's | built |
 | **Vanilla 1.6 floods** (`ShallowFloodwater`) | postfix on `TerrainGrid.SetTempTerrain` for flood terrains | the temp terrain's life + 1 day | fresh | event-driven | not built |
 | **Miasma salt-line surge** | today's surge band (`RM_SoakSources.cs:114-132`) | 1 day | fresh | today's | built |
@@ -315,7 +315,119 @@ again?**
 
 ## 5. Ground moisture taxonomy
 
-PENDING (inventory running).
+*Owner: "And a LOT of thought needs to be considered for what constitutes wet ground vs. mud vs. dry ground next to
+water, etc."*
+
+Sources (MEASURED unless tagged): the 1.6 install's Core/Odyssey/Anomaly TerrainDefs; Alpha Biomes 1.6
+(`workshop/294100/1841354677`, a hard dependency of `mandrake.rm.biomes`); every TerrainDef in `src/`. The
+`biomes_sprint` tier is `ratchet_pilot` + HugeThings (`src/RimMandrake/Utils/modset_builder.py:620-690`). Other
+workshop mods in the owner's full list were **not** swept (ASSUMPTION A11: they add no moisture-relevant terrain to
+our biomes, because our BiomeDefs only name the terrains below).
+
+### 5.1 What vanilla does with wet ground (MEASURED)
+
+- **Mud is a fixed terrain, not a state.** `Mud` (fert 0, pathCost 14, tag `Mud`, `driesTo` Soil) is placed only by
+  map generation (`Source/RimWorld/MapGenUtility.cs:240-244`). Nothing turns soil into mud after rain or a flood.
+- **`driesTo` is one-way**, used by the moisture pump (`CompTerrainPumpDry.cs:64-72`) and road generation. Nothing
+  re-wets ground.
+- **Odyssey floods are an overlay.** `SeasonalFlood` and `TorrentialRainFlood` lay temporary terrain
+  (`ShallowFloodwater`, or the source's `floodTerrain`, `MarshFlood` for Marsh) and remove it later
+  (`SeasonalFlood.cs:96-97`, `TorrentialRainFlood.cs:93,104`). The base terrain comes back unchanged: **a flood leaves
+  no mud and no wet state.**
+- **`TerrainDef.IsWater` is only `HasTag("Water")`** (`Source/Verse/TerrainDef.cs:324`). It cannot tell fresh water
+  from brine, poison, tar, slime or propane, and some non-water carries the tag: `RM_DeepSand` (a sand floor), and
+  every FlowWorks `RM_Fill_*` overlay, oil and blood included. **No existing tag means "fresh water".**
+- **Mud and marsh have fertility 0** (`Mud`, `Marsh`, `AB_DarkMud`, `AB_SlimyMud`): nothing sown grows on them.
+  `MarshyTerrain` (fert 1.0, pathCost 14), `AB_FertileMud` (1.0, 12) and `AB_DenseMud` (0.8, 20) are the wet ground
+  plants *can* stand on.
+
+### 5.2 What our mods write (MEASURED)
+
+| event | terrain written | where |
+|---|---|---|
+| dig a channel | base `RM_Channel_Empty/Mid/Deep/Superdeep` (fert 0, tag `Soil`) | `FlowWorks/Source/JobDriver_DigCanal.cs:74`; `RM_MapComponent_Excavation.cs:946-952`; `RM_ExcavationDepth.cs:84-90` |
+| channel fills | temp overlay `RM_Fill_<Liquid>_<tier>` (tags `Water`, `Flood`) | `RM_MapComponent_Excavation.cs:2090-2118` |
+| channel drains | overlay removed → bare dry trench; **no damp bank, no mud** | `:2114,2131` |
+| channel filled in | the recorded original terrain, else a neighbour vote, else `Soil` | `:1296-1330,1500-1549` |
+| pond recedes | base `RM_Lakebed_Shallow/Deep/Abyss` (fert 0, dry cracked bed) by default; vanilla `Mud` (or `AB_TarMud` for tar) only with the pond-hollow setting off | `:1552-1590`; `RimMandrakeFlowWorksMod.cs:126`; `Defs/Canals/FluidDefs/FlowWorks_Fluids.xml:37-162` |
+| canyon flood | permanent base `WaterMovingShallow` | `FloodedCanyon/Source/RM_MapComponent_CanyonFlood.cs:485-494` |
+| canyon flood recedes | every still-flooded cell becomes `SoilRich` (fert 1.4), whatever it was before (sand, gravel, mud, marsh) | `:557-575`; `Kernel/RM_FloodKernel.cs:296-300` |
+| Twilight channels gen | `RM_BankSilt` (fert 0.9, pathCost 3) | `TerminalBiomes/Source/RM_GenStep_TwilightChannels.cs:157` |
+
+Irrigation accepts a dug cell by its **fluid defName**, not its terrain (`src/RimMandrake/_Shared/FlowWorksIrrigation/FlowWorksIrrigationRead.cs:13-14,76-99`):
+ExplosiveGrowth accepts `RM_Fluid_Water` and the four `RM_Fluid_Slime*` (`RM_ExplosiveGrowthRoster.xml:194-204`); the
+Pyrelands ash field accepts water only (`Pyrelands/.../PyrelandsAshField.cs:58,286`).
+
+**No mod writes a damp-ground or bank state.** "Damp" is new.
+
+### 5.3 The terrains, by proposed class
+
+Fert = fertility; pc = pathCost. Biomes are where our BiomeDefs place the terrain (MEASURED by the census's XML scan).
+
+| proposed class | terrains (fert / pc) | our biomes using them |
+|---|---|---|
+| **open water (fresh)** | `WaterDeep`, `WaterMovingChestDeep` (– / 42), ManyWaters `RM_Water_{Rust,Verdigris,Amber,Violet,Chalk}`, `RM_WaterFrigid*` | rivers; Pyrelands; ManyWaters ponds |
+| **shallow water (fresh)** | `WaterShallow` (– / 30), `WaterMovingShallow` (– / 30), `RM_Fill_Water_*`, `RM_Fill_IcyWater_*`, Odyssey `ShallowFloodwater`, `SpringFlood` | Pyrelands, Lantern Deeps, rivers, Flooded Canyon flood, dug channels |
+| **waterlogged** (wet all the time; most grow nothing) | `Mud` (0 / 14), `Marsh` (0 / water), `MarshFlood`, `RM_Churnmud` (– / 60), `RM_GreentideChurnmud` (– / 34), `AB_DarkMud` (0 / 12), `AB_SlimyMud` (0), `AB_Quicksand`; **plantable:** `MarshyTerrain` (1.0 / 14), `AB_FertileMud` (1.0 / 12), `AB_DenseMud` (0.8 / 20), `AB_FertileMarsh` (0.7 / 1), `AB_WebbedMarshyTerrain` (0.75 / 25) | Miasma, Pyrelands, Webwork, Greentide (mud slot); Cauldron (Marsh); Warscar, Wasteland (MarshyTerrain) |
+| **damp** (wet-ish soil by water) | `Riverbank` (1.4 / 4), `RM_BankSilt` (0.9 / 3), `RM_BankSilt_Rich` (1.4 / 3), `SWCPTerrain_junkyardgarbage_soggy` (0.25 / 16) | Cauldron, Greentide, Leaning Scrub, Pyrelands (riverbank slot); Twilight Sea channels |
+| **dry soil** | `Soil` (1.0 / 2), `SoilRich` (1.4 / 2), `Gravel` (0.7 / 2), `GrasslandSoil`, `RM_CauldronSoil(Rich)`, `RM_FE_Ground_Soil(Rich)`, `RM_TheRotSoilRich`, `GU_AlienSand`/`GU_RichAlienSand` (0.9/1.2), `AB_ForsakenSand` (1.0), `AB_CrackedMud(Rich)` (0.8/1.2), `AB_ParchedEarth` (0.7 / 30) | most biomes |
+| **arid** (sand, beds, trenches) | `Sand` (0.1 / 4), `SoftSand` (0 / 14), `RM_DeepSand` (0 / 300), `AB_FineSand`, `GU_AlienSandFine`, `AB_GrassySand` (0.1), `DryLakeBed`, `RM_Lakebed_*` (0), `RM_Channel_*` (0) | Stillsand, Long Shade, Leaning Scrub, Weeping Stones, Flooded Canyon, Contagion, Sump |
+| **never waters** (non-fresh liquid or salt) | brine/brackish/mineral `RM_WaterBrine*`, `RM_WaterBrackish*`, `RM_WaterMineral*`, `RM_BrinePool*`; salt crusts `RM_SaltCrustShore`, `RM_MiasmaSaltCrust`, `RUT_Jawa_SaltCrust`; poisoned/toxic `RM_WaterPoisoned*`, `RM_WastelandBrine*`, `RUT_WastelandBrine*`, vanilla `ToxicWater*`, `ToxicFlood`; non-water `RM_{Acid,Ammonia,Coolant,FuelSap,Ichor,Ooze,Propane,ReactionLiquor,Tar}*`, `RUT_Scald*`, `AB_Tar`, `AB_LiquidLava`, `AB_Propane*`, `HotSpring`?; fills `RM_Fill_{Oil,Poison,Blood,Chemfuel,Astrofuel,Tar,BoilingWater}_*`; ocean `WaterOcean*` (salt on Ash'karr, ASSUMPTION A12) | Grey Sea, Twilight Sea, Wasteland, The Chill, The Scald |
+| **slime** (watering by today's roster; ASSUMPTION A13) | `RM_Fill_Slime*`, `RM_Slime_{Rust,…}` pools, `RM_Slime_Liquid`/`Mud`, `AB_LiquidSlime` | Gelatinous Slime |
+
+Open questions inside the table (ASSUMPTION A14): `HotSpring` and `RM_WaterBoiling*` (hot water: watering or
+scalding?); `GU_RedWater*` and `AB_LightRedWater*` (Contagion red water: design §1 lists `red_water` as qualifying).
+
+### 5.4 How each class is detected, and what it counts as
+
+**Detection (PROPOSED):** a moisture class per TerrainDef, held as data in the roster (a `terrainMoisture` list, or
+a small `DefModExtension` on the terrain), read once into a per-def array at startup. A cell's class is then one
+array read of its top terrain (temp overlay first, then base). **Never `IsWater`** (§5.1). Unclassified terrain
+counts as dry soil and is logged once at startup so new terrains surface.
+
+| class | counts as (§4.3) | plants on the cell | its neighbours |
+|---|---|---|---|
+| open water | — (no plants) | — | settled-wet within the W2 radius |
+| shallow water | — (no plants), except a temporary flood overlay: the cells under it are **fresh** when it lands | — | settled-wet within the W2 radius; a flood overlay instead makes its rim fresh |
+| waterlogged | settled-wet | fert-0 kinds grow nothing; plantable kinds grow at the settled rate | settled-wet within the W2 radius |
+| damp | settled-wet | settled rate | nothing extra |
+| dry soil | dry unless a source (§4.2) waters it | dry rate | — |
+| arid | dry unless watered; vanilla fertility (0–0.1) already keeps it near-empty | dry rate × its low fertility | — |
+| never waters | blocks: a cell next to *only* never-water terrain stays dry | — | no effect (salt shore stays barren) |
+| slime | today's roster waters with it; keep as fresh/settled like water (A13) | — | as shallow water |
+
+### 5.5 Transitions: state or terrain?
+
+**Recommendation: wetness is a state on the cell (§4.3's timer), not a terrain change**, with the two terrain writes
+that already exist kept as they are:
+- **Rain or a watering does not turn soil into mud.** It sets the moisture timer only. Reason: a terrain swap changes
+  fertility (soil 1.0 → mud 0, so it would *kill* the plants it watered), pathCost (2 → 14) and floors, and fights
+  vanilla's own fixed-mud design. (INFERRED from the fert/pc values above.)
+- **Draining a channel or a pond recession** leaves the trench or lakebed as today; the cells and their ring stay
+  **watered for the decay time** (1 day, then dry), PROPOSED. No damp terrain is written.
+- **The canyon flood's recession to `SoilRich`** stays: it is the lasting gift of the flood (fertility 1.4 where sand
+  was), and it is already built. That is a fertility change, not a wetness one; the wetness lasts 4 days, as today.
+- **Ground near permanent water stays damp** by the W2 bitset, recomputed when terrain changes. No terrain write.
+- **New machinery (not vanilla):** the terrain class table, the bitset, the timer fields (`wetSince`, `dryAt`).
+  **Vanilla already provides:** fixed mud and marsh, floods as overlays, `driesTo` for moisture pumps (which then also
+  remove settled-wet ground: a pump drying marsh to soil drops it out of the bitset by the terrain postfix).
+
+Walk speed and fertility therefore change only where they already change today (dug channels, receded ponds, the
+flood's SoilRich, a moisture pump). The moisture model touches growth rate only.
+
+**T1. Should water ever turn soil into mud (or mud dry back to soil)?**
+1. *(Recommended)* **No: wet is invisible state; terrain stays as it is.** Plants show the water by growing. *Trade:
+   the ground does not look wet; the darkening "ground tell" filth (today's) is the only visible sign.*
+2. Floods and channel spills leave a temporary mud overlay that dries back in a few days. *Trade: mud has fertility 0,
+   so the plants under it stop; slower walking; new overlay code.*
+3. A new "wet soil" overlay that keeps soil's fertility and adds a darker look and pathCost 4. *Trade: a new terrain
+   per soil type; art.*
+4. *(write your own)*
+
+**T2. Hot water, red water and slime: do they water plants?**
+1. *(Recommended)* **Slime yes (as today), Contagion red water yes (design §1), hot springs and boiling water no.**
+2. Only plain fresh water, nothing else.
+3. *(write your own)*
 
 ---
 
@@ -425,9 +537,10 @@ Size: **S** under half a day; **M** half a day to two days; **L** more. All INFE
 | Δ13 | Jackpot on harvest only; gamble from the first swell | `RM_ExplosiveGrowthPatches.cs:185-213` | S |
 | Δ14 | Pyrelands fire loop per decision C5 (burnt cell = fresh event) | `src/RimMandrake/Pyrelands` fire hook + Δ3 | M |
 | Δ15 | Docs: design doc §0 and §9 restated on the water rule; `PLANT_GROWTH_SPEC.md` R-G2's flat ×4 deleted and pointed here; item Owed rewritten | `design/Jawa/worldbuilding/explosive_plant_growth_design.md`, `PLANT_GROWTH_SPEC.md`, `infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md` | S each |
-| Δ16 | Density/growth decoupling and tuning classes (§6) | see §6 | see §6 |
+| Δ16 | Terrain moisture class table (§5.3) + startup log of unclassified terrains | roster or `DefModExtension`; `RM_ExplosiveGrowthRegistry.cs` | M (data, ~150 defs) |
+| Δ17 | Density classes on BiomeDefs (§6.4, if C7 = 1); rewrite R-G4 and R-H3 wording | each biome's BiomeDef; `PLANT_GROWTH_SPEC.md:87-106`; `hydrology_and_fire_ecology.md:170-180` | M (data + his review) |
 
-**Overall: L** (about 5–8 builder days, INFERRED from the sizes: 7 M, 8 S, plus §6). Nothing here is a rewrite: the
+**Overall: L** (about 6–10 builder days, INFERRED from the sizes: 9 M, 8 S). Nothing here is a rewrite: the
 soak grid, sources, tell ladder, tops, settings framework and suite harness all stay.
 
 ---
@@ -525,3 +638,9 @@ refuels it?**
 | A7 | Plants grow 55% of the day (deep dive §1, Plant.cs:281) | every calendar-day figure here | MEASURED in source |
 | A8 | Sizes in §7 are builder estimates, not measurements | planning | — |
 | A9 | Today's suite has 59 rows (kickoff §1.4); the per-chain mapping in §8 is by chain name, not by reading each row | test delta | read each chain at build time |
+| A10 | Moving a biome into a density class is a review row, not a silent edit | §6.4 | his review |
+| A11 | Workshop mods outside `biomes_sprint` add no moisture-relevant terrain to our biomes | §5 inventory | our BiomeDefs name only the §5.3 terrains (MEASURED); terrain added at runtime by other mods is unchecked |
+| A12 | Ocean water on Ash'karr is salt (never waters) | §5.3 | `water_taxonomy.csv` rows `sea_twilight` etc. (design §1) |
+| A13 | Slime keeps watering (today's roster accepts the four slime fluids) | §5.3, T2 | his answer to T2 |
+| A14 | Hot springs, boiling water and red water are undecided | §5.3, T2 | his answer to T2 |
+| A15 | The W2 radius and settled-wet are computed from terrain only, not from FlowWorks fluid identity; a dug channel is read through the fluid list (§5.2) | detection | build-time check |
