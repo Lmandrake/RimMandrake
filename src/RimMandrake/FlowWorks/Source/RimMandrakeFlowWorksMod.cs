@@ -1127,7 +1127,7 @@ namespace RimMandrake.FlowWorks
               + "a step the creature can climb.");
             pitRampMaxSpan = Mathf.RoundToInt(list.Slider(pitRampMaxSpan, 1f, 3f));
             list.Label("Ladder slowness: " + pitLadderSlowness.ToString("F1"), tooltip:
-                "A ladder joins its square to any shallower neighbour, however deep, but each level climbed on it costs this "
+                "A ladder joins its square to the wall it hangs on (a shallower neighbour), however deep, but each level climbed on it costs this "
               + "many normal climbs, so a ramp is always faster.");
             pitLadderSlowness = list.Slider(pitLadderSlowness, 1f, 4f);
 
