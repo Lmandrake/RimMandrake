@@ -1,20 +1,22 @@
 # Gimme Some Slack - human review key sheet
 
-41 stations; every card leads with how to POKE it and what to LOOK FOR (the suspected weak spot). Coverage of every feature: `src/RimMandrake/GimmeSomeSlack/review/COVERAGE.md`.
+31 stations; every card leads with how to POKE it and what to LOOK FOR (the suspected weak spot). Coverage of every feature: `src/RimMandrake/GimmeSomeSlack/review/COVERAGE.md`.
 
 Built by `src/RimMandrake/GimmeSomeSlack/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.
 
-**This map reviews the per-build style design** (`design/RimMandrake/messyconduit_style_per_build_design.md`, your decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-11 are built through that machinery and stand side by side in four looks. `--style` (Mod Settings 'Default style') now only sets the DEFAULT look, which station 12 and every station 13-40 but 34 draw because they store no look. Default look now: **Scrapper**.
+**This map reviews the per-build style design** (`design/RimMandrake/messyconduit_style_per_build_design.md`, your decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-10 are built through that machinery and stand side by side in four looks. `--style` (Mod Settings 'Default style') now only sets the DEFAULT look, which station 11 and every station 12-30 but 24 draw because they store no look. Default look now: **Scrapper**.
 
-Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-12; 0 = whole south region; N0 = north gallery 18-33 and 38-41; M = art board; F = free area).
+Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-11; 0 = whole south region; N0 = north gallery 15-23 and 28-31; M = art board; F = free area).
+
+The hose is not on this map: it moved to FlowWorks, and so did its review stations (owner 2026-10-15: *"Get rid of those hoses..."*). They are on the FlowWorks review map (`src/RimMandrake/FlowWorks/review_map.py`).
 
 ## Everywhere
 
-- Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or hose reel button opens a menu of four looks (Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, orange, green, brown, yellow, blue). The button remembers your last pick.
+- Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or floor lamp button opens a menu of four looks (Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, orange, green, brown, yellow, blue). The button remembers your last pick.
 - 'Restyle this run' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).
 - A run = connected conduit cells + switches + the poles and brackets wired into them. Batteries and machines end a run. Joining two runs of different looks: the run with more conduit cells wins; a tie goes to the older run.
 - Mod Settings > RimMandrake: Gimme Some Slack: master switch OFF restores vanilla conduit art instantly.
-- Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.
+- Unpause (space) to see motion: sway, live-end sparks. Pause again to study a frame.
 
 ## Row S - one look per station (style gallery, south-east)
 
@@ -228,49 +230,29 @@ a Scrapper run (battery, conduit, an in-line switch, a lamp) with a power mast w
 - pick Modern > random mix: the colours vary piece to piece along the run; restyle again and back: the same colours come back
 - unpause: nothing reverts
 
-## Row U - hose reels per look, and an older save (style gallery)
+## Row U - an older save (style gallery)
 
-### 11. HOSE REELS: FOUR LOOKS
+### 11. OLDER SAVE: NO STORED LOOK
 
-per look (top to bottom: Scrapper, Industrial, Modern, Futuristic) a reel with its hose laid out and full, and beside it a reel whose hose was laid and then reeled back in
+conduit, a switch, a lamp and a power mast with a span to a lamp mast, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look
 
-**Poke it:** Deploy / Retract each reel; build a reel from the menu
+**Poke it:** `--style Cybertek`: this set and 12-30 (not 24) change, 1-10 do not; build one conduit onto it
 
-**Look for / suspected weak spot:** a reeled-in drum must be full again in the SAME look (FlowWorks feature)
-
-**Notice**
-
-- laid: the reel draws its EMPTY drum (hose out) and the hose leaves the drum's mouth in the reel's own look
-- hose strand, wraps, couplings, nozzle or end cap: all in the reel's look (non-Scrapper wraps have no cloth tint)
-- reeled in: the drum is full again and the style is kept
-- NOT BUILT: the design's coil overlay; the reel swaps between two whole images instead (art board M)
-
-**Try**
-
-- select a reel: Deploy hose / Retract hose (dev mode: the instant DEV ones); lay the reeled-in one again: same look
-- build a new reel from the menu: four looks on the button; copy a reel: the copy keeps its look
-
-### 12. OLDER SAVE: NO STORED LOOK
-
-conduit, a switch, a lamp, a power mast with a span to a lamp mast and a laid hose reel, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look
-
-**Poke it:** `--style Cybertek`: this set and 13-40 (not 34) change, 1-11 do not; build one conduit onto it
-
-**Look for / suspected weak spot:** the hose reel here follows FlowWorks' default, not --style: it will look like it ignored the switch
+**Look for / suspected weak spot:** the build must write the run's look for real; nothing here may change when only the stored looks (1-10) are touched
 
 **Notice**
 
-- everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change; the hose reel is the exception: it draws FlowWorks' own default ('Look of reels built without a picked look', Scrapper here)
-- every station from 13 on is built the same way (except 34 and 41, which store a look), so it follows the default too
+- everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change
+- every station from 12 on is built the same way (except 24 and 31, which store a look), so it follows the default too
 
 **Try**
 
-- `human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-40 change (not 34, not the hose reels: their default is FlowWorks' setting); stations 1-11 do NOT
+- `human_review.py --style Cybertek` (or Mod Settings): this set and stations 12-30 change (not 24); stations 1-10 do NOT
 - build one conduit onto it from the menu: the run's look is written for real now (the save migration)
 
 ## Row A - floor cords (default look)
 
-### 13. WALL + ROCK ENTRIES
+### 12. WALL + ROCK ENTRIES
 
 a run passing under a steel wall and through a granite block; a branch ending inside the wall
 
@@ -292,7 +274,7 @@ a run passing under a steel wall and through a granite block; a branch ending in
 
 ## Row B - overhead lines (default look)
 
-### 14. CUT + FALLEN SPAN
+### 13. CUT + FALLEN SPAN
 
 battery -> power mast -> mast -> mast -> lamp, two 12-cell overhead spans, the SECOND span cut (as if blown by an explosion)
 
@@ -312,7 +294,7 @@ battery -> power mast -> mast -> mast -> lamp, two 12-cell overhead spans, the S
 - select the middle mast > Re-string cut wires: the span goes back up and the lamp relights
 - god mode: drop an explosion under a span (dev tools) to cut another
 
-### 15. POWER TAP
+### 14. POWER TAP
 
 a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained one-way into our lamp (right)
 
@@ -332,55 +314,11 @@ a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained
 - Mod Settings > Gimme Some Slack > taps off: our lamp goes dark
 - round 8: dev-spawn one of THEIR pawns within 12 cells, in sight of the clamp, and unpause: a 'Power theft discovered' letter, then their goodwill falls 2 a day while the clamp drains (`--goto` sweeps that pawn away again)
 
-## Row C - flexible hoses: states, lanes and crossings
-
-Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece.
-
-### 16. HOSE STATES
-
-three hoses laid side by side, two cells apart (top to bottom): FLAT (nothing flowing), FILLING (flow on, frozen half-way through filling), PLUMP (flow on, fully filled)
-
-**Poke it:** unpause: the filling hose finishes in about half a second
-
-**Look for / suspected weak spot:** a straight hose must have NO joiner; filling must not jump straight to plump (FlowWorks)
-
-**Notice**
-
-- flat: the hose lies flat and thin; a straight hose has NO joiner along it; the free end is a plain open end the hose's own width
-- filling: half-plump, the swell is mid-transition; UNPAUSE and it finishes plumping in ~half a second
-- plump: a full round hose, visibly wider than the flat one; still no joiner on the straight
-- lanes: each hose keeps its own lane; where their S-curves meet, one draws over the other cleanly (the newer reel's on top)
-
-**Try**
-
-- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
-- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
-- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
-
-### 17. HOSE GRID
-
-four hoses, two each way, crossing in a 2 x 2 grid
-
-**Poke it:** lay a fifth hose across the grid
-
-**Look for / suspected weak spot:** where S-curves run side by side two hoses may overlap for a stretch (FlowWorks)
-
-**Notice**
-
-- four crossings: every one is over/under, with a fixed order (newest on top)
-- FINDING to judge: where the S-curve slack of two hoses runs along each other they may overlap for a stretch
-
-**Try**
-
-- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
-- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
-- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
-
 ## Row E - power showpieces (north gallery)
 
 Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, a span over a hidden stone block.
 
-### 18. POLE CLUSTER
+### 15. POLE CLUSTER
 
 one power pole with a wide mix of devices: some right beside it (lamp, heater, sun lamp, mini-turret, two batteries), some reached by conduit runs (stove, hi-tech research bench, TV), a walk-in freezer with an in-wall cooler and wall lamps inside and out, and a lamp mast fed over the air
 
@@ -403,7 +341,7 @@ one power pole with a wide mix of devices: some right beside it (lamp, heater, s
 - deconstruct the pole: every adjacent hookup falls; the conduit-fed devices keep their cords
 - build another lamp right beside the pole: does it pick a free terminal?
 
-### 19. ELECTRIC ROOM
+### 16. ELECTRIC ROOM
 
 a walled workshop crammed with powered devices joined by messy conduit (with a tangle), and three power poles carrying a line OVER it: west pole outside, middle pole inside the room, east pole outside
 
@@ -425,7 +363,7 @@ a walled workshop crammed with powered devices joined by messy conduit (with a t
 - roof the room (Architect > Structure > Build roof, god mode): the middle pole is now under a roof - its spans should be cut (roof cut) and drop
 - switch looks (--style): the whole room changes at once
 
-### 20. OVER THE UNKNOWN
+### 17. OVER THE UNKNOWN
 
 two power poles carrying power OVER a solid granite block that lies hidden under fog of war and overhead mountain: the wire runs off into the unknown and emerges on the other side
 
@@ -446,56 +384,11 @@ two power poles carrying power OVER a solid granite block that lies hidden under
 - toggle the roof overlay (bottom-right): the block is all mountain roof
 - select a pole > Unlink wire: the east lamp goes dark; Link it again
 
-## Row F - hose mazes (north gallery)
-
-Two routes out of a small maze, then the short one walled off after laying. validation_hose.py owns the pass/fail; this map shows it.
-
-### 21. HOSE MAZE: TWO ROUTES
-
-a hose laid from a reel deep inside a small walled maze to a free end outside; two ways out: the short one (south-east gap) and a longer one (north-east gap)
-
-**Poke it:** reel in, lay again to the same end
-
-**Look for / suspected weak spot:** a bend clipping a wall corner in a one-cell corridor (FlowWorks)
-
-**Notice**
-
-- the hose finds the SHORT route out through the inner chamber's west door, down and out the south-east gap
-- it never clips a wall corner, and its bends stay smooth in the one-cell corridors
-- it stays inside the corridors (it never jumps a wall)
-
-**Try**
-
-- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
-- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
-- reel it in and lay it again to the same free end: does it pick the same route?
-
-### 22. HOSE MAZE: SHORT WAY WALLED
-
-station 21's maze; after the hose is laid, a wall is built across the short (south-east) gap - does the hose re-route the long way, or reel itself in?
-
-**Poke it:** deconstruct the blocking wall
-
-**Look for / suspected weak spot:** the hose must re-route or reel in with a message, never pass through the wall (FlowWorks)
-
-**Notice**
-
-- what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length (it does: measured offline the long way needs about 25 of the hose's 40 cells), else it winds back onto the reel with a message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)
-- add your own walls to lengthen the way round: past 40 cells (the default since round 6) the hose reels in (selftest r5: the 13x13 spiral needs 73)
-- if it re-routes, the new path is as clean as station 21's
-
-**Try**
-
-- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
-- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
-- reel it in and lay it again to the same free end: does it pick the same route?
-- deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?
-
 ## Row G - challenge configurations (north gallery)
 
 Built to make visible bugs show: map edge, water, roof edge, longest/odd spans, a full pole, neighbouring nets, half-built work and save-load.
 
-### 23. MAP EDGE
+### 18. MAP EDGE
 
 poles and cords at the map's north-east corner: a pole IN the corner cell, poles on the top and right edge cells, and floor runs lying along both edges
 
@@ -514,7 +407,7 @@ poles and cords at the map's north-east corner: a pole IN the corner cell, poles
 - pan the camera to the edge: is anything drawn in the black past the map?
 - deconstruct the corner pole: both its spans drop
 
-### 24. RIVER CROSSING
+### 19. RIVER CROSSING
 
 a river (chest-deep moving water, shallow banks): an overhead span from bank to bank, and a floor run fording the shallow end in waterproof conduit
 
@@ -534,7 +427,7 @@ a river (chest-deep moving water, shallow banks): an overhead span from bank to 
 - unpause: the river flows; does the cord on the water move with it (it should not)?
 - deconstruct one waterproof conduit cell in the river: the cut ends lie in water - do they still spark?
 
-### 25. ROOF BOUNDARY
+### 20. ROOF BOUNDARY
 
 a roofed steel room: an overhead span passes OVER its roof, a floor run goes in under the wall, and a pole standing INSIDE under the roof tries to link out
 
@@ -555,7 +448,7 @@ a roofed steel room: an overhead span passes OVER its roof, a floor run goes in 
 - build a roof over the east pole (god mode): its span drops (roof cut)
 - remove the room's roof: link the inside pole from its gizmo
 
-### 26. LONG SPAN + DIAGONALS
+### 21. LONG SPAN + DIAGONALS
 
 four chains: a span of EXACTLY the longest length (20), one cell too long (21, refused), a 45-degree diagonal chain, an odd-angle span, and a very short span (3 cells)
 
@@ -576,7 +469,7 @@ four chains: a span of EXACTLY the longest length (20), one cell too long (21, r
 - select a mast > Link wire to the 21-cell partner: the message says too far
 - Mod Settings: raise the longest span to 25: then link it
 
-### 27. CONVERGING HUB
+### 22. CONVERGING HUB
 
 a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH pole trying to link (refused: full), and three lamps plus a heater right beside the hub
 
@@ -596,7 +489,7 @@ a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH po
 - unlink one spoke, then link the NE pole: it takes the freed slot
 - deconstruct the hub: four spans drop at once
 
-### 28. NETS SIDE BY SIDE + HALF-BUILT
+### 23. NETS SIDE BY SIDE + HALF-BUILT
 
 three separate powered nets two cells apart; two nets end to end with a one-cell gap that is a conduit BLUEPRINT; a half-built run (conduit, then blueprints, a pole blueprint, a lamp blueprint)
 
@@ -618,107 +511,11 @@ three separate powered nets two cells apart; two nets end to end with a one-cell
 - save, load, compare (this is the save-load station)
 - --style ExtensionCord for the colour checks
 
-### 29. RELAY REELS: GOING FARTHER
-
-three hose reels in a row, 28 cells apart: the first reel's hose is laid onto the second reel, whose own hose is laid onto the third (58 cells end to end; one hose holds 40)
-
-**Poke it:** reel in the first hose: the second drains
-
-**Look for / suspected weak spot:** a relay that loops back must be refused (FlowWorks)
-
-**Notice**
-
-- each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses
-- flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed through the relay (the dev flag stands in for real liquid: no tank or pipe feeds the first reel here)
-- select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'
-
-**Try**
-
-- select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo (nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'
-- dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing moves real liquid through them)
-- reel in the first hose: the second one drains (nothing feeds it)
-- lay the third reel's hose back onto the first: refused, a chain may not loop back
-- build a fourth reel within 40 cells of the third (north or south: east is the map edge) and lay the third reel onto it: the chain goes on
-
-### 30. DEPLOY BY HAND, THEN WIND IT IN
-
-a hose reel with a Deploy order 24 cells out and one idle colonist beside it (UNPAUSE: nothing else is ordered); after he lays it, press Retract
-
-**Poke it:** UNPAUSE, then press Retract after he lays it
-
-**Look for / suspected weak spot:** the hose must never be longer than his walk; Retract must wind back along the route (FlowWorks)
-
-**Notice**
-
-- the colonist walks to the reel, picks up the hose end and walks it out: the hose unrolls behind him along his walk
-- he sets the end down at the order's cell and the hose lies there, coupled
-- the hose is never longer than his walk: it does not jump out to the target
-- after he lays it, press Retract on the reel: he winds the hose back along its route to the reel
-- the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once
-- it ends Stored: no hose on the ground, the reel's drum full
-
-**Try**
-
-- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-- draft him mid-walk: the end drops where he stands (see station 31)
-
-### 31. DROPPED HALFWAY
-
-a reel whose hose end was dropped 14 cells out (an interrupted carry)
-
-**Poke it:** Move hose end to a nearby cell, unpause
-
-**Look for / suspected weak spot:** nobody should be shown carrying anything until a colonist picks it up (FlowWorks)
-
-**Notice**
-
-- the open end lies on the ground at the end of the hose; the hose is drawn only as far as it was walked
-- select the reel: 'Move hose end' and 'Retract hose' are offered; no colonist is carrying anything
-
-**Try**
-
-- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-- Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there
-
-### 32. INTO THE POND
-
-a reel 10 cells from a pond, its hose laid into the water
-
-**Poke it:** select the reel: inspect
-
-**Look for / suspected weak spot:** the end must lie IN the water, not on the bank; it draws nothing by itself (FlowWorks)
-
-**Notice**
-
-- the hose end lies in the water, not on the bank
-- a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3): the reel's inspect reads 'Not connected' and 'Hose laid to ...'; the end's own reading 'lying in ... (no intake: filling a tank takes a pump)' is a state read (HoseProbe census freeEnd.describe), not shown in the inspect pane
-
-**Try**
-
-- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-
-### 33. ON THEIR TANK
-
-a hose coupled to another faction's liquid tank
-
-**Poke it:** select the reel and the tank
-
-**Look for / suspected weak spot:** the coupling must sit on their tank; nobody's inspect names their faction (FlowWorks)
-
-**Notice**
-
-- a brass coupling sits on THEIR tank where the hose ends
-- their faction is a state read (HoseProbe census freeEnd.portFaction / describe 'coupled to ... (<faction>)'); neither the reel's nor the tank's inspect names it
-
-**Try**
-
-- select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-
 ## Row H - pieces the gallery never showed (south band, added 2026-10-15)
 
 From the feature inventory (review/COVERAGE.md): waterproof conduit in four looks, the three conduit kinds, a bracket on every wall face, the tap clamp's poses.
 
-### 34. WATERPROOF CONDUIT: FOUR LOOKS
+### 24. WATERPROOF CONDUIT: FOUR LOOKS
 
 four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look (plain conduit on the soil legs: vanilla allows waterproof conduit only on water or marsh)
 
@@ -737,7 +534,7 @@ four runs of waterproof conduit, one per look (top to bottom: Scrapper, Industri
 - select a cell > Restyle this run: the waterproof run takes any look, like plain conduit
 - Mod Settings > 'Which conduits become cords' > untick Waterproof conduit: these four runs go back to vanilla art
 
-### 35. CONDUIT KINDS
+### 25. CONDUIT KINDS
 
 three runs in the DEFAULT look, top to bottom: plain power conduit, waterproof conduit (on soil), hidden conduit; each from a full battery to a lamp. The plain row has a 2-cell dead-end stub hanging down
 
@@ -757,7 +554,7 @@ three runs in the DEFAULT look, top to bottom: plain power conduit, waterproof c
 - Mod Settings > 'Which conduits become cords': untick one kind and only that row returns to vanilla art
 - `human_review.py --set gss.enabled=False` (master switch): every row is vanilla conduit art at once
 
-### 36. WALL BRACKETS: EVERY FACE
+### 26. WALL BRACKETS: EVERY FACE
 
 a 3x3 steel wall block with a wall bracket on each face (north, east, south, west), all four strung from one power mast; a lamp beside each bracket
 
@@ -776,7 +573,7 @@ a 3x3 steel wall block with a wall bracket on each face (north, east, south, wes
 - select a bracket > Unlink wire: only its lamp goes dark; Link wire to put it back
 - deconstruct a wall cell under a bracket: the bracket has nothing to hang on (what happens to it?)
 
-### 37. TAP CLAMP POSES
+### 27. TAP CLAMP POSES
 
 their grid (hostile batteries) as one east-west cord and one north-south cord; four of our clamps bite them, our cord arriving from the north, the south, the west and the east; a lamp on each
 
@@ -801,7 +598,7 @@ their grid (hostile batteries) as one east-west cord and one north-south cord; f
 
 Auto-link selected, a cut wire's hazards (shock, spilled fuel, the alert), a claimed enemy pole, and the look riding a blueprint.
 
-### 38. AUTO-LINK SELECTED
+### 28. AUTO-LINK SELECTED
 
 five power masts standing unlinked (one touches a full battery) and two dark lamps beside the far masts
 
@@ -818,7 +615,7 @@ five power masts standing unlinked (one touches a full battery) and two dark lam
 - select all five masts > 'Auto-link selected': the shortest set of wires that joins them all (4 wires), both lamps light
 - undo with Unlink all on each, then link them by hand with 'Link wire' and compare
 
-### 39. FALLEN WIRE HAZARDS
+### 29. FALLEN WIRE HAZARDS
 
 battery -> mast -> mast -> lamp, the span CUT; spilled fuel lies around the live end on the ground
 
@@ -837,7 +634,7 @@ battery -> mast -> mast -> lamp, the span CUT; spilled fuel lies around the live
 - draft a colonist and walk him onto the live end: he is shocked and thrown back about 2 cells (a weak heart can die; Mod Settings 'shock' / 'thrown back')
 - select the battery-side mast > Re-string cut wires: the alert clears, the lamp relights
 
-### 40. CLAIM THEIR POLE
+### 30. CLAIM THEIR POLE
 
 two power masts of ANOTHER faction strung together, their battery at the south mast and their lamp at the north one
 
@@ -855,7 +652,7 @@ two power masts of ANOTHER faction strung together, their battery at the south m
 - select the north mast > Claim (god mode: instant): the wire to their other pole is taken down and coiled at once, their lamp goes dark (Mod Settings 'Claiming a pole cuts wires to the other owner')
 - claim the south mast too, then Link wire between them: one grid, yours
 
-### 41. STYLED BLUEPRINTS
+### 31. STYLED BLUEPRINTS
 
 an Industrial run picked from the build menu but NOT built: conduit, an in-line switch and a floor lamp as blueprints, beside a full battery
 
@@ -875,9 +672,9 @@ an Industrial run picked from the build menu but NOT built: conduit, an in-line 
 
 ## Expected refusals (shown on purpose)
 
-- 25 ROOF BOUNDARY: link 0-2 is refused (Roofed).
-- 26 LONG SPAN + DIAGONALS: link 2-3 is refused (OutOfRange).
-- 27 CONVERGING HUB: link 0-5 is refused (FullA).
+- 20 ROOF BOUNDARY: link 0-2 is refused (Roofed).
+- 21 LONG SPAN + DIAGONALS: link 2-3 is refused (OutOfRange).
+- 22 CONVERGING HUB: link 0-5 is refused (FullA).
 
 ## Mod Settings: one switch each
 
@@ -885,54 +682,54 @@ Global settings change every station at once, so they are never faked side by si
 
 | setting | shipped | what it does | where to look |
 |---|---|---|---|
-| `gss.enabled` | True | Messy cords master switch (off = vanilla conduit art) | 35, any cord station |
-| `gss.style` | StarWarsJawa | default look of unstyled pieces (also `--style`) | 12, 13-40 (not 34), 35, 37 |
-| `gss.extCordColorMode` | Mixed | default Modern colour: one per net (Mixed) or one everywhere (Single) | 28 with --style ExtensionCord |
-| `gss.extCordColor` | 0 | the single Modern colour (0 orange .. 4 blue) | 28 with Single |
-| `gss.hideHookupWires` | True | hide vanilla's thin machine hookup wires | 18 |
-| `gss.slack` | 1.0 | slack, 0 = path-tight | 1-4, 13 |
+| `gss.enabled` | True | Messy cords master switch (off = vanilla conduit art) | 25, any cord station |
+| `gss.style` | StarWarsJawa | default look of unstyled pieces (also `--style`) | 11, 12-30 (not 24), 25, 27 |
+| `gss.extCordColorMode` | Mixed | default Modern colour: one per net (Mixed) or one everywhere (Single) | 23 with --style ExtensionCord |
+| `gss.extCordColor` | 0 | the single Modern colour (0 orange .. 4 blue) | 23 with Single |
+| `gss.hideHookupWires` | True | hide vanilla's thin machine hookup wires | 15 |
+| `gss.slack` | 1.0 | slack, 0 = path-tight | 1-4, 12 |
 | `gss.loopBudget` | 16 | cells of each cord in loops and heaps | 1-4 |
-| `gss.cordsPerConnection` | 3 | cords per connection, 1 to 3 | 1-4, 19 |
-| `gss.tangles` | True | dense conduit fields become one tangle | 1-4 (the 3x3), 19 |
-| `gss.tangleMin` | 9 | cells before a dense field becomes a tangle | 1-4, 19 |
-| `gss.needlessLoops` | True | needless stubs (2 cells or less) become pointless loops | 35 (the stub) |
-| `gss.diveThrough` | True | cords dive under walls and water (a plate marks the wall) | 13, 24, 34 |
-| `gss.breakReadout` | True | live ends spark, dead ends lie limp | 1-4, 14 |
-| `gss.sparkIntensity` | 1.0 | spark intensity (also clamp sparks) | 1, 14, 37, 39 |
+| `gss.cordsPerConnection` | 3 | cords per connection, 1 to 3 | 1-4, 16 |
+| `gss.tangles` | True | dense conduit fields become one tangle | 1-4 (the 3x3), 16 |
+| `gss.tangleMin` | 9 | cells before a dense field becomes a tangle | 1-4, 16 |
+| `gss.needlessLoops` | True | needless stubs (2 cells or less) become pointless loops | 25 (the stub) |
+| `gss.diveThrough` | True | cords dive under walls and water (a plate marks the wall) | 12, 19, 24 |
+| `gss.breakReadout` | True | live ends spark, dead ends lie limp | 1-4, 13 |
+| `gss.sparkIntensity` | 1.0 | spark intensity (also clamp sparks) | 1, 13, 27, 29 |
 | `gss.whip` | True | live broken floor ends whip (also paused) | 1-4 |
-| `gss.downedWire` | True | live wires hanging out of walls drip sparks | 13 |
-| `gss.sparksOnlyOverlay` | False | sparks only while the power overlay is open | 14, 39 |
+| `gss.downedWire` | True | live wires hanging out of walls drip sparks | 12 |
+| `gss.sparksOnlyOverlay` | False | sparks only while the power overlay is open | 13, 29 |
 | `gss.maxSparkingEnds` | 24 | most sparking ends per map | no station (needs 24+ live ends on one map) |
-| `gss.highlight` | True | selecting a powered building highlights its net's cords | 28 |
-| `gss.sway` | True | hanging cords sway in the wind | 13 (unpause) |
-| `gss.swayAmplitude` | 1.0 | cord sway strength | 13 |
-| `gss.swayMode` | CPU | cord sway on the CPU or the plant wind shader | 13 |
+| `gss.highlight` | True | selecting a powered building highlights its net's cords | 23 |
+| `gss.sway` | True | hanging cords sway in the wind | 12 (unpause) |
+| `gss.swayAmplitude` | 1.0 | cord sway strength | 12 |
+| `gss.swayMode` | CPU | cord sway on the CPU or the plant wind shader | 12 |
 | `gss.floorRipple` | True | outdoor floor cords ripple | 1-4 (unpause) |
-| `gss.excludedConduits` | [] | which conduits become cords (a list: Mod Settings window only) | 34, 35 |
+| `gss.excludedConduits` | [] | which conduits become cords (a list: Mod Settings window only) | 24, 25 |
 | `gss.lod` | True | far zoom: one thin strand, no pieces | any: zoom out |
 | `gss.debugDraw` | False | draw the node graph | any |
-| `aerial.enabled` | True | overhead lines master switch | 6, 14, 18-28, 36-40 |
-| `aerial.maxSpan` | 20 | longest span, cells | 26 |
-| `aerial.sag` | 0.06 | sag, share of the span | 26 |
-| `aerial.autoLink` | True | new anchors link to the nearest in range | F, 38 |
-| `aerial.maxStrands` | 3 | wires per span, 1 to this | 6, 27 |
+| `aerial.enabled` | True | overhead lines master switch | 6, 13, 15-23, 26-30 |
+| `aerial.maxSpan` | 20 | longest span, cells | 21 |
+| `aerial.sag` | 0.06 | sag, share of the span | 21 |
+| `aerial.autoLink` | True | new anchors link to the nearest in range | F, 28 |
+| `aerial.maxStrands` | 3 | wires per span, 1 to this | 6, 22 |
 | `aerial.dripLoops` | True | drip loops at the insulators | 6 |
 | `aerial.keepWiresOnGravship` | True | wires on a launched gravship stay strung | no station (needs a gravship launch) |
-| `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 26 (unpause) |
-| `aerial.swayStrength` | 1.0 | wire sway strength | 6, 26 |
-| `aerial.explosionsCut` | True | explosions cut wires | 14 |
+| `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 21 (unpause) |
+| `aerial.swayStrength` | 1.0 | wire sway strength | 6, 21 |
+| `aerial.explosionsCut` | True | explosions cut wires | 13 |
 | `aerial.kineticSway` | True | Kinetic Arms push waves swing wires, never cut | no station (needs a Kinetic Arms push wave) |
-| `aerial.fallenWireShock` | True | live fallen wires shock whoever touches them | 39 |
-| `aerial.fallenWireKnockback` | 2 | cells a shock throws the victim | 39 |
-| `aerial.fallenWireIgnites` | True | live fallen wires light spilled fuel | 39 |
-| `aerial.wireDownAlert` | True | the 'Wire down' alert | 14, 39 |
-| `aerial.cutWiresOnOwnerChange` | True | claiming a pole coils wires to the other owner | 40 |
-| `aerial.tapsEnabled` | True | power-tap clamps allowed | 15, 37 |
-| `aerial.tapRate` | 500 | most a clamp takes, W | 15 |
-| `aerial.tapEvents` | True | taps have consequences | 15 |
-| `aerial.theftGoodwill` | True | caught theft drains goodwill | 15 (spawn one of their pawns) |
-| `aerial.theftGoodwillPerDay` | 2 | goodwill lost per day | 15 |
-| `aerial.theftSightRange` | 12 | victims spot a clamp within N cells | 15 |
+| `aerial.fallenWireShock` | True | live fallen wires shock whoever touches them | 29 |
+| `aerial.fallenWireKnockback` | 2 | cells a shock throws the victim | 29 |
+| `aerial.fallenWireIgnites` | True | live fallen wires light spilled fuel | 29 |
+| `aerial.wireDownAlert` | True | the 'Wire down' alert | 13, 29 |
+| `aerial.cutWiresOnOwnerChange` | True | claiming a pole coils wires to the other owner | 30 |
+| `aerial.tapsEnabled` | True | power-tap clamps allowed | 14, 27 |
+| `aerial.tapRate` | 500 | most a clamp takes, W | 14 |
+| `aerial.tapEvents` | True | taps have consequences | 14 |
+| `aerial.theftGoodwill` | True | caught theft drains goodwill | 14 (spawn one of their pawns) |
+| `aerial.theftGoodwillPerDay` | 2 | goodwill lost per day | 14 |
+| `aerial.theftSightRange` | 12 | victims spot a clamp within N cells | 14 |
 
 ## M. Art-slot board: which per-look pieces still fall back
 
@@ -965,16 +762,6 @@ Computed from the files on disk at the paths the shipped code reads, so it shrin
 | wall bracket (E/W face) | own | own | own | own |
 | power-tap clamp | own | own | own | own |
 | floor lamp | own | own | own | own |
-| hose reel, stored | own | own | own | own |
-| hose reel, laid | own | own | own | own |
-| hose strand, flat | own | own | own | own |
-| hose strand, plump | own | own | own | own |
-| hose binding | own | own | own | own |
-| hose coupling | own | own | own | own |
-| hose nozzle | own | own | own | own |
-| hose end cap | own | own | own | own |
-| hose open mouth | own | own | own | own |
-| hose reel coil overlay | not built: the reel swaps two whole images | not built: the reel swaps two whole images | not built: the reel swaps two whole images | not built: the reel swaps two whole images |
 
 ## F. Free build area
 
@@ -982,7 +769,7 @@ North band, west end (`--goto F`): open soil. A charged power pad (2 solar gener
 
 ## Old station -> new station (densified 2026-10-05)
 
-Owner 2026-10-05: *"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."* Plan: `design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md` section 4. 47 stations -> 33: fifteen cut or merged, one new HOSE STATES station, the rest renumbered in order. Stations 34-41 were added 2026-10-15 (round 8); the old numbers in the left column are the 47-station map's, not today's.
+Owner 2026-10-05: *"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."* Plan: `design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md` section 4. 47 stations -> 33: fifteen cut or merged, one new HOSE STATES station, the rest renumbered in order. Eight stations were added 2026-10-15 (round 8, now 24-31), and the same day every hose station moved to the FlowWorks review map (owner: *"Get rid of those hoses..."*), leaving 31, renumbered in order. The old numbers in the left column are the 47-station map's, not today's.
 
 | old (47-station map) | new | station |
 |---|---|---|
@@ -996,52 +783,51 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
 | 8 | **8** | MERGE: A TIE |
 | 9 | **9** | SPLIT KEEPS THE LOOK |
 | 10 | **10** | RESTYLE THIS RUN (yours) |
-| 11 | **11** | HOSE REELS: FOUR LOOKS |
-| 12 | **12** | OLDER SAVE: NO STORED LOOK |
+| 11 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_reels_laid (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 12 | **11** | OLDER SAVE: NO STORED LOOK |
 | 13 | **-** | removed -> covered by 1-4 (doc l.165 'powered line': the ground-cord stations) |
 | 14 | **-** | removed -> covered by 1-4 (doc l.166 'unpowered line' (veto point): weakest distinct question; the matrix P=dead scenes cover it in state) |
 | 15 | **-** | removed -> covered by 1-4 (doc l.167 'cut line': their missing cell, live + dead end) |
-| 16 | **-** | removed -> covered by 1-4, 19 (doc l.168 'tangled pile': their 3x3 tangle; the electric room) |
-| 17 | **-** | removed -> covered by 1-4, 18 (doc l.169 'devices + plugs': their switch + three plugged devices; the pole cluster) |
-| 18 | **13** | WALL + ROCK ENTRIES |
+| 16 | **-** | removed -> covered by 1-4, 16 (doc l.168 'tangled pile': their 3x3 tangle; the electric room) |
+| 17 | **-** | removed -> covered by 1-4, 15 (doc l.169 'devices + plugs': their switch + three plugged devices; the pole cluster) |
+| 18 | **12** | WALL + ROCK ENTRIES |
 | 19 | **-** | removed -> covered by 6, 10 (doc l.171 'mast chain': OVERHEAD: FOUR LOOKS has battery > mast > mast > lamp mast > wall bracket in all four looks; RESTYLE THIS RUN has a span) |
 | 20 | **-** | removed -> covered by 6, 10 (doc l.171 'lamp masts': as the mast chain) |
 | 21 | **-** | removed -> covered by 6, 10 (doc l.171 'wall bracket': as the mast chain) |
-| 22 | **14** | CUT + FALLEN SPAN |
-| 23 | **15** | POWER TAP |
-| 24 | **-** | merged into 16 (doc l.173 'flat': HOSE STATES, three parallel hoses) |
-| 25 | **-** | merged into 16 (doc l.173 'filling': HOSE STATES) |
-| 26 | **-** | merged into 16 (doc l.173 'plump': HOSE STATES) |
-| 27 | **-** | removed -> covered by 21, 22, 29, 32 (doc l.174 'long + bend': the maze bends, the relay's length, the pond) |
-| 28 | **-** | removed -> covered by 17 (doc l.175 'crossing': the hose grid has four crossings with the same over/under question) |
-| 29 | **-** | merged into 16 (doc l.173 'parallel': its question (lanes, one over the other) is the same picture) |
-| 30 | **17** | HOSE GRID |
-| 31 | **18** | POLE CLUSTER |
-| 32 | **19** | ELECTRIC ROOM |
-| 33 | **20** | OVER THE UNKNOWN |
-| 34 | **21** | HOSE MAZE: TWO ROUTES |
-| 35 | **22** | HOSE MAZE: SHORT WAY WALLED |
-| 36 | **23** | MAP EDGE |
-| 37 | **24** | RIVER CROSSING |
-| 38 | **25** | ROOF BOUNDARY |
-| 39 | **26** | LONG SPAN + DIAGONALS |
-| 40 | **27** | CONVERGING HUB |
-| 41 | **28** | NETS SIDE BY SIDE + HALF-BUILT |
-| 42 | **29** | RELAY REELS: GOING FARTHER |
-| 43 | **30** | DEPLOY BY HAND, THEN WIND IT IN |
-| 44 | **31** | DROPPED HALFWAY |
-| 45 | **32** | INTO THE POND |
-| 46 | **33** | ON THEIR TANK |
-| 47 | **-** | merged into 30 (doc l.180 'wind it in': the deploy card now says 'after he lays it, press Retract'; same reel and pawn, the reverse action) |
-| new | **16** | HOSE STATES |
-| new | **34** | WATERPROOF CONDUIT: FOUR LOOKS |
-| new | **35** | CONDUIT KINDS |
-| new | **36** | WALL BRACKETS: EVERY FACE |
-| new | **37** | TAP CLAMP POSES |
-| new | **38** | AUTO-LINK SELECTED |
-| new | **39** | FALLEN WIRE HAZARDS |
-| new | **40** | CLAIM THEIR POLE |
-| new | **41** | STYLED BLUEPRINTS |
+| 22 | **13** | CUT + FALLEN SPAN |
+| 23 | **14** | POWER TAP |
+| 24 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_states (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 25 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_states (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 26 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_states (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 27 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_maze, hose_maze_walled, hose_relay, hose_into_pond (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 28 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_grid (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 29 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_states (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 30 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_grid (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 31 | **15** | POLE CLUSTER |
+| 32 | **16** | ELECTRIC ROOM |
+| 33 | **17** | OVER THE UNKNOWN |
+| 34 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_maze (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 35 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_maze_walled (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 36 | **18** | MAP EDGE |
+| 37 | **19** | RIVER CROSSING |
+| 38 | **20** | ROOF BOUNDARY |
+| 39 | **21** | LONG SPAN + DIAGONALS |
+| 40 | **22** | CONVERGING HUB |
+| 41 | **23** | NETS SIDE BY SIDE + HALF-BUILT |
+| 42 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_relay (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 43 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_deploy_by_hand (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 44 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_dropped (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 45 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_into_pond (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 46 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_their_tank (owner 2026-10-15: hoses left Gimme Some Slack) |
+| 47 | **-** | moved to the FlowWorks review map (FlowWorks/review_map.py): hose_deploy_by_hand (owner 2026-10-15: hoses left Gimme Some Slack) |
+| new | **24** | WATERPROOF CONDUIT: FOUR LOOKS |
+| new | **25** | CONDUIT KINDS |
+| new | **26** | WALL BRACKETS: EVERY FACE |
+| new | **27** | TAP CLAMP POSES |
+| new | **28** | AUTO-LINK SELECTED |
+| new | **29** | FALLEN WIRE HAZARDS |
+| new | **30** | CLAIM THEIR POLE |
+| new | **31** | STYLED BLUEPRINTS |
 | F | **F** | free build area |
 | M | **M** | art-slot board |
 
@@ -1083,210 +869,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   "26:2-3": "OutOfRange (expected OutOfRange)",
   "27:0-5": "FullA (expected FullA)"
  },
- "hose_hooks": {
-  "21": {
-   "judged": "TODO validation_hose.review_maze",
-   "route": {
-    "couplings": 2,
-    "layOk": true,
-    "layReason": null,
-    "pathLen": 20.812,
-    "state": "Plump"
-   }
-  },
-  "22": {
-   "after_wall": {
-    "couplings": 2,
-    "layOk": true,
-    "layReason": null,
-    "pathLen": 20.812,
-    "state": "Plump"
-   },
-   "before": {
-    "couplings": 2,
-    "layOk": true,
-    "layReason": null,
-    "pathLen": 20.812,
-    "state": "Plump"
-   },
-   "judged": "TODO validation_hose.review_block_wall"
-  },
-  "30": {
-   "colonist": {
-    "cmd": "pawn:672=tp:16,128",
-    "pawn": {
-     "downed": false,
-     "drafted": false,
-     "driver": null,
-     "forced": false,
-     "id": 672,
-     "job": null,
-     "name": "Haplo",
-     "pos": [
-      16,
-      128
-     ],
-     "toil": -1
-    },
-    "success": true
-   },
-   "order": {
-    "carry": "Stored",
-    "cmd": "order:14,124=deploy:38,125",
-    "pending": "Deploy",
-    "pendingAt": [
-     38,
-     125
-    ],
-    "reason": null,
-    "success": true
-   }
-  },
-  "31": {
-   "settrail": {
-    "carry": "Dropped",
-    "cmd": "settrail:58,124=dropped;58,124;59,124;60,124;61,124;62,124;63,124;64,124;65,124;66,124;67,124;68,124;69,124;70,124;71,124;72,124",
-    "layOk": true,
-    "success": true,
-    "trail": 15,
-    "trailLength": 14.4862
-   }
-  }
- },
- "hose_states": {
-  "11@206,14": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 22.7354,
-   "state": "Plump"
-  },
-  "11@206,19": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 22.7354,
-   "state": "Plump"
-  },
-  "11@206,24": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 22.7354,
-   "state": "Plump"
-  },
-  "11@206,9": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 22.7354,
-   "state": "Plump"
-  },
-  "11@224,14": {
-   "blend": 0,
-   "couplings": null,
-   "pathLen": null,
-   "state": "Flat"
-  },
-  "11@224,19": {
-   "blend": 0,
-   "couplings": null,
-   "pathLen": null,
-   "state": "Flat"
-  },
-  "11@224,24": {
-   "blend": 0,
-   "couplings": null,
-   "pathLen": null,
-   "state": "Flat"
-  },
-  "11@224,9": {
-   "blend": 0,
-   "couplings": null,
-   "pathLen": null,
-   "state": "Flat"
-  },
-  "12@208,98": {
-   "blend": 0,
-   "couplings": 2,
-   "pathLen": 24.7895,
-   "state": "Flat"
-  },
-  "16@100,39": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 29.7296,
-   "state": "Plump"
-  },
-  "16@100,41": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 29.7296,
-   "state": "Plump"
-  },
-  "16@100,43": {
-   "blend": 0,
-   "couplings": 2,
-   "pathLen": 29.7296,
-   "state": "Flat"
-  },
-  "17@100,14": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 29.7296,
-   "state": "Plump"
-  },
-  "17@100,23": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 29.7296,
-   "state": "Plump"
-  },
-  "17@106,8": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 25.1091,
-   "state": "Plump"
-  },
-  "17@115,8": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 25.1091,
-   "state": "Plump"
-  },
-  "21@172,149": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 20.812,
-   "state": "Plump"
-  },
-  "22@200,149": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 20.812,
-   "state": "Plump"
-  },
-  "29@160,174": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 35.9758,
-   "state": "Plump"
-  },
-  "29@188,174": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 27.711,
-   "state": "Plump"
-  },
-  "32@98,124": {
-   "blend": 1,
-   "couplings": 2,
-   "pathLen": 21.8581,
-   "state": "Plump"
-  },
-  "33@142,124": {
-   "blend": 0,
-   "couplings": 2,
-   "pathLen": 21.8581,
-   "state": "Flat"
-  }
- },
  "merge_actions": {
   "7": {
    "action": "C",
@@ -1308,7 +890,8 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   }
  },
  "notes": [
-  "swept 2 hostile/non-colonist pawn(s) off the review map"
+  "swept 2 hostile/non-colonist pawn(s) off the review map",
+  "2026-10-15 hoses removed IN PLACE from the 41-station walk (owner: \"Get rid of those hoses...\"): 25 reels, 10 sign books, 118 maze walls and their tank destroyed; labels and sign books re-pinned in the 31-station numbering; saved as RM_gss_walk_20261015b. The style reads above are the 41-station build's, keyed by its old numbers."
  ],
  "pawns_in_region": [
   "Human672",
@@ -1326,6 +909,111 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
     },
     {
      "PowerConduit_Scrapper": 2
+    }
+   ]
+  },
+  "10": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "runs": [
+    {
+     "PowerConduit_Scrapper": 12,
+     "PowerSwitch_Scrapper": 1,
+     "RM_AerialLampMast_Scrapper": 1,
+     "RM_AerialMast_Scrapper": 1
+    }
+   ]
+  },
+  "11": {
+   "reels": [
+    [
+     "Futuristic",
+     "RM_HoseReel_Futuristic",
+     "deployed"
+    ],
+    [
+     "Futuristic",
+     "RM_HoseReel_Futuristic",
+     "stored"
+    ],
+    [
+     "Modern",
+     "RM_HoseReel_Modern",
+     "deployed"
+    ],
+    [
+     "Modern",
+     "RM_HoseReel_Modern",
+     "stored"
+    ],
+    [
+     "Industrial",
+     "RM_HoseReel_Industrial",
+     "deployed"
+    ],
+    [
+     "Industrial",
+     "RM_HoseReel_Industrial",
+     "stored"
+    ],
+    [
+     "Scrapper",
+     "RM_HoseReel_Scrapper",
+     "deployed"
+    ],
+    [
+     "Scrapper",
+     "RM_HoseReel_Scrapper",
+     "stored"
+    ]
+   ],
+   "runs": []
+  },
+  "12": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     null,
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     null,
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "reels": [
+    [
+     "Scrapper",
+     null,
+     "deployed"
+    ]
+   ],
+   "runs": [
+    {
+     "null": 13
     }
    ]
   },
@@ -1351,6 +1039,26 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
     }
    ]
   },
+  "34": {
+   "runs": [
+    {
+     "PowerConduit_Futuristic": 7,
+     "WaterproofConduit_Futuristic": 6
+    },
+    {
+     "PowerConduit_Modern_Yellow": 7,
+     "WaterproofConduit_Modern_Yellow": 6
+    },
+    {
+     "PowerConduit_Industrial": 7,
+     "WaterproofConduit_Industrial": 6
+    },
+    {
+     "PowerConduit_Scrapper": 7,
+     "WaterproofConduit_Scrapper": 6
+    }
+   ]
+  },
   "4": {
    "runs": [
     {
@@ -1361,6 +1069,9 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Futuristic": 2
     }
    ]
+  },
+  "41": {
+   "runs": []
   },
   "5": {
    "mixPieces": 5,
@@ -1592,134 +1303,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Industrial": 5
     }
    ]
-  },
-  "10": {
-   "anchors": [
-    [
-     "RM_AerialMast",
-     "RM_AerialMast_Scrapper",
-     [
-      "Scrapper",
-      "AerialMast"
-     ]
-    ],
-    [
-     "RM_AerialLampMast",
-     "RM_AerialLampMast_Scrapper",
-     [
-      "Scrapper",
-      "AerialLampMast"
-     ]
-    ]
-   ],
-   "runs": [
-    {
-     "PowerConduit_Scrapper": 12,
-     "PowerSwitch_Scrapper": 1,
-     "RM_AerialLampMast_Scrapper": 1,
-     "RM_AerialMast_Scrapper": 1
-    }
-   ]
-  },
-  "11": {
-   "reels": [
-    [
-     "Futuristic",
-     "RM_HoseReel_Futuristic",
-     "deployed"
-    ],
-    [
-     "Futuristic",
-     "RM_HoseReel_Futuristic",
-     "stored"
-    ],
-    [
-     "Modern",
-     "RM_HoseReel_Modern",
-     "deployed"
-    ],
-    [
-     "Modern",
-     "RM_HoseReel_Modern",
-     "stored"
-    ],
-    [
-     "Industrial",
-     "RM_HoseReel_Industrial",
-     "deployed"
-    ],
-    [
-     "Industrial",
-     "RM_HoseReel_Industrial",
-     "stored"
-    ],
-    [
-     "Scrapper",
-     "RM_HoseReel_Scrapper",
-     "deployed"
-    ],
-    [
-     "Scrapper",
-     "RM_HoseReel_Scrapper",
-     "stored"
-    ]
-   ],
-   "runs": []
-  },
-  "12": {
-   "anchors": [
-    [
-     "RM_AerialMast",
-     null,
-     [
-      "Scrapper",
-      "AerialMast"
-     ]
-    ],
-    [
-     "RM_AerialLampMast",
-     null,
-     [
-      "Scrapper",
-      "AerialLampMast"
-     ]
-    ]
-   ],
-   "reels": [
-    [
-     "Scrapper",
-     null,
-     "deployed"
-    ]
-   ],
-   "runs": [
-    {
-     "null": 13
-    }
-   ]
-  },
-  "34": {
-   "runs": [
-    {
-     "PowerConduit_Futuristic": 7,
-     "WaterproofConduit_Futuristic": 6
-    },
-    {
-     "PowerConduit_Modern_Yellow": 7,
-     "WaterproofConduit_Modern_Yellow": 6
-    },
-    {
-     "PowerConduit_Industrial": 7,
-     "WaterproofConduit_Industrial": 6
-    },
-    {
-     "PowerConduit_Scrapper": 7,
-     "WaterproofConduit_Scrapper": 6
-    }
-   ]
-  },
-  "41": {
-   "runs": []
   }
  },
  "styled_refused": [],

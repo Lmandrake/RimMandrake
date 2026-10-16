@@ -163,12 +163,33 @@ def missing_parts(m, f, capd):
 #   tank    [(x, z, Mode, LiquidDef, units)]  contents by RM_NorthstarProofs.ProofTank, then the "Job:" button to Mode
 #   pump    [(x, z, "pour"|"draw")]    the pump's own Draw/Pour button
 #   ladder  [(x, z, "raise"|"lower")]  the ladder's own Ladder up/down button
-#   hose    [(rx, rz, x, z, end)]      HoseProbe "lay:" (instant staging verb) then "end:" nozzle|cap
+#   hose    [(rx, rz, x, z, end)]      HoseProbe "lay:" (instant staging verb) then "end:" nozzle|cap (end None = leave it)
 #   style   [(Def, x, z, StyleDef)]    jawa/set_thing_props style= on the thing at that cell (Choose style's write)
+#   hostile [(Def, x, z, rot, stuff)]  jawa/build_batch, faction hostile (another faction's tank for a hose to couple to)
+#   hose_order [(rx, rz, x, z)]        HoseProbe "order:rx,rz=deploy:x,z": the player's Deploy order, left for a colonist
+#   hose_trail [(rx, rz, [(x, z)..])]  HoseProbe "settrail:rx,rz=dropped;...": a carried end dropped part way
+#   hose_flow  [(rx, rz, state)]       late pass (late_hoses): Plump = the reel's debug flow on and fully filled; Filling =
+#                                      flow on half a transition before the map is frozen (caught mid-swell)
+#   hose_reelin [(rx, rz)]             late pass: laid, then reeled back in (the stored drum keeps the reel's look)
+#   build_after [(Def, x, z, rot, stuff)]  late pass, after every hose is down: built, then 60 ticks for the hose to answer
+# The hose stations hose_reels_laid .. hose_their_tank came from the Gimme Some Slack walk (owner 2026-10-15, touring it:
+# "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses
+# into FlowWorks! Get rid of those hoses..."): its hose cards, shrunk to this 16x14 footprint, so nothing reviewed is lost.
 # An EXTRA station (not a feature-sheet FEATURE) carries its section `s`, `after` (the station it sits beside) and
 # either `caps` or disk `probes`; extra_status() derives its status from them.
 # A station whose feature is NOT BUILT gets only a concrete placeholder pad + its label (build() adds it).
 W, T = "RM_Fluid_Water", "RM_Fluid_Tar"
+
+
+def _perimeter(x0, z0, x1, z1, gaps=()):
+    return [(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1) if (x in (x0, x1) or z in (z0, z1)) and (x, z) not in gaps]
+
+
+# the Gimme Some Slack walk's hose maze (its stations 21/22 until 2026-10-15): an outer 13x11 ring with two gaps on the east
+# side (south-east short way, north-east long way) round an inner chamber whose door faces west; the reel sits inside it
+MAZE = _perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + _perimeter(4, 3, 8, 7, gaps=[(4, 5)]) + \
+    [(x, 5) for x in range(9, 12)]
+HOSE_TRANSITION_TICKS = 30          # HoseSettings.transitionTicks default (GimmeSomeSlack/northstar_matrix/placer.py, same value)
 TANK = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
@@ -606,6 +627,107 @@ SETUPS = {
                         marks=[(1, 4, "scrapper"), (5, 4, "industrial"), (9, 4, "modern"), (13, 4, "futuristic")],
                         try_=["select one: Choose style"],
                         look="weak spot: the scrapper look has no art folder of its own; two looks that read the same"),
+    # ---- the hose gallery that left the Gimme Some Slack walk (owner 2026-10-15). Reels are 2x2, Position = SW cell.
+    "hose_reels_laid": dict(short="Reels per look: laid, reeled in", notice="per look (top to bottom: scrapper, industrial, "
+                            "modern, futuristic) a reel with its hose laid out and full, and beside it a reel whose hose was "
+                            "laid and then reeled back in",
+                            s="carry", after="hose_styles", caps=["K09"],
+                            build=[("RM_HoseReel", x, z, None, None) for z in (10, 7, 4, 1) for x in (0, 11)],
+                            style=[("RM_HoseReel", x, z, "RM_HoseReel_" + lk) for z, lk in zip((10, 7, 4, 1), LOOKS)
+                                   for x in (0, 11)],
+                            hose=[(x, z, fx, z, None) for z in (10, 7, 4, 1) for x, fx in ((0, 8), (11, 15))],
+                            hose_flow=[(0, z, "Plump") for z in (10, 7, 4, 1)], hose_reelin=[(11, z) for z in (10, 7, 4, 1)],
+                            try_=["select a reel: Deploy hose / Retract hose (dev mode: the instant DEV ones); lay a reeled-in "
+                                  "one again: the same look", "build a reel from the menu in a look; copy a reel: the copy "
+                                  "keeps its look"],
+                            look="weak spot: a reeled-in drum not full again, or back in another look; a laid hose strand, "
+                                 "wrap, coupling or end not in its reel's look (non-scrapper wraps have no cloth tint); the "
+                                 "design's coil overlay is NOT BUILT (the reel swaps two whole images)"),
+    "hose_states": dict(short="Hose states: flat, filling, plump", notice="three hoses side by side (top to bottom): flat "
+                        "(nothing flowing), filling (flow on, frozen half-way), plump (flow on, full)",
+                        s="carry", after="hose_reels_laid", caps=["K09"],
+                        build=[("RM_HoseReel", 0, z, None, None) for z in (10, 6, 2)],
+                        hose=[(0, z, 15, z, None) for z in (10, 6, 2)],
+                        hose_flow=[(0, 6, "Filling"), (0, 2, "Plump")],
+                        marks=[(3, 12, "flat"), (3, 8, "filling"), (3, 4, "plump")],
+                        try_=["UNPAUSE: the filling hose finishes plumping in about half a second",
+                              "dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank feeds these reels)"],
+                        look="weak spot: a joiner drawn along a straight hose; filling jumping straight to plump; plump no "
+                             "wider than flat; the free end not the hose's own width"),
+    "hose_grid": dict(short="Hoses crossing in a grid", notice="four hoses, two each way, crossing in a 2 x 2 grid: one "
+                      "is one line with two ends, hoses never branch (ruled by card), there is no crossing piece",
+                      s="carry", after="hose_states", caps=["K09"],
+                      build=[("RM_HoseReel", 0, 3, None, None), ("RM_HoseReel", 0, 10, None, None),
+                             ("RM_HoseReel", 5, 0, None, None), ("RM_HoseReel", 11, 0, None, None)],
+                      hose=[(0, 3, 15, 3, None), (0, 10, 15, 10, None), (5, 0, 5, 13, None), (11, 0, 11, 13, None)],
+                      hose_flow=[(0, 3, "Plump"), (0, 10, "Plump"), (5, 0, "Plump"), (11, 0, "Plump")],
+                      try_=["lay a fifth hose across the grid", "NOT designed: no crossing piece, no T or + fitting"],
+                      look="weak spot: a crossing that is not cleanly over/under in a fixed order (newest on top); where "
+                           "S-curve slack runs alongside another hose the two may overlap for a stretch"),
+    "hose_maze": dict(short="A hose out of a maze", notice="a hose laid from a reel deep in a small walled maze to a free "
+                      "end outside; two ways out: the short one (south-east gap) and a longer one (north-east gap)",
+                      s="carry", after="hose_grid", caps=["K09"],
+                      build=[("Wall", x, z, None, "Steel") for x, z in MAZE] + [("RM_HoseReel", 6, 5, None, None)],
+                      hose=[(6, 5, 15, 2, None)], hose_flow=[(6, 5, "Plump")],
+                      try_=["reel it in and lay it again to the same free end: does it pick the same route?"],
+                      look="weak spot: not the SHORT route (out the inner chamber's west door, down, out the south-east "
+                           "gap); a bend clipping a wall corner in a one-cell corridor; the hose jumping a wall"),
+    "hose_maze_walled": dict(short="Maze, short way walled after", notice="the same maze; after the hose was laid, a wall "
+                             "was built across the short (south-east) gap and the hose given 60 ticks to answer",
+                             s="carry", after="hose_maze", caps=["K09"],
+                             build=[("Wall", x, z, None, "Steel") for x, z in MAZE] + [("RM_HoseReel", 6, 5, None, None)],
+                             hose=[(6, 5, 15, 2, None)], hose_flow=[(6, 5, "Plump")],
+                             build_after=[("Wall", 12, 1, None, "Steel"), ("Wall", 12, 2, None, "Steel")],
+                             marks=[(13, 0, "walled")],
+                             try_=["deconstruct the blocking wall (the two marked cells): does it go back to the short way?",
+                                   "add walls to lengthen the way round past the hose's 40 cells: it must reel in"],
+                             look="weak spot: the hose passing THROUGH the new wall; neither a clean re-route north-east "
+                                  "(about 25 of its 40 cells) nor a reel-in with a message and an alert saying how many "
+                                  "cells the way round needs"),
+    "hose_relay": dict(short="Relay reels: going farther", notice="three reels in a row: the first reel's hose is laid onto "
+                       "the second reel, whose hose is laid onto the third; flow into the first (shrunk to fit: on the "
+                       "walk they stood 28 apart, beyond one 40-cell hose)",
+                       s="carry", after="hose_maze_walled", caps=["K09"],
+                       build=[("RM_HoseReel", 0, 6, None, None), ("RM_HoseReel", 7, 6, None, None),
+                              ("RM_HoseReel", 14, 6, None, None)],
+                       hose=[(0, 6, 6, 6, None), (7, 6, 13, 6, None)], hose_flow=[(0, 6, "Plump")],
+                       try_=["reel in the first hose: the second drains (nothing feeds it)",
+                             "lay the third reel's hose back onto the first: refused, a chain may not loop back",
+                             "select the middle reel: 'Relay: fed by the hose from the reel at ...'"],
+                       look="weak spot: a hose that does not end in a brass coupling on the NEXT reel (two loose hoses, "
+                            "not a chain); the second hose not plump though fed; a loop back accepted"),
+    "hose_deploy_by_hand": dict(short="Deploy by hand, then wind in", notice="a reel with a Deploy order 15 cells out and "
+                                "one idle colonist beside it: UNPAUSE and he walks the hose out; then press Retract",
+                                s="carry", after="hose_relay", caps=["K09"],
+                                build=[("RM_HoseReel", 0, 6, None, None)], hose_order=[(0, 6, 15, 7)],
+                                pawns=[("Colonist", 3, 9, "player", None)],
+                                try_=["UNPAUSE: he picks up the end and walks it out; then press Retract on the reel",
+                                      "draft him mid-walk: the end drops where he stands"],
+                                look="weak spot: the hose longer than his walk (jumping to the target); Retract making the "
+                                     "hose vanish at once instead of winding back along its route; not ending Stored"),
+    "hose_dropped": dict(short="A carry dropped halfway", notice="a reel whose hose end was dropped 11 cells out (an "
+                         "interrupted carry): the hose is drawn only as far as it was walked",
+                         s="carry", after="hose_deploy_by_hand", caps=["K09"],
+                         build=[("RM_HoseReel", 0, 6, None, None)], hose_trail=[(0, 6, [(x, 6) for x in range(0, 12)])],
+                         try_=["select the reel: Move hose end to a cell beside it, then unpause: an idle colonist walks "
+                               "it there"],
+                         look="weak spot: anyone shown carrying it before a colonist picks it up; the open end not lying "
+                              "at the hose's end; Move hose end / Retract not offered"),
+    "hose_into_pond": dict(short="A hose laid into a pond", notice="a reel beside a pond, its hose end laid into the water",
+                           s="carry", after="hose_dropped", caps=["K09"], terrain=[("WaterShallow", 9, 0, 7, 14)],
+                           build=[("RM_HoseReel", 0, 6, None, None)], hose=[(0, 6, 13, 6, None)],
+                           hose_flow=[(0, 6, "Plump")],
+                           try_=["select the reel: inspect"],
+                           look="weak spot: the end on the bank, not IN the water; the end drawing water by itself (owner "
+                                "ruling 2026-10-11 #3: it draws nothing; filling a tank takes a pump; the reel reads 'Not "
+                                "connected')"),
+    "hose_their_tank": dict(short="A hose on THEIR tank", notice="a hose coupled to another faction's liquid tank",
+                            s="carry", after="hose_into_pond", caps=["K09"],
+                            build=[("RM_HoseReel", 0, 6, None, None)], hostile=[("RM_LiquidTank", 13, 6, None, None)],
+                            hose=[(0, 6, 12, 6, None)],
+                            try_=["select the reel and the tank"],
+                            look="weak spot: the brass coupling not on THEIR tank; their faction is only a state read "
+                                 "(HoseProbe census): nobody's inspect names it"),
     "pipe_styles": dict(short="Four pipe looks", notice="four rigid pipe runs, one per look", s="carry", after="hose_styles",
                         probes=["xml:defName>RM_UniversalPipe_Futuristic<", "tex:Pipe/Scrapper"],
                         build=[("RM_UniversalPipe", x, z, None, None) for z in (2, 5, 8, 11) for x in range(2, 14)]
@@ -923,8 +1045,12 @@ def layout_check(S, doc=None):
             for r in u.get(k, []):
                 rr = r[1:5] if isinstance(r[0], str) else r[:4]
                 cells += [(rr[0], rr[1]), (rr[0] + rr[2] - 1, rr[1] + rr[3] - 1)]
-        for k in ("build", "spawn", "stuffed", "style"):
+        for k in ("build", "spawn", "stuffed", "style", "hostile", "build_after"):
             cells += [(r[1], r[2]) for r in u.get(k, [])]
+        for k in ("hose_flow", "hose_reelin"):
+            cells += [(r[0], r[1]) for r in u.get(k, [])]
+        cells += [c for r in u.get("hose_order", []) for c in ((r[0], r[1]), (r[2], r[3]))]
+        cells += [c for r in u.get("hose_trail", []) for c in [(r[0], r[1])] + list(r[2])]
         for k in ("tank", "pump", "ladder"):
             cells += [(r[0], r[1]) for r in u.get(k, [])]
         cells += [c for r in u.get("hose", []) for c in ((r[0], r[1]), (r[2], r[3]))]
@@ -1247,6 +1373,13 @@ class Review(object):
                 r = self.call("jawa/build_batch", **kw)
                 if r.get("survived") == 0:
                     self.notes.append("station %d: %s not built %s" % (s["n"], d, (r.get("failed") or [])[:1]))
+            for d, x, z, rot, stuff in u.get("hostile", []):
+                kw = dict(ops="%s:%d,%d" % ((d,) + g(x, z)) + ("" if rot is None else ",%d" % rot), faction="hostile",
+                          wipeExisting=False)
+                if stuff:
+                    kw["stuff"] = stuff
+                if self.call("jawa/build_batch", **kw).get("survived") == 0:
+                    self.notes.append("station %d: their %s not built" % (s["n"], d))
             for d, x, z, stuff in u.get("spawn", []):
                 # walk 2026-10-15: spawn_batch takes no faction, so a spawned ladder/cover/sluice was unowned ("Claim"
                 # button, no Ladder button: st.36 could not be raised). Build it as the player's first, as a player has it;
@@ -1278,6 +1411,7 @@ class Review(object):
                     kw["stuff"] = stuff
                 self.call("jawa/spawn_batch", **kw)
             self.stage(s, u, g)
+        self.late_hoses(S)
         self.say("gallery: %d stations placed" % len(S))
 
     def static(self, n, typ, method, args):
@@ -1300,6 +1434,56 @@ class Review(object):
             time.sleep(0.25)
         self.notes.append("hose probe %s: timed out (no frame serviced it)" % cmd)
         return ""
+
+    def hose_cmd(self, n, cmd):
+        res = self.hose_probe(cmd)
+        try:
+            ok = json.loads(res).get("success") is not False
+        except (ValueError, AttributeError):
+            ok = False
+        if not ok:
+            self.notes.append("station %d hose %s: %s" % (n, cmd, res[:120]))
+        return ok
+
+    def late_hoses(self, S):
+        """After every station is placed (the hose stations from the GSS walk, 2026-10-15): flow the Plump hoses, the
+        Filling ones half a transition later (frozen mid-swell), reel in the reelin ones, then build the build_after walls
+        and give the hoses 60 ticks to answer. The ticks run the whole map, so this is one pass, not one per station."""
+        todo = [s for s in S if not (s["placeholder"] or s.get("absent"))
+                and any(s["setup"].get(k) for k in ("hose_flow", "hose_reelin", "build_after"))]
+        if not todo:
+            return
+        B = self.B
+
+        def g(s, x, z):
+            return (s["origin"][0] + x, s["origin"][1] + z)
+        B.ticks(2)
+        for s in todo:
+            for rx, rz, state in s["setup"].get("hose_flow", []):
+                if state == "Plump":
+                    self.hose_cmd(s["n"], "flow:%d,%d=on" % g(s, rx, rz))
+        B.ticks(HOSE_TRANSITION_TICKS - HOSE_TRANSITION_TICKS // 2 + 5)
+        for s in todo:
+            for rx, rz, state in s["setup"].get("hose_flow", []):
+                if state == "Filling":
+                    self.hose_cmd(s["n"], "flow:%d,%d=on" % g(s, rx, rz))
+        B.ticks(HOSE_TRANSITION_TICKS // 2)
+        for s in todo:
+            for rx, rz in s["setup"].get("hose_reelin", []):
+                self.hose_cmd(s["n"], "reelin:%d,%d" % g(s, rx, rz))
+        B.ticks(2)
+        walls = 0
+        for s in todo:
+            for d, x, z, rot, stuff in s["setup"].get("build_after", []):
+                kw = dict(ops="%s:%d,%d" % ((d,) + g(s, x, z)) + ("" if rot is None else ",%d" % rot), faction="player",
+                          wipeExisting=False)
+                if stuff:
+                    kw["stuff"] = stuff
+                if self.call("jawa/build_batch", **kw).get("survived") == 0:
+                    self.notes.append("station %d: build_after %s not built" % (s["n"], d))
+                walls += 1
+        if walls:
+            B.ticks(60)
 
     def gizmo_cycle(self, n, cell, prefix, want, max_clicks=4):
         """Press the thing's own button until its label reads `want` (liquid_checks.gizmo_cycle's route: select by
@@ -1350,6 +1534,10 @@ class Review(object):
                     ok = False
                 if not ok:
                     self.notes.append("station %d hose %s: %s" % (n, cmd, res[:120]))
+        for rx, rz, x, z in u.get("hose_order", []):
+            self.hose_cmd(n, "order:%d,%d=deploy:%d,%d" % (g(rx, rz) + g(x, z)))
+        for rx, rz, cells in u.get("hose_trail", []):
+            self.hose_cmd(n, "settrail:%d,%d=dropped;%s" % (g(rx, rz) + (";".join("%d,%d" % g(*c) for c in cells),)))
         for d, x, z, style in u.get("style", []):
             th = self.B.call("jawa/list_things", defName=d, rect="%d,%d,1,1" % g(x, z), limit=3).get("things") or []
             if not th:

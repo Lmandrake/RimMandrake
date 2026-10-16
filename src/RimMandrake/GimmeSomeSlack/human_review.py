@@ -1,8 +1,8 @@
 """human_review.py -- the Northstar "for the human" review map for Gimme Some Slack (owner, 2026-10-04).
 
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --build [--fresh-map] [--style StarWarsJawa] | tr -d '\\r'
-    python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --goto 7 | tr -d '\\r'     # frame station 7 (S0 = style gallery 1-12,
-                                    # 0 = whole south region, N0 = north gallery 18-33 + 38-41, M = art-slot board, F = free area)
+    python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --goto 7 | tr -d '\\r'     # frame station 7 (S0 = style gallery 1-11,
+                                    # 0 = whole south region, N0 = north gallery 15-23 + 28-31, M = art-slot board, F = free area)
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --style Cybertek | tr -d '\\r'   # set the DEFAULT look only
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --labels | tr -d '\\r'     # re-pin the labels (after a load/restart)
     python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --clear | tr -d '\\r'      # wipe the review region and its labels
@@ -12,15 +12,15 @@ Owner, 2026-10-04 (typed): *"a 'for the human' review configuration that is prep
 presented tilemap to assess what things look like, act like, etc. It should be set up for me to easily interact with,
 explore, and see the various key combinations"*. Layout chosen by card: GALLERY PLUS FREE AREA.
 
-What it builds (one quicktest map on a tier carrying both mods -- flowworks or ratchet_pilot; the hose stations need FlowWorks):
+What it builds (one quicktest map on any tier carrying Gimme Some Slack; no hose: see HOSES MOVED below):
   * calm world: weather Clear locked, clock pinned to noon, incident queue cleared, difficulty Peaceful, every
     non-colonist destroyed, research finished (masts need Electricity), god mode ON, game PAUSED, screenshot mode
     OFF (he needs the UI), the review region unfogged + unroofed + Soil.
-  * a GALLERY of numbered stations in three labelled rows (cords / overhead lines / hoses), each a self-contained
+  * a GALLERY of numbered stations in labelled rows (cords / overhead lines / showpieces / challenges), each a self-contained
     little grid with its own battery, labelled in world by jawa/review_label (the dev-only JawaBench labeller).
   * round 2 (owner notes 2026-10-04): a NORTH GALLERY (REGION2, above the colonists, out to the NE map corner) with
-    the round-2 stations (now 18-28) appended after the south rows: power showpieces (row E), hose mazes (row F,
-    judged by validation_hose.py through the hose hooks) and challenge configurations (row G). Some stations carry their
+    the round-2 stations (now 15-23) appended after the south rows: power showpieces (row E) and challenge configurations
+    (row G). Some stations carry their
     own terrain (river), roof (mountain, roofed room), fog (mountain: re-hidden after the region is unfogged) and
     blueprints (half-built work for the save-load check).
   * a FREE AREA (north band, west): open soil, a charged power pad (2 solar + 3 batteries + a conduit stub to plug into),
@@ -33,26 +33,29 @@ design/RimMandrake/messyconduit_style_per_build_design.md). The look is chosen o
 piece (the engine's own style field), so the four looks now stand side by side. Stations 1-12 are the STYLE GALLERY (the
 south-east of the south region) and are built through the real style machinery: conduit and switches by the AerialProbe
 `cplace` verb (the Architect designator with the menu key picked exactly as the menu does), masts and brackets by
-`place:<def>:<Look>` (reels by FlowWorks' HoseProbe `place:`, the same shape), merges/splits by `cplace` / `cdeconstruct`. They never use the global setting. `--style X` now only
-sets the DEFAULT look: what unstyled pieces draw (station 12, the older-save set, and every station 13-40 except 34, which are
-still built by jawa/build_batch with no style stored) and what a fresh build button starts on. Hose reels are the exception:
-an unstyled reel draws FlowWorks' own default (RM_HoseSettings.defaultLook, reset to Scrapper by `hp defaults`), never `--style`. The free area moved to the
+`place:<def>:<Look>`, merges/splits by `cplace` / `cdeconstruct`. They never use the global setting. `--style X` now only
+sets the DEFAULT look: what unstyled pieces draw (station 11, the older-save set, and every station 12-30 except 24, which are
+still built by jawa/build_batch with no style stored) and what a fresh build button starts on. The free area moved to the
 north band; the art-slot board (M) lists every per-look piece that still falls back, computed from the files on disk.
 
 DENSIFIED 2026-10-05 (owner: "reduce the number of north Star verifications and verification stations for the human
 review sheet as well. If so, remove them."; design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md
-section 4): 47 stations -> 33. Fifteen were cut or merged (CUTS below holds each one's reason and what still shows it),
-one HOSE STATES station replaces the four single-state hose stations, and the rest were renumbered contiguously. Every
-station carries `prev` = its number on the 47-station map; the key sheet opens with the full prev -> new table.
+section 4): 47 stations -> 33. Fifteen were cut or merged (CUTS below holds each one's reason and what still shows it)
+and the rest were renumbered contiguously. Every station carries `prev` = its number on the 47-station map; the key
+sheet closes with the full prev -> new table.
 
 ROUND 8, 2026-10-15 (owner: "a nice, orderly station-by-station demonstration of the mechanics to test, the art to examine,
 etc. That showed more hidden bugs than anything."): the feature inventory in review/COVERAGE.md maps every def, setting,
-gizmo, state and art slot to a station or a stated reason. Eight stations were added (34-41: rows H and I), every card now
+gizmo, state and art slot to a station or a stated reason. Eight stations were added (now 24-31: rows H and I), every card now
 leads with a POKE line and a LOOK FOR / suspected weak spot line (CARD), global Mod Settings get one switch each
 (`--set gss.FIELD=V` / `--set aerial.FIELD=V`; SETTINGS), and the free area gained another faction's grid (for a clamp) and
-a wall stub (for brackets). The hose stations (11, 16, 17, 21, 22, 29-33 and 12's reel) show FlowWorks' hose, which moved
-there 2026-10-11; they stay here as cross-mod stations because the FlowWorks map shows the hose only as one station.
-Build tier: ratchet_pilot (carries GSS and FlowWorks).
+a wall stub (for brackets).
+
+HOSES MOVED, 2026-10-15 (owner, touring the walk save: "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore!
+It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses..."): the ten hose stations (old
+11 HOSE REELS, 16 HOSE STATES, 17 HOSE GRID, 21-22 the mazes, 29 relay, 30-33 the carried hose) and old 12's reel are
+gone; 41 stations -> 31, renumbered contiguously (old 12 -> 11, 13-15 -> 12-14, 18-20 -> 15-17, 23-28 -> 18-23, 34-41 ->
+24-31). Their review content now lives in the FlowWorks walkthrough (FlowWorks/review_map.py SETUPS, section carry).
 
 Idempotent: --build always clears the region first. Every station has a SIGN BOOK in the save itself (a vanilla Novel
 whose title is the DO line and whose info card is the whole sign: sign_ops, modcheck/reviewmap.py), readable on a plain
@@ -101,15 +104,11 @@ ROWS = (("S", "Row S - one look per station (style gallery, south-east)",
         ("T", "Row T - runs: merge, tie, split, restyle (style gallery, south-east)",
          "A run = connected conduit cells + switches + the poles wired into them. One run, one look. "
          "Each 'before' row is for YOU to poke; each 'after' row was done by the build so you see the result."),
-        ("U", "Row U - hose reels per look, and an older save (style gallery)", ""),
+        ("U", "Row U - an older save (style gallery)", ""),
         ("A", "Row A - floor cords (default look)", ""),
         ("B", "Row B - overhead lines (default look)", ""),
-        ("C", "Row C - flexible hoses: states, lanes and crossings",
-         "Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece."),
         ("E", "Row E - power showpieces (north gallery)",
          "Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, a span over a hidden stone block."),
-        ("F", "Row F - hose mazes (north gallery)",
-         "Two routes out of a small maze, then the short one walled off after laying. validation_hose.py owns the pass/fail; this map shows it."),
         ("G", "Row G - challenge configurations (north gallery)",
          "Built to make visible bugs show: map edge, water, roof edge, longest/odd spans, a full pole, neighbouring nets, half-built work and save-load."),
         ("H", "Row H - pieces the gallery never showed (south band, added 2026-10-15)",
@@ -121,10 +120,11 @@ GOLD, CREAM, TEAL, RUST = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b"
 
 # ------------------------------------------------------------------------------------------------ the gallery
 # Local coords (dx, dz) from the station origin, north up. Battery is 1x2 (rot 0: cells z, z+1); WoodFiredGenerator 2x2.
-# 2026-10-05: the five default-look south stations left after the cuts stand in ONE column west of the style gallery,
-# top to bottom 13..17, each 8 cells (2R-2, the layout_check minimum) below the one above.
+# 2026-10-05: the default-look south stations left after the cuts stand in ONE column west of the style gallery, top to
+# bottom 12..14, each at least 8 cells (2R-2, the layout_check minimum) below the one above. (The two hose stations below
+# them left for FlowWorks 2026-10-15.)
 COL_X = 100
-COL_Z = {13: 92, 14: 73, 15: 54, 16: 38, 17: 8}   # origin z per station: 13 wall+rock, 14 cut span, 15 tap, 16 hose states, 17 grid
+COL_Z = {12: 92, 13: 73, 14: 54}   # origin z per station: 12 wall+rock, 13 cut span, 14 tap
 
 # ------------------------------------------------------------------------------------------------ the cuts (2026-10-05)
 # design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4 (table lines 165-180), owner
@@ -151,6 +151,14 @@ CUTS = {
     47: ("merged", [43], "doc l.180 'wind it in': the deploy card now says 'after he lays it, press Retract'; same "
                          "reel and pawn, the reverse action"),
 }
+# 2026-10-15 (owner: "Get rid of those hoses..."): every hose station left this map for the FlowWorks walkthrough
+# (FlowWorks/review_map.py SETUPS, section carry). Keyed by 47-map number (the 47-map's 11 HOSE REELS kept its number; 30
+# HOSE GRID; 34-35 mazes; 42 relay; 43-46 carried hose); value = the FlowWorks station id now showing it. A CUTS entry
+# whose stations all moved renders as moved too (renumber_table).
+FW_MAP = "FlowWorks review map (FlowWorks/review_map.py)"
+HOSE_MOVED = {11: "hose_reels_laid", 30: "hose_grid", 34: "hose_maze", 35: "hose_maze_walled", 42: "hose_relay",
+              43: "hose_deploy_by_hand", 44: "hose_dropped", 45: "hose_into_pond", 46: "hose_their_tank",
+              "HOSE STATES": "hose_states"}
 
 
 def line(x0, x1, z):
@@ -161,8 +169,7 @@ def line(x0, x1, z):
 # A station's `styled` list holds the pieces placed through the REAL style machinery, in placement order (order matters:
 # "older run" = lowest thing id = placed first):
 #   ("C", def, key, cell)        conduit / switch by AerialProbe cplace (key = a conduit or switch MENU key)
-#   masts entries with a 4th element (def, cell, rot, Look) are placed by `place:<def>:<Look>`; hose dicts with "look"
-#   place their reel the same way, and "reelin": True lays the hose, then reels it back in.
+#   masts entries with a 4th element (def, cell, rot, Look) are placed by `place:<def>:<Look>`.
 # `actions` run after every station is placed: ("C", def, key, cell) or ("D", cell) = cdeconstruct (the 'after' rows).
 # `expect` is what the actions must produce, derived by plan_runs() below and re-checked by the selftest.
 CONDUIT_KEYS = ("Scrapper", "Industrial", "Modern_Mix", "Modern_Multi", "Modern_Orange", "Modern_Green", "Modern_Brown",
@@ -236,7 +243,7 @@ def ground_station(mk, n, x, look):
 
 
 def stations_style(mk):
-    """Stations 1-12 (owner 2026-10-04, design messyconduit_style_per_build_design.md sections 2.3 / 3, owner decisions).
+    """Stations 1-11 (owner 2026-10-04, design messyconduit_style_per_build_design.md sections 2.3 / 3, owner decisions).
     South-east of the south region: block S1 (x 140-236, z 6-52) and block S2 (x 162-236, z 79-111), where the free area
     was. Every piece is placed by the style verbs, never by the global setting."""
     for i, look in enumerate(LOOKS):                                  # 1-4: ground cords, one station per look
@@ -331,43 +338,27 @@ def stations_style(mk):
        devs=[("Battery", (0, 2), 1, 1.0), ("StandingLamp", (15, 2), None, None)], styled=rs,
        masts=[("RM_AerialMast", (14, 3), None, "Scrapper"), ("RM_AerialLampMast", (24, 3), None, "Scrapper")], links=[(0, 1)],
        marks=[(8, 0, "select any piece > Restyle this run", "")], style_station=True, lamp_looks={(15, 2): "Scrapper"})
-    reels = []
-    for i, look in enumerate(reversed(LOOKS)):
-        z = 1 + 5 * i
-        reels += [dict(reel=(0, z), far=(14, z), state="Plump", look=look),
-                  dict(reel=(18, z), far=(22, z), state="Flat", look=look, reelin=True)]
-    mk(11, "U", 206, 8, 24, 21, "HOSE REELS: FOUR LOOKS", "per look (top to bottom: Scrapper, Industrial, Modern, Futuristic) a "
-       "reel with its hose laid out and full, and beside it a reel whose hose was laid and then reeled back in",
-       ["laid: the reel draws its EMPTY drum (hose out) and the hose leaves the drum's mouth in the reel's own look",
-        "hose strand, wraps, couplings, nozzle or end cap: all in the reel's look (non-Scrapper wraps have no cloth tint)",
-        "reeled in: the drum is full again and the style is kept",
-        "NOT BUILT: the design's coil overlay; the reel swaps between two whole images instead (art board M)"],
-       ["select a reel: Deploy hose / Retract hose (dev mode: the instant DEV ones); lay the reeled-in one again: same look",
-        "build a new reel from the menu: four looks on the button; copy a reel: the copy keeps its look"],
-       hoses=reels, style_station=True)
-    mk(12, "U", 208, 93, 26, 8, "OLDER SAVE: NO STORED LOOK", "conduit, a switch, a lamp, a power mast with a span to a lamp mast "
-       "and a laid hose reel, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look",
-       ["everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change; the hose "
-        "reel is the exception: it draws FlowWorks' own default ('Look of reels built without a picked look', Scrapper here)",
-        "every station from 13 on is built the same way (except 34 and 41, which store a look), so it follows the default too"],
-       ["`human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-40 change (not 34, not the hose reels: their "
-        "default is FlowWorks' setting); stations 1-11 do NOT",
+    mk(11, "U", 208, 93, 26, 8, "OLDER SAVE: NO STORED LOOK", "conduit, a switch, a lamp and a power mast with a span to a lamp "
+       "mast, all built OUTSIDE the menu (as in a save from before this change): nothing stores a look",
+       ["everything draws the DEFAULT look (Mod Settings 'Default style', `--style`): the same as before the change",
+        "every station from 12 on is built the same way (except 24 and 31, which store a look), so it follows the default too"],
+       ["`human_review.py --style Cybertek` (or Mod Settings): this set and stations 12-30 change (not 24); stations 1-10 do NOT",
         "build one conduit onto it from the menu: the run's look is written for real now (the save migration)"],
        conduit=line(2, 6, 2) + line(8, 12, 2),
        devs=[("Battery", (0, 2), 1, 1.0), ("PowerSwitch", (7, 2), None, None), ("StandingLamp", (13, 2), None, None)],
-       masts=[("RM_AerialMast", (12, 3)), ("RM_AerialLampMast", (24, 3))], links=[(0, 1)],
-       hoses=[dict(reel=(0, 5), far=(16, 6), state="Flat")], legacy_set=True, style_station=True)
+       masts=[("RM_AerialMast", (12, 3)), ("RM_AerialLampMast", (24, 3))], links=[(0, 1)], legacy_set=True, style_station=True,
+       prev=12)
 
 
 def station_list():
-    """The 41 stations in number order. `prev` = the station's number on the 47-station map (2026-10-04); stations
-    added since (16 HOSE STATES, 2026-10-05; 34-41, round 8) carry prev = their own number. The cut ones (CUTS) are
-    gone from the code; git holds their old cards."""
+    """The 31 stations in number order. `prev` = the station's number on the 47-station map (2026-10-04); stations
+    added since (round 8, now 24-31) carry prev None. The cut ones (CUTS) and the hose stations (HOSE_MOVED, to the
+    FlowWorks map 2026-10-15) are gone from the code; git holds their old cards."""
     S = []
 
     def mk(n, row, x, z, w, h, title, what, notice, interact, **k):
         d = dict(n=n, row=row, origin=(x, z), size=(w, h), title=title, what=what, notice=notice, interact=interact,
-                 conduit=[], walls=[], rock=[], devs=[], hostile=[], masts=[], links=[], cuts=[], hose=None, hoses=[],
+                 conduit=[], walls=[], rock=[], devs=[], hostile=[], masts=[], links=[], cuts=[],
                  styled=[], actions=[], marks=[], notes=[], hconduit=[], fuel=[], owner_hostile=[], prev=n)
         d.update(k)
         S.append(d)
@@ -377,7 +368,7 @@ def station_list():
 
     # ---- row A: floor cords. CUT 2026-10-05 (doc section 4, l.165-169): 47-map 13 powered line, 14 unpowered line,
     # 15 cut line, 16 tangled pile, 17 devices + plugs; stations 1-4 show each (CUTS has the per-station reason).
-    mk(13, "A", COL_X, COL_Z[13], 14, 9, "WALL + ROCK ENTRIES", "a run passing under a steel wall and through a granite block; a branch ending inside the wall",
+    mk(12, "A", COL_X, COL_Z[12], 14, 9, "WALL + ROCK ENTRIES", "a run passing under a steel wall and through a granite block; a branch ending inside the wall",
        ["where the cord meets the wall it goes into a plate mounted ON the wall (round 4): a thin edge-on strip inside a west or "
         "east face, the whole plate on a south face's lit band, a sliver on a hidden north face; nothing pokes out onto the floor",
         "the cord meets the plate straight (no hooked curl of cord printed on the plate)",
@@ -391,7 +382,7 @@ def station_list():
 
     # ---- row B: overhead lines (masts are 4 cells tall; span range 20). CUT 2026-10-05 (doc section 4, l.171): 47-map
     # 19 mast chain, 20 lamp masts, 21 wall bracket; station 6 has all of them in four looks, station 10 a span.
-    mk(14, "B", COL_X, COL_Z[14], 30, 11, "CUT + FALLEN SPAN", "battery -> power mast -> mast -> mast -> lamp, two 12-cell "
+    mk(13, "B", COL_X, COL_Z[13], 30, 11, "CUT + FALLEN SPAN", "battery -> power mast -> mast -> mast -> lamp, two 12-cell "
        "overhead spans, the SECOND span cut (as if blown by an explosion)",
        ["each cut half is ONE wire in the span's own cable: from the mast's insulator down to the break, where both halves meet on the ground",
         "the live downed end sparks; the far lamp is dark",
@@ -402,7 +393,7 @@ def station_list():
        devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (27, 6), None, None)],
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialMast", (14, 4)), ("RM_AerialMast", (26, 4))], links=[(0, 1), (1, 2)], cuts=[(1, 2)],
        prev=22)
-    mk(15, "B", COL_X, COL_Z[15], 14, 11, "POWER TAP", "a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained one-way into our lamp (right)",
+    mk(14, "B", COL_X, COL_Z[14], 14, 11, "POWER TAP", "a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained one-way into our lamp (right)",
        ["the crocodile clamp sits on their conduit; one of our cords is taped to it",
         "the two grids never merge (their net and ours stay separate)", "our lamp is lit with no power source of our own"],
        ["unpause and watch their battery drain", "Mod Settings > Gimme Some Slack > taps off: our lamp goes dark",
@@ -411,42 +402,15 @@ def station_list():
        hostile=[("Battery", (2, 4), 0, 1.0), ("PowerConduit", (3, 4)), ("PowerConduit", (4, 4))],
        conduit=[(7, 4), (8, 4)], devs=[("RM_PowerTapClamp", (5, 4), None, None), ("StandingLamp", (10, 5), None, None)], prev=23)
 
-    # ---- row C: flexible hoses (a reel; the hose is laid as data from the reel to a free end). Hoses do NOT branch (ruled
-    # by card): one hose = one line with two ends, a "grid" is hoses crossing or lying side by side. What it does TODAY.
-    hose_i = ["select the reel: Deploy hose / Move hose end / Retract hose (a colonist carries it) and the 'Free end' gizmo "
-              "(nozzle / end cap / open); dev mode adds 'DEV: lay hose instantly' / 'DEV: reel in instantly'",
-              "dev mode: the reel's 'DEV: flow through hose' gizmo fakes flow (no tank, pump or pipe feeds these reels, so nothing "
-              "moves real liquid through them)"]
-    cross_i = hose_i + ["NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)"]
-    # MERGED 2026-10-05 (doc section 4, l.173): 47-map 24 flat, 25 filling, 26 plump and 29 parallel runs are ONE station.
-    # The per-hose `state` is the same machinery they used (build(): Plump flows first, Filling flows half a transition later).
-    # CUT 2026-10-05 (doc l.174-175): 27 long + bend (21/22 maze bends, 29 relay length, 32 pond) and 28 crossing (17 grid).
-    mk(16, "C", COL_X, COL_Z[16], 22, 8, "HOSE STATES", "three hoses laid side by side, two cells apart (top to bottom): FLAT "
-       "(nothing flowing), FILLING (flow on, frozen half-way through filling), PLUMP (flow on, fully filled)",
-       ["flat: the hose lies flat and thin; a straight hose has NO joiner along it; the free end is a plain open end the hose's own width",
-        "filling: half-plump, the swell is mid-transition; UNPAUSE and it finishes plumping in ~half a second",
-        "plump: a full round hose, visibly wider than the flat one; still no joiner on the straight",
-        "lanes: each hose keeps its own lane; where their S-curves meet, one draws over the other cleanly (the newer reel's on top)"],
-       cross_i, hoses=[dict(reel=(0, 5), far=(21, 5), state="Flat"), dict(reel=(0, 3), far=(21, 3), state="Filling"),
-                       dict(reel=(0, 1), far=(21, 1), state="Plump")], prev=None)
-    mk(17, "C", COL_X, COL_Z[17], 22, 22, "HOSE GRID", "four hoses, two each way, crossing in a 2 x 2 grid",
-       ["four crossings: every one is over/under, with a fixed order (newest on top)",
-        "FINDING to judge: where the S-curve slack of two hoses runs along each other they may overlap for a stretch"],
-       cross_i, hoses=[dict(reel=(0, 6), far=(21, 6), state="Plump"), dict(reel=(0, 15), far=(21, 15), state="Plump"),
-                       dict(reel=(6, 0), far=(6, 21), state="Plump"), dict(reel=(15, 0), far=(15, 21), state="Plump")], prev=30)
-    stations_round2(mk, hose_i)
-    stations_round6(mk, hose_i)
-    stations_round7(mk)
+    stations_round2(mk)
     stations_round8(mk)
-    for d in S:
-        if d["hose"] and not d["hoses"]:
-            d["hoses"] = [d["hose"]]
     return S
 
 
 def renumber_table(S):
     """[(prev, new, text)] for every 47-map number 1..47: kept -> its new number and title; cut -> None and the CUTS line
-    rendered in NEW numbers ('removed -> covered by 1-4' / 'merged into 16')."""
+    rendered in NEW numbers ('removed -> covered by 1-4' / 'merged into 6'); a hose station (HOSE_MOVED) or a cut whose
+    every target moved -> 'moved to the FlowWorks review map'."""
     by_prev = {s["prev"]: s for s in S if s.get("prev")}
     by_title = {s["title"]: s for s in S}
 
@@ -459,6 +423,9 @@ def renumber_table(S):
         if p in by_prev:
             s = by_prev[p]
             rows.append((p, s["n"], s["title"]))
+        elif p in HOSE_MOVED or (p in CUTS and CUTS[p][1] and all(t in HOSE_MOVED for t in CUTS[p][1])):
+            ids = [HOSE_MOVED[p]] if p in HOSE_MOVED else [HOSE_MOVED[t] for t in CUTS[p][1]]
+            rows.append((p, None, "moved to the %s: %s (owner 2026-10-15: hoses left Gimme Some Slack)" % (FW_MAP, ", ".join(ids))))
         else:
             how, tg, why = CUTS.get(p, ("removed", [], "NOT IN CUTS"))
             ns = sorted(n for n in (new_of(t) for t in tg) if n)
@@ -477,69 +444,14 @@ def perimeter(x0, z0, x1, z1, gaps=()):
     return [p for p in c if p not in set(gaps)]
 
 
-def stations_round6(mk, hose_i):
-    """Round 6 (owner 2026-10-04: "how does the player go farther? Maybe they place another reel out there to connect to? If
-    so we should show that working."). Three reels 32 cells apart: A's hose is laid onto B's intake, B's onto C's -- 66 cells
-    end to end, beyond one 40-cell hose. Rules: FlowWorks/Source/Hose/HoseRelay.cs; live check: FlowWorks/validation_hose.py --relay."""
-    mk(29, "G", 160, 172, 70, 6, "RELAY REELS: GOING FARTHER", "three hose reels in a row, 28 cells apart: the first reel's "
-       "hose is laid onto the second reel, whose own hose is laid onto the third (58 cells end to end; one hose holds 40)",
-       ["each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses",
-        "flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed "
-        "through the relay (the dev flag stands in for real liquid: no tank or pipe feeds the first reel here)",
-        "select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'"],
-       hose_i + ["reel in the first hose: the second one drains (nothing feeds it)",
-                 "lay the third reel's hose back onto the first: refused, a chain may not loop back",
-                 "build a fourth reel within 40 cells of the third (north or south: east is the map edge) and lay the third "
-                 "reel onto it: the chain goes on"],
-       # walk 2026-10-15: 32 apart (a 31-cell lay) was refused "route too long" at the shipped 40: the lead-outs and turn
-       # into the next reel's coupling add more than 9 cells. 28 apart lays (presumed lead-out cost, not traced)
-       hoses=[dict(reel=(0, 2), far=(27, 2), state="Plump"), dict(reel=(28, 2), far=(55, 2), state="Relay")],
-       devs=[("RM_HoseReel", (56, 2), None, None)], region=2, prev=42)
-
-
-def stations_round7(mk):
-    """Carry stage S5 (design/RimMandrake/hose_carry_design_2026-10-04.md section 14): the colonist-carried hose, stations
-    30-33 after the relay (29; 30-33 were 43-46, and 47 WIND IT IN merged into 30 on 2026-10-05). Staged through the hose probe (order:/settrail:/lay:, which work with dev mode off: they are staging
-    tools, not player actions); the hooks below place the one free colonist the carrying stations need."""
-    carry_i = ["select the reel: the gizmos are the player orders (Deploy hose / Move hose end / Retract hose); the instant "
-               "'DEV:' ones appear only with dev mode on"]
-    # MERGED 2026-10-05 (doc section 4, l.180): 47-map 47 WIND IT IN is this card's second half: same reel and pawn, the
-    # reverse action. 47's own staging (a pre-laid 30-cell hose + a colonist) is gone; he retracts what he just laid.
-    mk(30, "G", 12, 120, 30, 12, "DEPLOY BY HAND, THEN WIND IT IN", "a hose reel with a Deploy order 24 cells out and one idle "
-       "colonist beside it (UNPAUSE: nothing else is ordered); after he lays it, press Retract",
-       ["the colonist walks to the reel, picks up the hose end and walks it out: the hose unrolls behind him along his walk",
-        "he sets the end down at the order's cell and the hose lies there, coupled",
-        "the hose is never longer than his walk: it does not jump out to the target",
-        "after he lays it, press Retract on the reel: he winds the hose back along its route to the reel",
-        "the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once",
-        "it ends Stored: no hose on the ground, the reel's drum full"],
-       carry_i + ["draft him mid-walk: the end drops where he stands (see station 31)"],
-       devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_by_hand_hook", deploy_order=((2, 4), (26, 5)), region=2, prev=43)
-    mk(31, "G", 56, 120, 22, 12, "DROPPED HALFWAY", "a reel whose hose end was dropped 14 cells out (an interrupted carry)",
-       ["the open end lies on the ground at the end of the hose; the hose is drawn only as far as it was walked",
-        "select the reel: 'Move hose end' and 'Retract hose' are offered; no colonist is carrying anything"],
-       carry_i + ["Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there"],
-       devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_dropped_hook", region=2, prev=44)
-    mk(32, "G", 96, 120, 30, 12, "INTO THE POND", "a reel 10 cells from a pond, its hose laid into the water",
-       ["the hose end lies in the water, not on the bank", "a hose end in water draws nothing by itself (owner ruling 2026-10-11 #3): "
-        "the reel's inspect reads 'Not connected' and 'Hose laid to ...'; the end's own reading 'lying in ... (no intake: filling "
-        "a tank takes a pump)' is a state read (HoseProbe census freeEnd.describe), not shown in the inspect pane"],
-       carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Plump")],
-       terrain=[("WaterShallow", (12, 0, 14, 12))], region=2, prev=45)
-    mk(33, "G", 140, 120, 26, 12, "ON THEIR TANK", "a hose coupled to another faction's liquid tank",
-       ["a brass coupling sits on THEIR tank where the hose ends", "their faction is a state read (HoseProbe census "
-        "freeEnd.portFaction / describe 'coupled to ... (<faction>)'); neither the reel's nor the tank's inspect names it"],
-       carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Flat")], hostile=[("RM_LiquidTank", (16, 4), None, None)], region=2,
-       prev=46)
-
-
 def stations_round8(mk):
     """Round 8 (owner 2026-10-15: "a nice, orderly station-by-station demonstration of the mechanics to test, the art to
     examine, etc."; review/COVERAGE.md lists every feature -> station). The feature inventory found pieces and states the 33
     stations never showed: waterproof conduit in the four looks, the three conduit kinds and the per-def toggle, a wall
     bracket on every wall face, the clamp's poses, Auto-link selected, the fallen-wire hazards (shock, spilled fuel, the
     alert) and the claimed-pole wire coil. Row H fills the south band between the ground cords (1-4) and the runs (7-10);
-    row I takes the north-gallery strip east of station 33."""
+    row I takes the north-gallery strip east of row G's
+    carried-hose stations (those left for FlowWorks 2026-10-15)."""
     # ---- row H: pieces the gallery never showed
     wp_styled, wp_devs, wp_lamps = [], [], {}
     for i, look in enumerate(reversed(LOOKS)):                        # Scrapper on the top row, as station 6
@@ -549,7 +461,7 @@ def stations_round8(mk):
         wp_styled += [("C", "WaterproofConduit" if 6 <= x < 12 else "PowerConduit", GROUND_KEY[look], (x, z)) for x in range(2, 15)]
         wp_devs += [("Battery", (0, z), 1, 1.0)]
         wp_lamps[(15, z)] = look
-    mk(34, "H", 142, 58, 18, 12, "WATERPROOF CONDUIT: FOUR LOOKS", "four runs of waterproof conduit, one per look (top to bottom: "
+    mk(24, "H", 142, 58, 18, 12, "WATERPROOF CONDUIT: FOUR LOOKS", "four runs of waterproof conduit, one per look (top to bottom: "
        "Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look "
        "(plain conduit on the soil legs: vanilla allows waterproof conduit only on water or marsh)",
        ["each run draws its look's cord on soil AND in the water: the waterproof cells are the same cord as the plain ones",
@@ -559,7 +471,7 @@ def stations_round8(mk):
         "Mod Settings > 'Which conduits become cords' > untick Waterproof conduit: these four runs go back to vanilla art"],
        devs=wp_devs + [("StandingLamp", c, None, None) for c in wp_lamps], styled=wp_styled, lamp_looks=wp_lamps,
        terrain=[("WaterShallow", (6, 0, 6, 12))], style_station=True, prev=None)
-    mk(35, "H", 170, 58, 16, 11, "CONDUIT KINDS", "three runs in the DEFAULT look, top to bottom: plain power conduit, waterproof "
+    mk(25, "H", 170, 58, 16, 11, "CONDUIT KINDS", "three runs in the DEFAULT look, top to bottom: plain power conduit, waterproof "
        "conduit (on soil), hidden conduit; each from a full battery to a lamp. The plain row has a 2-cell dead-end stub hanging down",
        ["plain and waterproof draw the same messy cord", "the 2-cell stub is drawn as a pointless loop of cord, not a stub "
         "(Mod Settings 'Needless conduit stubs become pointless loops')", "hidden conduit stays hidden: no cord at all, the lamp still lit",
@@ -568,7 +480,7 @@ def stations_round8(mk):
         "`human_review.py --set gss.enabled=False` (master switch): every row is vanilla conduit art at once"],
        conduit=line(2, 13, 9) + [(6, 8), (6, 7)], wconduit=line(2, 13, 5), hconduit=line(2, 13, 1),
        devs=[("Battery", (0, z), 1, 1.0) for z in (9, 5, 1)] + [("StandingLamp", (14, z), None, None) for z in (9, 5, 1)], prev=None)
-    mk(36, "H", 194, 58, 16, 14, "WALL BRACKETS: EVERY FACE", "a 3x3 steel wall block with a wall bracket on each face (north, "
+    mk(26, "H", 194, 58, 16, 14, "WALL BRACKETS: EVERY FACE", "a 3x3 steel wall block with a wall bracket on each face (north, "
        "east, south, west), all four strung from one power mast; a lamp beside each bracket",
        ["each bracket sits flat on its own face: the east and west ones mirror each other, the north one shows only a sliver "
         "(the wall hides most of it), the south one shows whole",
@@ -581,7 +493,7 @@ def stations_round8(mk):
        masts=[("RM_AerialMast", (2, 12)), ("RM_AerialWallBracket", (8, 6), 1), ("RM_AerialWallBracket", (12, 6), 3),
               ("RM_AerialWallBracket", (10, 4), 0), ("RM_AerialWallBracket", (10, 8), 2)],
        links=[(0, 1), (0, 2), (0, 3), (0, 4)], prev=None)
-    mk(37, "H", 218, 58, 18, 14, "TAP CLAMP POSES", "their grid (hostile batteries) as one east-west cord and one north-south cord; "
+    mk(27, "H", 218, 58, 18, 14, "TAP CLAMP POSES", "their grid (hostile batteries) as one east-west cord and one north-south cord; "
        "four of our clamps bite them, our cord arriving from the north, the south, the west and the east; a lamp on each",
        ["each clamp's jaws grip THEIR cord just in from where ours meets it, laid along their cord",
         "on the east-west cord the handles stand upright; on the north-south cord they turn away from the side our cord comes from",
@@ -598,14 +510,14 @@ def stations_round8(mk):
              ("StandingLamp", (10, 11), None, None), ("StandingLamp", (17, 13), None, None)],
        conduit=[(5, 5), (5, 6), (10, 1), (12, 10), (11, 10), (16, 12), (17, 12)], prev=None)
     # ---- row I: wiring, hazards, ownership (north-gallery strip east of 33; masts > 20 cells apart between stations)
-    mk(38, "I", 176, 120, 14, 14, "AUTO-LINK SELECTED", "five power masts standing unlinked (one touches a full battery) and two "
+    mk(28, "I", 176, 120, 14, 14, "AUTO-LINK SELECTED", "five power masts standing unlinked (one touches a full battery) and two "
        "dark lamps beside the far masts", ["nothing is strung: no wire, no shadow, both lamps dark"],
        ["select all five masts > 'Auto-link selected': the shortest set of wires that joins them all (4 wires), both lamps light",
         "undo with Unlink all on each, then link them by hand with 'Link wire' and compare"],
        devs=[("Battery", (0, 1), 0, 1.0), ("StandingLamp", (13, 1), None, None), ("StandingLamp", (13, 12), None, None)],
        masts=[("RM_AerialMast", (1, 1)), ("RM_AerialMast", (12, 1)), ("RM_AerialMast", (6, 6)), ("RM_AerialMast", (1, 12)),
               ("RM_AerialMast", (12, 12))], region=2, prev=None)
-    mk(39, "I", 206, 120, 20, 10, "FALLEN WIRE HAZARDS", "battery -> mast -> mast -> lamp, the span CUT; spilled fuel lies around "
+    mk(29, "I", 206, 120, 20, 10, "FALLEN WIRE HAZARDS", "battery -> mast -> mast -> lamp, the span CUT; spilled fuel lies around "
        "the live end on the ground",
        ["the top-right alert reads 'Wire down'; clicking it jumps to the mast",
         "the live end sparks on the fuel; the far lamp is dark",
@@ -615,7 +527,7 @@ def stations_round8(mk):
        devs=[("Battery", (1, 4), 1, 1.0), ("StandingLamp", (17, 5), None, None)],
        masts=[("RM_AerialMast", (3, 4)), ("RM_AerialMast", (15, 4))], links=[(0, 1)], cuts=[(0, 1)],
        fuel=[(7, 4), (8, 4), (9, 4), (8, 3), (8, 5), (10, 4)], region=2, prev=None)
-    mk(40, "I", 234, 120, 14, 14, "CLAIM THEIR POLE", "two power masts of ANOTHER faction strung together, their battery at the "
+    mk(30, "I", 234, 120, 14, 14, "CLAIM THEIR POLE", "two power masts of ANOTHER faction strung together, their battery at the "
        "south mast and their lamp at the north one",
        ["their wire hangs between their poles like ours (same art, same sag)", "their lamp is lit by their battery"],
        ["select the north mast > Claim (god mode: instant): the wire to their other pole is taken down and coiled at once, "
@@ -627,7 +539,7 @@ def stations_round8(mk):
     # (the "B" kind below); a thin band of the north gallery between row E (ends z 170) and row G (starts z 192)
     bp = [("B", "PowerConduit", "Industrial", (x, 1)) for x in range(2, 15)] + [("B", "PowerSwitch", "Industrial", (15, 1))] + \
          [("B", "PowerConduit", "Industrial", (x, 1)) for x in range(16, 21)] + [("B", "StandingLamp", "Industrial", (21, 1))]
-    mk(41, "I", 60, 178, 24, 4, "STYLED BLUEPRINTS", "an Industrial run picked from the build menu but NOT built: conduit, an in-line "
+    mk(31, "I", 60, 178, 24, 4, "STYLED BLUEPRINTS", "an Industrial run picked from the build menu but NOT built: conduit, an in-line "
        "switch and a floor lamp as blueprints, beside a full battery",
        ["each blueprint ghost already shows the Industrial look (or the vanilla ghost: which?)",
         "UNPAUSE: colonists haul steel from the free area and build; frame and finished piece keep the Industrial look"],
@@ -635,14 +547,14 @@ def stations_round8(mk):
        devs=[("Battery", (0, 1), 1, 1.0)], styled=bp, style_station=True, region=2, prev=None)
 
 
-def stations_round2(mk, hose_i):
+def stations_round2(mk):
     """Round 2 stations (owner notes 2026-10-04, design/RimMandrake/messyconduit_review_round2_owner_notes_2026-10-04.md).
-    Now 18-28 (were 31-41 on the 47-station map, 19-29 before the style gallery). They live in REGION2, north of the quicktest colonists.
+    Now 15-23 (were 31-41 on the 47-station map, 19-29 before the style gallery; the two hose mazes left for FlowWorks
+    2026-10-15). They live in REGION2, north of the quicktest colonists.
     Extra per-station keys: terrain [(TerrainDef, rect)] painted before building; roof [(RoofDef, rect)] laid after the
     region is unroofed; fog {refog: [rect], unfog: [rect]} applied last (the region is unfogged by clear()); blueprints
     [(def, cell, rot)] placed as real blueprints; wconduit [cell] = WaterproofConduit; links may carry a third element,
-    the verdict the link is EXPECTED to get (Roofed / OutOfRange / FullA): a refusal shown on purpose; hook = the name of a
-    hose hook run after the hoses are laid."""
+    the verdict the link is EXPECTED to get (Roofed / OutOfRange / FullA): a refusal shown on purpose."""
     R2 = dict(region=2)
     # ---- row E: power showpieces
     s19 = [("Battery", (20, 11), 0, 1.0), ("Battery", (21, 11), 0, 1.0),            # TOUCHING the pole / its conduit (round 4: they stood 2 cells off)
@@ -651,7 +563,7 @@ def stations_round2(mk, hose_i):
            ("ElectricStove", (35, 13), None, None), ("HiTechResearchBench", (4, 16), None, None),   # at distance, by conduit
            ("FlatscreenTelevision", (9, 9), 0, None), ("Cooler", (26, 21), 3, None),
            ("WallLamp", (29, 23), 0, None), ("WallLamp", (29, 17), 0, None)]
-    mk(18, "E", 12, 144, 40, 26, "POLE CLUSTER", "one power pole with a wide mix of devices: some right beside it (lamp, heater, sun "
+    mk(15, "E", 12, 144, 40, 26, "POLE CLUSTER", "one power pole with a wide mix of devices: some right beside it (lamp, heater, sun "
        "lamp, mini-turret, two batteries), some reached by conduit runs (stove, hi-tech research bench, TV), a walk-in freezer "
        "with an in-wall cooler and wall lamps inside and out, and a lamp mast fed over the air",
        ["each device right beside the pole gets its own hookup from the pole's insulators; with more hookups than insulators, "
@@ -675,7 +587,7 @@ def stations_round2(mk, hose_i):
            ("Heater", (25, 8), None, None), ("SunLamp", (14, 13), None, None), ("Turret_MiniTurret", (24, 4), None, None),
            ("Cooler", (30, 13), 1, None), ("WallLamp", (18, 17), 0, None), ("WallLamp", (5, 14), 3, None),
            ("StandingLamp", (33, 13), None, None)]
-    mk(19, "E", 62, 144, 35, 22, "ELECTRIC ROOM", "a walled workshop crammed with powered devices joined by messy conduit (with a "
+    mk(16, "E", 62, 144, 35, 22, "ELECTRIC ROOM", "a walled workshop crammed with powered devices joined by messy conduit (with a "
        "tangle), and three power poles carrying a line OVER it: west pole outside, middle pole inside the room, east pole outside",
        ["the showpiece: does the room read as lived-in and messy without turning into noise?",
         "the overhead line passes over the walls and the devices; its ground shadow falls across the floor and furniture",
@@ -693,7 +605,7 @@ def stations_round2(mk, hose_i):
     # stone block, not through a tunnel. Appearing to carry power 'off into the unknown' and then emerging from it on the
     # other side."): two masts 19 cells apart (range 20) with a solid granite block between them under overhead mountain and
     # fog of war; the span runs over it, vanishes into the fog (drawn above spans) and comes out the far side.
-    mk(20, "E", 108, 144, 36, 22, "OVER THE UNKNOWN", "two power poles carrying power OVER a solid granite block that lies hidden "
+    mk(17, "E", 108, 144, 36, 22, "OVER THE UNKNOWN", "two power poles carrying power OVER a solid granite block that lies hidden "
        "under fog of war and overhead mountain: the wire runs off into the unknown and emerges on the other side",
        ["the span leaves the west pole, vanishes into the fog over the block and reappears to land on the east pole",
         "nothing of the wire shows ON the fog (no bright line drawn over the unknown), and its ground shadow vanishes with it",
@@ -706,28 +618,8 @@ def stations_round2(mk, hose_i):
        devs=[("Battery", (7, 10), 0, 1.0), ("StandingLamp", (29, 8), None, None), ("Heater", (29, 12), None, None)],
        masts=[("RM_AerialMast", (8, 10)), ("RM_AerialMast", (27, 10))], links=[(0, 1)],
        roof=[("RoofRockThick", (10, 2, 16, 17))], fog=dict(refog=[(10, 2, 16, 17)], unfog=[]), prev=33, **R2)
-    # ---- row F: hose mazes (the paths are judged by validation_hose.py; this file only lays them out and calls the hooks)
-    maze = perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + perimeter(4, 3, 8, 7, gaps=[(4, 5)]) + \
-        line(9, 11, 5)
-    maze_i = hose_i + ["reel it in and lay it again to the same free end: does it pick the same route?"]
-    mk(21, "F", 166, 144, 18, 11, "HOSE MAZE: TWO ROUTES", "a hose laid from a reel deep inside a small walled maze to a free end "
-       "outside; two ways out: the short one (south-east gap) and a longer one (north-east gap)",
-       ["the hose finds the SHORT route out through the inner chamber's west door, down and out the south-east gap",
-        "it never clips a wall corner, and its bends stay smooth in the one-cell corridors",
-        "it stays inside the corridors (it never jumps a wall)"],
-       maze_i, walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_maze_hook", prev=34, **R2)
-    mk(22, "F", 194, 144, 18, 11, "HOSE MAZE: SHORT WAY WALLED", "station 21's maze; after the hose is laid, a wall is built across the "
-       "short (south-east) gap - does the hose re-route the long way, or reel itself in?",
-       ["what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length "
-        "(it does: measured offline the long way needs about 25 of the hose's 40 cells), else it winds back onto the reel with a "
-        "message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)",
-        "add your own walls to lengthen the way round: past 40 cells (the default since round 6) the hose reels in (selftest r5: the 13x13 spiral needs 73)",
-        "if it re-routes, the new path is as clean as station 21's"],
-       maze_i + ["deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?"],
-       walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_block_wall_hook",
-       block=[(12, 1), (12, 2)], prev=35, **R2)
     # ---- row G: challenge configurations (bugs a human eye catches)
-    mk(23, "G", 222, 226, 28, 24, "MAP EDGE", "poles and cords at the map's north-east corner: a pole IN the corner cell, poles on the "
+    mk(18, "G", 222, 226, 28, 24, "MAP EDGE", "poles and cords at the map's north-east corner: a pole IN the corner cell, poles on the "
        "top and right edge cells, and floor runs lying along both edges",
        ["the cords' loose curls must not draw off the map (nothing hanging past the edge, nothing cut off with a hard line)",
         "the corner pole's wires and shadow stay on the map", "no red errors (open the debug log: none mentioning GimmeSomeSlack)"],
@@ -737,7 +629,7 @@ def stations_round2(mk, hose_i):
              ("StandingLamp", (25, 6), None, None)],
        masts=[("RM_AerialMast", (2, 12)), ("RM_AerialMast", (14, 23)), ("RM_AerialMast", (27, 23)), ("RM_AerialMast", (27, 8))],
        links=[(0, 1), (1, 2), (2, 3)], label_below=True, prev=36, **R2)
-    mk(24, "G", 12, 192, 30, 22, "RIVER CROSSING", "a river (chest-deep moving water, shallow banks): an overhead span from bank to bank, "
+    mk(19, "G", 12, 192, 30, 22, "RIVER CROSSING", "a river (chest-deep moving water, shallow banks): an overhead span from bank to bank, "
        "and a floor run fording the shallow end in waterproof conduit",
        ["the overhead wire's shadow falls on the water like on the ground (or not at all), never as a dark stripe on the river bed",
         "the floor cord on the water: does it float, sink or draw on top as if on soil? (waterproof conduit has its own look?)",
@@ -749,7 +641,7 @@ def stations_round2(mk, hose_i):
        devs=[("Battery", (1, 4), 0, 1.0), ("Heater", (27, 4), None, None), ("Battery", (2, 12), 0, 1.0),
              ("StandingLamp", (27, 12), None, None)],
        masts=[("RM_AerialMast", (6, 12)), ("RM_AerialMast", (23, 12))], links=[(0, 1)], prev=37, **R2)
-    mk(25, "G", 54, 192, 34, 20, "ROOF BOUNDARY", "a roofed steel room: an overhead span passes OVER its roof, a floor run goes in "
+    mk(20, "G", 54, 192, 34, 20, "ROOF BOUNDARY", "a roofed steel room: an overhead span passes OVER its roof, a floor run goes in "
        "under the wall, and a pole standing INSIDE under the roof tries to link out",
        ["wires over a roof are allowed: the span is drawn over the roof, its shadow on the roof",
         "the pole under the roof is refused (anchors need open sky): no wire through the roof",
@@ -766,7 +658,7 @@ def stations_round2(mk, hose_i):
              ("StandingLamp", (25, 9), None, None)],
        masts=[("RM_AerialMast", (3, 9)), ("RM_AerialMast", (22, 9)), ("RM_AerialMast", (14, 7))],
        links=[(0, 1), (0, 2, "Roofed")], prev=38, **R2)
-    mk(26, "G", 96, 192, 44, 34, "LONG SPAN + DIAGONALS", "four chains: a span of EXACTLY the longest length (20), one cell too long "
+    mk(21, "G", 96, 192, 44, 34, "LONG SPAN + DIAGONALS", "four chains: a span of EXACTLY the longest length (20), one cell too long "
        "(21, refused), a 45-degree diagonal chain, an odd-angle span, and a very short span (3 cells)",
        ["the 20-cell span: the deepest sag; it must not touch or dip below the ground, and its shadow stays a smooth curve",
         "the 21-cell pair stays unlinked and its lamp dark (refused: too far)",
@@ -782,7 +674,7 @@ def stations_round2(mk, hose_i):
               ("RM_AerialMast", (1, 14)), ("RM_AerialMast", (14, 27)), ("RM_AerialMast", (27, 14)),
               ("RM_AerialMast", (31, 22)), ("RM_AerialMast", (41, 8)), ("RM_AerialMast", (33, 30)), ("RM_AerialLampMast", (36, 31))],
        links=[(0, 1), (2, 3, "OutOfRange"), (4, 5), (5, 6), (7, 8), (9, 10)], prev=39, **R2)
-    mk(27, "G", 156, 192, 32, 32, "CONVERGING HUB", "a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH pole "
+    mk(22, "G", 156, 192, 32, 32, "CONVERGING HUB", "a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH pole "
        "trying to link (refused: full), and three lamps plus a heater right beside the hub",
        ["four wires meet on one crossarm: each lands on an insulator tip, none crossing through the pole art",
         "with more wires than insulators, do two share a tip cleanly or overlap in a blob?",
@@ -795,7 +687,7 @@ def stations_round2(mk, hose_i):
        masts=[("RM_AerialMast", (16, 16)), ("RM_AerialMast", (16, 30)), ("RM_AerialMast", (30, 16)), ("RM_AerialMast", (16, 2)),
               ("RM_AerialMast", (2, 16)), ("RM_AerialMast", (27, 27))],
        links=[(0, 1), (0, 2), (0, 3), (0, 4), (0, 5, "FullA")], prev=40, **R2)
-    mk(28, "G", 196, 192, 26, 24, "NETS SIDE BY SIDE + HALF-BUILT", "three separate powered nets two cells apart; two nets end to end "
+    mk(23, "G", 196, 192, 26, 24, "NETS SIDE BY SIDE + HALF-BUILT", "three separate powered nets two cells apart; two nets end to end "
        "with a one-cell gap that is a conduit BLUEPRINT; a half-built run (conduit, then blueprints, a pole blueprint, a lamp blueprint)",
        ["side by side: each net's cords stay with its own net (no cord jumping across to the neighbour's run)",
         "Modern look, 'a different colour per power net': three nets = three colours; after the gap is built, the two merged nets "
@@ -831,32 +723,24 @@ BOARD = dict(rect=(96, 236, 60, 12), region=2)
 BOARD_NOTES = ["U_style_missing_art (moved off the live proof 2026-10-05): per-family EndFrayed_Live / PowerStrip / "
                "StrandShadow art does not exist; those slots fall back to the Jawa (Scrapper) pieces. Judge whether the "
                "fallback reads acceptably in each look; it is taste, not a Northstar bar."]
-STYLE_GALLERY = (140, 6, 96, 104)                       # --goto S0: both style blocks (stations 1-12; row H, 34-37, sits inside it too)        # M: the art-slot board (labels only), east of the free area
+STYLE_GALLERY = (140, 6, 96, 104)                       # --goto S0: both style blocks (stations 1-11; row H, 24-27, sits inside it too)        # M: the art-slot board (labels only), east of the free area
 
 # ------------------------------------------------------------------------------------------------ art-slot board (M)
 # Each (piece, look) slot names the file the shipped code reads for that look (CordMaterials / AerialMaterials /
-# HoseStyles / ConduitStylePicker paths). Present -> own art; absent -> the code's fallback. Computed from disk, so the
-# board shrinks by itself as stage-4 art lands. One row is a code fact, not a file check: the reel's coil overlay was not
-# built. (Round 8: the power-tap clamp row used to be one too -- "not wired" -- but the clamp now draws the look of the run it
-# bites, so it is a file check like the rest.)
+# ConduitStylePicker paths). Present -> own art; absent -> the code's fallback. Computed from disk, so the board shrinks by
+# itself as stage-4 art lands. (Round 8: the power-tap clamp row used to be a code fact -- "not wired" -- but the clamp now
+# draws the look of the run it bites, so it is a file check like the rest. The hose and reel rows left with the hose
+# stations 2026-10-15: that art is FlowWorks'.)
 TEX = os.path.join(HERE, "Textures", "RimMandrake", "GimmeSomeSlack")
 CORD_DIR = {"Scrapper": "", "Industrial": "Styles/StarWars/", "Modern": "Styles/ExtCord/", "Futuristic": "Styles/Cybertek/"}
-HOSE_DIR = {"Scrapper": "Hose/", "Industrial": "Hose/Styles/Industrial/", "Modern": "Hose/Styles/Modern/",
-            "Futuristic": "Hose/Styles/Futuristic/"}
-# the hose and reel art moved with the hose to FlowWorks (hose port, 2026-10-11); this review map still shows the hose stations
-# as CROSS-MOD stations (they need FlowWorks' HoseProbe, so the map is built on the flowworks tier, which carries both mods)
-HOSE_TEX = os.path.join(os.path.dirname(HERE), "FlowWorks", "Textures", "RimMandrake", "FlowWorks")
 SPAN_FALLBACK = {"Scrapper": "the Scrapper ground strand", "Industrial": "black rubber ground cable",
                  "Modern": "black rubber ground cable", "Futuristic": "the Futuristic ground strand"}
 
 
 def art_slots(tex=TEX):
-    """[(piece, {look: (status, path)})] with status 'own' | 'fallback: <what>' | 'n/a' | 'not wired' | 'not built'."""
+    """[(piece, {look: (status, path)})] with status 'own' | 'fallback: <what>' | 'n/a'."""
     def has(rel):
         return os.path.exists(os.path.join(tex, rel + ".png"))
-
-    def has_hose(rel):
-        return os.path.exists(os.path.join(HOSE_TEX if tex == TEX else tex, rel + ".png"))
     strand = {"Scrapper": "Strand_Jawa", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
               "Futuristic": "Styles/Cybertek/Strand"}
     rows = []
@@ -893,11 +777,6 @@ def art_slots(tex=TEX):
                                      (("Scrapper", "Aerial/TapClamp"),) + tuple((l2, "Aerial/Styles/%s/TapClamp" % l2) for l2 in LOOKS[1:])}))
     rows.append(("floor lamp", {lk: ("own" if has("Styles/%s/StandingLamp" % lk) else "fallback: vanilla lamp",
                                      "Styles/%s/StandingLamp" % lk) for lk in LOOKS}))
-    for piece, nm in (("hose reel, stored", "Reel_PumpHookup"), ("hose reel, laid", "Reel_Deployed"), ("hose strand, flat", "Strand_Flat"),
-                      ("hose strand, plump", "Strand_Plump"), ("hose binding", "Binding"), ("hose coupling", "Coupling_Bare"),
-                      ("hose nozzle", "Nozzle_Bare"), ("hose end cap", "EndCap_Bare"), ("hose open mouth", "Mouth")):
-        rows.append((piece, {lk: ("own" if has_hose(HOSE_DIR[lk] + nm) else "fallback: Scrapper art", HOSE_DIR[lk] + nm) for lk in LOOKS}))
-    rows.append(("hose reel coil overlay", {lk: ("not built: the reel swaps two whole images", "-") for lk in LOOKS}))
     return rows
 
 
@@ -905,11 +784,6 @@ def art_missing(rows):
     """Only the slots that do NOT draw their own look's art (the board's content)."""
     return [(p, {lk: v for lk, v in r.items() if v[0] not in ("own", "n/a")}) for p, r in rows
             if any(v[0] not in ("own", "n/a") for v in r.values())]
-
-
-def reel_footprint(pos):
-    """RM_HoseReel's 2x2 footprint (rot North): Position is the south-west cell."""
-    return [(pos[0] + i, pos[1] + j) for i in (0, 1) for j in (0, 1)]
 
 
 def g(st, c):
@@ -986,17 +860,6 @@ def layout_check(S):
         for a in s.get("actions", []):       # a 'C' action fills a gap; a 'D' action removes a placed cell
             if (a[0] == "C") == (a[-1] in set(styled)):
                 probs.append("station %d: action %s does not match the layout (gap must be empty / cell must exist)" % (s["n"], a))
-        solid = set(s["walls"]) | set(s["rock"]) | set(s["conduit"]) | set(s.get("wconduit", [])) | set(s.get("hconduit", [])) | \
-            {d[1] for d in s["devs"]} | \
-            {m[1] for m in s["masts"]} | {h[1] for h in s["hostile"]} | set(styled)
-        seen_fp = set()
-        for hz in s["hoses"]:
-            fp = reel_footprint(hz["reel"])        # RM_HoseReel is 2x2, Position = SW cell: nothing else may sit in its 4 cells
-            cells += fp + [hz["far"]]
-            for c in fp:
-                if c in solid or c in seen_fp or c == tuple(hz["far"]) or any(tuple(o["far"]) == c for o in s["hoses"]):
-                    probs.append("station %d hose reel %s: footprint cell %s overlaps a wall/building/reel/free end" % (s["n"], hz["reel"], c))
-                seen_fp.add(c)
         for c in cells:
             if not (0 <= c[0] < w and 0 <= c[1] < h):   # 2026-10-05: no exemptions left (the round-1 ones went with the cuts)
                 probs.append("station %d cell %s outside its %dx%d footprint" % (s["n"], c, w, h))
@@ -1036,136 +899,143 @@ def layout_check(S):
 
 
 # ------------------------------------------------------------------------------------------------ labels
-SHORT = {1: "Scrapper: plugs, tangle, wall, switch, cut ends", 2: "Industrial: the same build",   # in-world sub line, by station
+# in-world sub line, by station
+SHORT = {1: "Scrapper: plugs, tangle, wall, switch, cut ends", 2: "Industrial: the same build",
          3: "Modern (one colour per run): the same build", 4: "Futuristic: the same build",
          5: "every Modern colour entry, random mix on top", 6: "poles, lamp mast, bracket, spans: one row per look",
          7: "8 Industrial + 4 Modern: the bigger run wins", 8: "5 + 5: the older run wins",
          9: "deconstruct the middle: both halves keep the look", 10: "select any piece > Restyle this run",
-         11: "per look: a laid reel and a reeled-in reel", 12: "built outside the menu: draws the DEFAULT look",
-         13: "cord stubs into a wall and through rock", 14: "three masts, the second span CUT",
-         15: "clamp drains THEIR grid into our lamp", 16: "flat / filling (frozen) / plump, side by side",
-         17: "four hoses crossing in a 2 x 2 grid",
-         18: "one pole, many kinds of device, near and far", 19: "crowded electric room, a line overhead",
-         20: "a span over a hidden, fogged stone block", 21: "hose out of a maze: two routes",
-         22: "maze, short way walled after laying", 23: "poles and cords on the map's corner",
-         24: "span over a river, cord fording it", 25: "span over a roof, pole under one",
-         26: "longest span, too long, diagonals, tiny", 27: "four spans into one pole, a fifth refused",
-         28: "neighbour nets, a blueprint gap: save + load", 29: "a hose laid onto a second reel, and on to a third",
-         30: "a colonist lays the hose, then you press Retract", 31: "the end dropped 14 cells out",
-         32: "the hose end laid into a pond", 33: "the hose coupled to THEIR tank",
-         34: "waterproof conduit through water, four looks", 35: "plain / waterproof / hidden conduit",
-         36: "a wall bracket on every wall face", 37: "four clamps bite their grid, four poses",
-         38: "five loose masts: select all > Auto-link", 39: "cut wire: live end, spilled fuel, alert",
-         40: "their two poles: claim one", 41: "an Industrial run left as blueprints"}
+         11: "built outside the menu: draws the DEFAULT look", 12: "cord stubs into a wall and through rock",
+         13: "three masts, the second span CUT", 14: "clamp drains THEIR grid into our lamp",
+         15: "one pole, many kinds of device, near and far", 16: "crowded electric room, a line overhead",
+         17: "a span over a hidden, fogged stone block", 18: "poles and cords on the map's corner",
+         19: "span over a river, cord fording it", 20: "span over a roof, pole under one",
+         21: "longest span, too long, diagonals, tiny", 22: "four spans into one pole, a fifth refused",
+         23: "neighbour nets, a blueprint gap: save + load", 24: "waterproof conduit through water, four looks",
+         25: "plain / waterproof / hidden conduit", 26: "a wall bracket on every wall face",
+         27: "four clamps bite their grid, four poses", 28: "five loose masts: select all > Auto-link",
+         29: "cut wire: live end, spilled fuel, alert", 30: "their two poles: claim one",
+         31: "an Industrial run left as blueprints"}
 
 # Round 8 (owner 2026-10-15): every card leads with HOW TO POKE IT and WHAT TO LOOK FOR / THE SUSPECTED WEAK SPOT (that is
 # what finds bugs). One line each; the long Notice / Try lists stay below them on the card.
 CARD = {
     1: ("flick the switch; Restyle this run; build one conduit into the gap in another look",
-        "the tangle's pieces may follow the DEFAULT look, not the run's (known gap); only the battery side of the gap may spark"),
-    2: ("as 1: switch, Restyle this run, fill the gap", "Industrial picks a cable kind per net: does the tangle or a cut half pick a different kind?"),
-    3: ("as 1; also restyle to random mix and back", "the 2 cells past the gap are a run of their own and may take another colour: confusing or fine?"),
-    4: ("as 1", "fallback pieces (power strip, live end) borrowed from Scrapper: do they jar in Futuristic?"),
+         "the tangle's pieces may follow the DEFAULT look, not the run's (known gap); only the battery side of the gap may spark"),
+    2: ("as 1: switch, Restyle this run, fill the gap",
+         "Industrial picks a cable kind per net: does the tangle or a cut half pick a different kind?"),
+    3: ("as 1; also restyle to random mix and back",
+         "the 2 cells past the gap are a run of their own and may take another colour: confusing or fine?"),
+    4: ("as 1",
+         "fallback pieces (power strip, live end) borrowed from Scrapper: do they jar in Futuristic?"),
     5: ("build one conduit onto a run's end; restyle the blue run to random mix and back",
-        "random mix: a colour may change only at a node, never mid-cord; restyling back must bring the same colours back"),
+         "random mix: a colour may change only at a node, never mid-cord; restyling back must bring the same colours back"),
     6: ("select a pole > Restyle this run; Link wire across to another row",
-        "the span cable has no per-look art (falls back): does each row's wire still read as its look?"),
+         "the span cable has no per-look art (falls back): does each row's wire still read as its look?"),
     7: ("build ONE conduit into the upper row's gap (hover first)",
-        "the hover hint must say 'bridges Industrial + Modern runs: Industrial wins' BEFORE the click; the message must name both looks"),
-    8: ("deconstruct one Scrapper cell, then join the gap", "tie goes to the OLDER run: a rebuilt (younger) cell must not make its run count as newer"),
-    9: ("deconstruct the marked cell in the upper row", "after the split a half may re-pick its Industrial cable kind (the colour-reshuffle bug)"),
+         "the hover hint must say 'bridges Industrial + Modern runs: Industrial wins' BEFORE the click; the message must name both looks"),
+    8: ("deconstruct one Scrapper cell, then join the gap",
+         "tie goes to the OLDER run: a rebuilt (younger) cell must not make its run count as newer"),
+    9: ("deconstruct the marked cell in the upper row",
+         "after the split a half may re-pick its Industrial cable kind (the colour-reshuffle bug)"),
     10: ("select any piece > Restyle this run; then the lamp > Restyle this lamp",
          "the lamp's own look must survive the next run restyle; 'Match its cable run' must undo it; the span must restyle with the poles"),
-    11: ("Deploy / Retract each reel; build a reel from the menu", "a reeled-in drum must be full again in the SAME look (FlowWorks feature)"),
-    12: ("`--style Cybertek`: this set and 13-40 (not 34) change, 1-11 do not; build one conduit onto it",
-         "the hose reel here follows FlowWorks' default, not --style: it will look like it ignored the switch"),
-    13: ("deconstruct a wall cell; mine the granite", "the NORTH-face plate is a sliver: is it there at all? no curl of cord printed on any plate"),
-    14: ("middle mast > Re-string cut wires; dev: an explosion under the first span",
+    11: ("`--style Cybertek`: this set and 12-30 (not 24) change, 1-10 do not; build one conduit onto it",
+         "the build must write the run's look for real; nothing here may change when only the stored looks (1-10) are touched"),
+    12: ("deconstruct a wall cell; mine the granite",
+         "the NORTH-face plate is a sliver: is it there at all? no curl of cord printed on any plate"),
+    13: ("middle mast > Re-string cut wires; dev: an explosion under the first span",
          "both cut halves must meet on the ground at ONE point; the 'Wire down' alert must list this mast"),
-    15: ("unpause: their battery drains; Mod Settings taps off; dev: spawn one of THEIR pawns near the clamp and unpause",
-         "the clamp sits ON their cord (v3 pose), not on the node; their net and ours stay two nets; a seen clamp must send "
-         "'Power theft discovered' and cost goodwill each day"),
-    16: ("unpause: the filling hose finishes in about half a second", "a straight hose must have NO joiner; filling must not jump straight to plump (FlowWorks)"),
-    17: ("lay a fifth hose across the grid", "where S-curves run side by side two hoses may overlap for a stretch (FlowWorks)"),
-    18: ("build another lamp right beside the pole", "more hookups than insulators: do two pile onto one tip? a cord must meet a big device's edge, not stop short"),
-    19: ("roof the room (god mode): the middle pole's spans must drop", "noise: does it still read as a room? any cord drawn ON TOP of a device's art"),
-    20: ("mine into the block from the west", "any wire or shadow drawn ON the fog is a leak of the unknown"),
-    21: ("reel in, lay again to the same end", "a bend clipping a wall corner in a one-cell corridor (FlowWorks)"),
-    22: ("deconstruct the blocking wall", "the hose must re-route or reel in with a message, never pass through the wall (FlowWorks)"),
-    23: ("pan the camera past the map edge", "anything drawn in the black past the edge; a red error naming GimmeSomeSlack"),
-    24: ("unpause; deconstruct one waterproof cell in the river", "the overhead shadow as a dark stripe on the river bed; cut ends in water still sparking?"),
-    25: ("build a roof over the east pole (god mode)", "the inside pole must stay refused (Roofed); a seam where the floor cord passes the roof edge"),
-    26: ("Link wire on the 21-cell pair; Mod Settings Longest span 25, link again", "the 20-cell sag dipping under the ground; diagonal wires leaving from the pole's middle"),
-    27: ("unlink one spoke, then link the NE pole", "four wires on one crossarm: an overlapping blob at the tips"),
-    28: ("build the gap blueprint; SAVE then LOAD here", "after the load every cord must return with the same curls and colours"),
-    29: ("reel in the first hose: the second drains", "a relay that loops back must be refused (FlowWorks)"),
-    30: ("UNPAUSE, then press Retract after he lays it", "the hose must never be longer than his walk; Retract must wind back along the route (FlowWorks)"),
-    31: ("Move hose end to a nearby cell, unpause", "nobody should be shown carrying anything until a colonist picks it up (FlowWorks)"),
-    32: ("select the reel: inspect", "the end must lie IN the water, not on the bank; it draws nothing by itself (FlowWorks)"),
-    33: ("select the reel and the tank", "the coupling must sit on their tank; nobody's inspect names their faction (FlowWorks)"),
-    34: ("Mod Settings > Which conduits become cords > untick Waterproof", "the cord in the water: does it dive, or lie on top as if on soil?"),
-    35: ("untick one conduit kind; `--set gss.needlessLoops=False`; `--set gss.enabled=False`",
+    14: ("unpause: their battery drains; Mod Settings taps off; dev: spawn one of THEIR pawns near the clamp and unpause",
+         "the clamp sits ON their cord (v3 pose), not on the node; their net and ours stay two nets; a seen clamp must send 'Power theft discovered' and cost goodwill each day"),
+    15: ("build another lamp right beside the pole",
+         "more hookups than insulators: do two pile onto one tip? a cord must meet a big device's edge, not stop short"),
+    16: ("roof the room (god mode): the middle pole's spans must drop",
+         "noise: does it still read as a room? any cord drawn ON TOP of a device's art"),
+    17: ("mine into the block from the west",
+         "any wire or shadow drawn ON the fog is a leak of the unknown"),
+    18: ("pan the camera past the map edge",
+         "anything drawn in the black past the edge; a red error naming GimmeSomeSlack"),
+    19: ("unpause; deconstruct one waterproof cell in the river",
+         "the overhead shadow as a dark stripe on the river bed; cut ends in water still sparking?"),
+    20: ("build a roof over the east pole (god mode)",
+         "the inside pole must stay refused (Roofed); a seam where the floor cord passes the roof edge"),
+    21: ("Link wire on the 21-cell pair; Mod Settings Longest span 25, link again",
+         "the 20-cell sag dipping under the ground; diagonal wires leaving from the pole's middle"),
+    22: ("unlink one spoke, then link the NE pole",
+         "four wires on one crossarm: an overlapping blob at the tips"),
+    23: ("build the gap blueprint; SAVE then LOAD here",
+         "after the load every cord must return with the same curls and colours"),
+    24: ("Mod Settings > Which conduits become cords > untick Waterproof",
+         "the cord in the water: does it dive, or lie on top as if on soil?"),
+    25: ("untick one conduit kind; `--set gss.needlessLoops=False`; `--set gss.enabled=False`",
          "hidden conduit must draw NOTHING; the stub's loop must not reach the waterproof row; an unticked kind must go vanilla without a reload"),
-    36: ("select a bracket > Unlink wire, then Link wire", "the west bracket is the east art mirrored: is its insulator on the right side? the north one mostly hidden"),
-    37: ("`--style Cybertek` (or any look): four clamp arts", "north-south cord: handles must turn AWAY from our cord's side; jaws along their cord, never across"),
-    38: ("select all five masts > Auto-link selected", "exactly 4 wires, no loop, no doubled wire; a full mast must be skipped"),
-    39: ("draft a colonist onto the live end; unpause", "the thrown-back pawn landing inside a wall or off the map; fuel lit by the DEAD half"),
-    40: ("select the north mast > Claim", "the wire must coil AT ONCE and their lamp go dark; their grid must never fuse with ours"),
-    41: ("unpause and let colonists build it", "the look lost at the frame stage, or a vanilla-looking ghost that builds Industrial"),
+    26: ("select a bracket > Unlink wire, then Link wire",
+         "the west bracket is the east art mirrored: is its insulator on the right side? the north one mostly hidden"),
+    27: ("`--style Cybertek` (or any look): four clamp arts",
+         "north-south cord: handles must turn AWAY from our cord's side; jaws along their cord, never across"),
+    28: ("select all five masts > Auto-link selected",
+         "exactly 4 wires, no loop, no doubled wire; a full mast must be skipped"),
+    29: ("draft a colonist onto the live end; unpause",
+         "the thrown-back pawn landing inside a wall or off the map; fuel lit by the DEAD half"),
+    30: ("select the north mast > Claim",
+         "the wire must coil AT ONCE and their lamp go dark; their grid must never fuse with ours"),
+    31: ("unpause and let colonists build it",
+         "the look lost at the frame stage, or a vanilla-looking ghost that builds Industrial"),
 }
 
 # Round 8: the GLOBAL Mod Settings, one switch each (the method: never fake copies side by side). `--set gss.FIELD=V` /
 # `--set aerial.FIELD=V` flips one live through the mod's own probes (GimmeSomeSlackProbe / AerialProbe `set:`), the same
 # static field the Mod Settings window writes. (scope, field, shipped value, what it does, where to look.)
 SETTINGS = [
-    ("gss", "enabled", "True", "Messy cords master switch (off = vanilla conduit art)", "35, any cord station"),
-    ("gss", "style", "StarWarsJawa", "default look of unstyled pieces (also `--style`)", "12, 13-40 (not 34), 35, 37"),
-    ("gss", "extCordColorMode", "Mixed", "default Modern colour: one per net (Mixed) or one everywhere (Single)", "28 with --style ExtensionCord"),
-    ("gss", "extCordColor", "0", "the single Modern colour (0 orange .. 4 blue)", "28 with Single"),
-    ("gss", "hideHookupWires", "True", "hide vanilla's thin machine hookup wires", "18"),
-    ("gss", "slack", "1.0", "slack, 0 = path-tight", "1-4, 13"),
+    ("gss", "enabled", "True", "Messy cords master switch (off = vanilla conduit art)", "25, any cord station"),
+    ("gss", "style", "StarWarsJawa", "default look of unstyled pieces (also `--style`)", "11, 12-30 (not 24), 25, 27"),
+    ("gss", "extCordColorMode", "Mixed", "default Modern colour: one per net (Mixed) or one everywhere (Single)", "23 with --style ExtensionCord"),
+    ("gss", "extCordColor", "0", "the single Modern colour (0 orange .. 4 blue)", "23 with Single"),
+    ("gss", "hideHookupWires", "True", "hide vanilla's thin machine hookup wires", "15"),
+    ("gss", "slack", "1.0", "slack, 0 = path-tight", "1-4, 12"),
     ("gss", "loopBudget", "16", "cells of each cord in loops and heaps", "1-4"),
-    ("gss", "cordsPerConnection", "3", "cords per connection, 1 to 3", "1-4, 19"),
-    ("gss", "tangles", "True", "dense conduit fields become one tangle", "1-4 (the 3x3), 19"),
-    ("gss", "tangleMin", "9", "cells before a dense field becomes a tangle", "1-4, 19"),
-    ("gss", "needlessLoops", "True", "needless stubs (2 cells or less) become pointless loops", "35 (the stub)"),
-    ("gss", "diveThrough", "True", "cords dive under walls and water (a plate marks the wall)", "13, 24, 34"),
-    ("gss", "breakReadout", "True", "live ends spark, dead ends lie limp", "1-4, 14"),
-    ("gss", "sparkIntensity", "1.0", "spark intensity (also clamp sparks)", "1, 14, 37, 39"),
+    ("gss", "cordsPerConnection", "3", "cords per connection, 1 to 3", "1-4, 16"),
+    ("gss", "tangles", "True", "dense conduit fields become one tangle", "1-4 (the 3x3), 16"),
+    ("gss", "tangleMin", "9", "cells before a dense field becomes a tangle", "1-4, 16"),
+    ("gss", "needlessLoops", "True", "needless stubs (2 cells or less) become pointless loops", "25 (the stub)"),
+    ("gss", "diveThrough", "True", "cords dive under walls and water (a plate marks the wall)", "12, 19, 24"),
+    ("gss", "breakReadout", "True", "live ends spark, dead ends lie limp", "1-4, 13"),
+    ("gss", "sparkIntensity", "1.0", "spark intensity (also clamp sparks)", "1, 13, 27, 29"),
     ("gss", "whip", "True", "live broken floor ends whip (also paused)", "1-4"),
-    ("gss", "downedWire", "True", "live wires hanging out of walls drip sparks", "13"),
-    ("gss", "sparksOnlyOverlay", "False", "sparks only while the power overlay is open", "14, 39"),
+    ("gss", "downedWire", "True", "live wires hanging out of walls drip sparks", "12"),
+    ("gss", "sparksOnlyOverlay", "False", "sparks only while the power overlay is open", "13, 29"),
     ("gss", "maxSparkingEnds", "24", "most sparking ends per map", "no station (needs 24+ live ends on one map)"),
-    ("gss", "highlight", "True", "selecting a powered building highlights its net's cords", "28"),
-    ("gss", "sway", "True", "hanging cords sway in the wind", "13 (unpause)"),
-    ("gss", "swayAmplitude", "1.0", "cord sway strength", "13"),
-    ("gss", "swayMode", "CPU", "cord sway on the CPU or the plant wind shader", "13"),
+    ("gss", "highlight", "True", "selecting a powered building highlights its net's cords", "23"),
+    ("gss", "sway", "True", "hanging cords sway in the wind", "12 (unpause)"),
+    ("gss", "swayAmplitude", "1.0", "cord sway strength", "12"),
+    ("gss", "swayMode", "CPU", "cord sway on the CPU or the plant wind shader", "12"),
     ("gss", "floorRipple", "True", "outdoor floor cords ripple", "1-4 (unpause)"),
-    ("gss", "excludedConduits", "[]", "which conduits become cords (a list: Mod Settings window only)", "34, 35"),
+    ("gss", "excludedConduits", "[]", "which conduits become cords (a list: Mod Settings window only)", "24, 25"),
     ("gss", "lod", "True", "far zoom: one thin strand, no pieces", "any: zoom out"),
     ("gss", "debugDraw", "False", "draw the node graph", "any"),
-    ("aerial", "enabled", "True", "overhead lines master switch", "6, 14, 18-28, 36-40"),
-    ("aerial", "maxSpan", "20", "longest span, cells", "26"),
-    ("aerial", "sag", "0.06", "sag, share of the span", "26"),
-    ("aerial", "autoLink", "True", "new anchors link to the nearest in range", "F, 38"),
-    ("aerial", "maxStrands", "3", "wires per span, 1 to this", "6, 27"),
+    ("aerial", "enabled", "True", "overhead lines master switch", "6, 13, 15-23, 26-30"),
+    ("aerial", "maxSpan", "20", "longest span, cells", "21"),
+    ("aerial", "sag", "0.06", "sag, share of the span", "21"),
+    ("aerial", "autoLink", "True", "new anchors link to the nearest in range", "F, 28"),
+    ("aerial", "maxStrands", "3", "wires per span, 1 to this", "6, 22"),
     ("aerial", "dripLoops", "True", "drip loops at the insulators", "6"),
     ("aerial", "keepWiresOnGravship", "True", "wires on a launched gravship stay strung", "no station (needs a gravship launch)"),
-    ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 26 (unpause)"),
-    ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 26"),
-    ("aerial", "explosionsCut", "True", "explosions cut wires", "14"),
+    ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 21 (unpause)"),
+    ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),
+    ("aerial", "explosionsCut", "True", "explosions cut wires", "13"),
     ("aerial", "kineticSway", "True", "Kinetic Arms push waves swing wires, never cut", "no station (needs a Kinetic Arms push wave)"),
-    ("aerial", "fallenWireShock", "True", "live fallen wires shock whoever touches them", "39"),
-    ("aerial", "fallenWireKnockback", "2", "cells a shock throws the victim", "39"),
-    ("aerial", "fallenWireIgnites", "True", "live fallen wires light spilled fuel", "39"),
-    ("aerial", "wireDownAlert", "True", "the 'Wire down' alert", "14, 39"),
-    ("aerial", "cutWiresOnOwnerChange", "True", "claiming a pole coils wires to the other owner", "40"),
-    ("aerial", "tapsEnabled", "True", "power-tap clamps allowed", "15, 37"),
-    ("aerial", "tapRate", "500", "most a clamp takes, W", "15"),
-    ("aerial", "tapEvents", "True", "taps have consequences", "15"),
-    ("aerial", "theftGoodwill", "True", "caught theft drains goodwill", "15 (spawn one of their pawns)"),
-    ("aerial", "theftGoodwillPerDay", "2", "goodwill lost per day", "15"),
-    ("aerial", "theftSightRange", "12", "victims spot a clamp within N cells", "15"),
+    ("aerial", "fallenWireShock", "True", "live fallen wires shock whoever touches them", "29"),
+    ("aerial", "fallenWireKnockback", "2", "cells a shock throws the victim", "29"),
+    ("aerial", "fallenWireIgnites", "True", "live fallen wires light spilled fuel", "29"),
+    ("aerial", "wireDownAlert", "True", "the 'Wire down' alert", "13, 29"),
+    ("aerial", "cutWiresOnOwnerChange", "True", "claiming a pole coils wires to the other owner", "30"),
+    ("aerial", "tapsEnabled", "True", "power-tap clamps allowed", "14, 27"),
+    ("aerial", "tapRate", "500", "most a clamp takes, W", "14"),
+    ("aerial", "tapEvents", "True", "taps have consequences", "14"),
+    ("aerial", "theftGoodwill", "True", "caught theft drains goodwill", "14 (spawn one of their pawns)"),
+    ("aerial", "theftGoodwillPerDay", "2", "goodwill lost per day", "14"),
+    ("aerial", "theftSightRange", "12", "victims spot a clamp within N cells", "14"),
 ]
 
 
@@ -1174,25 +1044,23 @@ def label_ops(S, style):
 
     def add(x, z, text, sub="", col=GOLD, size="medium"):
         L.append(RM.label_line(x, z, text, sub, col, size, TAG))
-    add(COL_X + 15, 108, "GIMME SOME SLACK - HUMAN REVIEW", "look is chosen PER BUILD (stations 1-11, 34, 41)   |   default look (unstyled pieces: 12-40 but 34): %s   |   "
+    add(COL_X + 15, 108, "GIMME SOME SLACK - HUMAN REVIEW", "look is chosen PER BUILD (stations 1-10, 24, 31)   |   default look (unstyled pieces: 11-30 but 24): %s   |   "
         "key sheet: Transient\\mc_human_review\\keysheet.html" % LOOK.get(style, style), CREAM)
-    add(190, 53, "STYLE GALLERY - stations 1-12", "every piece stores its own look   |   --goto S0 frames it", CREAM)
-    add(199, 108, "ROW T - RUNS: MERGE, TIE, SPLIT, RESTYLE   +   12 OLDER SAVE", "upper rows are yours to poke, lower rows the build already did", TEAL, "small")
-    add(COL_X - 6, COL_Z[13] + 4, "ROW A - FLOOR CORDS", "station 13, default look", TEAL, "small")
-    add(COL_X - 6, COL_Z[15] + 10, "ROW B - OVERHEAD LINES", "stations 14-15, default look", TEAL, "small")
-    add(COL_X - 6, COL_Z[16] - 4, "ROW C - FLEXIBLE HOSES", "stations 16-17: states, lanes, crossings", TEAL, "small")
-    add(120, 182, "GIMME SOME SLACK - NORTH GALLERY", "stations 18-33 + 38-41   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
-    add(32, 174, "ROW E - POWER SHOWPIECES", "stations 18-20", TEAL, "small")
-    add(188, 160, "ROW F - HOSE MAZES", "stations 21-22", TEAL, "small")
-    add(160, 75, "ROW H - PIECES THE GALLERY NEVER SHOWED", "stations 34-37: waterproof looks, conduit kinds, bracket faces, clamp poses", TEAL, "small")
-    add(212, 138, "ROW I - WIRING, HAZARDS, OWNERSHIP", "stations 38-40 (41 STYLED BLUEPRINTS is west, above row E)", TEAL, "small")
-    add(30, 218, "ROW G - CHALLENGE CONFIGURATIONS", "stations 23-33: edge, river, roof, spans, hub, nets + save-load, relay reels, carried hose", TEAL, "small")
+    add(190, 53, "STYLE GALLERY - stations 1-11", "every piece stores its own look   |   --goto S0 frames it", CREAM)
+    add(199, 108, "ROW T - RUNS: MERGE, TIE, SPLIT, RESTYLE   +   11 OLDER SAVE", "upper rows are yours to poke, lower rows the build already did", TEAL, "small")
+    add(COL_X - 6, COL_Z[12] + 4, "ROW A - FLOOR CORDS", "station 12, default look", TEAL, "small")
+    add(COL_X - 6, COL_Z[14] + 10, "ROW B - OVERHEAD LINES", "stations 13-14, default look", TEAL, "small")
+    add(120, 182, "GIMME SOME SLACK - NORTH GALLERY", "stations 15-23 + 28-31   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
+    add(32, 174, "ROW E - POWER SHOWPIECES", "stations 15-17", TEAL, "small")
+    add(160, 75, "ROW H - PIECES THE GALLERY NEVER SHOWED", "stations 24-27: waterproof looks, conduit kinds, bracket faces, clamp poses", TEAL, "small")
+    add(212, 138, "ROW I - WIRING, HAZARDS, OWNERSHIP", "stations 28-30 (31 STYLED BLUEPRINTS is west, above row E)", TEAL, "small")
+    add(30, 218, "ROW G - CHALLENGE CONFIGURATIONS", "stations 18-23: edge, river, roof, spans, hub, nets + save-load", TEAL, "small")
     for s in S:
         x, z = s["origin"]
         w, h = s["size"]
         sub = SHORT[s["n"]]
-        # round 8: no "(was N)" any more -- the 2026-10-05 renumbering is ten days old and its old numbers 34-41 now collide
-        # with the new stations 34-41; the prev -> new table stays in the key sheet's closing section
+        # round 8: no "(was N)" any more -- the 2026-10-05 numbers collide with today's (renumbered again 2026-10-15 when
+        # the hose stations left); the prev -> new table stays in the key sheet's closing section
         title = "%d  %s" % (s["n"], s["title"])
         # REVIEW SIGNS (owner 2026-10-15: "text signs ... to tell me what to DO at each station"): the card's poke and
         # weak spot under the clause; zoomed out only the clause draws (modcheck/reviewmap.weak_spot_sign)
@@ -1230,96 +1098,12 @@ def sign_ops(S):
 STUFFED = {"Turret_MiniTurret": "Steel", "HiTechResearchBench": "Steel"}   # MadeFromStuff (Metallic), RimSage 2026-10-04
 
 
-# ------------------------------------------------------------------------------------------------ hose hooks (st.21/22)
-# SLOT for validation_hose.py (HOSE workstream, owner notes round 2: "make the hose solve a complex path ... then 'build' a
-# wall to block the obvious solution so we can see if it changes to go the other way... or what happens"). This file
-# only lays the maze and the hose; the judging belongs to validation_hose.py. If it defines review_maze(R, station) or
-# review_block_wall(R, station), the hook hands over to it; otherwise the default below runs and records a census.
-def _hose_census(R, s):
-    reel = list(g(s, s["hose"]["reel"]))
-    hc = R.B.hp("census")
-    x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
-    return {k: x.get(k) for k in ("state", "pathLen", "couplings", "layOk", "layReason") if k in x}
-
-
-def _delegate(name, R, s):
-    fw = os.path.join(os.path.dirname(HERE), "FlowWorks")   # the hose (and validation_hose.py) moved to FlowWorks 2026-10-11
-    if fw not in sys.path:
-        sys.path.append(fw)
-    try:
-        import validation_hose as VH                 # noqa: E402  (FlowWorks folder; may not define the hook yet)
-    except Exception as e:                           # pragma: no cover - live only
-        R.notes.append("validation_hose import failed: %s" % e)
-        return False
-    fn = getattr(VH, name, None)
-    if fn is None:
-        return False
-    R.hook_results[s["n"]] = fn(R, s)
-    return True
-
-
-def hose_maze_hook(R, s):
-    """Station 21: the hose is already laid reel -> far through the maze. TODO(validation_hose.py): define
-    review_maze(R, station) to assert the SHORT route (out the inner west door, down, out the south-east gap)."""
-    if not _delegate("review_maze", R, s):
-        R.hook_results[s["n"]] = {"route": _hose_census(R, s), "judged": "TODO validation_hose.review_maze"}
-
-
-def hose_block_wall_hook(R, s):
-    """Station 22: after laying, wall off the short (south-east) gap and see what the hose does. TODO(validation_hose.py):
-    define review_block_wall(R, station) to judge it (re-route north-east / refuse / clip). Default: build the wall, step
-    60 ticks, census before and after."""
-    if _delegate("review_block_wall", R, s):
-        return
-    before = _hose_census(R, s)
-    R.call("jawa/build_batch", ops=PL._ops("Wall", [g(s, c) for c in s["block"]]), stuff="Steel", faction="player", wipeExisting=False)
-    R.B.ticks(60)
-    R.hook_results[s["n"]] = {"before": before, "after_wall": _hose_census(R, s), "judged": "TODO validation_hose.review_block_wall"}
-
-
-def _free_colonist(R, s, near):
-    """A carry station needs an idle colonist: stand the station's `colonist_i`-th free one (default the first) beside the
-    reel; draft off, no job given."""
-    col = R.B.hp("colonists")
-    pawns = [p for p in col.get("pawns") or [] if not p.get("downed")]
-    if not pawns:
-        R.notes.append("station %d: no free colonist to stand beside the reel" % s["n"])
-        return None
-    p = pawns[s.get("colonist_i", 0) % len(pawns)]
-    if p.get("drafted"):
-        R.B.hp("pawn:%d=undraft" % p["id"])
-    x, z = g(s, near)
-    return R.B.hp("pawn:%d=tp:%d,%d" % (p["id"], x, z))
-
-
-def hose_by_hand_hook(R, s):
-    """Station 30 (47-map 43, with 47 merged in): a colonist beside the reel and a pending Deploy order 24 cells out; he
-    lays it when unpaused, then the owner presses Retract. Keyed on the station's `deploy_order`, not its number."""
-    out = {"colonist": _free_colonist(R, s, (4, 8))}
-    if s.get("deploy_order"):
-        x, z = g(s, s["deploy_order"][0])
-        tx, tz = g(s, s["deploy_order"][1])
-        out["order"] = R.B.hp("order:%d,%d=deploy:%d,%d" % (x, z, tx, tz))
-    R.hook_results[s["n"]] = out
-
-
-def hose_dropped_hook(R, s):
-    """Station 31: the end dropped 14 cells out (probe settrail; works with dev mode off)."""
-    x, z = g(s, (2, 4))
-    cells = ";".join("%d,%d" % g(s, (cx, 4)) for cx in range(2, 17))
-    R.hook_results[s["n"]] = {"settrail": R.B.hp("settrail:%d,%d=dropped;%s" % (x, z, cells))}
-
-
-HOOKS = {"hose_maze_hook": hose_maze_hook, "hose_block_wall_hook": hose_block_wall_hook,
-         "hose_by_hand_hook": hose_by_hand_hook, "hose_dropped_hook": hose_dropped_hook}
-
-
 # ------------------------------------------------------------------------------------------------ live build
 class Review(object):
     def __init__(self, B, log):
         self.B, self.log = B, log
         self.notes = []
-        self.hook_results, self.refusals, self.S = {}, {}, []
+        self.refusals, self.S = {}, []
 
     def say(self, msg):
         line_ = "%s %s" % (time.strftime("%H:%M:%S"), msg)
@@ -1415,13 +1199,12 @@ class Review(object):
         B = self.B
         self.S = S
         terr = ["%s:%d,%d,%d,%d" % ((td,) + g(s, r[:2]) + tuple(r[2:])) for s in S for td, r in s.get("terrain", [])]
-        if terr:                                       # round 2 (st.24 river): paint before anything is built on it
+        if terr:                                       # round 2 (st.19 river): paint before anything is built on it
             self.call("jawa/set_terrain_batch", ops=";".join(terr))
         B.probe("defaults")
         B.probe("set:style=%s" % style)
         B.ap("defaults")
         B.ap("set:autoLink=False")                    # no gallery mast may link across stations; restored below
-        B.hp("defaults")
         per = {}
         def put(d, cell, stuff=None, rot=None, faction="player"):
             per.setdefault((d, stuff, rot, faction), []).append(cell)
@@ -1435,7 +1218,7 @@ class Review(object):
                 put("PowerConduit", g(s, c))
             for c in s.get("wconduit", []):
                 put("WaterproofConduit", g(s, c))
-            for c in s.get("hconduit", []):              # round 8 (st.35): vanilla's hidden conduit stays hidden
+            for c in s.get("hconduit", []):              # round 8 (st.25): vanilla's hidden conduit stays hidden
                 put("HiddenConduit", g(s, c))
             for h in s["hostile"]:
                 put(h[0], g(s, h[1]), rot=h[2] if len(h) > 2 else None, faction="hostile")
@@ -1452,9 +1235,6 @@ class Review(object):
                 put(d, g(s, c), stuff=STUFFED.get(d), rot=rot)
                 if d == "Battery":
                     bats.append((g(s, c), ch))
-            for h in s["hoses"]:
-                if not h.get("look"):
-                    put("RM_HoseReel", g(s, h["reel"]))
         for c in FREE["pad_conduit"]:
             put("PowerConduit", c)
         for c in FREE["batteries"]:
@@ -1469,7 +1249,7 @@ class Review(object):
         for c in FREE["bracket_wall"]:
             put("Wall", c, stuff="Steel")
         transmitters = ("Battery", "WoodFiredGenerator", "PowerSwitch", "SolarGenerator", "RM_AerialMast", "RM_AerialLampMast",
-                        "RM_AerialWallBracket", "RM_HoseReel")
+                        "RM_AerialWallBracket")
         order = ["Granite", "Wall", "PowerConduit", "WaterproofConduit", "HiddenConduit"] + list(transmitters)
         keys = sorted(per, key=lambda k: (order.index(k[0]) if k[0] in order else 99, k[0], str(k[3])))
         self.builds = {}
@@ -1500,7 +1280,7 @@ class Review(object):
                 self.notes.append("battery at %s not found" % (cell,))
                 continue
             self.call("jawa/battery_set", thing=tid, mode="setPct", value=pct)
-        for s in S:                                    # round 2 (st.28): real blueprints, left unbuilt for the owner
+        for s in S:                                    # round 2 (st.23): real blueprints, left unbuilt for the owner
             for d, c, rot in s.get("blueprints", []):
                 kw = {"def": d}
                 x, z = g(s, c)
@@ -1519,7 +1299,7 @@ class Review(object):
         apos = {(a["x"], a["z"]): a["id"] for a in c0.get("anchors") or []}
         for s in S:
             ids = [apos.get(g(s, m[1])) for m in s["masts"]]
-            for i in s.get("owner_hostile", []):        # round 8 (st.40): their poles, flipped BEFORE linking (same owner both ends)
+            for i in s.get("owner_hostile", []):        # round 8 (st.30): their poles, flipped BEFORE linking (same owner both ends)
                 r = B.ap("owner:%d,hostile" % ids[i]) if ids[i] is not None else {"success": False, "error": "anchor missing"}
                 if not r.get("success"):
                     self.notes.append("station %d owner flip of mast %d: %s" % (s["n"], i, json.dumps(r)[:200]))
@@ -1532,7 +1312,7 @@ class Review(object):
                     self.refusals["%d:%d-%d" % (s["n"], a, b)] = "%s (expected %s)" % (v, exp[0])
                     if v != exp[0]:
                         self.notes.append("station %d link %d-%d verdict %s, expected %s" % (s["n"], a, b, v, exp[0]))
-                        if v == "Ok":                  # walk 2026-10-15: st.25's roof landed after the link and cut it
+                        if v == "Ok":                  # walk 2026-10-15: st.20's roof landed after the link and cut it
                             B.ap("unlink:%d,%d" % (ids[a], ids[b]))   # (roofCuts 1, a dead stub); the sign wants no wire
                 elif v not in ("Ok", "Linked", "Success", None):
                     self.notes.append("station %d link %d-%d verdict %s" % (s["n"], a, b, v))
@@ -1555,48 +1335,17 @@ class Review(object):
         self.no_roofs()            # round 2: colonists had roofed the old station-9 shed in those ticks (frozen roof mote)
         B.ap("poll")
         B.ap("set:autoLink=True")                     # the free area behaves as shipped
-        # hoses: lay all, flow the plump ones, then the filling one half a transition later
-        hs = [(s, h) for s in S for h in s["hoses"]]
-        for s, h in hs:
-            r, f = g(s, h["reel"]), g(s, h["far"])
-            lay = B.hp("lay:%d,%d,%d,%d" % (r + f))
-            if not lay.get("success", True) or lay.get("layOk") is False:
-                self.notes.append("station %d hose lay: %s" % (s["n"], json.dumps(lay)[:200]))
-        B.ticks(2)
-        for s, h in hs:
-            if h["state"] == "Plump":
-                B.hp("flow:%d,%d=on" % g(s, h["reel"]))
-        B.ticks(PL.TRANSITION_TICKS - PL.TRANSITION_TICKS // 2 + 5)
-        for s, h in hs:
-            if h["state"] == "Filling":
-                B.hp("flow:%d,%d=on" % g(s, h["reel"]))
-        B.ticks(PL.TRANSITION_TICKS // 2)
-        for s, h in hs:                                # style gallery: laid, then reeled back in (stored art, style kept)
-            if h.get("reelin"):
-                r = B.hp("reelin:%d,%d" % g(s, h["reel"]))
-                if not r.get("success", True):
-                    self.notes.append("station %d reelin: %s" % (s["n"], json.dumps(r)[:200]))
-        B.ticks(2)
-        for s in S:                                    # round 2 (st.21/22): the maze hooks, after the hoses are down
-            if s.get("hook"):
-                HOOKS[s["hook"]](self, s)
-        hc = B.hp("census")
-        self.hose_states = {}
-        for s, h in hs:
-            reel = list(g(s, h["reel"]))
-            x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
-            self.hose_states["%d@%d,%d" % (s["n"], reel[0], reel[1])] = {k: x.get(k) for k in ("state", "blend", "couplings", "pathLen")}
         B.probe("poll")
-        self.style_reads = self.read_styles(S, hc)
+        self.style_reads = self.read_styles(S)
         self.station_fog()
-        for s in S:                                    # round 8 (st.39): spilled fuel LAST, after every tick, so nothing lights it
+        for s in S:                                    # round 8 (st.29): spilled fuel LAST, after every tick, so nothing lights it
             for c in s.get("fuel", []):                # before the map is paused (a live fallen end ignites fuel when unpaused)
                 x, z = g(s, c)
                 self.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=x, z=z)
         self.call("rimworld/pause_game", pause=True)
 
     def place_styled(self, S):
-        """Stations 1-11: every styled piece through the REAL Architect designator (AerialProbe cplace / place, the menu
+        """Stations 1-10 (and 24, 31): every styled piece through the REAL Architect designator (AerialProbe cplace / place, the menu
         option's own Pick call; only the click is skipped), god mode, in list order (older = placed first)."""
         B = self.B
         B.ap("clearpicks")
@@ -1604,7 +1353,7 @@ class Review(object):
         self.styled_fail = []
         for s in S:
             for kind, d, key, c in s.get("styled", []):
-                x, z = g(s, c)                         # kind "B" (round 8, st.41): the menu's blueprint, left unbuilt
+                x, z = g(s, c)                         # kind "B" (round 8, st.31): the menu's blueprint, left unbuilt
                 r = B.ap("cplace:%s:%s:%d,%d:%s" % (d, key, x, z, "build" if kind == "B" else "god"))
                 if not r.get("success"):
                     self.styled_fail.append((s["n"], d, key, (x, z), r.get("error")))
@@ -1622,16 +1371,9 @@ class Review(object):
                     r = B.ap("place:%s:%s:%d,%d%s:god" % (m[0], m[3], x, z, rot))
                     if not r.get("success"):
                         self.styled_fail.append((s["n"], m[0], m[3], (x, z), r.get("error")))
-            for h in s["hoses"]:
-                if h.get("look"):                      # the reel's picker moved to FlowWorks (HoseLook): HoseProbe place:, not AerialProbe
-                    x, z = g(s, h["reel"])
-                    r = B.hp("place:RM_HoseReel:%s:%d,%d:god" % (h["look"], x, z))
-                    if not r.get("success"):
-                        self.styled_fail.append((s["n"], "RM_HoseReel", h["look"], (x, z), r.get("error")))
         B.ap("cprocess")
         B.ap("clearpicks")                              # the free area's buttons start on the default look, not our last pick
         B.ap("cclearpicks")
-        B.hp("clearpicks")                              # the reel button's pick lives in FlowWorks' HoseLook
         if self.styled_fail:
             self.notes.append("styled placements refused: %d, first %s" % (len(self.styled_fail), self.styled_fail[:4]))
         self.say("styled pieces placed (%d refused)" % len(self.styled_fail))
@@ -1650,14 +1392,13 @@ class Review(object):
                 self.action_reads[s["n"]] = {"action": a[0], "ok": r.get("success"), "error": r.get("error"),
                                              "message": st.get("lastMessage")}
 
-    def read_styles(self, S, hc):
+    def read_styles(self, S):
         """State read per style station (never a screenshot): every run in the after row / station with its stored styles,
-        the anchors' stored style and drawn art, the reels' look and state; checked against each station's expectation."""
+        the anchors' stored style and drawn art; checked against each station's expectation."""
         B = self.B
         out = {}
         an = B.ap("styles")
         anchors = {(a.get("x"), a.get("z")): a for a in an.get("anchors") or []}
-        reels = {tuple(x.get("reel") or ()): x for x in hc.get("hoses") or []}
         for s in [s for s in S if s.get("style_station")]:
             st = B.ap("cstyles:%d,%d,%d,%d" % rect_of(s, 0))
             runs = {}
@@ -1677,9 +1418,6 @@ class Review(object):
             ms = [anchors.get(g(s, m[1])) or {} for m in s["masts"]]
             if ms:
                 r["anchors"] = [(m.get("def"), m.get("rawStyle"), (m.get("graphicPath") or "").split("/")[-2:]) for m in ms]
-            hz = [reels.get(g(s, h["reel"])) or {} for h in s["hoses"]]
-            if hz:
-                r["reels"] = [(x.get("look"), x.get("rawStyle"), x.get("reelState")) for x in hz]
             exp = s.get("expect")
             if exp and exp.get("winner"):              # merge / tie: the after row is ONE run, all of the expected look
                 after = [m for m in st.get("members") or [] if m.get("z") == s["origin"][1]]
@@ -1693,7 +1431,7 @@ class Review(object):
                 if r["afterRuns"] != exp["halves"] or any(exp["look"] not in (m.get("rawStyle") or "") for m in after):
                     self.notes.append("station %d: split gave %s runs %s" % (s["n"], r["afterRuns"], sorted({m.get("rawStyle") for m in after})))
             if s.get("legacy_set") and any(m.get("rawStyle") for m in st.get("members") or []):
-                self.notes.append("station 12: an unstyled piece stores a style")
+                self.notes.append("station 11: an unstyled piece stores a style")
             out[s["n"]] = r
         return out
 
@@ -1725,13 +1463,13 @@ class Review(object):
             return r
         if which in ("0", "all"):
             x, z, w, h = REGION
-        elif which.upper() == "N0":                     # round 2: the north gallery (stations 18-33, 38-41)
+        elif which.upper() == "N0":                     # round 2: the north gallery (stations 15-23, 28-31)
             x, z, w, h = REGION2
         elif which.upper() == "F":
             x, z, w, h = FREE["rect"]
         elif which.upper() == "M":
             x, z, w, h = BOARD["rect"]
-        elif which.upper() == "S0":                     # the style gallery, stations 1-12 (south-east)
+        elif which.upper() == "S0":                     # the style gallery, stations 1-11 (south-east)
             x, z, w, h = STYLE_GALLERY
         else:
             s = next(s for s in S if str(s["n"]) == which)
@@ -1749,21 +1487,23 @@ def keysheet(S, style, live=None):
           "feature: `src/RimMandrake/GimmeSomeSlack/review/COVERAGE.md`." % len(S), "",
           "Built by `src/RimMandrake/GimmeSomeSlack/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.", "",
           "**This map reviews the per-build style design** (`design/RimMandrake/messyconduit_style_per_build_design.md`, your "
-          "decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-11 are built "
+          "decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-10 are built "
           "through that machinery and stand side by side in four looks. `--style` (Mod Settings 'Default style') now only sets "
-          "the DEFAULT look, which station 12 and every station 13-40 but 34 draw because they store no look. Default look now: "
+          "the DEFAULT look, which station 11 and every station 12-30 but 24 draw because they store no look. Default look now: "
           "**%s**." % look, "",
-           "Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-12; 0 = whole south region; "
-           "N0 = north gallery 18-33 and 38-41; M = art board; F = free area).", "",
+           "Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-11; 0 = whole south region; "
+           "N0 = north gallery 15-23 and 28-31; M = art board; F = free area).", "",
+           "The hose is not on this map: it moved to FlowWorks, and so did its review stations (owner 2026-10-15: *\"Get rid of "
+           "those hoses...\"*). They are on the FlowWorks review map (`src/RimMandrake/FlowWorks/review_map.py`).", "",
            "## Everywhere", "",
-           "- Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or hose reel button opens a menu of four looks "
+           "- Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or floor lamp button opens a menu of four looks "
            "(Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, "
            "orange, green, brown, yellow, blue). The button remembers your last pick.",
            "- 'Restyle this run' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).",
            "- A run = connected conduit cells + switches + the poles and brackets wired into them. Batteries and machines end a "
            "run. Joining two runs of different looks: the run with more conduit cells wins; a tie goes to the older run.",
            "- Mod Settings > RimMandrake: Gimme Some Slack: master switch OFF restores vanilla conduit art instantly.",
-           "- Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.", ""]
+           "- Unpause (space) to see motion: sway, live-end sparks. Pause again to study a frame.", ""]
     for row, name, blurb in ROWS:
         md += ["## " + name, ""] + ([blurb, ""] if blurb else [])
         for s in [s for s in S if s["row"] == row]:
@@ -1799,7 +1539,9 @@ def keysheet(S, style, live=None):
            "Owner 2026-10-05: *\"reduce the number of north Star verifications and verification stations for the human review "
            "sheet as well. If so, remove them.\"* Plan: `design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md` "
            "section 4. 47 stations -> 33: fifteen cut or merged, one new HOSE STATES station, the rest renumbered in order. "
-           "Stations 34-41 were added 2026-10-15 (round 8); the old numbers in the left column are the 47-station map's, not today's.", "",
+           "Eight stations were added 2026-10-15 (round 8, now 24-31), and the same day every hose station moved to the FlowWorks "
+           "review map (owner: *\"Get rid of those hoses...\"*), leaving 31, renumbered in order. The old numbers in the left "
+           "column are the 47-station map's, not today's.", "",
            "| old (47-station map) | new | station |", "|---|---|---|"]
     md += ["| %s | **%s** | %s |" % (o if o else "new", n if n else "-", t) for o, n, t in renumber_table(S)]
     md += ["| F | **F** | free build area |", "| M | **M** | art-slot board |", ""]
@@ -1841,7 +1583,7 @@ th{color:var(--teal)}td.fb{color:var(--rust)}td.own{color:var(--muted)}
 .poke{margin:6px 0 2px;color:var(--teal)}.weak{margin:2px 0;color:var(--rust)}
 </style></head><body>
 <h1>Gimme Some Slack &mdash; human review</h1>
-<p class="sub">Reviewing the <b>per-build style</b> design: the look is picked on the build button and stored on each piece. Stations 1&ndash;11 stand side by side in four looks. Default look (station 12 and the stations 13&ndash;40 but 34, which store no look): <b>%s</b>; change it in Mod Settings &rsaquo; Default style. The game is paused, god mode on, clear weather, noon, Peaceful.</p>
+<p class="sub">Reviewing the <b>per-build style</b> design: the look is picked on the build button and stored on each piece. Stations 1&ndash;10 stand side by side in four looks. Default look (station 11 and the stations 12&ndash;30 but 24, which store no look): <b>%s</b>; change it in Mod Settings &rsaquo; Default style. The game is paused, god mode on, clear weather, noon, Peaceful.</p>
 <div class="box" style="margin-top:14px"><b>Everywhere:</b> each build button opens a four-look menu (conduit adds the Modern colours: random mix, one colour per run, orange, green, brown, yellow, blue) and remembers your pick. 'Restyle this run' sits on any selected conduit, switch or pole. Joining two looks: the run with more conduit cells wins, a tie goes to the older run. Master switch OFF = vanilla conduit art. Unpause for motion.</div>
 %s
 <h2>Mod Settings &mdash; one switch each</h2><p class="sub">Global: they change every station at once. Flip one live with <code>human_review.py --set gss.FIELD=VALUE</code> / <code>--set aerial.FIELD=VALUE</code>, or in Mod Settings &rsaquo; Gimme Some Slack.</p>
@@ -1851,8 +1593,8 @@ th{color:var(--teal)}td.fb{color:var(--rust)}td.own{color:var(--muted)}
 <div class="tw"><table><tr><th>piece</th>%s</tr>%s</table></div>
 <h2>F &mdash; free build area</h2><div class="box">North band, west end. Charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>; steel, plasteel, components, wood; <i>their grid: clamp here</i> (another faction's conduit, for a power-tap clamp) and a <i>wall for brackets</i>. Every buildable can be built here. Try the build menus here: pick a look, build, extend, join two looks, restyle. God mode builds instantly; turn it off to watch colonists carry the look from blueprint to building. No gallery mast is within 20 cells.</div>
 <details class="agent"><summary>For whoever drives the camera, and the old station numbers</summary>
-<p>Jump the camera: <code>human_review.py --goto N</code> (N = station number; S0 = style gallery, 0 = south region, N0 = north gallery 18&ndash;33 and 38&ndash;41, M = art board, F = free area). Default look: <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>.</p>
-<p>Old station &rarr; new station (densified 2026-10-05, owner: <i>"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."</i>): 47 stations &rarr; 33 (stations 34&ndash;41 were added 2026-10-15; the left column is the 47-station map, not today's numbers; plan: design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4). A removed one names the station that still shows it.</p>
+<p>Jump the camera: <code>human_review.py --goto N</code> (N = station number; S0 = style gallery, 0 = south region, N0 = north gallery 15&ndash;23 and 28&ndash;31, M = art board, F = free area). Default look: <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>.</p>
+<p>Old station &rarr; new station (densified 2026-10-05, owner: <i>"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."</i>): 47 stations &rarr; 33 (eight stations were added 2026-10-15, now 24&ndash;31; the same day the hose stations moved to the FlowWorks review map, leaving 31; the left column is the 47-station map, not today's numbers; plan: design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4). A removed one names the station that still shows it.</p>
 <div class="tw"><table><tr><th>old (47-station map)</th><th>new</th><th>station</th></tr>%s<tr><td>F</td><td><b>F</b></td><td>free build area (unchanged)</td></tr><tr><td>M</td><td><b>M</b></td><td>art-slot board (unchanged; now carries a note)</td></tr></table></div>
 </details>
 </body></html>""" % (E(look), "\n".join(
@@ -1896,8 +1638,8 @@ def main(argv=None):
     ap.add_argument("--build", action="store_true")
     ap.add_argument("--fresh-map", action="store_true", help="with --build: start a new quicktest map first")
     ap.add_argument("--style", choices=STYLES, default=None,
-                    help="set the DEFAULT look only (Mod Settings 'Default style'): what station 12 and stations 13-40 (not 34) "
-                         "draw, and what a fresh build button starts on; stations 1-11 store their own look and do not change")
+                    help="set the DEFAULT look only (Mod Settings 'Default style'): what station 11 and stations 12-30 (not 24) "
+                         "draw, and what a fresh build button starts on; stations 1-10 store their own look and do not change")
     ap.add_argument("--goto", default=None)
     ap.add_argument("--sub", default=None, help="with --goto N: frame only dx,dz,w,h (station-local cells), a close look")
     ap.add_argument("--shot", default=None, help="with --goto N --sub: the game's own render of that rect (no window focus "
@@ -1920,7 +1662,7 @@ def main(argv=None):
         return 2
     if a.plan:
         keysheet(S, a.style or "StarWarsJawa")
-        print("layout ok: %d stations (1-12 style gallery) + art board M + free area; key sheet -> %s" % (len(S), OUT))
+        print("layout ok: %d stations (1-11 style gallery) + art board M + free area; key sheet -> %s" % (len(S), OUT))
         return 0
     import run_live as RL  # noqa: E402  (python.exe: numpy-free path)
     R = Review(RL.LiveBridge(), a.log if a.build else None)
@@ -1941,7 +1683,7 @@ def main(argv=None):
         style = style or "StarWarsJawa"
         R.build(S, style)
         R.sweep_hostiles()
-        R.say("stations built; hose states %s" % R.hose_states)
+        R.say("stations built")
         lab = R.labels(S, style)
         R.say("labels: added %s, refused %s" % (lab.get("added"), lab.get("refused")))
         sg = RM.place_signs(R.B, sign_ops(S))
@@ -1950,8 +1692,8 @@ def main(argv=None):
             R.notes.append("sign books: %s" % json.dumps({k: sg.get(k) for k in ("count", "refused", "message")})[:300])
         R.goto(S, "S0")
         live = {"default_style": style, "style_reads": getattr(R, "style_reads", None), "merge_actions": getattr(R, "action_reads", None),
-                "styled_refused": getattr(R, "styled_fail", None), "builds": R.builds, "hose_states": R.hose_states, "peaceful": R.peaceful,
-                "expected_refusals": R.refusals, "hose_hooks": R.hook_results, "station_roofs": getattr(R, "roofs", None),
+                "styled_refused": getattr(R, "styled_fail", None), "builds": R.builds, "peaceful": R.peaceful,
+                "expected_refusals": R.refusals, "station_roofs": getattr(R, "roofs", None),
                 "pawns_in_region": R.pawns_in_region, "notes": R.notes, "wall_s": round(time.time() - t0, 1)}
         apply_sets(R, a.set)
         keysheet(S, style, live)
@@ -1969,7 +1711,7 @@ def main(argv=None):
         except (OSError, ValueError):
             last = None
         keysheet(S, style, last)
-        print("default look -> %s (%s); stations 1-11 keep their stored looks" % (style, r.get("value")))
+        print("default look -> %s (%s); stations 1-10 keep their stored looks" % (style, r.get("value")))
     if a.labels:
         cur = (R.B.call("jawa/mod_settings_field", typeName="RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings", action="get",
                         field="style").get("value") or "StarWarsJawa")
