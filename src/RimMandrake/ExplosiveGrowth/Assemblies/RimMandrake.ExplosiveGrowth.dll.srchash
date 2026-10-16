@@ -1,6 +1,7 @@
 # project: RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowth.csproj
-# dll: 597c9037d970de518bf7734db45056c780b0a44938c398faa675b321bbc56f4c
+# dll: 55b8f37b91da4d5b691bb228ebfcf7b62e2ae4b18d3170a49c8f074c33763c47
 02fcd28ba138e1dcc95be7d1036500154f5fba9cc12633821a3de3e4fb43c42e RM_SoakSources.cs
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
 29e31e91ae0df4c4058e0aaad13f4d4fefdc29fce7168d98ad03b301ed86d044 RM_GrowthTop.cs
 2fa478322afa6adb155976978980f8278636305be5b23738bec823cf8b2ff9d4 ExplosiveGrowthMod.cs
@@ -18,4 +19,3 @@ ad8deb20229e87306cc6226fd3edacb4663412b74da31a8440d4c7d3d521814d ../../_Shared/F
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs
 d77503b045e0aa14c48dd9372869c5a2fcce5bda8e2850ddfaa5dfcb6ac792ab RM_ChargeSelfTest.cs
 e9a64c5879c6d68ff09fbfb933ca374f4e699408d9f65c8da959416efd65f3b3 RM_MapComponent_ExplosiveGrowth.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../_Shared/HarmonyResilience/PatchApplier.cs

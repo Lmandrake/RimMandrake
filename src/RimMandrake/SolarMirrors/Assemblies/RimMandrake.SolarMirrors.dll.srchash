@@ -1,5 +1,6 @@
 # project: RimMandrake/SolarMirrors/Source/RM_SolarMirrors.csproj
-# dll: d67ade04cf350d9ff4d20b0203e5c2a3c2ff68f2797dfbb1d4ad4d647af86c4e
+# dll: fe367fcaf5ea9dbe993a6bc9242b214faf99b158283b50a20b20bc29342ec7b0
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../_Shared/HarmonyResilience/PatchApplier.cs
 163c7fb86fdb70525ed02d70b7c83944c8d9be9ee2ee96c391f27feb2f6a446c Kernel/RM_MirrorKernel.cs
 23c2b60c2805fb4db3282e327ad5223725d2505a852881a4517235fe4a08273a RM_CompMirror.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
@@ -13,4 +14,3 @@ c2a036e5dc63229d116e58f062fe82fcb052bcbbf8e1c3ef5a28121086d08298 RM_MirrorMath.c
 ca8ddaec2b44fcd8c5e79422e1a87dfc442464189dc05aff31fdd62f1cc361e9 RM_MirrorWork.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs
 df2ea7d3da17db7eb48e570355f958afa1a3856e7c438c04f6f46d968ad40043 RM_MirrorField.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../_Shared/HarmonyResilience/PatchApplier.cs

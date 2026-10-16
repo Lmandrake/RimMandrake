@@ -1,6 +1,7 @@
 # project: RimUtinni/ShipShields/Source/RimMandrake.Utinni.ShipShields.csproj
-# dll: b3065a18c9dfc23f2e0c78c1411a5bd247e02ae627d968364fa3bd5770ba8548
+# dll: b54bd3d8870357fd09684963bf3b85a71bdff03419e8c0bae631e80c0b12ad0c
 09db90b3b268ba4724cfdc2deb3e13dd2e3e5203a9ff7059cca8105569830e57 ShieldFieldMode.cs
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
 3cfba7676e091b44d68cc5210dcc33872e7bf32f95e9b7e745ab2cef236febdb ShieldLandingAdvisory.cs
 3f65f248e70e9c7d4f05d732f89c6ecfe3ce0da60a3026efe5aff328526bde41 CompProperties_ShieldGenerator.cs
@@ -19,4 +20,3 @@ d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMan
 dbf2510747a40e7018ed4e4dea7e356e52c7ed8ad2a7e8c710722ee5d6a03582 CompProperties_ShieldCryoEnvelope.cs
 e6309a67d62c635a2ca8970f7cf77d6da837ccbab2f18b4d576810ffba483093 CompShieldParticulateScreen.cs
 f002ec80fbe8039b6cfeedf0b97be7aaf3486fb7e85fd2c5922571f0fab35e97 CompShieldCryoEnvelope.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs

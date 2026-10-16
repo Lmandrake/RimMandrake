@@ -1,7 +1,8 @@
 # project: RimUtinni/EmpirePursuit/Source/EmpirePursuit.csproj
-# dll: a40d3072438114c8218046845d8c594a88cc3d5c2cda0f6a7944b1c92cea0576
+# dll: 1d5aa651c2a51c483e1a9a971c4115b2192c3aef80e9c3108d39fab76475a9d6
 0f4931fce397bb99d7ae08231dd746778e162c90d7bf48d2036bee4d58664456 EmpireLadderLords.cs
 13268e3b5f3ad2ce33d6b3f4584ed13515f904e3fb9f52323c2585fd5c177c6d EmpireLadderMath.cs
+1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
 1f502f77be6de8f89ac2d1c7b9d923297d3b0a7bc3cbf9ed2aac435fd96282f7 RUT_EmpireRungDef.cs
 268f1a6e89883f1398be01e6556e31eed5ede095896fb5ca6b7e55cbaf91de0e RuthlessPursuingMechanoids.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
@@ -14,4 +15,3 @@ a6967511944351015c05344e31d12c807301de9bbdbae625d33657ffa2a3a89f Utilities.cs
 bf4494c7e667c0ec5defcf7786d80e877690947a5710728c92a2185be1769657 AnomalySuppression.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
 dabffabdd64e10e99039d473609cc4e8c4a39c427e2251720b7620172c813e38 HarmonyPatches.cs
-f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs
