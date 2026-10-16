@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_BedBug: owned RM_ port of the Alpha Animals BedBug (sarg.alphaanimals AA_BedBug, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Cauldron.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 1 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
+    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
+    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_BedBugEgg (ART OWED, RM_BedBugEggUnfertilized)
+    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_BedBugEgg (ART OWED, RM_BedBugEggFertilized)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_BedBug</defName>
+    <label>bedbug</label>
+    <description>These oversized insects are considered a pest and a nuisance in every world they manage to infest. While not particularly dangerous or powerful on their own, their bite carries a powerful toxin that paralyzes its prey, so one small bite is enough to down prey much larger than themselves. Thankfully, humans are way too large for them, unless they are somehow maddened beyond all reason... Hunters should be wary not to tackle a bedbug on their own!\n\nArt by Feroxiious (check her Instagram at https://www.instagram.com/feroxiious/).</description>
+    <statBases>
+      <MoveSpeed>3.00</MoveSpeed>
+      <ComfyTemperatureMin>-86.6</ComfyTemperatureMin>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <MarketValue>100</MarketValue>
+      <Wildness>0.75</Wildness>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>RM_ParalysingBite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_BedBugEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_BedBugEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggCountRange>
+          <min>1</min>
+          <max>3</max>
+        </eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <maxPreyBodySize>0.80</maxPreyBodySize>
+      <trainability>None</trainability>
+      <predator>true</predator>
+      <body>BeetleLike</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseHealthScale>1.0</baseHealthScale>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_BedBug</defName>
+    <label>bedbug</label>
+    <race>RM_BedBug</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>7</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>bedbug</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_BedBug/RM_BedBug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <label>bedbug</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_BedBug/RM_BedBug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_BedBug/RM_BedBug</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+          <shadowData>
+            <volume>(0.2, 0.3, 0.2)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <DamageDef ParentName="Bite">
+    <defName>RM_ParalysingBite</defName>
+    <label>paralysing bite</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_Paralysis</hediff>
+        <severityPerDamageDealt>0.01</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+  <ManeuverDef>
+    <defName>RM_ParalysingBite</defName>
+    <requiredCapacity>RM_ParalysingBite</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_ParalysingBite</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Bite_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Bite_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Bite_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Bite_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+  <ToolCapacityDef>
+    <defName>RM_ParalysingBite</defName>
+    <label>paralysing bite</label>
+  </ToolCapacityDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_BedBugEggUnfertilized</defName>
+    <label>bedbug egg (unfert.)</label>
+    <description>Unfertilized bedbug egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a beetle egg, it is disgusting either way...</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BedBugEgg</texPath>
+      <color>(99,45,40)</color>
+    </graphicData>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MarketValue>9.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_BedBugEggFertilized</defName>
+    <label>bedbug egg (fert.)</label>
+    <description>Fertilized bedbug egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a beetle egg, it is disgusting either way... If all goes well, it should hatch into a bedbug.</description>
+    <tradeability>None</tradeability>
+    <statBases>
+      <MarketValue>9.0</MarketValue>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BedBugEgg</texPath>
+      <color>(99,45,40)</color>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RM_BedBug</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

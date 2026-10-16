@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Dustveil: owned RM_ port of the Alpha Animals AngelMoth (sarg.alphaanimals AA_AngelMoth, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod TheRot.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 5 op(s) from src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 3 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
+    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
+    - customResourceString AA_MothSilkDesc -> 'moth silk' (donor translation key replaced by the words)
+    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
+    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_DustveilEgg (ART OWED, RM_AngelMothEggFertilized)
+    - texPath Things/Item/Resource/AA_EggBeetle -> Things/Item/Resource/RM_DustveilEgg (ART OWED, RM_ButterflyEggUnfertilized)
+    - texPath Things/Item/Resource/AA_MothSilk -> Things/Item/Resource/RM_MothSilk (ART OWED, RM_MothSilk)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dustveil</defName>
+    <label>dustveil</label>
+    <description>A broad-winged moth whose pale, dust-soft wings hang like a veil, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description>
+    <statBases>
+      <MoveSpeed>3</MoveSpeed>
+      <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
+      <MarketValue>450</MarketValue>
+      <Wildness>0.65</Wildness>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+
+			</li>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RM_AngelMothEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_ButterflyEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>12</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~5</eggCountRange>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_EatWeirdFood" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <customThingToEat>
+          <li>Apparel_TribalA</li>
+          <li>Apparel_Parka</li>
+          <li>Apparel_Pants</li>
+          <li>Apparel_BasicShirt</li>
+          <li>Apparel_CollarShirt</li>
+          <li>Apparel_Duster</li>
+          <li>Apparel_Jacket</li>
+          <li>Apparel_CowboyHat</li>
+          <li>Apparel_BowlerHat</li>
+          <li>Apparel_Tuque</li>
+          <li>Apparel_WarVeil</li>
+          <li>VAE_Footwear_Boots</li>
+          <li>VAE_Footwear_Shoes</li>
+          <li>VAE_Handwear_Gloves</li>
+          <li>VAE_Apparel_CasualTShirt</li>
+          <li>VAE_Apparel_Hoodie</li>
+          <li>VAE_Apparel_Shorts</li>
+          <li>VAE_Apparel_Skirt</li>
+          <li>VAE_Apparel_ShirtandTie</li>
+          <li>VAE_Apparel_SuitJacket</li>
+          <li>VAE_Apparel_Trousers</li>
+          <li>VAE_Headgear_Fedora</li>
+          <li>VAE_Apparel_Overalls</li>
+          <li>VAE_Apparel_FleeceShirt</li>
+          <li>VAE_Apparel_Jeans</li>
+          <li>VAE_Apparel_ChefsUniform</li>
+          <li>VAE_Apparel_MilitaryJacket</li>
+          <li>VAE_Apparel_MilitaryUniform</li>
+          <li>VAE_Apparel_BuildersJacket</li>
+          <li>VAE_Apparel_DoctorScrubs</li>
+          <li>VAE_Apparel_LabCoat</li>
+          <li>VAE_Apparel_TankTop</li>
+          <li>VAE_Apparel_SheriffShirt</li>
+          <li>VAE_Apparel_Jumpsuit</li>
+          <li>VAE_Apparel_Tunic</li>
+          <li>VAE_Apparel_Blouse</li>
+          <li>VAE_Apparel_Apron</li>
+          <li>VAE_Apparel_Cape</li>
+          <li>VAE_Headgear_TrapperHat</li>
+          <li>VAE_Headgear_SummerHat</li>
+          <li>VAE_Apparel_PeltCoat</li>
+          <li>VAE_Apparel_TribalPoncho</li>
+          <li>VAE_Apparel_TribalKilt</li>
+          <li>VAE_Headgear_Hood</li>
+          <li>VAE_Headgear_Scarf</li>
+          <li>VAE_Headgear_Beret</li>
+          <li>VAE_Headgear_BaseballCap</li>
+          <li>VAE_Headgear_ChefsToque</li>
+          <li>Apparel_Headwrap</li>
+          <li>Apparel_Broadwrap</li>
+          <li>Apparel_AuthorityCap</li>
+          <li>Apparel_Tailcap</li>
+          <li>Apparel_Shadecone</li>
+          <li>Apparel_Flophat</li>
+          <li>Apparel_BodyStrap</li>
+          <li>Apparel_Burka</li>
+          <li>Apparel_Robe</li>
+          <li>Apparel_Blindfold</li>
+          <li>VCE_Grass</li>
+          <li>VCE_TallGrass</li>
+          <li>Plant_Grass</li>
+          <li>Plant_TallGrass</li>
+        </customThingToEat>
+        <nutrition>1</nutrition>
+        <digThingIfMapEmpty>false</digThingIfMapEmpty>
+        <fullyDestroyThing>false</fullyDestroyThing>
+        <percentageOfDestruction>0.5</percentageOfDestruction>
+        <needsWater>true</needsWater>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RM_MothSilk</resourceDef>
+        <gatheringIntervalDays>5</gatheringIntervalDays>
+        <resourceAmount>25</resourceAmount>
+        <customResourceString>moth silk</customResourceString>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
+      <herdAnimal>true</herdAnimal>
+      <body>RM_Butterfly</body>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>3</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>2</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dustveil</defName>
+    <label>angel moth</label>
+    <race>RM_Dustveil</race>
+    <combatPower>75</combatPower>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/AngelMoth/AngelMoth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.75</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_AngelMothEggFertilized</defName>
+    <label>angel moth egg (fert.)</label>
+    <description>Fertilized angel moth egg. If all goes well, it should hatch into an angel moth larva. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DustveilEgg</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.5</MarketValue>
+    </statBases>
+    <thingSetMakerTags>
+      <li>NotForGuests</li>
+    </thingSetMakerTags>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5</hatcherDaystoHatch>
+        <hatcherPawn>RM_DustveilLarva</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_ButterflyEggUnfertilized</defName>
+    <label>butterfly egg (unfert.)</label>
+    <description>Unfertilized butterfly egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DustveilEgg</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.5</MarketValue>
+    </statBases>
+    <thingSetMakerTags>
+      <li>NotForGuests</li>
+    </thingSetMakerTags>
+  </ThingDef>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_MothSilk</defName>
+    <label>moth silk</label>
+    <description>A very tough silk extracted from Angel moths. Very poor insulator.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_MothSilk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>5.5</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>5</DeteriorationRate>
+      <StuffPower_Armor_Sharp>1.40</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.36</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>16</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>16</StuffPower_Insulation_Heat>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <stuffProps>
+      <categories>
+        <li>Fabric</li>
+      </categories>
+      <commonality>0</commonality>
+      <color>(249,235,220)</color>
+      <statFactors>
+        <Flammability>1</Flammability>
+        <MaxHitPoints>1.3</MaxHitPoints>
+        <Beauty>3</Beauty>
+      </statFactors>
+    </stuffProps>
+    <thingCategories>
+      <li>Textiles</li>
+    </thingCategories>
+  </ThingDef>
+  <BodyDef>
+    <defName>RM_Butterfly</defName>
+    <label>butterfly body</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>RM_Thorax</def>
+          <coverage>0.10</coverage>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>InsectHeart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Pronotum</def>
+          <coverage>0.08</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>InsectHead</def>
+              <coverage>0.65</coverage>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.2</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>RM_EcholocationOrgan</def>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>left antenna</customLabel>
+                </li>
+                <li>
+                  <def>Antenna</def>
+                  <coverage>0.10</coverage>
+                  <customLabel>right antenna</customLabel>
+                </li>
+                <li>
+                  <def>InsectNostril</def>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>RM_InsectMouth</def>
+                  <coverage>0.05</coverage>
+                  <groups>
+                    <li>Mouth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_InsectWing</def>
+          <customLabel>right wing</customLabel>
+          <coverage>0.2</coverage>
+          <height>Middle</height>
+        </li>
+        <li>
+          <def>RM_InsectWing</def>
+          <customLabel>left wing</customLabel>
+          <coverage>0.2</coverage>
+          <height>Middle</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_DustveilLarva</defName>
+    <label>angel moth larva</label>
+    <description>Angel moths are beautiful lepidopterans that undergo metamorphosis, similar to other more mundane moths. Angel moths are yet another example of a genetically engineered project of waste disposal being abandoned, and its subjects being released into the wild.\n\nThe larvae are quite timid and harmless, and they are content with munching on sparse vegetation. The adult form of the moth, however, is voracious, and it will mainly consume its favourite food: clothing –in particular wool clothes, but many other natural fibres–. If no clothes are present they'll grudgingly devour grass. Although they can be used to get rid of unwanted clothing, it is hard to make them discriminate, as they are quite unruly creatures.\n\nAdult specimens produce a moth silk that can be harvested to use as a textile, though care must be taken to keep it out of other moths' reach, since they'll happily consume it too.\n\nArt by Feroxiious (check her Instagram at https://www.instagram.com/feroxiious/).</description>
+    <statBases>
+      <MoveSpeed>2</MoveSpeed>
+      <MarketValue>15</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MeatAmount>0</MeatAmount>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Metamorphosis" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <timeInYears>0.4</timeInYears>
+        <pawnToTurnInto>RM_Dustveil</pawnToTurnInto>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <body>RM_Slug</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>0.3</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <hasGenders>false</hasGenders>
+      <lifeExpectancy>1</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_DustveilLarva</defName>
+    <label>angel moth larva</label>
+    <race>RM_DustveilLarva</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.01</ecoSystemWeight>
+    <wildGroupSize>
+      <min>2</min>
+      <max>5</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DustveilLarva/RM_DustveilLarva</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <BodyPartDef>
+    <defName>RM_Thorax</defName>
+    <label>thorax</label>
+    <hitPoints>60</hitPoints>
+    <frostbiteVulnerability>0.8</frostbiteVulnerability>
+    <skinCovered>false</skinCovered>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_InsectMouth</defName>
+    <label>mouth</label>
+    <hitPoints>10</hitPoints>
+    <frostbiteVulnerability>0.8</frostbiteVulnerability>
+    <skinCovered>false</skinCovered>
+    <tags>
+      <li>EatingSource</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_InsectWing</defName>
+    <label>wing</label>
+    <hitPoints>25</hitPoints>
+    <frostbiteVulnerability>0.5</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>false</skinCovered>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyDef>
+    <defName>RM_Slug</defName>
+    <label>slug</label>
+    <corePart>
+      <def>RM_SlugBody</def>
+      <coverage>0.10</coverage>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Heart</def>
+          <coverage>0.1</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Skull</def>
+              <coverage>0.15</coverage>
+              <depth>Inside</depth>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.5</coverage>
+                  <depth>Inside</depth>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Nose</def>
+              <coverage>0.1</coverage>
+            </li>
+            <li>
+              <def>Jaw</def>
+              <coverage>0.1</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyPartDef>
+    <defName>RM_SlugBody</defName>
+    <label>slug body</label>
+    <hitPoints>25</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+</Defs>

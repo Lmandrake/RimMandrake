@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_CrystalMit: owned RM_ port of the Alpha Animals CrystalMit (sarg.alphaanimals AA_CrystalMit, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Cauldron.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 5 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
+    - useMeatFrom AA_BoulderMit -> Tortoise (vanilla; PROVISIONAL)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_CrystalMit</defName>
+    <label>crystalmit</label>
+    <description>A Crystalmit is a Pebblemit that has been genetically modified to feed on minerals. Crystalmits have a partly silicon-based biology, so they can derive substenance from eating scattered rocks.\n\nCrystalmits were created as a quick way of removing rock rubble from mining operations, but wild ones may prove to be a nuisance for colonies who'd rather use rocks for something useful.\n\nArt by Feroxiious (check her Instagram at https://www.instagram.com/feroxiious/).</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <ComfyTemperatureMin>-88.2</ComfyTemperatureMin>
+      <MarketValue>250</MarketValue>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+      <LeatherAmount>0</LeatherAmount>
+      <MeatAmount>0</MeatAmount>
+      <Wildness>0.6</Wildness>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RM_RandomBricks</resourceDef>
+        <gatheringIntervalDays>1</gatheringIntervalDays>
+        <resourceAmount>1</resourceAmount>
+        <customResourceString>StoneBlockDesc</customResourceString>
+        <isRandom>true</isRandom>
+        <randomItems>
+          <li>BlocksSandstone</li>
+          <li>BlocksGranite</li>
+          <li>BlocksLimestone</li>
+          <li>BlocksSlate</li>
+          <li>BlocksMarble</li>
+        </randomItems>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_EatWeirdFood" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <customThingToEat>
+          <li>ChunkSandstone</li>
+          <li>ChunkGranite</li>
+          <li>ChunkLimestone</li>
+          <li>ChunkSlate</li>
+          <li>ChunkMarble</li>
+          <li>GU_ChunkRoseQuartz</li>
+          <li>AB_ChunkCragstone</li>
+          <li>AB_ChunkObsidian</li>
+          <li>AB_ChunkMudstone</li>
+          <li>AB_ChunkSlimeStone</li>
+        </customThingToEat>
+        <nutrition>1</nutrition>
+        <digThingIfMapEmpty>false</digThingIfMapEmpty>
+        <fullyDestroyThing>false</fullyDestroyThing>
+        <percentageOfDestruction>0.1</percentageOfDestruction>
+        <needsWater>false</needsWater>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <useMeatFrom>Tortoise</useMeatFrom>
+      <body>TurtleLike</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.1</baseHungerRate>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>58</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <BlocksSandstone>1</BlocksSandstone>
+      <BlocksGranite>1</BlocksGranite>
+      <BlocksLimestone>1</BlocksLimestone>
+      <BlocksSlate>1</BlocksSlate>
+      <BlocksMarble>1</BlocksMarble>
+    </butcherProducts>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_CrystalMit</defName>
+    <label>crystalmit</label>
+    <race>RM_CrystalMit</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <ThingDef ParentName="UnfinishedBase">
+    <defName>RM_RandomBricks</defName>
+    <label>random bricks</label>
+    <description>This should never appear ingame. If it does, it's a bug</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/StoneBlocks</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+  </ThingDef>
+</Defs>

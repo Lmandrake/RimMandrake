@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_GiantCrownedSilkie: owned RM_ port of the Alpha Animals GiantCrownedSilkie (sarg.alphaanimals AA_GiantCrownedSilkie, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Cauldron.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - texPath Things/Item/Resource/AA_SilkieSilk -> Things/Item/Resource/RM_GiantCrownedSilkieSilk (ART OWED, RM_GiantCrownedSilkieSilk)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GiantCrownedSilkie</defName>
+    <label>giant crowned silkie</label>
+    <description>A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. The giant crowned silkie was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression.\n\nIt is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <ComfyTemperatureMin>-65</ComfyTemperatureMin>
+      <ComfyTemperatureMax>38.5</ComfyTemperatureMax>
+      <MarketValue>400</MarketValue>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.1</Wildness>
+    </statBases>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <body>Bird</body>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>1</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <useMeatFrom>Cassowary</useMeatFrom>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.03</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <leatherDef>Leather_Bird</leatherDef>
+      <roamMtbDays>3</roamMtbDays>
+      <lifeExpectancy>45</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundAngry>Pawn_Peacock_Angry</soundAngry>
+          <soundWounded>Pawn_Peacock_Wounded</soundWounded>
+          <soundDeath>Pawn_Peacock_Death</soundDeath>
+          <soundCall>Pawn_Peacock_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundCallIntervalRange>
+        <min>22000</min>
+        <max>30000</max>
+      </soundCallIntervalRange>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_EggGiantCrownedSilkieUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_EggGiantCrownedSilkieFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5</eggLayIntervalDays>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_GiantCrownedSilkieSilk</woolDef>
+        <shearIntervalDays>10</shearIntervalDays>
+        <woolAmount>30</woolAmount>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.55</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>15</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>13</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GiantCrownedSilkie</defName>
+    <label>giant crowned silkie</label>
+    <race>RM_GiantCrownedSilkie</race>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <combatPower>90</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>
+      <min>1</min>
+      <max>3</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>giant crowned silkie chick</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.1</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_EggGiantCrownedSilkieUnfertilized</defName>
+    <label>giant crowned silkie egg (unfert.)</label>
+    <description>An unfertilized giant crowned silkie egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <color>(230,230,230)</color>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>9.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_EggGiantCrownedSilkieFertilized</defName>
+    <label>giant crowned silkie egg (fert.)</label>
+    <description>A fertilized giant crowned silkie egg. If all goes well, it should hatch into a giant crowned silkie. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <color>(230,230,230)</color>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.3</Nutrition>
+      <MarketValue>9.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RM_GiantCrownedSilkie</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="WoolBase">
+    <defName>RM_GiantCrownedSilkieSilk</defName>
+    <label>giant crowned silkie silk</label>
+    <description>A soft silk produced by the giant crowned silkie. Once woven it has a very similar texture to sheep wool, but softer. Considered a luxury item.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_GiantCrownedSilkieSilk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>4</MarketValue>
+      <Mass>0.02</Mass>
+      <StuffPower_Insulation_Cold>26</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <commonality>0</commonality>
+      <color>(81,89,106)</color>
+      <statFactors>
+        <Flammability>1.7</Flammability>
+        <MaxHitPoints>1.2</MaxHitPoints>
+        <Beauty>3</Beauty>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+</Defs>

@@ -54,7 +54,7 @@
     own wildAnimals spawns only the donor's bare Beldon). This mod is the
     first place the tap's real target actually lives in a Forge wildAnimals
     list. Inline here: the 4 non-Star-Wars donor rows the frozen def already
-    carries (Q9), AA_ColossalAerofleet (FORGE_RULED_CONTENT_1), RM_FleetFlier
+    carries (Q9), RM_ColossalAerofleet (FORGE_RULED_CONTENT_1), RM_FleetFlier
     (COMMISSION_LEDGER_CLEANUP_1's own from-scratch, zero-donor creature) and
     the four ruled natives RM_Dhokkur/RM_Julmox/RM_Jossur/RM_Dhuvvox
     (FORGE_RULED_CONTENT_1).
@@ -245,15 +245,17 @@
       <li>RM_ForgePulse</li>
     </biomeMapConditions>
     <wildAnimals>
-      <AA_Aerofleet MayRequire="sarg.alphaanimals">0.4</AA_Aerofleet>  <!-- aerofleet - sky -->
+      <RM_Bulloo>0.4</RM_Bulloo>  <!-- aerofleet - sky -->
       <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow -->
-      <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow -->
+      <RM_Metallovore>0.15</RM_Metallovore>  <!-- metallovore - ground-slow -->
       <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ECOSYSTEM_PYRAMID_LAW_1 -->
       <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
       <!-- FORGE_RULED_CONTENT_1 (FORGE_BEDAZZLE_SITTING_1, owner turn 2 "Wire in all
-           waiting."): the roster's AA_ColossalAerofleet row, weight from
-           rosters/the_forge.json. -->
-      <AA_ColossalAerofleet MayRequire="sarg.alphaanimals">0.5</AA_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
+           waiting."): the roster's greater bulloo row, weight from
+           rosters/the_forge.json. RM_ColossalAerofleet is our port of the donor
+           AA_ColossalAerofleet (Phase 0 P3); the MayRequire stays only until our
+           art is installed at our own path (until then its texPath is the donor's). -->
+      <RM_ColossalAerofleet MayRequire="sarg.alphaanimals">0.5</RM_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
       <!-- FORGE_RULED_CONTENT_1 (turn 4 "1) admit."): the four admitted natives,
            Defs/ThingDefs_Races/RM_TheForgeNatives.xml. The dhuvvox's baseline row
            spawns them; FORGE_CYCLE_MECHANICS_1's dormancy comp seals the

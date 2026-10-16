@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Chittik: owned RM_ port of the Alpha Animals Swarmling (sarg.alphaanimals AA_Swarmling, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod TheRot.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 4 op(s) from src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 4 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
+    - useMeatFrom AA_Helixien -> Megaspider (vanilla; PROVISIONAL)
+    - leatherDef Leather_Chitin dropped (decoration item; no art owed)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Chittik</defName>
+    <label>chittik</label>
+    <description>A finger-long vermin, half insect and half spore-case, that is never seen alone. One is nothing; a swarm is a single body with a hundred mouths that shares every wound it takes. They lay their larvae in whatever they bite, and the larvae hatch when it dies.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <MarketValue>35</MarketValue>
+      <ComfyTemperatureMin>-53.9</ComfyTemperatureMin>
+      <Wildness>0.85</Wildness>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>RM_SwarmlingClaws</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>RM_SwarmlingClaws</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>0.2</maxPreyBodySize>
+      <body>RM_ClawedSlug</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHungerRate>0.16</baseHungerRate>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <hasGenders>false</hasGenders>
+      <lifeExpectancy>1</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Chittik</defName>
+    <label>chittik</label>
+    <race>RM_Chittik</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <wildGroupSize>
+      <min>4</min>
+      <max>8</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chittik/RM_Chittik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chittik/RM_Chittik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chittik/RM_Chittik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <DamageDef ParentName="CutBase">
+    <defName>RM_SwarmlingClaws</defName>
+    <label>swarmling claws</label>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_SwarmlingImplantation</hediff>
+        <severityPerDamageDealt>0.0001</severityPerDamageDealt>
+        <victimSeverityScaling>ToxicResistance</victimSeverityScaling>
+        <inverseStatScaling>true</inverseStatScaling>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+  <ManeuverDef>
+    <defName>RM_SwarmlingClaws</defName>
+    <requiredCapacity>RM_SwarmlingClaws</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_SwarmlingClaws</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Slash_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Slash_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Slash_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Slash_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+  <ToolCapacityDef>
+    <defName>RM_SwarmlingClaws</defName>
+    <label>swarmling claws</label>
+  </ToolCapacityDef>
+  <BodyDef>
+    <defName>RM_ClawedSlug</defName>
+    <label>slug</label>
+    <corePart>
+      <def>RM_SlugBody</def>
+      <coverage>0.10</coverage>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Heart</def>
+          <coverage>0.1</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_CarapaceTheRot</def>
+          <customLabel>carapace</customLabel>
+          <coverage>0.2</coverage>
+        </li>
+        <li>
+          <def>RM_FrontClaw</def>
+          <customLabel>front left claw</customLabel>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>FrontLeftClaws</li>
+          </groups>
+        </li>
+        <li>
+          <def>RM_FrontClaw</def>
+          <customLabel>front right claw</customLabel>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>FrontRightClaws</li>
+          </groups>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.1</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Skull</def>
+              <coverage>0.15</coverage>
+              <depth>Inside</depth>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.5</coverage>
+                  <depth>Inside</depth>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>Nose</def>
+              <coverage>0.1</coverage>
+            </li>
+            <li>
+              <def>AnimalJaw</def>
+              <coverage>0.1</coverage>
+              <groups>
+                <li>Teeth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <HediffDef ParentName="InfectionBase">
+    <defName>RM_SwarmlingImplantation</defName>
+    <label>swarmling implantation</label>
+    <description>Affected by Swarmling implantation. If the disease is not properly treated, or if the creature dies when it is sufficiently advanced, Swarmling larvae will devour it from inside and hatch from its corpse.</description>
+    <makesSickThought>true</makesSickThought>
+    <lethalSeverity>1</lethalSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>24</baseTendDurationHours>
+        <severityPerDayTended>-0.53</severityPerDayTended>
+      </li>
+      <li Class="AlphaBehavioursAndEvents.HediffCompProperties_TurnWhenDead">
+        <thingToTurnTo>RM_Chittik</thingToTurnTo>
+        <numberOfSpawn>
+          <li>1</li>
+          <li>3</li>
+        </numberOfSpawn>
+        <severityToTurn>0.15</severityToTurn>
+        <isHostile>false</isHostile>
+        <keepGender>false</keepGender>
+      </li>
+      <li Class="HediffCompProperties_Immunizable">
+        <severityPerDayNotImmune>0.84</severityPerDayNotImmune>
+        <immunityPerDaySick>0.6441</immunityPerDaySick>
+        <severityPerDayImmune>-0.70</severityPerDayImmune>
+        <immunityPerDayNotSick>-0.40</immunityPerDayNotSick>
+      </li>
+      <li Class="AlphaBehavioursAndEvents.HediffCompProperties_RemoveFromMechsAndGhouls">
+				
+			</li>
+    </comps>
+    <stages>
+      <li>
+        <label>minor</label>
+        <painOffset>0.05</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.33</minSeverity>
+        <label>major</label>
+        <painOffset>0.08</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.78</minSeverity>
+        <label>extreme</label>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.12</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.87</minSeverity>
+        <label>extreme</label>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.85</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.1</setMax>
+          </li>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+  <BodyPartDef>
+    <defName>RM_CarapaceTheRot</defName>
+    <label>metallic carapace</label>
+    <hitPoints>100</hitPoints>
+    <skinCovered>false</skinCovered>
+    <solid>true</solid>
+    <alive>false</alive>
+    <bleedRate>0</bleedRate>
+  </BodyPartDef>
+  <BodyPartDef ParentName="ClawBase">
+    <defName>RM_FrontClaw</defName>
+    <label>front claw</label>
+    <labelShort>claw</labelShort>
+    <tags>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+</Defs>

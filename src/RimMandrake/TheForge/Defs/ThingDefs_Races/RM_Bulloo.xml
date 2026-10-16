@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Bulloo: owned RM_ port of the Alpha Animals Aerofleet (sarg.alphaanimals AA_Aerofleet, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod TheForge.
+  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
+  (our rename/tolerance patches on the donor def are folded in). Departures:
+    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
+    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
+    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
+      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
+    - dessicated donor art and alternate random graphics dropped (vanilla fallback).
+    - folded 5 op(s) from src/RimMandrake/TerminalBiomes/Patches/AA_Aerofleet_TwilightSea.xml
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml
+    - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
+    - folded 1 op(s) from src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml
+    - folded 3 op(s) from src/RimUtinni/UtinniPatches/Patches/Contagion_Rename.xml
+    - leatherDef AA_Leather_Aerofleet dropped (decoration item; no art owed)
+    - specificMeatDef AA_AerofleetMeat dropped (decoration item; no art owed)
+    - useMeatFrom Megaspider added (PROVISIONAL, stands in for the donor's own meat item)
+    - customResourceString AA_BlueGel -> 'blue gel' (donor translation key replaced by the words)
+    - texPath Things/Item/Resource/AA_BlueGel -> Things/Item/Resource/RM_BlueGel (ART OWED, RM_BlueGel)
+-->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Bulloo</defName>
+    <label>bulloo</label>
+    <description>A small, floating, gas-filled creature that drifts on the hydrogen it draws from water and plant matter, bouncing gently off whatever stands in its way. Harmless, and slowly weeping a thick gel that can be refined into fuel.</description>
+    <statBases>
+      <MoveSpeed>2.84</MoveSpeed>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>71.8</ComfyTemperatureMax>
+      <MarketValue>120</MarketValue>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>tentacles</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Arms</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_Floating" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+
+			</li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>9</reproductionIntervalDays>
+        <customString>Asexual fission in: </customString>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RM_BlueGel</resourceDef>
+        <gatheringIntervalDays>3</gatheringIntervalDays>
+        <resourceAmount>6</resourceAmount>
+        <customResourceString>blue gel</customResourceString>
+      </li>
+    </comps>
+    <race>
+      <deathAction>
+        <workerClass>DeathActionWorker_SmallExplosion</workerClass>
+      </deathAction>
+      <executionRange>2</executionRange>
+      <herdAnimal>true</herdAnimal>
+      <body>RM_JellyfishBody</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.10</baseHungerRate>
+      <hasGenders>false</hasGenders>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>None</trainability>
+      <lifeExpectancy>9</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">VEF_CycleSeverance</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">VEF_ControlledDetonation</li>
+      </specialTrainables>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <useMeatFrom>Megaspider</useMeatFrom>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Bulloo</defName>
+    <label>bulloo</label>
+    <race>RM_Bulloo</race>
+    <abilities>
+      <li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_ControlledDetonation</li>
+    </abilities>
+    <combatPower>20</combatPower>
+    <wildGroupSize>
+      <min>1</min>
+      <max>7</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bulloo/RM_Bulloo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BlueGel</defName>
+    <label>blue gel</label>
+    <description>A syrupy residue extracted from Aerofleets which can be refined into an energy-dense compound. It can be used to build powerful batteries and generators with the appropriate research (Biofuel refining to process it further, and Batteries).</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BlueGel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>Sellable</tradeability>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>75</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MarketValue>1</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>0.05</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+  <BodyDef>
+    <defName>RM_JellyfishBody</defName>
+    <label>jellyfish</label>
+    <corePart>
+      <def>RM_JellyfishMainBody</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Stomach</def>
+          <customLabel>stomach pouch</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <customLabel>gastrovascular cavity</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_HydrogenSac</def>
+          <customLabel>left hydrogen sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_HydrogenSac</def>
+          <customLabel>right hydrogen sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.05</coverage>
+          <parts>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye spot</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye spot</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>AnimalJaw</def>
+              <coverage>0.02</coverage>
+              <groups>
+                <li>Teeth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>first tentacle</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>second tentacle</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_JellyfishTentacle</def>
+          <customLabel>third tentacle</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+  <BodyPartDef>
+    <defName>RM_JellyfishMainBody</defName>
+    <label>hood</label>
+    <hitPoints>30</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_HydrogenSac</defName>
+    <label>hydrogen sac</label>
+    <hitPoints>20</hitPoints>
+    <bleedRate>5</bleedRate>
+    <skinCovered>false</skinCovered>
+    <tags>
+      <li>BloodPumpingSource</li>
+      <li>BloodFiltrationSource</li>
+      <li>MetabolismSource</li>
+      <li>BreathingSource</li>
+    </tags>
+  </BodyPartDef>
+  <BodyPartDef>
+    <defName>RM_JellyfishTentacle</defName>
+    <label>tentacle</label>
+    <hitPoints>5</hitPoints>
+    <frostbiteVulnerability>0.1</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+</Defs>

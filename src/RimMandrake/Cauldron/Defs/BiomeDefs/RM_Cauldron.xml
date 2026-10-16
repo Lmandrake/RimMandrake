@@ -143,19 +143,19 @@
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- rhossak (donor "corruptor dryad", renamed in UtinniPatches Cauldron_Rename.xml) -->
       <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- galled rhossak (donor "tumorous dryad", renamed in Cauldron_Rename.xml) -->
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
-      <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
-      <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, keep -->
-      <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
+      <RM_BedBug>0.3</RM_BedBug>  <!-- bedbug - small-pred, keep -->
+      <RM_CrystalMit>0.15</RM_CrystalMit>  <!-- crystalmit - small, keep -->
+      <RM_GiantCrownedSilkie>0.15</RM_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
       <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis (decay drake) - medium, keep; our port of AA_DecayDrake, defined in the Miasma member (DONOR_CODE_PLAIN_PORTS_1) -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
-      <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
+      <RM_Bileworm MayRequire="mandrake.rm.scarlands">0.1</RM_Bileworm>  <!-- helixien - giant, keep -->
+      <RM_Mullgoth MayRequire="mandrake.rsw.swbestiary">0.05</RM_Mullgoth>  <!-- wildpod - giant, keep -->
       <!-- CAULDRON_RULED_CONTENT_1: three owned natives (one home each). -->
       <RM_Vexxiss>0.02</RM_Vexxiss>  <!-- vexxiss - the armoured living boiler-mound; shear-only vexxith -->
       <RM_Zisska>0.5</RM_Zisska>  <!-- zisska - herd rasper, toxic prized meat, steel on butcher -->
       <RM_Eskith>0.4</RM_Eskith>  <!-- eskith - silent-flock small bird -->
       <!-- CAULDRON_RULED_CONTENT_1: owner-ruled donor imports (Alpha Animals, Q9 inline). Wired and kept on purpose:
            overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" them back out. -->
-      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.1</AA_Plasmorph>  <!-- plasmorph -->
+      <RM_Bezzul>0.1</RM_Bezzul>  <!-- plasmorph -->
       <RM_Radyak>0.1</RM_Radyak>  <!-- ossrith; our port of AA_Radyak (DONOR_CODE_PLAIN_PORTS_1), art installed 2026-10-10 -->
     </wildAnimals>
     <coastalWildAnimals />
