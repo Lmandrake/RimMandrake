@@ -9,9 +9,11 @@ import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import site_spec as S  # noqa: E402
 import prep_site as PS  # noqa: E402
-import test_site_saves as TS  # noqa: E402  (prep_site put Utils/modcheck on sys.path)
+import biome_site as B  # noqa: E402  (prep_site put Utils/modcheck on sys.path)
+import test_site_saves as TS  # noqa: E402
+
+S = PS.S
 
 FAILS = []
 
@@ -50,15 +52,15 @@ class Fake(object):
 
 
 # retile read-back
-check("retile ok", PS.retile(Fake(), [1, 2, 3]) == 3)
+check("retile ok", B.retile(Fake(), S, [1, 2, 3]) == 3)
 try:
-    PS.retile(Fake(tile_biome="TemperateForest"), [1, 2])
+    B.retile(Fake(tile_biome="TemperateForest"), S, [1, 2])
     check("retile wrong biome raises", False)
 except PS.SiteError:
     pass
 # census / site problems
 P, c = PS.site_problems(Fake(natives=2).call)
-check("census counts natives", c["natives"]["RM_Vexxiss"] == 2 and c["vents"] == 1 and not P, (P, c))
+check("census counts natives", c["natives"]["RM_Vexxiss"] == 2 and c["probe"]["vents"] == 1 and not P, (P, c))
 P, _c = PS.site_problems(Fake(natives=0).call)
 check("no native is a problem", any("natives" in x for x in P), P)
 P, _c = PS.site_problems(Fake(biome="TemperateForest").call)
@@ -73,8 +75,8 @@ NS = types.SimpleNamespace(
     retire_offsite_colonies=lambda s, c: {"retired": []},
     stock_food=lambda s, x, z, packs=None: {"packs": packs},
 )
-PS._NS = NS
-PS.choose_tile = lambda s, d, t: {"centre": 77, "patch": [77, 78], "lat": 10.0, "long": 3.0}
+B._NS = NS
+B.choose_tile = lambda s, spec, d, t: {"centre": 77, "patch": [77, 78], "lat": 10.0, "long": 3.0}
 events = []
 orig = {k: getattr(TS, k) for k in ("clean_map", "check_map", "save_site", "load_site", "backup_saves",
                                     "write_registry", "saves_stat")}
