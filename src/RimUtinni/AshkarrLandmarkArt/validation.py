@@ -105,7 +105,7 @@ KNOWN_CROSS_MOD_EXTRAS = {
 SAMPLE_DEFS = {
     "Cliffs": "World/Landmarks/Ashkarr/Cliffs",                 # Replace branch, vanilla Odyssey
     "AncientGarrison": "World/Landmarks/Ashkarr/AncientGarrison",  # Add branch (inherited field)
-    "sw_Sarlacc": "World/Landmarks/Ashkarr/sw_Sarlacc",           # StarWarsAnimalCollection
+    "RSW_Sarlacc": "World/Landmarks/Ashkarr/RSW_Sarlacc",         # SWBestiary (ported off StarWarsAnimalCollection)
     "VEE_AlluvialFan": "World/Landmarks/Ashkarr/VEE_AlluvialFan", # VEE_-prefixed provider
 }
 
@@ -178,10 +178,10 @@ def repo_checks(t):
 def sample_defs_readback(t):
     """One representative LandmarkDef per provider/branch shape: Cliffs
     (Replace branch, vanilla Odyssey), AncientGarrison (Add branch -- field
-    inherited from an abstract parent, no local node to Replace), sw_Sarlacc
-    (StarWarsAnimalCollection-sourced), VEE_AlluvialFan (VEE_-prefixed
+    inherited from an abstract parent, no local node to Replace), RSW_Sarlacc
+    (SWBestiary, ported off StarWarsAnimalCollection), VEE_AlluvialFan (VEE_-prefixed
     provider). REQUIRES THE FULL MOD LIST -- see module docstring's
-    environment note; on minimal, sw_Sarlacc and VEE_AlluvialFan's provider
+    environment note; on minimal, RSW_Sarlacc and VEE_AlluvialFan's provider
     mods are absent and `jawa/get_defs` will report not-found, which this
     component treats as an environment gap (UNMEASURED-style skip) rather
     than a hard failure -- see `_check_one`'s own guard.

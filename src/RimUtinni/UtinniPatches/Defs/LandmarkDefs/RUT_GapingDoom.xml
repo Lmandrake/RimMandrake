@@ -2,11 +2,11 @@
 <Defs>
 
   <!-- RUT_GapingDoom — the dead-sarlacc waste pit at tile 2403 (owner, 2026-09-08,
-       GAPING_DOOM_SITE_1). A distinct LandmarkDef, not a reskin of sw_DeadSarlacc,
+       GAPING_DOOM_SITE_1). A distinct LandmarkDef, not a reskin of RSW_DeadSarlacc,
        because THIS instance carries a unique icon: the dead sarlacc with a bright
        green throat, dull at the edges and brightening irregularly toward the centre
        (owner's verbatim art spec). Art generated offline (RUT_GapingDoom.png, alpha
-       byte-identical to sw_DeadSarlacc so the footprint is preserved).
+       byte-identical to the dead-sarlacc landmark icon so the footprint is preserved).
 
        commonality 0 ON PURPOSE — worldgen must never roll it; it is placed only on
        tile 2403 by the world-edit step owed on the item. Description is present-tense,
@@ -17,9 +17,10 @@
        mutatorChances at all, which is exactly the live config error seen tonight
        ("LandmarkDef RUT_GapingDoom has no mutators with a chance of 1 or higher").
        Every vanilla/SW LandmarkDef carries a Required="True" entry that drives the
-       actual map generation step; sw_DeadSarlaccCave (StarWarsAnimalCollection,
-       SW_Buildings_Natural.xml) is exactly the mutator this derives its art from —
-       it scatters a DeadSarlacc corpse via GenStep_ScatterThings, which is the correct
+       actual map generation step; RSW_DeadSarlaccCave (SWBestiary,
+       RSW_DonorPack_Sarlacc.xml; ported off Star Wars Animal Collection 2026-10-15, owner
+       by card "Port both landmarks") is exactly the mutator this derives its art from —
+       it scatters an RSW_DeadSarlaccHusk (an enterable cavity) via GenStep_ScatterThings, which is the correct
        mechanism for "a dead sarlacc used as a waste pit". Reusing it (not copying the
        whole flavor list of Star-Wars-biome mutators alongside it, which don't belong
        in the Cracked Lands) keeps this a minimal, correct fix. -->
@@ -34,7 +35,7 @@
     <category>structure</category>
     <nameMaker>NamerLandmark_Ruins</nameMaker>
     <mutatorChances>
-      <sw_DeadSarlaccCave MayRequire="Mlie.StarWarsAnimalCollection" Required="True" />
+      <RSW_DeadSarlaccCave MayRequire="mandrake.rsw.swbestiary" Required="True" />
     </mutatorChances>
   </LandmarkDef>
 

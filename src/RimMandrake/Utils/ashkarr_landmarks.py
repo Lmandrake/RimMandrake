@@ -187,7 +187,7 @@ RULES = [
      "furrows still visible from the air"),
     ("VEE_MeteorCrater",   3, 12, lambda t: t["hill"] <= 3 and t["biome"] not in ("Ocean", "Lake"),
      "nothing on this world stops a rock"),
-    ("sw_DeadSarlacc",     1, 20, lambda t: t["biome"] in ("Desert", "ExtremeDesert") and t["hill"] <= 2,
+    ("RSW_DeadSarlacc",    1, 20, lambda t: t["biome"] in ("Desert", "ExtremeDesert") and t["hill"] <= 2,
      "the second sarlacc, and it is dead - somebody killed it"),
 ]
 

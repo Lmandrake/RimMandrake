@@ -6,14 +6,12 @@
        adjacent), same GenStep_RandomSelector mechanism
        GenStepDefs_Whisper_Batch1.xml (RimUtinni tier) established
        2026-09-12: no new C# for the roll itself, one option this pass
-       (declared "fires every time sw_SarlaccLair generates, not RARE" -
+       (declared "fires every time RSW_SarlaccLair generates, not RARE" -
        same limitation every single-option whisper selector in this
        program carries so far).
 
-       Anchor: sw_SarlaccLair (Mlie.StarWarsAnimalCollection, requires
-       Ludeon.RimWorld.Odyssey per its own def) - confirmed real via a
-       validate_patch.py PatchOperationConditional probe against the live
-       632-active-mod set, 1 match in SW_Buildings_Natural.xml. -->
+       Anchor: RSW_SarlaccLair (mandrake.rsw.swbestiary, RSW_DonorPack_Sarlacc.xml;
+       ported off Star Wars Animal Collection's sw_SarlaccLair 2026-10-15). -->
 
   <GenStepDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RSW_GenStep_WhisperSarlaccSign</defName>

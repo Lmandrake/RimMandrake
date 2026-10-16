@@ -700,31 +700,31 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="sw_DeadSarlacc"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RSW_DeadSarlacc"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="sw_DeadSarlacc"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RSW_DeadSarlacc"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="sw_DeadSarlacc"]/iconTexturePath</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/sw_DeadSarlacc</iconTexturePath></value>
+        <xpath>/Defs/LandmarkDef[defName="RSW_DeadSarlacc"]/iconTexturePath</xpath>
+        <value><iconTexturePath>World/Landmarks/Ashkarr/RSW_DeadSarlacc</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="sw_DeadSarlacc"]</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/sw_DeadSarlacc</iconTexturePath></value>
+        <xpath>/Defs/LandmarkDef[defName="RSW_DeadSarlacc"]</xpath>
+        <value><iconTexturePath>World/Landmarks/Ashkarr/RSW_DeadSarlacc</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="sw_Sarlacc"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RSW_Sarlacc"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="sw_Sarlacc"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RSW_Sarlacc"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="sw_Sarlacc"]/iconTexturePath</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/sw_Sarlacc</iconTexturePath></value>
+        <xpath>/Defs/LandmarkDef[defName="RSW_Sarlacc"]/iconTexturePath</xpath>
+        <value><iconTexturePath>World/Landmarks/Ashkarr/RSW_Sarlacc</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="sw_Sarlacc"]</xpath>
-        <value><iconTexturePath>World/Landmarks/Ashkarr/sw_Sarlacc</iconTexturePath></value>
+        <xpath>/Defs/LandmarkDef[defName="RSW_Sarlacc"]</xpath>
+        <value><iconTexturePath>World/Landmarks/Ashkarr/RSW_Sarlacc</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>

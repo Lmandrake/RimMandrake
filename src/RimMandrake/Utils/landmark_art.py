@@ -907,7 +907,7 @@ SPECS = {
     "organic", base=(178, 92, 96), lit=(224, 148, 148), dark=(72, 30, 36),
     sheen=(238, 176, 172), gullet=(48, 18, 26), folds=9, maw=0.34, alpha=216),
 
-"sw_Sarlacc": S("""A gaping beaked maw at the bottom of a deep pit of teeth, with a dark
+"RSW_Sarlacc": S("""A gaping beaked maw at the bottom of a deep pit of teeth, with a dark
     black centre. Take the reference literally: a bowl of pale wind-blown sand falling away into
     shadow, and set off-centre in the bottom of it a large irregular BLACK hole. Around that hole
     a dense crowd of thin bone-coloured needles leans inward -- a hundred of them, every one a
@@ -921,7 +921,7 @@ SPECS = {
     gullet=(5, 4, 4), mouth=0.42, spines=120, length=1.0, tip_lo=0.74, tip_hi=1.04,
     barbs=4, warp=0.09, alpha=218),
 
-"sw_DeadSarlacc": S("""The same gaping beaked maw, desiccated -- at the bottom of a grey husk
+"RSW_DeadSarlacc": S("""The same gaping beaked maw, desiccated -- at the bottom of a grey husk
     of a pit, still with a dark black centre. Everything that was bone is now chalk: the needles
     bleached, thinned and mostly snapped off short, far fewer of them left standing, the barbs
     cracked pale grey and half buried in drifted sand. The funnel walls have slumped to the

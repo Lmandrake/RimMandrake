@@ -6,7 +6,7 @@
 
   ASHFALL_SPIRE_LANDMARK_1. The Spire's display name must be the FIXED string
   "The Spire" (owner's register, ashfall_research_base.md §3/§6) — not one of
-  the randomized outputs a vanilla landmark namer produces. The sw_Sarlacc
+  the randomized outputs a vanilla landmark namer produces. The sarlacc-landmark
   placements are the counter-example this exists to avoid: the same LandmarkDef
   came back as "Hehieran Sarlacc", "Sarlacc Pit" and "The Sarlacc" on three
   different tiles, because NamerLandmark_* packs roll.

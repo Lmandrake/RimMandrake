@@ -20,7 +20,7 @@
   same shape as Dunes/DryLake/Hollow/Caves/AncientUplink (this pass's own
   SignalMast.xml, RM tier), not the "append one more <li>" shape used where
   the target already carries one (RUT_Monument, RUT_BrokenRing,
-  sw_SarlaccLair).
+  RSW_SarlaccLair).
 
   Same safety convention as every prior whisper/promise patch in this
   program: the PatchOperationAdd is wrapped in a PatchOperationConditional

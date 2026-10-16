@@ -267,6 +267,11 @@ D = {
 "sw_SarlaccLair":      (K, "deep desert - the Pit of Carkoon"),
 "sw_DeadSarlacc":      (K, "deep desert - a dead sarlacc, hollowed out for shelter"),
 "sw_DeadSarlaccCave":  (K, "deep desert - a dead sarlacc, hollowed out for shelter"),
+# the same four, ported to SWBestiary 2026-10-15 (the sw_ names stay until the save is renamed, Phase 0 P6)
+"RSW_Sarlacc":         (K, "deep desert - the Pit of Carkoon"),
+"RSW_SarlaccLair":     (K, "deep desert - the Pit of Carkoon"),
+"RSW_DeadSarlacc":     (K, "deep desert - a dead sarlacc, hollowed out for shelter"),
+"RSW_DeadSarlaccCave": (K, "deep desert - a dead sarlacc, hollowed out for shelter"),
 
 # ----------------------------------------------- Vanilla Landmarks Expanded
 "VEE_LargerRegion":     (K, "open desert - big sprawling maps"),
