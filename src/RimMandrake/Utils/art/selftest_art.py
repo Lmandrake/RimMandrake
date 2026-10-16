@@ -265,7 +265,7 @@ def main():
         check(not art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")["wrote_decisions"],
               "biome rebuild never overwrites a decisions file the sidecar wrote")
         # ART_SHEET_DONOR_JOIN_GAPS_1: a donor-prefixed texPath (RG_Brambles) must still join its finished render
-        # `brambles_v1`, and a render that failed the canon gate shows as a candidate badged as such
+        # `brambles_v1`, and a render the old canon gate failed shows as a candidate with the grader's advice
         import backfill as _bf
         yellow = png((255, 255, 0, 255))
         syellow = L.sha256_bytes(yellow)
@@ -287,7 +287,13 @@ def main():
                              extra={"job": f"pyre_foxwing_flight8_{n}_{fac}", "facing": fac, "date": "2026-10-06"})
         wr.flush()
         (tmp / "artpipe" / "failed").mkdir(parents=True)
-        (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon"}))
+        (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon",
+            "canon_check": {"status": "graded", "verdict": "FAIL", "score": "1/2", "graded": 2, "lines": [
+                {"line": "Big round eyes", "verdict": "fail", "reason": "small vertical ovals"},
+                {"line": "Forked tail", "verdict": "pass", "reason": "ok"}]}}))
+        (tmp / "artpipe" / "done").mkdir(parents=True)
+        (tmp / "artpipe" / "done" / "brambles_v1.manifest.json").write_text(json.dumps({"id": "brambles_v1", "status": "ok",
+            "canon_check": {"status": "graded", "verdict": "PASS", "score": "0/0", "graded": 0, "lines": []}}))
         os.environ["ARTPIPE_STATE_DIR"] = str(tmp / "artpipe")
         row_c = {"key": "RG_Plant_Brambles", "kind": "flora", "label": "thorny bush", "defNames": ["RG_Plant_Brambles"],
                  "placements": [], "canon": {"entry": None}, "twins": [], "artpipe_state_jobs": [],
@@ -304,8 +310,16 @@ def main():
         cols_c = [c for g in items2["RG_Plant_Brambles"]["graphics"] for c in g["cols"]]
         check(any(sblue in c["faces"].values() for c in cols_c), "donor-prefixed row RG_Plant_Brambles shows the render brambles_v1")
         cols_d = [c for g in items2["RM_Foxwing"]["graphics"] for c in g["cols"]]
-        check(any(syellow in c["faces"].values() and "failed canon check" in c["label"] for c in cols_d),
-              "a failed_canon render is a candidate badged 'failed canon check'")
+        check(any(syellow in c["faces"].values() and art_sheet.FAILED_CANON_BADGE in c["label"] for c in cols_d),
+              "an old failed_canon render is a candidate, badged as an advisory grader flag")
+        fx = next((c for c in cols_d if syellow in c["faces"].values()), {})
+        check(fx.get("canonFlag") and any("Big round eyes" in t and "small vertical ovals" in t and "1/2" in t
+                                          for t in fx.get("canonAdvice", [])),
+              f"the grader's flagged line, reason and score ride on the column: {fx.get('canonAdvice')}")
+        bx = next((c for c in cols_c if sblue in c["faces"].values()), {})
+        check(not bx.get("canonFlag") and any("UNGRADED" in t for t in bx.get("canonAdvice", [])),
+              f"a stored 0/0 PASS shows as UNGRADED, never PASS: {bx.get('canonAdvice')}")
+        check("bs-grader" in bout2.read_text(), "the sheet renders the grader advisory line")
         fg = [g for g in items2["RM_Foxwing"]["graphics"] if g.get("flip")]
         check(len(fg) == 1 and len(fg[0]["cols"]) == 1 and len(fg[0]["cols"][0]["faces"]) == 6
               and fg[0]["nframes"] == 3 and fg[0]["flipFacings"] == ["east", "south"]

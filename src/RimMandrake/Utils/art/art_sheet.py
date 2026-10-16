@@ -375,6 +375,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
 
     # 2. artpipe render families: bound by collected.jsonl dest, or alias by creature word
     fams = defaultdict(dict)
+    fam_jobs = defaultdict(dict)
     fam_meta = {}
     _fc = failed_canon_jobs()
     for sha, vs in idx.variants.items():
@@ -394,6 +395,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
                 fac = fm.group(1) if fm else "single"
             fams[fam].setdefault(fac, sha)
+            fam_jobs[fam].setdefault(fac, job)
             fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
                              "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
     for fam, faces in sorted(fams.items(), key=lambda kv: fam_meta[kv[0]]["date"], reverse=True):
@@ -404,7 +406,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
                      "label": f"render {fam}" + (FAILED_CANON_BADGE if _is_failed_canon(fam, _fc) else ""),
                      "detail": (f"{m['date']} · {'collected to this texPath' if m['bound'] else 'joined by creature name only (not bound to this graphic)'}"
                                 f" · derive_from {'yes' if m['derive'] else 'no'} · {m['item'] or ''}"),
-                     "prompt": m["prompt"][:240], "bound": m["bound"]})
+                     "prompt": m["prompt"][:240], "bound": m["bound"], **canon_advice_fields(fam_jobs[fam])})
 
     # 3. every historical state in git, per mod path, as an observed set
     hist = defaultdict(list)       # mod -> [(date, commit, subject, facing, sha)]
@@ -538,6 +540,7 @@ window.itemBody = it => {
   const col = c => `<div class="ac-col ac-${c.kind}${c.winner ? ' ac-win' : ''}${d.decision === c.letter ? ' ac-picked' : ''}">
       <div class="ac-head"><b>${c.letter}</b> ${esc(c.label)}</div>
       ${facings.map(f => cell(c, f)).join('')}
+      ${(c.canonAdvice || []).length ? `<div class="bs-grader${c.canonFlag ? ' flag' : ''}" title="the canon grader's reading — ADVICE ONLY, it decides nothing">${c.canonAdvice.map(esc).join('<br>')}</div>` : ''}
       <div class="ac-detail" title="${esc(c.detail)}${c.prompt ? '\n\nprompt: ' + esc(c.prompt) : ''}">${esc(c.detail)}</div>
       ${c.also ? `<details class="ac-also"><summary>${c.also.length} identical elsewhere</summary>${c.also.map(a => `<div>${esc(a)}</div>`).join('')}</details>` : ''}
     </div>`;
@@ -642,6 +645,8 @@ STYLE = r"""
 .ac-purge.on{background:#e06c6c;color:#000}
 .ac-purged .ac-thumb{outline:3px solid #e06c6c;opacity:.45}
 .ac-detail{font-size:10.5px;color:var(--dim);height:3.9em;overflow:hidden;line-height:1.3}
+.bs-grader{font-size:10.5px;line-height:1.3;color:var(--dim);margin-top:3px;max-width:340px;white-space:normal}
+.bs-grader.flag{color:#e8c070;border-left:2px solid #c9902c;padding-left:4px}
 .ac-also,.ac-near,.ac-masks,.ac-canon{font-size:11.5px;color:var(--dim);margin-top:4px}
 .ac-canon-imgs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}
 .ac-brief pre{white-space:pre-wrap;font:inherit;color:#c3cad6;margin:2px 0 6px;max-height:16em;overflow:auto}
@@ -964,7 +969,50 @@ def _fkey(c: dict) -> tuple:
 OVERRIDES = Path(__file__).resolve().parent / "sheet_row_overrides.json"
 
 
-FAILED_CANON_BADGE = " — failed canon check"
+# A render the daemon filed failed_canon BEFORE the grader became an advisor (owner, 2026-10-15). The grader never
+# blocks now; the badge only marks those old records, and every render's own grade shows as `canonAdvice`.
+FAILED_CANON_BADGE = " — grader flagged (advisory)"
+_CA_CACHE: dict = {}
+
+
+def canon_advice(job: str) -> dict | None:
+    """The canon ADVISOR's verdict on one artpipe job, from its done/ (else failed/) manifest:
+    {verdict, text} with text = canon_check.advisory_text (score + flagged lines). None when ungraded/absent."""
+    import os
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+    key = (str(root), job)
+    if key in _CA_CACHE:
+        return _CA_CACHE[key]
+    out = None
+    for d in ("done", "failed"):
+        mp = root / d / f"{job}.manifest.json"
+        if not mp.is_file():
+            continue
+        try:
+            m = json.loads(mp.read_text())
+        except (OSError, ValueError):
+            break
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "artpipe"))
+        import canon_check  # noqa: E402 — lazily: only sheets with artpipe renders need it
+        c = canon_check.normalize(m.get("canon_check"))
+        if c and c.get("status") == "graded":
+            out = {"verdict": c["verdict"], "text": canon_check.advisory_text(c)}
+        break
+    _CA_CACHE[key] = out
+    return out
+
+
+def canon_advice_fields(jobs_by_facing: dict) -> dict:
+    """Column fields for the grader's advice on a render set: canonAdvice = ["south: grader flag (advisory) 4/5: ✗ …"],
+    canonFlag = any facing FAILed. Advisory only — the owner decides; nothing here gates a pick."""
+    order = {f: i for i, f in enumerate(FACINGS)}
+    lines, flag = [], False
+    for fac, job in sorted(jobs_by_facing.items(), key=lambda kv: order.get(kv[0], 99)):
+        a = canon_advice(job)
+        if a and a["text"]:
+            lines.append(f"{fac}: {a['text']}")
+            flag = flag or a["verdict"] == "FAIL"
+    return {"canonAdvice": lines, "canonFlag": flag} if lines else {}
 
 
 _FC_CACHE: dict = {}
@@ -1061,7 +1109,7 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
     exact = {e.lower() for e in exact}
     defs = {d for d in defs if d}
     targets = job_targets() if defs else {}
-    fams, meta = defaultdict(dict), {}
+    fams, meta, jobs_of = defaultdict(dict), {}, defaultdict(dict)
     for sha, vs in idx.variants.items():
         if idx.is_purged(sha):
             continue
@@ -1081,6 +1129,7 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
                 fm = FAM_RE.search(job)
                 fac = fm.group(1) if fm else "single"
             fams[fam].setdefault(fac, sha)
+            jobs_of[fam].setdefault(fac, job)
             meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item")}
     fc = failed_canon_jobs()
     slots_of = job_slots()
@@ -1088,7 +1137,7 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
              "jobSlot": next((slots_of[j] for j in slots_of if FAM_RE.sub("", j) == k.lower()), None),
              "label": f"render {k}" + (FAILED_CANON_BADGE if _is_failed_canon(k, fc) else ""),
              "detail": f"{meta[k]['date']} · found by NAME — not wired to any graphic of ours yet · {meta[k]['item'] or ''}",
-             "prompt": (meta[k]["prompt"] or "")[:240], "bound": False}
+             "prompt": (meta[k]["prompt"] or "")[:240], "bound": False, **canon_advice_fields(jobs_of[k])}
             for k, f in sorted(fams.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
 
 
@@ -1612,6 +1661,7 @@ const _itemBody = it => {
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${(rej || ret || leaves) ? ' sl-rej' : ''}${inAdd ? ' bs-isvar' : ''}${c.noSelect ? ' bs-phcol' : ''}">
       ${head}${badges ? `<div class="sl-badges">${badges}</div>` : ''}
       ${faces(c, g)}${note}
+      ${(c.canonAdvice || []).length ? `<div class="bs-grader${c.canonFlag ? ' flag' : ''}" title="the canon grader's reading — ADVICE ONLY, it decides nothing">${c.canonAdvice.map(esc).join('<br>')}</div>` : ''}
       <div class="bs-foot">${foot}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
@@ -1839,6 +1889,8 @@ BIOME_STYLE = """<style>
 .bs-nearstub[open]{display:flex;gap:4px}.bs-nearstub[open]>summary{width:auto;min-height:0;height:auto}
 .bs-nearstub[open]>summary .sub{display:none}
 .bs-nearof{color:#9fb3c8;font-size:10.5px}
+.bs-grader{font-size:10.5px;line-height:1.3;color:var(--dim);margin-top:3px;max-width:340px;white-space:normal}
+.bs-grader.flag{color:#e8c070;border-left:2px solid #c9902c;padding-left:4px}
 .bs-foot{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;justify-content:space-between;margin-top:3px;width:0;min-width:100%}
 .bs-var{font-size:10.5px;padding:1px 7px;border-radius:4px;border:1px solid #2f4a35;background:#0f1612;color:#7fae86;cursor:pointer;opacity:.75}
 .bs-var:hover{opacity:1}.bs-var.on{background:#2f7a45;color:#fff;border-color:#5ac37f;opacity:1}
@@ -2719,7 +2771,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "pool": bool(g.get("pool")) and lane == "slot", "lane": lane, "slot": slot_,
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf", "canonAdvice", "canonFlag")}
                          | {"short": _short(c), "setId": SLOTS.set_id(c["faces"]),
                             "hint": SLOTS.hint(c.get("family") or c.get("seq") or c.get("label") or "") if lane == "unassigned" else ""}
                          for c in g["cols"]]})
