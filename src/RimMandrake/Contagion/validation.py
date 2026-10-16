@@ -423,6 +423,7 @@ def _wait(t, n):
     poll the real clock, then pause; raises on a stall."""
     # LIVE 2026-10-03: under the situational watch the Ultrafast poll below moves the clock outside the budgeted gate (ClockStall /
     # BudgetExceeded), so a watched run uses the chunked, budgeted t.wait_ticks for every length.
+    _support_upkeep(t)
     if t.session is None or t.upstream_failed or n <= 4000 or getattr(t, "watch", None) is not None:
         return t.wait_ticks(n)
     s = t.session
@@ -522,8 +523,57 @@ def _end_conditions(t):
 
 
 def _baseline(t):
-    """Everything that could spoil a fixture: storyteller incidents, auto-home, queued incidents."""
+    """Everything that could spoil a fixture: storyteller incidents, auto-home, queued incidents; then the
+    run's quiet-site profile and the colony's own colonists kept calm and fed (_quiet_site)."""
     t.bridge_call("jawa/site_state", storyteller="off", autoHome="off", clearIncidentQueue=True)
+    _quiet_site(t)
+
+
+# SITE, LIVE 2026-10-16 (modcheck run Contagion --policy record, no --situational): with no Watch nobody turned off
+# random mental states or fed the quicktest colony, so its own colonists stopped safe_advance three times -- a
+# Berserk colonist (colonist_hostile, touched chain), then 'hurt ... Bruise from Human' on another colonist
+# (zhool + coalescence chains: the berserker / social fights; Pawn_InteractionsTracker.CheckSocialFightStart is
+# gated on DebugSettings.enableRandomMentalStates), and a starving colonist. None of it is the Contagion. The
+# fix is the SHARED isolated profile (modcheck/quiet_site.py: storyteller off, random mental states and diseases
+# off, wild spawner blocked, threat structures and hostiles cleared) applied once per run when no Watch owns the
+# map, plus upkeep before every advance: a colonist's mental state ended and a LOW Food need topped up (only
+# below 0.25, bland_world.feed_colonists). Nothing here touches a hediff, the Contagion's things or its settings,
+# and every Contagion row reads hediffs/things/inspect lines, never a colonist's mood, food or mental state.
+def _quiet_site(t):
+    if not _live(t) or getattr(t, "watch", None) is not None:
+        return          # a situational Watch already prepared (and restores) a bland map for this chain
+    if "quiet" not in _STATE:
+        try:
+            import quiet_site as QS   # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+            rc = QS.site_profile_receipt(t.session, row="Contagion", suite="isolated",
+                                         keep_defs=(COALESCENCE, REPULSOR))
+        except Exception as ex:                                 # noqa: BLE001 - recorded, never silent
+            rc = {"error": "%s: %s" % (type(ex).__name__, ex)}
+        _STATE["quiet"] = rc
+        rb = dict((c.get("name"), c.get("readBack")) for c in rc.get("controls") or [])
+        _note(t, "quiet-site profile (once per run)",
+              {"storyteller/mental/disease": rb.get("storyteller_off"), "wildSpawner": rb.get("wild_spawner_off"),
+               "problems": rc.get("problems"), "error": rc.get("error")})
+    _support_upkeep(t)
+
+
+def _support_upkeep(t):
+    """End any colonist's mental state and top up a LOW Food need. -> what it did (also noted when it acted)."""
+    if not _live(t) or getattr(t, "watch", None) is not None:
+        return None
+    try:
+        import helpers as H              # noqa: E402
+        import bland_world as BW         # noqa: E402
+        ids = [r["id"] for r in H.read_pawns(t.session, health=False) if H.is_colonist(r) and not r.get("dead")]
+        calm = H.calm_colonists(t.session, ids)
+        fed = BW.feed_colonists(t.session)
+    except Exception as ex:                                     # noqa: BLE001 - upkeep, never a verdict
+        _note(t, "support upkeep failed", "%s: %s" % (type(ex).__name__, ex))
+        return None
+    out = {"calmed": calm.acted, "calmResidue": calm.residue, "fed": fed}
+    if calm.acted or calm.residue or fed:
+        _note(t, "support upkeep", out)
+    return out
 
 
 def _stable(t, fn):
@@ -1243,6 +1293,20 @@ def zhool_haze(t):
 
 # --------------------------------------------------------------------------- chain: coalescence
 
+def _unfinished_emission(trig):
+    """A safe_advance trigger caused by an emitted manhunter Unfinished (see coalescence_emits_...)."""
+    if trig.get("critical") or trig.get("declared"):
+        return False
+    k, d = trig.get("kind"), str(trig.get("detail") or "")
+    if k == "hostile_arrival":
+        return UNFINISHED in d
+    if k == "mental":
+        return "Manhunter" in d and trig.get("severity") != "damage"
+    if k == "hurt":
+        return ("from " + UNFINISHED) in d
+    return False
+
+
 def _mass_stage(lines):
     m = re.search(r"Stage (\d+), absorbed mass (\d+)", lines)
     return (int(m.group(1)), int(m.group(2))) if m else (None, None)
@@ -1323,7 +1387,13 @@ def coalescence(t):
                 _, before = _inspect(t, _STATE["coal"])
                 known = set(p["id"] for p in _things_pawns(t, UNFINISHED, None))
                 _jump(t, 7000)              # passive growth is 1 mass / 6000 ticks; emit every 3000 (stage 2)
-                _wait(t, 400)
+                # The arm's OWN product stops safe_advance by design: an emitted manhunter Unfinished is a
+                # hostile_arrival / 'turned hostile' / mental Manhunter trigger, and it bites whoever it reaches.
+                # Declared for this wait only; any other trigger (a colonist turned hostile, a death, a hurt
+                # from anything else) still stops the clock.
+                import clockgate   # noqa: E402
+                with clockgate.expected_disturbance("Coalescence emits manhunter Unfinished", _unfinished_emission):
+                    _wait(t, 400)
                 stage, mass = _mass_stage(_inspect(t, _STATE["coal"])[1])
                 m0 = _mass_stage(before)[1]
                 if mass is None or mass <= m0:
@@ -1340,6 +1410,10 @@ def coalescence(t):
                                        (p.get("x"), p.get("z")))
                 _note(t, "Unfinished new since the jump", states)
                 mad = [k for k, v in states.items() if v[0] in ("Manhunter", "ManhunterPermanent")]
+                # Read, then removed: the emitted manhunters are this arm's own product, and left alive they maul the
+                # next arm's colonist (Vanish: no death, no corpse, no acid burst).
+                for k in states:
+                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=k, action="vanish")
                 if not new:
                     _fail("no Unfinished emitted at all after 7000 ticks (stage %s; emit interval 3000)" % stage)
                 if not mad:
@@ -1380,16 +1454,116 @@ def _give(t, pawn, sample_id):
         _fail("could not put the sample in the colonist's pack: %r" % r)
 
 
+def _census(t, pid):
+    """One pawn's jawa/pawn_census row (job{def,...}, x, z, downed, dead, inMentalState), or None if unreadable."""
+    r = t.bridge_call("jawa/pawn_census", ids=str(pid))
+    if not isinstance(r, dict) or r.get("success") is False:
+        return None
+    rows = r.get("pawns") or []
+    return rows[0] if rows else None
+
+
+def _job(row):
+    return ((row or {}).get("job") or {}).get("def")
+
+
+def _idnum(pid):
+    m = re.search(r"(\d+)$", str(pid or ""))
+    return int(m.group(1)) if m else None
+
+
+def _near_bed(c, bed):
+    try:
+        return max(abs(int(c["x"]) - int(bed["x"])), abs(int(c["z"]) - int(bed["z"]))) <= 1
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _lay_in_bed(t, patient, bed, ceiling=600, step=60):
+    """SITE for the surgery: the bill-giver is the PATIENT and Pawn.UsableForBillsAfterFueling holds only while it lies
+    in a bed. LIVE 2026-10-16: a fresh, rested patient ordered to LayDown was overridden (CheckForJobOverride every 211
+    ticks) and went for a walk, so the first surgery broke off mid-job and the second could not start. So the patient
+    is made TIRED first (Rest 0.1: the GetRest node then keeps choosing the same bed), ordered down, and READ lying
+    there before the bill is worked. -> (ticks waited, census row) or (None, last census row)."""
+    t.bridge_call("jawa/pawn_need", pawn=patient, action="need", need="Rest", level=0.1)
+    waited, c = 0, None
+    while True:
+        c = _census(t, patient)
+        if _job(c) == "LayDown" and _near_bed(c, bed):
+            return waited, c
+        if waited >= ceiling:
+            return None, c
+        if _job(c) != "LayDown":
+            t.bridge_call("jawa/ordered_job", pawnId=patient, jobDef="LayDown", targetAId=bed["id"],
+                          waitTicks=0, timeoutSeconds=30)
+        _wait(t, step)
+        waited += step
+
+
+SURGERY_STEP, SURGERY_CEILING = 250, 2500
+
+
+def _surgery_done(t, g):
+    """Advance until a genome sample lies in the rect, or the doctor's DoBill ended. The extraction costs its patient
+    blood by design (and a failed surgery cuts it), so a 'hurt' stop on THAT patient is a declared disturbance
+    (clockgate.expected_disturbance); anyone else hurt still stops the clock. -> the samples found ([] if none).
+    Records in g['completed'] how many tries ended with the patient still lying in its bed (a try that ended because
+    the patient got up is not a completed surgery)."""
+    import clockgate   # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+    pnum = _idnum(g["patient"])
+    pred = (lambda trig: trig.get("kind") == "hurt" and pnum is not None and trig.get("subjectId") == pnum)
+    waited, ended = 0, False
+    with clockgate.expected_disturbance("extraction surgery bleeds its own patient", pred):
+        while waited < SURGERY_CEILING:
+            _wait(t, SURGERY_STEP)
+            waited += SURGERY_STEP
+            got = _things(t, SAMPLE, g["rect"])
+            if got:
+                return got
+            if _job(_census(t, g["doer"])) != "DoBill":
+                ended = True
+                break
+    c = _census(t, g["patient"])
+    if ended and _job(c) == "LayDown":
+        g["completed"] = g.get("completed", 0) + 1
+    _note(t, "surgery try ended without a sample", {"ticks": waited, "doBillEnded": ended, "patient": c})
+    return []
+
+
+INJECT_STEP, INJECT_CEILING = 150, 3000
+
+
 def _inject(t, doer, host):
-    # LIVE 2026-10-08: this 600-tick server-side wait is frame-bound and outran the runner's 30 s reply
-    # timeout ("timed out after 30.0s"), the same failure _patient already fixed for LayDown / do_bill_now.
+    """Order the inject job, then WAIT ON ITS OUTCOME, not a flat window: advance in INJECT_STEP chunks until the host
+    carries RM_AmoebaGestation, or the doer's job is no longer RM_InjectGenomeSample (it ended: the caller's gestation
+    check is then the verdict), up to INJECT_CEILING. Still running at the ceiling, or a doer that could not act
+    (dead/downed/mental/unreadable), is UNMEASURED, never a FAIL.
+    LIVE 2026-10-16: a flat 600-tick window read 'no gestation' with the doer 2 cells from the host -- the walk from
+    wherever the failed surgery left the doer, a wandering host and the 180-tick inject toil outran it (HARNESS)."""
+    # waitTicks=0: the game is paused between calls, so the tool's own wait ran no ticks at all and only burned
+    # wall time (LIVE 2026-10-16: 205 s, pausedDuringWait true). The read-back is immediate; the clock moves below.
     with _patient(t):
         r = t.bridge_call("jawa/ordered_job", pawnId=doer, jobDef="RM_InjectGenomeSample",
-                          targetAId=host, waitTicks=600, timeoutSeconds=180)
-    if _live(t):
-        if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
-            _fail("RM_InjectGenomeSample was not accepted and running: %r" % r)
-        t.wait_ticks(600)
+                          targetAId=host, waitTicks=0, timeoutSeconds=30)
+    if not _live(t):
+        return
+    if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
+        _fail("RM_InjectGenomeSample was not accepted and running: %r" % r)
+    waited, c = 0, None
+    while waited < INJECT_CEILING:
+        _wait(t, INJECT_STEP)
+        waited += INJECT_STEP
+        if "RM_AmoebaGestation" in _hdefs(_rows(t).get(host)):
+            _note(t, "inject: gestation read after", {"ticks": waited})
+            return
+        c = _census(t, doer)
+        if c is None or c.get("dead") or c.get("downed") or c.get("inMentalState"):
+            _unmeasured(t, "the injecting colonist could not act (census %s) after %d ticks" % (json.dumps(c)[:300], waited))
+        if _job(c) != "RM_InjectGenomeSample":
+            _note(t, "inject: the job ended", {"ticks": waited, "doerJobNow": _job(c), "at": (c.get("x"), c.get("z"))})
+            return
+    _unmeasured(t, "the inject job was still running after %d ticks (doer at %s, job %s): the window, not the mod"
+                % (waited, (c or {}).get("x"), json.dumps((c or {}).get("job"))[:200]))
 
 
 def _batch_snapshot(t, rect):
@@ -1442,31 +1616,32 @@ def genome(t):
                 # 2026-10-03: a bed existed but the patient stood beside it, so JobOnThing returned null
                 # on all three tries). Lay the patient down on the bed first.
                 beds = _things(t, "Bed", g["rect"])
-                if _live(t):
-                    if not beds:
-                        _unmeasured(t, "fixture: the Bed did not spawn for the surgery")
-                    with _patient(t):    # the LayDown order waits 300 ticks server-side: it timed out at 30 s (live 2026-10-03 rerun)
-                        t.bridge_call("jawa/ordered_job", pawnId=g["patient"], jobDef="LayDown",
-                                      targetAId=beds[0]["id"], waitTicks=300, timeoutSeconds=60)
-                        _wait(t, 300)
+                if not beds:
+                    _unmeasured(t, "fixture: the Bed did not spawn for the surgery")
+                bed = beds[0]
                 for attempt in range(3):     # surgery can fail on skill; three completed tries
                     t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample",
                                   repeatMode="repeatcount", repeatCount=1)
-                    with _patient(t):    # a 2500-tick surgery outruns the runner's 30 s reply timeout (MEASURED live 2026-10-03)
+                    inbed, c = _lay_in_bed(t, g["patient"], bed)
+                    if inbed is None:
+                        _unmeasured(t, "SITE: the patient never lay in the bed at (%s,%s) (census %s)"
+                                    % (bed.get("x"), bed.get("z"), json.dumps(c, default=str)[:300]))
+                    # waitTicks=0: the game is paused between calls, so a server-side wait ran no ticks and only burned
+                    # wall time (LIVE 2026-10-16: 90 s per try, pausedDuringWait true). The clock moves in _surgery_done.
+                    with _patient(t):
                         r = t.bridge_call("jawa/do_bill_now", billGiverId=g["patient"], pawnId=g["doer"],
-                                          workGiverDef="DoBillsMedicalHumanOperation", waitTicks=2500, timeoutSeconds=90)
-                    if (r or {}).get("jobOnThingReturnedNull") or (
-                            _live(t) and isinstance(r, dict) and r.get("success") is False):
+                                          workGiverDef="DoBillsMedicalHumanOperation", waitTicks=0, timeoutSeconds=30)
+                    if (r or {}).get("jobOnThingReturnedNull") or (isinstance(r, dict) and r.get("success") is False):
                         _unmeasured(t, "the surgery job could not start (patient not in a bed / giver "
                                        "unusable): %s" % json.dumps((r or {}).get("details"), default=str)[:300])
-                    with _patient(t):
-                        _wait(t, 1500)
-                    got = _things(t, SAMPLE, g["rect"])
+                    got = _surgery_done(t, g)
                     if got:
                         made = got[0]
                         break
                 if not made:
-                    _fail("three completed extraction surgeries produced no genome sample")
+                    if not g.get("completed"):
+                        _unmeasured(t, "none of the three surgery tries ran to its end with the patient in bed")
+                    _fail("%d completed extraction surgery tries produced no genome sample" % g["completed"])
                 _, lines = _inspect(t, made["id"])
                 if "Genome source:" not in lines:
                     _fail("the sample does not record its source colonist: %r" % lines)
@@ -1486,6 +1661,8 @@ def genome(t):
                 _give(t, g["doer"], g["sample"])
                 _inject(t, g["doer"], g["host"])
                 row = _rows(t).get(g["host"])
+                if not _alive(row):
+                    _unmeasured(t, "the host is not readable alive after the inject job: %s" % json.dumps(row)[:200])
                 if "RM_AmoebaGestation" not in _hdefs(row):
                     _fail("the host carries no RM_AmoebaGestation after the inject job (hediffs: %s)"
                           % sorted(_hdefs(row)))
@@ -1595,3 +1772,11 @@ def site_restore(t):
             _ok(t.bridge_call("jawa/world_commit", redraw=False, recalcPaths=False), "world_commit")
             if _map_biome(t)[0] != orig:
                 _fail("the map's biome did not return to %s" % orig)
+    if t.session is not None and "quiet" in _STATE:
+        # put back what the quiet-site profile changed (debug + difficulty statics, the wild-spawner block)
+        try:
+            import quiet_site as QS   # noqa: E402
+            prob = QS.restore_attached(t.session)
+        except Exception as ex:                                 # noqa: BLE001
+            prob = "%s: %s" % (type(ex).__name__, ex)
+        print("[contagion-note] quiet-site restore: %s" % (prob or "ok"), file=sys.stderr, flush=True)
