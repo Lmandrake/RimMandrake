@@ -1,0 +1,5 @@
+LC_preflight                             PASS       HARNESS  {"playing": true, "flowworks": true, "drafted": [558, 561, 564], "neutral": {"defName": "OutlanderCivil", "name": "Homestead Defense League", "isPlayer": false, "hostile": false, "goodwill": 0, "hidden": false, "permanentEnemy": false, "settlementCount": 11}}
+== L5
+L5_switched_off_hose_spills              FAIL       MOD      {"heldUnits": [10000, 0], "drained": 10000, "filthInRect": [1, 1], "unplaced": [0, 0], "heldLiquid": "LiquidDef:RM_Liquid_FreshWater", "rect": [34, 179, 5, 5], "spilledUnits": [1, 10001]}
+L5_colonists_clean_spill                 UNMEASURED SITE     "no spill filth to clean (L5 spill row FAIL)"
+result: \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimMandrake\FlowWorks\northstar\liquid_checks_result_20261016T130318.json {"PASS": 1, "FAIL": 1, "UNMEASURED": 1}
