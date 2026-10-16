@@ -140,6 +140,11 @@
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
+    <Compile Include="MapControls\RM_MapControlMath.cs" />
+    <Compile Include="MapControls\RM_MapControlSettings.cs" />
+    <Compile Include="MapControls\Building_RM_MapControl.cs" />
+    <Compile Include="MapControls\RM_FlowTaps.cs" />
+    <Compile Include="MapControls\RM_MapControls.cs" />
     <!-- PHASE 5: ladders and ruling 23's shooting rule. SUPERDEEP_HOLDER_RETIRE_1:
          the holder Thing is gone; a pit is a D=4 cell and the trap is a grid rule
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->

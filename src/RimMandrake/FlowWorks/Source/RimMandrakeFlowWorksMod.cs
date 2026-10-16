@@ -562,6 +562,7 @@ namespace RimMandrake.FlowWorks
             // Builder Y sections (2026-10-05): sluice gates, quarry. One line each. (The empty tanker and bottled-blood stubs were
             // deleted 2026-10-11: neither feature is built; its settings arrive with it.)
             Machinery.Logistics.RM_SluiceGateSettings.ExposeData();
+            MapControls.RM_MapControlSettings.ExposeData();   // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
             Hose.RM_HoseSettings.ExposeData();
@@ -1545,6 +1546,7 @@ namespace RimMandrake.FlowWorks
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
             Machinery.RM_MachinerySettings.DoSettingsSection(list);
             Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
+            MapControls.RM_MapControlSettings.DoSettingsSection(list);
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
             Hose.RM_HoseSettings.DoSettingsSection(list);

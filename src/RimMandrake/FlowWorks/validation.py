@@ -390,6 +390,41 @@ def flow_door_facing(t):
                                     "superdeep canal, blueprint and finished door (SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR)")
 
 
+# FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): dev-placed flow source and flow sink (Source/MapControls/).
+# Offline proof of the rate math, a source and a sink driven through the production kernel with its ledger balanced every
+# pulse, and the wiring incl. the mapControlsEnabled master switch gating the pulse (Source/SelfTest/MapControlChecks.cs).
+# OWED live: place both on a dug channel (RM_MapControls.PlaceSource / PlaceSink via jawa/static_call), watch the level
+# rise and fall, read the L0 ledger (flowSources= / flowSinks=) and see no conservation warning; save and reload.
+MAP_CONTROL_CASES = ["MapControl_rate_to_levels", "MapControl_rate_clamps", "MapControl_blocked_source_never_banks",
+                     "MapControl_pick_targets", "MapControl_source_and_sink_conserve_through_the_kernel"]
+suite.toggles += [t for t in ["mapControlsEnabled"] if t not in suite.toggles]
+
+
+@suite.chain("flow_map_controls")
+def flow_map_controls(t):
+    """Offline: flow source / sink math, kernel conservation and wiring (RM_MapControlMath + call sites). 0 ticks, no bridge."""
+    cases = {}
+    with t.component("map_controls_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in MAP_CONTROL_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    with t.component("MapControl_wiring_and_master_switch", toggle="mapControlsEnabled"):
+        if t._guard():
+            got = cases.get("MapControl_wiring_and_master_switch")
+            if got != "ok":
+                raise ExpectationFailed("MapControl_wiring_and_master_switch: %s" % (got or "case missing from the SelfTest output"))
+    with t.component("flow_map_controls_live"):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- a flow source and sink on a dug channel move liquid, "
+                                    "the L0 ledger shows them and no conservation warning fires; survives save/reload "
+                                    "(FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS)")
+
+
 # Hose port review S2/S3 (2026-10-11), liquid networks L4: the tank-jobs switch tankModesEnabled (default on; was tanksFeedHoses). One C#
 # SelfTest case flips it through RM_LiquidNetKernel.SettlePlan (jobs vs all-Store) and reads the production call site
 # (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining

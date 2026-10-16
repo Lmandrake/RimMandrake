@@ -151,6 +151,10 @@ SETTINGS = {
     "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": {
         "sluiceGatesEnabled": True, "sluiceGateOpenDelayTicks": 120, "sluiceGateCloseDelayTicks": 240,
     },
+    # FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (2026-10-16): the map controls' master switch
+    "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": {
+        "mapControlsEnabled": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -161,6 +165,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Hose.RM_HoseSettings": os.path.join("Hose", "RM_HoseSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings": os.path.join("Machinery", "Kits", "RM_KitSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": os.path.join("Machinery", "Logistics", "RM_SluiceGateSettings.cs"),
+    "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": os.path.join("MapControls", "RM_MapControlSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.

@@ -134,6 +134,21 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>L0 ledger: whole levels the return leg credited to limitless bodies (they leave our books).</summary>
 		private float limitlessReturnedTotal;
+		/// <summary>FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: levels the dev-placed flow sources poured in and the flow sinks
+		/// took out (MapControls/). Both act BEFORE the kernel measures a pulse's "before", like rain, so the per-component
+		/// ledger never sees them; these totals are where they are disclosed (the L0 ledger report).</summary>
+		private float mapControlPouredTotal;
+		private float mapControlDrainedTotal;
+
+		/// <summary>A map control (source or sink) moved liquid across the map's boundary this pulse; recorded for the ledger.</summary>
+		public void NoteMapControlFlow(int pouredLevels, int drainedLevels)
+		{
+			mapControlPouredTotal += pouredLevels;
+			mapControlDrainedTotal += drainedLevels;
+		}
+
+		public float MapControlPouredTotal => mapControlPouredTotal;
+		public float MapControlDrainedTotal => mapControlDrainedTotal;
 
 		/// <summary>Rain arrives in fractions of a fill level; a level is an
 		/// integer. This carries the remainder between pulses so a light drizzle
@@ -676,6 +691,8 @@ namespace RimMandrake.FlowWorks
 				ref detachedBedKeys, ref detachedBedValues);
 			Scribe_Values.Look(ref burnedLevelsTotal, "RM_burnedLevelsTotal", 0f);
 			Scribe_Values.Look(ref limitlessReturnedTotal, "RM_limitlessReturnedTotal", 0f);
+			Scribe_Values.Look(ref mapControlPouredTotal, "RM_mapControlPouredTotal", 0f);
+			Scribe_Values.Look(ref mapControlDrainedTotal, "RM_mapControlDrainedTotal", 0f);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -1494,6 +1511,8 @@ namespace RimMandrake.FlowWorks
 				+ " burned=" + (burnedLevelsTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " spilled(session)=" + Machinery.RM_LiquidSpill.SpilledUnits
 				+ " toLimitless=" + (limitlessReturnedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " | inputs: flowSources=" + (mapControlPouredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " exits: flowSinks=" + (mapControlDrainedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " | limitless bodies=" + limitless + " (not summed)";
 		}
 
@@ -1762,6 +1781,9 @@ namespace RimMandrake.FlowWorks
 			// of the "before" the conservation ledger measures and cannot read
 			// as a leak. It is genuine external input, like a limitless source.
 			ApplyRain();
+			// FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow sources pour and flow sinks drain here, with rain and
+			// before the components measure "before", so the ledger reads them as external input / output, never as a leak.
+			MapControls.RM_MapControls.PulseAll(map, this);
 			// PHASE 6, ruling 7: the burn takes its levels before the components measure "before", so burned
 			// liquid is never mistaken for a leak.
 			liquidFire.BurnPulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
