@@ -1,0 +1,222 @@
+repo : /home/mandrake/rm/bench/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 25 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+  MayRequire: rewrote 5 folded-id/name guard(s) in 2 file(s) of FlowWorks (deployed copy only)
+FlowWorks        mandrake.rm.flowworks      105 file(s) HELD
+    H  northstar/review/map/keysheet.html   (repo-only; not deployed)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  review_map_stations_visuals.json   (repo-only; not deployed)
+           held: visuals station data for the review map builder; not game content
+    H  northstar/review/FlowWorks_review.decisions.json   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_review.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_status_board.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/extension_result_20261005T194720.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T195815.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T200437.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T194509.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T195337.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T200322.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T201023.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T202312.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T201540.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T232949.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T233603.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T000710.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T001245.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T002141.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003132.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003624.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003701.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003821.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003913.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T004655.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T010918.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T011022.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T011246.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T020120.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T020515.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021000.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021144.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021337.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021726.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021908.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T025236.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T033603.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T033840.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T040417.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T041249.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T041420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261007T052408.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261008T212615.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261008T212719.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261011T141116.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261011T170309.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/player_missions_spec.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T034753.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T040637.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T041535.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T042312.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T050823.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T080050.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/review/shots/ART_ladder_A.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/ART_ladder_B.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E2_flow.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E3_E4.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E5_sinks.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/J_jobs.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/P_pits.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/REF_quarry.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/S_ladder.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/X_promoted.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/validation_v2_result_20261002T074022.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T074157.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T074420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075252.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075351.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075609.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092652.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092839.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092952.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T093135.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T142502.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T144000.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T144257.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T145340.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T143030.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T143354.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T145357.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T150720.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T151248.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T151609.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T162414.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T191242.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T192324.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T193218.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T193627.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T202626.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T203150.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T231740.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T232201.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261006T040914.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261006T064707.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261007T140351.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261008T112703.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261008T141115.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261009T183221.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261009T183909.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T052325.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T081718.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T131544.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T132117.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T151120.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    ~  Assemblies/RimMandrakeFlowWorks.dll
+    ~  Assemblies/RimMandrakeFlowWorks.dll.srchash
+
+Drift found. Re-run with --apply to deploy.
