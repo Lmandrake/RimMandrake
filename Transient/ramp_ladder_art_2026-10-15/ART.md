@@ -26,3 +26,12 @@ away), south shows dark drops (stairs descending away), east/west a side wedge o
   (guide_east attempt read as a crate and was rejected). West = east mirrored.
 - `art_source/PitRamp/finalize.py` — premultiplied BOX to 256, alpha<32 zeroed, east inset 12 px (wedge touched the canvas edge).
 - `art_source/PitRamp/sheet.py` — the contact sheet.
+
+## v2 redraw — owner by card 2026-10-15 17:50: "Pit ramp art → Redraw as a visible slope"
+v1 read as a flat boarded crate. v2 carries the slope in SHAPE and light: trapezoid plan (wide, ragged earth toe in the pit;
+narrow head ending in one crisp, bright timber header at the rim), toe dark → head light (mean L toe/head: N 74/132, S 89/144,
+E 82/125), east/west a sheared wedge with a stratified earth side-face triangle. Guides `art_source/PitRamp/v2/guide_v2.py`,
+generation `v2/gen.sh` (codex edit, gpt-6.1-sol; north first, south/east with north as sibling), `v2/finalize_v2.py` (crop,
+BOX to 240 + 8 px inset, as v1 north). Candidates A earth+log cleats, B planks, C cut steps; **A picked** (strongest
+toe-to-head gradient, earth spill reads at 64 px; B's planks drift back toward crate). Installed via `art.py install
+--owner-said` with the card words. Sheet: `sheet_v2.png` (old v1 row vs new v2 row, 64 px/cell in a pit + 2x).
