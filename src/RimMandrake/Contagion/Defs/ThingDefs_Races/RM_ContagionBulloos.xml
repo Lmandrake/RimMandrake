@@ -30,11 +30,8 @@
       descriptions); the blistered bulloo's Blue Gel product (donor item; its description names none);
       the VEF ControlledDetonation PawnKind ability and Odyssey trainables (donor-specific); donor
       wildBiomes; the VEF AnimalStatExtension info-card rows.
-  ART: our renders exist and are not installed in this mod yet (zhool: gapall_AA_OcularJelly_v1, the owner's
-    "B" on the Cauldron sheet, today installed only in the campaign layer; blistered bulloo:
-    enact_d3c59886_infectedaerofleet_v1, his "redo"). Until the art ledger installs them here, both texPaths
-    are the donor path (a placeholder, reported ART OWED by donor_plain_ports_check.py) and the roster rows
-    stay MayRequire="sarg.alphaanimals".
+  ART: installed through the art ledger 2026-10-15 (owner: "accept all the art you showed me"): zhool = gapall_AA_OcularJelly_v1,
+    blistered bulloo = enact_d3c59886_infectedaerofleet_v1; texPaths are ours, roster rows carry no donor guard.
 -->
 <Defs>
 
@@ -138,7 +135,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet</texPath>
+          <texPath>Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet</texPath>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -148,7 +145,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet</texPath>
+          <texPath>Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet</texPath>
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -158,7 +155,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet</texPath>
+          <texPath>Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet</texPath>
           <drawSize>0.85</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -272,7 +269,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -282,7 +279,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
           <drawSize>1.25</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -292,7 +289,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
           <drawSize>1.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
