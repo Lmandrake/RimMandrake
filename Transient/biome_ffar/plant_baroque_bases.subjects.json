@@ -51,7 +51,16 @@
        }
       ],
       "searched": "live def dump: RM_Murrowbulb found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleA.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleB.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleC.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleD.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleE.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleF.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Bloddle/RSW_Plant_BloddleG.png"
+     ]
     },
     {
      "key": "RM_Crimmelroot",
@@ -90,7 +99,10 @@
        }
       ],
       "searched": "live def dump: RM_Crimmelroot found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_Chakroot_Wild/RSW_Plant_Chakroot_WildA.png"
+     ]
     },
     {
      "key": "RM_Thrannagourd",
@@ -129,7 +141,10 @@
        }
       ],
       "searched": "live def dump: RM_Thrannagourd found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_HubbaGourd_Wild/RSW_Plant_HubbaGourd_WildA.png"
+     ]
     },
     {
      "key": "RM_CorriskTree",
@@ -169,7 +184,13 @@
        }
       ],
       "searched": "live def dump: RM_CorriskTree found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_HydenockTree_Wild/RSW_Plant_HydenockTree_WildA.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_HydenockTree_Wild/RSW_Plant_HydenockTree_Wild_b.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_HydenockTree_Wild/RSW_Plant_HydenockTree_Wild_c.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_HydenockTree_Wild/RSW_Plant_HydenockTree_Wild_d.png"
+     ]
     },
     {
      "key": "RM_LumbrelTree",
@@ -209,7 +230,10 @@
        }
       ],
       "searched": "live def dump: RM_LumbrelTree found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_JoganTree_Wild/RSW_Plant_JoganTree_WildA.png"
+     ]
     },
     {
      "key": "RM_Salvessa",
@@ -248,7 +272,11 @@
        }
       ],
       "searched": "live def dump: RM_Salvessa found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/swplants/Nysillin/Nysillin_a.png",
+      "src/RimStarWars/SWBestiary/Textures/swplants/Nysillin/Nysillin_e.png"
+     ]
     },
     {
      "key": "RM_Glasmaw",
@@ -287,7 +315,11 @@
        }
       ],
       "searched": "live def dump: RM_Glasmaw found"
-     }
+     },
+     "reference_textures": [
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_TookeTrap_Wild/RSW_Plant_TookeTrap_WildA.png",
+      "src/RimStarWars/SWBestiary/Textures/Things/Plant/RSW_Plant_TookeTrap_Wild/RSW_Plant_TookeTrap_Wild_c.png"
+     ]
     }
    ]
   }

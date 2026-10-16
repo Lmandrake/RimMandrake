@@ -217,6 +217,74 @@ class Resolver:
                 hits.append(f"{fn}")
         return sorted(set(hits))
 
+    # ── source XML, for a def the live dump predates ──
+    SRC_ROOT = HERE.parents[2]                       # src/RimMandrake/Utils/art -> src/
+    VANILLA_PLANT_PARENTS = {"PlantBase", "PlantBaseNonEdible", "TreeBase", "BushBase", "PlantBase_Fungus",
+                             "TreeBase_Fungal", "PlantBase_Anomaly"}
+
+    @lru_cache(maxsize=None)
+    def _src_files(self) -> tuple:
+        out = []
+        for p in sorted(self.SRC_ROOT.glob("**/Defs/**/*.xml")):
+            try:
+                out.append((p, p.read_text(errors="replace")))
+            except OSError:
+                continue
+        return tuple(out)
+
+    def _src_el(self, needle: str, attr: str | None, name: str):
+        """(file, ThingDef element) in src/ whose defName (attr None) or Name attribute equals NAME."""
+        for p, txt in self._src_files():
+            if needle not in txt:
+                continue
+            root = self._parse(p)
+            if root is None:
+                continue
+            for el in root.iter("ThingDef"):
+                if (el.get(attr) if attr else el.findtext("defName")) == name:
+                    return p, el
+        return None, None
+
+    def src_plant_size(self, name: str) -> dict:
+        """A plant def absent from the live dump, sized from ITS SOURCE XML under src/ (ParentName followed within src/;
+        a chain ending at a vanilla plant parent takes the engine defaults: drawSize 1×1, maxMeshCount 1). Status stays
+        "fallback" — the source is not what the game loaded — with the real numbers, so the scene draws the true quad.
+        {} when the def is not in src/ or the chain never shows it is a plant."""
+        p, el = self._src_el(f"<defName>{name}</defName>", None, name)
+        if el is None:
+            return {}
+        file0, chain, found, plant = p, [], {}, False
+        getters = {"drawSize": lambda e: e.findtext("graphicData/drawSize"),
+                   "visualMax": lambda e: e.findtext("plant/visualSizeRange"),
+                   "mesh": lambda e: e.findtext("plant/maxMeshCount")}
+        while el is not None:
+            plant = plant or el.find("plant") is not None
+            for k, g in getters.items():
+                v = g(el)
+                if k not in found and v and v.strip():
+                    found[k] = (v.strip(), p.name)
+            parent = el.get("ParentName")
+            if not parent:
+                break
+            chain.append(parent)
+            if parent in self.VANILLA_PLANT_PARENTS:
+                plant = True
+                break
+            p, el = self._src_el(f'Name="{parent}"', "Name", parent)
+        if not plant:
+            return {}
+        ds = _vec(found["drawSize"][0]) if "drawSize" in found else [1.0, 1.0]
+        vmax = _fr(found["visualMax"][0]) if "visualMax" in found else None
+        mesh = int(found["mesh"][0]) if "mesh" in found else 1
+        quad = ds[0] * (vmax if vmax else 1.0)
+        how = " · ".join(f"{k} {found[k][0]} ({found[k][1]})" if k in found else f"{k} engine default"
+                         for k in ("drawSize", "visualMax", "mesh"))
+        rel = file0.relative_to(self.SRC_ROOT.parent)
+        return {"status": "fallback", "kind": "plant", "def": name, "drawSize": ds, "visualMax": vmax, "mesh": mesh,
+                "color": [1, 1, 1], "quad": quad, "cells": quad if mesh == 1 else 1.0,
+                "source": f"FALLBACK from source XML {rel} (def not in live dump {self.captured[:10]}) · {how}"
+                          + (f" · chain {' → '.join(chain)}" if chain else "")}
+
     # ── public ──
     def describe(self, row: dict) -> dict:
         """The in-game label + description the player reads: ThingDef label/description from the LIVE dump
@@ -248,6 +316,10 @@ class Resolver:
             other = self._ui_only(names)
             if other:
                 return other
+            for n in names:      # a def NEWER than the dump: its source XML, still flagged FALLBACK (never "measured")
+                src = self.src_plant_size(n)
+                if src:
+                    return src
             return {"status": "fallback", "cells": 1.0, "source": "FALLBACK 1 cell — no ThingDef in the live dump",
                     "kind": row.get("kind")}
         tmod = (td.get("modContentPack") or {}).get("packageId", "")
