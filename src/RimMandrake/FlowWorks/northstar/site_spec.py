@@ -82,6 +82,7 @@ SETTINGS = {
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
         "waterFrontCreepEnabled": True,    # CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: water front advances one cell per pulse from the mouth
         "levelBySurfaceEnabled": True,     # WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: water levels by surface, not dug depth
+        "waterBodyTypeFlipFixEnabled": True,   # FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: vanilla water-body count fix on type change
         "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
         "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
@@ -129,6 +130,7 @@ SETTINGS = {
         "universalPipesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
         "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
         "litresPerFilth": 400.0, "liquidTheftEnabled": True, "liquidTheftGoodwillPerDay": 2.0, "liquidTheftSightRange": 12.0,
+        "pipeLinksIntoMachines": True, "joinFittings": False,   # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (art only; fittings OFF until the owner rules)
     },
     # the flexible hose's section (moved from Gimme Some Slack at the hose port, 2026-10-11); Scribed with a `hose_` key prefix.
     # String fields (defaultLook) are not in this bool/float table; hoseSettingsImported is an internal flag.
