@@ -82,6 +82,8 @@
     <Compile Include="Kernel\RM_DraftprintKernel.cs" />
     <Compile Include="Kernel\RM_ZhoolHazeKernel.cs" />
     <Compile Include="CompZhoolHaze.cs" />
+    <!-- Phase 0 twin-only ports, owner card 2026-10-15 Q3: the Bloody Mess bursts only when killed -->
+    <Compile Include="DeathActionWorker_RM_GenomeHostBurst.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +91,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- EnvironmentalHazards is already this mod's About.xml dependency; DeathActionWorker_RM_GenomeHostBurst
+         subclasses its scaled-explosion worker. Not copied: the kit ships its own DLL. -->
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
