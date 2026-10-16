@@ -63,8 +63,10 @@
     </building>
     <comps>
       <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
-           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml. CompTankLook is the
+           built tank's "Choose style" gizmo (owner 2026-10-16) -->
       <li Class="CompProperties_Styleable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_TankLook" />
     </comps>
   </ThingDef>
 
@@ -110,8 +112,10 @@
     </building>
     <comps>
       <!-- per-build look, the same four as Gimme Some Slack (owner 2026-10-14): the engine's style field, picked on the
-           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml -->
+           build button through PipeLook (PipeStyles.TankDefs); styles in RM_LiquidTankStyles.xml. CompTankLook is the
+           built tank's "Choose style" gizmo (owner 2026-10-16) -->
       <li Class="CompProperties_Styleable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_TankLook" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">

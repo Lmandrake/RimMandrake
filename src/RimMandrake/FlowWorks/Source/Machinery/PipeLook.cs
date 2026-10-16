@@ -135,6 +135,81 @@ namespace RimMandrake.FlowWorks.Machinery
         }
     }
 
+    /// <summary>
+    /// TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH (owner 2026-10-16: "The tanks should have switchable art like everything else in
+    /// here. I don't see the switch."): the four liquid tanks' "Choose style" gizmo, the reel's and the pipe's twin. The build
+    /// button, copy and frame already carried a tank's look (PipeStyles.TankDefs through this picker); a BUILT tank had no
+    /// way to change it. This tank, or every selected tank (each in its own def's style). Shown only once the tank's style
+    /// defs are loaded (PipeLook.IsStyled).
+    /// </summary>
+    public class CompProperties_TankLook : CompProperties
+    {
+        public CompProperties_TankLook()
+        {
+            compClass = typeof(CompTankLook);
+        }
+    }
+
+    public class CompTankLook : ThingComp
+    {
+        /// <summary>Restyle one tank in place (free, instant, art only) and redraw its whole footprint.</summary>
+        public static bool SetLook(Thing tank, string look)
+        {
+            ThingStyleDef sd = PipeLook.StyleFor(tank?.def, look);
+            if (sd == null || !tank.Spawned) return false;
+            tank.SetStyleDef(sd);
+            tank.Notify_ColorChanged();
+            foreach (IntVec3 c in tank.OccupiedRect())
+            {
+                tank.Map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
+            }
+            return true;
+        }
+
+        /// <summary>The player's selected tanks that can take a look (the multi-select option's targets).</summary>
+        private static List<Thing> SelectedTanks()
+        {
+            var list = new List<Thing>();
+            foreach (object o in Find.Selector.SelectedObjectsListForReading)
+            {
+                if (o is Thing t && t.Faction == Faction.OfPlayer && t.TryGetComp<CompTankLook>() != null && PipeLook.IsStyled(t.def)) list.Add(t);
+            }
+            return list;
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
+            if (parent.Faction != Faction.OfPlayer || !PipeLook.IsStyled(parent.def)) yield break;
+            yield return new Command_Action
+            {
+                defaultLabel = "Choose style",
+                defaultDesc = "Change how this tank looks (scrapper, industrial, modern, futuristic): this tank, or every selected tank. " +
+                              "Free and instant; it changes art only, never cost, capacity or function.",
+                icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
+                action = () =>
+                {
+                    string cur = PipeLook.LookOfThing(parent);
+                    List<Thing> sel = SelectedTanks();
+                    var opts = new List<FloatMenuOption>();
+                    foreach (string look in PipeStyles.Looks)
+                    {
+                        ThingStyleDef sd = PipeLook.StyleFor(parent.def, look);
+                        if (sd == null) continue;
+                        string l = look;
+                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this tank", () => SetLook(parent, l), sd.UIIcon, Color.white));
+                        if (sel.Count > 1)
+                            opts.Add(new FloatMenuOption(look + ": every selected tank (" + sel.Count + ")", () =>
+                            {
+                                foreach (Thing t in sel) SetLook(t, l);
+                            }, sd.UIIcon, Color.white));
+                    }
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
+            };
+        }
+    }
+
     [PatchFeature("Universal pipe: look picker")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ProcessInput))]
     internal static class Patch_Pipe_DesignatorBuild_ProcessInput
