@@ -57,7 +57,7 @@
     <fertility>1.5</fertility>
     <pathCost>2</pathCost>
     <takeFootprints>True</takeFootprints>
-    <acceptTerrainSourceFilth>false</acceptTerrainSourceFilth>
+    <filthAcceptanceMask>Natural, Unnatural</filthAcceptanceMask>
     <generatedFilth>Filth_Dirt</generatedFilth>
     <statBases>
       <Beauty>-3</Beauty>
