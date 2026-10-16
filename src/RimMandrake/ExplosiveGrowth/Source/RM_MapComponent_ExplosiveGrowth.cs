@@ -225,6 +225,13 @@ namespace RimMandrake.ExplosiveGrowth
         private void Pass(int now, int dt)
         {
             ledger.PruneExpired(now);
+            // Out of scope (the "other biomes" option turned off, or a save from before the biome scope): soaks left on
+            // this map lapse on their own clock and nothing new arms, charges or fires. Ruptures already venting finish.
+            if (!RM_ExplosiveGrowthRegistry.BiomeInScope(map.Biome))
+            {
+                if (ruptures.Count > 0) TickRuptures(now);
+                return;
+            }
             RM_SoakSources.Pulse(this, now);
 
             bool reprint = now >= nextReprintTick;
