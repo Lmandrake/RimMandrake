@@ -35,6 +35,10 @@ DONOR_ASSEMBLY_NS = (b"AlphaBehavioursAndEvents.",)
 
 # Owner-ruled / ported-today mappings that are not simply RSW_<name> or RM_<name minus AA_>.
 EXPLICIT = {
+    # Ideoligion icon ports (Transient/ideo_icons_repoint_plan.md)
+    "sw_Pentastar": "RUT_IdeoIcon_Contract", "sw_OnderonRoyalty": "RUT_IdeoIcon_AscendantGenome",
+    "sw_JediNova": "RUT_IdeoIcon_Balance", "sw_SithExarKun": "RUT_IdeoIcon_Weight",
+    "sw_Bantha": "RUT_IdeoIcon_SunDebt", "sw_JediGray": "RUT_IdeoIcon_Astropolitan",
     # Sarlacc landmark port (Transient/phase0_sarlacc_save_renames.md)
     "sw_Sarlacc": "RSW_Sarlacc", "sw_DeadSarlacc": "RSW_DeadSarlacc",
     "SarlaccPit": "RSW_SarlaccPit", "DeadSarlacc": "RSW_DeadSarlaccHusk",
