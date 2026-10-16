@@ -846,9 +846,9 @@ def main():
     # SITE: a mountain site. With the pad's roof stripped (_open_sky) nothing collapses and the whole run stays green;
     # if the strip is lost the collapse buries the vent and vent_gas_emits must say UNMEASURED, never FAIL.
     res = run(["mountain_site"])
-    notpass = sorted(k for k, v in res.items() if v[0] != "PASS" and k in healthy and healthy[k][0] == "PASS")
-    if notpass:
-        bad.append("site break mountain_site (roof stripped): expected the healthy verdicts, got non-PASS %s" % notpass)
+    mt_notpass = sorted(k for k, v in res.items() if v[0] != "PASS" and k in healthy and healthy[k][0] == "PASS")
+    if mt_notpass:
+        bad.append("site break mountain_site (roof stripped): expected the healthy verdicts, got non-PASS %s" % mt_notpass)
     res = run(["mountain_site", "no_roof_strip"])
     reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
     got = res.get("gas.vent_gas_emits", ("?",))[0]

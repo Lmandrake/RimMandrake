@@ -3145,6 +3145,8 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                try
+                {
                 foreach (var pawn in pawns)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -3181,6 +3183,18 @@ namespace JawaBench.BridgeTools
                     var job = JobMaker.MakeJob(JobDefOf.Goto, dest);
                     var tag = (pawn.Drafted ? JobTag.DraftedOrder : JobTag.Misc);
                     accepted[id] = pawn.jobs.TryTakeOrderedJob(job, tag, false);
+                }
+                }
+                catch
+                {
+                    // The speed-restoring try/finally below is not entered yet; a throw
+                    // here (CanReach, a drafter, cancellation) must not leave Normal speed on.
+                    if (speedChanged && tm != null)
+                    {
+                        tm.CurTimeSpeed = speedBefore;
+                        speedChanged = false;
+                    }
+                    throw;
                 }
                 return null;
             }, cancellationToken).ConfigureAwait(false);
@@ -6386,7 +6400,10 @@ namespace JawaBench.BridgeTools
 
                 FactionRelationKind parsed = default;
                 var wantKind = !string.IsNullOrWhiteSpace(kind);
-                if (wantKind && !Enum.TryParse(kind.Trim(), true, out parsed))
+                // Enum.TryParse accepts any integer literal ("99"); an undefined kind
+                // would be written into both factions' scribed relation records.
+                if (wantKind && (!Enum.TryParse(kind.Trim(), true, out parsed)
+                                 || !Enum.IsDefined(typeof(FactionRelationKind), parsed)))
                     return Fail($"'{kind}' is not a FactionRelationKind.", new
                     {
                         valid = Enum.GetNames(typeof(FactionRelationKind))
