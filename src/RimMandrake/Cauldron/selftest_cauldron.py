@@ -234,6 +234,10 @@ class Fake(object):
 
     def chunk(self, d, old):
         b = self.broken
+        if "indoor_walks_out" in b:                      # SITE break: the indoor colonist leaves the room (live 2026-10-16)
+            for p in self.pawns.values():
+                if p["kind"] == "Colonist" and self.roofed(p):
+                    p["x"] -= 20
         # --- vent bloom exposure at multiples of the interval, once the weather transition is done
         if old // V.BLOOM_INTERVAL != self.ticks // V.BLOOM_INTERVAL and self.weather == V.BLOOM \
                 and self.wage >= 4000 and "no_exposure" not in b \
@@ -548,7 +552,11 @@ class Fake(object):
     def t_make_empty_room(self, rect=None, **k):
         r = V_rect(rect)
         self.rooms.append((r[0] + 1, r[1] + 1, r[2] - 2, r[3] - 2))
-        return {"success": True}
+        door = (r[0] + r[2] // 2, r[1])                  # live: one random non-corner edge cell is a door
+        self.new("Door", door[0], door[1])
+        if "room_reports_no_door" in self.broken:
+            return {"success": True}
+        return {"success": True, "doorAt": {"x": door[0], "z": door[1]}}
 
     def t_get_roof_batch(self, rects=None, **k):
         return {"success": True, "roofedCells": 49}
@@ -805,6 +813,13 @@ def main():
         reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
         if reds != [target]:
             bad.append("break %-22s expected only %s FAIL, got %s" % (brk, target, reds))
+    # SITE breaks (not mod defects): the roofed-room guard must answer UNMEASURED, never FAIL and never PASS.
+    for brk in ("room_reports_no_door", "indoor_walks_out"):
+        res = run([brk])
+        reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
+        got = res.get("bloom.bloom_spares_roofed", ("?",))[0]
+        if reds or got != "UNMEASURED":
+            bad.append("site break %s: expected bloom_spares_roofed UNMEASURED and no red, got %s / %s" % (brk, got, reds))
     print("selftest Cauldron: %d components, healthy-PASS %d/%d; %d breaks, each turning exactly its own "
           "component red" % (n_comp, n_comp - len(notpass), n_comp,
                              len(BREAKS) - len([1 for b in bad if b.startswith("break ")])))

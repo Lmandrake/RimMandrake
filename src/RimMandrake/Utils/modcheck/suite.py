@@ -128,6 +128,25 @@ class TestContext(object):
         # action receipts (contract.spawn_receipt): requested vs ACTUAL kinds and ids of every pawn spawn this
         # context made, the actual kind READ BACK from an independent list_pawns (E5: a substituted spawn).
         self.receipts = []
+        # The unwatched wait tops up LOW colonists' Food before each chunk, the same policy Watch applies per chunk
+        # (bland_world.feed_colonists, floor 0.25): LIVE 2026-10-16 Cauldron, two chains ended UNMEASURED because a
+        # map colonist went Starving and the safe_advance vitals latch stopped the clock. A suite that MEASURES
+        # hunger sets `t.feed = False`. `fed` is the evidence (one id per top-up).
+        self.feed = True
+        self.fed = []
+
+    def _feed_low_colonists(self):
+        if not self.feed or self.session is None:
+            return
+        try:
+            import bland_world  # noqa: E402 - modcheck dir is on sys.path wherever suite is importable
+            got = bland_world.feed_colonists(self.session)
+        except Exception as ex:                                  # noqa: BLE001 - upkeep, never a verdict
+            self._record("feed_colonists failed: %s" % ex, None)
+            return
+        if got:
+            self.fed.extend(got)
+            self._record("fed low colonists %s" % got, got)
 
     # ----------------------------------------------------------- guard
     def _guard(self):
@@ -280,6 +299,7 @@ class TestContext(object):
         advanced = 0
         while advanced < n and calls < max_calls:
             step = min(_chunk, n - advanced)
+            self._feed_low_colonists()      # BEFORE the chunk: the vitals latch stops mid-chunk, not after it
             # WATCH_WAIT_WIRE_SMALL_STEPS: jawa/safe_advance when the companion has it (interruptible, stopped by the
             # vitals latch -> clockgate.GovernorStop, a surprise abort = UNMEASURED); else the legacy step tool.
             import clockgate  # noqa: E402 - modcheck dir is on sys.path wherever suite is importable

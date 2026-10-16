@@ -1333,9 +1333,21 @@ def bloom_chain(t):
                 _lock_weather(t, BLOOM)
                 room = t.bridge_call("jawa/make_empty_room", rect="%d,%d,9,9" % (x - 11, z - 4), stuffDef="Steel")
                 _ok(room, "make_empty_room")
+                # SEAL the room: make_empty_room always cuts a door, and a drafted pawn left waiting is auto-undrafted
+                # by vanilla AutoUndrafter after 10000 ticks (this chain's transition wait + clock jump reach that),
+                # after which the indoor colonist walks out and is honestly exposed (bloom_spares_roofed FAIL,
+                # LIVE 2026-10-16). The door becomes a wall; the colonist's own cell is re-read at the verdict.
+                door = (room or {}).get("doorAt") or {}
+                if door.get("x") is not None:
+                    t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (door["x"], door["z"]), categories="All")
+                    t.bridge_call("jawa/spawn_batch", ops="Wall:%d,%d" % (door["x"], door["z"]), stuff="Steel")
+                if _live(t) and (door.get("x") is None or _count(t, "Door", "%d,%d,9,9" % (x - 11, z - 4)) != 0):
+                    _unmeasured(t, "could not seal the roofed room (door %r still open): an indoor colonist "
+                                   "can walk out" % (door,))
                 ids["out"] = _spawn(t, "Colonist", x + 6, z + 8, faction="player")
                 ids["in"] = _spawn(t, "Colonist", x - 7, z, faction="player")
                 for p in (ids["out"], ids["in"]):
+                    _full(t, p)
                     t.bridge_call("jawa/set_draft", pawnId=p, drafted=True)
                 roof = t.bridge_call("jawa/get_roof_batch", rects="%d,%d,7,7" % (x - 10, z - 3))
                 if not _roofed(roof):
@@ -1377,6 +1389,13 @@ def bloom_chain(t):
                 row = _rows(t, health=True).get(ids["in"])
                 if row is None:
                     _unmeasured(t, "roofed colonist missing from list_pawns")
+                at = _xz(row)
+                _note(t, "indoor colonist cell at the verdict", at)
+                if at is None or not (x - 10 <= at[0] <= x - 4 and z - 3 <= at[1] <= z + 3):
+                    _unmeasured(t, "the indoor colonist is not inside the sealed room at the verdict (%r): "
+                                   "its exposure says nothing about the roof" % (at,))
+                if not _roofed(t.bridge_call("jawa/get_roof_batch", rects="%d,%d,1,1" % at)):
+                    _unmeasured(t, "the indoor colonist's own cell %r reads unroofed" % (at,))
                 if _hediff(row, HEDIFF) is not None:
                     _fail("the colonist inside the roofed room also gained %s (the roof is ignored)" % HEDIFF)
         with _comp(t, "bloom_spares_natives"):
