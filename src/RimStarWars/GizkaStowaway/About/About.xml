@@ -36,7 +36,6 @@ Every feature is gated in Mod Settings (MOD_OPTIONS_RETROFIT_1); all-off leaves 
     <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
-    <li>mlie.starwarsanimalcollection</li>
     <li>mandrake.rsw.swbestiary</li>
   </loadAfter>
 </ModMetaData>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  GIZKA_TRIBBLE_ADAPTATION_1 — patches against the DONOR gizka.
+  GIZKA_TRIBBLE_ADAPTATION_1 — patches on the ported gizka (RSW_Gizka).
 
-  The creature belongs to Star Wars Animal Collection (Continued)
-  (`Mlie.StarWarsAnimalCollection`, WS 3497316713). We never edit that mod;
-  everything here is an xpath patch from our own mod, wrapped in
-  PatchOperationFindMod so the whole file no-ops cleanly when the donor is
-  absent.
+  The gizka was first patched on the Star Wars Animal Collection (Continued)
+  donor (`Mlie.StarWarsAnimalCollection`, WS 3497316713) and later ported to
+  SWBestiary as RSW_Gizka. The donor-name block was deleted in the Phase 0
+  cleanup (2026-10-15) because its target is gone with the donor; every number
+  in it survives in the RSW_ block below. The history text that follows is kept
+  as the record of the values and rulings.
 
   TWO separate owner rulings live in this file, and they pull in opposite
   directions on purpose:
@@ -69,77 +70,6 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-
-        <!-- Card 2: the scam pays pocket change. -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/statBases/MarketValue</xpath>
-          <value>
-            <MarketValue>15</MarketValue>
-          </value>
-        </li>
-
-        <!-- Owner 2026-09-17: crazy reproduction, everywhere. -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggLayIntervalDays</xpath>
-          <value>
-            <eggLayIntervalDays>0.4</eggLayIntervalDays>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggCountRange</xpath>
-          <value>
-            <eggCountRange>3~5</eggCountRange>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/comps/li[@Class="CompProperties_EggLayer"]/eggFertilizationCountMax</xpath>
-          <value>
-            <eggFertilizationCountMax>4</eggFertilizationCountMax>
-          </value>
-        </li>
-
-        <!-- mateMtbHours is absent from the donor def, so this is an Add, not
-             a Replace: RaceProperties defaults it to 12. -->
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/race</xpath>
-          <value>
-            <mateMtbHours>4</mateMtbHours>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/race/lifeStageAges/li[def="AnimalJuvenile"]/minAge</xpath>
-          <value>
-            <minAge>0.02</minAge>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Gizka"]/race/lifeStageAges/li[def="AnimalAdult"]/minAge</xpath>
-          <value>
-            <minAge>0.045</minAge>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="EggGizkaFertilized"]/comps/li[@Class="CompProperties_Hatcher"]/hatcherDaystoHatch</xpath>
-          <value>
-            <hatcherDaystoHatch>1.5</hatcherDaystoHatch>
-          </value>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
-
   <!--
     THE SECOND GIZKA. MEASURED 2026-09-17, and it is not in the draft.
 
@@ -166,8 +96,7 @@
     cannot drift. It also returns true when it finds nothing, which is the
     graceful no-op wanted here and is deliberate, not an oversight.
 
-    NOTE for whoever retires the donor: delete the FIRST operation block, not
-    this one. Nothing else in this file needs to change.
+    (The donor-name block is already deleted: nothing is left to do on retirement.)
   -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Gizka"]</xpath>

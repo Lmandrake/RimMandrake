@@ -25,8 +25,9 @@
   have our own RSW_ ports too — retargeted into the single
   mandrake.rsw.swbestiary op below, alongside RSW_Screecher/RSW_VentStalker.
   CAULDRON_RULED_CONTENT_1 (2026-09-29) adds the owner-ruled imports: Lylek and
-  Skalder (RSW_ ports, in the swbestiary op) and Silooth (donor row, its own
-  FindMod op). Both ops now guard with PatchOperationFindMod; the old
+  Skalder and Silooth (RSW_ ports, all in the swbestiary op; Silooth was a
+  donor row with its own FindMod op until RSW_Silooth was ported, Phase 0
+  cleanup 2026-10-15). The op guards with PatchOperationFindMod; the old
   Operation MayRequire attribute was inert.
 
   RSW_Screecher is multi-homed on purpose (owner approved 2026-09-22,
@@ -69,23 +70,9 @@
                Lylek and Skalder). Do not "fix" them back out. -->
           <RSW_Lylek>0.05</RSW_Lylek>
           <RSW_Skalder>0.08</RSW_Skalder>
-        </value>
-      </match>
-    </match>
-  </Operation>
-
-  <!-- CAULDRON_RULED_CONTENT_1: Silooth is a donor row (Star Wars Animal
-       Collection) with no RSW_ port; owner-ruled import, wired and kept. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
-        <value>
-          <Silooth>0.5</Silooth>
+          <!-- CAULDRON_RULED_CONTENT_1: Silooth, owner-ruled import. It was a donor row until RSW_Silooth was
+               ported (Phase 0 cleanup 2026-10-15); wired and kept on purpose. -->
+          <RSW_Silooth>0.5</RSW_Silooth>
         </value>
       </match>
     </match>

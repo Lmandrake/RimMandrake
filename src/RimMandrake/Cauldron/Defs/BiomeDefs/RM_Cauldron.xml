@@ -46,7 +46,7 @@
         RM_Zisska, RM_Eskith) and +3 owner-ruled Alpha Animals imports
         (Plasmorph, LuciferBug, Radyak). The imports override
         the frozen sheet's no-grazer and ban-9 lines on purpose. Lylek,
-        Skalder (RSW_ ports) and Silooth (donor) ride the Utinni patch.
+        Skalder and Silooth (RSW_ ports) ride the Utinni patch.
 
     Everything else — texture, terrain (Marsh/Riverbank), diseases —
     is the twin's content unchanged.

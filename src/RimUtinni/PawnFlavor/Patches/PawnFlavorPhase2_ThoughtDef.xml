@@ -1,372 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Patch>
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Animals</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate black truffle</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate black truffle</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Real truffle, dug up clean and eaten fresh. Out here that's worth more than most of what's in my pack.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Real truffle, dug up clean and eaten fresh. Out here that's worth more than most of what's in my pack.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate black truffle</label>
-                  <description>Real truffle, dug up clean and eaten fresh. Out here that's worth more than most of what's in my pack.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteBlackTruffleIngredient"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate black truffle</label>
-                    <description>Real truffle, dug up clean and eaten fresh. Out here that's worth more than most of what's in my pack.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate rotting scrap-greens</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate rotting scrap-greens</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>I scavenged fermented, rotting plant matter just to keep moving. Worse than eating a corpse — if this is what it takes to survive out here, I don't like what's coming.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages/li[1]</xpath>
-                  <value>
-                    <description>I scavenged fermented, rotting plant matter just to keep moving. Worse than eating a corpse — if this is what it takes to survive out here, I don't like what's coming.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate rotting scrap-greens</label>
-                  <description>I scavenged fermented, rotting plant matter just to keep moving. Worse than eating a corpse — if this is what it takes to survive out here, I don't like what's coming.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteHorribleRot"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate rotting scrap-greens</label>
-                    <description>I scavenged fermented, rotting plant matter just to keep moving. Worse than eating a corpse — if this is what it takes to survive out here, I don't like what's coming.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate an abomination's leavings</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate an abomination's leavings</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>That meal came out of the guts of something that shouldn't exist, half metal and half rot. I've eaten corpses that sat better than this.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages/li[1]</xpath>
-                  <value>
-                    <description>That meal came out of the guts of something that shouldn't exist, half metal and half rot. I've eaten corpses that sat better than this.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate an abomination's leavings</label>
-                  <description>That meal came out of the guts of something that shouldn't exist, half metal and half rot. I've eaten corpses that sat better than this.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_AteSuperAwfulMeal"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate an abomination's leavings</label>
-                    <description>That meal came out of the guts of something that shouldn't exist, half metal and half rot. I've eaten corpses that sat better than this.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>psionically nuzzled</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]</xpath>
-                  <value>
-                    <label>psionically nuzzled</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[1]</xpath>
-                  <value>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages</xpath>
-              <value>
-                <li>
-                  <label>psionically nuzzled</label>
-                  <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>psionically nuzzled</label>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]/label</xpath>
-                  <value>
-                    <label>psionically nuzzled</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]</xpath>
-                  <value>
-                    <label>psionically nuzzled</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]/description</xpath>
-                  <value>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages/li[2]</xpath>
-                  <value>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]/stages</xpath>
-              <value>
-                <li>
-                  <label>psionically nuzzled</label>
-                  <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_BeenPsionicallyNuzzled"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>psionically nuzzled</label>
-                    <description>That fox pressed against me and something warm and unearned washed through my head. Feels good, feels loved, feels like it isn't entirely mine.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>saw a disgusting creature</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]</xpath>
-                  <value>
-                    <label>saw a disgusting creature</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>That slug reeked of old corpse-rot from ten paces off. My stomach's still turning just thinking about it.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages/li[1]</xpath>
-                  <value>
-                    <description>That slug reeked of old corpse-rot from ten paces off. My stomach's still turning just thinking about it.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_Disgust"]/stages</xpath>
-              <value>
-                <li>
-                  <label>saw a disgusting creature</label>
-                  <description>That slug reeked of old corpse-rot from ten paces off. My stomach's still turning just thinking about it.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_Disgust"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>saw a disgusting creature</label>
-                    <description>That slug reeked of old corpse-rot from ten paces off. My stomach's still turning just thinking about it.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
+  <Operation Class="PatchOperationSequence">
+    <operations>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="AA_PhotosensitiveExoskeleton"]</xpath><match Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="AA_PhotosensitiveExoskeleton"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -425,190 +61,9 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>psychic pain nearby</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]</xpath>
-                  <value>
-                    <label>psychic pain nearby</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Something out there is hurting bad, and its pain is leaking straight into my skull. Can't think past it.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Something out there is hurting bad, and its pain is leaking straight into my skull. Can't think past it.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]/stages</xpath>
-              <value>
-                <li>
-                  <label>psychic pain nearby</label>
-                  <description>Something out there is hurting bad, and its pain is leaking straight into my skull. Can't think past it.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyBad"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>psychic pain nearby</label>
-                    <description>Something out there is hurting bad, and its pain is leaking straight into my skull. Can't think past it.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>psychic calm nearby</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]</xpath>
-                  <value>
-                    <label>psychic calm nearby</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Something out there is fed, safe, and content, and I can feel a thread of that settle into me too.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Something out there is fed, safe, and content, and I can feel a thread of that settle into me too.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]/stages</xpath>
-              <value>
-                <li>
-                  <label>psychic calm nearby</label>
-                  <description>Something out there is fed, safe, and content, and I can feel a thread of that settle into me too.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_PsychicHarmonyGood"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>psychic calm nearby</label>
-                    <description>Something out there is fed, safe, and content, and I can feel a thread of that settle into me too.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate burning wasp eggs</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate burning wasp eggs</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Whatever was in those eggs is still burning down my throat and it isn't letting up. Should have checked the ration crate closer.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Whatever was in those eggs is still burning down my throat and it isn't letting up. Should have checked the ration crate closer.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate burning wasp eggs</label>
-                  <description>Whatever was in those eggs is still burning down my throat and it isn't letting up. Should have checked the ration crate closer.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AA_UncomfortablyHot"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate burning wasp eggs</label>
-                    <description>Whatever was in those eggs is still burning down my throat and it isn't letting up. Should have checked the ration crate closer.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
+        </match></li>
       </operations>
-    </match>
-  </Operation>
+    </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>ABF: Synstructs Core</li>
@@ -87183,41 +86638,31 @@
       </operations>
     </match>
   </Operation>
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars Animal Collection (Continued)</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]</xpath>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate acklay claw</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]</xpath>
                   <value>
                     <label>ate acklay claw</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Tender enough to fall apart on the fork, with a buttery sweetness that hangs around after the plate's empty. Good eating off a mean animal.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages/li[1]</xpath>
                   <value>
                     <description>Tender enough to fall apart on the fork, with a buttery sweetness that hangs around after the plate's empty. Good eating off a mean animal.</description>
                   </value>
@@ -87226,9 +86671,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]/stages</xpath>
               <value>
                 <li>
                   <label>ate acklay claw</label>
@@ -87237,7 +86682,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteAcklayClaw"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteAcklayClaw"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87248,36 +86693,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate bloddle</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]</xpath>
                   <value>
                     <label>ate bloddle</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Something about cooked bloddle just smells right the moment it hits the pan. Simple meal, but it made the whole camp look over.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages/li[1]</xpath>
                   <value>
                     <description>Something about cooked bloddle just smells right the moment it hits the pan. Simple meal, but it made the whole camp look over.</description>
                   </value>
@@ -87286,9 +86725,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteBloddle"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]/stages</xpath>
               <value>
                 <li>
                   <label>ate bloddle</label>
@@ -87297,7 +86736,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteBloddle"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteBloddle"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87308,36 +86747,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate chak-root</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]</xpath>
                   <value>
                     <label>ate chak-root</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]/description</xpath>
                   <value>
                     <description>That tangy sweetness is unmistakable once you've had it — chak-root, and no mistaking it for scrap-grown filler.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages/li[1]</xpath>
                   <value>
                     <description>That tangy sweetness is unmistakable once you've had it — chak-root, and no mistaking it for scrap-grown filler.</description>
                   </value>
@@ -87346,9 +86779,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteChakroot"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]/stages</xpath>
               <value>
                 <li>
                   <label>ate chak-root</label>
@@ -87357,7 +86790,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteChakroot"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteChakroot"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87368,36 +86801,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate rancor heart</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]</xpath>
                   <value>
                     <label>ate rancor heart</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]/description</xpath>
                   <value>
                     <description>There's something in that meat working through me now — my hands feel steadier, my grip feels stronger. I could haul twice the load tonight.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages/li[1]</xpath>
                   <value>
                     <description>There's something in that meat working through me now — my hands feel steadier, my grip feels stronger. I could haul twice the load tonight.</description>
                   </value>
@@ -87406,9 +86833,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]/stages</xpath>
               <value>
                 <li>
                   <label>ate rancor heart</label>
@@ -87417,7 +86844,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteChrysalideHeart"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteChrysalideHeart"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87428,36 +86855,36 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]/label</xpath>
                   <value>
                     <label>ate crustapod roe</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]</xpath>
                   <value>
                     <label>ate crustapod roe</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Rich, creamy, and worth more than the water it took to prepare. A find like this doesn't come along often.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages/li[1]</xpath>
                   <value>
                     <description>Rich, creamy, and worth more than the water it took to prepare. A find like this doesn't come along often.</description>
                   </value>
@@ -87466,9 +86893,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]/stages</xpath>
               <value>
                 <li>
                   <label>ate crustapod roe</label>
@@ -87477,7 +86904,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteCrustapodRoe"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteCrustapodRoe"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87488,216 +86915,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate doshian jelly</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate doshian jelly</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Can't tell if that was flavor or my mouth just objecting to it. Strange stuff, but I finished the bowl anyway.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Can't tell if that was flavor or my mouth just objecting to it. Strange stuff, but I finished the bowl anyway.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate doshian jelly</label>
-                  <description>Can't tell if that was flavor or my mouth just objecting to it. Strange stuff, but I finished the bowl anyway.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteDoshianJelly"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate doshian jelly</label>
-                    <description>Can't tell if that was flavor or my mouth just objecting to it. Strange stuff, but I finished the bowl anyway.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate fleek eel</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate fleek eel</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Rich, fatty flesh that melts before you're done chewing it. A delicacy out here, and I'm not sharing the last piece.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Rich, fatty flesh that melts before you're done chewing it. A delicacy out here, and I'm not sharing the last piece.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteFleekEel"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate fleek eel</label>
-                  <description>Rich, fatty flesh that melts before you're done chewing it. A delicacy out here, and I'm not sharing the last piece.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteFleekEel"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate fleek eel</label>
-                    <description>Rich, fatty flesh that melts before you're done chewing it. A delicacy out here, and I'm not sharing the last piece.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate gornt meat</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate gornt meat</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Good, honest meat with real flavor to it. Whatever a gornt is, it eats well.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Good, honest meat with real flavor to it. Whatever a gornt is, it eats well.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate gornt meat</label>
-                  <description>Good, honest meat with real flavor to it. Whatever a gornt is, it eats well.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteGorntMeat"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate gornt meat</label>
-                    <description>Good, honest meat with real flavor to it. Whatever a gornt is, it eats well.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate hawkbat egg</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]</xpath>
                   <value>
                     <label>ate hawkbat egg</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]/description</xpath>
                   <value>
                     <description>One egg, and it tasted like something a moisture farmer only dreams about. Whatever laid it, I owe it thanks.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages/li[1]</xpath>
                   <value>
                     <description>One egg, and it tasted like something a moisture farmer only dreams about. Whatever laid it, I owe it thanks.</description>
                   </value>
@@ -87706,9 +86947,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]/stages</xpath>
               <value>
                 <li>
                   <label>ate hawkbat egg</label>
@@ -87717,7 +86958,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteHawkbatEgg"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteHawkbatEgg"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87728,36 +86969,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate jogan fruit</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]</xpath>
                   <value>
                     <label>ate jogan fruit</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Sweet, crisp, unmistakably jogan. Real fruit out here is rarer than good chrome.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages/li[1]</xpath>
                   <value>
                     <description>Sweet, crisp, unmistakably jogan. Real fruit out here is rarer than good chrome.</description>
                   </value>
@@ -87766,9 +87001,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]/stages</xpath>
               <value>
                 <li>
                   <label>ate jogan fruit</label>
@@ -87777,7 +87012,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteJoganFruit"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteJoganFruit"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87788,156 +87023,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate manax fungus</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate manax fungus</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Aromatic and sharp enough to clear my sinuses. No wonder the traders charge what they do for it.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Aromatic and sharp enough to clear my sinuses. No wonder the traders charge what they do for it.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate manax fungus</label>
-                  <description>Aromatic and sharp enough to clear my sinuses. No wonder the traders charge what they do for it.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteManaxFungus"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate manax fungus</label>
-                    <description>Aromatic and sharp enough to clear my sinuses. No wonder the traders charge what they do for it.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate meiloorun</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate meiloorun</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Juicy and cool going down, a real treat against the heat. Wish the crate held more than one.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Juicy and cool going down, a real treat against the heat. Wish the crate held more than one.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate meiloorun</label>
-                  <description>Juicy and cool going down, a real treat against the heat. Wish the crate held more than one.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMeiloorun"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate meiloorun</label>
-                    <description>Juicy and cool going down, a real treat against the heat. Wish the crate held more than one.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate mudhorn egg</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]</xpath>
                   <value>
                     <label>ate mudhorn egg</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Utini! Best thing I've eaten all week, and I'm not explaining any further than that.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages/li[1]</xpath>
                   <value>
                     <description>Utini! Best thing I've eaten all week, and I'm not explaining any further than that.</description>
                   </value>
@@ -87946,9 +87055,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]/stages</xpath>
               <value>
                 <li>
                   <label>ate mudhorn egg</label>
@@ -87957,7 +87066,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMudhornEgg"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteMudhornEgg"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -87968,216 +87077,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate muja fruit</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate muja fruit</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Sweet all the way through, no argument needed. Muja fruit, and it didn't last long once the crew smelled it.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Sweet all the way through, no argument needed. Muja fruit, and it didn't last long once the crew smelled it.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate muja fruit</label>
-                  <description>Sweet all the way through, no argument needed. Muja fruit, and it didn't last long once the crew smelled it.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMujaFruit"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate muja fruit</label>
-                    <description>Sweet all the way through, no argument needed. Muja fruit, and it didn't last long once the crew smelled it.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate munch-fungus</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate munch-fungus</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Prepared right, munch-fungus turns into almost anything you need it to be. Good, reliable eating.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Prepared right, munch-fungus turns into almost anything you need it to be. Good, reliable eating.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate munch-fungus</label>
-                  <description>Prepared right, munch-fungus turns into almost anything you need it to be. Good, reliable eating.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMunchFungus"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate munch-fungus</label>
-                    <description>Prepared right, munch-fungus turns into almost anything you need it to be. Good, reliable eating.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate munch-fungus bread</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate munch-fungus bread</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Warm and filling, baked the way it should be. Tastes like something from home, back when the clan still had a real oven.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Warm and filling, baked the way it should be. Tastes like something from home, back when the clan still had a real oven.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate munch-fungus bread</label>
-                  <description>Warm and filling, baked the way it should be. Tastes like something from home, back when the clan still had a real oven.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteMunchFungusBread"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate munch-fungus bread</label>
-                    <description>Warm and filling, baked the way it should be. Tastes like something from home, back when the clan still had a real oven.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate nexu tongue</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]</xpath>
                   <value>
                     <label>ate nexu tongue</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Chewy in a way I wasn't expecting, with a texture nothing else out here really matches. Strange, but I'd eat it again.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages/li[1]</xpath>
                   <value>
                     <description>Chewy in a way I wasn't expecting, with a texture nothing else out here really matches. Strange, but I'd eat it again.</description>
                   </value>
@@ -88186,9 +87109,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]/stages</xpath>
               <value>
                 <li>
                   <label>ate nexu tongue</label>
@@ -88197,7 +87120,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteNexuTongue"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteNexuTongue"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88208,156 +87131,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate paddy frog</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate paddy frog</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Swear the legs were still kicking when they hit my teeth. Ate so much I felt fat and lazy as a Hutt afterward.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Swear the legs were still kicking when they hit my teeth. Ate so much I felt fat and lazy as a Hutt afterward.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate paddy frog</label>
-                  <description>Swear the legs were still kicking when they hit my teeth. Ate so much I felt fat and lazy as a Hutt afterward.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AtePaddyFrog"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate paddy frog</label>
-                    <description>Swear the legs were still kicking when they hit my teeth. Ate so much I felt fat and lazy as a Hutt afterward.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate raw munch-fungus</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ate raw munch-fungus</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Ixta! Spongy, bland, and clearly meant for the fire, not straight off the stalk. Won't make that mistake twice.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Ixta! Spongy, bland, and clearly meant for the fire, not straight off the stalk. Won't make that mistake twice.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ate raw munch-fungus</label>
-                  <description>Ixta! Spongy, bland, and clearly meant for the fire, not straight off the stalk. Won't make that mistake twice.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRawMunchFungus"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ate raw munch-fungus</label>
-                    <description>Ixta! Spongy, bland, and clearly meant for the fire, not straight off the stalk. Won't make that mistake twice.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate rikknit ovum</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]</xpath>
                   <value>
                     <label>ate rikknit ovum</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]/description</xpath>
                   <value>
                     <description>The smell nearly stopped me before the first bite, but underneath it was something exquisite. Worth pushing through the stink.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages/li[1]</xpath>
                   <value>
                     <description>The smell nearly stopped me before the first bite, but underneath it was something exquisite. Worth pushing through the stink.</description>
                   </value>
@@ -88366,9 +87163,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]/stages</xpath>
               <value>
                 <li>
                   <label>ate rikknit ovum</label>
@@ -88377,7 +87174,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRikknitOvum"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteRikknitOvum"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88388,36 +87185,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate rycrit meat</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]</xpath>
                   <value>
                     <label>ate rycrit meat</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Real flavor, no mistaking it for anything else. Whatever a rycrit is, I'd hunt another.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages/li[1]</xpath>
                   <value>
                     <description>Real flavor, no mistaking it for anything else. Whatever a rycrit is, I'd hunt another.</description>
                   </value>
@@ -88426,9 +87217,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]/stages</xpath>
               <value>
                 <li>
                   <label>ate rycrit meat</label>
@@ -88437,7 +87228,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteRycritMeat"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteRycritMeat"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88448,36 +87239,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate tach gland</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]</xpath>
                   <value>
                     <label>ate tach gland</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]/description</xpath>
                   <value>
                     <description>What was I thinking? Bitter, foul, and I knew halfway through swallowing it that this was a mistake.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages/li[1]</xpath>
                   <value>
                     <description>What was I thinking? Bitter, foul, and I knew halfway through swallowing it that this was a mistake.</description>
                   </value>
@@ -88486,9 +87271,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteTachGland"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]/stages</xpath>
               <value>
                 <li>
                   <label>ate tach gland</label>
@@ -88497,7 +87282,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteTachGland"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteTachGland"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88508,36 +87293,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate tender meat</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]</xpath>
                   <value>
                     <label>ate tender meat</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Tender, fatty, and gone before I really got to enjoy it. That's the kind of meal I don't get often enough.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages/li[1]</xpath>
                   <value>
                     <description>Tender, fatty, and gone before I really got to enjoy it. That's the kind of meal I don't get often enough.</description>
                   </value>
@@ -88546,9 +87325,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]/stages</xpath>
               <value>
                 <li>
                   <label>ate tender meat</label>
@@ -88557,7 +87336,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteTenderMeat"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteTenderMeat"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88568,36 +87347,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ate tough meat</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]</xpath>
                   <value>
                     <label>ate tough meat</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Chewed on that for longer than I ate it. Tough as old harness leather and about as satisfying.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages/li[1]</xpath>
                   <value>
                     <description>Chewed on that for longer than I ate it. Tough as old harness leather and about as satisfying.</description>
                   </value>
@@ -88606,9 +87379,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteToughMeat"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]/stages</xpath>
               <value>
                 <li>
                   <label>ate tough meat</label>
@@ -88617,7 +87390,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="AteToughMeat"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_AteToughMeat"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88628,36 +87401,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>drank blue milk</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]</xpath>
                   <value>
                     <label>drank blue milk</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Can't really argue with a mug of blue milk. Simple, cold, and it does the job every time.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages/li[1]</xpath>
                   <value>
                     <description>Can't really argue with a mug of blue milk. Simple, cold, and it does the job every time.</description>
                   </value>
@@ -88666,9 +87433,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]/stages</xpath>
               <value>
                 <li>
                   <label>drank blue milk</label>
@@ -88677,7 +87444,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="DrankBlueMilk"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_DrankBlueMilk"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88688,36 +87455,30 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>drank green milk</label>
-                  </value>
-                </match>
+                <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]/label</xpath>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]</xpath>
                   <value>
                     <label>drank green milk</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Whatever made that had already gone bad before it ever left the animal. My mouth hasn't forgiven me yet.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages/li[1]</xpath>
                   <value>
                     <description>Whatever made that had already gone bad before it ever left the animal. My mouth hasn't forgiven me yet.</description>
                   </value>
@@ -88726,9 +87487,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]/stages</xpath>
               <value>
                 <li>
                   <label>drank green milk</label>
@@ -88737,7 +87498,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="DrankGreenMilk"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_DrankGreenMilk"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88748,36 +87509,36 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]/label</xpath>
                   <value>
                     <label>high on glitterstim</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]</xpath>
                   <value>
                     <label>high on glitterstim</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Everything's clearer than it should be, like the whole desert opened up just for me. I feel like I could see clean across the dunes to the horizon and past it.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages/li[1]</xpath>
                   <value>
                     <description>Everything's clearer than it should be, like the whole desert opened up just for me. I feel like I could see clean across the dunes to the horizon and past it.</description>
                   </value>
@@ -88786,9 +87547,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]/stages</xpath>
               <value>
                 <li>
                   <label>high on glitterstim</label>
@@ -88797,7 +87558,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimHigh"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_GlitterstimHigh"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -88808,336 +87569,36 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>glitterstim withdrawal</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]</xpath>
-                  <value>
-                    <label>glitterstim withdrawal</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[1]</xpath>
-                  <value>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages</xpath>
-              <value>
-                <li>
-                  <label>glitterstim withdrawal</label>
-                  <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>glitterstim withdrawal</label>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]/label</xpath>
-                  <value>
-                    <label>glitterstim withdrawal</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]</xpath>
-                  <value>
-                    <label>glitterstim withdrawal</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]/description</xpath>
-                  <value>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages/li[2]</xpath>
-                  <value>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]/stages</xpath>
-              <value>
-                <li>
-                  <label>glitterstim withdrawal</label>
-                  <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="GlitterstimWithdrawal"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>glitterstim withdrawal</label>
-                    <description>My thoughts won't hold still and my own skull feels like a cage around them. Even my eyes won't focus right.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>high on ji rikknit</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]</xpath>
-                  <value>
-                    <label>high on ji rikknit</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Everything's soft and drifting, like I'm floating in a warm purple current with nowhere I need to be.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Everything's soft and drifting, like I'm floating in a warm purple current with nowhere I need to be.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]/stages</xpath>
-              <value>
-                <li>
-                  <label>high on ji rikknit</label>
-                  <description>Everything's soft and drifting, like I'm floating in a warm purple current with nowhere I need to be.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitHigh"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>high on ji rikknit</label>
-                    <description>Everything's soft and drifting, like I'm floating in a warm purple current with nowhere I need to be.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]/label</xpath>
-                  <value>
-                    <label>ji rikknit withdrawal</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]</xpath>
-                  <value>
-                    <label>ji rikknit withdrawal</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]/description</xpath>
-                  <value>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[1]</xpath>
-                  <value>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ji rikknit withdrawal</label>
-                  <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ji rikknit withdrawal</label>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]/label</xpath>
-                  <value>
-                    <label>ji rikknit withdrawal</label>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]</xpath>
-                  <value>
-                    <label>ji rikknit withdrawal</label>
-                  </value>
-                </nomatch>
-              </li>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]/description</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]/description</xpath>
-                  <value>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </value>
-                </match>
-                <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages/li[2]</xpath>
-                  <value>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </value>
-                </nomatch>
-              </li>
-            </operations>
-          </match>
-          <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages</xpath>
-            <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]/stages</xpath>
-              <value>
-                <li>
-                  <label>ji rikknit withdrawal</label>
-                  <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                </li>
-              </value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="JiRikknitWithdrawal"]</xpath>
-              <value>
-                <stages>
-                  <li>
-                    <label>ji rikknit withdrawal</label>
-                    <description>Keep hearing little clicking legs in my sleep, like something's climbing through the tent that isn't really there.</description>
-                  </li>
-                </stages>
-              </value>
-            </nomatch>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]</xpath>
-          <match Class="PatchOperationSequence">
-            <operations>
-              <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]/label</xpath>
-                <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]/label</xpath>
                   <value>
                     <label>heard a soothing song</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]</xpath>
                   <value>
                     <label>heard a soothing song</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Something out there sang low and calm, and for a minute the whole camp went quiet to listen. Felt like a dream I didn't want to wake from.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages/li[1]</xpath>
                   <value>
                     <description>Something out there sang low and calm, and for a minute the whole camp went quiet to listen. Felt like a dream I didn't want to wake from.</description>
                   </value>
@@ -89146,9 +87607,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="SoothingSong"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]/stages</xpath>
               <value>
                 <li>
                   <label>heard a soothing song</label>
@@ -89157,7 +87618,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="SoothingSong"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_SoothingSong"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -89168,36 +87629,36 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]/label</xpath>
                   <value>
                     <label>got spat on</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]</xpath>
                   <value>
                     <label>got spat on</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Schutta! That beast hocked something foul straight at me and I didn't even see it coming. Still smells like it, too.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages/li[1]</xpath>
                   <value>
                     <description>Schutta! That beast hocked something foul straight at me and I didn't even see it coming. Still smells like it, too.</description>
                   </value>
@@ -89206,9 +87667,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="SpatOn"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]/stages</xpath>
               <value>
                 <li>
                   <label>got spat on</label>
@@ -89217,7 +87678,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="SpatOn"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_SpatOn"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -89228,36 +87689,36 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]</xpath>
+        </match></li>
+        <li Class="PatchOperationConditional"><xpath>Defs/ThoughtDef[defName="RSW_Webbed"]</xpath><match Class="PatchOperationConditional">
+          <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]/label</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]/label</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]/label</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]/label</xpath>
                   <value>
                     <label>got webbed</label>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]</xpath>
                   <value>
                     <label>got webbed</label>
                   </value>
                 </nomatch>
               </li>
               <li Class="PatchOperationConditional">
-                <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]/description</xpath>
+                <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]/description</xpath>
                 <match Class="PatchOperationReplace">
-                  <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]/description</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]/description</xpath>
                   <value>
                     <description>Something sticky is stuck to half my gear now and I still don't know what spat it at me. Going to be picking it off for days.</description>
                   </value>
                 </match>
                 <nomatch Class="PatchOperationAdd">
-                  <xpath>Defs/ThoughtDef[defName="Webbed"]/stages/li[1]</xpath>
+                  <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages/li[1]</xpath>
                   <value>
                     <description>Something sticky is stuck to half my gear now and I still don't know what spat it at me. Going to be picking it off for days.</description>
                   </value>
@@ -89266,9 +87727,9 @@
             </operations>
           </match>
           <nomatch Class="PatchOperationConditional">
-            <xpath>Defs/ThoughtDef[defName="Webbed"]/stages</xpath>
+            <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages</xpath>
             <match Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="Webbed"]/stages</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]/stages</xpath>
               <value>
                 <li>
                   <label>got webbed</label>
@@ -89277,7 +87738,7 @@
               </value>
             </match>
             <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThoughtDef[defName="Webbed"]</xpath>
+              <xpath>Defs/ThoughtDef[defName="RSW_Webbed"]</xpath>
               <value>
                 <stages>
                   <li>
@@ -89288,10 +87749,9 @@
               </value>
             </nomatch>
           </nomatch>
-        </li>
+        </match></li>
       </operations>
-    </match>
-  </Operation>
+    </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Biotech</li>
