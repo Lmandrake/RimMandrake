@@ -483,6 +483,27 @@ TIERS = {
         ],
         "dlc": True,
     },
+    "donor_off_phase0": {
+        "why": "Phase 0 step L1 (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md §0.5.4-0.5.5): the donor-off "
+               "round for retiring BOTH art donors. Neither mlie.starwarsanimalcollection nor sarg.alphaanimals (nor "
+               "its Outposts patch) may be in the closure: `forbid` refuses the tier if any dependency drags one back. "
+               "Alpha Biomes (sarg.alphabiomes) STAYS: the composed mandrake.rm.biomes hard-depends on it (it cannot "
+               "be forbidden), and retiring it is the owner's O1 card, not this round. VEF core arrives through "
+               "insectoid2 and carries the oomb growth/split comp and the bulloo/zhool Floating comp. "
+               "Driver: src/RimMandrake/Utils/modcheck/l1_donor_off_round.py; runbook Transient/phase0_L1_runbook.md.",
+        "want": [
+            BRIDGE,
+            "mandrake.rsw.swbestiary",
+            "mandrake.rm.biomes",
+            "mandrake.rm.proximityhatch",
+            "mandrake.rut.patches",
+            "mandrake.rut.ashkarrflora",
+            "mandrake.rsw.shokk",
+            "oskarpotocki.vfe.insectoid2",
+        ],
+        "forbid": ["mlie.starwarsanimalcollection", "sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"],
+        "dlc": True,
+    },
     "leaningscrub": {
         "why": "LEANINGSCRUB_RM_MOD_BUILD_1's own quicktest load-proof: does "
                "mandrake.rm.leaningscrub load clean, does its RM_LeaningScrub "
