@@ -1,0 +1,488 @@
+{
+ "rows": [
+  {
+   "key": "LiqJoin_pump_Scrapper",
+   "label": "liquid pump (hefty), scrapper look",
+   "part": "pump",
+   "look": "Scrapper",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Scrapper/RM_LiquidPump"
+   ],
+   "render_match": "liqjoin_pump_scrapper_",
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "proposed: footprint 2x1 (today 1x1), drawSize (2,2) with drawOffset z +0.5 (today drawSize 1)"
+   }
+  },
+  {
+   "key": "LiqJoin_pump_Industrial",
+   "label": "liquid pump (hefty), industrial look",
+   "part": "pump",
+   "look": "Industrial",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Industrial/RM_LiquidPump"
+   ],
+   "render_match": "liqjoin_pump_industrial_",
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "proposed: footprint 2x1 (today 1x1), drawSize (2,2) with drawOffset z +0.5 (today drawSize 1)"
+   }
+  },
+  {
+   "key": "LiqJoin_pump_Modern",
+   "label": "liquid pump (hefty), modern look",
+   "part": "pump",
+   "look": "Modern",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Modern/RM_LiquidPump"
+   ],
+   "render_match": "liqjoin_pump_modern_",
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "proposed: footprint 2x1 (today 1x1), drawSize (2,2) with drawOffset z +0.5 (today drawSize 1)"
+   }
+  },
+  {
+   "key": "LiqJoin_pump_Futuristic",
+   "label": "liquid pump (hefty), futuristic look",
+   "part": "pump",
+   "look": "Futuristic",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Pump/Futuristic/RM_LiquidPump"
+   ],
+   "render_match": "liqjoin_pump_futuristic_",
+   "size": {
+    "drawSize": [
+     2,
+     2
+    ],
+    "footprint": [
+     2,
+     1
+    ],
+    "source": "proposed: footprint 2x1 (today 1x1), drawSize (2,2) with drawOffset z +0.5 (today drawSize 1)"
+   }
+  },
+  {
+   "key": "LiqJoin_flange_Scrapper",
+   "label": "pipe-end flange, scrapper look",
+   "part": "flange",
+   "look": "Scrapper",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Scrapper/Flange"
+   ],
+   "render_match": "liqjoin_flange_scrapper_",
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 0.5 x 0.5 cell, its face on the edge a pipe shares with a tank or machine"
+   }
+  },
+  {
+   "key": "LiqJoin_flange_Industrial",
+   "label": "pipe-end flange, industrial look",
+   "part": "flange",
+   "look": "Industrial",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Industrial/Flange"
+   ],
+   "render_match": "liqjoin_flange_industrial_",
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 0.5 x 0.5 cell, its face on the edge a pipe shares with a tank or machine"
+   }
+  },
+  {
+   "key": "LiqJoin_flange_Modern",
+   "label": "pipe-end flange, modern look",
+   "part": "flange",
+   "look": "Modern",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/Flange"
+   ],
+   "render_match": "liqjoin_flange_modern_",
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 0.5 x 0.5 cell, its face on the edge a pipe shares with a tank or machine"
+   }
+  },
+  {
+   "key": "LiqJoin_flange_Futuristic",
+   "label": "pipe-end flange, futuristic look",
+   "part": "flange",
+   "look": "Futuristic",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Futuristic/Flange"
+   ],
+   "render_match": "liqjoin_flange_futuristic_",
+   "size": {
+    "drawSize": [
+     0.5,
+     0.5
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 0.5 x 0.5 cell, its face on the edge a pipe shares with a tank or machine"
+   }
+  },
+  {
+   "key": "LiqJoin_saddle_Scrapper",
+   "label": "hose saddle on a pipe, scrapper look",
+   "part": "saddle",
+   "look": "Scrapper",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Scrapper/Saddle"
+   ],
+   "render_match": "liqjoin_saddle_scrapper_",
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 1 x 1 cell across the pipe cell a hose end couples onto"
+   }
+  },
+  {
+   "key": "LiqJoin_saddle_Industrial",
+   "label": "hose saddle on a pipe, industrial look",
+   "part": "saddle",
+   "look": "Industrial",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Industrial/Saddle"
+   ],
+   "render_match": "liqjoin_saddle_industrial_",
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 1 x 1 cell across the pipe cell a hose end couples onto"
+   }
+  },
+  {
+   "key": "LiqJoin_saddle_Modern",
+   "label": "hose saddle on a pipe, modern look",
+   "part": "saddle",
+   "look": "Modern",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Modern/Saddle"
+   ],
+   "render_match": "liqjoin_saddle_modern_",
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 1 x 1 cell across the pipe cell a hose end couples onto"
+   }
+  },
+  {
+   "key": "LiqJoin_saddle_Futuristic",
+   "label": "hose saddle on a pipe, futuristic look",
+   "part": "saddle",
+   "look": "Futuristic",
+   "variant": "A",
+   "section": "liquid joins",
+   "resources": [
+    "RimMandrake/FlowWorks/Joins/Futuristic/Saddle"
+   ],
+   "render_match": "liqjoin_saddle_futuristic_",
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "drawn by RM_LiquidJoins at 1 x 1 cell across the pipe cell a hose end couples onto"
+   }
+  },
+  {
+   "key": "LiqJoinMock_hose_to_pump",
+   "label": "mock: hose to pump (top today, bottom proposed)",
+   "part": "mock hose_to_pump",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/hose_to_pump"
+   ],
+   "render_match": "liqjoin_mock_hose_to_pump_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_hose_to_tank",
+   "label": "mock: hose to tank (top today, bottom proposed)",
+   "part": "mock hose_to_tank",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/hose_to_tank"
+   ],
+   "render_match": "liqjoin_mock_hose_to_tank_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_hose_to_reel",
+   "label": "mock: hose to reel (top today, bottom proposed)",
+   "part": "mock hose_to_reel",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/hose_to_reel"
+   ],
+   "render_match": "liqjoin_mock_hose_to_reel_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_hose_to_pipe",
+   "label": "mock: hose to pipe (top today, bottom proposed)",
+   "part": "mock hose_to_pipe",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/hose_to_pipe"
+   ],
+   "render_match": "liqjoin_mock_hose_to_pipe_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_pipe_to_tank",
+   "label": "mock: pipe to tank (top today, bottom proposed)",
+   "part": "mock pipe_to_tank",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/pipe_to_tank"
+   ],
+   "render_match": "liqjoin_mock_pipe_to_tank_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_pipe_to_pump",
+   "label": "mock: pipe to pump (top today, bottom proposed)",
+   "part": "mock pipe_to_pump",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/pipe_to_pump"
+   ],
+   "render_match": "liqjoin_mock_pipe_to_pump_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_pump_to_tank",
+   "label": "mock: pump to tank (top today, bottom proposed)",
+   "part": "mock pump_to_tank",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/pump_to_tank"
+   ],
+   "render_match": "liqjoin_mock_pump_to_tank_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_reel_to_tank",
+   "label": "mock: reel to tank (top today, bottom proposed)",
+   "part": "mock reel_to_tank",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/reel_to_tank"
+   ],
+   "render_match": "liqjoin_mock_reel_to_tank_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  },
+  {
+   "key": "LiqJoinMock_pipe_to_pipe",
+   "label": "mock: pipe to pipe (top today, bottom proposed)",
+   "part": "mock pipe_to_pipe",
+   "look": "all",
+   "variant": "mock",
+   "section": "join mockups",
+   "resources": [
+    "Mockups/LiquidJoins/pipe_to_pipe"
+   ],
+   "render_match": "liqjoin_mock_pipe_to_pipe_",
+   "size": {
+    "drawSize": [
+     6,
+     6
+    ],
+    "footprint": [
+     6,
+     6
+    ],
+    "source": "mock.py: a 6 x 6 cell frame at 128 px per cell (two 6 x 3 cell scenes stacked)"
+   }
+  }
+ ],
+ "lead_html": "<p>Owner 2026-10-16: <i>\u201cthe flexible hose seems absolutely enormous when attached to things like pumps \u2026 The pump needs to be made to be commensurate with such a thick tube. And we might need to shrink the tube diameter a bit \u2026 anything the hoses can connect to (pumps, tanks, reels) as well as when you place a tank, reel, or pump next to each other some kind of connection should be visually apparent \u2026 The pipe needs connectors that show where it's connecting.\u201d</i></p><p><b>Numbers.</b> Hose today: 0.38 cell flat / 0.465 plump. Rigid pipe: 0.23. Pump today: 1 x 1 cell. <b>Proposed:</b> hose 0.65x = <b>0.25 flat / 0.30 plump</b> (still a little thicker than the pipe); pump <b>footprint 2 x 1, drawn 2 x 2</b> (about 1.9 x 1.1 cells of machine), its two port flanges sized to the 0.30 hose.</p><p><b>Rows.</b> Pump, flange and saddle, one row per look (A = the only candidate; pick it, or note what to change). Then one mockup per join type, each column a look: <b>top half today, bottom half proposed</b> (pipe arm running to the tank or pump edge plus a flange; a flange pair where a pump or reel touches a tank; a saddle where a hose couples onto a pipe). Nothing is installed; the hose stays at today's width and the fittings stay switched off until you rule. Design note: design/RimMandrake/liquid_connections_visuals_2026-10-16.md.</p>"
+}
