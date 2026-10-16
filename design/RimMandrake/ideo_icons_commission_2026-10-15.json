@@ -88,5 +88,20 @@
   "biome_neutral": true,
   "prompt": "RimWorld ideoligion icon (Ideology DLC style emblem) for the creed 'Astropolitan': a ringed planet seen slightly tilted, the ring a thick ellipse crossing in front of the sphere, with a small four-pointed star above and to the right. A plain spacer creed of travellers and traders between worlds. Flat white emblem on a transparent background.",
   "style_notes": "RimWorld Ideology ideoligion icon, matching the vanilla Ideology icon set: ONE bold, simple, symmetric-leaning emblem filling about 85 percent of a square canvas, drawn as a solid near-white glyph (the game tints it with the ideoligion's colour, so the glyph itself is white to light grey, never coloured) with only a very faint grey shading inside the shapes and a thin dark-grey border hugging the glyph's outer edge; no outlines on interior details, no text, no letters, no frame, no background, no photographic or painted texture. Big, chunky shapes with wide gaps between them so it still reads at 32 pixels. Original design drawn from the description; do not reuse donor pixels or copy any existing logo."
+ },
+ {
+  "id": "ideoicon_sundebt_v2",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "no_subject": "ideoligion icon glyph for the Sun-Debt (Deep Desert Tribes (tribal faction)); its IdeoIconDef RUT_IdeoIcon_SunDebt is created with the install, replacing the donor icon in the canonical save",
+  "target_texpath": "UI/Ideoligions/RUT_sundebt",
+  "install_to": "src/RimUtinni/UtinniPatches/Textures/UI/Ideoligions/RUT_sundebt.png",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": "",
+  "priority": 46,
+  "background": "transparent",
+  "biome_neutral": true,
+  "prompt": "RimWorld ideoligion icon (Ideology DLC style emblem) for the creed 'the Sun-Debt': a solid sun disc ringed by eight short wedge-shaped rays, with three THICK parallel diagonal slashes cut right THROUGH the lower half of the disc as fully transparent empty gaps (holes in the glyph, like claw or tally scars), each slash as wide as a ray so the cuts stay visible when the icon is shrunk to 32 pixels; the disc is otherwise solid white with no stripes, shine or reflections. The creed of desert tribes who hold every drop of water as a debt owed to the sun, paid in walking, thirst and scars. Flat white emblem on a transparent background.",
+  "style_notes": "RimWorld Ideology ideoligion icon, matching the vanilla Ideology icon set: ONE bold, simple, symmetric-leaning emblem filling about 85 percent of a square canvas, drawn as a solid near-white glyph (the game tints it with the ideoligion's colour, so the glyph itself is white to light grey, never coloured) with only a very faint grey shading inside the shapes and a thin dark-grey border hugging the glyph's outer edge; no outlines on interior details, no text, no letters, no frame, no background, no photographic or painted texture. Big, chunky shapes with wide gaps between them so it still reads at 32 pixels. Original design drawn from the description; do not reuse donor pixels or copy any existing logo."
  }
 ]

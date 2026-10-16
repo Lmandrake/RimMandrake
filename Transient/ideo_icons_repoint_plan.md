@@ -14,7 +14,7 @@ white glyph tinted in game by the ideo colour. The donor's were 256x256 (bundle 
 | `sw_OnderonRoyalty` | Ideo_20 | the Ascendant Genome (RUT_Jawa_Culture_Helix) | Ascendant Helix, PlayerColony | `ideoicon_ascendantgenome_v1` | `RUT_IdeoIcon_AscendantGenome` | `UI/Ideoligions/RUT_ascendantgenome` |
 | `sw_JediNova` | Ideo_21 | the Balance (RUT_Jawa_Culture_Deepwater) | Deepwater Compact | `ideoicon_balance_v1` | `RUT_IdeoIcon_Balance` | `UI/Ideoligions/RUT_balance` |
 | `sw_SithExarKun` | Ideo_25 | the Weight (RUT_Jawa_Culture_Junkers) | the Junkers | `ideoicon_weight_v1` | `RUT_IdeoIcon_Weight` | `UI/Ideoligions/RUT_weight` |
-| `sw_Bantha` | Ideo_28 | the Sun-Debt (RUT_Jawa_Culture_DeepDesert) | Deep Desert Tribes (TribeCivil) | `ideoicon_sundebt_v1` | `RUT_IdeoIcon_SunDebt` | `UI/Ideoligions/RUT_sundebt` |
+| `sw_Bantha` | Ideo_28 | the Sun-Debt (RUT_Jawa_Culture_DeepDesert) | Deep Desert Tribes (TribeCivil) | `ideoicon_sundebt_v2` (v1 refiled: its cuts were grey stripes, not gaps) | `RUT_IdeoIcon_SunDebt` | `UI/Ideoligions/RUT_sundebt` |
 | `sw_JediGray` | Ideo_18 | Astropolitan (culture Astropolitan, no memes) | Ancients, Voidborn Bazaar, Comet Party, hostile generics | `ideoicon_astropolitan_v1` | `RUT_IdeoIcon_Astropolitan` | `UI/Ideoligions/RUT_astropolitan` |
 
 Mod: `mandrake.rut.patches` (`src/RimUtinni/UtinniPatches`), where the RUT_Jawa cultures live.
