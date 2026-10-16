@@ -169,7 +169,7 @@
     <wildPlants>
       <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
       <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
-      <RUT_FireLavender>0.6</RUT_FireLavender>  <!-- fire lavender -->
+      <RM_FireLavender>0.6</RM_FireLavender>  <!-- fire lavender -->
       <RM_Sagecrust>0.4</RM_Sagecrust>  <!-- sagecrust — LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: repointed from
            RUT_Sagecrust (RotSporeKit, retired/not in the canonical mod list) to its
            mandrake.rm.therot equivalent; this row had no MayRequire and dangled a
@@ -187,7 +187,7 @@
       <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
       <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
       <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
-      <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus>  <!-- heatsink fungus - tree -->
+      <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- heatsink fungus - tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>

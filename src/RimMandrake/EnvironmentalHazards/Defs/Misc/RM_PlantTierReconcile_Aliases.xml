@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner, 2026-10-16): Utinni/Star Wars plant defs that were retired
+  into their Baroque Biomes RM_ twin, or moved there under an RM_ name. A save holding the old name (a plant
+  on a map, a harvested item) loads it as the RM_ def through RM_DefAliasDef (RM_DefAliases.cs, this mod).
+  Not aliased, because they were removed outright on his notes: RUT_TwinkleSpikeTestPlant ("cut this") and
+  the ten VCE_Plant_* succulents ("remove terran") - a saved one is dropped with a load warning.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_PlantTierReconcileAliases</defName>
+    <aliases>
+      <li><from>RUT_GiantLeaf</from><to>RM_GiantLeaf</to><defType>ThingDef</defType></li>
+      <li><from>RUT_RawGiantLeaf</from><to>RM_RawGiantLeaf</to><defType>ThingDef</defType></li>
+      <li><from>RUT_FireLavender</from><to>RM_FireLavender</to><defType>ThingDef</defType></li>
+      <li><from>RUT_HeatsinkFungus</from><to>RM_HeatsinkFungus</to><defType>ThingDef</defType></li>
+      <li><from>RUT_TreeMartyr</from><to>RM_TreeMartyr</to><defType>ThingDef</defType></li>
+      <li><from>RUT_DarkCrust</from><to>RM_DarkCrust</to><defType>ThingDef</defType></li>
+      <li><from>RUT_ScorchedStars</from><to>RM_ScorchedStars</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Glower</from><to>RM_Glower</to><defType>ThingDef</defType></li>
+      <li><from>RUT_DosimeterLawn</from><to>RM_DosimeterLawn</to><defType>ThingDef</defType></li>
+      <li><from>RUT_VaultRoot</from><to>RM_VaultRoot</to><defType>ThingDef</defType></li>
+      <li><from>RUT_SweetlineTree</from><to>RM_SweetlineTree</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Fuzz</from><to>RM_Fuzz</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Grellbush</from><to>RM_Grellbush</to><defType>ThingDef</defType></li>
+      <li><from>RUT_WildHealroot</from><to>RM_WildHealroot</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Grellspine</from><to>RM_Grellspine</to><defType>ThingDef</defType></li>
+      <li><from>RUT_BloomCrop</from><to>RM_BloomCrop</to><defType>ThingDef</defType></li>
+      <li><from>RUT_DyingCreep</from><to>RM_DyingCreep</to><defType>ThingDef</defType></li>
+      <li><from>RUT_DeadCreep</from><to>RM_DeadCreep</to><defType>ThingDef</defType></li>
+      <li><from>RSW_SurraGrass</from><to>RM_SurraGrass</to><defType>ThingDef</defType></li>
+      <li><from>RSW_VellaraBloom</from><to>RM_VellaraBloom</to><defType>ThingDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

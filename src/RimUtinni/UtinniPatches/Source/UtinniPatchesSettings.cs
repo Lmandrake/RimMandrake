@@ -19,10 +19,6 @@ namespace RimMandrake.Utinni.UtinniPatches
     //      the gravship's world-map sprite from vanilla's grav-engine glyph to
     //      the Utinni's own ring silhouette. Applied at XML patch time through
     //      PatchOperationSettingGate, so it takes effect on the next game start.
-    // TWINKLE_FLORA_SPIKE_1 (TwinkleFloraSpike.cs) is a timeboxed feasibility
-    // spike that ships compiled but is not wired into any live biome or
-    // shipped plant def — nothing in a real game ever runs it, so it gets no
-    // settings entry.
     // BLUE_DESERT_LIFE_AUTHORING_1's six toggles/one slider MOVED OUT
     // (BLUEDESERT_RM_MOD_BUILD_1, 2026-09-25) to
     // src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs's own

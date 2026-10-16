@@ -238,7 +238,9 @@
       <RM_Maidenbloom>0.15</RM_Maidenbloom>
       <RM_Pavecrust>0.3</RM_Pavecrust>
       <RM_Shadespire>0.05</RM_Shadespire>
-      <!-- The 4 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
+      <RM_SurraGrass>0.6</RM_SurraGrass>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16: was RSW_SurraGrass, patch-added -->
+      <RM_VellaraBloom>0.12</RM_VellaraBloom>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16: was RSW_VellaraBloom, patch-added -->
+      <!-- The 2 remaining RSW_-tier rows (canon chak-root, hubba gourd) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
     </wildPlants>

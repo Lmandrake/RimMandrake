@@ -5,7 +5,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // FORGE_MECHANICS_1 F5 "the Contagion die-off ring" (forge_kit_spec.md
     // F5: "RUT_ContagionProbe IncidentDef (weighted only into Forge biomes,
-    // MTB-ish commonality... spawning a cluster of RUT_DyingCreep plant-
+    // MTB-ish commonality... spawning a cluster of RM_DyingCreep plant-
     // things at a map edge... Letter on arrival, quiet death.").
     //
     // RUT_-prefixed but living in the shared EnvironmentalHazards assembly,
@@ -43,7 +43,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
 
-            ThingDef dyingCreep = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_DyingCreep");
+            ThingDef dyingCreep = DefDatabase<ThingDef>.GetNamedSilentFail("RM_DyingCreep");
             if (dyingCreep == null)
             {
                 return false; // content not deployed — never a hard error over it

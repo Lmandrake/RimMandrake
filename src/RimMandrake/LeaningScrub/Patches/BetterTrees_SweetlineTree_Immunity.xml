@@ -9,9 +9,9 @@
        construction), and this patch is insurance against a future update
        adding an entry for it — matches nothing today and therefore logs
        nothing today (CLAUDE.md: "a patch that matches nothing logs
-       nothing" is expected here). The ORIGINAL file stays in
-       mandrake.rut.ashkarrflora targeting RUT_SweetlineTree, since that
-       defName is still live on the frozen twin. -->
+       nothing" is expected here). The original file in
+       mandrake.rut.ashkarrflora was deleted with that mod (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE,
+       2026-10-16). -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Better Trees</li></mods>

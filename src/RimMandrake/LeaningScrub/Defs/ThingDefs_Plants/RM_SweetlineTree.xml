@@ -12,10 +12,9 @@
   design/Jawa/worldbuilding/biomes/arid_shrubland.md §4 "The sweetline
   trees").
 
-  🔑 The ORIGINAL RUT_SweetlineTree def is left standing in
-  mandrake.rut.ashkarrflora, untouched — mandrake.rut.ashkarrflora is frozen
-  alongside RUT_AridShrubland.xml (see RM_LeaningScrub_Biome.xml's own
-  header), and real deletion waits for Phase B.
+  RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): the original RUT_SweetlineTree and
+  the whole mandrake.rut.ashkarrflora mod are gone; a saved RUT_SweetlineTree loads as this def through
+  RM_PlantTierReconcile_Aliases.xml.
 
   ⚠️ NOT added to RM_LeaningScrub_Biome.xml's wildPlants — same as the
   original, which never wired it into spawning either. See the biome def's

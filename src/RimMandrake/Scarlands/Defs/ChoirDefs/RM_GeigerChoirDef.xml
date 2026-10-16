@@ -5,7 +5,7 @@
 <Defs>
   <RimMandrake.Scarlands.RM_GeigerChoirDef>
     <defName>RM_GeigerChoir</defName>
-    <tickPlants><li>RM_Glower</li><li>RUT_Glower</li></tickPlants>
+    <tickPlants><li>RM_Glower</li></tickPlants>
     <tickCreatures><li>RM_Tetchik</li></tickCreatures>
     <windMetal>
       <li>AncientFortifiedWall</li><li>AncientAutocannonTurret</li><li>AncientUraniumSlugTurret</li><li>AncientSecurityTurret</li>

@@ -395,7 +395,7 @@ TIERS = {
                "meet in RUT_Desert's wildPlants, which names RM_Leachmoss and "
                "RM_Venomvine (mandrake.rm.environmentalhazards), RSW_Ultracactus "
                "and four more SWBestiary plants, and RUT_Vorrel "
-               "(mandrake.rut.ashkarrflora) -- a MayRequire that does not resolve "
+               "-- a MayRequire that does not resolve "
                "drops the entry SILENTLY, so every one of those mods must be "
                "present or the biome reads as misconfigured rather than absent. "
                "mandrake.rm.proximityhatch is named explicitly because SWBestiary "
@@ -404,7 +404,6 @@ TIERS = {
             BRIDGE,
             "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: environmentalhazards folded
             "mandrake.rut.patches",
-            "mandrake.rut.ashkarrflora",
             "mandrake.rsw.swbestiary",
             "mandrake.rm.proximityhatch",
         ],
@@ -459,7 +458,6 @@ TIERS = {
             "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: creaturebehaviors + environmentalhazards both folded
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
-            "mandrake.rut.ashkarrflora",
             "sarg.alphaanimals",
             "mlie.starwarsanimalcollection",
             "oskarpotocki.vfe.insectoid2",
@@ -476,7 +474,6 @@ TIERS = {
             "mandrake.rm.biomes",
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
-            "mandrake.rut.ashkarrflora",
             "mandrake.rsw.shokk",
             "sarg.alphaanimals",
             "oskarpotocki.vfe.insectoid2",
@@ -497,7 +494,6 @@ TIERS = {
             "mandrake.rm.biomes",
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
-            "mandrake.rut.ashkarrflora",
             "mandrake.rsw.shokk",
             "oskarpotocki.vfe.insectoid2",
         ],
@@ -521,7 +517,6 @@ TIERS = {
             "mandrake.rm.biomes",
             "mandrake.rsw.swbestiary",
             "mandrake.rut.patches",
-            "mandrake.rut.ashkarrflora",
             "sarg.alphaanimals",
             "mlie.starwarsanimalcollection",
             "mlie.horrors",
@@ -758,7 +753,7 @@ TIERS["live_20261008"] = {
 
 TIERS["live_20261008b"] = {
     "why": "FOUNDRY live checks 2026-10-08 (second pass): Watchers + FlowWorks + GimmeSomeSlack + LuminousPigment on the composed biomes mod, "
-           "plus the Utinni patch layer (RUT_ScarlandsMark, RUT_DyingCreep) and Visibility, so every owed L1/L2 read of the day runs on one load.",
+           "plus the Utinni patch layer (RUT_ScarlandsMark, RM_DyingCreep) and Visibility, so every owed L1/L2 read of the day runs on one load.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.watchers", "mandrake.rm.flowworks",
              "mandrake.rm.luminouspigment", "mandrake.rut.patches", "mandrake.rm.visibility"],
     "dlc": True,
@@ -775,7 +770,7 @@ TIERS["acc_20261009b"] = {
            "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket) so ~60 skipped criteria and "
            "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
     "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
-             "mandrake.rsw.swbestiary", "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
+             "mandrake.rsw.swbestiary", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
              "mandrake.rm.warcasket"],
     "dlc": True,
 }
@@ -807,7 +802,6 @@ TIERS["acc_green_min"] = {
            "Warcasket, GizkaStowaway, OasisMaker, RiverColors, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
            "GelatinousSlime, GravshipLanding, Stillsand, Pyrinth (composed biomes mod carries several).",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
-             "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors",
              "mandrake.rm.shipvermin", "mandrake.rm.hugethings", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
              "mandrake.rm.oasismaker", "mandrake.rut.rivercolors", "mandrake.rut.scarlandsladder",
              "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
@@ -819,7 +813,6 @@ TIERS["acc_green_min2"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch 2: Stillsand retry, CreatureBehaviors, Greentide, PyrelandsMechanics, "
            "LuminousPigment (with Ninefold, which its gods chain needs) on the composed biomes mod.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
-             "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors",
              "mandrake.rm.luminouspigment", "mandrake.rm.ninefold", "mandrake.rut.pyrelandsmechanics"],
     "dlc": True,
 }

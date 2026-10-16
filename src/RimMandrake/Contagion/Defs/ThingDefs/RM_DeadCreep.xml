@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeadCreep — the black mat RM_DyingCreep leaves when it dies (RM_CompScriptedDieOff's deadThingDef), also
+  painted along the map-edge band by RUT_ContagionRingScatter. Moved from UtinniPatches' RUT_DeadCreep with
+  RM_DyingCreep (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE, 2026-10-16); a saved RUT_DeadCreep loads as this def
+  through RM_PlantTierReconcile_Aliases.xml.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_DeadCreep</defName>
+    <label>dead creep</label>
+    <description>A blackened, dried-out mat of creep — the Contagion's own dead, left on ground it could not hold.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>25~35</disappearsInDays>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_DeadCreep</texPath>
+      <color>(40, 34, 30, 200)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-14</Beauty>
+      <Cleanliness>-10</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

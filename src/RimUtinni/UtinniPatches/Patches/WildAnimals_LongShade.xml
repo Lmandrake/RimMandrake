@@ -159,10 +159,8 @@
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
         <value>
-          <RSW_SurraGrass>0.6</RSW_SurraGrass>
           <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>
           <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>
-          <RSW_VellaraBloom>0.12</RSW_VellaraBloom>
         </value>
       </match>
     </match>

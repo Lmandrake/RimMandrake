@@ -39,43 +39,10 @@ Its own donor texPath (Things/Plant/RG_Brambles) does not exist as a loose
 file either - same AB_Aaklac mismatched-but-non-magenta placeholder as the
 five rows above, loudly commented at its own site.
 -->
+<!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner, 2026-10-16): RSW_SurraGrass and RSW_VellaraBloom
+     (invented, not canon) moved to Baroque Biomes as RM_SurraGrass / RM_VellaraBloom
+     (src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_TierMovedPlants.xml). -->
 <Defs>
-
-	<ThingDef ParentName="PlantBase">
-		<defName>RSW_SurraGrass</defName>
-<altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
-		<label>surra grass</label>
-		<description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
-		<statBases>
-			<MaxHitPoints>85</MaxHitPoints>
-			<Flammability>1.3</Flammability>
-			<Nutrition>0.15</Nutrition>
-		</statBases>
-		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_SurraGrass, no more donor dependency (was rendering as an aaklac) -->
-		<graphicData>
-			<texPath>Things/Plant/RSW_SurraGrass</texPath>
-			<graphicClass>Graphic_Random</graphicClass>
-		</graphicData>
-		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
-		<ingestible/>
-		<plant>
-			<!-- RULED (owner, 2026-09-20, SURRA_GRASS_FERTILITYMIN_1): KEEP fertilityMin at
-			     0.30, deliberately above Core Sand's 0.10 fertility, so surra grass is confined
-			     to Soil islands rather than spreading across Sand. This is intentional, not a
-			     bug: the grass being confined to the damper soil patches is the player's signal
-			     that water is near — green means water. Do NOT lower this to spread the grass
-			     onto Sand. -->
-			<fertilityMin>0.30</fertilityMin>
-			<fertilitySensitivity>0.3</fertilitySensitivity>
-			<growDays>2.5</growDays>
-			<pollution>Any</pollution>
-			<harvestWork>40</harvestWork>
-			<maxMeshCount>9</maxMeshCount>
-			<visualSizeRange>0.4~0.6</visualSizeRange>
-			<topWindExposure>0.4</topWindExposure>
-			<wildOrder>1</wildOrder>
-		</plant>
-	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
 		<defName>RSW_JekkaGrass</defName>
@@ -203,30 +170,6 @@ five rows above, loudly commented at its own site.
 		</plant>
 	</ThingDef>
 
-	<ThingDef ParentName="BushBase">
-		<defName>RSW_VellaraBloom</defName>
-		<label>vellara bloom</label>
-		<description>A rare, huge flower with a striking color and a strong, sweet smell. Popular in gardening wherever it can be grown at all.</description>
-		<statBases>
-			<Beauty>10</Beauty>
-		</statBases>
-		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_VellaraBloom -->
-		<graphicData>
-			<texPath>Things/Plant/RSW_VellaraBloom</texPath>
-			<graphicClass>Graphic_Random</graphicClass>
-			<drawSize>1.5</drawSize>
-			<shadowData>
-				<volume>(0.55, 0.2, 0.2)</volume>
-				<offset>(0,0,-0.1)</offset>
-			</shadowData>
-		</graphicData>
-		<plant>
-			<topWindExposure>0.07</topWindExposure>
-			<wildClusterRadius>-1</wildClusterRadius>
-			<!-- AUTHORED: donor left visualSizeRange unset (inherits BushBase's own default, itself UNMEASURED by the census); set explicitly here rather than left ambiguous. -->
-			<visualSizeRange>0.7~1.0</visualSizeRange>
-		</plant>
-	</ThingDef>
 
 
 	<ThingDef ParentName="PlantBase">

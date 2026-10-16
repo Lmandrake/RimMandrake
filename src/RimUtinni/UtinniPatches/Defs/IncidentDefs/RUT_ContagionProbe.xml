@@ -5,7 +5,7 @@
   ============================================================================
   forge_kit_spec.md F5: "RUT_ContagionProbe IncidentDef (weighted only into
   Forge biomes, MTB-ish commonality — INVENTED: ~1 per 8 days) spawning a
-  cluster of RUT_DyingCreep plant-things at a map edge... Letter on arrival,
+  cluster of RM_DyingCreep plant-things at a map edge... Letter on arrival,
   quiet death."
 
   workerClass -> RUT_IncidentWorker_ContagionProbe (new this pass,

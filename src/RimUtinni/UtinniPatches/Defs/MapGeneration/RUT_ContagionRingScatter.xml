@@ -4,7 +4,7 @@
   RUT_ContagionRingScatter.xml           UtinniPatches · FORGE_MECHANICS_1 F5
   ============================================================================
   forge_kit_spec.md F5: "a scatter pass in the biome's terrain GenStep
-  painting RUT_DeadCreep filth/ground-cover along the map-edge band on
+  painting RM_DeadCreep filth/ground-cover along the map-edge band on
   Pyroclastic maps (INVENTED: band 8-15 cells in from the edge, patchy)."
 
   Uses RM_GenStep_EdgeBandFilth (new this pass, src/RimMandrake/
@@ -22,7 +22,7 @@
   order 968 — after GenStep_Terrain (vanilla ~210) so terrain is already
   painted, and after the wreck-scatter precedent's own 965-967 band (this
   paints filth on TOP of whatever scattered there, which is fine — filth is
-  a separate non-edifice layer, same as RUT_DeadCreep/RUT_DyingCreep
+  a separate non-edifice layer, same as RM_DeadCreep/RM_DyingCreep
   co-existing with any building).
   ============================================================================
 -->
@@ -32,10 +32,10 @@
     <defName>RUT_ContagionRingScatter</defName>
     <order>968</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth">
-      <!-- RUT_DeadCreep ships in this same mod (Defs/ThingDefs_Items/RUT_DeadCreep.xml), so
+      <!-- RM_DeadCreep ships in mandrake.rm.biomes (Contagion/Defs/ThingDefs/RM_DeadCreep.xml), a hard dependency of this mod, so
            the field needs no gate. It used to carry MayRequire="mandrake.rut.rotsporekit" (a
            retired packageId nothing provides), which made this scatter step never run. -->
-      <filthDef>RUT_DeadCreep</filthDef>
+      <filthDef>RM_DeadCreep</filthDef>
       <biomes>
         <li>RUT_TheForge</li>
       </biomes>

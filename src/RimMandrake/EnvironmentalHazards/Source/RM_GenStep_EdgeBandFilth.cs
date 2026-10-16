@@ -6,7 +6,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // FORGE_MECHANICS_1 F5 "the Contagion die-off ring" (forge_kit_spec.md
     // F5: "a scatter pass in the biome's terrain GenStep painting
-    // RUT_DeadCreep filth/ground-cover along the map-edge band on
+    // RM_DeadCreep filth/ground-cover along the map-edge band on
     // Pyroclastic maps... reuse RM_GenStep_PlacedSetPieces if genuinely a
     // fit, or a simpler stock scatterer if that framework doesn't suit a
     // filth-painting pass — use judgment, don't force-fit."
