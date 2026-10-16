@@ -360,7 +360,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Scorchpod</defName>
     <label>scorchpod</label>
-    <description>A blistered walking seed-case on too few legs, shell sweating metal, smoking faintly the moment the light touches it. Gallium-based, not carbon — the one native that can walk into the Burn, and almost always cooks before it gets where it's going.</description>
+    <description>A blistered walking seed-case on too few legs, shell sweating metal, smoking faintly the moment the light touches it. Gallium-based, not carbon — the one native that can walk into the Burn, and almost always cooks before it gets where it's going. When it dies the shell splits, and what spills out burns like acid.</description>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
       <Mass>10</Mass>
@@ -385,6 +385,15 @@
       </li>
     </tools>
     <race>
+      <!-- Phase 0 twin-only ports (owner 2026-10-15, "port all"): the donor AA_RedSpore's acid death burst, repointed
+           to our own class with the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def. -->
+      <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+        <flatRadius>2.5</flatRadius>
+        <damageDef>AcidBurn</damageDef>
+        <damageAmount>12</damageAmount>
+        <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+        <postExplosionFilthChance>0.3</postExplosionFilthChance>
+      </deathAction>
       <body>TurtleLike</body>
       <bloodDef>Filth_Slime</bloodDef>
       <baseBodySize>0.55</baseBodySize>
