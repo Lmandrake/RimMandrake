@@ -306,6 +306,15 @@ def _hdefs(row):
     return out
 
 
+def _sev(row, hediff):
+    """Summed severity of one hediff def on a row (0.0 when absent)."""
+    tot = 0.0
+    for h in (((row or {}).get("health") or {}).get("hediffs") or []):
+        if isinstance(h, dict) and (h.get("def") or h.get("defName")) == hediff:
+            tot += float(h.get("severity") or 0)
+    return tot
+
+
 def _alive(row):
     return row is not None and not row.get("dead")
 
@@ -1297,12 +1306,25 @@ def touched(t):
 
         with _comp(t, "touched_contact_doses", toggle="touchedEnabled"):
             if _live(t):
+                # The standing Bloom doses Contagion-touched too (owner N4: "Bloom time ... and contact"), so a dose
+                # alone does not prove CONTACT: a drafted control 12 cells off the Coalescence, under the same sky for
+                # the same ticks, must end with LESS than the colonist against it.
+                x, z = t.anchor
+                far = _spawn(t, "Colonist", x - 12, z - 12, faction="player")
+                t.bridge_call("jawa/set_draft", pawnId=far, drafted=True)
                 _wait(t, 1000)
-                row = _rows(t, _rs(_rect(t))).get(_STATE["touched"]["near"])
-                if row is None:
-                    _unmeasured(t, "the colonist beside the Coalescence is not readable")
+                rows = _rows(t, _rs(_rect(t)))
+                row, frow = rows.get(_STATE["touched"]["near"]), rows.get(far)
+                if row is None or not _alive(frow):
+                    _unmeasured(t, "the colonist beside the Coalescence / the far control is not readable")
                 if TOUCHED not in _hdefs(row):
                     _fail("1000 ticks against a Coalescence gave no %s: %s" % (TOUCHED, sorted(_hdefs(row))))
+                near_sev, far_sev = _sev(row, TOUCHED), _sev(frow, TOUCHED)
+                _note(t, "touched severity (contact, far control)", [near_sev, far_sev])
+                if not near_sev > far_sev:
+                    _fail("contact added nothing: %s %.4f against the Coalescence vs %.4f on the far control"
+                          % (TOUCHED, near_sev, far_sev))
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=far, action="vanish")
 
         with _comp(t, "sunbeam_hit_arrests", toggle="sunbeamArrestEnabled"):
             if _live(t):
@@ -1448,6 +1470,8 @@ def coalescence(t):
                         _fail("the Coalescence absorbed an Unfinished with coalescenceEnabled off")
                     if _mass_stage(_inspect(t, _STATE["coal"])[1]) != (1, 0):
                         _fail("mass moved with coalescenceEnabled off")
+                # the off arm's Unfinished would otherwise be absorbed in the next arm and pad its mass count
+                t.bridge_call("jawa/pawn_force_incapacitate", pawn=kid, action="vanish")
                 t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 24)), categories="Item")
 
         with _comp(t, "coalescence_absorbs_and_grows_a_stage", toggle="coalescenceEnabled"):
