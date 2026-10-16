@@ -1,0 +1,15 @@
+#!/bin/bash
+# One candidate style per worker: north first, then south and east with north as the sibling.
+# usage: gen.sh <tag> <codexhome> "<material sentence>"
+set -u
+tag=$1; home=$2; mat=$3
+R=/home/mandrake/rm/bench
+CI="python3 $R/skills/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --codex-home $home --timeout 900"
+LAD=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_Ladder.png
+OLD=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Excavation/RM_PitRamp_north.png
+COMMON="RimWorld top-down building sprite, hand-painted, warm 1970s earth-brown palette (ochre, umber, sand, weathered timber), soft painterly texture like image 2 (a RimWorld ladder sprite) and the wood/earth material of image 3. Orthographic RimWorld building camera, light overhead and from the front, no cast shadow, no outline. Fully transparent background with real alpha; the ramp occupies the image exactly where the grey shape in image 1 does, same silhouette, same proportions."
+SLOPE="The ramp must read unmistakably as a SLOPE climbing out of a pit: dark and shadowed at the low end (the toe, where loose earth spills onto the pit floor in a ragged edge), getting steadily brighter up to the high end, which finishes in one crisp sunlit timber header beam at the rim."
+$CI --out raw/${tag}_north.png --image guides/guide_north.png --image $LAD --image $OLD --prompt "Repaint image 1 as a pit ramp seen from above. $mat The ramp climbs AWAY from the viewer toward the top of the image: the narrow top end is the high end with the bright header beam; the wide bottom end is the low toe. Each cleat shows a lit vertical riser face below it, like steps rising away. $SLOPE $COMMON" > raw/${tag}_north.log 2>&1
+$CI --out raw/${tag}_south.png --image guides/guide_south.png --image $LAD --image raw/${tag}_north.png --prompt "Repaint image 1 as a pit ramp seen from above, the same ramp as image 3 but turned to climb TOWARD the viewer: the narrow bottom end is the high end with the bright header beam, the wide top end is the dark low toe. Each cleat shows a thin dark shadow gap on its far (upper) side, like steps descending away from the viewer. $mat $SLOPE Match image 3's materials, colours and brushwork exactly. $COMMON" > raw/${tag}_south.log 2>&1
+$CI --out raw/${tag}_east.png --image guides/guide_east.png --image $LAD --image raw/${tag}_north.png --prompt "Repaint image 1 as a pit ramp seen from above and slightly from the front, the same ramp as image 3 but climbing to the RIGHT: a wedge. The left end is the dark low toe spilling earth onto the pit floor; the right end is the raised high end with the bright vertical header beam. The upper band is the ramp's running surface with cleats across it; the triangle below it is the ramp's near side face, cut packed earth with horizontal strata, growing from nothing at the left to tall at the right. $mat $SLOPE Match image 3's materials, colours and brushwork exactly. $COMMON" > raw/${tag}_east.log 2>&1
+echo "$tag done"; ls -la raw/${tag}_*.png
