@@ -5,9 +5,10 @@
   Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_GreenGoo.xml, AA_GreenGoo).
   Label and description are ours: the words the campaign's Slime_Rename.xml patches onto the donor def.
 
-  NOT CAST. RM_Gelatid already holds the substrate slot on RM_GelatinousSlime ("the substrate creature",
-  RM_gelatinous_slime_mod.md §2) at 3.0; the wuum would be a second substrate at the twin's 2.0. Which one the
-  free def carries is the owner's call: Transient/phase0_twin_only_questions.md Q1.
+  CAST on RM_GelatinousSlime at 0.5 (owner by card 2026-10-15, Transient/phase0_twin_only_questions.md Q1 "Both,
+  wuum rarer"): RM_Gelatid stays the common, harmless substrate at 3.0 ("the substrate creature",
+  RM_gelatinous_slime_mod.md §2); the wuum is the part of the body that bites. Roster row guarded on the donor until
+  our art is installed (the P3 convention).
 
   REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
     (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor def).

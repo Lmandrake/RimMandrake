@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_Oomb.xml — the oomb and the lesser oomb, the giant trash-eating amoebae. Owner ruling 2026-10-15 (by card):
+  RM_Oomb.xml — the lesser oomb, the oomb and the greater oomb, the giant trash-eating amoebae. Owner ruling 2026-10-15 (by card):
   PORT ALL of the creatures that exist only on the frozen RUT_ twin rosters. Invented creatures, no Star Wars IP:
   RM_ tier. Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_AcanthamoebaGigantea.xml:
-  AA_AcanthamoebaGiganteaLarge, AA_AcanthamoebaGiganteaSmall). Labels and descriptions are ours (Slime_Rename.xml's
-  words, corrected where they promised a split this port does not do). Comfy bands are the live values
+  AA_AcanthamoebaGiganteaSmall, AA_AcanthamoebaGiganteaLarge, AA_AcanthamoebaGiganteaHuge). Labels and descriptions
+  are ours (Slime_Rename.xml's words, corrected to the split this port does). Comfy bands are the live values
   AnimalTolerances_Ashkarr.xml pins on the donor defs.
 
-  OOMB (RM_Oomb). CAST on RM_GelatinousSlime at the twin's 0.15: the_slime.md §4 names "the giant trash-eating
-    acanthamoeba" a resistant native, and the free def had no creature of ours for that line (Q14, by card
-    2026-09-23: "Holes are filled with new creatures of ours").
-  LESSER OOMB (RM_LesserOomb). NOT CAST: the twin cast it on RUT_Wasteland, the owner's round-2 move mapping sent it
-    to the Scarlands (RM_Warscar), and the Warscar sheet never ruled it. Transient/phase0_twin_only_questions.md Q2.
-    It lives in this file beside its grown form so the growth link below needs no cross-mod reference.
+  THE CYCLE (owner by card 2026-10-15, Transient/phase0_twin_only_questions.md Q4 "Port the greater oomb too"):
+    lesser oomb (10 feedings) -> oomb (20 feedings) -> greater oomb (20 feedings) -> splits into two lesser oombs.
+    The donor's counts, all through VEF's CompProperties_EatWeirdFood (advanceLifeStage / fissionAfterXFeedings),
+    no class of ours. The split keeps the donor's rule that only a TAMED greater oomb splits (fissionOnlyIfTamed):
+    a wild one eats and stays big, so the wild cycle cannot multiply without bound on the map.
+  CAST, all on RM_GelatinousSlime (one biome per animal; the Slime's sheet, the_slime.md §4 "the giant trash-eating
+    acanthamoeba"):
+    OOMB (RM_Oomb) at the twin's 0.15.
+    LESSER OOMB (RM_LesserOomb) at 0.2 (owner Q2 "The Slime, beside the oomb"; the weight is ours: the small stage a
+      little commoner than the middle one, the Gappo family's own lesser > middle > greater shape, 1.5 : 1.0 : 0.3).
+    GREATER OOMB (RM_GreaterOomb) at 0.05 (owner Q4 "a small weight"; 0.15 x 0.3, the same Gappo greater:middle ratio).
 
-  BOTH:
+  ALL THREE:
     REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
       (the values RM_AlphaAnimals_DeathBursts.xml patches onto the donor defs).
     KEPT, VEF-guarded (a framework we keep, as P3 did): eating filth, trash and grass off the ground
       (CompProperties_EatWeirdFood; the VEF weird-eater think tree is added by
-      Patches/RM_Oomb_VEFThinkTree.xml only when VEF loads, the fermatalis's pattern). The lesser oomb grows into an oomb after 10
-      feedings. The oomb's own growth went to the greater oomb (AA_AcanthamoebaGiganteaHuge), which is not ported:
-      it stops growing.
+      Patches/RM_Oomb_VEFThinkTree.xml only when VEF loads, the fermatalis's pattern). Growth and the split ride the
+      same comp, so without VEF all three are plain animals that neither grow nor split.
     SWAPPED: body AA_GooBody -> RM_AmorphousBody (this mod's own); sounds AA_GreenGoo_* -> vanilla tortoise (as the
       gelatid); pseudopods link to RM_Pseudopods.
     DROPPED: VRecyclingE_Trash from the food list (another mod's item); donor wildBiomes; the VEF
       AnimalStatExtension info-card rows and its donor art panel; the donor dessicated picture (a cell leaves no
-      skeleton; RM_Meltgut precedent).
-  ART: the oomb's render exists (artpipe slime_oomb, 3 facings) and is not installed in this mod; the lesser oomb has
-    none (filed: donorart_lesseroomb_v1). Until the art ledger installs them, both texPaths are the donor path
-    (a placeholder, reported ART OWED by donor_plain_ports_check.py) and the roster row stays
+      skeleton; RM_Meltgut precedent); the greater oomb's Odyssey trainable VEF_CycleSeverance.
+    GREATER OOMB burst: the donor's huge size had no row in RM_AlphaAnimals_DeathBursts.xml; ours carries on the
+      lesser -> oomb step (1.9/10 -> 3.5/16) to 4.9/20.
+  ART: the oomb's render exists (artpipe slime_oomb, 3 facings) and so does the greater oomb's (artpipe
+    slime_greateroomb, 3 facings, art-ledger artpipe rows 3bba33d0481f35c2726c / 77cf2fe3e0b6b7c7eecf /
+    bd1c3d07cfa5f35769a3, item DONOR_DEFS_PORT_TO_OURS_1); neither is installed in this mod. The lesser oomb's is
+    commissioned (donorart_lesseroomb_v1). Until the art ledger installs them, all three texPaths are the donor path
+    (a placeholder, reported ART OWED by donor_plain_ports_check.py) and each roster row stays
     MayRequire="sarg.alphaanimals".
 -->
 <Defs>
@@ -38,7 +46,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Oomb</defName>
     <label>oomb</label>
-    <description>A great spiked lobe of a cell, genetically built to eat whatever non-metal trash is put in front of it. It rolls over filth, litter and grass alike and leaves the ground clean behind it.\n\nIt bursts when it dies, and what bursts out burns like acid.</description>
+    <description>A great spiked lobe of a cell, genetically built to eat whatever non-metal trash is put in front of it. It rolls over filth, litter and grass alike and leaves the ground clean behind it, and after enough meals it swells into a greater oomb.\n\nIt bursts when it dies, and what bursts out burns like acid.</description>
     <statBases>
       <MoveSpeed>1.75</MoveSpeed>
       <ComfyTemperatureMin>-16.3</ComfyTemperatureMin>
@@ -75,6 +83,9 @@
         <nutrition>1</nutrition>
         <digThingIfMapEmpty>false</digThingIfMapEmpty>
         <fullyDestroyThing>true</fullyDestroyThing>
+        <advanceLifeStage>true</advanceLifeStage>
+        <advanceAfterXFeedings>20</advanceAfterXFeedings>
+        <defToAdvanceTo>RM_GreaterOomb</defToAdvanceTo>
       </li>
     </comps>
     <race>
@@ -240,6 +251,115 @@
           <texPath>Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ===================== GREATER OOMB ===================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GreaterOomb</defName>
+    <label>greater oomb</label>
+    <description>An oomb swollen past its usual size, still rolling up whatever refuse it can find. A tame one that eats enough splits in two, and two lesser oombs crawl away from where it was.\n\nIt bursts when it dies, and what bursts out burns like acid.</description>
+    <statBases>
+      <MoveSpeed>2</MoveSpeed>
+      <ComfyTemperatureMin>-16.3</ComfyTemperatureMin>
+      <ComfyTemperatureMax>81.2</ComfyTemperatureMax>
+      <MarketValue>700</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <FilthRate>0</FilthRate>
+      <Wildness>0.42</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>pseudopods</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>RM_Pseudopods</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_EatWeirdFood" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <customThingToEat>
+          <li>Filth_Dirt</li>
+          <li>Filth_AnimalFilth</li>
+          <li>Filth_Trash</li>
+          <li>Filth_Sand</li>
+          <li>Filth_Blood</li>
+          <li>Plant_Grass</li>
+          <li>Plant_TallGrass</li>
+        </customThingToEat>
+        <nutrition>1</nutrition>
+        <digThingIfMapEmpty>false</digThingIfMapEmpty>
+        <fullyDestroyThing>true</fullyDestroyThing>
+        <advanceLifeStage>true</advanceLifeStage>
+        <advanceAfterXFeedings>20</advanceAfterXFeedings>
+        <fissionAfterXFeedings>true</fissionAfterXFeedings>
+        <defToFissionTo>RM_LesserOomb</defToFissionTo>
+        <fissionOnlyIfTamed>true</fissionOnlyIfTamed>
+        <numberOfOffspring>2</numberOfOffspring>
+      </li>
+    </comps>
+    <race>
+      <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+        <flatRadius>4.9</flatRadius>
+        <damageDef>AcidBurn</damageDef>
+        <damageAmount>20</damageAmount>
+        <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+        <postExplosionFilthChance>0.6</postExplosionFilthChance>
+      </deathAction>
+      <executionRange>8</executionRange>
+      <herdAnimal>false</herdAnimal>
+      <body>RM_AmorphousBody</body>
+      <baseBodySize>1.5</baseBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <baseHealthScale>2.5</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <hasGenders>false</hasGenders>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <useMeatFrom>Pig</useMeatFrom>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Call</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GreaterOomb</defName>
+    <label>greater oomb</label>
+    <race>RM_GreaterOomb</race>
+    <combatPower>105</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.01</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_AcanthamoebaGigantea/AA_AcanthamoebaGigantea</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>

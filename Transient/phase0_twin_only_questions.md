@@ -89,3 +89,12 @@ twitch node. That needs separate body-only and tentacle pictures (the same situa
 Q1), so today's wuum is one fixed whole-body picture. The lesser oomb's picture is commissioned
 (`donorart_lesseroomb_v1`, three facings). The wuum and oomb pictures already exist (`slime_wuum`,
 `slime_oomb`); the art ledger installs them.
+
+---
+
+## Ruled 2026-10-15 (by card) and enacted
+
+- **Q1 A:** the wuum is cast on the Slime at 0.5; the gelatid stays at 3.0.
+- **Q2 C:** the lesser oomb is cast on the Slime at 0.2. That makes the small size a little commoner than the oomb (0.15), the same lesser > middle > greater shape as the Gappo family.
+- **Q3 A:** the Bloody Mess bursts (radius 2.5, acid 12) on every death except the one where it gives birth. Our worker `DeathActionWorker_RM_GenomeHostBurst` skips the death that completes a gestation.
+- **Q4 A:** the greater oomb (`RM_GreaterOomb`) is ported and cast on the Slime at 0.05. The cycle: a lesser oomb grows into an oomb after 10 meals, an oomb into a greater oomb after 20, and a greater oomb splits into 2 lesser oombs after 20. As in the donor, only a tame greater oomb splits, so a wild one stays big. Its picture is `slime_greateroomb` (3 facings, not yet installed).
