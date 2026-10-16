@@ -80,7 +80,7 @@ def gen(row, facing, out: Path, extra: str, pose: str, timeout: int) -> int:
                         "--model", MODEL, "--codex-home", CODEX_HOME],
                        capture_output=True, text=True)
     dt = round(time.time() - t0, 1)
-    rec = {"texPath": row["texPath"], "facing": facing, "raw": str(raw.relative_to(REPO)), "seconds": dt,
+    rec = {"texPath": row["texPath"], "facing": facing, "raw": (str(raw.relative_to(REPO)) if raw.is_relative_to(REPO) else str(raw)), "seconds": dt,
            "ok": p.returncode == 0 and raw.exists(), "rc": p.returncode, "at": time.strftime("%Y-%m-%dT%H:%M:%S"),
            "prompt": prompt, "err": (p.stderr or "")[-400:] if p.returncode else ""}
     with open(out / "timing.jsonl", "a") as fh:
@@ -135,7 +135,7 @@ def conform(row, facing, out: Path, raw: Path | None = None) -> Path:
     dst = out / "candidates" / Path(row["files"][facing]).name
     dst.parent.mkdir(parents=True, exist_ok=True)
     canvas.save(dst)
-    print(f"conformed {raw.name} -> {dst.relative_to(REPO)} ({tw}x{th} on {W}x{H})")
+    print(f"conformed {raw.name} -> {dst} ({tw}x{th} on {W}x{H})")
     return dst
 
 
