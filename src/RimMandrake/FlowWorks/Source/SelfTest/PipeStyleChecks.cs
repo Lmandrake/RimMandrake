@@ -97,6 +97,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "CompTankLook restyles in place through the shared picker");
                 Assert(src.Contains("tank.OccupiedRect()"), "the whole footprint is redrawn (a 2x2 can straddle a mesh section)");
             });
+            Case("PipeStyles_restyle_clears_cached_graphic", () =>
+            {
+                // can-fail: ThingStyleHelper.SetStyleDef never clears Thing.styleGraphicInt, so a restyle that does not call
+                // Notify_ColorChanged stores the look and redraws the old one (owner 2026-10-16: the pipe's button "doesn't seem to do anything")
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                Assert(src.Contains("pipe.SetStyleDef(sd);") && src.Contains("pipe.Notify_ColorChanged();"), "the pipe's SetLook clears the cached style graphic");
+                Assert(src.Contains("tank.SetStyleDef(sd);") && src.Contains("tank.Notify_ColorChanged();"), "the tank's SetLook clears the cached style graphic");
+                string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
+                Assert(reel.Contains("parent.SetStyleDef(sd);") && reel.Contains("parent.Notify_ColorChanged();"), "the reel's SetLook clears the cached style graphic");
+            });
             Case("PipeStyles_shipped_style_defs", () =>
             {
                 XDocument d = Load("Machinery", "RM_UniversalPipeStyles.xml");
