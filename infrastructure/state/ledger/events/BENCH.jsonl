@@ -2756,3 +2756,5 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"restart + review save rebuild","ts":"2026-10-16T03:00:34Z","tsn":1792119634495213562}
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-16T03:00:35Z","tsn":1792119635741203316}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T03:30:13Z","tsn":1792121413139141769}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"owner watches firehawk fly","ts":"2026-10-16T03:48:55Z","tsn":1792122535729417964}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-16T03:51:01Z","tsn":1792122661070955399}
