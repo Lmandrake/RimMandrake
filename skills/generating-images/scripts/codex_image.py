@@ -220,6 +220,24 @@ def check_sandbox_fingerprint(base: Path | None = None, template: Path | None = 
     template_fp = template_sandbox_fingerprint(template)
     installed_fp = installed_sandbox_fingerprint(base)
     if template_fp is not None and installed_fp is not None and template_fp == installed_fp:
+        # SANDBOX_DIALOG_SILENCE (2026-10-16, MEASURED): a matching runner exe is not enough. Every elevated
+        # sandbox setup re-provisions the two machine-wide sandbox users with NEW passwords, so a template whose
+        # setup_marker/sandbox_users.json differ from the shared home's is stale even on the same build: codex.exe
+        # logs "sandbox users missing or incompatible with marker version" and re-runs the UAC-gated setup on every
+        # seeded home (three parallel facing_regen homes = three full-screen dialogs).
+        def _blob(root: Path) -> bytes | None:
+            try:
+                return ((root / ".sandbox" / "setup_marker.json").read_bytes()
+                        + (root / ".sandbox-secrets" / "sandbox_users.json").read_bytes())
+            except OSError:
+                return None
+        tb, ib = _blob(template), _blob(base)
+        if tb is None or ib is None or tb != ib:
+            return ("mismatch", template_fp, installed_fp,
+                    f"sandbox seed template at {template} holds a different sandbox-user provisioning than {base} "
+                    f"(setup_marker.json / .sandbox-secrets/sandbox_users.json differ) - seeding would trigger the "
+                    f"UAC sandbox setup dialog. Re-sync: cp {base}/.sandbox/setup_marker.json {template}/.sandbox/ && "
+                    f"cp {base}/.sandbox-secrets/sandbox_users.json {template}/.sandbox-secrets/")
         return "match", template_fp, installed_fp, ""
     return ("mismatch", template_fp, installed_fp,
             f"sandbox seed template at {template} was captured against codex "
