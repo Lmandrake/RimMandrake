@@ -746,7 +746,7 @@ SITE_EXPECT = {
     # the round-4 failure, reproduced: without the unroof the fake map crushes the pads exactly as live did
     "unroof_noop": {"repulsor_clear.off_when_setting_off": "FAIL",
                     "spawner.spawner_off_buds_nothing": "UNMEASURED",
-                    "burn_forced.burn_harmless_at_zero_damage": "FAIL",
+                    "burn_forced.burn_harmless_at_zero_damage": "UNMEASURED",   # crushed visitor: no reading
                     "coalescence.coalescence_off_absorbs_nothing": "FAIL"},
 }
 
