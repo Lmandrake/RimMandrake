@@ -1,0 +1,20 @@
+[
+ {
+  "id": "donorart_zhissa_alien_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_Zhissa",
+  "target_texpath": "Things/Pawn/Animal/RM_Zhissa/RM_Zhissa",
+  "install_to": "src/RimMandrake/NightsideIce/Textures/Things/Pawn/Animal/RM_Zhissa/RM_Zhissa_{facing}.png",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "oversize_reason": "detail floor: 512px minimum so the painted anatomy and arcs read (owner: sizing errs generous)",
+  "facings": "east,south,north",
+  "priority": 12,
+  "background": "transparent",
+  "owner_note": "Owner 2026-10-15, verbatim: \"It is just a redrawn version of the donor art. Instead it should be a truly alien goat with lightning rippling along its surface.\"",
+  "prompt": "RimWorld creature sprite of the ADULT zhissa, an invented alien grazer of a frozen night-side ice sheet. SCALE: footprint 2.5x2.5 cells (drawSize 2.5); a colonist is about 1 cell. CANVAS: 512x512, square, the animal fills the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a TRULY ALIEN goat-sized four-legged grazer. Only the overall goat body plan survives (four legs, a compact barrel body, a long head carried forward, a pair of horns) so it still reads as a goat-like herd animal at a glance, but every surface and joint is alien: the body is armoured in overlapping ridged plates of pale, frost-white, faintly translucent crystalline chitin with glacial-blue seams; the legs are long and extra-jointed, each with a backward second knee, ending in split crystalline hooves; the horns are branching, crystal-like conductive spires; a mane of fine standing static filaments bristles along the neck and spine; six small pale eyes in two rows of three on each side of the long eyeless-looking face. LIGHTNING: bright branching blue-white electric arcs crawl and ripple ALONG ITS SURFACE, jumping between the plate seams, up the legs and between the horn tips, clearly visible as forked lightning on the hide, not a soft glow or aura. MUST SHOW: (1) alien crystalline/chitinous plated hide, no fur, no wool; (2) branching lightning arcs running over the body surface; (3) extra-jointed legs; (4) still readable as a goat-shaped quadruped. NEGATIVE: not an ordinary goat, no fur coat, no brown-and-cream donor colouring, no curled ram horns, no cartoon look, no outline, no background, no ground.",
+  "style_notes": "Realistic painted natural-history illustration of a living alien animal, grounded believable anatomy, matte textured surfaces with the electric arcs as the only bright light, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Painterly vanilla-RimWorld house style, no outlines, bake NO cast shadow onto the ground. Invented creature: draw from this description; do not reuse donor pixels.",
+  "biome_neutral": true
+ }
+]
