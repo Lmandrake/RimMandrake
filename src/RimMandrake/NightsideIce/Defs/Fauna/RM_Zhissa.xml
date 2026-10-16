@@ -6,17 +6,10 @@
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
     - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
-    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is
-      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
     - folded 3 op(s) from src/RimMandrake/NightsideIce/Patches/AA_ShockGoat_NightsideIce.xml
     - folded 4 op(s) from src/RimUtinni/UtinniPatches/Patches/NightsideIce_Rename.xml
-    - TEMP PLACEHOLDER ART (2026-10-15): texPath points at the installed horned-goat render
-      (AA_ShockGoat_NightsideIce, job nightsideice_shockgoat_v1) ONLY so the creature is not invisible.
-      The owner REJECTED that drawing ("It is just a redrawn version of the donor art. Instead it should
-      be a truly alien goat with lightning rippling along its surface."). ART OWED: commission
-      donorart_zhissa_alien_v1 (design/RimMandrake/zhissa_alien_art_commission_2026-10-15.json). On his
-      accept, install it at Things/Pawn/Animal/RM_Zhissa/RM_Zhissa and repoint all three lifeStages there.
+    - Art: alien zhissa (job donorart_zhissa_alien_v1), owner-accepted 2026-10-15, installed via the art ledger.
 -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Zhissa</defName>
@@ -135,7 +128,7 @@
       <li>
         <label>zhissa lamb</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath>  <!-- TEMP PLACEHOLDER, see header -->
+          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_Zhissa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
           <shadowData>
@@ -146,7 +139,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath>  <!-- TEMP PLACEHOLDER, see header -->
+          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_Zhissa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.9</drawSize>
           <shadowData>
@@ -157,7 +150,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath>  <!-- TEMP PLACEHOLDER, see header -->
+          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_Zhissa</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.5</drawSize>
           <shadowData>
