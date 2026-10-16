@@ -14,6 +14,8 @@ from the cited file or the ledger) or INFERRED (my reasoning from those numbers)
 
 ## Short version
 
+> **Prerequisite added 2026-10-15 ~19:30 PDT (owner):** *"since we're about ready to retire two entire art mods and maybe some more, we should finish THAT before we try to review any biomes beyond the Pyrelands."* The sprint now opens with Phase 0, which retires Star Wars Animal Collection and Alpha Animals, with Alpha Biomes as a candidate. Its sequence, its gate and the shifted calendar (sign-off now about 10-27 to 10-29) are in `design/RimMandrake/biome_sprint_kickoff_2026-10-15.md` §0.5 and §4.
+
 1. **Consolidation: yes, it is done, and the pilot already used it.** All 24 biomes and their 6 engine/extra entries are
    composed into ONE mod, *RimMandrake: Baroque Biomes* (`mandrake.rm.biomes`; 30 entries in
    `src/RimMandrake/Biomes.compose.json`). The `ratchet_pilot` tier loads that whole mod. Every pilot round therefore had
