@@ -329,6 +329,9 @@ def _as_bool(v):
 
 def _same(got, want):
     if isinstance(want, bool):
+        # only a real "true"/"false" read-back counts: a missing value (None, "") is not False
+        if str(got).strip().lower() not in ("true", "false"):
+            return False
         return _as_bool(got) == want
     try:
         return abs(float(str(got).replace(",", ".")) - float(want)) < 1e-6
@@ -853,6 +856,10 @@ def repulsor_clear(t):
                 if _has_cond(t, CLEAR_COND):
                     _fail("the clear-sky condition outlived the device's power by > 1200 ticks "
                           "(it must lapse within holdTicks=750)")
+                # the lapse counts only if the device is still there, unpowered (a destroyed one also lapses)
+                _, lines = _inspect(t, _STATE["rep_id"])
+                if "Unpowered" not in lines:
+                    _unmeasured(t, "the repulsor does not read Unpowered after the switch-off: %r" % lines)
     _stable(t, body)
 
 
@@ -912,10 +919,10 @@ def spawner(t):
                                   hediff="RM_UnfinishedUnraveling", offset=1.0)
                 _ok(r, "pawn_severity_adjust")
                 _wait(t, 120)
-                row = _rows(t, _STATE["host_rect"]).get(kid)
+                row = _rows(t).get(kid)                # whole map: a kid that wandered off is not 'dissolved'
                 if _alive(row):
                     _fail("the Unfinished survived being pushed to lethal severity: %r" % (r,))
-                corpses = _things(t, "Corpse_" + UNFINISHED, _STATE["host_rect"])
+                corpses = _things(t, "Corpse_" + UNFINISHED)
                 if corpses:
                     _fail("a corpse persists (%d): death must dissolve it" % len(corpses))
 
@@ -1029,6 +1036,8 @@ def burn_forced(t):
                 _wait(t, 600)                        # at least two 250-tick pressure passes
                 rows = _rows(t)
                 b = _STATE["burn"]
+                if not _alive(rows.get(b["open"])):
+                    _unmeasured(t, "the open visitor is not readable alive: 'not harmed' would mean nothing")
                 hit = [k for k in ("open", "native") if _hdefs(rows.get(b[k])) & {"RM_BurnDose", "Burn"}]
                 if hit or not _alive(rows.get(b["native"])):
                     _fail("burnDamageFactor=0 still harmed: %s (native alive=%s)"
@@ -1292,6 +1301,8 @@ def touched(t):
         with _comp(t, "sunbeam_hit_arrests", toggle="sunbeamArrestEnabled"):
             if _live(t):
                 pid = _STATE["touched"]["near"]
+                if TOUCHED not in _hdefs(_rows(t, _rs(_rect(t))).get(pid)):
+                    _unmeasured(t, "the colonist carries no %s before the hit: nothing to arrest" % TOUCHED)
                 _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
                     "damage(RM_UVBeam)")
                 row = _rows(t, _rs(_rect(t))).get(pid)
@@ -1352,7 +1363,9 @@ def zhool_haze(t):
                     _wait(t, 5000)
                 lash = len(_things(t, LASHGRASS, _STATE["zrect"]))
                 grass1 = len(_things(t, GRASS, _STATE["zrect"]))
-                lost = _STATE.get("grass0", grass1) - grass1
+                if _STATE.get("grass0") is None:
+                    _unmeasured(t, "no grass count from the off arm: the replacement check has no baseline")
+                lost = _STATE["grass0"] - grass1
                 _note(t, "zhool haze: grass before/after, lashgrass after", [_STATE.get("grass0"), grass1, lash])
                 if lash < 1:
                     _fail("no grass turned to lashgrass in 5000 ticks at 5x speed (expected ~8)")
@@ -1472,6 +1485,8 @@ def coalescence(t):
                     _wait(t, 400)
                 stage, mass = _mass_stage(_inspect(t, _STATE["coal"])[1])
                 m0 = _mass_stage(before)[1]
+                if m0 is None:
+                    _unmeasured(t, "Coalescence mass unreadable before the jump: %r" % before)
                 if mass is None or mass <= m0:
                     _fail("no passive growth over 7000 ticks (passiveGrowthTicks 6000) (mass %s -> %s)" % (m0, mass))
                 # LIVE 2026-10-08: jawa/pawn_get carries no mental-state field at all, so the old
@@ -1848,7 +1863,8 @@ def log_chain(t):
             r = t.bridge_call("jawa/drain_log", contains="Contagion", errorsOnly=True, limit=50)
             bad = [m.get("text") for m in (_ok(r, "drain_log").get("messages") or [])]
             owned = set(n for ns in DEFS_BY_TYPE.values() for n in ns)
-            r2 = t.bridge_call("jawa/drain_log", contains="cross-reference", errorsOnly=True, limit=100)
+            r2 = _ok(t.bridge_call("jawa/drain_log", contains="cross-reference", errorsOnly=True, limit=100),
+                     "drain_log(cross-reference)")
             xref = [m.get("text") for m in ((r2 or {}).get("messages") or [])
                     if any(d in (m.get("text") or "") for d in owned)]
             _note(t, "log scan", {"contagion errors": len(bad), "xref naming our defs": len(xref),
