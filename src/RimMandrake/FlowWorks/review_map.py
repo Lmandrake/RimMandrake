@@ -101,6 +101,40 @@ def derive(m=None, rows=None):
     return m, st, capd
 
 
+def _nav_cache_path():
+    return r"D:\Luke\dev\_rmscratch\fw_review_nav_cache.pickle" if os.name == "nt" else \
+        "/mnt/d/Luke/dev/_rmscratch/fw_review_nav_cache.pickle"
+
+
+def _nav_key():
+    import hashlib
+    h = hashlib.sha1()
+    for f in ("review_map.py", "human_review.py", "review_map_stations_visuals.json"):
+        with open(os.path.join(HERE, f), "rb") as fh:
+            h.update(fh.read())
+    return h.hexdigest()
+
+
+def _nav_cache_write(S, st):
+    """A program reads it, so it lives outside the repo (D:\\Luke\\dev\\_rmscratch, where python.exe can reach it)."""
+    import pickle
+    try:
+        with open(_nav_cache_path(), "wb") as f:
+            pickle.dump(dict(key=_nav_key(), S=S, st=st), f)
+    except OSError:
+        pass
+
+
+def _nav_cache_read():
+    import pickle
+    try:
+        with open(_nav_cache_path(), "rb") as f:
+            d = pickle.load(f)
+    except (OSError, EOFError, pickle.UnpicklingError):
+        return None
+    return (d["S"], d["st"]) if d.get("key") == _nav_key() else None
+
+
 def sentence(title, say):
     """The feature's designer sentence plus its plain line, as two sentences."""
     t = title.strip()
@@ -592,7 +626,10 @@ SETUPS = {
                          try_=["select an adapter: its mode button cycles Send, Take and Shut"],
                          look="weak spot: the adapters exist only with Vanilla Chemfuel Expanded loaded; without it "
                               "(the release test list) this pad is empty and the build notes say so"),
-    "liquid_spill": dict(short="Spilled liquid", notice="spilled liquid (left) and tracked tar (right) on the ground",
+    # walk 2026-10-15: on Soil (filthAcceptanceMask Unnatural) BOTH filths are refused, the Natural spill and the
+    # Terrain-sourced tar alike, so the pad is concrete (mask Any). The soil refusal of the spill is a MOD finding.
+    "liquid_spill": dict(short="Spilled liquid", notice="spilled liquid (left) and tracked tar (right) on a concrete pad",
+                         terrain=[("Concrete", 1, 4, 13, 5)],
                          s="carry", after="pipe_adapter",
                          probes=["xml:defName>RM_Filth_LiquidSpill<", "xml:defName>RM_Filth_Tar<", "tex:RM_FilthTar"],
                          stuffed=[("RM_Filth_LiquidSpill", x, z, 1, None) for x in (2, 3, 4) for z in (5, 6, 7)]
@@ -1211,6 +1248,14 @@ class Review(object):
                 if r.get("survived") == 0:
                     self.notes.append("station %d: %s not built %s" % (s["n"], d, (r.get("failed") or [])[:1]))
             for d, x, z, stuff in u.get("spawn", []):
+                # walk 2026-10-15: spawn_batch takes no faction, so a spawned ladder/cover/sluice was unowned ("Claim"
+                # button, no Ladder button: st.36 could not be raised). Build it as the player's first, as a player has it;
+                # spawn_batch stays the fallback for what build_batch refuses (e.g. a cell build_batch will not accept).
+                kw = dict(ops="%s:%d,%d" % ((d,) + g(x, z)), faction="player", wipeExisting=False)
+                if stuff:
+                    kw["stuff"] = stuff
+                if (self.call("jawa/build_batch", **kw) or {}).get("survived"):
+                    continue
                 kw = dict(ops="%s:%d,%d" % ((d,) + g(x, z)))
                 if stuff:
                     kw["stuff"] = stuff
@@ -1605,8 +1650,18 @@ def main(argv=None):
     ap.add_argument("--name", default=None)
     ap.add_argument("--log", default=os.path.join(REPO, "Transient", "fw_review_map_build_log.md"))
     a = ap.parse_args(argv)
-    m, st, capd = derive()
-    S = station_list(m, st, capd)
+    # walk 2026-10-15: under Windows python.exe the feature sheet's derivation reads the repo through \\wsl.localhost
+    # and takes ~5 minutes, so a --goto took 5 minutes. --plan/--build (re)write a cache of the station list keyed on
+    # this file's and the sheet's bytes; a plain --goto/--labels on Windows reads it, and falls back to deriving.
+    nav_only = (a.goto or a.labels) and not (a.plan or a.build or a.save or a.clear or a.rivers)
+    cached = _nav_cache_read() if nav_only and os.name == "nt" else None
+    if cached:
+        m, capd = None, None
+        S, st = cached
+    else:
+        m, st, capd = derive()
+        S = station_list(m, st, capd)
+        _nav_cache_write(S, st)
     doc = visuals_doc()
     probs = layout_check(S, doc)
     if probs:
