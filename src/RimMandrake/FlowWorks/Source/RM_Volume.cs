@@ -19,12 +19,79 @@ namespace RimMandrake.FlowWorks
 		/// <summary>One deep notch: a tank square, a deep canal square, the shallowest deep-pond square.</summary>
 		public const int LevelsPerSquare = 4;
 
-		/// <summary>The unit bridge between the channel ledger (levels) and the tank ledger (units): a level is a
-		/// bucket's worth.</summary>
-		public const int UnitsPerLevel = 5;
+		/// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner 2026-10-16, "Count in Litres"; design
+		/// liquid_litres_2026-10-16.md): one level is one cubic metre. A vanilla human draws 1.20 cells tall and is ~1.75 m, so a
+		/// cell is ~1.46 m; deep water (4 levels) is ~2 m, so a level is ~0.5 m deep and 1.46² × 0.5 ≈ 1.07 m³. 1,000 L is
+		/// within 7 % of that and makes every readout legible: a level = 1 kL, a deep square = 4 kL.</summary>
+		public const int LitresPerLevel = 1000;
 
-		/// <summary>Tank units in one square (20).</summary>
+		/// <summary>The depth of one level in metres (mouseover readout).</summary>
+		public const float MetresPerLevel = 0.5f;
+
+		/// <summary>The integer tank unit is a DECILITRE: a 1.5 L bottle is exactly 15 units, and every integer ledger
+		/// (tanks, hoses, pumps, nets) stays exact. Players only ever see litres (<see cref="FormatUnits"/>).</summary>
+		public const int UnitsPerLitre = 10;
+
+		/// <summary>The unit bridge between the channel ledger (levels) and the tank ledger (units): 10,000 dL = 1,000 L.</summary>
+		public const int UnitsPerLevel = LitresPerLevel * UnitsPerLitre;
+
+		/// <summary>Tank units in one square (40,000 dL = 4 kL).</summary>
 		public const int UnitsPerSquare = LevelsPerSquare * UnitsPerLevel;
+
+		/// <summary>Model 2's tank unit: a fifth of a level (200 L, "a drum"). Saves and settings written before model 3 hold
+		/// amounts in it; <see cref="FromLegacyUnits(int)"/> converts them once.</summary>
+		public const int LegacyUnitsPerLevel = 5;
+
+		/// <summary>Decilitres in one model-2 unit (2,000).</summary>
+		public const int LegacyUnitScale = UnitsPerLevel / LegacyUnitsPerLevel;
+
+		/// <summary>Litres in one model-2 unit (200).</summary>
+		public const int LegacyUnitLitres = LitresPerLevel / LegacyUnitsPerLevel;
+
+		/// <summary>Litres → integer units, rounded half away from zero.</summary>
+		public static int Units(float litres)
+		{
+			double u = Math.Round(litres * (double)UnitsPerLitre, MidpointRounding.AwayFromZero);
+			return u >= int.MaxValue ? int.MaxValue : u <= int.MinValue ? int.MinValue : (int)u;
+		}
+
+		/// <summary>Integer units → litres.</summary>
+		public static float Litres(int units) => units / (float)UnitsPerLitre;
+
+		/// <summary>A model-2 amount (200 L units) in model-3 units, clamped to int.</summary>
+		public static int FromLegacyUnits(int legacy)
+		{
+			long u = (long)legacy * LegacyUnitScale;
+			return u >= int.MaxValue ? int.MaxValue : u <= int.MinValue ? int.MinValue : (int)u;
+		}
+
+		/// <summary>A model-2 float amount in model-3 units.</summary>
+		public static float FromLegacyUnits(float legacy) => legacy * LegacyUnitScale;
+
+		/// <summary>Litres for a player: "1.5 L", "15 L", "208 L", "4 kL", "12.5 kL". Invariant culture (inspect panes,
+		/// probes and parsers read the same text).</summary>
+		public static string FormatLitres(double litres)
+		{
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			double a = Math.Abs(litres);
+			if (a >= 1000.0)
+			{
+				return (litres / 1000.0).ToString(a >= 100000.0 ? "0" : "0.#", inv) + " kL";
+			}
+			return litres.ToString(a >= 100.0 ? "0" : "0.#", inv) + " L";
+		}
+
+		/// <summary><see cref="FormatLitres"/> of an integer unit amount.</summary>
+		public static string FormatUnits(int units) => FormatLitres(units / (double)UnitsPerLitre);
+
+		/// <summary>Depth for a player: "0.5 m", "2 m" (levels may be fractional: a part-drained pond square).</summary>
+		public static string FormatMetres(double levels) => (levels * MetresPerLevel).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m";
+
+		/// <summary>The mouseover line for a liquid square: "1.5 m deep, 3 kL" (levels of liquid standing in it).</summary>
+		public static string DepthReadout(double levels, double litres)
+		{
+			return FormatMetres(levels) + " deep, " + FormatLitres(litres);
+		}
 
 		/// <summary>Ruling 3/7 (2026-10-12): a shallow-water pond square holds 2 levels, which is also its bed depth.</summary>
 		public const int ShallowBedLevels = 2;
@@ -34,9 +101,13 @@ namespace RimMandrake.FlowWorks
 		/// Marsh cost 30 (Core Terrain_Water.xml, read 2026-10-13). Any liquid terrain at this cost or above is deep.</summary>
 		public const int DeepPathCostFloor = 40;
 
-		/// <summary>The save format of every volume this file defines. 1 = before this item (5 levels a pond square,
-		/// 300/600-unit tanks); 2 = one square = one square. Scribed by RM_MapComponent_Excavation.</summary>
-		public const int CurrentModel = 2;
+		/// <summary>The save format of every volume this file defines. 1 = before POND_VOLUME_UNIFY (5 levels a pond square,
+		/// 300/600-unit tanks); 2 = one square = one square, 5 units a level; 3 = litres (a unit is a decilitre, 10,000 a level).
+		/// Scribed by RM_MapComponent_Excavation (ponds) and by every holder of tank units (tanks, hoses, converters).</summary>
+		public const int CurrentModel = 3;
+
+		/// <summary>The model a unit holder reads when its save carries no marker: every save before model 3.</summary>
+		public const int LegacyModel = 2;
 
 		/// <summary>Bed depth, and so budget, of one natural liquid square in levels.</summary>
 		public static int BedLevels(bool impassable, int pathCost)

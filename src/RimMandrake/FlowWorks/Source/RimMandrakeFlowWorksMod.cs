@@ -122,6 +122,9 @@ namespace RimMandrake.FlowWorks
         // POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2 (owner rulings 2-4, look (b) by card 2026-10-13): a drained pond square is a
         // hollow at its bed depth (2 shallow, 4 deep), laid as cracked lakebed; a canal above a bed's floor runs back into the pond.
         public static bool pondBedHollowEnabled = true;
+        /// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner by card 2026-10-16): the bottom-left cell readout shows the
+        /// liquid standing in the square, metres deep and litres (RM_Patch_MouseoverDepth). Off: vanilla's line only.</summary>
+        public static bool mouseoverDepthEnabled = true;
         // POND_ELEVATION_BUILD_LAKES_RUN_DEEP (owner by card 2026-10-15, "Build it today"; design §9): a lake's deep middle runs
         // deeper than 4 (one level per deepBedCellsPerLevel squares past the shore band, capped at deepBedMaxDepth), it drains
         // off its shallow rim first and refills to its exact shape; an inland lake up to drainableLakeMaxCells squares is
@@ -447,6 +450,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref refillWaitsForOccupants, "refillWaitsForOccupants", true);
             Scribe_Values.Look(ref dugBedLeavesPondEnabled, "dugBedLeavesPondEnabled", true);
             Scribe_Values.Look(ref pondBedHollowEnabled, "pondBedHollowEnabled", true);
+            Scribe_Values.Look(ref mouseoverDepthEnabled, "mouseoverDepthEnabled", true);
             Scribe_Values.Look(ref deepBedsEnabled, "deepBedsEnabled", true);
             Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 20f);
             Scribe_Values.Look(ref deepBedCellsPerLevel, "deepBedCellsPerLevel", 4f);
@@ -745,8 +749,14 @@ namespace RimMandrake.FlowWorks
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Flow Works excavation, flow and pit", ResetAllFields);
 
-            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled" }))
+            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled", "mouseoverDepthEnabled" }))
             {
+
+            list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
+                "The cell readout in the bottom-left corner adds the liquid standing in the square: how deep it is in metres "
+              + "(a level is half a metre) and how many litres it holds (a level is 1,000 litres, a deep square 4,000). Dug "
+              + "channels and pits show their fill; ponds and lakes show their bed, scaled by how full the pond is. Off: "
+              + "vanilla's line only.");
 
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
                 "The depth/fill engine: liquid pours into the deepest excavated cells first "
@@ -1334,8 +1344,8 @@ namespace RimMandrake.FlowWorks
               + "front visibly travels along it like a flood. Off: a level can be passed the whole run in one pulse, "
               + "which fills a dead-end channel from its far end first.");
             list.CheckboxLabeled("Water levels out by its surface", ref levelBySurfaceEnabled,
-                "On: each square holds units of water and they spread toward the lowest water surface, whatever depth "
-              + "each square was dug to, so a channel settles to within one unit everywhere and a draining channel "
+                "On: each square holds levels of water (half a metre, 1,000 litres each) and they spread toward the lowest water surface, whatever depth "
+              + "each square was dug to, so a channel settles to within one level everywhere and a draining channel "
               + "empties instead of leaving deep puddles. Off: water only runs into a deeper square or out of a "
               + "brim-full one, so partly filled squares of equal depth never even out.");
 
@@ -1407,16 +1417,16 @@ namespace RimMandrake.FlowWorks
 
             list.Gap();
             list.Label("Tank capacity: x" + tankCapacityMultiplier.ToString("F2") + "  (one tank square "
-                     + RM_Volume.TankCapacity(1, false, tankCapacityMultiplier) + " units, a tall square twice that, an extra-tall four times)");
+                     + RM_Volume.FormatUnits(RM_Volume.TankCapacity(1, false, tankCapacityMultiplier)) + ", a tall square twice that, an extra-tall four times)");
             tankCapacityMultiplier = list.Slider(tankCapacityMultiplier, 0.2f, 5f);
             list.Label("Scales every tank's capacity (at 1x a tank square holds one deep canal square, "
-                     + RM_Volume.UnitsPerSquare + " units: the 2x2 liquid tank 80, the tall tank and cargo tank 160, the extra-tall cargo tank 320). Any value but 1x "
+                     + RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare) + ": the 2x2 liquid tank 16 kL, the tall tank and cargo tank 32 kL, the extra-tall cargo tank 64 kL). Any value but 1x "
                      + "breaks one tank square = one canal square. Raise it for a colony that wants to stockpile.");
 
             list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
                 "A powered pump either draws liquid from the pond, lake or dug channel it reaches into a tank on its "
-              + "line (touching it or on a hose run to it), or pours that tank into a dug channel it reaches — one channel level (five tank "
-              + "units) every few seconds. A pond it draws from runs down like any other use. Off: pumps sit idle "
+              + "line (touching it or on a hose run to it), or pours that tank into a dug channel it reaches — one channel level (1,000 litres, "
+              + "a cubic metre) every few seconds. A pond it draws from runs down like any other use. Off: pumps sit idle "
               + "and draw no power.");
 
             // ══════════════════════════════════════════════════════════════

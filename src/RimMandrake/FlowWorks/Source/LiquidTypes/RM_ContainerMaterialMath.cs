@@ -34,7 +34,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     {
         public RM_ContainerMaterial material = RM_ContainerMaterial.Unknown;
 
-        /// <summary>Multiplies the liquid's units per container of this size (LiquidBottledForm.UnitsFor).</summary>
+        /// <summary>Multiplies the liquid's litres per container of this size (LiquidBottledForm.UnitsFor).</summary>
         public float capacityFactor = 1f;
 
         /// <summary>False = refuses hot liquids (LiquidDef.hot, e.g. boiling water).</summary>
@@ -104,7 +104,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         /// <summary>Units a container of this material holds: the liquid's base units for the size,
         /// times the factor, rounded half away from zero, never below 1 while the base is above 0.
-        /// A 1-unit bottle therefore only changes at a factor of 1.5 or more.</summary>
+        /// Units are decilitres, so a 1.5 L bottle (15) changes with any factor that moves it by 0.05 L or more.</summary>
         public static int ScaledUnits(int baseUnits, float capacityFactor)
         {
             if (baseUnits <= 0)

@@ -27,7 +27,7 @@
   </ThingDef>
 
   <!-- Crude: sun-driven still. Salt water and brine-free distilling at crude tier, and cools boiling/icy
-       water back to fresh. Daylight under open sky only. 30 input units/day PROVISIONAL. -->
+       water back to fresh. Daylight under open sky only. 6,000 input litres/day (the old 30 units) PROVISIONAL. -->
   <ThingDef ParentName="RM_LiquidConverterBase">
     <defName>RM_SunPanStill</defName>
     <label>sun-pan still</label>
@@ -56,7 +56,7 @@
           <li>distill</li>
           <li>cool</li>
         </processes>
-        <inputUnitsPerDay>30</inputUnitsPerDay>
+        <inputLitresPerDay>6000</inputLitresPerDay>
         <needsSun>true</needsSun>
       </li>
     </comps>
@@ -94,7 +94,7 @@
         <processes>
           <li>filter</li>
         </processes>
-        <inputUnitsPerDay>24</inputUnitsPerDay>
+        <inputLitresPerDay>4800</inputLitresPerDay>
       </li>
     </comps>
     <modExtensions>
@@ -151,7 +151,7 @@
           <li>cool</li>
           <li>filter</li>
         </processes>
-        <inputUnitsPerDay>120</inputUnitsPerDay>
+        <inputLitresPerDay>24000</inputLitresPerDay>
         <fuelPerDay>12</fuelPerDay>
       </li>
     </comps>

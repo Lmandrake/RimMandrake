@@ -8,16 +8,16 @@
   <!-- SUMP_GASLIGHT_1 piece 1, liquid side: tar + acid -> gas. FlowWorks' own fact is that the two react and
        the gas comes off; with nothing to catch it, it vents as a toxic cloud (a readable sign, never a silent
        loss). No patch yet points productThing at TheSump's gaslight fuel RM_TarGas (owed under SUMP_GASLIGHT_1).
-       PROVISIONAL: 2 tar + 1 acid water per batch, 1 product per batch, 40 gas when vented. -->
+       PROVISIONAL: 400 L tar + 200 L acid water per batch, 200 L (or 1 item) of product per batch, 40 gas when vented. -->
   <RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>
     <defName>RM_Reaction_TarAcid</defName>
     <label>tar and acid</label>
     <description>Tar worked with acid gives off a green, heavy gas — the same reaction that lifts tar off skin and stone.</description>
     <reactantA>RM_Liquid_Tar</reactantA>
     <reactantB>RM_Liquid_AcidWater</reactantB>
-    <unitsA>2</unitsA>
-    <unitsB>1</unitsB>
-    <productUnits>1</productUnits>
+    <litresA>400</litresA>
+    <litresB>200</litresB>
+    <productLitres>200</productLitres>
     <ventGas>ToxGas</ventGas>
     <ventGasAmount>40</ventGasAmount>
   </RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>

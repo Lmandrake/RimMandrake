@@ -24,9 +24,15 @@ namespace RimMandrake.FlowWorks.Machinery
 		public LiquidDef liquid;
 		public string storageCompTypeName = "PipeSystem.CompResourceStorage";
 		/// <summary>Tank units moved per rare tick (PROVISIONAL).</summary>
-		public int unitsPerRareTick = 10;
-		/// <summary>Pipe-net resource per tank unit (PROVISIONAL 1:1; VE chemfuel counts chemfuel items).</summary>
-		public float resourcePerUnit = 1f;
+		/// <summary>LITRES moved per rare tick (PROVISIONAL; 2,000 L = the old 10 units, LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS).</summary>
+		public float litresPerRareTick = 2000f;
+		/// <summary>Pipe-net resource per LITRE (PROVISIONAL 0.005 = the old 1 per 200 L unit; VE chemfuel counts chemfuel
+		/// items, and a Chemfuel item is 200 L in FlowWorks).</summary>
+		public float resourcePerLitre = 0.005f;
+
+		/// <summary>The same two numbers per tank unit (decilitre).</summary>
+		public int UnitsPerRareTick => RM_Volume.Units(litresPerRareTick);
+		public float ResourcePerUnit => resourcePerLitre / RM_Volume.UnitsPerLitre;
 
 		public CompProperties_LiquidPipeAdapter()
 		{
@@ -43,6 +49,8 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public RM_AdapterMode Mode => RM_AdapterRules.ModeOf(feedNet, shut);
 		public int moved;
+		/// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the volume model <see cref="moved"/> was saved under.</summary>
+		private int volumeModel = RM_Volume.CurrentModel;
 		/// <summary>L1 (§3.10 G5): the fractional remainder of resourcePerUnit across the boundary, in pipe-net resource, saved and
 		/// never rounded away (RM_LiquidTransfer.SettleSend / SettleTake keep tankUnits x per + stored + carry unchanged).</summary>
 		public float carry;
@@ -62,6 +70,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref feedNet, "RM_adapterFeedNet", true);
 			Scribe_Values.Look(ref shut, "RM_adapterShut", false);
 			Scribe_Values.Look(ref moved, "RM_adapterMoved", 0);
+			Scribe_Values.Look(ref volumeModel, "rmVolumeModel", RM_Volume.LegacyModel);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && volumeModel < RM_Volume.CurrentModel)
+			{
+				moved = RM_Volume.FromLegacyUnits(moved);   // 200 L units -> decilitres, once (carry is pipe-net resource: unchanged)
+				volumeModel = RM_Volume.CurrentModel;
+			}
 			Scribe_Values.Look(ref carry, "RM_adapterCarry", 0f);
 		}
 
@@ -131,10 +145,10 @@ namespace RimMandrake.FlowWorks.Machinery
 				FailClosed("no " + Props.storageCompTypeName + " with AmountStored/AmountCanAccept/AddResource/DrawResource");
 				return;
 			}
-			float per = Props.resourcePerUnit;
+			float per = Props.ResourcePerUnit;
 			if (float.IsNaN(per) || float.IsInfinity(per) || per <= 0f || float.IsNaN(carry) || float.IsInfinity(carry))
 			{
-				FailClosed("resourcePerUnit " + per + ", carry " + carry);
+				FailClosed("resourcePerLitre " + Props.resourcePerLitre + ", carry " + carry);
 				return;
 			}
 			bool broken = false;
@@ -148,7 +162,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					FailClosed("AmountCanAccept read " + room + " from " + storage.GetType().FullName);
 					return;
 				}
-				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt(room / per));
+				int units = Mathf.Min(Props.UnitsPerRareTick, Mathf.FloorToInt(room / per));
 				// L3 (rev 2 §3.2): drawn by the draw plan (emptiest tank first, split across tanks); a short accept is put back
 				// into the plan's LAST parts, so the first parts up to the units sent are the ones credited
 				int take = Mathf.Min(units, RM_LiquidNet.Available(parent, Props.liquid));
@@ -183,7 +197,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					FailClosed("AmountStored read " + stored + " from " + storage.GetType().FullName);
 					return;
 				}
-				int units = Mathf.Min(Props.unitsPerRareTick, Mathf.FloorToInt((stored + Mathf.Max(0f, carry)) / per));
+				int units = Mathf.Min(Props.UnitsPerRareTick, Mathf.FloorToInt((stored + Mathf.Max(0f, carry)) / per));
 				if (units > 0)
 				{
 					// L3: the room is the whole store's, and the units split across tanks by the fill plan
@@ -273,7 +287,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public override string CompInspectStringExtra()
 		{
-			return status + "\n" + "RMFlow_AdapterMoved".Translate(moved);
+			return status + "\n" + "RMFlow_AdapterMoved".Translate(RM_Volume.FormatUnits(moved));
 		}
 	}
 }

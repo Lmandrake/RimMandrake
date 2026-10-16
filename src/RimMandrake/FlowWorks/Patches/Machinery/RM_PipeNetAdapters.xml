@@ -55,8 +55,8 @@
             </li>
             <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidPipeAdapter">
               <liquid>RM_Liquid_Chemfuel</liquid>
-              <unitsPerRareTick>10</unitsPerRareTick>
-              <resourcePerUnit>1</resourcePerUnit>
+              <litresPerRareTick>2000</litresPerRareTick>
+              <resourcePerLitre>0.005</resourcePerLitre>
             </li>
           </comps>
           <modExtensions>
@@ -112,8 +112,8 @@
             </li>
             <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidPipeAdapter">
               <liquid>RM_Liquid_Propane</liquid>
-              <unitsPerRareTick>10</unitsPerRareTick>
-              <resourcePerUnit>1</resourcePerUnit>
+              <litresPerRareTick>2000</litresPerRareTick>
+              <resourcePerLitre>0.005</resourcePerLitre>
             </li>
           </comps>
           <modExtensions>

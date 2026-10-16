@@ -128,7 +128,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// hose end, a draining Dump tank, a stopped hose emptying). Null = the generic RM_Filth_LiquidSpill.</summary>
         public ThingDef spillFilth;
 
-        /// <summary>Units this liquid moves per container of a given size --
+        /// <summary>Tank units (decilitres) this liquid moves per container of a given size --
         /// a null-safe forward onto <see cref="bottled"/> so the tank half
         /// (LIQUID_BOTTLE_LOOP_1) can read it straight off a LiquidDef
         /// without a null check at every call site. 0 when this row ships no
@@ -209,14 +209,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
     /// <summary>The item form of a liquid -- LIQUID_BOTTLE_LOOP_1's fill/use/
     /// dirty/wash loop reads <see cref="bottle"/> and
-    /// <see cref="unitsPerBottle"/>. Of the two named special behaviors,
+    /// <see cref="litresPerBottle"/>. Of the two named special behaviors,
     /// revert-on-bottle lives here as data (read by RM_CompLiquidRevert), so it
     /// needs no per-liquid C#; rot-to-product (rotsTo/rotTicks) is
     /// UNIMPLEMENTED schema that nothing reads.</summary>
     public class LiquidBottledForm
     {
         public ThingDef bottle;
-        public int unitsPerBottle = 1;
+
+        /// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner 2026-10-16, "A barrel should not be able to hold the same as a
+        /// 1x1 solid tank"; "Count in Litres"): what one container of each size holds, in LITRES, before the container
+        /// material's capacityFactor. A bottle 1.5 L, a bucket 15 L, a barrel 208 L (a 55-gallon drum); a deep square is
+        /// 4,000 L. An adopted item form (Chemfuel) states its own size.</summary>
+        public float litresPerBottle = 1.5f;
 
         /// <summary>Bucket sibling -- LIQUID_BOTTLE_LOOP_1's third slice,
         /// "buckets = larger bottle, same chain". Optional: null on a row
@@ -224,9 +229,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// optionality at the row level -- only <see cref="bottled"/> itself
         /// being non-null is what ConfigErrors requires a bottle for).</summary>
         public ThingDef bucket;
-        public int unitsPerBucket = 5;
+        public float litresPerBucket = 15f;
 
-        /// <summary>Barrel sibling -- the ~25-unit bulk/trade sibling
+        /// <summary>Barrel sibling -- the 208 L (55-gallon drum) bulk/trade sibling
         /// (owner-ruled 2026-09-13, "very scavenger"). Optional. Ships with
         /// no &lt;ingestible&gt; block by generator convention
         /// (generate_liquid_suite.py) -- a barrel is the bulk TRADE good
@@ -236,7 +241,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// Building_LiquidTank plus RM_LiquidTankUtility's fill/drain
         /// WorkGiver pair (see LIQUID_BOTTLE_LOOP_1's own notes).</summary>
         public ThingDef barrel;
-        public int unitsPerBarrel = 25;
+        public float litresPerBarrel = 208f;
 
         /// <summary>Boiling/icy water bottled fresh reverts to this liquid
         /// after <see cref="revertTicks"/>.</summary>
@@ -265,7 +270,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
         }
 
-        /// <summary>Units this liquid moves per container of a given size --
+        /// <summary>Tank units (decilitres) this liquid moves per container of a given size --
         /// what LIQUID_BOTTLE_LOOP_1's tank half (fill/empty at
         /// Building_LiquidTank) reads to convert a bottle/bucket/barrel into
         /// a tank stock delta, the same generic-across-sizes idiom
@@ -275,11 +280,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             switch (size)
             {
                 case RM_ContainerSize.Bucket:
-                    return unitsPerBucket;
+                    return RM_Volume.Units(litresPerBucket);
                 case RM_ContainerSize.Barrel:
-                    return unitsPerBarrel;
+                    return RM_Volume.Units(litresPerBarrel);
                 default:
-                    return unitsPerBottle;
+                    return RM_Volume.Units(litresPerBottle);
             }
         }
 
@@ -289,17 +294,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 yield return "LiquidDef " + ownerDefName + ": bottled form is present but bottle is null.";
             }
-            if (unitsPerBottle < 1)
+            // a container holds at least one tank unit (0.1 L)
+            if (RM_Volume.Units(litresPerBottle) < 1)
             {
-                yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBottle must be >= 1.";
+                yield return "LiquidDef " + ownerDefName + ": bottled.litresPerBottle must be >= 0.1.";
             }
-            if (bucket != null && unitsPerBucket < 1)
+            if (bucket != null && RM_Volume.Units(litresPerBucket) < 1)
             {
-                yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBucket must be >= 1.";
+                yield return "LiquidDef " + ownerDefName + ": bottled.litresPerBucket must be >= 0.1.";
             }
-            if (barrel != null && unitsPerBarrel < 1)
+            if (barrel != null && RM_Volume.Units(litresPerBarrel) < 1)
             {
-                yield return "LiquidDef " + ownerDefName + ": bottled.unitsPerBarrel must be >= 1.";
+                yield return "LiquidDef " + ownerDefName + ": bottled.litresPerBarrel must be >= 0.1.";
             }
             if (revertsTo != null && revertTicks < 1)
             {
@@ -338,15 +344,25 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// machine's tier -- so a new liquid joins a machine by DATA.</summary>
         public string process;
 
-        /// <summary>Units of THIS liquid consumed per <see cref="outputUnits"/>
-        /// of product. PROVISIONAL ratios live in the generator table.</summary>
-        public int inputUnits = 1;
-        public int outputUnits = 1;
+        /// <summary>One batch: LITRES of THIS liquid consumed per <see cref="outputLitres"/> of product (LIQUID_LITRES_MIGRATE_
+        /// DRUMS_ARE_DRUMS; the old per-batch units × 200 L, so every ratio and rate is unchanged). PROVISIONAL ratios live in
+        /// the generator table.</summary>
+        public float inputLitres = 200f;
+        public float outputLitres = 200f;
+
+        /// <summary>Items made per batch when the product is an item (<see cref="product"/> null, <see cref="productThing"/>
+        /// set).</summary>
+        public int productCount = 1;
 
         /// <summary>Item fallback when no connected tank takes the product
-        /// liquid (tar → vanilla Chemfuel): outputUnits of this ThingDef are
-        /// dropped beside the machine instead.</summary>
+        /// liquid: <see cref="productCount"/> of this ThingDef per batch, dropped beside the machine instead.</summary>
         public ThingDef productThing;
+
+        /// <summary>Tank units (decilitres) one batch consumes.</summary>
+        public int InputUnits => RM_Volume.Units(inputLitres);
+
+        /// <summary>One batch's output: tank units of the product liquid, or items when the product is an item.</summary>
+        public int OutputUnits => product != null ? RM_Volume.Units(outputLitres) : productCount;
     }
 
     public class LiquidTradeSpec

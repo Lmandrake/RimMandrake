@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// <summary>
 	/// Liquid networks L7 (rev 2 §3.5, §3.7): the world side of an Outflow end, and the spill. A level of a liquid with a channel
 	/// form goes into an excavated cell at the end or the best one within 1.5 cells (RM_PumpMath.PickPour, A14); dry open ground
-	/// takes any liquid as a spill: its filth (LiquidDef.spillFilth, else RM_Filth_LiquidSpill), one per unitsPerFilth units,
+	/// takes any liquid as a spill: its filth (LiquidDef.spillFilth, else RM_Filth_LiquidSpill), one per litresPerFilth litres,
 	/// cleanable by colonists in the home area. A full or foreign channel, or a wall, is BLOCKED and moves nothing. Filth is a
 	/// world record of the spill, never converted back into liquid units.
 	/// </summary>
@@ -187,7 +187,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			SpilledUnits += units;
-			int n = RM_LiquidNetKernel.FilthCount(units, RM_MachinerySettings.unitsPerFilth);
+			int n = RM_LiquidNetKernel.FilthCount(units, RM_MachinerySettings.UnitsPerFilth);
 			ThingDef own = liquid?.spillFilth ?? RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill;
 			for (int i = 0; i < n; i++)
 			{

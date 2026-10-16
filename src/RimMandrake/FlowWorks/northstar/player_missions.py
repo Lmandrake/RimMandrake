@@ -639,7 +639,16 @@ def cmd_note(a, spec):
     return 0
 
 
-UNITS_RX = re.compile(r"\((\d+(?:\.\d+)?) / (\d+(?:\.\d+)?) units\)")
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the inspect line is "Holding: X (<a> / <b>)" with a, b = RM_Volume.FormatLitres
+# ("1.5 L", "208 L", "4 kL", "12.5 kL"); the tank unit is a DECILITRE (UnitsPerLitre 10). The word "units" is gone.
+UNITS_PER_LITRE = 10
+LEGACY_UNIT_SCALE = 2000      # one model-2 unit (a 200 L drum) = 2000 decilitres; spec min_units is still in drums
+UNITS_RX = re.compile(r"\((\d+(?:\.\d+)?) (kL|L) / (\d+(?:\.\d+)?) (?:kL|L)\)")
+
+
+def litres_to_units(num, suffix):
+    """'16', 'kL' -> 16000 L -> 160000 tank units (decilitres)."""
+    return float(num) * (1000.0 if suffix == "kL" else 1.0) * UNITS_PER_LITRE
 THING_ID_RX = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*?\d+)\b")
 
 
@@ -651,7 +660,7 @@ def read_dest_tanks(B, tank_def, dest):
     (None, False) if unanswered. `complete` is False when list_things hit its limit (isCompleteList false, or a
     full page on a reply without that field) - some tanks were then never listed at all.
 
-    Units come from the only player-visible channel, the inspect line "Holding: X (a / b units)", read by clicking
+    Units (decilitres) come from the only player-visible channel, the inspect line "Holding: X (a / b)" in litres, read by clicking
     the tank's cell. The read is bound to the tank's ThingID: if the selection names other ThingIDs and not this
     one, the units belong to something else and the read is discarded (units None)."""
     lt = B.call("jawa/list_things", {"defName": tank_def, "rect": rect_str(dest), "limit": TANK_LIST_LIMIT})
@@ -681,7 +690,7 @@ def read_dest_tanks(B, tank_def, dest):
         if named and tid not in named:
             units, bound = None, "selection names %s, not %s" % (named[:3], tid)
         else:
-            units = float(m.group(1)) if m else None
+            units = litres_to_units(m.group(1), m.group(2)) if m else None
             bound = "thingId" if tid in named else "cell"
         out.append({"id": tid, "pos": [int(x), int(z)], "units": units, "boundBy": bound})
     return out, complete
@@ -793,7 +802,7 @@ def goal_check(B, run):
                 rows_.append(r)
             ev["destRect"] = rect_str(dest)
             ev["destTanks"] = rows_
-            best = [r for r in rows_ if r["delta"] is not None and r["delta"] >= g["min_units"]]
+            best = [r for r in rows_ if r["delta"] is not None and r["delta"] >= g["min_units"] * LEGACY_UNIT_SCALE]   # min_units is in 200 L drums (spec unchanged)
             ev["destTank"] = best[0]["id"] if best else None
             if reads is None:
                 ev["why"] = "list_things answered without things"
@@ -813,7 +822,7 @@ def goal_check(B, run):
                         "; an unlisted tank could hold the delta")
                     return "UNMEASURED", ev
             if not best and any(r["delta"] is None for r in rows_):
-                ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... units')"
+                ev["why"] = "a destination tank's units or baseline was not read (inspect 'Holding: ... (a / b)' litres)"
                 return "UNMEASURED", ev
             if gone:
                 ev["why"] = "colonists from the start roster are gone (dead and removed, or off the map): %s" % gone[:5]

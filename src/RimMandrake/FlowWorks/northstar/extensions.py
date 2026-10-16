@@ -1801,14 +1801,19 @@ def toggle_bottle_dirty(t):
                         "a drink with the dirty stage OFF left no clean empty: %s -> %s" % (c0, c1))
 
 
+UNITS_PER_LITRE = 10                      # RM_Volume.UnitsPerLitre: the tank unit is a decilitre
+UNITS_PER_LEVEL = 1000 * UNITS_PER_LITRE  # RM_Volume.LitresPerLevel x UnitsPerLitre (a channel level = 1 kL = 10,000 units)
+
+
 def _tank_units(t, x, z):
-    """Units held by the RM_LiquidTank at (x,z), read from its inspect line ("Holding: <liquid> (N / C units)",
-    Languages/English/Keyed/LiquidTank_Keys.xml); 0 for "Empty"; None when no tank answers."""
+    """Tank units (decilitres) held by the RM_LiquidTank at (x,z), read from its inspect line ("Holding: <liquid> (a / b)",
+    a and b in litres via RM_Volume.FormatLitres: "15 L", "12.5 kL"; Languages/English/Keyed/LiquidTank_Keys.xml); 0 for
+    "Empty"; None when no tank answers. LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the word "units" is gone from the line."""
     import re
     txt = _tank_text(t, x, z)
-    m = re.search(r"\((\d+) / \d+ units\)", txt)
+    m = re.search(r"\((\d+(?:\.\d+)?) (kL|L) / \d+(?:\.\d+)? (?:kL|L)\)", txt)
     if m:
-        return int(m.group(1))
+        return int(round(float(m.group(1)) * (1000 if m.group(2) == "kL" else 1) * UNITS_PER_LITRE))
     return 0 if "Empty" in txt else None
 
 
@@ -1856,8 +1861,9 @@ def _watch_tank(t, tank, ticks, done=None):
 
 
 WATER_LIQUID = "RM_Liquid_FreshWater"
-# RM_LiquidTank (2x2) holds 80 units (RM_Volume.TankCapacity); staging more makes ProofTank REFUSE (live 2026-10-13: staged 100).
-TANK_STAGE_UNITS = 60
+# RM_LiquidTank (2x2) holds 160,000 units = 16 kL (RM_Volume.TankCapacity); staging more makes ProofTank REFUSE.
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: was 60 (old 200 L drums) = 12 kL = 120,000 decilitres.
+TANK_STAGE_UNITS = 120000
 
 
 @suite.chain("toggle_tank_loop")
@@ -1868,7 +1874,7 @@ def toggle_tank_loop(t):
     pump's job (liquid_pump chain); the old row asserted that and FAILed every live run (FLOWWORKS_TANK_LOOP_ROW_WRONG_1).
     Since the 2026-10-11 bottle-loop fix no tank both takes bottles unasked and gives them back (RM_TankBottleRules), so
     the two halves are staged apart, bottleLoopEnabled OFF throughout so the terrain fill giver cannot win:
-      draw-out: a Store tank pre-filled with 60 (TANK_STAGE_UNITS) fresh water + one RM_BottleEmpty -> units FALL (ON); stay 60 (OFF).
+      draw-out: a Store tank pre-filled with 12 kL (TANK_STAGE_UNITS = 120,000 units) fresh water + one RM_BottleEmpty -> units FALL (ON); stay 12 kL (OFF).
       pour-in : an Empty Fill-mode tank + one RM_Bottle_FreshWater -> units RISE (ON); stay empty (OFF).
     Sampled every 125 ticks, 3000 ticks a window: a pour or a fill is a walk plus a toil."""
     with _setting(t, "bottleLoopEnabled", False):
@@ -1892,7 +1898,7 @@ def toggle_tank_loop(t):
                 _, _, tank2 = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
                 seen2 = _watch_tank(t, tank2, 3000)
                 if t._guard():
-                    # an unanswered tank (seen == []) is UNMEASURED, never a pass: the OFF side must READ the staged 60 / the empty tank
+                    # an unanswered tank (seen == []) is UNMEASURED, never a pass: the OFF side must READ the staged 12 kL / the empty tank
                     _expect(bool(seen) and bool(seen2), "no RM_LiquidTank answered inspect_string (Store %s, Fill %s)" % (seen, seen2))
                     _expect(seen == [TANK_STAGE_UNITS], "Store tank drawn down with tankLoopEnabled OFF: units %s" % seen)
                     _expect(not any(seen2), "Fill tank took a bottle with tankLoopEnabled OFF: units %s" % seen2)
@@ -2592,7 +2598,7 @@ def pit_prison_room(t):
 @suite.chain("liquid_pump")
 def liquid_pump(t):
     """FLOWWORKS_BUILD_PROGRAM_1 Phase 8 slice 1 (f3ab74a1b): a powered pump between a 3-cell D=2 water channel
-    (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 5 units, and in pour mode returns
+    (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 10,000 units (1 kL, was 5 drums), and in pour mode returns
     them. Unpowered it does nothing; with liquidPumpEnabled off it does nothing even powered."""
     x0, z0 = _prep_plot(t, "D")
     ch = _line(x0 + 4, z0 + 6, 3)
@@ -2626,8 +2632,8 @@ def liquid_pump(t):
             tk = k.get("tank", "none")
             _expect(k.get("running") == "True" and moved >= 2, "powered pump not drawing: %s" % k)
             _expect(lv == 6 - moved, "channel levels %s, expected 6 - moved %d" % (lv, moved))
-            _expect(":" in tk and not tk.startswith("empty") and int(tk.split(":")[1]) == 5 * moved,
-                    "tank %s after %d draws (5 units/level)" % (tk, moved))
+            _expect(":" in tk and not tk.startswith("empty") and int(tk.split(":")[1]) == UNITS_PER_LEVEL * moved,
+                    "tank %s after %d draws (10000 units/level)" % (tk, moved))
     with t.component("pump_off_idles", toggle="liquidPumpEnabled"):
         with _setting(t, "liquidPumpEnabled", False):
             m0 = rd().get("moved")

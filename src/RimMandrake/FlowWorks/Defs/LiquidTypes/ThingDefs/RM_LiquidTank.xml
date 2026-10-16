@@ -71,7 +71,7 @@
   </ThingDef>
 
   <!-- TANK_TALL_BUILD_TWICE_THE_DRINK (owner 2026-10-13: "Make tall tanks too that double the storage"). Same 2x2 footprint,
-       tall=true => 160 units (Building_LiquidTank.Capacity doubles a tall tank). Cost ~1.9x steel / 1.7x components, work 1.8x:
+       tall=true => 32 kL (Building_LiquidTank.Capacity doubles a tall tank). Cost ~1.9x steel / 1.7x components, work 1.8x:
        the hull stands upright at ~1.7x height, so material roughly doubles with a small saving on shared frame. Art: four looks,
        art_source/TankTall/v3, 512x768 for drawSize (2,3). -->
   <ThingDef ParentName="BuildingBase">
@@ -119,7 +119,7 @@
     </comps>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
-        <tall>true</tall>   <!-- 2x2 tall = 160 units -->
+        <tall>true</tall>   <!-- 2x2 tall = 32 kL -->
       </li>
     </modExtensions>
   </ThingDef>

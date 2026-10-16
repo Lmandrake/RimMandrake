@@ -677,7 +677,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>Once per pump cycle (RM_PumpMath.CycleTicks): every component holding a Fill or Empty tank settles once
 		/// (RM_LiquidNetKernel.SettlePlan, selftested): Empty tanks send to Fill then Store tanks, Fill tanks pull from Empty then
-		/// Store tanks, tankUnitsPerCycle each, from the stock present at the start. Owner ruling #9 ("a tank would pass liquid on
+		/// Store tanks, TankUnitsPerCycle each, from the stock present at the start. Owner ruling #9 ("a tank would pass liquid on
 		/// to a hose screwed into it, without a pump needed") is met by these jobs: one click on the tank. Off in Mod Settings
 		/// (tankModesEnabled): every tank is Store, nothing moves tank to tank. Dump tanks drain through outflow ends (L7).</summary>
 		public static void SettleTick(Map map)
@@ -711,7 +711,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			var sentById = new Dictionary<int, int>();
 			var recvById = new Dictionary<int, int>();
 			int cycle = Find.TickManager.TicksGame / RM_PumpMath.CycleTicks;
-			int per = System.Math.Max(1, RM_HoseSettings.tankUnitsPerCycle);
+			int per = System.Math.Max(1, RM_HoseSettings.TankUnitsPerCycle);
 			foreach (Building_LiquidTank mover in movers)
 			{
 				foreach (RM_NetComponent c in comps.ComponentsOf(mover))
@@ -752,7 +752,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>Settle step 3 (rev 2 §3.2, §3.5, build step L7): every Dump tank drains slowly, with no pump, out of the Outflow
 		/// ends on its networks (reel-id order; an end takes one drain per settle): a whole level into a channel cell that can take
-		/// it, or up to dumpUnitsPerCycle onto dry ground as a cleanable spill (RM_LiquidNetKernel.DumpTake). A blocked end (full or
+		/// it, or up to DumpUnitsPerCycle onto dry ground as a cleanable spill (RM_LiquidNetKernel.DumpTake). A blocked end (full or
 		/// foreign channel, wall, water) moves nothing. With no Outflow end a Dump tank waits.</summary>
 		private static void DumpDrain(Map map, RM_NetComponents comps, List<Building_LiquidTank> dumps)
 		{
@@ -765,7 +765,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			int level = RM_PumpMath.TankUnitsPerLevel;
 			foreach (Building_LiquidTank tank in dumps.OrderBy(t => t.thingIDNumber))
 			{
-				int left = System.Math.Max(0, RM_HoseSettings.dumpUnitsPerCycle);
+				int left = System.Math.Max(0, RM_HoseSettings.DumpUnitsPerCycle);
 				foreach (RM_NetComponent c in comps.ComponentsOf(tank))
 				{
 					if (c.Refused)

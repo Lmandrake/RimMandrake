@@ -71,7 +71,7 @@
           <li>refine</li>
           <li>detox</li>
         </processes>
-        <inputUnitsPerDay>80</inputUnitsPerDay>
+        <inputLitresPerDay>16000</inputLitresPerDay>
         <fuelPerDay>1</fuelPerDay>
       </li>
     </comps>

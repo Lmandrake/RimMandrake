@@ -71,7 +71,7 @@
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->
   <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
   <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>
-  <RM_SubsurfaceYieldReport>Subsurface: {0}, {1} fill-units remaining.</RM_SubsurfaceYieldReport>
+  <RM_SubsurfaceYieldReport>Subsurface: {0}, {1} remaining.</RM_SubsurfaceYieldReport>
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
   <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
   <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>

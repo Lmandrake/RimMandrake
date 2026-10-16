@@ -8,8 +8,8 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 {
 	/// <summary>
 	/// Two liquids that react when mixed (SUMP_GASLIGHT_1: "tar + acid → green gas"). Data, not code: a kit
-	/// adds a row or patches a product onto one. Per batch the vat eats <see cref="unitsA"/> of A and
-	/// <see cref="unitsB"/> of B and makes, in order of preference:
+	/// adds a row or patches a product onto one. Per batch the vat eats <see cref="litresA"/> of A and
+	/// <see cref="litresB"/> of B (LITRES) and makes, in order of preference:
 	///   productLiquid — into a tank on the vat's net that takes it;
 	///   productThing  — dropped beside the vat as items (the Sump patches RM_TarGas here);
 	///   else the reaction VENTS: <see cref="ventGas"/> rises from the vat (a readable sign, never a silent loss).
@@ -20,11 +20,20 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 	{
 		public LiquidDef reactantA;
 		public LiquidDef reactantB;
-		public int unitsA = 1;
-		public int unitsB = 1;
+		/// <summary>One batch in LITRES (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the old per-batch units × 200 L).</summary>
+		public float litresA = 200f;
+		public float litresB = 200f;
 		public LiquidDef productLiquid;
 		public ThingDef productThing;
-		public int productUnits = 1;
+		/// <summary>Product liquid per batch, litres.</summary>
+		public float productLitres = 200f;
+		/// <summary>Product items per batch when no tank takes the product (productThing).</summary>
+		public int productCount = 1;
+
+		/// <summary>The batch in tank units (decilitres).</summary>
+		public int UnitsA => RM_Volume.Units(litresA);
+		public int UnitsB => RM_Volume.Units(litresB);
+		public int ProductUnits => RM_Volume.Units(productLitres);
 		public GasType ventGas = GasType.ToxGas;
 		public int ventGasAmount = 40;
 		public bool ventAlways;
@@ -43,9 +52,9 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				yield return defName + ": reactantA and reactantB are the same liquid.";
 			}
-			if (unitsA < 1 || unitsB < 1 || productUnits < 1)
+			if (UnitsA < 1 || UnitsB < 1 || ProductUnits < 1 || productCount < 1)
 			{
-				yield return defName + ": unitsA, unitsB and productUnits must be at least 1.";
+				yield return defName + ": litresA, litresB and productLitres must be at least 0.1, productCount at least 1.";
 			}
 		}
 
@@ -159,7 +168,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
 				object rotKey = RM_ConsumerRotation.Key(r.reactantA, tanks.Count > 0 ? tanks.Min(t => t.thingIDNumber) : 0);   // C1-F4: per store
 				int haveA = RM_LiquidNet.Available(parent, r.reactantA), haveB = RM_LiquidNet.Available(parent, r.reactantB);
-				if (haveA < r.unitsA || haveB < r.unitsB)
+				if (haveA < r.UnitsA || haveB < r.UnitsB)
 				{
 					if (haveA > 0 && haveB > 0)
 					{
@@ -168,8 +177,8 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					continue;
 				}
 				int roomP = r.productLiquid != null ? RM_LiquidNet.Room(parent, r.productLiquid) : -1;
-				bool toTank = r.productLiquid != null && roomP >= r.productUnits;
-				int n = RM_KitMath.ReactionBatches(accrued, r.unitsA, r.unitsB, haveA, haveB, r.productUnits, toTank ? roomP : -1);
+				bool toTank = r.productLiquid != null && roomP >= r.ProductUnits;
+				int n = RM_KitMath.ReactionBatches(accrued, r.UnitsA, r.UnitsB, haveA, haveB, r.ProductUnits, toTank ? roomP : -1);
 				if (n > 0 && !rotation.MayDraw(rotKey, parent.thingIDNumber, now))
 				{
 					rotation.Starved(rotKey, parent.thingIDNumber, now);
@@ -180,9 +189,9 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
 					return;
 				}
-				List<(Building_LiquidTank tank, int units)> pa = RM_LiquidNet.DrawPlan(parent, r.reactantA, n * r.unitsA);
-				List<(Building_LiquidTank tank, int units)> pb = RM_LiquidNet.DrawPlan(parent, r.reactantB, n * r.unitsB);
-				List<(Building_LiquidTank tank, int units)> pp = toTank ? RM_LiquidNet.FillPlan(parent, r.productLiquid, n * r.productUnits) : null;
+				List<(Building_LiquidTank tank, int units)> pa = RM_LiquidNet.DrawPlan(parent, r.reactantA, n * r.UnitsA);
+				List<(Building_LiquidTank tank, int units)> pb = RM_LiquidNet.DrawPlan(parent, r.reactantB, n * r.UnitsB);
+				List<(Building_LiquidTank tank, int units)> pp = toTank ? RM_LiquidNet.FillPlan(parent, r.productLiquid, n * r.ProductUnits) : null;
 				if (pa == null || pb == null || (toTank && pp == null))
 				{
 					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
@@ -191,9 +200,9 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				// L1 (§4): both reactants and the product are one committed move (in batches). A and B are removed first and put
 				// back together if the product tanks refuse; with no product tank the product is dropped as items, else it vents.
 				RM_TransferLeg dest = pp != null
-					? RM_TransferLeg.Split(pp.Count, i => pp[i].units, (i, k) => pp[i].tank.CanAccept(r.productLiquid, k), (i, k) => pp[i].tank.TryAddLiquid(r.productLiquid, k), (i, k) => pp[i].tank.TryRemoveLiquid(k), r.productUnits)
-					: RM_TransferLeg.Sink(k => { if (r.productThing != null) Drop(r.productThing, k * r.productUnits); });
-				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Split(pa.Count, i => pa[i].units, (i, k) => pa[i].tank.CanProvide(k), (i, k) => pa[i].tank.TryRemoveLiquid(k), (i, k) => pa[i].tank.TryAddLiquid(r.reactantA, k), r.unitsA), RM_TransferLeg.Split(pb.Count, i => pb[i].units, (i, k) => pb[i].tank.CanProvide(k), (i, k) => pb[i].tank.TryRemoveLiquid(k), (i, k) => pb[i].tank.TryAddLiquid(r.reactantB, k), r.unitsB)), dest, out _) == n)
+					? RM_TransferLeg.Split(pp.Count, i => pp[i].units, (i, k) => pp[i].tank.CanAccept(r.productLiquid, k), (i, k) => pp[i].tank.TryAddLiquid(r.productLiquid, k), (i, k) => pp[i].tank.TryRemoveLiquid(k), r.ProductUnits)
+					: RM_TransferLeg.Sink(k => { if (r.productThing != null) Drop(r.productThing, k * r.productCount); });
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.All(RM_TransferLeg.Split(pa.Count, i => pa[i].units, (i, k) => pa[i].tank.CanProvide(k), (i, k) => pa[i].tank.TryRemoveLiquid(k), (i, k) => pa[i].tank.TryAddLiquid(r.reactantA, k), r.UnitsA), RM_TransferLeg.Split(pb.Count, i => pb[i].units, (i, k) => pb[i].tank.CanProvide(k), (i, k) => pb[i].tank.TryRemoveLiquid(k), (i, k) => pb[i].tank.TryAddLiquid(r.reactantB, k), r.UnitsB)), dest, out _) == n)
 				{
 					foreach ((Building_LiquidTank tank, int units) p in pa) RM_LiquidNet.Credit(parent, p.tank, r.reactantA, p.units, RM_ConversionMath.RareTick);   // credit site: reactor A
 					foreach ((Building_LiquidTank tank, int units) p in pb) RM_LiquidNet.Credit(parent, p.tank, r.reactantB, p.units, RM_ConversionMath.RareTick);   // credit site: reactor B

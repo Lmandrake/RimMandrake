@@ -86,7 +86,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				Thing tank = SpawnBeside(Props.tankDef, map);
 				if (tank is Building_LiquidTank t && liquid != null)
 				{
-					t.TryAddLiquid(liquid, System.Math.Max(5, (int)(t.Capacity * Props.stockFraction.RandomInRange)));
+					t.TryAddLiquid(liquid, System.Math.Max(RM_Volume.UnitsPerLevel, (int)(t.Capacity * Props.stockFraction.RandomInRange)));   // at least one level
 				}
 			}
 			if (Props.pumpDef != null)

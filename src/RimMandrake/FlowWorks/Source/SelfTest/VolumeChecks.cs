@@ -18,8 +18,8 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             Case("Volume_one_square_is_one_square", () =>
             {
-                Assert(RM_Volume.LevelsPerSquare == 4 && RM_Volume.UnitsPerLevel == 5 && RM_Volume.UnitsPerSquare == 20,
-                    "one deep notch = 4 levels = 20 units (owner 2026-10-12)");
+                Assert(RM_Volume.LevelsPerSquare == 4 && RM_Volume.UnitsPerLevel == 10000 && RM_Volume.UnitsPerSquare == 40000,
+                    "one deep notch = 4 levels = 4,000 L = 40,000 decilitre units (owner 2026-10-12, 2026-10-16)");
                 Assert(RM_PumpMath.TankUnitsPerLevel == RM_Volume.UnitsPerLevel, "the pump's level is the yardstick's level");
                 // deep pond square, in levels -> units
                 int deepBed = RM_Volume.BedLevels(true, 300);
@@ -34,8 +34,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_Volume.TankCapacity(a, false, 1f) == a * RM_Volume.UnitsPerSquare, x + "x" + z + " tank = " + a + " squares");
                     Assert(RM_Volume.TankCapacity(a, true, 1f) == 2 * a * RM_Volume.UnitsPerSquare, x + "x" + z + " tall tank = twice");
                 }
-                Assert(RM_Volume.TankCapacity(4, false, 1f) == 80 && RM_Volume.TankCapacity(4, true, 1f) == 160, "2x2 = 80, tall 160 (§8.2)");
-                Assert(RM_Volume.TankCapacity(4, 4f, 1f) == 320 && RM_Volume.TankCapacity(4, 2f, 1f) == RM_Volume.TankCapacity(4, true, 1f), "2x2 extra-tall 320, factor 2 = tall (TANK_TALL)");
+                Assert(RM_Volume.TankCapacity(4, false, 1f) == 160000 && RM_Volume.TankCapacity(4, true, 1f) == 320000, "2x2 = 16 kL, tall 32 kL (§8.2)");
+                Assert(RM_Volume.TankCapacity(4, 4f, 1f) == 640000 && RM_Volume.TankCapacity(4, 2f, 1f) == RM_Volume.TankCapacity(4, true, 1f), "2x2 extra-tall 64 kL, factor 2 = tall (TANK_TALL)");
                 Assert(RM_Volume.TankCapacity(1, false, 0.01f) == RM_Volume.UnitsPerLevel, "never below one level at the lowest slider");
             });
 
@@ -63,6 +63,57 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_Volume.Overfull(250, 80) && !RM_Volume.Overfull(80, 80), "250 in an 80 tank is overfull; 80 is not");
             });
 
+            Case("Volume_litres_model_3", () =>
+            {
+                // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner 2026-10-16): a level is 1,000 L, half a metre; the unit is a decilitre
+                Assert(RM_Volume.LitresPerLevel == 1000 && Math.Abs(RM_Volume.MetresPerLevel - 0.5f) < 1e-6 && RM_Volume.CurrentModel == 3,
+                    "a level is 1,000 L and 0.5 m; the save model is 3");
+                Assert(RM_Volume.Units(1.5f) == 15 && RM_Volume.Units(15f) == 150 && RM_Volume.Units(208f) == 2080, "bottle 15, bucket 150, barrel 2,080 units");
+                Assert(Math.Abs(RM_Volume.Litres(2080) - 208f) < 1e-4, "units back to litres");
+                // the old unit was a fifth of a level: 200 L, so one old unit is 2,000 new ones, and a level converts to a level
+                Assert(RM_Volume.LegacyUnitScale == 2000 && RM_Volume.LegacyUnitLitres == 200, "one model-2 unit = 200 L = 2,000 units");
+                Assert(RM_Volume.FromLegacyUnits(RM_Volume.LegacyUnitsPerLevel) == RM_Volume.UnitsPerLevel, "a saved level (5 old units) loads as a level");
+                Assert(RM_Volume.FromLegacyUnits(80) == RM_Volume.TankCapacity(4, false, 1f), "a full old 2x2 tank (80) loads full (16 kL)");
+                Assert(RM_Volume.FromLegacyUnits(int.MaxValue / 2) == int.MaxValue, "the conversion clamps, never wraps");
+                // mutation probe: a converted stock that skipped the scale would read 2,000x too small
+                Assert(RM_Volume.FromLegacyUnits(25) != 25, "mutation probe: the migration must change the number");
+                // what players read
+                Assert(RM_Volume.FormatLitres(1.5) == "1.5 L" && RM_Volume.FormatLitres(15) == "15 L" && RM_Volume.FormatLitres(208) == "208 L",
+                    "container sizes read 1.5 L / 15 L / 208 L: " + RM_Volume.FormatLitres(1.5) + " " + RM_Volume.FormatLitres(208));
+                Assert(RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare) == "4 kL" && RM_Volume.FormatUnits(160000) == "16 kL" && RM_Volume.FormatLitres(12500) == "12.5 kL",
+                    "squares and tanks read in kL: " + RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare));
+                Assert(RM_Volume.DepthReadout(4, 4000) == "2 m deep, 4 kL" && RM_Volume.DepthReadout(3, 3000) == "1.5 m deep, 3 kL"
+                    && RM_Volume.DepthReadout(1, 1000) == "0.5 m deep, 1 kL", "mouseover: " + RM_Volume.DepthReadout(3, 3000));
+                // a bottle from a deep pond square barely dents it (C2-F2 debit in fill-units: 15 units of a 40,000-unit square)
+                float bottleStock = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.BodyStockFor(15, 1f, RM_Volume.UnitsPerLevel);
+                Assert(Math.Abs(bottleStock - 0.0015f) < 1e-7, "a bottle costs 0.0015 of a level, got " + bottleStock);
+                float barrelStock = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.BodyStockFor(2080, 1f, RM_Volume.UnitsPerLevel);
+                Assert(barrelStock < RM_Volume.LevelsPerSquare / 10f, "a barrel takes about a twentieth of a deep square, got " + barrelStock + " levels");
+            });
+
+            Case("Volume_litres_production_wiring", () =>
+            {
+                // every holder of tank units converts a model-2 save once, on load, behind its own marker
+                foreach (string f in new[] { Path.Combine("LiquidTypes", "Building_LiquidTank.cs"), Path.Combine("Hose", "CompHoseReel.cs"),
+                                             Path.Combine("Machinery", "CompLiquidConverter.cs"), Path.Combine("Machinery", "CompLiquidPipeAdapter.cs") })
+                {
+                    string src = RiverSwitchFlipChecks.Src(f);
+                    RiverSwitchFlipChecks.Has(src, @"Scribe_Values\.Look\(ref volumeModel, ""rmVolumeModel"", RM_Volume\.LegacyModel\);", f + ": an unmarked save loads as model 2");
+                    RiverSwitchFlipChecks.Has(src, @"if \(Scribe\.mode == LoadSaveMode\.LoadingVars && volumeModel < RM_Volume\.CurrentModel\)", f + ": converted once on load");
+                    RiverSwitchFlipChecks.Has(src, @"RM_Volume\.FromLegacyUnits\(", f + ": by the one conversion");
+                }
+                string hs = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
+                RiverSwitchFlipChecks.Has(hs, @"tankLitresPerCycle = tu \* RM_Volume\.LegacyUnitLitres;", "old tank-to-tank setting read once into litres");
+                RiverSwitchFlipChecks.Has(hs, @"dumpLitresPerCycle = du \* RM_Volume\.LegacyUnitLitres;", "old dump setting read once into litres");
+                string ms = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_MachinerySettings.cs"));
+                RiverSwitchFlipChecks.Has(ms, @"litresPerFilth = oldUnits \* RM_Volume\.LegacyUnitLitres;", "old filth setting read once into litres");
+                string mo = RiverSwitchFlipChecks.Src("RM_MouseoverDepth.cs");
+                RiverSwitchFlipChecks.Has(mo, @"\[HarmonyPatch\(typeof\(MouseoverReadout\), nameof\(MouseoverReadout\.MouseoverReadoutOnGUI\)\)\]", "the cell readout is patched");
+                RiverSwitchFlipChecks.Has(mo, @"cachedTerrain\(__instance\) = null;", "a dry square hands the line back to vanilla");
+                string tk = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidTank.cs"));
+                RiverSwitchFlipChecks.Has(tk, @"RM_Volume\.FormatUnits\(storedUnits\), RM_Volume\.FormatUnits\(Capacity\)", "the tank says litres");
+            });
+
             Case("Volume_production_wiring", () =>
             {
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
@@ -72,7 +123,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!Regex.IsMatch(st, @"canalCellsPerSourceCell"), "the 5:1 budget is gone from the stock model");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Values\.Look\(ref volumeModel, ""RM_volumeModel"", 1\);", "an old save loads as model 1");
-                RiverSwitchFlipChecks.Has(ex, @"if \(volumeModel < RM_Volume\.CurrentModel\) \{ int rescaled = stock\.MigrateVolumeModel\(this\);", "migrated once in FinalizeInit");
+                RiverSwitchFlipChecks.Has(ex, @"if \(volumeModel < RM_Volume\.CurrentModel\) \{ int rescaled = volumeModel < 2 \? stock\.MigrateVolumeModel\(this\) : 0;", "ponds migrated once in FinalizeInit, model 1 only");
                 RiverSwitchFlipChecks.Has(ex, @"return RM_Volume\.BedLevels\(t\.passability == Traversability\.Impassable, t\.pathCost\);", "bed depth from the water terrain");
                 string tk = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidTank.cs"));
                 RiverSwitchFlipChecks.Has(tk, @"public int Capacity => RM_Volume\.TankCapacity\(def\.size\.x \* def\.size\.z,", "a tank is sized by its footprint");

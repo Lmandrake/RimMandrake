@@ -13,10 +13,11 @@ Scene (plot coords from --origin, default 180,40; the plot is 14 x 14 and is cle
   (2x2) at (3,10) on that pipe net. Same layout as fw_live_checks L2b, with a natural pond where L2b had a dug channel.
 
 Phase A (draw), refill OFF: read the tank units u0 and the body stock s0 at one tick, run --cycles pump cycles (250 ticks
-each), read u1 / s1 at one tick.  Unit bridge: one world level = RM_PumpMath.TankUnitsPerLevel = 5 tank units, and a level
-debits volumePerTile = 1 stock unit (liquid_network_semantics_design_2026-10-11.md §3.3: "A 5-unit level"). So the bar is
-    (s0 - s1) * 5 == (u1 - u0)  exactly (|diff| <= 1e-3),  u1 > u0,
-and the raw floats are recorded so a reader who expects stock and tank units to be the SAME unit sees the 1:5 directly.
+each), read u1 / s1 at one tick.  Unit bridge: one world level = RM_PumpMath.TankUnitsPerLevel = 10,000 tank units (decilitres; was 5
+drums before LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS), and a level
+debits volumePerTile = 1 stock unit. So the bar is
+    (s0 - s1) * 10000 == (u1 - u0)  exactly (|diff| <= 1e-3),  u1 > u0,
+and the raw floats are recorded so a reader who expects stock and tank units to be the SAME unit sees the 1:10000 directly.
 Phase B (refill), pump switched off (liquidPumpEnabled false), refillEnabled on, refillRateMultiplier 5 (the slider max),
 weather locked Clear: tick up to --refill-days in-game days; the bar is stock rises AND recededCount falls below its
 post-draw value (a receded cell re-wets). Settings are restored to their values before the run.
@@ -39,7 +40,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-UNITS_PER_LEVEL = 5          # RM_PumpMath.TankUnitsPerLevel
+UNITS_PER_LEVEL = 10000      # RM_PumpMath.TankUnitsPerLevel = LitresPerLevel x UnitsPerLitre (was 5)
 STOCK_PER_LEVEL = 1.0        # FluidDef.volumePerTile of fresh water (FlowWorks_Fluids.xml)
 EPS = 1e-3
 

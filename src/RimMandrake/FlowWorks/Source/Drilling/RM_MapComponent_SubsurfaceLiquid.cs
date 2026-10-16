@@ -193,7 +193,9 @@ namespace RimMandrake.FlowWorks.Drilling
 			{
 				return "RM_SubsurfaceNoYield".Translate();
 			}
-			return "RM_SubsurfaceYieldReport".Translate(yieldedLiquid.LabelCap, reserveUnits.ToString("F0"));
+			// fill-units -> litres: a level of the canal fluid is volumePerTile fill-units and 1,000 L (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS)
+			float vpt = yieldedLiquid.canalFluid != null && yieldedLiquid.canalFluid.volumePerTile > 0f ? yieldedLiquid.canalFluid.volumePerTile : 1f;
+			return "RM_SubsurfaceYieldReport".Translate(yieldedLiquid.LabelCap, RM_Volume.FormatLitres(reserveUnits / vpt * RM_Volume.LitresPerLevel));
 		}
 	}
 }

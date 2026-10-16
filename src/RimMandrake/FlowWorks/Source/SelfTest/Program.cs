@@ -1299,7 +1299,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             // ── Phase 8: the pump ──
             Case("Pump_unit_bridge", () =>
             {
-                Assert(RM_PumpMath.TankUnitsPerLevel == 5, "a channel level is a bucket");
+                // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: a channel level is a cubic metre, 10,000 decilitre units
+                Assert(RM_PumpMath.TankUnitsPerLevel == 10000 && RM_Volume.LitresPerLevel == 1000 && RM_Volume.UnitsPerLitre == 10,
+                    "a channel level is 1,000 L = 10,000 tank units");
             });
 
             // ── LIQUID_UNIT_CONTRACT_ROUNDTRIP_1: units cross every system join without appearing or vanishing ──
@@ -1321,8 +1323,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var liquids = new List<(int bottle, int bucket, int barrel)>();
                 foreach (var d in reg.Descendants("bottled"))
                 {
-                    int Get(string n, int dflt) { var e = d.Descendants(n).FirstOrDefault(); return e == null ? dflt : int.Parse(e.Value.Trim()); }
-                    liquids.Add((Get("unitsPerBottle", 1), Get("unitsPerBucket", 5), Get("unitsPerBarrel", 25)));
+                    Assert(!d.Descendants().Any(e => e.Name.LocalName.StartsWith("unitsPer")), "a registry row still states a container in old units");
+                    int Get(string n, float dflt) { var e = d.Descendants(n).FirstOrDefault(); return RM_Volume.Units(e == null ? dflt : float.Parse(e.Value.Trim(), System.Globalization.CultureInfo.InvariantCulture)); }
+                    if (d.Descendants("bottle").FirstOrDefault()?.Value.Trim() == "Chemfuel") continue;   // the adopted item keeps 200 L
+                    liquids.Add((Get("litresPerBottle", 1.5f), Get("litresPerBucket", 15f), Get("litresPerBarrel", 208f)));
                 }
                 Assert(liquids.Count >= 9, "sanity probe: registry should list its liquids, found " + liquids.Count);
                 var factors = new List<float> { 1f };
@@ -1332,25 +1336,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 
                 foreach (var l in liquids)
                 {
-                    // the contract: a channel level is a bucket; a barrel is five buckets; a bucket is five bottles
-                    Assert(l.bucket == RM_PumpMath.TankUnitsPerLevel, "unitsPerBucket " + l.bucket + " != TankUnitsPerLevel");
-                    Assert(l.barrel == 5 * l.bucket && l.bucket == 5 * l.bottle, "bottle/bucket/barrel ladder broke: " + l.bottle + "/" + l.bucket + "/" + l.barrel);
+                    // the contract (owner 2026-10-16): bottle 1.5 L, bucket 15 L, barrel 208 L; a barrel is far below a tank square
+                    Assert(l.bottle == 15 && l.bucket == 150 && l.barrel == 2080, "container sizes are not 1.5 / 15 / 208 L: " + l.bottle + "/" + l.bucket + "/" + l.barrel + " dL");
+                    Assert(l.barrel * 10 < RM_Volume.UnitsPerSquare, "a barrel must not hold anything like a tank square");
                 }
                 foreach (var l in liquids)
                 foreach (float f in factors)
                 {
                     int pumped = 12 * RM_PumpMath.TankUnitsPerLevel;     // pond -> canal -> pump: 12 levels
                     int tank = pumped, held = 0;
+                    var count = new Dictionary<int, int>();
                     foreach (int baseUnits in new[] { l.barrel, l.bucket, l.bottle })
                     {
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
-                        while (tank >= units) { tank -= units; held += units; }
+                        while (tank >= units) { tank -= units; held += units; count[baseUnits] = (count.TryGetValue(baseUnits, out int c0) ? c0 : 0) + 1; }
                     }
-                    // pour back: each container returns exactly what it took (same ScaledUnits call both ways)
+                    // pour back: each filled container returns exactly what it took (same ScaledUnits call both ways)
                     foreach (int baseUnits in new[] { l.bottle, l.bucket, l.barrel })
                     {
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
-                        while (held >= units) { held -= units; tank += units; }
+                        for (int k = count.TryGetValue(baseUnits, out int c1) ? c1 : 0; k > 0; k--) { held -= units; tank += units; }
                     }
                     Assert(held == 0 && tank == pumped, "round trip did not return the pumped liquid at factor " + f + " (held " + held + ", tank " + tank + ")");
                 }

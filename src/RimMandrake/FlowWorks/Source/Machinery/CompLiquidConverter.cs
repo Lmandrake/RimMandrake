@@ -26,11 +26,12 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public bool distillsAny;
 		public LiquidDef distillProduct;
-		public int distillInputUnits = 2;
-		public int distillOutputUnits = 1;
+		/// <summary>One distill batch in LITRES (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the old 2:1 units × 200 L).</summary>
+		public float distillInputLitres = 400f;
+		public float distillOutputLitres = 200f;
 
-		/// <summary>Input units this machine can process per day at 1x (PROVISIONAL per def).</summary>
-		public float inputUnitsPerDay = 24f;
+		/// <summary>Input LITRES this machine can process per day at 1x (PROVISIONAL per def; the old units × 200 L).</summary>
+		public float inputLitresPerDay = 4800f;
 
 		/// <summary>Repair-tier multiplier (WreckedMachines grammar: kludged slower than repaired).</summary>
 		public float tierRate = 1f;
@@ -71,6 +72,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		private float accrued;
 		public int totalIn;
 		public int totalOut;
+		/// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the volume model accrued/totalIn/totalOut were saved under.</summary>
+		private int volumeModel = RM_Volume.CurrentModel;
 		private string status = "";
 		private LiquidDef lastRefused;
 		/// <summary>G6 (L1): item output made but not yet placed (no room beside the machine). Saved; placed on later rare ticks,
@@ -90,6 +93,15 @@ namespace RimMandrake.FlowWorks.Machinery
 			Scribe_Values.Look(ref accrued, "RM_convAccrued", 0f);
 			Scribe_Values.Look(ref totalIn, "RM_convIn", 0);
 			Scribe_Values.Look(ref totalOut, "RM_convOut", 0);
+			Scribe_Values.Look(ref volumeModel, "rmVolumeModel", RM_Volume.LegacyModel);
+			if (Scribe.mode == LoadSaveMode.LoadingVars && volumeModel < RM_Volume.CurrentModel)
+			{
+				// LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: 200 L units -> decilitres, once
+				accrued = RM_Volume.FromLegacyUnits(accrued);
+				totalIn = RM_Volume.FromLegacyUnits(totalIn);
+				totalOut = RM_Volume.FromLegacyUnits(totalOut);
+				volumeModel = RM_Volume.CurrentModel;
+			}
 			Scribe_Defs.Look(ref pendingThing, "RM_convPendingThing");
 			Scribe_Values.Look(ref pendingCount, "RM_convPendingCount", 0);
 			Scribe_Defs.Look(ref lastInput, "RM_convLastInput");
@@ -128,8 +140,8 @@ namespace RimMandrake.FlowWorks.Machinery
 					tier = Props.tier,
 					process = "distill",
 					product = Props.distillProduct,
-					inputUnits = Props.distillInputUnits,
-					outputUnits = Props.distillOutputUnits
+					inputLitres = Props.distillInputLitres,
+					outputLitres = Props.distillOutputLitres
 				};
 			}
 			return null;
@@ -187,7 +199,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				status = why ?? "";
 				return;
 			}
-			float perTick = RM_ConversionMath.BudgetPerRareTick(Props.inputUnitsPerDay, Props.tierRate,
+			float perTick = RM_ConversionMath.BudgetPerRareTick(Props.inputLitresPerDay * RM_Volume.UnitsPerLitre, Props.tierRate,
 				RM_MachinerySettings.converterRateMultiplier, env);
 			accrued += perTick;
 
@@ -223,15 +235,15 @@ namespace RimMandrake.FlowWorks.Machinery
 					continue;
 				}
 				anyInput = true;
-				float capped = RM_ConversionMath.CapAccrued(accrued, step.inputUnits, perTick);
+				float capped = RM_ConversionMath.CapAccrued(accrued, step.InputUnits, perTick);
 				int room = step.product != null
 					? RM_LiquidNet.Room(parent, step.product)
 					: (step.productThing != null ? -1 : 0);
-				int n = RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, RM_LiquidNet.Available(parent, liquid), room);
+				int n = RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, RM_LiquidNet.Available(parent, liquid), room);
 				// "went without" (G9) means went without the LIQUID: budget and output room allowed a batch but the input did not,
 				// or the rotation held us back. A machine idle for budget or a full output tank must not hold the other one back
 				// (it would starve forever, and the machine that drew last could never draw again).
-				bool wanted = n > 0 || RM_ConversionMath.Batches(capped, step.inputUnits, step.outputUnits, int.MaxValue, room) > 0;
+				bool wanted = n > 0 || RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, int.MaxValue, room) > 0;
 				if (n > 0 && !rotation.MayDraw(RM_ConsumerRotation.Key(liquid, storeId), parent.thingIDNumber, now))
 				{
 					n = 0;   // our turn was last: the other machine on this liquid goes first this time
@@ -261,8 +273,8 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				var (inputLiquid, step, _) = cand[pick];
 				int n = batches[pick];
-				int made = n * step.outputUnits;
-				List<(Building_LiquidTank tank, int units)> inPlan = RM_LiquidNet.DrawPlan(parent, inputLiquid, n * step.inputUnits);
+				int made = n * step.OutputUnits;
+				List<(Building_LiquidTank tank, int units)> inPlan = RM_LiquidNet.DrawPlan(parent, inputLiquid, n * step.InputUnits);
 				List<(Building_LiquidTank tank, int units)> outPlan = step.product != null ? RM_LiquidNet.FillPlan(parent, step.product, made) : null;
 				if (inPlan == null || (step.product != null && outPlan == null))
 				{
@@ -272,9 +284,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				// L1 (§4, G6): input and output are one committed move (in batches): the input is removed first and put back if the
 				// output refuses; item output goes to the saved pending count, placed by PlacePending (never lost when there is no room)
 				RM_TransferLeg dest = outPlan != null
-					? RM_TransferLeg.Split(outPlan.Count, i => outPlan[i].units, (i, k) => outPlan[i].tank.CanAccept(step.product, k), (i, k) => outPlan[i].tank.TryAddLiquid(step.product, k), (i, k) => outPlan[i].tank.TryRemoveLiquid(k), step.outputUnits)
-					: new RM_TransferLeg("pending", k => pendingCount == 0 || pendingThing == step.productThing, k => { pendingThing = step.productThing; pendingCount += k * step.outputUnits; return k; }, k => { pendingCount -= k * step.outputUnits; return true; });
-				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Split(inPlan.Count, i => inPlan[i].units, (i, k) => inPlan[i].tank.CanProvide(k), (i, k) => inPlan[i].tank.TryRemoveLiquid(k), (i, k) => inPlan[i].tank.TryAddLiquid(inputLiquid, k), step.inputUnits),
+					? RM_TransferLeg.Split(outPlan.Count, i => outPlan[i].units, (i, k) => outPlan[i].tank.CanAccept(step.product, k), (i, k) => outPlan[i].tank.TryAddLiquid(step.product, k), (i, k) => outPlan[i].tank.TryRemoveLiquid(k), step.OutputUnits)
+					: new RM_TransferLeg("pending", k => pendingCount == 0 || pendingThing == step.productThing, k => { pendingThing = step.productThing; pendingCount += k * step.OutputUnits; return k; }, k => { pendingCount -= k * step.OutputUnits; return true; });
+				if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Split(inPlan.Count, i => inPlan[i].units, (i, k) => inPlan[i].tank.CanProvide(k), (i, k) => inPlan[i].tank.TryRemoveLiquid(k), (i, k) => inPlan[i].tank.TryAddLiquid(inputLiquid, k), step.InputUnits),
 					dest, out RM_MoveOutcome mv) == n)
 				{
 					foreach ((Building_LiquidTank tank, int units) p in inPlan) RM_LiquidNet.Credit(parent, p.tank, inputLiquid, p.units, RM_ConversionMath.RareTick);   // credit site: converter input
@@ -288,8 +300,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				rotation.Served(RM_ConsumerRotation.Key(inputLiquid, storeId), parent.thingIDNumber, now);
 				lastInput = inputLiquid;
 				PlacePending();
-				accrued -= n * step.inputUnits;
-				totalIn += n * step.inputUnits;
+				accrued -= n * step.InputUnits;
+				totalIn += n * step.InputUnits;
 				totalOut += made;
 				CompRefuelable fuel = parent.GetComp<CompRefuelable>();
 				if (fuel != null && Props.fuelPerDay > 0f)
@@ -398,7 +410,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		public override string CompInspectStringExtra()
 		{
 			string s = status.NullOrEmpty() ? "RMFlow_ConverterIdle".Translate().ToString() : status;
-			s += "\n" + "RMFlow_ConverterTotals".Translate(totalIn, totalOut);
+			s += "\n" + "RMFlow_ConverterTotals".Translate(RM_Volume.FormatUnits(totalIn), RM_Volume.FormatUnits(totalOut));
 			return pendingCount > 0 && pendingThing != null ? s + "\n" + "RMFlow_ConverterPending".Translate(pendingCount, pendingThing.label) : s;
 		}
 	}

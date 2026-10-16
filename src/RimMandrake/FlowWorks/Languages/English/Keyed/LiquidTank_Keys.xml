@@ -2,7 +2,7 @@
 <LanguageData>
 
   <RM_LiquidTankEmpty>Empty</RM_LiquidTankEmpty>
-  <RM_LiquidTankHolding>Holding: {0} ({1} / {2} units)</RM_LiquidTankHolding>
+  <RM_LiquidTankHolding>Holding: {0} ({1} / {2})</RM_LiquidTankHolding>
   <RM_LiquidTankOverfull>overfull (old save): takes nothing in until drained below capacity</RM_LiquidTankOverfull>
 
 </LanguageData>

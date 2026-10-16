@@ -7,7 +7,7 @@ namespace RimMandrake.FlowWorks.MapControls
 	/// flow source and flow sink, so the selftest runs the production code.
 	///
 	/// The rate unit is the engine's own: LEVELS PER PULSE. A level is one fill step of a dug square (a square dug to depth
-	/// 4 holds 4 levels; one level = RM_Volume.UnitsPerLevel tank units); a pulse is the flow engine's step, every
+	/// 4 holds 4 levels; one level = RM_Volume.UnitsPerLevel tank units = 1,000 L); a pulse is the flow engine's step, every
 	/// PulseIntervalTicks. A fractional rate carries its remainder from pulse to pulse, so 0.25 pours one level every
 	/// fourth pulse. A tap that cannot deliver what falls due (the canal brims, or holds another liquid) does NOT bank it:
 	/// the carry never exceeds one level, so a blocked source never bursts when the way clears.</summary>
@@ -90,7 +90,8 @@ namespace RimMandrake.FlowWorks.MapControls
 		{
 			float r = ClampRate(ratePerPulse);
 			return r.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + " level(s) per pulse (about "
-				+ PerHour(r, pulseTicks).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " per hour)";
+				+ PerHour(r, pulseTicks).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " per hour; a level is "
+				+ RM_Volume.FormatLitres(RM_Volume.LitresPerLevel) + ")";
 		}
 
 		// ── FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: the further controls' numbers ─────────────────────────────

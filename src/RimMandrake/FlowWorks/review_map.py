@@ -160,7 +160,7 @@ def missing_parts(m, f, capd):
 #   beds    [(x, z, rot)]              a wooden bed made a PRISONER bed
 #   roof    [(RoofDef, x, z, w, h)]    designate [(DesignationDef, x, z, w, h)]    marks [(x, z, text)]
 #   stuffed [(Def, x, z, n, Stuff)]    jawa/spawn_batch, stack n, stuff or None (containers per material; filth)
-#   tank    [(x, z, Mode, LiquidDef, units)]  contents by RM_NorthstarProofs.ProofTank, then the "Job:" button to Mode
+#   tank    [(x, z, Mode, LiquidDef, litres)]  contents by RM_NorthstarProofs.ProofTank (tank units = litres x 10), then the "Job:" button to Mode
 #   pump    [(x, z, "pour"|"draw")]    the pump's own Draw/Pour button
 #   ladder  [(x, z, "raise"|"lower")]  the ladder's own Ladder up/down button
 #   hose    [(rx, rz, x, z, end)]      HoseProbe "lay:" (instant staging verb) then "end:" nozzle|cap (end None = leave it)
@@ -271,6 +271,8 @@ SETUPS = {
                              "xml:defName>RM_Lakebed_Shallow<"],
                      terrain=[("WaterDeep", 0, 6, 2, 2)], dig=[(2, 6, 14, 1, 2), (15, 7, 1, 5, 2), (2, 12, 14, 1, 2)],
                      try_=["hover the bed: lakebed terrain, and a hollow you climb down into",
+                           "hover the water still in the pond and in the canal: the cell readout adds its depth in metres "
+                           "and litres (a deep square full is 2 m deep, 4 kL; a canal level is 0.5 m, 1 kL)",
                            "order a colonist into the bed and back out: a hollow never traps"],
                      look="weak spot: water still in the pond (the build's pulses ran short, say so); a bed drawn as "
                           "flat soil; a colonist stuck in it"),
@@ -617,7 +619,7 @@ SETUPS = {
                       build=[("RM_LiquidPump", 3, 6, None, None), ("RM_LiquidTank", 8, 6, None, None),
                              ("Battery", 4, 9, 0, None), ("PowerConduit", 3, 7, None, None),
                              ("PowerConduit", 3, 8, None, None), ("PowerConduit", 3, 9, None, None)],
-                      tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 80)], pump=[(3, 6, "pour")], charge=[(4, 9)],
+                      tank=[(8, 6, "Store", "RM_Liquid_FreshWater", 16000)], pump=[(3, 6, "pour")], charge=[(4, 9)],
                       try_=["unpause: the tank empties back into the pond", "the pump's button flips Draw and Pour"],
                       look="weak spot: pouring with no power; water poured onto dry ground"),
     "tank_sizes": dict(short="Four tank sizes", notice="a short, a tall, a cargo and an extra-tall tank, each half full",
@@ -626,9 +628,9 @@ SETUPS = {
                                "tex:RM_LiquidTankTall", "tex:RM_UniversalCargoTankXTall"],
                        build=[("RM_LiquidTank", 1, 5, None, None), ("RM_LiquidTankTall", 5, 5, None, None),
                               ("RM_UniversalCargoTank", 9, 5, None, None), ("RM_UniversalCargoTankXTall", 13, 5, None, None)],
-                       tank=[(1, 5, "Store", "RM_Liquid_FreshWater", 40), (5, 5, "Store", "RM_Liquid_FreshWater", 80),
-                             (9, 5, "Store", "RM_Liquid_FreshWater", 80), (13, 5, "Store", "RM_Liquid_FreshWater", 160)],
-                       try_=["select each: 80, 160, 160 and 320 units, every fill bar at half"],
+                       tank=[(1, 5, "Store", "RM_Liquid_FreshWater", 8000), (5, 5, "Store", "RM_Liquid_FreshWater", 16000),
+                             (9, 5, "Store", "RM_Liquid_FreshWater", 16000), (13, 5, "Store", "RM_Liquid_FreshWater", 32000)],
+                       try_=["select each: 16, 32, 32 and 64 kL, every fill bar at half (8 / 16 / 16 / 32 kL held)"],
                        look="weak spot: both tall tanks are placeholder art (a drum stacked twice); a tall top cut off or "
                             "hidden behind the label"),
     "tank_styles": dict(short="Tank looks: short and tall", notice="the short tank (bottom) and the tall tank (top) in "
@@ -660,8 +662,8 @@ SETUPS = {
                        s="carry", after="tank_styles_cargo", probes=["cs:RMFlow_TankMode_", "cs:class Building_LiquidTank"],
                        build=[("RM_LiquidTank", 1, 6, None, None), ("RM_LiquidTank", 5, 6, None, None),
                               ("RM_LiquidTank", 9, 6, None, None), ("RM_LiquidTank", 13, 6, None, None)],
-                       tank=[(1, 6, "Store", "RM_Liquid_FreshWater", 40), (5, 6, "Fill", "RM_Liquid_FreshWater", 40),
-                             (9, 6, "Empty", "RM_Liquid_FreshWater", 40), (13, 6, "Dump", "RM_Liquid_FreshWater", 40)],
+                       tank=[(1, 6, "Store", "RM_Liquid_FreshWater", 8000), (5, 6, "Fill", "RM_Liquid_FreshWater", 8000),
+                             (9, 6, "Empty", "RM_Liquid_FreshWater", 8000), (13, 6, "Dump", "RM_Liquid_FreshWater", 8000)],
                        items=[("RM_BottleEmpty", 10, 7, 3), ("RM_Bottle_FreshWater", 10, 9, 3)],
                        marks=[(1, 4, "store"), (5, 4, "fill"), (9, 4, "empty"), (13, 4, "dump")],
                        try_=["unpause: colonists fill bottles from Empty and pour into Fill only",
@@ -854,7 +856,7 @@ SETUPS = {
                        "and tar stains have nothing to show until a biome wires them in",
                        build=[("RM_LiquidTank", 2, 6, None, None), ("RM_ReactionVat", 7, 6, None, None),
                               ("RM_LiquidTank", 11, 6, None, None)],
-                       tank=[(2, 6, "Store", "RM_Liquid_Tar", 40), (11, 6, "Store", "RM_Liquid_AcidWater", 40)],
+                       tank=[(2, 6, "Store", "RM_Liquid_Tar", 8000), (11, 6, "Store", "RM_Liquid_AcidWater", 8000)],
                        marks=[(2, 4, "tar tank"), (7, 4, "vat"), (11, 4, "acid tank")],
                        try_=["unpause: with tar and acid water in the tanks the vat vents a gas cloud"],
                        look="weak spot: no gas although both tanks hold their liquids"),
@@ -1284,6 +1286,9 @@ def gallery_verdict(placeholder, dig_ok, missing, want_kinds, got_kinds):
     return bool(dig_ok and not missing and not short)
 
 
+# LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: FlowWorks tanks count decilitres (RM_Volume.UnitsPerLitre).
+UNITS_PER_LITRE = 10
+
 class Review(object):
     def __init__(self, B, log=None):
         self.B, self.log = B, log
@@ -1610,8 +1615,8 @@ class Review(object):
         """Frozen mid-states. Contents through the proof surface (ProofTank: stock only, in Store), every mode and
         state through the player's own button (gizmo_cycle), so the save holds what a player's click leaves."""
         n = s["n"]
-        for x, z, mode, liquid, units in u.get("tank", []):
-            self.static(n, TANK, "ProofTank", "%d,%d;Store;%s;%d" % (g(x, z) + (liquid, units)))
+        for x, z, mode, liquid, litres in u.get("tank", []):
+            self.static(n, TANK, "ProofTank", "%d,%d;Store;%s;%d" % (g(x, z) + (liquid, litres * UNITS_PER_LITRE)))
             if mode != "Store":
                 self.gizmo_cycle(n, g(x, z), "Job:", "Job: " + mode)
         for x, z, on_clock, spill, cap in u.get("flood_trigger", []):

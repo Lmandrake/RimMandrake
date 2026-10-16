@@ -66,17 +66,22 @@ namespace RimMandrake.Cauldron
             Deliver();
         }
 
+        // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: one banked unit is 200 L of condensate (the old FlowWorks tank unit); a tank
+        // counts decilitres, so each banked unit goes in as RM_Volume.Units(200 L).
+        public const float LitresPerBankUnit = 200f;
+
         // Whole units into touching tanks, as many as they take.
         private void Deliver()
         {
             int ready = RM_VentGasKernel.TapReady(bank);
             if (ready <= 0 || Props.condensate == null) return;
+            int per = RimMandrake.FlowWorks.RM_Volume.Units(LitresPerBankUnit);
             foreach (Building_LiquidTank tank in TouchingTanks())
             {
                 if (ready <= 0) break;
                 int n = ready;
-                while (n > 0 && !tank.CanAccept(Props.condensate, n)) n--;
-                if (n <= 0 || !tank.TryAddLiquid(Props.condensate, n)) continue;
+                while (n > 0 && !tank.CanAccept(Props.condensate, n * per)) n--;
+                if (n <= 0 || !tank.TryAddLiquid(Props.condensate, n * per)) continue;
                 bank -= n;
                 ready -= n;
                 unitsDelivered += n;

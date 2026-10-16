@@ -392,6 +392,9 @@ namespace JawaBench.BridgeTools
                 if (power != null && power.PowerOn) power.PowerOn = false;
                 int cap = (int)QGet(tank, "Capacity");
                 int Units() => (int)QGet(tank, "storedUnits");
+                // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: a level is RM_Volume.UnitsPerLevel tank units (10,000 decilitres = 1,000 L
+                // since 2026-10-16; 5 before), read off the loaded FlowWorks rather than hard-coded
+                int L = QT("RimMandrake.FlowWorks.RM_Volume")?.GetField("UnitsPerLevel")?.GetRawConstantValue() is int lvl ? lvl : 5;
                 string Liquid() => (QGet(tank, "storedLiquid") as Def)?.defName;
                 int Moved() => (int)QGet(pump, "Moved");
                 string Status() => QGet(pump, "lastStatus") as string;
@@ -411,19 +414,19 @@ namespace JawaBench.BridgeTools
                 var a = Snap("unpowered_600"); steps.Add(a);
                 if (power != null && (Moved() != 0 || QFill(c, ch) != 3 || Units() != 0)) fails.Add("unpowered pump moved liquid");
 
-                // B. powered draw: one level channel -> tank, 5 units
+                // B. powered draw: one level channel -> tank, L units
                 c.Phase("setup");
                 if (power != null) power.PowerOn = true;
                 c.Phase("exec");
                 yield return PUntil(() => Units() > 0, 700);
                 c.Phase("observe");
                 var b = Snap("powered_draw"); steps.Add(b);
-                if (Units() != 5 || Liquid() != lWater.defName || QFill(c, ch) != 2)
-                    fails.Add("powered draw: expected tank 5 units of " + lWater.defName + " and channel F 2, got " + Units() + " " + Liquid() + " F " + QFill(c, ch));
+                if (Units() != L || Liquid() != lWater.defName || QFill(c, ch) != 2)
+                    fails.Add("powered draw: expected tank " + L + " units of " + lWater.defName + " and channel F 2, got " + Units() + " " + Liquid() + " F " + QFill(c, ch));
 
-                // C. capacity clamp: tank 5 short of full takes exactly one more level and then refuses
+                // C. capacity clamp: tank one level short of full takes exactly one more level and then refuses
                 c.Phase("setup");
-                QSet(tank, "storedUnits", cap - 5);
+                QSet(tank, "storedUnits", cap - L);
                 int movedC = Moved();
                 c.Phase("exec");
                 yield return PUntil(() => Units() >= cap, 700);
@@ -437,27 +440,27 @@ namespace JawaBench.BridgeTools
                 c.Phase("setup");
                 QSet(pump, "pourMode", true);
                 QSet(tank, "storedLiquid", lTar);
-                QSet(tank, "storedUnits", 50);
+                QSet(tank, "storedUnits", 10 * L);
                 int movedD = Moved();
                 c.Phase("exec");
                 yield return PTicks(600);
                 c.Phase("observe");
                 var dd = Snap("wrong_fluid_refused"); steps.Add(dd);
-                if (QFill(c, ch) != 1 || QFluidAt(c, ch) != water.defName || Units() != 50 || Moved() != movedD)
+                if (QFill(c, ch) != 1 || QFluidAt(c, ch) != water.defName || Units() != 10 * L || Moved() != movedD)
                     fails.Add("wrong-fluid pour was not refused: channel F " + QFill(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
 
-                // E. pour into an empty channel: tar goes in, tank pays 5 units a level
+                // E. pour into an empty channel: tar goes in, tank pays L units a level
                 c.Phase("setup");
                 QSetFill(c, ch, 0, null);
                 c.Phase("exec");
                 yield return PUntil(() => QFill(c, ch) >= 1, 700);
                 c.Phase("observe");
                 var e = Snap("pour_into_empty"); steps.Add(e);
-                if (QFill(c, ch) < 1 || QFluidAt(c, ch) != tar.defName || Units() != 50 - 5 * QFill(c, ch))
-                    fails.Add("pour: expected tar in the channel and the tank down 5 a level; got F " + QFill(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
+                if (QFill(c, ch) < 1 || QFluidAt(c, ch) != tar.defName || Units() != 10 * L - L * QFill(c, ch))
+                    fails.Add("pour: expected tar in the channel and the tank down " + L + " a level; got F " + QFill(c, ch) + " " + QFluidAt(c, ch) + ", tank " + Units());
 
                 if (power == null) c.ev["note"] = "pump def has no CompPowerTrader; the unpowered step proves nothing";
-                if (fails.Count == 0) c.Pass("unpowered idle; powered draw 1 level = 5 units; tank clamps at " + cap + "; tar refused into water; tar poured into an empty channel");
+                if (fails.Count == 0) c.Pass("unpowered idle; powered draw 1 level = " + L + " units; tank clamps at " + cap + "; tar refused into water; tar poured into an empty channel");
                 else c.Defect(string.Join("; ", fails));
             }
             finally { QVanish(pump); QVanish(tank); }

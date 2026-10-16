@@ -66,7 +66,7 @@
           <canalFluid>RM_Fluid_Astrofuel</canalFluid>
           <bottled>
             <bottle>VGE_Astrofuel</bottle>
-            <unitsPerBottle>1</unitsPerBottle>
+            <litresPerBottle>200</litresPerBottle>   <!-- one VGE astrofuel item = 200 L, the old unit (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS) -->
           </bottled>
         </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
       </value>
