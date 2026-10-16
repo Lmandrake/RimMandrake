@@ -51,6 +51,10 @@ namespace RimMandrake.FlowWorks.Machinery
             ThingStyleDef sd = StyleFor(pipe?.def, look);
             if (sd == null || !pipe.Spawned) return false;
             pipe.SetStyleDef(sd);
+            // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY (owner 2026-10-16: "I can't change the style on it even though there is such a
+            // button. It doesn't seem to do anything."): the ThingStyleHelper.SetStyleDef extension stores the style but, unlike the
+            // Thing.StyleDef setter, never clears Thing.styleGraphicInt, so the mesh redrew the cached old look. Clear it here.
+            pipe.Notify_ColorChanged();
             pipe.Map.mapDrawer.MapMeshDirty(pipe.Position, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
             return true;
         }
