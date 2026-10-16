@@ -85,7 +85,8 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("UtinniPatches")
 suite.toggles = ["ambientShrineDoctrineEnabled", "geothermalDensityFieldEnabled",
-                 "utinniWorldIconEnabled", "zersiumForgeEnabled", "phrikiteDesertEnabled"]
+                 "utinniWorldIconEnabled", "holyFlameActEnabled", "mindstoneGalleryEnabled",
+                 "zersiumForgeEnabled", "phrikiteDesertEnabled"]
 
 _MOD_DIR = os.path.dirname(os.path.abspath(__file__))
 _WORLDICON_PATCH = os.path.join(_MOD_DIR, "Patches", "UtinniWorldIcon.xml")

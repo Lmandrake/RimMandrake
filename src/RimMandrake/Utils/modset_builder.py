@@ -136,7 +136,6 @@ TIERS = {
             BRIDGE,
             "mandrake.rm.biomes",
             "mandrake.rut.patches",
-            "mandrake.rut.rotsporekit",
             "mandrake.rsw.swbestiary",
             "sarg.alphaanimals",
         ],
@@ -250,7 +249,7 @@ TIERS = {
             BRIDGE,
             # --- ours
             "mandrake.rsw.armoury", "mandrake.rut.doctrine",
-            "mandrake.jawa.patches", "mandrake.rsw.ionweapons",
+            "mandrake.rut.patches", "mandrake.rsw.ionweapons",
             "mandrake.rm.rimdefdump",
             # --- weapons and armour matrix (L3 / L14)
             "lee.theforce.lightsaber",      # lightsabers, Heat damage

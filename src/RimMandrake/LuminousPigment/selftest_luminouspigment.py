@@ -492,11 +492,13 @@ def main():
                         and n.args and isinstance(n.args[0], ast.Constant) and isinstance(n.args[0].value, str):
                     keys.add(n.args[0].value)
     own = {"x0", "_coated", "statParts", "stats", "things", "def", "opinion", "b", "d", "id", "success"}
-    miss = sorted(k for k in keys if k not in own and ('\\"%s\\"' % k) not in cs and ('"%s"' % k) not in cs)
+    def _missing(ks):
+        return sorted(k for k in ks if k not in own and ('\\"%s\\"' % k) not in cs and ('"%s"' % k) not in cs)
+    miss = _missing(keys)
     check("sanity probe: the key scan saw >= 80 keys", len(keys) >= 80, str(len(keys)))
     check("every debug-action report key the suite reads exists in the C# source", not miss, str(miss))
     check("sanity probe: the key scan CAN miss a key (a made-up one is reported)",
-          ("zzNoSuchKey" not in cs), "")
+          _missing(keys | {"zzNoSuchKey"}) == ["zzNoSuchKey"], str(_missing(keys | {"zzNoSuchKey"})))
 
     # --- 4 toggles
     decl = V.components_declared()
@@ -520,7 +522,8 @@ def main():
     check("tank: established culture bypasses the seed-fuel requirement", "!established && (seedComp == null || !seedComp.HasFuel)" in tank)
     check("tank: blackout clears established and consumes the seed", re.search(r"established = false;\s*\n\s*if \(seedComp", tank) is not None)
     check("tank: sow consumes the seed only while not yet established", "if (established || seedComp == null || !seedComp.HasFuel) return;" in tank)
-    check("tank: sanity probe, the contract scan CAN fail", "zzNoSuchFlag" not in tank)
+    check("tank: sanity probe, the contract scan CAN fail",
+          'Scribe_Values.Look(ref established, "rmGlowTankEstablished"' not in tank.replace("rmGlowTankEstablished", "zzNoSuchFlag"))
     check("settings: family toggles saved by key", '"familyDisabledKeys"' in src and "DeepfireFamilies.All[i].key" in src)
     check("settings: legacy positional list is read only on load and never written",
           src.count('Look(ref legacyList, "familyEnabled"') == 1 and "Scribe_Collections.Look(ref familyEnabledList" not in src

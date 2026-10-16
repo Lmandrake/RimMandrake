@@ -335,13 +335,13 @@ class Patcher:
             return True
         if cls == "PatchOperationFindMod":
             mods = [(li.text or "").strip() for li in op.findall("mods/li")]
-            hit = any(n in self.names for n in mods)
+            hit = any(n in self.names or n.lower() in self.active for n in mods)
             br = op.find("match" if hit else "nomatch")
-            return self.apply(br, path) if br is not None else hit
+            return self.apply(br, path) if br is not None else True   # engine: no branch -> true
         if cls == "PatchOperationConditional":
             hit = bool(self._sel(_txt(op, "xpath") or ""))
             br = op.find("match" if hit else "nomatch")
-            return self.apply(br, path) if br is not None else hit
+            return self.apply(br, path) if br is not None else True   # engine: no branch -> true
         if cls == "PatchOperationTest":
             return bool(self._sel(_txt(op, "xpath") or ""))
         xp = _txt(op, "xpath")
