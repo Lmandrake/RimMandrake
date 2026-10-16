@@ -32,12 +32,18 @@ namespace RimMandrake.Contagion
         private int lastBurnEndTick = -1;
         private bool wasBurning;
         private bool lastShaking;
+        private bool wasTellsBegun;
+        private int tellsBeganTick = -1;
 
         public RM_MapComponent_ContagionSky(Map map) : base(map) { }
 
         public int NextBurnTick => nextBurnTick;
         public bool TellsBegun => tellsBegun;
         public int LastBurnEndTick => lastBurnEndTick;
+        public int TellsBeganTick => tellsBeganTick;
+        // What the rattlers' static mesh was last built for: they print and draw by THIS, never by live state, so the mesh
+        // and the per-frame draw can never disagree between polls (a Repulsor Burn starts off-poll).
+        public bool ShakeDrawn => lastShaking;
 
         public override void ExposeData()
         {
@@ -64,6 +70,10 @@ namespace RimMandrake.Contagion
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
+            // Every tick (cheap), so the gawpsacks' rise starts the tick the Burn ends and not at the next poll.
+            bool burningNow = BurnActive;
+            if (wasBurning && !burningNow) lastBurnEndTick = now;
+            wasBurning = burningNow;
             if (now % RM_ContagionSky.Interval != 0) return;
 
             RM_ContagionSkyExtension ext = RM_ContagionSky.ExtFor(map);
@@ -88,14 +98,15 @@ namespace RimMandrake.Contagion
             UpdateVisibleTells(ext, now);
         }
 
-        // Owner Q6 (2026-10-15): the sink and shake are drawn from this clock; here the clock only notes the Burn's end
-        // and rebuilds the rattlers' static mesh when shaking starts or stops (RM_Plant_Rattlegrope leaves the mesh while
+        // Owner Q6 (2026-10-15): the sink and shake are drawn from this clock; here the clock notes when the tells began
+        // (the Burn's end is noted every tick, above) and rebuilds the rattlers' static mesh when shaking starts or stops (RM_Plant_Rattlegrope leaves the mesh while
         // it shakes).
         private void UpdateVisibleTells(RM_ContagionSkyExtension ext, int now)
         {
             bool burning = ext != null && BurnActive;
-            if (wasBurning && !burning) lastBurnEndTick = now;
-            wasBurning = burning;
+            if (tellsBegun && !wasTellsBegun) tellsBeganTick = now;
+            else if (!tellsBegun) tellsBeganTick = -1;
+            wasTellsBegun = tellsBegun;
             bool shaking = ext != null && RM_TellRenderKernel.Shaking(RM_ContagionSettings.burnTellsEnabled, tellsBegun, burning);
             if (shaking == lastShaking) return;
             lastShaking = shaking;

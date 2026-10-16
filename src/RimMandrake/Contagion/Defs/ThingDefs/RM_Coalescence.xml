@@ -11,8 +11,9 @@
   and emits manhunter Unfinished on a stage-scaled clock (capped by live
   manhunters on the map). It never moves — it cannot leave the storm shadow it
   formed in. ANY Burn (natural or Cloud-Repulsor-forced) collapses it into
-  slime and sourceless genome samples (they gestate unmatched organs). All
-  numbers are this build's INVENTED tuning.
+  slime, sourceless genome samples (they gestate unmatched organs) and a heap
+  of Contagion mulch; killed by damage instead it leaves only a smaller heap
+  of mulch. All numbers are this build's INVENTED tuning.
 
   Art: artpipe coalescence_stage1, coalescence_stage2_v2, coalescence_stage3_v2
   (512, the owner-ruled "more gelatinous goop, less body" regens for 2 and 3).
