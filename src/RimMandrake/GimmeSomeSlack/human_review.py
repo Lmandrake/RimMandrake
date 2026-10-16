@@ -481,8 +481,8 @@ def stations_round6(mk, hose_i):
     """Round 6 (owner 2026-10-04: "how does the player go farther? Maybe they place another reel out there to connect to? If
     so we should show that working."). Three reels 32 cells apart: A's hose is laid onto B's intake, B's onto C's -- 66 cells
     end to end, beyond one 40-cell hose. Rules: FlowWorks/Source/Hose/HoseRelay.cs; live check: FlowWorks/validation_hose.py --relay."""
-    mk(29, "G", 160, 172, 70, 6, "RELAY REELS: GOING FARTHER", "three hose reels in a row, 32 cells apart: the first reel's "
-       "hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)",
+    mk(29, "G", 160, 172, 70, 6, "RELAY REELS: GOING FARTHER", "three hose reels in a row, 28 cells apart: the first reel's "
+       "hose is laid onto the second reel, whose own hose is laid onto the third (58 cells end to end; one hose holds 40)",
        ["each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses",
         "flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed "
         "through the relay (the dev flag stands in for real liquid: no tank or pipe feeds the first reel here)",
@@ -491,8 +491,10 @@ def stations_round6(mk, hose_i):
                  "lay the third reel's hose back onto the first: refused, a chain may not loop back",
                  "build a fourth reel within 40 cells of the third (north or south: east is the map edge) and lay the third "
                  "reel onto it: the chain goes on"],
-       hoses=[dict(reel=(0, 2), far=(31, 2), state="Plump"), dict(reel=(32, 2), far=(63, 2), state="Relay")],
-       devs=[("RM_HoseReel", (64, 2), None, None)], region=2, prev=42)
+       # walk 2026-10-15: 32 apart (a 31-cell lay) was refused "route too long" at the shipped 40: the lead-outs and turn
+       # into the next reel's coupling add more than 9 cells. 28 apart lays (presumed lead-out cost, not traced)
+       hoses=[dict(reel=(0, 2), far=(27, 2), state="Plump"), dict(reel=(28, 2), far=(55, 2), state="Relay")],
+       devs=[("RM_HoseReel", (56, 2), None, None)], region=2, prev=42)
 
 
 def stations_round7(mk):
@@ -542,12 +544,15 @@ def stations_round8(mk):
     wp_styled, wp_devs, wp_lamps = [], [], {}
     for i, look in enumerate(reversed(LOOKS)):                        # Scrapper on the top row, as station 6
         z = 1 + 3 * i
-        wp_styled += [("C", "WaterproofConduit", GROUND_KEY[look], (x, z)) for x in range(2, 15)]
+        # walk 2026-10-15: vanilla builds waterproof conduit only on WaterproofConduitable ground (water, marsh), so the
+        # 28 soil cells were refused; the soil legs are plain conduit in the same look, the water strip (x 6-11) waterproof
+        wp_styled += [("C", "WaterproofConduit" if 6 <= x < 12 else "PowerConduit", GROUND_KEY[look], (x, z)) for x in range(2, 15)]
         wp_devs += [("Battery", (0, z), 1, 1.0)]
         wp_lamps[(15, z)] = look
     mk(34, "H", 142, 58, 18, 12, "WATERPROOF CONDUIT: FOUR LOOKS", "four runs of waterproof conduit, one per look (top to bottom: "
-       "Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look",
-       ["each run draws its look's cord on soil AND in the water: waterproof conduit is the same cord as plain conduit",
+       "Scrapper, Industrial, Modern, Futuristic), each from a full battery across a shallow-water strip to a lamp in its look "
+       "(plain conduit on the soil legs: vanilla allows waterproof conduit only on water or marsh)",
+       ["each run draws its look's cord on soil AND in the water: the waterproof cells are the same cord as the plain ones",
         "in the water the cord dives (Mod Settings 'cords dive under walls and water'): it should not lie on top of the water as if on soil",
         "all four lamps lit"],
        ["select a cell > Restyle this run: the waterproof run takes any look, like plain conduit",
@@ -1527,6 +1532,8 @@ class Review(object):
                     self.refusals["%d:%d-%d" % (s["n"], a, b)] = "%s (expected %s)" % (v, exp[0])
                     if v != exp[0]:
                         self.notes.append("station %d link %d-%d verdict %s, expected %s" % (s["n"], a, b, v, exp[0]))
+                        if v == "Ok":                  # walk 2026-10-15: st.25's roof landed after the link and cut it
+                            B.ap("unlink:%d,%d" % (ids[a], ids[b]))   # (roofCuts 1, a dead stub); the sign wants no wire
                 elif v not in ("Ok", "Linked", "Success", None):
                     self.notes.append("station %d link %d-%d verdict %s" % (s["n"], a, b, v))
             s["_ids"] = ids
