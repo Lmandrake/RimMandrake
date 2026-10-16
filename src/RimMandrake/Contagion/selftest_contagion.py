@@ -507,6 +507,10 @@ class Fake(object):
     def t_list_pawns(self, rect=None, includeHealth=False, limit=500, **k):
         rr = globals()["rect"](rect) if rect else None
         rows = []
+        if "armored_wanders_off" in self.broken:      # SITE: an armored native walks off under the mountain roof
+            for p in self.pawns.values():
+                if p["kind"] in ARMORED and not p["vanished"]:
+                    p["x"], p["z"] = p["x"] - 40, p["z"]
         for p in self.pawns.values():
             if p["vanished"] or (rr and not inrect(p["x"], p["z"], rr)):
                 continue
@@ -575,7 +579,8 @@ class Fake(object):
             amount = amount * f
         self.addh(p, "RM_UVSunburn", amount)
         # DamageWorker_RM_UV: a landed Sunbeam hit arrests Contagion-touched
-        if damageDef == "RM_UVBeam" and self.on("sunbeamArrestEnabled") and "arrest_ignored" not in self.broken:
+        if damageDef == "RM_UVBeam" and (self.on("sunbeamArrestEnabled") or "arrest_ignores_toggle" in self.broken) \
+                and "arrest_ignored" not in self.broken:
             p["hed"] = [h for h in p["hed"] if h["def"] != V.TOUCHED]
         return {"success": True}
 
@@ -745,6 +750,8 @@ BREAKS = {
     "touched_no_contact": ["touched.touched_contact_doses"],
     "touched_bloom_only": ["touched.touched_contact_doses"],   # dosed everywhere alike: contact adds nothing
     "arrest_ignored": ["touched.sunbeam_hit_arrests"],
+    "arrest_ignores_toggle": ["touched.sunbeam_hit_arrests"],
+    "armored_wanders_off": [],                # SITE: the armored control leaves the open pad -> UNMEASURED (SITE_EXPECT)
     "mulch_none": ["spawner.unfinished_leaves_mulch"],
     "helix_trader_unwired": ["defs.helix_trader_wired"],
     "tells_unwired": ["defs.visible_tells_wired"],
@@ -753,6 +760,7 @@ BREAKS = {
 
 # SITE breaks whose point is a verdict other than FAIL: {break: {component: verdict}}
 SITE_EXPECT = {
+    "armored_wanders_off": {"burn_forced.burn_hurts_native_spares_armored": "UNMEASURED"},
     "roof_patch_fails": {"burn_forced.burn_site_ready": "UNMEASURED",
                          "burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     "xref_flood": {"log.log_clean": "UNMEASURED"},
