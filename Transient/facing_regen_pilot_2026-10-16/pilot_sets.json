@@ -1,0 +1,53 @@
+{
+ "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando": {
+  "east": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_south.png",
+  "west": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_west.png"
+ },
+ "Things/Pawn/Animal/RM_Heemin/RM_Heemin": {
+  "east": "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Heemin/RM_Heemin_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Heemin/RM_Heemin_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Heemin/RM_Heemin_south.png"
+ },
+ "Things/Pawn/Animal/RM_Zrrik/RM_Zrrik": {
+  "east": "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Zrrik/RM_Zrrik_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Zrrik/RM_Zrrik_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Zrrik/RM_Zrrik_south.png"
+ },
+ "Things/Pawn/Animal/RM_Krissek/RM_Krissek": {
+  "east": "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Krissek/RM_Krissek_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Krissek/RM_Krissek_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Krissek/RM_Krissek_south.png"
+ },
+ "swanimals/Borcatu/Borcatu": {
+  "east": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Borcatu/Borcatu_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Borcatu/Borcatu_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Borcatu/Borcatu_south.png"
+ },
+ "RimStarWars/SWBestiary/Dewback/Dewback": {
+  "east": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_south.png"
+ },
+ "swanimals/Akk/Akk": {
+  "east": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Akk/Akk_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Akk/Akk_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Akk/Akk_south.png"
+ },
+ "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax": {
+  "east": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_south.png"
+ },
+ "Things/Pawn/Animal/RM_Siidda/RM_Siidda": {
+  "east": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Siidda/RM_Siidda_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Siidda/RM_Siidda_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Siidda/RM_Siidda_south.png"
+ },
+ "RimStarWars/SWBestiary/Anooba/Anooba_f": {
+  "east": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_east.png",
+  "north": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_north.png",
+  "south": "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_south.png"
+ }
+}
