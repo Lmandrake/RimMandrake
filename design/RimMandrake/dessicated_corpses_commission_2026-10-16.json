@@ -1,0 +1,1244 @@
+[
+ {
+  "id": "dessic_akk_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult akk. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Akk",
+  "target_texpath": "swanimals/Akk/Akk_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Akk/Akk_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/akk/donorart_akk_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_boarwolf_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult boarwolf. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2.5x2.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Boarwolf",
+  "target_texpath": "swanimals/Boarwolf/Boarwolf_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/boarwolf/Boarwolf_east.png"
+  ]
+ },
+ {
+  "id": "dessic_bordok_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult bordok. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.9x1.9 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.9,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Bordok",
+  "target_texpath": "swanimals/Bordok/Bordok_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Bordok/Bordok_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/bordok/Bordok_east.png"
+  ]
+ },
+ {
+  "id": "dessic_brezak_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult brezak. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 5x5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 5.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Brezak",
+  "target_texpath": "swanimals/Brezak/Brezak_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Brezak/Brezak_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/brezak/Brezak_east.png"
+  ]
+ },
+ {
+  "id": "dessic_bursa_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult bursa. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Bursa",
+  "target_texpath": "swanimals/Bursa/Bursa_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Bursa/Bursa_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/bursa/Bursa_east.png"
+  ]
+ },
+ {
+  "id": "dessic_corellianhound_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult corellian hound. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.75x1.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_CorellianHound",
+  "target_texpath": "swanimals/CorellianHound/CorellianHound_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/CorellianHound/CorellianHound_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/corellianhound/CorellianHound_east.png"
+  ]
+ },
+ {
+  "id": "dessic_devourer_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult devourer. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Devourers",
+  "target_texpath": "swanimals/Devourer/Devourer_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Devourer/Devourer_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/devourer/Devourer_east.png"
+  ]
+ },
+ {
+  "id": "dessic_drexl_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult drexl. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 5x5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 5.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Drexl",
+  "target_texpath": "swanimals/Drexl/Drexl_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Drexl/Drexl_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/drexl/Drexl_east.png"
+  ]
+ },
+ {
+  "id": "dessic_drexl_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) drexl. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Drexl",
+  "target_texpath": "swanimals/Drexl/Drexl_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Drexl/Drexl_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/drexl/donorart_drexl_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_energyspider_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult energy spider. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_EnergySpider",
+  "target_texpath": "swanimals/EnergySpider/EnergySpider_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/EnergySpider/EnergySpider_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/energyspider/EnergySpider_east.png"
+  ]
+ },
+ {
+  "id": "dessic_frogdog_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult frog dog. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.5x1.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": "east",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_FrogDog",
+  "target_texpath": "swanimals/FrogDog/FrogDog_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/FrogDog/FrogDog_Dessicated_{facing}.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/frogdog/donorart_frogdog_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_grazer_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult grazer. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2.7x2.7 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.7,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Grazer",
+  "target_texpath": "swanimals/Grazer/Grazer_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Grazer/Grazer_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/grazer/donorart_grazer_m_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_gualaar_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult gualaar. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Gualaar",
+  "target_texpath": "swanimals/Gualaar/Gualaar_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Gualaar/Gualaar_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/gualaar/Gualaar_east.png"
+  ]
+ },
+ {
+  "id": "dessic_gullipud_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult gullipud. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Gullipud",
+  "target_texpath": "swanimals/Gullipud/Gullipud_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/gullipud/Gullipud_east.png"
+  ]
+ },
+ {
+  "id": "dessic_gundark_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult gundark. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Gundark",
+  "target_texpath": "swanimals/Gundark/Gundark_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Gundark/Gundark_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/gundark/Gundark_east.png"
+  ]
+ },
+ {
+  "id": "dessic_harvesterbeetle_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult harvester beetle. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4x4 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_HarvesterBeetle",
+  "target_texpath": "swanimals/HarvesterBeetle/HarvesterBeetle_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/HarvesterBeetle/HarvesterBeetle_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/harvesterbeetle/HarvesterBeetle_east.png"
+  ]
+ },
+ {
+  "id": "dessic_harvesterbeetle_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) harvester beetle. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_HarvesterBeetle",
+  "target_texpath": "swanimals/HarvesterBeetle/HarvesterBeetle_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/harvesterbeetle/donorart_harvesterbeetle_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_insectomorph_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult insectomorph. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Insectomorph",
+  "target_texpath": "swanimals/Insectomorph/Insectomorph_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Insectomorph/Insectomorph_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/insectomorph/Insectomorph_east.png"
+  ]
+ },
+ {
+  "id": "dessic_bullrancor_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult jungle rancor. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 8x8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 8.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_JungleRancor",
+  "target_texpath": "swanimals/JungleRancor/BullRancor_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/JungleRancor/BullRancor_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/junglerancor/donorport_junglerancor_m_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_junglerancor_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult jungle rancor. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 8x8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 8.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_JungleRancor",
+  "target_texpath": "swanimals/JungleRancor/JungleRancor_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/JungleRancor/JungleRancor_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/junglerancor/JungleRancor_east.png"
+  ]
+ },
+ {
+  "id": "dessic_kaadu_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult kaadu. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2.5x2.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Kaadu",
+  "target_texpath": "swanimals/Kaadu/Kaadu_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Kaadu/Kaadu_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/kaadu/Kaadu_m_east.png"
+  ]
+ },
+ {
+  "id": "dessic_katarn_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult katarn. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4x4 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Katarn",
+  "target_texpath": "swanimals/Katarn/Katarn_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Katarn/Katarn_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/katarn/Katarn_east.png"
+  ]
+ },
+ {
+  "id": "dessic_kelldragon_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult kell dragon. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_KellDragon",
+  "target_texpath": "swanimals/KellDragon/KellDragon_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/KellDragon/KellDragon_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/kelldragon/KellDragon_east.png"
+  ]
+ },
+ {
+  "id": "dessic_kwazelmaw_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult kwazel maw. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 6x6 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 6.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_KwazelMaw",
+  "target_texpath": "swanimals/KwazelMaw/KwazelMaw_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/KwazelMaw/KwazelMaw_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/kwazelmaw/KwazelMaw_east.png"
+  ]
+ },
+ {
+  "id": "dessic_leaftail_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult leaftail. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Leaftail",
+  "target_texpath": "swanimals/Leaftail/Leaftail_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Leaftail/Leaftail_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/leaftail/Leaftail_east.png"
+  ]
+ },
+ {
+  "id": "dessic_lothwolf_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult loth wolf. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_LothWolf",
+  "target_texpath": "swanimals/LothWolf/LothWolf_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/LothWolf/LothWolf_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/lothwolf/donorart_lothwolf_m_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_maalraas_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult maalraas. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Maalraas",
+  "target_texpath": "swanimals/Maalraas/Maalraas_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Maalraas/Maalraas_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/maalraas/donorart_maalraas_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_manka_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult manka. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Manka",
+  "target_texpath": "swanimals/Manka/Manka_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Manka/Manka_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/manka/donorart_manka_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_mastiffphalone_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult mastiff phalone. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_MastiffPhalone",
+  "target_texpath": "swanimals/MastiffPhalone/MastiffPhalone_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/MastiffPhalone/MastiffPhalone_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/mastiffphalone/donorart_mastiffphalone_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_mastmot_f_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult mastmot. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4.75x4.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 4.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Mastmot",
+  "target_texpath": "swanimals/Mastmot/Mastmot_f_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Mastmot/Mastmot_f_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/mastmot/donorart_mastmot_f_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_mastmot_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) mastmot. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Mastmot",
+  "target_texpath": "swanimals/Mastmot/Mastmot_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Mastmot/Mastmot_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/mastmot/donorart_mastmot_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_mastmot_m_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult mastmot. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4.75x4.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 4.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Mastmot",
+  "target_texpath": "swanimals/Mastmot/Mastmot_m_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Mastmot/Mastmot_m_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/mastmot/donorart_mastmot_m_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_mawvorr_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult mawvorr. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3.5x3.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Mawvorr",
+  "target_texpath": "swanimals/Mawvorr/Mawvorr_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Mawvorr/Mawvorr_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/mawvorr/donorart_mawvorr_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_narglatch_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult narglatch. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3.5x3.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Narglatch",
+  "target_texpath": "swanimals/Narglatch/Narglatch_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Narglatch/Narglatch_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/narglatch/donorport_narglatch_m_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_nexu_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult nexu. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.8x1.8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.8,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Nexu",
+  "target_texpath": "swanimals/Nexu/Nexu_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/nexu/donorart_nexuw_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_nexu_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) nexu. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.2x1.2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.2,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Nexu",
+  "target_texpath": "swanimals/Nexu/Nexu_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/nexu/donorart_nexu_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_paintedspat_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult painted spat. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_PaintedSpat",
+  "target_texpath": "swanimals/PaintedSpat/PaintedSpat_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/PaintedSpat/PaintedSpat_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/paintedspat/PaintedSpat_east.png"
+  ]
+ },
+ {
+  "id": "dessic_rancor_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult rancor. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 6.5x6.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 6.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Rancor",
+  "target_texpath": "swanimals/Rancor/Rancor_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Rancor/Rancor_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/rancor/Rancor_east.png"
+  ]
+ },
+ {
+  "id": "dessic_raxshir_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult raxshir. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Raxshir",
+  "target_texpath": "swanimals/Raxshir/Raxshir_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Raxshir/Raxshir_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/raxshir/Raxshir_east.png"
+  ]
+ },
+ {
+  "id": "dessic_rikknit_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult rikknit. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Rikknit",
+  "target_texpath": "swanimals/Rikknit/Rikknit_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Rikknit/Rikknit_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/rikknit/Rikknit_east.png"
+  ]
+ },
+ {
+  "id": "dessic_roggwart_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult roggwart. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 6x6 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 6.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Roggwart",
+  "target_texpath": "swanimals/Roggwart/Roggwart_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Roggwart/Roggwart_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/roggwart/Roggwart_east.png"
+  ]
+ },
+ {
+  "id": "dessic_rycrit_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult rycrit. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.75x1.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Rycrit",
+  "target_texpath": "swanimals/Rycrit/Rycrit_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Rycrit/Rycrit_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/rycrit/Rycrit_east.png"
+  ]
+ },
+ {
+  "id": "dessic_silooth_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult silooth. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 8x8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 8.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Silooth",
+  "target_texpath": "swanimals/Silooth/Silooth_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Silooth/Silooth_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/silooth/Silooth_east.png"
+  ]
+ },
+ {
+  "id": "dessic_silooth_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) silooth. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Silooth",
+  "target_texpath": "swanimals/Silooth/Silooth_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Silooth/Silooth_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/silooth/Silooth_j_east.png"
+  ]
+ },
+ {
+  "id": "dessic_squall_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult squall. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.5x1.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Squall",
+  "target_texpath": "swanimals/Squall/Squall_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Squall/Squall_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/squall/Squall_east.png"
+  ]
+ },
+ {
+  "id": "dessic_stintaril_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult stintaril. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.75x1.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Stintaril",
+  "target_texpath": "swanimals/Stintaril/Stintaril_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Stintaril/Stintaril_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/stintaril/Stintaril_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tach_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tach. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.5x1.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tach",
+  "target_texpath": "swanimals/Tach/Tach_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tach/Tach_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tach/Tach_east.png"
+  ]
+ },
+ {
+  "id": "dessic_taozin_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult taozin. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4x4 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Taozin",
+  "target_texpath": "swanimals/Taozin/Taozin_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Taozin/Taozin_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/taozin/Taozin_east.png"
+  ]
+ },
+ {
+  "id": "dessic_taozin_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) taozin. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Taozin",
+  "target_texpath": "swanimals/Taozin/Taozin_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Taozin/Taozin_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/taozin/donorart_taozin_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tauntaun_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tauntaun. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 2x2 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tauntaun",
+  "target_texpath": "swanimals/Tauntaun/Tauntaun_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tauntaun/Tauntaun_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tauntaun/RSW_Tauntaun_Canon_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tauntaun_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) tauntaun. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tauntaun",
+  "target_texpath": "swanimals/Tauntaun/Tauntaun_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tauntaun/Tauntaun_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tauntaun/RSW_Tauntaun_Canon_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tetnisscrab_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) tetniss crab. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1.5x1.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_TetnissCrab",
+  "target_texpath": "swanimals/TetnissCrab/TetnissCrab_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/TetnissCrab/TetnissCrab_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tetnisscrab/donorart_tetnisscrab_j_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_thranta_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult thranta. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4x4 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Thranta",
+  "target_texpath": "swanimals/Thranta/Thranta_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Thranta/Thranta_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/thranta/Thranta_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tibidee_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tibidee. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 8x8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 8.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tibidee",
+  "target_texpath": "swanimals/Tibidee/Tibidee_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tibidee/Tibidee_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tibidee/Tibidee_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tooke_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tooke. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 0.75x0.75 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.75,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tooke",
+  "target_texpath": "swanimals/Tooke/Tooke_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tooke/Tooke_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tooke/Tooke_east.png"
+  ]
+ },
+ {
+  "id": "dessic_torton_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult torton. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 7x7 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 7.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Torton",
+  "target_texpath": "swanimals/Torton/Torton_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Torton/Torton_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/torton/Torton_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tukata_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tukata. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 4x4 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Tukata",
+  "target_texpath": "swanimals/Tukata/Tukata_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Tukata/Tukata_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tukata/Tukata_east.png"
+  ]
+ },
+ {
+  "id": "dessic_tuskcat_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult tusk cat. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_TuskCat",
+  "target_texpath": "swanimals/TuskCat/TuskCat_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/TuskCat/TuskCat_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/tuskcat/TuskCat_east.png"
+  ]
+ },
+ {
+  "id": "dessic_vapaad_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult vapaad. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3.8x3.8 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.8,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Vapaad",
+  "target_texpath": "swanimals/Vapaad/Vapaad_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Vapaad/Vapaad_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/vapaad/RUT_Vapaad_east.png"
+  ]
+ },
+ {
+  "id": "dessic_veermok_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult veermok. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 3x3 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Veermok",
+  "target_texpath": "swanimals/Veermok/Veermok_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Veermok/Veermok_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/veermok/donorart_veermok_v1_east.png"
+  ]
+ },
+ {
+  "id": "dessic_warbird_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult warbird. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 5x5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 768,
+  "canvas_h": 768,
+  "drawsize": 5.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Warbird",
+  "target_texpath": "swanimals/Warbird/Warbird_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Warbird/Warbird_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/warbird/Warbird_east.png"
+  ]
+ },
+ {
+  "id": "dessic_snoruuk_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of the adult snoruuk. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 1x1 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.0,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Snoruuk",
+  "target_texpath": "swanimals/Snoruuk/Snoruuk_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Snoruuk/Snoruuk_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/snoruuk/Snoruuk_east.png"
+  ]
+ },
+ {
+  "id": "dessic_snoruuk_j_dessicated_v1",
+  "rimflow_item_id": "DESSICATED_CORPSES_REDRAW_ONE_BY_ONE",
+  "prompt": "RimWorld creature corpse sprite, dessicated stage: the long-dead, sun-dried remains of a JUVENILE (young, smaller, softer proportions) snoruuk. The attached image shows the living animal: keep its exact proportions, limb count, head shape, horns, crests and tail, and draw only its dried remains. VIEW: orthographic side view, head toward the right (east), the whole carcass slumped on its belly and filling the frame width, centred. SUBJECT: pale bleached bone and parchment-tan skin drawn tight over the frame; the skull with hollow sockets, the ribcage standing out rib by rib, the spine and limb bones, a few brittle strips of dried hide in the animal's own colours clinging at the joints and the hollow flank. SCALE: 0.5x0.5 cells at its largest stage (a colonist is about 1 cell); the carcass spans the frame as the living animal would. Matte, dry, weathered, quiet.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.5,
+  "facings": "",
+  "priority": 51,
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred carcass on a transparent background, no ground, no props, no baked shadow. Realistic natural-history illustration, grounded anatomy.",
+  "target_def": "RSW_Snoruuk",
+  "target_texpath": "swanimals/Snoruuk/Snoruuk_j_Dessicated",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/swanimals/Snoruuk/Snoruuk_j_Dessicated.png",
+  "biome_neutral": true,
+  "background": "transparent",
+  "oversize_reason": "detail floor: 512px so the painted bones read (owner: sizing errs generous)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artpipe/_refs/dessicated/snoruuk/Snoruuk_j_east.png"
+  ]
+ }
+]
