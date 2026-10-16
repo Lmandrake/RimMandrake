@@ -10,6 +10,11 @@ of one level): L2/L4 then moved nothing and read as MOD FAILs (bench_live_202610
 (decilitres): FILL_UNITS, LEVEL. L5's 2026-10-16 FAIL (10,000 units spilled, 0 filth) was a MOD bug: RM_Filth_LiquidSpill's
 placementMask Natural is refused on every natural terrain (SPILL_FILTH_FIX_SOIL_SAYS_NO); the row now also reads
 RM_LiquidSpill.Unplaced, so a refused spill names itself instead of hiding behind the spilled-units count.
+The re-run after that fix (bench_live_20261016b, filth [1,1], spilled 1 -> 10001, unplaced 0 -> 0) was a HARNESS FAIL: the row
+counted filth THINGS, but vanilla FilthMaker.TryMakeFilth THICKENS the filth already on the cell (thickness < 5) instead of
+spawning a second one, and the 1-unit spill during the Outflow phase had already laid that filth. 10,000 units = 3 pieces
+(litresPerFilth 400 L = 4,000 units) = thickness 1 -> 4 on one thing. The row now sums RM_Filth_LiquidSpill THICKNESS in the
+rect (read from Filth.Label, "{label} x{thickness}") and wants it to rise by exactly FilthCount(spilled, unitsPerFilth).
 
 Promoted out of Transient/bench_live_20261011/fw_live_checks.py (debug_process.md: the checks that found real bugs persist).
 Run from the repo root with python.exe, bridge held; map = a 250x250 FlowWorks-tier quicktest. Exit 0 = every row PASS.
@@ -49,6 +54,8 @@ THEFT = "RimMandrake.FlowWorks.Machinery.RM_LiquidTheft"
 S_HOSE = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
 S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
 SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
+SPILL_FILTH = "RM_Filth_LiquidSpill"   # FreshWater has no LiquidDef.spillFilth of its own
+UNITS_PER_LITRE = 10                   # RM_Volume.UnitsPerLitre (tank units are decilitres)
 FW_PKG = "mandrake.rm.flowworks"
 
 
@@ -149,15 +156,34 @@ def ship_empty_verdict(trace, precondition=None):
     return ("PASS" if fall > 0 and gain > 0 else "FAIL"), "MOD", det
 
 
-def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, precondition=None):
+def filth_pieces(units, per_filth):
+    """RM_LiquidNetKernel.FilthCount: one piece per per_filth units, rounded up; any spill shows."""
+    if units is None or units <= 0:
+        return 0
+    per = max(1, per_filth or 1)
+    return max(1, (units + per - 1) // per)
+
+
+def filth_thickness(label):
+    """Vanilla Filth.Label is "FilthLabel" = "{0} x{1}" (or "{0} of {1} x{2}"): the trailing x<n> is the thickness."""
+    m = re.search(r"x(\d+)\s*$", str(label or ""))
+    return int(m.group(1)) if m else None
+
+
+def spill_verdict(held0, held1, drained, filth0, filth1, unplaced0, unplaced1, precondition=None, expected=None):
     """L5: capping an Outflow end empties the hose (held -> 0, drained >= held) AND the spill shows as filth at the end.
-    A spill the mod counted but could not place (RM_LiquidSpill.Unplaced rose) is a MOD FAIL that says so."""
-    det = {"heldUnits": [held0, held1], "drained": drained, "filthInRect": [filth0, filth1], "unplaced": [unplaced0, unplaced1]}
+    filth0/filth1 are the summed THICKNESS of the spill filth in the rect: vanilla thickens the filth on the cell (up to 5)
+    before it spawns another thing, so a thing count stays flat. expected = pieces the spill made (FilthCount); when known
+    the thickness must rise by exactly that. A spill the mod counted but could not place (RM_LiquidSpill.Unplaced rose) is
+    a MOD FAIL that says so."""
+    det = {"heldUnits": [held0, held1], "drained": drained, "filthThicknessInRect": [filth0, filth1],
+           "expectedPieces": expected, "unplaced": [unplaced0, unplaced1]}
     if precondition or not held0:
         return "UNMEASURED", "SITE", dict(det, why=precondition or "the hose held nothing before the cap")
     if None in (held1, drained, filth0, filth1):
         return "UNMEASURED", "HARNESS", dict(det, why="a reading was unreadable")
-    ok = held1 == 0 and drained >= held0 and filth1 > filth0
+    rise = filth1 - filth0
+    ok = held1 == 0 and drained >= held0 and rise > 0 and (expected is None or rise == expected)
     if not ok and unplaced0 is not None and unplaced1 is not None and unplaced1 > unplaced0:
         det["why"] = "the spill found no cell that takes the filth (RM_LiquidSpill.Unplaced %s -> %s)" % (unplaced0, unplaced1)
     return ("PASS" if ok else "FAIL"), "MOD", det
@@ -546,7 +572,16 @@ def main(argv=None):
             lt = B.call("jawa/list_things", rect="%d,%d,%d,%d" % frect, limit=200, includePawns=False) or {}
             if lt.get("success") is False:
                 return None
-            return sum(1 for t in lt.get("things") or [] if "filth" in str(t.get("def") or t.get("defName") or "").lower())
+            # thickness, not things: vanilla thickens the filth already on the cell (SPILL_FILTH_FIX_SOIL_SAYS_NO re-run)
+            tot = 0
+            for t in lt.get("things") or []:
+                if str(t.get("def") or t.get("defName") or "") != SPILL_FILTH:
+                    continue
+                k = filth_thickness(t.get("label"))
+                if k is None:
+                    return None
+                tot += k
+            return tot
 
         def unplaced():
             v = sget(SPILL, "Unplaced")
@@ -565,7 +600,11 @@ def main(argv=None):
         drained = (d1 - d0) if isinstance(d0, int) and isinstance(d1, int) else None
         pre = None if (lay.get("success") and role["ok"] and off["ok"] and pw is not None) else \
             "precondition: lay %s, Outflow %s, Capped %s, pump powered after %s" % (lay.get("success"), role, off, pw)
-        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre)
+        sp0, sp1 = net0.get("spilledUnits"), net1.get("spilledUnits")
+        lpf = sget(S_MACH, "litresPerFilth")
+        per = int(lpf) * UNITS_PER_LITRE if str(lpf).isdigit() else None
+        want = filth_pieces(sp1 - sp0, per) if per and isinstance(sp0, int) and isinstance(sp1, int) else None
+        st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre, expected=want)
         row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect,
                                                          spilledUnits=[net0.get("spilledUnits"), net1.get("spilledUnits")]))
         if st != "PASS":
