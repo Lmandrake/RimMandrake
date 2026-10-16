@@ -1,0 +1,121 @@
+{
+ "biome": "SUBJECTS_three_picks",
+ "built": "2026-10-15T19:46:12-0700",
+ "census": "Transient/biome_ffar/three_picks.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_Ashwallow": {
+   "columns": {
+    "A": {
+     "east": "8a4a8e8bc5d902d1eabc6739d4e73abedf5d9c9407834df5d3e5dbe993d25db9",
+     "north": "f5817a6d9ee868902e88f16bf7e88aedb1665cda94e3186427f044f0f4e99fd0",
+     "south": "f5a3d2bad0b494a7d899d7af11c1d008fdb354eaf582a65818b4f0a6be647a64"
+    },
+    "B": {
+     "east": "c6d767f5476d42532cb13d14382a46fa56f236b23216a46ecee09c8647bd93da",
+     "north": "bc8778aa5b71cc94821a94aafabf5780f6296e79c451da71d3046ec97b25052d",
+     "south": "00e736de02bf24e7c96cd8c16a66da935229827a74477a1d5289b39a0f17537d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+    "B": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render enact_f6734fd2_ashwallow_v1"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ashwallow"
+  },
+  "RM_Barbslinger": {
+   "columns": {
+    "A": {
+     "east": "bbaf33113a1097ac646f2a635c148f9b2c28923afd8d7fcab23b4917e01d2995",
+     "north": "b690d85f1fee3de081bb9a73525c2b10bf95aba1b9f291b8c02b74708618a995",
+     "south": "d2217327b73ce22b3e05a66ef32d66aaa375998b1f8ad09b14422868b0b8def3"
+    },
+    "B": {
+     "single": "c1e90b758454cc362566ea1cb56dec017c3e4c856e23c6c87443f9e20c55f734"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+    "B": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render pyr_barbslinger_spike"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "barbslinger"
+  },
+  "RSW_Nuna": {
+   "columns": {
+    "A": {
+     "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
+     "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
+     "south": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847"
+    },
+    "B": {
+     "east": "b9b130324e8c3ccc0bb1badbcd66f561f3f9211a4d6dcbfd2a756946dd69d5c9",
+     "north": "ed812ecba9a3a2731303552897f1795d28fb355e92903f9aa3177c55f3b54d34",
+     "south": "1ce1f1363804025267de7c1fe022a182b7f7ef77ae8da4056e267490d6c522d0"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+    "B": "RimStarWars/SWBestiary/Nuna/Nuna_m"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "nuna"
+  },
+  "RSW_Nuna_variantC": {
+   "columns": {
+    "A": {
+     "east": "faa1dc986f17054cb20da7c577288428e364f18581ad97f80cabeecf5caa63d7",
+     "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
+     "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Nuna/Nuna_fV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/Nuna/Nuna_fV_C",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "nuna_variantc"
+  }
+ },
+ "sheetId": "three_picks_sheet_2026-10-15",
+ "snapshotId": "3a578efa43dae8ff"
+}
