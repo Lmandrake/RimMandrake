@@ -462,8 +462,8 @@ def _set(t, field, value):
 @contextlib.contextmanager
 def _setting(t, field, value):
     """Flip one field for a block; ALWAYS restore the shipped default and re-read it."""
-    _set(t, field, value)
     try:
+        _set(t, field, value)    # inside the try: a set whose read-back failed may still have changed the field
         yield
     finally:
         _restore(t, field)
@@ -926,6 +926,8 @@ def stall_chain(t):
                 with _setting(t, "stallFreezeEnabled", False):
                     res = _path(t, [ids["small"]])
                 _note(t, "Stall, stallFreezeEnabled OFF: path", res)
+                if res[ids["small"]]["alive"] < 3:
+                    _unmeasured(t, "the small animal vanished from list_pawns: %r" % res)
                 if res[ids["small"]]["path"] < 3.0:
                     _fail("with stallFreezeEnabled OFF the small animal still moved only %.1f cells "
                           "in 1500 ticks (the toggle does not release it)" % res[ids["small"]]["path"])
@@ -934,6 +936,8 @@ def stall_chain(t):
                 with _setting(t, "modEnabled", False):
                     res = _path(t, [ids["small"]])
                 _note(t, "Stall, modEnabled OFF: path", res)
+                if res[ids["small"]]["alive"] < 3:
+                    _unmeasured(t, "the small animal vanished from list_pawns: %r" % res)
                 if res[ids["small"]]["path"] < 3.0:
                     _fail("with modEnabled OFF the small animal moved only %.1f cells in 1500 ticks "
                           "(the master switch does not gate the freeze)" % res[ids["small"]]["path"])
@@ -1745,10 +1749,10 @@ def sweetline_chain(t):
                     t.wait_ticks(2100)
                 off_v = seen()     # toggle restored, no tick has passed: the line is visible again
                 _note(t, "sweetline visits before / after a 13-day jump, visitors OFF", [before_v, off_v])
+                ids["visits_seen"] = seen      # before the verdict: the ON arm reads these even when this one fails
+                ids["visits_base"] = off_v
                 if off_v != before_v:
                     _fail("sweetlineVisitorsEnabled OFF but %d visit(s) were recorded" % (off_v - before_v))
-                ids["visits_seen"] = seen
-                ids["visits_base"] = off_v
         with _comp(t, "visitors_come_and_leave_marks", toggle="sweetlineVisitorsEnabled"):
             if _live(t):
                 tok0 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))

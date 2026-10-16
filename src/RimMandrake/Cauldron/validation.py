@@ -553,6 +553,7 @@ def _restore(t, field):
         if not _same((got or {}).get("value"), DEFAULTS[field]):
             print("%s RESTORE FAILED %s -> %r (set returned %r)" % (TAG, field, got, r),
                   file=sys.stderr, flush=True)
+            _note(t, "RESTORE FAILED %s" % field, {"got": got, "set": r})
     except Exception as ex:   # restoring must never mask the verdict that got us here
         print("%s RESTORE FAILED %s: %s" % (TAG, field, ex), file=sys.stderr, flush=True)
 
@@ -1509,6 +1510,10 @@ def bloom_chain(t):
             if _live(t):
                 if ids.get("sev1") is None:
                     _unmeasured(t, "no baseline severity at factor 1.0")
+                # a leftover load (toggle_off's removal failing) would add to the factor-2 tick and read as ratio ~3
+                t.bridge_call("jawa/pawn_health", pawn=ids["out"], action="remove", hediff=HEDIFF)
+                if _hediff(_rows(t, health=True).get(ids["out"]), HEDIFF) is not None:
+                    _unmeasured(t, "could not clear %s before the factor-2.0 tick: the ratio would be cumulative" % HEDIFF)
                 with _setting(t, "ventBloomExposureFactor", 2.0):
                     _next_interval_jump(t)
                     t.wait_ticks(40)

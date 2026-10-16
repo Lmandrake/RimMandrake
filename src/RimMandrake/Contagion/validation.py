@@ -1134,6 +1134,8 @@ def burn_forced(t):
                 # stood while ALIVE is kept, so a Burn and a dive seen before it died are still read.
                 b["native_track"], b["armored_track"], b["native_hd_alive"] = track, atrack, nhd
                 rows = _rows(t)
+                if not _alive(rows.get(b["open"])):
+                    _unmeasured(t, "the open visitor is not readable alive after the Burn: 'undosed' would mean nothing")
                 if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
                           "(hediffs: %s)" % sorted(_hdefs(rows.get(b["open"]))))
