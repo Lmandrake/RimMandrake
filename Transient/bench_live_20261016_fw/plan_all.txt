@@ -1,0 +1,1185 @@
+repo : /home/mandrake/rm/export_main/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 25 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+AcousticScanner  mandrake.rm.acousticscanner not enabled in ModsConfig
+    in sync (6 files)
+
+Aftermath        mandrake.rm.aftermath      not enabled in ModsConfig
+    in sync (4 files)
+
+AftermathRites   mandrake.rut.aftermath     not enabled in ModsConfig
+    in sync (4 files)
+
+Antiquities      mandrake.rut.antiquities   not enabled in ModsConfig
+    +  Patches/RUT_OldTongueTranscription.xml
+
+Armoury          mandrake.rsw.armoury       not enabled in ModsConfig · 2 file(s) HELD
+    H  Patches/Armour_Ratings.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    H  Patches/Warcasket_HazardRetune.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    +  Defs/ThingDefs/RSW_Coaxium.xml
+    +  Defs/ThingDefs/RSW_Duranium.xml
+    +  Defs/ThingDefs/RSW_MineShaftCanonPolicy.xml
+    +  Defs/ThingDefs/RSW_Stygium.xml
+    +  Patches/RSW_BeskarNeverReforged.xml
+    +  Patches/RSW_CanonMaterialsTrade.xml
+    +  Patches/RSW_DurasteelProducersZeroed.xml
+    +  Patches/RSW_SalvageByComposition.xml
+    +  Patches/RSW_StygiumConvert.xml
+    +  Patches/RSW_ZeroedOreGates.xml
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Hulk_east.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Hulk_north.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Thin_east.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Thin_north.png
+    +  Textures/SWApparel/DesertWraps/Draped/Wraps_Thin_south.png
+    +  canon_materials_l9_baseline.json
+    ~  About/About.xml
+    ~  Assemblies/JawaArmoury.dll
+    ~  Assemblies/JawaArmoury.dll.srchash
+    ~  Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml
+    ~  Patches/Armour_Leather.xml
+    ~  Patches/Armoury_RangedDamage.xml
+    ~  Patches/Turrets_DamageDoctrine.xml
+    ~  Patches/Turrets_Renames.xml
+
+AshkarrFlora     mandrake.rut.ashkarrflora  not enabled in ModsConfig
+    ~  Defs/ThingDefs_Plants/RUT_Fuzz.xml
+
+AshkarrInhabited mandrake.rut.inhabited     not enabled in ModsConfig
+    in sync (8 files)
+
+AshkarrLandmarkArt mandrake.rut.ashkarrlandmarkart not enabled in ModsConfig
+    +  Textures/World/Landmarks/Ashkarr/RSW_DeadSarlacc.png
+    +  Textures/World/Landmarks/Ashkarr/RSW_Sarlacc.png
+    ~  About/About.xml
+    ~  Patches/LandmarkIcons.xml
+    -  Textures/World/Landmarks/Ashkarr/sw_DeadSarlacc.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/World/Landmarks/Ashkarr/sw_Sarlacc.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+AshkarrWeatherSuite mandrake.rut.weathersuite  not enabled in ModsConfig
+    in sync (4 files)
+
+AssailantSalvage mandrake.rut.assailantsalvage not enabled in ModsConfig
+    in sync (28 files)
+
+Atlas            mandrake.rut.atlas         not enabled in ModsConfig
+    in sync (9 files)
+
+AtmosphericBase  mandrake.rm.atmosphericbase NOT DEPLOYED · not enabled in ModsConfig
+    +  About/About.xml
+    +  Assemblies/RimMandrakeAtmosphericBase.dll
+    +  Assemblies/RimMandrakeAtmosphericBase.dll.srchash
+    +  Defs/RM_AtmosphericSchemes.xml
+
+Bacta            mandrake.rsw.bacta         not enabled in ModsConfig
+    in sync (23 files)
+
+BirthHatchDemo   mandrake.rut.birthhatchdemo not enabled in ModsConfig
+    in sync (3 files)
+
+BrainWorms       mandrake.rsw.brainworms    not enabled in ModsConfig
+    in sync (12 files)
+
+CathedralPass    mandrake.rut.cathedralpass not enabled in ModsConfig
+    in sync (4 files)
+
+Cuisine          mandrake.rsw.cuisine       not enabled in ModsConfig
+    in sync (20 files)
+
+DesertVehicleReskin mandrake.rsw.desertvehiclereskin not enabled in ModsConfig
+    in sync (40 files)
+
+Doctrine         mandrake.rut.doctrine      not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Patches/MegafaunaYield.xml
+    ~  Patches/MegafaunaYield_OwnedPorts.xml
+    ~  Patches/MegafaunaYield_OwnedPorts_Warscar.xml
+
+DroidRepairJobs  mandrake.rut.droidrepairjobs not enabled in ModsConfig
+    in sync (7 files)
+
+Droidworks       mandrake.rsw.droidworks    not enabled in ModsConfig · 3 file(s) HELD
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_east.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_south.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    in sync (562 files, 3 held)
+
+EggReckoning     mandrake.rut.eggreckoning  not enabled in ModsConfig
+    in sync (7 files)
+
+EmpirePursuit    mandrake.rut.empirepursuit
+    in sync (11 files)
+
+ExplosiveGrowth  mandrake.rm.explosivegrowth not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Assemblies/RimMandrake.ExplosiveGrowth.dll
+    ~  Assemblies/RimMandrake.ExplosiveGrowth.dll.srchash
+    ~  Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml
+
+ExplosiveKnockback mandrake.rm.explosiveknockback not enabled in ModsConfig
+    ~  Assemblies/RimMandrakeExplosiveKnockback.dll
+    ~  Assemblies/RimMandrakeExplosiveKnockback.dll.srchash
+
+FallLineArrivals mandrake.rut.falllinearrivals not enabled in ModsConfig
+    in sync (12 files)
+
+FlameStatues     mandrake.rm.flamestatues   not enabled in ModsConfig
+    +  Patches/Helixien_Pipenet.xml
+    +  Textures/Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Colossus.png
+    +  Textures/Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Dancer.png
+    +  Textures/Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Ember.png
+    ~  Assemblies/RimMandrake.FlameStatues.dll
+    ~  Assemblies/RimMandrake.FlameStatues.dll.srchash
+    ~  Defs/ThingDefs_Buildings/RM_FlameStatues.xml
+
+  MayRequire: rewrote 5 folded-id/name guard(s) in 2 file(s) of FlowWorks (deployed copy only)
+FlowWorks        mandrake.rm.flowworks      105 file(s) HELD
+    H  northstar/review/map/keysheet.html   (repo-only; not deployed)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  review_map_stations_visuals.json   (repo-only; not deployed)
+           held: visuals station data for the review map builder; not game content
+    H  northstar/review/FlowWorks_review.decisions.json   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_review.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/FlowWorks_status_board.html   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/extension_result_20261005T194720.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T195815.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T200437.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T034753.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T040637.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T041535.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T042312.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T050823.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T194509.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T195337.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T200322.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T201023.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T202312.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T052325.json   (game-only; kept, not pruned)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T201540.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T232949.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261005T233603.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T000710.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T001245.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T002141.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003132.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003624.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003701.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003821.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T003913.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T004655.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T010918.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T011022.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T011246.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T020120.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T020515.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021000.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021144.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021337.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021726.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T021908.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T025236.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T033603.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T033840.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T040417.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T041249.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261006T041420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261007T052408.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261008T212615.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261008T212719.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261011T141116.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/extension_result_20261011T170309.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/player_missions_spec.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/proof_hose_20261011T080050.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/review/shots/ART_ladder_A.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/ART_ladder_B.png   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E2_flow.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E3_E4.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/E5_sinks.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/J_jobs.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/P_pits.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/REF_quarry.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/S_ladder.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/review/shots/X_promoted.jpg   (game copy left as-is)
+           held: review sheet + decisions + shots kept beside the mod; not game content
+    H  northstar/validation_v2_result_20261002T074022.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T074157.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T074420.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075252.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075351.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T075609.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092652.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092839.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T092952.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T093135.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T142502.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T144000.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T144257.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261002T145340.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T143030.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T143354.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T145357.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T150720.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T151248.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T151609.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T162414.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T191242.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T192324.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T193218.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T193627.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T202626.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T203150.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T231740.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261005T232201.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261006T040914.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261006T064707.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261007T140351.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261008T112703.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261008T141115.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261009T183221.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261009T183909.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T081718.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T131544.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T132117.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    H  northstar/validation_v2_result_20261011T151120.json   (game copy left as-is)
+           held: RELEASE_PACKAGING 2026-10-15: proof/validation result JSONs + mission spec, read from the repo by the northstar tools, never by the game
+    +  About/Preview.png
+    ~  About/About.xml
+    ~  Assemblies/RimMandrakeFlowWorks.dll
+    ~  Assemblies/RimMandrakeFlowWorks.dll.srchash
+    ~  Textures/RimMandrake/FlowWorks/Hose/Reel_Deployed.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Reel_PumpHookup.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_Deployed.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Futuristic/Reel_PumpHookup.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_Deployed.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Industrial/Reel_PumpHookup.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_Deployed.png
+    ~  Textures/RimMandrake/FlowWorks/Hose/Styles/Modern/Reel_PumpHookup.png
+    -  Textures/Things/Building/FlowWorks/Doors/RM_SecurityGrateDoor_MenuIcon.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Building/FlowWorks/Doors/RM_SecurityGrateDoor_Mover.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Building/FlowWorks/Doors/RM_Sluice_MenuIcon.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Building/FlowWorks/Doors/RM_Sluice_Mover.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Building/FlowWorks/Excavation/RM_WallFace_North.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Building/FlowWorks/Excavation/RM_WallFace_Side.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+FungalSoilTrade  mandrake.rut.fungalsoiltrade not enabled in ModsConfig
+    ~  About/About.xml
+
+GimmeSomeSlack   mandrake.rm.gimmesomeslack 149 file(s) HELD
+    H  northstar/hose_matrix_H0_20261009g.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T082415.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T084118.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T085243.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261010T175536.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261010T185049.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261010T225217.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261011T074701.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261011T145639.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261009T180159.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261009T180402.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261009T180525.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261009T180038.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261009T181630.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261009T182325.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261009T182705.json   (repo-only; not deployed)
+           held: proof/validation result JSONs: evidence, not game content
+    H  review/gss_art_manifest.json   (repo-only; not deployed)
+           held: review sheet + key kept beside the mod for quick review; not game content
+    H  review/keysheet.html   (repo-only; not deployed)
+           held: review sheet + key kept beside the mod for quick review; not game content
+    H  northstar/matrix_live_20261002T185109.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261002T192306.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261002T202406.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261002T232636.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261003T002338.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261004T104900.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261004T111300.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261004T112800.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/matrix_live_20261004T1152.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T010730.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T012345.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T012712.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/proof_all_20261005T013803.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261002T171851.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261002T172508.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261002T175540.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T084830.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T085649.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T090138.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T105819.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T110845.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T112205.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T115036.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_live_20261004T144729.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_removal-check_20261002T172648.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_removal-check_20261002T180115.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261002T171928.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261002T171953.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261002T172531.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261002T175735.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T084920.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T085739.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T090236.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T105830.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T110854.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T112215.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_aerial_save-load_20261004T144749.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_carry_20261004T233651.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_carry_20261004T234240.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_carry_20261005T001134.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261002T194954.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261002T195642.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261002T225907.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261002T235510.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T085236.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T105934.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T110908.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T112228.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T115144.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T144808.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_live_20261004T234747.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_maze_20261004T234830.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_maze_20261004T235220.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_maze_20261004T235328.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_maze_20261004T235424.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_relay_20261004T220506.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_relay_20261004T225835.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_relay_20261004T234910.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_removal-check_20261002T202639.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261002T195703.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261004T085316.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261004T105944.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261004T110918.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261004T112237.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_hose_save-load_20261004T144819.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_merged_laneb_20261002T1727.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T150544.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T151205.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T160521.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T170807.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T172639.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T180111.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261002T202649.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_removal-check_20261003T004318.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T134810.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T134921.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T135010.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T135427.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T135728.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T150004.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T150809.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T160022.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T165548.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T165843.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T170301.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T171227.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T172232.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T175304.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T194729.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T195410.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T225644.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261002T235249.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T084401.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T105710.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T110816.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T112138.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T114613.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T120435.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T144404.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_result_20261004T144613.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T150311.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T150833.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T160050.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T165902.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T170412.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T171245.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T172251.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T175324.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T195722.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T230005.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261002T235524.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T084454.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T105719.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T110824.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T112146.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T114931.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T120447.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_save-load_20261004T144631.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_hose_live_20261004T174950.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_hose_live_20261004T212855.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_hose_live_20261004T212933.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_hose_live_20261004T220422.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_hose_live_20261004T234917.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T172454.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T174915.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T175845.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T180716.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T212841.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T212919.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_style_live_20261004T220407.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    H  northstar/validation_styles_20261002T175647.json   (game copy left as-is)
+           held: proof/validation result JSONs: evidence, not game content
+    +  About/Preview.png
+    ~  About/About.xml
+
+GizkaStowaway    mandrake.rsw.gizkastowaway not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Patches/RSW_GizkaDonorPatches.xml
+
+Graffiti         mandrake.rm.graffiti       not enabled in ModsConfig
+    +  Textures/Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame/dripframe_0.png
+    +  Textures/Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox/stencilbox_0.png
+    ~  Defs/ThingDefs_Graffiti.xml
+
+GraffitiImperial mandrake.rsw.graffitiimperial not enabled in ModsConfig
+    in sync (3 files)
+
+GravshipLanding  mandrake.rm.gravshiplanding not enabled in ModsConfig
+    in sync (4 files)
+
+GreentideRaidAnt mandrake.rut.greentideraidant not enabled in ModsConfig
+    ~  Defs/ThingDefs_Races/RUT_Race_GreentideAnt.xml
+
+HostileFlora     mandrake.rm.hostileflora   not enabled in ModsConfig
+    in sync (2 files)
+
+HugeThings       mandrake.rm.hugethings     not enabled in ModsConfig
+    ~  Assemblies/RM_HugeThings.dll
+    ~  Assemblies/RM_HugeThings.dll.srchash
+    ~  Defs/JobDefs/RM_JobDefs.xml
+    ~  Languages/English/Keyed/RM_HugeThings.xml
+
+Inhabited        mandrake.rm.inhabited      not enabled in ModsConfig
+    in sync (43 files)
+
+IshkoDarkLandmarks mandrake.rut.ishkolandmarks not enabled in ModsConfig
+    in sync (3 files)
+
+JawaIonWeapons   mandrake.rsw.ionweapons    not enabled in ModsConfig
+    in sync (14 files)
+
+JawaRules        mandrake.rsw.jawarules     not enabled in ModsConfig
+    in sync (5 files)
+
+JawaVoice        mandrake.rsw.jawavoice     not enabled in ModsConfig
+    in sync (13 files)
+
+KeelHoist        mandrake.rm.keelhoist      not enabled in ModsConfig
+    in sync (11 files)
+
+KineticArms      mandrake.rm.kineticarms    not enabled in ModsConfig
+    in sync (29 files)
+
+KotORBandolierNorthFix mandrake.rsw.kotorbandoliernorthfix not enabled in ModsConfig
+    in sync (22 files)
+
+KyberTradePlot   mandrake.rut.kybertradeplot not enabled in ModsConfig
+    in sync (7 files)
+
+LoadTracer       mandrake.rm.loadtracer     not enabled in ModsConfig
+    in sync (3 files)
+
+LongHunger       mandrake.rut.longhunger    not enabled in ModsConfig
+    in sync (8 files)
+
+LoreStages       mandrake.rm.lorestages     not enabled in ModsConfig
+    in sync (3 files)
+
+LuminousPigment  mandrake.rm.luminouspigment
+    in sync (32 files)
+
+MSEDroidFix      mandrake.rsw.msedroidfix   not enabled in ModsConfig
+    in sync (3 files)
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    ~  About/About.xml
+    ~  Patches/AnimalDessicatedTexPaths_Fix.xml
+
+MenuShell        mandrake.rut.menushell     not enabled in ModsConfig
+    in sync (37 files)
+
+MineShaft        mandrake.rm.mineshaft      NOT DEPLOYED · not enabled in ModsConfig
+    +  About/About.xml
+    +  Assemblies/RimMandrake.MineShaft.dll
+    +  Assemblies/RimMandrake.MineShaft.dll.srchash
+    +  Defs/MineShaftPolicies/RM_MineShaftPolicy_Base.xml
+    +  Defs/ThingDefs_Buildings/RM_MineShaft.xml
+
+Ninefold         mandrake.rm.ninefold       not enabled in ModsConfig
+    in sync (5 files)
+
+OasisMaker       mandrake.rm.oasismaker     not enabled in ModsConfig
+    in sync (6 files)
+
+Oracle           mandrake.rm.oracle         not enabled in ModsConfig
+    in sync (4 files)
+
+PawnFlavor       mandrake.rut.pawnflavor    not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Patches/PawnFlavorPhase2_ThoughtDef.xml
+
+PlanetPresetPrime mandrake.rm.planetpresetprime not enabled in ModsConfig
+    in sync (4 files)
+
+PlantGrowth      mandrake.rut.plantgrowth   not enabled in ModsConfig
+    ~  ExplosiveGrowth/Defs/IncidentDefs/RUT_BloomBurst.xml
+    ~  ExplosiveGrowth/Defs/RUT_ExplosiveGrowthRoster.xml
+
+PropaneLakeMechanics mandrake.rut.propanelakemechanics not enabled in ModsConfig
+    in sync (9 files)
+
+ProximityHatch   mandrake.rm.proximityhatch not enabled in ModsConfig
+    in sync (3 files)
+
+PyrelandsMechanics mandrake.rut.pyrelandsmechanics
+    in sync (7 files)
+
+Pyrinth          mandrake.rm.pyrinth        not enabled in ModsConfig
+    in sync (25 files)
+
+RaidRedesigner   mandrake.rm.raidredesigner not enabled in ModsConfig
+    in sync (4 files)
+
+ResearchRetag    mandrake.rut.researchretag not enabled in ModsConfig
+    +  Patches/RUT_TechprintGating.xml
+    ~  About/About.xml
+    ~  Patches/RUT_ResearchRetag.xml
+    ~  Patches/RUT_ResearchTabAssign.xml
+
+RestrainingBolts mandrake.rut.restrainingbolts not enabled in ModsConfig
+    in sync (5 files)
+
+RimDefDump       mandrake.rm.rimdefdump     not enabled in ModsConfig
+    in sync (4 files)
+
+RimProperty      mandrake.rm.property       not enabled in ModsConfig
+    in sync (12 files)
+
+Rites            mandrake.rut.rites         not enabled in ModsConfig
+    in sync (6 files)
+
+RiverColors      mandrake.rut.rivercolors   not enabled in ModsConfig
+    in sync (4 files)
+
+RustCathedralRoaches mandrake.rut.rustcathedralroaches not enabled in ModsConfig
+    in sync (13 files)
+
+RustChrome       mandrake.rm.rustchrome     not enabled in ModsConfig
+    in sync (18 files)
+
+  MayRequire: rewrote 1 folded-id/name guard(s) in 1 file(s) of SWBestiary (deployed copy only)
+SWBestiary       mandrake.rsw.swbestiary    96 file(s) HELD
+    H  art/Livestock/mockups/karrask_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/karrask_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/onnik_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    +  Defs/DonorPackPort/RSW_DonorPack_P1_Plants.xml
+    +  Defs/DonorPackPort/RSW_DonorPack_Sarlacc.xml
+    +  Textures/World/Landmarks/RSW_DeadSarlacc.png
+    +  Textures/World/Landmarks/RSW_Sarlacc.png
+    ~  About/About.xml
+    ~  Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml
+    ~  Patches/BeastNorm/BeastNorm_Law3.xml
+    ~  Textures/RimStarWars/SWBestiary/Anooba/Anooba_m_north.png
+    ~  Textures/RimStarWars/SWBestiary/Anooba/Anooba_m_south.png
+    -  Patches/Tauntaun_CanonArt.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+
+SacredGraffiti   mandrake.rm.sacredgraffiti not enabled in ModsConfig
+    in sync (10 files)
+
+Sarlacc          mandrake.rsw.sarlacc       not enabled in ModsConfig
+    in sync (13 files)
+
+ScarlandsLadder  mandrake.rut.scarlandsladder not enabled in ModsConfig
+    in sync (8 files)
+
+ScavengerEvents  mandrake.rut.scavengerevents not enabled in ModsConfig
+    in sync (6 files)
+
+ShipMemory       mandrake.rut.shipmemory    not enabled in ModsConfig
+    in sync (7 files)
+
+ShipShields      mandrake.rut.shipshields   not enabled in ModsConfig
+    in sync (6 files)
+
+ShipVermin       mandrake.rm.shipvermin     not enabled in ModsConfig
+    in sync (5 files)
+
+  MayRequire: rewrote 1 folded-id/name guard(s) in 1 file(s) of Shokk (deployed copy only)
+Shokk            mandrake.rsw.shokk         not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Defs/FactionDefs/RSW_Shokk_FeraliskBrood.xml
+
+  MayRequire: rewrote 3 folded-id/name guard(s) in 3 file(s) of ShokkweaveEconomy (deployed copy only)
+ShokkweaveEconomy mandrake.rut.shokkweaveeconomy not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Defs/MapGeneration/ShokkweaveHarvestScatter.xml
+    ~  Defs/ThingDefs_Buildings/ShokkweaveHarvestNodes.xml
+    ~  Patches/ShokkweaveNestScatter_MapGenPatch.xml
+    -  Patches/ShokkweaveButcherYield.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+
+SolarMirrors     mandrake.rm.solarmirrors   not enabled in ModsConfig
+    in sync (11 files)
+
+StarWarsPatches  mandrake.rsw.patches       not enabled in ModsConfig
+    ~  Patches/WeaponTags_Renormalise.xml
+    -  Patches/BehemothArtUpres_StarWarsAnimalCollection.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+
+  MayRequire: rewrote 1 folded-id/name guard(s) in 1 file(s) of StarWarsRaces (deployed copy only)
+StarWarsRaces    mandrake.rsw.starwarsraces not enabled in ModsConfig
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadPot_east.png
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadPot_north.png
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadRidged_east.png
+    +  Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadRidged_north.png
+    ~  Patches/RSW_Jawa_GlareAdapted.xml
+
+StrandedQuest    mandrake.rm.strandedquest  not enabled in ModsConfig
+    in sync (4 files)
+
+StructureInjections mandrake.rm.injections     not enabled in ModsConfig
+    ~  Patches/SignalMast.xml
+
+StructureInjectionsRUT mandrake.rut.injections    not enabled in ModsConfig
+    ~  Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll
+    ~  Assemblies/RimMandrake.Utinni.StructureInjectionsRUT.dll.srchash
+    ~  Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml
+    ~  Patches/AshfallBattery.xml
+    ~  Patches/WhisperBatch2.xml
+
+StructureInjectionsSW mandrake.rsw.injections    not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Defs/GenStepDefs_SarlaccRing.xml
+    ~  Defs/GenStepDefs_Whisper_Batch1.xml
+    ~  Patches/SarlaccRing.xml
+    ~  Patches/WhisperSarlaccSign.xml
+
+TheBazaar        mandrake.rm.bazaar         not enabled in ModsConfig
+    in sync (6 files)
+
+Traces           mandrake.rm.traces         not enabled in ModsConfig
+    in sync (2 files)
+
+TrophyCraft      mandrake.rsw.trophycraft   not enabled in ModsConfig
+    ~  About/About.xml
+    ~  Patches/RSW_TrophyCraft_WyyyschokkFangDrop.xml
+
+UnfinishedLine   mandrake.rut.unfinishedline not enabled in ModsConfig
+    in sync (14 files)
+
+  MayRequire: rewrote 4 folded-id/name guard(s) in 4 file(s) of UtinniPatches (deployed copy only)
+UtinniPatches    mandrake.rut.patches       10 file(s) HELD
+    H  Defs/MapGeneration/RUT_FoundryFloor.xml   (repo-only; not deployed)
+           held: genSteps names held RUT_FoundryFloor_SalvageCache; the pocket map is entered only via held RUT_FoundryTowerEntrance
+    H  Defs/MapGeneration/RUT_FoundryTowerScatter.xml   (repo-only; not deployed)
+           held: LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundryTowerEntrance.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the entrance deployed without it)
+    H  Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   (repo-only; not deployed)
+           held: art wired f94585748 (2026-09-29): LIFT condition met, lift with a load round
+    H  Defs/ThingDefs_Buildings/RUT_VentForge.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentKiln.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentSmelter.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Patches/RUT_FoundryTowerHoistFrame.xml   (repo-only; not deployed)
+           held: 2026-10-03 belt r5: patches the held RUT_FoundryTowerEntrance; deployed alone it logged '[RimUtinni Patches] Patch operation PatchOperationConditional(RM_HoistFrame) failed' every load. Un-hold with the entrance.
+    H  Patches/RUT_FoundryTowerScatter_Register.xml   (repo-only; not deployed)
+           held: adds held RUT_FoundryTowerScatter onto Base_Player genSteps (MayRequire mandrake.rm.biomes is satisfied, so it dangled)
+    H  Patches/RUT_VentForge_RecipeWiring.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_VentForge.xml, 2026-09-19 (FOUNDRY, retroactive)
+    H  Patches/RUT_VentKiln_RecipeWiring.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_VentKiln.xml, 2026-09-19 (FOUNDRY, retroactive)
+    ~  About/About.xml
+    ~  Defs/FactionDefs/JawaHuttCartel.xml
+    ~  Defs/FactionDefs/JawaWildsteamClan.xml
+    ~  Defs/LandmarkDefs/RUT_GapingDoom.xml
+    ~  Defs/RulePackDefs/Namer_AshfallSpire.xml
+    ~  Patches/AnimalTolerances_Ashkarr.xml
+    ~  Patches/BiomeFloraStatAdjustments_Generated.xml
+    ~  Patches/Cauldron_ToxicPrizedMeat.xml
+    ~  Patches/Ikee_Rename.xml
+    ~  Patches/Ikee_Tuning.xml
+    ~  Patches/PlantTolerances_Ashkarr.xml
+    ~  Patches/WildAnimals_Cauldron.xml
+    ~  Patches/WildAnimals_CrackedLands.xml
+    ~  Patches/WildAnimals_FeverWood.xml
+    ~  Patches/WildAnimals_Greentide.xml
+    ~  Patches/WildPlants_Webwork.xml
+    -  Patches/AnoobaDrawSize_Fix.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+    -  Patches/Vapaad_BlueDesertArt.xml   (in game, not in repo; deleted in repo -- --apply prunes it)
+
+UtinniStatues    mandrake.rut.utinnistatues not enabled in ModsConfig
+    in sync (21 files)
+
+Visibility       mandrake.rm.visibility     not enabled in ModsConfig
+    in sync (4 files)
+
+Warcasket        mandrake.rm.warcasket      not enabled in ModsConfig
+    in sync (13 files)
+
+WasteRun         mandrake.rut.wasterun      not enabled in ModsConfig
+    in sync (8 files)
+
+Watchers         mandrake.rm.watchers       not enabled in ModsConfig
+    in sync (25 files)
+
+WeatherSuite     mandrake.rm.weathersuite
+    in sync (9 files)
+
+WildsteamEggBounty mandrake.rut.wildsteameggbounty not enabled in ModsConfig
+    in sync (4 files)
+
+WreckedMachines  mandrake.rm.wreckedmachines not enabled in ModsConfig
+    -  Textures/WreckedMachines/Modules/Distillation/Kludged/RM_WM_Distillation.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/WreckedMachines/Modules/Distillation/Repaired/RM_WM_Distillation.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/WreckedMachines/Modules/Distillation/Wrecked/RM_WM_Distillation.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+⚠️  3 hold pattern(s) matched NOTHING — stale, or the file moved:
+      src/DEPLOY_HOLD.txt:227  Pyrelands/diag/*
+      src/DEPLOY_HOLD.txt:456  TheForge/Staged/*
+      src/DEPLOY_HOLD.txt:457  Contagion/Staged/*
+    A hold that matches nothing protects nothing. Fix the pattern or delete the line.
+
+Drift found. Re-run with --apply to deploy.

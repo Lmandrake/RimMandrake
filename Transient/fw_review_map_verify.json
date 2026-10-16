@@ -1,6 +1,6 @@
 {
  "visuals_ok": 39,
- "gallery_ok": 75,
+ "gallery_ok": 85,
  "verify": {
   "vis_dry_dirt_D1": {
    "ok": true,
@@ -1261,8 +1261,12 @@
    "dug": 0,
    "want_dug": 0,
    "missing": [],
-   "pawns": [],
-   "want_pawns": []
+   "pawns": [
+    "Colonist"
+   ],
+   "want_pawns": [
+    "Colonist"
+   ]
   },
   "69": {
    "ok": true,
@@ -1285,12 +1289,8 @@
    "dug": 0,
    "want_dug": 0,
    "missing": [],
-   "pawns": [
-    "Colonist"
-   ],
-   "want_pawns": [
-    "Colonist"
-   ]
+   "pawns": [],
+   "want_pawns": []
   },
   "72": {
    "ok": true,
@@ -1302,8 +1302,8 @@
   },
   "73": {
    "ok": true,
-   "dug": 12,
-   "want_dug": 12,
+   "dug": 0,
+   "want_dug": 0,
    "missing": [],
    "pawns": [],
    "want_pawns": []
@@ -1339,16 +1339,100 @@
    "missing": [],
    "pawns": [],
    "want_pawns": []
+  },
+  "78": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "79": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "80": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "81": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [
+    "Colonist"
+   ],
+   "want_pawns": [
+    "Colonist"
+   ]
+  },
+  "82": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "83": {
+   "ok": true,
+   "dug": 12,
+   "want_dug": 12,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "84": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "85": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "86": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
+  },
+  "87": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": [],
+   "want_pawns": []
   }
  },
  "notes": [
-  "swept 76 non-colonist pawn(s) (kept 0 held on purpose)",
+  "swept 18 non-colonist pawn(s) (kept 0 held on purpose)",
   "station 60 (pipe_adapter): RM_PipeAdapter_Chemfuel is not loaded on this mod list; empty pad",
-  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Rust\", \"stackCount\": 5, \"x\": 207, \"z\": 69} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Rust'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_30e63762fbf948c89b452640828534df\", \"Status\": \"Completed\", \"Success\": true,",
-  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Verdigris\", \"stackCount\": 5, \"x\": 210, \"z\": 69} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Verdigris'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_67018c77fb5942109a3202cfd74c9996\", \"Status\": \"Completed\", \"Success\": ",
-  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Amber\", \"stackCount\": 5, \"x\": 213, \"z\": 69} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Amber'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_80b317a535b249de929e0ac4e2c4e7df\", \"Status\": \"Completed\", \"Success\": true",
-  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Violet\", \"stackCount\": 5, \"x\": 216, \"z\": 69} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Violet'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_ede0eb519a024bfdb871917b86baa4e9\", \"Status\": \"Completed\", \"Success\": tru",
-  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Chalk\", \"stackCount\": 5, \"x\": 219, \"z\": 69} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Chalk'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_5a1221b9945c42bea0b0e79d69bd3d0a\", \"Status\": \"Completed\", \"Success\": true"
+  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Rust\", \"stackCount\": 5, \"x\": 229, \"z\": 49} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Rust'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_2441dbf106d9431e8906ea3dd0ea7adb\", \"Status\": \"Completed\", \"Success\": true,",
+  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Verdigris\", \"stackCount\": 5, \"x\": 232, \"z\": 49} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Verdigris'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_2cf6fd4b3ee547279c9ae204eecbaf60\", \"Status\": \"Completed\", \"Success\": ",
+  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Amber\", \"stackCount\": 5, \"x\": 235, \"z\": 49} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Amber'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_b5d655f3b7e3466c8e4155e609e92ffd\", \"Status\": \"Completed\", \"Success\": true",
+  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Violet\", \"stackCount\": 5, \"x\": 238, \"z\": 49} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Violet'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_7f99c56a5dcf4e2ca8780cf5e64b0402\", \"Status\": \"Completed\", \"Success\": tru",
+  "rimworld/spawn_thing {\"defName\": \"RM_WaterBottle_Chalk\", \"stackCount\": 5, \"x\": 241, \"z\": 49} refused: {\"success\": false, \"message\": \"No ThingDef named 'RM_WaterBottle_Chalk'.\", \"suggestions\": [], \"operation\": {\"OperationId\": \"op_c4b17507d2964c2a9f9d538fcfc31f06\", \"Status\": \"Completed\", \"Success\": true"
  ],
- "wall_s": 213.4
+ "wall_s": 287.1
 }

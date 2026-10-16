@@ -1,0 +1,2 @@
+layout ok: 87 gallery stations + 39 visuals + 8 river stations (map R) + S0/M/F; key sheet -> /home/mandrake/rm/bench/src/RimMandrake/FlowWorks/northstar/review/map
+coverage: 694 inventory items in 169 features; 14 features with no station, each with its reason; 0 uncovered -> /home/mandrake/rm/bench/src/RimMandrake/FlowWorks/northstar/review/map/COVERAGE.md

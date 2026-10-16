@@ -1273,6 +1273,10 @@ class Review(object):
             for s in S:
                 if s["setup"].get("west_edge"):
                     out.append((0, s["origin"][1], s["origin"][0], SH))
+                # a reel's hose leaves through its WEST outlet: the straight lead-out needs open, unfogged ground in the
+                # gap west of the station (2026-10-16: natural rock there refused two of station 63's three lays)
+                if any(s["setup"].get(k) for k in ("hose", "hose_order", "hose_trail")):
+                    out.append((s["origin"][0] - (PITCH_X - SW), s["origin"][1] - 1, PITCH_X - SW, SH + 3))
         return out
 
     def clear(self, S, doc, only=None):
@@ -1540,6 +1544,8 @@ class Review(object):
                              "Pouring into the channel" if mode == "pour" else "Drawing into the tank")
         for x, z, op in u.get("ladder", []):
             self.gizmo_cycle(n, g(x, z), "Ladder", "Ladder up" if op == "raise" else "Ladder down")
+        if any(u.get(k) for k in ("hose", "hose_order", "hose_trail")):
+            self.B.ticks(1)     # the hose layer's whole-map CordWorld is cached per TICK: paused, it still sees the pre-clear map
         for rx, rz, x, z, end in u.get("hose", []):
             (ax, az), (bx, bz) = g(rx, rz), g(x, z)
             for cmd in ["lay:%d,%d,%d,%d" % (ax, az, bx, bz)] + (["end:%d,%d=%s" % (ax, az, end)] if end else []):

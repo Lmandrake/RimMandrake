@@ -1,0 +1,8 @@
+22:56:25 fresh quicktest map
+22:56:52 calm world (peaceful=True)
+22:57:25 cleared
+22:58:17 visuals: 39 stations placed
+22:59:43 gallery: 87 stations placed
+22:59:46 visuals verified: 39 of 39 stations as built
+22:59:57 gallery verified: 85 of 85 stations as built (2 placeholders or absent-def stations not read)
+22:59:57 DONE in 212.4s; visuals 39/39, gallery 85/85; 9 notes (Transient/fw_review_map_verify.json)
