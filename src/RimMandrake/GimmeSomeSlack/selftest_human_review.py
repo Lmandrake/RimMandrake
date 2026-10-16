@@ -250,5 +250,15 @@ fa = HR.FREE
 check(fa["their_conduit"] and fa["their_battery"] and fa["bracket_wall"], "free area: another faction's grid for a clamp and a wall for brackets")
 N_CHECKS += 10
 
+# in-save sign books: one a station, each on its own cell outside every station footprint, title SIGN n
+books = HR.sign_ops(S)
+bc = [tuple(int(v) for v in b.split("|")[:2]) for b in books]
+fp = [(t["origin"][0], t["origin"][1], t["size"][0], t["size"][1]) for t in S]
+inside = [c for c in bc if any(x <= c[0] < x + w and z <= c[1] < z + h for x, z, w, h in fp)]
+check(len(books) == len(S) and not inside and len(set(bc)) == len(bc)
+      and all(b.split("|")[2].startswith("SIGN %d " % t["n"]) for b, t in zip(books, S)),
+      "sign books: one a station, own free cell outside every footprint (inside: %s)" % inside)
+N_CHECKS += 1
+
 print("%d/%d checks passed" % (N_CHECKS - len(fails), N_CHECKS))
 sys.exit(1 if fails else 0)
