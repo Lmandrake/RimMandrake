@@ -13,7 +13,7 @@
     <description>A broad, umbrella-crowned tree with smooth grey-green bark and dense dark foliage, hung underneath with clusters of pale gold, teardrop fruit. The fruit is sweet and crisp, and people who find a stand of lumbrels tend to come back for it.</description>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/Plant/RM_LumbrelTree</texPath>
+      <texPath>Things/RM_LumbrelTree/RM_LumbrelTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.15, 0.3, 0.15)</volume>

@@ -18,7 +18,7 @@
     </statBases>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/Plant/RM_Salvessa</texPath>
+      <texPath>Things/RM_Salvessa/RM_Salvessa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
