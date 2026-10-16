@@ -97,6 +97,8 @@ namespace RimMandrake.TheForge
         public static float dhoggurSwellHours = 8f;
         public static float dhoggurCooldownDays = 1f;
         public static float dhoggurSwellScale = 3f;
+        // Card 2026-10-16 "Only attacks and your colonists": off = only a pawn, turret or trap provokes the swell.
+        public static bool dhoggurSwellEnvironmentTriggers = false;
         // A cell gains at most one pass per half day, so only a path walked
         // on separate rains wears in.
         public const int DhokkurWearCooldownTicks = 30000;
@@ -169,6 +171,7 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref dhoggurSwellHours, "dhoggurSwellHours", 8f);
             Scribe_Values.Look(ref dhoggurCooldownDays, "dhoggurCooldownDays", 1f);
             Scribe_Values.Look(ref dhoggurSwellScale, "dhoggurSwellScale", 3f);
+            Scribe_Values.Look(ref dhoggurSwellEnvironmentTriggers, "dhoggurSwellEnvironmentTriggers", false);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -386,15 +389,18 @@ namespace RimMandrake.TheForge
                 list.GapLine();
             }
 
-            if (Group(list, "The dhoggur", RimMandrake.Shared.SettingScope.Now, new[] { "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale" }))
+            if (Group(list, "The dhoggur", RimMandrake.Shared.SettingScope.Now, new[] { "dhoggurSwellEnabled", "dhoggurSwellManhunts", "dhoggurSwellHours", "dhoggurCooldownDays", "dhoggurSwellScale", "dhoggurSwellEnvironmentTriggers" }))
             {
-                list.CheckboxLabeled("Dhoggur swells when harmed", ref dhoggurSwellEnabled,
-                    "Damage a dhoggur and it swells with a violent chemical reaction: bigger, tougher, harder-hitting, "
+                list.CheckboxLabeled("Dhoggur swells when attacked", ref dhoggurSwellEnabled,
+                    "Attack a dhoggur (any creature or colonist, a turret or a trap) and it swells with a violent chemical reaction: bigger, tougher, harder-hitting, "
                   + "and spitting fire, until the swell passes. Off: it stays a plain placid forager that flees when "
                   + "hurt, and one already swollen shrinks back at once.");
                 list.CheckboxLabeled("  A swollen wild dhoggur hunts its attackers", ref dhoggurSwellManhunts,
                     "While swollen, a wild dhoggur goes manhunter and calms down when the swell ends. A tamed one never "
                   + "turns. Off: it swells but does not hunt.");
+                list.CheckboxLabeled("  The environment also sets it off", ref dhoggurSwellEnvironmentTriggers,
+                    "Off (shipped): only an attack provokes the swell; boiling-rain scald, fire nobody set, the "
+                  + "melt-back and other hazards hurt it without swelling it. On: any damage at all does.");
                 list.Label("  Swell lasts: " + dhoggurSwellHours.ToString("0.#") + " hours");
                 dhoggurSwellHours = list.Slider(dhoggurSwellHours, 1f, 24f);
                 list.Label("  Rest before it can swell again (counted from the swell's end): " + dhoggurCooldownDays.ToString("0.##") + " days");

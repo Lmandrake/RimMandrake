@@ -1474,7 +1474,13 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description =
                 "Safety rail: refuse to damage player colonists unless this is true.",
                 DefaultValue = false)]
-            bool allowColonists = false)
+            bool allowColonists = false,
+            [ToolParameter(Description =
+                "ThingID of the damage's instigator (a pawn, turret or trap on this map). Omit for " +
+                "an instigator-less hit, the same DamageInfo weather, fire and other environmental " +
+                "sources build. Code that asks WHO hit (DamageInfo.Instigator) sees this thing.",
+                DefaultValue = null)]
+            string instigatorId = null)
         {
             if (string.IsNullOrWhiteSpace(damageDef))
                 return Fail("damageDef is required.");
@@ -1560,7 +1566,7 @@ namespace JawaBench.BridgeTools
                             new
                             {
                                 accepted = new[] { "thingId", "x", "z", "damageDef", "amount",
-                                                   "armorPenetration", "bodyPart", "allowColonists" },
+                                                   "armorPenetration", "bodyPart", "allowColonists", "instigatorId" },
                                 thingIdGiven = false,
                                 xGiven = x,
                                 zGiven = z
@@ -1574,6 +1580,16 @@ namespace JawaBench.BridgeTools
                         return Fail($"Nothing at ({x},{z}) to damage. The cell is empty, so " +
                                     "this is a miss, not a failure of the damage itself.",
                                     new { x, z });
+                }
+
+                // An instigator that does not resolve is a refusal, never a silent null: a null
+                // instigator is a DIFFERENT hit (environmental) to code that reads it.
+                Thing instigator = null;
+                if (!string.IsNullOrWhiteSpace(instigatorId))
+                {
+                    instigator = map.listerThings.AllThings.FirstOrDefault(q => q.ThingID == instigatorId);
+                    if (instigator == null)
+                        return Fail($"No instigator with id '{instigatorId}' on this map. Nothing was damaged.");
                 }
 
                 var results = new List<object>();
@@ -1603,7 +1619,7 @@ namespace JawaBench.BridgeTools
 
                     var before = thing.HitPoints;
                     var hediffsBefore = pawn?.health?.hediffSet?.hediffs?.Count ?? 0;
-                    var dinfo = new DamageInfo(ddef, amount, armorPenetration, -1f, null, part, null);
+                    var dinfo = new DamageInfo(ddef, amount, armorPenetration, -1f, instigator, part, null);
                     var res = thing.TakeDamage(dinfo);
                     hit++;
 
@@ -1621,6 +1637,7 @@ namespace JawaBench.BridgeTools
                         hitPointsAfter = thing.Destroyed ? 0 : thing.HitPoints,
                         destroyed = thing.Destroyed,
                         totalDamageDealt = res.totalDamageDealt,
+                        instigatorId = instigator?.ThingID,
                         // Read the world back rather than trusting the call: a
                         // damage def with harmsHealth:false deals ZERO hit points
                         // and this is where that becomes visible.

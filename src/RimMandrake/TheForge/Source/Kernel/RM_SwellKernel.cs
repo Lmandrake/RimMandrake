@@ -26,6 +26,17 @@ namespace RimMandrake.TheForge
             return enabled && !dead && damageDealt > 0f && !Swollen(s) && now >= s.cooldownUntilTick;
         }
 
+        // Owner card 2026-10-16 ("Boiling rain and melt fire hurt a wild Dhoggur... Should the environment set off the
+        // swell?" -> "Only attacks and your colonists"): what hurt it decides. A pawn (any faction, hunting included) or a
+        // weapon building (turret, trap) provokes it; weather scald, fire with no attacker, melt-back and every other
+        // environmental hurt does not, unless the "environment also triggers" setting is on.
+        public enum SwellSource { Pawn, WeaponBuilding, Environment }
+
+        public static bool SourceProvokes(SwellSource src, bool environmentTriggers)
+        {
+            return src != SwellSource.Environment || environmentTriggers;
+        }
+
         public static int DurationTicks(float hours) { return Math.Max(1, (int)Math.Round(hours * TicksPerHour)); }
         public static int CooldownTicks(float days) { return Math.Max(0, (int)Math.Round(days * TicksPerDay)); }
 
