@@ -721,6 +721,8 @@ def defs_chain(t):
             if not isinstance(wa, (list, dict)):
                 _unmeasured(t, "wildAnimals is not serialisable by get_defs (non-public field): %r; the "
                                "roster is checked statically from the XML" % (wa,))
+            if not WILD_ANIMALS:
+                _fail("the XML roster parsed to 0 wildAnimals: nothing to compare (parser broken?)")
             blob = json.dumps(wa)
             missing = [a for a in WILD_ANIMALS if '"%s"' % a not in blob]   # exact quoted name, never a prefix
             if missing:
@@ -989,6 +991,12 @@ def site(t):
 
 # --------------------------------------------------------------------------- chain: burn_forced
 
+def _under_patch(t, px, pz):
+    """Inside the burn chain's 8x8 roof patch (x+6, z-4, 8, 8 off the pad anchor)."""
+    x, z = t.anchor
+    return px is not None and pz is not None and x + 6 <= px < x + 14 and z - 4 <= pz < z + 4
+
+
 def _open_pawns(t, x, z):
     """The Burn fixture: an open visitor, a roofed visitor, a UV-shy native, an armored native, and a
     roof patch east of the native to dive for. Drafted colonists hold their ground."""
@@ -1072,18 +1080,25 @@ def burn_forced(t):
                 b["armored_fixture"] = b["armored"]
                 b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
-                track = []
+                track, atrack = [], []
                 for _ in range(4):                   # 4 x 200 = the same 800 ticks, sampling the dive
                     _wait(t, 200)
-                    nrow = _rows(t).get(b["native"]) or {}
+                    srows = _rows(t)
+                    nrow = srows.get(b["native"]) or {}
+                    arow = srows.get(b["armored"]) or {}
                     track.append((nrow.get("x"), nrow.get("z")))
-                b["native_track"] = track
+                    atrack.append((arow.get("x"), arow.get("z")))
+                b["native_track"], b["armored_track"] = track, atrack
                 rows = _rows(t)
                 if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
                           "(hediffs: %s)" % sorted(_hdefs(rows.get(b["open"]))))
-                if not _alive(rows.get(b["roofed"])):
+                rrow = rows.get(b["roofed"])
+                if not _alive(rrow):
                     _unmeasured(t, "the ROOFED control visitor is not readable alive: shelter cannot be judged")
+                if not _under_patch(t, rrow.get("x"), rrow.get("z")):
+                    _unmeasured(t, "the ROOFED control visitor is not under the roof patch (at %s,%s): shelter cannot "
+                                   "be judged" % (rrow.get("x"), rrow.get("z")))
                 if "RM_BurnDose" in _hdefs(rows.get(b["roofed"])):
                     _fail("a ROOFED visitor was dosed: shelter must protect")
                 _STATE["rows_after"] = rows
@@ -1104,6 +1119,8 @@ def burn_forced(t):
                 if "Burn" not in _hdefs(nat):
                     _fail("the UV-shy native took no Burn damage under open sky (hediffs: %s)"
                           % sorted(_hdefs(nat)))
+                if any(_under_patch(t, px, pz) for px, pz in (b.get("armored_track") or [])):
+                    _unmeasured(t, "the armored control stood under the roof patch: 'spared' could be shelter")
                 if "Burn" in _hdefs(arm):
                     _fail("the ARMORED native took Burn damage: %s" % sorted(_hdefs(arm)))
 
