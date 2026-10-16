@@ -841,3 +841,9 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"quicktest map up","ts":"2026-10-16T16:06:48Z","tsn":1792166808398609415}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"dhoggur swell proof done","ts":"2026-10-16T16:15:58Z","tsn":1792167358154096276}
 {"seat":"OWNER","event":"close","id":"BRASKEEN_REDRAW_VARIATIONS_ON_E","sha":"2392e564e","ownerSaid":"Braskeen is awesome.","ts":"2026-10-16T16:24:16Z","tsn":1792167856965096856}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"dhoggur_swell live re-run: attack-only source filter + swollen art","ts":"2026-10-16T16:34:30Z","tsn":1792168470475124212}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"quicktest map up","ts":"2026-10-16T16:36:25Z","tsn":1792168585242160872}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"dhoggur_swell run done; restoring owner list","ts":"2026-10-16T16:38:42Z","tsn":1792168722964483227}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"closed after dhoggur_swell run","ts":"2026-10-16T16:38:52Z","tsn":1792168732376951933}
+{"seat":"OWNER","event":"note","id":"DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR","text":"Built 270dcc71e: swell only on a pawn/turret/trap instigator; setting 'environment also triggers' default off. Live 64cba2bdb: dhoggur_swell 16/16 PASS (scald/fire no swell, attack swells, opt-in swells). Swollen art drawn in game, no texture errors.","byCard":"Boiling rain and melt fire hurt a wild Dhoggur... Should the environment set off the swell? → Only attacks and your colonists (Recommended)","ts":"2026-10-16T16:39:04Z","tsn":1792168744418962364}
+{"seat":"OWNER","event":"note","id":"DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR","text":"Kept; comment in EndSwell forbids a guard.","byCard":"Death on shrink → Keep it, it is the price of the swell","ts":"2026-10-16T16:39:05Z","tsn":1792168745383071025}

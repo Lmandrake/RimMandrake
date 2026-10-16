@@ -748,7 +748,10 @@
       "dhoggur_swell.cooldown_blocks_a_new_swell": "PASS",
       "dhoggur_swell.dhoggur_placid_before_harm": "PASS",
       "dhoggur_swell.dhoggur_source_wiring": "PASS",
+      "dhoggur_swell.environment_opt_in_swells": "PASS",
+      "dhoggur_swell.fresh_dhoggur_for_attacks": "PASS",
       "dhoggur_swell.provoked_dhoggur_swells_x3": "PASS",
+      "dhoggur_swell.rain_scald_does_not_swell": "PASS",
       "dhoggur_swell.rested_dhoggur_swells_again": "PASS",
       "dhoggur_swell.scale_setting_is_read_live": "PASS",
       "dhoggur_swell.second_hit_does_not_refresh": "PASS",
@@ -757,6 +760,7 @@
       "dhoggur_swell.switched_off_it_shrinks_at_once": "PASS",
       "dhoggur_swell.swollen_dhoggur_spits_fire": "PASS",
       "dhoggur_swell.swollen_wild_dhoggur_is_manhunter": "PASS",
+      "dhoggur_swell.unattended_fire_does_not_swell": "PASS",
       "dormancy.skipped#0": "UNMEASURED",
       "dormancy.skipped#1": "UNMEASURED",
       "dormancy.skipped#2": "UNMEASURED",
@@ -804,7 +808,7 @@
     },
     "components": {
       "counts": {
-        "PASS": 12,
+        "PASS": 16,
         "UNMEASURED": 98
       },
       "not_ok": [
@@ -908,20 +912,20 @@
         "sky_pastures.skipped#5"
       ]
     },
-    "hash": "a6f745cdac79912e93285f01c1356b5290c2d43aba72acdd9d3421e07ad6a6f7",
+    "hash": "46936ebeab9e909faa41d40597b99a3a861cd27822736930a89fe261c469774a",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "TheForge/northstar_driver@TheForge_20261016T161326Z.json",
+    "run_id": "TheForge/northstar_driver@TheForge_20261016T163631Z.json",
     "source": {
       "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
       "mode": "live",
-      "result": "Transient/northstar/TheForge_20261016T161326Z.json",
-      "started": "2026-10-16T16:13:26Z",
+      "result": "Transient/northstar/TheForge_20261016T163631Z.json",
+      "started": "2026-10-16T16:36:31Z",
       "verb": "northstar_driver run"
     },
     "status": "RED",
-    "ts": 1792167280.9604812
+    "ts": 1792168659.2566328
   },
   "TheRot": {
     "hash": "28c088ea5dd30df305953df827a5464af3804830f5b6aab1d6dc527edc0b447f",

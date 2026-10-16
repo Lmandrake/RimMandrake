@@ -1,0 +1,1908 @@
+{
+  "mod": "TheForge",
+  "mode": "live",
+  "started_utc": "2026-10-16T16:36:31Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "dhoggur_swell.site_ready_dhoggur",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.dhoggur_placid_before_harm",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.rain_scald_does_not_swell",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.unattended_fire_does_not_swell",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.fresh_dhoggur_for_attacks",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.provoked_dhoggur_swells_x3",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.swollen_dhoggur_spits_fire",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.swollen_wild_dhoggur_is_manhunter",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.scale_setting_is_read_live",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.second_hit_does_not_refresh",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.swell_reverts_after_a_third_of_a_day",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.cooldown_blocks_a_new_swell",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.rested_dhoggur_swells_again",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.switched_off_it_shrinks_at_once",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.environment_opt_in_swells",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dhoggur_swell.dhoggur_source_wiring",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "log_clean.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#11",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#12",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#13",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#14",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#15",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "defs_resolve.skipped#16",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "def_wiring.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "biome_wiring.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "settings.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "settings.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "spunstone.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "spunstone.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "spunstone.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "keelwork.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_walk.skipped#11",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "cycle_arms.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "still_heat_hiss.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "still_heat_hiss.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "still_heat_hiss.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "voices.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "voices.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "voices.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "dormancy.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "floatstone_harvest.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "floatstone_harvest.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "plume_fronts.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    },
+    {
+      "id": "sky_pastures.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "541 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "21 active, sha256 b2aa9f7c0e6ee065 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "dhoggur_swell"
+  ],
+  "chains_skipped": [
+    "log_clean",
+    "defs_resolve",
+    "def_wiring",
+    "biome_wiring",
+    "settings",
+    "spunstone",
+    "keelwork",
+    "cycle_walk",
+    "cycle_arms",
+    "still_heat_hiss",
+    "voices",
+    "dormancy",
+    "floatstone_harvest",
+    "plume_fronts",
+    "sky_pastures"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "dhoggur_swell",
+      "name": "site_ready_dhoggur",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "dhoggur_placid_before_harm",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "rain_scald_does_not_swell",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "unattended_fire_does_not_swell",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "fresh_dhoggur_for_attacks",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "provoked_dhoggur_swells_x3",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "swollen_dhoggur_spits_fire",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "swollen_wild_dhoggur_is_manhunter",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "scale_setting_is_read_live",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "second_hit_does_not_refresh",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "swell_reverts_after_a_third_of_a_day",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "cooldown_blocks_a_new_swell",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "rested_dhoggur_swells_again",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "switched_off_it_shrinks_at_once",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "environment_opt_in_swells",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dhoggur_swell",
+      "name": "dhoggur_source_wiring",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "log_clean",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#11",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#12",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#13",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#14",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#15",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#16",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "def_wiring",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_wiring",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spunstone",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spunstone",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spunstone",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "keelwork",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_walk",
+      "name": "skipped#11",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cycle_arms",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "still_heat_hiss",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "still_heat_hiss",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "still_heat_hiss",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "voices",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "voices",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "voices",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dormancy",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "floatstone_harvest",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "floatstone_harvest",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "plume_fronts",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sky_pastures",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains dhoggur_swell)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 16,
+    "FAIL": 0,
+    "UNMEASURED": 98
+  },
+  "all_green": false,
+  "timing": {
+    "n": 192,
+    "total_ms": 11369.682,
+    "mean_ms": 59.2171,
+    "p50_ms": 49.4083,
+    "p95_ms": 183.2195,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 2,
+        "mean_ms": 53.4171,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 28,
+        "mean_ms": 13.7948,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 3,
+        "mean_ms": 28.5767,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 21.6034,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 17.334,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 12.2838,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 33,
+        "mean_ms": 34.911,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 2,
+        "mean_ms": 231.8163,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 19,
+        "mean_ms": 51.4758,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 2,
+        "mean_ms": 50.0103,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 1,
+        "mean_ms": 51.5778,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 1,
+        "mean_ms": 17.526,
+        "errors": 0
+      },
+      "jawa/get_terrain_layers": {
+        "n": 1,
+        "mean_ms": 54.8657,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 3,
+        "mean_ms": 49.2338,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 36,
+        "mean_ms": 49.3442,
+        "errors": 0
+      },
+      "jawa/safe_advance": {
+        "n": 12,
+        "mean_ms": 354.336,
+        "errors": 0
+      },
+      "rimworld/list_debug_action_children": {
+        "n": 1,
+        "mean_ms": 51.2482,
+        "errors": 0
+      },
+      "rimworld/execute_debug_action": {
+        "n": 17,
+        "mean_ms": 17.8131,
+        "errors": 0
+      },
+      "jawa/damage": {
+        "n": 14,
+        "mean_ms": 49.6158,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 3,
+        "mean_ms": 50.2697,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 8,
+        "mean_ms": 49.0907,
+        "errors": 0
+      },
+      "jawa/time_set_ticks": {
+        "n": 3,
+        "mean_ms": 51.1877,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "46936ebeab9e909faa41d40597b99a3a861cd27822736930a89fe261c469774a"
+}
