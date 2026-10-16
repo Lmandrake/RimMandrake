@@ -1,0 +1,76 @@
+{
+ "biome": "SUBJECTS_dewback_reconcile",
+ "built": "2026-10-16T07:04:44-0700",
+ "census": "Transient/biome_ffar/dewback_reconcile.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RSW_Dewback": {
+   "columns": {
+    "A": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
+     "north": "0bace5521bc60713a4bd7f3caf44a0b6caee8097c2e128f83eb33b10d8a81beb",
+     "south": "46831788c65c1182198f3eadb083377c5b211503c597c209f85fb197702c825a"
+    },
+    "B": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
+     "north": "806721529c14e58fb91a8e6438baf6f48f36b3019980fb358770e88685791147",
+     "south": "20c2056ba76be1bdb771fe14e362479fcfc9be3ab163d9b923a7529c2d3b7595"
+    },
+    "C": {
+     "east": "a64097abc972d7bafdc36a7ed07f7708952c2d2c3ca0a4e388d6bded18558f30",
+     "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
+     "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
+    },
+    "D": {
+     "east": "a64097abc972d7bafdc36a7ed07f7708952c2d2c3ca0a4e388d6bded18558f30"
+    },
+    "E": {
+     "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
+     "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
+    },
+    "F": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
+    },
+    "G": {
+     "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "B": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "C": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "D": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "E": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "F": "RimStarWars/SWBestiary/Dewback/Dewback",
+    "G": "RimStarWars/SWBestiary/Dewback/Dewback"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render standtall_v1_dewback",
+    "C": "render reconcile_v1_dewback",
+    "D": "render regen_ls_canon_dewback_v1",
+    "E": "render regen_ls_canon_dewback_v1_ns",
+    "F": "render longshade_rsw_dewback_v1 \u2014 grader flagged (advisory)",
+    "G": "render facingrepair_dewback_v1"
+   },
+   "pools": [
+    "RimStarWars/SWBestiary/Dewback/Dewback"
+   ],
+   "res": "RimStarWars/SWBestiary/Dewback/Dewback",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "dewback"
+  }
+ },
+ "sheetId": "dewback_reconcile_sheet_2026-10-16",
+ "snapshotId": "b4826d88204b6c32"
+}
