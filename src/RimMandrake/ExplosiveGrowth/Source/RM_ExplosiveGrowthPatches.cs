@@ -93,7 +93,7 @@ namespace RimMandrake.ExplosiveGrowth
             Map map = __instance.Map;
             if (map == null) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(map);
-            if (comp == null || comp.SoakedCount == 0) return;
+            if (comp == null || comp.SoakedCount == 0 || !RM_ExplosiveGrowthRegistry.BiomeInScope(map.Biome)) return;
             __result *= comp.GrowthFactorFor(__instance);
         }
     }
