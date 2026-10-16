@@ -1,0 +1,47 @@
+[
+ {
+  "id": "forgeslot_jobbosh_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_Jobbosh",
+  "target_texpath": "Things/Pawn/Animal/RM_Jobbosh/RM_Jobbosh",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": "east,south,north",
+  "priority": 45,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT jobbosh, a small ground-runner of a volcanic mountain that hunts a swarm of glittering beetle-like skitterers during brief bursts of boiling rain. SCALE: footprint 1x1 cell (drawSize 1.0); a colonist is about 1 cell, this animal is forearm-long. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a low, lean, four-legged lizard-shaped hunter with a long flattened body, a wedge head with a wide gaping jaw built for scooping many small prey at once, and a stiff tapering tail. Its skin is fine glazed ceramic-like scales in sulphur ochre and pale chalk-yellow banding, matte with a faint glaze, darker umber along the spine. Long slender toes splayed wide for running on wet hot rock. Posture alert and mid-dart, head low. PALETTE ANCHOR: VENT-SULPHUR (ochre, chalk-yellow, umber) - deliberately unlike the black, rust and green of its castmates. MUST SHOW: (1) lizard-like quadruped body plan, small; (2) wide scooping jaw; (3) glazed ochre-and-chalk banded scales. NEGATIVE: no fur, no feathers, no frill or dewlap, no glow, no seam-red or lava on the body, no rain.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. North facing is a TRUE REAR VIEW from directly behind: no eyes, no face. New invented creature: draw from this description only; no donor pixels exist or may be used."
+ },
+ {
+  "id": "forgeslot_dhoggur_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_Dhoggur",
+  "target_texpath": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": "east,south,north",
+  "priority": 45,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT dhoggur, a small armoured burrower of a volcanic mountain that licks the white mineral salt crust left on the rock after boiling rain flashes to steam. SCALE: footprint about 1.2x1.2 cells (drawSize 1.2); a colonist is about 1 cell, this animal is knee-high and squat. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a squat, heavy, short-legged digger shaped like a kiln brick on four stubby spade-clawed legs, with a broad flat shovel snout and a pale rasping tongue just showing. Its back is three overlapping domed armour plates of slate grey, crusted and caked with chalky white salt bloom that flakes at the plate edges; belly and legs darker slate. Small deep-set eyes under a brow plate. Posture: head down, snout to the ground, rasping. PALETTE ANCHOR: SALT-WHITE (chalk white crust over cool slate grey) - deliberately unlike the black, rust and green of its castmates. MUST SHOW: (1) squat armoured quadruped digger, short legs, spade claws; (2) flat shovel snout; (3) white salt crust caked on slate plates. NEGATIVE: no fur, no spikes, no glow, no seam-red or lava on the body, no rain, not a turtle shell, not an armadillo.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte mineral surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. North facing is a TRUE REAR VIEW from directly behind: no eyes, no face. New invented creature: draw from this description only; no donor pixels exist or may be used."
+ },
+ {
+  "id": "forgeslot_jurrox_v1",
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "target_def": "RM_Jurrox",
+  "target_texpath": "Things/Pawn/Animal/RM_Jurrox/RM_Jurrox",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.1,
+  "facings": "east,south,north",
+  "priority": 45,
+  "background": "transparent",
+  "biome_register": "The Forge: a volcanic massif under doubled furnace light, hard white sun above and seam-red from below; basalt black, ash grey, obsidian gloss in the room, seam-red ONLY where melt actually shows (never on this animal). Heat-adapted and few: no fur, no lush register, nothing lava-native.",
+  "prompt": "RimWorld creature sprite of the ADULT jurrox, a small high-stepping scavenger of a volcanic mountain's ash skirts that eats dead, heat-killed matter. SCALE: footprint about 1.1x1.1 cells (drawSize 1.1); a colonist is about 1 cell, this animal stands shin-high on long legs. CANVAS: 256x256, square, the animal fills most of the frame width. VIEW: orthographic side view facing right (east), standing naturally on a transparent background, whole animal in frame, centred. SUBJECT: a slight, narrow-bodied four-legged gleaner on long thin stilt legs held high so the body clears the hot ground, caught mid-trot with one forefoot lifted; a long narrow probing snout like tongs, a short stiff tail, tight leathery hide over a visible ribcage. Hide colour dusty bruise-violet fading to ash grey on the legs, with a dark oxblood stain only around the snout tip. Small hooded eyes. PALETTE ANCHOR: BRUISE-ASH (dusty violet-grey, ash, oxblood at the snout only) - deliberately unlike the black, rust and green of its castmates. MUST SHOW: (1) stilt-legged quadruped, body held high; (2) long narrow tong-like snout; (3) violet-grey leathery hide over ribs. NEGATIVE: no fur, no mane, no glow, no seam-red or lava on the body, no rain, not a dog, not a deer.",
+  "style_notes": "Realistic painted natural-history illustration of a living animal, grounded believable anatomy, matte leathery surface texture, soft painted edges, readable silhouette at game zoom (owner ruling 2026-10-08: realistic, not cartoon). Never cute. North facing is a TRUE REAR VIEW from directly behind: no eyes, no face. New invented creature: draw from this description only; no donor pixels exist or may be used."
+ }
+]
