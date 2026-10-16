@@ -75,7 +75,7 @@
            Graphic_StackCount, not Graphic_MealVariants: the variants class wants
            a numbered set of meal images and this job renders one dish. -->
       <texPath>Things/Item/Meal/RM_VorrelSeedDish</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>62</MarketValue>

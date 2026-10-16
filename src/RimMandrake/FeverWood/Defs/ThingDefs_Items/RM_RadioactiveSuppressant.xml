@@ -35,7 +35,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>
     <statBases>

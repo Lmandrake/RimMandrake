@@ -86,7 +86,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Brakkel/RM_Brakkel_a</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.4, 0.5, 0.35)</volume>
@@ -323,7 +323,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Maddrick/RM_Maddrick_a</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.32, 0.32, 0.22)</volume>
@@ -367,7 +367,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Illurin/RM_Illurin_a</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.3, 0.35, 0.22)</volume>

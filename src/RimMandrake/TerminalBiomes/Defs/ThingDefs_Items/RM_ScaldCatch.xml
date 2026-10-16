@@ -20,16 +20,9 @@
     <label>shulla</label>
     <description>A hot-white sliver netted from between the Scald's vent plumes, a heat-shimmer still playing off its edge as it cools in the pail. Always comes up in company.</description>
     <graphicData>
-      <!-- SCALD_ART_UPGRADE_WAVE_1, 2026-09-26: owned Graphic_StackCount
-           folder, three variants small/medium/large (FishBase's own
-           graphicClass; texPath is a FOLDER, and
-           Graphic_StackCount.SubGraphicForStackCount takes [0] at
-           stackCount 1, [2] at the stack limit and [1] between — which is
-           why the files must sort small→large by name).
-           _b/_c are scald2_shullacatch_b/_c; _a is scald3_shullacatch_a, a
-           refile, because the original scald2_shullacatch_a finished with
-           no PNG on disk and was the one missing render in the wave. -->
+      <!-- Single flat PNG (Fish/RM_ShullaCatch.png), so Graphic_Single: FishBase's Graphic_StackCount wants a FOLDER of small/medium/large variants and found none (L1 donor-off, 2026-10-16). -->
       <texPath>Things/Item/Fish/RM_ShullaCatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.1</Nutrition>

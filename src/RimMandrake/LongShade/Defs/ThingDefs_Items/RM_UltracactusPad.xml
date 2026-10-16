@@ -31,7 +31,7 @@
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/Plant/RM_UltracactusPad</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>1.4</MarketValue>

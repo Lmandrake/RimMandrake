@@ -74,7 +74,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(140, 70, 150)</color>
     </graphicData>
     <socialPropernessMatters>true</socialPropernessMatters>

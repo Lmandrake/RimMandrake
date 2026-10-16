@@ -9,7 +9,7 @@
     <defName>RM_ProjectorCore</defName>
     <label>projector core</label>
     <description>The humming heart of an old-line aerosol projector. Nothing humans make can replace it. Needed to build an aerosol screen.</description>
-    <graphicData><texPath>Things/Item/RM_Etchant</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <graphicData><texPath>Things/Item/RM_Etchant</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
     <thingCategories><li>Manufactured</li></thingCategories>
     <stackLimit>5</stackLimit>
     <statBases><MarketValue>600</MarketValue><Mass>2</Mass><Flammability>0</Flammability></statBases>
