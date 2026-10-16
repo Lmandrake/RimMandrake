@@ -253,9 +253,8 @@
       <!-- FORGE_RULED_CONTENT_1 (FORGE_BEDAZZLE_SITTING_1, owner turn 2 "Wire in all
            waiting."): the roster's greater bulloo row, weight from
            rosters/the_forge.json. RM_ColossalAerofleet is our port of the donor
-           AA_ColossalAerofleet (Phase 0 P3); the MayRequire stays only until our
-           art is installed at our own path (until then its texPath is the donor's). -->
-      <RM_ColossalAerofleet MayRequire="sarg.alphaanimals">0.5</RM_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
+           AA_ColossalAerofleet (Phase 0 P3); its art is installed at our own path, so no donor guard. -->
+      <RM_ColossalAerofleet>0.5</RM_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
       <!-- FORGE_RULED_CONTENT_1 (turn 4 "1) admit."): the four admitted natives,
            Defs/ThingDefs_Races/RM_TheForgeNatives.xml. The dhuvvox's baseline row
            spawns them; FORGE_CYCLE_MECHANICS_1's dormancy comp seals the
