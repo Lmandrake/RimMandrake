@@ -14,7 +14,10 @@
                                             rel: with or without a leading Textures/.
                                             TAG: artpipe-collect | script:<writer path>; a mechanical
                                             install is refused over an owner-kept picture
-    art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make
+    art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make; a push range is
+                                            also checked event -> PNG (the committed tree holds what the ledger says)
+    art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
+                                            (default HEAD) disagree, with the worktree bytes; read-only
     art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only)
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
     art.py index                            write the gitignored projection index.json
@@ -114,7 +117,7 @@ def cmd_backfill(a):
     for s in steps:
         r = getattr(backfill, f"step_{s}")(budget=a.budget)
         print(f"backfill {s}: {json.dumps(r)}", flush=True)
-        rc = rc or (3 if r.get("budget_reached") else 0)
+        rc = rc or (3 if r.get("budget_reached") else 1 if r.get("drift") else 0)
     return rc
 
 
@@ -204,6 +207,30 @@ def cmd_install(a):
         res = L.parse_texfile(L.rel_key(a.rel))["res"]
         FR.after_install([res, res.rpartition("/")[0]])
     return 0
+
+
+def cmd_doctor(a):
+    import subprocess
+    import art_guard as G
+    root = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True).stdout.strip()
+    rows = G.doctor(root or L.REPO_ROOT, a.rev)
+    by = {}
+    for r in rows:
+        by[r["kind"]] = by.get(r["kind"], 0) + 1
+    unc = sum(1 for r in rows if r["uncommitted_install"])
+    print(f"doctor ({a.rev}): {len(rows)} slot(s) where ledger and committed tree disagree"
+          + (": " + ", ".join(f"{k} {n}" for k, n in sorted(by.items())) if rows else "")
+          + (f"; {unc} of them are installs sitting uncommitted in this clone's worktree" if unc else ""))
+    if a.out:
+        Path(a.out).write_text(json.dumps(rows, indent=1))
+        print(f"  rows -> {a.out}")
+    else:
+        for r in rows[:40]:
+            print(f"  {r['kind']:<17} {r['path']}  ledger={str(r['ledger'])[:12]} tree={str(r['tree'])[:12]} "
+                  f"worktree={str(r['worktree'])[:12]}")
+        if len(rows) > 40:
+            print(f"  … {len(rows) - 40} more (--out FILE for all)")
+    return 1 if rows else 0
 
 
 def cmd_purge(a):
@@ -300,6 +327,7 @@ def main(argv=None):
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
     p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")
     sp.add_parser("index")
+    p = sp.add_parser("doctor"); p.add_argument("--rev", default="HEAD"); p.add_argument("--out")
     p = sp.add_parser("backfill-rejections", help="record the bytes behind past owner redo/reject rulings")
     p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("rotate", help="move old events of a seat's live shard into write-once archive files")
@@ -318,7 +346,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "put": cmd_put, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "put": cmd_put, "doctor": cmd_doctor, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

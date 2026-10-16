@@ -97,17 +97,23 @@ def _roles():
 
 
 def step_disk(budget=480):
+    """Observe every PNG on disk. A slot the ledger has NO record of gets `backfill-observed`; a slot whose disk
+    bytes differ from the recorded live sha (or that the ledger retired) is DRIFT: reported, never written —
+    the 2026-10-14 re-scan relabelled 18 recorded installs back to the old picture that way."""
     t0 = time.time()
     w = L.Writer()
+    idx = L.Index(list(L.read_events()))
     root = L.src_root()
     slots = _roles()
     n0 = len(w.known)
-    count = 0
+    count, drift, seen = 0, [], set()
     for p in sorted(root.rglob("*.png")):
         sp = L.split_texture_path(str(p.relative_to(root.parent)))
         if not sp:
             continue
         mod, rel = sp
+        key = (L.mod_key(mod), L.rel_key(rel))
+        seen.add(key)
         b = p.read_bytes()
         sha = L.sha256_bytes(b)
         pt = L.parse_texfile(rel)
@@ -116,12 +122,28 @@ def step_disk(budget=480):
         _variant(w, sha=sha, b=b, kind="repo", loc=f"{mod}/Textures/{rel}", rel=rel,
                  date=time.strftime("%Y-%m-%d", time.localtime(p.stat().st_mtime)),
                  extra={"role": role, "mod": mod, "subjects": subj})
+        count += 1
+        cur = idx.live.get(key)
+        if cur is not None:
+            if cur.get("sha") != sha:
+                drift.append(f"DISK_DIFFERS {mod}/Textures/{rel}: ledger {str(cur.get('sha'))[:12]}, disk {sha[:12]}")
+            continue
+        if key in idx._retired:
+            drift.append(f"DISK_RETIRED {mod}/Textures/{rel}: the ledger retired this slot, disk holds {sha[:12]}")
+            continue
         w.add({"type": "live", "id": L.det_id("live-backfill", mod, rel, sha), "mod": mod, "rel": rel,
                "sha": sha, "prev": None, "role": role, "reason": "backfill-observed"})
-        count += 1
+    sroot = root.resolve().parent
+    for (m, r), ev in idx.live.items():
+        if (m, r) not in seen and (sroot / m).is_dir() and not (sroot / m / "Textures" / r).is_file():
+            drift.append(f"DISK_MISSING {m}/Textures/{r}: ledger records {str(ev.get('sha'))[:12]} live, no file on disk")
     w.flush()
     _phsave()
-    return {"files": count, "new_events": len(w.known) - n0, "secs": round(time.time() - t0)}
+    for d in drift[:20]:
+        print("  DRIFT " + d, flush=True)
+    if drift:
+        print(f"  {len(drift)} drifted slot(s) left UNWRITTEN — reconcile them (art.py doctor), never relabel", flush=True)
+    return {"files": count, "new_events": len(w.known) - n0, "drift": len(drift), "secs": round(time.time() - t0)}
 
 
 def _git(*args, **kw):
