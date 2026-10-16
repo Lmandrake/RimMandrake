@@ -514,6 +514,30 @@ def t_ensure_playing_map():
     check("runner: dry-run skips", runner.ensure_playing_map(dry_run=True) == "dry-run")
 
 
+def t_ensure_test_profile():
+    """Night 2026-10-16: an expired companion test profile made every safe_advance a 'surprise'; the run must stop."""
+    import datetime as dt
+    import json
+    class C:
+        def __init__(self, r): self.r = r
+        def call(self, tool, p): return self.r
+    pf = os.path.join(tempfile.mkdtemp(), "companion_profile.json")
+    with open(pf, "w", encoding="utf-8") as fh:
+        json.dump({"profile": "test", "expiresUtc": "2026-10-16T14:00:00Z"}, fh)
+    now = dt.datetime(2026, 10, 16, 10, 0, tzinfo=dt.timezone.utc)
+    check("runner: live test profile passes", runner.ensure_test_profile(
+        _client=C({"effectiveProfile": "test", "profileFile": pf}), _now=now) == "test")
+    for label, r, n in (("campaign (expired) profile refuses the run",
+                         {"effectiveProfile": "campaign", "profileWhy": "test profile expired at X", "profileFile": pf}, now),
+                        ("a grant about to lapse refuses the run",
+                         {"effectiveProfile": "test", "profileFile": pf}, now.replace(hour=13, minute=40))):
+        try:
+            runner.ensure_test_profile(_client=C(r), _now=n)
+            check("runner: " + label, False)
+        except RuntimeError as e:
+            check("runner: " + label, "profile" in str(e) and pf in str(e), str(e))
+
+
 # --------------------------------------------------------- deploy skip rule
 
 def t_deploy_tool_already_skips_python_files():
@@ -608,6 +632,7 @@ TESTS = [
     t_run_dry_run_never_calls_subprocess,
     t_windows_python_shells_posix_scripts_through_wsl,
     t_ensure_playing_map,
+    t_ensure_test_profile,
     t_restore_full_runs_even_when_a_mod_load_fails,
     t_deploy_tool_already_skips_python_files,
 ]

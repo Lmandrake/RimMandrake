@@ -354,6 +354,10 @@ def test_safe_advance_chunks():
     _rows = [json.loads(x) for x in open(_gl, encoding="utf-8")] if os.path.exists(_gl) else []
     ok(len(_rows) == 1 and (_rows[0].get("stopBy") or {}).get("kind") == "death" and "Hernan died" in _rows[0]["message"],
        "every GovernorStop leaves a governor_stops.jsonl row naming its trigger (even if nobody catches it)")
+    _g = cg.GovernorStop({"success": False, "refused": True, "error": "REFUSED in the CAMPAIGN profile: expired",
+                          "state": {"tick": 1}})
+    ok("CAMPAIGN profile" in str(_g) and not str(_g).endswith("True"),
+       "a profile-gate refusal (refused: true) names the companion's reason, never a bare 'True'")
     # TESTENV_WILD_DOWNED_REPAIR_STOPS_CLOCK: advance_chunk resumes past a wild animal's downed stop, never past a colonist's
     class W(S):
         def __init__(self, sev):
