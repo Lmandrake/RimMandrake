@@ -91,7 +91,8 @@ def _pen(kind, n=4, flyer=False, note=""):
     """A walled, roofed granite pen (make_empty_room) with deep-ash floor: wild animals cannot open its door.
     Owner, 2026-10-15: "You should put many creatures in each pen so they will have different facings to study."
     So every pen holds n (default 4) placed at FACING_SPOTS and turned S/E/N/W explicitly (jawa/artboard_stage
-    gives each a long Wait job and sets its rotation after it), never left to wander into a facing."""
+    gives each a long Wait job and sets its rotation after it), never left to wander into a facing.
+    To watch them move on a loaded review save: --release-pens (and --pin-pens to put them back)."""
     return dict(room=(1, 1, 10, 10), pawns=[(kind, 6, 6, n)], keep=True, flyer=flyer, note=note, facings=True)
 
 
@@ -602,6 +603,16 @@ BOARDS = {
 def footprint(s):
     x, z = s["origin"]
     return (x, z, SW, SH)
+
+
+def pen_stations(S):
+    """Stations whose animals are held on the map (pawns + keep): the pens --release-pens / --pin-pens act on."""
+    return [s for s in S if s["setup"].get("pawns") and s["setup"].get("keep")]
+
+
+def pen_rects(S):
+    """The 'x,z,w,h;...' rects string the companion's pen_release / pen_pin take: one footprint per pen station."""
+    return ";".join("%d,%d,%d,%d" % footprint(s) for s in pen_stations(S))
 
 
 def _overlap(a, b, pad=0):
@@ -1244,6 +1255,13 @@ class Review(object):
                 if not (r.get("pawns") or r.get("id") or r.get("pawnId")):
                     self.notes.append("station %d: no %s spawned (%s)" % (s["n"], kind, json.dumps(r)[:160]))
 
+    def pens(self, S, release):
+        """Release (end the pinning 60000-tick Wait job, so they wander in their pens) or re-pin every pen animal.
+        Returns the tool's reply; a selection that changes nobody is reported, never read as success."""
+        if release:
+            return self.call("jawa/pen_release", rects=pen_rects(S))
+        return self.call("jawa/pen_pin", rects=pen_rects(S), restore=True)
+
     def burn(self, S, phase):
         rects = []
         for s in S:
@@ -1391,9 +1409,15 @@ def main(argv=None):
     ap.add_argument("--signs", action="store_true", help="re-place the in-save sign books (live)")
     ap.add_argument("--signs-for", default=None, metavar="SAVE",
                     help="offline: write the sign sidecar for an existing keeper SAVE (no game needed)")
+    ap.add_argument("--release-pens", action="store_true",
+                    help="live: end every pen animal's pinning Wait job so it wanders in its pen (unpause to watch)")
+    ap.add_argument("--pin-pens", action="store_true",
+                    help="live: pin the pen animals again, back on their release cell and facing where known")
     ap.add_argument("--name", default="RM_pyre_review_%s" % time.strftime("%Y%m%d"))
     ap.add_argument("--log", default=os.path.join(REPO, "Transient", "pyre_review_map_build_log.md"))
     a = ap.parse_args(argv)
+    if a.release_pens and a.pin_pens:
+        ap.error("give one of --release-pens / --pin-pens")
     S = station_list()
     probs = layout_check(S, known_defs(S) if a.plan else None) + coverage_check(S)
     if probs:
@@ -1485,6 +1509,13 @@ def main(argv=None):
         if r["ok"]:
             keysheet(S, st.get("live"), save=name, weather=st.get("weather", "Clear"))
         return rc if r["ok"] else 1
+    if a.release_pens or a.pin_pens:
+        r = R.pens(S, a.release_pens)
+        keys = ("selected", "released", "notReleased", "pinned", "returnedHome", "jobsAfter", "message")
+        print("%s pens (%d): %s; skipped %d" % ("release" if a.release_pens else "pin", len(pen_stations(S)),
+                                               {k: r.get(k) for k in keys if k in r}, len(r.get("skipped") or [])))
+        if not r.get("success"):
+            rc = 1
     if a.signs:
         r = RM.place_signs(R.B, sign_ops(S, st.get("ruin")))
         print("signs: %s" % {k: r.get(k) for k in ("count", "refused", "message")})
