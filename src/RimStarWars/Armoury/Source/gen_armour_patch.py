@@ -834,6 +834,11 @@ for fn, by_mod in sorted(ops.items()):
             fh.write("      </operations>" + NL)
             fh.write("    </match>" + NL + "  </Operation>" + NL)
         fh.write(NL + "</Patch>" + NL)
+    # Phase 0 (owner 2026-10-15, Q3): this scan still knows the donors' names, so end by migrating the file just written
+    # onto our RSW_/RM_ twins (design/Jawa/mods/retarget_donor_patch.py); a re-run emits no donor names.
+    sys.path.insert(0, os.path.join(ROOT, "design", "Jawa", "mods"))
+    import retarget_donor_patch as _rdp
+    _rdp.migrate_if_donor(os.path.join(OUTDIR, fn))
     print("  %-34s %4d operations in %d mod groups" % (fn, n, len(by_mod)))
 
 if own_dropped:

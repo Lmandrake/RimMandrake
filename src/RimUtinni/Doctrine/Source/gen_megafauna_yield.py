@@ -364,6 +364,15 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
         fh.write("    </match>" + NL + "  </Operation>" + NL)
     fh.write(NL + "</Patch>" + NL)
 
+# Phase 0 (owner 2026-10-15, Q3): the dump scan above still knows the donors' names, so end by migrating the file just
+# written onto our RSW_/RM_ twins (design/Jawa/mods/retarget_donor_patch.py); a re-run emits no donor names.
+sys.path.insert(0, os.path.join(ROOT, "design", "Jawa", "mods"))
+import retarget_donor_patch as _rdp
+_rdp.migrate_if_donor(out)
+# the loadAfter check below reads the mods the MIGRATED file still gates on: the donors are gone from it
+with io.open(out, encoding="utf-8") as _mfh:
+    emitted_mods &= set(__import__("re").findall(r"<mods><li>([^<]+)</li></mods>", _mfh.read()))
+
 # --- DOCTRINE_LOADAFTER_STALE_1: assert About.xml's loadAfter still covers ---
 # every mod this file just emitted a PatchOperationFindMod group for. The list
 # above IS the patch surface; About.xml's <loadAfter> is what protects that

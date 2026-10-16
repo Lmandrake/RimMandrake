@@ -318,6 +318,11 @@ def write_patch(path, top_ops):
     tree = ET.ElementTree(root)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tree.write(path, encoding="utf-8", xml_declaration=True)
+    # Phase 0 (owner 2026-10-15, Q3): the dump this reads still knows the donors' names, so end by migrating the file just
+    # written onto our RSW_/RM_ twins (design/Jawa/mods/retarget_donor_patch.py); a file with no donor gate is untouched.
+    sys.path.insert(0, os.path.join(ROOT, "design", "Jawa", "mods"))
+    import retarget_donor_patch as _rdp
+    _rdp.migrate_if_donor(path)
 
 
 def main():

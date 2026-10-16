@@ -302,6 +302,16 @@ def run(path, write):
         trail = orig[len(orig.rstrip()):] or '\n'
         open(path, 'w', encoding='utf-8', newline='').write(head + body + trail)
 
+def migrate_if_donor(path):
+    """For generators: call at the END of a generator, on each file it just wrote. A file with no donor-NAME FindMod gate
+    is left byte-for-byte alone; one with a gate is migrated in place, so a re-run no longer re-emits donor names."""
+    text = open(path, encoding='utf-8').read()
+    if any('<li>%s</li>' % m in text for m in DONOR_MODS):
+        run(path, True)
+        for n in notes: print('NOTE', n)
+        return True
+    return False
+
 if __name__ == '__main__':
     write = '--write' in sys.argv
     for f in [a for a in sys.argv[1:] if not a.startswith('--')]:
