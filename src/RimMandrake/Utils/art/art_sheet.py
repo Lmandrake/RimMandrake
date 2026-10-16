@@ -393,6 +393,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
     fams = defaultdict(dict)
     fam_jobs = defaultdict(dict)
     fam_meta = {}
+    fam_ts = {}
     _fc = failed_canon_jobs()
     for sha, vs in idx.variants.items():
         for v in vs:
@@ -410,7 +411,9 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
             if fac not in FACINGS:
                 fm = re.search(r"_(north|east|south|west)(_r\d+)?$", job)
                 fac = fm.group(1) if fm else "single"
-            fams[fam].setdefault(fac, sha)
+            if fac not in fams[fam] or (job == fam_jobs[fam].get(fac) and (v.get("ts") or "") > fam_ts.get((fam, fac), "")):
+                fams[fam][fac] = sha                 # a job re-registered with new bytes (a re-seat): its NEWEST bytes show
+                fam_ts[(fam, fac)] = v.get("ts") or ""
             fam_jobs[fam].setdefault(fac, job)
             fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
                              "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
@@ -1131,7 +1134,7 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
     exact = {e.lower() for e in exact}
     defs = {d for d in defs if d}
     targets = job_targets() if defs else {}
-    fams, meta, jobs_of = defaultdict(dict), {}, defaultdict(dict)
+    fams, meta, jobs_of, seen_ts = defaultdict(dict), {}, defaultdict(dict), {}
     for sha, vs in idx.variants.items():
         if idx.is_purged(sha):
             continue
@@ -1150,7 +1153,10 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
             if fac not in FACINGS:
                 fm = FAM_RE.search(job)
                 fac = fm.group(1) if fm else "single"
-            fams[fam].setdefault(fac, sha)
+            vts = v.get("ts") or ""
+            if fac not in fams[fam] or (job == jobs_of[fam].get(fac) and vts > seen_ts.get((fam, fac), "")):
+                fams[fam][fac] = sha                 # a job re-registered with new bytes (a re-seat): its NEWEST bytes show
+                seen_ts[(fam, fac)] = vts
             jobs_of[fam].setdefault(fac, job)
             meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item")}
     fc = failed_canon_jobs()
@@ -1800,7 +1806,8 @@ function scaleBlock(it) {
   const pg = (it.graphics || []).find(g => g.primary);
   const each = (pg ? pg.cols : []).filter(c => c.scale && c.scale.img);
   const all = each.length > 1 ? `<details class="bs-scall" open><summary class="sub">every set at its true scale beside the human (${each.length}) — click one to enlarge</summary>${each.map(c => `<div class="bs-scone${c.letter === s.set ? ' on' : ''}" data-zoom="${c.scale.full}" data-cap="${esc(it.label)} · set ${esc(c.letter)} · ${esc(c.scale.face)} · max zoom ${c.scale.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18"><b>${esc(c.letter)}</b> <span class="sub">${c.scale.ppc} px/cell</span><img src="${c.scale.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
-  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}${all}
+  const refs = (s.refs || []).length ? `<details class="bs-scall bs-refs" open><summary class="sub"><b>installed canon twin, reference only</b> — not pickable, never installed from here; same true scale beside the human</summary>${s.refs.map(r => r.missing ? `<div class="sub">missing: ${esc(r.path)}</div>` : `<div class="bs-scone" data-zoom="${r.full}" data-cap="REFERENCE ONLY (not pickable) · ${esc(r.path)}"><span class="sub">${esc(r.path.split('/').pop())}</span><img src="${r.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}${all}${refs}
     <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
     <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
 }
@@ -2265,6 +2272,29 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
                 "zoomPpc": m.get("zoomPpc"), "zoomFitted": m.get("zoomFitted"), "zoomCropped": m.get("zoomCropped"), "zoomFullPpc": m.get("zoomFullPpc"),
                 "sets": [{"l": l, "ppc": (round(px[0] / qx) if px and qx else None), "px": (px[0] if px else None)}
                          for l, _f, px in sets]})
+    out["refs"] = _reference_panels(row, size, imgdir)
+    return out
+
+
+def _reference_panels(row: dict, size: dict, imgdir: Path) -> list[dict]:
+    """Read-only REFERENCE pictures of a row (census field `reference_textures`: repo-relative PNG paths, e.g. the installed
+    canon twin of a base it will reskin), each at the row's true scale beside the vanilla human. They are rendered here
+    ONLY: never a graphic, column, letter, snapshot entry, decision or enact target, and never put in the art store."""
+    import scale_panel as SP
+    out = []
+    for rel in row.get("reference_textures") or []:
+        f = L.REPO_ROOT / rel
+        if not f.is_file():
+            out.append({"path": rel, "missing": True})
+            continue
+        b = f.read_bytes()
+        stem = "ref_" + re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + hashlib.sha256(b).hexdigest()[:10] + "_" + hashlib.sha1(
+            json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh")]).encode()
+        ).hexdigest()[:6]
+        comp, full = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png"
+        if not (comp.exists() and full.exists()):
+            SP.render_panel(b, size, comp, full)
+        out.append({"path": rel, "img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}"})
     return out
 
 
@@ -2579,7 +2609,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [],
                                              defs={r["key"], r.get("port"), *(r.get("defNames") or [])},
                                              exact_any=bool(r.get("render_match")))
-                 if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))
+                 if _fkey(c) not in seen
+                 and (not (set(c["faces"].values()) & (have | flip_shas))
+                      # a render the row NAMES (artpipe_state_jobs) that shares only some pictures (its east is a copy of
+                      # the live east) is still a different set; it is dropped only when everything in it is shown already
+                      or (FAM_RE.sub("", (c.get("family") or "")).lower() in {FAM_RE.sub("", j).lower() for j in (r.get("artpipe_state_jobs") or [])}
+                          and not set(c["faces"].values()) <= (have | flip_shas)))
                  and (not r.get("render_match") or re.search(r["render_match"], c.get("label", ""), re.I))]
         if flips:
             # one lane per flip-book (a male and a female sequence are different slots, DESIGN §1 PekoPeko): a live
