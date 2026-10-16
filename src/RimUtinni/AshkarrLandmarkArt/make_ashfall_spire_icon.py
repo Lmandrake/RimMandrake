@@ -27,7 +27,7 @@ kept only where the house style needs it: the rock the Spire stands on.
 
 Distinct from the other Ashkarr structure icons: RUT_ComplexStructures and the
 vanilla AncientWarehouse/Ruins repaints all read as masonry footprints seen from
-above; sw_Sarlacc and RUT_GapingDoom read as holes. This is the only one that is a
+above; RSW_Sarlacc and RUT_GapingDoom read as holes. This is the only one that is a
 single vertical thing standing up, and the only one deliberately half-occluded.
 
 Four variants differ in ridge profile, spire height, disc cant and — the point —

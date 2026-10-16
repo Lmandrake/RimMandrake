@@ -15,7 +15,7 @@
   itself and adds a WHOLE `<extraGenSteps>` element, same shape as
   Dunes/DryLake/Hollow/Caves (WhisperBatch1-4.xml's own precedent), not the
   "append one more <li>" shape used where the target already carries one
-  (RUT_Monument, RUT_BrokenRing, sw_SarlaccLair).
+  (RUT_Monument, RUT_BrokenRing, RSW_SarlaccLair).
 
   Same safety convention as every prior whisper/promise patch in this
   program: the PatchOperationAdd is wrapped in a PatchOperationConditional

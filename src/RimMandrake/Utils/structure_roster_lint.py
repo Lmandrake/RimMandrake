@@ -57,7 +57,7 @@ TIER_DIRS = {
 #        NOT safe to fill without inventing).
 PROMISES = [
     (1, "The Moisture Farm", "RSW", "moisture_farm", "done"),
-    (2, "The Sarlacc", "RSW", "sarlacc_ring", "done"),  # engine gap CLOSED 2026-09-20: GenStep_RimplacePlan.cs grew a third placement mode, anchorThingDef — finds an already-spawned Thing of the named def on the map at mapgen time and centers the plan on its OccupiedRect().CenterCell instead of the map center or a caller-fixed offset. sarlacc_ring.lua rings SarlaccPit's own measured 9x6 footprint with 6-9 SculptureSmall totems in a 3-cell margin, computed to align cell-for-cell with the real pit (verified by hand: both sides use the same W/2 truncated-division centering). Wired via Defs/GenStepDefs_SarlaccRing.xml (order=960, strictly after sw_SarlaccPit's own order=950) + Patches/SarlaccRing.xml (a third <li> appended to sw_SarlaccLair's extraGenSteps, alongside sw_SarlaccPit and RSW_GenStep_WhisperSarlaccSign)
+    (2, "The Sarlacc", "RSW", "sarlacc_ring", "done"),  # engine gap CLOSED 2026-09-20: GenStep_RimplacePlan.cs grew a third placement mode, anchorThingDef — finds an already-spawned Thing of the named def on the map at mapgen time and centers the plan on its OccupiedRect().CenterCell instead of the map center or a caller-fixed offset. sarlacc_ring.lua rings RSW_SarlaccPit's (donor SarlaccPit's) measured 9x6 footprint with 6-9 SculptureSmall totems in a 3-cell margin, computed to align cell-for-cell with the real pit (verified by hand: both sides use the same W/2 truncated-division centering). Wired via Defs/GenStepDefs_SarlaccRing.xml (order=960, strictly after RSW_GenStep_SarlaccPit's order=950) + Patches/SarlaccRing.xml (a third <li> appended to RSW_SarlaccLair's extraGenSteps, alongside RSW_GenStep_SarlaccPit and RSW_GenStep_WhisperSarlaccSign)
     (3, "The Krayt Graveyard", "RSW", "krayt_graveyard", "done"),
     (4, "The Podracer Wreck", "RSW", "podracer_wreck", "done"),
     (5, "The Junkers' Field", "RUT", None, "skip-tool"),  # needs coastal_mesa-style mapsynth pass, not a rimplace template — batch 6 note, re-confirmed 2026-09-18 (src/RimMandrake/mapsynth/authored/ is a full terrain-synthesis pipeline, a different tool from rimplace's per-tile Lua templates)
@@ -116,7 +116,7 @@ WHISPERS = [
     (19, "The Mirage Twin", "mirage_twin", "AB_MagmaVents", "done"),
     (20, "The Rootstock", "rootstock", "DryLake", "done"),
     (21, "The Sleeper's Knock", None, None, "no-mechanism"),
-    (22, "The Sarlacc Sign", "sarlacc_sign", "sw_SarlaccLair", "done"),
+    (22, "The Sarlacc Sign", "sarlacc_sign", "RSW_SarlaccLair", "done"),
 ]
 
 

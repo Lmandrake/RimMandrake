@@ -2,6 +2,8 @@
 
 ## Q1. The Sarlacc landmarks: port, trim, or let the repaint settle it? (owner's call)
 
+**DECIDED 2026-10-15 by card: A, port both.** Done: `RSW_DonorPack_Sarlacc.xml` (SWBestiary); renames table `Transient/phase0_sarlacc_save_renames.md`.
+
 What still names the donor: `RUT_GapingDoom` (`src/RimUtinni/UtinniPatches/Defs/LandmarkDefs/RUT_GapingDoom.xml`) requires the donor mutator `sw_DeadSarlaccCave`
 (`MayRequire="Mlie.StarWarsAnimalCollection" Required="True"`); two StructureInjectionsSW patches (`SarlaccRing.xml`, `WhisperSarlaccSign.xml`) append gen steps to the donor
 `sw_SarlaccLair`; the canonical save holds `sw_Sarlacc` x8 and `sw_DeadSarlacc` x7 landmark defs. What a port would copy: the donor's `DeadSarlacc` MapPortal building

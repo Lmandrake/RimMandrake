@@ -255,6 +255,9 @@ MUTATOR = {
     # ---- Star Wars Animal Collection ----
     "sw_SarlaccLair": "🔑 Generates a LIVE sarlacc pit on the map — a standing hazard that swallows pawns. Up to mountainous.",
     "sw_DeadSarlaccCave": "🔑 Generates a DEAD sarlacc as a cave structure — shelter and salvage with no live hazard.",
+    # ported to SWBestiary 2026-10-15 (the sw_ rows stay until the save is renamed, Phase 0 P6)
+    "RSW_SarlaccLair": "🔑 Generates a LIVE sarlacc pit on the map: a corpse-dump work table that coughs up slag. Up to mountainous.",
+    "RSW_DeadSarlaccCave": "🔑 Generates a DEAD sarlacc husk you can climb down into: an underground cavity pocket map.",
     "WildGalacticPlants": "Grows wild chakroot, meiloorun, muja fruit, jogan and nysyllin — off-world food and drug crops.",
     "WildRylothPlants": "Grows wild munch fungus — a Ryloth food crop that needs settled spores.",
     "WildTattooinePlants": "🔑 Grows wild hubba gourds — the Tatooine desert food crop, needs condensed moisture.",

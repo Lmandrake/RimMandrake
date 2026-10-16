@@ -27,6 +27,6 @@ Patch-only. Load it LAST.</description>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>VanillaExpanded.VExplorationE</li>
     <li>sarg.alphabiomes</li>
-    <li>Mlie.StarWarsAnimalCollection</li>
+    <li>mandrake.rsw.swbestiary</li>  <!-- RSW_Sarlacc / RSW_DeadSarlacc, ported off Star Wars Animal Collection 2026-10-15 -->
   </loadAfter>
 </ModMetaData>

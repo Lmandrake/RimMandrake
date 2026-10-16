@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_DonorPack_Sarlacc.xml - SWAC PHASE 0 (design/RimMandrake/biome_sprint_kickoff_2026-10-15.md 0.5.2),
+     Transient/phase0_p1_questions.md Q1. Owner, 2026-10-15, by question card ("What should happen to the donor's Sarlacc
+     landmarks" -> "Port both landmarks").
+
+     Both Sarlacc landmarks of Star Wars Animal Collection (mlie, SW_Buildings_Natural.xml + RulePacks_Namers_Landmarks.xml)
+     ported as our own RSW_ defs, so the donor can retire. Every class is vanilla: no C#.
+       live pit:  RSW_Sarlacc (LandmarkDef) -> RSW_SarlaccLair (TileMutatorDef) -> RSW_GenStep_SarlaccPit -> RSW_SarlaccPit
+                  (9x6 corpse-dump work table; RSW_FeedCorpseToSarlacc / RSW_DoBillsFeedSarlacc)
+       dead cave: RSW_DeadSarlacc (LandmarkDef) -> RSW_DeadSarlaccCave (TileMutatorDef) -> RSW_GenStep_DeadSarlaccPit
+                  -> RSW_DeadSarlaccHusk (12x9 MapPortal) -> RSW_SarlaccCavity (pocket MapGeneratorDef, exit CaveExit)
+     Old -> new names (the canonical save holds the two LandmarkDefs): Transient/phase0_sarlacc_save_renames.md.
+
+     Deliberate differences from the donor:
+     - RSW_SarlaccPit keeps the donor's (9,6) footprint EXACTLY: StructureInjectionsSW's sarlacc_ring template is measured
+       against it (RSW_GenStep_SarlaccRing anchors on this def).
+     - The building ThingDef is RSW_DeadSarlaccHusk, not a second "RSW_DeadSarlacc", so a save grep never confuses the
+       building with the LandmarkDef.
+     - RSW_SarlaccCavity drops the donor's UndercaveMapComponent: that component looks for a PitGate on the source map and,
+       finding none, logged a warning on every generation and did nothing else but ambient dust. It also drops the donor's
+       Name="Undercave" attribute, which collided with vanilla Anomaly's own abstract name.
+     - The donor's Wild*Plants mutators (WildGalacticPlants, WildRylothPlants, WildTattooinePlants, WildNabooPlants,
+       WildDantooinePlants, WildAlderaanPlants, WildFelucianPlants) are donor defs and are not ported; they are dropped from
+       both landmarks' optional mutator chances. Every other chance is a vanilla Odyssey/Biotech/Ideology mutator.
+     - Odyssey MayRequire guards are dropped: every DLC is assumed and this mod depends on Odyssey.
+     ART: no donor pixels. RSW_SarlaccPit, RSW_DeadSarlaccHusk and RSW_SarlacciSpore name OUR texture paths; the renders are
+     filed in design/RimMandrake/swac_sarlacc_art_2026-10-15.json (artpipe). Until they install those three defs have no
+     texture: do not deploy SWBestiary past this commit before they land. The landmark icons are our own Ash'karr icons
+     (AshkarrLandmarkArt), copied here so the defs resolve without that mod. -->
+<Defs>
+
+  <!-- ========================= live sarlacc pit ========================= -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_SarlaccPit</defName>
+    <label>sarlacc pit</label>
+    <description>The gaping maw of a juvenile sarlacc creature. The endlessly hungry sarlacc can be used to quickly get rid of various organic corpses and so such sites are popular with various criminal enterprises. It will occasionally regurgitate a small amount of indigestible scrap metal; no doubt leftover from some unlucky "prey".</description>
+    <size>(9,6)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>Building_WorkTable</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <castEdgeShadows>false</castEdgeShadows>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <fillPercent>1</fillPercent>
+    <blockWind>false</blockWind>
+    <holdsRoof>false</holdsRoof>
+    <passability>Impassable</passability>
+    <destroyable>true</destroyable>
+    <blockPlants>true</blockPlants>
+    <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Natural/RSW_SarlaccPit</texPath>
+      <drawSize>(10,10)</drawSize>
+    </graphicData>
+    <building>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+      <destroySound>RSW_Pawn_Sarlacc_Wounded</destroySound>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Beauty>-50</Beauty>
+      <BeautyOutdoors>-50</BeautyOutdoors>
+      <Flammability>0</Flammability>
+    </statBases>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <soundImpactDefault>RSW_Pawn_Sarlacc_Death</soundImpactDefault>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <recipes>
+      <li>RSW_FeedCorpseToSarlacc</li>
+    </recipes>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Spawner">
+        <thingToSpawn>ChunkSlagSteel</thingToSpawn>
+        <spawnCount>1</spawnCount>
+        <spawnIntervalRange>300000~600000</spawnIntervalRange>
+        <spawnMaxAdjacent>1</spawnMaxAdjacent>
+      </li>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Morbid</li>
+        </focusTypes>
+      </li>
+      <li Class="CompProperties_AmbientSound">
+        <sound>RSW_Pawn_Sarlacc_Call_Ambient</sound>
+      </li>
+      <li Class="CompProperties_SpawnEffecterOnDestroy">
+        <effect>CocoonDestroyed</effect>
+      </li>
+    </comps>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <costList>
+      <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
+      <RSW_Silica_Meat>300</RSW_Silica_Meat>
+    </costList>
+    <killedLeavings>
+      <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
+    </killedLeavings>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RSW_FeedCorpseToSarlacc</defName>
+    <label>dump corpse in sarlacc</label>
+    <description>Feed a corpse to the sarlacc to completely destroy it.</description>
+    <jobString>Dumping corpse.</jobString>
+    <workAmount>90</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>ButcherFlesh</effectWorking>
+    <soundWorking>RSW_Pawn_Sarlacc_Butchered</soundWorking>
+    <autoStripCorpses>false</autoStripCorpses>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Corpses</li>
+      </categories>
+      <disallowedCategories>
+        <li>CorpsesMechanoid</li>
+        <li>CorpsesDrone</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <thingDefs>
+        <li>Corpse_Human</li>
+      </thingDefs>
+      <specialFiltersToAllow>
+        <li>AllowCorpsesColonist</li>
+        <li>AllowCorpsesSlave</li>
+        <li>AllowCorpsesStranger</li>
+      </specialFiltersToAllow>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <WorkGiverDef>
+    <defName>RSW_DoBillsFeedSarlacc</defName>
+    <label>dumping corpse</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>40</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RSW_SarlaccPit</li>
+    </fixedBillGiverDefs>
+    <verb>dump corpse at</verb>
+    <gerund>dumping at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+  <TileMutatorDef>
+    <defName>RSW_SarlaccLair</defName>
+    <label>sarlacc pit</label>
+    <description>This area hosts a juvenile sarlacc creature. These sessile creatures are known to have millennia-long lifespans; the circular maws on the surface are supported by a massive underground body.</description>
+    <biomeBlacklist>
+      <li>SeaIce</li>
+      <li>IceSheet</li>
+      <li>GlacialPlain</li>
+    </biomeBlacklist>
+    <maxHilliness>Mountainous</maxHilliness>
+    <extraGenSteps>
+      <li>RSW_GenStep_SarlaccPit</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- order=950 is load-bearing: RSW_GenStep_SarlaccRing (StructureInjectionsSW, order 960) anchors on the pit this lands. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_SarlaccPit</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RSW_SarlaccPit</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <skipRoofed>true</skipRoofed>
+      <countPer10kCellsRange>1~1</countPer10kCellsRange>
+      <clearSpaceSize>10</clearSpaceSize>
+      <terrainValidationDisallowed>
+        <li>Road</li>
+      </terrainValidationDisallowed>
+      <count>1</count>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <RulePackDef>
+    <defName>RSW_NamerLandmark_Sarlacc</defName>
+    <include>
+      <li>WorldFeatureNamerCommon</li>
+    </include>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name(p=0.3)->Pit of [NamePerson]</li>
+        <li>r_name(p=0.2)->The [dread] [terrain_word]</li>
+        <li>r_name(p=0.1)->The [terrain_word]</li>
+        <li>r_name(p=0.05)->Sarlacc Pit</li>
+        <li>terrain_word->sarlacc</li>
+        <li>terrain_word->sarlacci burrow</li>
+        <li>terrain_word->creature</li>
+        <li>dread->dreaded</li>
+        <li>dread->grim</li>
+        <li>dread->vile</li>
+        <li>dread->dark</li>
+        <li>dread->great</li>
+        <li>dread->mighty</li>
+        <li>dread->eternal</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <LandmarkDef>
+    <defName>RSW_Sarlacc</defName>
+    <label>sarlacc pit</label>
+    <iconTexturePath>World/Landmarks/RSW_Sarlacc</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.1</commonality>
+    <nameMaker>RSW_NamerLandmark_Sarlacc</nameMaker>
+    <mutatorChances>
+      <RSW_SarlaccLair Required="True" />
+      <Pollution_Increased>0.02</Pollution_Increased>
+      <Junkyard>0.05</Junkyard>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <MineralRich>0.05</MineralRich>
+      <MixedBiome>0.5</MixedBiome>
+      <AncientUplink>0.02</AncientUplink>
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Sandy>0.05</Sandy>
+      <DryGround>0.05</DryGround>
+      <InsectMegahive>0.02</InsectMegahive>
+      <FoggyMutator>0.05</FoggyMutator>
+    </mutatorChances>
+    <comboLandmarkMutators>
+      <Dunes>0.05</Dunes>
+      <Sandy>0.02</Sandy>
+      <Hollow>0.02</Hollow>
+      <Chasm>0.02</Chasm>
+      <Valley>0.01</Valley>
+      <Cavern>0.01</Cavern>
+    </comboLandmarkMutators>
+  </LandmarkDef>
+
+  <!-- ========================= dead sarlacc cave ========================= -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_DeadSarlaccHusk</defName>
+    <label>dead sarlacc</label>
+    <description>The remnant of a dead sarlacc creature. Perhaps disease, starvation, predation from burrowing insects or maybe even old age has killed it, leaving behind a cavern that its body once filled.</description>
+    <size>(12,9)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <graphicData>
+      <texPath>Things/Building/Natural/RSW_DeadSarlaccHusk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(15,15)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>true</destroyable>
+    <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RSW_SarlaccCavity</pocketMapGenerator>
+      <exitDef>CaveExit</exitDef>
+      <enteredLetterLabel>Sarlacc grave</enteredLetterLabel>
+      <enteredLetterText>In the depths of a dead sarlacc. Not much here but rocks and rubble and dead flesh. Quite the morbid tourist attraction!</enteredLetterText>
+      <enteredLetterDef>PositiveEvent</enteredLetterDef>
+    </portal>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Beauty>-50</Beauty>
+      <BeautyOutdoors>-50</BeautyOutdoors>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Sealable">
+        <sealTexPath>UI/Commands/FillInCaveEntrance</sealTexPath>
+        <sealCommandLabel>Collapse sarlacc cavity</sealCommandLabel>
+        <sealCommandDesc>Choose a colonist to permanently collapse the sarlacc cavity entrance. Anything or anyone left below will be lost forever.</sealCommandDesc>
+        <cannotSealLabel>Cannot collapse</cannotSealLabel>
+        <confirmSealText>Collapsing the sarlacc cavity is permanent. Anything or anyone left below will be lost forever.{0}\n\nAre you sure you want to continue?</confirmSealText>
+        <destroyPortal>true</destroyPortal>
+      </li>
+      <li Class="CompProperties_LeaveFilthOnDestroyed">
+        <filthDef>Filth_Slime</filthDef>
+        <thickness>2</thickness>
+      </li>
+    </comps>
+    <costList>
+      <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
+    </costList>
+    <killedLeavings>
+      <RSW_SarlacciSpore>1</RSW_SarlacciSpore>
+    </killedLeavings>
+  </ThingDef>
+
+  <MapGeneratorDef>
+    <defName>RSW_SarlaccCavity</defName>
+    <label>sarlacc cavity</label>
+    <isUnderground>true</isUnderground>
+    <forceCaves>true</forceCaves>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>Underground</biome>
+      <temperature>15</temperature>
+      <tileMutators>
+        <li>UndergroundCave</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Underground_RocksFromGrid</li>
+      <li>Terrain</li>
+      <li>Plants</li>
+      <li>MutatorPostTerrain</li>
+      <li>MutatorCriticalStructures</li>
+      <li>MutatorNonCriticalStructures</li>
+      <li>RockChunks</li>
+      <li>PlaceCaveExit</li>
+      <li>Fleshbulbs</li>
+      <li>Fleshmass</li>
+      <li>FleshSacks</li>
+      <li>MutatorFinal</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <TileMutatorDef>
+    <defName>RSW_DeadSarlaccCave</defName>
+    <label>a dead sarlacc</label>
+    <description>This area hosts a dead sarlacc creature. These sessile creatures are known to have millennia-long lifespans, but are ultimately mortal. Whether from disease, starvation, burrowing insectoids or even old age they eventually die and leave a cavern where the bulk of their corpse has rotted away.</description>
+    <biomeBlacklist>
+      <li>SeaIce</li>
+      <li>IceSheet</li>
+      <li>GlacialPlain</li>
+    </biomeBlacklist>
+    <maxHilliness>Mountainous</maxHilliness>
+    <extraGenSteps>
+      <li>RSW_GenStep_DeadSarlaccPit</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <GenStepDef>
+    <defName>RSW_GenStep_DeadSarlaccPit</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>RSW_DeadSarlaccHusk</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <allowInWaterBiome>false</allowInWaterBiome>
+      <skipRoofed>true</skipRoofed>
+      <countPer10kCellsRange>1~1</countPer10kCellsRange>
+      <clearSpaceSize>10</clearSpaceSize>
+      <terrainValidationDisallowed>
+        <li>Road</li>
+      </terrainValidationDisallowed>
+      <count>1</count>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+  <LandmarkDef>
+    <defName>RSW_DeadSarlacc</defName>
+    <label>dead sarlacc</label>
+    <iconTexturePath>World/Landmarks/RSW_DeadSarlacc</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.1</commonality>
+    <mutatorChances>
+      <RSW_DeadSarlaccCave Required="True" />
+      <Pollution_Increased>0.02</Pollution_Increased>
+      <Junkyard>0.05</Junkyard>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <MineralRich>0.05</MineralRich>
+      <MixedBiome>0.5</MixedBiome>
+      <AncientUplink>0.02</AncientUplink>
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <PlantLife_Increased>0.03</PlantLife_Increased>
+      <Fertile>0.05</Fertile>
+      <Sandy>0.05</Sandy>
+      <DryGround>0.05</DryGround>
+      <InsectMegahive>0.04</InsectMegahive>
+      <FoggyMutator>0.05</FoggyMutator>
+    </mutatorChances>
+    <comboLandmarkMutators>
+      <Dunes>0.05</Dunes>
+      <Sandy>0.02</Sandy>
+      <Hollow>0.02</Hollow>
+      <Chasm>0.02</Chasm>
+      <Valley>0.01</Valley>
+      <Cavern>0.01</Cavern>
+    </comboLandmarkMutators>
+  </LandmarkDef>
+
+  <!-- ========================= the spore both leave ========================= -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_SarlacciSpore</defName>
+    <label>sarlacci spore</label>
+    <description>The spore of a sarlacc creature. It appears dormant and whilst ugly, it is no less valuable as a naturally occurring curiosity.</description>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>4.0</Mass>
+      <Beauty>-2.0</Beauty>
+      <MarketValue>750</MarketValue>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Item/RSW_SarlacciSpore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5, 1.5)</drawSize>
+    </graphicData>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable" />
+    </comps>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

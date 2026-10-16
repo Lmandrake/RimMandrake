@@ -85,7 +85,7 @@ HAND_PLACED = [
     ("AbandonedColonyOutlander", ("tile", 2476),                     "The Setdown - where the dead gravship was found",                   0),
     ("AncientQuarry",            ("settlement", "The Ore Moot"),     "the mine the sandcrawlers were stolen from",                        3),
     ("Valley",                   ("settlement", "Oxalate Watch"),    "The Scald Gate - the one breach in the Spine",                      4),
-    ("sw_Sarlacc",               ("settlement", "Sarlacc Ground"),   "the sarlacc the town is named for",                                 0),
+    ("RSW_Sarlacc",              ("settlement", "Sarlacc Ground"),   "the sarlacc the town is named for",                                 0),
     ("AncientLaunchSite",        ("biome", "AB_MechanoidIntrusion"), "The Rust Cathedral - mechanoid ground, permanently at war",          0),
     ("LavaCrater",               ("biome", "Volcano"),               "the Scald rim volcanics - the one volcanic province",                0),
     ("LavaLake",                 ("biome", "LavaField"),             "the Scald rim volcanics",                                           0),
