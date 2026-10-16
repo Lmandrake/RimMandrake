@@ -224,6 +224,8 @@
     <!-- SWEETLINE_TREE_MAP_STEP_1: 1-2 sweetline trees on a share of new maps (Mod Setting). -->
     <extraGenSteps>
       <li>RM_SweetlineTrees</li>
+      <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 8: ruins and living camps (Source/RM_ScrubInjections.cs). -->
+      <li>RM_ScrubInjections</li>
     </extraGenSteps>
     <modExtensions>
       <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 2: the Lean - each map locks one wind

@@ -12,6 +12,7 @@ namespace RimMandrake.LeaningScrub
         public static WeatherDef RM_Gale;
 
         public static HediffDef RM_GaleDeafened;
+        public static HediffDef RM_RippleHidden;
 
         public static JobDef RM_SmotherVenomvine;
         public static JobDef RM_ScratchOnSweetline;

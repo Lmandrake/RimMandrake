@@ -83,6 +83,12 @@
     <Compile Include="Kernel\RM_FourFormsKernel.cs" />
     <Compile Include="RM_VenomvineFourForms.cs" />
     <Compile Include="Kernel\RM_CoatKernel.cs" />
+    <Compile Include="Kernel\RM_RippleKernel.cs" />
+    <Compile Include="Kernel\RM_PyreKernel.cs" />
+    <Compile Include="Kernel\RM_InjectionKernel.cs" />
+    <Compile Include="RM_Ripple.cs" />
+    <Compile Include="RM_CallingPyre.cs" />
+    <Compile Include="RM_ScrubInjections.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -55,6 +55,18 @@ namespace RimMandrake.LeaningScrub
             parent.Map?.GetComponent<RM_MapComponent_SmotherClaims>()?.Register(this);
         }
 
+        /// <summary>Map generation (RM_GenStep_ScrubInjections): a claim found mid-cycle, started at
+        /// <paramref name="startTick"/> (clamped to 0 or later). No-op on a stand already smothered.</summary>
+        public void StartSmotherAt(int startTick)
+        {
+            if (Smothered)
+            {
+                return;
+            }
+            smotherStartTick = startTick < 0 ? 0 : startTick;
+            parent.Map?.GetComponent<RM_MapComponent_SmotherClaims>()?.Register(this);
+        }
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);

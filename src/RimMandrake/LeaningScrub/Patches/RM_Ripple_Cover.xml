@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Ripple_Cover.xml   LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple.
+  The fuzz carpet is the cover small creatures hide under (Source/RM_Ripple.cs reads RM_RippleCoverExtension).
+  Every def here ships in this mod's own Defs/ThingDefs_Plants (RM_Fuzz.xml, RM_LeaningScrubFuzzFlora.xml), so no
+  FindMod guard. The cruststar is left out:
+  it is a hand-span lichen flat on the crust, not canopy anything could hide under.
+-->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="RM_Fuzz" or defName="RM_Whipfuzz" or defName="RM_Pillowmoss" or defName="RM_Tanglefuzz"]</xpath>
+    <value>
+      <li Class="RimMandrake.LeaningScrub.RM_RippleCoverExtension" />
+    </value>
+  </Operation>
+</Patch>

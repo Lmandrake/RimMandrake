@@ -75,6 +75,10 @@ DEFAULTS = {
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
+    # LEANINGSCRUB_MECHANICS_BUILD_1 parts 6, 5b, 8 (RM_Ripple.cs, RM_CallingPyre.cs, RM_ScrubInjections.cs)
+    "rippleEnabled": True, "rippleMaxBodySize": 0.6,
+    "callingPyreEnabled": True, "callingPyreRadius": 14.0, "callingPyreHerdFactor": 1.0,
+    "scrubInjectionsEnabled": True, "scrubRuinsPerMap": 3, "scrubCampsEnabled": True,
     # LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs)
     "rearingEnabled": True, "rearingHours": 2.0, "walkingEnabled": True, "walkingMaxCellsPerMap": 120,
     "hoardEnabled": True, "hoardGrowInHours": 4.0, "hoardKeepsDeadGear": True,
@@ -1342,6 +1346,62 @@ def stamp_chain(t):
                     _fail("fire stamp (%s): %s" % (mode, txt[:400]))
                 if not txt.startswith("PASS"):
                     _unmeasured(t, "fire stamp proof did not answer PASS/FAIL: %s" % txt[:200])
+
+
+def _proof(t, name, typ, method, args, label, toggle=None):
+    """One C# proof hook row: PASS/FAIL/UNMEASURED read off the hook's own answer."""
+    kw = {"toggle": toggle} if toggle else {}
+    with _comp(t, name, **kw):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub." + typ, method=method, args=args)
+        if _live(t):
+            txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+            _note(t, label, txt[:300])
+            if txt.startswith("FAIL"):
+                _fail("%s: %s" % (label, txt[:400]))
+            if not txt.startswith("PASS"):
+                _unmeasured(t, "%s did not answer PASS/FAIL: %s" % (label, txt[:200]))
+
+
+# --------------------------------------------------------------------------- chain: ripple
+
+@suite.chain("ripple")
+def ripple_chain(t):
+    """Part 6 the ripple (RM_Ripple.cs; owner Q9 "Hiding with a faint shimmer"). RM_RippleProof spawns a small wild
+    animal on fuzz, drives the SHIPPED pass in wind and in the Stall (still), reads IsPsychologicallyInvisible."""
+    _proof(t, "ripple_hides_small_creatures", "RM_RippleProof", "ProofRipple", "on", "ripple proof (on)", "rippleEnabled")
+    _proof(t, "ripple_toggle_off_nobody_hides", "RM_RippleProof", "ProofRipple", "off", "ripple proof (off)", "rippleEnabled")
+
+
+# --------------------------------------------------------------------------- chain: pyre
+
+@suite.chain("pyre")
+def pyre_chain(t):
+    """Part 5b the calling-pyre (RM_CallingPyre.cs; Q7 three beliefs, N3 fire/ritual memes only). Defs gated on the
+    memes; the SHIPPED Ignite/CallHerd on a fuzz patch; the gate refuses with the toggle off."""
+    _proof(t, "pyre_beliefs_gated_on_memes", "RM_CallingPyreProof", "ProofPyre", "defs", "pyre defs")
+    _proof(t, "pyre_lights_fields_and_calls_herd", "RM_CallingPyreProof", "ProofPyre", "fire", "pyre fire", "callingPyreEnabled")
+    _proof(t, "pyre_toggle_off_refuses", "RM_CallingPyreProof", "ProofPyre", "off", "pyre off", "callingPyreEnabled")
+
+
+# --------------------------------------------------------------------------- chain: injections
+
+@suite.chain("injections")
+def injections_chain(t):
+    """Parts 3 + 8 (RM_WindVaporator.xml, RM_ScrubInjections.cs; Q8 plain vaporator from a dead farmstead, Q10 ruins
+    plus living camps, N1 scavengers and the new farmers). The vaporator's defs, then the SHIPPED map step run on the
+    current map: at least one site and one dead farmstead's vaporator wrecks."""
+    _proof(t, "vaporator_learned_from_farmstead", "RM_VaporatorProof", "ProofVaporator", "", "vaporator defs")
+    with _comp(t, "map_holds_ruins_and_camps", toggle="scrubInjectionsEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_GenStep_ScrubInjections",
+                          method="ProofInjections", args="")
+        if _live(t):
+            txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+            _note(t, "injections (PLACED sites=n vaporatorWrecks=+n campPeople=+n)", txt[:300])
+            m = re.search(r"sites=(\d+) vaporatorWrecks=\+(-?\d+)", txt)
+            if not m:
+                _unmeasured(t, "injection proof did not answer PLACED: %s" % txt[:200])
+            if int(m.group(1)) < 1 or int(m.group(2)) < 1:
+                _fail("the map step placed no ruin or no dead farmstead: %s" % txt[:300])
 
 
 # --------------------------------------------------------------------------- chain: the six further forms

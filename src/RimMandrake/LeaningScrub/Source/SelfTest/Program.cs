@@ -18,7 +18,8 @@ namespace RimMandrake.LeaningScrub.SelfTest
             i = Array.IndexOf(args, "--fuzz-only");
             if (i >= 0) only = args[i + 1];
             bool four = LeaningScrubFourFormsCheck.Run();
-            return LeaningScrubFuzz.Run(scale, one, only) && four ? 0 : 1;
+            bool tonight = LeaningScrubTonightCheck.Run();
+            return LeaningScrubFuzz.Run(scale, one, only) && four && tonight ? 0 : 1;
         }
     }
 }
