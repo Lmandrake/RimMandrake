@@ -1,0 +1,1724 @@
+{
+ "mod": "GimmeSomeSlack",
+ "mode": "live",
+ "script": "validation_style.py",
+ "tier": "gimmesomeslack",
+ "started": "2026-10-15T17:15:14",
+ "rows": [
+  {
+   "id": "S1_pick_reaches_blueprint",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = each picked look is the designator's style (getter patch, any game mode) and is stored on the blueprint"
+   }
+  },
+  {
+   "id": "S2_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Dirt",
+     "workerHasIdeo": true,
+     "frames": 4,
+     "built": 4,
+     "errors": []
+    },
+    "frameStyleRestored": 0,
+    "meaning": "PASS = the engine carried each look blueprint -> frame -> building, and each mast DRAWS its look's art"
+   }
+  },
+  {
+   "id": "S3_god_mode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = god mode writes the picked look straight onto the building"
+   }
+  },
+  {
+   "id": "S4_copy_carries_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "copy": {
+     "success": true,
+     "cmd": "copy:59211:80,128",
+     "godMode": false,
+     "designatorStyle": "RM_AerialMast_Industrial",
+     "made": {
+      "id": 59215,
+      "def": "Blueprint_RM_AerialMast",
+      "x": 80,
+      "z": 128,
+      "rot": 0,
+      "rawStyle": "RM_AerialMast_Industrial",
+      "style": "RM_AerialMast_Industrial",
+      "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+      "drawnTex": "AerialMast",
+      "kind": "blueprint"
+     }
+    },
+    "built": "RM_AerialMast_Industrial",
+    "lastPicked": {
+     "RM_AerialMast": "Modern",
+     "RM_AerialLampMast": null,
+     "RM_AerialWallBracket": null
+    },
+    "meaning": "PASS = copying an Industrial mast builds Industrial although the button's last pick is Futuristic"
+   }
+  },
+  {
+   "id": "S5_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:59209:80,120",
+     "styleBefore": "RM_AerialMast_Futuristic",
+     "minifiedStyle": "RM_AerialMast_Futuristic",
+     "installBlueprint": 59219,
+     "installStyle": "RM_AerialMast_Futuristic"
+    },
+    "after": {
+     "id": 59209,
+     "rawStyle": "RM_AerialMast_Futuristic",
+     "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast"
+    }
+   }
+  },
+  {
+   "id": "S8_legacy_unstyled_draws_default",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": "RM_AerialMast_Scrapper",
+     "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast"
+    },
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"
+   }
+  },
+  {
+   "id": "S6_spans_in_pole_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spans": 8,
+    "sameLook": 8,
+    "mixedLook": 0,
+    "bad": [],
+    "lookSpans": {
+     "Scrapper": {
+      "tex": "Strand_Jawa",
+      "path": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+      "width": 0.14
+     },
+     "Industrial": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.1
+     },
+     "Modern": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.095
+     },
+     "Futuristic": {
+      "tex": "Strand",
+      "path": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
+      "width": 0.095
+     }
+    },
+    "meaning": "PASS = a same-look span draws that look's cable, and auto-link strung no span between two looks (stage 2)"
+   }
+  },
+  {
+   "id": "S9a_two_runs_two_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "runs": 2,
+    "piecesChecked": 2,
+    "pieceBad": [],
+    "switchDrawn": "PowerSwitch",
+    "errors": [],
+    "meaning": "PASS = each run stores its picked style on every cell (the switch adopts its Modern run) and its cords print that look"
+   }
+  },
+  {
+   "id": "S9b_bridge_largest_wins",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "wrong": [],
+    "switch": "PowerSwitch_Industrial",
+    "switchDrawn": "PowerSwitch",
+    "message": "Joined a Modern run to a larger Industrial run (6 conduit cells): the Modern run is now Industrial.",
+    "counters": {
+     "processed": 23,
+     "adopted": 8,
+     "bridges": 9,
+     "linkBridges": 8,
+     "repainted": 5,
+     "materialised": 0,
+     "unpainted": 0,
+     "legacyKept": 1,
+     "restyles": 0,
+     "pending": 0,
+     "lampsFollowed": 0,
+     "lampsKeptOwn": 0,
+     "lampRestyles": 0,
+     "runOfVisits": 132
+    },
+    "pieceBad": [],
+    "meaning": "PASS = bridging Industrial(6) and Modern(3) with a Futuristic cell: one run, all Industrial incl. the switch, a message naming both"
+   }
+  },
+  {
+   "id": "S9c_split_keeps_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "deconstruct": {
+     "success": true,
+     "cmd": "cdeconstruct:65,149",
+     "destroyed": "PowerConduit"
+    },
+    "left": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial"
+    ],
+    "right": [
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerConduit_Industrial",
+     "PowerSwitch_Industrial"
+    ],
+    "meaning": "PASS = deconstructing the middle leaves two runs, each still Industrial"
+   }
+  },
+  {
+   "id": "S9d_restyle_and_materials",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "restyle": {
+     "success": true,
+     "cmd": "crestyle:67,149:Modern_Mix",
+     "changed": 7,
+     "message": "Restyled this run (7 pieces, 7 changed) to Modern: random mix of colours."
+    },
+    "build": {
+     "line": true,
+     "finish": {
+      "success": true,
+      "cmd": "cfinishbuild",
+      "workerHasIdeo": true,
+      "built": 4,
+      "errors": []
+     }
+    },
+    "rightColours": [
+     "Strand_Blue",
+     "Strand_Brown",
+     "Strand_Orange"
+    ],
+    "pieceBad": [],
+    "unprintedStrands": [],
+    "printedTex": {
+     "EndFrayed_Dead": 52,
+     "Junction_T": 4,
+     "Plug": 4,
+     "Strand": 888,
+     "Strand(lod)": 148,
+     "Strand_Blue": 716,
+     "Strand_Blue(lod)": 78,
+     "Strand_Brown": 186,
+     "Strand_Brown(lod)": 64,
+     "Strand_CoiledBlack": 686,
+     "Strand_CoiledBlack(lod)": 112,
+     "Strand_Orange": 800,
+     "Strand_Orange(lod)": 142,
+     "StrandShadow": 3276
+    },
+    "switchDrawn": "PowerSwitch",
+    "mixPieceTex": [
+     "Strand_Orange",
+     "Strand_Blue",
+     "Strand_Brown"
+    ],
+    "spur": true,
+    "conds": {
+     "restyle": true,
+     "right": true,
+     "left": true,
+     "futuristic": true,
+     "piecesChecked": 5,
+     "mixPieces": 3,
+     "eachPieceOneColour": true,
+     "spurMix": true,
+     "mixed": true,
+     "lodMissing": []
+    },
+    "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern); each mix piece node to node is ONE colour and the run's >= 3 pieces show >= 2 colours (round 5), build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"
+   }
+  },
+  {
+   "id": "S10_legacy_default_materials",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "rawStyles": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "pieces": 1,
+    "sameMaterials": 1,
+    "defaultLook": "Scrapper",
+    "defaultKey": "Scrapper",
+    "materialisedBefore": 0,
+    "materialisedAfter": 0,
+    "meaning": "PASS = an unstyled line stores nothing, processing writes nothing, and every piece chooses the SAME Material objects as the pre-stage-2 default-look set (older saves look unchanged)"
+   }
+  },
+  {
+   "id": "S11_lamp_master_off_vanilla",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "on": {
+     "id": 59255,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+     "lit": false
+    },
+    "off": {
+     "id": 59255,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "Things/Building/Furniture/LampStanding",
+     "lit": false
+    },
+    "onAgain": {
+     "id": 59255,
+     "x": 80,
+     "z": 155,
+     "rawStyle": "StandingLamp_Modern",
+     "look": "Modern",
+     "run": null,
+     "runLook": null,
+     "drawnPath": "RimMandrake/GimmeSomeSlack/Styles/Modern/StandingLamp",
+     "lit": false
+    },
+    "placedOff": {
+     "id": 59256,
+     "x": 82,
+     "z": 155,
+     "rawStyle": null,
+     "look": null,
+     "run": null,
+     "runLook": null,
+     "drawnPath": "Things/Building/Furniture/LampStanding",
+     "lit": false
+    },
+    "place": [
+     true,
+     true
+    ],
+    "meaning": "PASS = master off: the styled lamp draws vanilla art at once (style kept), master on: its look again; a lamp built while off gets no GSS style"
+   }
+  },
+  {
+   "id": "S12a_D1_legacy_run_one_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "looksBefore": [
+     "Scrapper"
+    ],
+    "looksAfterDefaultChange": [
+     "Industrial"
+    ],
+    "mast": true,
+    "meaning": "PASS = a styled mast built onto an unstyled run leaves ONE look on the run, and a later default change cannot split it (D1 refuted); FAIL = D1 confirmed"
+   }
+  },
+  {
+   "id": "S12b_D7_bulk_spawn_cost",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "visitsN": 43,
+    "visits2N": 89,
+    "ratio": 2.0697674418604652,
+    "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"
+   }
+  },
+  {
+   "id": "S12c_D5_multilink_one_frame",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": true,
+    "lookBefore": [
+     [
+      "Industrial",
+      "Modern"
+     ],
+     [
+      "Industrial",
+      "Modern"
+     ]
+    ],
+    "multilink": {
+     "success": true,
+     "error": null,
+     "ids": [
+      59274,
+      59277,
+      59278
+     ],
+     "linked": [
+      [
+       59274,
+       59277
+      ],
+      [
+       59277,
+       59278
+      ]
+     ],
+     "pendingBefore": 0,
+     "pendingAfter": 2
+    },
+    "planPairs": [
+     [
+      59283,
+      59284
+     ],
+     [
+      59280,
+      59283
+     ]
+    ],
+    "controlVerdicts": [
+     "Ok",
+     "Ok"
+    ],
+    "looksMulti": [
+     "Industrial"
+    ],
+    "looksControl": [
+     "Industrial"
+    ],
+    "runsMulti": [
+     59274
+    ],
+    "runsControl": [
+     59280
+    ],
+    "meaning": "PASS = linking >= 3 anchors of two runs in ONE call leaves the joined run ONE look, the same as linking the planned pairs one per cprocess (D5 refuted); FAIL = two looks on one run or a different winner (D5 confirmed)"
+   }
+  },
+  {
+   "id": "S7_save_load_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "anchors": 16,
+    "differs": [],
+    "loadSeconds": 4
+   }
+  },
+  {
+   "id": "S9e_runs_save_load",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "members": 25,
+    "pieces": 7,
+    "membersDiffer": [],
+    "piecesDiffer": [],
+    "meaning": "PASS = after save/load every cell's stored style and every piece's material index and strand texture are identical (legacy cells still store nothing)"
+   }
+  },
+  {
+   "id": "S12d_D4_pending_queue_save",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "built": true,
+    "csavenow": {
+     "success": true,
+     "error": null,
+     "pendingAtSave": 1,
+     "saved": true
+    },
+    "liveAfterSave": {
+     "ctrl": [
+      "Industrial"
+     ],
+     "staged": [
+      "Industrial"
+     ],
+     "stagedCells": 4,
+     "pending": 0
+    },
+    "afterLoad": {
+     "ctrl": [
+      "Industrial"
+     ],
+     "staged": [
+      "Industrial",
+      "Modern"
+     ],
+     "stagedCells": 4,
+     "pending": 0
+    },
+    "meaning": "PASS = a member saved while still in the run rule's pending queue reads, after reload, ONE look on its run and the same looks as the control processed before the save (D4 refuted); FAIL = the pending resolution was lost (D4 confirmed)"
+   }
+  }
+ ],
+ "styles_before": {
+  "success": true,
+  "cmd": "styles",
+  "lookSpans": {
+   "Scrapper": {
+    "tex": "Strand_Jawa",
+    "path": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+    "width": 0.14
+   },
+   "Industrial": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.1
+   },
+   "Modern": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.095
+   },
+   "Futuristic": {
+    "tex": "Strand",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
+    "width": 0.095
+   }
+  },
+  "defaultLook": "Scrapper",
+  "lastPicked": {
+   "RM_AerialMast": "Modern",
+   "RM_AerialLampMast": null,
+   "RM_AerialWallBracket": null
+  },
+  "picks": 25,
+  "missingStyleDefs": [],
+  "frameStyleRestored": 0,
+  "godMode": false,
+  "anchors": [
+   {
+    "id": 50826,
+    "def": "RM_AerialMast",
+    "x": 92,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     92.5,
+     185.5
+    ],
+    "spans": [
+     {
+      "other": 50850,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 50828,
+    "def": "RM_AerialMast",
+    "x": 116,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     116.5,
+     185.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 50830,
+    "def": "RM_AerialMast",
+    "x": 110,
+    "z": 195,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     110.5,
+     195.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 50850,
+    "def": "RM_AerialMast",
+    "x": 104,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     104.5,
+     185.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59206,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59210,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 59207,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59211,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.1
+     }
+    ]
+   },
+   {
+    "id": 59208,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59212,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59209,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59213,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59210,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59220,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 59211,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59217,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.1
+     }
+    ]
+   },
+   {
+    "id": 59212,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59214,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59213,
+    "def": "RM_AerialMast",
+    "x": 72,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     72.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59214,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 131,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     131.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59217,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59220,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 134,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     134.5
+    ],
+    "spans": []
+   }
+  ],
+  "pending": []
+ },
+ "stage2_before": {
+  "success": true,
+  "cmd": "cstyles:60,146,30,12",
+  "defaultLook": "Scrapper",
+  "defaultKey": "Scrapper",
+  "missingStyleDefs": [],
+  "notStylable": [],
+  "globalMissing": [],
+  "lookStrands": {
+   "Scrapper": [
+    "Strand_Jawa"
+   ],
+   "Industrial": [
+    "Strand_BlackRubber",
+    "Strand_CorrugatedSteel",
+    "Strand_CoiledBlack"
+   ],
+   "Modern": [
+    "Strand_Orange",
+    "Strand_Green",
+    "Strand_Brown",
+    "Strand_Yellow",
+    "Strand_Blue"
+   ],
+   "Futuristic": [
+    "Strand"
+   ]
+  },
+  "counters": {
+   "processed": 30,
+   "adopted": 14,
+   "bridges": 9,
+   "linkBridges": 8,
+   "repainted": 12,
+   "materialised": 0,
+   "unpainted": 0,
+   "legacyKept": 1,
+   "restyles": 1,
+   "pending": 0,
+   "lampsFollowed": 0,
+   "lampsKeptOwn": 0,
+   "lampRestyles": 0,
+   "runOfVisits": 196
+  },
+  "lamps": [],
+  "lastMessage": "Restyled this run (7 pieces, 7 changed) to Modern: random mix of colours.",
+  "switchPaths": {
+   "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch": "RimMandrake/GimmeSomeSlack/Styles/Modern/PowerSwitch",
+   "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch": "RimMandrake/GimmeSomeSlack/Styles/Industrial/PowerSwitch"
+  },
+  "members": [
+   {
+    "id": 59221,
+    "def": "PowerConduit",
+    "x": 62,
+    "z": 149,
+    "rawStyle": "PowerConduit_Industrial",
+    "look": "Industrial",
+    "colour": null,
+    "run": 59221,
+    "runArea": 3
+   },
+   {
+    "id": 59222,
+    "def": "PowerConduit",
+    "x": 63,
+    "z": 149,
+    "rawStyle": "PowerConduit_Industrial",
+    "look": "Industrial",
+    "colour": null,
+    "run": 59221,
+    "runArea": 3
+   },
+   {
+    "id": 59223,
+    "def": "PowerConduit",
+    "x": 64,
+    "z": 149,
+    "rawStyle": "PowerConduit_Industrial",
+    "look": "Industrial",
+    "colour": null,
+    "run": 59221,
+    "runArea": 3
+   },
+   {
+    "id": 59225,
+    "def": "PowerConduit",
+    "x": 66,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59226,
+    "def": "PowerConduit",
+    "x": 67,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59227,
+    "def": "PowerConduit",
+    "x": 69,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59228,
+    "def": "PowerConduit",
+    "x": 70,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59229,
+    "def": "PowerConduit",
+    "x": 71,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59230,
+    "def": "PowerSwitch",
+    "x": 72,
+    "z": 149,
+    "rawStyle": "PowerSwitch_Modern",
+    "look": "Modern",
+    "colour": null,
+    "run": 59225,
+    "runArea": 9,
+    "drawnTex": "PowerSwitch"
+   },
+   {
+    "id": 59231,
+    "def": "PowerConduit",
+    "x": 68,
+    "z": 149,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59232,
+    "def": "PowerConduit",
+    "x": 69,
+    "z": 150,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59233,
+    "def": "PowerConduit",
+    "x": 69,
+    "z": 151,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59234,
+    "def": "PowerConduit",
+    "x": 69,
+    "z": 152,
+    "rawStyle": "PowerConduit_Modern_Mix",
+    "look": "Modern",
+    "colour": "Mix",
+    "run": 59225,
+    "runArea": 9
+   },
+   {
+    "id": 59243,
+    "def": "PowerConduit",
+    "x": 62,
+    "z": 152,
+    "rawStyle": "PowerConduit_Futuristic",
+    "look": "Futuristic",
+    "colour": null,
+    "run": 59243,
+    "runArea": 4
+   },
+   {
+    "id": 59244,
+    "def": "PowerConduit",
+    "x": 63,
+    "z": 152,
+    "rawStyle": "PowerConduit_Futuristic",
+    "look": "Futuristic",
+    "colour": null,
+    "run": 59243,
+    "runArea": 4
+   },
+   {
+    "id": 59245,
+    "def": "PowerConduit",
+    "x": 64,
+    "z": 152,
+    "rawStyle": "PowerConduit_Futuristic",
+    "look": "Futuristic",
+    "colour": null,
+    "run": 59243,
+    "runArea": 4
+   },
+   {
+    "id": 59246,
+    "def": "PowerConduit",
+    "x": 65,
+    "z": 152,
+    "rawStyle": "PowerConduit_Futuristic",
+    "look": "Futuristic",
+    "colour": null,
+    "run": 59243,
+    "runArea": 4
+   }
+  ],
+  "pieces": [
+   {
+    "key": "c:62,149:62.14,149.50|c:64,149:64.86,149.50|0#c:(62,149);c:(63,149);c:(64,149);Terminal\u0000-1/00.00/0.000.00/0.00,TerminalG\u00001/00.00/0.000.00/0.00,DD#1,7,16,2.6,0.35,0.8,1,3,Wire,0.15,0.22,70,160000,0.05,1.2,2.6,0.06#JunctionsJunctionsV",
+    "owner": [
+     62,
+     149
+    ],
+    "strands": 2,
+    "g": 3,
+    "look": "Industrial",
+    "variant": 2,
+    "legacy": false,
+    "mix": false,
+    "mixTex": [],
+    "strandTex": "Strand_CoiledBlack",
+    "decalTex": [
+     "EndFrayed_Dead"
+    ]
+   },
+   {
+    "key": "c:62,152:62.14,152.50|c:65,152:65.86,152.50|0#c:(62,152);c:(63,152);c:(64,152);c:(65,152);Terminal\u0000-1/00.00/0.000.00/0.00,Terminal\u00001/00.00/0.000.00/0.00,DD#1,7,16,2.6,0.35,0.8,1,3,Wire,0.15,0.22,70,160000,0.05,1.2,2.6,0.06#JunctionsJunctionsV",
+    "owner": [
+     62,
+     152
+    ],
+    "strands": 2,
+    "g": 9,
+    "look": "Futuristic",
+    "variant": 0,
+    "legacy": false,
+    "mix": false,
+    "mixTex": [],
+    "strandTex": "Strand",
+    "decalTex": [
+     "EndFrayed_Dead"
+    ]
+   },
+   {
+    "key": "c:66,149:66.14,149.50|c:69,149:69.50,149.50|0#c:(66,149);c:(67,149);c:(68,149);c:(69,149);TerminalG\u0000-1/00.00/0.000.00/0.00,Junctiont0/00.00/0.000.00/0.00,D#1,7,16,2.6,0.35,0.8,1,3,Wire,0.15,0.22,70,160000,0.05,1.2,2.6,0.06#StripsStripsV",
+    "owner": [
+     66,
+     149
+    ],
+    "strands": 2,
+    "g": 4,
+    "look": "Modern",
+    "variant": 0,
+    "legacy": false,
+    "mix": true,
+    "mixTex": [
+     "Strand_Orange"
+    ],
+    "strandTex": "Strand_Orange",
+    "decalTex": [
+     "EndFrayed_Dead"
+    ]
+   },
+   {
+    "key": "c:69,149:69.50,149.50|c:69,152:69.50,152.86|0#c:(69,149);c:(69,150);c:(69,151);c:(69,152);Junctiont0/00.00/0.000.00/0.00,Terminal\u00000/10.00/0.000.00/0.00,D#1,7,16,2.6,0.35,0.8,1,3,Wire,0.15,0.22,70,160000,0.05,1.2,2.6,0.06#StripsStripsV",
+    "owner": [
+     69,
+     149
+    ],
+    "strands": 3,
+    "g": 8,
+    "look": "Modern",
+    "variant": 4,
+    "legacy": false,
+    "mix": true,
+    "mixTex": [
+     "Strand_Blue"
+    ],
+    "strandTex": "Strand_Blue",
+    "decalTex": [
+     "EndFrayed_Dead"
+    ]
+   },
+   {
+    "key": "c:69,149:69.50,149.50|m:71,149:71.92,149.50|0#c:(69,149);c:(70,149);c:(71,149);m:t59230;Junctiont0/00.00/0.000.00/0.00,Transmitter\u00000/00.00/0.000.00/0.00,#1,7,16,2.6,0.35,0.8,1,3,Wire,0.15,0.22,70,160000,0.05,1.2,2.6,0.06#StripsStripsV",
+    "owner": [
+     69,
+     149
+    ],
+    "strands": 1,
+    "g": 6,
+    "look": "Modern",
+    "variant": 2,
+    "legacy": false,
+    "mix": true,
+    "mixTex": [
+     "Strand_Brown"
+    ],
+    "strandTex": "Strand_Brown",
+    "decalTex": [
+     "Plug"
+    ]
+   },
+   {
+    "key": "node:c:(69,149)",
+    "owner": [
+     69,
+     149
+    ],
+    "strands": 0,
+    "g": 7,
+    "look": "Modern",
+    "variant": 3,
+    "legacy": false,
+    "mix": true,
+    "mixTex": [
+     "Strand_Yellow"
+    ],
+    "strandTex": "Strand_Yellow",
+    "decalTex": [
+     "Junction_T"
+    ]
+   }
+  ],
+  "legacyPieces": 0,
+  "legacySameMaterials": 0,
+  "printedTex": {
+   "EndFrayed_Dead": 52,
+   "Junction_T": 4,
+   "Plug": 4,
+   "Strand": 888,
+   "Strand(lod)": 148,
+   "Strand_Blue": 716,
+   "Strand_Blue(lod)": 78,
+   "Strand_Brown": 186,
+   "Strand_Brown(lod)": 64,
+   "Strand_CoiledBlack": 686,
+   "Strand_CoiledBlack(lod)": 112,
+   "Strand_Orange": 800,
+   "Strand_Orange(lod)": 142,
+   "StrandShadow": 3276
+  }
+ },
+ "save": {
+  "success": true,
+  "cmd": "styles",
+  "lookSpans": {
+   "Scrapper": {
+    "tex": "Strand_Jawa",
+    "path": "RimMandrake/GimmeSomeSlack/Strand_Jawa",
+    "width": 0.14
+   },
+   "Industrial": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.1
+   },
+   "Modern": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.095
+   },
+   "Futuristic": {
+    "tex": "Strand",
+    "path": "RimMandrake/GimmeSomeSlack/Styles/Cybertek/Strand",
+    "width": 0.095
+   }
+  },
+  "defaultLook": "Scrapper",
+  "lastPicked": {
+   "RM_AerialMast": null,
+   "RM_AerialLampMast": null,
+   "RM_AerialWallBracket": null
+  },
+  "picks": 32,
+  "missingStyleDefs": [],
+  "frameStyleRestored": 0,
+  "godMode": false,
+  "anchors": [
+   {
+    "id": 50826,
+    "def": "RM_AerialMast",
+    "x": 92,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     92.5,
+     185.5
+    ],
+    "spans": [
+     {
+      "other": 50850,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 50828,
+    "def": "RM_AerialMast",
+    "x": 116,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     116.5,
+     185.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 50830,
+    "def": "RM_AerialMast",
+    "x": 110,
+    "z": 195,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     110.5,
+     195.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 50850,
+    "def": "RM_AerialMast",
+    "x": 104,
+    "z": 185,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     104.5,
+     185.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59206,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59210,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 59207,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59211,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.1
+     }
+    ]
+   },
+   {
+    "id": 59208,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59212,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59209,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 59213,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59210,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59220,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 59211,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59217,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.1
+     }
+    ]
+   },
+   {
+    "id": 59212,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 59214,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 59213,
+    "def": "RM_AerialMast",
+    "x": 72,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     72.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59214,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 131,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     131.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59217,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 59220,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 134,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     134.5
+    ],
+    "spans": [
+     {
+      "other": 59261,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 59261,
+    "def": "RM_AerialMast",
+    "x": 78,
+    "z": 147,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     78.5,
+     147.5
+    ],
+    "spans": []
+   }
+  ],
+  "pending": []
+ }
+}
