@@ -140,3 +140,82 @@
 {"key": "swanimals/corellianhound/corellianhound", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:11"}
 {"key": "swanimals/desertport/zakkro/zakkro", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:57:13"}
 {"key": "swanimals/eopie/eopie", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:16"}
+{"event": "publish", "n_paths": 29, "result": "close with: rimflow close <ID> --sha 429f9ad4bbf3", "at": "2026-10-16T13:57:26"}
+{"key": "swanimals/frilledgorg/frilledgorg_j", "event": "done", "seconds": 114, "at": "2026-10-16T13:59:20"}
+{"key": "swanimals/frilledgorg/frilledgorgv_j", "event": "done", "seconds": 106, "at": "2026-10-16T14:01:06"}
+{"key": "swanimals/gelagrub/gelagrub", "event": "done", "seconds": 74, "at": "2026-10-16T14:02:20"}
+{"key": "swanimals/gloomcast/gloomcast", "event": "done", "seconds": 72, "at": "2026-10-16T14:03:32"}
+{"key": "swanimals/gorg/gorgv_o", "event": "done", "seconds": 127, "at": "2026-10-16T14:05:39"}
+{"key": "swanimals/graniteslug/graniteslug", "event": "done", "seconds": 235, "at": "2026-10-16T14:09:34"}
+{"key": "swanimals/grazer/grazer_f", "event": "done", "seconds": 75, "at": "2026-10-16T14:10:49"}
+{"key": "swanimals/grazer/grazer_m", "event": "done", "seconds": 68, "at": "2026-10-16T14:11:57"}
+{"key": "swanimals/gullipud/gullipud", "event": "done", "seconds": 70, "at": "2026-10-16T14:13:06"}
+{"key": "swanimals/harvesterbeetle/harvesterbeetle", "event": "done", "seconds": 132, "at": "2026-10-16T14:15:19"}
+{"key": "swanimals/hssiss/hssiss", "event": "lint_flag", "at": "2026-10-16T14:17:09"}
+{"key": "swanimals/hssiss/hssissa", "event": "lint_flag", "at": "2026-10-16T14:18:58"}
+{"key": "swanimals/hssiss/hssissb", "event": "lint_flag", "at": "2026-10-16T14:21:41"}
+{"key": "swanimals/hssiss/hssissc", "event": "lint_flag", "at": "2026-10-16T14:23:31"}
+{"key": "swanimals/ithorianreek/ithorianreek", "event": "done", "seconds": 148, "at": "2026-10-16T14:25:59"}
+{"key": "swanimals/jamel/jamel", "event": "done", "seconds": 60, "at": "2026-10-16T14:26:59"}
+{"key": "swanimals/klorslug/klorslug", "event": "done", "seconds": 194, "at": "2026-10-16T14:30:13"}
+{"key": "swanimals/kraytdragon/kraytdragon_f", "event": "done", "seconds": 158, "at": "2026-10-16T14:32:51"}
+{"key": "swanimals/kraytdragon/kraytdragon_j", "event": "done", "seconds": 77, "at": "2026-10-16T14:34:08"}
+{"key": "swanimals/kraytdragon/kraytdragon_m", "event": "done", "seconds": 194, "at": "2026-10-16T14:37:22"}
+{"key": "swanimals/kreetle/kreetle_j", "event": "done", "seconds": 234, "at": "2026-10-16T14:41:16"}
+{"key": "swanimals/kwazelmaw/kwazelmaw", "event": "done", "seconds": 158, "at": "2026-10-16T14:43:54"}
+{"key": "swanimals/longtailgorg/longtailgorg", "event": "done", "seconds": 199, "at": "2026-10-16T14:47:13"}
+{"key": "swanimals/longtailgorg/longtailgorg_j", "event": "done", "seconds": 147, "at": "2026-10-16T14:49:39"}
+{"key": "swanimals/longtailgorg/longtailgorgv_g", "event": "done", "seconds": 191, "at": "2026-10-16T14:52:51"}
+{"key": "swanimals/longtailgorg/longtailgorgv_h", "event": "done", "seconds": 250, "at": "2026-10-16T14:57:01"}
+{"key": "swanimals/longtailgorg/longtailgorgv_i", "event": "done", "seconds": 153, "at": "2026-10-16T14:59:34"}
+{"key": "swanimals/longtailgorg/longtailgorgv_j", "event": "done", "seconds": 205, "at": "2026-10-16T15:03:00"}
+{"key": "swanimals/longtailgorg/longtailgorgv_k", "event": "done", "seconds": 80, "at": "2026-10-16T15:04:20"}
+{"key": "swanimals/longtailgorg/longtailgorgv_l", "event": "done", "seconds": 230, "at": "2026-10-16T15:08:10"}
+{"key": "swanimals/lothcat/lothcat_m", "event": "done", "seconds": 117, "at": "2026-10-16T15:10:08"}
+{"key": "swanimals/lothwolf/lothwolf_f", "event": "done", "seconds": 75, "at": "2026-10-16T15:11:23"}
+{"key": "swanimals/lothwolf/lothwolf_m", "event": "done", "seconds": 68, "at": "2026-10-16T15:12:31"}
+{"key": "swanimals/mastiffphalone/mastiffphalone", "event": "done", "seconds": 81, "at": "2026-10-16T15:13:52"}
+{"key": "swanimals/mott/mott_f", "event": "done", "seconds": 73, "at": "2026-10-16T15:15:05"}
+{"key": "swanimals/mott/mott_m", "event": "done", "seconds": 155, "at": "2026-10-16T15:17:40"}
+{"key": "swanimals/narglatch/narglatch_f", "event": "done", "seconds": 149, "at": "2026-10-16T15:20:09"}
+{"key": "swanimals/nexu/nexuw", "event": "done", "seconds": 66, "at": "2026-10-16T15:21:15"}
+{"key": "swanimals/porg/porg", "event": "lint_flag", "at": "2026-10-16T15:24:35"}
+{"key": "swanimals/reek/reek", "event": "done", "seconds": 148, "at": "2026-10-16T15:27:03"}
+{"key": "swanimals/rycrit/rycrit", "event": "done", "seconds": 174, "at": "2026-10-16T15:29:57"}
+{"key": "swanimals/shyrack/shyrack", "event": "done", "seconds": 82, "at": "2026-10-16T15:31:19"}
+{"key": "swanimals/stintaril/stintaril", "event": "done", "seconds": 192, "at": "2026-10-16T15:34:31"}
+{"key": "swanimals/strill/strill", "event": "done", "seconds": 151, "at": "2026-10-16T15:37:02"}
+{"key": "swanimals/taozin/taozin", "event": "done", "seconds": 114, "at": "2026-10-16T15:38:56"}
+{"key": "swanimals/taozin/taozin_j", "event": "done", "seconds": 128, "at": "2026-10-16T15:41:04"}
+{"key": "swanimals/teemuss/teemuss", "event": "done", "seconds": 77, "at": "2026-10-16T15:42:21"}
+{"key": "swanimals/tukata/tukata", "event": "done", "seconds": 198, "at": "2026-10-16T15:45:40"}
+{"key": "swanimals/tukata/tukatac", "event": "done", "seconds": 127, "at": "2026-10-16T15:47:46"}
+{"key": "swanimals/tuskcat/tuskcat", "event": "done", "seconds": 125, "at": "2026-10-16T15:49:51"}
+{"key": "swanimals/varactyl/varactyl_f", "event": "done", "seconds": 77, "at": "2026-10-16T15:51:08"}
+{"key": "swanimals/varactyl/varactyl_m", "event": "lint_flag", "at": "2026-10-16T15:54:11"}
+{"key": "swanimals/varactyl/varactylv_f", "event": "done", "seconds": 82, "at": "2026-10-16T15:55:32"}
+{"key": "swanimals/wampa/wampa_j", "event": "done", "seconds": 66, "at": "2026-10-16T15:56:38"}
+{"key": "swanimals/yobshrimp/yobshrimp_j", "event": "done", "seconds": 134, "at": "2026-10-16T15:58:52"}
+{"key": "things/pawn/animal/aa_sandlion/aa_dessicated_sandlion", "event": "done", "seconds": 63, "at": "2026-10-16T15:59:55"}
+{"key": "things/pawn/animal/fubbum/rm_fubbum", "event": "done", "seconds": 68, "at": "2026-10-16T16:01:03"}
+{"key": "things/pawn/animal/gappo/rm_gappogreater", "event": "done", "seconds": 65, "at": "2026-10-16T16:02:08"}
+{"key": "swanimals/frilledgorg/frilledgorg_j", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:13"}
+{"key": "swanimals/frilledgorg/frilledgorgv_j", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:14"}
+{"key": "swanimals/gelagrub/gelagrub", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:16"}
+{"key": "swanimals/gloomcast/gloomcast", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:18"}
+{"key": "swanimals/gullipud/gullipud", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:21"}
+{"key": "swanimals/harvesterbeetle/harvesterbeetle", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:25"}
+{"key": "swanimals/ithorianreek/ithorianreek", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:29"}
+{"key": "swanimals/jamel/jamel", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:32"}
+{"key": "swanimals/kwazelmaw/kwazelmaw", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:36"}
+{"key": "swanimals/lothwolf/lothwolf_f", "event": "installed", "facings": ["south"], "at": "2026-10-16T16:02:38"}
+{"key": "swanimals/lothwolf/lothwolf_m", "event": "installed", "facings": ["south"], "at": "2026-10-16T16:02:40"}
+{"key": "swanimals/mott/mott_m", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:45"}
+{"key": "swanimals/reek/reek", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:49"}
+{"key": "swanimals/taozin/taozin", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:52"}
+{"key": "swanimals/tukata/tukatac", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:52"}
+{"key": "swanimals/tuskcat/tuskcat", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:02:57"}
+{"key": "swanimals/varactyl/varactyl_f", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:02:59"}
+{"key": "things/pawn/animal/aa_sandlion/aa_dessicated_sandlion", "event": "installed", "facings": ["south"], "at": "2026-10-16T16:03:00"}
+{"key": "things/pawn/animal/fubbum/rm_fubbum", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:03:02"}
+{"key": "things/pawn/animal/gappo/rm_gappogreater", "event": "installed", "facings": ["north"], "at": "2026-10-16T16:03:04"}

@@ -4196,896 +4196,3382 @@
    "worker": "codex_home_facing_regen"
   },
   "swanimals/frilledgorg/frilledgorg_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/FrilledGorg_j/candidates/FrilledGorg_j_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/FrilledGorg_j/candidates/FrilledGorg_j_south.png"
+   },
+   "canon": {
+    "standtall_b1_frilledgorg_j_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_frilledgorg_j_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_FrilledGorg",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "e11402c4a74a0d8ac68b15eb2a708d952a393d372710acbbf9f34a5b76b30019",
+    "south": "1a9a093db8bdd3266984c7fb5bc2b052539145487a5a4a30ef0956ad15243686"
+   },
+   "jobs": [
+    "standtall_b1_frilledgorg_j_east",
+    "standtall_b1_frilledgorg_j_south",
+    "standtall_b1_frilledgorg_j_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.074,
+     "d_south": 1.13,
+     "e_north": 1.074,
+     "e_south": 1.13,
+     "ns": 0.951,
+     "nsw": 0.692,
+     "w_north": 0.266,
+     "w_south": 0.385
+    }
+   },
    "live_sha": {
     "north": "14ed69702a2a4f0aca498fa3bb651918e0e707657b58ebc70c219e22145cbed0",
     "south": "844947c2b964ba3091357e6baef10740cc02c377c246df2922bea81d20a058b1"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 114,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/FrilledGorg/FrilledGorg_j",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/FrilledGorg_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/frilledgorg/frilledgorgv_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/FrilledGorgV_J/candidates/FrilledGorgV_J_north.png"
+   },
+   "canon": {
+    "standtall_b1_frilledgorgv_j_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_FrilledGorg",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "abec406f57bdfcaef98ad749ed1b36c15e76a19cb52ee26528e417d5f976d8d3"
+   },
+   "jobs": [
+    "standtall_b1_frilledgorgv_j_east",
+    "standtall_b1_frilledgorgv_j_south",
+    "standtall_b1_frilledgorgv_j_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.421,
+     "e_north": 1.079,
+     "e_south": 1.421,
+     "ns": 0.759,
+     "nsw": 1.205,
+     "w_north": 0.61,
+     "w_south": 0.506
+    }
+   },
    "live_sha": {
     "north": "54fece3dc9a8d919ea56be4b7f1f78717f0f68c2aced3992a71961dc12f9deb9"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 106,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/FrilledGorg/FrilledGorgV_J",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/FrilledGorgV_J",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/gelagrub/gelagrub": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gelagrub/candidates/Gelagrub_north.png"
+   },
+   "canon": {
+    "standtall_b1_gelagrub_north": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Gelagrub",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "e5e3e7bc19a54fa02de908455264f2a8463cfb3eb86470a1af40aa9bdc710a59"
+   },
+   "jobs": [
+    "standtall_b1_gelagrub_east",
+    "standtall_b1_gelagrub_south",
+    "standtall_b1_gelagrub_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.316,
+     "e_north": 1.08,
+     "e_south": 1.316,
+     "ns": 0.821,
+     "nsw": 0.815,
+     "w_north": 0.628,
+     "w_south": 0.771
+    }
+   },
    "live_sha": {
     "north": "2f87d1691f424f5a94c771da9a2f5736de997fc19c67d656a1b1368c017fc111"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 74,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Gelagrub/Gelagrub",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gelagrub",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/gloomcast/gloomcast": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gloomcast/candidates/Gloomcast_north.png"
+   },
+   "canon": {},
    "def": "RM_Gloomcast",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "b9fd750a78d98fa3b442d7ccbee5fe419c4870c523da982c0387174948789b37"
+   },
+   "jobs": [
+    "standtall_b1_gloomcast_east",
+    "standtall_b1_gloomcast_south",
+    "standtall_b1_gloomcast_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.316,
+     "e_north": 1.056,
+     "e_south": 1.316,
+     "ns": 0.803,
+     "nsw": 0.803,
+     "w_north": 0.806,
+     "w_south": 1.004
+    }
+   },
    "live_sha": {
     "north": "d8aab44d3e687420c9d01d6ecc12f94ac190e6e899e1953f7315f212420d3442"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 72,
+   "status": "installed",
    "sw": false,
    "texPath": "swanimals/Gloomcast/Gloomcast",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gloomcast",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/gorg/gorgv_o": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GorgV_O/candidates/GorgV_O_north.png"
+   },
+   "canon": {
+    "standtall_b1_gorgv_o_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a SMALL, soft, flattened amphibious-lizard body (head + trunk + tail, or a pear-shaped trunk for the bulbous variants), limbs splayed out sideways from the body, with webbed AND clawed feet on both front and hind limbs; head wide and flat, as wide as or wider than the neck, with a mouth running the full width of the head",
+       "reason": "The squat trunk and bulky, folded hind haunches read as a frog; visible hindfeet have webbing and claws."
+      },
+      {
+       "line": "(owner-supplied 2026-10-04, verbatim) \"They do NOT look like frogs, more like amphibious lizards with smooth slick skin.\" \"Eyes can be small or large, numbering two to four.\" \"All of them are small.\"",
+       "reason": "The broad crouched body and heavy folded hindlegs look distinctly frog-like; eyes and absolute size cannot be assessed."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no upright sitting frog pose, no big folded jumping hind legs), not a scaled lizard or gecko, not a toad (no warts), not bigger than a cat",
+       "reason": "Large folded jumping-style hindlegs create the explicitly excluded frog silhouette."
+      }
+     ],
+     "note": "",
+     "score": "3/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Gorg",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.932,
+     "d_south": 1.061,
+     "e_north": 0.932,
+     "e_south": 1.061,
+     "ns": 0.878,
+     "nsw": 1.178,
+     "w_north": 0.565,
+     "w_south": 0.48
+    }
+   },
    "live_sha": {
     "north": "f81090ac86b87ec86bf5347e070ad770d99f991a9c7114a79a60c34d89789a9b"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 127,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Gorg/GorgV_O",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a SMALL, soft, flattened amphibious-lizard body (head + trunk + tail,; north: (owner-supplied 2026-10-04, verbatim) \"They do NOT look like frogs, more like am",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GorgV_O",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/graniteslug/graniteslug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GraniteSlug/candidates/GraniteSlug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GraniteSlug/candidates/GraniteSlug_south.png"
+   },
+   "canon": {
+    "standtall_b1_graniteslug_north": {
+     "flags": [
+      {
+       "line": "Wet slime trail left behind the body",
+       "reason": "No wet slime trail is visible around or behind the foot."
+      },
+      {
+       "line": "Realistic rendering: wet glistening sea-slug skin and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Hard, metallic-looking gold ridges dominate the surface; soft, translucent flesh and a convincing mucus sheen are absent."
+      }
+     ],
+     "note": "",
+     "score": "5/7",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_graniteslug_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a low, long slug/caterpillar body on a flat foot, with a hump over the mid-body; no legs; head end carrying thin eye and tentacle stalks; tail end curling upward",
+       "reason": "The head lacks distinct thin, tall eye and tentacle stalks; the pale base forms curled side lobes rather than a clear flat foot."
+      },
+      {
+       "line": "Realistic rendering: wet glistening sea-slug skin and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Strong decorative outlines and metallic-looking gold curls lack convincing wet, translucent sea-slug flesh and mucus sheen."
+      }
+     ],
+     "note": "",
+     "score": "4/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_GraniteSlug",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.123,
+     "e_north": 1.08,
+     "e_south": 1.123,
+     "ns": 0.961,
+     "nsw": 1.192,
+     "w_north": 0.683,
+     "w_south": 0.573
+    }
+   },
    "live_sha": {
     "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
     "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 235,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/GraniteSlug/GraniteSlug",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a low, long slug/caterpillar body on a flat foot, with a hump over th; south: Realistic rendering: wet glistening sea-slug skin and natural lighting, no outli; north: Wet slime trail left behind the body; north: Realistic rendering: wet glistening sea-slug skin and natural lighting, no outli",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GraniteSlug",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/grazer/grazer_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grazer_f/candidates/Grazer_f_north.png"
+   },
+   "canon": {
+    "standtall_b1_grazer_f_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: mostly white/cream hide with large tan-to-gold patches holding leopard-style rosettes across the back and upper flanks",
+       "reason": "Cream hide has a few solid grey-tan spots, lacking large golden patches containing darker leopard-style rosettes."
+      },
+      {
+       "line": "Short thin tail",
+       "reason": "The central tail is a thick teardrop-shaped stub rather than a short, thin tail."
+      },
+      {
+       "line": "Realistic rendering: natural wrinkled hide and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08)",
+       "reason": "Strong dark outlines and smooth cartoon shading replace realistic wrinkled hide and natural lighting."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Grazer",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.059,
+     "d_south": 1.231,
+     "e_north": 1.059,
+     "e_south": 1.231,
+     "ns": 0.861,
+     "nsw": 1.35,
+     "w_north": 0.815,
+     "w_south": 0.603
+    }
+   },
    "live_sha": {
     "north": "947800e0b120e71b5efdfcb89f3828d33277dae2d4058c8ebc750c20f575ff39"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 75,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Grazer/Grazer_f",
-   "why": ""
+   "why": "canon Must-show FAIL: north: COLOUR LAYOUT: mostly white/cream hide with large tan-to-gold patches holding le; north: Short thin tail",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grazer_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/grazer/grazer_m": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grazer_m/candidates/Grazer_m_north.png"
+   },
+   "canon": {
+    "standtall_b1_grazer_m_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: mostly white/cream hide with large tan-to-gold patches holding leopard-style rosettes across the back and upper flanks",
+       "reason": "Cream hide lacks the required large tan-to-gold patches and darker leopard-style rosettes."
+      },
+      {
+       "line": "Short thin tail",
+       "reason": "The central rear appendage is thick, tapered and segmented rather than a short thin tail."
+      },
+      {
+       "line": "Realistic rendering: natural wrinkled hide and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08)",
+       "reason": "Strong dark outlines and smooth, simplified shading lack natural wrinkled hide and realistic lighting."
+      },
+      {
+       "line": "NEGATIVE: not the lean wild grazer (no long low body on thin legs, no spine scutes, not spotted all over), not a plain unspotted cow or nerf, not a hippo with no markings",
+       "reason": "The plain unspotted cream body reads as the prohibited unmarked stand-in."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Grazer",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.287,
+     "e_north": 1.055,
+     "e_south": 1.287,
+     "ns": 0.82,
+     "nsw": 0.944,
+     "w_north": 0.578,
+     "w_south": 0.612
+    }
+   },
    "live_sha": {
     "north": "fb647cabdd9323fe1da4d9ab75281383499babd346ab1f3a8db72e22159ac040"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 68,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Grazer/Grazer_m",
-   "why": ""
+   "why": "canon Must-show FAIL: north: COLOUR LAYOUT: mostly white/cream hide with large tan-to-gold patches holding le; north: Short thin tail",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Grazer_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/gullipud/gullipud": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gullipud/candidates/Gullipud_north.png"
+   },
+   "canon": {
+    "standtall_b1_gullipud_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Gullipud",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "ba35b816a6bfd977b5a33d48c190e20d449f0cdf7a19157507e8cd500dedfa7f"
+   },
+   "jobs": [
+    "standtall_b1_gullipud_east",
+    "standtall_b1_gullipud_south",
+    "standtall_b1_gullipud_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.114,
+     "e_north": 1.057,
+     "e_south": 1.114,
+     "ns": 0.949,
+     "nsw": 1.062,
+     "w_north": 0.98,
+     "w_south": 0.922
+    }
+   },
    "live_sha": {
     "north": "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 70,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Gullipud/Gullipud",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gullipud",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/harvesterbeetle/harvesterbeetle": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HarvesterBeetle/candidates/HarvesterBeetle_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HarvesterBeetle/candidates/HarvesterBeetle_south.png"
+   },
+   "canon": {
+    "standtall_b1_harvesterbeetle_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_harvesterbeetle_south": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_HarvesterBeetle",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "605995dbf7d19eaf3ccebbafc123e280d2b51c1d83886ca129c4ef8d46290105",
+    "south": "c3d80238f0b6866ec154c53f7fa01ed5e06871e50b9192fb83d969a2cba7e2ad"
+   },
+   "jobs": [
+    "standtall_b1_harvesterbeetle_east",
+    "standtall_b1_harvesterbeetle_south",
+    "standtall_b1_harvesterbeetle_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.118,
+     "e_north": 1.081,
+     "e_south": 1.118,
+     "ns": 0.967,
+     "nsw": 0.898,
+     "w_north": 0.878,
+     "w_south": 0.978
+    }
+   },
    "live_sha": {
     "north": "c89222db1355fef48815c9f996d990bc940957865e79de3a282809f4d0d8b45d",
     "south": "6e18cbd590feab2cbc6bdb3da5c36d11377fec40a83013768105a24bedae6f17"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 132,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/HarvesterBeetle/HarvesterBeetle",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HarvesterBeetle",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/hssiss/hssiss": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Hssiss",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6835,
+       1.509
+      ],
+      "facing": "north",
+      "key": "ns",
+      "value": 2.625
+     }
+    ],
+    "ratios": {
+     "d_north": 1.22,
+     "d_south": 1.096,
+     "e_north": 2.877,
+     "e_south": 1.096,
+     "ns": 2.625,
+     "nsw": 1.2,
+     "w_north": 0.29,
+     "w_south": 0.242
+    }
+   },
    "live_sha": {
     "south": "e84e3fba38c7a0e5cfd71104587134708b800a650f55d9481696ef3fab0e15be"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 111,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Hssiss/Hssiss",
-   "why": ""
+   "why": "lint: north ns=2.625",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Hssiss",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/hssiss/hssissa": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Hssiss",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6835,
+       1.509
+      ],
+      "facing": "north",
+      "key": "ns",
+      "value": 2.692
+     }
+    ],
+    "ratios": {
+     "d_north": 1.22,
+     "d_south": 1.069,
+     "e_north": 2.877,
+     "e_south": 1.069,
+     "ns": 2.692,
+     "nsw": 1.469,
+     "w_north": 0.29,
+     "w_south": 0.198
+    }
+   },
    "live_sha": {
     "south": "291c1ede2a0fe974a11a0e0145a25f9dbf7ce1a62a62ec6ee16848fb55d6d465"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 109,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Hssiss/HssissA",
-   "why": ""
+   "why": "lint: north ns=2.692",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HssissA",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/hssiss/hssissb": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Hssiss",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6835,
+       1.509
+      ],
+      "facing": "north",
+      "key": "ns",
+      "value": 2.625
+     }
+    ],
+    "ratios": {
+     "d_north": 1.22,
+     "d_south": 1.096,
+     "e_north": 2.877,
+     "e_south": 1.096,
+     "ns": 2.625,
+     "nsw": 0.924,
+     "w_north": 0.294,
+     "w_south": 0.319
+    }
+   },
    "live_sha": {
     "south": "91d30b28f55403aad9b8b9ba58050c9fe2f20dfff759734ded608194b18b6987"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 163,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Hssiss/HssissB",
-   "why": ""
+   "why": "lint: north ns=2.625",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HssissB",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/hssiss/hssissc": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Hssiss",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6835,
+       1.509
+      ],
+      "facing": "north",
+      "key": "ns",
+      "value": 2.625
+     }
+    ],
+    "ratios": {
+     "d_north": 1.22,
+     "d_south": 1.096,
+     "e_north": 2.877,
+     "e_south": 1.096,
+     "ns": 2.625,
+     "nsw": 1.161,
+     "w_north": 0.29,
+     "w_south": 0.25
+    }
+   },
    "live_sha": {
     "south": "e6ffe21911aff87bbbed86745221e253f8eea68fc90aba6a02c8f81e9815eced"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 110,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Hssiss/HssissC",
-   "why": ""
+   "why": "lint: north ns=2.625",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/HssissC",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/ithorianreek/ithorianreek": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/IthorianReek/candidates/IthorianReek_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/IthorianReek/candidates/IthorianReek_south.png"
+   },
+   "canon": {
+    "standtall_b1_ithorianreek_north": {
+     "flags": [],
+     "note": "",
+     "score": "2/2",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_ithorianreek_south": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_IthorianReek",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "961d1b62904bb71b3bbf662801378157f91c0f97894fe7d2bef009fedb7a28b0",
+    "south": "492fdb6174f873991eab6b65b9575f0b5e5a95a61706a54793283439911e1cd1"
+   },
+   "jobs": [
+    "standtall_b1_ithorianreek_east",
+    "standtall_b1_ithorianreek_south",
+    "standtall_b1_ithorianreek_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.116,
+     "e_north": 1.055,
+     "e_south": 1.116,
+     "ns": 0.945,
+     "nsw": 0.926,
+     "w_north": 0.607,
+     "w_south": 0.655
+    }
+   },
    "live_sha": {
     "north": "308fddf8634c7071f0be3ae04a54a1fc6c57cf12e4b62a4b29394d00b11d8283",
     "south": "7123e3205408513a27a9e0c5a506051522f0338316d33d999a873750ef48fe90"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 148,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/IthorianReek/IthorianReek",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/IthorianReek",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/jamel/jamel": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jamel/candidates/Jamel_north.png"
+   },
+   "canon": {
+    "standtall_b1_jamel_north": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Jamel",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "32212b86d2b0e4026a781a32cefedc88f216203cde8eada66011d5b141940253"
+   },
+   "jobs": [
+    "standtall_b1_jamel_east",
+    "standtall_b1_jamel_south",
+    "standtall_b1_jamel_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.16,
+     "e_north": 1.058,
+     "e_south": 1.16,
+     "ns": 0.913,
+     "nsw": 0.74,
+     "w_north": 0.381,
+     "w_south": 0.514
+    }
+   },
    "live_sha": {
     "north": "08d586f5808ca080f76e9b46d5e14d750ce804e59111b65853a81a824e9d887a"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 60,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Jamel/Jamel",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jamel",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/klorslug/klorslug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Klorslug/candidates/Klorslug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Klorslug/candidates/Klorslug_south.png"
+   },
+   "canon": {
+    "standtall_b1_klorslug_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long, thick, tubular segmented worm body, ringed and creased like a real earthworm or sea cucumber, rearing up in a tall arch with a hunched raised front; a long banded tail tapering behind; about 2 m tall when reared",
+       "reason": "Body forms a broad, low wedge of overlapping plates; neither a tall tubular arch nor a distinct tapering banded tail is evident."
+      },
+      {
+       "line": "COLOUR LAYOUT: pink to dusky rose-magenta skin over the whole body (live-action and prose); claws a darker, glossier contrast",
+       "reason": "Body is vivid scarlet red rather than pink or dusky rose-magenta; claws are pale ivory rather than darker contrasting material."
+      },
+      {
+       "line": "Realistic rendering: natural wet, wrinkled skin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Wet highlights are present, but the body reads as rigid overlapping shell plates rather than soft, naturally wrinkled skin."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_klorslug_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long, thick, tubular segmented worm body, ringed and creased like a real earthworm or sea cucumber, rearing up in a tall arch with a hunched raised front; a long banded tail tapering behind; about 2 m tall when reared",
+       "reason": "The ringed body forms a squat, tapering mound rather than a thick tubular worm rearing in a tall arch; tail length and absolute height cannot be verified from this facing."
+      },
+      {
+       "line": "COLOUR LAYOUT: pink to dusky rose-magenta skin over the whole body (live-action and prose); claws a darker, glossier contrast",
+       "reason": "Skin is saturated scarlet-red rather than pink or dusky rose-magenta, and the ivory claws are lighter rather than darker than the body."
+      },
+      {
+       "line": "NEGATIVE: not orange (the deleted comic colour) and not a smooth legless snake or plain earthworm (it has many clawed limbs and a toothed sucker maw); no eyes-and-jaws dragon head",
+       "reason": "Although clearly clawed and tooth-ringed, the front has paired eyes, horns and prominent tusks that create the prohibited dragonlike head."
+      }
+     ],
+     "note": "",
+     "score": "3/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Klorslug",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.117,
+     "e_north": 1.08,
+     "e_south": 1.117,
+     "ns": 0.967,
+     "nsw": 1.09,
+     "w_north": 1.01,
+     "w_south": 0.927
+    }
+   },
    "live_sha": {
     "north": "d62753e91074dc7dff313cd083e3700950cea0626e723b81a826d1127a8bd764",
     "south": "2a543fc96a251167cb491fcaea063e43e5abdb342ad8674b61be9b357a80eec8"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 194,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Klorslug/Klorslug",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a long, thick, tubular segmented worm body, ringed and creased like a; south: COLOUR LAYOUT: pink to dusky rose-magenta skin over the whole body (live-action ; north: BODY PLAN: a long, thick, tubular segmented worm body, ringed and creased like a; north: COLOUR LAYOUT: pink to dusky rose-magenta skin over the whole body (live-action ",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Klorslug",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/kraytdragon/kraytdragon_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_f/candidates/KraytDragon_f_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_f/candidates/KraytDragon_f_south.png"
+   },
+   "canon": {
+    "standtall_b1_kraytdragon_f_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4\u20135 curved dark claws",
+       "reason": "Compact body with two dominant haunches; no visible clustered limb banks or long, upward-curled, spike-ridged tail."
+      },
+      {
+       "line": "COLOUR LAYOUT: sand-tan / desert-brown rough, dry, wrinkled hide over the back and flanks with rock-and-sand texture, a paler cream-grey underside; teeth white; no bright colours, not green or blue",
+       "reason": "Back and flanks are predominantly olive green with tan highlights, contrary to the required sand-tan/desert-brown hide."
+      },
+      {
+       "line": "NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon",
+       "reason": "Two prominent upswept horns and olive-green hide visibly reproduce excluded Legends features; no wings are visible."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_kraytdragon_f_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4\u20135 curved dark claws",
+       "reason": "Squat body with a short neck and two prominent limb masses; clustered banks of short legs and curved claws are absent. Tail length is obscured by the frontal view."
+      },
+      {
+       "line": "COLOUR LAYOUT: sand-tan / desert-brown rough, dry, wrinkled hide over the back and flanks with rock-and-sand texture, a paler cream-grey underside; teeth white; no bright colours, not green or blue",
+       "reason": "Hide is predominantly olive-green rather than desert tan-brown, although the underside is pale."
+      },
+      {
+       "line": "Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue; a small hooked horn or barb on the side of the head",
+       "reason": "Head has large upswept brow horns and a narrow closed mouth; the huge tooth-filled wedge maw, long tongue and small hooked side barb are not shown."
+      },
+      {
+       "line": "NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon",
+       "reason": "Large upswept brow horns and olive-green hide directly match the excluded Legends features; no wings are visible."
+      }
+     ],
+     "note": "",
+     "score": "0/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_KraytDragon",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.121,
+     "e_north": 1.056,
+     "e_south": 1.121,
+     "ns": 0.942,
+     "nsw": 0.679,
+     "w_north": 0.298,
+     "w_south": 0.44
+    }
+   },
    "live_sha": {
     "north": "0fb16fa689a08181253ed2b6b8428429b108175ff6250a3db6eae7d194e38ae8",
     "south": "8be79f2b641421e6e0c502975220eaadcb07e57ac3c4e1a498d8896421f9cbc2"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 158,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/KraytDragon/KraytDragon_f",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick; south: COLOUR LAYOUT: sand-tan / desert-brown rough, dry, wrinkled hide over the back a; north: BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick; north: COLOUR LAYOUT: sand-tan / desert-brown rough, dry, wrinkled hide over the back a",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/kraytdragon/kraytdragon_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_j/candidates/KraytDragon_j_north.png"
+   },
+   "canon": {
+    "standtall_b1_kraytdragon_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4\u20135 curved dark claws",
+       "reason": "Visible limbs form a few large masses rather than clustered banks of many short, thick legs."
+      },
+      {
+       "line": "Short bony dorsal spikes down the neck and back",
+       "reason": "The visible back has broad angular plates but no clear row of short bony dorsal spikes."
+      },
+      {
+       "line": "NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon",
+       "reason": "Two prominent upswept horn-like projections evoke the excluded Legends anatomy."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_KraytDragon",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.053,
+     "d_south": 1.062,
+     "e_north": 1.053,
+     "e_south": 1.062,
+     "ns": 0.992,
+     "nsw": 0.984,
+     "w_north": 0.557,
+     "w_south": 0.566
+    }
+   },
    "live_sha": {
     "north": "4b98fab5564bd239f9dd3240938ac70507dfa568a641e52eecb8eae52b55e558"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/KraytDragon/KraytDragon_j",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick; north: Short bony dorsal spikes down the neck and back",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/kraytdragon/kraytdragon_m": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_m/candidates/KraytDragon_m_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_m/candidates/KraytDragon_m_south.png"
+   },
+   "canon": {
+    "standtall_b1_kraytdragon_m_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4\u20135 curved dark claws",
+       "reason": "The visible body has two dominant limb masses without clustered limb banks or an upcurled, spike-ridged tail."
+      },
+      {
+       "line": "Short bony dorsal spikes down the neck and back",
+       "reason": "No clear row of short bony dorsal spikes appears along the visible neck and back."
+      },
+      {
+       "line": "NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon",
+       "reason": "Two large upswept horns visibly contradict the canon design's exclusion of Legends brow horns."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_kraytdragon_m_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4\u20135 curved dark claws",
+       "reason": "The visible form is squat, with oversized forelimbs and a short neck; it lacks the leviathan\u2019s very long muscular neck and clustered short limbs."
+      },
+      {
+       "line": "Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue; a small hooked horn or barb on the side of the head",
+       "reason": "The head is small with a narrow closed mouth; the huge wedge-shaped maw, conical teeth, long tongue and hooked side barb are not evident."
+      },
+      {
+       "line": "NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon",
+       "reason": "Two large upswept brow horns contradict the canon leviathan design, although no wings are visible."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_KraytDragon",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.121,
+     "e_north": 1.056,
+     "e_south": 1.121,
+     "ns": 0.942,
+     "nsw": 0.898,
+     "w_north": 0.391,
+     "w_south": 0.435
+    }
+   },
    "live_sha": {
     "north": "dc9f06ae65c91341a93aa25942dc084a168baafca2585c5e701e0c569aa88975",
     "south": "8050c37ed2005a4f4c2d80cf0294ad871c1becde3bac38b9e7ee70b4d16bd34d"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 194,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/KraytDragon/KraytDragon_m",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick; south: Huge wedge head with a wide mouth packed with rows of conical white teeth and a ; north: BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick; north: Short bony dorsal spikes down the neck and back",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KraytDragon_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/kreetle/kreetle_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kreetle_j/candidates/Kreetle_j_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kreetle_j/candidates/Kreetle_j_south.png"
+   },
+   "canon": {
+    "standtall_b1_kreetle_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed shell (pillbug or hermit-crab silhouette); head at the front; many short jointed legs along both sides of the body (five pairs per the text)",
+       "reason": "Rounded ribbed shell is present, but only two brown appendages are visible; many short jointed legs along both sides are missing."
+      },
+      {
+       "line": "COLOUR LAYOUT: shell reddish-brown to maroon over the whole back; head mottled tan/gold with dark reddish spots; mandibles dark; eyes bright yellow, the brightest element",
+       "reason": "The entire visible shell is pale yellow-gold instead of reddish-brown to maroon; frontal colours are hidden by this rear view."
+      },
+      {
+       "line": "Realistic rendering: natural glossy chitin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "The shell lacks visible glossy chitin highlights, reading as matte bands rather than a naturally reflective carapace."
+      },
+      {
+       "line": "NEGATIVE: not a tall-legged spider or a long-bodied centipede (legs short, body low and domed); not an olive/khaki shell (the deleted Galaxies render); not human-sized",
+       "reason": "The compact body avoids spider or centipede proportions, but the pale khaki-gold shell falls within the excluded shell palette."
+      }
+     ],
+     "note": "",
+     "score": "0/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_kreetle_j_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed shell (pillbug or hermit-crab silhouette); head at the front; many short jointed legs along both sides of the body (five pairs per the text)",
+       "reason": "Fan-shaped shell has radial ridges; a distinct front head and multiple short jointed side legs are missing."
+      },
+      {
+       "line": "COLOUR LAYOUT: shell reddish-brown to maroon over the whole back; head mottled tan/gold with dark reddish spots; mandibles dark; eyes bright yellow, the brightest element",
+       "reason": "Shell is cream/gold instead of reddish-maroon; mottled tan head, reddish spots, and bright yellow eyes are absent."
+      },
+      {
+       "line": "Dark, curved mandibles/tusks at the front of the head",
+       "reason": "Two brown rounded lobes do not form recognizable curved mandibles or tusks."
+      },
+      {
+       "line": "Bright yellow eyes",
+       "reason": "No bright yellow eyes are visible."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Kreetle",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.112,
+     "e_north": 1.079,
+     "e_south": 1.112,
+     "ns": 0.97,
+     "nsw": 0.807,
+     "w_north": 0.554,
+     "w_south": 0.687
+    }
+   },
    "live_sha": {
     "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
     "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 234,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Kreetle/Kreetle_j",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed; south: COLOUR LAYOUT: shell reddish-brown to maroon over the whole back; head mottled t; north: BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed; north: COLOUR LAYOUT: shell reddish-brown to maroon over the whole back; head mottled t",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Kreetle_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/kwazelmaw/kwazelmaw": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KwazelMaw/candidates/KwazelMaw_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KwazelMaw/candidates/KwazelMaw_south.png"
+   },
+   "canon": {
+    "standtall_b1_kwazelmaw_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_kwazelmaw_south": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_KwazelMaw",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "99904d3eab4616ecb1d3e77c7914d8f383246d52882cfb5b8ed55d6eead6ef84",
+    "south": "bb511f27181e0f7a33f328b77c559c71ca8a6b33a1aeb032f9309f987700617e"
+   },
+   "jobs": [
+    "standtall_b1_kwazelmaw_east",
+    "standtall_b1_kwazelmaw_south",
+    "standtall_b1_kwazelmaw_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.123,
+     "e_north": 1.081,
+     "e_south": 1.123,
+     "ns": 0.962,
+     "nsw": 0.924,
+     "w_north": 0.55,
+     "w_south": 0.595
+    }
+   },
    "live_sha": {
     "north": "3c8d32ca87c5fc37e1f4efc86619249d2f6296518fe25f544a0b7494b31e8bd6",
     "south": "01193b833dcdb560a9bfd7987f98eb4addefcd536e8ae4c7bbfd88333f10f943"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 158,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/KwazelMaw/KwazelMaw",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/KwazelMaw",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorg": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg/candidates/LongtailGorg_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg/candidates/LongtailGorg_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorg_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Four splayed limbs are visible, but the rear appendage is much shorter than the head and body."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "The rear appendage forms a short broad fan, without the defining long thin tail preceding its flattened tip."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Pale tan riblike lines dominate the back and limbs; evenly distributed dark round spots are absent."
+      },
+      {
+       "line": "Smooth slick wet amphibian skin, not scaled",
+       "reason": "The surface reads as exposed bones and ribs rather than smooth, slick amphibian skin."
+      }
+     ],
+     "note": "",
+     "score": "0/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorg_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Compact frog-like silhouette with bulky bent legs, rather than a low, flattened lizard-shaped body and long splayed toes."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Tan skin carries elaborate dark loops and stripes rather than evenly distributed round spots; the visible underside is also heavily patterned."
+      },
+      {
+       "line": "Large bulging eyes on top of the wide head; mouth spans the head's full width (long red tongue optional)",
+       "reason": "Eyes bulge above the head, but the mouth is a central vertical gape rather than spanning the wide head."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The squat stance and bulky folded hind legs read as a sitting frog."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.125,
+     "e_north": 1.083,
+     "e_south": 1.125,
+     "ns": 0.963,
+     "nsw": 0.753,
+     "w_north": 0.46,
+     "w_south": 0.611
+    }
+   },
    "live_sha": {
     "north": "428edd9fe12cceb8c9a0eb3b8eb56eade0a6843d359e0b5e719e07078a5a54ac",
     "south": "acae07b9b0ed328e5a7243b9a8ef67ea8c3da3de73811d1fec56ea8328751d43"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 199,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorg",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorg_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg_j/candidates/LongtailGorg_j_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg_j/candidates/LongtailGorg_j_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorg_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The silhouette is narrow and elongated, lacking the broad flattened body, long splayed clawed toes, and clearly body-length tail."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "The visible tail tapers to a point without the defining widened, horizontally flattened tip."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Pale green surfaces surround a dark purple central stripe; round spots are absent from the back, limbs, and tail."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The slender body and tapering, unspread tail read as a newt or salamander."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorg_j_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The body is rounded and compact; the head lacks a broad flat shape, and the limbs lack long, spread clawed toes."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The pale mint body has purple accents but lacks dark round spots on the visible limbs and upper surfaces."
+      },
+      {
+       "line": "Large bulging eyes on top of the wide head; mouth spans the head's full width (long red tongue optional)",
+       "reason": "Small dark eyes sit within the face rather than bulging above the head; no full-width mouth is visible."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The rounded frog-like silhouette and tucked limbs lack the required low, sideways-sprawling stance."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.074,
+     "d_south": 1.13,
+     "e_north": 1.074,
+     "e_south": 1.13,
+     "ns": 0.951,
+     "nsw": 0.679,
+     "w_north": 0.213,
+     "w_south": 0.314
+    }
+   },
    "live_sha": {
     "north": "c3a56038087947c5e39f20db91040a1b7ccf00cab1a3eab49058f4146d481b8d",
     "south": "d0c6409f4a26cea787d94244237bd9576a3e1c3afa8b2f66a36e36d4fc1db230"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 147,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorg_j",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorg_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_g": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_G/candidates/LongtailGorgV_G_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_G/candidates/LongtailGorgV_G_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_g_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Four splayed clawed limbs are present, but the body is narrow and elongated, with no evident tail reaching head-plus-body length."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "The visible tail appears short and bulb-ended, lacking the defining long thin shaft and horizontally flattened spread."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Lavender-grey and tan bands dominate; evenly distributed dark round spots across the back, limbs and tail are missing."
+      },
+      {
+       "line": "Smooth slick wet amphibian skin, not scaled",
+       "reason": "Pronounced repeated rib-like ridges give the back a skeletal appearance rather than smooth, slick amphibian skin."
+      }
+     ],
+     "note": "",
+     "score": "0/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorgv_g_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The tall, narrow exposed chest and elevated head do not read as a low, flattened amphibian with a short trunk; four clawed limbs are visible."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The base is predominantly purple with pink and yellow ventral stripes, rather than spotted tan/ochre or lime-green."
+      },
+      {
+       "line": "Large bulging eyes on top of the wide head; mouth spans the head's full width (long red tongue optional)",
+       "reason": "The eyes appear small and inset beneath the flared head edges, rather than prominently bulging atop a wide frog-like head."
+      }
+     ],
+     "note": "",
+     "score": "3/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.125,
+     "e_north": 1.079,
+     "e_south": 1.125,
+     "ns": 0.96,
+     "nsw": 1.034,
+     "w_north": 0.384,
+     "w_south": 0.371
+    }
+   },
    "live_sha": {
     "north": "b690aebb5166461428d3a7c55f9c4a9c7f6f94c5c38dc0831297ced1fee53293",
     "south": "2cb6096cfef81812aa7e6577ef19d9a26ea9b1989d6d5691ce028335084d1a90"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 191,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_G",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_G",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_h": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_H/candidates/LongtailGorgV_H_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_H/candidates/LongtailGorgV_H_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_h_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The body has bulky, folded frog-like hindquarters rather than a low, flattened lizard-shaped build with four comparably splayed limbs."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Dark markings form dense stripes and branching bands across the back and tail rather than evenly distributed round spots."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "Large folded hind legs and a squat crouching silhouette give it the explicitly excluded sitting-frog appearance."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorgv_h_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Wide head and four clawed limbs are present, but the squat body and bulky folded hind legs create a sitting frog silhouette."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The crouched sitting pose and large folded hind legs read strongly as a conventional frog."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.077,
+     "d_south": 1.125,
+     "e_north": 1.077,
+     "e_south": 1.125,
+     "ns": 0.957,
+     "nsw": 0.994,
+     "w_north": 0.663,
+     "w_south": 0.667
+    }
+   },
    "live_sha": {
     "north": "3a6a1a8efc91cc92cd5d859ebd8964389dab865480892bd3eb69752dee3f1e54",
     "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 250,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_H",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_H",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_i": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_I/candidates/LongtailGorgV_I_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_I/candidates/LongtailGorgV_I_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_i_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The ochre base carries dark transverse bands and nested stripes rather than evenly distributed round spots."
+      },
+      {
+       "line": "Smooth slick wet amphibian skin, not scaled",
+       "reason": "Repeated raised-looking ridges across the back and tail read as segmented armor rather than smooth amphibian skin."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "Prominent folded hind haunches create a crouching frog silhouette."
+      }
+     ],
+     "note": "",
+     "score": "2/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorgv_i_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Upright, rounded frog body and bulky folded legs replace the low, flattened, short-trunked body with widely splayed limbs."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The tan base and pale belly fit, but visible limbs lack the required evenly distributed dark round spots."
+      },
+      {
+       "line": "Smooth slick wet amphibian skin, not scaled",
+       "reason": "Skin appears knobbly, deeply wrinkled and leathery rather than smooth, slick and wet."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The creature reads as a seated frog with large folded jumping legs."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.085,
+     "d_south": 1.123,
+     "e_north": 1.085,
+     "e_south": 1.123,
+     "ns": 0.966,
+     "nsw": 0.845,
+     "w_north": 0.476,
+     "w_south": 0.564
+    }
+   },
    "live_sha": {
     "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
     "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 153,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_I",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: Smooth slick wet amphibian skin, not scaled",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_I",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_J/candidates/LongtailGorgV_J_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_J/candidates/LongtailGorgV_J_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Splayed clawed toes are present, but oversized folded hindlegs create a squat frog silhouette rather than a low lizard-shaped body."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "Although foreshortened and flattened at its tip, the visible tail is broad and thick rather than slender."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Blue-grey skin with pale web-like outlines around dark patches differs from the tan/ochre or lime-green base with dark round spots."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "Large folded jumping thighs and a crouched sitting posture make the creature read strongly as a frog."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorgv_j_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The body is squat and high-backed with bulky folded limbs, rather than a low, flattened lizard-like sprawl."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The spotted skin has a blue-grey base instead of the canon tan/ochre or lime-green."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The hunched body and bulky folded hind legs read as a sitting frog pose."
+      }
+     ],
+     "note": "",
+     "score": "3/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.078,
+     "d_south": 1.122,
+     "e_north": 1.078,
+     "e_south": 1.122,
+     "ns": 0.96,
+     "nsw": 1.372,
+     "w_north": 0.664,
+     "w_south": 0.484
+    }
+   },
    "live_sha": {
     "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
     "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 205,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_J",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tai; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_J",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_k": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_K/candidates/LongtailGorgV_K_north.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_k_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Splayed limbs and spread toes are visible, but the bulky folded hindquarters and broad stubby tail undermine the flattened, long-tailed body plan."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "The tail has a flattened paddle-like tip, but reads as thick and stubby rather than thin and elongated, even allowing for foreshortening."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "Spots cover the back, limbs and tail, but are conspicuously purple rather than the canon brown or dark green."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "Large folded hind legs create a crouching frog silhouette, reinforced by the short-looking broad tail."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.475,
+     "e_north": 1.083,
+     "e_south": 1.475,
+     "ns": 0.735,
+     "nsw": 0.855,
+     "w_north": 0.424,
+     "w_south": 0.496
+    }
+   },
    "live_sha": {
     "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 80,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_K",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_K",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/longtailgorg/longtailgorgv_l": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_L/candidates/LongtailGorgV_L_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_L/candidates/LongtailGorgV_L_south.png"
+   },
+   "canon": {
+    "standtall_b1_longtailgorgv_l_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "Four splayed limbs and spread toes are visible, but the narrow, elongated trunk and short tail miss the required proportions."
+      },
+      {
+       "line": "Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unusually long tails with an odd flat tail spread horizontally\": flattened/widened toward the tip, not a round whip",
+       "reason": "The tail has a flattened, spreading tip, but is too short to read as the defining unusually long tail."
+      },
+      {
+       "line": "COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted",
+       "reason": "The back shows prominent pale longitudinal streaks rather than evenly distributed dark round spots across back, limbs and tail."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The splayed stance avoids folded frog legs, but the short tail gives the creature the excluded short-tailed newt proportions."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_longtailgorgv_l_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body",
+       "reason": "The body reads as an upright frog crouch with folded hind legs, rather than a low flattened trunk with four sideways-splayed limbs."
+      },
+      {
+       "line": "NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail",
+       "reason": "The seated posture and prominently folded hind legs give it the prohibited frog silhouette."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_LongtailGorg",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.086,
+     "d_south": 1.123,
+     "e_north": 1.086,
+     "e_south": 1.123,
+     "ns": 0.967,
+     "nsw": 0.573,
+     "w_north": 0.263,
+     "w_south": 0.458
+    }
+   },
    "live_sha": {
     "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
     "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 230,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/LongtailGorg/LongtailGorgV_L",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; south: NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt; north: BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like ; north: Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) \"unus",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LongtailGorgV_L",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/lothcat/lothcat_m": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Lothcat_m/candidates/Lothcat_m_north.png"
+   },
+   "canon": {
+    "standtall_b1_lothcat_m_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small (cat-sized) four-legged animal with a plump rounded fluffy body on thin stilt-like bird legs with long clawed toes; a bushy fluffy tail carried up; a broad flat head topped by two very tall upright pointed ears",
+       "reason": "Rounded body is present, but legs are thick and paw-like, tall ears are absent, and the raised tail is a short smooth stub without bushy volume."
+      },
+      {
+       "line": "COLOUR LAYOUT: dense soft pale cream-to-oatmeal fur over the body, with sparse dark brown spots on the flanks and on the ears; ear tips dark and tufted, pinkish-grey inside; legs thin dark grey and scaly, the darkest part, contrasting with the fluffy pale body; pale chin pouch",
+       "reason": "Cream colouring is present, but bold dark stripes replace sparse brown spots, and pale chunky feet replace dark grey scaly legs."
+      },
+      {
+       "line": "Realistic photographic fur rendering: no outlines, no cartoon gloss, no reptile skin (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\"; earlier he rejected a glossy frog-lizard render with \"Nope. Try this.\" and the live-action Ahsoka puppet photo)",
+       "reason": "The body and tail read as smooth solid surfaces, lacking the soft plush fur material and fluffy silhouette visible in canon."
+      },
+      {
+       "line": "NEGATIVE: not an ordinary house cat (no cat face, no short ears, no furred cat legs), not a glossy frog or lizard, not the animated Rebels cartoon, no open toothy grin",
+       "reason": "The visible legs end in broad pale cat-like paws instead of thin bird legs with long clawed toes."
+      }
+     ],
+     "note": "",
+     "score": "0/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Lothcat",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.236,
+     "e_north": 1.054,
+     "e_south": 1.236,
+     "ns": 0.853,
+     "nsw": 1.316,
+     "w_north": 0.725,
+     "w_south": 0.551
+    }
+   },
    "live_sha": {
     "north": "a6934821e1e6615fdde3189145de78d63b9854cfe69791f7d683fe9e22090701"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 117,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Lothcat/Lothcat_m",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a small (cat-sized) four-legged animal with a plump rounded fluffy bo; north: COLOUR LAYOUT: dense soft pale cream-to-oatmeal fur over the body, with sparse d",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Lothcat_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/lothwolf/lothwolf_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LothWolf_f/candidates/LothWolf_f_south.png"
+   },
+   "canon": {
+    "standtall_b1_lothwolf_f_south": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_LothWolf",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "6640f692a7a40892ce9e7318263ef214b85368ca437ecb8ce0b7e6a8ff996df7"
+   },
+   "jobs": [
+    "standtall_b1_lothwolf_f_east",
+    "standtall_b1_lothwolf_f_south",
+    "standtall_b1_lothwolf_f_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.121,
+     "e_north": 1.661,
+     "e_south": 1.121,
+     "ns": 1.482,
+     "nsw": 1.328,
+     "w_north": 0.316,
+     "w_south": 0.238
+    }
+   },
    "live_sha": {
     "south": "197a9755c80fdc277d68db70f86d2b354a5412ecfe311c07dc266affeaa4c32b"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 75,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/LothWolf/LothWolf_f",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LothWolf_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/lothwolf/lothwolf_m": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LothWolf_m/candidates/LothWolf_m_south.png"
+   },
+   "canon": {
+    "standtall_b1_lothwolf_m_south": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_LothWolf",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "594e83d3520614204e4124e4f01b892f6db139a87836dd91046ad9b82e984b4e"
+   },
+   "jobs": [
+    "standtall_b1_lothwolf_m_east",
+    "standtall_b1_lothwolf_m_south",
+    "standtall_b1_lothwolf_m_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.121,
+     "e_north": 1.661,
+     "e_south": 1.121,
+     "ns": 1.482,
+     "nsw": 1.04,
+     "w_north": 0.316,
+     "w_south": 0.303
+    }
+   },
    "live_sha": {
     "south": "6dc8a78ff1c570312785056190ddab1419ea196effb046981c9b209c2fd81ea0"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 68,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/LothWolf/LothWolf_m",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/LothWolf_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/mastiffphalone/mastiffphalone": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MastiffPhalone/candidates/MastiffPhalone_south.png"
+   },
+   "canon": {
+    "standtall_b1_mastiffphalone_south": {
+     "flags": [
+      {
+       "line": "A big hooked pale beak and a bright blue bare patch on the face/throat",
+       "reason": "The prominent beak is brown rather than pale bone, and the face/throat lacks the vivid blue bare-skin patch."
+      }
+     ],
+     "note": "",
+     "score": "3/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_MastiffPhalone",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.925,
+     "d_south": 1.115,
+     "e_north": 1.654,
+     "e_south": 1.115,
+     "ns": 1.483,
+     "nsw": 1.093,
+     "w_north": 0.384,
+     "w_south": 0.351
+    }
+   },
    "live_sha": {
     "south": "62365a5006b6a1608f1bd93b967c123492b4d09633af95bb6b12abf21e1894e8"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 81,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/MastiffPhalone/MastiffPhalone",
-   "why": ""
+   "why": "canon Must-show FAIL: south: A big hooked pale beak and a bright blue bare patch on the face/throat",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/MastiffPhalone",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/mott/mott_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Mott_f/candidates/Mott_f_north.png"
+   },
+   "canon": {
+    "standtall_b1_mott_f_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: two-tone coat with a pale sage-tan/cream-grey back and rump and warm orange-rust flanks and neck; cream-white bands running horizontally across the flanks and rump and ringing the upper legs; cream belly, throat and cheeks",
+       "reason": "The coat is cream and beige, lacking warm orange-rust flanks and distinct horizontal rump bands or upper-leg rings."
+      },
+      {
+       "line": "Feet: broad toes with claws (three or four visible), tapir-like",
+       "reason": "The visible feet end in smooth rounded shapes without distinct broad toes or claws."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Mott",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.057,
+     "d_south": 1.333,
+     "e_north": 1.057,
+     "e_south": 1.333,
+     "ns": 0.793,
+     "nsw": 0.863,
+     "w_north": 0.389,
+     "w_south": 0.451
+    }
+   },
    "live_sha": {
     "north": "36e3d79c344b266acdc237a2cc5bc1fc5596ab8d3f852ecab2e869731d0bb88a"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 73,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Mott/Mott_f",
-   "why": ""
+   "why": "canon Must-show FAIL: north: COLOUR LAYOUT: two-tone coat with a pale sage-tan/cream-grey back and rump and w; north: Feet: broad toes with claws (three or four visible), tapir-like",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Mott_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/mott/mott_m": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Mott_m/candidates/Mott_m_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Mott_m/candidates/Mott_m_south.png"
+   },
+   "canon": {
+    "standtall_b1_mott_m_north": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_mott_m_south": {
+     "flags": [],
+     "note": "",
+     "score": "6/6",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Mott",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "68fed1b7c644369c3f5c10904419ec063795dc4102768b806f32c6bc446fccf2",
+    "south": "ab4d411f8091e0405a4b26a20813ad37e74a7fac0320694236566219eaadb532"
+   },
+   "jobs": [
+    "standtall_b1_mott_m_east",
+    "standtall_b1_mott_m_south",
+    "standtall_b1_mott_m_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.117,
+     "e_north": 1.055,
+     "e_south": 1.117,
+     "ns": 0.944,
+     "nsw": 0.973,
+     "w_north": 0.436,
+     "w_south": 0.448
+    }
+   },
    "live_sha": {
     "north": "c14b47e2fc083f4c77ff11548487c93b84db9e73bfceb72963a99d431c9c23a4",
     "south": "f8800811a6b1c40baf3ef2cb13f8d987731134db2ca745c1fd33632f6dd0c25f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 155,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Mott/Mott_m",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Mott_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/narglatch/narglatch_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Narglatch_f/candidates/Narglatch_f_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Narglatch_f/candidates/Narglatch_f_south.png"
+   },
+   "canon": {
+    "standtall_b1_narglatch_f_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a huge lean long-limbed cat, low-slung, with a long tail ending in a spiked fin/fan",
+       "reason": "Powerful feline hindquarters and long legs are visible, but the furry, tapering tail lacks a spiked fin/fan."
+      }
+     ],
+     "note": "",
+     "score": "4/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_narglatch_f_south": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Narglatch",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.118,
+     "e_north": 1.055,
+     "e_south": 1.118,
+     "ns": 0.944,
+     "nsw": 0.799,
+     "w_north": 0.334,
+     "w_south": 0.418
+    }
+   },
    "live_sha": {
     "north": "4c85240741e7442bd43852ba1f9c701dfaf2312fc3abcca93cd524ede254581c",
     "south": "7644bcc5dbcbc3e09c6d547a6440447596950ef5a06a41c98970fb8d00347997"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 149,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Narglatch/Narglatch_f",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a huge lean long-limbed cat, low-slung, with a long tail ending in a ",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Narglatch_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/nexu/nexuw": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/NexuW/candidates/NexuW_north.png"
+   },
+   "canon": {
+    "standtall_b1_nexuw_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long, low, agile cat-like predator with clawed climbing feet and a long whip tail forked at the tip",
+       "reason": "Cat-like hindquarters are visible, but the exposed tail is short and single-tipped, lacking the long whip shape and fork."
+      },
+      {
+       "line": "COLOUR LAYOUT: sandy tan to brown fur with darker stripes",
+       "reason": "Darker stripes are present, but the fur is white to pale grey rather than sandy tan to brown."
+      },
+      {
+       "line": "NEGATIVE: not a plain big cat (needs the split mouth and quills), not white",
+       "reason": "The quill crest is present, but the creature is visibly white."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Nexu",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.729,
+     "d_south": 1.021,
+     "e_north": 1.081,
+     "e_south": 1.412,
+     "ns": 0.766,
+     "nsw": 0.721,
+     "w_north": 0.408,
+     "w_south": 0.566
+    }
+   },
    "live_sha": {
     "north": "dbf8063d7d49ed0b6169118a40e15192df9f6089994efeb4145c3f92d2784cef"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 66,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Nexu/NexuW",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a long, low, agile cat-like predator with clawed climbing feet and a ; north: COLOUR LAYOUT: sandy tan to brown fur with darker stripes",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/NexuW",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/porg/porg": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Porg",
    "facings": [
     "south"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.7117,
+       1.3127
+      ],
+      "facing": "south",
+      "key": "d_south",
+      "value": 1.409
+     }
+    ],
+    "ratios": {
+     "d_north": 1.112,
+     "d_south": 1.409,
+     "e_north": 0.97,
+     "e_south": 1.051,
+     "ns": 0.923,
+     "nsw": 0.868,
+     "w_north": 1.031,
+     "w_south": 1.188
+    }
+   },
    "live_sha": {
     "south": "23331543a54c1c876e71b4e5719fa1aa817e628226d4d30ad0f0886b2bc8a8cc"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 200,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Porg/Porg",
-   "why": ""
+   "why": "lint: south d_south=1.409",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Porg",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/reek/reek": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reek/candidates/Reek_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reek/candidates/Reek_south.png"
+   },
+   "canon": {
+    "standtall_b1_reek_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_reek_south": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Reek",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "3b81c6ad4395fa34b0b3ca85748c81ac770a8dd4d2d704473ad39a44b69bcd55",
+    "south": "0d60169c8aaad4a7dc43e87d24971fe51c54833799b898b5fa958ae2d9465fd3"
+   },
+   "jobs": [
+    "standtall_b1_reek_east",
+    "standtall_b1_reek_south",
+    "standtall_b1_reek_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.117,
+     "e_north": 1.056,
+     "e_south": 1.117,
+     "ns": 0.946,
+     "nsw": 0.876,
+     "w_north": 0.559,
+     "w_south": 0.638
+    }
+   },
    "live_sha": {
     "north": "0eff87b5a3a678985a7a3889e1762f944c4b03f432055f6e7b4f052fc2252504",
     "south": "36fe8967542f97ae77955e0e29976b07f954fbb55fe8fe27ad7785933a5e3965"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 148,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Reek/Reek",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reek",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/rycrit/rycrit": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Rycrit/candidates/Rycrit_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Rycrit/candidates/Rycrit_south.png"
+   },
+   "canon": {
+    "standtall_b1_rycrit_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_rycrit_south": {
+     "flags": [
+      {
+       "line": "A long horse/cow-like face with small horns and visible teeth",
+       "reason": "Teeth and broad muzzle are visible, but the face is short and bull-like rather than elongated, and the horns are oversized."
+      }
+     ],
+     "note": "",
+     "score": "3/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Rycrit",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.119,
+     "e_north": 1.058,
+     "e_south": 1.119,
+     "ns": 0.946,
+     "nsw": 0.881,
+     "w_north": 0.476,
+     "w_south": 0.54
+    }
+   },
    "live_sha": {
     "north": "4055edcbc1a611aa2a2c1e5aa978f63a4cb6660c0bc2da1280ea4b1a7c8f2745",
     "south": "d368c14d4763ea8ba67e32ff1059f99ed9ffc9efb10e856b4259625fd95f9f6e"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 174,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Rycrit/Rycrit",
-   "why": ""
+   "why": "canon Must-show FAIL: south: A long horse/cow-like face with small horns and visible teeth",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Rycrit",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/shyrack/shyrack": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Shyrack/candidates/Shyrack_north.png"
+   },
+   "canon": {
+    "standtall_b1_shyrack_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: hunched, ungainly bat/pterosaur-like flier: a heavy bulbous pot-bellied body hanging below two large leathery bat wings; no forelegs separate from the wings; long thin hind legs hanging down; a thin sinuous tail curving up behind",
+       "reason": "Bulbous body, broad bat wings and dangling hind legs are present, but the thin tail curls downward between the legs rather than upward behind."
+      }
+     ],
+     "note": "",
+     "score": "5/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Shyrack",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.866,
+     "d_south": 0.975,
+     "e_north": 0.917,
+     "e_south": 0.917,
+     "ns": 1.0,
+     "nsw": 1.028,
+     "w_north": 1.028,
+     "w_south": 1.0
+    }
+   },
    "live_sha": {
     "north": "afd8f66c9e2f2b3994e95d7b639213454c76b0bbb3d3386001f315d582a8bc36"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 82,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Shyrack/Shyrack",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: hunched, ungainly bat/pterosaur-like flier: a heavy bulbous pot-belli",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Shyrack",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/stintaril/stintaril": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Stintaril/candidates/Stintaril_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Stintaril/candidates/Stintaril_south.png"
+   },
+   "canon": {
+    "standtall_b1_stintaril_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_stintaril_south": {
+     "flags": [
+      {
+       "line": "Head: long narrow toothy snout with bulging eyes and a fan of thin bristles standing up from the back of the head",
+       "reason": "Bulging eyes, a narrow drooping snout and head bristles are present, but no sharp-toothed mouth is visible."
+      }
+     ],
+     "note": "",
+     "score": "3/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Stintaril",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.087,
+     "d_south": 1.13,
+     "e_north": 1.087,
+     "e_south": 1.13,
+     "ns": 0.962,
+     "nsw": 0.859,
+     "w_north": 0.289,
+     "w_south": 0.336
+    }
+   },
    "live_sha": {
     "north": "af4d6075d693dbbc181cbd57946d0d484be1334ae59bf524ac2fe200c85cdb86",
     "south": "d4fefcebf624cc568b7d6bd7e8613e62a84192e794e91496ba1ea9721ea53fa6"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 192,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Stintaril/Stintaril",
-   "why": ""
+   "why": "canon Must-show FAIL: south: Head: long narrow toothy snout with bulging eyes and a fan of thin bristles stan",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Stintaril",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/strill/strill": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Strill/candidates/Strill_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Strill/candidates/Strill_south.png"
+   },
+   "canon": {
+    "standtall_b1_strill_north": {
+     "flags": [
+      {
+       "line": "Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Strong dark outlines and graphic shading across the folds give an illustrated appearance rather than realistic skin under soft natural lighting."
+      },
+      {
+       "line": "NEGATIVE: not a plain dog in a smooth coat (no tight skin, no short stubby tail), not a cartoon/comic-shaded creature",
+       "reason": "The abundant folds avoid a smooth-coated dog appearance, but the conspicuous outlines and stylized shading retain a comic-like treatment."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_strill_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a low-slung, hunched, muscular bulldog/hyena-like predator on four thick limbs, with a thick short neck and a huge head carried low; a very long thin whip-like tail",
+       "reason": "The creature has a tall, narrow, horned head held high above long forelimbs, rather than a huge low-carried head and squat bulldog/hyena build; the tail is obscured from this facing."
+      },
+      {
+       "line": "Wide fanged mouth: large curved ivory fangs jutting from a wide dark mouth",
+       "reason": "The mouth is narrow and nearly closed, with small ivory teeth rather than large curved fangs jutting from a wide dark mouth."
+      },
+      {
+       "line": "Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Strong dark ink outlines and hard-edged illustrated shading dominate; the skin lacks natural leathery texture and soft realistic lighting."
+      },
+      {
+       "line": "NEGATIVE: not a plain dog in a smooth coat (no tight skin, no short stubby tail), not a cartoon/comic-shaded creature",
+       "reason": "The folded skin avoids a smooth-coated dog appearance, but the creature is visibly cartoon/comic-shaded."
+      }
+     ],
+     "note": "",
+     "score": "2/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Strill",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.118,
+     "e_north": 1.079,
+     "e_south": 1.118,
+     "ns": 0.965,
+     "nsw": 0.837,
+     "w_north": 0.328,
+     "w_south": 0.392
+    }
+   },
    "live_sha": {
     "north": "acd77d22ead9f20e35090127cf6a1d6247c75f4e5184e921be3544ada6c51531",
     "south": "e08a9f4fc51b7f65baa81c90d9172d6933f6e0b936336977ec910757385278fe"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 151,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Strill/Strill",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a low-slung, hunched, muscular bulldog/hyena-like predator on four th; south: Wide fanged mouth: large curved ivory fangs jutting from a wide dark mouth; north: Realistic rendering: natural leathery skin and fur texture with soft natural lig; north: NEGATIVE: not a plain dog in a smooth coat (no tight skin, no short stubby tail)",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Strill",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/taozin/taozin": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Taozin/candidates/Taozin_north.png"
+   },
+   "canon": {
+    "standtall_b1_taozin_north": {
+     "flags": [],
+     "note": "",
+     "score": "3/3",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Taozin",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "f62d91cbd0e8474f2d7efab76b001f33c0a04db7e06f7a142a2024f15404ed28"
+   },
+   "jobs": [
+    "standtall_b1_taozin_east",
+    "standtall_b1_taozin_south",
+    "standtall_b1_taozin_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.117,
+     "e_north": 1.08,
+     "e_south": 1.117,
+     "ns": 0.967,
+     "nsw": 1.208,
+     "w_north": 0.381,
+     "w_south": 0.316
+    }
+   },
    "live_sha": {
     "north": "2267903e8bd76ead7521227598e292a106a40db5771dad71db49aa600ad5f720"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 114,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Taozin/Taozin",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Taozin",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/taozin/taozin_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Taozin_j/candidates/Taozin_j_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Taozin_j/candidates/Taozin_j_south.png"
+   },
+   "canon": {
+    "standtall_b1_taozin_j_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: grub pale white with black eyes (canon); adult red-brown and cream ringed bands with green eyes (Legends)",
+       "reason": "Body is uniformly dark red, lacking both the canon grub\u2019s pale white skin and the adult\u2019s cream bands."
+      }
+     ],
+     "note": "",
+     "score": "2/3",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_taozin_j_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a long segmented, many-legged centipede/grub body with legs clustered behind the head (grub) or along the body (adult)",
+       "reason": "Stacked body segments are visible, but the required numerous legs are missing; no leg cluster or rows appear beside the head or body."
+      },
+      {
+       "line": "COLOUR LAYOUT: grub pale white with black eyes (canon); adult red-brown and cream ringed bands with green eyes (Legends)",
+       "reason": "The body is dark red with green eyes and a grey face, matching neither the pale white, black-eyed grub nor the cream-banded adult."
+      }
+     ],
+     "note": "",
+     "score": "2/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Taozin",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.112,
+     "e_north": 1.079,
+     "e_south": 1.112,
+     "ns": 0.97,
+     "nsw": 0.88,
+     "w_north": 0.488,
+     "w_south": 0.554
+    }
+   },
    "live_sha": {
     "north": "1e75da77429cc5a6fcfbff6848d535d86ff339d71fbbb03fc93b5f36eac4df5e",
     "south": "63366f4b3ac117ada3ee7dad7abac78732c6c3b91936f6edc184af5478a47aec"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 128,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Taozin/Taozin_j",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a long segmented, many-legged centipede/grub body with legs clustered; south: COLOUR LAYOUT: grub pale white with black eyes (canon); adult red-brown and crea; north: COLOUR LAYOUT: grub pale white with black eyes (canon); adult red-brown and crea",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Taozin_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/teemuss/teemuss": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TeeMuss/candidates/TeeMuss_north.png"
+   },
+   "canon": {
+    "standtall_b1_teemuss_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: mottled tan to sandy-brown short hide with lighter and darker blotches over the body; a shaggy darker-gold mane along the top of the neck and back; ears dark brown; hooves cream, the lightest element",
+       "reason": "Long, streaky golden fur covers the rump and thighs instead of short, blotchy tan hide; dark ears and cream hooves are present."
+      }
+     ],
+     "note": "",
+     "score": "4/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_TeeMuss",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 0.93,
+     "d_south": 0.764,
+     "e_north": 0.93,
+     "e_south": 0.8,
+     "ns": 1.163,
+     "nsw": 0.779,
+     "w_north": 0.365,
+     "w_south": 0.469
+    }
+   },
    "live_sha": {
     "north": "c9f44d94cf509f7101141b037c31e2a2bfaf2509d9b1604f2eb06299af90079f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/TeeMuss/TeeMuss",
-   "why": ""
+   "why": "canon Must-show FAIL: north: COLOUR LAYOUT: mottled tan to sandy-brown short hide with lighter and darker blo",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TeeMuss",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/tukata/tukata": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Tukata/candidates/Tukata_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Tukata/candidates/Tukata_south.png"
+   },
+   "canon": {
+    "standtall_b1_tukata_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a large lean quadruped with clawed paws and a long whip-like tail",
+       "reason": "Four clawed legs are visible, but the tail is thick and blunt-ended rather than tapering to a whip-like tip, even allowing for foreshortening."
+      }
+     ],
+     "note": "",
+     "score": "3/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_tukata_south": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Tukata",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.118,
+     "e_north": 1.055,
+     "e_south": 1.118,
+     "ns": 0.944,
+     "nsw": 1.039,
+     "w_north": 0.451,
+     "w_south": 0.434
+    }
+   },
    "live_sha": {
     "north": "a31a0f391bdbceeb494c167a36b879fe43987c98e163f0d9dc1ee651be7955c1",
     "south": "ca7d5b6836818e0affcf75e011686069e16e9e072f7434761a59463e671646db"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 198,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Tukata/Tukata",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a large lean quadruped with clawed paws and a long whip-like tail",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Tukata",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/tukata/tukatac": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TukataC/candidates/TukataC_north.png"
+   },
+   "canon": {
+    "standtall_b1_tukatac_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Tukata",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "442f97ea54946b08e27eac05b8000775a3bf7814f5c48c011067d2633e7881ef"
+   },
+   "jobs": [
+    "standtall_b1_tukatac_east",
+    "standtall_b1_tukatac_south",
+    "standtall_b1_tukatac_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.225,
+     "e_north": 1.056,
+     "e_south": 1.225,
+     "ns": 0.862,
+     "nsw": 0.893,
+     "w_north": 0.782,
+     "w_south": 0.875
+    }
+   },
    "live_sha": {
     "north": "d650010023f778c8cf7efaae2d9ce7d7fa2aa54e8b2daf6e2250d8caf8d7eaca"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 127,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Tukata/TukataC",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TukataC",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/tuskcat/tuskcat": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TuskCat/candidates/TuskCat_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TuskCat/candidates/TuskCat_south.png"
+   },
+   "canon": {
+    "standtall_b1_tuskcat_north": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    },
+    "standtall_b1_tuskcat_south": {
+     "flags": [],
+     "note": "",
+     "score": "4/4",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_TuskCat",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "da8357d9dc643b4eb20e81ad5f3b79936ed126bbd3a9350ce6f8cad6b11e38ab",
+    "south": "c2af8b3c6970ade1758b5f56d458d714a3265322a6b6458354b44d019547a650"
+   },
+   "jobs": [
+    "standtall_b1_tuskcat_east",
+    "standtall_b1_tuskcat_south",
+    "standtall_b1_tuskcat_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.115,
+     "e_north": 1.058,
+     "e_south": 1.115,
+     "ns": 0.949,
+     "nsw": 0.945,
+     "w_north": 0.219,
+     "w_south": 0.232
+    }
+   },
    "live_sha": {
     "north": "f6c554373c737103f4e230bbc4c84a2042a25e07960424f4c13f06e8d7b197a5",
     "south": "5a2868622dc609a4f78055bd4a9d24976858237dfa6ec412670614b56d0c0bad"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 125,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/TuskCat/TuskCat",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/TuskCat",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/varactyl/varactyl_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Varactyl_f/candidates/Varactyl_f_north.png"
+   },
+   "canon": {
+    "standtall_b1_varactyl_f_north": {
+     "flags": [],
+     "note": "",
+     "score": "5/5",
+     "status": "checked",
+     "verdict": "PASS"
+    }
+   },
    "def": "RSW_Varactyl",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "c7673f2977f5c25f284a26ba7a7ad49804ec2ae00538424a03acd3414a3859e1"
+   },
+   "jobs": [
+    "standtall_b1_varactyl_f_east",
+    "standtall_b1_varactyl_f_south",
+    "standtall_b1_varactyl_f_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.051,
+     "d_south": 1.32,
+     "e_north": 1.051,
+     "e_south": 1.32,
+     "ns": 0.796,
+     "nsw": 0.97,
+     "w_north": 0.79,
+     "w_south": 0.815
+    }
+   },
    "live_sha": {
     "north": "0785b151d1c5252df9164e34c97b1ccf5f5f7db819b8a1a5ece15ff86d6ef000"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 77,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/Varactyl/Varactyl_f",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Varactyl_f",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/varactyl/varactyl_m": {
-   "attempts": 0,
+   "attempts": 1,
    "def": "RSW_Varactyl",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [
+     {
+      "band": [
+       0.6835,
+       1.509
+      ],
+      "facing": "south",
+      "key": "ns",
+      "value": 0.492
+     }
+    ],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.149,
+     "e_north": 1.054,
+     "e_south": 2.14,
+     "ns": 0.492,
+     "nsw": 1.468,
+     "w_north": 0.282,
+     "w_south": 0.192
+    }
+   },
    "live_sha": {
     "north": "bc00bf239dd698679ff35d4b45f18a9b0beb4b98391abc34970428559992dd87"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 182,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Varactyl/Varactyl_m",
-   "why": ""
+   "why": "lint: south ns=0.492",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Varactyl_m",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/varactyl/varactylv_f": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/VaractylV_F/candidates/VaractylV_F_north.png"
+   },
+   "canon": {
+    "standtall_b1_varactylv_f_north": {
+     "flags": [
+      {
+       "line": "COLOUR LAYOUT: green to teal scaly skin over the back and flanks (darker olive-green acceptable, as in the film frame), paler yellow-green on the throat and belly; feathers teal-blue and green; beak tan-yellow horn colour, contrasting with the green head",
+       "reason": "Skin is green-teal, but the dominant bright red feathers contradict the required teal-blue and green palette."
+      },
+      {
+       "line": "Feathers: a ruff of long stiff teal-blue and green feathers fanned around the back of the head and neck, and a ridge of shorter feathery spines running down the spine and along the top of the tail to a feathery tuft at the tip",
+       "reason": "A long feathered ruff and central ridge are present, but predominantly red rather than teal-blue and green."
+      }
+     ],
+     "note": "",
+     "score": "3/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Varactyl",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.319,
+     "e_north": 1.058,
+     "e_south": 1.319,
+     "ns": 0.802,
+     "nsw": 0.678,
+     "w_north": 0.624,
+     "w_south": 0.92
+    }
+   },
    "live_sha": {
     "north": "38bd5860c1b47262e84c902b2553c34d3a7e7133ba3b040ecea723da43437456"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 82,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Varactyl/VaractylV_F",
-   "why": ""
+   "why": "canon Must-show FAIL: north: COLOUR LAYOUT: green to teal scaly skin over the back and flanks (darker olive-g; north: Feathers: a ruff of long stiff teal-blue and green feathers fanned around the ba",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/VaractylV_F",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/wampa/wampa_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Wampa_j/candidates/Wampa_j_north.png"
+   },
+   "canon": {
+    "standtall_b1_wampa_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a huge, heavy, bipedal, upright ape/yeti-like predator (2.5-3 m), long arms ending in dark claws, standing or reaching upright, not on all fours (owner ruling 2026-09-14: \"Correct. Giant ape-like predator, capable of standing upright.\")",
+       "reason": "Rounded animal hindquarters on short legs lack a discernible upright ape torso, long arms, and dark claws."
+      },
+      {
+       "line": "COLOUR LAYOUT: long, thick, shaggy cream-white fur (warm cream, not pure white) over the whole body, hanging in clumps; dark grey-black bare skin confined to the face around the eyes and muzzle; no brown/tan blotching",
+       "reason": "The coat is bright white and mostly smooth, lacking warm cream colouring and long, thick fur hanging in clumps."
+      },
+      {
+       "line": "Two small dark ram-like cranial horns curling down beside the face, visible in the head silhouette",
+       "reason": "No paired dark curled horns appear in the head silhouette."
+      },
+      {
+       "line": "Realistic rendering: natural shaggy cream-white fur with clumping and natural snow-cave lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "The visible coat lacks the natural shaggy clumping and cream colour required; this is apparent even at sprite scale."
+      }
+     ],
+     "note": "",
+     "score": "0/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Wampa",
    "facings": [
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.321,
+     "e_north": 1.083,
+     "e_south": 1.321,
+     "ns": 0.819,
+     "nsw": 0.849,
+     "w_north": 0.486,
+     "w_south": 0.572
+    }
+   },
    "live_sha": {
     "north": "59619e94a34980b3c146678c9ab9bde52488d0db4df76426eefda67fe933b106"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 66,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Wampa/Wampa_j",
-   "why": ""
+   "why": "canon Must-show FAIL: north: BODY PLAN: a huge, heavy, bipedal, upright ape/yeti-like predator (2.5-3 m), lon; north: COLOUR LAYOUT: long, thick, shaggy cream-white fur (warm cream, not pure white) ",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Wampa_j",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/yobshrimp/yobshrimp_j": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp_j/candidates/Yobshrimp_j_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp_j/candidates/Yobshrimp_j_south.png"
+   },
+   "canon": {
+    "standtall_b1_yobshrimp_j_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sharp pointed rostrum, short stalked eyes, two long thin whip-like antennae trailing and curling from the head, four to five pairs of thin jointed walking legs spread crab-like and ending in small hooked claws, and two much larger raised front arms of long, thin, spiky pincer claws held up and forward (the biggest part of the silhouette)",
+       "reason": "Angular shell has only a few short pointed appendages; four to five pairs of jointed walking legs and silhouette-dominating raised pincer arms are missing. Head details are obscured from behind."
+      },
+      {
+       "line": "COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon spots and warty bumps along the shell edges and claws, pale pink-white highlights; eyeballs round and bright green",
+       "reason": "Shell and appendages are blue rather than lilac-violet, with no visible maroon spots, warty edge bumps, or pale pink-white highlights; eyes are hidden from this facing."
+      },
+      {
+       "line": "Pincer claws: flat blade-like scissors with thorn-like projections along them",
+       "reason": "No large blade-like scissor pincers with thorn-like projections are visible."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_yobshrimp_j_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sharp pointed rostrum, short stalked eyes, two long thin whip-like antennae trailing and curling from the head, four to five pairs of thin jointed walking legs spread crab-like and ending in small hooked claws, and two much larger raised front arms of long, thin, spiky pincer claws held up and forward (the biggest part of the silhouette)",
+       "reason": "A narrow pointed shell is visible, but long curling antennae, stalked eyes, four to five pairs of hooked walking legs, and dominant raised pincer arms are missing."
+      },
+      {
+       "line": "COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon spots and warty bumps along the shell edges and claws, pale pink-white highlights; eyeballs round and bright green",
+       "reason": "Shell and limbs are blue and cyan, with dark eyes; violet colouring, maroon spots, warty bumps, pale pink-white highlights, and bright green eyeballs are absent."
+      },
+      {
+       "line": "Pincer claws: flat blade-like scissors with thorn-like projections along them",
+       "reason": "The short pointed appendages lack long blade-like scissor pincers and thorn-like projections."
+      }
+     ],
+     "note": "",
+     "score": "1/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_YobshrimpLand",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.06,
+     "d_south": 1.11,
+     "e_north": 1.06,
+     "e_south": 1.11,
+     "ns": 0.955,
+     "nsw": 0.876,
+     "w_north": 0.314,
+     "w_south": 0.358
+    }
+   },
    "live_sha": {
     "north": "ee6204e2e3a8e2d5b8b142e69001a4cc8fcd627fbd919e15f822c60d007de6d3",
     "south": "a74dbbdf55dbb5a12771867f74194509ab10f03df08fab7a1158bdf8130d41a5"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 134,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "swanimals/Yobshrimp/Yobshrimp_j",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sha; south: COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon ; north: BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sha; north: COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon ",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp_j",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/aa_sandlion/aa_dessicated_sandlion": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/AA_Dessicated_SandLion/candidates/AA_Dessicated_SandLion_south.png"
+   },
+   "canon": {
+    "standtall_b1_aa_dessicated_sandlion_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_SandLion",
    "facings": [
     "south"
    ],
+   "installed": {
+    "south": "8cf787a26316921b1a7a2a3eeeb509674bebbc61e64e8e60474bdb634480f908"
+   },
+   "jobs": [
+    "standtall_b1_aa_dessicated_sandlion_east",
+    "standtall_b1_aa_dessicated_sandlion_south",
+    "standtall_b1_aa_dessicated_sandlion_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.144,
+     "d_south": 1.118,
+     "e_north": 1.144,
+     "e_south": 1.118,
+     "ns": 1.023,
+     "nsw": 1.687,
+     "w_north": 1.01,
+     "w_south": 0.599
+    }
+   },
    "live_sha": {
     "south": "2b485a439e263230c90cf77df1c857a399b3742aa6cd4513ade35d9a3c29560f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 63,
+   "status": "installed",
    "sw": true,
    "texPath": "Things/Pawn/Animal/AA_SandLion/AA_Dessicated_SandLion",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/AA_Dessicated_SandLion",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/alligator/alligator": {
    "attempts": 0,
@@ -5114,34 +7600,90 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "things/pawn/animal/fubbum/rm_fubbum": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Fubbum/candidates/RM_Fubbum_north.png"
+   },
+   "canon": {},
    "def": "RM_Fubbum",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "8762d7572e9071fc327f254a0c0fc93a117394b8d6ff94ec0ad8050812c676ff"
+   },
+   "jobs": [
+    "standtall_b1_rm_fubbum_east",
+    "standtall_b1_rm_fubbum_south",
+    "standtall_b1_rm_fubbum_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.031,
+     "d_south": 0.985,
+     "e_north": 1.031,
+     "e_south": 0.985,
+     "ns": 1.047,
+     "nsw": 1.041,
+     "w_north": 1.02,
+     "w_south": 0.98
+    }
+   },
    "live_sha": {
     "north": "6e97315c38e6df849d306ea50e00b60cfee0d1b80d3413b1ae5191b6b2bd03b1"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 68,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_Fubbum",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/gappo/rm_gappogreater": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_GappoGreater/candidates/RM_GappoGreater_north.png"
+   },
+   "canon": {},
    "def": "RM_GappoGreater",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "9e31517a4639070cdcc222deac92c0c130dfb341de2402ff0fc2f1ceb0ece8fb"
+   },
+   "jobs": [
+    "standtall_b1_rm_gappogreater_east",
+    "standtall_b1_rm_gappogreater_south",
+    "standtall_b1_rm_gappogreater_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.247,
+     "e_north": 1.056,
+     "e_south": 1.247,
+     "ns": 0.847,
+     "nsw": 0.844,
+     "w_north": 0.785,
+     "w_south": 0.93
+    }
+   },
    "live_sha": {
     "north": "c2e0cfad8a9085ea6b17925a37fc72fcddc7e2a30de1ba83c446907d581b33f2"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 65,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RM_GappoGreater",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/gappo/rm_gappolesser": {
    "attempts": 0,
