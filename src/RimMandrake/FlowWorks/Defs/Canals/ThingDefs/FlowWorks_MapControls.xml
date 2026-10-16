@@ -2,7 +2,7 @@
 <Defs>
 
   <!-- FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS (owner 2026-10-16): map controls, plain markers a map maker places in
-       development mode (debug actions "Place flow source..." / "Place flow sink", or the bridge's
+       development mode (debug actions "Place flow source..." / "Place flow sink" / "Place flow meter" ..., or the bridge's
        RimMandrake.FlowWorks.MapControls.RM_MapControls). NOT buildable: no designationCategory, no cost. Owner: "They
        should not have any fancy graphics, just a minimal appearance that can be overlooked." Owner 2026-10-16 (card, the
        eight controls): "You should make the graphics for these just be a small rock or other insignificant-looking object,
@@ -60,6 +60,67 @@
     <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowSink</thingClass>
     <graphicData>
       <color>(0.60,0.55,0.52)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_FlowMeter</defName>
+    <label>flow meter</label>
+    <description>A map maker's marker that only reads. Every flow pulse it reads the dug channel it stands on or beside (squares, levels held, liquids, net in or out per day) or, with no channel, the natural liquid body there (its stock, and whether it is limitless). Placed in development mode only; it cannot be built. In development mode its reading shows over it.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_FlowMeter</thingClass>
+    <graphicData>
+      <color>(0.55,0.56,0.55)</color>
+    </graphicData>
+    <drawGUIOverlay>true</drawGUIOverlay>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_LevelHolder</defName>
+    <label>level holder</label>
+    <description>A map maker's marker. Every flow pulse it pours or takes its liquid, at a set rate, to keep the dug channel beside it at a set fill (or, with no channel, the natural pond it stands by): a pond that never dries or floods. Placed in development mode only; it cannot be built.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_LevelHolder</thingClass>
+    <graphicData>
+      <color>(0.55,0.57,0.58)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_TimerSwitch</defName>
+    <label>timer switch</label>
+    <description>A map maker's marker. It switches the other map markers and the sluices and grates near it on and off by the hour of day, or on a repeating period. Placed in development mode only; it cannot be built.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_TimerSwitch</thingClass>
+    <graphicData>
+      <color>(0.57,0.56,0.54)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_MapEdgeSetter</defName>
+    <label>map-edge setter</label>
+    <description>A map maker's marker. It sets each map edge to automatic, sealed (no water beyond it: a lake touching it is finite and nothing drains there) or drain (the edge always drains and a lake touching it never runs dry). Placed in development mode only; it cannot be built.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_EdgeSetter</thingClass>
+    <graphicData>
+      <color>(0.55,0.54,0.56)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_CurrentPainter</defName>
+    <label>current painter</label>
+    <description>A map maker's marker. It gives the water around it a current in a chosen direction, slow or fast, that carries pawns and things like a river's. Placed in development mode only; it cannot be built.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_CurrentPainter</thingClass>
+    <graphicData>
+      <color>(0.54,0.57,0.57)</color>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_LiquidThermostat</defName>
+    <label>liquid thermostat</label>
+    <description>A map maker's marker. It holds the liquid around it at a set temperature: a roofed room over that liquid is warmed or chilled towards it. Placed in development mode only; it cannot be built.</description>
+    <thingClass>RimMandrake.FlowWorks.MapControls.Building_RM_LiquidThermostat</thingClass>
+    <graphicData>
+      <color>(0.58,0.55,0.55)</color>
     </graphicData>
   </ThingDef>
 

@@ -64,7 +64,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			get
 			{
 				EnsureGrid();
-				return anyCurrent;
+				return anyCurrent || PaintedCellCount > 0;
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			EnsureGrid();
 			ThingDef weir = RM_RiverWorksDefOf.RM_BankWeir;
-			if (weir != null && anyCurrent)
+			if (weir != null && (anyCurrent || PaintedCellCount > 0))
 			{
 				List<Thing> ws = map.listerThings.ThingsOfDef(weir);
 				for (int i = 0; i < ws.Count; i++)
@@ -186,6 +186,60 @@ namespace RimMandrake.FlowWorks.Rivers
 		}
 
 		public float SizeFactor => sizeFactor;
+
+		// ── FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: painted current (MapControls/RM_CurrentPainter) ──
+		// Derived from the placed painters, never saved here; a painted square overrides the river's own direction.
+		private sbyte[] paintDir;
+		private sbyte[] paintLane;
+		private bool paintDirty = true;
+		private int paintedCount;
+		private int paintCooldown;
+
+		public void MarkPaintDirty()
+		{
+			paintDirty = true;
+		}
+
+		public int PaintedCellCount
+		{
+			get
+			{
+				EnsurePaint();
+				return paintedCount;
+			}
+		}
+
+		private void EnsurePaint()
+		{
+			if (!paintDirty)
+			{
+				return;
+			}
+			paintDirty = false;
+			if (paintedCount == 0 && !MapControls.RM_MapControls.AnyPainter(map))
+			{
+				return; // nothing painted before or now: no grid work
+			}
+			int n = map.cellIndices.NumGridCells;
+			if (paintDir == null || paintDir.Length != n)
+			{
+				paintDir = new sbyte[n];
+				paintLane = new sbyte[n];
+			}
+			for (int i = 0; i < n; i++)
+			{
+				paintDir[i] = -1;
+				paintLane[i] = 0;
+			}
+			paintedCount = MapControls.RM_MapControls.PaintCurrent(map, paintDir, paintLane);
+		}
+
+		private bool Painted(IntVec3 c, out int i)
+		{
+			EnsurePaint();
+			i = map.cellIndices.CellToIndex(c);
+			return paintedCount > 0 && paintDir[i] >= 0;
+		}
 
 		public override void ExposeData()
 		{
@@ -252,6 +306,10 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return -1;
 			}
+			if (Painted(c, out int pi))
+			{
+				return paintDir[pi];
+			}
 			return flowDir[map.cellIndices.CellToIndex(c)];
 		}
 
@@ -261,7 +319,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return RM_RiverMath.LaneNone;
 			}
-			int lane = RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
+			int lane = Painted(c, out int pi) ? paintLane[pi] : RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
 			if (lane != RM_RiverMath.LaneNone && InPool(c))
 			{
 				lane = RM_RiverMath.PoolLane(lane); // the weir's slack water drops one lane
@@ -294,7 +352,13 @@ namespace RimMandrake.FlowWorks.Rivers
 				return;
 			}
 			EnsureGrid();
-			if (!anyCurrent)
+			if (--paintCooldown <= 0)
+			{
+				paintCooldown = ScanIntervalTicks;
+				paintDirty = true; // a painter switched on/off, or the map-controls switch flipped: seen within 250 ticks
+			}
+			EnsurePaint();
+			if (!anyCurrent && paintedCount == 0)
 			{
 				return;
 			}

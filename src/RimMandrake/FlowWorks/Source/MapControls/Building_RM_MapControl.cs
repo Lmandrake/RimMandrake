@@ -32,6 +32,30 @@ namespace RimMandrake.FlowWorks.MapControls
 		/// <summary>The bridge's one-line state (RM_MapControls.Report).</summary>
 		public abstract string StateLine();
 
+		/// <summary>FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: false for a control whose job is not on a dug channel (map-edge
+		/// setter, current painter, thermostat, timer), so the inspect pane does not ask for one.</summary>
+		public virtual bool WorksOnDugChannel => true;
+
+		/// <summary>False for a control that does not need the FlowWorks depth engine (current painter, thermostat).</summary>
+		public virtual bool NeedsDepthEngine => true;
+
+		/// <summary>May a timer switch turn this control on and off? (Not another timer.)</summary>
+		public virtual bool TimerSwitchable => true;
+
+		/// <summary>The cells within <paramref name="radius"/> of this control (in bounds), its own first.</summary>
+		public IEnumerable<IntVec3> CellsInRadius(float radius)
+		{
+			int n = GenRadial.NumCellsInRadius(System.Math.Min(radius, GenRadial.MaxRadialPatternRadius - 1f));
+			for (int i = 0; i < n; i++)
+			{
+				IntVec3 c = Position + GenRadial.RadialPattern[i];
+				if (c.InBounds(Map))
+				{
+					yield return c;
+				}
+			}
+		}
+
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
@@ -126,7 +150,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				sb.AppendLine("Switched off in Mod Settings (map controls): moves nothing.");
 			}
-			else if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
+			else if (NeedsDepthEngine && !RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{
 				sb.AppendLine("The FlowWorks depth engine is off in Mod Settings: moves nothing.");
 			}
@@ -136,7 +160,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			if (ex != null)
 			{
-				if (!AnyDugInReach(ex))
+				if (WorksOnDugChannel && !AnyDugInReach(ex))
 				{
 					sb.AppendLine("Nothing dug here or beside it: it needs a dug channel to work on.");
 				}
@@ -161,6 +185,40 @@ namespace RimMandrake.FlowWorks.MapControls
 		{
 			return f == null ? "any liquid" : (f.label.NullOrEmpty() ? f.defName : f.label);
 		}
+
+		/// <summary>A radius chooser (RM_MapControlMath.RadiusPresets).</summary>
+		protected Command_Action RadiusGizmo(string what, System.Func<float> get, System.Action<float> set)
+		{
+			return new Command_Action
+			{
+				defaultLabel = "Radius: " + get().ToString("0.#"),
+				defaultDesc = "How far this " + def.label + " reaches (" + what + "). Now: " + get().ToString("0.#") + " squares.",
+				icon = def.uiIcon,
+				action = () =>
+				{
+					List<FloatMenuOption> opts = new List<FloatMenuOption>();
+					foreach (float r in RM_MapControlMath.RadiusPresets)
+					{
+						float v = r;
+						opts.Add(new FloatMenuOption(v.ToString("0.#") + " squares", () => set(v)));
+					}
+					Find.WindowStack.Add(new FloatMenu(opts));
+				},
+			};
+		}
+
+		public override void DrawExtraSelectionOverlays()
+		{
+			base.DrawExtraSelectionOverlays();
+			float r = SelectionRadius;
+			if (r > 0f)
+			{
+				GenDraw.DrawRadiusRing(Position, System.Math.Min(r, GenRadial.MaxRadialPatternRadius - 1f));
+			}
+		}
+
+		/// <summary>The radius ring drawn while selected (0 = none).</summary>
+		protected virtual float SelectionRadius => 0f;
 
 		protected Command_Action RateGizmo(string verb, System.Func<float> get, System.Action<float> set, bool offerUnlimited,
 			System.Func<bool> unlimited, System.Action<bool> setUnlimited)
