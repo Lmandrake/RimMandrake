@@ -76,10 +76,10 @@
     <label>ismerrow</label>
     <description>A knee-high rosette of sharply toothed leaves. Each individual is a different colour scheme — electric blue-teal with a magenta edge, purple over lime, near-black with a lit yellow centre, rose bleeding to cream — while the toothing and posture stay constant. Every plant looks faintly scorched at the leaf-tips. It is the only plant on the planet whose individuals differ, which makes a stand of it look like a garden of many species.</description>
     <graphicData>
-      <!-- Graphic_Random over RM_IsmerrowA..D — the per-plant colour scheme
+      <!-- Graphic_Random over the folder Things/Plant/RM_Ismerrow (seven files: RM_Ismerrow + _B _C _D _F _G _H) — the per-plant colour scheme
            IS the row's whole point (roster §4 row 7); a single texture here
            would ship the row with none of its value. -->
-      <texPath>Things/Plant/RM_Ismerrow/RM_Ismerrow</texPath>
+      <texPath>Things/Plant/RM_Ismerrow</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>

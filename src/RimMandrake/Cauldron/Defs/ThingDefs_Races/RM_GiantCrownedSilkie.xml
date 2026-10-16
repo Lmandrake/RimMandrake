@@ -14,8 +14,8 @@
 -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_GiantCrownedSilkie</defName>
-    <label>giant crowned silkie</label>
-    <description>A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. The giant crowned silkie was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression.\n\nIt is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected.</description>
+    <label>Sikka Sikka</label>
+    <description>A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. Sikka Sikka was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression.\n\nIt is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <ComfyTemperatureMin>-65</ComfyTemperatureMin>
@@ -130,7 +130,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_GiantCrownedSilkie</defName>
-    <label>giant crowned silkie</label>
+    <label>Sikka Sikka</label>
     <race>RM_GiantCrownedSilkie</race>
     <ecoSystemWeight>1</ecoSystemWeight>
     <combatPower>90</combatPower>
@@ -141,7 +141,7 @@
     </wildGroupSize>
     <lifeStages>
       <li>
-        <label>giant crowned silkie chick</label>
+        <label>Sikka Sikka chick</label>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -174,8 +174,8 @@
   </PawnKindDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RM_EggGiantCrownedSilkieUnfertilized</defName>
-    <label>giant crowned silkie egg (unfert.)</label>
-    <description>An unfertilized giant crowned silkie egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <label>Sikka Sikka egg (unfert.)</label>
+    <description>An unfertilized Sikka Sikka egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <color>(230,230,230)</color>
       <drawSize>1.3</drawSize>
@@ -186,8 +186,8 @@
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RM_EggGiantCrownedSilkieFertilized</defName>
-    <label>giant crowned silkie egg (fert.)</label>
-    <description>A fertilized giant crowned silkie egg. If all goes well, it should hatch into a giant crowned silkie. It can be eaten raw, but it's much better cooked.</description>
+    <label>Sikka Sikka egg (fert.)</label>
+    <description>A fertilized Sikka Sikka egg. If all goes well, it should hatch into a Sikka Sikka. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <color>(230,230,230)</color>
       <drawSize>1.3</drawSize>
@@ -205,8 +205,8 @@
   </ThingDef>
   <ThingDef ParentName="WoolBase">
     <defName>RM_GiantCrownedSilkieSilk</defName>
-    <label>giant crowned silkie silk</label>
-    <description>A soft silk produced by the giant crowned silkie. Once woven it has a very similar texture to sheep wool, but softer. Considered a luxury item.</description>
+    <label>Sikka Sikka silk</label>
+    <description>A soft silk produced by the Sikka Sikka. Once woven it has a very similar texture to sheep wool, but softer. Considered a luxury item.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_GiantCrownedSilkieSilk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
