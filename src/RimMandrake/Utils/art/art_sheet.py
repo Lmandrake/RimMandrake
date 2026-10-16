@@ -1790,7 +1790,11 @@ function scaleBlock(it) {
   const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
   const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Enhanced zoom (owner, 2026-10-04) resolves 128–256 px per cell of the draw size; below 128 reads soft at max zoom, below 64 loses detail. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc < 120 ? 'soft at max zoom' : s.ppc > 256 ? 'above 256 max zoom' : 'in the 128–256 zoom range'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
   const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · max zoom ${s.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18 px/cell, each also ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
-  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}
+  /* every candidate set at true scale beside the vanilla human (owner, 2026-10-15), not only the picked one */
+  const pg = (it.graphics || []).find(g => g.primary);
+  const each = (pg ? pg.cols : []).filter(c => c.scale && c.scale.img);
+  const all = each.length > 1 ? `<details class="bs-scall" open><summary class="sub">every set at its true scale beside the human (${each.length}) — click one to enlarge</summary>${each.map(c => `<div class="bs-scone${c.letter === s.set ? ' on' : ''}" data-zoom="${c.scale.full}" data-cap="${esc(it.label)} · set ${esc(c.letter)} · ${esc(c.scale.face)} · max zoom ${c.scale.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18"><b>${esc(c.letter)}</b> <span class="sub">${c.scale.ppc} px/cell</span><img src="${c.scale.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}${all}
     <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
     <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
 }
@@ -1946,6 +1950,10 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
 .bs-schead b{color:#9fe0a8;flex:none}.bs-schead span{color:#8aa58a}
 .bs-scimg{overflow-x:auto;cursor:zoom-in;margin:3px 0 2px}
+.bs-scall{display:flex;flex-direction:column;gap:3px;margin:4px 0}
+.bs-scone{cursor:zoom-in;overflow-x:auto;border-left:3px solid transparent;padding-left:4px}
+.bs-scone.on{border-left-color:#d9a441}
+.bs-scone img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
 .bs-scimg img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
 .bs-scsize{color:#d8c7a8}
 .bs-scl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2181,6 +2189,24 @@ def _img_px(sha: str):
         return None
 
 
+def _panel_for(row: dict, size: dict, sha: str, imgdir: Path):
+    """Render (or reuse) the true-scale panel of ONE archived picture: (measurement json, composite, full-size)."""
+    import scale_panel as SP
+    stem = re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + sha[:10] + "_" + hashlib.sha1(
+        json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh"),
+                    size.get("color")] + ([size.get("footprint"), size.get("offset")] if size.get("kind") == "thing" else [])
+                   ).encode()).hexdigest()[:6]
+    comp, full, mj = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png", imgdir / f"scale_{stem}.json"
+    try:
+        m = json.loads(mj.read_text()) if comp.exists() and full.exists() else None
+    except (OSError, ValueError):
+        m = None
+    if m is None:
+        m = SP.render_panel(L.store_get(sha), size, comp, full)
+        mj.write_text(json.dumps(m))
+    return m, comp, full
+
+
 def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None, imgdir: Path) -> dict:
     """In-game size (cells, with its SOURCE) + a true-scale panel of the set the owner picked (else the
     prefill), and px/cell for every set of the body graphic. See scale_panel.py for the measurement."""
@@ -2218,19 +2244,16 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     if not f:
         out["why"] = f"set {col['letter']} has no archived picture"
         return out
-    sha = col["faces"][f]
-    stem = re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + sha[:10] + "_" + hashlib.sha1(
-        json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh"),
-                    size.get("color")] + ([size.get("footprint"), size.get("offset")] if size.get("kind") == "thing" else [])
-                   ).encode()).hexdigest()[:6]
-    comp, full, mj = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png", imgdir / f"scale_{stem}.json"
-    try:
-        m = json.loads(mj.read_text()) if comp.exists() and full.exists() else None
-    except (OSError, ValueError):
-        m = None
-    if m is None:
-        m = SP.render_panel(L.store_get(sha), size, comp, full)
-        mj.write_text(json.dumps(m))
+    m, comp, full = _panel_for(row, size, col["faces"][f], imgdir)
+    # EVERY candidate gets its own true-scale panel beside the vanilla human (owner, 2026-10-15), not only the picked
+    # set: each primary column carries {img, full, ppc, face}; the gate checks every shown column has one on disk
+    for c in prim["cols"]:
+        cf = next((x for x in list(faces_order) + sorted(c["faces"]) if x in c["faces"] and L.store_has(c["faces"][x])), None)
+        if not cf:
+            continue
+        cm, cc, cfull = (m, comp, full) if c is col else _panel_for(row, size, c["faces"][cf], imgdir)
+        c["scale"] = {"img": f"{imgdir.name}/{cc.name}", "full": f"{imgdir.name}/{cfull.name}", "face": cf,
+                      "ppc": cm["pxPerCell"], "zoomFullPpc": cm.get("zoomFullPpc")}
     out.update({"img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}", "set": col["letter"],
                 "by": by, "face": f, "srcPx": m["srcPx"], "ppc": m["pxPerCell"], "verdict": SP.ppc_verdict(m["pxPerCell"]),
                 "zoomPpc": m.get("zoomPpc"), "zoomFitted": m.get("zoomFitted"), "zoomCropped": m.get("zoomCropped"), "zoomFullPpc": m.get("zoomFullPpc"),

@@ -122,6 +122,18 @@ def main():
         def no_panel(it, c2): it[0]["scale"] = {"why": "set B has no archived picture"}
         f = failing(mut(no_panel), "2")
         check(f and "RM_Alpha" in f[0].problems[0] and "no scale panel" in f[0].problems[0], "req 2 FAILS: a row with art but no scale panel is named")
+        # req 2, per candidate (owner 2026-10-15): every shown set of the primary graphic has its OWN true-scale panel
+        def _per_set(it, c2, give):
+            g = it[1]["graphics"][0]
+            g["primary"] = True
+            it[1]["thumbs"] = {"a" * 64: "img/a.webp"}
+            for c in g["cols"]:
+                if give:
+                    c["scale"] = {"img": it[1]["scale"]["img"], "full": it[1]["scale"]["full"]}
+        f = failing(mut(lambda it, c2: _per_set(it, c2, False)), "2")
+        check(f and "has no true-scale panel of its own" in " ".join(f[0].problems),
+              "req 2 FAILS: a shown candidate set with no true-scale panel of its own is named")
+        check(not failing(mut(lambda it, c2: _per_set(it, c2, True)), "2"), "req 2 passes: every shown set has its own panel")
         def no_src(it, c2): it[0]["scale"]["source"] = ""
         check(failing(mut(no_src), "2"), "req 2 FAILS: scale panel with no size source")
         def fb_unflagged(it, c2): it[0]["scale"].update(status="fallback", source="FALLBACK 1 cell — no ThingDef")
