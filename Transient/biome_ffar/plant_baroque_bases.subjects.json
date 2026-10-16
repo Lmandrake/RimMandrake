@@ -1,0 +1,305 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T07:03:52-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_plant_baroque_bases"
+ ],
+ "biomes": {
+  "SUBJECTS_plant_baroque_bases": {
+   "label": "Baroque base candidates for the 7 canon plants",
+   "slug": "plant_baroque_bases",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Baroque base candidates for the 7 canon plants \u2014 game art",
+   "lead_html": "<p>Each row is a NEW franchise-free RimMandrake plant (Baroque Biomes) that one Star Wars canon plant will become a pure reskin of (item PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE). The render columns are the base's candidate art; the IN GAME column is the installed CANON art of its reskin, shown for comparison only. Judge: does the base read as its own plant, clearly not the canon look? Size is measured from the canon twin's def (the reskin shares it).</p>",
+   "rows": [
+    {
+     "key": "RM_Murrowbulb",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Murrowbulb (base) beside canon RSW_Plant_Bloddle",
+     "defNames": [
+      "RM_Murrowbulb",
+      "RSW_Plant_Bloddle"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Murrowbulb_base_v1"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/BerryPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Murrowbulb"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Murrowbulb found"
+     }
+    },
+    {
+     "key": "RM_Crimmelroot",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Crimmelroot (base) beside canon RSW_Plant_Chakroot_Wild",
+     "defNames": [
+      "RM_Crimmelroot",
+      "RSW_Plant_Chakroot_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Crimmelroot_base_v1"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/BerryPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Crimmelroot"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Crimmelroot found"
+     }
+    },
+    {
+     "key": "RM_Thrannagourd",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Thrannagourd (base) beside canon RSW_Plant_HubbaGourd_Wild",
+     "defNames": [
+      "RM_Thrannagourd",
+      "RSW_Plant_HubbaGourd_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Thrannagourd_base_v1"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/BerryPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Thrannagourd"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Thrannagourd found"
+     }
+    },
+    {
+     "key": "RM_CorriskTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_CorriskTree (base) beside canon RSW_Plant_HydenockTree_Wild",
+     "defNames": [
+      "RM_CorriskTree",
+      "Plant_HydenockTree_Wild",
+      "RSW_Plant_HydenockTree_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_CorriskTree_base_v1",
+      "RM_CorriskTree_base_v2"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/TreeOak",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_CorriskTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_CorriskTree found"
+     }
+    },
+    {
+     "key": "RM_LumbrelTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_LumbrelTree (base) beside canon RSW_Plant_JoganTree_Wild",
+     "defNames": [
+      "RM_LumbrelTree",
+      "Plant_JoganTree_Wild",
+      "RSW_Plant_JoganTree_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_LumbrelTree_base_v1",
+      "RM_LumbrelTree_base_v2"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/TreeOak",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_LumbrelTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_LumbrelTree found"
+     }
+    },
+    {
+     "key": "RM_Salvessa",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Salvessa (base) beside canon RSW_Plant_Nysyllin_Wild",
+     "defNames": [
+      "RM_Salvessa",
+      "RSW_Plant_Nysyllin_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Salvessa_base_v1"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/BerryPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Salvessa"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Salvessa found"
+     }
+    },
+    {
+     "key": "RM_Glasmaw",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_Glasmaw (base) beside canon RSW_Plant_TookeTrap_Wild",
+     "defNames": [
+      "RM_Glasmaw",
+      "Plant_TookeTrap_Wild",
+      "RSW_Plant_TookeTrap_Wild"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "RM_Glasmaw_base_v1"
+     ],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/BerryPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Glasmaw"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Glasmaw found"
+     }
+    }
+   ]
+  }
+ }
+}
