@@ -83,7 +83,7 @@
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <dieIfLeafless>true</dieIfLeafless>
       <growDays>10</growDays>
-      <visualSizeRange>4~8</visualSizeRange>
+      <visualSizeRange>5~8</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
       <immatureGraphicPath>Things/Plant/RSW_Plant_JoganTree_Wild</immatureGraphicPath>
