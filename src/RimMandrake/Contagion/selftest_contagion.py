@@ -470,6 +470,8 @@ class Fake(object):
                 if "unroof_noop" not in self.broken:
                     self.open_sky.append(rr)
                     self.roofs = [r for r in self.roofs if not inrect(r[0], r[1], rr)]
+            elif "roof_patch_fails" in self.broken:
+                return {"success": True, "cellsChanged": 0, "cellsFailedVerify": 0}
             else:
                 self.roofs.append(rr)
         return {"success": True, "cellsChanged": n, "cellsFailedVerify": 0}
@@ -734,7 +736,8 @@ BREAKS = {
     "log_error": ["log.log_clean"],
     "xref_error": ["log.log_clean"],
     "xref_flood": [],                         # a full page of other mods' errors: UNMEASURED (SITE_EXPECT)
-    "jump_noop": None,                        # harness instrument: a jump that did not take (SITE_EXPECT)
+    "jump_noop": None,
+    "roof_patch_fails": [],                   # SITE: the shelter fixture never landed -> UNMEASURED (SITE_EXPECT)                        # harness instrument: a jump that did not take (SITE_EXPECT)
     "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
     "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
     "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
@@ -750,6 +753,8 @@ BREAKS = {
 
 # SITE breaks whose point is a verdict other than FAIL: {break: {component: verdict}}
 SITE_EXPECT = {
+    "roof_patch_fails": {"burn_forced.burn_site_ready": "UNMEASURED",
+                         "burn_forced.burn_doses_the_exposed_visitor": "UNMEASURED"},
     "xref_flood": {"log.log_clean": "UNMEASURED"},
     "jump_noop": {"spawner.spawner_off_buds_nothing": "FAIL", "burn_natural.burn_off_never_schedules": "FAIL"},
     "patient_walks_to_bed": {"genome.extraction_surgery_yields_sample": "PASS"},
