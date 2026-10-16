@@ -30,6 +30,36 @@ V.time.sleep = lambda s: None                      # the fast-wait poll loop mus
 
 from suite import TestContext                     # noqa: E402
 
+_CLASS_RE = re.compile(r"\n    (?:public |internal )?(?:static )?(?:sealed )?(?:partial )?class (\w+)")
+_ARITY = {}
+
+
+def cs_arities(type_name, method):
+    """Parameter counts of every `public static` overload of `method` on the mod's own C# class `type_name` (read off
+    Source/*.cs). The fake's static_call resolves through this exactly as jawa/static_call does live (args split on
+    '|', the arg count picks the overload), so a caller passing "<form>|<mode>" to a one-parameter method fails here
+    offline instead of live (LIVE 2026-10-16: twelve forms rows read 'No public static ProofForm with 2 params')."""
+    key = (type_name, method)
+    if key not in _ARITY:
+        cls = type_name.rsplit(".", 1)[-1]
+        found = set()
+        for root, _dirs, files in os.walk(os.path.join(HERE, "Source")):
+            for f in files:
+                if not f.endswith(".cs"):
+                    continue
+                src = open(os.path.join(root, f), encoding="utf-8-sig").read()
+                heads = [(m.start(), m.group(1)) for m in _CLASS_RE.finditer(src)]
+                for i, (start, name) in enumerate(heads):
+                    if name != cls:
+                        continue
+                    body = src[start:heads[i + 1][0] if i + 1 < len(heads) else len(src)]
+                    for m in re.finditer(r"public static \w+(?:<[^>]*>)? %s\(([^)]*)\)" % re.escape(method), body):
+                        a = m.group(1).strip()
+                        found.add(0 if not a else a.count(",") + 1)
+        _ARITY[key] = found
+    return _ARITY[key]
+
+
 BODY = {"RM_Thornhold": 0.4, "RM_Shirrel": 0.7, "RM_Dustflutter": 0.08, "RM_Crustweevil": 0.05,
         "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0}
 BLOOM = {"RM_Crustweevil", "RM_Fuzzrunner", "RM_Dustflutter", "RM_Vissler"}
@@ -344,6 +374,10 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        n = 0 if not args else len(args.split("|"))
+        if n not in cs_arities(type, method):
+            return {"success": False, "message": "No public static %s with %d params." % (method, n),
+                    "details": {"available": sorted(cs_arities(type, method))}}
         if method == "ProofStamp":
             on = (args != "off" and "stamp_never" not in self.broken) or (args == "off" and "stamp_ignores_toggle" in self.broken)
             if args != "off":
