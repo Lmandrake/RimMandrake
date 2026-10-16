@@ -66,6 +66,8 @@ namespace RimMandrake.FlowWorks
 				RescanNatural(map, ex);
 			}
 			Push(map, ex, RimMandrakeFlowWorksSettings.liquidHeatStrength);
+			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: dev-placed liquid thermostats hold their liquid's rooms at a set temperature.
+			MapControls.RM_MapControls.HeatAll(map, ex, RimMandrakeFlowWorksSettings.liquidHeatStrength);
 		}
 
 		/// <summary>Forget the natural-cell list so the next interval rebuilds it (a proof painted terrain).</summary>

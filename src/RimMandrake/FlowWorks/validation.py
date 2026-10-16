@@ -456,6 +456,45 @@ def flow_map_controls(t):
                                     "(FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS)")
 
 
+# FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES (owner card 2026-10-16): six further dev-placed map controls (Source/MapControls/), all
+# small stones: flow meter, level holder, timer switch, map-edge setter, current painter, liquid thermostat. Offline: their
+# math (setpoint, schedule, edge rules, thermostat energy), a level holder driven through the production kernel with the
+# ledger balanced every pulse, and the wiring into IsSinkCell / the kernel gate / body classification / liquid heat /
+# river current, all behind mapControlsEnabled (Source/SelfTest/MapControlChecks.cs).
+# OWED live (RM_MapControls static_calls): PlaceMeter/ReadMeter on a dug channel; PlaceLevelHolder holds a channel and a
+# limited pond at 50%; PlaceTimer + PulseTimer flips a source and holds a sluice open; PlaceEdgeSetter "ssss" makes an
+# edge-touching lake LIMITED and "dddd" drains a dug edge band with edge sinks off (EdgeSinkReport); PlacePainter on a
+# hand-dug water channel carries a pawn (CurrentAt); PlaceThermostat + HeatNow moves a roofed room's temperature.
+MAP_CONTROL_SIX_CASES = ["MapControl_level_holder_need", "MapControl_level_holder_conserves_through_the_kernel",
+                         "MapControl_timer_schedule", "MapControl_edge_rules", "MapControl_thermostat_energy"]
+
+
+@suite.chain("flow_map_controls_six")
+def flow_map_controls_six(t):
+    """Offline: meter, level holder, timer, map-edge setter, current painter, thermostat (math, kernel conservation, wiring)."""
+    cases = {}
+    with t.component("map_controls_six_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in MAP_CONTROL_SIX_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    with t.component("MapControl_six_wiring", toggle="mapControlsEnabled"):
+        if t._guard():
+            got = cases.get("MapControl_six_wiring")
+            if got != "ok":
+                raise ExpectationFailed("MapControl_six_wiring: %s" % (got or "case missing from the SelfTest output"))
+    for ctl in ["flow_meter", "level_holder", "timer_switch", "map_edge_setter", "current_painter", "liquid_thermostat"]:
+        with t.component(ctl + "_live"):
+            if t._guard():
+                raise ExpectationFailed("UNMEASURED: live check owed -- %s placed by RM_MapControls static_call does its job, "
+                                        "the L0 ledger shows no conservation warning, survives save/reload "
+                                        "(FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES)" % ctl)
+
+
 # Hose port review S2/S3 (2026-10-11), liquid networks L4: the tank-jobs switch tankModesEnabled (default on; was tanksFeedHoses). One C#
 # SelfTest case flips it through RM_LiquidNetKernel.SettlePlan (jobs vs all-Store) and reads the production call site
 # (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining

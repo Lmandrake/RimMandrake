@@ -92,5 +92,176 @@ namespace RimMandrake.FlowWorks.MapControls
 			return r.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + " level(s) per pulse (about "
 				+ PerHour(r, pulseTicks).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " per hour)";
 		}
+
+		// ── FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: the further controls' numbers ─────────────────────────────
+
+		/// <summary>The fill fractions the level holder's gizmo offers.</summary>
+		public static readonly float[] SetpointPresets = { 0f, 0.25f, 0.5f, 0.75f, 1f };
+
+		/// <summary>Level holder: how many levels to pour (+) or take (-) so <paramref name="held"/> levels out of
+		/// <paramref name="capacity"/> come to the set fraction (rounded to the nearest level). 0 when already there or
+		/// there is no room at all. NaN and out-of-range setpoints clamp to [0, 1].</summary>
+		public static int LevelHolderNeed(int held, int capacity, float setpoint)
+		{
+			if (capacity <= 0)
+			{
+				return 0;
+			}
+			float sp = float.IsNaN(setpoint) ? 0f : (setpoint < 0f ? 0f : (setpoint > 1f ? 1f : setpoint));
+			int target = (int)Math.Round(sp * capacity, MidpointRounding.AwayFromZero);
+			return target - held;
+		}
+
+		/// <summary>Timer switch modes.</summary>
+		public const int TimerByHours = 0;
+		public const int TimerByPeriod = 1;
+
+		/// <summary>Timer switch: is it ON now? By hours: on from <paramref name="startHour"/> (inclusive) to
+		/// <paramref name="endHour"/> (exclusive) of the local day, wrapping past midnight when start &gt; end; start ==
+		/// end is on all day. By period: on for the first <paramref name="onHours"/> of every
+		/// <paramref name="periodHours"/>, counted from game tick 0 (2500 ticks an hour). <paramref name="invert"/> flips
+		/// the answer.</summary>
+		public static bool TimerOn(int mode, float hourOfDay, int startHour, int endHour, long ticksGame, float periodHours,
+			float onHours, bool invert)
+		{
+			bool on;
+			if (mode == TimerByPeriod)
+			{
+				float period = float.IsNaN(periodHours) || periodHours < 0.1f ? 0.1f : periodHours;
+				double phase = (ticksGame / 2500.0) % period;
+				if (phase < 0)
+				{
+					phase += period;
+				}
+				on = phase < onHours;
+			}
+			else
+			{
+				int s = ((startHour % 24) + 24) % 24;
+				int e = ((endHour % 24) + 24) % 24;
+				float h = hourOfDay < 0f ? 0f : hourOfDay;
+				on = s == e || (s < e ? (h >= s && h < e) : (h >= s || h < e));
+			}
+			return on != invert;
+		}
+
+		/// <summary>Map-edge setter modes, one per edge (index 0 north, 1 east, 2 south, 3 west).</summary>
+		public const int EdgeAuto = 0;
+		public const int EdgeSealed = 1;
+		public const int EdgeDrain = 2;
+
+		public static string EdgeModeLabel(int mode)
+		{
+			return mode == EdgeSealed ? "sealed" : (mode == EdgeDrain ? "drain" : "automatic");
+		}
+
+		/// <summary>Is a dug square near the edges flagged here a map-edge sink? Any DRAIN edge it is near makes it one
+		/// (even with the automatic edge sinks switched off); otherwise any AUTOMATIC edge it is near leaves the
+		/// automatic rule (<paramref name="autoRule"/>) to decide; near only SEALED edges, it is not. Not near any edge:
+		/// false. <paramref name="modes"/> null = every edge automatic.</summary>
+		public static bool EdgeSink(int[] modes, bool nearN, bool nearE, bool nearS, bool nearW, bool autoRule)
+		{
+			if (!(nearN || nearE || nearS || nearW))
+			{
+				return false;
+			}
+			if (modes == null)
+			{
+				return autoRule;
+			}
+			bool[] near = { nearN, nearE, nearS, nearW };
+			bool anyAuto = false;
+			for (int i = 0; i < 4; i++)
+			{
+				if (!near[i])
+				{
+					continue;
+				}
+				int m = modes.Length > i ? modes[i] : EdgeAuto;
+				if (m == EdgeDrain)
+				{
+					return true;
+				}
+				if (m != EdgeSealed)
+				{
+					anyAuto = true;
+				}
+			}
+			return anyAuto && autoRule;
+		}
+
+		/// <summary>A natural body's edge contact as the setter rules it: <paramref name="touchesOpenEdge"/> = it touches
+		/// an edge that is not sealed (the automatic size rule then applies); <paramref name="touchesDrainEdge"/> = it
+		/// touches a drain edge (limitless whatever its size). Inputs: which edges its footprint touches.</summary>
+		public static void BodyEdges(int[] modes, bool touchN, bool touchE, bool touchS, bool touchW,
+			out bool touchesOpenEdge, out bool touchesDrainEdge)
+		{
+			bool[] touch = { touchN, touchE, touchS, touchW };
+			touchesOpenEdge = false;
+			touchesDrainEdge = false;
+			for (int i = 0; i < 4; i++)
+			{
+				if (!touch[i])
+				{
+					continue;
+				}
+				int m = modes != null && modes.Length > i ? modes[i] : EdgeAuto;
+				if (m == EdgeDrain)
+				{
+					touchesDrainEdge = true;
+					touchesOpenEdge = true;
+				}
+				else if (m == EdgeAuto)
+				{
+					touchesOpenEdge = true;
+				}
+			}
+		}
+
+		/// <summary>The temperatures the thermostat's gizmo offers (C).</summary>
+		public static readonly float[] ThermostatPresets = { -20f, -5f, 0f, 10f, 21f, 40f, 60f, 90f, 100f };
+
+		/// <summary>The radii the radius-reaching controls offer (cells).</summary>
+		public static readonly float[] RadiusPresets = { 1.5f, 3f, 5f, 8f, 12f };
+
+		// Mirrors RM_LiquidHeatMath (kept Verse-free and self-contained here so the SelfTest compiles this file alone):
+		// hot 3 / cold 2 energy per level per second, a 250-tick interval, a per-room cap of 8 x 21 per second.
+		public const float ThermoHotPerLevelPerSecond = 3f;
+		public const float ThermoColdPerLevelPerSecond = 2f;
+		public const float ThermoSecondsPerInterval = 250 / 60f;
+		public const float ThermoMaxRoomPerSecond = 8f * 21f;
+
+		/// <summary>Liquid thermostat: the heat (+) or chill (-) one room takes this 250-tick interval from
+		/// <paramref name="levels"/> levels of liquid the thermostat holds at <paramref name="targetC"/>. Liquid warmer
+		/// than the room warms it, colder chills it, at the liquid-heat rates, capped per room, and never past the target
+		/// (so the room settles AT the set temperature). 0 for no liquid, an empty room, or strength 0.</summary>
+		public static float ThermostatEnergy(int levels, float roomTempC, int roomCells, float targetC, float strength)
+		{
+			if (levels <= 0 || roomCells <= 0 || !(strength > 0f) || float.IsNaN(targetC) || float.IsNaN(roomTempC))
+			{
+				return 0f;
+			}
+			float diff = targetC - roomTempC;
+			if (diff == 0f)
+			{
+				return 0f;
+			}
+			float per = diff > 0f ? ThermoHotPerLevelPerSecond : -ThermoColdPerLevelPerSecond;
+			float e = per * levels * ThermoSecondsPerInterval * strength;
+			float cap = ThermoMaxRoomPerSecond * ThermoSecondsPerInterval * strength;
+			float room = diff * roomCells;
+			if (diff > 0f)
+			{
+				return Math.Min(Math.Min(e, cap), room);
+			}
+			return Math.Max(Math.Max(e, -cap), room);
+		}
+
+		/// <summary>Flow meter: a level change over <paramref name="ticks"/> as levels per day (60000 ticks). 0 when no
+		/// time has passed.</summary>
+		public static float PerDay(float deltaLevels, int ticks)
+		{
+			return ticks <= 0 ? 0f : deltaLevels * 60000f / ticks;
+		}
 	}
 }

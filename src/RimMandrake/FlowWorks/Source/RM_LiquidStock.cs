@@ -195,8 +195,16 @@ namespace RimMandrake.FlowWorks
 			RM_LiquidBody body = new RM_LiquidBody(nextBodyId++);
 			body.cells = found;
 			body.truncated = truncated;
+			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: a map-edge setter rules which edges count. A sealed edge is no
+			// off-map reservoir (contact with it alone is not edge contact); a drain edge makes the body limitless.
+			bool drainEdge = false;
+			int[] edgeModes = MapControls.RM_MapControls.EdgeModes(map);
+			if (edgeModes != null)
+			{
+				MapControls.RM_MapControls.BodyEdgeContact(map, edgeModes, fillFound, out touchesEdge, out drainEdge);
+			}
 			// Ruling 16: edge contact AND a minimum size. Both, and only here.
-			body.limitless = RM_StockMath.IsLimitless(
+			body.limitless = drainEdge || RM_StockMath.IsLimitless(
 				RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,
 				truncated,
 				touchesEdge,

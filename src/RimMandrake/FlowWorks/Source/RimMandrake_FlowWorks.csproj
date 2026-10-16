@@ -145,6 +145,12 @@
     <Compile Include="MapControls\Building_RM_MapControl.cs" />
     <Compile Include="MapControls\RM_FlowTaps.cs" />
     <Compile Include="MapControls\RM_MapControls.cs" />
+    <Compile Include="MapControls\RM_FlowMeter.cs" />
+    <Compile Include="MapControls\RM_LevelHolder.cs" />
+    <Compile Include="MapControls\RM_TimerSwitch.cs" />
+    <Compile Include="MapControls\RM_EdgeSetter.cs" />
+    <Compile Include="MapControls\RM_CurrentPainter.cs" />
+    <Compile Include="MapControls\RM_LiquidThermostat.cs" />
     <!-- PHASE 5: ladders and ruling 23's shooting rule. SUPERDEEP_HOLDER_RETIRE_1:
          the holder Thing is gone; a pit is a D=4 cell and the trap is a grid rule
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->

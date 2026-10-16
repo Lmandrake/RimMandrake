@@ -1600,12 +1600,17 @@ namespace RimMandrake.FlowWorks
 		/// It is counted separately from destroyed overflow for that reason.</summary>
 		public bool IsSinkCell(IntVec3 c)
 		{
-			if (!RimMandrakeFlowWorksSettings.edgeSinksEnabled || !c.InBounds(map))
+			if (!c.InBounds(map) || depthGrid[map.cellIndices.CellToIndex(c)] == 0)
 			{
 				return false;
 			}
-			return depthGrid[map.cellIndices.CellToIndex(c)] != 0
-				&& c.CloseToEdge(map, GenGrid.NoBuildEdgeWidth);
+			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: a map-edge setter (MapControls/RM_EdgeSetter) seals or drains an edge
+			// on top of the automatic rule; with none placed, EdgeModes is null and the rule below is today's, unchanged.
+			if (MapControls.RM_MapControls.EdgeModes(map) != null)
+			{
+				return MapControls.RM_MapControls.EdgeSinkAt(map, c, RimMandrakeFlowWorksSettings.edgeSinksEnabled);
+			}
+			return RimMandrakeFlowWorksSettings.edgeSinksEnabled && c.CloseToEdge(map, GenGrid.NoBuildEdgeWidth);
 		}
 
 		public float SinkTransferredTotal => sinkTransferredTotal;
@@ -1816,7 +1821,7 @@ namespace RimMandrake.FlowWorks
 			flowKernel.depth = depthGrid;
 			flowKernel.fill = fillGrid;
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
-			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled;
+			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled || MapControls.RM_MapControls.AnyDrainEdge(map);
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
 			flowKernel.creepEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled && RimMandrakeFlowWorksSettings.thickCreepEnabled;
 			flowKernel.creepWaterEnabled = RimMandrakeFlowWorksSettings.waterFrontCreepEnabled;
@@ -1835,7 +1840,7 @@ namespace RimMandrake.FlowWorks
 				pulseSeeds.Add(map.cellIndices.CellToIndex(seed));
 			}
 			flowKernel.Pulse(pulseSeeds, pulseCount);
-			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
+			if (flowKernel.edgeSinksEnabled)
 			{
 				sinkTransferredTotal += flowKernel.sinkDrained;
 			}

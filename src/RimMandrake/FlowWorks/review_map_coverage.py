@@ -51,6 +51,11 @@ FEATURES = [
     ("def", r"^ThingDef/RM_Flow(Source|Sink)$", "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
     ("set", r"^mapControlsEnabled$", "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
     ("gizmo", r'^"(On|Remove|Rate\.\.\.)"$|^"(Liquid|Takes): " \+ FluidLabel', "Map controls: flow source and flow sink", M + "dev-placed map controls, no station yet"),
+    # FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: the six further dev-placed map controls (small stones; no station yet)
+    ("def", r"^ThingDef/RM_(FlowMeter|LevelHolder|TimerSwitch|MapEdgeSetter|CurrentPainter|LiquidThermostat)$",
+     "Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat", M + "dev-placed map controls, no station yet"),
+    ("gizmo", r'^"(Read now|Schedule\.\.\.|Invert|Fast)"$|^"(Hold at|Radius:|Flows) " \+|^EdgeNames\[edge\] \+',
+     "Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat", M + "dev-placed map controls, no station yet"),
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
     ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled)$", "Viscosity: tar crawls", "flow_identity"),
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|sourceBudgetMultiplier|minLimitlessBodyCells)$",
