@@ -24,10 +24,9 @@
     leather Leather_Cactus (donor) -> Leather_Plain; meat AA_CactusMeat (donor) -> useMeatFrom Iguana; dessicated art
     (donor) -> vanilla bear.
   DROPPED: donor wildBiomes; the VEF AnimalStatExtension info-card rows.
-  ART: our renders exist and are not installed (miasma_lastvine_calm_v1 and miasma_lastvine_reared_v1, made from the
-    owner's note, not yet reviewed). Until the art ledger installs them at our path, the texPath is the donor path
-    (a placeholder, reported ART OWED by donor_plain_ports_check.py; with no _Reared texture there the creature always
-    draws its calm body) and the roster row stays MayRequire="sarg.alphaanimals".
+  ART: installed through the art ledger (owner accepted 2026-10-15): calm at Things/Pawn/Animal/RM_Lastvine/RM_Lastvine,
+    reared at RM_Lastvine_Reared (the comp appends _Reared to the life-stage texPath); the roster row no longer
+    carries MayRequire on Alpha Animals.
 -->
 <Defs>
 
@@ -141,7 +140,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <texPath>Things/Pawn/Animal/RM_Lastvine/RM_Lastvine</texPath>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -151,7 +150,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <texPath>Things/Pawn/Animal/RM_Lastvine/RM_Lastvine</texPath>
           <drawSize>1.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -161,7 +160,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Mantrap/AA_Mantrap</texPath>
+          <texPath>Things/Pawn/Animal/RM_Lastvine/RM_Lastvine</texPath>
           <drawSize>2</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
