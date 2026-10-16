@@ -65,6 +65,9 @@ Canon check: none of these is a creature body with a canon library entry except 
 images of their parent entries through `derive_from`/`canon_reference` (the job file shows them attached). Items and icons carry no
 `canon` link (no Must-show list applies to a bone or an egg). Nothing is Star Wars IP beyond names already in the defs.
 
+Biome-sprint kit art (ruled by card 2026-10-16, *"Let me guess the designs"*): commissioned with guessed designs, see
+`design/RimMandrake/kit_art_designs_2026-10-16.md`.
+
 ## Deliberately NOT commissioned
 
 | what | reason |
@@ -79,7 +82,6 @@ images of their parent entries through `derive_from`/`canon_reference` (the job 
 | SandLion v2, Hydenock, Jogan, Tooke trap, Sarlacc, Zhissa, Vekka, AngelMoth options, Skorra | rendered, and most are installed on his word; Skorra waits on a sheet row |
 | Alpha Biomes (16 plant and disease names) | his card at O1 (*"Retire Alpha Biomes now too?"*) is unanswered |
 | Gender, juvenile and swimming art for species not yet reached | `EXTRA_ART_PER_BIOME_COMMISSION_1`: per biome, after group sizes are settled |
-| Biome-sprint kit art (Cauldron Filter-Works, ruin kit, Oomo shrine, vaporator, camp kit, calling pyre, new vaporator people, three grown-limb placeholders, half-transformed tree) | outside the stated scope and each owes a design call at S0 before a prompt can be written without inventing the design. **NEEDS A RULING if you want these drawn ahead of S0** |
 | 49 shipped placeholders on `placeholder_allowlist.json` (FeverWood, LuminousPigment, TheSump, Webwork, Bacta, RUT_Greenwood) | not Phase 0, not ratchet; owned by those biomes' sittings. Three Murrelith entries are stale (`placeholder_lint.py` fails on them) |
 | Ratchet pilot: Pyrelands | owner approved the whole review save 2026-10-16 (*"I'm approving this whole sheet"*); art coverage is 49 of 51 texPaths ours, the other two (`Filth/Ash`, `ShellFirefoam`) are vanilla by design. Nothing owed |
 | Ratchet pilot: FlowWorks | tanks (16 looks), containers (12 plus masks), pit ladder (lowered and raised), pipe looks are installed and approved. 86 of 91 texPaths ours; the five left are vanilla Spatter, ChunkStone, VatBubble and Fire, so replacing them is a cosmetic change he must permit. `FLOWWORKS_NORTHSTAR_SHIP_1`'s "97 of 100 borrowed" line is stale (2026-10-07) |
@@ -87,12 +89,10 @@ images of their parent entries through `derive_from`/`canon_reference` (the job 
 | `SWALE_CANAL_ART_REFERENCE_1` | needs a live screenshot of a built canal; not offline |
 | Owner-kept donor art (18 species) | his ruling stands |
 
-## Needs his ruling (three lines)
+## Needs his ruling (two lines)
 
 1. **Dessicated corpses of the ported SWAC species** (61, donor bytes): draw them per species now (about 61 jobs, 1.5 h of daemon), or
    accept the donor pictures as owner-kept for Phase 0 and let the look-alike-family ticket redraw them after the biome art settles?
-2. **Draw the biome-sprint kit art now?** (Filter-Works, ruin kit, shrine, vaporator, camps, pyre, new people.) Each needs a one-line design
-   answer first.
-3. **Retire Alpha Biomes too?** (Unchanged from the kickoff; it decides whether its 16 names get art jobs.)
+2. **Retire Alpha Biomes too?** (Unchanged from the kickoff; it decides whether its 16 names get art jobs.)
 
 Check progress: `ls D:\Luke\dev\_artpipe\pending` and `...\active`; per job `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <id> --names-only`.
