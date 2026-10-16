@@ -190,6 +190,8 @@
     </costList>
     <building>
       <deconstructible>true</deconstructible>
+      <!-- Unowned and unclaimable, so Building.DeconstructibleBy needs this to let the player take it apart. -->
+      <alwaysDeconstructible>true</alwaysDeconstructible>
       <claimable>false</claimable>
     </building>
   </ThingDef>

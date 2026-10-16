@@ -103,9 +103,19 @@ namespace RimMandrake.LeaningScrub
             zoned.Shuffle();
             wild.Shuffle();
             zoned.SortBy(c => c.DistanceToSquared(center));
-            wild.SortBy(c => c.DistanceToSquared(center));
             if (zoned.Count < want)
             {
+                // Top up from wild plants nearest the zoned fires actually chosen (their centroid), not nearest the spot,
+                // so a small field far from the spot and the wild fires form one cluster, not two.
+                IntVec3 anchor = center;
+                int used = zoned.Count;
+                if (used > 0)
+                {
+                    int sx = 0, sz = 0;
+                    for (int i = 0; i < used; i++) { sx += zoned[i].x; sz += zoned[i].z; }
+                    anchor = new IntVec3(sx / used, 0, sz / used);
+                }
+                wild.SortBy(c => c.DistanceToSquared(anchor));
                 zoned.AddRange(wild);
             }
             int lit = 0;
