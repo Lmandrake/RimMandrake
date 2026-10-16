@@ -54,7 +54,8 @@ a wall stub (for brackets). The hose stations (11, 16, 17, 21, 22, 29-33 and 12'
 there 2026-10-11; they stay here as cross-mod stations because the FlowWorks map shows the hose only as one station.
 Build tier: ratchet_pilot (carries GSS and FlowWorks).
 
-Idempotent: --build always clears the region first. Labels are process memory (never in a save): --labels re-pins them.
+Idempotent: --build always clears the region first. Labels are not in the save itself: every SaveGame writes them to a
+sign sidecar the JawaBench companion reads back on load (modcheck/reviewmap.py, REVIEW SIGNS); --labels re-pins them.
 Reuses run_live.LiveBridge (the probe protocol) and placer._ops (the op-string shape).
 """
 import argparse
@@ -71,6 +72,10 @@ for p in (HERE, NS):
     if p not in sys.path:
         sys.path.insert(0, p)
 import placer as PL  # noqa: E402  (numpy-free)
+_UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+from modcheck import reviewmap as RM  # noqa: E402  (label_line, weak_spot_sign: the shared review signs)
 
 OUT = os.path.join(REPO, "Transient", "mc_human_review")
 STYLES = ("StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek")
@@ -1159,7 +1164,7 @@ def label_ops(S, style):
     L = []
 
     def add(x, z, text, sub="", col=GOLD, size="medium"):
-        L.append("%d|%d|%s|%s|%s|%s|%s" % (x, z, text.replace("|", "/"), sub.replace("|", "/"), col, size, TAG))
+        L.append(RM.label_line(x, z, text, sub, col, size, TAG))
     add(COL_X + 15, 108, "GIMME SOME SLACK - HUMAN REVIEW", "look is chosen PER BUILD (stations 1-11, 34, 41)   |   default look (unstyled pieces: 12-40 but 34): %s   |   "
         "key sheet: Transient\\mc_human_review\\keysheet.html" % LOOK.get(style, style), CREAM)
     add(190, 53, "STYLE GALLERY - stations 1-12", "every piece stores its own look   |   --goto S0 frames it", CREAM)
@@ -1180,7 +1185,10 @@ def label_ops(S, style):
         # round 8: no "(was N)" any more -- the 2026-10-05 renumbering is ten days old and its old numbers 34-41 now collide
         # with the new stations 34-41; the prev -> new table stays in the key sheet's closing section
         title = "%d  %s" % (s["n"], s["title"])
-        add(x + w // 2, z - 2 if s.get("label_below") else z + h, title, sub)
+        # REVIEW SIGNS (owner 2026-10-15: "text signs ... to tell me what to DO at each station"): the card's poke and
+        # weak spot under the clause; zoomed out only the clause draws (modcheck/reviewmap.weak_spot_sign)
+        poke, weak = CARD[s["n"]]
+        add(x + w // 2, z - 2 if s.get("label_below") else z + h, title, RM.weak_spot_sign(sub, "", poke, weak))
         for dx, dz, text, msub in s.get("marks", []):
             add(x + dx, z + dz, text, msub, RUST, "small")
     fx, fz, fw, fh = FREE["rect"]

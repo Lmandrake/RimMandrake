@@ -63,6 +63,14 @@ check(any("outside its footprint" in p for p in H.layout_check(bad)), "can fail:
 # 3 def check
 known = H.known_defs(S)
 names = set().union(*[H.station_def_names(s) for s in S])
+bad = [dict(S[0], short="NO SUCH SIGN")]
+check(any("has no sign" in p for p in H.layout_check(bad)), "can fail: a station with no sign is reported")
+ops = H.label_ops(S).split("\n")
+signed = [o for o in ops if o.split("|")[2].split("  ")[0].isdigit() and "DECIDE:" in o.split("|")[3]]
+check(len(signed) == len(S), "every station's title label carries its LOOK/DO/DECIDE sign (%d of %d)" % (len(signed), len(S)))
+fur = [s for s in S if s["setup"].get("chill") is not None]
+check(len(fur) == 2 and any(s["setup"].get("pawns") for s in fur) and any(not s["setup"].get("pawns") for s in fur),
+      "the furnace-beast pen and its empty control pen are both chilled (got %s)" % [s["n"] for s in fur])
 check(names and names <= known, "sanity probe: all %d station defs are known (missing: %s)" % (len(names), sorted(names - known)))
 bad = copy.deepcopy(S)
 bad[0]["setup"]["terrain"].append(("RM_FE_Ash_Deeep", 2, 2, 1, 1))

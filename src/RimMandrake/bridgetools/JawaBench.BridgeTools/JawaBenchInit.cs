@@ -138,6 +138,15 @@ namespace JawaBench.BridgeTools
                 // NORTHSTAR_COMPANION_GAPS_1. The damage/kill ring buffer and the item
                 // lineage journal. Same lazy-init reasoning: events before the first jawa/
                 // call of a session are NOT recorded, which the read tools report.
+                // REVIEW SIGNS (owner 2026-10-15). The review-label drawer and its save/load sidecar hooks, so a
+                // review save loaded after any jawa/ call comes back with its signs (JawaBenchReviewLabels.cs).
+                try { JawaBenchReviewLabelDrawer.Install(); }
+                catch (Exception se)
+                {
+                    try { Log.Warning("[JawaBench] review-label install threw: " + se.Message); }
+                    catch { }
+                }
+
                 try { JawaBenchEventRecorder.Install(); }
                 catch (Exception re)
                 {

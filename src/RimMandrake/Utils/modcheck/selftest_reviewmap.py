@@ -84,5 +84,24 @@ check(RM.pawn_xz({"position": "(5, 0, 6)"}) == (5, 6), "pawn_xz string")
 ln = RM.label_line(1, 2, "a|b\nc", "s|t", "#ffffff", "small", "tg")
 check(ln.split("|") == ["1", "2", "a/b c", "s/t", "#ffffff", "small", "tg"], "label_line: %r" % ln)
 
-print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  reviewmap: save names, save judge (wrong-slot trap), sweep, labels")
+# sign_sub: clause first, then LOOK / DO / DECIDE, joined by the drawer's two-character break, capped
+sg = RM.sign_sub("a clause", "the ground", "hover it", "is it ash?")
+check(sg.split(RM.SIGN_BREAK) == ["a clause", "LOOK: the ground", "DO: hover it", "DECIDE: is it ash?"], "sign_sub: %r" % sg)
+check("\n" not in sg and "|" not in RM.sign_sub("a|b", "c"), "sign_sub: no real newline, no separator")
+long_ = RM.sign_sub("", "word " * 80, max_lines=3)
+check(long_.count(RM.SIGN_BREAK) == 2 and long_.endswith("..."), "sign_sub caps lines and marks the cut: %r" % long_[-20:])
+ln = RM.label_line(1, 2, "T", sg)
+check(ln.split("|")[3] == sg, "label_line keeps the sign break")
+
+ws = RM.weak_spot_sign("clause", "", "poke it", "weak spot: the pool on the wrong side").split(RM.SIGN_BREAK)
+check(ws == ["clause", "DO: poke it", "DECIDE: is this fault there? the pool on the wrong side"], "weak_spot_sign: %r" % ws)
+
+# write_signs: header + one op per line, into a temp folder
+import tempfile
+d = tempfile.mkdtemp()
+pth = RM.write_signs("RM_x", [ln, "", RM.label_line(3, 4, "U")], folder=d)
+rows = open(pth, encoding="utf-8").read().splitlines()
+check(rows[0] == "# map ?" and rows[1] == ln and len(rows) == 3, "write_signs file: %r" % rows)
+
+print("FAIL\n  " + "\n  ".join(fails) if fails else "ok  reviewmap: save names, save judge (wrong-slot trap), sweep, labels, signs")
 sys.exit(1 if fails else 0)
