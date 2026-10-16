@@ -130,9 +130,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
+                // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND).
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
-                    return OracleScenes.Run(reader, Console.Out);
+                    return OracleScenes.Run(reader, Console.Out, args.Length > 2 && args[2] == "surface");
                 }
             }
 
@@ -1728,6 +1729,36 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel", () =>
             {
                 string r = FlowKernelFuzz.FrontSpeed();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_flat_channel_levels", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceFlatChannelLevels();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_edge_drained_channel_empties", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceEdgeDrainedChannelEmpties();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_deep_hole_beside_shallow_trench_levels_by_surface", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceDeepHoleBesideShallowTrench();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_source_still_fills_channel", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceSourceStillFillsChannel();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("WATER_SURFACE_REWIRE_random_scenes_settle_and_conserve", () =>
+            {
+                string r = FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve();
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });

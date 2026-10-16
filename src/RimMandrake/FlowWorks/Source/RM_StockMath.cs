@@ -476,6 +476,20 @@ namespace RimMandrake.FlowWorks
 		/// never filled. Hops are geometry, so the result is direction-independent.
 		/// With no supplying source the source hops are 0 everywhere, and with no
 		/// sink the sink hops are; a constant drops out of the comparison.</summary>
+		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: the same order with a third tier, hops to the component's
+		/// deepest bed (farther gives to nearer), between the sink tier and depth. Still a strict order on a static key,
+		/// so still acyclic.</summary>
+		public static bool MayFlowBetween(
+			int donorSourceHops, int donorSinkHops, int donorLowHops, int donorDepth,
+			int recipientSourceHops, int recipientSinkHops, int recipientLowHops, int recipientDepth)
+		{
+			if (donorSourceHops != recipientSourceHops || donorSinkHops != recipientSinkHops || donorLowHops == recipientLowHops)
+			{
+				return MayFlowBetween(donorSourceHops, donorSinkHops, donorDepth, recipientSourceHops, recipientSinkHops, recipientDepth);
+			}
+			return donorLowHops > recipientLowHops;
+		}
+
 		public static bool MayFlowBetween(
 			int donorSourceHops, int donorSinkHops, int donorDepth,
 			int recipientSourceHops, int recipientSinkHops, int recipientDepth)

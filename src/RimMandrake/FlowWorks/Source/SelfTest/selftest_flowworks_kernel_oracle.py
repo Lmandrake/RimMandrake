@@ -46,10 +46,10 @@ def scene(seed):
     return w, h, pulses, band, bodies, src, digs
 
 
-def oracle(sc):
+def oracle(sc, surface=False):
     w, h, pulses, band, bodies, src, digs = sc
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
-                      sink_band=band or None, algo="fixed")
+                      sink_band=band or None, algo="fixed", level_surface=surface)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -86,10 +86,7 @@ def main():
     dotnet = stock_wrapper._find_dotnet()
     if dotnet is None:
         sys.exit("dotnet.exe not found; UNMEASURED, not a pass or a fail")
-    t0 = time.time()
     scenes = [scene(s) for s in range(n)]
-    want = [oracle(sc) for sc in scenes]
-    t1 = time.time()
     with stock_wrapper.dotnet_lock():
         proj = stock_wrapper._to_windows_path(stock_wrapper.CSPROJ)
         # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
@@ -101,23 +98,32 @@ def main():
         scene_file = os.path.join(HERE, "bin", "oracle_scenes.txt")   # bin/ is gitignored
         with open(scene_file, "w") as f:
             f.write("\n".join(encode(sc) for sc in scenes) + "\n")
-        res = subprocess.run([dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)],
-                             capture_output=True, text=True, timeout=300)
-        t2 = time.time()
-        if res.returncode != 0:
-            print(res.stdout[-2000:], res.stderr[-2000:])
-            sys.exit("kernel run failed")
-        got = [ln for ln in res.stdout.replace("\r", "").split("\n") if ln.strip()]
-        if len(got) != n:
-            sys.exit("kernel answered %d scenes of %d" % (len(got), n))
-        bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
-        pulses = sum(sc[2] for sc in scenes)
-    print("%d scenes, %d pulses: oracle %.2f s, kernel (incl. dotnet build check) %.2f s" % (n, pulses, t1 - t0, t2 - t1))
-    for i in bad[:5]:
-        print("DISAGREE seed %d: %s\n  oracle %s\n  kernel %s" % (i, encode(scenes[i]), want[i][:300], got[i][:300]))
-    if bad:
-        sys.exit("%d/%d scenes disagree" % (len(bad), n))
-    print("PASS: kernel == PulseOracle on %d/%d scenes" % (n, n))
+        failed = []
+        # Both engines: the pre-surface rule, and levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, shipped ON).
+        for mode in ("depth", "surface"):
+            t0 = time.time()
+            want = [oracle(sc, mode == "surface") for sc in scenes]
+            t1 = time.time()
+            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + (["surface"] if mode == "surface" else [])
+            res = subprocess.run(args, capture_output=True, text=True, timeout=300)
+            t2 = time.time()
+            if res.returncode != 0:
+                print(res.stdout[-2000:], res.stderr[-2000:])
+                sys.exit("kernel run failed (%s)" % mode)
+            got = [ln for ln in res.stdout.replace("\r", "").split("\n") if ln.strip()]
+            if len(got) != n:
+                sys.exit("kernel answered %d scenes of %d (%s)" % (len(got), n, mode))
+            bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
+            pulses = sum(sc[2] for sc in scenes)
+            print("[%s] %d scenes, %d pulses: oracle %.2f s, kernel %.2f s" % (mode, n, pulses, t1 - t0, t2 - t1))
+            for i in bad[:5]:
+                print("DISAGREE [%s] seed %d: %s\n  oracle %s\n  kernel %s" % (mode, i, encode(scenes[i]), want[i][:300], got[i][:300]))
+            if bad:
+                failed.append("%s: %d/%d scenes disagree" % (mode, len(bad), n))
+            else:
+                print("PASS [%s]: kernel == PulseOracle on %d/%d scenes" % (mode, n, n))
+    if failed:
+        sys.exit("; ".join(failed))
 
 
 if __name__ == "__main__":

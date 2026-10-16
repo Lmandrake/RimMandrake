@@ -562,6 +562,198 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return at;
 		}
 
+		// ── WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND (owner 2026-10-16, by card "Level by water surface") ──────────────
+
+		/// <summary>A 1-row world of dug cells x=0..n-1 (depths given), filled as given, water, shipped flags (creep, viscosity,
+		/// levelBySurface as asked). Sink band = x &lt; sinkBand.</summary>
+		private static ArrayWorld SurfaceRow(int[] depths, int[] fills, bool surface, int sinkBand = 0)
+		{
+			var w = new ArrayWorld(depths.Length, 1);
+			for (int x = 0; x < depths.Length; x++)
+			{
+				w.k.depth[x] = (byte)depths[x];
+				w.k.fill[x] = (byte)fills[x];
+				if (fills[x] > 0) w.cellFluid[x] = ArrayWorld.Water;
+				w.sink[x] = x < sinkBand;
+			}
+			w.k.edgeSinksEnabled = sinkBand > 0;
+			w.k.viscosityEnabled = true;
+			w.k.creepWaterEnabled = true;
+			w.k.levelBySurfaceEnabled = surface;
+			return w;
+		}
+
+		/// <summary>Runs <paramref name="pulses"/> pulses over every dug cell. Returns the final F vector; <paramref name="settledAt"/>
+		/// is the first pulse after which the F vector never changed again (-1 = still changing on the last pulse);
+		/// <paramref name="worst"/> the worst ledger imbalance; <paramref name="drained"/> the units sinks took.</summary>
+		private static string SurfaceRun(ArrayWorld w, int pulses, out int settledAt, out float worst, out float drained)
+		{
+			var digs = Enumerable.Range(0, w.w * w.h).Where(i => w.k.depth[i] > 0).ToList();
+			string prev = string.Join(",", digs.Select(c => w.k.fill[c]));
+			settledAt = 0; worst = 0f; drained = 0f;
+			for (int p = 1; p <= pulses; p++)
+			{
+				w.Pulse(digs);
+				worst = Math.Max(worst, w.k.worstImbalance);
+				drained += w.k.sinkDrained;
+				string now = string.Join(",", digs.Select(c => w.k.fill[c]));
+				if (now != prev) settledAt = p;
+				prev = now;
+			}
+			if (settledAt == pulses) settledAt = -1;
+			return prev;
+		}
+
+		private static int MaxNeighbourSurfaceStep(ArrayWorld w)
+		{
+			int worst = 0;
+			for (int i = 0; i < w.w * w.h; i++)
+			{
+				if (w.k.depth[i] == 0) continue;
+				for (int d = 0; d < 4; d++)
+				{
+					int n = w.k.Cardinal(i, d);
+					if (n < 0 || w.k.depth[n] == 0) continue;
+					worst = Math.Max(worst, Math.Abs((w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n])));
+				}
+			}
+			return worst;
+		}
+
+		/// <summary>A closed, flat D=2 run with all its water at one end (2,2,2,2,0..0): by surface it spreads until no two
+		/// cells anywhere in the run differ by more than one unit (no 2,2,1,1,0 terrace), keeps all 8 units, and is at rest well inside 200 pulses. The old rule
+		/// moves nothing (a brim-full cell may only overflow down a flow order, and a sourceless, sinkless run has none).</summary>
+		public static string SurfaceFlatChannelLevels()
+		{
+			int[] depths = Enumerable.Repeat(2, 10).ToArray();
+			int[] fills = { 2, 2, 2, 2, 0, 0, 0, 0, 0, 0 };
+			var on = SurfaceRow(depths, fills, true);
+			string end = SurfaceRun(on, 200, out int settled, out float worst, out _);
+			int sum = on.k.fill.Sum(f => f);
+			int step = MaxNeighbourSurfaceStep(on);
+			int spread = on.k.fill.Max(f => f) - on.k.fill.Min(f => f);   // one bed depth: fill spread = surface spread
+			string old = SurfaceRun(SurfaceRow(depths, fills, false), 200, out _, out _, out _);
+			bool ok = sum == 8 && step <= 1 && spread <= 1 && settled >= 0 && settled < 150 && worst <= 0.001f && old == "2,2,2,2,0,0,0,0,0,0";
+			string line = $"surface F={end} (sum {sum}, max neighbour step {step}, spread {spread}, at rest after pulse {settled}, worst imbalance {worst:F3}); old rule F={old}";
+			return (ok ? "OK: " : "BROKEN: ") + line;
+		}
+
+		/// <summary>A full D=2 run breached into the sink band at x=0 drains to EMPTY by surface (the owner's review-station-1
+		/// sighting: the old rule strands the bottom unit of every cell), every unit accounted to the sink.</summary>
+		public static string SurfaceEdgeDrainedChannelEmpties()
+		{
+			int[] depths = Enumerable.Repeat(2, 13).ToArray();
+			int[] fills = Enumerable.Repeat(2, 13).ToArray();
+			var on = SurfaceRow(depths, fills, true, 1);
+			string end = SurfaceRun(on, 200, out int settled, out float worst, out float drained);
+			string old = SurfaceRun(SurfaceRow(depths, fills, false, 1), 200, out _, out _, out _);
+			bool empty = on.k.fill.All(f => f == 0);
+			bool ok = empty && Math.Abs(drained - 26f) < 0.001f && settled >= 0 && worst <= 0.001f && old.Contains("1");
+			string line = $"surface F={end} drained {drained:F0}/26 at rest after pulse {settled}; old rule F={old}";
+			return (ok ? "OK: " : "BROKEN: ") + line;
+		}
+
+		/// <summary>Depth stops deciding: (a) a D=1 trench holding water (1,1,1,1,1) beside an empty D=4 hole pours into
+		/// the hole until the surfaces are within one unit; (b) a D=3 cell at 1/3 (surface -2) beside a D=4 hole at 3/4
+		/// (surface -1) gives NOTHING: the old GRAVITY rule pushed it uphill into the deeper bed.</summary>
+		public static string SurfaceDeepHoleBesideShallowTrench()
+		{
+			var a = SurfaceRow(new[] { 1, 1, 1, 1, 1, 4 }, new[] { 1, 1, 1, 1, 1, 0 }, true);
+			string endA = SurfaceRun(a, 200, out int settledA, out float worstA, out _);
+			int stepA = MaxNeighbourSurfaceStep(a);
+			bool okA = a.k.fill.Sum(f => f) == 5 && stepA <= 1 && a.k.fill[5] >= 3 && settledA >= 0 && worstA <= 0.001f;
+			var b = SurfaceRow(new[] { 3, 4 }, new[] { 1, 3 }, true);
+			string endB = SurfaceRun(b, 50, out _, out float worstB, out _);
+			string oldB = SurfaceRun(SurfaceRow(new[] { 3, 4 }, new[] { 1, 3 }, false), 50, out _, out _, out _);
+			bool okB = endB == "1,3" && oldB == "0,4" && worstB <= 0.001f;
+			string line = $"(a) trench+hole F={endA} step {stepA} rest {settledA}; (b) 1/3 beside 3/4: surface {endB}, old rule {oldB}";
+			return (okA && okB ? "OK: " : "BROKEN: ") + line;
+		}
+
+		/// <summary>A limitless pond feeding a D=2 run still fills it full, mouth first (creep on), ledger balanced.</summary>
+		public static string SurfaceSourceStillFillsChannel()
+		{
+			var w = new ArrayWorld(11, 1);
+			w.AddBody(true, 0f, new[] { 0 });
+			var digs = Enumerable.Range(1, 10).ToList();
+			foreach (int c in digs) w.k.depth[c] = 2;
+			w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true;
+			float worst = 0f;
+			w.Pulse(digs);
+			string first = string.Join("", digs.Select(c => w.k.fill[c]));
+			for (int p = 1; p < 80; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			string end = string.Join("", digs.Select(c => w.k.fill[c]));
+			bool ok = first == "1000000000" && end == "2222222222" && worst <= 0.001f;
+			return (ok ? "OK: " : "BROKEN: ") + $"after 1 pulse {first}, after 80 {end}, worst imbalance {worst:F3}";
+		}
+
+		/// <summary>300 seeded random 8x8 scenes (random digs D1..4, random fills, optional sink band, optional LIMITED pond):
+		/// with levelBySurface on, each conserves (fill + pond stock + sink drain constant, ledger balanced every pulse)
+		/// and is at rest by pulse 200 (identical F for the last 50 pulses: no shuttle of any period); in a sinkless scene no
+		/// wet cell ends 2+ units of surface above a dug neighbour.</summary>
+		public static string SurfaceRandomScenesSettleAndConserve()
+		{
+			var rng = new Random(20261016);
+			int notAtRest = 0, unbalanced = 0, steep = 0, total = 300;
+			string firstBad = null;
+			for (int t = 0; t < total; t++)
+			{
+				var w = new ArrayWorld(8, 8);
+				int band = rng.Next(3) == 0 ? 1 : 0;
+				ArrayWorld.Body pond = null;
+				if (rng.Next(2) == 0)
+				{
+					int pc = rng.Next(64);
+					pond = w.AddBody(false, rng.Next(0, 15), new[] { pc });
+				}
+				for (int i = 0; i < 40; i++)
+				{
+					int c = rng.Next(64);
+					if (w.natural[c]) continue;
+					w.k.depth[c] = (byte)rng.Next(1, 5);
+					w.k.fill[c] = (byte)rng.Next(0, w.k.depth[c] + 1);
+					w.cellFluid[c] = w.k.fill[c] > 0 ? ArrayWorld.Water : null;
+				}
+				for (int i = 0; i < 64; i++) { int x = i % 8, z = i / 8; w.sink[i] = band > 0 && (x < band || z < band || x >= 8 - band || z >= 8 - band); }
+				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true;
+				float startTotal = w.k.fill.Sum(f => f) + (pond?.stock ?? 0f);
+				var digs = Enumerable.Range(0, 64).Where(i => w.k.depth[i] > 0).ToList();
+				string prev = null; int lastChange = 0; float worst = 0f, drained = 0f;
+				for (int p = 1; p <= 200; p++)
+				{
+					w.Pulse(digs);
+					worst = Math.Max(worst, w.k.worstImbalance);
+					drained += w.k.sinkDrained;
+					string now = string.Join(",", digs.Select(c => w.k.fill[c]));
+					if (now != prev) lastChange = p;
+					prev = now;
+				}
+				float endTotal = w.k.fill.Sum(f => f) + (pond?.stock ?? 0f) + drained;
+				bool rest = lastChange <= 150, bal = worst <= 0.001f && Math.Abs(endTotal - startTotal) < 0.001f;
+				// At rest, no wet cell stands 2+ above a dug neighbour in its own network (sealed/sink-free scenes only;
+				// a sink band empties toward the edge, and a different-fluid wall cannot happen here: one fluid).
+				bool level = true;
+				if (band == 0)
+				{
+					for (int i = 0; i < 64 && level; i++)
+					{
+						if (w.k.depth[i] == 0 || w.k.fill[i] == 0) continue;
+						for (int d = 0; d < 4; d++)
+						{
+							int n = w.k.Cardinal(i, d);
+							if (n >= 0 && w.k.depth[n] > 0 && (w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n]) >= 2) { level = false; break; }
+						}
+					}
+				}
+				if (!rest) notAtRest++;
+				if (!bal) unbalanced++;
+				if (!level) steep++;
+				if ((!rest || !bal || !level) && firstBad == null) firstBad = $"scene {t}: rest={rest} (last change {lastChange}) bal={bal} level={level}\n{w.Grid()}";
+			}
+			string line = $"{total} scenes: {notAtRest} not at rest by pulse 150, {unbalanced} unbalanced, {steep} with a wet step of 2+";
+			return notAtRest == 0 && unbalanced == 0 && steep == 0 ? "OK: " + line : "BROKEN: " + line + "\n" + firstBad;
+		}
+
 		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>
 		public static string ChannelTouchingBothNeverMixes()
 		{
@@ -668,7 +860,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 	/// pulse, then each body's final stock.</summary>
 	internal static class OracleScenes
 	{
-		public static int Run(System.IO.TextReader input, System.IO.TextWriter output)
+		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -699,6 +891,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					for (int i = 0; i < w * h; i++) { int x = i % w, z = i / w; world.sink[i] = x < band || z < band || x >= w - band || z >= h - band; }
 				}
 				world.k.viscosityEnabled = true;
+				world.k.levelBySurfaceEnabled = levelBySurface;
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{

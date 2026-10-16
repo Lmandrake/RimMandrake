@@ -78,6 +78,7 @@ SETTINGS = {
         "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "poisonFillEnabled": True,   # PIT_FILL_EFFECTS_1
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
         "waterFrontCreepEnabled": True,    # CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: water front advances one cell per pulse from the mouth
+        "levelBySurfaceEnabled": True,     # WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: water levels by surface, not dug depth
         "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
         "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
