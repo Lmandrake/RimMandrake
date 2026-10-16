@@ -1,0 +1,73 @@
+{
+ "biome": "SUBJECTS_pit_spikes_half_a_man",
+ "built": "2026-10-16T07:06:31-0700",
+ "census": "Transient/biome_ffar/pit_spikes_half_a_man.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "rows": {
+  "RM_Spikes": {
+   "columns": {
+    "A": {
+     "single": "973d0aee5296d944590d013ffb046b3f74144cb5db21cb6f258a11db82ffb1bf"
+    },
+    "B": {
+     "single": "6b976de446c370f3734b14febc984d4476abbe4105bfdd516acd3c61d87049b8"
+    },
+    "C": {
+     "single": "c362bd2156ca1531c6d5f716360e265082fb6e69c62d63f0db67d44ba1f6914e"
+    },
+    "D": {
+     "single": "988d1715c8b99cf0a3fad4d20cd9e835be1686ea62d539bfc4d392c00c5d6d18"
+    },
+    "E": {
+     "single": "0ba4c52a7af3965ce8813f5b5a88d30ec6a87ae34d127029c072eecbb13dfd32"
+    },
+    "F": {
+     "single": "e15c2ebb45396f60e63389099e1dcb33a69ec7b653001fc420e3ada3c70ca1a7"
+    },
+    "G": {
+     "single": "113cdfbdf3f37aed28e3192ce6a98cfe6d15b3b66496318bb73ebffc8d1cc71a"
+    },
+    "H": {
+     "single": "951e9cece5682cd714e49afdd14ea8764b44030cedf3e6e6e8af743e67785b88"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "B": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "C": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "D": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "E": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "F": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "G": "Things/Building/FlowWorks/Canals/RM_Spikes",
+    "H": "Things/Building/FlowWorks/Canals/RM_Spikes"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_Spikes_halfman_v1",
+    "C": "render RM_Spikes_halfman_v2",
+    "D": "render RM_Spikes_halfman_v3",
+    "E": "render RM_Spikes_halfman_v4",
+    "F": "render RM_Spikes_halfman_v5",
+    "G": "render RM_Spikes_halfman_v6",
+    "H": "render RM_Spikes"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Canals/RM_Spikes",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "spikes"
+  }
+ },
+ "sheetId": "pit_spikes_half_a_man_sheet_2026-10-16",
+ "snapshotId": "137697932229f894"
+}
