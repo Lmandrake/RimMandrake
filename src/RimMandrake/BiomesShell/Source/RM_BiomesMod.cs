@@ -49,6 +49,10 @@ namespace RimMandrake.Biomes
         // patch time, so a change takes effect on the NEXT game start.
         public static bool ownedCaravanCarriers = true;
 
+        // GIANT_MUSHROOM_DRAW_FIX_SOUTH_GOES_FRONT (owner 2026-10-16): on maps in our biomes, of two overlapping plants the
+        // more southern one draws in front (RM_PlantDrawOrder.cs). Draw order only; applies at once on running maps.
+        public static bool plantDrawOrderSouthInFront = true;
+
         public static RM_BiomesSettings Instance;
 
         // Roster keys whose own mod gates its mechanics on Enabled(key), added by that mod at startup by reflection
@@ -66,6 +70,7 @@ namespace RimMandrake.Biomes
             base.ExposeData();
             Scribe_Collections.Look(ref enabled, "enabled", LookMode.Value, LookMode.Value);
             Scribe_Values.Look(ref ownedCaravanCarriers, "ownedCaravanCarriers", true);
+            Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
             if (enabled == null) enabled = new Dictionary<string, bool>();
         }
     }
@@ -83,6 +88,7 @@ namespace RimMandrake.Biomes
         {
             Instance = this;
             settings = GetSettings<RM_BiomesSettings>();
+            plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
             RM_BiomesSettings.Instance = settings;
             roster = ReadRoster(Path.Combine(content.RootDir, "Biomes.roster.xml"));
         }
@@ -121,6 +127,11 @@ namespace RimMandrake.Biomes
         {
             base.WriteSettings();
             RM_BiomesGate.Apply("settings changed");
+            if (plantDrawOrderShown != RM_BiomesSettings.plantDrawOrderSouthInFront)
+            {
+                plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
+                RM_PlantDrawOrder.Reprint();
+            }
         }
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
@@ -129,6 +140,7 @@ namespace RimMandrake.Biomes
         // listed in RM_BiomesSettings.mechanicsGated (live: those mechanics stop on existing maps). An entry with no BiomeDefs and no
         // mechanics reader (every engine/mechanic entry today) gates nothing yet: DEAD.
         private float viewHeight = 1200f;
+        private static bool plantDrawOrderShown = true;
         private string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
@@ -179,6 +191,17 @@ namespace RimMandrake.Biomes
                     "Every faction's trade caravans may lead tirbak, vellak and vaalok as pack animals. Without them no land "
                     + "trade caravan can reach the Weeping Stones or the Stillsand, whose only pack animals they are.\n\n"
                     + "Default: on. Takes effect on the next game start (it edits faction defs while the game loads).");
+                list.GapLine();
+            }
+
+            if (string.IsNullOrWhiteSpace(searchQuery)
+                || RimMandrake.Shared.SettingsKitCore.Matches("plants draw order south front mushrooms overlap", searchQuery))
+            {
+                list.CheckboxLabeled("Southern plants draw in front [now]", ref RM_BiomesSettings.plantDrawOrderSouthInFront,
+                    "On maps in our biomes, where two plants overlap, the one standing further south is drawn in front, "
+                    + "whatever their sizes. Without it a giant mushroom on a higher draw layer covers a southern neighbour.\n\n"
+                    + "Draw order only. Ground cover stays under every plant; pawns and items stay on top. "
+                    + "Other mods' biomes are not touched.\n\nDefault: on. Takes effect at once on running maps.");
                 list.GapLine();
             }
 

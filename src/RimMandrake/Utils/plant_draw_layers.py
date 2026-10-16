@@ -10,8 +10,8 @@ WHY
 ===
 A plant draws at its def's AltitudeLayer, and `Plant.Print` lifts a plant plane's top edge
 by 0.1 altitude (`Printer_Plane.PrintPlane(..., topVerticesAltitudeBias 0.1f, ...)`) while
-layers sit 0.0366 apart (Altitudes.AltInc). So a ground-cover plant is only GUARANTEED under
-a LowPlant (11) plant when it sits at least 3 layers lower, i.e. <= Filth (8). Within one
+layers sit 0.366 apart (Altitudes.LayerSpacing; AltInc 0.0366 is a tenth of a layer). So any
+lower layer keeps a ground-cover plant under a LowPlant (11) plant. Within one
 layer the order between two plants is hash-random -- the "moss sometimes in front" report.
 Nothing in the decompiled 1.6 source branches on a plant's altitudeLayer except drawing
 (searched `altitudeLayer ==|<|>` and `AltitudeLayer.LowPlant`: no logic hits).
@@ -70,7 +70,7 @@ ALT = {n: i for i, n in enumerate([
     "LightingOverlay", "VisEffects", "FogOfWar", "Darkness", "WorldClipper", "Silhouettes",
     "MapDataOverlay", "MetaOverlays"])}
 DEFAULT_ALT = "Item"            # BuildableDef.altitudeLayer = AltitudeLayer.Item
-TARGET_ALT = "FloorEmplacement"  # 7: >= 3 layers under LowPlant (11)
+TARGET_ALT = "FloorEmplacement"  # 7: under LowPlant (11), Filth (8) and zones (9)
 MAX_SAFE = ALT["Filth"]          # 8: anything at or below is already guaranteed under LowPlant
 
 FIELDS_WATCHED = ("altitudeLayer", "wildPlants", "wildBiomes", "visualSizeRange", "drawSize",
