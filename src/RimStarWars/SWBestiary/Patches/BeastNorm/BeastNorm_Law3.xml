@@ -264,26 +264,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Aiwha"]/tools/li[2]/power</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Aiwha"]/tools/li[2]/power</xpath>
-          <value>
-            <power>45.0</power>
-          </value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Aiwha"]/tools/li[2]/cooldownTime</xpath>
-          <value>
-            <cooldownTime>2.6</cooldownTime>
-          </value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Behemoth"]/tools/li[1]/power</xpath>
     <match Class="PatchOperationSequence">
       <operations>
