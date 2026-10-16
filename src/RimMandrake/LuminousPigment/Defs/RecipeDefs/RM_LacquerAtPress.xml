@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LacquerAtPress.xml        LuminousPigment · deepfire lacquer as a bill (owner ruling 2026-10-16)
+  One stored apparel (or weapon) + its deepfire -> the SAME item with one more coat (RecipeWorker_LacquerItem /
+  Patch_GenRecipe_WriteCookSkill; Source/LacquerAtPress.cs). Two recipes because the deepfire cost differs by class
+  (costApparel / costWeapon in Mod Settings; SetLacquerRecipeCost writes the ingredient count at startup).
+  Bills show only items that can still take a coat (Patch_Bill_LacquerEligible) and obey the Mod Settings toggles.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_LacquerApparel</defName>
+    <label>lacquer apparel</label>
+    <description>Coat one stored garment in deepfire lacquer so it glows on its wearer. The same garment comes back with one more coat.</description>
+    <jobString>Lacquering apparel.</jobString>
+    <workerClass>RimMandrake.LuminousPigment.RecipeWorker_LacquerItem</workerClass>
+    <workAmount>1000</workAmount>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Artistic</workSkill>
+    <workSkillLearnFactor>1.0</workSkillLearnFactor>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Apparel</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Deepfire</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Apparel</li>
+      </categories>
+      <thingDefs>
+        <li>RM_Deepfire</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Apparel</li>
+      </categories>
+      <thingDefs>
+        <li>RM_Deepfire</li>
+      </thingDefs>
+    </defaultIngredientFilter>
+    <recipeUsers>
+      <li>RM_DeepfirePress</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_LacquerWeapon</defName>
+    <label>lacquer weapon</label>
+    <description>Coat one stored weapon in deepfire lacquer so it glows in its wielder's hand. The same weapon comes back with one more coat.</description>
+    <jobString>Lacquering a weapon.</jobString>
+    <workerClass>RimMandrake.LuminousPigment.RecipeWorker_LacquerItem</workerClass>
+    <workAmount>1000</workAmount>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Artistic</workSkill>
+    <workSkillLearnFactor>1.0</workSkillLearnFactor>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Weapons</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Deepfire</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Weapons</li>
+      </categories>
+      <thingDefs>
+        <li>RM_Deepfire</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Weapons</li>
+      </categories>
+      <thingDefs>
+        <li>RM_Deepfire</li>
+      </thingDefs>
+    </defaultIngredientFilter>
+    <recipeUsers>
+      <li>RM_DeepfirePress</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

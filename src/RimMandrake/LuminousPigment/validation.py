@@ -65,7 +65,7 @@ MOD_ID = "mandrake.rm.luminouspigment"
 LIT = 0.3                       # GlowGrid.GameGlowLitThreshold
 PREFIXES = ("Floor:", "FirstCoat:", "Proxy:", "WornGlow:", "Status:", "GodDeltas:", "Health:")
 TAGS = ("[DeepfireFloor] ", "[DeepfireFirstCoat] ", "[DeepfireProxy] ", "[DeepfireWorn] ",
-        "[DeepfireStatus] ", "[DeepfireGods] ", "[DeepfireHealth] ")
+        "[DeepfireStatus] ", "[DeepfireGods] ", "[DeepfireHealth] ", "[DeepfireLacquerBill] ")
 GODS = ("Ishko", "Ohm", "Oomo", "MobUnloo", "Rekko", "TaBaa", "Zizzik", "Shkaar", "Ozzik")
 TRIO = ("MobUnloo", "Rekko", "Zizzik")
 LIKE, ADORE, ISHKO, STATUE, DIMINISHED = 3.0, 8.0, 3.0, 15.0, 1.0   # shipped godDelta* defaults
@@ -1711,6 +1711,34 @@ def health_clean(t):
             _chk(t, h.get("wrongMapPawnLights") == 0, "%s pawn light(s) left on the wrong map: %s" % (h.get("wrongMapPawnLights"), h.get("examples")))
             _chk(t, h.get("uncoveredFloorCells") == 0 and h.get("uncoveredThings") == 0,
                  "coated members outside their light: floor=%s things=%s %s" % (h.get("uncoveredFloorCells"), h.get("uncoveredThings"), h.get("examples")))
+
+
+@suite.chain("lacquer_bill")
+def lacquer_bill(t):
+    """Owner ruling 2026-10-16: lacquering is a BILL at the press plus a right-click on the press, never a pawn button.
+    The static component reads the shipped files; the round trip drives the recipe's real hooks on a parka."""
+    x, z = _pad(t, "paint")
+    here = os.path.dirname(os.path.abspath(__file__))
+    with _comp(t, "shipped_as_bill_and_right_click_not_a_gizmo"):
+        xml = open(os.path.join(here, "Defs", "RecipeDefs", "RM_LacquerAtPress.xml"), encoding="utf-8").read()
+        cs = "\n".join(open(os.path.join(here, "Source", f), encoding="utf-8").read()
+                       for f in ("JobDriver_LacquerWornItem.cs", "LacquerAtPress.cs"))
+        if "RM_LacquerApparel" not in xml or "RM_LacquerWeapon" not in xml or xml.count("<li>RM_DeepfirePress</li>") != 2:
+            _fail("the two lacquer recipes (RM_LacquerApparel, RM_LacquerWeapon) are not both usable at RM_DeepfirePress")
+        if "Patch_Pawn_GetGizmos_Lacquer" in cs or "MakeGizmo" in cs:
+            _fail("the pawn gizmo for lacquering is back; the ruling is bill + right-click the press")
+        if "FloatMenuOptionProvider_LacquerAtPress" not in cs:
+            _fail("no right-click-the-press provider")
+    with _comp(t, "bill_returns_the_same_item_with_one_more_coat"):
+        r = _act(t, "Lacquer bill: round trip", x, z)
+        _chk(t, r.get("recipeFound") and r.get("workerOk") and r.get("eligibleBefore"),
+             "recipe/worker/eligibility not as expected: %s" % json.dumps(r)[:300])
+        _chk(t, r.get("productCount") == 1 and r.get("sameItem") and r.get("itemAlive") and r.get("itemDespawned"),
+             "the product is not the very same item (alive, despawned for storing): %s" % json.dumps(r)[:300])
+        _chk(t, r.get("coatsAfter") == (r.get("coatsBefore") or 0) + 1, "coats %s -> %s, wanted +1" % (r.get("coatsBefore"), r.get("coatsAfter")))
+        _chk(t, r.get("hpKept") and r.get("qualityKept"), "HP or quality not kept: %s" % json.dumps(r)[:300])
+        _chk(t, r.get("deepfireDestroyed") and r.get("recipeCount") == r.get("costN"),
+             "deepfire not consumed or recipe cost %s != job cost %s" % (r.get("recipeCount"), r.get("costN")))
 
 
 @suite.chain("no_new_errors")

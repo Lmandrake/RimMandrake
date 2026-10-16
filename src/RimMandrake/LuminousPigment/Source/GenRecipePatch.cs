@@ -21,8 +21,16 @@ namespace RimMandrake.LuminousPigment
     [HarmonyPatch(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts))]
     public static class Patch_GenRecipe_WriteCookSkill
     {
-        public static IEnumerable<Thing> Postfix(IEnumerable<Thing> values, RecipeDef recipeDef, Pawn worker)
+        public static IEnumerable<Thing> Postfix(IEnumerable<Thing> values, RecipeDef recipeDef, Pawn worker, List<Thing> ingredients)
         {
+            // DEEPFIRE lacquer bill: the product IS the ingredient item, one coat richer.
+            if (recipeDef?.workerClass == typeof(RecipeWorker_LacquerItem))
+            {
+                foreach (Thing t in values) yield return t;
+                foreach (Thing t in RecipeWorker_LacquerItem.Products(ingredients)) yield return t;
+                yield break;
+            }
+
             SteeredFamilyExtension ext = recipeDef?.GetModExtension<SteeredFamilyExtension>();
             int cookSkill = worker?.skills?.GetSkill(SkillDefOf.Cooking)?.Level ?? 0;
 

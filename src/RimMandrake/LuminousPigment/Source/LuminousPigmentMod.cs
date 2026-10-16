@@ -676,6 +676,10 @@ namespace RimMandrake.LuminousPigment
                 }
             }
 
+            // Lacquer bills: the deepfire ingredient count follows the same cost settings as the job.
+            SetLacquerRecipeCost("RM_LacquerApparel", LuminousPigmentSettings.costApparel);
+            SetLacquerRecipeCost("RM_LacquerWeapon", LuminousPigmentSettings.costWeapon);
+
             if (deepfire != null)
             {
                 deepfire.SetStatBaseValue(StatDefOf.MarketValue, LuminousPigmentSettings.deepfireMarketValue);
@@ -707,6 +711,13 @@ namespace RimMandrake.LuminousPigment
             ApplyStatusThoughtNumbers();
             ApplyStatusMoodScale();
             ApplyClusterBlockToMaps();
+        }
+
+        static void SetLacquerRecipeCost(string recipeName, int cost)
+        {
+            RecipeDef r = DefDatabase<RecipeDef>.GetNamedSilentFail(recipeName);
+            if (r?.ingredients == null || r.ingredients.Count < 2) return;
+            r.ingredients[1].SetBaseCount(System.Math.Max(1, cost));
         }
 
         // The architect menu is NOT derived from BuildableDef.designationCategory at draw time:
