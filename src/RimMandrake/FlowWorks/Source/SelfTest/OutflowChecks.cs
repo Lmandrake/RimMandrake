@@ -72,8 +72,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string reel = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "CompHoseReel.cs"));
                 RiverSwitchFlipChecks.Has(reel, @"if \(freeEndRole == Machinery\.RM_FreeEndRole\.Intake && !pump\) return "" Intake needs a working pump on this network\.""", "an Intake end with no working pump says so (ruling #3)");
                 string defs = File.ReadAllText(Path.Combine(ContainerMatFixture.Root(), "ThingDefs", "RM_Filth_LiquidSpill.xml"));
-                Assert(defs.Contains("<defName>RM_Filth_LiquidSpill</defName>") && defs.Contains("<li>Natural</li>") && defs.Contains("ParentName=\"BaseFilth\""),
-                    "the generic spill is a cleanable filth that lands on natural ground too");
+                Assert(defs.Contains("<defName>RM_Filth_LiquidSpill</defName>") && defs.Contains("<li>Unnatural</li>") && !defs.Contains("<li>Natural</li>") && defs.Contains("ParentName=\"BaseFilth\""),
+                    "the generic spill is a cleanable filth that lands on natural ground too (placementMask Unnatural: vanilla NaturalTerrainBase accepts only Unnatural; Natural was refused on Soil, SPILL_FILTH_FIX_SOIL_SAYS_NO)");
             });
         }
     }
