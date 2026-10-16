@@ -361,6 +361,35 @@ def rivers_switch_flips(t):
                     raise ExpectationFailed("RiverSwitchFlip_%s: %s" % (tg, got or "case missing from the SelfTest output"))
 
 
+# SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR (owner 2026-10-16): a sluice or grate on a dug canal cell turns so its leaf spans
+# between the banks, as a door spans between walls (RM_Patch_FlowDoorFacing on DoorUtility.DoorRotationAt). Offline proof
+# of the verdict on small grids and the call site (Source/SelfTest/FlowDoorFacingChecks.cs). OWED live: a sluice and a grate
+# placed in a N-S and an E-W canal (one superdeep), blueprint and finished door both drawn across the channel.
+FLOW_DOOR_FACING_CASES = ["FlowDoorFacing_spans_between_the_banks", "FlowDoorFacing_superdeep_channel_is_not_a_wall",
+                          "FlowDoorFacing_ends_bends_and_mouths", "FlowDoorFacing_gates_side_by_side_form_one_barrier",
+                          "FlowDoorFacing_walls_still_win_and_dry_ground_is_vanilla",
+                          "FlowDoorFacing_call_site_is_vanilla_door_rotation"]
+
+
+@suite.chain("flow_door_facing")
+def flow_door_facing(t):
+    """Offline: sluices and grates turn across their canal (RM_FlowDoorFacingMath + call site). 0 ticks, no bridge."""
+    cases = {}
+    with t.component("flow_door_facing_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for name in FLOW_DOOR_FACING_CASES:
+        with t.component(name):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    with t.component("flow_door_facing_live"):
+        if t._guard():
+            raise ExpectationFailed("UNMEASURED: live check owed -- sluice and grate drawn across a N-S, an E-W and a "
+                                    "superdeep canal, blueprint and finished door (SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR)")
+
+
 # Hose port review S2/S3 (2026-10-11), liquid networks L4: the tank-jobs switch tankModesEnabled (default on; was tanksFeedHoses). One C#
 # SelfTest case flips it through RM_LiquidNetKernel.SettlePlan (jobs vs all-Store) and reads the production call site
 # (Source/SelfTest/HoseSwitchFlipChecks.cs, `HoseSwitchFlip_<toggle>`). Offline proof only -- a tank actually draining
@@ -463,6 +492,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (2026-10-14): its live rows are owed on the item, not yet a
                         # toggle chain
                         "pitRampsEnabled",
+                        # DIG_ROCK_TUNE_STONE_FIGHTS_BACK (2026-10-16): digging rock takes longer and drops chunks; no live
+                        # toggle chain yet (the rows are owed on the item)
+                        "digRockGroundEnabled", "digRockChunksEnabled",
                         # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
                         # all along but missing from the registry): no live row flips them yet
                         "fluidResidueEnabled", "hotLiquidEnabled", "liquidBathRecipesEnabled", "liquidReactionsEnabled",
