@@ -1264,39 +1264,39 @@
     </match>
   </Operation>
 
-  <!-- giant crowned silkie (RM_GiantCrownedSilkie) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -65..38.5 -->
+  <!-- giant crowned silkie (RM_SikkaSikka) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -65..38.5 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/ComfyTemperatureMin</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/ComfyTemperatureMin</xpath>
             <value><ComfyTemperatureMin>-65</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases</xpath>
             <value><ComfyTemperatureMin>-65</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases/ComfyTemperatureMax</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases/ComfyTemperatureMax</xpath>
             <value><ComfyTemperatureMax>38.5</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]/statBases</xpath>
             <value><ComfyTemperatureMax>38.5</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RM_GiantCrownedSilkie"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_SikkaSikka"]</xpath>
       <value>
         <statBases>
           <ComfyTemperatureMin>-65</ComfyTemperatureMin>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!--
-  RM_GiantCrownedSilkie: owned RM_ port of the Alpha Animals GiantCrownedSilkie (sarg.alphaanimals AA_GiantCrownedSilkie, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Cauldron.
+  RM_SikkaSikka: owned RM_ port of the Alpha Animals GiantCrownedSilkie (sarg.alphaanimals AA_GiantCrownedSilkie, 1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool src/RimMandrake/Utils/aa_port.py. Free RM_ tier, home mod Cauldron.
   Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
@@ -10,10 +10,10 @@
       installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
-    - texPath Things/Item/Resource/AA_SilkieSilk -> Things/Item/Resource/RM_GiantCrownedSilkieSilk (ART OWED, RM_GiantCrownedSilkieSilk)
+    - texPath Things/Item/Resource/AA_SilkieSilk -> Things/Item/Resource/RM_SikkaSikkaSilk (ART OWED, RM_SikkaSikkaSilk)
 -->
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_GiantCrownedSilkie</defName>
+    <defName>RM_SikkaSikka</defName>
     <label>Sikka Sikka</label>
     <description>A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. Sikka Sikka was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression.\n\nIt is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected.</description>
     <statBases>
@@ -71,13 +71,13 @@
     </tradeTags>
     <comps>
       <li Class="CompProperties_EggLayer">
-        <eggUnfertilizedDef>RM_EggGiantCrownedSilkieUnfertilized</eggUnfertilizedDef>
-        <eggFertilizedDef>RM_EggGiantCrownedSilkieFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_EggSikkaSikkaUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_EggSikkaSikkaFertilized</eggFertilizedDef>
         <eggFertilizationCountMax>1</eggFertilizationCountMax>
         <eggLayIntervalDays>5</eggLayIntervalDays>
       </li>
       <li Class="CompProperties_Shearable">
-        <woolDef>RM_GiantCrownedSilkieSilk</woolDef>
+        <woolDef>RM_SikkaSikkaSilk</woolDef>
         <shearIntervalDays>10</shearIntervalDays>
         <woolAmount>30</woolAmount>
       </li>
@@ -129,9 +129,9 @@
     </tools>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_GiantCrownedSilkie</defName>
+    <defName>RM_SikkaSikka</defName>
     <label>Sikka Sikka</label>
-    <race>RM_GiantCrownedSilkie</race>
+    <race>RM_SikkaSikka</race>
     <ecoSystemWeight>1</ecoSystemWeight>
     <combatPower>90</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
@@ -143,14 +143,14 @@
       <li>
         <label>Sikka Sikka chick</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <texPath>Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <texPath>Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.1</drawSize>
           <shadowData>
@@ -161,7 +161,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_GiantCrownedSilkie/RM_GiantCrownedSilkie</texPath>
+          <texPath>Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.6</drawSize>
           <shadowData>
@@ -173,7 +173,7 @@
     </lifeStages>
   </PawnKindDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RM_EggGiantCrownedSilkieUnfertilized</defName>
+    <defName>RM_EggSikkaSikkaUnfertilized</defName>
     <label>Sikka Sikka egg (unfert.)</label>
     <description>An unfertilized Sikka Sikka egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
@@ -185,7 +185,7 @@
     </statBases>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
-    <defName>RM_EggGiantCrownedSilkieFertilized</defName>
+    <defName>RM_EggSikkaSikkaFertilized</defName>
     <label>Sikka Sikka egg (fert.)</label>
     <description>A fertilized Sikka Sikka egg. If all goes well, it should hatch into a Sikka Sikka. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
@@ -199,16 +199,16 @@
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RM_GiantCrownedSilkie</hatcherPawn>
+        <hatcherPawn>RM_SikkaSikka</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
   <ThingDef ParentName="WoolBase">
-    <defName>RM_GiantCrownedSilkieSilk</defName>
+    <defName>RM_SikkaSikkaSilk</defName>
     <label>Sikka Sikka silk</label>
     <description>A soft silk produced by the Sikka Sikka. Once woven it has a very similar texture to sheep wool, but softer. Considered a luxury item.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_GiantCrownedSilkieSilk</texPath>
+      <texPath>Things/Item/Resource/RM_SikkaSikkaSilk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <tradeability>Sellable</tradeability>
