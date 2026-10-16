@@ -30,7 +30,7 @@ import facing_scale_lint as L  # noqa: E402
 DEFAULT_ROWS = REPO / "Transient/facing_rescale_2026-10-16/after2.json"
 CODEX = REPO / "skills/generating-images/scripts/codex_image.py"
 MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")      # what rm-artpiped runs; codex_image's gpt-5.5 default 400s on ChatGPT auth
-CODEX_HOME = "/mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen"   # own home: never harvest the daemon's renders
+CODEX_HOME = os.environ.get("FACING_REGEN_CODEX_HOME", "/mnt/d/Luke/dev/_rmscratch/codex_home_facing_regen")   # own home (one per parallel worker): never harvest the daemon's renders
 
 SURFACE = {
     "north": ("REAR view", "seen from directly behind: its back, hindquarters, tail base and the backs of its legs "
