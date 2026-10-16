@@ -42,10 +42,13 @@ UNMEASURED ("donor not loaded"). Churn, the default top, is proven with vanilla 
 
 THE SCOPE (owner, 2026-10-16). By default only Baroque Biomes plants soak (its own plant defs, the wild
 flora of its biomes, and plants opted in by a nativeSoak roster or an extension); vanilla Rice/Bush/Corn
-are OUTSIDE it. So every chain that stages a vanilla plant first turns `soakOtherModsPlants` on and
-rebuilds the plant table (`_suite_scope`, through RM_ExplosiveGrowthProof.ProofRebuild: a field written
-by jawa/mod_settings_field never runs WriteSettings). `scope_native_only` / `scope_option_extends` prove
-the default and the option themselves; `settings_restored` puts the option back off and rebuilds.
+are OUTSIDE it. So every chain that stages a vanilla plant first puts every plant in scope through the
+TEST-ONLY, never-Scribed override (`_suite_scope` -> RM_ExplosiveGrowthProof.ProofTestScopeAllOn), never
+by writing the player's `soakOtherModsPlants`: a run that dies part-way cannot leave the option on in a
+settings file. `scope_native_only` / `scope_option_extends` clear the override and prove the default and
+the real option (written, the table rebuilt by ProofRebuild since a field written by
+jawa/mod_settings_field never runs WriteSettings, then restored in a `finally`); `settings_restored`
+clears the override too.
 
 A FAIL turns the rest of a chain UNMEASURED, so every independent proof has its OWN chain, and
 every settings arm restores the shipped default in a `finally` that bypasses the guard.
@@ -232,29 +235,45 @@ def _arm(t, **values):
 
 # ---- the soak's scope (EXPLOSIVE_GROWTH_MERGE_COMES_HOME)
 
-def _rebuild(t):
-    """Rebuild the live plant table from the current settings; -> (parsed dict, raw)."""
+def _rebuild(t, method="ProofRebuild"):
+    """Rebuild the live plant table (ProofRebuild, or a ProofTestScopeAll* variant); -> (parsed dict, raw)."""
     r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof",
-                      method="ProofRebuild", args="current")
+                      method=method, args="current")
     text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
     if _live(t) and "outOfScope=" not in text:
-        _unmeasured(t, "ProofRebuild gave no scope read: %r" % (text[:200] or r))
+        _unmeasured(t, "%s gave no scope read: %r" % (method, text[:200] or r))
     return dict(re.findall(r"(\w+)=([\w.\-/]+)", text)), text
 
 
-def _set_scope(t, all_plants):
-    """Write soakOtherModsPlants and rebuild the table; -> the scope read after the rebuild."""
-    _put(t, "soakOtherModsPlants", all_plants)
-    v, raw = _rebuild(t)
+def _test_scope_all(t, on):
+    """Set the TEST-ONLY, never-Scribed every-plant override and rebuild; -> the scope read."""
+    v, raw = _rebuild(t, "ProofTestScopeAllOn" if on else "ProofTestScopeAllOff")
     if t.session is not None:
-        t.session._eg_scope_all = all_plants
+        t.session._eg_scope_all = bool(on)
     return v, raw
 
 
 def _suite_scope(t):
-    """Vanilla subjects are outside the default scope: put every plant in scope for the suite (once per session)."""
+    """Vanilla subjects are outside the default scope: every plant in scope for the suite (once per session)."""
     if t.session is not None and getattr(t.session, "_eg_scope_all", None) is not True:
-        _set_scope(t, True)
+        _test_scope_all(t, True)
+
+
+@contextlib.contextmanager
+def _real_option(t, value):
+    """The override off and the player's soakOtherModsPlants at `value`, the table rebuilt; ALWAYS restores the
+    shipped default (and rebuilds) afterwards. Yields the scope read."""
+    try:
+        _test_scope_all(t, False)
+        _put(t, "soakOtherModsPlants", value)
+        yield _rebuild(t)
+    finally:
+        if t.session is not None:
+            try:
+                _put(t, "soakOtherModsPlants", DEFAULT_OF["soakOtherModsPlants"])
+                _rebuild(t)
+            except Exception as e:      # never mask the body's own exception
+                print("[eg] RESTORE FAILED soakOtherModsPlants: %s" % e, file=sys.stderr, flush=True)
 
 
 # ---- site
@@ -950,12 +969,14 @@ def scope_native_only(t):
     do; the table leaves some foreign plants out and puts none in by the option. Can FAIL: a registry that ignored the
     scope would report rice=True and outOfScope=0."""
     with _comp(t, "default_soaks_baroque_biomes_plants_only", toggle="soakOtherModsPlants"):
-        try:
-            v, raw = _set_scope(t, False)
+        with _real_option(t, False) as (v, raw):
             _note(t, "scope_off", raw)
             if _live(t):
                 if v.get("riceLoaded") != "True":
                     _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
+                if v.get("forcedBy", "none") != "none":
+                    _unmeasured(t, "SITE: roster %s forces every plant into scope (a campaign layer is loaded), so the "
+                                   "default scope cannot be seen on this list: %s" % (v.get("forcedBy"), raw))
                 if not v.get("home", "NONE").startswith("mandrake.rm.biomes"):
                     _fail("the engine's home mod is %r, not Baroque Biomes (mandrake.rm.biomes): it is not composed, "
                           "or a standalone copy loaded: %s" % (v.get("home"), raw))
@@ -969,17 +990,14 @@ def scope_native_only(t):
                 if int(v.get("outOfScope", 0)) < 1 or int(v.get("allPlants", -1)) != 0:
                     _fail("with the option off the table must leave foreign plants out (outOfScope>0) and admit none "
                           "by the option (allPlants=0): %s" % raw)
-        finally:
-            if t.session is not None:
-                t.session._eg_scope_all = None     # the next staging chain re-arms the suite scope
 
 
 @suite.chain("scope_option_extends")
 def scope_option_extends(t):
     """Option ON: vanilla Plant_Rice soaks, nothing is left out of scope, and the option itself admitted plants."""
     with _comp(t, "option_soaks_other_mods_and_base_game_plants", toggle="soakOtherModsPlants"):
-        v, raw = _set_scope(t, True)
-        _note(t, "scope_on", raw)
+        with _real_option(t, True) as (v, raw):
+            _note(t, "scope_on", raw)
         if _live(t):
             if v.get("riceLoaded") != "True":
                 _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
@@ -1137,7 +1155,12 @@ def settings_restored(t):
     own scope arm (soakOtherModsPlants on) is undone here first, with a table rebuild."""
     with _comp(t, "all_settings_at_shipped_defaults"):
         if t.session is not None:
-            _set_scope(t, DEFAULT_OF["soakOtherModsPlants"])
+            try:
+                _test_scope_all(t, False)
+            except Exception as e:      # still read every field back below
+                print("[eg] clearing the test scope override failed: %s" % e, file=sys.stderr, flush=True)
+                t.upstream_failed = False
+                t._why = None
         if _live(t):
             bad = []
             for f, d in DEFAULTS:

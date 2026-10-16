@@ -87,7 +87,7 @@ namespace RimMandrake.EnvironmentalHazards
         // raw all hold the green back the same way.
         private static void WriteSuppression(IntVec3 cell, Map map, Pawn ingester)
         {
-            if (map == null) return;
+            if (map == null || !RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings.On) return;
             RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI.Suppress(map, cell, SuppressionRadius, GrazingSuppressionTicks);
         }
     }

@@ -32,7 +32,7 @@
 
 Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own toggle on the Baroque Biomes settings page, and its own settings page). RM tier: nothing here knows what campaign or planet uses it.
 
-WHICH PLANTS. By default only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension). A Mod Settings option (off by default) extends the soak to every other mod's and the base game's plants.
+WHICH PLANTS. By default only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension). A Mod Settings option (off by default) extends the soak to every other mod's and the base game's plants; a campaign layer's roster can do the same for its whole world (scopeAllPlants).
 
 THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of whatever ambient rate the rest of your mod list gives them. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
 

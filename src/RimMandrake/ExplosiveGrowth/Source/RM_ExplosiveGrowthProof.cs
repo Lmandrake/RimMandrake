@@ -145,8 +145,23 @@ namespace RimMandrake.ExplosiveGrowth
         /// only takes effect after this rebuild. Returns the same read as ProofScope.</summary>
         public static string ProofRebuild(Map map)
         {
-            RM_ExplosiveGrowthRegistry.Rebuild();
+            if (!RM_ExplosiveGrowthRegistry.TryRebuild("ProofRebuild")) return "ERROR rebuild failed (see the log)";
             return ProofScope(map);
+        }
+
+        /// <summary>TEST-ONLY: put every plant in scope (RM_ExplosiveGrowthRegistry.TestScopeAll, never Scribed) and
+        /// rebuild, so the suite can stage vanilla subjects without writing the player's soakOtherModsPlants.</summary>
+        public static string ProofTestScopeAllOn(Map map)
+        {
+            RM_ExplosiveGrowthRegistry.TestScopeAll = true;
+            return ProofRebuild(map);
+        }
+
+        /// <summary>TEST-ONLY: clear the override and rebuild.</summary>
+        public static string ProofTestScopeAllOff(Map map)
+        {
+            RM_ExplosiveGrowthRegistry.TestScopeAll = false;
+            return ProofRebuild(map);
         }
 
         /// <summary>The soak's native scope as the live plant table holds it: does vanilla Plant_Rice soak, is it one of
@@ -165,6 +180,8 @@ namespace RimMandrake.ExplosiveGrowth
             }
             return "home=" + (home?.PackageId ?? "NONE")
                    + " option=" + ExplosiveGrowthSettings.soakOtherModsPlants
+                   + " forcedBy=" + (RM_ExplosiveGrowthRegistry.ScopeForcedBy ?? "none")
+                   + " testScopeAll=" + RM_ExplosiveGrowthRegistry.TestScopeAll
                    + " rice=" + (rice != null && RM_ExplosiveGrowthRegistry.For(rice)?.Soaks == true)
                    + " riceLoaded=" + (rice != null)
                    + " riceInHomeBiome=" + (rice != null && RM_ExplosiveGrowthRegistry.HomeBiomePlants.Contains(rice))

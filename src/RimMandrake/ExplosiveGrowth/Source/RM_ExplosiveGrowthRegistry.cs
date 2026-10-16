@@ -44,6 +44,12 @@ namespace RimMandrake.ExplosiveGrowth
         public static int ScopeOptIn, ScopeHomePack, ScopeHomeBiome, ScopeAllPlants, OutOfScope;
         /// <summary>Plants that grow wild in a BiomeDef shipped by this engine's own mod (read at the last Rebuild).</summary>
         public static HashSet<ThingDef> HomeBiomePlants = new HashSet<ThingDef>();
+        /// <summary>defName of a roster that sets scopeAllPlants (every plant in scope, the option moot), else null.</summary>
+        public static string ScopeForcedBy;
+        /// <summary>TEST-ONLY scope override for the north-star suite (RM_ExplosiveGrowthProof.ProofTestScopeAll*): every
+        /// plant in scope, like the option, but never Scribed, so a run that dies part-way cannot persist it to the
+        /// player's settings file. Off at every game start.</summary>
+        public static bool TestScopeAll;
         public static readonly int[] CountByTop = new int[7];
 
         public static RM_PlantProfile For(ThingDef def)
@@ -52,15 +58,32 @@ namespace RimMandrake.ExplosiveGrowth
             return i < byIndex.Length ? byIndex[i] : null;
         }
 
+        /// <summary>Rebuild, logging (not throwing) a failure; the previous table stays in force. -> success.</summary>
+        public static bool TryRebuild(string why)
+        {
+            try
+            {
+                Rebuild();
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Log.Error("[RM ExplosiveGrowth] plant table rebuild (" + why + ") failed; the previous table stays in force: " + e);
+                return false;
+            }
+        }
+
         public static bool BiomeRefusesSoak(BiomeDef biome) =>
             biome != null && noSoakBiomes.Contains(biome);
 
+        /// <summary>Rebuilds into locals and swaps them in only at the end, so a throw part-way leaves the previous table
+        /// (and Ready) in force. Callers after startup use TryRebuild.</summary>
         public static void Rebuild()
         {
-            Ready = false;
 
             var rows = new Dictionary<string, RM_ExplosiveGrowthRosterEntry>();
             var optInRows = new HashSet<string>();
+            string forcedBy = null;
             var exempt = new HashSet<string>(BuiltinExempt);
             var biomes = new HashSet<BiomeDef>();
             var kinds = new List<PawnKindDef>();
@@ -77,6 +100,7 @@ namespace RimMandrake.ExplosiveGrowth
                     rows[e.plant] = e;
                     if (roster.nativeSoak) optInRows.Add(e.plant);
                 }
+                if (roster.scopeAllPlants && forcedBy == null) forcedBy = roster.defName;
                 foreach (string s in roster.exemptPlants) exempt.Add(s);
                 foreach (string s in roster.noSoakBiomes)
                 {
@@ -104,7 +128,10 @@ namespace RimMandrake.ExplosiveGrowth
             // The native scope (owner, 2026-10-16): plants that ship in the same mod as this engine (Baroque Biomes, of
             // which it is a composed member), and every plant that grows wild in a biome that mod ships — the donor
             // and base-game flora our biomes list are "plants within the Baroque Biomes" too. Read AFTER patches, so a
-            // patch-added cast (UtinniPatches' WildAnimals_/WildPlants_ files on our twins) counts.
+            // patch-added cast (UtinniPatches' WildAnimals_/WildPlants_ files on our twins) counts. Reads the raw
+            // wildPlants records, NEVER BiomeDef.AllWildPlants: that property caches its list on first read, and this runs
+            // in a startup static constructor — before e.g. Cauldron/FloodedCanyon/BlueDesert prune their flora
+            // expansions out of wildPlants — so touching it here would freeze the unpruned list for the whole session.
             ModContentPack home = ExplosiveGrowthMod.Home;
             var homeBiomePlants = new HashSet<ThingDef>();
             if (home != null)
@@ -112,9 +139,8 @@ namespace RimMandrake.ExplosiveGrowth
                 foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
                 {
                     if (b.modContentPack != home) continue;
-                    List<ThingDef> wild = b.AllWildPlants;
-                    if (wild == null) continue;
-                    foreach (ThingDef w in wild) if (w != null) homeBiomePlants.Add(w);
+                    if (b.wildPlants == null) continue;
+                    foreach (BiomePlantRecord r in b.wildPlants) if (r?.plant != null) homeBiomePlants.Add(r.plant);
                 }
             }
             int sOpt = 0, sPack = 0, sBiome = 0, sAll = 0, sOut = 0;
@@ -164,7 +190,7 @@ namespace RimMandrake.ExplosiveGrowth
                         ext != null || optInRows.Contains(def.defName),
                         home != null && def.modContentPack == home,
                         homeBiomePlants.Contains(def),
-                        ExplosiveGrowthSettings.soakOtherModsPlants);
+                        ExplosiveGrowthSettings.soakOtherModsPlants || forcedBy != null || TestScopeAll);
                     switch (scope)
                     {
                         case RM_ExplosiveGrowthKernel.ScopeOptIn: sOpt++; break;
@@ -202,6 +228,7 @@ namespace RimMandrake.ExplosiveGrowth
             ScopeAllPlants = sAll;
             OutOfScope = sOut;
             HomeBiomePlants = homeBiomePlants;
+            ScopeForcedBy = forcedBy;
             Ready = true;
         }
     }

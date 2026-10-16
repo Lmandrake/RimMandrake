@@ -8,9 +8,12 @@
     (LoadFolders.xml), so this mod never hard-depends on it. The RM-tier half
     (AB_/RG_/vanilla/RM_ rows) ships with the engine.
 
-    nativeSoak (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): the engine soaks only Baroque
-    Biomes plants by default; this campaign's world is its own flora, so every
-    plant named below is opted INTO the soak whatever mod ships it.
+    scopeAllPlants (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): the engine soaks only
+    Baroque Biomes plants by default, with a player option to extend it to every
+    plant. The owner called that option "irrelevant in Utinni": this campaign's
+    world IS the game, and its RUT_ twins of our biomes (UtinniPatches BiomeDefs)
+    carry donor flora outside the Baroque Biomes scope. So while this roster is
+    loaded every plant is in scope (exemptions still apply) and the option is moot.
 
     Source: design/RimUtinni/explosive_plant_growth_roster.md, regenerated
     2026-09-21 against ruling 4 (water scarcity decides). CHURN is the default
@@ -21,7 +24,7 @@
   -->
   <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
     <defName>RUT_ExplosiveGrowthRoster_Campaign</defName>
-    <nativeSoak>true</nativeSoak>
+    <scopeAllPlants>true</scopeAllPlants>
 
     <plants>
       <!-- BURST — dry-adapted: one chance in years, spent all at once. -->

@@ -104,6 +104,13 @@ namespace RimMandrake.ExplosiveGrowth
         /// its own flora (the Utinni roster) sets it.</summary>
         public bool nativeSoak;
 
+        /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME: true puts EVERY plant in the soak's scope while this roster is
+        /// loaded, exactly as the player's "soak other mods' and base-game plants" option does, and that option then has
+        /// no effect. For a campaign layer whose whole world is the game (owner, 2026-10-16: the option is "irrelevant in
+        /// Utinni"): its twins of our biomes are its own BiomeDefs, whose donor flora would otherwise fall outside the
+        /// Baroque Biomes scope. A plain content mod must not set it.</summary>
+        public bool scopeAllPlants;
+
         /// <summary>R-G5: plants whose slowness is a mechanic. Never soak.</summary>
         public List<string> exemptPlants = new List<string>();
 

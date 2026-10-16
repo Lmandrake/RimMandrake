@@ -22,7 +22,7 @@ Exempt plants are untouched in every biome: the anima tree and the Gauranlen tre
 
 The postfix scales the COMPOSITE GrowthRate rather than a single GrowthRateFactor_*, so environmental penalties (light, temperature, fertility, drought) still apply and the terminator case genuinely comes out slower than vanilla.
 
-When mandrake.rm.biomes (which carries the Explosive Plant Growth engine) is active, this mod also loads ExplosiveGrowth/ (LoadFolders.xml): the campaign half of the explosive-growth plant roster, which opts the campaign's own flora into the soak (nativeSoak), and the RUT_BloomBurst incident (FLOOD_WITNESS_EVENT_1's map-scale bloom). Without it, those files are simply not loaded.
+When mandrake.rm.biomes (which carries the Explosive Plant Growth engine) is active, this mod also loads ExplosiveGrowth/ (LoadFolders.xml): the campaign half of the explosive-growth plant roster, which puts every plant of the campaign's world in the soak's scope (scopeAllPlants), and the RUT_BloomBurst incident (FLOOD_WITNESS_EVENT_1's map-scale bloom). Without it, those files are simply not loaded.
 
 Load after Harmony. It is silent when it works: verify from the inspect string on a plant, which reads the boosted rate because it is computed from the same getter.</description>
   <modDependencies>
