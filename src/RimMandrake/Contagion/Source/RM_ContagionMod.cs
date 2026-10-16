@@ -83,6 +83,19 @@ namespace RimMandrake.Contagion
         // Off (shipped): a player's sown crop is never turned.
         public static bool zhoolConvertsCrops = false;
 
+        // CONTAGION_MECHANICS_BUILD_1 — Contagion-touched (owner N4 2026-10-15: "Bloom time, stronger in burn, and
+        // contact.") and the Sunbeam arrest (Q3: "Stops current mutations. No protection if you get exposed again
+        // later."). Off: nobody is dosed and an existing condition stops mutating (it stays on the pawn, inert).
+        public static bool touchedEnabled = true;
+        // Multiplier on every exposure dose (1 = shipped: a day outdoors in the Bloom is ~0.12 severity).
+        public static float touchedExposureFactor = 1f;
+        // Multiplier on how often a touched pawn mutates (1 = shipped: about every 6 days at full severity).
+        public static float touchedMutationRate = 1f;
+        // Off: neither a Sunbeam hit nor the Sunbeam treatment arrests anything.
+        public static bool sunbeamArrestEnabled = true;
+        // Q4 "Plain fertilizer only": Unfinished and Coalescences leave Contagion mulch. Off: they leave none.
+        public static bool mulchDropsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -105,6 +118,11 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref zhoolConversionEnabled, "zhoolConversionEnabled", true, true);
             Scribe_Values.Look(ref zhoolConversionRate, "zhoolConversionRate", 1f, true);
             Scribe_Values.Look(ref zhoolConvertsCrops, "zhoolConvertsCrops", false, true);
+            Scribe_Values.Look(ref touchedEnabled, "touchedEnabled", true, true);
+            Scribe_Values.Look(ref touchedExposureFactor, "touchedExposureFactor", 1f, true);
+            Scribe_Values.Look(ref touchedMutationRate, "touchedMutationRate", 1f, true);
+            Scribe_Values.Look(ref sunbeamArrestEnabled, "sunbeamArrestEnabled", true, true);
+            Scribe_Values.Look(ref mulchDropsEnabled, "mulchDropsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -222,6 +240,39 @@ namespace RimMandrake.Contagion
                     + "the sky clear of rain and fog anywhere else. Off: the device does nothing.");
                 list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
                 sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Contagion-touched", RimMandrake.Shared.SettingScope.Now, new[] { "touchedEnabled", "touchedExposureFactor", "touchedMutationRate", "sunbeamArrestEnabled" }))
+            {
+                list.CheckboxLabeled(
+                    "Contagion-touched enabled",
+                    ref touchedEnabled,
+                    "Colonists and visitors pick up the Contagion three ways: slowly from time under open sky in the "
+                    + "Bloom, faster in a Burn, and from standing against the Unfinished or a Coalescence. A touched "
+                    + "pawn mutates now and then: half of all mutations are pure harm, the other half give something "
+                    + "and always take something. It never just upgrades anyone. Off: nobody is touched, and anyone "
+                    + "already touched stops changing.");
+                list.Label("Exposure: " + touchedExposureFactor.ToString("0.00") + "x (0 = nobody is touched)");
+                touchedExposureFactor = list.Slider(touchedExposureFactor, 0f, 4f);
+                list.Label("Mutation speed: " + touchedMutationRate.ToString("0.00") + "x (1 = about one every 6 days when heavily touched)");
+                touchedMutationRate = list.Slider(touchedMutationRate, 0f, 4f);
+                list.CheckboxLabeled(
+                    "Sunbeam arrest enabled",
+                    ref sunbeamArrestEnabled,
+                    "A Helix sunbeam stops the Contagion in a touched pawn: hold the lens on them (right-click with a "
+                    + "colonist carrying one), or hit them with it. What already changed stays, and it gives no "
+                    + "protection: the next exposure starts it again. Off: nothing arrests it.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Contagion mulch", RimMandrake.Shared.SettingScope.Now, new[] { "mulchDropsEnabled" }))
+            {
+                list.CheckboxLabeled(
+                    "Unfinished and Coalescences leave mulch",
+                    ref mulchDropsEnabled,
+                    "Dead Unfinished and fallen Coalescences leave Contagion mulch, a fertilizer: spread it on soil "
+                    + "(the mulched soil floor) for the richest growing ground on the planet. Off: they leave none.");
                 list.GapLine();
             }
 

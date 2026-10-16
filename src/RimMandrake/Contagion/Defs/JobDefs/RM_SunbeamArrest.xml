@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- CONTAGION_MECHANICS_BUILD_1: the Sunbeam arrest (owner Q3, 2026-10-15). Source/RM_SunbeamArrest.cs. -->
+  <JobDef>
+    <defName>RM_SunbeamArrest</defName>
+    <driverClass>RimMandrake.Contagion.JobDriver_RM_SunbeamArrest</driverClass>
+    <reportString>holding a sunbeam on TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

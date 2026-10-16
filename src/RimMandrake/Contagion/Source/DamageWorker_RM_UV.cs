@@ -19,7 +19,14 @@ namespace RimMandrake.Contagion
             {
                 dinfo.SetAmount(dinfo.Amount * factor);
             }
-            return base.Apply(dinfo, thing);
+            DamageResult result = base.Apply(dinfo, thing);
+            // The ruled arrest (Q3, 2026-10-15): a Sunbeam hit that lands on a Contagion-touched pawn stops its
+            // progression. Mutations already grown stay (RM_ContagionTouchedUtility.Arrest removes only the condition).
+            if (thing is Pawn p && !p.Dead && result.totalDamageDealt > 0f)
+            {
+                RM_ContagionTouchedUtility.Arrest(p, "by the sunbeam's light");
+            }
+            return result;
         }
     }
 }

@@ -2,6 +2,7 @@
 //   sky          the Burn clock, its tells, the Bloom clock and the Cloud Repulsor against a mock Burn condition (RM_SkyKernel)
 //   coalescence  the Coalescence's stage / growth / emission / death spill (RM_CoalescenceKernel)
 //   burn         the Burn's pressure classification, exposure and dive choice, exhaustively (RM_SkyKernel)
+//   touched      Contagion-touched: exposure dose, mutation clock, the ruled 50/50 deck and the never-upgrade law (RM_TouchedKernel)
 //   zhool        the zhool haze's eligibility, shape, chance, puffs and message throttle (RM_ZhoolHazeKernel)
 //   draftprint   sampling, extreme stat, worst limb, contract match and reward, market value, gestation plan, the Unfinished
 //                spawner arithmetic (RM_DraftprintKernel)
@@ -507,6 +508,94 @@ namespace RimMandrake.Contagion.SelfTest
             return null;
         }
 
+        // ════════════════════════ touched ════════════════════════
+        // Contagion-touched (owner Q3/N4 2026-10-15; deck ruled 2026-09-12): dose, mutation clock, the 50/50 deck, the
+        // never-upgrade law. A simulated pawn draws from a random deck until the cap and must never hold a card twice.
+        public static long TDosed, TMutations, TFallbacks, TCapped;
+
+        private static string TouchedUnits()
+        {
+            Check(RM_TouchedKernel.Dose(false, true, true, false, true, 1f, 2f, 3f, 1f) == 0f, "an ineligible pawn was dosed");
+            Check(RM_TouchedKernel.Dose(true, true, true, false, false, 0.5f, 4f, 10f, 0f) == 0f, "exposure factor 0 still dosed");
+            Check(RM_TouchedKernel.Dose(true, true, true, true, false, 0.5f, 4f, 10f, 1f) == 4f, "a Burn must replace the Bloom dose, not stack on it");
+            Check(RM_TouchedKernel.Dose(true, false, true, true, true, 0.5f, 4f, 10f, 1f) == 10f, "sheltered from the sky, only contact doses");
+            Check(RM_TouchedKernel.Dose(true, true, true, false, true, 0.5f, 4f, 10f, 2f) == 21f, "bloom + contact, x factor");
+            Check(RM_TouchedKernel.MutationMtbDays(0.05f, 0.1f, 6f, 1f, 0, 6) < 0f, "mutated below the threshold");
+            Check(RM_TouchedKernel.MutationMtbDays(1f, 0.1f, 6f, 1f, 6, 6) < 0f, "mutated at the cap");
+            Check(RM_TouchedKernel.MutationMtbDays(1f, 0.1f, 6f, 0f, 0, 6) < 0f, "mutated with the rate at 0");
+            Check(Math.Abs(RM_TouchedKernel.MutationMtbDays(0.5f, 0.1f, 6f, 1f, 0, 6) - 12f) < 1e-4, "mtb at half severity should be 12 days");
+            Check(RM_TouchedKernel.PickWeighted(new[] { 1f, 3f }, new[] { true, true }, 0.2f) == 0 && RM_TouchedKernel.PickWeighted(new[] { 1f, 3f }, new[] { true, true }, 0.3f) == 1, "weighted pick edges");
+            Check(RM_TouchedKernel.PickWeighted(new[] { 1f, 3f }, new[] { false, false }, 0.5f) == -1, "picked with nothing eligible");
+            Check(RM_TouchedKernel.PickWeighted(new[] { 1f, 3f }, new[] { true, true }, 0.99999994f) == 1, "top-end roll must land on the last eligible");
+            Check(RM_TouchedKernel.Half(true, false, false) == -1 && RM_TouchedKernel.Half(true, false, true) == 0 && RM_TouchedKernel.Half(false, true, false) == 1, "half fallback");
+            Check(RM_TouchedKernel.EntryLawful(true, 0, 1) && !RM_TouchedKernel.EntryLawful(true, 1, 1) && RM_TouchedKernel.EntryLawful(false, 1, 1)
+                  && !RM_TouchedKernel.EntryLawful(false, 1, 0) && !RM_TouchedKernel.EntryLawful(false, 0, 1) && !RM_TouchedKernel.EntryLawful(true, 0, 0), "never-upgrade law table");
+            Check(RM_CoalescenceKernel.Mulch(10, 10, 2, 5, 1f) == 35 && RM_CoalescenceKernel.Mulch(10, 10, 2, 5, 0f) == 0
+                  && RM_CoalescenceKernel.Mulch(-50, 0, 0, 0, 1f) == 0 && RM_CoalescenceKernel.Mulch(10, 10, 0, 0, 0.5f) == 5, "Coalescence mulch arithmetic");
+            // The ruled 50/50 with everything eligible.
+            var r = new Random(7); int neg = 0; const int N = 40000;
+            for (int i = 0; i < N; i++) if (RM_TouchedKernel.Half(RM_TouchedKernel.AllNegative((float)r.NextDouble(), 0.5f), true, true) == 1) neg++;
+            Check(Math.Abs(neg / (double)N - 0.5) < 0.015, $"the 50/50 split drew {neg}/{N} all-negative");
+            return null;
+        }
+
+        private static string TouchedCase(int seed)
+        {
+            var r = new Random(seed ^ 0x7007);
+            // Dose: random inputs, structural invariants.
+            for (int k = 0; k < 20; k++)
+            {
+                bool el = r.Next(5) > 0, ex = r.Next(2) == 0, bl = r.Next(2) == 0, bu = r.Next(3) == 0, co = r.Next(3) == 0;
+                float bd = (float)r.NextDouble() * 0.01f, ud = (float)r.NextDouble() * 0.02f, cd = (float)r.NextDouble() * 0.05f, f = (float)(r.NextDouble() * 4 - 0.5);
+                float d = RM_TouchedKernel.Dose(el, ex, bl, bu, co, bd, ud, cd, f);
+                Check(d >= 0f, "negative dose");
+                if (!el || f <= 0f) Check(d == 0f, "dosed while ineligible or factor <= 0");
+                float expect = !el || f <= 0f ? 0f : ((ex ? (bu ? ud : bl ? bd : 0f) : 0f) + (co ? cd : 0f)) * f;
+                Check(Math.Abs(d - expect) < 1e-6, $"dose {d} != {expect}");
+                if (d > 0) TDosed++;
+                // more factor never doses less
+                if (el && f > 0) Check(RM_TouchedKernel.Dose(el, ex, bl, bu, co, bd, ud, cd, f * 2f) >= d, "dose not monotone in factor");
+                // mtb: shrinks with severity, never positive below threshold or at the cap
+                float s1 = (float)r.NextDouble(), s2 = s1 + (float)r.NextDouble() * (1 - s1), th = (float)r.NextDouble() * 0.3f, rate = (float)r.NextDouble() * 3f;
+                int held = r.Next(8), cap = r.Next(8);
+                float m1 = RM_TouchedKernel.MutationMtbDays(s1, th, 6f, rate, held, cap), m2 = RM_TouchedKernel.MutationMtbDays(s2, th, 6f, rate, held, cap);
+                if (s1 < th || held >= cap || rate <= 0f || s1 <= 0f) Check(m1 < 0f, "an mtb where none may run");
+                if (m1 > 0f && m2 > 0f) Check(m2 <= m1 + 1e-4, "a heavier dose mutated slower");
+            }
+            // A pawn drawing from a random deck until it can draw no more.
+            int n = 1 + r.Next(10), cap2 = 1 + r.Next(10);
+            var allNeg = new bool[n]; var w = new float[n]; var held2 = new bool[n];
+            for (int i = 0; i < n; i++) { allNeg[i] = r.Next(2) == 0; w[i] = r.Next(4) == 0 ? 0f : (float)r.NextDouble() * 3f + 0.01f; }
+            int count = 0;
+            for (int step = 0; step < 40; step++)
+            {
+                if (RM_TouchedKernel.MutationMtbDays(1f, 0.1f, 6f, 1f, count, cap2) < 0f) { Check(count >= cap2, "stopped before the cap"); TCapped++; break; }
+                var eN = new bool[n]; var eM = new bool[n]; bool anyN = false, anyM = false;
+                for (int i = 0; i < n; i++) { eN[i] = !held2[i] && allNeg[i]; eM[i] = !held2[i] && !allNeg[i]; anyN |= eN[i] && w[i] > 0; anyM |= eM[i] && w[i] > 0; }
+                bool rolled = RM_TouchedKernel.AllNegative((float)r.NextDouble(), 0.5f);
+                int half = RM_TouchedKernel.Half(rolled, anyN, anyM);
+                if (half < 0) { Check(!anyN && !anyM, "no half chosen while a card was drawable"); break; }
+                if ((half == 1) != rolled) TFallbacks++;
+                int pick = half == 1 ? RM_TouchedKernel.PickWeighted(w, eN, (float)r.NextDouble()) : RM_TouchedKernel.PickWeighted(w, eM, (float)r.NextDouble());
+                Check(pick >= 0, "a half with a drawable card picked nothing");
+                Check(!held2[pick], "drew a card the pawn already holds");
+                Check(w[pick] > 0f, "drew a zero-weight card");
+                Check(allNeg[pick] == (half == 1), "drew from the wrong half");
+                held2[pick] = true; count++; TMutations++;
+            }
+            Check(count <= cap2, "more mutations than the cap");
+            return null;
+        }
+
+        public static List<string> Touched(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            Cases++;
+            try { string e = TouchedUnits(); if (e != null) fails.Add("touched units: " + e); } catch (Exception e) { fails.Add("touched units: " + e.Message); }
+            fails.AddRange(Family("touched", n, baseSeed, TouchedCase));
+            return fails;
+        }
+
         public static List<string> Zhool(int n, int baseSeed) { return Family("zhool", n, baseSeed, ZhoolCase); }
 
         public static bool Run(double scale, int? oneSeed, string only)
@@ -522,6 +611,7 @@ namespace RimMandrake.Contagion.SelfTest
                 ("burn", () => Burn(0, 0)),
                 ("draftprint", () => Draft(N(4000), S(1))),
                 ("zhool", () => Zhool(N(4000), S(1))),
+                ("touched", () => Touched(N(3000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -534,10 +624,10 @@ namespace RimMandrake.Contagion.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}; zhool converts {ZConvert}/{ZConvert + ZRefuse}, tree/cover/shrub {ZTree}/{ZCover}/{ZShrub}, messages {ZMsg}");
+            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}; zhool converts {ZConvert}/{ZConvert + ZRefuse}, tree/cover/shrub {ZTree}/{ZCover}/{ZShrub}, messages {ZMsg}; touched doses {TDosed}, mutations {TMutations}, half fallbacks {TFallbacks}, capped {TCapped}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0 || ZConvert == 0 || ZRefuse == 0 || ZMsg == 0 || ZTree == 0 || ZCover == 0 || ZShrub == 0)
+                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0 || ZConvert == 0 || ZRefuse == 0 || ZMsg == 0 || ZTree == 0 || ZCover == 0 || ZShrub == 0 || TDosed == 0 || TMutations == 0 || TFallbacks == 0 || TCapped == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"contagion fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

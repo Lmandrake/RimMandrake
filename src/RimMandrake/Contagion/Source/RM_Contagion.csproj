@@ -84,6 +84,11 @@
     <Compile Include="CompZhoolHaze.cs" />
     <!-- Phase 0 twin-only ports, owner card 2026-10-15 Q3: the Bloody Mess bursts only when killed -->
     <Compile Include="DeathActionWorker_RM_GenomeHostBurst.cs" />
+    <!-- CONTAGION_MECHANICS_BUILD_1: Contagion-touched + Sunbeam arrest (owner Q3/N4 2026-10-15), mulch (Q4) -->
+    <Compile Include="Kernel\RM_TouchedKernel.cs" />
+    <Compile Include="RM_ContagionTouched.cs" />
+    <Compile Include="RM_SunbeamArrest.cs" />
+    <Compile Include="RM_ContagionMulch.cs" />
   </ItemGroup>
 
   <ItemGroup>

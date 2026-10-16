@@ -154,6 +154,13 @@ class Fake(object):
     def step(self):
         b = self.broken
         contagion = self.biome == V.BIOME
+        # --- Contagion-touched by contact (RM_MapComponent_ContagionTouch): a colonist on or beside a Coalescence
+        if (self.on("touchedEnabled") or "touched_ignores_toggle" in b) and "touched_no_contact" not in b:
+            for c in self.of(V.COALESCENCE):
+                for p in self.pawns.values():
+                    if p["kind"] == "Colonist" and not p["dead"] and not p["vanished"] \
+                            and abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2:
+                        self.addh(p, V.TOUCHED, 0.01)
         # --- the zhool's haze (CompZhoolHaze): one grass in reach turns per 250-tick step, on our biome only
         for z in [q for q in self.pawns.values() if q["kind"] == V.ZHOOL and not q["dead"] and not q["vanished"]]:
             on = self.on("zhoolConversionEnabled") or "haze_ignores_toggle" in b
@@ -296,6 +303,9 @@ class Fake(object):
             self.new("Corpse_" + p["kind"], p["x"], p["z"])
         else:
             p["vanished"] = True
+        # DeathActionWorker_RM_VanishToMulch: a dead Unfinished leaves mulch
+        if p["kind"] == V.UNFINISHED and self.on("mulchDropsEnabled") and "mulch_none" not in self.broken:
+            self.new(V.MULCH, p["x"], p["z"])
 
     def collapse(self, c):
         st = self.stage(c)
@@ -514,6 +524,9 @@ class Fake(object):
                 "uv_person_multiplied" in self.broken:
             amount = amount * f
         self.addh(p, "RM_UVSunburn", amount)
+        # DamageWorker_RM_UV: a landed Sunbeam hit arrests Contagion-touched
+        if damageDef == "RM_UVBeam" and self.on("sunbeamArrestEnabled") and "arrest_ignored" not in self.broken:
+            p["hed"] = [h for h in p["hed"] if h["def"] != V.TOUCHED]
         return {"success": True}
 
     def t_pawn_severity_adjust(self, pawn=None, hediff=None, offset=0, **k):
@@ -594,7 +607,7 @@ BREAKS = {
     "no_sky_ext": ["defs.biome_table_and_roster"],
     "organ_unpatched": ["defs.organ_patch_comps"],
     "setting_missing": ["settings.defaults", "settings_coalescenceEnabled.coalescenceEnabled_roundtrip",
-                        "coalescence.coalescence_off_absorbs_nothing"],
+                        "coalescence.coalescence_off_absorbs_nothing", "touched.touched_site_ready"],
     "default_wrong": ["settings.defaults"],
     "rep_ignores_toggle": ["repulsor_clear.off_when_setting_off", "burn_forced.repulsor_off_lapses_burn"],
     "rep_no_clear": ["repulsor_clear.holds_sky_clear"],
@@ -638,6 +651,10 @@ BREAKS = {
     "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
     "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
     "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
+    "touched_ignores_toggle": ["touched.touched_off_doses_nothing"],
+    "touched_no_contact": ["touched.touched_contact_doses"],
+    "arrest_ignored": ["touched.sunbeam_hit_arrests"],
+    "mulch_none": ["spawner.unfinished_leaves_mulch"],
 }
 
 

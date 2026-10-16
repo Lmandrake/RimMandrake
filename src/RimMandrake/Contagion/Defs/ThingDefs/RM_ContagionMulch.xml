@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 — Contagion mulch, the owner's Q4 ruling (2026-10-15, by card: "Contagion mulch scope ->
+  Plain fertilizer only"): ONE fertilizer item, no sunned or raw states, no field infection.
+
+  Where it comes from (C#, gated by the "Unfinished and Coalescences leave mulch" setting):
+    - a dead Unfinished dissolves into slime AND a little mulch (DeathActionWorker_RM_VanishToMulch, RM_TheUnfinished.xml);
+    - a Coalescence killed by a Burn spills it with its genome samples (Building_RM_Coalescence.Collapse), and one
+      killed by damage leaves a smaller heap.
+  What it does: it is the cost of RM_MulchedSoil (the floor below), the richest growing ground the stack ships:
+  fertility 1.5 against rich soil's 1.4, laid only where soil already grows things. Removing the floor gives the soil back.
+
+  Art: PLACEHOLDER, vanilla Kibble tinted goo-red (Graphic_StackCount). Real art is owed on the next art sheet.
+  Numbers (mass, value, fertility, 3 mulch per cell) are this build's INVENTED tuning.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ContagionMulch</defName>
+    <label>Contagion mulch</label>
+    <description>Dead goo: what is left when the Contagion's flesh dies and stops trying to become anything. Sterile, black-red and rich, it is what made the green valleys below the storm green. Spread on soil it makes the best growing ground on the planet. Not food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Kibble</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0.42, 0.13, 0.14)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.4</Mass>
+      <Flammability>0.5</Flammability>
+      <MarketValue>1.6</MarketValue>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+  </ThingDef>
+
+  <TerrainDef ParentName="FloorBase">
+    <defName>RM_MulchedSoil</defName>
+    <label>mulched soil</label>
+    <description>Soil worked through with Contagion mulch: the richest growing ground on the planet. It can only be laid where soil already grows things; removing it gives the soil back.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <color>(92, 52, 46)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>336</renderPrecedence>
+    <affordances Inherit="False">
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>GrowSoil</li>
+    </affordances>
+    <terrainAffordanceNeeded>GrowSoil</terrainAffordanceNeeded>
+    <fertility>1.5</fertility>
+    <pathCost>2</pathCost>
+    <takeFootprints>True</takeFootprints>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+      <WorkToBuild>200</WorkToBuild>
+    </statBases>
+    <costList>
+      <RM_ContagionMulch>3</RM_ContagionMulch>
+    </costList>
+    <constructEffect>ConstructDirt</constructEffect>
+    <uiOrder>2005</uiOrder>
+  </TerrainDef>
+
+</Defs>
