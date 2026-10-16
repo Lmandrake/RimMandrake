@@ -26,6 +26,7 @@
     <Compile Include="..\Kernel\RM_CoalescenceKernel.cs" />
     <Compile Include="..\Kernel\RM_DraftprintKernel.cs" />
     <Compile Include="..\Kernel\RM_ZhoolHazeKernel.cs" />
+    <Compile Include="..\Kernel\RM_TouchedKernel.cs" />
     <Compile Include="ContagionFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

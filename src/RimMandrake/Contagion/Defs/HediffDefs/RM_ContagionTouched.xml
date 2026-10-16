@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 — Contagion-touched and its mutation deck.
+
+  Owner rulings (verbatim):
+    N4 (2026-10-15)  "Bloom time, stronger in burn, and contact."
+    Q3 (2026-10-15)  "Stops current mutations. No protection if you get exposed again later."
+    deck (2026-09-12, research/mutation_systems_survey_2026-09-11.md "THE DECK IS RULED")
+                     "It should be a large variance experience that's 50% all negative and 50% positive + negative.
+                      The Contagion isn't nice."  + a CUSTOM unstable gene + Contagion-added parts copy the existing
+                      removal risk (cut one off and an Unfinished gets out).
+    sheet §6 ban 6   Contagion-touched never upgrades you.
+
+  RM_ContagionTouched is the PROGRESSION, nothing else: severity is the exposure the pawn has soaked up (doses in
+  HediffCompProperties_RM_ContagionTouched; RM_MapComponent_ContagionTouch applies them). It never fades on its own:
+  only the Sunbeam arrest removes it (Source/RM_SunbeamArrest.cs, DamageWorker_RM_UV). From severity 0.1 the pawn
+  mutates at a mean of 6 days / severity; at most 6 mutations, one of each card.
+
+  THE DECK is every HediffDef/GeneDef below carrying RimMandrake.Contagion.RM_ContagionMutationExtension. Each card
+  writes its benefits and costs in words; RM_ContagionMutationExtension.ConfigErrors refuses a benefit-only card, an
+  all-negative card with a benefit, and a mixed card with no benefit (the never-upgrade law, checked at load).
+  All-negative half: weeping lesions, nerve misfires, fused hand (part), unstable genome (gene).
+  Mixed half: thickened hide, budded eyes, racing blood, hook claw (part).
+  Every number here is this build's INVENTED first-pass tuning; every one is a vanilla field, so tuning is XML only.
+  Simplest-default choices taken without an owner ruling are listed on the item (rimflow note, 2026-10-16).
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_ContagionTouched</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>Contagion-touched</label>
+    <labelNoun>the Contagion's touch</labelNoun>
+    <description>The Contagion's spores have taken root. The body has started changing, and it will keep changing, more and faster the more of the storm it soaks up: some of the changes are pure harm, the rest give something and always take something.\n\nNothing undoes a change once it has grown. A Helix sunbeam can stop the process: hold the lens on the patient, or hit them with it. That gives no protection; the next exposure starts it again.</description>
+    <defaultLabelColor>(0.80, 0.25, 0.32)</defaultLabelColor>
+    <isBad>true</isBad>
+    <initialSeverity>0.001</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_RM_ContagionTouched">
+        <bloomDosePerPoll>0.0005</bloomDosePerPoll>
+        <burnDosePerPoll>0.004</burnDosePerPoll>
+        <contactDosePerPoll>0.01</contactDosePerPoll>
+        <contactSources>
+          <li>RM_TheUnfinished</li>
+          <li>RM_Coalescence</li>
+        </contactSources>
+        <minSeverityToMutate>0.1</minSeverityToMutate>
+        <mtbDaysAtFull>6</mtbDaysAtFull>
+        <mutationCap>6</mutationCap>
+        <allNegativeShare>0.5</allNegativeShare>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>brushed</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>changing</label>
+        <minSeverity>0.1</minSeverity>
+        <painOffset>0.02</painOffset>
+      </li>
+      <li>
+        <label>changing fast</label>
+        <minSeverity>0.5</minSeverity>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.03</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ───────────── the deck: whole-body cards ───────────── -->
+
+  <HediffDef Name="RM_ContagionMutationBase" Abstract="True">
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>true</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+    <defaultLabelColor>(0.72, 0.24, 0.34)</defaultLabelColor>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionMutationBase">
+    <defName>RM_ContagionWeepingLesions</defName>
+    <label>weeping lesions</label>
+    <description>Patches of skin that never close, weeping a thin red fluid. They hurt, they look terrible, and they let sickness in.</description>
+    <stages>
+      <li>
+        <painOffset>0.08</painOffset>
+        <statOffsets>
+          <PawnBeauty>-1</PawnBeauty>
+          <ImmunityGainSpeed>-0.1</ImmunityGainSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>true</allNegative>
+        <costs>
+          <li>pain</li>
+          <li>ugliness</li>
+          <li>slower immunity</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionMutationBase">
+    <defName>RM_ContagionNerveMisfire</defName>
+    <label>nerve misfires</label>
+    <description>Nerves that grew in the wrong order. Hands twitch, a leg sometimes forgets it is a leg.</description>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.1</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>true</allNegative>
+        <costs>
+          <li>manipulation</li>
+          <li>moving</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionMutationBase">
+    <defName>RM_ContagionThickHide</defName>
+    <label>thickened hide</label>
+    <description>The skin has grown thick and plated, like the Contagion's armored natives. It turns a blade, and it is heavy, stiff and hideous.</description>
+    <stages>
+      <li>
+        <statOffsets>
+          <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+          <MoveSpeed>-0.25</MoveSpeed>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>false</allNegative>
+        <benefits>
+          <li>sharp and blunt armor</li>
+        </benefits>
+        <costs>
+          <li>move speed</li>
+          <li>ugliness</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionMutationBase">
+    <defName>RM_ContagionBuddedEyes</defName>
+    <label>budded eyes</label>
+    <description>Small extra eyes have budded along the brow and temples. They see well. They never close, and the pawn never quite stops seeing.</description>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>0.15</offset>
+          </li>
+        </capMods>
+        <statOffsets>
+          <MentalBreakThreshold>0.05</MentalBreakThreshold>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>false</allNegative>
+        <benefits>
+          <li>sight</li>
+        </benefits>
+        <costs>
+          <li>mental break threshold</li>
+          <li>ugliness</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionMutationBase">
+    <defName>RM_ContagionRacingBlood</defName>
+    <label>racing blood</label>
+    <description>The blood runs hot and fast, like the Contagion's own. Wounds close at a visible rate, and the body is always starving.</description>
+    <stages>
+      <li>
+        <hungerRateFactorOffset>0.4</hungerRateFactorOffset>
+        <statOffsets>
+          <InjuryHealingFactor>0.5</InjuryHealingFactor>
+        </statOffsets>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>false</allNegative>
+        <benefits>
+          <li>injury healing</li>
+        </benefits>
+        <costs>
+          <li>hunger</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <!-- ───────────── the deck: part cards (removal lets an Unfinished out) ───────────── -->
+
+  <HediffDef Name="RM_ContagionPartMutationBase" Abstract="True">
+    <hediffClass>Hediff_AddedPart</hediffClass>
+    <isBad>false</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <defaultLabelColor>(0.72, 0.24, 0.34)</defaultLabelColor>
+    <comps>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The growth comes away</letterLabel>
+        <letterText>Cutting the Contagion's growth off {PAWN_nameDef} has let the thing inside finish its thought. It has torn loose and walked off as one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionPartMutationBase">
+    <defName>RM_ContagionFusedHand</defName>
+    <label>fused hand</label>
+    <labelNoun>a fused hand</labelNoun>
+    <description>The fingers have run together into one stiff, swollen paddle of flesh. It is barely a hand.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <addedPartProps>
+      <partEfficiency>0.2</partEfficiency>
+    </addedPartProps>
+    <stages>
+      <li>
+        <statOffsets>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>true</allNegative>
+        <installPart>Hand</installPart>
+        <costs>
+          <li>a near-useless hand</li>
+          <li>ugliness</li>
+          <li>removing it lets an Unfinished out</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_ContagionPartMutationBase">
+    <defName>RM_ContagionHookClaw</defName>
+    <label>hook claw</label>
+    <labelNoun>a hook claw</labelNoun>
+    <description>The hand has become a single hooked claw of bone, like an Unfinished's one finished limb. It tears flesh well and holds a tool badly.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <addedPartProps>
+      <partEfficiency>0.5</partEfficiency>
+    </addedPartProps>
+    <stages>
+      <li>
+        <statOffsets>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <tools>
+          <li>
+            <label>hook claw</label>
+            <capacities>
+              <li>Cut</li>
+            </capacities>
+            <power>14</power>
+            <cooldownTime>2</cooldownTime>
+          </li>
+        </tools>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>false</allNegative>
+        <installPart>Hand</installPart>
+        <benefits>
+          <li>a strong claw attack</li>
+        </benefits>
+        <costs>
+          <li>half a hand for work</li>
+          <li>ugliness</li>
+          <li>removing it lets an Unfinished out</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <!-- ───────────── the deck: the custom unstable gene (ruled 2026-09-12) ───────────── -->
+
+  <GeneDef>
+    <defName>RM_ContagionUnstableGenome</defName>
+    <label>Contagion-unstable genome</label>
+    <labelShortAdj>unstable</labelShortAdj>
+    <description>The Contagion has written itself into this genome, badly. The body keeps half-starting repairs it never finishes: wounds close slowly, sickness takes longer to beat, and the mind frays under the strain.</description>
+    <iconPath>UI/Icons/Genes/Gene_WeakImmunity</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <canGenerateInGeneSet>false</canGenerateInGeneSet>
+    <selectionWeight>0</selectionWeight>
+    <statFactors>
+      <ImmunityGainSpeed>0.8</ImmunityGainSpeed>
+      <InjuryHealingFactor>0.8</InjuryHealingFactor>
+    </statFactors>
+    <statOffsets>
+      <MentalBreakThreshold>0.04</MentalBreakThreshold>
+    </statOffsets>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionMutationExtension">
+        <allNegative>true</allNegative>
+        <costs>
+          <li>slower immunity</li>
+          <li>slower healing</li>
+          <li>mental break threshold</li>
+        </costs>
+      </li>
+    </modExtensions>
+  </GeneDef>
+
+</Defs>

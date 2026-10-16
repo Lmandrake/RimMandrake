@@ -60,17 +60,21 @@ DEFAULTS = {
     "grownLimbsEnabled": True,
     "zhoolHazeEnabled": True, "zhoolHazeDensity": 1.0, "zhoolConversionEnabled": True,
     "zhoolConversionRate": 1.0, "zhoolConvertsCrops": False,
+    "touchedEnabled": True, "touchedExposureFactor": 1.0, "touchedMutationRate": 1.0,
+    "sunbeamArrestEnabled": True, "mulchDropsEnabled": True,
 }
 # a value different from the default, for the write+read-back round trip
 ALT = {"biomeRarityFactor": 0.5, "burnFrequency": 2.0, "burnDamageFactor": 0.5, "sunbeamNativeFactor": 3.0,
-       "zhoolHazeDensity": 2.0, "zhoolConversionRate": 2.0}
+       "zhoolHazeDensity": 2.0, "zhoolConversionRate": 2.0, "touchedExposureFactor": 2.0,
+       "touchedMutationRate": 2.0}
 suite.toggles = sorted(DEFAULTS)
 
 PADS = {"repulsor": (-45, -45), "spawner": (45, -45), "burn": (0, -45), "uv": (-45, 0),
-        "coal": (45, 0), "genome": (0, 45), "zhool": (-45, 45)}
+        "coal": (45, 0), "genome": (0, 45), "zhool": (-45, 45), "touched": (45, 45)}
 PAD_SIZE = 30
 SOIL = "Soil"
 REPULSOR, COALESCENCE, SAMPLE = "RM_CloudRepulsor", "RM_Coalescence", "RM_GenomeSample"
+TOUCHED, MULCH = "RM_ContagionTouched", "RM_ContagionMulch"   # owner N4/Q3/Q4, 2026-10-15
 HOST, UNFINISHED = "RM_BloodyMess", "RM_TheUnfinished"
 BURN_COND, CLEAR_COND = "RM_ContagionBurnCondition", "RM_RepulsorClearSky"
 BURN_WEATHER = "RM_ContagionBurn"
@@ -778,6 +782,15 @@ def spawner(t):
                 corpses = _things(t, "Corpse_" + UNFINISHED, _STATE["host_rect"])
                 if corpses:
                     _fail("a corpse persists (%d): death must dissolve it" % len(corpses))
+
+        # Owner Q4 (2026-10-15, plain fertilizer): a dead Unfinished leaves Contagion mulch where it dissolved
+        # (DeathActionWorker_RM_VanishToMulch). Reads the same death the component above caused.
+        with _comp(t, "unfinished_leaves_mulch", toggle="mulchDropsEnabled"):
+            if _live(t):
+                heaps = _things(t, MULCH, _STATE["host_rect"])
+                if not heaps:
+                    _fail("no %s near the dissolved Unfinished" % MULCH)
+                _note(t, "mulch heaps", [h.get("stackCount") for h in heaps])
     _stable(t, body)
 
 
@@ -1073,6 +1086,66 @@ def uv(t):
                 if not s6 >= 3 * sp:
                     _fail("a native took %.2f vs a PERSON %.2f from the same beam at 6x (people must "
                           "not get the native multiplier)" % (s6, sp))
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: touched
+# Contagion-touched and the Sunbeam arrest (owner 2026-10-15: N4 "Bloom time, stronger in burn, and contact."; Q3 "Stops
+# current mutations. No protection if you get exposed again later."). Only the CONTACT source is driven here: a drafted
+# colonist stands against a Coalescence (stationary, and set inert with coalescenceEnabled off so it neither absorbs nor
+# emits). The Bloom/Burn doses and the mutation roll are arithmetic, fuzzed offline (SelfTest family "touched").
+
+@suite.chain("touched")
+def touched(t):
+    def body():
+        with _comp(t, "touched_site_ready", poison=True):
+            _pad(t, "touched")
+            if _live(t):
+                _baseline(t)
+                _prep(t, "touched")
+                _set(t, "burnEnabled", False)
+                _set(t, "coalescenceEnabled", False)
+                x, z = t.anchor
+                t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (COALESCENCE, x, z))
+                if not _things(t, COALESCENCE, _rs(_rect(t))):
+                    _fail("fixture: no Coalescence spawned")
+                _STATE["touched"] = {"near": _spawn(t, "Colonist", x + 2, z, faction="player")}
+                t.bridge_call("jawa/set_draft", pawnId=_STATE["touched"]["near"], drafted=True)
+
+        with _comp(t, "touched_off_doses_nothing", toggle="touchedEnabled"):
+            if _live(t):
+                x, z = t.anchor
+                with _setting(t, "touchedEnabled", False):
+                    off = _spawn(t, "Colonist", x - 2, z, faction="player")
+                    t.bridge_call("jawa/set_draft", pawnId=off, drafted=True)
+                    _wait(t, 1000)
+                    row = _rows(t, _rs(_rect(t))).get(off)
+                    if row is None:
+                        _unmeasured(t, "the toggle-off colonist is not readable")
+                    if TOUCHED in _hdefs(row):
+                        _fail("dosed by contact with touchedEnabled off")
+                    t.bridge_call("jawa/pawn_force_incapacitate", pawn=off, action="vanish")
+
+        with _comp(t, "touched_contact_doses", toggle="touchedEnabled"):
+            if _live(t):
+                _wait(t, 1000)
+                row = _rows(t, _rs(_rect(t))).get(_STATE["touched"]["near"])
+                if row is None:
+                    _unmeasured(t, "the colonist beside the Coalescence is not readable")
+                if TOUCHED not in _hdefs(row):
+                    _fail("1000 ticks against a Coalescence gave no %s: %s" % (TOUCHED, sorted(_hdefs(row))))
+
+        with _comp(t, "sunbeam_hit_arrests", toggle="sunbeamArrestEnabled"):
+            if _live(t):
+                pid = _STATE["touched"]["near"]
+                _ok(t.bridge_call("jawa/damage", damageDef="RM_UVBeam", amount=5, thingId=pid, allowColonists=True),
+                    "damage(RM_UVBeam)")
+                row = _rows(t, _rs(_rect(t))).get(pid)
+                hd = _hdefs(row)
+                if "RM_UVSunburn" not in hd:
+                    _unmeasured(t, "the Sunbeam hit left no RM_UVSunburn: the hit itself did not land (%s)" % sorted(hd))
+                if TOUCHED in hd:
+                    _fail("a Sunbeam hit did not arrest %s" % TOUCHED)
     _stable(t, body)
 
 

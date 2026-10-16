@@ -40,6 +40,15 @@ namespace RimMandrake.Contagion
             return Math.Min(samplesMax, samplesBase + samplesPerStage * stage + (massPerSample > 0 ? mass / massPerSample : 0));
         }
 
+        // Mulch left by a death (owner Q4, 2026-10-15): base + perStage * stage + one per absorbed mass, scaled by the death's
+        // factor (1 for a Burn collapse, less for a kill by damage), never negative.
+        public static int Mulch(int mulchBase, int mulchPerStage, int stage, int mass, float factor)
+        {
+            if (factor <= 0f) return 0;
+            int raw = mulchBase + mulchPerStage * stage + (mass > 0 ? mass : 0);
+            return raw <= 0 ? 0 : (int)Math.Round(raw * factor);
+        }
+
         // Burn catches it: collapses even with the setting off. Otherwise it only acts with the setting on.
         public static bool Collapses(bool burnActive) { return burnActive; }
         public static bool Acts(bool burnActive, bool coalescenceEnabled) { return !burnActive && coalescenceEnabled; }

@@ -11,9 +11,11 @@
   multiplies the hit by the Mod Settings "Sunbeam vs natives" factor (default
   6x → 30 per shot). All numbers are this build's INVENTED tuning.
 
-  NOT BUILT HERE: the ruled ARREST use (a medical use that stops Contagion-
-  touched mutation progression). No Contagion-touched progression hediff
-  exists in src/ yet, so there is nothing for an arrest to stop.
+  The ruled ARREST (owner Q3, 2026-10-15: "Stops current mutations. No
+  protection if you get exposed again later."): a landed RM_UVBeam hit removes
+  RM_ContagionTouched (DamageWorker_RM_UV), and a colonist wielding this gun
+  can hold it on a touched patient as a treatment (Source/RM_SunbeamArrest.cs).
+  Grown mutations stay; the next exposure starts the condition again.
 
   Art: artpipe job RM_Sunbeam (validated pass, 2026-09-28), mirrored to face
   right like vanilla weapon textures.

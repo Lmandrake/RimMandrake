@@ -28,11 +28,11 @@
     SeverityPerDay ticking to a vanilla lethalSeverity kills the pawn within a
     few in-game days, no custom death-timer class needed.
 
-    Goo dissolve: race.deathAction is vanilla's own DeathActionProperties_Vanish
+    Goo dissolve: race.deathAction is DeathActionProperties_RM_VanishToMulch,
+    a thin subclass of vanilla's DeathActionProperties_Vanish
     (Verse.DeathActionWorker_Vanish) — destroys the corpse outright and drops
-    Filth_Slime in its place. Zero new C# needed for "dissolves to goo"; it is
-    a declarative vanilla mechanism, the same one already reused by mods for
-    "no corpse left" fleshy creatures.
+    Filth_Slime in its place, then leaves a small heap of RM_ContagionMulch
+    (owner Q4, 2026-10-15; Source/RM_ContagionMulch.cs).
 
     Art: PLACEHOLDER — a recolored vanilla Warg body (this mod's own
     RM_BlueDesertFauna.xml precedent: "recolored placeholder, no new art"),
@@ -91,9 +91,12 @@
           <minAge>0</minAge>
         </li>
       </lifeStageAges>
-      <deathAction Class="DeathActionProperties_Vanish">
+      <!-- Vanilla's vanish (slime, no corpse) plus a small heap of Contagion mulch (owner Q4 2026-10-15) -->
+      <deathAction Class="RimMandrake.Contagion.DeathActionProperties_RM_VanishToMulch">
         <filth>Filth_Slime</filth>
         <filthCountRange>2~4</filthCountRange>
+        <mulchDef>RM_ContagionMulch</mulchDef>
+        <mulchCountRange>2~4</mulchCountRange>
       </deathAction>
     </race>
     <comps>

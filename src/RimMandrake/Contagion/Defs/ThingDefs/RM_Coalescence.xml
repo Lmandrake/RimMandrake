@@ -94,6 +94,11 @@
         <samplesPerStage>2</samplesPerStage>
         <massPerSample>4</massPerSample>
         <samplesMax>14</samplesMax>
+        <!-- Contagion mulch (owner Q4 2026-10-15, plain fertilizer): (10 + 10/stage + mass) on a Burn collapse, half on a kill -->
+        <mulchDef>RM_ContagionMulch</mulchDef>
+        <mulchBase>10</mulchBase>
+        <mulchPerStage>10</mulchPerStage>
+        <killedMulchFactor>0.5</killedMulchFactor>
       </li>
     </modExtensions>
   </ThingDef>

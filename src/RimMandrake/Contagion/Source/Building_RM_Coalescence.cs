@@ -40,6 +40,12 @@ namespace RimMandrake.Contagion
         public int samplesPerStage = 2;
         public int massPerSample = 4;
         public int samplesMax = 14;
+        // Contagion mulch (owner Q4, 2026-10-15) per death = (base + perStage * stage + mass) x the death's factor:
+        // 1 for a Burn collapse, killedMulchFactor for a kill by damage. Null mulchDef = none.
+        public ThingDef mulchDef;
+        public int mulchBase = 10;
+        public int mulchPerStage = 10;
+        public float killedMulchFactor = 0.5f;
     }
 
     public class Building_RM_Coalescence : Building
@@ -217,10 +223,9 @@ namespace RimMandrake.Contagion
             pawn.mindState?.mentalStateHandler?.TryStartMentalState(MentalStateDefOf.Manhunter, null, true);
         }
 
-        // Any Burn kills it: it collapses into slime and a spill of genome
-        // samples (sourceless — they gestate unmatched organs). The mulch half
-        // of the ruled bonanza waits on a Contagion mulch item, which does
-        // not exist yet.
+        // Any Burn kills it: it collapses into slime, a spill of genome samples
+        // (sourceless — they gestate unmatched organs) and a heap of Contagion
+        // mulch: the ruled "mulch + genome-sample bonanza".
         private void Collapse(RM_CoalescenceExtension ext)
         {
             Map map = Map;
@@ -246,12 +251,29 @@ namespace RimMandrake.Contagion
                     GenPlace.TryPlaceThing(s, center, map, ThingPlaceMode.Near);
                 }
             }
+            RM_ContagionMulchUtility.Drop(ext.mulchDef, RM_CoalescenceKernel.Mulch(ext.mulchBase, ext.mulchPerStage, stage, mass, 1f), center, map);
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, 2.5f + stage, true))
             {
                 if (c.InBounds(map) && c.Standable(map) && Rand.Chance(0.5f))
                 {
                     FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Slime);
                 }
+            }
+        }
+
+        // Killed by damage instead of a Burn: no samples (the Burn's light is what fixes the tissue), but the dead goo
+        // still leaves a smaller heap of mulch.
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            Map map = Map;
+            IntVec3 at = Position;
+            bool killed = mode == DestroyMode.KillFinalize && Spawned;
+            int stage = Stage;
+            RM_CoalescenceExtension ext = Ext;
+            base.Destroy(mode);
+            if (killed && ext != null)
+            {
+                RM_ContagionMulchUtility.Drop(ext.mulchDef, RM_CoalescenceKernel.Mulch(ext.mulchBase, ext.mulchPerStage, stage, mass, ext.killedMulchFactor), at, map);
             }
         }
 
