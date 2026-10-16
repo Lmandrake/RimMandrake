@@ -24,7 +24,7 @@
     </projectile>
     <graphicData>
       <texPath>Things/Mote/FoamSpray</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>2.5</drawSize>
     </graphicData>

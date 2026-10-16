@@ -208,7 +208,7 @@
     <label>angel moth egg (fert.)</label>
     <description>Fertilized angel moth egg. If all goes well, it should hatch into an angel moth larva. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
-      <texPath>Things/Item/RM_AngelMothEggFertilized/RM_AngelMothEggFertilized</texPath>
+      <texPath>Things/Item/RM_AngelMothEggFertilized</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

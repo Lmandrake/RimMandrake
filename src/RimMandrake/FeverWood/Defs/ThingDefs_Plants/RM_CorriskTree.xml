@@ -13,7 +13,7 @@
     <description>A tall tree whose trunk splits into twisting, rope-braided limbs under a sparse crown of hanging blade-leaves. Its bark weeps a resin that stains everything it touches rust-orange; stripped and boiled, it gives dye in quantity.</description>
     <graphicData>
       <!-- own texPath; folder empty until the owner rules the base-art sheet (pink until then) -->
-      <texPath>Things/RM_CorriskTree/RM_CorriskTree</texPath>
+      <texPath>Things/RM_CorriskTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.15, 0.3, 0.1)</volume>

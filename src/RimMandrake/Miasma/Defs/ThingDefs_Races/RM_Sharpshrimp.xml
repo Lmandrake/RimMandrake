@@ -353,7 +353,7 @@
     <label>hardened chitin</label>
     <description>Overlapping plates of hardened chitin. Really durable in combat, but provides little protection from weather.</description>
     <graphicData>
-      <texPath>Things/Item/RM_Leather_RaptorPlatesMiasma/RM_Leather_RaptorPlatesMiasma</texPath>
+      <texPath>Things/Item/RM_Leather_RaptorPlatesMiasma</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

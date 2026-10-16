@@ -86,7 +86,7 @@
     <description>A stick topped with a fist-sized pyrinth shard for lighting an area. People need light to move and work at full speed. Doesn't need to be refueled, ever. Produces a small amount of heat.</description>
     <graphicData>
       <texPath>Things/Building/Misc/PyrinthLamp</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawRotated>false</drawRotated>
       <damageData>
         <rect>(0.35,0.35,0.3,0.3)</rect>
