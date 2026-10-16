@@ -76,7 +76,7 @@ DEFAULTS = {
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
     # LEANINGSCRUB_MECHANICS_BUILD_1 parts 6, 5b, 8 (RM_Ripple.cs, RM_CallingPyre.cs, RM_ScrubInjections.cs)
-    "rippleEnabled": True, "rippleMaxBodySize": 0.6,
+    "rippleEnabled": True, "rippleMaxBodySize": 0.6, "stallHuntEnabled": True,
     "callingPyreEnabled": True, "callingPyreRadius": 14.0, "callingPyreHerdFactor": 1.0,
     "scrubInjectionsEnabled": True, "scrubRuinsPerMap": 3, "scrubCampsEnabled": True,
     # LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs)
@@ -1370,6 +1370,16 @@ def ripple_chain(t):
     animal on fuzz, drives the SHIPPED pass in wind and in the Stall (still), reads IsPsychologicallyInvisible."""
     _proof(t, "ripple_hides_small_creatures", "RM_RippleProof", "ProofRipple", "on", "ripple proof (on)", "rippleEnabled")
     _proof(t, "ripple_toggle_off_nobody_hides", "RM_RippleProof", "ProofRipple", "off", "ripple proof (off)", "rippleEnabled")
+
+
+# --------------------------------------------------------------------------- chain: stallhunt
+
+@suite.chain("stallhunt")
+def stallhunt_chain(t):
+    """Part 1 the stallhawk rises (RM_StallHunt.cs). RM_StallHuntProof forces the Stall, spawns a stall hunter beside
+    visible small prey, drives the SHIPPED pass and reads the hunter's JOB (flyer law: no flight is watched)."""
+    _proof(t, "stallhawk_hunts_in_the_stall", "RM_StallHuntProof", "ProofStallHunt", "on", "stall hunt (on)", "stallHuntEnabled")
+    _proof(t, "stallhawk_toggle_off_idle", "RM_StallHuntProof", "ProofStallHunt", "off", "stall hunt (off)", "stallHuntEnabled")
 
 
 # --------------------------------------------------------------------------- chain: pyre

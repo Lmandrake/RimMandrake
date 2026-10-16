@@ -20,6 +20,16 @@ namespace RimMandrake.LeaningScrub.SelfTest
             Eq("stall mover seen", RM_RippleKernel.Hidden(true, true, false, true, 0.2f, 0.6f, false, true, true), false);
             Eq("stall still hidden", RM_RippleKernel.Hidden(true, true, false, true, 0.2f, 0.6f, false, true, false), true);
             Eq("negative limit", RM_RippleKernel.SizeLimit(-1f, true), 0f);
+            // stall hunt
+            Eq("hunts in stall", RM_StallHuntKernel.Hunts(true, true, true, true, false, false, false), true);
+            Eq("idle in wind", RM_StallHuntKernel.Hunts(true, false, true, true, false, false, false), false);
+            Eq("off idle", RM_StallHuntKernel.Hunts(false, true, true, true, false, false, false), false);
+            Eq("tame idle", RM_StallHuntKernel.Hunts(true, true, false, true, false, false, false), false);
+            Eq("already hunting", RM_StallHuntKernel.Hunts(true, true, true, true, false, false, true), false);
+            Eq("hidden prey safe", RM_StallHuntKernel.Prey(true, false, false, true, 0.2f, 0.65f), false);
+            Eq("visible prey taken", RM_StallHuntKernel.Prey(true, false, false, false, 0.2f, 0.65f), true);
+            Eq("own kind safe", RM_StallHuntKernel.Prey(true, true, false, false, 0.2f, 0.65f), false);
+            Eq("big prey safe", RM_StallHuntKernel.Prey(true, false, false, false, 1.0f, 0.65f), false);
             // pyre gate
             Eq("off refuses", RM_PyreKernel.Gate(false, RM_PyreKernel.BeliefVenerated, 1), RM_PyreKernel.ReasonOff);
             Eq("forbidden refuses", RM_PyreKernel.Gate(true, RM_PyreKernel.BeliefForbidden, 5), RM_PyreKernel.ReasonForbidden);
