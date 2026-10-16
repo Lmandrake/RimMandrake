@@ -417,7 +417,8 @@ namespace RimMandrake.FlowWorks
 		private readonly Dictionary<int, int> gaveThisPulse = new Dictionary<int, int>();
 		private readonly Dictionary<int, int> gotThisPulse = new Dictionary<int, int>();
 		private readonly SortedSet<int>[] donorsBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
-		private readonly SortedSet<int>[] takersBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
+		/// <summary>Takers keyed by <see cref="TakerKey"/> (deepest bed, then lowest index first), so Min is the pick.</summary>
+		private readonly SortedSet<long>[] takersBySurface = { new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>() };
 
 		/// <summary>True when the creep rule holds this cell's level back this pulse (it received a level of a fluid
 		/// whose creep switch is on).</summary>
@@ -432,7 +433,9 @@ namespace RimMandrake.FlowWorks
 		/// Real water connected through wet squares levels anyway. So, per connected WET region of one fluid (cells wet
 		/// before this pulse's creep, in this partition, not sealed), a unit moves from the region's highest surface to the
 		/// lowest surface among the region and its dug rim (a rim cell must accept the fluid), while those differ by two or
-		/// more. Each cell gives at most, and takes at most, flowPerPulse in this pass. Ties: donor = highest surface then
+		/// more. Each cell gives at most, and takes at most, flowPerPulse in this pass, and a region cell never gives its
+		/// LAST unit here (so no connector goes dry mid-pass and the region stays connected through wet squares; the
+		/// neighbour rules above still empty it). Ties: donor = highest surface then
 		/// lowest cell index; taker = lowest surface, then deepest bed, then lowest index. Regions in order of their lowest
 		/// cell index. Every move lowers sum(surface^2) by at least 2, so this cannot oscillate; it moves liquid only inside
 		/// the component, so the ledger is untouched. A rim cell joins the region next pulse, so the wet front still
@@ -517,13 +520,13 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < regionCells.Count; i++)
 				{
 					int c = regionCells[i];
-					if (GotOrGave(gaveThisPulse, c) < per)
+					if (fill[c] >= 2 && GotOrGave(gaveThisPulse, c) < per)
 					{
 						donorsBySurface[Bucket(c)].Add(c);
 					}
 					if (fill[c] < depth[c] && GotOrGave(gotThisPulse, c) < per)
 					{
-						takersBySurface[Bucket(c)].Add(c);
+						takersBySurface[Bucket(c)].Add(TakerKey(c));
 					}
 				}
 				for (int i = 0; i < regionRim.Count; i++)
@@ -531,7 +534,7 @@ namespace RimMandrake.FlowWorks
 					int c = regionRim[i];
 					if (GotOrGave(gotThisPulse, c) < per)
 					{
-						takersBySurface[Bucket(c)].Add(c);
+						takersBySurface[Bucket(c)].Add(TakerKey(c));
 					}
 				}
 				while (true)
@@ -551,15 +554,15 @@ namespace RimMandrake.FlowWorks
 						break;
 					}
 					int donor = donorsBySurface[db].Min;
-					int taker = BestTaker(takersBySurface[tb]);
+					int taker = (int)(takersBySurface[tb].Min % (width * height));
 					if (fill[taker] == 0 && !world.CanClaim(fluid))
 					{
-						takersBySurface[tb].Remove(taker);   // P7: no identity key free for a dry rim cell
+						takersBySurface[tb].Remove(TakerKey(taker));   // P7: no identity key free for a dry rim cell
 						continue;
 					}
 					donorsBySurface[db].Remove(donor);
-					takersBySurface[db].Remove(donor);
-					takersBySurface[tb].Remove(taker);
+					takersBySurface[db].Remove(TakerKey(donor));
+					takersBySurface[tb].Remove(TakerKey(taker));
 					donorsBySurface[tb].Remove(taker);
 					fill[donor] -= 1;
 					if (fill[taker] == 0)
@@ -571,19 +574,19 @@ namespace RimMandrake.FlowWorks
 					gaveThisPulse[donor] = gave;
 					int got = GotOrGave(gotThisPulse, taker) + 1;
 					gotThisPulse[taker] = got;
-					if (fill[donor] > 0 && gave < per)
+					if (fill[donor] >= 2 && gave < per)
 					{
 						donorsBySurface[Bucket(donor)].Add(donor);
 					}
 					if (fill[donor] < depth[donor] && GotOrGave(gotThisPulse, donor) < per)
 					{
-						takersBySurface[Bucket(donor)].Add(donor);
+						takersBySurface[Bucket(donor)].Add(TakerKey(donor));
 					}
 					if (fill[taker] < depth[taker] && got < per)
 					{
-						takersBySurface[Bucket(taker)].Add(taker);
+						takersBySurface[Bucket(taker)].Add(TakerKey(taker));
 					}
-					if (inRegion.Contains(taker) && GotOrGave(gaveThisPulse, taker) < per)
+					if (inRegion.Contains(taker) && fill[taker] >= 2 && GotOrGave(gaveThisPulse, taker) < per)
 					{
 						donorsBySurface[Bucket(taker)].Add(taker);
 					}
@@ -602,18 +605,11 @@ namespace RimMandrake.FlowWorks
 			return counts.TryGetValue(c, out int v) ? v : 0;
 		}
 
-		/// <summary>Among takers at one surface: the deepest bed, then the lowest cell index.</summary>
-		private int BestTaker(SortedSet<int> takers)
+		/// <summary>Taker order within one surface bucket: the deepest bed, then the lowest cell index (depth does not
+		/// change during the pass, so the key is stable).</summary>
+		private long TakerKey(int c)
 		{
-			int best = -1;
-			foreach (int c in takers)
-			{
-				if (best < 0 || depth[c] > depth[best])
-				{
-					best = c;
-				}
-			}
-			return best;
+			return (long)(Superdeep - depth[c]) * (width * height) + c;
 		}
 
 		private int CompareDeepestFirst(int a, int b)
