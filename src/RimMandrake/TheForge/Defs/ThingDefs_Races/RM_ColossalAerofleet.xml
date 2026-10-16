@@ -21,9 +21,7 @@
     vanilla elephant.
   DROPPED: the VEF ControlledDetonation PawnKind
     ability and Odyssey trainables (donor-specific); the VEF AnimalStatExtension info-card rows.
-  ART: our render exists and is not installed (gapall_AA_ColossalAerofleet_v1, The Forge sheet "A"). Until the art
-    ledger installs it at our path, the texPath is the donor path (a placeholder, reported ART OWED by
-    donor_plain_ports_check.py) and the roster row stays MayRequire="sarg.alphaanimals".
+  ART: our render (gapall_AA_ColossalAerofleet_v1) is installed through the art ledger at our own path.
 -->
 <Defs>
 
@@ -118,7 +116,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal</texPath>
+          <texPath>Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet</texPath>
           <drawSize>2.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
