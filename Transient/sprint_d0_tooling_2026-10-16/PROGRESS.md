@@ -11,7 +11,19 @@ Open for S0/FOUNDRY: X1's "loads before mandrake.rut.plantgrowth" needs plantgro
 plant growth under every suite) -- decide at S0.
 
 ## 2. Preflight: Cauldron, Contagion, LeaningScrub
-_pending_
+northstar_plan.py already existed for all three (thin USE_SUITE=True wrappers) -- untouched.
+NEW: shared rows `src/RimMandrake/Utils/northstar_driver/biome_preflight.py` (+ selftest_biome_preflight.py) and thin
+wrappers `src/RimMandrake/<Biome>/preflight_<biome>.py`. Rows O-TIER, O-PLAN, O-DEPLOY (src vs deployed composite,
+byte-equal), O-ROSTER, O-TEX (M2), O-SUITE (required_checks.json current + probe count), O-MANIFEST, O-SITE.
+First run (2026-10-16 ~00:xx, offline, ~60 s each):
+- Cauldron: O-TEX FAIL -- RM_Bezzul, RM_GiantCrownedSilkie (Phase 0 ports, no Textures in src or deployed) and the 2
+  fleck overlays on RM_TreeMartyr/RM_TwistingThornwood (packet §0 confirms). The 5 dew variants are code-derived paths,
+  invisible to an XML read -- still owed, not measured here.
+- Contagion: O-SUITE FAIL -- required_checks.json STALE for Contagion/validation.py (FOUNDRY is editing it; rerun
+  required_checks.py once its edit lands). O-TEX PASS 36/36.
+- LeaningScrub: O-TEX PASS (77 OK, 1 base-game, 5 not on tier). Instrument trap found and fixed on the way:
+  placeholder_lint.resolve's mask filter drops `*_m` texPaths (RSW_Anooba/RSW_Nuna read MISSING falsely).
+- All three: O-MANIFEST UNMEASURED (S0 freezes `design/RimMandrake/sprint_manifests/<Biome>.json`), O-SITE UNMEASURED.
 
 ## 3. Cauldron saved-site spec
 _pending_
