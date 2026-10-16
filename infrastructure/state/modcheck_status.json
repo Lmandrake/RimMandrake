@@ -103,26 +103,22 @@
     "ts": 1791234245.5508502
   },
   "Cauldron": {
-    "hash": "22d4f90fab907d47b6259ede3f08ac55580a7800d50c0da0a39a516aecd18179",
+    "hash": "8f329146eec82bd4b9c6e7b281e983c53699d8594f3c8286f6602f999054874f",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Cauldron@1791369167",
+    "run_id": "Cauldron@1792150238",
     "status": "RED",
-    "ts": 1791369167.8864179
+    "ts": 1792150239.0792007
   },
   "Contagion": {
-    "hash": "32c91175b0db9bbfae5186ea23eac2a5c011af722e238a940a08be6efe9583a2",
+    "hash": "74140525c5b802f4c2fab59168ef68164d76b9dca3aeb6f94a59f071dd9908c4",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Contagion@1791234245",
-    "source": {
-      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Contagion_summary.json",
-      "verb": "situational_rerun"
-    },
+    "run_id": "Contagion@1792151751",
     "status": "RED",
-    "ts": 1791234245.5700111
+    "ts": 1792151753.2710614
   },
   "CreatureBehaviors": {
     "hash": "a586d2030240e8527689557c20970c24e0a4346bf902a064cf57fdd6ea4b9425",
@@ -391,13 +387,13 @@
     "ts": 1791235182.6462698
   },
   "LeaningScrub": {
-    "hash": "cfea26920fd6180e436c4f3ae8412909704f756a6ff9f07af4e05d45d668e25e",
+    "hash": "a2f0964894048ba16f646cfe7411dc3d6ec2c4f8f9d2812d1e42fce458d47fbd",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "LeaningScrub@1791401413",
+    "run_id": "LeaningScrub@1792149636",
     "status": "RED",
-    "ts": 1791401414.6527653
+    "ts": 1792149637.6059144
   },
   "LongShade": {
     "hash": "9046fcbdd2c0692d316716c64a4672050de8365b0a3c84068bb06bdc14850228",

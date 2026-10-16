@@ -1,0 +1,1 @@
+chat_review scale images drew any def absent from the 2026-10-04 dump at 1 cell (FALLBACK in the header); sizes now read from src XML; companion test profile expires and silently UNMEASUREs whole suites

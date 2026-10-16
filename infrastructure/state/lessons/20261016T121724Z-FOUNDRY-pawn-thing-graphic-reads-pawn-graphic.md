@@ -1,0 +1,1 @@
+pawn thing_graphic reads Pawn.Graphic=BadTexture for every undrawn pawn (144/144 false badTex FAILs): a vanilla control pawn must be read first; harnesses proven only against a fake bridge lie on the real one

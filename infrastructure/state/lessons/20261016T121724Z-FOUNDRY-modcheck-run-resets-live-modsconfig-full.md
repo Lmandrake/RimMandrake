@@ -1,0 +1,1 @@
+modcheck run resets the live ModsConfig to the full 556-mod list when it ends; reapply modset_builder tier + launch_ready + start_debug_game_ready before each suite (Transient/night_rounds/run_suite.sh)
