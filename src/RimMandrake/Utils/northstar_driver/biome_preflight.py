@@ -531,6 +531,11 @@ def o_site(c):
     want = TS.SITES[key].get("biome")
     if want and reg.get("biome") != want:
         return Row("O-SITE", FAIL, "registered site is biome %s, want %s" % (reg.get("biome"), want))
+    # the registry is written once before the reload (loadVerified absent) and again after it: only True is built
+    if reg.get("loadVerified") is False:
+        return Row("O-SITE", FAIL, "site %s saved but its reload read back unclean (loadVerified False)" % reg.get("save"))
+    if reg.get("loadVerified") is not True:
+        return Row("O-SITE", UNMEASURED, "site %s saved, reload never read back (no loadVerified)" % reg.get("save"))
     return Row("O-SITE", PASS, "site %s built %s at %s" % (reg.get("save"), reg.get("builtUtc"), reg.get("head")))
 
 
