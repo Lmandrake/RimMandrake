@@ -519,9 +519,15 @@ def o_manifest(c):
                % (len(rows), len(man["requirement_ids"]), h), {"hash": h})
 
 
+# A suite that is not a biome runs on a shared site. ExplosiveGrowth puts every biome in scope through its test-only
+# override (validation.py _suite_scope), so the calm temperate site serves; its scope_native_only row needs a list with
+# no campaign layer (tier explosivegrowth_solo), see Transient/biome_sprint_live_order_2026-10-16.md.
+SITE_FOR = {"explosivegrowth": "calm"}
+
+
 def o_site(c):
     import test_site_saves as TS
-    key = c.biome.lower()
+    key = SITE_FOR.get(c.biome.lower(), c.biome.lower())
     if key not in TS.SITES:
         return Row("O-SITE", UNMEASURED, "no saved site declared for %s in test_site_saves.SITES" % c.biome)
     reg = TS.read_registry().get(key)
