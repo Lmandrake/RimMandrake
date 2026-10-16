@@ -508,7 +508,8 @@ class PulseOracle(object):
     def _level_regions(self, comp):
         """RM_FlowKernel.LevelWetRegions (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND): per connected wet region of one
         fluid (not held by creep), move a unit from the highest surface to the lowest surface among the region and its
-        dug rim while they differ by 2+; each cell gives <= per and takes <= per in this pass. Donor ties: lowest
+        dug rim while they differ by 2+; each cell gives <= per and takes <= per in this pass, never a region cell's
+        last unit (so the region stays connected through wet squares). Donor ties: lowest
         index; taker ties: deepest bed, then lowest index. Regions in order of their lowest cell index."""
         per = self.per
         surf = lambda c: self.F[c] - self.D[c]
@@ -543,7 +544,7 @@ class PulseOracle(object):
                     rim.add(n)
             rset = set(region)
             while True:
-                donors = [c for c in region if self.F[c] > 0 and gave.get(c, 0) < per]
+                donors = [c for c in region if self.F[c] >= 2 and gave.get(c, 0) < per]   # never its last unit here
                 takers = [c for c in list(rset) + sorted(rim, key=self.idx)
                           if self.F[c] < self.D[c] and got.get(c, 0) < per]
                 if not donors or not takers:

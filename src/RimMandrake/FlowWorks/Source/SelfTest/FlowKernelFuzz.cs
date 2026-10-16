@@ -666,8 +666,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 			string endB = SurfaceRun(b, 50, out _, out float worstB, out _);
 			string oldB = SurfaceRun(SurfaceRow(new[] { 3, 4 }, new[] { 1, 3 }, false), 50, out _, out _, out _);
 			bool okB = endB == "1,3" && oldB == "0,4" && worstB <= 0.001f;
-			string line = $"(a) trench+hole F={endA} step {stepA} rest {settledA}; (b) 1/3 beside 3/4: surface {endB}, old rule {oldB}";
-			return (okA && okB ? "OK: " : "BROKEN: ") + line;
+			// (c) review finding: pit 3/4 | channel 1/1 | empty pit 0/4. The channel's one unit goes to a pit and the channel
+			// runs dry; the first pit must never be drawn below the channel floor (-1, i.e. F &lt; 3) through that dry square
+			// (a "wet region" that outlived its connector mid-pass did exactly that).
+			var c = SurfaceRow(new[] { 4, 1, 4 }, new[] { 3, 1, 0 }, true);
+			string endC = SurfaceRun(c, 50, out _, out float worstC, out _);
+			bool okC = (endC == "3,0,1" || endC == "4,0,0") && worstC <= 0.001f;
+			string line = $"(a) trench+hole F={endA} step {stepA} rest {settledA}; (b) 1/3 beside 3/4: surface {endB}, old rule {oldB}; (c) 3/4|1/1|0/4 -> {endC}";
+			return (okA && okB && okC ? "OK: " : "BROKEN: ") + line;
 		}
 
 		/// <summary>A limitless pond feeding a D=2 run still fills it full, mouth first (creep on), ledger balanced.</summary>
@@ -687,14 +693,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return (ok ? "OK: " : "BROKEN: ") + $"after 1 pulse {first}, after 80 {end}, worst imbalance {worst:F3}";
 		}
 
-		/// <summary>300 seeded random 8x8 scenes (random digs D1..4, random fills, optional sink band, optional LIMITED pond):
+		/// <summary>1000 seeded random 8x8 scenes (random digs D1..4, random fills, optional sink band, optional LIMITED pond):
 		/// with levelBySurface on, each conserves (fill + pond stock + sink drain constant, ledger balanced every pulse)
 		/// and is at rest by pulse 200 (identical F for the last 50 pulses: no shuttle of any period); in a sinkless scene no
 		/// wet cell ends 2+ units of surface above a dug neighbour.</summary>
 		public static string SurfaceRandomScenesSettleAndConserve()
 		{
 			var rng = new Random(20261016);
-			int notAtRest = 0, unbalanced = 0, steep = 0, total = 300;
+			int notAtRest = 0, unbalanced = 0, steep = 0, total = 1000;
 			string firstBad = null;
 			for (int t = 0; t < total; t++)
 			{
