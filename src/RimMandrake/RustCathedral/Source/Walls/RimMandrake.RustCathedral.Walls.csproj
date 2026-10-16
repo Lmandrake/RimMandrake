@@ -3,7 +3,7 @@
   <!--
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
     the mod DLL must target net472. Same shape as
-    src/RimUtinni/PlantGrowth/Source/JawaPlantGrowth.csproj (Harmony
+    src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowth.csproj (Harmony
     reference) and src/RimUtinni/LanternDeeps/Source/
     RimMandrake.Utinni.LanternDeeps.csproj (plain GenStep subclasses) —
     this mod needs both: two self-gating GenStep subclasses (no Harmony)

@@ -66,8 +66,9 @@ MUTATIONS = [
     ("EffectiveTop Tinder falls to None", "case 3: return tinder ? top : fallback;", "case 3: return tinder ? top : (byte)6;"),
     ("prune keeps entries due now", "if (kv.Value <= now) tmp.Add(kv.Key);", "if (kv.Value < now) tmp.Add(kv.Key);"),
     ("GrowthFactor ignores the plant", "if (!plantSoaks) return 1f;", ""),
-    ("SoakScope ignores home biome", "if (homeBiome) return ScopeHomeBiome;", ""),
-    ("SoakScope default soaks all", "            return ScopeOut;\n        }", "            return ScopeAllPlants;\n        }"),
+    ("AmbientBand wet beats terminator", "            if (terminatorBiome) return terminatorMult;\n            if (wetBiome) return tree ? wetTreeMult : wetMult;", "            if (wetBiome) return tree ? wetTreeMult : wetMult;\n            if (terminatorBiome) return terminatorMult;"),
+    ("AmbientBand ignores exempt", "if (!inScope || exempt) return 1f;", "if (!inScope) return 1f;"),
+    ("AmbientBand wet trees use the plant band", "if (wetBiome) return tree ? wetTreeMult : wetMult;", "if (wetBiome) return wetMult;"),
     ("PassDelta unclamped","Math.Min(Math.Max(now - lastPassTick, 1), PassInterval * 8)", "Math.Max(now - lastPassTick, 1)"),
 ]
 

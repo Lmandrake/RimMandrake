@@ -483,9 +483,10 @@ MODS = {
     }, ("broodGiftWeightMultipliers",)),
     "ExplosiveGrowth": ("ExplosiveGrowthMod.cs", "RM_ExplosiveGrowth.csproj", {
         "Mod switch": "Now",
+        "Everyday growth (no water needed)": "Now",
         "The soak": "Now",
         "Soak length": "NextPulse",
-        "Which plants soak": "Now",
+        "Where and which plants (everyday growth and the soak)": "Now",
         "The charge": "Now",
         "The tops (a disabled top falls back to the Churn)": "Now",
         "Player verbs": "Now",
@@ -716,11 +717,6 @@ MODS = {
     "LongHunger": ("LongHungerMod.cs", "LongHunger.csproj", {
         "Whether it surfaces": "NextPulse",
         "Eruption, tremors and salvage": "Now",
-    }, ()),
-    "PlantGrowth": ("PlantGrowthMod.cs", "JawaPlantGrowth.csproj", {
-        "Planetary fast growth": "Now",
-        "Growth multipliers": "Now",
-        "Plants left alone": "Now",
     }, ()),
     "ScavengerEvents": ("ScavengerEventsSettings.cs", "RimMandrake.Utinni.ScavengerEvents.csproj", {
         "Wildlife migration": "NextPulse",

@@ -32,24 +32,53 @@ namespace RimMandrake.ExplosiveGrowth
             Log.Message(string.Format(
                 "[RM ExplosiveGrowth] {0} plant defs soak (churn {1}, burst {2}, slime {3}, tinder {4}, rupture {5}, flush {6}), {7} never soak; " +
                 "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}. " +
-                "Scope (home mod {12}): opted in {13}, Baroque Biomes plants {14}, their biomes' wild flora {15}, " +
-                "by the all-plants option {16}{18}; {17} plants of other mods / the base game left out.",
+                "Everyday bands: {13} plant defs scaled, {14} left alone; {15} stalled and {16} wet biome(s) loaded. " +
+                "Scope (home mod {12}): {17} Baroque Biomes biome(s){18}.",
                 RM_ExplosiveGrowthRegistry.CountSoaking, t[0], t[1], t[2], t[3], t[4], t[5],
                 RM_ExplosiveGrowthRegistry.CountNone, RM_ExplosiveGrowthRegistry.RosterResolved,
                 RM_ExplosiveGrowthRegistry.RosterMissing, RM_ExplosiveGrowthRegistry.RupturePawnKinds.Count,
                 RM_ExplosiveGrowthRegistry.RuptureMutationHediffs.Count,
-                ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", RM_ExplosiveGrowthRegistry.ScopeOptIn,
-                RM_ExplosiveGrowthRegistry.ScopeHomePack, RM_ExplosiveGrowthRegistry.ScopeHomeBiome,
-                RM_ExplosiveGrowthRegistry.ScopeAllPlants, RM_ExplosiveGrowthRegistry.OutOfScope,
-                RM_ExplosiveGrowthRegistry.ScopeForcedBy != null ? " (forced on by roster " + RM_ExplosiveGrowthRegistry.ScopeForcedBy + ")" : ""));
+                ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", RM_ExplosiveGrowthRegistry.BandedCount,
+                RM_ExplosiveGrowthRegistry.BandExemptCount, RM_ExplosiveGrowthRegistry.TerminatorBiomeCount,
+                RM_ExplosiveGrowthRegistry.WetAmbientBiomeCount, RM_ExplosiveGrowthRegistry.HomeBiomes.Count,
+                RM_ExplosiveGrowthRegistry.ScopeForcedBy != null ? ", every biome by roster " + RM_ExplosiveGrowthRegistry.ScopeForcedBy
+                : ExplosiveGrowthSettings.applyInOtherBiomes ? ", every biome by the unsupported option" : " only"));
+        }
+    }
+
+    /// <summary>
+    /// The AMBIENT tier (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth, mandrake.rut.plantgrowth,
+    /// now part of this engine). Scales the COMPOSITE GrowthRate, so light, temperature, fertility and drought penalties
+    /// still apply and the stalled band genuinely comes out slower than vanilla. Exactly one band applies per plant
+    /// (kernel AmbientBand). Scope is the soak's scope: the map's biome (RM_ExplosiveGrowthRegistry.BiomeInScope). Runs
+    /// on every plant tick: one array read and three hash lookups, no allocation.
+    /// </summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Everyday growth bands", typeof(ExplosiveGrowthSettings), "bandsEnabled")]
+    public static class RM_Patch_Plant_GrowthRate_Bands
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Plant __instance, ref float __result)
+        {
+            if (__result <= 0f || !RM_ExplosiveGrowthRegistry.Ready || !ExplosiveGrowthSettings.BandsOn) return;
+            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
+            if (p == null || !p.banded) return;
+            // Scope is the map's biome (owner, 2026-10-16). Unspawned or held (caravan, pod, minified): no biome, so
+            // out of scope unless every biome is; then the normal band.
+            BiomeDef biome = __instance.Map?.Biome;
+            if (!RM_ExplosiveGrowthRegistry.BiomeInScope(biome)) return;
+            __result *= RM_ExplosiveGrowthKernel.AmbientBand(true, false,
+                RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome), RM_ExplosiveGrowthRegistry.IsWetAmbientBiome(biome), p.tree,
+                ExplosiveGrowthSettings.defaultMultiplier, ExplosiveGrowthSettings.treeMultiplier,
+                ExplosiveGrowthSettings.terminatorMultiplier, ExplosiveGrowthSettings.wetAmbientMultiplier,
+                ExplosiveGrowthSettings.wetAmbientTreeMultiplier);
         }
     }
 
     /// <summary>
     /// The EVENT tier (design doc §0): a soaked plant's composite GrowthRate is
-    /// multiplied again, on top of whichever ambient band another mod applied
-    /// (mandrake.rut.plantgrowth's x4 / x10 / x0.4). Postfix order between the
-    /// two does not matter — both multiply. This REPLACES FloodedCanyon's own
+    /// multiplied again, on top of the ambient band above (x4 / x10 / x0.4).
+    /// Postfix order between the two does not matter — both multiply. This REPLACES FloodedCanyon's own
     /// soak postfix (retired in the same change), so flooded ground is
     /// multiplied once, not twice.
     /// </summary>

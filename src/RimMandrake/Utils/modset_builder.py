@@ -355,25 +355,26 @@ TIERS = {
         "dlc": True,
     },
     "explosivegrowth": {
-        "why": "Live-verify EXPLOSIVE_PLANT_GROWTH_1 with its x10 wet-ambient band: the engine, composed in "
-               "Baroque Biomes (mandrake.rm.biomes) since EXPLOSIVE_GROWTH_MERGE_COMES_HOME, plus "
-               "mandrake.rut.plantgrowth (the band, and the campaign roster that opts the campaign's flora "
-               "into the soak). Biomes brings its own hard dependencies (Alpha Biomes and the rest). The old "
-               "standalone packageId is forbidden: it would load the engine twice.",
-        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.plantgrowth"],
-        "forbid": ["mandrake.rm.explosivegrowth"],
+        "why": "Live-verify EXPLOSIVE_PLANT_GROWTH_1 on the CAMPAIGN path: the engine (everyday bands, x10 in the wet "
+               "jungles, and the soak), composed in Baroque Biomes (mandrake.rm.biomes), plus the Utinni patch layer "
+               "mandrake.rut.patches, which carries the campaign roster (scopeAllBiomes, the RUT_ wet twins, the "
+               "PoisonForest stalled band) and RUT_BloomBurst. Biomes brings its own hard dependencies. The retired "
+               "standalone ids (mandrake.rm.explosivegrowth, and mandrake.rut.plantgrowth, absorbed by "
+               "PLANT_GROWTH_MERGE_NEVER_MEANT_APART) are forbidden: either would multiply growth twice.",
+        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches"],
+        "forbid": ["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
         "dlc": True,
     },
     "explosivegrowth_solo": {
         "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script on the smallest list that loads the engine: "
-               "since EXPLOSIVE_GROWTH_MERGE_COMES_HOME that is Baroque Biomes (mandrake.rm.biomes, which composes "
-               "it) with the bridge, and NOT mandrake.rut.plantgrowth, whose x4/x10 ambient bands multiply the same "
-               "Plant.GrowthRate the soak postfix multiplies (it cancels in a ratio but not in any absolute rate); "
-               "the RM-tier script must not depend on a campaign mod. The vanilla-plant checks run with the "
-               "suite's soakOtherModsPlants arm (vanilla plants are outside the default scope). Biomes brings "
-               "Alpha Biomes, so several donor tops can run here too. The old standalone packageId is forbidden.",
+               "that is Baroque Biomes (mandrake.rm.biomes, which composes it, everyday bands included since "
+               "PLANT_GROWTH_MERGE_NEVER_MEANT_APART) with the bridge, and no campaign layer: the RM-tier script must "
+               "not depend on one, and a campaign roster's scopeAllBiomes would hide the default biome scope. The "
+               "quicktest map's biome is outside that scope, so the suite runs under its test-only every-biome "
+               "override. Biomes brings Alpha Biomes, so several donor tops can run here too. The retired standalone "
+               "ids are forbidden.",
         "want": [BRIDGE, "mandrake.rm.biomes"],
-        "forbid": ["mandrake.rm.explosivegrowth"],
+        "forbid": ["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
         "dlc": True,
     },
     "fish": {
@@ -669,11 +670,12 @@ TIERS["biomes_sprint"] = {
            "ratchet_pilot's guards, so the pilot guards (M6) run on the same load. Phase 0 donors (Star Wars Animal "
            "Collection, Alpha Animals and its Outposts patch) are forbidden: a dependency dragging one back fails the "
            "plan. ExplosiveGrowth: %s." % (
-               "composed into mandrake.rm.biomes, standalone packageId forbidden" if _EG_FOLDED else
+               "composed into mandrake.rm.biomes with the everyday growth bands (the former mandrake.rut.plantgrowth, "
+               "absorbed 2026-10-16); both standalone packageIds forbidden" if _EG_FOLDED else
                "NOT yet folded (EXPLOSIVE_GROWTH_MERGE_COMES_HOME), so the standalone mandrake.rm.explosivegrowth loads"),
     "want": list(TIERS["ratchet_pilot"]["want"]) + ([] if _EG_FOLDED else ["mandrake.rm.explosivegrowth"]),
     "forbid": list(TIERS["ratchet_pilot"]["forbid"]) + ["sarg.alphaanimals", "daria40k.alphaanimalspatchoutposts"]
-              + (["mandrake.rm.explosivegrowth"] if _EG_FOLDED else []),
+              + (["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"] if _EG_FOLDED else []),
     "forbid_substr": list(TIERS["ratchet_pilot"]["forbid_substr"]),
     "dlc": True,
 }
@@ -1009,6 +1011,21 @@ DLC_IDS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimwor
            "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 
 
+_RETIRED = None
+
+
+def _retired_ids():
+    """{packageId: composed packageId} for every mod folded into or absorbed by mandrake.rm.biomes (read once)."""
+    global _RETIRED
+    if _RETIRED is None:
+        try:
+            import biomes_compose
+            _RETIRED = dict(biomes_compose.folded_ids(os.path.join(ROOT, "src")))
+        except Exception:      # a broken manifest must not hide the tier's own guards
+            _RETIRED = {}
+    return _RETIRED
+
+
 def tier_guard(tier, pids):
     """Refusals for a resolved tier list (empty = fine). A tier's `forbid` ids and
     `forbid_substr` fragments must be absent from the dependency CLOSURE, not just
@@ -1020,6 +1037,12 @@ def tier_guard(tier, pids):
     for f in tier.get("forbid", ()):
         if f.lower() in pids:
             out.append("forbidden mod in closure: %s" % f)
+    # Every tier: a packageId folded into (or absorbed by) Baroque Biomes would load its defs and types a second
+    # time beside the composed copy (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: "forbidden in every modset tier").
+    named = {f.lower() for f in tier.get("forbid", ())}
+    for f in sorted(_retired_ids()):
+        if f in pids and f not in named:
+            out.append("retired packageId in closure (folded into %s): %s" % (_retired_ids()[f], f))
     for frag in tier.get("forbid_substr", ()):
         hit = [p for p in pids if frag.lower() in p]
         if hit:

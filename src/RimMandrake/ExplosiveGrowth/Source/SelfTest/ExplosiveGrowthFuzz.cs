@@ -472,27 +472,22 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
         }
 
         // ════════════════════════ scope ════════════════════════
-        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME: exhaustive over the four inputs. In scope iff any input holds; the reason is
-        // the first that holds in the order opt-in, home pack, home biome, all-plants option; out of scope only when all
-        // four are false (so the option, default off, is the ONLY way a foreign plant with no opt-in soaks).
+        // PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the ambient bands. (The scope is now a biome, read at runtime against
+        // the DefDatabase; nothing Verse-free is left to fuzz there.)
         private static List<string> Scope()
         {
             var fails = new List<string>();
             try
             {
-                for (int m = 0; m < 16; m++)
+                // The ambient bands: exactly one applies, terminator beats wet beats default; exempt/out of scope = 1.
+                for (int m = 0; m < 32; m++)
                 {
-                    bool opt = (m & 1) != 0, pack = (m & 2) != 0, biome = (m & 4) != 0, all = (m & 8) != 0;
-                    byte got = RM_ExplosiveGrowthKernel.SoakScope(opt, pack, biome, all);
-                    byte want = opt ? RM_ExplosiveGrowthKernel.ScopeOptIn : pack ? RM_ExplosiveGrowthKernel.ScopeHomePack
-                              : biome ? RM_ExplosiveGrowthKernel.ScopeHomeBiome : all ? RM_ExplosiveGrowthKernel.ScopeAllPlants
-                              : RM_ExplosiveGrowthKernel.ScopeOut;
-                    Check(got == want, $"SoakScope(optIn {opt}, pack {pack}, biome {biome}, all {all}) = {got}, want {want}");
-                    Check((got == RM_ExplosiveGrowthKernel.ScopeOut) == (m == 0), $"scope flags {m}: out-of-scope must mean no input holds");
+                    bool sc = (m & 1) != 0, ex = (m & 2) != 0, term = (m & 4) != 0, wet = (m & 8) != 0, tree = (m & 16) != 0;
+                    float got = RM_ExplosiveGrowthKernel.AmbientBand(sc, ex, term, wet, tree, 4f, 2.5f, 0.4f, 10f, 6.25f);
+                    float want = (!sc || ex) ? 1f : term ? 0.4f : wet ? (tree ? 6.25f : 10f) : (tree ? 2.5f : 4f);
+                    Check(got == want, $"AmbientBand(scope {sc}, exempt {ex}, term {term}, wet {wet}, tree {tree}) = {got}, want {want}");
                     Cases++; Steps++;
                 }
-                Check(RM_ExplosiveGrowthKernel.SoakScope(false, false, false, false) == RM_ExplosiveGrowthKernel.ScopeOut,
-                      "a foreign plant with the option at its default (off) must not soak");
             }
             catch (Exception e) { fails.Add("scope: " + e.Message); }
             return fails;

@@ -22,7 +22,7 @@ live-verified.**
 | ×10 wet-ambient band (Greentide/Miasma/Fever Wood, ruling 6) — a fourth band on the existing PlantGrowth postfix, replacing ×4 there, trees ×6.25 (🄸 keeps the ruled 2.5:4 ratio) | `src/RimUtinni/PlantGrowth/` | `19b2f9496` |
 | The engine, new mod `mandrake.rm.explosivegrowth` (RM tier, no campaign names in code): sparse per-cell SOAKED + suppression grid (`RM_MapComponent_ExplosiveGrowth`), ×10 soak postfix on `Plant.GrowthRate` stacking on the ambient band, staged re-print of soaked wild plants (vanilla re-prints only cultivated plants per growth step — verified `Plant.TickLong`), overgrowth past natural size via `Plant.Print` prefix/finalizer scaling `visualSizeRange`, hue shift via `Plant.Graphic` postfix (Graphic_Single/Random only), the §2 tell ladder, the six tops, harvest jackpot (`YieldNow`), last-swing gamble (`PlantCollected`), soak routes, reflection API, BloomBurst worker, debug actions, full Mod Settings | `src/RimMandrake/ExplosiveGrowth/` | `5a91b3d46`, `5d246f7e5` |
 | FloodedCanyon's soak stub RETIRED (its x6 `RM_Patch_Plant_GrowthRate` + `soakUntilTick` deleted); the flood hands its cells to the engine by reflection (`RM_ExplosiveGrowthBridge`) | `src/RimMandrake/FloodedCanyon/` | `09ce6fb4e` |
-| Roster wired: RM-tier rows (AB_/RG_/vanilla/RM_) in the engine; campaign rows (RUT_/RSW_/SW donors), `noSoakBiomes` carve-outs and `RUT_BloomBurst` IncidentDef in `PlantGrowth/ExplosiveGrowth/`, loaded by `LoadFolders.xml` `IfModActive` only | both | `a3f1308ae` |
+| Roster wired: RM-tier rows (AB_/RG_/vanilla/RM_) in the engine; campaign rows (RUT_/RSW_/SW donors), `noSoakBiomes` carve-outs and `RUT_BloomBurst` IncidentDef, now in `src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth/` (moved from the retired PlantGrowth mod 2026-10-16) | both | `a3f1308ae` |
 | Greentide M10 grazing hook AND M2 dry-air blower wired to the suppression grid (reflection, no hard dep) | `src/RimMandrake/EnvironmentalHazards/` | `555df9b7b` |
 
 **The plant-variant shape** (for anyone wiring a plant): enum
@@ -127,9 +127,9 @@ is the only thing this pass closes.
    {soaked plants} × {re-print cadence} × {dynamic-draw cap}. Needs a live load. No
    density is promised until it exists.
 2. **Live proof of every mechanism** — nothing here has run in game. A load needs:
-   `mandrake.rm.explosivegrowth` added to the mod list (it is NOT in any list yet)
-   before `mandrake.rut.plantgrowth`; the startup log line `[RM ExplosiveGrowth] N plant
-   defs soak (churn…)` with roster rows resolved/absent; then the debug actions
+   `mandrake.rm.biomes` (which composes the engine, everyday bands included since
+   PLANT_GROWTH_MERGE_NEVER_MEANT_APART; `mandrake.rut.plantgrowth` is retired); the startup
+   log line `[RM ExplosiveGrowth] N plant defs soak (churn…)` with roster rows resolved/absent; then the debug actions
    (`RMExplosiveGrowth` → Soak 5x5 here / Charge all to 0.9 / Fire top here) to watch
    swell, hue, tremble, creak and each top.
 3. The **dynamic-draw close-up layer** (§5 option 2, smooth swelling + real tremble) —
@@ -143,7 +143,7 @@ is the only thing this pass closes.
 7. Roster micro-questions, INVENTED defaults used (roster "UNMEASURED"): hoarders are
    `NONE`; the extract overriding CHURN→BURST is unbuilt (no extract); irrigation in a
    ×10 biome soaks and stacks (§0/ruling 8 reading).
-9. Pre-existing, not this item's: PlantGrowth's terminator list names only
-   `PoisonForest`, not `RUT_PoisonForest`/`RM_PoisonForest`, and it does not exempt
+9. Pre-existing, not this item's: the campaign roster's `terminatorBiomes` (the former
+   PlantGrowth list) names only `PoisonForest`, not `RUT_`/`RM_Cauldron`, and nothing exempts
    `RUT_ExtremeDesert` from ×4 (deep_desert HARD BAN 4). The engine's soak carve-out
-   covers all four; the ambient band does not.
+   covers them; the everyday band does not. Open for the sprint's S0.

@@ -118,8 +118,9 @@ Harvest first. Then spawn.
   `Could not find type named`.** `harvest_log.py --show crossref` reads the actual
   lines. ⚠️ 70/70 species already spawn with the right xenotype — that half is
   **banked, do not redo it**. Only the crossref sweep is open.
-- **The `[JawaPlantGrowth]` startup line** (§5 L6 step 1). It is emitted once, at
-  startup, and it is the only positive evidence that assembly bound at all.
+- **The `[RM ExplosiveGrowth] ... Everyday bands:` startup line** (§5 L6 step 1; the former
+  `[JawaPlantGrowth]` line, absorbed into Baroque Biomes 2026-10-16). It is emitted once, at
+  startup, and it is the only positive evidence that the growth bands bound at all.
 
 ---
 

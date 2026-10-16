@@ -40,15 +40,14 @@ THE TOPS. Burst / Tinder / Slime / Rupture / Flush plants are roster rows naming
 `RG_` and Pyrelands (`RM_FE_`) plants: a chain whose donor def is not loaded probes for it and records
 UNMEASURED ("donor not loaded"). Churn, the default top, is proven with vanilla Rice.
 
-THE SCOPE (owner, 2026-10-16). By default only Baroque Biomes plants soak (its own plant defs, the wild
-flora of its biomes, and plants opted in by a nativeSoak roster or an extension); vanilla Rice/Bush/Corn
-are OUTSIDE it. So every chain that stages a vanilla plant first puts every plant in scope through the
-TEST-ONLY, never-Scribed override (`_suite_scope` -> RM_ExplosiveGrowthProof.ProofTestScopeAllOn), never
-by writing the player's `soakOtherModsPlants`: a run that dies part-way cannot leave the option on in a
-settings file. `scope_native_only` / `scope_option_extends` clear the override and prove the default and
-the real option (written, the table rebuilt by ProofRebuild since a field written by
-jawa/mod_settings_field never runs WriteSettings, then restored in a `finally`); `settings_restored`
-clears the override too.
+THE SCOPE IS A BIOME (owner, 2026-10-16, PLANT_GROWTH_MERGE_NEVER_MEANT_APART). The everyday bands
+(the former Jawa Plant Growth, now in this engine) and the soak run only on maps whose biome Baroque
+Biomes ships; a quicktest map's biome is rarely one. So every chain first puts every biome in scope
+through the TEST-ONLY, never-Scribed override (`_suite_scope` -> RM_ExplosiveGrowthProof.ProofTestScopeAllOn),
+never by writing the player's `applyInOtherBiomes`: a run that dies part-way cannot leave the option on in
+a settings file. `scope_native_only` clears the override and proves the default (a foreign biome is out of
+scope). The option's ON state has NO row, by the owner's ruling: "we won't test or support that."
+`settings_restored` clears the override too.
 
 A FAIL turns the rest of a chain UNMEASURED, so every independent proof has its OWN chain, and
 every settings arm restores the shipped default in a `finally` that bypasses the guard.
@@ -75,7 +74,7 @@ HARMONY_ID = "mandrake.rm.explosivegrowth"
 # field -> shipped default (ExplosiveGrowthMod.cs). The suite restores exactly these.
 DEFAULTS = [
     ("enabled", True), ("soakMultiplier", 10.0), ("defaultSoakHours", 24.0),
-    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True), ("soakOtherModsPlants", False),
+    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True), ("applyInOtherBiomes", False),
     ("irrigationSoakEnabled", True), ("gradientSurgeSoakEnabled", True), ("weatherSoakEnabled", True),
     ("chargeHours", 6.0), ("maxOvergrowthScale", 2.0), ("reprintIntervalTicks", 250),
     ("hueShiftEnabled", True), ("tellSoundsEnabled", True), ("groundTellEnabled", True),
@@ -83,6 +82,8 @@ DEFAULTS = [
     ("slimeEnabled", True), ("ruptureEnabled", True), ("ruptureMutationChance", 0.08),
     ("flushEnabled", True), ("harvestJackpotEnabled", True), ("lastSwingGambleEnabled", True),
     ("suppressionEnabled", True),
+    ("bandsEnabled", True), ("defaultMultiplier", 4.0), ("treeMultiplier", 2.5), ("terminatorMultiplier", 0.4),
+    ("wetAmbientMultiplier", 10.0), ("wetAmbientTreeMultiplier", 6.25), ("minGrowDaysToBoost", 1.0),
 ]
 DEFAULT_OF = dict(DEFAULTS)
 suite.toggles = [f for f, _ in DEFAULTS]
@@ -242,13 +243,13 @@ def _rebuild(t, method="ProofRebuild", unguarded=False):
     r = call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof",
                       method=method, args="current")
     text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
-    if _live(t) and "outOfScope=" not in text:
+    if _live(t) and "biomeInScope=" not in text:
         _unmeasured(t, "%s gave no scope read: %r" % (method, text[:200] or r))
     return dict(re.findall(r"(\w+)=([\w.\-/]+)", text)), text
 
 
 def _test_scope_all(t, on):
-    """Set the TEST-ONLY, never-Scribed every-plant override and rebuild; -> the scope read."""
+    """Set the TEST-ONLY, never-Scribed every-biome override and rebuild; -> the scope read."""
     if t.session is not None:
         t.session._eg_scope_all = None      # unknown until the read below confirms it
     v, raw = _rebuild(t, "ProofTestScopeAllOn" if on else "ProofTestScopeAllOff")
@@ -258,27 +259,9 @@ def _test_scope_all(t, on):
 
 
 def _suite_scope(t):
-    """Vanilla subjects are outside the default scope: every plant in scope for the suite (once per session)."""
+    """A quicktest map's biome is outside the default scope: every biome in scope for the suite (once per session)."""
     if t.session is not None and getattr(t.session, "_eg_scope_all", None) is not True:
         _test_scope_all(t, True)
-
-
-@contextlib.contextmanager
-def _real_option(t, value):
-    """The override off and the player's soakOtherModsPlants at `value`, the table rebuilt; ALWAYS restores the
-    shipped default (and rebuilds) afterwards. Yields the scope read."""
-    try:
-        _test_scope_all(t, False)
-        _put(t, "soakOtherModsPlants", value)
-        yield _rebuild(t)
-    finally:
-        if t.session is not None:
-            for what, step in (("put", lambda: _put(t, "soakOtherModsPlants", DEFAULT_OF["soakOtherModsPlants"])),
-                               ("rebuild", lambda: _rebuild(t, unguarded=True))):
-                try:                        # each step on its own: a failed put must not skip the rebuild
-                    step()
-                except Exception as e:      # never mask the body's own exception
-                    print("[eg] RESTORE FAILED soakOtherModsPlants (%s): %s" % (what, e), file=sys.stderr, flush=True)
 
 
 # ---- site
@@ -970,50 +953,61 @@ def burst_hurts_pawns(t):
 
 @suite.chain("scope_native_only")
 def scope_native_only(t):
-    """Option OFF (the shipped default): vanilla Plant_Rice is out of scope and never soaks; Baroque Biomes' own plants
-    do; the table leaves some foreign plants out and puts none in by the option. Can FAIL: a registry that ignored the
-    scope would report rice=True and outOfScope=0."""
-    with _comp(t, "default_soaks_baroque_biomes_plants_only", toggle="soakOtherModsPlants"):
-        with _real_option(t, False) as (v, raw):
+    """Option OFF (the shipped default), override cleared: a map whose biome Baroque Biomes does not ship is out of
+    scope (no soak, no band). Can FAIL: an engine that ignored the scope would read biomeInScope=True. The option's ON
+    state is deliberately untested (owner, 2026-10-16: "we won't test or support that")."""
+    with _comp(t, "default_runs_only_in_baroque_biomes_biomes", toggle="applyInOtherBiomes"):
+        try:
+            v, raw = _test_scope_all(t, False)
             _note(t, "scope_off", raw)
             if _live(t):
-                if v.get("riceLoaded") != "True":
-                    _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
                 if v.get("forcedBy", "none") != "none":
-                    _unmeasured(t, "SITE: roster %s forces every plant into scope (a campaign layer is loaded), so the "
+                    _unmeasured(t, "SITE: roster %s puts every biome in scope (a campaign layer is loaded), so the "
                                    "default scope cannot be seen on this list: %s" % (v.get("forcedBy"), raw))
                 if v.get("home", "NONE") != "mandrake.rm.biomes":
                     _fail("the engine's home mod is %r, not Baroque Biomes (mandrake.rm.biomes): it is not composed, "
                           "or a standalone copy loaded: %s" % (v.get("home"), raw))
-                if v.get("riceInHomeBiome") == "True":
-                    _unmeasured(t, "SITE: a Baroque Biomes biome lists Plant_Rice as wild flora, so rice is native and "
-                                   "cannot stand for a foreign plant: %s" % raw)
-                if v.get("rice") != "False":
-                    _fail("soakOtherModsPlants=false but vanilla Plant_Rice soaks: %s" % raw)
-                if int(v.get("homeSoaking", 0)) < 1:
-                    _fail("no Baroque Biomes plant def soaks (homePlants=%s): %s" % (v.get("homePlants"), raw))
-                if int(v.get("outOfScope", 0)) < 1 or int(v.get("allPlants", -1)) != 0:
-                    _fail("with the option off the table must leave foreign plants out (outOfScope>0) and admit none "
-                          "by the option (allPlants=0): %s" % raw)
+                if v.get("option") != "False":
+                    _unmeasured(t, "SITE: applyInOtherBiomes is on in this player's settings: %s" % raw)
+                if int(v.get("homeBiomes", 0)) < 1:
+                    _fail("no Baroque Biomes BiomeDef is in the scope table: %s" % raw)
+                if v.get("mapBiomeIsHome") == "True":
+                    _unmeasured(t, "SITE: the test map's biome (%s) is a Baroque Biomes biome, so it cannot stand for "
+                                   "a foreign one: %s" % (v.get("mapBiome"), raw))
+                if v.get("biomeInScope") != "False":
+                    _fail("option off, override off, foreign biome %s, yet biomeInScope=%s: %s"
+                          % (v.get("mapBiome"), v.get("biomeInScope"), raw))
+        finally:
+            if t.session is not None:
+                try:
+                    _test_scope_all(t, True)    # the rest of the suite stages on this foreign-biome map
+                except Exception as e:
+                    print("[eg] RESTORE FAILED test scope (on): %s" % e, file=sys.stderr, flush=True)
 
 
-@suite.chain("scope_option_extends")
-def scope_option_extends(t):
-    """Option ON: vanilla Plant_Rice soaks, nothing is left out of scope, and the option itself admitted plants."""
-    with _comp(t, "option_soaks_other_mods_and_base_game_plants", toggle="soakOtherModsPlants"):
-        with _real_option(t, True) as (v, raw):
-            _note(t, "scope_on", raw)
+# --------------------------------------------------------------------------- the everyday bands
+
+@suite.chain("bands_x4_default")
+def bands_x4_default(t):
+    """PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the everyday band (former Jawa Plant Growth) multiplies a non-tree
+    plant's growth x4 outside the wet and stalled biomes. Same plant, read with bandsEnabled on, then off."""
+    x, z = t.anchor
+    with _comp(t, "everyday_band_multiplies_growth_x4", toggle="bandsEnabled"):
+        _prep(t, 40)
+        _env_grows(t)
+        a = _place(t, SOAKER, x, z, 0.5)
+        r_on = _rate(t, a)
+        with _arm(t, bandsEnabled=False):
+            r_off = _rate(t, a)
+        v, raw = _rebuild(t)
+        _note(t, "bands_x4", {"rate_on": r_on, "rate_off": r_off, "scope": raw})
         if _live(t):
-            if v.get("riceLoaded") != "True":
-                _unmeasured(t, "Plant_Rice is not loaded: %s" % raw)
-            if v.get("forcedBy", "none") != "none" or v.get("riceInHomeBiome") == "True":
-                _unmeasured(t, "SITE: rice is in scope without the option (forcedBy=%s riceInHomeBiome=%s), so this "
-                               "list cannot show the option's effect: %s"
-                               % (v.get("forcedBy"), v.get("riceInHomeBiome"), raw))
-            if v.get("rice") != "True":
-                _fail("soakOtherModsPlants=true but vanilla Plant_Rice still does not soak: %s" % raw)
-            if int(v.get("outOfScope", -1)) != 0 or int(v.get("allPlants", 0)) < 1:
-                _fail("with the option on nothing may be left out of scope and the option must admit plants: %s" % raw)
+            if r_off <= 0:
+                _unmeasured(t, "SITE: the bush's GrowthRate is 0 with the bands off (night/cold/no fertility): %s" % r_off)
+            ratio = r_on / r_off
+            if abs(ratio - 4.0) > 0.8:
+                _fail("everyday band x%.2f, expected x4 (rate %s on, %s off; a wet or stalled test biome changes "
+                      "the band: %s)" % (ratio, r_on, r_off, v.get("mapBiome")))
 
 
 # --------------------------------------------------------------------------- settings round trip
@@ -1032,6 +1026,12 @@ FLIPS = [
     ("ruptureMutationChance", 0.08, 0.2),    # statistical, needs Contagion hediffs + a pawn in the cloud
     ("harvestJackpotEnabled", True, False),  # needs a harvesting pawn (YieldNow)
     ("lastSwingGambleEnabled", True, False),  # needs a cutting pawn, random (PlantCollected)
+    ("treeMultiplier", 2.5, 3.0),            # everyday band: trees (the x4 row proves the band path)
+    ("terminatorMultiplier", 0.4, 0.5),      # needs a stalled biome (PoisonForest), not on the solo tier
+    ("wetAmbientMultiplier", 10.0, 8.0),     # needs a wet biome map (Greentide/Miasma/Fever Wood)
+    ("wetAmbientTreeMultiplier", 6.25, 5.0),
+    ("defaultMultiplier", 4.0, 3.0),
+    ("minGrowDaysToBoost", 1.0, 2.0),        # registry rebuild only on WriteSettings/startup
 ]
 
 
@@ -1161,7 +1161,7 @@ def probe_tell_scale_off(t):
 @suite.chain("settings_restored")
 def settings_restored(t):
     """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run). The suite's
-    own scope arm (soakOtherModsPlants on) is undone here first, with a table rebuild."""
+    own scope arm (the test-only every-biome override) is undone here first, with a table rebuild."""
     with _comp(t, "all_settings_at_shipped_defaults"):
         cleared, clear_err = {}, None
         if t.session is not None:

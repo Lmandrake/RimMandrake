@@ -112,6 +112,12 @@ def folded_ids(src_root):
             continue
         if pid and pid != target:
             out[pid] = target
+    # A mod ABSORBED into a member's code (no folder of its own left, e.g. mandrake.rut.plantgrowth, fused into the
+    # ExplosiveGrowth engine by PLANT_GROWTH_MERGE_NEVER_MEANT_APART): its packageId is retired the same way.
+    for pid in m.get("absorbed", ()):
+        pid = (pid or "").strip().lower()
+        if pid and pid != target:
+            out[pid] = target
     return out
 
 

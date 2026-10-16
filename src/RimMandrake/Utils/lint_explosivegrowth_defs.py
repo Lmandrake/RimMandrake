@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline lint of ExplosiveGrowth (mandrake.rm.explosivegrowth) and its campaign half (src/RimUtinni/PlantGrowth).
+"""Offline lint of ExplosiveGrowth (composed in mandrake.rm.biomes) and its campaign half (src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth).
 
 First the generic mod lint (lint_mod_defs.py: class/field/driver/GetNamed/DefOf/settings/compile-listed/wired), then the
 data checks the generic lint cannot see because the roster is one Def holding string lists:
@@ -55,7 +55,7 @@ def main(argv):
     mod = os.path.join(SRC, "RimMandrake", "ExplosiveGrowth")
     if "--mod-dir" in argv:
         mod = argv[argv.index("--mod-dir") + 1]
-    camp = os.path.join(SRC, "RimUtinni", "PlantGrowth")
+    camp = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Defs", "ExplosiveGrowth")
     errs, warns = [], []
     E = lambda c, m: errs.append(f"ERROR {c}: {m}")
     W = lambda c, m: warns.append(f"WARN  {c}: {m}")
@@ -64,7 +64,7 @@ def main(argv):
     gt = open(os.path.join(mod, "Source", "RM_GrowthTop.cs"), encoding="utf-8-sig").read()
     enum = {n: int(v) for n, v in re.findall(r"^\s*(\w+)\s*=\s*(\d+)\s*,", gt.split("enum RM_GrowthTop")[1].split("}")[0], flags=re.M)}
     top_names = set(enum)
-    rosters = glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True) + glob.glob(os.path.join(camp, "**", "Defs", "**", "*.xml"), recursive=True)
+    rosters = glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True) + glob.glob(os.path.join(camp, "**", "*.xml"), recursive=True)
     nrows = nroster = nplausible = 0
     exempt_all, rows_by_roster = set(), {}
     for p in sorted(rosters):

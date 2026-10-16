@@ -57,8 +57,8 @@ namespace RimMandrake.ExplosiveGrowth
     /// the plant by string, so an absent donor is skipped silently rather than
     /// eating the def (a modExtension patched onto a def whose mod is missing
     /// is exactly the silent-discard trap this repo keeps hitting).
-    /// A modExtension wins over any roster row, and it also puts the plant in the
-    /// soak's native scope (it is an explicit opt-in by the plant's owner).
+    /// A modExtension wins over any roster row. It assigns the top only; where the
+    /// plant soaks is decided by the map's biome (RM_ExplosiveGrowthRegistry.BiomeInScope).
     /// </summary>
     public class RM_ExplosiveGrowthExtension : DefModExtension
     {
@@ -97,19 +97,11 @@ namespace RimMandrake.ExplosiveGrowth
     {
         public List<RM_ExplosiveGrowthRosterEntry> plants = new List<RM_ExplosiveGrowthRosterEntry>();
 
-        /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME: true puts every plant this roster's rows name INTO the soak's
-        /// native scope (as an RM_ExplosiveGrowthExtension does). False (the default) only assigns tops: the rows
-        /// then matter for plants already in scope (Baroque Biomes' own and their biomes' wild flora) or for every
-        /// plant once the player turns on "soak other mods' and base-game plants". A campaign layer whose world is
-        /// its own flora (the Utinni roster) sets it.</summary>
-        public bool nativeSoak;
-
-        /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME: true puts EVERY plant in the soak's scope while this roster is
-        /// loaded, exactly as the player's "soak other mods' and base-game plants" option does, and that option then has
-        /// no effect. For a campaign layer whose whole world is the game (owner, 2026-10-16: the option is "irrelevant in
-        /// Utinni"): its twins of our biomes are its own BiomeDefs, whose donor flora would otherwise fall outside the
-        /// Baroque Biomes scope. A plain content mod must not set it.</summary>
-        public bool scopeAllPlants;
+        /// <summary>True puts EVERY biome in scope (everyday bands and the soak) while this roster is loaded, exactly as
+        /// the player's unsupported "other biomes" option does, and that option then has no effect. For a campaign layer
+        /// whose whole world is the game (owner, 2026-10-16: the option is "irrelevant in Utinni"): its twins of our
+        /// biomes are its own BiomeDefs, outside Baroque Biomes. A plain content mod must not set it.</summary>
+        public bool scopeAllBiomes;
 
         /// <summary>R-G5: plants whose slowness is a mechanic. Never soak.</summary>
         public List<string> exemptPlants = new List<string>();
@@ -133,5 +125,19 @@ namespace RimMandrake.ExplosiveGrowth
         /// §1 "hit by a qualifying rain"). Empty by default — the one ruled
         /// rain route (red_water / Contagion rain) has no WeatherDef yet.</summary>
         public List<string> soakWeathers = new List<string>();
+
+        // ── the ambient bands (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth) ──
+
+        /// <summary>Biomes where growth has STALLED: in-scope plants there run the terminator band (below 1.0) instead
+        /// of the default band. Names, not references: an absent biome is skipped.</summary>
+        public List<string> terminatorBiomes = new List<string>();
+
+        /// <summary>The always-on wet jungles (ruling 6, 2026-09-21): in-scope plants there run the wet band (x10, trees
+        /// x6.25) INSTEAD of the default band, never on top of it.</summary>
+        public List<string> wetAmbientBiomes = new List<string>();
+
+        /// <summary>Plants the ambient bands leave alone in every biome (their slowness is the point). Separate from
+        /// exemptPlants, which only stops the soak; the vanilla anima/gauranlen/ambrosia trio is built in for both.</summary>
+        public List<string> bandExemptPlants = new List<string>();
     }
 }

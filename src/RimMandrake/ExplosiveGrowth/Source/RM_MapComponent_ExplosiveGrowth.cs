@@ -337,14 +337,14 @@ namespace RimMandrake.ExplosiveGrowth
         private string Report()
         {
             return string.Format("soaked={0} charging={1} suppressed={2} ruptures={3} biomeRefusesSoak={4} registry: soaking={5} none={6} rosterRows resolved={7} missing={8}"
-                + " scope: optIn={9} homePack={10} homeBiome={11} allPlants={12} outOfScope={13} mechanicsOn={14}",
+                + " scope: biomeInScope={9} homeBiomes={10} forcedBy={11} banded={12} bandsOn={13} mechanicsOn={14}",
                 ledger.soakUntil.Count, ledger.charges.Count, ledger.suppressedUntil.Count, ruptures.Count,
                 RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome),
                 RM_ExplosiveGrowthRegistry.CountSoaking, RM_ExplosiveGrowthRegistry.CountNone,
                 RM_ExplosiveGrowthRegistry.RosterResolved, RM_ExplosiveGrowthRegistry.RosterMissing,
-                RM_ExplosiveGrowthRegistry.ScopeOptIn, RM_ExplosiveGrowthRegistry.ScopeHomePack,
-                RM_ExplosiveGrowthRegistry.ScopeHomeBiome, RM_ExplosiveGrowthRegistry.ScopeAllPlants,
-                RM_ExplosiveGrowthRegistry.OutOfScope, ExplosiveGrowthSettings.On);
+                RM_ExplosiveGrowthRegistry.BiomeInScope(map.Biome), RM_ExplosiveGrowthRegistry.HomeBiomes.Count,
+                RM_ExplosiveGrowthRegistry.ScopeForcedBy ?? "none", RM_ExplosiveGrowthRegistry.BandedCount,
+                ExplosiveGrowthSettings.BandsOn, ExplosiveGrowthSettings.On);
         }
 
         public override void ExposeData()

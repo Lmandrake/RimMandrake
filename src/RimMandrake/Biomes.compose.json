@@ -9,8 +9,10 @@
     "'entries' ORDER IS THE LoadFolders.xml ORDER, after the root '/'. Engines first (spec §3: their static ctors run first), biomes alphabetical by key, sea/sand kits last (spec §2).",
     "MEASURED from decompiled 1.6 (ModContentPack.InitLoadFolders + DirectXmlLoader.XmlAssetsInModFolder): Defs/ and Patches/ are read in REVERSE LoadFolders order, and a relative path already seen in a later-listed root SHADOWS the same relative path in an earlier one (TryAdd). Assemblies/ load in LoadFolders order, deduped by relative path. So every shipped relative path must be unique across entries — the compose verb refuses otherwise.",
     "wave 2 = everything currently on the owner's live ModsConfig (measured 2026-09-27 from the live file, not the spec's snapshot): the spec's on-list 12, plus BlueDesert, CreatureBehaviors, EnvironmentalHazards, LanternDeeps and MovingDunes, which are ALL active on the live list. Folding any of them before the wave-2 swap would put its defs and types in the game twice.",
-    "ExplosiveGrowth joined wave 2 on 2026-10-16 (EXPLOSIVE_GROWTH_MERGE_COMES_HOME, owner: 'Yes, Explosive Plant Growth should move into Baroque Biomes'). It sits BEFORE EnvironmentalHazards: that kit and FloodedCanyon reference its assembly directly (ExplosiveGrowthAPI), and Assemblies/ load in LoadFolders order. Its standalone packageId mandrake.rm.explosivegrowth must leave the live ModsConfig at the same deploy, or its defs and types load twice (deploy_custom_mods.py --compose warns)."
+    "ExplosiveGrowth joined wave 2 on 2026-10-16 (EXPLOSIVE_GROWTH_MERGE_COMES_HOME, owner: 'Yes, Explosive Plant Growth should move into Baroque Biomes'). It sits BEFORE EnvironmentalHazards: that kit and FloodedCanyon reference its assembly directly (ExplosiveGrowthAPI), and Assemblies/ load in LoadFolders order. Its standalone packageId mandrake.rm.explosivegrowth must leave the live ModsConfig at the same deploy, or its defs and types load twice (deploy_custom_mods.py --compose warns).",
+    "Jawa Plant Growth (mandrake.rut.plantgrowth) was ABSORBED into the ExplosiveGrowth member's code on 2026-10-16 (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, owner: 'those mods are fusing! They were never meant to be apart'): its everyday growth bands are that engine's, its campaign roster and RUT_BloomBurst moved to UtinniPatches (Defs/ExplosiveGrowth/). 'absorbed' lists retired packageIds with no folder of their own: biomes_compose.folded_ids treats them as folded, so the compose plan warns while one is still active (both postfixes would multiply: x16)."
   ],
+  "absorbed": ["mandrake.rut.plantgrowth"],
   "target": "RimMandrake.Biomes",
   "compose_wave": 2,
   "about": {
@@ -26,7 +28,7 @@
   },
   "entries": [
     {"key": "CreatureBehaviors", "source": "CreatureBehaviors", "group": "engine", "wave": 2, "label": "Creature Behaviors", "blurb": "Shared creature-AI engine (hunting, lairs, swarms) that many biomes' fauna ride on."},
-    {"key": "ExplosiveGrowth", "source": "ExplosiveGrowth", "group": "engine", "wave": 2, "label": "Explosive Plant Growth", "blurb": "Soaked plants grow where you can watch them, swell past natural size and reach a top. Baroque Biomes plants only, unless its own settings extend it."},
+    {"key": "ExplosiveGrowth", "source": "ExplosiveGrowth", "group": "engine", "wave": 2, "label": "Plant Growth (everyday and explosive)", "blurb": "Plants grow fast every day (x4, x10 in the wet jungles); soaked plants grow where you can watch them, swell past natural size and reach a top. In Baroque Biomes' own biomes only, unless its own (unsupported) option extends it."},
     {"key": "EnvironmentalHazards", "source": "EnvironmentalHazards", "group": "engine", "wave": 2, "label": "Environmental Hazards", "blurb": "Shared hazard engine: configurable terrain, gas and weather mechanics used across biomes."},
     {"key": "Wreckage", "source": "Wreckage", "group": "engine", "wave": 2, "label": "Wreckage", "blurb": "Shared wreck engine: careful salvage of a wreck gives a tiered loot roll that skill improves."},
 

@@ -141,7 +141,7 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         /// <summary>EXPLOSIVE_GROWTH_MERGE_COMES_HOME. A field written through jawa/mod_settings_field does not run
-        /// WriteSettings, so a registry-affecting setting (soakOtherModsPlants, minGrowDaysToSoak, cavePlantsNeverSoak)
+        /// WriteSettings, so a registry-affecting setting (minGrowDaysToSoak, minGrowDaysToBoost, cavePlantsNeverSoak)
         /// only takes effect after this rebuild. Returns the same read as ProofScope.</summary>
         public static string ProofRebuild(Map map)
         {
@@ -149,8 +149,8 @@ namespace RimMandrake.ExplosiveGrowth
             return ProofScope(map);
         }
 
-        /// <summary>TEST-ONLY: put every plant in scope (RM_ExplosiveGrowthRegistry.TestScopeAll, never Scribed) and
-        /// rebuild, so the suite can stage vanilla subjects without writing the player's soakOtherModsPlants.</summary>
+        /// <summary>TEST-ONLY: put every biome in scope (RM_ExplosiveGrowthRegistry.TestScopeAll, never Scribed) and
+        /// rebuild, so the suite can stage on a quicktest map without writing the player's applyInOtherBiomes.</summary>
         public static string ProofTestScopeAllOn(Map map)
         {
             return SetTestScopeAll(map, true);
@@ -175,31 +175,22 @@ namespace RimMandrake.ExplosiveGrowth
             return ProofScope(map);
         }
 
-        /// <summary>The soak's native scope as the live plant table holds it: does vanilla Plant_Rice soak, is it one of
-        /// the home biomes' wild plants (then it is native and the off-arm cannot test it), how many of the home mod's
-        /// own plant defs soak, and the scope counters.</summary>
+        /// <summary>The scope as the live engine holds it (owner, 2026-10-16: a BIOME scope): is this map's biome in
+        /// scope, is it one of Baroque Biomes' own biomes (then the default-off arm cannot be seen here), how many home
+        /// biomes loaded, and what forces every biome in.</summary>
         public static string ProofScope(Map map)
         {
-            ModContentPack home = ExplosiveGrowthMod.Home;
-            ThingDef rice = DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Rice");
-            int homePlants = 0, homeSoaking = 0;
-            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
-            {
-                if (d.plant == null || home == null || d.modContentPack != home) continue;
-                homePlants++;
-                if (RM_ExplosiveGrowthRegistry.For(d)?.Soaks == true) homeSoaking++;
-            }
-            return "home=" + (home?.PackageId ?? "NONE")
-                   + " option=" + ExplosiveGrowthSettings.soakOtherModsPlants
+            BiomeDef biome = map?.Biome;
+            return "home=" + (ExplosiveGrowthMod.Home?.PackageId ?? "NONE")
+                   + " option=" + ExplosiveGrowthSettings.applyInOtherBiomes
                    + " forcedBy=" + (RM_ExplosiveGrowthRegistry.ScopeForcedBy ?? "none")
                    + " testScopeAll=" + RM_ExplosiveGrowthRegistry.TestScopeAll
-                   + " rice=" + (rice != null && RM_ExplosiveGrowthRegistry.For(rice)?.Soaks == true)
-                   + " riceLoaded=" + (rice != null)
-                   + " riceInHomeBiome=" + (rice != null && RM_ExplosiveGrowthRegistry.HomeBiomePlants.Contains(rice))
-                   + " homePlants=" + homePlants + " homeSoaking=" + homeSoaking
-                   + " optIn=" + RM_ExplosiveGrowthRegistry.ScopeOptIn + " homePack=" + RM_ExplosiveGrowthRegistry.ScopeHomePack
-                   + " homeBiome=" + RM_ExplosiveGrowthRegistry.ScopeHomeBiome + " allPlants=" + RM_ExplosiveGrowthRegistry.ScopeAllPlants
-                   + " outOfScope=" + RM_ExplosiveGrowthRegistry.OutOfScope;
+                   + " mapBiome=" + (biome?.defName ?? "NONE")
+                   + " mapBiomeIsHome=" + (biome != null && RM_ExplosiveGrowthRegistry.HomeBiomes.Contains(biome))
+                   + " biomeInScope=" + RM_ExplosiveGrowthRegistry.BiomeInScope(biome)
+                   + " homeBiomes=" + RM_ExplosiveGrowthRegistry.HomeBiomes.Count
+                   + " soaking=" + RM_ExplosiveGrowthRegistry.CountSoaking
+                   + " banded=" + RM_ExplosiveGrowthRegistry.BandedCount;
         }
     }
 }

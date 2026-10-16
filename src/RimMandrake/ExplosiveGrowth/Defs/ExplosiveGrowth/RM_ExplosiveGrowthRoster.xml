@@ -5,18 +5,16 @@
     EXPLOSIVE_PLANT_GROWTH_1 — the RM-tier roster: only plants and content this
     tier (or vanilla/DLC, or a gated donor looked up by name) owns. The
     campaign's own rows (RUT_/RSW_/donor flora the frozen world rosters) ship
-    in mandrake.rut.plantgrowth, loaded only when this mod is active.
+    in the Utinni patch layer (mandrake.rut.patches, Defs/ExplosiveGrowth/).
 
     Source of every assignment: design/RimUtinni/explosive_plant_growth_roster.md
     (regenerated 2026-09-21 against ruling 4, water scarcity decides). CHURN is
     the default and is never listed. A row naming a plant that is not loaded is
     skipped silently and counted in the startup log line.
 
-    SCOPE (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): this roster is NOT nativeSoak, so
-    its rows only assign TOPS. A row's plant soaks only when it is already in the
-    native scope (shipped by Baroque Biomes, or wild flora of one of its biomes —
-    e.g. the Contagion's AB_ rupture flora) or when the player turns on "Also soak
-    plants from other mods and the base game".
+    SCOPE (owner, 2026-10-16): a BIOME scope. Rows only assign TOPS; any plant
+    growing on a map whose biome Baroque Biomes ships runs the everyday bands and
+    can soak. An unsupported option (off) extends both to every biome.
 
     ⛔ No biome decides a top. noSoakBiomes is the soak CARVE-OUT only
     (design doc §3) and is empty here: the RM tier names no campaign biome.
@@ -206,6 +204,24 @@
     </irrigationFluids>
 
     <soakWeathers />
+
+    <!-- EVERYDAY BANDS (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, the former Jawa
+         Plant Growth). The wet jungles run x10 (trees x6.25) INSTEAD of x4
+         (ruling 6, 2026-09-21; the Rot excluded by his word). No RM-tier biome is
+         a stalled (terminator) biome; the campaign roster names its own. -->
+    <wetAmbientBiomes>
+      <li>RM_Greentide</li>
+      <li>RM_Miasma</li>
+      <li>RM_FeverWood</li>
+    </wetAmbientBiomes>
+    <!-- BLUE_DESERT_LIFE_AUTHORING_1 (brief §6a): their growDays (6/9/12)
+         already assume vanilla rate ("without the polar water molecule,
+         transport and chemistry are simply less efficient"); x4 would erase it. -->
+    <bandExemptPlants>
+      <li>RM_Palefloss</li>
+      <li>RM_Glassfern</li>
+      <li>RM_Chimeglobe</li>
+    </bandExemptPlants>
   </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
 
 </Defs>

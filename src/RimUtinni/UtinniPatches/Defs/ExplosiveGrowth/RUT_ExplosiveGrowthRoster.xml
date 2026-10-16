@@ -4,16 +4,18 @@
   <!--
     EXPLOSIVE_PLANT_GROWTH_1 — the CAMPAIGN half of the roster: the RUT_ and
     RSW_ plants and the Star Wars donor flora the frozen world rosters carry.
-    Loaded only when mandrake.rm.biomes (which carries the engine) is active
-    (LoadFolders.xml), so this mod never hard-depends on it. The RM-tier half
-    (AB_/RG_/vanilla/RM_ rows) ships with the engine.
+    Ships in the Utinni patch layer (mandrake.rut.patches), which hard-depends
+    on mandrake.rm.biomes (the engine's home). Moved here from the retired
+    mandrake.rut.plantgrowth (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, 2026-10-16).
+    The RM-tier half (AB_/RG_/vanilla/RM_ rows) ships with the engine.
 
-    scopeAllPlants (EXPLOSIVE_GROWTH_MERGE_COMES_HOME): the engine soaks only
-    Baroque Biomes plants by default, with a player option to extend it to every
-    plant. The owner called that option "irrelevant in Utinni": this campaign's
-    world IS the game, and its RUT_ twins of our biomes (UtinniPatches BiomeDefs)
-    carry donor flora outside the Baroque Biomes scope. So while this roster is
-    loaded every plant is in scope (exemptions still apply) and the option is moot.
+    scopeAllBiomes: the engine (everyday bands and the soak) runs only in Baroque
+    Biomes' own biomes by default, with an unsupported option for every biome.
+    The owner called that option "irrelevant in Utinni": this campaign's world IS
+    the game, and its RUT_ twins of our biomes are UtinniPatches BiomeDefs outside
+    Baroque Biomes. So while this roster is loaded every biome is in scope
+    (exemptions still apply) and the option is moot. This is the former Jawa
+    Plant Growth's "every plant from every mod", unchanged for the campaign.
 
     Source: design/RimUtinni/explosive_plant_growth_roster.md, regenerated
     2026-09-21 against ruling 4 (water scarcity decides). CHURN is the default
@@ -24,7 +26,7 @@
   -->
   <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
     <defName>RUT_ExplosiveGrowthRoster_Campaign</defName>
-    <scopeAllPlants>true</scopeAllPlants>
+    <scopeAllBiomes>true</scopeAllBiomes>
 
     <plants>
       <!-- BURST — dry-adapted: one chance in years, spent all at once. -->
@@ -79,6 +81,21 @@
       <li>RUT_Cauldron</li>  <!-- CAULDRON_FULL_RENAME_1 (2026-09-30): RUT_PoisonForest -> RUT_Cauldron -->
       <li>RUT_ExtremeDesert</li>
     </noSoakBiomes>
+
+    <!-- EVERYDAY BANDS, campaign half (shipped values of the former
+         JawaPlantGrowthSettings.xml, unchanged). The stalled (terminator) band:
+         PoisonForest (Advanced Biomes) is the only confirmed member; whether the
+         RUT_/RM_ Cauldron and RUT_ExtremeDesert belong here is open for the
+         sprint's S0 (kickoff §1.4 X1). -->
+    <terminatorBiomes>
+      <li>PoisonForest</li>
+    </terminatorBiomes>
+    <!-- Ruling 6 (2026-09-21): the campaign twins of the three wet jungles. -->
+    <wetAmbientBiomes>
+      <li>RUT_Greentide</li>
+      <li>RUT_Miasma</li>
+      <li>RUT_FeverWood</li>
+    </wetAmbientBiomes>
   </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
 
 </Defs>
