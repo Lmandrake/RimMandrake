@@ -50,6 +50,14 @@ case((v[0], "no cell" in v[2].get("why", "")), ("FAIL", True), "counted but unpl
 case(LC.spill_verdict(L, L, 0, 0, 0, 0, 0)[0], "FAIL", "hose kept its liquid after the cap")
 case(LC.spill_verdict(0, 0, 0, 0, 0, 0, 0)[0], "UNMEASURED", "hose held nothing before the cap")
 case(LC.spill_verdict(L, 0, L, None, 3, 0, 0)[0], "UNMEASURED", "filth unreadable")
+case(LC.spill_verdict(L, 0, 10000, 1, 4, 0, 0, expected=3)[0], "PASS", "the 2026-10-16b trace: one filth thickened 1 -> 4 by 3 pieces")
+case(LC.spill_verdict(L, 0, 10000, 1, 1, 0, 0, expected=3)[0], "FAIL", "spilled but the filth did not thicken")
+case(LC.spill_verdict(L, 0, 10000, 1, 2, 0, 0, expected=3)[0], "FAIL", "fewer pieces than FilthCount")
+case(LC.filth_pieces(10000, 4000), 3, "1000 L at 400 L per piece = 3")
+case(LC.filth_pieces(1, 4000), 1, "any spill shows")
+case(LC.filth_thickness("Spilled liquid x4"), 4, "FilthLabel thickness")
+case(LC.filth_thickness("Spilled liquid of hose x2"), 2, "FilthLabelWithSource thickness")
+case(LC.filth_thickness("Spilled liquid"), None, "no thickness is unreadable, never 0")
 case(LC.FILL_UNITS >= 4 * L, True, "staging is level-scale, not the pre-litres 100")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
