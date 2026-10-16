@@ -228,6 +228,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
     }
 
+    [RimMandrake.Shared.PatchFeature("Power taps", typeof(AerialSettings), "tapsEnabled")]
     [HarmonyPatch(typeof(PowerNet), nameof(PowerNet.CurrentEnergyGainRate))]
     internal static class Patch_PowerNet_GainRate_TapDebit
     {
@@ -248,6 +249,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// TRANSMITTER, not per net — a mixed net whose nearest transmitter is foreign used to pass the net filter, be refused by
     /// the guard below, re-queue, and loop on every net update). The pick is vanilla's BestTransmitterForConnector rule
     /// (6-cell square, transmitting, wire-connectable, nearest) with the faction test added.</summary>
+    [RimMandrake.Shared.PatchFeature("Power taps", typeof(AerialSettings), "tapsEnabled")]
     [HarmonyPatch(typeof(PowerConnectionMaker), nameof(PowerConnectionMaker.TryConnectToAnyPowerNet))]
     internal static class Patch_TryConnect_TapOwnFaction
     {
@@ -288,6 +290,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <summary>Every other route (ConnectAllConnectorsToTransmitter when their net is rebuilt, manual reconnect) is
     /// refused onto a foreign transmitter; the clamp then asks again through the faction-aware path above — but only
     /// when that path has an own-faction transmitter to give it, so a refusal it would repeat never re-queues.</summary>
+    [RimMandrake.Shared.PatchFeature("Power taps", typeof(AerialSettings), "tapsEnabled")]
     [HarmonyPatch(typeof(CompPower), nameof(CompPower.ConnectToTransmitter))]
     internal static class Patch_ConnectToTransmitter_TapGuard
     {

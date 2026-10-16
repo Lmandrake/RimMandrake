@@ -107,6 +107,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>The build button opens the 4-style menu (the way walls ask for a material), after vanilla selected it.</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: anchor looks", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ProcessInput))]
     internal static class Patch_DesignatorBuild_ProcessInput
     {
@@ -115,6 +116,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>For our defs the designator's style is the picked (or copied) look in EVERY game mode. DesignateSingleCell
     /// reads this getter for both the blueprint and the god-mode building, and ThingStyleDefForPreview (the button icon).</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: anchor looks", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ThingStyleDefNonPreceptSource), MethodType.Getter)]
     internal static class Patch_DesignatorBuild_StyleGetter
     {
@@ -123,6 +125,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>A "Copy" of one of our buildings/frames/blueprints always carries its look: Blueprint_Build passes its own
     /// styleOverridden (usually false) where Building/Frame/Blueprint_Install pass true.</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: anchor looks", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(BuildCopyCommandUtility), nameof(BuildCopyCommandUtility.BuildCopyCommand))]
     internal static class Patch_BuildCopyCommand_CarryStyle
     {
@@ -132,6 +135,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <summary>Legacy: an anchor with no stored style reads as the default look's style, so it draws (Thing.Graphic), copies
     /// and is probed in that look. Only the getter answers; CompStyleable's saved field stays null, so an older save is not
     /// changed by loading it. Hot path: one array read for every other thing.</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: anchor looks", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(Thing), nameof(Thing.StyleDef), MethodType.Getter)]
     internal static class Patch_Thing_StyleDef
     {
@@ -140,6 +144,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>Frame.CompleteConstruction copies the frame's style only when GetIdeoForStyle(worker) != null (decompiled
     /// 1.6): a worker with no ideoligion would drop the picked look. Re-apply it on our defs.</summary>
+    [RimMandrake.Shared.PatchFeature("Overhead lines: anchor looks", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
     internal static class Patch_Frame_KeepStyle
     {

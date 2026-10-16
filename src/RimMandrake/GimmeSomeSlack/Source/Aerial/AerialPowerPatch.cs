@@ -24,6 +24,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static int appendedCalls;
     }
 
+    // the master deliberately never gates power carry (placed links keep powering a save); a failure here stops offering anchors
+    [RimMandrake.Shared.PatchFeature("Overhead lines: power through spans", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(PowerNetManager), nameof(PowerNetManager.UpdatePowerNetsAndConnections_First))]
     internal static class Patch_PowerNetManager_UpdateFirst_Scope
     {
@@ -33,6 +35,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static Exception Finalizer(Exception __exception, bool __state) { if (__state) AerialPowerScope.depth--; return __exception; }
     }
 
+    [RimMandrake.Shared.PatchFeature("Overhead lines: power through spans", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(PowerNetMaker), nameof(PowerNetMaker.NewPowerNetStartingFrom))]
     internal static class Patch_PowerNetMaker_NewNet_Scope
     {
@@ -40,6 +43,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static Exception Finalizer(Exception __exception, bool __state) { if (__state) AerialPowerScope.depth--; return __exception; }
     }
 
+    [RimMandrake.Shared.PatchFeature("Overhead lines: power through spans", typeof(AerialSettings), "enabled")]
     [HarmonyPatch(typeof(GenAdj), nameof(GenAdj.CellsAdjacentCardinal), new[] { typeof(Thing) })]
     internal static class Patch_GenAdj_CellsAdjacentCardinal_AerialLinks
     {

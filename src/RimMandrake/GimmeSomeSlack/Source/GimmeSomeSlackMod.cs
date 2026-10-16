@@ -96,6 +96,7 @@ namespace RimMandrake.GimmeSomeSlack
         public override void ExposeData()
         {
             base.ExposeData();
+            RimMandrake.Shared.PatchApplier.BeforeExpose();   // a feature forced off by a failed patch is never SAVED as off
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref style, "style", CordStyle.StarWarsJawa);
             Scribe_Values.Look(ref slack, "slack", 1f);
@@ -129,6 +130,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
             Scribe_Collections.Look(ref excludedConduits, "excludedConduits", LookMode.Value);
             if (excludedConduits == null) excludedConduits = new List<string>();
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public static void ResetToDefaults()
@@ -564,6 +566,8 @@ namespace RimMandrake.GimmeSomeSlack
 
     /// <summary>A save made before the rename names our map components and job drivers RimMandrake.MessyConduit.*;
     /// Scribe resolves every Class attribute through GenTypes.GetTypeInAnyAssembly, so the old name is mapped here.</summary>
+    // always on: save compatibility; pre-rename saves name our classes RimMandrake.MessyConduit.*
+    [RimMandrake.Shared.PatchFeature("Messy cords: load saves from before the rename")]
     [HarmonyPatch(typeof(GenTypes), nameof(GenTypes.GetTypeInAnyAssembly))]
     internal static class Patch_GenTypes_LegacyTypeName
     {

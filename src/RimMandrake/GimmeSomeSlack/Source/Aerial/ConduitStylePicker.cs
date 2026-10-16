@@ -352,6 +352,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     // ---------------------------------------------------------------------- patches
 
     /// <summary>The conduit / switch build button opens its style menu (after vanilla selected the designator).</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ProcessInput))]
     internal static class Patch_DesignatorBuild_ProcessInput_Conduit
     {
@@ -369,6 +370,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>For conduit and the switch the designator's style is the picked (or copied) one in every game mode.</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.ThingStyleDefNonPreceptSource), MethodType.Getter)]
     internal static class Patch_DesignatorBuild_StyleGetter_Conduit
     {
@@ -385,6 +387,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// whatever the settings say. Owner rule: each master switch brings the vanilla art back at once; with the cords master
     /// off, a lamp in one of OUR looks draws the def's own (vanilla) graphic. The stored style is kept, so switching the
     /// master back on restores the look. Off the hot path: one static bool read while the master is on.</summary>
+    // always on: this IS the master-off path; forcing the master off on its failure would make things worse
+    [RimMandrake.Shared.PatchFeature("Messy cords: vanilla lamp art when switched off")]
     [HarmonyPatch(typeof(Thing), nameof(Thing.Graphic), MethodType.Getter)]
     internal static class Patch_Thing_Graphic_LampMasterOff
     {
@@ -397,6 +401,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>The placement cursor says what the cell will join (design 2.3: "joins Industrial run", so nothing is a
     /// surprise): one neighbouring run -> its look; two or more looks -> which one wins (the run with most conduit cells).</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.DrawMouseAttachments))]
     internal static class Patch_DesignatorBuild_JoinsHint
     {
@@ -417,6 +422,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>A styled switch draws its look's art, on and off. Unstyled (legacy) switches and Scrapper keep the art
     /// ConduitVisuals gives today; with the cords off, vanilla's.</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Building_PowerSwitch), nameof(Building_PowerSwitch.Graphic), MethodType.Getter)]
     internal static class Patch_PowerSwitch_Graphic
     {
@@ -433,6 +439,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
     /// <summary>Every new run member (conduit, switch, pole, bracket) is queued once for the run rule. Loading a save never
     /// queues: a loaded map is already resolved, and an older save must load unchanged.</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Building), nameof(Building.SpawnSetup))]
     internal static class Patch_Building_SpawnSetup_Runs
     {
@@ -444,6 +451,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>The "Restyle this run" gizmo on every run member the player owns.</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(Building), nameof(Building.GetGizmos))]
     internal static class Patch_Building_GetGizmos_Restyle
     {
@@ -457,6 +465,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     }
 
     /// <summary>Linking two anchors (by hand, or auto-link) can join two runs: queue the bridge check.</summary>
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
     [HarmonyPatch(typeof(CompAerialAnchor), nameof(CompAerialAnchor.TryLink))]
     internal static class Patch_TryLink_Bridge
     {
