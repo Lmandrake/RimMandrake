@@ -40,3 +40,7 @@ damage x3, sprite drawn 3x). And: *"Needs new angry art too... it should be very
 biomes) DLL + defs and run `northstar_driver/cli.py run --mod TheForge --plan src/RimMandrake/TheForge/northstar_plan.py`
 (chain `dhoggur_swell`), fix what it finds, then put the swollen art (artpipe job from the art helper) on his review
 sheet and `art install` only what he picks.
+Swollen art: artpipe jobs `forgeslot_dhoggur_swollen_v1_{east,south,north}` (done, NOT installed; west mirrors east),
+sheet `Transient/biome_ffar/dhoggur_swollen_sheet_2026-10-16.html` (built, gate-passed, NOT yet served: serve it with
+`serve_gated.py`; its scale panel shows the swollen art at the calm 1.2, so show him
+`Transient/biome_ffar/dhoggur_swollen_vs_calm_scale_2026-10-16.png` (human / calm 1.2 / swollen 3.6) beside it).
