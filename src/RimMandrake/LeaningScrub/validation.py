@@ -1014,7 +1014,10 @@ def gale_chain(t):
                     _restore(t, "galeTurbineBreakdownMtbDays")
                 _note(t, "turbine output W (on, off, on)", [on1, off, on2])
                 if off <= 0:
-                    _, why = _inspect(t, ids["turbine"])
+                    try:    # evidence only: an unreadable inspect must not turn this UNMEASURED into a FAIL
+                        _, why = _inspect(t, ids["turbine"])
+                    except ExpectationFailed as ex:
+                        why = "unreadable: %s" % str(ex)[:120]
                     _unmeasured(t, "turbine produces %.1f W with the surge off (obstructed or "
                                    "unpowered): no baseline; inspect %r" % (off, why))
                 ratio = (on1 + on2) / 2.0 / off
