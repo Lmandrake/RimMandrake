@@ -122,12 +122,23 @@ namespace RimMandrake.FlowWorks
 		{
 			if (look != null && mats.TryGetValue(look, out Material[] m))
 			{
+				// the ripple/rainbow textures are generated per look too (layers 0 and 1 share one): destroy each once,
+				// or every live retune leaks a texture (TAR_LOOK_TUNE_THICK_AND_SLOW)
+				HashSet<Texture> texs = new HashSet<Texture>();
 				for (int i = 0; i < m.Length; i++)
 				{
 					if (m[i] != null)
 					{
+						if (m[i].mainTexture != null)
+						{
+							texs.Add(m[i].mainTexture);
+						}
 						UnityEngine.Object.Destroy(m[i]);
 					}
+				}
+				foreach (Texture t in texs)
+				{
+					UnityEngine.Object.Destroy(t);
 				}
 				mats.Remove(look);
 			}

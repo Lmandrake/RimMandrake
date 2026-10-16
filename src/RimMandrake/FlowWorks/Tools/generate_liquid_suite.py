@@ -1214,12 +1214,14 @@ SURFACE_LOOKS = {
     # Dirt tar should look the same as stone tar."). The vanilla WATER shader cannot do that: its texture is
     # vanilla's blue depth ramp (any tint on it stays blue) and it blends with what lies under it, so tar over soil
     # and over granite differed. The lava-flow shader was tried next and came out OLIVE in game (it paints its own
-    # hot colours under any tint). Now "Solid": the plain opaque terrain shader over plain white, so the colour is
-    # exactly the R=G=B tint — dark grey on any ground — with a slow neutral-grey gloss drifting over it so it still
-    # reads as a liquid ("Tar should not simply be solid black", 2026-10-05). Splash kept.
+    # hot colours under any tint). So "Solid": the plain opaque terrain shader over plain white, colour exactly the
+    # R=G=B tint on any ground. TAR_LOOK_TUNE_THICK_AND_SLOW (2026-10-16): the drifting white gloss overlay read as
+    # "weird drifting motes of white stuff" -- overlay and highlight OFF; instead vanilla's water ripple pass is kept
+    # over the solid colour (a Solid look keeps it when rippleDensity/rippleIntensity is set). A BASE for the live
+    # tuning session (bridge liquid_look_set), not a verdict: paste the tuned look back here (liquid_look_dump).
     "tar":            dict(_WATER, shader="Solid", texture="White", tint="(0.24,0.24,0.24)", depthDarken=0.10,
-                           seeThrough=0.0, overlay=True, highlight="(0.80,0.80,0.80)", strength=0.18, scale=3.0,
-                           speed=0.05, sharpness=3.0, splashes=True, wake=0.1),
+                           rippleDensity=1.0, rippleIntensity=1.0, seeThrough=0.0, overlay=False, strength=0.0,
+                           splashes=True, wake=0.1),
     "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
     "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),

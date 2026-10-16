@@ -350,13 +350,11 @@
       <texture>White</texture>
       <tint>(0.24,0.24,0.24)</tint>
       <depthDarken>0.1</depthDarken>
+      <rippleDensity>1.0</rippleDensity>
+      <rippleIntensity>1.0</rippleIntensity>
       <splashes>true</splashes>
-      <overlay>true</overlay>
-      <highlight>(0.80,0.80,0.80)</highlight>
-      <strength>0.18</strength>
-      <scale>3.0</scale>
-      <speed>0.05</speed>
-      <sharpness>3.0</sharpness>
+      <overlay>false</overlay>
+      <strength>0.0</strength>
       <wake>0.1</wake>
       <seeThrough>0.0</seeThrough>
     </surfaceLook>
