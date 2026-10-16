@@ -444,8 +444,9 @@ owner's own typed coinage): **Q1** the mod is **"RimMandrake: Baroque Biomes"**
 campaign; nothing executes until a release is real) · **Q3** CreatureBehaviors AND
 EnvironmentalHazards fold **IN** (overrides the recommendation — ShipVermin and
 HostileFlora become hard-dependents of Baroque Biomes) · **Q4** LanternDeeps IN,
-MovingDunes IN; ExplosiveGrowth, HostileFlora, OasisMaker, LuminousPigment, Pyrinth
-OUT · **Q5** per-biome DLLs · **Q6** compose at deploy time from per-biome dev
+MovingDunes IN; HostileFlora, OasisMaker, LuminousPigment, Pyrinth OUT; **ExplosiveGrowth
+IN** (owner, typed 2026-10-16, reversing this card: *"Yes, Explosive Plant Growth should move into Baroque
+Biomes."*; item `EXPLOSIVE_GROWTH_MERGE_COMES_HOME`) · **Q5** per-biome DLLs · **Q6** compose at deploy time from per-biome dev
 folders · **Q7** FlowWorks owns generic liquid terrain — TerminalBiomes retargets
 now, nothing deleted until the world-remake window · **Q8** waves, the live list
 written once at wave 2. **Final IN roster: 29 mods** (the §1 25 + CB + EH +

@@ -446,6 +446,13 @@ Draft lines for S0 (from the item's `## Owed`, re-read 2026-10-16):
   (hoarders NONE, extract override unbuilt); PlantGrowth's terminator list missing `RUT_`/`RM_PoisonForest` and the
   `RUT_ExtremeDesert` ×4 exemption.
 
+**Owner, typed 2026-10-16 (folds it into Baroque Biomes):** *"Yes, Explosive Plant Growth should move into Baroque
+Biomes. It should only natively apply to plants within the Baroque Biomes, though option settings could allow it to
+apply to other plants from other mods or vanilla basegame (irrelevant in Utinni). Simpler."* So X1 reads: the engine
+loads as part of `mandrake.rm.biomes` (composed from its own folder) and the separate `mandrake.rm.explosivegrowth`
+is gone; by default only Baroque Biomes plants soak, and a Mod Settings option (off by default) extends it to other
+mods' and vanilla plants. Work: `EXPLOSIVE_GROWTH_MERGE_COMES_HOME` (FOUNDRY, sprint D0-D2).
+
 Its live rows ride the biome rounds in §4: it adds about one live round (perf gate plus soak routes, about 2 h,
 INFERRED) and one sign in each relevant review save, with no extra owner sitting.
 
