@@ -1,0 +1,550 @@
+[
+ {
+  "defName": "RUT_TwinkleSpikeTestPlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_TwinkleSpikeTestPlant.xml",
+  "label": "twinkle spike test plant",
+  "cls": "RimMandrake.Utinni.UtinniPatches.RUT_PlantTwinkle",
+  "ext": [],
+  "parent": null,
+  "tex": "Things/Building/Production/DeepDrill"
+ },
+ {
+  "defName": "RUT_GiantLeaf",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml",
+  "label": "giant leaf",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/GiantLeaf"
+ },
+ {
+  "defName": "RUT_RawGiantLeaf",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml",
+  "label": "giant leaf",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "Things/Plant/GiantLeaf/GiantLeaf_a"
+ },
+ {
+  "defName": "RUT_FireLavender",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml",
+  "label": "fire lavender",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/FireLavender"
+ },
+ {
+  "defName": "RUT_HeatsinkFungus",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_CavernsFlora.xml",
+  "label": "heatsink fungus",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/HeatsinkFungus"
+ },
+ {
+  "defName": "RUT_TreeMartyr",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_PollutedFlora.xml",
+  "label": "martyr tree",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/MartyrTree"
+ },
+ {
+  "defName": "RUT_DarkCrust",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_PollutedFlora.xml",
+  "label": "vein moss",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_DarkCrust"
+ },
+ {
+  "defName": "RUT_ScorchedStars",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_PollutedFlora.xml",
+  "label": "scorched stars",
+  "cls": null,
+  "ext": [
+   "BushBase"
+  ],
+  "parent": "BushBase",
+  "tex": "Things/Plant/ScorchedStars"
+ },
+ {
+  "defName": "RUT_Glower",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_ScarlandsFlora.xml",
+  "label": "the Glowers",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_Glower"
+ },
+ {
+  "defName": "RUT_DosimeterLawn",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_WastelandFlora.xml",
+  "label": "dosimeter lawn",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/DosimeterLawn"
+ },
+ {
+  "defName": "RUT_VaultRoot",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_WastelandFlora.xml",
+  "label": "vault-root tree",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/VaultRoot"
+ },
+ {
+  "defName": "RUT_BloomCrop",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_BloomCrop.xml",
+  "label": "bloomcrop",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_BloomCrop"
+ },
+ {
+  "defName": "RUT_DyingCreep",
+  "file": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml",
+  "label": "dying creep",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_DyingCreep"
+ },
+ {
+  "defName": "VCE_Plant_AloeVera",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "aloe vera plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/AloeVera"
+ },
+ {
+  "defName": "VCE_Plant_BunnyEarsCactus",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "bunny ears cactus",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/BunnyEarsCactus"
+ },
+ {
+  "defName": "VCE_Plant_Echeveria",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "echeveria plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/Echeveria"
+ },
+ {
+  "defName": "VCE_Plant_FairyWashboard",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "fairy washboard plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/FairyWashboard"
+ },
+ {
+  "defName": "VCE_Plant_JadePlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "jade plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/JadePlant"
+ },
+ {
+  "defName": "VCE_Plant_PeyotePlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "peyote plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/Peyote"
+ },
+ {
+  "defName": "VCE_Plant_PincushionPlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "pincushion plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/PincushionPlant"
+ },
+ {
+  "defName": "VCE_Plant_Schlumbergera",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "schlumbergera plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/Schlumbergera"
+ },
+ {
+  "defName": "VCE_Plant_SnakePlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "snake plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/SnakePlant"
+ },
+ {
+  "defName": "VCE_Plant_SweetheartPlant",
+  "file": "src/RimUtinni/UtinniPatches/Defs/Absorbed_VESucculents/Absorbed_VESucculents_Defs.xml",
+  "label": "sweetheart plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/SweetheartPlant"
+ },
+ {
+  "defName": "RUT_SweetlineTree",
+  "file": "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml",
+  "label": "sweetline tree",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/RUT_SweetlineTree"
+ },
+ {
+  "defName": "RUT_Fuzz",
+  "file": "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_Fuzz.xml",
+  "label": "the fuzz",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RM_Fuzz"
+ },
+ {
+  "defName": "RUT_Grellbush",
+  "file": "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AridShrublandVanillaReplacements.xml",
+  "label": "grellbush",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_Grellbush"
+ },
+ {
+  "defName": "RUT_WildHealroot",
+  "file": "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AridShrublandVanillaReplacements.xml",
+  "label": "wild healroot",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_WildHealroot"
+ },
+ {
+  "defName": "RUT_Grellspine",
+  "file": "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AridShrublandVanillaReplacements.xml",
+  "label": "grellspine",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RUT_Grellspine"
+ },
+ {
+  "defName": "RSW_RawTookeTrapRoot",
+  "file": "src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_W4a.xml",
+  "label": "tooke-trap root",
+  "cls": null,
+  "ext": [
+   "RoughPlantBase"
+  ],
+  "parent": "RoughPlantBase",
+  "tex": "swresource/PlantFoodRaw/TookeTrapRoot"
+ },
+ {
+  "defName": "RSW_Plant_HydenockTree_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_P1_Plants.xml",
+  "label": "wild hydenock tree",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/RSW_Plant_HydenockTree_Wild"
+ },
+ {
+  "defName": "RSW_Plant_JoganTree_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_P1_Plants.xml",
+  "label": "wild jogan tree",
+  "cls": null,
+  "ext": [
+   "TreeBase"
+  ],
+  "parent": "TreeBase",
+  "tex": "Things/Plant/RSW_Plant_JoganTree_Wild"
+ },
+ {
+  "defName": "RSW_Plant_TookeTrap_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_P1_Plants.xml",
+  "label": "wild tooke-trap plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RSW_Plant_TookeTrap_Wild"
+ },
+ {
+  "defName": "RSW_RawJoganFruit",
+  "file": "src/RimStarWars/SWBestiary/Defs/DonorPackPort/RSW_DonorPack_P1_Plants.xml",
+  "label": "jogan fruit",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "Things/Item/RSW_RawJoganFruit"
+ },
+ {
+  "defName": "RSW_Plant_Chakroot_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "wild chak-root plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RSW_Plant_Chakroot_Wild"
+ },
+ {
+  "defName": "RSW_Plant_Nysyllin_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "wild nysyllin plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "swplants/Nysillin"
+ },
+ {
+  "defName": "RSW_Plant_HubbaGourd_Wild",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "wild hubba gourd plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RSW_Plant_HubbaGourd_Wild"
+ },
+ {
+  "defName": "RSW_Plant_Bloddle",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "bloddle plant",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RSW_Plant_Bloddle"
+ },
+ {
+  "defName": "RSW_RawBloddle",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "bloddle",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "swresource/PlantFoodRaw/Bloddle"
+ },
+ {
+  "defName": "RSW_RawChakroot",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "chak-root",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "swresource/PlantFoodRaw/Chakroot"
+ },
+ {
+  "defName": "RSW_RawHubbaGourd",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "hubba gourd",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "swresource/PlantFoodRaw/HubbaGourd"
+ },
+ {
+  "defName": "RSW_RawNysyllin",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortB_Plants.xml",
+  "label": "nysyllin",
+  "cls": null,
+  "ext": [
+   "RoughPlantBase"
+  ],
+  "parent": "RoughPlantBase",
+  "tex": "swresource/PlantFoodRaw/Nysyllin"
+ },
+ {
+  "defName": "RSW_CactusMeat",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Items.xml",
+  "label": "plant meat",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "Things/Item/Resource/RSW_CactusMeat"
+ },
+ {
+  "defName": "RSW_SurraGrass",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "surra grass",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plant/RSW_SurraGrass"
+ },
+ {
+  "defName": "RSW_JekkaGrass",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "jekka grass",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plants/AB_Aaklac"
+ },
+ {
+  "defName": "RSW_TanniVine",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "tanni vine",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plants/AB_Aaklac"
+ },
+ {
+  "defName": "RSW_RuzzoCarpet",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "ruzzo carpet",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plants/AB_Aaklac"
+ },
+ {
+  "defName": "RSW_QuissaBloom",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "quissa bloom",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plants/AB_Aaklac"
+ },
+ {
+  "defName": "RSW_VellaraBloom",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "vellara bloom",
+  "cls": null,
+  "ext": [
+   "BushBase"
+  ],
+  "parent": "BushBase",
+  "tex": "Things/Plant/RSW_VellaraBloom"
+ },
+ {
+  "defName": "RSW_Thornscrub",
+  "file": "src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Plants.xml",
+  "label": "krenna bramble",
+  "cls": null,
+  "ext": [
+   "PlantBase"
+  ],
+  "parent": "PlantBase",
+  "tex": "Things/Plants/AB_Aaklac"
+ },
+ {
+  "defName": "RSW_MarshFungus",
+  "file": "src/RimStarWars/Cuisine/Defs/RSW_MarshFungus.xml",
+  "label": "marsh fungus",
+  "cls": null,
+  "ext": [
+   "PlantFoodRawBase"
+  ],
+  "parent": "PlantFoodRawBase",
+  "tex": "Things/Item/RSW_MarshFungus"
+ }
+]
