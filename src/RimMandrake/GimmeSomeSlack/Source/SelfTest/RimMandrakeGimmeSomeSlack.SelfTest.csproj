@@ -36,6 +36,8 @@
     <Compile Include="..\Core\LegacyName.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
     <Compile Include="..\Core\ConduitTargets.cs" />
+    <Compile Include="..\Core\HookupPick.cs" />
+    <Compile Include="PhantomSparkChecks.cs" />
     <Compile Include="..\Core\WallMount.cs" />
     <Compile Include="..\Core\SettingsPrint.cs" />
     <Compile Include="Program.cs" />
