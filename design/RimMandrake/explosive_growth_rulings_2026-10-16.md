@@ -45,7 +45,7 @@ growth below its light threshold; our factor must not bypass that, and dark-side
 |---|---|---|
 | SP1 sprinkler source | *"Let's define what sprinklers should do first, then adapt VFE and our own together. VFE should incorporate some kind of bold automation and enhancement, whereas the native one should be pretty rudimentary (just sprinklers set on pipes)"* | a sprinkler design comes first (filed `SPRINKLERS_DESIGN_PIPES_THEN_PANACHE`); ours is rudimentary (sprinkler heads on FlowWorks pipes); VFE's gets bold automation and enhancement; both adapted together |
 | churn | card: **Yes, endlessly while wet and lit** | a dry-biome native on wet, lit ground cycles forever: ×10 to maturity, then fruit + sprouts, or rupture (1 in 3) |
-| EC1 wood plants | *"(1) but we need to renormalize EVERYTHING anyway"* | anything yielding logs grows at the slower tree rate; AND a planet-wide yield/growth renormalization is owed (filed `PLANT_ECONOMY_RENORMALIZE_EVERYTHING_AT_ONCE`) |
+| EC1 wood plants | *"(1) but we need to renormalize EVERYTHING anyway"* | anything yielding logs grows at the slower tree rate; AND a planet-wide yield/growth renormalization is owed (filed `PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE`) |
 | PF1 whole-map wave | *"Try (2) then fallback to (3) if we have to "* | first build: every plant on the map puts on the show; if it misses the perf bar, stagger it over about a day |
 
 ## Round 5 (12:45 PDT)
