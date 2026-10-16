@@ -431,8 +431,13 @@ intimidatingly; the jungles visibly grow.
 
 Draft lines for S0 (from the item's `## Owed`, re-read 2026-10-16):
 
-- **X1** The mod is in the `biomes_sprint` tier, loading before `mandrake.rut.plantgrowth`, and the startup line
-  `[RM ExplosiveGrowth] N plant defs soak` appears with the roster rows resolved.
+- **X1** Plant growth is ONE engine inside Baroque Biomes (`mandrake.rm.biomes`, composed member `ExplosiveGrowth`):
+  the everyday bands (the former Jawa Plant Growth: ×4, trees ×2.5, ×10/×6.25 in the wet jungles, ×0.4 where growth
+  has stalled) and the soak with its tops. Both run only in Baroque Biomes' own biomes; one Mod Settings option, off
+  and unsupported, extends them to every biome (owner, 2026-10-16: *"…but we won't test or support that"*), and the
+  Utinni roster in `mandrake.rut.patches` puts every biome in scope for the campaign. `mandrake.rut.plantgrowth` and
+  `mandrake.rm.explosivegrowth` are retired and forbidden in every tier. The startup line `[RM ExplosiveGrowth] N plant
+  defs soak … Everyday bands: M plant defs scaled …` appears with the roster rows resolved.
 - **X2** Perf gate (design §5): TPS and frame time on a jungle-density saved map with soaked plants stay inside the
   bar he sets at S0. No density is promised until this row is MEASURED.
 - **X3** Every soak route proven live: crack flood, player irrigation (a dug FlowWorks water cell), the Miasma axis
@@ -442,15 +447,19 @@ Draft lines for S0 (from the item's `## Owed`, re-read 2026-10-16):
   on this engine), so the Greentide review shows grazed ground staying low.
 - **Open for S0, cut or keep:** salted ground refusing the soak (no salt verb exists); the dynamic-draw close-up
   layer (smooth swelling, real tremble); Fever Wood's inside-the-giant presentation; the roster's invented defaults
-  (hoarders NONE, extract override unbuilt); PlantGrowth's terminator list missing `RUT_`/`RM_PoisonForest` and the
-  `RUT_ExtremeDesert` ×4 exemption.
+  (hoarders NONE, extract override unbuilt); the campaign roster's stalled-band list missing `RUT_`/`RM_Cauldron` and
+  the `RUT_ExtremeDesert` ×4 exemption; the joint tuning of everyday bands against the soak (*"let's tune them all
+  together"*: dry ground near-still, water explosive).
 
 **Owner, typed 2026-10-16 (folds it into Baroque Biomes):** *"Yes, Explosive Plant Growth should move into Baroque
 Biomes. It should only natively apply to plants within the Baroque Biomes, though option settings could allow it to
-apply to other plants from other mods or vanilla basegame (irrelevant in Utinni). Simpler."* So X1 reads: the engine
-loads as part of `mandrake.rm.biomes` (composed from its own folder) and the separate `mandrake.rm.explosivegrowth`
-is gone; by default only Baroque Biomes plants soak, and a Mod Settings option (off by default) extends it to other
-mods' and vanilla plants. Work: `EXPLOSIVE_GROWTH_MERGE_COMES_HOME` (FOUNDRY, sprint D0-D2).
+apply to other plants from other mods or vanilla basegame (irrelevant in Utinni). Simpler."* Then, the same day, he
+fused Plant Growth in too (*"those mods are fusing! They were never meant to be apart. Especially because in dry places
+the plants won't be growing almost at all unless water is present, then they grow explosively. So yes, always
+together, fuse them as a single mod right now and let's tune them all together."*) and made the scope a biome (*"Yes,
+there should just be an option in Baroque Biomes to allow the accelerated plant growth and explosive growth to apply
+to other biomes, but we won't test or support that."*). X1 above is the result. Work:
+`EXPLOSIVE_GROWTH_MERGE_COMES_HOME` (FOUNDRY), `PLANT_GROWTH_MERGE_NEVER_MEANT_APART` (BENCH).
 
 Its live rows ride the biome rounds in §4: it adds about one live round (perf gate plus soak routes, about 2 h,
 INFERRED) and one sign in each relevant review save, with no extra owner sitting.

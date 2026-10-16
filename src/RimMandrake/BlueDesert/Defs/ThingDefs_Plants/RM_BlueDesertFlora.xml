@@ -49,8 +49,9 @@
   visible THROUGH the body) and fractal branching (§8) — no leaves, no solid
   silhouette.
 
-  mandrake.rut.plantgrowth's x4 fast-growth multiplier is turned off for these
-  three via PlantGrowthSettingsDef.exemptPlants (JawaPlantGrowthSettings.xml) —
+  The everyday x4 growth band (Plant Growth, inside Baroque Biomes' ExplosiveGrowth
+  engine) is turned off for these three via bandExemptPlants in
+  ExplosiveGrowth/Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml —
   growDays below already assume vanilla rate (brief §6a note).
 -->
 <Defs>

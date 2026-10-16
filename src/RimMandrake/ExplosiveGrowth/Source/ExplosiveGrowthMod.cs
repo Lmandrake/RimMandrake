@@ -28,6 +28,22 @@ namespace RimMandrake.ExplosiveGrowth
         /// Never Scribed; each switch keeps its own saved state.</summary>
         public static bool On => enabled && RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
 
+        // ── the ambient bands (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, the former Jawa Plant Growth) ──
+        // Owner, 2026-10-16: "those mods are fusing! They were never meant to be apart. Especially because in dry
+        // places the plants won't be growing almost at all unless water is present, then they grow explosively."
+        // The shipped numbers carry over unchanged (PLANT_GROWTH_SPEC R-G2, ruling 6); joint tuning is owed.
+        // Off: in-scope plants grow at vanilla ambient speed; the soak (its own switch above) is unaffected.
+        public static bool bandsEnabled = true;
+        public static float defaultMultiplier = 4f;        // wild plants AND crops: on this world water limits farming, not time
+        public static float treeMultiplier = 2.5f;         // wood stays a decision
+        public static float terminatorMultiplier = 0.4f;   // where growth has stalled; below 1.0 on purpose
+        public static float wetAmbientMultiplier = 10f;    // ruling 6: x10 INSTEAD of x4 in the three wet biomes
+        public static float wetAmbientTreeMultiplier = 6.25f; // INVENTED: keeps the 2.5:4 tree ratio
+        public static float minGrowDaysToBoost = 1f;       // R-G5: a plant already this fast is left alone
+
+        /// <summary>What the band postfix reads: its switch AND the Baroque Biomes page's toggle for this engine.</summary>
+        public static bool BandsOn => bandsEnabled && RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
+
         // ── the soak ─────────────────────────────────────────────────────
         // Design doc §0 🄸: the soak multiplier stacks multiplicatively on the
         // ambient band (x4 → ~x40 vanilla-relative, "a 3-day plant finishes in
@@ -40,10 +56,10 @@ namespace RimMandrake.ExplosiveGrowth
         public static float minGrowDaysToSoak = 1f;
         // 🄸 INVENTED generalisation of the fungal carve-out to the RM tier.
         public static bool cavePlantsNeverSoak = true;
-        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME, owner 2026-10-16: "It should only natively apply to plants within the
-        // Baroque Biomes, though option settings could allow it to apply to other plants from other mods or vanilla
-        // basegame". Off = the ruled default.
-        public static bool soakOtherModsPlants = false;
+        // Owner, 2026-10-16: "there should just be an option in Baroque Biomes to allow the accelerated plant growth and
+        // explosive growth to apply to other biomes, but we won't test or support that." Off = the ruled default: both
+        // tiers run only on maps whose biome Baroque Biomes ships. No suite row covers the on state, by that ruling.
+        public static bool applyInOtherBiomes = false;
 
         public static bool irrigationSoakEnabled = true;
         public static bool gradientSurgeSoakEnabled = true;
@@ -92,11 +108,18 @@ namespace RimMandrake.ExplosiveGrowth
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref enabled, "enabled", true);
+            Scribe_Values.Look(ref bandsEnabled, "bandsEnabled", true);
+            Scribe_Values.Look(ref defaultMultiplier, "defaultMultiplier", 4f);
+            Scribe_Values.Look(ref treeMultiplier, "treeMultiplier", 2.5f);
+            Scribe_Values.Look(ref terminatorMultiplier, "terminatorMultiplier", 0.4f);
+            Scribe_Values.Look(ref wetAmbientMultiplier, "wetAmbientMultiplier", 10f);
+            Scribe_Values.Look(ref wetAmbientTreeMultiplier, "wetAmbientTreeMultiplier", 6.25f);
+            Scribe_Values.Look(ref minGrowDaysToBoost, "minGrowDaysToBoost", 1f);
             Scribe_Values.Look(ref soakMultiplier, "soakMultiplier", 10f);
             Scribe_Values.Look(ref defaultSoakHours, "defaultSoakHours", 24f);
             Scribe_Values.Look(ref minGrowDaysToSoak, "minGrowDaysToSoak", 1f);
             Scribe_Values.Look(ref cavePlantsNeverSoak, "cavePlantsNeverSoak", true);
-            Scribe_Values.Look(ref soakOtherModsPlants, "soakOtherModsPlants", false);
+            Scribe_Values.Look(ref applyInOtherBiomes, "applyInOtherBiomes", false);
             Scribe_Values.Look(ref irrigationSoakEnabled, "irrigationSoakEnabled", true);
             Scribe_Values.Look(ref gradientSurgeSoakEnabled, "gradientSurgeSoakEnabled", true);
             Scribe_Values.Look(ref weatherSoakEnabled, "weatherSoakEnabled", true);
@@ -142,6 +165,36 @@ namespace RimMandrake.ExplosiveGrowth
                 list.GapLine();
             }
 
+            if (Group(list, "Everyday growth (no water needed)", RimMandrake.Shared.SettingScope.Now, new[] { "bandsEnabled", "defaultMultiplier", "treeMultiplier", "terminatorMultiplier", "wetAmbientMultiplier", "wetAmbientTreeMultiplier", "minGrowDaysToBoost" }))
+            {
+                list.CheckboxLabeled("Everyday fast growth enabled", ref bandsEnabled,
+                    "The always-on growth rate of plants in Baroque Biomes' own biomes (see \"Where and which plants\" below), before any soak. "
+                    + "Exactly one band applies per plant: stalled biomes, else the wet jungles, else the normal band. "
+                    + "Off: those plants grow at vanilla speed until water soaks them. On by default.");
+                if (!RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey))
+                    list.Label("  The Baroque Biomes page has this engine switched OFF, so this does nothing until it is back on.");
+                list.Label("Wild plants & crops: x" + defaultMultiplier.ToString("0.0"));
+                defaultMultiplier = list.Slider(defaultMultiplier, 1f, 8f);
+                list.Label("Trees: x" + treeMultiplier.ToString("0.0") + " (kept lower than crops: wood stays a decision)");
+                treeMultiplier = list.Slider(treeMultiplier, 1f, 8f);
+                list.Label("Stalled biomes (terminator / poison forest): x" + terminatorMultiplier.ToString("0.00")
+                           + " (the multiplier itself: 1.0 = vanilla speed there)");
+                terminatorMultiplier = list.Slider(terminatorMultiplier, 0.1f, 2f);
+                list.Label("Wet jungles (Greentide, Miasma, Fever Wood): x" + wetAmbientMultiplier.ToString("0.0")
+                           + " (replaces the wild-plants band there, never stacks on it)");
+                wetAmbientMultiplier = list.Slider(wetAmbientMultiplier, 1f, 20f);
+                list.Label("Wet-jungle trees: x" + wetAmbientTreeMultiplier.ToString("0.00"));
+                wetAmbientTreeMultiplier = list.Slider(wetAmbientTreeMultiplier, 1f, 20f);
+                list.Label("Leave alone plants already faster than " + minGrowDaysToBoost.ToString("0.0") + " grow-days (applied when you close this window)");
+                minGrowDaysToBoost = list.Slider(minGrowDaysToBoost, 0.1f, 5f);
+                if (RM_ExplosiveGrowthRegistry.Ready)
+                    list.Label("  Scaling now: " + RM_ExplosiveGrowthRegistry.BandedCount + " plant kinds; "
+                               + RM_ExplosiveGrowthRegistry.BandExemptCount + " in scope but left alone; "
+                               + RM_ExplosiveGrowthRegistry.TerminatorBiomeCount + " stalled and "
+                               + RM_ExplosiveGrowthRegistry.WetAmbientBiomeCount + " wet biome(s) loaded.");
+                list.GapLine();
+            }
+
             if (Group(list, "The soak", RimMandrake.Shared.SettingScope.Now, new[] { "soakMultiplier", "irrigationSoakEnabled", "gradientSurgeSoakEnabled", "weatherSoakEnabled" }))
             {
                 list.Label("Soaked growth: x" + soakMultiplier.ToString("0.0") + " on top of the plant's normal rate");
@@ -162,20 +215,18 @@ namespace RimMandrake.ExplosiveGrowth
                 list.GapLine();
             }
 
-            if (Group(list, "Which plants soak", RimMandrake.Shared.SettingScope.Now, new[] { "soakOtherModsPlants", "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
+            if (Group(list, "Where and which plants (everyday growth and the soak)", RimMandrake.Shared.SettingScope.Now, new[] { "applyInOtherBiomes", "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
             {
-                list.CheckboxLabeled("Also soak plants from other mods and the base game", ref soakOtherModsPlants,
-                    "Off (default): only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, "
-                    + "and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension on the plant).\n\n"
-                    + "On: any plant from any mod or the base game can soak, minus the exemptions below. Applied when you close this window.");
+                list.CheckboxLabeled("UNSUPPORTED: also apply in other mods' and the base game's biomes", ref applyInOtherBiomes,
+                    "Off (default): everyday growth and the soak run only on maps whose biome Baroque Biomes ships, for every plant "
+                    + "growing there (minus the exemptions).\n\n"
+                    + "On: they run in every biome. Untested and unsupported: it should work, but nobody validates it. Applies at once.");
                 if (RM_ExplosiveGrowthRegistry.ScopeForcedBy != null)
                     list.Label("  A campaign layer on your mod list (" + RM_ExplosiveGrowthRegistry.ScopeForcedBy
-                               + ") puts every plant in scope, so this option changes nothing while it is loaded.");
+                               + ") puts every biome in scope, so this option changes nothing while it is loaded.");
                 if (RM_ExplosiveGrowthRegistry.Ready)
-                    list.Label("  Soaking now: " + RM_ExplosiveGrowthRegistry.CountSoaking + " plant kinds ("
-                               + (RM_ExplosiveGrowthRegistry.ScopeHomePack + RM_ExplosiveGrowthRegistry.ScopeHomeBiome + RM_ExplosiveGrowthRegistry.ScopeOptIn)
-                               + " Baroque Biomes or opted in, " + RM_ExplosiveGrowthRegistry.ScopeAllPlants + " by this option or a campaign layer); "
-                               + RM_ExplosiveGrowthRegistry.OutOfScope + " other plant kinds left out.");
+                    list.Label("  Baroque Biomes biomes loaded: " + RM_ExplosiveGrowthRegistry.HomeBiomes.Count
+                               + "; plant kinds that can soak there: " + RM_ExplosiveGrowthRegistry.CountSoaking + ".");
                 list.Label("Plants faster than " + minGrowDaysToSoak.ToString("0.0") + " grow-days never soak (applied when you close this window)");
                 minGrowDaysToSoak = list.Slider(minGrowDaysToSoak, 0.1f, 5f);
                 list.CheckboxLabeled("Cave plants and fungi never soak", ref cavePlantsNeverSoak,
@@ -297,7 +348,7 @@ namespace RimMandrake.ExplosiveGrowth
             RimMandrake.Biomes.RM_BiomesSettings.mechanicsGated.Add(ExplosiveGrowthSettings.RosterKey);
         }
 
-        public override string SettingsCategory() => "Explosive Plant Growth";
+        public override string SettingsCategory() => "Plant Growth (everyday and explosive)";
 
         public override void DoSettingsWindowContents(Rect inRect) => settings.DoWindowContents(inRect);
 

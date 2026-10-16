@@ -11,6 +11,9 @@ namespace RimMandrake.ExplosiveGrowth
         public float produceFactor = 1f;
         public ThingDef ringPlant;
         public TerrainDef slimeTerrain;
+        /// <summary>The ambient bands apply (in the shared scope and not band-exempt).</summary>
+        public bool banded;
+        public bool tree;
 
         public bool Soaks => top != RM_GrowthTop.None;
     }
@@ -30,6 +33,8 @@ namespace RimMandrake.ExplosiveGrowth
 
         private static RM_PlantProfile[] byIndex = new RM_PlantProfile[0];
         private static HashSet<BiomeDef> noSoakBiomes = new HashSet<BiomeDef>();
+        private static HashSet<BiomeDef> terminatorBiomes = new HashSet<BiomeDef>();
+        private static HashSet<BiomeDef> wetAmbientBiomes = new HashSet<BiomeDef>();
 
         public static List<PawnKindDef> RupturePawnKinds = new List<PawnKindDef>();
         public static List<HediffDef> RuptureMutationHediffs = new List<HediffDef>();
@@ -39,18 +44,28 @@ namespace RimMandrake.ExplosiveGrowth
         public static bool Ready { get; private set; }
 
         public static int CountSoaking, CountNone, RosterResolved, RosterMissing;
-        // EXPLOSIVE_GROWTH_MERGE_COMES_HOME: soaking plants by the reason they are in scope (kernel SoakScope order),
-        // and plants left out only because they are foreign and the "other mods' plants" option is off.
-        public static int ScopeOptIn, ScopeHomePack, ScopeHomeBiome, ScopeAllPlants, OutOfScope;
-        /// <summary>Plants that grow wild in a BiomeDef shipped by this engine's own mod (read at the last Rebuild).</summary>
-        public static HashSet<ThingDef> HomeBiomePlants = new HashSet<ThingDef>();
-        /// <summary>defName of a roster that sets scopeAllPlants (every plant in scope, the option moot), else null.</summary>
+        // THE SCOPE IS A BIOME (owner, 2026-10-16, PLANT_GROWTH_MERGE_NEVER_MEANT_APART: "there should just be an option
+        // in Baroque Biomes to allow the accelerated plant growth and explosive growth to apply to other biomes, but we
+        // won't test or support that"). Everyday bands and the soak run on maps whose biome Baroque Biomes ships; the
+        // option (off, unsupported) or a campaign roster's scopeAllBiomes extends both to every biome.
+        /// <summary>BiomeDefs shipped by this engine's own mod (read at the last Rebuild).</summary>
+        public static HashSet<BiomeDef> HomeBiomes = new HashSet<BiomeDef>();
+        /// <summary>defName of a roster that sets scopeAllBiomes (every biome in scope, the option moot), else null.</summary>
         public static string ScopeForcedBy;
         /// <summary>TEST-ONLY scope override for the north-star suite (RM_ExplosiveGrowthProof.ProofTestScopeAll*): every
-        /// plant in scope, like the option, but never Scribed, so a run that dies part-way cannot persist it to the
-        /// player's settings file. Off at every game start.</summary>
+        /// biome in scope, but never Scribed, so a run that dies part-way cannot persist it to the player's settings
+        /// file. Off at every game start. The suites stage on quicktest maps, whose biome is rarely ours.</summary>
         public static bool TestScopeAll;
+
+        /// <summary>Both tiers run on this biome's maps. Null (an unspawned or held plant) is out of scope unless
+        /// every biome is.</summary>
+        public static bool BiomeInScope(BiomeDef biome) =>
+            ExplosiveGrowthSettings.applyInOtherBiomes || ScopeForcedBy != null || TestScopeAll
+            || (biome != null && HomeBiomes.Contains(biome));
         public static readonly int[] CountByTop = new int[7];
+        /// <summary>Ambient bands (PLANT_GROWTH_MERGE_NEVER_MEANT_APART): plant defs the bands scale, plant defs left
+        /// alone (exempt or under the grow-days floor, in scope), and the resolved biome rosters.</summary>
+        public static int BandedCount, BandExemptCount, TerminatorBiomeCount, WetAmbientBiomeCount;
 
         public static RM_PlantProfile For(ThingDef def)
         {
@@ -73,15 +88,18 @@ namespace RimMandrake.ExplosiveGrowth
             }
         }
 
+        /// <summary>No soak forms on this biome's maps: a carve-out (terminator, deep desert), or out of scope.</summary>
         public static bool BiomeRefusesSoak(BiomeDef biome) =>
-            biome != null && noSoakBiomes.Contains(biome);
+            (biome != null && noSoakBiomes.Contains(biome)) || !BiomeInScope(biome);
+
+        public static bool IsTerminatorBiome(BiomeDef biome) => biome != null && terminatorBiomes.Contains(biome);
+        public static bool IsWetAmbientBiome(BiomeDef biome) => biome != null && wetAmbientBiomes.Contains(biome);
 
         /// <summary>Rebuilds into locals and swaps them in only at the end, so a throw part-way leaves the previous table
         /// (and Ready) in force. Callers after startup use TryRebuild.</summary>
         public static void Rebuild()
         {
             var rows = new Dictionary<string, RM_ExplosiveGrowthRosterEntry>();
-            var optInRows = new HashSet<string>();
             string forcedBy = null;
             var exempt = new HashSet<string>(BuiltinExempt);
             var biomes = new HashSet<BiomeDef>();
@@ -89,6 +107,9 @@ namespace RimMandrake.ExplosiveGrowth
             var hediffs = new List<HediffDef>();
             var fluids = new HashSet<string>();
             var weathers = new HashSet<WeatherDef>();
+            var bandExempt = new HashSet<string>(BuiltinExempt);
+            var termBiomes = new HashSet<BiomeDef>();
+            var wetBiomes = new HashSet<BiomeDef>();
             int missing = 0, resolved = 0;
 
             foreach (RM_ExplosiveGrowthRosterDef roster in DefDatabase<RM_ExplosiveGrowthRosterDef>.AllDefsListForReading)
@@ -97,9 +118,8 @@ namespace RimMandrake.ExplosiveGrowth
                 {
                     if (string.IsNullOrEmpty(e?.plant)) continue;
                     rows[e.plant] = e;
-                    if (roster.nativeSoak) optInRows.Add(e.plant);
                 }
-                if (roster.scopeAllPlants && forcedBy == null) forcedBy = roster.defName;
+                if (roster.scopeAllBiomes && forcedBy == null) forcedBy = roster.defName;
                 foreach (string s in roster.exemptPlants) exempt.Add(s);
                 foreach (string s in roster.noSoakBiomes)
                 {
@@ -122,31 +142,31 @@ namespace RimMandrake.ExplosiveGrowth
                     WeatherDef w = DefDatabase<WeatherDef>.GetNamedSilentFail(s);
                     if (w != null) weathers.Add(w);
                 }
-            }
-
-            // The native scope (owner, 2026-10-16): plants that ship in the same mod as this engine (Baroque Biomes, of
-            // which it is a composed member), and every plant that grows wild in a biome that mod ships — the donor
-            // and base-game flora our biomes list are "plants within the Baroque Biomes" too. Read AFTER patches, so a
-            // patch-added cast (UtinniPatches' WildAnimals_/WildPlants_ files on our twins) counts. Reads the raw
-            // wildPlants records, NEVER BiomeDef.AllWildPlants: that property caches its list on first read, and this runs
-            // in a startup static constructor — before e.g. Cauldron/FloodedCanyon/BlueDesert prune their flora
-            // expansions out of wildPlants — so touching it here would freeze the unpruned list for the whole session.
-            ModContentPack home = ExplosiveGrowthMod.Home;
-            var homeBiomePlants = new HashSet<ThingDef>();
-            if (home != null)
-            {
-                foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
+                foreach (string s in roster.bandExemptPlants) bandExempt.Add(s);
+                // Silent when absent: the rosters list every plausible name (campaign twin, RM_ biome, donor), and a
+                // player running only one of them should not see a warning per load. The startup line counts them.
+                foreach (string s in roster.terminatorBiomes)
                 {
-                    if (b.modContentPack != home) continue;
-                    if (b.wildPlants == null) continue;
-                    foreach (BiomePlantRecord r in b.wildPlants) if (r?.plant != null) homeBiomePlants.Add(r.plant);
+                    BiomeDef b = DefDatabase<BiomeDef>.GetNamedSilentFail(s);
+                    if (b != null) termBiomes.Add(b);
+                }
+                foreach (string s in roster.wetAmbientBiomes)
+                {
+                    BiomeDef b = DefDatabase<BiomeDef>.GetNamedSilentFail(s);
+                    if (b != null) wetBiomes.Add(b);
                 }
             }
-            int sOpt = 0, sPack = 0, sBiome = 0, sAll = 0, sOut = 0;
+
+            // The native scope: the BiomeDefs this engine's own mod (Baroque Biomes) ships.
+            ModContentPack home = ExplosiveGrowthMod.Home;
+            var homeBiomes = new HashSet<BiomeDef>();
+            if (home != null)
+                foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
+                    if (b.modContentPack == home) homeBiomes.Add(b);
 
             var table = new RM_PlantProfile[DefDatabase<ThingDef>.DefCount];
             var byTop = new int[CountByTop.Length];
-            int soaking = 0, none = 0;
+            int soaking = 0, none = 0, banded = 0, bandLeft = 0;
 
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
@@ -183,22 +203,10 @@ namespace RimMandrake.ExplosiveGrowth
                     p.top = RM_GrowthTop.None;
                 }
 
-                if (p.Soaks)
-                {
-                    byte scope = RM_ExplosiveGrowthKernel.SoakScope(
-                        ext != null || optInRows.Contains(def.defName),
-                        home != null && def.modContentPack == home,
-                        homeBiomePlants.Contains(def),
-                        ExplosiveGrowthSettings.soakOtherModsPlants || forcedBy != null || TestScopeAll);
-                    switch (scope)
-                    {
-                        case RM_ExplosiveGrowthKernel.ScopeOptIn: sOpt++; break;
-                        case RM_ExplosiveGrowthKernel.ScopeHomePack: sPack++; break;
-                        case RM_ExplosiveGrowthKernel.ScopeHomeBiome: sBiome++; break;
-                        case RM_ExplosiveGrowthKernel.ScopeAllPlants: sAll++; break;
-                        default: p.top = RM_GrowthTop.None; sOut++; break;
-                    }
-                }
+                // The ambient bands' plant-side filter (scope is the map's biome, checked at runtime).
+                p.tree = def.plant.IsTree;
+                p.banded = !bandExempt.Contains(def.defName) && def.plant.growDays >= ExplosiveGrowthSettings.minGrowDaysToBoost;
+                if (p.banded) banded++; else bandLeft++;
 
                 table[def.index] = p;
                 byTop[(int)p.top]++;
@@ -213,6 +221,12 @@ namespace RimMandrake.ExplosiveGrowth
 
             byIndex = table;
             noSoakBiomes = biomes;
+            terminatorBiomes = termBiomes;
+            wetAmbientBiomes = wetBiomes;
+            BandedCount = banded;
+            BandExemptCount = bandLeft;
+            TerminatorBiomeCount = termBiomes.Count;
+            WetAmbientBiomeCount = wetBiomes.Count;
             RupturePawnKinds = kinds;
             RuptureMutationHediffs = hediffs;
             IrrigationFluids = fluids;
@@ -222,12 +236,7 @@ namespace RimMandrake.ExplosiveGrowth
             CountNone = none;
             RosterResolved = resolved;
             RosterMissing = missing;
-            ScopeOptIn = sOpt;
-            ScopeHomePack = sPack;
-            ScopeHomeBiome = sBiome;
-            ScopeAllPlants = sAll;
-            OutOfScope = sOut;
-            HomeBiomePlants = homeBiomePlants;
+            HomeBiomes = homeBiomes;
             ScopeForcedBy = forcedBy;
             Ready = true;
         }

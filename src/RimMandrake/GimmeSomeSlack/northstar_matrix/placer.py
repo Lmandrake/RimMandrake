@@ -41,7 +41,7 @@ PROVEN = {
     "jawa/set_fog": "validation.py", "jawa/set_roof_batch": "validation.py", "jawa/build_batch": "validation.py",
     "jawa/battery_set": "validation.py", "jawa/map_commit": "validation.py", "rimworld/frame_cell_rect": "validation.py",
     "rimworld/step_game_ticks": "validation.py", "jawa/list_things": "validation.py",
-    "rimworld/screenshot_cell_rect": "PlantGrowth / live-review", "jawa/set_plants": "RimUtinni/PlantGrowth/validation.py",
+    "rimworld/screenshot_cell_rect": "live-review", "jawa/set_plants": "PlantGrowth's retired suite (now inside ExplosiveGrowth)",
     "jawa/weather_set": "schema only (args from tool_schemas.json)",
 }
 UNVERIFIED = [

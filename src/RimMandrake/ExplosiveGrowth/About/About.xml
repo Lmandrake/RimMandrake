@@ -28,13 +28,15 @@
          rewrite of MayRequire guards that still name mandrake.rm.explosivegrowth). -->
     <li>sarg.alphabiomes</li>
   </loadAfter>
-  <description>EXPLOSIVE_PLANT_GROWTH_1. Water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
+  <description>EXPLOSIVE_PLANT_GROWTH_1. Plants grow fast every day, and water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
 
 Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own toggle on the Baroque Biomes settings page, and its own settings page). RM tier: nothing here knows what campaign or planet uses it.
 
-WHICH PLANTS. By default only Baroque Biomes plants soak: the plants Baroque Biomes ships, every plant that grows wild in one of its biomes, and plants another mod opts in on purpose (a roster marked nativeSoak, or an RM_ExplosiveGrowthExtension). A Mod Settings option (off by default) extends the soak to every other mod's and the base game's plants; a campaign layer's roster can do the same for its whole world (scopeAllPlants).
+EVERYDAY GROWTH (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth, mandrake.rut.plantgrowth, fused in 2026-10-16). Plants grow faster every day, no water needed: wild plants and crops x4, trees x2.5; the wet jungles (Greentide, Miasma, Fever Wood) x10, trees x6.25, instead; stalled biomes a roster names x0.4 instead. Exactly one band applies; the soak multiplies on top. It scales the composite growth rate, so light, temperature and fertility still apply. Anima, gauranlen, ambrosia, a roster's bandExemptPlants and plants under a grow-day are left alone. Every number is a Mod Settings slider.
 
-THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of whatever ambient rate the rest of your mod list gives them. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
+WHERE. Both tiers run only on maps whose biome Baroque Biomes ships, for every plant growing there. An option (off by default, UNSUPPORTED and untested) extends them to every biome; a campaign layer's roster can do the same for its whole world (scopeAllBiomes).
+
+THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of the everyday band. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
 
 THE CHARGE. A soaked plant that reaches full size keeps going: it swells past natural size, and it tells you, in a fixed order — the ground darkens and sprouts, it swells, its hue shifts wrong, it trembles, it creaks, and then it goes silent. Then the top.
 
