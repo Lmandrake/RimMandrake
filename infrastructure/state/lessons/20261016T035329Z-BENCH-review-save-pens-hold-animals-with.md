@@ -1,0 +1,1 @@
+Review-save pens hold animals with a 60000-tick Wait job; jawa/order_pawn cannot release wild animals (0/64 accepted). A review save needs a release-the-pens tool if the owner wants to watch animals move.

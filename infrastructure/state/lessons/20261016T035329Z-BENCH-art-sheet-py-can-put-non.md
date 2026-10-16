@@ -1,0 +1,1 @@
+art_sheet.py can put a non-body render (e.g. a projectile) as a column in a creature's body row; an owner pick there is ambiguous (Barbslinger 'B' meant approve the spike). Keep projectile/attachment art in its own row.
