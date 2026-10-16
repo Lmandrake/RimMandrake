@@ -109,7 +109,7 @@ namespace RimMandrake.GimmeSomeSlack
                 if (near != null)
                 {
                     // GSS_CORD_SILENCE_PHANTOM_SPARK: a same-net conduit end beside the device is its one cord
-                    foreach (Cell h in near) if (world.IsConduit(h) && !m.Hookups.Contains(h)) m.Hookups.Add(h);
+                    foreach (Cell hk in near) if (world.IsConduit(hk) && !m.Hookups.Contains(hk)) m.Hookups.Add(hk);
                     world.Machines.Add(m);
                 }
                 else if (how == HookupDraw.ConduitCell)
