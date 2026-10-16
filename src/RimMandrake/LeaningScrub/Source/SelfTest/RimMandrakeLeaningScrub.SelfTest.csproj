@@ -29,7 +29,11 @@
     <Compile Include="..\Kernel\RM_FormsKernel.cs" />
     <Compile Include="..\Kernel\RM_CoatKernel.cs" />
     <Compile Include="..\Kernel\RM_FourFormsKernel.cs" />
+    <Compile Include="..\Kernel\RM_RippleKernel.cs" />
+    <Compile Include="..\Kernel\RM_PyreKernel.cs" />
+    <Compile Include="..\Kernel\RM_InjectionKernel.cs" />
     <Compile Include="LeaningScrubFourFormsCheck.cs" />
+    <Compile Include="LeaningScrubTonightCheck.cs" />
     <Compile Include="LeaningScrubFuzz.cs" />
     <Compile Include="LeaningScrubFuzz2.cs" />
     <Compile Include="Program.cs" />

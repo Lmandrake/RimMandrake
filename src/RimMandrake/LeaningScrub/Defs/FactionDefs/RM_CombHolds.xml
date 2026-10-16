@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_CombHolds.xml                  LEANINGSCRUB_MECHANICS_BUILD_1 part 8
+  ============================================================================
+  The new vaporator-farming people. Owner N1 (typed, 2026-10-15): "Scavengers
+  and vapor farming new" - the Scrub's living camps hold the existing
+  scavenger clans AND a new people who farm the vaporators.
+
+  Name: invented and franchise-free, so the RM_ tier (owner Q11a 2026-09-22).
+  "Comb holds": the sheet's farmsteads set their vaporator rows "comb-wise to
+  the wind" (arid_shrubland.md §8). Agent default, not ruled: the owner may
+  rename them at the camp-kit art sitting.
+
+  Stance (kickoff N5, unanswered; its stated agent default taken): trade-first,
+  hostile only if attacked, a raid-capable faction so the camps are not
+  decoration. Hence: not a natural enemy, Outlander trade kinds, a Combat group.
+
+  Shape: vanilla OutlanderFactionBase / VillagerBase / GuardBase / TraderBase
+  (Core Factions_Misc.xml, PawnKinds_Outlander.xml). Its own pawn kinds, so
+  no vanilla kind is required to exist. Pawns are human; no new art (the
+  faction icon is the vanilla town icon, interim; the camp-kit art round is in
+  the sprint).
+
+  World presence: the planet is frozen and shipped (CLAUDE.md, worldgen ruling),
+  so this faction exists only in a world made with it on the list. It is added
+  to the default list (startingCountAtWorldCreation 1) for the one-time
+  repaint; camps on a world without it are simply skipped.
+  ============================================================================
+-->
+<Defs>
+
+  <FactionDef ParentName="OutlanderFactionBase">
+    <defName>RM_Faction_CombHolds</defName>
+    <label>comb holds</label>
+    <description>Vaporator farmers of the Leaning Scrub. They set their fog-catches in long rows across the wind, like the teeth of a comb, and live on the thin water those rows drip.\n\nThey would rather trade water than fight over it. They defend their rows, and they remember who burned them.</description>
+    <pawnSingular>comber</pawnSingular>
+    <pawnsPlural>combers</pawnsPlural>
+    <leaderTitle>eldest comber</leaderTitle>
+    <factionNameMaker>RM_NamerFaction_CombHolds</factionNameMaker>
+    <settlementNameMaker>RM_NamerSettlement_CombHolds</settlementNameMaker>
+    <basicMemberKind>RM_Comber</basicMemberKind>
+    <naturalEnemy>false</naturalEnemy>
+    <permanentEnemy>false</permanentEnemy>
+    <startingCountAtWorldCreation>1</startingCountAtWorldCreation>
+    <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
+    <configurationListOrderPriority>15</configurationListOrderPriority>
+    <colorSpectrum>
+      <li>(0.55, 0.62, 0.66)</li>
+      <li>(0.72, 0.80, 0.84)</li>
+    </colorSpectrum>
+    <pawnGroupMakers Inherit="False">
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <RM_Comber>5</RM_Comber>
+          <RM_CombWarden>10</RM_CombWarden>
+        </options>
+      </li>
+      <li>
+        <kindDef>Peaceful</kindDef>
+        <options>
+          <RM_Comber>20</RM_Comber>
+          <RM_CombWarden>6</RM_CombWarden>
+        </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <RM_CombTrader>1</RM_CombTrader>
+        </traders>
+        <guards>
+          <RM_Comber>3</RM_Comber>
+          <RM_CombWarden>8</RM_CombWarden>
+        </guards>
+      </li>
+      <li>
+        <kindDef>Settlement</kindDef>
+        <options>
+          <RM_Comber>12</RM_Comber>
+          <RM_CombWarden>8</RM_CombWarden>
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+  <PawnKindDef ParentName="VillagerBase">
+    <defName>RM_Comber</defName>
+    <label>comber</label>
+    <defaultFactionDef>RM_Faction_CombHolds</defaultFactionDef>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="GuardBase">
+    <defName>RM_CombWarden</defName>
+    <label>row warden</label>
+    <defaultFactionDef>RM_Faction_CombHolds</defaultFactionDef>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="TraderBase">
+    <defName>RM_CombTrader</defName>
+    <label>water trader</label>
+    <defaultFactionDef>RM_Faction_CombHolds</defaultFactionDef>
+  </PawnKindDef>
+
+  <RulePackDef>
+    <defName>RM_NamerFaction_CombHolds</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->the [rowword] of [placeword]</li>
+        <li>r_name->[placeword] [holdword]</li>
+        <li>r_name->the [adj] [holdword]</li>
+        <li>rowword->Long Rows</li>
+        <li>rowword->Comb Rows</li>
+        <li>rowword->Dripping Rows</li>
+        <li>rowword->Fog Rows</li>
+        <li>holdword->Holds</li>
+        <li>holdword->Combs</li>
+        <li>holdword->Rowfolk</li>
+        <li>adj->Windward</li>
+        <li>adj->Patient</li>
+        <li>adj->Thin-Water</li>
+        <li>adj->Leeward</li>
+        <li>placeword->Ashfold</li>
+        <li>placeword->Tallmere</li>
+        <li>placeword->Greyreach</li>
+        <li>placeword->Hollin</li>
+        <li>placeword->Drewe</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <RulePackDef>
+    <defName>RM_NamerSettlement_CombHolds</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->[first][second]</li>
+        <li>r_name->[first] Rows</li>
+        <li>first->Drip</li>
+        <li>first->Fog</li>
+        <li>first->Comb</li>
+        <li>first->Still</li>
+        <li>first->Grey</li>
+        <li>first->Tall</li>
+        <li>second->hold</li>
+        <li>second->stead</li>
+        <li>second->reach</li>
+        <li>second->water</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

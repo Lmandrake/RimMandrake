@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple (Source/RM_Ripple.cs adds and removes it).
+  Owner Q9 (card 2026-10-15): "Ripple -> Hiding with a faint shimmer".
+  Vanilla HediffComp_Invisibility (same machinery as CreatureBehaviors' RM_SandSubmerged), but visibleToPlayer=true:
+  enemies, hunters and predators cannot target the creature, and the player sees it drawn through the vanilla
+  invisibility shimmer instead of not at all. Damage, burning, being carried or downed force it visible (vanilla).
+-->
+<Defs>
+  <HediffDef>
+    <defName>RM_RippleHidden</defName>
+    <label>hidden in the fuzz</label>
+    <description>Pressed down under the wind-combed fuzz, this creature cannot be picked out to shoot or hunt. Only a faint shimmer where the fuzz moves wrong gives it away.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>true</visibleToPlayer>
+        <fadeDurationTicks>60</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>true</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+</Defs>

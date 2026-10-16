@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_WindVaporator.xml              LEANINGSCRUB_MECHANICS_BUILD_1 part 3
+  ============================================================================
+  Owner ruling Q8 (card 2026-10-15): "Vaporator scope -> Plain vaporator, no
+  scar". Learned from a dead farmstead; one art-sheet round for its look. So:
+  no V-blight wake, no terrain morph (the item spec's V-blight half is CUT by
+  that card).
+
+  Sheet §7 (the moisture-farmer's trade, owner's ruling): "a moisture farm
+  works wherever you stand ... But the harvest is *meager*" and "the wind must
+  also power the growlights". So: a powered building (the wind turbines pay
+  for it) that drips a little fog water anywhere, no placement gate.
+
+  No new C#: vanilla CompSpawner (requiresPower, writeTimeLeftToSpawn;
+  RimSage-read CompProperties_Spawner) drops the water.
+
+  The study source (Q8 "learned from a dead farmstead"): RM_WindVaporators is a
+  techprint project (techprintCount 1, techprintCommonality 0 so no trader or
+  quest hands it out). ThingDefGenerator_Techprints makes the techprint
+  Techprint_RM_WindVaporators; RM_GenStep_ScrubInjections leaves one in every
+  dead farmstead while the colony has not finished the project. Applying it
+  (vanilla ApplyTechprint job) unlocks the research.
+
+  ⚠️ NAME: "vaporator" is the sheet's and the owner's word; "moisture vaporator"
+  is also a Star Wars canon term. This RM-tier def is labelled "wind
+  vaporator" (an ordinary English coinage) and flagged on the item for the
+  naming tier question, not decided here.
+
+  ART: interim textures are VANILLA paths (no magenta, no donor art): the
+  vanilla moisture pump for the vaporator and its wreck, vanilla beer bottles
+  for the water. The vaporator look is a sheet round in the sprint (kickoff
+  §1.3 "Art set"); repoint texPath when that art is installed.
+
+  PROVISIONAL (owner ruling 2026-10-03): 120 W, 4 fog water a day, research
+  cost 600, all build costs, item value/mass/nutrition.
+  ============================================================================
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_WindVaporators</defName>
+    <label>wind vaporators</label>
+    <description>Pull drinking water out of the wind with a powered fog-catch, the way the dead farmsteads of the Leaning Scrub once did. It must be learned from a farmstead's own plans.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <techprintCount>1</techprintCount>
+    <techprintCommonality>0</techprintCommonality>
+    <techprintMarketValue>250</techprintMarketValue>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>6.60</researchViewY>
+  </ResearchProjectDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FogWater</defName>
+    <label>fog water</label>
+    <description>Water combed out of the Leaning Scrub's wind by a vaporator. Clean, flat-tasting, and never quite enough.\n\nPROVISIONAL: value, mass and nutrition are placeholder figures.</description>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(170,200,220)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>1.5</MarketValue>
+      <Nutrition>0.04</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fluid</foodType>
+      <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WindVaporator</defName>
+    <label>wind vaporator</label>
+    <description>A tall fog-catch that combs water out of the passing wind. It works wherever it stands, as long as it has power, but it only ever drips: a thin, reliable margin, never a living.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.58, 0.35, 0.25)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+    </graphicData>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Misc</designationCategory>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <repairEffect>Repair</repairEffect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>RM_WindVaporators</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>120</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Spawner">
+        <thingToSpawn>RM_FogWater</thingToSpawn>
+        <spawnCount>4</spawnCount>
+        <spawnIntervalRange>(54000,66000)</spawnIntervalRange>
+        <spawnMaxAdjacent>40</spawnMaxAdjacent>
+        <requiresPower>true</requiresPower>
+        <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+        <inheritFaction>true</inheritFaction>
+        <saveKeysPrefix>rmVaporator</saveKeysPrefix>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- The dead farmsteads' wrecks. Deconstruct for a little steel and a component; otherwise scenery. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WindVaporatorWreck</defName>
+    <label>wrecked vaporator</label>
+    <description>A wind vaporator long dead: its fog-combs are torn and its pump rusted through. Someone farmed water here once.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(140,120,100)</color>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Beauty>-8</Beauty>
+      <WorkToBuild>600</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <building>
+      <deconstructible>true</deconstructible>
+      <claimable>false</claimable>
+    </building>
+  </ThingDef>
+
+</Defs>

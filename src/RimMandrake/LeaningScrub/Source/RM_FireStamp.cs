@@ -58,7 +58,12 @@ namespace RimMandrake.LeaningScrub
 
         public static bool IsStamper(Pawn p)
         {
-            return p.def.GetModExtension<RM_FireStamperExtension>() != null;
+            return IsStamperDef(p.def);
+        }
+
+        public static bool IsStamperDef(ThingDef race)
+        {
+            return race != null && race.GetModExtension<RM_FireStamperExtension>() != null;
         }
 
         private static bool Available(Pawn p)

@@ -98,6 +98,20 @@ namespace RimMandrake.LeaningScrub
         // LEANINGSCRUB_MECHANICS_BUILD_1 part 5 (RM_FireStamp.cs).
         public static bool fireStampEnabled = true;
 
+        // LEANINGSCRUB_MECHANICS_BUILD_1 part 6 (RM_Ripple.cs). PROVISIONAL size limit (doubled in the Gale).
+        public static bool rippleEnabled = true;
+        public static float rippleMaxBodySize = 0.6f;
+
+        // LEANINGSCRUB_MECHANICS_BUILD_1 part 5, second half (RM_CallingPyre.cs). PROVISIONAL numbers.
+        public static bool callingPyreEnabled = true;
+        public static float callingPyreRadius = 14f;
+        public static float callingPyreHerdFactor = 1f;
+
+        // LEANINGSCRUB_MECHANICS_BUILD_1 part 8 (RM_ScrubInjections.cs). New maps only. PROVISIONAL count.
+        public static bool scrubInjectionsEnabled = true;
+        public static int scrubRuinsPerMap = 3;
+        public static bool scrubCampsEnabled = true;
+
         // LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs): the six further forms.
         // Numbers PROVISIONAL. Each off: that form is a plain venomvine stand.
         public static bool rearingEnabled = true;
@@ -167,6 +181,14 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineFeltApparelEnabled, "sweetlineFeltApparelEnabled", true, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
+            Scribe_Values.Look(ref rippleEnabled, "rippleEnabled", true, true);
+            Scribe_Values.Look(ref rippleMaxBodySize, "rippleMaxBodySize", 0.6f, true);
+            Scribe_Values.Look(ref callingPyreEnabled, "callingPyreEnabled", true, true);
+            Scribe_Values.Look(ref callingPyreRadius, "callingPyreRadius", 14f, true);
+            Scribe_Values.Look(ref callingPyreHerdFactor, "callingPyreHerdFactor", 1f, true);
+            Scribe_Values.Look(ref scrubInjectionsEnabled, "scrubInjectionsEnabled", true, true);
+            Scribe_Values.Look(ref scrubRuinsPerMap, "scrubRuinsPerMap", 3, true);
+            Scribe_Values.Look(ref scrubCampsEnabled, "scrubCampsEnabled", true, true);
             Scribe_Values.Look(ref rearingEnabled, "rearingEnabled", true, true);
             Scribe_Values.Look(ref rearingHours, "rearingHours", 2f, true);
             Scribe_Values.Look(ref walkingEnabled, "walkingEnabled", true, true);
@@ -431,6 +453,47 @@ namespace RimMandrake.LeaningScrub
                     "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
                     + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
                     + "it out, crushing whatever was burning. Off: the herds ignore fire.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The ripple and the calling-pyre", RimMandrake.Shared.SettingScope.Now, new[] { "rippleEnabled", "rippleMaxBodySize", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor" }))
+            {
+                list.CheckboxLabeled("Small creatures hide under the fuzz", ref rippleEnabled,
+                    "A small wild animal standing in the fuzz cannot be shot, hunted or seen by predators; you see it "
+                    + "as a faint shimmer. The Gale doubles the size that can hide; in the Stall anything that moves "
+                    + "is seen. Off: nothing hides.");
+                if (rippleEnabled)
+                {
+                    list.Label("Largest body size that hides: " + rippleMaxBodySize.ToString("0.00") + " (PROVISIONAL; a hare is about 0.2, a person 1.0)");
+                    rippleMaxBodySize = Mathf.Round(list.Slider(rippleMaxBodySize, 0.1f, 1.5f) * 20f) / 20f;
+                }
+                list.CheckboxLabeled("The calling-pyre ritual can be held", ref callingPyreEnabled,
+                    "Belief systems with a fire or ritual meme can hold the calling-pyre: the colony's own fields are "
+                    + "set alight and the fire-stamping giants come down on everyone. Off: the ritual cannot be started.");
+                if (callingPyreEnabled)
+                {
+                    list.Label("How far from the ritual spot the fields are lit: " + callingPyreRadius.ToString("0") + " cells");
+                    callingPyreRadius = Mathf.Round(list.Slider(callingPyreRadius, 4f, 30f));
+                    list.Label("Size of the herd it calls: " + callingPyreHerdFactor.ToString("0.0") + "x (PROVISIONAL)");
+                    callingPyreHerdFactor = Mathf.Round(list.Slider(callingPyreHerdFactor, 0f, 3f) * 10f) / 10f;
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Ruins and living camps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled" }))
+            {
+                list.CheckboxLabeled("New Leaning Scrub maps have ruins", ref scrubInjectionsEnabled,
+                    "Dead farmsteads (one always holds the vaporator plans while you have not learned it), smother-claimed "
+                    + "venomvine fields and hedge-walled homesteads. Affects newly generated maps only; not worldgen.");
+                if (scrubInjectionsEnabled)
+                {
+                    list.Label("Ruins per map: " + scrubRuinsPerMap);
+                    scrubRuinsPerMap = Mathf.RoundToInt(list.Slider(scrubRuinsPerMap, 1f, 8f));
+                }
+                list.CheckboxLabeled("New Leaning Scrub maps have living camps", ref scrubCampsEnabled,
+                    "A camp of comb-row vaporator farmers and one of a scavenger clan, when those peoples exist in your "
+                    + "world and are not at war with you. They hold their camp and turn on you only if you make them "
+                    + "enemies. Affects newly generated maps only.");
                 list.GapLine();
             }
 

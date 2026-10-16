@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScrubInjections_ScavengerClans.xml     UtinniPatches - LEANINGSCRUB_MECHANICS_BUILD_1 part 8
+
+  Owner N1 (typed, 2026-10-15): "Scavengers and vapor farming new" - the Leaning Scrub's living camps hold the
+  existing scavenger clans as well as the new comb-row farmers. The camp step (RM-tier Leaning Scrub,
+  RM_ScrubInjections.cs) names no Star Wars faction, so the clans are listed HERE: the Jawa Trade Moot first, the
+  Junkers as the fallback when the Moot is missing or at war with the colony. (Agent reading of "scavenger clans":
+  the Jawa factions this layer ships; recorded on LEANINGSCRUB_MECHANICS_BUILD_1.)
+
+  Guards: Conditional on the step's own scavengerFactions node (it ships one, empty), so this is a silent no-op when
+  Leaning Scrub is absent; both FactionDefs ship in this mod (Defs/FactionDefs), so they always resolve.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/GenStepDef[defName="RM_ScrubInjections"]/genStep/scavengerFactions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/GenStepDef[defName="RM_ScrubInjections"]/genStep/scavengerFactions</xpath>
+      <value>
+        <li>RUT_Jawa_IndigenousTribes</li>
+        <li>RUT_Jawa_Junkers</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

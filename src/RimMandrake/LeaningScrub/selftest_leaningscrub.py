@@ -351,6 +351,27 @@ class Fake(object):
                                                      "FAIL: a six-fire blaze sent no stamper toward it")}
             return {"success": True, "result": ("FAIL: fireStampEnabled off but the herd answered" if on
                                                  else "PASS off sent=0 stamped=0")}
+        if method == "ProofRipple":
+            hides = (args != "off" and "ripple_never" not in self.broken) or (args == "off" and "ripple_ignores_toggle" in self.broken)
+            if args != "off":
+                return {"success": True, "result": "PASS wind=True stallStill=True" if hides else
+                        "FAIL: small wild creature on fuzz in wind was not hidden"}
+            return {"success": True, "result": "FAIL: rippleEnabled off but the creature hid" if hides else "PASS off wind=False"}
+        if method == "ProofPyre":
+            if args == "defs":
+                return {"success": True, "result": "FAIL: RM_CallingPyre_Venerated not gated on Ritualist"
+                        if "pyre_ungated" in self.broken else "PASS defs"}
+            if args == "off":
+                return {"success": True, "result": "FAIL: callingPyreEnabled off but the gate said ok"
+                        if "pyre_ignores_toggle" in self.broken else "PASS off: gate refuses"}
+            return {"success": True, "result": "FAIL: the pyre lit fewer fires than the stamp threshold lit=2"
+                    if "pyre_no_fire" in self.broken else "PASS lit=6 came=3 raging=1"}
+        if method == "ProofVaporator":
+            return {"success": True, "result": "FAIL: no techprint for RM_WindVaporators"
+                    if "vaporator_unlearnable" in self.broken else "PASS vaporator"}
+        if method == "ProofInjections":
+            wrecks = 0 if "no_farmstead" in self.broken else 3
+            return {"success": True, "result": "PLACED sites=4 vaporatorWrecks=+%d campPeople=+4 farmers=True scavengers=False" % wrecks}
         if method == "ProofComfortDelta":
             on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
             d = 0.10 if on and "no_comfort" not in self.broken else 0.0
@@ -601,6 +622,13 @@ BREAKS = {
     "log_error": "log.log_clean",
     "stamp_never": "stamp.stamp_answers_a_blaze",
     "stamp_ignores_toggle": "stamp.stamp_toggle_off_ignores_fire",
+    "ripple_never": "ripple.ripple_hides_small_creatures",
+    "ripple_ignores_toggle": "ripple.ripple_toggle_off_nobody_hides",
+    "pyre_ungated": "pyre.pyre_beliefs_gated_on_memes",
+    "pyre_no_fire": "pyre.pyre_lights_fields_and_calls_herd",
+    "pyre_ignores_toggle": "pyre.pyre_toggle_off_refuses",
+    "vaporator_unlearnable": "injections.vaporator_learned_from_farmstead",
+    "no_farmstead": "injections.map_holds_ruins_and_camps",
 }
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
