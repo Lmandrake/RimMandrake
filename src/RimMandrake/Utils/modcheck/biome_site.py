@@ -5,8 +5,7 @@ clean -> read back -> save -> registry -> reload -> read back. LIVE ONLY, bridge
 BIOME_SPRINT_PROVE_SCRUB_SETS_PACE (kickoff packet design/RimMandrake/biome_sprint_kickoff_2026-10-15.md §4 D0). The
 recipe is Cauldron's (src/RimMandrake/Cauldron/prep_site.py, commit e1e5a6ff3a) with the biome's data passed in as a
 `spec` module (a <Biome>/site_spec.py) and its own extra read-back as a `probe(call, phase, saved)` function, so
-Contagion and LeaningScrub run the same steps instead of a copy each. (Cauldron keeps its own copy for now; folding it
-onto this module is a mechanical follow-up its selftest would have to move with.)
+Cauldron, Contagion and LeaningScrub run the same steps instead of a copy each.
 
 `spec` must carry: SITE SAVE BIOME PROFILE MAP_SIZE COLONISTS TEMP_BAND TILE LAT_MAX NATIVES MIN_NATIVES FOOD_PACKS
 COLONY_NAME (optional FOOD_AT). `probe(call, phase, saved)` -> (problems, info): phase "save" runs on the cleaned map before the save,
