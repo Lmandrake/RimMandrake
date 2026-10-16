@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_ColossalAerofleet_TwitchWiring.xml: switches the greater bulloo onto its twitching-feeler render tree.
-  HELD in src/DEPLOY_HOLD.txt until the owner accepts the split art (feeler-less bell + four feeler pictures, all facings;
+  STAGED (Staged/TentacleTwitch/, never loaded; held in src/DEPLOY_HOLD.txt) until the owner accepts the split art (feeler-less bell + four feeler pictures, all facings;
   artpipe rows tt_bulloo_*_v1, design/RimMandrake/tentacle_twitch_art_rows_2026-10-15.json) and it is installed through
-  art.py at the texPaths below. Lift the hold line only then: with the art missing this patch draws pink squares.
-  Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md. Tree: Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml.
+  art.py at the texPaths below. Go live only then: with the art missing this draws pink squares.
+  Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md. Tree: Staged/TentacleTwitch/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml.
 
   Until then the race keeps vanilla's Animal tree and its one whole-body picture (Defs/ThingDefs_Races/RM_ColossalAerofleet.xml).
-  When lifting, fold both operations into that def and delete this file rather than shipping a patch on our own def.
+  Go-live: fold both operations into that def, delete this file, and move the tree into Defs/PawnRenderTreeDefs/.
 -->
 <Patch>
 

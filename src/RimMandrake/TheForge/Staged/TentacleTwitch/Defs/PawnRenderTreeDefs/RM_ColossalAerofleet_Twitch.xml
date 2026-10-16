@@ -11,10 +11,11 @@
   Anomaly's Toughspike, Trispike and Fingerspike trees use exactly this. It is base game, not the donor's
   AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled, and no C# of ours runs here.
 
-  INERT UNTIL THE ART LANDS. Nothing names this tree yet, and an unnamed tree resolves no texture (textures load at
-  render time, PawnRenderNode.GraphicFor; PawnRenderNodeProperties.ConfigErrors checks classes only). The race keeps
-  vanilla's Animal tree and its one whole-body picture. Patches/RM_ColossalAerofleet_TwitchWiring.xml switches the race
-  to this tree and the body to the feeler-less bell; it sits in src/DEPLOY_HOLD.txt until the owner accepts the split art.
+  STAGED UNTIL THE ART LANDS (this file sits in Staged/TentacleTwitch/, which the game never loads and
+  texture_gap_lint never scans: shipping a texPath with no picture is a frozen-allowlist gap). The race keeps vanilla's
+  Animal tree and its one whole-body picture. Go-live, once the owner accepts the split art and art.py installs it:
+  move this file into Defs/PawnRenderTreeDefs/, fold the two operations of Staged/TentacleTwitch/Patches/RM_ColossalAerofleet_TwitchWiring.xml
+  into the race def, delete that patch and the Staged hold line in src/DEPLOY_HOLD.txt, then deploy.
 
   GEOMETRY (cells from the pawn centre, z up; PROVISIONAL, tune live in Dialog_DebugRenderTree):
     Body: the vanilla Animal body node (1.6), whose mesh is the life stage's drawSize (2.5).
