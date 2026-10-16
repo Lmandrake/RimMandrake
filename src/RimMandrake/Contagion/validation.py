@@ -997,10 +997,21 @@ def _under_patch(t, px, pz):
     return px is not None and pz is not None and x + 6 <= px < x + 14 and z - 4 <= pz < z + 4
 
 
+def _on_open_pad(t, px, pz):
+    """On the unroofed pad (PAD_SIZE around the anchor) and not under the burn chain's roof patch."""
+    x, z = t.anchor
+    half = PAD_SIZE // 2
+    return (px is not None and pz is not None and x - half <= px < x + half and z - half <= pz < z + half
+            and not _under_patch(t, px, pz))
+
+
 def _open_pawns(t, x, z):
     """The Burn fixture: an open visitor, a roofed visitor, a UV-shy native, an armored native, and a
     roof patch east of the native to dive for. Drafted colonists hold their ground."""
-    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,8,8" % (x + 6, z - 4))
+    r = t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,8,8" % (x + 6, z - 4))
+    if _live(t) and (not isinstance(r, dict) or r.get("success") is False or r.get("cellsFailedVerify")
+                     or (r.get("cellsChanged") or 0) < 64):
+        _unmeasured(t, "SITE: the 8x8 roof patch did not land: %r" % (r,))
     out = {}
     out["open"] = t.spawn_pawn("Colonist", hostile=False)
     out["roofed"] = t.spawn_pawn("Colonist", hostile=False)
@@ -1061,6 +1072,8 @@ def burn_forced(t):
                 if not _alive(rows.get(b["open"])):
                     _unmeasured(t, "the open visitor is not readable alive: 'not harmed' would mean nothing")
                 hit = [k for k in ("open", "native") if _hdefs(rows.get(b[k])) & {"RM_BurnDose", "Burn"}]
+                if rows.get(b["native"]) is None:
+                    _unmeasured(t, "the native's row is absent (no corpses are listed): nothing to read")
                 if hit or not _alive(rows.get(b["native"])):
                     _fail("burnDamageFactor=0 still harmed: %s (native alive=%s)"
                           % (hit, _alive(rows.get(b["native"]))))
@@ -1160,6 +1173,10 @@ def burn_forced(t):
                     frow = _rows(t).get(fresh)
                     if not _alive(frow):
                         _unmeasured(t, "the fresh visitor is not readable alive: 'not dosed' would mean nothing")
+                    fx, fz = frow.get("x"), frow.get("z")
+                    if not _on_open_pad(t, fx, fz):
+                        _unmeasured(t, "the fresh visitor is not on the open pad (at %s,%s): 'not dosed' could be "
+                                       "shelter" % (fx, fz))
                     if "RM_BurnDose" in _hdefs(frow):
                         _fail("a fresh exposed visitor was dosed with burnEnabled off")
 
