@@ -144,7 +144,7 @@
       <li Class="CompProperties_Spawner">
         <thingToSpawn>RM_FogWater</thingToSpawn>
         <spawnCount>4</spawnCount>
-        <spawnIntervalRange>(54000,66000)</spawnIntervalRange>
+        <spawnIntervalRange>54000~66000</spawnIntervalRange>
         <spawnMaxAdjacent>40</spawnMaxAdjacent>
         <requiresPower>true</requiresPower>
         <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
