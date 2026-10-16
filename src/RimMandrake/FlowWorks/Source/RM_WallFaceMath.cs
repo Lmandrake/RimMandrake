@@ -1,3 +1,5 @@
+using System;
+
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>EXCAVATION_WALL_ART_1 + FLOWWORKS_VISUAL_PRINCIPLES_1 — the geometry and shading numbers of the
@@ -128,6 +130,30 @@ namespace RimMandrake.FlowWorks
 				n++;
 			}
 			return n;
+		}
+
+		/// <summary>PIT_LIP_FIX_BOAR_HANGS_OUT (owner 2026-10-16: <i>"A boar sleeping in a pit seems to hang out of the pit
+		/// rather than be obscured by the southern lip."</i>). The occupant window exists so an occupant is never lost behind
+		/// the near bank; it opens only when the bank would hide MORE than half of the sprite. With the sink clamp on, the
+		/// drawn centre never drops past the lip, so at least half the occupant is always in the opening and the lip hides
+		/// the rest — the window, cut unconditionally since 2026-10-09 while the clamp was off, was what let every occupant
+		/// (standing or lying) hang out over the south bank once the clamp came on (2026-10-15).</summary>
+		public static bool OccupantCutNeeded(float lipZ, float spriteBottomZ, float spriteTopZ)
+		{
+			float h = spriteTopZ - spriteBottomZ;
+			if (!(h > 0f)) return false;
+			return spriteTopZ - lipZ < 0.5f * h - 0.01f;
+		}
+
+		/// <summary>PIT_LIP_FIX_BOAR_HANGS_OUT. Half extents of a sprite of half size (hx,hy) drawn rotated by
+		/// <paramref name="angleDeg"/> (vanilla's BodyAngle: a sleeping animal lies at 90/270, a downed pawn at any angle):
+		/// the axis-aligned box that holds the rotated quad, so the near-lip cover spans what is actually drawn.</summary>
+		public static void RotatedHalfExtent(float hx, float hy, float angleDeg, out float rx, out float ry)
+		{
+			double r = angleDeg * Math.PI / 180.0;
+			float c = (float)Math.Abs(Math.Cos(r)), s = (float)Math.Abs(Math.Sin(r));
+			rx = c * hx + s * hy;
+			ry = s * hx + c * hy;
 		}
 
 		// ── scorch (principle 5) ────────────────────────────────────────────
