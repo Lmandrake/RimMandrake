@@ -1,0 +1,1 @@
+Agent wait loops 'while pgrep -f X; do sleep; done' never end: pgrep -f matches the waiting shell's own command line (which contains X). Four BENCH subagent loops ran 3-5 h on 2026-10-16 and left their agents showing stale 'current action' text. Wait on a PID (wait/kill -0) or a bracketed pattern (pgrep -f '[i]nst.py'), never the bare string.
