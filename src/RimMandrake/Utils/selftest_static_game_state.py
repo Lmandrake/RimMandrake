@@ -48,6 +48,7 @@ REVIEWED = {
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs::aboardCacheFor": "Gravship reference: a reload makes a new Gravship, so the id set is rebuilt",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs::aboardCache": "rebuilt whenever aboardCacheFor != Current.Game.Gravship",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs::groundedMessageTick": "one-message-per-launch dedupe; a launch at the exact reload tick loses one message (cosmetic, accepted)",
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs::sameFrameWall": "bridge-probe handle to the one test wall; every use is guarded by Spawned and Map == the map being probed, so a Thing left by a prior game is never touched, and it is overwritten on the next spawn",
     # FlowWorks
     "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs::Default": "the carry state machine's constant transition table (tuple key of enums)",
     "src/RimMandrake/FlowWorks/Source/Hose/HoseRelay.cs::NoFeeders": "a shared empty readonly sentinel",

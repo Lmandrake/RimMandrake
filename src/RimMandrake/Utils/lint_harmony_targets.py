@@ -78,15 +78,37 @@ def _param_count(sig):
         return -1
 
 
+def _fix_dnfile_coded_index_width(dnfile):
+    """dnfile 0.18 sizes a coded index as 2 bytes when the largest referenced table has <= 2**(16-tag_bits) rows;
+    ECMA-335 II.24.2.6 says < . A DLL with EXACTLY that many rows (GimmeSomeSlack: MemberRef == 2048 with the 5-bit
+    HasCustomAttribute) is then misparsed from CustomAttribute on, every later table (NestedClass...) reads as None."""
+    import inspect
+    cls = next((c for c in vars(dnfile.base).values() if inspect.isclass(c) and hasattr(c, "_clr_coded_index_struct_size")), None)
+    if cls is None or getattr(cls, "_rm_width_fixed", False):
+        return
+
+    def size(self, tag_bits, table_names):
+        mx = 0
+        for name in table_names:
+            if name:
+                mx = max(mx, self._tables_rowcnt[dnfile.enums.MetadataTables[name].value] or 0)
+        return "H" if mx < 2 ** (16 - tag_bits) else "I"
+    cls._clr_coded_index_struct_size = size
+    cls._rm_width_fixed = True
+
+
 def index_dll(path):
     """{fullName: {"ns", "name", "base": fullName|None, "methods": {name: [paramCounts]}, "fields": [names]}}."""
     import dnfile                              # imported here so the parsing half is testable without it
+    _fix_dnfile_coded_index_width(dnfile)
     pe = dnfile.dnPE(path)
     md = pe.net.mdtables
     rows = md.TypeDef.rows if md.TypeDef else []
     enclosing = {}
     if md.NestedClass:
         for n in md.NestedClass.rows:
+            if n.NestedClass is None or n.EnclosingClass is None:   # a misparsed table: say so, never guess a nesting
+                raise RuntimeError("%s: NestedClass metadata unreadable (dnfile misparse); its nested types cannot be indexed" % path)
             enclosing[n.NestedClass.row_index] = n.EnclosingClass.row_index
 
     def full(ri, seen=0):
