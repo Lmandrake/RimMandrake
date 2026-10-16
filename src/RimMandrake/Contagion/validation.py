@@ -1303,8 +1303,8 @@ def touched(t):
                     t.bridge_call("jawa/set_draft", pawnId=off, drafted=True)
                     _wait(t, 1000)
                     row = _rows(t, _rs(_rect(t))).get(off)
-                    if row is None:
-                        _unmeasured(t, "the toggle-off colonist is not readable")
+                    if not _alive(row):
+                        _unmeasured(t, "the toggle-off colonist is not readable alive")
                     if TOUCHED in _hdefs(row):
                         _fail("dosed by contact with touchedEnabled off")
                     t.bridge_call("jawa/pawn_force_incapacitate", pawn=off, action="vanish")
