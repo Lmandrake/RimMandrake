@@ -49,4 +49,6 @@
        whose mechanic its owning mod's settings have switched off. -->
   <RM_MechanicDisabledInSettings>Dormant: switched off in mod settings.</RM_MechanicDisabledInSettings>
 
+  <RM_DieOffProgress>Dying back</RM_DieOffProgress>
+
 </LanguageData>

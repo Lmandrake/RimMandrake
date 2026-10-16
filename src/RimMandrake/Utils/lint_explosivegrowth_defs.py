@@ -215,7 +215,9 @@ def plant_check():
                 continue
             open(f, "w", encoding="utf-8").write(t.replace(old, new, 1))
             r = subprocess.run([sys.executable, os.path.abspath(__file__), "--quiet", "--mod-dir", dst], capture_output=True, text=True)
-            hit = [l for l in (r.stdout + r.stderr).splitlines() if l.startswith("ERROR") or "Traceback" in l]
+            # the temp copy sits outside src/, so every ../../_Shared csproj include "does not exist": that artefact is not a catch
+            hit = [l for l in (r.stdout + r.stderr).splitlines()
+                   if (l.startswith("ERROR") and not (l.startswith("ERROR compile-listed: csproj lists") and "does not exist" in l)) or "Traceback" in l]
             print(("CAUGHT  " if hit else "MISSED  ") + name + ("  " + hit[0][:100] if hit else ""))
             caught += bool(hit)
     print(f"{caught}/{len(PLANTS)} planted defects caught")
