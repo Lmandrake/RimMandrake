@@ -167,6 +167,8 @@
       <RM_Tetchik>0.5</RM_Tetchik>
       <RM_Pallbearer>0.06</RM_Pallbearer>
       <RM_ScarRoach>0.08</RM_ScarRoach>
+      <!-- JURROX_MIGRATE_INTO_WARSCAR_GAUNT (owner, art sheet 2026-10-16: "Add it to the Warscar"): the ultra-gaunt carrion gleaner. Weight PROVISIONAL. -->
+      <RM_Rakeshank>0.12</RM_Rakeshank>
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Stillsand sheet: "This should go into the Warscar."): the vozzik giant, moved here from the Stillsand. Def + skeleton wiring stay in mandrake.rm.stillsand (same composed mod). Weight carried over verbatim (giant-rare); PROVISIONAL. -->
       <RM_Vozzik MayRequire="mandrake.rm.biomes">0.0005</RM_Vozzik>
     </wildAnimals>

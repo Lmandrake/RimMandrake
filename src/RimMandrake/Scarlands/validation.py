@@ -421,6 +421,16 @@ def static_checks():
         for f in ("south", "east", "north"):
             if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", port, "%s_%s.png" % (port, f))):
                 bad.append("%s texture %s missing" % (port, f))
+    # JURROX_MIGRATE_INTO_WARSCAR_GAUNT: the rakeshank (the jurrox picture, renamed) lives here and only here.
+    rk = os.path.join(D, "ThingDefs_Races", "RM_Rakeshank.xml")
+    if "RM_Rakeshank" not in rows:
+        bad.append("wildAnimals lacks RM_Rakeshank")
+    if not os.path.exists(rk) or {("ThingDef", "RM_Rakeshank"), ("PawnKindDef", "RM_Rakeshank")} - {
+            (e.tag, e.findtext("defName")) for e in ET.parse(rk).getroot()}:
+        bad.append("RM_Rakeshank lacks its ThingDef or PawnKindDef")
+    for f in ("south", "east", "north"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Rakeshank", "RM_Rakeshank_%s.png" % f)):
+            bad.append("RM_Rakeshank texture %s missing" % f)
     if "<RM_Totchak>" in biome_txt:
         bad.append("totchak must stay genstep-only (not a wildAnimals row)")
     fa = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_WarscarFauna.xml")).getroot()
