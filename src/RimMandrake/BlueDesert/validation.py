@@ -620,7 +620,7 @@ def defs_chain(t):
         if _live(t):
             plants = [n for n in FLORA]
             r = t.bridge_call("jawa/biome_probe", biomes="RM_BlueDesert",
-                              find=",".join(NATIVES + plants + ["AA_Thunderbeast"]),
+                              find=",".join(NATIVES + plants + ["RM_Thunderbeast"]),
                               animals=True, plants=True, limit=1, topN=60)
             _ok(r, "biome_probe")
             rows = r.get("biomes") or []
@@ -629,9 +629,9 @@ def defs_chain(t):
             b = rows[0]
             state = dict((x.get("defName"), x.get("state")) for x in b["findResults"])
             bad = dict((n, state.get(n)) for n in NATIVES + plants if state.get(n) != "spawning")
-            # AA_Thunderbeast is MayRequire sarg.alphaanimals: its state follows the mod list, so it is
-            # recorded as evidence and never gates.
-            _note(t, "biome roster states (AA_Thunderbeast follows the mod list)", state)
+            # RM_Thunderbeast (our port of the donor AA_Thunderbeast, Phase 0 P3) is recorded, not gated, until a
+            # live run has seen it spawning: its band moved to the natives' -100..-11 in the port.
+            _note(t, "biome roster states (RM_Thunderbeast recorded, not gated)", state)
             dens = b.get("animalDensity")
             if not isinstance(dens, (int, float)) or dens <= 0:
                 _fail("animalDensity %r: <= 0 means the animal roster can never spawn" % (dens,))

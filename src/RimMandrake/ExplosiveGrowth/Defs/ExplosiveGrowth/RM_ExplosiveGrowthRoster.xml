@@ -149,12 +149,13 @@
       <li>RM_Chimeglobe</li>
     </exemptPlants>
 
-    <!-- RUPTURE's spawn: "red slimes, occular entities". Alpha Animals kinds,
-         looked up by name exactly as the Contagion mod itself does
-         (AmoebaHostUtility.HostDefName), so there is no hard dependency. -->
+    <!-- RUPTURE's spawn: "red slimes, occular entities". Kinds looked up by name
+         exactly as the Contagion mod itself does (AmoebaHostUtility.HostDefName),
+         so there is no hard dependency. RM_OcularJelly is our port of the donor
+         zhool (Phase 0 P3); AA_RedGoo is still the Alpha Animals kind. -->
     <rupturePawnKinds>
       <li>AA_RedGoo</li>
-      <li>AA_OcularJelly</li>
+      <li>RM_OcularJelly</li>
     </rupturePawnKinds>
 
     <!-- RUPTURE's "extra mutation hediffs": the Contagion mod's own

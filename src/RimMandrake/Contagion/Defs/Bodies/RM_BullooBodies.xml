@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BullooBodies.xml — bodies for the floating gas-sac creatures (Phase 0 P3, biome_sprint_kickoff_2026-10-15.md
+  §0.5.3 item 2). Ported from Alpha Animals' AA_JellyfishBody and AA_OcularJellyBody (1.6/Defs/Bodies/
+  Bodies_Animal_Jellyfish.xml, Bodies_Ocular_Jelly.xml) with the donor BodyPartDefs (AA_JellyfishMainBody,
+  AA_HydrogenSac, AA_JellyfishTentacle) re-declared as ours below, same hit points and tags.
+  Used by RM_InfectedAerofleet (blistered bulloo) and RM_OcularJelly (zhool) in this member, and by
+  RM_ColossalAerofleet (greater bulloo) in TheForge; all are members of the one composed Baroque Biomes mod.
+  The feelers keep the vanilla Arms group: the twitching limb render nodes link to it, so a severed feeler
+  stops being drawn.
+-->
+<Defs>
+
+  <BodyPartDef>
+    <defName>RM_BullooHood</defName>
+    <label>hood</label>
+    <hitPoints>30</hitPoints>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_BullooGasSac</defName>
+    <label>gas sac</label>
+    <hitPoints>20</hitPoints>
+    <bleedRate>5</bleedRate>
+    <skinCovered>false</skinCovered>
+    <tags>
+      <li>BloodPumpingSource</li>
+      <li>BloodFiltrationSource</li>
+      <li>MetabolismSource</li>
+      <li>BreathingSource</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyPartDef>
+    <defName>RM_BullooFeeler</defName>
+    <label>feeler</label>
+    <hitPoints>5</hitPoints>
+    <frostbiteVulnerability>0.1</frostbiteVulnerability>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>true</skinCovered>
+    <tags>
+      <li>MovingLimbCore</li>
+      <li>ManipulationLimbCore</li>
+    </tags>
+  </BodyPartDef>
+
+  <BodyDef>
+    <defName>RM_BullooBody</defName>
+    <label>bulloo</label>
+    <corePart>
+      <def>RM_BullooHood</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Stomach</def>
+          <customLabel>stomach pouch</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <customLabel>gastrovascular cavity</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_BullooGasSac</def>
+          <customLabel>left gas sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_BullooGasSac</def>
+          <customLabel>right gas sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.05</coverage>
+          <parts>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye spot</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye spot</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>AnimalJaw</def>
+              <coverage>0.02</coverage>
+              <groups>
+                <li>Teeth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>first feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>second feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>third feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <BodyDef>
+    <defName>RM_ZhoolBody</defName>
+    <label>zhool</label>
+    <corePart>
+      <def>RM_BullooHood</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Stomach</def>
+          <customLabel>stomach pouch</customLabel>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <customLabel>gastrovascular cavity</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_BullooGasSac</def>
+          <customLabel>left gas sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>RM_BullooGasSac</def>
+          <customLabel>right gas sac</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Head</def>
+          <coverage>0.05</coverage>
+          <parts>
+            <li>
+              <def>Eye</def>
+              <customLabel>first eye spot</customLabel>
+              <coverage>0.02</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>second eye spot</customLabel>
+              <coverage>0.02</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>third eye spot</customLabel>
+              <coverage>0.02</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>fourth eye spot</customLabel>
+              <coverage>0.02</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>fifth eye spot</customLabel>
+              <coverage>0.02</coverage>
+            </li>
+            <li>
+              <def>AnimalJaw</def>
+              <coverage>0.02</coverage>
+              <groups>
+                <li>Teeth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>first feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>second feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+        <li>
+          <def>RM_BullooFeeler</def>
+          <customLabel>third feeler</customLabel>
+          <groups>
+            <li>Arms</li>
+          </groups>
+          <coverage>0.05</coverage>
+          <height>Bottom</height>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+</Defs>
