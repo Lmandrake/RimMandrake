@@ -67,6 +67,7 @@
     <Compile Include="RM_WakeMath.cs" />
     <Compile Include="RM_LiquidHeatMath.cs" />
     <Compile Include="RM_LiquidHeat.cs" />
+    <Compile Include="RM_WaterBodyTypeFlipFix.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
