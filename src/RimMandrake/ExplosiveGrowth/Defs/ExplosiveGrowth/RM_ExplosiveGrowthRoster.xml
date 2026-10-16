@@ -152,9 +152,10 @@
     <!-- RUPTURE's spawn: "red slimes, occular entities". Kinds looked up by name
          exactly as the Contagion mod itself does (AmoebaHostUtility.HostDefName),
          so there is no hard dependency. RM_OcularJelly is our port of the donor
-         zhool (Phase 0 P3); AA_RedGoo is still the Alpha Animals kind. -->
+         zhool (Phase 0 P3); RM_BloodyMess is the Contagion's own port of the donor red goo
+         (contagion_grotesque_cast_2026-09-27.md), repointed 2026-10-15 (twin-only ports). -->
     <rupturePawnKinds>
-      <li>AA_RedGoo</li>
+      <li>RM_BloodyMess</li>
       <li>RM_OcularJelly</li>
     </rupturePawnKinds>
 
