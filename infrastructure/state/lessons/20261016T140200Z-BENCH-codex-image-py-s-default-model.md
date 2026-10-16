@@ -1,0 +1,1 @@
+codex_image.py's default --model gpt-5.5 is refused on this ChatGPT-auth Codex (400 'not supported'); pass --model gpt-6.1-sol (config.toml's model) — LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS 2026-10-16
