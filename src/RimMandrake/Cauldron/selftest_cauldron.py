@@ -170,7 +170,7 @@ class Fake(object):
         for v in self.of(V.VENT):
             out = self.vent_output(v)
             tap = self.tap_on(v)
-            emitting = tap is None and out > 0.05 and "no_gas" not in b and self.on("ventGasEnabled", "gas_ignores_toggle")
+            emitting = tap is None and out > 0.05 and self.vent_mult() != self.FALTER and "no_gas" not in b and self.on("ventGasEnabled", "gas_ignores_toggle")
             if emitting:
                 v["gas"] = min(255.0, v["gas"] + d / 60.0 * 12 * out)
                 if "gas_is_tox" in b:
@@ -178,6 +178,8 @@ class Fake(object):
             else:
                 v["gas"] = max(0.0, v["gas"] - d / 128.0 * 8)
             v["tox"] = max(0.0, v["tox"] - d / 64.0 * 3) if "gas_is_tox" not in b else v["tox"]
+            # Simplification: one scalar cloud per vent and a 3-cell fire reach; the C# burns per cell from a fire's 8
+            # neighbours, so a positional miss (fire beside a thin cell) is NOT reproduced here — the live run decides.
             near_fire = any(abs(f[0] - v["x"]) <= 3 and abs(f[1] - v["z"]) <= 3 for f in self.fires)
             if near_fire and v["gas"] >= 24 and "no_ignite" not in b and self.on("ventGasIgnites", "ignite_ignores_toggle"):
                 self.burned += int(v["gas"] / 4) + 1

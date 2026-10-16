@@ -477,8 +477,8 @@ def _set(t, field, value):
 @contextlib.contextmanager
 def _setting(t, field, value):
     """Flip one field for a block; ALWAYS restore the shipped default and re-read it."""
-    _set(t, field, value)
     try:
+        _set(t, field, value)       # inside the try: a failed read-back still restores the shipped default
         yield
     finally:
         _restore(t, field)
@@ -1873,31 +1873,37 @@ def gas_chain(t):
                 g0 = gas()
                 if g0["peak"] < 24:
                     _unmeasured(t, "the cloud is too thin to ignite (peak %d)" % g0["peak"])
-                with _setting(t, "ventGasIgnites", False):
-                    _ok(t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d,10" % (x + 2, z)), "spawn_batch(wood)")
-                    r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x + 2, z), fireSize=1.0)
+                # One fire cell for both arms, directly under the vent's bottom row (x, z-1): its 8 neighbours include
+                # two vent cells, where the emission lands. ON arm first (the positive control), then OFF at the same
+                # cell once the cloud has rebuilt. `burned` is map-wide; nothing else burns on this pad.
+                fx, fz = x, z - 1
+
+                def light(ticks):
+                    _ok(t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d,10" % (fx, fz)), "spawn_batch(wood)")
+                    r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (fx, fz), fireSize=1.0)
                     if not (r or {}).get("firesStarted"):
                         _unmeasured(t, "map_fire lit nothing beside the vent: %r" % r)
-                    _wait(t, 240)
-                    g_off = gas()
+                    _wait(t, ticks)
+                    after = gas()
                     t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t)))
-                _note(t, "OFF arm: burned before / after", [g0["burned"], g_off["burned"]])
-                if g_off["burned"] != g0["burned"]:
-                    _fail("ventGasIgnites OFF but the gas still burned (%d -> %d)" % (g0["burned"], g_off["burned"]))
-                _wait(t, 600)
+                    return after
+
                 g1 = gas()
-                _ok(t.bridge_call("jawa/spawn_batch", ops="WoodLog:%d,%d,10" % (x - 1, z)), "spawn_batch(wood)")
-                r = t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x - 1, z), fireSize=1.0)
-                if not (r or {}).get("firesStarted"):
-                    _unmeasured(t, "map_fire lit nothing beside the vent: %r" % r)
-                _wait(t, 240)
-                g2 = gas()
-                t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t)))
+                g2 = light(600)
                 _note(t, "ON arm: before / after the fire", [g1, g2])
                 if g2["burned"] <= g1["burned"]:
-                    _fail("a fire beside a thick cloud (peak %d) burned no gas" % g1["peak"])
+                    _fail("a fire for 600 ticks under a thick cloud (peak %d) burned no gas" % g1["peak"])
                 if g2["tox"] <= 0:
                     _fail("the gas burned (%d cells) but left no tox gas: no toxic smoke" % (g2["burned"] - g1["burned"]))
+                _wait(t, 1500)                                   # the cloud rebuilds
+                with _setting(t, "ventGasIgnites", False):
+                    g3 = gas()
+                    if g3["peak"] < 24:
+                        _unmeasured(t, "OFF arm: the cloud did not rebuild (peak %d)" % g3["peak"])
+                    g4 = light(600)
+                _note(t, "OFF arm: burned before / after", [g3["burned"], g4["burned"]])
+                if g4["burned"] != g3["burned"]:
+                    _fail("ventGasIgnites OFF but the gas still burned (%d -> %d)" % (g3["burned"], g4["burned"]))
         with _comp(t, "gas_tap_caps_and_banks", toggle="gasTapBanksCondensate"):
             if _live(t):
                 _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1;%s:%d,%d,1" % (GAS_TAP, x, z, TANK, x + 2, z)),
@@ -1908,11 +1914,15 @@ def gas_chain(t):
                 ids["tap"] = rows[0]["id"]
                 if not gas().get("capped"):
                     _fail("a gas tap stands on the vent but the vent does not read capped")
-                _wait(t, 6000)
+                _wait(t, 9000)
                 b1, d1, _h = _tap_read(t, ids["tap"])
-                _note(t, "tap banked / delivered after 6000 ticks", [b1, d1])
+                _note(t, "tap banked / delivered after 9000 ticks", [b1, d1])
                 if b1 + d1 <= 0.05:
-                    _fail("a tapped breathing vent banked nothing in 6000 ticks")
+                    _fail("a tapped breathing vent banked nothing in 9000 ticks")
+                # d1 >= 1 also proves RM_Liquid_VentCondensate resolved (the tank only accepts a real LiquidDef); the def
+                # census cannot, since LiquidDef is a FlowWorks type the bridge's get_defs does not address.
+                if d1 < 1:
+                    _fail("the tap banked %.2f but delivered nothing to the tank touching it" % b1)
                 with _setting(t, "gasTapBanksCondensate", False):
                     b2, d2, _h = _tap_read(t, ids["tap"])
                     _wait(t, 3000)

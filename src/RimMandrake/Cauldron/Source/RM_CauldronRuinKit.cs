@@ -81,12 +81,15 @@ namespace RimMandrake.Cauldron
         private Thing Place(ThingDef def, Map map, RM_RuinPiece piece, FloatRange hp)
         {
             ThingDef stuff = def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null;
+            // Keep the rig's interaction cell and the ring around it open: a tank set down there would make the rig
+            // unstudiable, and studying it is the only route to the Filter-Works research.
             CellRect own = parent.OccupiedRect();
+            CellRect keepClear = parent.def.hasInteractionCell ? CellRect.CenteredOn(parent.InteractionCell, 1) : CellRect.Empty;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(parent.Position, Props.radius, false).InRandomOrder())
             {
                 Rot4 rot = def.rotatable ? Rot4.Random : Rot4.North;
                 CellRect rect = GenAdj.OccupiedRect(c, rot, def.size);
-                if (!Free(rect, own, map, def.category == ThingCategory.Item)) continue;
+                if (!Free(rect, own, map, def.category == ThingCategory.Item) || rect.Overlaps(keepClear)) continue;
                 Thing t = ThingMaker.MakeThing(def, stuff);
                 if (t.def.useHitPoints) t.HitPoints = System.Math.Max(1, (int)(t.MaxHitPoints * hp.RandomInRange));
                 GenSpawn.Spawn(t, c, map, rot);

@@ -20,7 +20,10 @@ namespace RimMandrake.Cauldron
     {
         public const int MaxDensity = 255;
         public const int MinDiffusion = 17;            // vanilla GasGrid.MinDiffusion
-        public const int DissipationAmount = 2;        // PROVISIONAL: vanilla tox gas is 3; vent gas lingers a little longer
+        // PROVISIONAL: vanilla tox gas is 3; vent gas lingers a little longer. At half vanilla's sweep rate one 1x vent holds a
+        // cloud of only ~13-60 cells (reviewer estimate): if the live bar "a drifting cloud" reads as a blob, lower the
+        // dissipation (not below 2: a roofed cell rounds 0.5x of 1 to 0 and would never clear) or raise BaseEmit.
+        public const int DissipationAmount = 2;
         public const float VacuumDissipateFactor = 25f; // vanilla GasGrid.VacuumDissipatePerTickFactor
         public const int BaseEmit = 12;                // PROVISIONAL: density added per emission pulse at output 1x
         public const float LeakFactor = 2f;            // PROVISIONAL: a chronic leak breathes twice as much gas
@@ -73,11 +76,12 @@ namespace RimMandrake.Cauldron
             return (int)Math.Round(DissipationAmount * f, MidpointRounding.ToEven);
         }
 
-        // Density one vent adds per EmitIntervalTicks. 0 when the setting is off, the vent is capped by a gas-tap scaffold, or
-        // it is silenced / faltering (output at or below the puff floor RM_VentKernel.PuffsAt uses).
-        public static int EmitAmount(bool enabled, bool capped, float output, bool leaking, float factor)
+        // Density one vent adds per EmitIntervalTicks. 0 when the setting is off, the vent is capped by a gas-tap scaffold, it
+        // is faltering (the hush before a bloom: the forest goes silent), or silenced (output at or below the puff floor
+        // RM_VentKernel.PuffsAt uses).
+        public static int EmitAmount(bool enabled, bool capped, bool faltering, float output, bool leaking, float factor)
         {
-            if (!enabled || capped || output <= 0.05f || factor <= 0f) return 0;
+            if (!enabled || capped || faltering || output <= 0.05f || factor <= 0f) return 0;
             double v = BaseEmit * output * (leaking ? LeakFactor : 1f) * factor;
             return (int)Math.Round(v, MidpointRounding.AwayFromZero);
         }
