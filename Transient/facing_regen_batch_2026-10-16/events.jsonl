@@ -95,3 +95,48 @@
 {"key": "swanimals/biomesteam/bmt_caverns/things/animal/foundrybeetle/foundrygrub", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:53"}
 {"key": "swanimals/biomesteam/bmt_caverns/things/animal/glowworm/glowworm", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:57"}
 {"key": "swanimals/biomesteam/bmt_caverns/things/animal/jewelbeetle/jewelbeetle", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:12:59"}
+{"event": "publish", "n_paths": 33, "result": "close with: rimflow close <ID> --sha 045359f70b87", "at": "2026-10-16T13:13:07"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/maguana/maguana", "event": "done", "seconds": 109, "at": "2026-10-16T13:14:56"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalgrub", "event": "done", "seconds": 56, "at": "2026-10-16T13:15:52"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalrhino", "event": "done", "seconds": 113, "at": "2026-10-16T13:17:45"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/sandpillar/sandpillar", "event": "done", "seconds": 101, "at": "2026-10-16T13:19:26"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/yooka/yooka", "event": "done", "seconds": 56, "at": "2026-10-16T13:20:22"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/bloodletterpetrel/bloodletterpetrel", "event": "lint_flag", "at": "2026-10-16T13:22:12"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/bunkerbug/bunkerbug", "event": "done", "seconds": 207, "at": "2026-10-16T13:25:38"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/gastrotoad/polluwog", "event": "done", "seconds": 105, "at": "2026-10-16T13:27:24"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtail", "event": "done", "seconds": 155, "at": "2026-10-16T13:29:59"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtailbaby", "event": "done", "seconds": 104, "at": "2026-10-16T13:31:43"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatfemale", "event": "done", "seconds": 61, "at": "2026-10-16T13:32:44"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatmale", "event": "done", "seconds": 72, "at": "2026-10-16T13:33:55"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/megakrill/megakrill", "event": "done", "seconds": 101, "at": "2026-10-16T13:35:36"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutagenicnorphea/mutagenicnorphea", "event": "done", "seconds": 53, "at": "2026-10-16T13:36:30"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage1", "event": "done", "seconds": 53, "at": "2026-10-16T13:37:23"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage3", "event": "done", "seconds": 102, "at": "2026-10-16T13:39:05"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/sacapillar/sacapillar", "event": "done", "seconds": 166, "at": "2026-10-16T13:41:51"}
+{"key": "swanimals/blarth/blarth", "event": "lint_flag", "at": "2026-10-16T13:44:29"}
+{"key": "swanimals/boarwolf/boarwolf", "event": "done", "seconds": 77, "at": "2026-10-16T13:45:46"}
+{"key": "swanimals/bolotaur/bolotaur", "event": "done", "seconds": 214, "at": "2026-10-16T13:49:20"}
+{"key": "swanimals/cancell/cancell", "event": "done", "seconds": 146, "at": "2026-10-16T13:51:46"}
+{"key": "swanimals/corellianhound/corellianhound", "event": "done", "seconds": 76, "at": "2026-10-16T13:53:02"}
+{"key": "swanimals/desertport/zakkro/zakkro", "event": "done", "seconds": 140, "at": "2026-10-16T13:55:22"}
+{"key": "swanimals/eopie/eopie", "event": "done", "seconds": 77, "at": "2026-10-16T13:56:39"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/maguana/maguana", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:43"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalgrub", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:56:44"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/royalrhinobeetle/royalrhino", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:46"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/sandpillar/sandpillar", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:56:48"}
+{"key": "swanimals/biomesteam/bmt_caverns/things/animal/yooka/yooka", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:56:49"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/bunkerbug/bunkerbug", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:50"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/gastrotoad/polluwog", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:52"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtail", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:53"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/glowtail/glowtailbaby", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:55"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatfemale", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:56:57"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/maligoat/maligoatmale", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:56:57"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/megakrill/megakrill", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:56:59"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutagenicnorphea/mutagenicnorphea", "event": "installed", "facings": ["south"], "at": "2026-10-16T13:57:01"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage1", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:02"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/mutatingtumorfish/mutatingtumorfish_stage3", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:03"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/sacapillar/sacapillar", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:57:07"}
+{"key": "swanimals/boarwolf/boarwolf", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:09"}
+{"key": "swanimals/corellianhound/corellianhound", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:11"}
+{"key": "swanimals/desertport/zakkro/zakkro", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T13:57:13"}
+{"key": "swanimals/eopie/eopie", "event": "installed", "facings": ["north"], "at": "2026-10-16T13:57:16"}
