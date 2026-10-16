@@ -604,7 +604,18 @@ class PulseOracle(object):
                 i += 1
                 for dx, dz in CARDINAL:
                     n = (c[0] + dx, c[1] + dz)
-                    if n in member or n not in compset or not self.exc(n) or self.F[n] == 0 or flu(n) != fl or self._held(n, fl):
+                    if n in member or n not in compset or not self.exc(n):
+                        continue
+                    if self.F[n] == 0:                 # a one-square dry gap joins the wet squares beyond it
+                        for ex, ez in CARDINAL:
+                            m = (n[0] + ex, n[1] + ez)
+                            if m == c or m in member or m not in compset or not self.exc(m) or self.F[m] == 0 \
+                                    or flu(m) != fl or self._held(m, fl):
+                                continue
+                            member.add(m)
+                            region.append(m)
+                        continue
+                    if flu(n) != fl or self._held(n, fl):
                         continue
                     member.add(n)
                     region.append(n)

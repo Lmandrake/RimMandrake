@@ -77,6 +77,9 @@ case(LC.levelset_verdict(_rows([2, 2, 2, 2]))[0], "PASS", "L7: brim-full canal")
 case(LC.levelset_verdict(_rows([0, 0, 0]))[0], "UNMEASURED", "L7: no water is unreadable, not a pass")
 case(LC.levelset_verdict(_rows([1, 0, 1, 1], sink_upto=1))[0], "PASS", "L7: sink-band squares are in flux and not read")
 case(LC.levelset_verdict(_rows([2, 0, 0], x0=1, source_at=0))[0], "PASS", "L7: the mouth beside the pond is not a step")
+case(LC.levelset_verdict(_rows([1, 1, 0, 1, 0, 0]), _rows([1, 0, 1, 1, 0, 0]))[0], "PASS", "L7: a gap that moved since the last pulse is flow in transit")
+case(LC.levelset_verdict(_rows([1, 0, 1, 0, 1, 0]), _rows([1, 0, 1, 0, 1, 0]))[0], "FAIL", "L7: a stripe standing in both reads")
+case(LC.levelset_verdict(_rows([1, 1, 0, 1, 0, 0]), _rows([1, 0, 1, 1, 0, 0]))[2]["movingStripes"], [(2, 0)], "L7: the moving gap is named")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)

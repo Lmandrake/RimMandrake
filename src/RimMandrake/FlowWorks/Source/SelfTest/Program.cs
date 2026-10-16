@@ -1808,6 +1808,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 ("enough_volume_flat_sheet", LevelSetChecks.EnoughVolumeFlatSheet),
                 ("stepped_floor_flat_surface", LevelSetChecks.SteppedFloorFlatSurface),
                 ("conserves_and_edge_drains", LevelSetChecks.ConservesAndDrains),
+                ("striped_save_gathers", LevelSetChecks.StripedSaveGathers),
                 ("wide_basin_cost", LevelSetChecks.WideBasinCost) })
             {
                 Case("WATER_LEVELSET_" + name, () =>
