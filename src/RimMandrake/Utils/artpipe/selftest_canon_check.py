@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_canon_check.py — CANON_RENDER_GATE_1: canon_check.py's parsing/grading/CLI and artpiped's canon gate,
+"""selftest_canon_check.py — canon_check.py's parsing/grading/CLI and artpiped's canon ADVISOR (never a gate),
 with a MOCKED vision call. Never invokes codex.exe.
 
     python3 selftest_canon_check.py
@@ -64,8 +64,7 @@ def test_parsing():
        canon_check.owner_note_lines(dict(OWNER_JOB, owner_note=["a", " ", "b"])) == ["a", "b"])
     ok("owner_note_lines: no owner marker -> none",
        canon_check.owner_note_lines({"prompt": "a small weathered supply crate."}) == [])
-    retried = canon_check.with_corrections(OWNER_JOB, {"kind": "owner", "lines": [
-        {"line": "pale blue body.", "verdict": "fail", "reason": "it is red"}]})
+    retried = dict(OWNER_JOB, prompt=OWNER_JOB["prompt"] + f" {canon_check.CORRECTIONS_HEAD} (old retry): (1) MUST: x")
     ok("owner_note_lines: appended CANON CORRECTIONS are not re-read as owner lines",
        canon_check.owner_note_lines(retried) == lines)
 
@@ -107,12 +106,52 @@ def test_grade():
         ok("grade: a skipped line raises", False)
     except canon_check.CanonCheckError:
         ok("grade: a skipped line raises (never silently counted)", True)
-    c = canon_check.corrections_text(v)
-    ok("corrections_text: names only the failed line and its reason",
-       "RULE (owner" in c and "r2" in c and "Previous attempt" not in c, c)
-    j2 = canon_check.with_corrections(canon_check.with_corrections(OWNER_JOB, v), v)
-    ok("with_corrections: replaces (never stacks) earlier corrections; counts retries",
-       j2["prompt"].count(canon_check.CORRECTIONS_HEAD) == 1 and j2["canon_retry"] == 2)
+    ok("grade: advisory verdict carries the flagged line and its reason",
+       v["advisory"] and v["flags"] == [{"line": spec["lines"][1], "reason": "r2"}], v.get("flags"))
+    a = canon_check.advisory_text(v)
+    ok("advisory_text: names the flagged line, reason and score", "advisory" in a and "2/3" in a
+       and spec["lines"][1] in a and "r2" in a, a)
+    v0 = canon_check.grade(Path("/x/r.png"), spec, vision=MockVision(reply("na", "na", "na")))
+    ok("grade: 0/0 (every line n/a) is UNGRADED, never PASS", v0["verdict"] == "UNGRADED" and v0["score"] == "0/0", v0)
+    ok("advisory_text: UNGRADED says nothing was checked", "UNGRADED" in canon_check.advisory_text(v0))
+    old = {"status": "graded", "verdict": "PASS", "score": "0/0", "graded": 0, "lines": []}
+    ok("normalize: an old stored 0/0 PASS reads UNGRADED", canon_check.normalize(old)["verdict"] == "UNGRADED")
+    old_fail = {"status": "graded", "verdict": "FAIL", "score": "1/2", "graded": 2,
+                "lines": [{"line": "L1", "verdict": "pass", "reason": "a"}, {"line": "L2", "verdict": "fail", "reason": "b"}]}
+    ok("normalize: Python-repr string and missing flags are read", canon_check.normalize(repr(old_fail))["flags"]
+       == [{"line": "L2", "reason": "b"}])
+    ok("normalize: unreadable -> None", canon_check.normalize("not a dict {") is None)
+
+
+def test_facing_tags():
+    lf = canon_check.line_facings
+    ok("tag [not:north] -> every facing but north, stripped",
+       lf("Big round eyes [not:north]") == ("Big round eyes", frozenset({"east", "south", "west"}), None))
+    ok("tag [only:east,west]", lf("[only:east, west] long tail in profile")[1] == frozenset({"east", "west"}))
+    ok("tag [east-only]", lf("Tail visible [east-only]")[:2] == ("Tail visible", frozenset({"east"})))
+    ok("no tag -> None", lf("Green skin") == ("Green skin", None, None))
+    t, al, err = lf("Eyes [not:nroth]")
+    ok("unknown facing: line untouched, untagged, error reported", t == "Eyes [not:nroth]" and al is None and err, err)
+    job = {"id": "t", "facing": "north", "prompt": "p",
+           "owner_note": ["Big round eyes [not:north].", "Forked tail.", "Eyes [not:nroth]."]}
+    spec = canon_check.gather(job, use_subject=False)
+    ok("gather: tags stripped from lines, kept parallel", spec["lines"][0] == "Big round eyes." and
+       spec["line_facings"][1] is None and spec["tag_errors"], spec)
+    mv = MockVision(reply("fail", "pass", "pass"))
+    v = canon_check.grade(Path("/x/r.png"), spec, vision=mv)
+    ok("grade: a tagged line on a facing it excludes is n/a in CODE, overriding the model",
+       v["lines"][0]["verdict"] == "na" and v["lines"][0].get("facing_na") and v["verdict"] == "PASS"
+       and v["score"] == "2/2" and v["tag_errors"], v)
+    ok("grade: the prompt tells the model line 1 is n/a", "N/A for this job" in mv.calls[0]["prompt"] and ": 1" in mv.calls[0]["prompt"])
+    v = canon_check.grade(Path("/x/r.png"), dict(spec, facing="south"), vision=MockVision(reply("fail", "pass", "pass")))
+    ok("grade: the same line on an allowed facing is graded", v["verdict"] == "FAIL" and v["score"] == "2/3", v)
+    v = canon_check.grade(Path("/x/r.png"), dict(spec, facing=None), vision=MockVision(reply("fail", "pass", "pass")))
+    ok("grade: a job with no facing ignores tags", v["lines"][0]["verdict"] == "fail")
+    gspec = dict(spec, kind="canon", images=[])
+    mv = MockVision(json.dumps({"canon_description": "", "render_description": "R"}),
+                    reply("pass", "pass", "fail", "pass", "pass"))
+    v = canon_check.grade(Path("/x/r.png"), gspec, vision=mv, mode="v2")
+    ok("v2: facing tags shift past the gate lines", v["lines"][2]["verdict"] == "na" and v["verdict"] == "PASS", v)
 
 
 def test_canon_na():
@@ -187,80 +226,57 @@ def test_gate_in_process():
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
         out = tmp / "t_owner.png"
-
-        def rerun_writer(calls):
-            def rerun(job):
-                calls.append(job)
-                out.write_bytes(b"retry")
-                return {"id": job["id"], "channel": "codex", "status": "ok", "elapsed_s": 2}
-            return rerun
-
         out.write_bytes(b"first")
         r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok"}, out,
-                                _ctx(MockVision(reply("pass", "pass", "pass")), tmp), rerun=None)
-        ok("gate: PASS stores verdict, job stays ok", r["status"] == "ok" and r["canon_check"]["score"] == "3/3")
-
-        calls = []
-        r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok", "elapsed_s": 1}, out,
-                                _ctx(MockVision(reply("fail", "pass", "pass"), reply("pass", "pass", "pass")), tmp),
-                                rerun=rerun_writer(calls))
-        ok("gate: FAIL -> one corrected re-render -> PASS is ok",
-           r["status"] == "ok" and r["canon_check"]["verdict"] == "PASS" and len(calls) == 1
-           and canon_check.CORRECTIONS_HEAD in calls[0]["prompt"] and calls[0]["canon_retry"] == 1, r)
-        first = tmp / "t_owner.canon_attempt1.png"
-        ok("gate: first render kept as canon_attempt1 with its verdict",
-           first.read_bytes() == b"first" and r["canon_first_attempt"]["canon_check"]["verdict"] == "FAIL")
-
-        out.write_bytes(b"first")
-        calls = []
-        r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok"}, out,
-                                _ctx(MockVision(reply("fail", "pass", "pass"), reply("fail", "fail", "pass")), tmp),
-                                rerun=rerun_writer(calls))
-        ok("gate: FAIL twice -> failed_canon with the second verdict",
-           r["status"] == "failed" and r["worker_status"] == "failed_canon" and r["canon_check"]["score"] == "1/3"
-           and len(calls) == 1, r)
-
+                                _ctx(MockVision(reply("pass", "pass", "pass")), tmp))
+        ok("advisor: PASS stores verdict + advisory line, job stays ok",
+           r["status"] == "ok" and r["canon_check"]["score"] == "3/3" and "PASS" in r["canon_advisory"])
+        mv = MockVision(reply("fail", "pass", "pass"))
+        r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok", "elapsed_s": 1}, out, _ctx(mv, tmp))
+        ok("advisor: FAIL never fails the job, never re-renders, attaches the flagged line",
+           r["status"] == "ok" and "worker_status" not in r and r["canon_check"]["verdict"] == "FAIL"
+           and len(mv.calls) == 1 and "r1" in r["canon_advisory"] and "canon_first_attempt" not in r
+           and out.read_bytes() == b"first" and not (tmp / "t_owner.canon_attempt1.png").exists(), r)
         r = artpiped.canon_gate(dict(OWNER_JOB, canon_retry=1), "t_owner", {"status": "ok"}, out,
-                                _ctx(MockVision(reply("fail", "pass", "pass")), tmp), rerun=rerun_writer([]))
-        ok("gate: a job already retried once is not retried again", r["worker_status"] == "failed_canon")
-
+                                _ctx(MockVision(reply("fail", "fail", "fail")), tmp))
+        ok("advisor: an old retried job with every line failing is still ok", r["status"] == "ok")
         r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok"}, out,
-                                _ctx(MockVision(RuntimeError("codex down")), tmp), rerun=None)
-        ok("gate: grader outage keeps the render ok, records error",
+                                _ctx(MockVision(reply("na", "na", "na")), tmp))
+        ok("advisor: 0/0 -> UNGRADED, ok", r["status"] == "ok" and r["canon_check"]["verdict"] == "UNGRADED")
+        r = artpiped.canon_gate(OWNER_JOB, "t_owner", {"status": "ok"}, out,
+                                _ctx(MockVision(RuntimeError("codex down")), tmp))
+        ok("advisor: grader outage keeps the render ok, records error",
            r["status"] == "ok" and r["canon_check"]["status"] == "error")
-        r = artpiped.canon_gate({"id": "c", "prompt": "a crate."}, "c", {"status": "ok"}, out,
-                                _ctx(MockVision(), tmp), rerun=None)
-        ok("gate: nothing to grade -> skipped", r["canon_check"]["status"] == "skipped")
-        r = artpiped.canon_gate(OWNER_JOB, "t", {"status": "failed"}, out, _ctx(MockVision(), tmp), rerun=None)
-        ok("gate: a render that failed earlier gates is never graded", "canon_check" not in r)
-        r = artpiped.canon_gate(OWNER_JOB, "t", {"status": "ok"}, out, _ctx(None, tmp), rerun=None)
-        ok("gate: canon_vision None -> gate off", "canon_check" not in r)
+        r = artpiped.canon_gate(dict(OWNER_JOB, canon_na=[99]), "t_owner", {"status": "ok"}, out,
+                                _ctx(MockVision(reply("pass", "pass", "pass")), tmp))
+        ok("advisor: a bad canon_na mark is an error record, never a failed job",
+           r["status"] == "ok" and r["canon_check"]["status"] == "error", r)
+        r = artpiped.canon_gate({"id": "c", "prompt": "a crate."}, "c", {"status": "ok"}, out, _ctx(MockVision(), tmp))
+        ok("advisor: nothing to grade -> skipped", r["canon_check"]["status"] == "skipped")
+        r = artpiped.canon_gate(OWNER_JOB, "t", {"status": "failed"}, out, _ctx(MockVision(), tmp))
+        ok("advisor: a render that failed earlier gates is never graded", "canon_check" not in r)
+        r = artpiped.canon_gate(OWNER_JOB, "t", {"status": "ok"}, out, _ctx(None, tmp))
+        ok("advisor: canon_vision None -> off", "canon_check" not in r)
 
 
 def test_daemon_end_to_end():
-    for name, mock, want_dir, want_status in (
-            ("retry-pass", {"first": json.loads(reply("fail", "pass", "pass")),
-                            "retry": json.loads(reply("pass", "pass", "pass"))}, "done", "ok"),
-            ("retry-fail", {"first": json.loads(reply("fail", "pass", "pass")),
-                            "retry": json.loads(reply("fail", "pass", "pass"))}, "failed", "failed_canon")):
-        with tempfile.TemporaryDirectory() as td:
-            q = sa.Queue(Path(td))
-            sa.make_job(q.pending, "t_owner", q.reference, prompt=OWNER_JOB["prompt"])
-            mock_path = Path(td) / "vision.json"
-            mock_path.write_text(json.dumps(mock))
-            import os
-            os.environ["ARTPIPE_CANON_VISION_MOCK"] = str(mock_path)
-            try:
-                proc = q.run({}, "--once", "-N", "1", timeout=120)
-            finally:
-                del os.environ["ARTPIPE_CANON_VISION_MOCK"]
-            mp = getattr(q, want_dir) / "t_owner.manifest.json"
-            m = json.loads(mp.read_text()) if mp.is_file() else {}
-            got = m.get("status") if want_status == "ok" else m.get("worker_status")
-            ok(f"daemon {name}: filed to {want_dir}/ as {want_status}, both verdicts on the manifest",
-               got == want_status and m.get("canon_check", {}).get("status") == "graded"
-               and m.get("canon_first_attempt", {}).get("canon_check", {}).get("verdict") == "FAIL",
-               f"rc={proc.returncode} manifest={json.dumps(m)[:600]} stderr={proc.stderr[-800:]}")
+    with tempfile.TemporaryDirectory() as td:
+        q = sa.Queue(Path(td))
+        sa.make_job(q.pending, "t_owner", q.reference, prompt=OWNER_JOB["prompt"])
+        mock_path = Path(td) / "vision.json"
+        mock_path.write_text(json.dumps({"first": json.loads(reply("fail", "pass", "pass"))}))
+        import os
+        os.environ["ARTPIPE_CANON_VISION_MOCK"] = str(mock_path)
+        try:
+            proc = q.run({}, "--once", "-N", "1", timeout=120)
+        finally:
+            del os.environ["ARTPIPE_CANON_VISION_MOCK"]
+        mp = q.done / "t_owner.manifest.json"
+        m = json.loads(mp.read_text()) if mp.is_file() else {}
+        ok("daemon: a canon FAIL files to done/ as ok with the verdict and advisory line on the manifest",
+           m.get("status") == "ok" and m.get("canon_check", {}).get("verdict") == "FAIL"
+           and "advisory" in m.get("canon_advisory", "") and not (q.failed / "t_owner.manifest.json").exists(),
+           f"rc={proc.returncode} manifest={json.dumps(m)[:600]} stderr={proc.stderr[-800:]}")
 
 
 def test_cli():
@@ -279,17 +295,22 @@ def test_cli():
            m["canon_check"]["score"] == "1/2" and (artsrc / "t_owner" / "t_owner.canon_check.json").is_file())
         r2 = canon_check.check_one("t_owner", vision=MockVision(), **kw)
         ok("cli: an already-graded render is not re-graded without --force", r2["status"] == "already")
-        dst = canon_check.requeue(r["job"], r["check"], pending)
-        j = json.loads(dst.read_text())
-        ok("cli: --requeue files the job to pending/ with corrections and canon_retry=1",
-           canon_check.CORRECTIONS_HEAD in j["prompt"] and j["canon_retry"] == 1)
+        ok("cli: nothing is requeued (advisor)", not list(pending.iterdir()) and not hasattr(canon_check, "requeue"))
+        try:
+            import contextlib
+            import io
+            with contextlib.redirect_stderr(io.StringIO()):
+                canon_check.main(["t_owner", "--requeue"])
+            ok("cli: --requeue is gone", False)
+        except SystemExit:
+            ok("cli: --requeue is gone", True)
         r3 = canon_check.check_one("t_owner", vision=MockVision(), **dict(kw, dry_run=True, force=True))
         ok("cli: --dry-run writes nothing", r3["status"] == "dry"
            and json.loads((done / "t_owner.manifest.json").read_text())["canon_check"]["score"] == "1/2")
 
 
 def main():
-    for t in (test_parsing, test_resolve_and_gather, test_grade, test_canon_na, test_v2_mode, test_gate_in_process, test_daemon_end_to_end,
+    for t in (test_parsing, test_resolve_and_gather, test_grade, test_facing_tags, test_canon_na, test_v2_mode, test_gate_in_process, test_daemon_end_to_end,
               test_cli):
         try:
             t()

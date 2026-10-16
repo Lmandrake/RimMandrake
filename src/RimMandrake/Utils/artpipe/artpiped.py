@@ -67,7 +67,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
 import console  # noqa: E402 — ARTPIPE_CONSOLE_REDESIGN_1: presentation only, no job logic
-import canon_check  # noqa: E402 — CANON_RENDER_GATE_1: vision-grade a passed render against canon / owner note
+import canon_check  # noqa: E402 — canon ADVISOR (owner 2026-10-15): grade a passed render, attach the verdict, never block
 import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl;
                 # imported in-process (not shelled out) so a hot per-job
                 # finalize doesn't pay a subprocess spawn each time.
@@ -1378,7 +1378,7 @@ class RunCtx:
                  gemini_worker_script, gemini_timeout, throughput_log=None,
                  done_dir=None, failed_dir=None, canon_vision=None, canon_model=None):
         self.worker_script = worker_script
-        # CANON_RENDER_GATE_1: callable(prompt, images, home=...) -> str, or None = canon gate off.
+        # canon ADVISOR: callable(prompt, images, home=...) -> str, or None = advisor off.
         self.canon_vision = canon_vision
         self.canon_model = canon_model or canon_check.DEFAULT_MODEL
         self.validator_script = validator_script
@@ -2537,56 +2537,30 @@ def _canon_grade(spec: dict, out_png: Path, ctx: RunCtx) -> dict:
         ctx.slots.put(slot)
 
 
-def canon_gate(job: dict, job_id: str, result: dict, out_png: Path, ctx: RunCtx, rerun) -> dict:
-    """CANON_RENDER_GATE_1 (owner, 2026-10-04: "ensure that art regens look carefully and closely at the canon
-    at every step"). Runs only on a render that already passed every existing gate. Grades it against the job's
-    canon entry `## Must show` (or, with no entry, its owner note) — canon_check.py's docstring has the rules.
-    PASS → result["canon_check"] = verdict (sheets show "canon check: 7/7"). FAIL → the first render is kept
-    as <id>.canon_attempt1.png, the job re-renders ONCE in this claim with the failed lines appended to its
-    prompt, and is graded again; a second FAIL files it failed with worker_status "failed_canon"."""
+def canon_gate(job: dict, job_id: str, result: dict, out_png: Path, ctx: RunCtx) -> dict:
+    """CANON ADVISOR (was CANON_RENDER_GATE_1). Owner, 2026-10-15, by question card: the canon grader is an ADVISOR.
+    Runs only on a render that already passed every technical gate, grades it once against the job's canon entry
+    `## Must show` (or, with no entry, its owner note) — canon_check.py's docstring has the rules — and ATTACHES the
+    verdict: result["canon_check"] (score, flagged lines) and result["canon_advisory"] (one owner-facing line the
+    sheet / chat review shows beside the picture). It never changes the job's status, never files it failed, never
+    re-renders and never re-files it with corrections: the owner decides. Evidence for the demotion:
+    Transient/art_review_2026-10-15/pipeline_review.md §3 (a FAIL predicted 0 of 64 owner rejections)."""
     if ctx.canon_vision is None or result.get("status") != "ok":
         return result
-    spec = canon_check.gather(job)
+    try:
+        spec = canon_check.gather(job)
+    except Exception as exc:  # noqa: BLE001 — an advisor can never cost the render
+        result["canon_check"] = {"status": "error", "note": f"gather: {type(exc).__name__}: {exc}"[:400]}
+        return result
     if spec is None:
         result["canon_check"] = {"status": "skipped", "reason": "no canon entry and no owner note"}
         return result
-    v1 = _canon_grade(spec, out_png, ctx)
-    result["canon_check"] = v1
-    if v1.get("status") != "graded" or v1["verdict"] == "PASS":
-        return result
-    already = int(job.get("canon_retry") or 0) >= 1
-    if rerun is None or already:
-        result.update(status="failed", worker_status="failed_canon",
-                      note=f"canon check FAIL {v1['score']}"
-                           + (" after its canon retry" if already else " (no in-daemon retry on this channel)"))
-        return result
-    first_png = out_png.with_name(f"{job_id}.canon_attempt1.png")
-    try:
-        os.replace(out_png, first_png)
-    except OSError:
-        first_png = None
-    retry_job = canon_check.with_corrections(job, v1)
-    try:
-        r2 = rerun(retry_job)
-    except Exception as exc:  # noqa: BLE001
-        r2 = {"id": job_id, "channel": result.get("channel", "codex"), "status": "failed",
-              "worker_status": "daemon_error", "validator": "not_run",
-              "note": f"canon retry raised {type(exc).__name__}: {exc}"}
-    r2["canon_first_attempt"] = {"canon_check": v1, "png": str(first_png) if first_png else None,
-                                 "elapsed_s": result.get("elapsed_s")}
-    r2["canon_retry_prompt_tail"] = canon_check.corrections_text(v1)[:2000]
-    if r2.get("status") != "ok":
-        r2["canon_check"] = v1
-        r2["note"] = f"canon retry render failed its own gates ({r2.get('note')}); first attempt FAIL {v1['score']}"
-        return r2
-    # Re-gathered from the retry job so the grader sees the corrected prompt it was rendered from; the
-    # acceptance lines are the same (owner_note_lines drops the appended corrections).
-    v2 = _canon_grade(canon_check.gather(retry_job) or spec, out_png, ctx)
-    r2["canon_check"] = v2
-    if v2.get("status") == "graded" and v2["verdict"] == "FAIL":
-        r2.update(status="failed", worker_status="failed_canon",
-                  note=f"canon check FAIL {v2['score']} after one corrected retry (first {v1['score']})")
-    return r2
+    v = _canon_grade(spec, out_png, ctx)
+    result["canon_check"] = v
+    advice = canon_check.advisory_text(v)
+    if advice:
+        result["canon_advisory"] = advice
+    return result
 
 
 def process_job(job_path: Path, ctx: RunCtx) -> dict:
@@ -2655,10 +2629,7 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
     if channel == "gemini":
         try:
             result = process_gemini_job(job, job_id, reference, out_png, ctx, derive_master_png)
-            # No in-daemon retry on gemini: a second paid call inside one claim would overrun the claim-time
-            # reservation and write a second billing-intent row. A gemini canon FAIL is failed_canon at once;
-            # `canon_check.py <id> --requeue` re-files it.
-            return canon_gate(job, job_id, result, out_png, ctx, rerun=None)
+            return canon_gate(job, job_id, result, out_png, ctx)  # advisory: never re-renders, never fails
         except Exception as exc:
             return {"id": job_id, "channel": "gemini", "status": "failed", "cost_usd": 0.0,
                     "worker_status": "daemon_error", "validator": "not_run",
@@ -2676,8 +2647,7 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
         return {"id": job_id, "channel": "codex", "status": "failed",
                 "worker_status": "daemon_error", "validator": "not_run",
                 "note": f"process_codex_job raised {type(exc).__name__}: {exc}"}
-    return canon_gate(job, job_id, result, out_png, ctx,
-                      rerun=lambda j: process_codex_job(j, job_id, reference, out_png, ctx, derive_master_png))
+    return canon_gate(job, job_id, result, out_png, ctx)  # advisory: never re-renders, never fails
 
 
 def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
@@ -2844,12 +2814,9 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
 # --------------------------------------------------------------------------
 
 def _mock_canon_vision(reply_file: Path):
-    """$ARTPIPE_CANON_VISION_MOCK: a JSON file {"first": <reply>, "retry": <reply>} — the reply returned for a
-    first grade, and for a grade of a corrected retry (its prompt carries CANON CORRECTIONS). Tests only."""
+    """$ARTPIPE_CANON_VISION_MOCK: a JSON file {"first": <reply>} — the grader's reply. Tests only."""
     def vision(prompt, images, **_kw):
-        data = json.loads(Path(reply_file).read_text())
-        key = "retry" if canon_check.CORRECTIONS_HEAD in prompt else "first"
-        return json.dumps(data.get(key) or data.get("first"))
+        return json.dumps(json.loads(Path(reply_file).read_text()).get("first"))
     return vision
 
 
@@ -2948,8 +2915,8 @@ def parse_args(argv=None) -> argparse.Namespace:
                           "directly (no job needed) at most this often, so a reset "
                           "window can unwedge without a daemon restart")
     ap.add_argument("--no-canon-check", dest="canon_check", action="store_false", default=True,
-                     help="disable CANON_RENDER_GATE_1 (vision grade of each passed render against its "
-                          "canon entry / owner note). It is also off when --worker-script is not the real "
+                     help="disable the canon ADVISOR (vision grade of each passed render against its "
+                          "canon entry / owner note, attached to the result; never blocks). It is also off when --worker-script is not the real "
                           "codex worker, unless $ARTPIPE_CANON_VISION_MOCK names a mock reply file")
     ap.add_argument("--canon-model", default=canon_check.DEFAULT_MODEL)
     ap.add_argument("--verbose", action="store_true")
@@ -3297,9 +3264,9 @@ def main(argv=None) -> int:
                  done_dir=args.done_dir, failed_dir=args.failed_dir,
                  canon_vision=_canon_vision_for(args), canon_model=args.canon_model)
     if ctx.canon_vision is None:
-        console_obj.info("canon gate OFF for this run")
+        console_obj.info("canon advisor OFF for this run")
     else:
-        console_obj.info(f"canon gate on — {args.canon_model} vision grade of every passed render")
+        console_obj.info(f"canon advisor on — {args.canon_model} grades every passed render; advisory only, never blocks")
     detector = Detector()
     stop_event = threading.Event()
     render_stop = threading.Event()
