@@ -2,6 +2,7 @@
 //   sky          the Burn clock, its tells, the Bloom clock and the Cloud Repulsor against a mock Burn condition (RM_SkyKernel)
 //   coalescence  the Coalescence's stage / growth / emission / death spill (RM_CoalescenceKernel)
 //   burn         the Burn's pressure classification, exposure and dive choice, exhaustively (RM_SkyKernel)
+//   zhool        the zhool haze's eligibility, shape, chance, puffs and message throttle (RM_ZhoolHazeKernel)
 //   draftprint   sampling, extreme stat, worst limb, contract match and reward, market value, gestation plan, the Unfinished
 //                spawner arithmetic (RM_DraftprintKernel)
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
@@ -458,6 +459,52 @@ namespace RimMandrake.Contagion.SelfTest
 
         public static List<string> Draft(int n, int baseSeed) { return Family("draftprint", n, baseSeed, DraftCase); }
 
+        // ════════════════════════ zhool ════════════════════════
+        // The zhool's haze (RM_ZhoolHazeKernel): eligibility truth table, shape classification, the chance and puff
+        // arithmetic and the message throttle, over random inputs.
+        public static long ZConvert, ZRefuse, ZMsg, ZTree, ZCover, ZShrub;
+
+        private static string ZhoolCase(int seed)
+        {
+            var r = new Random(seed);
+            Steps++;
+            bool en = r.Next(2) == 0, ours = r.Next(2) == 0, imm = r.Next(4) == 0, stump = r.Next(6) == 0,
+                 comps = r.Next(6) == 0, sown = r.Next(3) == 0, crops = r.Next(2) == 0;
+            bool el = RM_ZhoolHazeKernel.Eligible(en, ours, imm, stump, comps, sown, crops);
+            bool want = en && ours && !imm && !stump && !comps && (!sown || crops);
+            if (el != want) return $"Eligible({en},{ours},{imm},{stump},{comps},{sown},{crops}) = {el}, want {want}";
+            if (el) ZConvert++; else ZRefuse++;
+
+            bool tree = r.Next(3) == 0, floor = r.Next(3) == 0; int mesh = 1 + r.Next(9);
+            var sh = RM_ZhoolHazeKernel.Classify(tree, floor, mesh);
+            var shWant = tree ? HazeShape.Tree : (floor || mesh > 1) ? HazeShape.GroundCover : HazeShape.Shrub;
+            if (sh != shWant) return $"Classify({tree},{floor},{mesh}) = {sh}, want {shWant}";
+            if (sh == HazeShape.Tree) ZTree++; else if (sh == HazeShape.GroundCover) ZCover++; else ZShrub++;
+
+            float bc = (float)r.NextDouble() * 0.5f, rate = (float)(r.NextDouble() * 12 - 2);
+            float c = RM_ZhoolHazeKernel.Chance(bc, rate);
+            if (!(c >= 0f && c <= 1f)) return $"Chance({bc},{rate}) = {c} outside [0,1]";
+            float c2 = RM_ZhoolHazeKernel.Chance(bc, rate + 0.5f);
+            if (c2 + 1e-6f < c) return $"Chance not monotone in rate: {c} -> {c2}";
+            if (RM_ZhoolHazeKernel.Chance(bc, float.NaN) != RM_ZhoolHazeKernel.Chance(bc, 1f)) return "Chance(NaN rate) is not the shipped rate";
+            if (bc > 0 && RM_ZhoolHazeKernel.Chance(bc, -5f) <= 0f) return "a negative rate silenced conversion (clamp lost)";
+
+            float bp = (float)r.NextDouble() * 3, dens = (float)(r.NextDouble() * 5 - 1), roll = (float)r.NextDouble();
+            int puffs = RM_ZhoolHazeKernel.Puffs(bp, dens, roll);
+            float wantP = bp * RM_ZhoolHazeKernel.ClampDensity(dens);
+            if (puffs < Math.Floor(wantP) || puffs > Math.Ceiling(wantP)) return $"Puffs({bp},{dens},{roll}) = {puffs}, outside [{Math.Floor(wantP)},{Math.Ceiling(wantP)}]";
+
+            int now = r.Next(10_000_000), cd = r.Next(2) == 0 ? Tpd : r.Next(100_000);
+            int last = r.Next(4) == 0 ? -1 : now - r.Next(-50_000, 200_000);
+            bool due = RM_ZhoolHazeKernel.MessageDue(now, last, cd);
+            bool dueWant = last < 0 || last > now || now - last >= cd;
+            if (due != dueWant) return $"MessageDue({now},{last},{cd}) = {due}, want {dueWant}";
+            if (due) ZMsg++;
+            return null;
+        }
+
+        public static List<string> Zhool(int n, int baseSeed) { return Family("zhool", n, baseSeed, ZhoolCase); }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -470,6 +517,7 @@ namespace RimMandrake.Contagion.SelfTest
                 ("coalescence", () => Coal(N(3000), S(1))),
                 ("burn", () => Burn(0, 0)),
                 ("draftprint", () => Draft(N(4000), S(1))),
+                ("zhool", () => Zhool(N(4000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -482,10 +530,10 @@ namespace RimMandrake.Contagion.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}");
+            Console.WriteLine($"reached: sky natural burns {SNaturalBurns}, forced {SForced}, schedules {SGapWindows}, tells {STells} (first {STellFirst}), coalescences formed {SCoalForm}; coalescence emits {CEmits}, blocked {CBlocked}, passive growths {CPassive}, stage-ups {CStages}, collapses {CCollapses}; draftprint matches {DMatch}/{DMatch + DNoMatch}, extreme {DExtreme}, worst {DWorst}; zhool converts {ZConvert}/{ZConvert + ZRefuse}, tree/cover/shrub {ZTree}/{ZCover}/{ZShrub}, messages {ZMsg}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0)
+                if (SNaturalBurns == 0 || SForced == 0 || STellFirst == 0 || SCoalForm == 0 || CEmits == 0 || CBlocked == 0 || CPassive == 0 || CStages == 0 || CCollapses == 0 || DMatch == 0 || DNoMatch == 0 || DExtreme == 0 || DWorst == 0 || ZConvert == 0 || ZRefuse == 0 || ZMsg == 0 || ZTree == 0 || ZCover == 0 || ZShrub == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"contagion fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

@@ -58,13 +58,16 @@ DEFAULTS = {
     "burnEnabled": True, "burnTellsEnabled": True, "burnFrequency": 1.0, "burnDamageFactor": 1.0,
     "cloudRepulsorEnabled": True, "sunbeamNativeFactor": 6.0, "coalescenceEnabled": True,
     "grownLimbsEnabled": True,
+    "zhoolHazeEnabled": True, "zhoolHazeDensity": 1.0, "zhoolConversionEnabled": True,
+    "zhoolConversionRate": 1.0, "zhoolConvertsCrops": False,
 }
 # a value different from the default, for the write+read-back round trip
-ALT = {"biomeRarityFactor": 0.5, "burnFrequency": 2.0, "burnDamageFactor": 0.5, "sunbeamNativeFactor": 3.0}
+ALT = {"biomeRarityFactor": 0.5, "burnFrequency": 2.0, "burnDamageFactor": 0.5, "sunbeamNativeFactor": 3.0,
+       "zhoolHazeDensity": 2.0, "zhoolConversionRate": 2.0}
 suite.toggles = sorted(DEFAULTS)
 
 PADS = {"repulsor": (-45, -45), "spawner": (45, -45), "burn": (0, -45), "uv": (-45, 0),
-        "coal": (45, 0), "genome": (0, 45)}
+        "coal": (45, 0), "genome": (0, 45), "zhool": (-45, 45)}
 PAD_SIZE = 30
 SOIL = "Soil"
 REPULSOR, COALESCENCE, SAMPLE = "RM_CloudRepulsor", "RM_Coalescence", "RM_GenomeSample"
@@ -78,6 +81,8 @@ LIMB_POOL = ("RM_UnfinishedClaw", "RM_UnfinishedSpike", "RM_UnfinishedFang", "RM
 LIMB_ITEMS = ("RM_PillarArmItem", "RM_LashItem", "RM_EyeburstItem", "RM_CaudalSpringItem",
               "RM_BellowsItem")
 ORGANS = ("Kidney", "Liver", "Lung", "Heart", "RM_GrownLeg", "RM_GrownArm")
+ZHOOL, GRASS, LASHGRASS = "RM_OcularJelly", "Plant_Grass", "RM_Lashgrass"   # CompZhoolHaze: grass -> groundCoverResult
+ZHOOL_FILL = 7                               # grass on every cell within +-7 of the zhool (> its 3.9 haze radius)
 STAGE_MASS = (0, 6, 15)                      # RM_Coalescence's RM_CoalescenceExtension.stageMass
 SAMPLES_BASE, SAMPLES_PER_STAGE, MASS_PER_SAMPLE, SAMPLES_MAX = 2, 2, 4, 14
 JUMP_WIDE, JUMP_FAST, JUMP_OFF = 95000, 70000, 285000          # see chain burn_natural
@@ -1068,6 +1073,61 @@ def uv(t):
                 if not s6 >= 3 * sp:
                     _fail("a native took %.2f vs a PERSON %.2f from the same beam at 6x (people must "
                           "not get the native multiplier)" % (s6, sp))
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: zhool_haze
+
+@suite.chain("zhool_haze")
+def zhool_haze(t):
+    """CompZhoolHaze (owner ruling 2026-10-15, phase0_p3_questions Q2 "A"): plants in a zhool's haze turn into the
+    Contagion's own flesh-plants, only on our biomes, replaced in place (never deleted without a replacement). The
+    off arm runs first on the same fixture and must turn nothing; the on arm runs at the top turning speed so a
+    5000-tick wait expects ~8 turned cells (P(none) ~ 3e-4 if the mechanic works)."""
+    def body():
+        _need_contagion(t)
+        with _comp(t, "zhool_site_ready", poison=True):
+            _pad(t, "zhool")
+            if _live(t):
+                _baseline(t)
+                _prep(t, "zhool")
+                x, z = t.anchor
+                ops = ["%s:%d,%d" % (GRASS, x + dx, z + dz)
+                       for dx in range(-ZHOOL_FILL, ZHOOL_FILL + 1) for dz in range(-ZHOOL_FILL, ZHOOL_FILL + 1)]
+                t.bridge_call("jawa/spawn_batch", ops=";".join(ops))
+                _STATE["zrect"] = _rs(_rect(t, PAD_SIZE))
+                n = len(_things(t, GRASS, _STATE["zrect"]))
+                if n < len(ops) // 2:
+                    _fail("fixture: wanted ~%d grass plants, found %d" % (len(ops), n))
+                if _things(t, LASHGRASS, _STATE["zrect"]):
+                    _fail("fixture: lashgrass already on the cleared pad")
+                _STATE["zhool"] = _spawn(t, ZHOOL, x, z)
+
+        with _comp(t, "conversion_off_turns_nothing", toggle="zhoolConversionEnabled"):
+            if _live(t):
+                with _setting(t, "zhoolConversionRate", 5.0):
+                    with _setting(t, "zhoolConversionEnabled", False):
+                        _wait(t, 3000)
+                        lash = _things(t, LASHGRASS, _STATE["zrect"])
+                        if lash:
+                            _fail("%d grass turned to lashgrass with zhoolConversionEnabled off" % len(lash))
+                _STATE["grass0"] = len(_things(t, GRASS, _STATE["zrect"]))
+
+        with _comp(t, "haze_turns_grass_in_place", toggle="zhoolConversionRate"):
+            if _live(t):
+                if not _alive(_rows(t, _STATE["zrect"]).get(_STATE.get("zhool"))):
+                    _unmeasured(t, "the zhool is not alive on the pad; nothing could turn")
+                with _setting(t, "zhoolConversionRate", 5.0):
+                    _wait(t, 5000)
+                lash = len(_things(t, LASHGRASS, _STATE["zrect"]))
+                grass1 = len(_things(t, GRASS, _STATE["zrect"]))
+                lost = _STATE.get("grass0", grass1) - grass1
+                _note(t, "zhool haze: grass before/after, lashgrass after", [_STATE.get("grass0"), grass1, lash])
+                if lash < 1:
+                    _fail("no grass turned to lashgrass in 5000 ticks at 5x speed (expected ~8)")
+                if lost > lash:
+                    _fail("%d grass gone but only %d lashgrass stand: plants deleted without a replacement"
+                          % (lost, lash))
     _stable(t, body)
 
 

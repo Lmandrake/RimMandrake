@@ -2,7 +2,7 @@
 subject: src/RimMandrake/Contagion  (packageId `mandrake.rm.contagion`)
 deps: none beyond Core and the five DLCs (`RM_RustPuff` carries `MayRequire` on `mandrake.rm.therot`); ships composed inside the Baroque Biomes mod (Biomes.compose.json, wave 0)
 list: baroque_wave0
-status-hint: a storm-roofed mutation-engine biome — the Bloom and the Burn (sky clock), the Cloud Repulsor and Sunbeam (Helix devices), the Coalescence, the Unfinished spawner, and the genome/organ-growing loop with Monstrous grown limbs; script = `src/RimMandrake/Contagion/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_contagion.py`
+status-hint: a storm-roofed mutation-engine biome — the Bloom and the Burn (sky clock), the Cloud Repulsor and Sunbeam (Helix devices), the Coalescence, the Unfinished spawner, the zhool's plant-turning haze, and the genome/organ-growing loop with Monstrous grown limbs; script = `src/RimMandrake/Contagion/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_contagion.py`
 
 ## must be true
 Every line ends in `→ chain.component` (a suite component that reads the state back) or `→ UNCOVERED: why`. Sources: the mod's About.xml description, `RM_ContagionMod.cs`, the mechanic `.cs` headers (`RM_MapComponent_ContagionSky`, `RM_GameCondition_ContagionBurn`, `CompCloudRepulsor`, `Building_RM_Coalescence`, `CompSpawnerUnfinished`, `AmoebaHostUtility`), `CONTAGION_RM_MOD_BUILD_1`, `CONTAGION_MECHANICS_BUILD_1`, `CONTAGION_UNFINISHED_SPAWNER_1`, `CONTAGION_GENOME_ORGAN_GROWING_1`, `CONTAGION_GROWN_LIMBS_BUILD_1`.
@@ -11,7 +11,7 @@ Load and wiring
 - Every def this mod ships (the biome, 2 weathers, the Burn condition, creatures, flora, hediffs, recipes, items, abilities, the UV damage def) resolves in the live game; none is silently discarded for a missing comp or extension type. → defs.defs_resolve
 - `RM_Contagion` has the Bloom as its standing weather and gives the Burn weather NO commonality (the Burn is reachable only through its condition), has `animalDensity` above 0, carries `RM_ContagionSkyExtension`, and names every rostered animal and the rattlegrope in its rosters. → defs.biome_table_and_roster
 - The four vanilla organs (Kidney, Liver, Lung, Heart) carry `CompProperties_GenomeMatched` (the patch matched; a patch that matches nothing logs nothing). → defs.organ_patch_comps
-- All 11 Mod Settings fields exist and read their shipped defaults; a nonexistent field fails loudly. → settings.defaults
+- All 16 Mod Settings fields exist and read their shipped defaults; a nonexistent field fails loudly. → settings.defaults
 - The log carries no `Contagion` error and no cross-reference error naming one of this mod's defs. → log.log_clean
 
 Mod Settings (each is also exercised by the mechanic lines below)
@@ -26,6 +26,11 @@ Mod Settings (each is also exercised by the mechanic lines below)
 - `sunbeamNativeFactor` exists, defaults to 6 and is writable. → settings_sunbeamNativeFactor.sunbeamNativeFactor_roundtrip
 - `coalescenceEnabled` exists, defaults on and is writable. → settings_coalescenceEnabled.coalescenceEnabled_roundtrip
 - `grownLimbsEnabled` exists, defaults on and is writable. → settings_grownLimbsEnabled.grownLimbsEnabled_roundtrip
+- `zhoolHazeEnabled` exists, defaults on and is writable. → settings_zhoolHazeEnabled.zhoolHazeEnabled_roundtrip
+- `zhoolHazeDensity` exists, defaults to 1 and is writable. → settings_zhoolHazeDensity.zhoolHazeDensity_roundtrip
+- `zhoolConversionEnabled` exists, defaults on and is writable. → settings_zhoolConversionEnabled.zhoolConversionEnabled_roundtrip
+- `zhoolConversionRate` exists, defaults to 1 and is writable. → settings_zhoolConversionRate.zhoolConversionRate_roundtrip
+- `zhoolConvertsCrops` exists, defaults OFF and is writable. → settings_zhoolConvertsCrops.zhoolConvertsCrops_roundtrip
 - `biomeRarityFactor` at 0 stops the biome generating on a NEW planet, and the default places a handful of peaks. → UNCOVERED: worldgen placement, a boundary (debug_process §4 "world, map, art authoring"; the project has no worldgen feature, CLAUDE.md); only the field round trip is checked
 
 The Cloud Repulsor off the Contagion (a stock biome)
@@ -83,6 +88,10 @@ The genome and organ-growing loop
 - With `grownLimbsEnabled` off a Monstrous sample grows the normal organ batch. → coalescence.grown_limbs_off_grows_organs
 - An organ carrying a source identity reads "matched" and gives the matched-install mood bonus when installed into that colonist. → UNCOVERED: install surgery on the matched patient needs the same surgery fixture plus a thought read; follow-up CONTAGION_LIMB_SURGERY_FIXTURE_1
 - The five grown limbs (Pillar Arm, Lash, Eyeburst, Caudal Spring, Bellows) install and carry their trade-off stats and abilities. → UNCOVERED: the install recipes need the surgery fixture and the effects are tuning by feel (CONTAGION_LIMB_SURGERY_FIXTURE_1); only the defs resolving is checked (defs.defs_resolve)
+- A zhool (`RM_OcularJelly`, `CompZhoolHaze`) on a Contagion map turns grass in its haze into lashgrass (its `groundCoverResult`), and every plant gone has its replacement standing (nothing deleted without a sign). → zhool_haze.haze_turns_grass_in_place
+- With `zhoolConversionEnabled` off the same zhool turns nothing, even at the top turning speed. → zhool_haze.conversion_off_turns_nothing
+- Off our biomes (a biome whose mod's packageId is not `mandrake.*`) the haze turns nothing; a sown crop is never turned unless `zhoolConvertsCrops` is on; trees turn to `RM_HalfmadeTree` and other plants to `RM_Bleedleaf`. → UNCOVERED: the arithmetic and truth table are fuzzed offline (selftest_contagion_fuzz.py, family zhool); live, the off-biome arm needs a second retile and the crop arm a growing-zone fixture; follow-up when the haze first runs live
+- The zhool's red haze reads as a faint reddish haze, and a turning plant throws a red puff and (at most once a day) a message. → UNCOVERED: visual; left to the judge pass (debug_process §4)
 - The Contagion's red valley, its flora and creatures read right in the art. → UNCOVERED: visual; left to the judge pass (debug_process §4)
 
 ## the walk

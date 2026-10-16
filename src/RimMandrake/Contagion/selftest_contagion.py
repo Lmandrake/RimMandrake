@@ -154,6 +154,17 @@ class Fake(object):
     def step(self):
         b = self.broken
         contagion = self.biome == V.BIOME
+        # --- the zhool's haze (CompZhoolHaze): one grass in reach turns per 250-tick step, on our biome only
+        for z in [q for q in self.pawns.values() if q["kind"] == V.ZHOOL and not q["dead"] and not q["vanished"]]:
+            on = self.on("zhoolConversionEnabled") or "haze_ignores_toggle" in b
+            if not contagion or not on or "haze_no_convert" in b:
+                continue
+            for g in self.of(V.GRASS):
+                if abs(g["x"] - z["x"]) <= 3 and abs(g["z"] - z["z"]) <= 3:
+                    del self.things[g["id"]]
+                    if "haze_deletes" not in b:
+                        self.new(V.LASHGRASS, g["x"], g["z"])
+                    break
         self.conds = [c for c in self.conds if self.ticks <= c["until"]]
         # --- the Cloud Repulsor
         for r in self.of(V.REPULSOR):
@@ -624,6 +635,9 @@ BREAKS = {
     "monstrous_organs": ["coalescence.monstrous_gestation_grows_one_limb"],
     "limbs_ignore_toggle": ["coalescence.grown_limbs_off_grows_organs"],
     "log_error": ["log.log_clean"],
+    "haze_ignores_toggle": ["zhool_haze.conversion_off_turns_nothing"],
+    "haze_no_convert": ["zhool_haze.haze_turns_grass_in_place"],
+    "haze_deletes": ["zhool_haze.haze_turns_grass_in_place"],
 }
 
 

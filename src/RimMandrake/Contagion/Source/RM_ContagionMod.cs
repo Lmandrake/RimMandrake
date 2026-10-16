@@ -69,6 +69,20 @@ namespace RimMandrake.Contagion
         // Multiplier on the silver a Helix contract pays.
         public static float helixContractRewardFactor = 1f;
 
+        // ZHOOL_HAZE (owner ruling 2026-10-15, phase0_p3_questions Q2 "A"): the zhool's red haze (CompZhoolHaze).
+        // The haze is a look (tinted puffs); conversion turns plants inside it into the Contagion's own flesh-plants,
+        // only on a map whose biome is one of ours. Off degrades gracefully: no puffs / nothing turns; plants already
+        // turned stay what they are.
+        public static bool zhoolHazeEnabled = true;
+        // Multiplier on how thick the haze looks (1 = shipped).
+        public static float zhoolHazeDensity = 1f;
+        public static bool zhoolConversionEnabled = true;
+        // Multiplier on how fast plants in the haze turn (1 = shipped: a plant that stays in a zhool's haze turns in
+        // about three days on average).
+        public static float zhoolConversionRate = 1f;
+        // Off (shipped): a player's sown crop is never turned.
+        public static bool zhoolConvertsCrops = false;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -86,6 +100,11 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref draftprintsEnabled, "draftprintsEnabled", true, true);
             Scribe_Values.Look(ref draftprintProvokeChance, "draftprintProvokeChance", 0.35f, true);
             Scribe_Values.Look(ref helixContractRewardFactor, "helixContractRewardFactor", 1f, true);
+            Scribe_Values.Look(ref zhoolHazeEnabled, "zhoolHazeEnabled", true, true);
+            Scribe_Values.Look(ref zhoolHazeDensity, "zhoolHazeDensity", 1f, true);
+            Scribe_Values.Look(ref zhoolConversionEnabled, "zhoolConversionEnabled", true, true);
+            Scribe_Values.Look(ref zhoolConversionRate, "zhoolConversionRate", 1f, true);
+            Scribe_Values.Look(ref zhoolConvertsCrops, "zhoolConvertsCrops", false, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -203,6 +222,33 @@ namespace RimMandrake.Contagion
                     + "the sky clear of rain and fog anywhere else. Off: the device does nothing.");
                 list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
                 sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The zhool's red haze", RimMandrake.Shared.SettingScope.Now, new[] { "zhoolHazeEnabled", "zhoolHazeDensity", "zhoolConversionEnabled", "zhoolConversionRate", "zhoolConvertsCrops" }))
+            {
+                list.CheckboxLabeled(
+                    "Haze visible",
+                    ref zhoolHazeEnabled,
+                    "A zhool breathes out a faint reddish haze that drifts around it. A look only: it "
+                    + "harms nothing and changes no temperature. Off: no haze is drawn (plants can still turn, "
+                    + "per the switch below).");
+                list.Label("Haze thickness: " + zhoolHazeDensity.ToString("0.00") + "x");
+                zhoolHazeDensity = list.Slider(zhoolHazeDensity, RM_ZhoolHazeKernel.MinDensity, RM_ZhoolHazeKernel.MaxDensity);
+                list.CheckboxLabeled(
+                    "Haze turns plants",
+                    ref zhoolConversionEnabled,
+                    "Plants inside a zhool's haze slowly turn into the Contagion's own flesh-plants: a tree "
+                    + "into a halfmade tree, grass into lashgrass, anything else into bleedleaf. Each one turning "
+                    + "throws a red puff, and a message names it (at most one a day). Only on our own biomes; "
+                    + "elsewhere the haze is only a look. Off: nothing turns; plants already turned stay.");
+                list.Label("Turning speed: " + zhoolConversionRate.ToString("0.00") + "x (1 = a plant left in the haze turns in about three days)");
+                zhoolConversionRate = list.Slider(zhoolConversionRate, RM_ZhoolHazeKernel.MinRate, RM_ZhoolHazeKernel.MaxRate);
+                list.CheckboxLabeled(
+                    "Haze turns sown crops too",
+                    ref zhoolConvertsCrops,
+                    "Off (the default): crops your colonists planted are never turned. On: a zhool drifting "
+                    + "over a field turns its crops like any wild plant.");
                 list.GapLine();
             }
 
