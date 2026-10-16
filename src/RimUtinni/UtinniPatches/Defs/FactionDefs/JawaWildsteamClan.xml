@@ -35,7 +35,7 @@
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
       RSW_Wookiee · RSW_WookieeTribal      mandrake.rsw.starwarsraces
-      Bantha                                     Mlie.StarWarsAnimalCollection
+      RSW_Bantha                                mandrake.rsw.swbestiary
       Muffalo                                    vanilla Core, no MayRequire
   ============================================================================
 -->
@@ -184,7 +184,7 @@
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>
-          <Bantha MayRequire="Mlie.StarWarsAnimalCollection">5</Bantha>
+          <RSW_Bantha MayRequire="mandrake.rsw.swbestiary">5</RSW_Bantha>
         </carriers>
       </li>
       <li>

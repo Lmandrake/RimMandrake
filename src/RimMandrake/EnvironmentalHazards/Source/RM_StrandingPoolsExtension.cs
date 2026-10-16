@@ -15,7 +15,7 @@ namespace RimMandrake.EnvironmentalHazards
     //
     //   <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
     //     <strandedSpawnList>
-    //       <li MayRequire="mlie.starwarsanimalcollection">Yobshrimp</li> <!-- PLACEHOLDER, see header -->
+    //       <li MayRequire="mandrake.rsw.swbestiary">RSW_Yobshrimp</li> <!-- PLACEHOLDER, see header -->
     //     </strandedSpawnList>
     //     <emptyWeight>40</emptyWeight>
     //     <smallWeight>50</smallWeight>

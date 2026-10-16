@@ -4,8 +4,8 @@
      Mee/Laa ship foodType None v1 (no lightkelp plant yet — EatsFood false,
      no food need, per Pawn_NeedsTracker.cs:358); Faa is the canon predatory
      exception, CarnivoreAnimal + canFishForFood. specificMeatDef on Faa/Laa
-     is MayRequire-gated on mlie.starwarsanimalcollection (SWAC, active),
-     which already ships swfish_Faa/swfish_Laa as Odyssey fish items. -->
+     point at our own RSW_FaaCatch/RSW_LaaCatch items (RSW_ScalefishCatch_Items.xml;
+     the donor swfish_ items are retired, SWAC Phase 0). -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase" Name="RSW_Mee">
@@ -173,7 +173,7 @@
       <baseHungerRate>0.10</baseHungerRate>
       <foodType>CarnivoreAnimal</foodType>
       <canFishForFood>true</canFishForFood>
-      <specificMeatDef MayRequire="mlie.starwarsanimalcollection">swfish_Faa</specificMeatDef>
+      <specificMeatDef MayRequire="Ludeon.RimWorld.Odyssey">RSW_FaaCatch</specificMeatDef>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <gestationPeriodDays>4</gestationPeriodDays>
@@ -296,7 +296,7 @@
       <baseHealthScale>0.5</baseHealthScale>
       <baseHungerRate>0.15</baseHungerRate>
       <foodType>None</foodType>
-      <specificMeatDef MayRequire="mlie.starwarsanimalcollection">swfish_Laa</specificMeatDef>
+      <specificMeatDef MayRequire="Ludeon.RimWorld.Odyssey">RSW_LaaCatch</specificMeatDef>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <gestationPeriodDays>4</gestationPeriodDays>
