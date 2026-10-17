@@ -66,6 +66,13 @@ namespace RimMandrake.FlowWorks
 		/// Off by default; the adapter sets it.</summary>
 		public bool creepWaterEnabled;
 		private long[] receivedStamp;
+		/// <summary>WATER_SURFACE_REPAIR_LEVEL_OR_BUST (owner 2026-10-17: "We need VERY smooth water. That's water's one primary
+		/// characteristic: a level surface."): the WATER creep hold is on the FRONT only, a square that was DRY when it took its
+		/// first unit this pulse. Holding every square that received (the old rule) held a mouth for as long as its source kept
+		/// paying it, so the mouth never joined its wet region and filled to the brim beside dry squares of the same floor
+		/// (live S2 read pond [4 0 4 0]). A square already wet passes water on as it receives it, so a pond rises as one
+		/// surface; the front still advances one square a pulse. Thick liquids keep the whole-square hold (THICK_LIQUID_CREEP_1).</summary>
+		private long[] frontStamp;
 		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND (owner 2026-10-16, by card "Level by water surface": "Shouldn't
 		/// each square of the channel have 'units of water' in it, and they will try to spread out evenly"): a neighbour
 		/// gives a unit when its water SURFACE (fill - dug depth; a source reads 0) stands above the recipient's, whatever
@@ -452,6 +459,10 @@ namespace RimMandrake.FlowWorks
 					if (fill[r] == 0)
 					{
 						world.Claim(r, world.DonorFluid(donor, IsSource(donor)));
+						if (creepWaterEnabled)
+						{
+							(frontStamp ??= new long[width * height])[r] = pulseCount + 1;
+						}
 					}
 					fill[r] += 1;
 					if (creepEnabled || creepWaterEnabled)
@@ -569,6 +580,7 @@ namespace RimMandrake.FlowWorks
 					if (fill[r] == 0)
 					{
 						world.Claim(r, world.DonorFluid(donor, true));
+						(frontStamp ??= new long[width * height])[r] = pulseCount + 1;
 					}
 					fill[r] += 1;
 					(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
@@ -582,8 +594,9 @@ namespace RimMandrake.FlowWorks
 		/// whose creep switch is on).</summary>
 		private bool HeldByCreep(int c, object fluid, long pulseCount)
 		{
-			return (creepEnabled || creepWaterEnabled) && receivedStamp != null && receivedStamp[c] == pulseCount + 1
-				&& (RM_StockMath.ViscosityStride(world.TicksPerTile(fluid)) > 1 ? creepEnabled : creepWaterEnabled);
+			return RM_StockMath.ViscosityStride(world.TicksPerTile(fluid)) > 1
+				? creepEnabled && receivedStamp != null && receivedStamp[c] == pulseCount + 1
+				: creepWaterEnabled && frontStamp != null && frontStamp[c] == pulseCount + 1;
 		}
 
 		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND, communicating vessels: the neighbour-to-neighbour pass above
@@ -1398,8 +1411,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if ((creepEnabled || creepWaterEnabled) && !source && receivedStamp != null && receivedStamp[n] == pulseCount + 1
-					&& (RM_StockMath.ViscosityStride(world.TicksPerTile(donorFluid)) > 1 ? creepEnabled : creepWaterEnabled))
+				if (!source && HeldByCreep(n, donorFluid, pulseCount))
 				{
 					continue; // THICK_LIQUID_CREEP_1: filled this pulse, so it cannot pass a thick liquid on until the next
 				}
