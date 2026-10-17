@@ -363,6 +363,10 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Collections.Look(ref ruptures, "ruptures", LookMode.Deep);
             Scribe_Values.Look(ref irrigationCursor, "irrigationCursor", 0);
             Scribe_Values.Look(ref surgeCursor, "surgeCursor", 0);
+            // EGROWTH_RELOAD_FIX_FREE_CHARGE_PASS: unsaved, the first pass after every load ran with dt = PassInterval
+            // whatever had really elapsed, so save/load cycles banked free charge. -1 (an old save) is the old behaviour.
+            Scribe_Values.Look(ref nextPassTick, "nextPassTick", -1);
+            Scribe_Values.Look(ref lastPassTick, "lastPassTick", -1);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (ledger.soakUntil == null) ledger.soakUntil = new Dictionary<IntVec3, int>();
