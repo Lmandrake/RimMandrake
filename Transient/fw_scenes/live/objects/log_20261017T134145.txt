@@ -1,0 +1,28 @@
+==========================================================================================
+styles_RM_LiquidTank
+  MATCHES    RM_LiquidTank default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTank Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTank Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTank Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTank Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_LiquidTankTall
+  MATCHES    RM_LiquidTankTall default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTankTall Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTankTall Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTankTall Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTankTall Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_HoseReel
+  MATCHES    RM_HoseReel default: 1 of 1 placed; game reads look default look = Scrapper
+  UNMEASURED RM_HoseReel Futuristic: 1 of 1 placed; game reads look None
+  UNMEASURED RM_HoseReel Industrial: 1 of 1 placed; game reads look None
+  UNMEASURED RM_HoseReel Modern: 1 of 1 placed; game reads look None
+  UNMEASURED RM_HoseReel Scrapper: 1 of 1 placed; game reads look None
+==========================================================================================
+styles_RM_UniversalPipe
+  MATCHES    RM_UniversalPipe default: 3 of 3 placed; game reads look default look = Scrapper
+  MATCHES    RM_UniversalPipe Futuristic: 3 of 3 placed; game reads look Futuristic
+  MATCHES    RM_UniversalPipe Industrial: 3 of 3 placed; game reads look Industrial
+  MATCHES    RM_UniversalPipe Modern: 3 of 3 placed; game reads look Modern
+  MATCHES    RM_UniversalPipe Scrapper: 3 of 3 placed; game reads look Scrapper

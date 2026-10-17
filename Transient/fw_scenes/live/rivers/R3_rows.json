@@ -1,0 +1,26 @@
+[
+ {
+  "id": "R3.a",
+  "scene": "R3",
+  "status": "MATCHES",
+  "game": "pending 0 -> 3 after 250 ticks (6 colonists staged)"
+ },
+ {
+  "id": "R3.b",
+  "scene": "R3",
+  "status": "MATCHES",
+  "game": "walk-home call: SWEPT pending=0"
+ },
+ {
+  "id": "R3.c",
+  "scene": "R3",
+  "status": "DIFFERS",
+  "game": "washed away ['Human54279', 'Human54285', 'Human54291']; back on the map after return: []"
+ },
+ {
+  "id": "R3.d",
+  "scene": "R3",
+  "status": "UNMEASURED",
+  "game": "the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)"
+ }
+]

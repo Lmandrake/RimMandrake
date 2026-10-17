@@ -1,0 +1,14 @@
+====================================================================================================
+R2. Ford stones: a safe crossing
+  R2.a    MATCHES    ford stones read back at [(125, 125), (126, 125), (127, 125), (128, 125)]: ['RM_FordStones', 'RM_FordStones', 'RM_FordStones', 'RM_FordStones']
+  ford colonist Human54144 on (127, 125); control Human54147 at (125, 120)
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R2_p00.png
+  step 1: ford colonist None, control None
+  step 2: ford colonist None, control None
+  step 3: ford colonist None, control None
+  step 4: ford colonist None, control None
+  step 5: ford colonist None, control None
+  step 6: ford colonist None, control None
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R2_p06.png
+  R2.b    UNMEASURED ford colonist moved None; control moved None (control did not drift: the current is not shown running, so the ford reading is UNMEASURED)
+  R2.c    MATCHES    ford shove test: MOVED 0 from 0,68 to 0,68 lane=1

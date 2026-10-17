@@ -73,11 +73,11 @@ def list_things(w, defs, rect):
     return out
 
 
-def place(w, defname, cell, rot=None, stuff=None):
+def place(w, defname, cell, rot=None, stuff=None, wipe=False):
     """build_batch one thing and READ IT BACK (list_things at the cell). Returns dict(def, asked, cell, rot_asked, rot_read,
     survived, note). rot_read is what the game says now; asked is only what we sent."""
     op = "%s:%d,%d" % (defname, cell[0], cell[1]) + ("" if rot is None else ",%d" % rot)
-    kw = dict(ops=op, faction="player", wipeExisting=False)
+    kw = dict(ops=op, faction="player", wipeExisting=bool(wipe))
     if stuff:
         kw["stuff"] = stuff
     r = w.call("jawa/build_batch", **kw) or {}
@@ -86,7 +86,7 @@ def place(w, defname, cell, rot=None, stuff=None):
     t = mine[0] if mine else None
     note = ""
     if not mine:
-        note = "not on the map after build_batch (reply: %s)" % str(r)[:160]
+        note = "not on the map after build_batch (reply: %s)" % str(r.get("failed") or r)[:300]
     elif t["rot"] is None:
         note = "game gave no rotation field (keys: %s)" % sorted(t["raw"].keys())
     return dict(def_=defname, asked=cell, rot_asked=rot, rot_read=(t or {}).get("rot"), survived=bool(mine), note=note)

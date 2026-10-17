@@ -1,0 +1,59 @@
+==========================================================================================
+ladders_lowered
+  MATCHES    North wall (cell 191,152): asked North -> game reads North
+  MATCHES    East wall (cell 198,151): asked East -> game reads East
+  MATCHES    South wall (cell 203,150): asked South -> game reads South
+  MATCHES    West wall (cell 208,151): asked West -> game reads West
+==========================================================================================
+ladders_raised
+  MATCHES    North wall (cell 191,159): asked North -> game reads North; raised=True
+  MATCHES    East wall (cell 198,158): asked East -> game reads East; raised=True
+  MATCHES    South wall (cell 203,157): asked South -> game reads South; raised=True
+  MATCHES    West wall (cell 208,158): asked West -> game reads West; raised=True
+==========================================================================================
+ladders_autoturn
+  MATCHES    North wall (cell 191,166): asked South -> game reads North
+  MATCHES    East wall (cell 198,165): asked West -> game reads East
+  MATCHES    South wall (cell 203,164): asked North -> game reads South
+  MATCHES    West wall (cell 208,165): asked East -> game reads West
+==========================================================================================
+styles_RM_LiquidTank
+  MATCHES    RM_LiquidTank default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTank Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTank Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTank Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTank Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_LiquidTankTall
+  MATCHES    RM_LiquidTankTall default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTankTall Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTankTall Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTankTall Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTankTall Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_HoseReel
+  MATCHES    RM_HoseReel default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_HoseReel Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_HoseReel Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_HoseReel Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_HoseReel Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_UniversalPipe
+  MATCHES    RM_UniversalPipe default: 3 of 3 placed; game reads look default look = Scrapper
+  MATCHES    RM_UniversalPipe Futuristic: 3 of 3 placed; game reads look Futuristic
+  MATCHES    RM_UniversalPipe Industrial: 3 of 3 placed; game reads look Industrial
+  MATCHES    RM_UniversalPipe Modern: 3 of 3 placed; game reads look Modern
+  MATCHES    RM_UniversalPipe Scrapper: 3 of 3 placed; game reads look Scrapper
+==========================================================================================
+river_prereq
+==========================================================================================
+river_weirs
+  note: placed with god-mode build_batch (no PlaceWorker); the bank-edge rule itself is the river suite's place_weir_bank_edge
+  MATCHES    RM_BankWeir default at 128,122: asked North -> reads North; look Scrapper
+  MATCHES    RM_BankWeir Futuristic at 130,129: asked West -> reads West; look Futuristic
+  MATCHES    RM_BankWeir Industrial at 125,115: asked North -> reads North; look Industrial
+  MATCHES    RM_BankWeir Modern at 131,136: asked West -> reads West; look Modern
+  MATCHES    RM_BankWeir Scrapper at 141,121: asked East -> reads East; look Scrapper
+==========================================================================================
+river_fords
+  MATCHES    top terrain read back at [(128, 122), (129, 122), (130, 122), (131, 122)]: ['RM_FordStones', 'RM_FordStones', 'RM_FordStones', 'RM_FordStones']

@@ -1,0 +1,122 @@
+quicktest map up: True (2 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [917, 920, 932]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+====================================================================================================
+S4. A sluice gate shut, then open, then shut again
+    |~~~~~~~~..........
+    |~~~~~~~~111G1111..
+    |~~~~~~~~..........
+S4 staged: lake 1 limitless=True; canal 3 up + RM_Sluice on cell 4 + 4 down, all depth 1, dry; built=1 DOOR RM_Sluice open=False seals=True | depth 1 fill 0
+S4 variant staged: lake 2 limitless=True; canal 3 up + RM_SecurityGrateDoor on cell 4 + 4 down, all depth 1, dry; built=1 DOOR RM_SecurityGrateDoor open=False seals=False | depth 1 fill 0
+         screenshot: Transient\fw_scenes\live\S4_p00.png
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.2 s pause
+  step A: sluice SHUT, 20 pulses (the grate variant runs alongside, never opened)
+  A pulse  0  sluice canal [0 0 0 | 0 | 0 0 0 0]  grate canal [0 0 0 | 0 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  1  sluice canal [1 0 0 | 0 | 0 0 0 0]  grate canal [1 0 0 | 0 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  2  sluice canal [1 1 0 | 0 | 0 0 0 0]  grate canal [1 1 0 | 0 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  3  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 0 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  4  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  5  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  6  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 0 0]  DOOR RM_Sluice open=False seals=True
+         screenshot: Transient\fw_scenes\live\S4A_p06.png
+  A pulse  7  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  8  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  9  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 10  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 11  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 12  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+         screenshot: Transient\fw_scenes\live\S4A_p12.png
+  A pulse 13  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 14  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 15  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 16  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 17  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 18  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 19  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse 20  sluice canal [1 1 1 | 0 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+         screenshot: Transient\fw_scenes\live\S4A_p20.png
+  S4.a   MATCHES    doc: The 3 upstream cells hold 1 level.
+                    game: 3 upstream cells at 1 first at pulse 3
+  S4.b   MATCHES    doc: The 4 downstream cells stay dry while the gate is shut.
+                    game: downstream wet while shut at pulses: never
+  S4.e   MATCHES    doc: Grate gate, never opened: all 4 downstream cells hold 1 level.
+                    game: grate: 4 downstream cells at 1 first at pulse 8
+  step B: sluice OPEN, 20 pulses -- DOOR RM_Sluice open=True seals=False | depth 1 fill 1 (opening took 304 ticks: Hold open on + a colonist walked in and left)
+  B pulse  0  sluice canal [1 1 1 | 1 | 0 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  1  sluice canal [1 1 1 | 1 | 1 0 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  2  sluice canal [1 1 1 | 1 | 1 1 0 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  3  sluice canal [1 1 1 | 1 | 1 1 1 0]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  4  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  5  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  6  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  7  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse  8  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+         screenshot: Transient\fw_scenes\live\S4B_p08.png
+  B pulse  9  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 10  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 11  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 12  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 13  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 14  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 15  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 16  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 17  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 18  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 19  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+  B pulse 20  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=True seals=False
+         screenshot: Transient\fw_scenes\live\S4B_p20.png
+  S4.c   MATCHES    doc: After opening, all 4 downstream cells hold 1 level.
+                    game: 4 downstream cells at 1 first at pulse 4 after opening
+  step C: sluice SHUT again, 40 pulses -- DOOR RM_Sluice open=False seals=True | depth 1 fill 1 (closing took 417 ticks: Hold open off + a colonist passed through)
+  C pulse  0  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  1  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  2  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  3  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  4  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  5  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  6  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  7  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  8  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse  9  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 10  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 11  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 12  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 13  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 14  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 15  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 16  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 17  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 18  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 19  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 20  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+         screenshot: Transient\fw_scenes\live\S4C_p20.png
+  C pulse 21  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 22  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 23  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 24  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 25  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 26  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 27  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 28  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 29  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 30  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 31  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 32  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 33  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 34  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 35  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 36  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 37  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 38  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 39  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  C pulse 40  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+         screenshot: Transient\fw_scenes\live\S4C_p40.png
+  S4.d   MATCHES    doc: Shut again: the upstream cells stay full.
+                    game: an upstream cell below 1 at pulses: never
+  S4.Q1  OPEN RULING  Step C: the gate is shut again with the 4 downstream cells full. That water is now cut off from the lake. What should it do?
+         (a) stay exactly as it is until the gate opens or a pump/sink moves it
+         (b) slowly drain back through the shut gate to the lake (a leaky gate)
+         (c) slowly drain away and vanish (evaporation) - this would be a second exception to conservation
+         game today: downstream held 4 level(s) when shut again and 4 after 40 pulses (stays put = (a))
+  log: Transient\fw_scenes\live\S4_20261017T132655.txt

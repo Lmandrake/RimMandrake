@@ -1,21 +1,21 @@
 [
  {
   "id": "S5.a",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond.",
-  "game": "A: most canal cells wet at once 1 of 10; pulses where pond+canal != start 36.0: none; not one run at: none"
+  "game": "A: most canal cells wet at once 0 of 10; pulses where pond+canal != start 36.0: [1, 2, 3, 4, 5, 6, 7, 8]; not one run at: none"
  },
  {
   "id": "S5.b",
   "status": "MATCHES",
   "doc": "The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m.",
-  "game": "pond A stock 36.0 -> 35.0, lowest 35.0 (doc: lower than at start, never below 27)"
+  "game": "pond A stock 36.0 -> 31.2631, lowest 31.2631 (doc: lower than at start, never below 27)"
  },
  {
   "id": "S5.c",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L.",
-  "game": "B canal cells ever wet [1]; pond B lowest 3.0 (start 4.0); total at pulse 10 = 4.0"
+  "game": "B canal cells ever wet none; pond B lowest 3.0909 (start 4.0); total at pulse 10 = 3.0909"
  },
  {
   "id": "S5.d",
@@ -31,9 +31,9 @@
  },
  {
   "id": "S5.e",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears.",
-  "game": "B canal+pond total 4.0 -> 4.0; overflow destroyed 0.0 -> 0.0"
+  "game": "B canal+pond total 3.0909 -> 3.0909; overflow destroyed 0.0 -> 0.091"
  },
  {
   "id": "S5.f",
@@ -43,14 +43,14 @@
  },
  {
   "id": "S5.g",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L.",
-  "game": "pulse 20: 0 cell(s) at 1 m while 28 dry; total 8 notches (doc: none at 1 m while any dry; total 8)"
+  "game": "pulse 20: 0 cell(s) at 1 m while 36 dry; total 0 notches (doc: none at 1 m while any dry; total 8)"
  },
  {
   "id": "S5.i",
   "status": "DIFFERS",
   "doc": "Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet.",
-  "game": "end: canal cells wet [2, 3, 4], pond 0.0, hoses 0.00; pulses where pond+hoses+canal != 4.0: [6, 7, 8, 9, 10, 11]; 5th/6th cell wet at: never; undug ground wet: never"
+  "game": "end: canal cells wet [], pond 2.025, hoses 0.00; pulses where pond+hoses+canal != 4.0: [3, 4, 5, 6, 7, 8]; 5th/6th cell wet at: never; undug ground wet: never"
  }
 ]

@@ -1,0 +1,46 @@
+==========================================================================================
+ladders_lowered
+  MATCHES    North wall (cell 191,152): asked North -> game reads North
+  MATCHES    East wall (cell 198,151): asked East -> game reads East
+  MATCHES    South wall (cell 203,150): asked South -> game reads South
+  MATCHES    West wall (cell 208,151): asked West -> game reads West
+==========================================================================================
+ladders_raised
+  MATCHES    North wall (cell 191,159): asked North -> game reads North; raised=True
+  MATCHES    East wall (cell 198,158): asked East -> game reads East; raised=True
+  MATCHES    South wall (cell 203,157): asked South -> game reads South; raised=True
+  MATCHES    West wall (cell 208,158): asked West -> game reads West; raised=True
+==========================================================================================
+ladders_autoturn
+  MATCHES    North wall (cell 191,166): asked South -> game reads North
+  MATCHES    East wall (cell 198,165): asked West -> game reads East
+  MATCHES    South wall (cell 203,164): asked North -> game reads South
+  MATCHES    West wall (cell 208,165): asked East -> game reads West
+==========================================================================================
+styles_RM_LiquidTank
+  MATCHES    RM_LiquidTank: 1 of 1 placed
+  DIFFERS    RM_LiquidTank_Futuristic: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTank_Futuristic:155,150,0', 'why': "no ThingDef)
+  DIFFERS    RM_LiquidTank_Industrial: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTank_Industrial:160,150,0', 'why': "no ThingDef)
+  DIFFERS    RM_LiquidTank_Modern: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTank_Modern:165,150,0', 'why': "no ThingDef 'RM)
+  DIFFERS    RM_LiquidTank_Scrapper: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTank_Scrapper:170,150,0', 'why': "no ThingDef ')
+==========================================================================================
+styles_RM_LiquidTankTall
+  MATCHES    RM_LiquidTankTall: 1 of 1 placed
+  DIFFERS    RM_LiquidTankTall_Futuristic: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTankTall_Futuristic:155,156,0', 'why': "no Thin)
+  DIFFERS    RM_LiquidTankTall_Industrial: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTankTall_Industrial:160,156,0', 'why': "no Thin)
+  DIFFERS    RM_LiquidTankTall_Modern: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTankTall_Modern:165,156,0', 'why': "no ThingDef)
+  DIFFERS    RM_LiquidTankTall_Scrapper: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_LiquidTankTall_Scrapper:170,156,0', 'why': "no ThingD)
+==========================================================================================
+styles_RM_HoseReel
+  MATCHES    RM_HoseReel: 1 of 1 placed
+  DIFFERS    RM_HoseReel_Futuristic: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_HoseReel_Futuristic:155,162,0', 'why': "no ThingDef ')
+  DIFFERS    RM_HoseReel_Industrial: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_HoseReel_Industrial:160,162,0', 'why': "no ThingDef ')
+  DIFFERS    RM_HoseReel_Modern: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_HoseReel_Modern:165,162,0', 'why': "no ThingDef 'RM_H)
+  DIFFERS    RM_HoseReel_Scrapper: 0 of 1 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_HoseReel_Scrapper:170,162,0', 'why': "no ThingDef 'RM)
+==========================================================================================
+styles_RM_UniversalPipe
+  MATCHES    RM_UniversalPipe: 3 of 3 placed
+  DIFFERS    RM_UniversalPipe_Futuristic: 0 of 3 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_UniversalPipe_Futuristic:155,168,0', 'why': "no Thing)
+  DIFFERS    RM_UniversalPipe_Industrial: 0 of 3 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_UniversalPipe_Industrial:160,168,0', 'why': "no Thing)
+  DIFFERS    RM_UniversalPipe_Modern: 0 of 3 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_UniversalPipe_Modern:165,168,0', 'why': "no ThingDef )
+  DIFFERS    RM_UniversalPipe_Scrapper: 0 of 3 placed; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_UniversalPipe_Scrapper:170,168,0', 'why': "no ThingDe)

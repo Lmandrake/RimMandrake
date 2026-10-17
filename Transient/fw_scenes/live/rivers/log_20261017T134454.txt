@@ -1,0 +1,11 @@
+====================================================================================================
+R3. Swept off the map edge, then walks home
+  6 colonists staged on edge river cells [(0, 75), (249, 208), (0, 68), (249, 201), (0, 72), (249, 205)]; pending 0
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R3_p00.png
+  after 250 ticks: pending 3, still on map: 3 of 6
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R3_swept.png
+  R3.a    MATCHES    pending 0 -> 3 after 250 ticks (6 colonists staged)
+  R3.b    MATCHES    walk-home call: SWEPT pending=0
+  R3.c    DIFFERS    washed away ['Human54191', 'Human54197', 'Human54204']; back on the map after return: []
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R3_home.png
+  R3.d    UNMEASURED the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)

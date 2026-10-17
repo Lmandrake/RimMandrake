@@ -1,0 +1,9 @@
+====================================================================================================
+R4. A bank weir holds the river back
+  R4.a    MATCHES    place test: PLACE edge=True dry=False wet=False
+  R4.b    MATCHES    pool test: POOL cells=22 dropped=22 arrestedWet=True at=(12, 0, 72) wetCell=12,73 wetDir=0 nbr=1,0:0|1,1:0|0,1:0|-1,1:0|-
+  R4.c    MATCHES    join test: JOIN placeOk=True run=2 headIsBank=True joint=True poolSingle=22 poolJoined=40 poolGap=0 at=(12, 0, 72)+(12, 0, 74)
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R4_before.png
+  R4.d    MATCHES    weir at (124, 124): asked North, game reads North
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R4_after.png
+  weir removed again (destroy_batch around (124, 124))

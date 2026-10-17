@@ -1,0 +1,20 @@
+[
+ {
+  "id": "R5.a",
+  "scene": "R5",
+  "status": "MATCHES",
+  "game": "wash: site=10,72 rot=1 poolCount=2 lane=1 before=13.6 after=1.6 got=12 drawMatches=True inPool=True off=sluice=off pan=pan=nothing washe"
+ },
+ {
+  "id": "R5.b",
+  "scene": "R5",
+  "status": "MATCHES",
+  "game": "setting off: off=sluice=off"
+ },
+ {
+  "id": "R5.c",
+  "scene": "R5",
+  "status": "MATCHES",
+  "game": "sluice box at (126, 126): asked North, game reads North"
+ }
+]

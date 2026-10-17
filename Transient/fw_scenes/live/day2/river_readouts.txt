@@ -1,0 +1,6 @@
+128,124 | OK Open water, never runs dry (about 1 m deep)
+128,119 | OK Open water, never runs dry (about 1 m deep)
+92,5 | OK Open water, never runs dry (about 2 m deep)
+92,0 | OK Open water, never runs dry (about 1 m deep)
+85,4 | OK Open water, never runs dry (about 1 m deep)
+89,2 | OK Open water, never runs dry (about 1 m deep)

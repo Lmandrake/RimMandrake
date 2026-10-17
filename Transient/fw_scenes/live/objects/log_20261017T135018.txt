@@ -1,0 +1,59 @@
+==========================================================================================
+ladders_lowered
+  MATCHES    North wall (cell 191,152): asked North -> game reads North
+  MATCHES    East wall (cell 198,151): asked East -> game reads East
+  MATCHES    South wall (cell 203,150): asked South -> game reads South
+  MATCHES    West wall (cell 208,151): asked West -> game reads West
+==========================================================================================
+ladders_raised
+  MATCHES    North wall (cell 191,159): asked North -> game reads North; raised=True
+  MATCHES    East wall (cell 198,158): asked East -> game reads East; raised=True
+  MATCHES    South wall (cell 203,157): asked South -> game reads South; raised=True
+  MATCHES    West wall (cell 208,158): asked West -> game reads West; raised=True
+==========================================================================================
+ladders_autoturn
+  MATCHES    North wall (cell 191,166): asked South -> game reads North
+  MATCHES    East wall (cell 198,165): asked West -> game reads East
+  MATCHES    South wall (cell 203,164): asked North -> game reads South
+  MATCHES    West wall (cell 208,165): asked East -> game reads West
+==========================================================================================
+styles_RM_LiquidTank
+  MATCHES    RM_LiquidTank default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTank Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTank Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTank Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTank Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_LiquidTankTall
+  MATCHES    RM_LiquidTankTall default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_LiquidTankTall Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_LiquidTankTall Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_LiquidTankTall Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_LiquidTankTall Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_HoseReel
+  MATCHES    RM_HoseReel default: 1 of 1 placed; game reads look default look = Scrapper
+  MATCHES    RM_HoseReel Futuristic: 1 of 1 placed; game reads look Futuristic
+  MATCHES    RM_HoseReel Industrial: 1 of 1 placed; game reads look Industrial
+  MATCHES    RM_HoseReel Modern: 1 of 1 placed; game reads look Modern
+  MATCHES    RM_HoseReel Scrapper: 1 of 1 placed; game reads look Scrapper
+==========================================================================================
+styles_RM_UniversalPipe
+  MATCHES    RM_UniversalPipe default: 3 of 3 placed; game reads look default look = Scrapper
+  MATCHES    RM_UniversalPipe Futuristic: 3 of 3 placed; game reads look Futuristic
+  MATCHES    RM_UniversalPipe Industrial: 3 of 3 placed; game reads look Industrial
+  MATCHES    RM_UniversalPipe Modern: 3 of 3 placed; game reads look Modern
+  MATCHES    RM_UniversalPipe Scrapper: 3 of 3 placed; game reads look Scrapper
+==========================================================================================
+river_prereq
+==========================================================================================
+river_weirs
+  note: placed with god-mode build_batch (no PlaceWorker); the bank-edge rule itself is the river suite's place_weir_bank_edge
+  MATCHES    RM_BankWeir at 128,123: asked North -> reads North
+  UNMEASURED RM_BankWeir_Futuristic at 130,130: asked West -> reads UNREADABLE; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_BankWeir_Futuristic:130,130,3', 'why': "no ThingDef ')
+  UNMEASURED RM_BankWeir_Industrial at 126,116: asked West -> reads UNREADABLE; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_BankWeir_Industrial:126,116,3', 'why': "no ThingDef ')
+  UNMEASURED RM_BankWeir_Modern at 131,137: asked West -> reads UNREADABLE; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_BankWeir_Modern:131,137,3', 'why': "no ThingDef 'RM_B)
+  UNMEASURED RM_BankWeir_Scrapper at 123,109: asked West -> reads UNREADABLE; not on the map after build_batch (reply: {'success': True, 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_BankWeir_Scrapper:123,109,3', 'why': "no ThingDef 'RM)
+==========================================================================================
+river_fords
+  MATCHES    top terrain read back at [(128, 123), (129, 123), (130, 123), (131, 123)]: ['RM_FordStones', 'RM_FordStones', 'RM_FordStones', 'RM_FordStones']

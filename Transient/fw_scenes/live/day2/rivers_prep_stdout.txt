@@ -1,0 +1,10 @@
+founding a river site (river_site.py; a few minutes) ...
+tiles 119904 flat temperate candidates 4114
+river tiles among them 338
+fish by biome: {'Scarlands': False, 'TemperateForest': True} | rejected fishless river tiles: [('Scarlands', 8)]
+tile 1232 mapId 1 TemperateForest riverCount 2 grid: GRID current=4086 fast=844 edge=3242 size=1.89 flood=False
+tile 1232 moving water on edges {'west': 15, 'east': 15}
+loaded maps: [{'mapId': 0, 'tile': 13220, 'biome': 'AridShrubland'}, {'mapId': 1, 'tile': 1232, 'biome': 'TemperateForest'}]
+quiet site (map): [('threat_structures_cleared', {'removed': [], 'threatsAfter': 0, 'kept': 0, 'errors': []}), ('hostiles_removed', {'acted': 0, 'residue': []}), ('proximity_letters_sent', {'letters': [], 'unsentAfter': 0})] problems [] error None
+tile 1232 mapId 1 map_info tile 1232 size 250 biome TemperateForest destroyed 39 colonists ['Human54115', 'Human54132', 'Human54135'] site problems [] reset problems []
+river_site.py exit 0 (0 = ready; 2 = no tile qualified; 3 = site problems printed above)
