@@ -104,6 +104,17 @@ def _fmt(x):
     return ("%g" % x) if isinstance(x, (int, float)) else str(x)
 
 
+
+def runtime_size(key: str, rs: dict) -> dict:
+    """The size dict of a picture whose size a manifest states ({drawSize, footprint, source}): a C#-drawn texture row, or a
+    sized reference composite (art_sheet --textures `reference_textures` entry {path, size})."""
+    ds = [float(rs["drawSize"][0]), float(rs["drawSize"][1])]
+    fp = [int(x) for x in rs.get("footprint") or [1, 1]]
+    return {"status": "measured", "kind": "thing", "category": "Building", "def": key, "drawSize": ds,
+            "footprint": fp, "offset": [0.0, 0.0], "graphicClass": "runtime", "color": [1, 1, 1],
+            "quad": ds[0], "cells": float(max(fp)), "mesh": 1,
+            "source": "drawn by C#, no def: " + rs["source"]}
+
 class Resolver:
     def __init__(self, db_path: Path = DB):
         self.db = sqlite3.connect(str(db_path))
@@ -301,12 +312,7 @@ class Resolver:
     def size(self, row: dict) -> dict:
         rs = row.get("runtimeSize")
         if rs:      # a texture C# draws with no def (art_sheet --textures): the size its code sets, citing that line
-            ds = [float(rs["drawSize"][0]), float(rs["drawSize"][1])]
-            fp = [int(x) for x in rs.get("footprint") or [1, 1]]
-            return {"status": "measured", "kind": "thing", "category": "Building", "def": row["key"], "drawSize": ds,
-                    "footprint": fp, "offset": [0.0, 0.0], "graphicClass": "runtime", "color": [1, 1, 1],
-                    "quad": ds[0], "cells": float(max(fp)), "mesh": 1,
-                    "source": "drawn by C#, no def: " + rs["source"]}
+            return runtime_size(row["key"], rs)
         names = [row["key"]] + [n for n in (row.get("defNames") or []) if n != row["key"]]
         for n in names:
             td = self._def(n, "ThingDef")

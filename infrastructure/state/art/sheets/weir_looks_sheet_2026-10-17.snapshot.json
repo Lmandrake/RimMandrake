@@ -1,0 +1,346 @@
+{
+ "biome": "SUBJECTS_weir_looks",
+ "built": "2026-10-17T00:25:19-0700",
+ "census": "Transient/biome_ffar/weir_looks.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 547 active",
+ "rows": {
+  "RM_BankWeirCap_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "5165074d664d3d257eca92be282b27e1d3a9360c0725c31710ecfc47b17b782a"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweircap_futuristic"
+  },
+  "RM_BankWeirCap_Industrial": {
+   "columns": {
+    "A": {
+     "single": "ba16fa3c967197643e59e61d33dcc2ba2669901c414ad0671adc7df518c7983f"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweircap_industrial"
+  },
+  "RM_BankWeirCap_Modern": {
+   "columns": {
+    "A": {
+     "single": "29efe0aef63b1ace5814b952260b735b4d7e66abadde2a5a37909062c3f3fee0"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweircap_modern"
+  },
+  "RM_BankWeirCap_Scrapper": {
+   "columns": {
+    "A": {
+     "single": "1c556032c0ba2aa48a97c93ec5cfe2dd61f88d78b2e8b6b82fb6d8757db62642"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweircap_scrapper"
+  },
+  "RM_BankWeirSpill_Futuristic": {
+   "columns": {
+    "A": {
+     "east": "1f674079529a99822585f93edc882c11d8294cfac557f9ce557ce354d4a9b591",
+     "north": "d0bf503530bdee45a3c2c9965b0497b74a087b43343dbff4c37ced38a6fbbca9",
+     "south": "eb574c6943c9a209973a7bd99f3986770e8cf5a9247670a477854d5a455dcc8e",
+     "west": "79fe30f63649d8a55a3097a5990c7abbe76d5623691edbf4b4aad0591e896417"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirSpill"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirSpill",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweirspill_futuristic"
+  },
+  "RM_BankWeirSpill_Industrial": {
+   "columns": {
+    "A": {
+     "east": "1297d792e85e3bdc8d261067c3b7a9ef1a823614ebd8e025fe73f539684e7960",
+     "north": "c970bb2f336cb0b88833dd2be0db36b7033592277d86156e50d44fe05fe5d203",
+     "south": "dfd7d2e6e99e7c67339fe8718171f6f386f30d5e58f7617194b551e2e2c882f9",
+     "west": "a303e6df7e00eb316617cd97cf338d8ec5c8f8839b365e5612d28b6d51bb2789"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirSpill"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirSpill",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweirspill_industrial"
+  },
+  "RM_BankWeirSpill_Modern": {
+   "columns": {
+    "A": {
+     "east": "0d15445c4ccb0dbdb937b4e43a126b05baf752f1c475970798c4e09b0c18a2ab",
+     "north": "3e0c067751e851335e992777a92fbd44a3f8036027fc0b05b6420a900bb1a1b0",
+     "south": "b6edb70ae9ab4bd49ec59a4dfd527ce6460d09cd155825a9a1e602375239fcfb",
+     "west": "2a27783fc7a95052c84669d4de690ef5863f47b3edd6d89cb7feb101420d556d"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweirspill_modern"
+  },
+  "RM_BankWeirSpill_Scrapper": {
+   "columns": {
+    "A": {
+     "east": "4a040eb4f24209a8b82e37413cb1ed7af354cab924632e4e30352e9f87e6cb68",
+     "north": "a3427ddfc6d68655b134f27767e936061c5e15a0e159d6662cfc165981f475b7",
+     "south": "7dee1bd4684b80c3c7111dd8d6e1296b0e0c3a3784df4aaaa1ebceaedd502261",
+     "west": "60d09a967e0e02154fc53b112dc792882fcd8fd7fb4f35093a52eb9b05698beb"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirSpill"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirSpill",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweirspill_scrapper"
+  },
+  "RM_BankWeirWater": {
+   "columns": {
+    "A": {
+     "east": "05b5886ca746e36a458bfdf738a39c5719b2d1d52c16e6c5212bdf75ddc1734f",
+     "north": "796f8fc3609b0806c2eb93728c3e72024eba1632183dde09890774879fefa2bd",
+     "south": "b4a0ea83f0760bd3bb306ff54b9c5872c3bef5116e9b1cd53fb0e04d7a10bf92",
+     "west": "d315b6f1af2a00a293f2eaaf07244cc34f0249f03d8483c832f305c59d415a4f"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/RM_BankWeirWater"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/RM_BankWeirWater",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweirwater"
+  },
+  "RM_BankWeir_Futuristic": {
+   "columns": {
+    "A": {
+     "east": "82516a1134a304760a93b977d8de0db3fbd5c1fb2ca5c0d45d92e409d8e16ca4",
+     "north": "e32169c79d4b459d67516079e91aef931e67c0f3247579f8eb5208b61888ea4a",
+     "south": "bd61a4a0d39ea5eda92b827c93a22510177b8fa7a56ffb267be04dcfdb7a0bc8",
+     "west": "512ed6f293f5ac035d91c425e71958100a912a71b5cdfef44f55991d6d4a5730"
+    },
+    "B": {
+     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
+    },
+    "C": {
+     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir",
+    "B": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir",
+    "C": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render fwart_RM_BankWeir",
+    "C": "render RM_BankWeir_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweir_futuristic"
+  },
+  "RM_BankWeir_Industrial": {
+   "columns": {
+    "A": {
+     "east": "9dcb6a691e51f83070c0844aca8609ba222bfd2beb1d70ba8a7ae0bd6db6414e",
+     "north": "a463650cf2b127fd2c22535cac56713da5f65a555b4fb6dbc964327012b5d07e",
+     "south": "d0a593ce2bcfa7f36cea216b19f702126ee131140d63eef24c688e4a44839a7e",
+     "west": "4989da00d355a0133d50db55d636b48efe2ca0e49df9233915128737502dff1f"
+    },
+    "B": {
+     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
+    },
+    "C": {
+     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir",
+    "B": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir",
+    "C": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render fwart_RM_BankWeir",
+    "C": "render RM_BankWeir_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweir_industrial"
+  },
+  "RM_BankWeir_Modern": {
+   "columns": {
+    "A": {
+     "east": "849ea4badd0c89424a8e26a8ce7359a082cf1209cee1ee707662822bd6c59b08",
+     "north": "e14cfc803aaefdfeec66e12f7b23690ca24fb6c2ad44d6ea45a8810ac1e5c545",
+     "south": "a549b471a6e379f1b5014da35a0a5be51d7c3beae470fc83c28d80396d1a6804",
+     "west": "e3dfb55c8b57282ba0ecc61b9c926f076ffc2fffddb256e055eb6035ba814759"
+    },
+    "B": {
+     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
+    },
+    "C": {
+     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir",
+    "B": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir",
+    "C": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render fwart_RM_BankWeir",
+    "C": "render RM_BankWeir_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweir_modern"
+  },
+  "RM_BankWeir_Scrapper": {
+   "columns": {
+    "A": {
+     "east": "854709bc744f8bfc8390eecbabd577fd3564690a9de786e1c6e60a2f81d4bc05",
+     "north": "11c3036ff8fb8f4b3058701cfab5cf848b28de48114ff2415c45f65cc8f6634b",
+     "south": "24ae5d13846bde3dc6f5260e956b710bdcf2b9e43bfaa69c9ac0f5fa5233d728",
+     "west": "55017495ecdda727e271da3c78783fa41dbc74fb0910085e0bbdbb2a371b8f82"
+    },
+    "B": {
+     "single": "a1c0dfe3d1e94698e4c9e95b6c329216f03d30bd0d005017f44442bad455559a"
+    },
+    "C": {
+     "single": "b17a7cc37fdf4dcdd2ef021a69bfaf8565779bdbf60110b2372903cb3b2ea437"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
+    "B": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
+    "C": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render fwart_RM_BankWeir",
+    "C": "render RM_BankWeir_v1"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bankweir_scrapper"
+  }
+ },
+ "sheetId": "weir_looks_sheet_2026-10-17",
+ "snapshotId": "225414034bed6e5f"
+}

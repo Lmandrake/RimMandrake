@@ -1,0 +1,455 @@
+{
+ "rows": [
+  {
+   "key": "RM_BankWeir_Scrapper",
+   "label": "weir wall, scrapper look: one picture per heading (south/north spill west/east, east = spill face to camera, west = upstream face)",
+   "part": "weir wall",
+   "look": "Scrapper",
+   "section": "walls",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     2
+    ],
+    "footprint": [
+     1,
+     2
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml Graphic_Multi drawSize (1,2), size (1,2); RM_Building_BankWeir.Print picks the heading from the current"
+   },
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Scrapper_sceneA.png",
+     "size": {
+      "drawSize": [
+       6,
+       5
+      ],
+      "footprint": [
+       6,
+       5
+      ],
+      "source": "offline composite A: a lone bank weir (posts at both free ends), synthetic river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Scrapper_sceneB.png",
+     "size": {
+      "drawSize": [
+       10,
+       5
+      ],
+      "footprint": [
+       10,
+       5
+      ],
+      "source": "offline composite B: four sections joined bank to bank across a 6-cell river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Scrapper_sceneC.png",
+     "size": {
+      "drawSize": [
+       5,
+       8
+      ],
+      "footprint": [
+       5,
+       8
+      ],
+      "source": "offline composite C: four sections joined across a river flowing east (north art)"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_BankWeirCap_Scrapper",
+   "label": "weir end post, scrapper look (drawn only at a free end)",
+   "part": "weir end post",
+   "look": "Scrapper",
+   "section": "posts",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirCap"
+   ],
+   "size": {
+    "drawSize": [
+     0.7,
+     0.7
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: RM_WeirArt.CapSize 0.7"
+   }
+  },
+  {
+   "key": "RM_BankWeirSpill_Scrapper",
+   "label": "weir spill sheet over the crest, scrapper look (overlay above the wall, per wet cell)",
+   "part": "weir spill",
+   "look": "Scrapper",
+   "section": "water",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeirSpill"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: one per wet cell, 1x1"
+   }
+  },
+  {
+   "key": "RM_BankWeir_Industrial",
+   "label": "weir wall, industrial look: one picture per heading (south/north spill west/east, east = spill face to camera, west = upstream face)",
+   "part": "weir wall",
+   "look": "Industrial",
+   "section": "walls",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     2
+    ],
+    "footprint": [
+     1,
+     2
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml Graphic_Multi drawSize (1,2), size (1,2); RM_Building_BankWeir.Print picks the heading from the current"
+   },
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Industrial_sceneA.png",
+     "size": {
+      "drawSize": [
+       6,
+       5
+      ],
+      "footprint": [
+       6,
+       5
+      ],
+      "source": "offline composite A: a lone bank weir (posts at both free ends), synthetic river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Industrial_sceneB.png",
+     "size": {
+      "drawSize": [
+       10,
+       5
+      ],
+      "footprint": [
+       10,
+       5
+      ],
+      "source": "offline composite B: four sections joined bank to bank across a 6-cell river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Industrial_sceneC.png",
+     "size": {
+      "drawSize": [
+       5,
+       8
+      ],
+      "footprint": [
+       5,
+       8
+      ],
+      "source": "offline composite C: four sections joined across a river flowing east (north art)"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_BankWeirCap_Industrial",
+   "label": "weir end post, industrial look (drawn only at a free end)",
+   "part": "weir end post",
+   "look": "Industrial",
+   "section": "posts",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirCap"
+   ],
+   "size": {
+    "drawSize": [
+     0.7,
+     0.7
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: RM_WeirArt.CapSize 0.7"
+   }
+  },
+  {
+   "key": "RM_BankWeirSpill_Industrial",
+   "label": "weir spill sheet over the crest, industrial look (overlay above the wall, per wet cell)",
+   "part": "weir spill",
+   "look": "Industrial",
+   "section": "water",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeirSpill"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: one per wet cell, 1x1"
+   }
+  },
+  {
+   "key": "RM_BankWeir_Modern",
+   "label": "weir wall, modern look: one picture per heading (south/north spill west/east, east = spill face to camera, west = upstream face)",
+   "part": "weir wall",
+   "look": "Modern",
+   "section": "walls",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     2
+    ],
+    "footprint": [
+     1,
+     2
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml Graphic_Multi drawSize (1,2), size (1,2); RM_Building_BankWeir.Print picks the heading from the current"
+   },
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Modern_sceneA.png",
+     "size": {
+      "drawSize": [
+       6,
+       5
+      ],
+      "footprint": [
+       6,
+       5
+      ],
+      "source": "offline composite A: a lone bank weir (posts at both free ends), synthetic river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Modern_sceneB.png",
+     "size": {
+      "drawSize": [
+       10,
+       5
+      ],
+      "footprint": [
+       10,
+       5
+      ],
+      "source": "offline composite B: four sections joined bank to bank across a 6-cell river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Modern_sceneC.png",
+     "size": {
+      "drawSize": [
+       5,
+       8
+      ],
+      "footprint": [
+       5,
+       8
+      ],
+      "source": "offline composite C: four sections joined across a river flowing east (north art)"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_BankWeirCap_Modern",
+   "label": "weir end post, modern look (drawn only at a free end)",
+   "part": "weir end post",
+   "look": "Modern",
+   "section": "posts",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirCap"
+   ],
+   "size": {
+    "drawSize": [
+     0.7,
+     0.7
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: RM_WeirArt.CapSize 0.7"
+   }
+  },
+  {
+   "key": "RM_BankWeirSpill_Modern",
+   "label": "weir spill sheet over the crest, modern look (overlay above the wall, per wet cell)",
+   "part": "weir spill",
+   "look": "Modern",
+   "section": "water",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Modern/RM_BankWeirSpill"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: one per wet cell, 1x1"
+   }
+  },
+  {
+   "key": "RM_BankWeir_Futuristic",
+   "label": "weir wall, futuristic look: one picture per heading (south/north spill west/east, east = spill face to camera, west = upstream face)",
+   "part": "weir wall",
+   "look": "Futuristic",
+   "section": "walls",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     2
+    ],
+    "footprint": [
+     1,
+     2
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml Graphic_Multi drawSize (1,2), size (1,2); RM_Building_BankWeir.Print picks the heading from the current"
+   },
+   "reference_textures": [
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Futuristic_sceneA.png",
+     "size": {
+      "drawSize": [
+       6,
+       5
+      ],
+      "footprint": [
+       6,
+       5
+      ],
+      "source": "offline composite A: a lone bank weir (posts at both free ends), synthetic river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Futuristic_sceneB.png",
+     "size": {
+      "drawSize": [
+       10,
+       5
+      ],
+      "footprint": [
+       10,
+       5
+      ],
+      "source": "offline composite B: four sections joined bank to bank across a 6-cell river flowing south"
+     }
+    },
+    {
+     "path": "src/RimMandrake/FlowWorks/art_source/Weir/out/composite_Futuristic_sceneC.png",
+     "size": {
+      "drawSize": [
+       5,
+       8
+      ],
+      "footprint": [
+       5,
+       8
+      ],
+      "source": "offline composite C: four sections joined across a river flowing east (north art)"
+     }
+    }
+   ]
+  },
+  {
+   "key": "RM_BankWeirCap_Futuristic",
+   "label": "weir end post, futuristic look (drawn only at a free end)",
+   "part": "weir end post",
+   "look": "Futuristic",
+   "section": "posts",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirCap"
+   ],
+   "size": {
+    "drawSize": [
+     0.7,
+     0.7
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: RM_WeirArt.CapSize 0.7"
+   }
+  },
+  {
+   "key": "RM_BankWeirSpill_Futuristic",
+   "label": "weir spill sheet over the crest, futuristic look (overlay above the wall, per wet cell)",
+   "part": "weir spill",
+   "look": "Futuristic",
+   "section": "water",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeirSpill"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Rivers/RM_BankWeirStyles.xml + RM_Building_BankWeir.Print: one per wet cell, 1x1"
+   }
+  },
+  {
+   "key": "RM_BankWeirWater",
+   "label": "weir water under-layer per heading (calm pool upstream, foam toe downstream; the same in every look)",
+   "part": "weir water",
+   "look": "all",
+   "section": "water",
+   "resources": [
+    "RimMandrake/FlowWorks/Weir/RM_BankWeirWater"
+   ],
+   "size": {
+    "drawSize": [
+     3,
+     1
+    ],
+    "footprint": [
+     3,
+     1
+    ],
+    "source": "RM_Building_BankWeir.Print: per wet cell, 3 across the wall x 1 along (south heading shown; east/west are 1 x 3)"
+   }
+  }
+ ],
+ "lead_html": "<p>The weir redrawn as you ruled 2026-10-16: <i>\"(1) but in the four art styles\"</i>, and by card, weirs join into one continuous wall. A low timber wall with a level crest, in the four FlowWorks looks (Scrapper, Industrial, Modern, Futuristic), one picture per heading. The game picks the heading from the river's current, so the spill face is always downstream. Wall pictures are seamless along the wall: sections built end to end out into the current read as one wall, and a post is drawn only at a free end. Water is a separate overlay layer, not baked into the wall: a calm pool tint upstream and white foam at the toe (under the wall, the same in every look) plus a thin spill sheet over the crest (above the wall). The overlay shows only while the weir holds; a breach removes it. The joined-wall pictures on the E-W rows are OFFLINE composites on a synthetic river, not a game capture (the game is up on other work; an in-game look is owed). Installed, not yet deployed.</p>",
+ "ground_terrain": "Soil"
+}

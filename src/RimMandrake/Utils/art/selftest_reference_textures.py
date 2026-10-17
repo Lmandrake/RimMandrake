@@ -41,6 +41,13 @@ def synthetic():
         check(refs[1].get("missing") is True, "a missing reference path is reported, not dropped")
         check(set(refs[0]) == {"path", "img", "full"}, f"a reference panel carries no letter/sha/faces: {sorted(refs[0])}")
         check(L.store_has(sha) == had, "a reference texture is never put in the art store (so no column can name it)")
+        # a sized entry {path, size} renders at ITS size, not the row's (a composite of several pieces: a joined weir wall)
+        wide = {"path": rel, "size": {"drawSize": [6, 2], "footprint": [6, 2], "source": "selftest composite"}}
+        sized = A._reference_panels({"key": "ST_Row", "reference_textures": [rel, wide]}, size, Path(td))
+        check(len(sized) == 2 and sized[1].get("img") and sized[1]["img"] != sized[0]["img"]
+              and (Path(td).parent / sized[1]["img"]).exists(),
+              "a sized reference entry renders its own panel at its own size")
+        check(set(sized[1]) == {"path", "img", "full"} and sized[1]["path"] == rel, "a sized entry reports its path only")
 
 
 def built_sheets():
@@ -49,7 +56,7 @@ def built_sheets():
         c = json.loads(cj.read_text())
         for b in c.get("biomes", {}).values():
             for r in b.get("rows", []):
-                refs = r.get("reference_textures") or []
+                refs = [e["path"] if isinstance(e, dict) else e for e in r.get("reference_textures") or []]
                 if not refs:
                     continue
                 shas = {hashlib.sha256((L.REPO_ROOT / p).read_bytes()).hexdigest() for p in refs if (L.REPO_ROOT / p).is_file()}
