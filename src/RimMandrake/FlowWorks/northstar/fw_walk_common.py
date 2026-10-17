@@ -209,14 +209,47 @@ CSS = ("body{font:20px sans-serif;background:#2b2118;color:#eee;margin:20px auto
        ".cap{color:#04508c;font-weight:bold;margin:10px 0 4px}pre{white-space:pre-wrap;background:#eee;padding:8px;font-size:15px}")
 
 
-def write_index(path, title, intro, groups):
+def merge_groups(old, new, stamp=None):
+    """Accumulate scene groups across runs: a group whose id is already there is REPLACED in place (the newest run of that
+    scene wins, its position kept); a new id is appended. Each new group is stamped with the run that made it. Pure."""
+    out = [dict(g) for g in (old or [])]
+    pos = {g.get("id"): i for i, g in enumerate(out)}
+    for g in new or []:
+        g = dict(g)
+        if stamp:
+            g["stamp"] = stamp
+        if g.get("id") in pos:
+            out[pos[g["id"]]] = g
+        else:
+            pos[g.get("id")] = len(out)
+            out.append(g)
+    return out
+
+
+def write_index(path, title, intro, groups, accumulate=True):
     """groups: list of dict(id, title, looking_at, check[], passif, fails, images[(relative png, caption)], readings[(status,
-    text)], notes[], pre). One 'looks right / looks wrong / note' line per group, kept in localStorage and copyable as JSON."""
+    text)], notes[], pre). One 'looks right / looks wrong / note' line per group, kept in localStorage and copyable as JSON.
+    ACCUMULATES (2026-10-17: the river index showed only the last scene run): the groups of earlier runs are kept in
+    <index>.groups.json beside it and merged by group id (merge_groups), so `go R2` after `go R1` leaves both. accumulate=
+    False starts the index afresh (the walks' --reset-index)."""
     e = html.escape
+    side = os.path.splitext(path)[0] + ".groups.json"
+    old = []
+    if accumulate and os.path.exists(side):
+        try:
+            with open(side, encoding="utf-8") as f:
+                old = json.load(f)
+        except (OSError, ValueError):
+            old = []        # an unreadable sidecar is a fresh index, never a crash of the walk
+    groups = merge_groups(old, groups, stamp=time.strftime("%Y-%m-%d %H:%M"))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(side, "w", encoding="utf-8") as f:
+        json.dump(groups, f, indent=1)
     h = ["<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>%s</title>"
          "<style>%s</style><h1>%s</h1><p>%s</p>" % (e(title), CSS, e(title), e(intro))]
     for g in groups:
-        h.append("<section id='%s'><h2>%s</h2>" % (e(g["id"]), e(g["title"])))
+        h.append("<section id='%s'><h2>%s</h2>%s" % (e(g["id"]), e(g["title"]),
+                                                    ("<p><small>run %s</small></p>" % e(g["stamp"])) if g.get("stamp") else ""))
         if g.get("looking_at"):
             h.append("<p><b>What you are looking at.</b> %s</p>" % e(g["looking_at"]))
         if g.get("check"):

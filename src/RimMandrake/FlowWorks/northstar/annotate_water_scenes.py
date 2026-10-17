@@ -2,8 +2,11 @@
 """Annotate FlowWorks water-scene screenshots with plain-language review text.
 Input : Transient/fw_scenes/live/S*_p*.png + newest S*_<ts>.txt + S*_rows.json
 Output: Transient/fw_scenes/live/annotated/<name>.png and index.html
-Scene wording comes from design/RimMandrake/vv_methods/water_scenes_for_approval_2026-10-16.md."""
-import json, glob, os, re, html, textwrap
+Scene wording comes from design/RimMandrake/vv_methods/water_scenes_for_approval_2026-10-16.md.
+Every picture also prints, from the walk's rows, the level-water expectation, the ProofReadout strings (verbatim, litres to the
+litre) and the per-body surface gap (ProofLevelSurface) when the walk recorded them. Run: python3 annotate_water_scenes.py
+[live-folder]; the live folder defaults to Transient/fw_scenes/live."""
+import json, glob, os, re, html, sys, textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), *[".."] * 4))
@@ -44,10 +47,20 @@ SCENES = {
           "Metal-grate gate (never opened): downstream fills anyway."],
    passif="Sealed gate blocks water while shut; opens and passes it; grate always passes.",
    fails="Water gets past a SHUT sealed gate, or a grate holds water back."),
- "S5": dict(title="S5 under redesign", status="S5 UNDER REDESIGN: do not judge this picture or its numbers.",
-   legend="Left: an enclosed pond with a 10-square canal off it, drawn for the old version of the scene.",
-   check=["Nothing to judge here yet. The scene is being redrawn."],
-   passif="(not applicable until the redraw)", fails="(not applicable until the redraw)"),
+ "S5": dict(title="S5. Nothing created or destroyed: a closed pond pays for its canal, by gravity and by pump",
+   status="Level water (third draft, awaiting the owner's verdict): every body stands at ONE surface; amounts are litres to the decilitre.",
+   legend="Closed ponds with canals dug off them, nothing touching a map edge. A: 3x3 pond 2 m deep (36,000 L) + 10-square 0.5 m canal. "
+          "B: 1-square pond (4,000 L) + the same canal. F: 1-square pond beside one 2 m canal square. G: 1-square pond, a pump and a 6-square canal. "
+          "D: an isolated 3-square run, full. E: a 6x6 basin 1 m deep with 8,000 L heaped in its middle.",
+   check=["A and B: water flows downhill only. The canal gets a thin even sheet over ALL its squares (A: 0.24 m, B: 4.5 cm), the pond drops to the same surface.",
+          "Pond + canal always add up to the starting litres. Nothing is created or lost.",
+          "F: the pond square and the 2 m canal square end with 1.00 m of water each (2,000 L each).",
+          "C: filling in a canal square that holds a sheet moves its water elsewhere; the total stays 4,000 L, no overflow message.",
+          "D: filling in the middle square of the isolated run destroys exactly 1,000 L and the message says so.",
+          "E: the heap spreads to a smooth even sheet over all 36 squares (0.11 m, 222 L each), never 0, deep, 0.",
+          "G: the pump empties the pond (bar what the hoses hold) into the canal; all 6 canal squares end at the same depth (0.33 m); the ground between stays dry."],
+   passif="Totals conserved to the decilitre; one surface per body (gap under 1 cm); D destroys exactly 1,000 L.",
+   fails="Any total changes except D's 1,000 L; two squares of one body at different heights; a canal square wet that is not dug."),
  "S6": dict(title="S6. Save and reload mid-flow, and the flow carries on", status="Ruled: the reloaded run must match on totals and END state (not every pulse).",
    legend="The same pond + canal and gate scenes as S5 part A and S4, saved partway and reloaded. Compare the 'run 1' (never saved) and 'run 2' (saved and reloaded) pictures.",
    check=["Right after reload, every square, the pond stock and the gate open/shut state look exactly like before the save.",
@@ -78,7 +91,15 @@ IMGS = {
  "S4B_p08": ("S4", "B", 8, "Gate OPENED, 8 pulses later: all 4 downstream squares wet."),
  "S4B_p20": ("S4", "B", 20, "Gate still open, pulse 20: everything full."),
  "S4C_p20": ("S4", "C", 20, "Gate SHUT AGAIN, pulse 20: downstream water stays (ruled)."),
- "S5_p00": ("S5", None, None, "Old S5 start picture."),
+ "S5_p00": ("S5", None, None, "Start: ponds A, B, F, G with their canals dug dry; the isolated run D full; pump G off."),
+ "S5AB_p10": ("S5", "AB", 10, "Pulse 10: B and F should be settled; A's canal still filling."),
+ "S5AB_p20": ("S5", "AB", 20, "Pulse 20: A settled: pond lower, 10 canal squares at one even depth."),
+ "S5AB_p54": ("S5", "AB", 54, "Pulse 54: all of A, B, F at rest; B's canal has not moved for 40 pulses."),
+ "S5C_p01": ("S5", "C", 1, "Part C, one pulse after filling in canal B's first square."),
+ "S5_D_message": ("S5", None, None, "Part D: the isolated run after its middle square was filled in; the overflow message is top-left."),
+ "S5E_p20": ("S5", "E", 20, "Part E, pulse 20: the heaped basin should be one even sheet over all 36 squares."),
+ "S5G_p10": ("S5", "G", 10, "Part G, pump on, pulse 10: canal filling from the pond."),
+ "S5G_p30": ("S5", "G", 30, "Part G, pulse 30: pond empty (bar the hoses), six canal squares level."),
  "S6_p00": ("S6", None, None, "Run 1 start (never saved)."),
  "S6_run1_p30": ("S6", None, None, "Run 1 (never saved) at pulse 30: this is the target end state."),
  "S6_run2_p30": ("S6", None, None, "Run 2 (saved, reloaded) at pulse 30: must look the same as run 1."),
@@ -94,7 +115,7 @@ def pulse_line(s, step, pulse):
     if not f: return None
     cur = None
     for ln in open(f, errors="replace"):
-        m = re.match(r"\s*step ([A-Z]):", ln)
+        m = re.match(r"\s*step ([A-Z]+):", ln)
         if m: cur = m.group(1)
         m = re.match(r"\s*(?:([ABC]) )?pulse\s+(\d+)\s+(.*)", ln)
         if m and int(m.group(2)) == pulse:
@@ -109,7 +130,6 @@ def rows(s):
 
 def measured(s, step, pulse):
     out = []
-    if s == "S5": return ["Not shown: this scene is being redesigned."]
     pl = pulse_line(s, step, pulse)
     if pl: out.append("Raw game readout at this moment (squares, 0 = dry, 1 = wet): " + pl)
     for r in rows(s):
@@ -117,6 +137,12 @@ def measured(s, step, pulse):
         st = {"MATCHES": "MATCHES the rule", "DIFFERS": "DIFFERS from the rule", "UNMEASURED": "not measured"}.get(r["status"], r["status"])
         # rows without a doc claim (S3.audit's MEASURED ledger, a scene's CRASHED row) are named by their id
         out.append(f"{st}: {r.get('doc', r.get('id', ''))}  Game: {r.get('game','')}")
+        if r.get("level"):
+            out.append(f"   Level-water expectation ({r.get('id','')}): {r['level']}")
+        if r.get("readout"):
+            out.append(f"   Readout ({r.get('id','')}), litres to the litre: " + " | ".join(r["readout"]))
+        if r.get("gaps"):
+            out.append(f"   Surface gap per body ({r.get('id','')}): " + "; ".join(r["gaps"]))
     return out
 
 def wrap(d, text, font, w):
@@ -163,7 +189,11 @@ def build(name):
     cv.save(f"{OUT}/{name}.png")
     return s, name, moment, sc, measured(s, step, pulse)
 
-def main():
+def main(live=None, out=None):
+    global LIVE, OUT
+    if live:
+        LIVE = os.path.abspath(live)
+        OUT = os.path.abspath(out) if out else os.path.join(LIVE, "annotated")
     res = [build(n) for n in IMGS if os.path.exists(f"{LIVE}/{n}.png")]
     e = html.escape
     h = ["<!doctype html><meta charset=utf-8><title>FlowWorks water scenes</title><style>body{font:18px sans-serif;background:#2b2118;color:#eee;margin:20px auto;max-width:1700px}"
@@ -186,6 +216,11 @@ def main():
         h.append(f"<div class=cap style='color:#9cf'>{e(moment)}</div><img src='{e(name)}.png'><br>")
     h.append("</section>")
     # close sections properly: simple structure, browsers tolerate
-    open(f"{OUT}/index.html", "w").write("\n".join(h))
+    with open(f"{OUT}/index.html", "w", encoding="utf-8") as f:
+        f.write("\n".join(h))
     print(len(res), "annotated ->", OUT)
-main()
+    return res
+
+
+if __name__ == "__main__":
+    main(*sys.argv[1:2])

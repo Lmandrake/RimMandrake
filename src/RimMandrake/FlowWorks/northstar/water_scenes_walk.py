@@ -21,6 +21,11 @@ he should see beside what the game measures, and saves a screenshot under Transi
            --no-wait (all: no CONTINUE file between scenes)
   python3 src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py all --mock --no-wait --pace 0 --no-shots [--mock-fail S4]
                                                      # OFFLINE: the script's own paths only (water_scenes_mock.py)
+READINGS ARE DECILITRES (2026-10-17, P3 exact-level engine): a canal square holds a sheet that no whole notch counts, so
+every dug square is also read through RM_NorthstarProofs.ProofReadout ("Hole 0.5 m . Water 0.24 m (474 L)", litres to the
+whole litre) and a pond's stock in decilitres (stock * 10,000); tolerance TOL_DL per square read. Level rows (".lvl") ask
+ProofLevelSurface for each body's surface gap (bar: 1 cm). The sealed scenes file's whole-notch wording stays printed as
+"doc"; the level-water expectation (level_solution) is printed beside it as "level".
 A crash in a scene is printed in full, kept at Transient/fw_scenes/live/<scene>_traceback_<stamp>.txt, recorded as a
 CRASHED row, and the walk goes on. Colonists are fed every 5,000 ticks and a GovernorStop is printed and resumed once:
 the 2026-10-17 S4/S5 tracebacks were the vitals latch stopping the clock on starving quicktest colonists.
@@ -35,6 +40,7 @@ each option, never chosen). Nothing here is a verdict: the owner judges.
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 import time
@@ -48,6 +54,7 @@ for _p in (UTILS, HERE):
 
 SCENES_JSON = os.path.join(REPO, "design", "RimMandrake", "vv_methods", "water_scenes_2026-10-16.scenes.json")
 OUT = os.path.join(REPO, "Transient", "fw_scenes", "live")
+OUT_MOCK = os.path.join(REPO, "Transient", "fw_scenes", "mock")      # --mock output never lands beside live evidence
 FLAG = os.path.join(OUT, "CONTINUE")
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 PROMO = "RimMandrake.FlowWorks.RM_PromotionProofs"
@@ -55,7 +62,8 @@ NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 GATES = "RimMandrake.FlowWorks.RM_FlowDoorRules"   # RM_Sluice / RM_SecurityGrateDoor are Building_RM_FlowDoor
 HPROBE = "RimMandrake.FlowWorks.Hose.HoseProbe"
 WATER = "RM_Fluid_Water"
-LEVEL_UNITS = 10000            # RM_Volume.UnitsPerLevel: tank/hose units per level
+LEVEL_UNITS = 10000            # RM_Volume.UnitsPerLevel: tank/hose units (decilitres) per level
+SETTLE_PULSES = 8              # S2.d: unchanged pulses in a row that make a state "settled"
 # the scene file's global exceptions to shipped defaults ("rain off, refill/seepage off, fire off, weather clear")
 SCENE_OVERRIDES = {"rainFillsExcavationsEnabled": False, "refillEnabled": False}
 SHIPPED = {"rainFillsExcavationsEnabled": True, "refillEnabled": True}
@@ -79,6 +87,120 @@ def mid(band):
 
 def run(x0, z, n, d=1):
     return [(x0 + k, z) for k in range(n)]
+
+
+# ---------------------------------------------------------------- decilitres (pure helpers, selftested offline)
+# One square holds LEVEL_UNITS dL per 0.5 m notch (RM_Volume.UnitsPerLevel; 1 dL = 0.1 L), so a metre of water in one
+# square is DL_PER_METRE dL. ProofReadout prints litres to the whole litre: one square is read to +-5 dL; TOL_DL = 10 is
+# one litre of slack per square read, the width every level row uses (n squares read -> n * TOL_DL).
+DL_PER_METRE = 2 * LEVEL_UNITS
+TOL_DL = 10
+SURFACE_BAR_M = 0.01
+_READOUT_WATER = re.compile(r"Hole\s+([\d.,]+)\s*m\D+?Water\s+([\d.,]+)\s*m\s*\(\s*([\d,]+)\s*L\s*\)")
+
+
+def parse_readout(txt):
+    """ProofReadout answer -> dict(kind="water", hole_m, water_m, litres, dl) | dict(kind="limitless") | dict(kind="none")
+    | None (refused / unreadable). dl = litres * 10 (the readout rounds to the whole litre)."""
+    s = str(txt or "").strip()
+    if s.startswith("OK"):
+        s = s[2:].strip()
+    elif s:
+        return None
+    if s in ("", "-"):
+        return dict(kind="none") if s == "-" else None
+    if s.startswith("Open water"):
+        return dict(kind="limitless", text=s)
+    m = _READOUT_WATER.search(s)
+    if not m:
+        return None
+    lit = int(m.group(3).replace(",", ""))
+    return dict(kind="water", hole_m=float(m.group(1).replace(",", "")), water_m=float(m.group(2).replace(",", "")),
+                litres=lit, dl=lit * 10, text=s)
+
+
+def level_solution(groups, total_dl):
+    """The exact-level answer for water that stands at ONE surface over several groups of squares. groups = [(n_squares,
+    floor_m)] (floor below ground, metres, negative); total_dl = decilitres in the whole connected body. Returns
+    (surface_m, [dl per square of each group]); depth of a group = max(0, surface - floor). Units: DL_PER_METRE dL per
+    metre of depth per square (P3 log: S5 A canal 0.237 m, B 4.5 cm, E 0.111 m, F 1 m)."""
+    gs = [(int(n), float(f)) for n, f in groups]
+    top = max(f for _, f in gs) + 1e6
+    lo, hi = min(f for _, f in gs), 0.0
+    cap = sum(n * (0.0 - f) * DL_PER_METRE for n, f in gs)
+    if total_dl > cap + 1e-6:
+        raise ValueError("body holds %s dL but its squares only %s dL to the brim" % (total_dl, cap))
+    for _ in range(200):
+        mid_ = (lo + hi) / 2.0
+        have = sum(n * max(0.0, mid_ - f) * DL_PER_METRE for n, f in gs)
+        if have < total_dl:
+            lo = mid_
+        else:
+            hi = mid_
+    s = (lo + hi) / 2.0
+    return s, [max(0.0, s - f) * DL_PER_METRE for _, f in gs]
+
+
+def near(a, b, n=1):
+    """a and b agree within n squares' worth of readout slack (n * TOL_DL dL); None never agrees."""
+    return a is not None and b is not None and abs(a - b) <= TOL_DL * max(1, n)
+
+
+def settled_at(states, n, ok=None):
+    """Index of the first state from which the next n states are all equal to it (n unchanged pulses in a row) AND ok(state)
+    holds (default: any); None when there is none. S2.d took a 4-pulse plateau in the middle of the fill for 'settled'
+    (live 2026-10-17: [3 3 3 3] at p7-p10, finished at p12); n=8 refuses it, `ok` (pond and trench full) refuses a
+    settle on a half-filled state."""
+    for i in range(len(states) - n):
+        if all(states[i] == states[i + j] for j in range(1, n + 1)) and (ok is None or ok(states[i])):
+            return i
+    return None
+
+
+def parse_surface(txt):
+    """ProofLevelSurface answer "OK n worst G m;x,z:squares:gap:min:max;..." -> [dict(at, squares, gap_m, min_m, max_m)],
+    largest gap first. ValueError when it is not an OK answer (a refusal or an older DLL is UNMEASURED, never a pass)."""
+    s = str(txt or "").strip()
+    if not s.startswith("OK "):
+        raise ValueError("ProofLevelSurface did not answer OK: %r" % s[:160])
+    out = []
+    for part in [q for q in s.split(";")[1:] if q.strip()]:
+        f = part.split(":")
+        if len(f) != 5:
+            raise ValueError("unparsed body entry %r" % part)
+        out.append(dict(at=f[0], squares=int(f[1]), gap_m=float(f[2]), min_m=float(f[3]), max_m=float(f[4])))
+    return out
+
+
+def dl_of(m, c):
+    """Decilitres read for cell c in a cells() reading; None when it was not read (older shape, failed call, undug)."""
+    v = (m or {}).get(c)
+    return v[2] if v is not None and len(v) > 2 else None
+
+
+def dl_sum(m, cs):
+    vals = [dl_of(m, c) for c in cs]
+    return None if any(v is None for v in vals) else sum(vals)
+
+
+def wet(m, c):
+    """A square holds water: any decilitre when the readout is there, else a whole notch (a walk against an old DLL)."""
+    d = dl_of(m, c)
+    return d > 0 if d is not None else (m or {}).get(c, (0, 0))[1] > 0
+
+
+def holds(m, c, levels):
+    """A square holds `levels` full notches (to the brim of a depth-`levels` square) within the readout slack."""
+    d = dl_of(m, c)
+    return d >= levels * LEVEL_UNITS - TOL_DL if d is not None else (m or {}).get(c, (0, 0))[1] >= levels
+
+
+def stock_dl(body):
+    """A pond body's water in decilitres: the report's stock is notches as a float (dL / 10,000)."""
+    try:
+        return int(round(float((body or {}).get("stock")) * LEVEL_UNITS))
+    except (TypeError, ValueError):
+        return None
 
 
 # ---------------------------------------------------------------- bridge
@@ -155,8 +277,22 @@ class Walk(object):
         except (TypeError, ValueError):
             return 250
 
-    def cells(self, cells):
-        """{(x,z): (depth, fill)} plus the engine's pulse count, read in one ProofFluidRow over the bbox."""
+    def readout(self, c):
+        """ProofReadout over one square -> parse_readout dict, or None (refused / unreadable: never a silent zero)."""
+        ok, txt = self.proof(NSP, "ProofReadout", "%d,%d" % (c[0], c[1]))
+        return parse_readout(txt) if ok else None
+
+    def readout_lines(self, cs):
+        """['x,z: <the readout string verbatim>'] for the audit trail on a row (annotate_water_scenes prints them)."""
+        out = []
+        for c in cs:
+            ok, txt = self.proof(NSP, "ProofReadout", "%d,%d" % (c[0], c[1]))
+            out.append("%d,%d: %s" % (c[0], c[1], (txt[3:] if txt.startswith("OK ") else txt).strip() if ok else "UNREAD " + txt[:60]))
+        return out
+
+    def cells(self, cells, dl=True):
+        """{(x,z): (depth, fill, dl)} plus the engine's pulse count, read in one ProofFluidRow over the bbox. dl = the
+        decilitres in a DUG square (ProofReadout, litres * 10; None when unread), 0 for an undug one."""
         xs, zs = [c[0] for c in cells], [c[1] for c in cells]
         x0, z0 = min(xs), min(zs)
         w, h = max(xs) - x0 + 1, max(zs) - z0 + 1
@@ -184,6 +320,21 @@ class Walk(object):
                     out[(x, z)] = (int(parts[0]), int(parts[1]))
                     if len(parts) > 3:
                         self.terrain[(x, z)] = parts[3]
+        if dl:
+            bad = []
+            for c in list(out):
+                d, f = out[c]
+                if d <= 0:
+                    out[c] = (d, f, 0)
+                    continue
+                r = self.readout(c)
+                if r is not None and r["kind"] == "water":
+                    out[c] = (d, f, r["dl"])
+                else:
+                    out[c] = (d, f, None)
+                    bad.append(c)
+            if bad:
+                self.say("         READ FAILED ProofReadout at %s (decilitres unread there; whole notches stand in)" % bad[:4])
         return out, pulse
 
     def grid(self, sq, m=None):
@@ -193,7 +344,7 @@ class Walk(object):
             m, _ = self.cells(sq)
         zs = sorted({c[1] for c in sq})
         rows = [sorted([c for c in sq if c[1] == z]) for z in zs]
-        return " | ".join(" ".join("%s/%s:%s" % (m.get(c, ("?", "?")) + (_tshort(self.terrain.get(c)),)) for c in r)
+        return " | ".join(" ".join("%s/%s:%s" % (tuple(m.get(c, ("?", "?")))[:2] + (_tshort(self.terrain.get(c)),)) for c in r)
                           for r in rows)
 
     def body(self, c, classify=False):
@@ -260,8 +411,22 @@ class Walk(object):
 
 
 def fills_str(m, cells):
+    """One token per square: LITRES (dL / 10, to the litre) when the engine's decilitres were read, else the whole notches."""
     m = m or {}
-    return " ".join(("%d" % m[c][1]) if c in m else "?" for c in cells)
+    out = []
+    for c in cells:
+        if c not in m:
+            out.append("?")
+        elif dl_of(m, c) is not None:
+            out.append("%d" % round(dl_of(m, c) / 10.0))
+        else:
+            out.append("%d" % m[c][1])
+    return " ".join(out)
+
+
+def dl_str(m, cells):
+    """The same squares in decilitres ('?' where unread)."""
+    return " ".join(("%d" % dl_of(m, c)) if dl_of(m, c) is not None else "?" for c in cells)
 
 
 def _tshort(t):
@@ -275,11 +440,11 @@ def _tshort(t):
 
 def one_run(m, cells):
     """True when the wet cells are one unbroken run starting at cells[0]."""
-    wet = [m.get(c, (0, 0))[1] > 0 for c in cells]
-    if not any(wet):
+    ws = [wet(m, c) for c in cells]
+    if not any(ws):
         return True
-    k = wet.index(False) if False in wet else len(wet)
-    return all(wet[:k]) and not any(wet[k:])
+    k = ws.index(False) if False in ws else len(ws)
+    return all(ws[:k]) and not any(ws[k:])
 
 
 def verdict(ok):
@@ -292,13 +457,52 @@ def scene_doc(sid):
     return next(s for s in doc["scenes"] if s["id"] == sid)
 
 
-def expect_line(w, sid, eid, measured, ok, extra=""):
+def expect_line(w, sid, eid, measured, ok, extra="", level="", readout=None, claim=None):
+    """One expected row. `level` = what exact-level water predicts (printed beside the sealed doc's whole-notch wording and
+    kept on the row); `readout` = ProofReadout strings verbatim for the audit trail; `claim` overrides the doc text."""
     s = scene_doc(sid)
     e = next((x for x in s["expected"] if x["id"] == eid), None)
-    claim = e["claim"] if e else eid
+    claim = claim or (e["claim"] if e else eid)
     w.say("  %-6s %-10s doc: %s" % (eid, verdict(ok), claim))
+    if level:
+        w.say("  %-6s %-10s level: %s" % ("", "", level))
     w.say("  %-6s %-10s game: %s%s" % ("", "", measured, (" | " + extra) if extra else ""))
-    w.rows.append(dict(id=eid, status=verdict(ok), doc=claim, game=str(measured)))
+    row = dict(id=eid, status=verdict(ok), doc=claim, game=str(measured))
+    if level:
+        row["level"] = level
+    if readout:
+        row["readout"] = list(readout)
+        w.say("  %-6s %-10s readout: %s" % ("", "", " || ".join(readout)))
+    w.rows.append(row)
+
+
+def level_row(w, rid, rect, what):
+    """The level-surface bar for the bodies in `rect` (x,z,w,h), read from game state by ProofLevelSurface: every body's
+    surface gap must be <= SURFACE_BAR_M. UNMEASURED (never a pass) when the DLL predates the method, the answer is not OK,
+    or no water was seen. The per-body gaps are kept on the row for annotate_water_scenes."""
+    claim = "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17)."
+    arg = "%d,%d,%d,%d" % tuple(rect)
+    ok, txt = w.proof(NSP, "ProofLevelSurface", arg)
+    try:
+        if not ok:
+            raise ValueError(txt[:160])
+        bodies = parse_surface(txt)
+        if not bodies:
+            raise ValueError("no still-water squares read in %s" % (arg,))
+    except ValueError as ex:
+        w.say("  %-6s %-10s doc: %s" % (rid, "UNMEASURED", claim))
+        w.say("  %-6s %-10s game: %s (%s)" % ("", "", ex, what))
+        w.rows.append(dict(id=rid, status="UNMEASURED", doc=claim, game="%s (%s)" % (ex, what)))
+        return None
+    worst = max(b["gap_m"] for b in bodies)
+    gaps = ["body at %s: %d sq, gap %.4f m (surface %.4f..%.4f m)" % (b["at"], b["squares"], b["gap_m"], b["min_m"], b["max_m"])
+            for b in bodies]
+    st = verdict(worst <= SURFACE_BAR_M)
+    w.say("  %-6s %-10s doc: %s" % (rid, st, claim))
+    w.say("  %-6s %-10s game: %s: %d bod%s, worst gap %.4f m; %s" % ("", "", what, len(bodies), "y" if len(bodies) == 1 else "ies",
+                                                                  worst, "; ".join(gaps[:6])))
+    w.rows.append(dict(id=rid, status=st, doc=claim, game="%s: worst gap %.4f m in %d bodies" % (what, worst, len(bodies)), gaps=gaps))
+    return worst
 
 
 def ruling_line(w, sid, qid, observed):
@@ -366,12 +570,12 @@ def run_S1(w):
         w_.say("  pulse %2d  canal [%s]  lake limitless=%s stock=%s" % (k, fills_str(m, canal), b.get("limitless"), b.get("stock")))
         return b
     h = pulse_loop(w, "S1", canal, 14, tick, g["rect"], shots_at=(3, 10, 14))
-    full = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in canal))
+    full = first_pulse(h, lambda m: all(holds(m, c, 1) for c in canal))
     expect_line(w, "S1", "S1.a", "all 8 hold 1 level first at pulse %s" % full, full is not None and full <= 10)
     broken = [k for k, m, _ in h if not one_run(m, canal)]
     expect_line(w, "S1", "S1.b", "pulses where the wet part was NOT one run from the lake: %s" % (broken or "none"), not broken)
     dried = [k for i, (k, m, _) in enumerate(h) for c in canal
-             if i and h[i - 1][1].get(c, (0, 0))[1] > 0 and m.get(c, (0, 0))[1] == 0]
+             if i and wet(h[i - 1][1], c) and not wet(m, c)]
     expect_line(w, "S1", "S1.c", "a wet cell went dry at pulses: %s" % (sorted(set(dried)) or "never"), not dried)
     lim = [x.get("limitless") for _, _, x in h]
     expect_line(w, "S1", "S1.d", "lake limitless at every pulse: %s (stock %s -> %s)" % (
@@ -403,36 +607,47 @@ def run_S2(w):
     pond, trench = g["pond"], g["trench"]
 
     def tick(k, m, w_):
-        w_.say("  pulse %2d  pond [%s]  trench [%s]   pond squares (depth/fill:terrain, south row | north row): %s" % (
+        w_.say("  pulse %2d  pond [%s]  trench [%s]  (litres)   pond squares (depth/fill:terrain, south row | north row): %s" % (
             k, fills_str(m, pond), fills_str(m, trench), w_.grid(pond, m)))
         return None
     h = pulse_loop(w, "S2", pond + trench, 60, tick, g["rect"], shots_at=(10, 30, 60))
-    # plan P1's L2 bar (WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX): every pulse, each pond square within one level of the
-    # pond squares it touches (no [4 0 4 0])
-    gaps = []
+    # plan P1's L2 bar (WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX): every pulse, each pond square within one level (10,000 dL)
+    # of the pond squares it touches (no [4 0 4 0])
+    gaps, worst_all = [], 0
     for k, m, _ in h:
-        worst = max(abs(m.get(a, (0, 0))[1] - m.get(b, (0, 0))[1]) for a in pond for b in pond
-                    if abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1)
-        if worst > 1:
-            gaps.append("p%d gap %d [%s]" % (k, worst, fills_str(m, pond)))
+        pairs = [(dl_of(m, a), dl_of(m, b)) for a in pond for b in pond if abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1]
+        if any(None in pr for pr in pairs):
+            gaps.append("p%d pond squares unread" % k)
+            continue
+        worst = max(abs(x - y) for x, y in pairs)
+        worst_all = max(worst_all, worst)
+        if worst > LEVEL_UNITS:
+            gaps.append("p%d gap %d dL [%s]" % (k, worst, dl_str(m, pond)))
     claim = "Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0])."
     w.say("  %-6s %-10s doc: %s" % ("S2.lvl", verdict(not gaps), claim + " (plan P1 bar, not a scenes-file row)"))
-    w.say("  %-6s %-10s game: pulses with a gap over 1: %s" % ("", "", gaps[:8] or "none"))
-    w.rows.append(dict(id="S2.lvl", status=verdict(not gaps), doc=claim, game=str(gaps[:8] or "none")))
-    pf = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 4 for c in pond))
-    tf = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in trench))
-    expect_line(w, "S2", "S2.a", "all 4 pond cells at 4 first at pulse %s" % pf, pf is not None and pf <= 30)
-    expect_line(w, "S2", "S2.b", "all 6 trench cells at 1 first at pulse %s" % tf, tf is not None and tf <= 30)
+    w.say("  %-6s %-10s game: pulses with a gap over 1 level (10,000 dL): %s; widest gap of any pulse %d dL (level water: the "
+          "pond rises as ONE surface, so 0)" % ("", "", gaps[:8] or "none", worst_all))
+    w.rows.append(dict(id="S2.lvl", status=verdict(not gaps), doc=claim, game="%s; widest %d dL" % (gaps[:8] or "none", worst_all)))
+    pf = first_pulse(h, lambda m: all(holds(m, c, 4) for c in pond))
+    tf = first_pulse(h, lambda m: all(holds(m, c, 1) for c in trench))
+    expect_line(w, "S2", "S2.a", "all 4 pond cells at 4 first at pulse %s (40,000 dL = 4,000 L each)" % pf, pf is not None and pf <= 30,
+                level="each pond square holds 40,000 dL (2.00 m) within %d dL" % TOL_DL)
+    expect_line(w, "S2", "S2.b", "all 6 trench cells at 1 first at pulse %s (10,000 dL = 1,000 L each)" % tf, tf is not None and tf <= 30,
+                level="each trench square holds 10,000 dL (0.50 m, brim) within %d dL" % TOL_DL)
     broken = [k for k, m, _ in h if not one_run(m, trench)]
     expect_line(w, "S2", "S2.c", "pulses where the wet trench was NOT one run from the pond: %s" % (broken or "none"), not broken)
-    settle = None
-    for i in range(len(h) - 3):
-        if all(h[i][1] == h[j][1] for j in (i + 1, i + 2, i + 3)):
-            settle = h[i][0]
-            break
-    changed = [k for k, m, _ in h if settle is not None and k > settle and m != h[settle][1]]
-    expect_line(w, "S2", "S2.d", "settled at pulse %s; changes after that: %s" % (settle, changed or "none"),
-                None if settle is None else not changed)
+    # S2.d: SETTLED = N unchanged pulses in a row with the scene FULL (a pause mid-fill is not settled; live 2026-10-17 the
+    # old 3-pulse test took the [3 3 3 3] plateau at p7-p10 for it)
+    states = [tuple(dl_of(m, c) if dl_of(m, c) is not None else m.get(c, (0, 0))[1] for c in pond + trench) for _, m, _ in h]
+    full = lambda s: all(s[i] is not None and s[i] >= 4 * LEVEL_UNITS - TOL_DL for i in range(len(pond))) and \
+        all(s[len(pond) + i] is not None and s[len(pond) + i] >= LEVEL_UNITS - TOL_DL for i in range(len(trench)))
+    si = settled_at(states, SETTLE_PULSES, ok=full)
+    settle = None if si is None else h[si][0]
+    changed = [k for k, m, _ in h if settle is not None and k > settle and states[k] != states[si]]
+    expect_line(w, "S2", "S2.d", "settled (full, %d unchanged pulses in a row) at pulse %s; changes after that: %s" % (
+        SETTLE_PULSES, settle, changed or "none"), None if settle is None else not changed,
+        level="a full pond and trench read the same decilitres for every later pulse")
+    level_row(w, "S2.lvl.end", g["rect"], "S2 pond + trench after 60 pulses")
 
 
 # ---------------------------------------------------------------- S3
@@ -529,7 +744,8 @@ def stage_S3(w):
 
 
 def _hose_held(w, g=None):
-    """Notches held inside the two hoses of a pump rig (S3 by default): CompHoseReel.heldUnits (decilitres) off each reel."""
+    """DECILITRES held inside the two hoses of a pump rig (S3 by default): CompHoseReel.heldUnits off each reel (NaN when a
+    reel cannot be read)."""
     g = g or s3_geom()
     tot = 0.0
     for reel in (g["reelA"], g["reelB"]):
@@ -540,7 +756,7 @@ def _hose_held(w, g=None):
             tot += float(v.get("heldUnits"))
         except (TypeError, ValueError):
             return float("nan")
-    return tot / LEVEL_UNITS
+    return tot
 
 
 def _s3_ledger(w, g):
@@ -568,53 +784,60 @@ def run_S3(w):
     g = s3_geom()
     canal, pond = g["canal"], g["pond"]
     b0 = w.body(pond[0])
-    s0 = b0.get("stock")
+    s0 = stock_dl(b0)
 
     def tick(k, m, w_):
         b = w_.body(pond[0])
         held = _hose_held(w_)
-        cf = sum(m.get(c, (0, 0))[1] for c in canal)
-        gapwet = [c for c in g["gap"] if m.get(c, (0, 0))[1] > 0]
+        cf = dl_sum(m, canal)
+        gapwet = [c for c in g["gap"] if wet(m, c)]
         d = _s3_ledger(w_, g)
-        w_.say("  pulse %2d  canal [%s]  pond stock=%s  hoses hold %.2f levels  ground between wet: %s" % (
-            k, fills_str(m, canal), b.get("stock"), held, gapwet or "none"))
+        w_.say("  pulse %2d  canal [%s] L  pond %s dL  hoses hold %.0f dL  ground between wet: %s" % (
+            k, fills_str(m, canal), stock_dl(b), held, gapwet or "none"))
         w_.say("            ledger: %s" % json.dumps(d, sort_keys=True))
-        return dict(stock=b.get("stock"), held=held, canal=cf, gapwet=gapwet, ledger=d)
+        return dict(stock=stock_dl(b), held=held, canal=cf, gapwet=gapwet, ledger=d)
     w.say("  step A: pump OFF for 20 pulses")
     ha = pulse_loop(w, "S3A", canal + g["gap"], 20, tick, g["rect"], shots_at=(20,))
-    wetA = [k for k, _, x in ha if x["canal"] > 0]
-    lostA = [k for k, _, x in ha if x["stock"] is not None and s0 is not None and float(x["stock"]) < float(s0) - 1e-6]
-    expect_line(w, "S3", "S3.a", "canal wet at pulses %s; pond below its start (%s) at pulses %s" % (
-        wetA or "never", s0, lostA or "never"), not wetA and not lostA)
+    wetA = [k for k, _, x in ha if (x["canal"] or 0) > TOL_DL * len(canal)]
+    lostA = [k for k, _, x in ha if x["stock"] is not None and s0 is not None and x["stock"] < s0 - TOL_DL]
+    expect_line(w, "S3", "S3.a", "canal wet at pulses %s; pond below its start (%s dL) at pulses %s" % (
+        wetA or "never", s0, lostA or "never"), not wetA and not lostA,
+        level="canal 0 dL in every square, pond %s dL unchanged within %d dL" % (s0, TOL_DL))
     fl = w.hp("flick:%d,%d=on" % g["pump"])
     pw = w.hp("pump:%d,%d" % g["pump"])
     w.say("  step B: pump ON (%s; powered=%s)" % (fl.get("success"), pw.get("powered")))
     hb = pulse_loop(w, "S3B", canal + g["gap"], 16, tick, g["rect"], shots_at=(6, 16))
-    full = first_pulse(hb, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in canal))
-    expect_line(w, "S3", "S3.b", "all 6 canal cells at 1 first at pulse %s of step B" % full, full is not None and full <= 16)
+    full = first_pulse(hb, lambda m: all(holds(m, c, 1) for c in canal))
+    expect_line(w, "S3", "S3.b", "all 6 canal cells at 1 first at pulse %s of step B (6 x 10,000 dL = 6,000 L to the brim)" % full,
+                full is not None and full <= 16,
+                level="a pump lifts: the canal fills to the brim, every square 10,000 dL within %d dL, and the squares match each other" % TOL_DL,
+                readout=w.readout_lines([canal[0], canal[-1]]))
     sB = hb[0][2]["stock"]
     bad = []
+    tolc = TOL_DL * (len(canal) + 1)
     for k, _, x in hb:
-        if None in (x["stock"], sB):
+        if None in (x["stock"], sB, x["canal"]) or x["held"] != x["held"]:
             continue
-        lost = float(sB) - float(x["stock"])
+        lost = sB - x["stock"]
         gained = x["canal"] + x["held"]
-        if abs(lost - gained) > 0.01:
-            bad.append("p%d lost %.2f gained %.2f" % (k, lost, gained))
-    expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss: %s" % (bad[:4] or "none"), not bad if sB is not None else None)
-    # S3 mass audit (2026-10-17 question: pond lost 6.98, canal gained 6.00): every counter that could hold the gap,
-    # first pulse of step B against the last, in levels (1 level = 10,000 units)
+        if abs(lost - gained) > tolc:
+            bad.append("p%d lost %d gained %d dL" % (k, lost, gained))
+    expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss (tolerance %d dL): %s" % (tolc, bad[:4] or "none"),
+                not bad if sB is not None else None,
+                level="canal dL + hose dL = pond loss in dL at every pulse (no litre leaves the ledger as a spill)")
+    # S3 mass audit: every counter that could hold the gap, first pulse of step B against the last (levels = 10,000 units)
     l0, l1 = hb[0][2]["ledger"], hb[-1][2]["ledger"]
     delta = {k: (round((_f(l1.get(k)) or 0) - (_f(l0.get(k)) or 0), 4)) for k in sorted(set(l0) | set(l1))
              if _f(l1.get(k)) is not None or _f(l0.get(k)) is not None}
-    lost = None if None in (sB, hb[-1][2]["stock"]) else float(sB) - float(hb[-1][2]["stock"])
-    w.say("  S3 mass audit: pond lost %s levels; canal %s; hoses %.4f; counter deltas over step B: %s" % (
+    lost = None if None in (sB, hb[-1][2]["stock"]) else sB - hb[-1][2]["stock"]
+    w.say("  S3 mass audit: pond lost %s dL; canal %s dL; hoses %.0f dL; counter deltas over step B: %s" % (
         lost, hb[-1][2]["canal"], hb[-1][2]["held"], json.dumps(delta, sort_keys=True)))
-    w.rows.append(dict(id="S3.audit", status="MEASURED", game=dict(pondLost=lost, canal=hb[-1][2]["canal"],
-                                                                   hoses=hb[-1][2]["held"], deltas=delta)))
+    w.rows.append(dict(id="S3.audit", status="MEASURED", game=dict(pondLostDl=lost, canalDl=hb[-1][2]["canal"],
+                                                                   hosesDl=hb[-1][2]["held"], deltas=delta)))
     gw = sorted({c for _, _, x in ha + hb for c in x["gapwet"]})
     expect_line(w, "S3", "S3.d", "undug ground between pond and canal ever wet: %s" % (gw or "never"), not gw)
     expect_line(w, "S3", "S3.e", "not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)", None)
+    level_row(w, "S3.lvl", g["rect"], "S3 pond + canal after step B")
 
 
 def stage_S3q(w):
@@ -650,9 +873,11 @@ def run_S3q(w):
     m = h[-1][1]
     obs = []
     for name, cs in canals.items():
-        tot = sum(m.get(c, (0, 0))[1] for c in cs)
-        obs.append("%s: canal holds %d level(s) after 10 pulses with no hose (%s)" % (
-            name, tot, "pours straight into the touching dug cell - behaves as (a)/(c)" if tot else "nothing reached the canal - behaves as (b) or is not running (power/survey)"))
+        tot = dl_sum(m, cs)
+        if tot is None:
+            tot = sum(m.get(c, (0, 0))[1] for c in cs) * LEVEL_UNITS
+        obs.append("%s: canal holds %d dL (%.0f L) after 10 pulses with no hose (%s)" % (
+            name, tot, tot / 10.0, "pours straight into the touching dug cell - behaves as (a)/(c)" if tot > 0 else "nothing reached the canal - behaves as (b) or is not running (power/survey)"))
     ruling_line(w, "S3", "S3.Q1", "; ".join(obs))
 
 
@@ -738,33 +963,38 @@ def run_S4(w):
         return gs
     w.say("  step A: sluice SHUT, 20 pulses (the grate variant runs alongside, never opened)")
     ha = pulse_loop(w, "S4A", allc, 20, tick, both, shots_at=(6, 12, 20))
-    up = first_pulse(ha, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in g["up"]))
+    up = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in g["up"]))
     expect_line(w, "S4", "S4.a", "3 upstream cells at 1 first at pulse %s" % up, up is not None and up <= 6)
-    leak = [k for k, m, _ in ha if any(m.get(c, (0, 0))[1] > 0 for c in g["down"])]
+    leak = [k for k, m, _ in ha if any(wet(m, c) for c in g["down"])]
     expect_line(w, "S4", "S4.b", "downstream wet while shut at pulses: %s" % (leak or "never"), not leak)
-    gr = first_pulse(ha, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in gg["down"]))
+    gr = first_pulse(ha, lambda m: all(holds(m, c, 1) for c in gg["down"]))
     expect_line(w, "S4", "S4.e", "grate: 4 downstream cells at 1 first at pulse %s" % gr, gr is not None and gr <= 12)
     state["step"] = "B"
     w.say("  step B: sluice OPEN, 20 pulses -- %s" % gate_open(w, g["gate"]))
     hb = pulse_loop(w, "S4B", allc, 20, tick, both, shots_at=(8, 20))
-    dn = first_pulse(hb, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in g["down"]))
+    dn = first_pulse(hb, lambda m: all(holds(m, c, 1) for c in g["down"]))
     expect_line(w, "S4", "S4.c", "4 downstream cells at 1 first at pulse %s after opening" % dn, dn is not None and dn <= 8)
     state["step"] = "C"
     w.say("  step C: sluice SHUT again, 40 pulses -- %s" % gate_shut(w, g["gate"]))
     hc = pulse_loop(w, "S4C", allc, 40, tick, both, shots_at=(20, 40))
-    updry = [k for k, m, _ in hc if any(m.get(c, (0, 0))[1] < 1 for c in g["up"])]
+    updry = [k for k, m, _ in hc if any(not holds(m, c, 1) for c in g["up"])]
     expect_line(w, "S4", "S4.d", "an upstream cell below 1 at pulses: %s" % (updry or "never"), not updry)
-    d0 = sum(hc[0][1].get(c, (0, 0))[1] for c in g["down"])
-    d1 = sum(hc[-1][1].get(c, (0, 0))[1] for c in g["down"])
-    ruling_line(w, "S4", "S4.Q1", "downstream held %d level(s) when shut again and %d after 40 pulses (%s)" % (
-        d0, d1, "stays put = (a)" if d1 == d0 else "it went down; whether back to the lake (b) or gone (c) needs the totals"))
+    d0 = dl_sum(hc[0][1], g["down"])
+    d1 = dl_sum(hc[-1][1], g["down"])
+    if d0 is None or d1 is None:
+        d0 = sum(hc[0][1].get(c, (0, 0))[1] for c in g["down"]) * LEVEL_UNITS
+        d1 = sum(hc[-1][1].get(c, (0, 0))[1] for c in g["down"]) * LEVEL_UNITS
+    ruling_line(w, "S4", "S4.Q1", "downstream held %d dL when shut again and %d dL after 40 pulses (%s)" % (
+        d0, d1, "stays put = (a)" if abs(d1 - d0) <= TOL_DL * len(g["down"]) else "it went down; whether back to the lake (b) or gone (c) needs the totals"))
 
 
 # ---------------------------------------------------------------- S5
 # Redrawn 2026-10-17 (scenes file re-sealed) per design/RimMandrake/flowworks_unified_depth_2026-10-17.md: water moves
 # by the leveling law, so by gravity a 0.5 m canal takes only a pond's top 0.5 m (A, B); a 2 m canal levels with the
-# pond (F); a pump moves the whole 4,000 L (G). Amounts below are notches (1 notch = 0.5 m in one square = 1,000 L), the
-# unit both ProofFluidRow fills and the pond body's stock report.
+# pond (F); a pump moves the whole 4,000 L (G). Amounts below are DECILITRES (1 notch = 0.5 m in one square = 10,000 dL =
+# 1,000 L), read per square through ProofReadout and per pond through its stock (notches * 10,000). Under exact-level water
+# (P3) a body stands at ONE surface, so the sealed doc's whole-notch pictures (S5.a "at most 9 wet", S5.c "only cell 1",
+# S5.i "never a 5th") are replaced by level_solution numbers, printed as "level:" beside the doc's wording.
 def s5_geom():
     ox, oz = INTERIOR["S5"]
     pondA = [(ox + 1 + i, oz + 1 + j) for i in range(3) for j in range(3)]
@@ -829,128 +1059,195 @@ def stage_S5(w):
         w.dig(c, 1, fill=1)
     notes = _pump_rig(w, q)
     fl = w.hp("flick:%d,%d=off" % q["pump"])
-    w.say("S5 staged: A = 3x3 pond (stock %s, limitless=%s) + 10-cell 0.5 m canal; B = 1-square pond (stock %s, limitless=%s) "
-          "+ 10-cell 0.5 m canal; F = 1-square pond (stock %s) + one 2 m canal square; G = 1-square pond (stock %s) + pump "
+    w.say("S5 staged: A = 3x3 pond (%s dL, limitless=%s) + 10-cell 0.5 m canal; B = 1-square pond (%s dL, limitless=%s) "
+          "+ 10-cell 0.5 m canal; F = 1-square pond (%s dL) + one 2 m canal square; G = 1-square pond (%s dL) + pump "
           "(OFF until part G: %s) + 6-cell 0.5 m canal; D = isolated 3-cell run full (E, the basin, is dug when its turn comes)" % (
-              bA.get("stock"), bA.get("limitless"), bB.get("stock"), bB.get("limitless"), bF.get("stock"), bG.get("stock"),
+              stock_dl(bA), bA.get("limitless"), stock_dl(bB), bB.get("limitless"), stock_dl(bF), stock_dl(bG),
               fl.get("success")))
     for n in notes:
         w.say("  STAGING NOTE (part G): " + n)
     w.say("         screenshot: %s" % w.shot("S5_p00", g["rect"]))
 
 
+def _expect(groups, total_dl):
+    """level_solution -> (surface_m, [dl per square per group]), or (None, None) when the water cannot fit (never a guess)."""
+    try:
+        return level_solution(groups, total_dl)
+    except ValueError:
+        return None, [None] * len(groups)
+
+
+def _r(v):
+    return None if v is None else round(v)
+
+
 def run_S5(w):
     g, e, f, q = s5_geom(), s5e_geom(), s5f_geom(), s5g_geom()
-    sA0 = w.body(g["pondA"][4]).get("stock")
-    sB0 = w.body(g["pondB"][0]).get("stock")
+    TOT_A, TOT_B = 36 * LEVEL_UNITS, 4 * LEVEL_UNITS
+    sA, (exA_pond, exA_can) = _expect([(9, -2.0), (10, -0.5)], TOT_A)
+    sB, (exB_pond, exB_can) = _expect([(1, -2.0), (10, -0.5)], TOT_B)
+    sA0 = stock_dl(w.body(g["pondA"][4]))
+    sB0 = stock_dl(w.body(g["pondB"][0]))
     allc = g["canalA"] + g["canalB"] + g["runD"] + [f["canal"]]
 
     def tick(k, m, w_):
         a, b, fp = w_.body(g["pondA"][4]), w_.body(g["pondB"][0]), w_.body(f["pond"])
-        w_.say("  pulse %2d  A canal [%s] pond %s   B canal [%s] pond %s   F canal %s pond %s" % (
-            k, fills_str(m, g["canalA"]), a.get("stock"), fills_str(m, g["canalB"]), b.get("stock"),
-            fills_str(m, [f["canal"]]), fp.get("stock")))
+        w_.say("  pulse %2d  A canal [%s] pond %s dL   B canal [%s] pond %s dL   F canal [%s] pond %s dL   (canals in litres)" % (
+            k, fills_str(m, g["canalA"]), stock_dl(a), fills_str(m, g["canalB"]), stock_dl(b),
+            fills_str(m, [f["canal"]]), stock_dl(fp)))
         if k % 5 == 0 or k <= 3:
             w_.say("            pond A squares (depth/fill:terrain; body cells=%s receded=%s): %s" % (
                 a.get("cellCount"), a.get("recededCount"), w_.grid(g["pondA"])))
-        return dict(a=a.get("stock"), b=b.get("stock"), f=fp.get("stock"), aw=a.get("cellCount"), ar=a.get("recededCount"))
-    w.say("  parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)")
+        return dict(a=stock_dl(a), b=stock_dl(b), f=stock_dl(fp), aw=a.get("cellCount"), ar=a.get("recededCount"))
+    w.say("  step AB: parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)")
     h = pulse_loop(w, "S5AB", allc, 54, tick, g["rect"], shots_at=(10, 20, 54))
-    # A: never all 10 wet, total 36, one run; the pond gives at most its top notch
-    totA = [(k, (_f(x["a"]) or 0) + sum(m.get(c, (0, 0))[1] for c in g["canalA"])) for k, m, x in h if _f(x["a"]) is not None]
-    badA = [k for k, t in totA if abs(t - (_f(sA0) or 0)) > 1e-3]
-    wetA = [sum(1 for c in g["canalA"] if m.get(c, (0, 0))[1] > 0) for _, m, _ in h]
+    # A: pond + canal hold 36,000 L every pulse; no canal square above its brim (10,000 dL); one run from the pond.
+    totA = [(k, x["a"] + dl_sum(m, g["canalA"])) for k, m, x in h if x["a"] is not None and dl_sum(m, g["canalA"]) is not None]
+    tolA = TOL_DL * (len(g["canalA"]) + 1)
+    badA = [k for k, t_ in totA if abs(t_ - TOT_A) > tolA]
+    over = [k for k, m, _ in h if any((dl_of(m, c) or 0) > LEVEL_UNITS + TOL_DL for c in g["canalA"])]
     brokenA = [k for k, m, _ in h if not one_run(m, g["canalA"])]
-    expect_line(w, "S5", "S5.a", "A: most canal cells wet at once %s of 10; pulses where pond+canal != start %s: %s; not one run at: %s" % (
-        max(wetA), sA0, badA[:8] or "none", brokenA[:8] or "none"),
-        None if not totA else (max(wetA) <= 9 and not badA and not brokenA))
-    stA = [_f(x["a"]) for _, _, x in h if _f(x["a"]) is not None]
-    expect_line(w, "S5", "S5.b", "pond A stock %s -> %s, lowest %s (doc: lower than at start, never below 27)" % (
-        sA0, stA[-1] if stA else None, min(stA) if stA else None),
-        None if not stA or _f(sA0) is None else (stA[-1] < _f(sA0) and min(stA) >= 27 - 1e-3))
-    # B: at most cell 1 wet, pond keeps >= 3, total 4
-    wetB_ever = sorted({i + 1 for _, m, _ in h for i, c in enumerate(g["canalB"]) if m.get(c, (0, 0))[1] > 0})
-    stB = [_f(x["b"]) for _, _, x in h if _f(x["b"]) is not None]
+    wetA = [sum(1 for c in g["canalA"] if wet(m, c)) for _, m, _ in h]
+    expect_line(w, "S5", "S5.a", "A: canal squares wet at once, most %d of 10; pulses where pond+canal != %d dL (+-%d): %s; a canal "
+                "square above 10,000 dL at: %s; not one run at: %s" % (
+                    max(wetA), TOT_A, tolA, badA[:8] or "none", over[:8] or "none", brokenA[:8] or "none"),
+                None if not totA else (not badA and not over and not brokenA),
+                level="the doc's 'at most 9 wet' is a whole-notch picture; level water wets all 10 at one depth (%s dL = 0.237 m each)" %
+                _r(exA_can))
+    stA = [x["a"] for _, _, x in h if x["a"] is not None]
+    pondA20 = h[20][2]["a"] if len(h) > 20 else None
+    expect_line(w, "S5", "S5.b", "pond A %s -> %s dL, lowest %s; at pulse 20 %s dL (doc: lower than at start, never below 270,000)" % (
+        sA0, stA[-1] if stA else None, min(stA) if stA else None, pondA20),
+        None if not stA or sA0 is None or exA_pond is None else (
+            stA[-1] < sA0 and min(stA) >= 27 * LEVEL_UNITS - TOL_DL and near(pondA20, exA_pond * 9, 10)
+            and all(near(dl_of(h[20][1], c), exA_can, 1) for c in g["canalA"])),
+        level="pond %s dL (9 x %s), each canal square %s dL; surface -0.263 m" % (
+            _r(None if exA_pond is None else exA_pond * 9), _r(exA_pond), _r(exA_can)),
+        readout=w.readout_lines([g["canalA"][0], g["canalA"][-1], g["pondA"][0]]))
+    level_row(w, "S5.lvl.A", g["rect"], "S5 A+B bodies at pulse 54")
+    # B: total 4,000 L; pond keeps >= 3,000 L; level water spreads the sheet over all 10 squares (4.5 cm)
+    stB = [x["b"] for _, _, x in h if x["b"] is not None]
     k10 = min(10, len(h) - 1)
-    totB10 = (_f(h[k10][2]["b"]) or 0) + sum(h[k10][1].get(c, (0, 0))[1] for c in g["canalB"])
-    expect_line(w, "S5", "S5.c", "B canal cells ever wet %s; pond B lowest %s (start %s); total at pulse 10 = %s" % (
-        wetB_ever or "none", min(stB) if stB else None, sB0, totB10),
-        None if not stB else (set(wetB_ever) <= {1} and min(stB) >= 3 - 1e-3 and abs(totB10 - 4) < 1e-3))
+    k14 = min(14, len(h) - 1)
+    cB10 = dl_sum(h[k10][1], g["canalB"])
+    totB10 = None if cB10 is None or h[k10][2]["b"] is None else h[k10][2]["b"] + cB10
+    wetB_ever = sorted({i + 1 for _, m, _ in h for i, c in enumerate(g["canalB"]) if wet(m, c)})
+    expect_line(w, "S5", "S5.c", "B canal cells ever wet %s; pond B lowest %s dL (start %s); total at pulse 10 = %s dL; at pulse 14 canal "
+                "squares %s dL, pond %s dL" % (wetB_ever or "none", min(stB) if stB else None, sB0, totB10,
+                                               dl_str(h[k14][1], g["canalB"]), h[k14][2]["b"]),
+                None if not stB or totB10 is None or exB_can is None else (
+                    min(stB) >= 3 * LEVEL_UNITS - TOL_DL and near(totB10, TOT_B, 11)
+                    and all(near(dl_of(h[k14][1], c), exB_can, 1) for c in g["canalB"]) and near(h[k14][2]["b"], exB_pond, 1)),
+                level="the doc's 'only cell 1 wet' is a whole-notch picture; level water lays %s dL (4.5 cm) on all 10 squares, pond %s dL" % (
+                    _r(exB_can), _r(exB_pond)),
+                readout=w.readout_lines([g["canalB"][0], g["canalB"][-1], g["pondB"][0]]))
     ref = h[14][1] if len(h) > 14 else None
-    moved = [k for k, m, _ in h[14:] if ref is not None and [m.get(c) for c in g["canalB"]] != [ref.get(c) for c in g["canalB"]]]
-    expect_line(w, "S5", "S5.d", "B canal changed after pulse 14 at pulses: %s" % (moved[:12] or "never"), not moved)
-    # F: one pond square and one 2 m canal square level at 2 notches each
-    fh = [(k, _f(x["f"]), m.get(f["canal"], (0, 0))[1]) for k, m, x in h[:21]]
+    moved = [k for k, m, _ in h[14:] if ref is not None and any(
+        not near(dl_of(m, c), dl_of(ref, c)) for c in g["canalB"])]
+    expect_line(w, "S5", "S5.d", "B canal changed (more than %d dL a square) after pulse 14 at pulses: %s" % (TOL_DL, moved[:12] or "never"), not moved)
+    # F: pond square + 2 m canal square settle to one surface: 2,000 L each
+    exF = _expect([(1, -2.0), (1, -2.0)], 4 * LEVEL_UNITS)[1]
+    fh = [(k, x["f"], dl_of(m, f["canal"])) for k, m, x in h[:21]]
     f10 = fh[min(10, len(fh) - 1)]
-    fmoved = [k for k, s_, c_ in fh[10:] if (s_, c_) != (f10[1], f10[2])]
-    expect_line(w, "S5", "S5.h", "pulse 10: pond F %s, 2 m canal %s (doc: 2 and 2, total 4); changed after pulse 10 at: %s" % (
+    fmoved = [k for k, s_, c_ in fh[10:] if not (near(s_, f10[1]) and near(c_, f10[2]))]
+    expect_line(w, "S5", "S5.h", "pulse 10: pond F %s dL, 2 m canal %s dL (doc: 1 m each = 20,000 dL, total 40,000); changed after pulse 10 at: %s" % (
         f10[1], f10[2], fmoved or "never"),
-        None if f10[1] is None else (abs(f10[1] - 2) < 1e-3 and f10[2] == 2 and not fmoved))
-    # C: fill in canal B cell 1
-    totB0 = sum(h[-1][1].get(c, (0, 0))[1] for c in g["canalB"]) + float(w.body(g["pondB"][0]).get("stock") or 0)
+        None if f10[1] is None or f10[2] is None or exF is None else (
+            near(f10[1], exF[0], 2) and near(f10[2], exF[1], 1) and not fmoved),
+        level="each of the two squares holds 20,000 dL (1.00 m), surface -1.000 m",
+        readout=w.readout_lines([f["canal"], f["pond"]]))
+    level_row(w, "S5.lvl.F", f["rect"], "S5 F pond + 2 m canal square")
+    # C: fill in canal B cell 1; destroys nothing: pond+canal still 4,000 L (the displaced sheet goes to the other squares)
+    cB_end = dl_sum(h[-1][1], g["canalB"])
+    totB0 = None if cB_end is None else cB_end + stock_dl(w.body(g["pondB"][0]))
     ov0 = _overflow(w)
     w.fill_in(g["canalB"][0])
-    w.say("  part C: canal B cell 1 filled in")
+    w.say("  step C: canal B cell 1 filled in")
     hc = pulse_loop(w, "S5C", g["canalB"], 4, tick, g["rect"], shots_at=(1,))
-    totB1 = sum(hc[-1][1].get(c, (0, 0))[1] for c in g["canalB"]) + float(w.body(g["pondB"][0]).get("stock") or 0)
+    cB1 = dl_sum(hc[-1][1], g["canalB"][1:])
+    totB1 = None if cB1 is None else cB1 + stock_dl(w.body(g["pondB"][0]))
     ov1 = _overflow(w)
-    expect_line(w, "S5", "S5.e", "B canal+pond total %s -> %s; overflow destroyed %s -> %s" % (totB0, totB1, ov0, ov1),
-                abs(totB0 - totB1) < 1e-3 and ov0 == ov1)
-    # D: fill in the middle of the isolated run
+    destroyed = None if None in (ov0, ov1) else (float(ov1) - float(ov0)) * LEVEL_UNITS
+    sC, (exC_pond, exC_can) = _expect([(1, -2.0), (9, -0.5)], TOT_B)
+    expect_line(w, "S5", "S5.e", "B canal(2-10)+pond total %s -> %s dL; overflow destroyed %s dL (the 4 pulses after the fill-in; level "
+                "prediction: canal squares %s dL, pond %s dL)" % (
+                    totB0, totB1, None if destroyed is None else round(destroyed, 1),
+                    _r(exC_can), _r(exC_pond)),
+                None if totB0 is None or totB1 is None or destroyed is None else (
+                    near(totB0, totB1, 11) and destroyed <= TOL_DL),
+                level="the 91 L sheet on cell 1 is displaced, not destroyed: total 40,000 dL, 0 dL overflowed",
+                readout=w.readout_lines([g["canalB"][1], g["pondB"][0]]))
+    # D: fill in the middle of the isolated run: exactly 10,000 dL (1,000 L) destroyed, ends keep 10,000 dL each
     m0, _ = w.cells(g["runD"])
-    d0 = sum(m0.get(c, (0, 0))[1] for c in g["runD"])
+    d0 = dl_sum(m0, g["runD"])
     ov0 = _overflow(w)
     w.fill_in(g["runD"][1])
-    w.say("  part D: middle cell of the isolated 3-cell run filled in (look top-left for the message)")
+    w.say("  step D: middle cell of the isolated 3-cell run filled in (look top-left for the message)")
     w.say("         screenshot: %s" % w.shot("S5_D_message", g["rect"]))
     m1, _ = w.cells(g["runD"])
-    d1 = sum(m1.get(c, (0, 0))[1] for c in g["runD"])
+    d1 = dl_sum(m1, g["runD"])
     ov1 = _overflow(w)
-    lost = None if None in (ov0, ov1) else float(ov1) - float(ov0)
-    expect_line(w, "S5", "S5.f", "run held %s -> %s notches; game's destroyed-overflow total rose by %s (the message text is in the screenshot)" % (
-        d0, d1, lost), None if lost is None else abs(lost - 1) < 1e-3 and d0 - d1 == 1)
+    lostd = None if None in (ov0, ov1) else (float(ov1) - float(ov0)) * LEVEL_UNITS
+    expect_line(w, "S5", "S5.f", "run held %s -> %s dL; the game's destroyed-overflow total rose by %s dL (the message text is in the "
+                "screenshot)" % (d0, d1, None if lostd is None else round(lostd, 1)),
+                None if lostd is None or d0 is None or d1 is None else (
+                    near(lostd, LEVEL_UNITS, 1) and near(d0 - d1, LEVEL_UNITS, 3)),
+                level="exactly 10,000 dL (1,000 L) destroyed and named in the message; the two end squares keep 10,000 dL each",
+                readout=w.readout_lines([g["runD"][0], g["runD"][2]]))
     # E: the basin
     for c in e["basin"]:
         w.dig(c, 2)
     for c in e["centre"]:
         w.set_fill(c, 2)
-    w.say("  part E: 6x6 basin 1 m deep dug now, 8 notches (8,000 L) heaped in the 4 centre cells, 20 pulses")
+    w.say("  step E: 6x6 basin 1 m deep dug now, 8 notches (80,000 dL = 8,000 L) heaped in the 4 centre cells, 20 pulses")
+    exE = _expect([(36, -1.0)], 8 * LEVEL_UNITS)[1]
 
     def tickE(k, m, w_):
-        row = lambda j: "".join(str(m.get((e["basin"][0][0] + i, e["basin"][0][1] + j), (0, 0))[1]) for i in range(6))
-        w_.say("  pulse %2d  basin rows %s  total %d" % (k, " ".join(row(j) for j in range(6)), sum(m.get(c, (0, 0))[1] for c in e["basin"])))
+        row = lambda j: " ".join("%s" % (fills_str(m, [(e["basin"][0][0] + i, e["basin"][0][1] + j)])) for i in range(6))
+        w_.say("  pulse %2d  basin rows (litres) %s  total %s dL" % (k, " | ".join(row(j) for j in range(6)), dl_sum(m, e["basin"])))
         return None
     he = pulse_loop(w, "S5E", e["basin"], 20, tickE, e["rect"], shots_at=(20,))
     mE = he[-1][1]
-    deep = [c for c in e["basin"] if mE.get(c, (0, 0))[1] >= 2]
-    dry = [c for c in e["basin"] if mE.get(c, (0, 0))[1] == 0]
-    tot = sum(mE.get(c, (0, 0))[1] for c in e["basin"])
-    expect_line(w, "S5", "S5.g", "pulse 20: %d cell(s) at 1 m while %d dry; total %d notches (doc: none at 1 m while any dry; total 8)" % (
-        len(deep), len(dry), tot), not (deep and dry) and tot == 8)
-    # G: the pump
-    sG0 = w.body(q["pond"]).get("stock")
+    deep = [c for c in e["basin"] if (dl_of(mE, c) or 0) >= 2 * LEVEL_UNITS - TOL_DL]
+    dry = [c for c in e["basin"] if not wet(mE, c)]
+    tot = dl_sum(mE, e["basin"])
+    off = [c for c in e["basin"] if exE is None or not near(dl_of(mE, c), exE[0], 1)]
+    expect_line(w, "S5", "S5.g", "pulse 20: %d cell(s) at 1 m while %d dry; total %s dL; %d square(s) off the level share by more than %d dL" % (
+        len(deep), len(dry), tot, len(off), TOL_DL),
+        None if tot is None or exE is None else (not (deep and dry) and near(tot, 8 * LEVEL_UNITS, 36) and not off),
+        level="all 36 squares wet at one depth: %s dL (0.111 m, 222 L) each, total 80,000 dL, none dry" % _r(exE[0]),
+        readout=w.readout_lines([e["basin"][0], e["centre"][0], e["basin"][-1]]))
+    level_row(w, "S5.lvl.E", e["rect"], "S5 E basin after 20 pulses")
+    # G: the pump moves the pond's 4,000 L (minus what the hoses hold) into the canal, level over its six squares
+    sG0 = stock_dl(w.body(q["pond"]))
     fl = w.hp("flick:%d,%d=on" % q["pump"])
     pw = w.hp("pump:%d,%d" % q["pump"])
-    w.say("  part G: pump ON (%s; powered=%s), pond G stock %s, 30 pulses" % (fl.get("success"), pw.get("powered"), sG0))
+    w.say("  step G: pump ON (%s; powered=%s), pond G %s dL, 30 pulses" % (fl.get("success"), pw.get("powered"), sG0))
 
     def tickG(k, m, w_):
-        st = _f(w_.body(q["pond"]).get("stock"))
+        st = stock_dl(w_.body(q["pond"]))
         held = _hose_held(w_, q)
-        cf = sum(m.get(c, (0, 0))[1] for c in q["canal"])
-        gapwet = [c for c in q["gap"] if m.get(c, (0, 0))[1] > 0]
-        w_.say("  pulse %2d  canal [%s]  pond stock=%s  hoses hold %.2f notches  ground between wet: %s" % (
+        cf = dl_sum(m, q["canal"])
+        gapwet = [c for c in q["gap"] if wet(m, c)]
+        w_.say("  pulse %2d  canal [%s] L  pond %s dL  hoses hold %.0f dL  ground between wet: %s" % (
             k, fills_str(m, q["canal"]), st, held, gapwet or "none"))
         return dict(stock=st, held=held, canal=cf, gapwet=gapwet)
     hg = pulse_loop(w, "S5G", q["canal"] + q["gap"], 30, tickG, q["rect"], shots_at=(10, 30))
-    badG = [k for k, _, x in hg if x["stock"] is None or abs(x["stock"] + x["held"] + x["canal"] - (_f(sG0) or 0)) > 0.01]
-    mG = hg[-1][1]
-    wetG = [i + 1 for i, c in enumerate(q["canal"]) if mG.get(c, (0, 0))[1] > 0]
-    fifth = [k for k, m, _ in hg if any(m.get(c, (0, 0))[1] > 0 for c in q["canal"][4:])]
+    tolG = TOL_DL * (len(q["canal"]) + 1)
+    badG = [k for k, _, x in hg if None in (x["stock"], x["canal"]) or x["held"] != x["held"]
+            or abs(x["stock"] + x["held"] + x["canal"] - (sG0 or 0)) > tolG]
+    mG, xG = hg[-1][1], hg[-1][2]
+    cG = [dl_of(mG, c) for c in q["canal"]]
+    levelG = None not in cG and (max(cG) - min(cG)) <= TOL_DL
     gw = sorted({c for _, _, x in hg for c in x["gapwet"]})
-    expect_line(w, "S5", "S5.i", "end: canal cells wet %s, pond %s, hoses %.2f; pulses where pond+hoses+canal != %s: %s; "
-                "5th/6th cell wet at: %s; undug ground wet: %s" % (
-                    wetG, hg[-1][2]["stock"], hg[-1][2]["held"], sG0, badG[:6] or "none", fifth[:6] or "never", gw or "never"),
-                None if _f(sG0) is None else (not badG and wetG in ([1, 2, 3], [1, 2, 3, 4]) and not fifth and not gw))
+    exG = None if sG0 is None or xG["held"] != xG["held"] else _expect([(6, -0.5)], max(0, sG0 - (xG["stock"] or 0) - xG["held"]))[1]
+    expect_line(w, "S5", "S5.i", "end: canal squares %s dL (level: %s), pond %s dL, hoses %.0f dL; pulses where pond+hoses+canal != %s "
+                "(+-%d): %s; undug ground wet: %s" % (cG, levelG, xG["stock"], xG["held"], sG0, tolG, badG[:6] or "none", gw or "never"),
+                None if sG0 is None or None in cG else (not badG and levelG and (xG["stock"] or 0) <= TOL_DL * 2 and not gw),
+                level="the doc's 'cells 1-4 at 0.5 m, never a 5th' is a whole-notch picture; level water spreads the pumped water over "
+                "all 6 squares (4,000 L = %s dL each, 0.333 m), pond dry bar the hoses" % _r(exG[0] if exG else None),
+                readout=w.readout_lines([q["canal"][0], q["canal"][-1], q["pond"]]))
+    level_row(w, "S5.lvl.G", q["rect"], "S5 G canal after the pump")
 
 
 # ---------------------------------------------------------------- S6
@@ -988,11 +1285,12 @@ def _s6_stage(w, run2=False):
 
 
 def _s6_snap(w, g, with_grid=False):
+    """Every compared field in DECILITRES: per canal square (depth, fill, dL), the pond's dL and the gate state."""
     cells = g["canal"] + g["gate"]["canal"]
     m, _ = w.cells(cells)
     _, gs = w.proof(GATES, "ProofLiquid", "current|%d,%d" % g["gate"]["gate"])
-    s = dict(m=[list(m.get(c, (None, None))) for c in cells] if m else None,
-             pond=w.body(g["pond"][4]).get("stock"), gate=gs.split("|")[0].strip())
+    s = dict(m=[list(m.get(c, (None, None, None))) for c in cells] if m else None,
+             pond=stock_dl(w.body(g["pond"][4])), gate=gs.split("|")[0].strip())
     if with_grid:
         s["grid"] = w.grid(g["pond"])     # kept apart from the compared fields: a view, not part of the S6.a equality
     return s
@@ -1000,6 +1298,21 @@ def _s6_snap(w, g, with_grid=False):
 
 def _s6_eq(a, b):
     return {k: v for k, v in a.items() if k != "grid"} == {k: v for k, v in b.items() if k != "grid"}
+
+
+def _s6_dl(s):
+    """Decilitres in a snapshot: canal + gate squares (None when any was unread) + the pond."""
+    if not s["m"] or s["pond"] is None or any(v[2] is None for v in s["m"]):
+        return None
+    return sum(v[2] for v in s["m"]) + s["pond"]
+
+
+def _s6_maxdiff(a, b):
+    """Widest per-square / pond difference in dL between two snapshots (None when unreadable)."""
+    if not a["m"] or not b["m"] or a["pond"] is None or b["pond"] is None:
+        return None
+    ds = [abs(x[2] - y[2]) for x, y in zip(a["m"], b["m"]) if x[2] is not None and y[2] is not None]
+    return max(ds + [abs(a["pond"] - b["pond"])])
 
 
 def stage_S6(w):
@@ -1010,8 +1323,8 @@ def stage_S6(w):
 
 
 def _s6_line(k, s):
-    return "  pulse %2d  canal [%s]  pond %s  gate %s%s" % (
-        k, " ".join(str(v[1]) for v in s["m"][:10]) if s["m"] else "?", s["pond"], s["gate"],
+    return "  pulse %2d  canal [%s] dL  pond %s dL  gate %s%s" % (
+        k, " ".join(str(v[2] if v[2] is not None else "?") for v in s["m"][:10]) if s["m"] else "?", s["pond"], s["gate"],
         ("\n            pond squares: %s" % s["grid"]) if s.get("grid") else "")
 
 
@@ -1028,6 +1341,8 @@ def run_S6(w):
         w.say(_s6_line(k, s))
         time.sleep(w.args.pace / 3)
     w.say("         screenshot: %s" % w.shot("S6_run1_p30", g["rect"]))
+    ro1 = w.readout_lines([g["canal"][0], g["canal"][-1], g["pond"][4]])
+    level_row(w, "S6.lvl.run1", g["rect"], "S6 run 1 pond + canal at pulse 30")
     w.say("  run 2: the same start again on a fresh twin plot just north; save at pulse 4, reload, continue to 30")
     g = s6_geom(True)
     _s6_stage(w, True)
@@ -1043,11 +1358,14 @@ def run_S6(w):
     post = _s6_snap(w, g, with_grid=True)
     w.say(_s6_line(4, post) + "   <- after reload (save %s, load %s)" % (sv.get("success"), ld.get("success")))
     same = _s6_eq(pre, post)
-    expect_line(w, "S6", "S6.a", "after reload: cells, pond stock and gate %s the save" % ("EQUAL" if same else "DIFFER FROM"),
-                same if pre["m"] and post["m"] else None, "" if same else "pre %s / post %s" % (json.dumps(pre)[:200], json.dumps(post)[:200]))
-    tot = lambda s: (sum(v[1] or 0 for v in s["m"]) + float(s["pond"] or 0)) if s["m"] else None
-    expect_line(w, "S6", "S6.b", "total liquid before save %s, after reload %s" % (tot(pre), tot(post)),
-                None if None in (tot(pre), tot(post)) else abs(tot(pre) - tot(post)) < 1e-3)
+    md = _s6_maxdiff(pre, post)
+    expect_line(w, "S6", "S6.a", "after reload: cells (dL), pond stock (dL) and gate %s the save; widest square/pond difference %s dL" % (
+        "EQUAL" if same else "DIFFER FROM", md), same if pre["m"] and post["m"] else None,
+        "" if same else "pre %s / post %s" % (json.dumps(pre)[:200], json.dumps(post)[:200]),
+        level="every square's decilitres, the pond's decilitres and the gate state are equal across the save (a long, not a rounded, stock)")
+    expect_line(w, "S6", "S6.b", "total liquid before save %s dL, after reload %s dL" % (_s6_dl(pre), _s6_dl(post)),
+                None if None in (_s6_dl(pre), _s6_dl(post)) else abs(_s6_dl(pre) - _s6_dl(post)) <= TOL_DL,
+                level="conserved to the decilitre across the reload")
     r2 = [pre]
     for k in range(5, 31):
         w.ticks(iv)
@@ -1056,9 +1374,13 @@ def run_S6(w):
         w.say(_s6_line(k, s))
         time.sleep(w.args.pace / 3)
     w.say("         screenshot: %s" % w.shot("S6_run2_p30", g["rect"]))
-    expect_line(w, "S6", "S6.c", "pulse 30: cells %s; pond run 1 %s, run 2 %s" % (
-        "equal" if r2[-1]["m"] == r1[-1]["m"] else "differ", r1[-1]["pond"], r2[-1]["pond"]),
-                r2[-1]["m"] == r1[-1]["m"] and r2[-1]["pond"] == r1[-1]["pond"])
+    ro2 = w.readout_lines([g["canal"][0], g["canal"][-1], g["pond"][4]])
+    expect_line(w, "S6", "S6.c", "pulse 30: cells (dL) %s; pond run 1 %s dL, run 2 %s dL; widest difference %s dL" % (
+        "equal" if r2[-1]["m"] == r1[-1]["m"] else "differ", r1[-1]["pond"], r2[-1]["pond"], _s6_maxdiff(r1[-1], r2[-1])),
+                r2[-1]["m"] == r1[-1]["m"] and r2[-1]["pond"] == r1[-1]["pond"],
+                level="run 2 ends cell for cell and decilitre for decilitre as run 1 (run 1: %s; run 2: %s)" % (" || ".join(ro1[:1]), " || ".join(ro2[:1])),
+                readout=ro1 + ro2)
+    level_row(w, "S6.lvl.run2", g["rect"], "S6 run 2 pond + canal at pulse 30")
     diffs = [k for k in range(5, 31) if r1[k]["m"] != r2[k - 4]["m"]]
     ruling_line(w, "S6", "S6.Q1", "pulse-by-pulse after the reload, run 2 differed from run 1 at pulses: %s" % (diffs or "none"))
 
@@ -1114,6 +1436,8 @@ def do_scene(w, sid, stage=True, go=True):
     w.say("%s. %s" % (sid, s["title"]))
     for line in s["grid"]:
         w.say("    " + line)
+    w.say("    readings: canal / pond squares are LITRES (to the litre, from ProofReadout) and ponds / hoses decilitres; 1 notch = 0.5 m "
+          "in one square = 1,000 L = 10,000 dL; tolerance %d dL per square read" % TOL_DL)
     ok = True
     if hasattr(w.B, "scene"):            # the offline mock (--mock-fail) needs to know which scene it is in
         w.B.scene, w.B.ticks_in_scene = sid, 0
@@ -1161,7 +1485,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.mock:                      # mock output never lands beside live evidence
         global OUT
-        OUT = os.path.join(REPO, "Transient", "fw_scenes", "mock")
+        OUT = OUT_MOCK
         a.no_shots = True
     w = Walk(a)
     rc = 0
