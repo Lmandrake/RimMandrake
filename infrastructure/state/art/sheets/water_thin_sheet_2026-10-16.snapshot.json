@@ -1,0 +1,37 @@
+{
+ "biome": "SUBJECTS_water_thin",
+ "built": "2026-10-16T23:46:46-0700",
+ "census": "Transient/biome_ffar/water_thin.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 547 active",
+ "rows": {
+  "RM_WaterThin": {
+   "columns": {
+    "A": {
+     "single": "30527a6263172a2458c019c5c4ea8e6faae8f987604b2a7e0f6bde2a4419436b"
+    },
+    "B": {
+     "single": "fa4bbb90e716d581da50a5f99bc61ffb84daa33c4b69886469836ab951c97db3"
+    }
+   },
+   "graphic_of": {
+    "A": "Terrain/FlowWorks/RM_WaterThin",
+    "B": "Terrain/FlowWorks/RM_WaterThin"
+   },
+   "labels": {
+    "A": "render rm_waterthin",
+    "B": "IN GAME \u2014 placeholder: the def points at vanilla WaterShallowRamp until approved (offline approximation of how it draws)"
+   },
+   "pools": [],
+   "res": "Terrain/FlowWorks/RM_WaterThin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "waterthin"
+  }
+ },
+ "sheetId": "water_thin_sheet_2026-10-16",
+ "snapshotId": "8eb48f0d3065c1bb"
+}
