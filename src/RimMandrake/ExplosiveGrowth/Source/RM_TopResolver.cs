@@ -373,7 +373,8 @@ namespace RimMandrake.ExplosiveGrowth
         private static void DropProduce(Plant plant, float factor, bool scatter)
         {
             ThingDef produce = plant.def.plant.harvestedThingDef;
-            if (produce == null || plant.def.plant.harvestYield <= 0f || factor <= 0f) return;
+            // §4.1 / §5.1 (EC1): "Wood is never a cycle drop." A woody plant grows at the tree rate and is cut for its logs.
+            if (produce == null || produce == ThingDefOf.WoodLog || plant.def.plant.harvestYield <= 0f || factor <= 0f) return;
             int count = GenMath.RoundRandom(plant.def.plant.harvestYield * factor);
             if (count <= 0) return;
             if (!scatter)
