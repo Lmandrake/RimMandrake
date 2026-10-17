@@ -6,7 +6,7 @@
 //     each leg refused in turn; then the PRODUCTION site is read and must build exactly those legs inside Move and credit
 //     only inside the block of a committed Move (the RiverSwitchFlipChecks pattern);
 //   * caller coverage over the whole production source: every tank / world / VE mutation in the L1 site files is inside a
-//     transfer leg, every hose credit is inside a committed-Move block, the credit sites are FINAL's 11 plus the tank feed, the pump's six hose-end credits (L6) and the dump drain (L7),
+//     transfer leg, every hose credit is inside a committed-Move block, the credit sites are FINAL's 11 plus the tank feed, the pump's six hose-end credits (L6), the dump drain (L7) and the pond return,
 //     and no other file mutates a tank except the listed item-and-bottle paths. Can-fail: planted violations are caught.
 using System;
 using System.Collections.Generic;
@@ -365,7 +365,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             { "RM_NorthstarProofs.cs", "ProofTank: the extension harness's tank staging (test setup, like the probe's filltank)" },
         };
 
-        /// <summary>FINAL's 11 credit sites, the tank settle (L1/L4) and the pump's hose-end credits (L6): each tag exactly once, each inside a committed-Move block.</summary>
+        /// <summary>FINAL's 11 credit sites, the tank settle (L1/L4), the pump's hose-end credits (L6), the dump drain (L7) and the pond return: each tag exactly once, each inside a committed-Move block.</summary>
         internal static readonly string[] CreditTags =
         {
             "credit site: pump draw (channel)", "credit site: pump draw (source)", "credit site: pump pour", "credit site: converter input",

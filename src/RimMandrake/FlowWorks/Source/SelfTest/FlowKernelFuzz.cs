@@ -687,8 +687,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var digs = Enumerable.Range(1, 10).ToList();
 			foreach (int c in digs) w.k.depth[c] = 2;
 			w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
-			float worst = 0f;
 			w.Pulse(digs);
+			float worst = w.k.worstImbalance;   // pulse 1's ledger counts too
 			string first = string.Join("", digs.Select(c => w.k.fill[c]));
 			for (int p = 1; p < 80; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
 			string end = string.Join("", digs.Select(c => w.k.fill[c]));
