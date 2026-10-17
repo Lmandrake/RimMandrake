@@ -1919,11 +1919,14 @@ namespace RimMandrake.FlowWorks
 				if (b.limitless) { limitless++; continue; }
 				FluidDef f = b.fluid ?? ActiveFluid;
 				float vpt = f != null && f.volumePerTile > 0f ? f.volumePerTile : 1f;
-				bodiesU += b.stock * RM_Volume.UnitsPerLevel / vpt;
+				// review day 2: the decilitre truth, never the float view (a big lake's float stock is off by tens of dL)
+				bodiesU += b.stockDl * (RM_Volume.UnitsPerLevel / (double)RM_LevelSolve.U) / vpt;
 			}
 			foreach (IntVec3 c in excavatedCells)
 			{
-				canalsU += FillAt(c) * RM_Volume.UnitsPerLevel;
+				// review day 2: whole notches AND the part-notch (FillAt alone dropped every sheet's decilitres, so water moving
+				// between a whole notch and a part read as a leak or a gain)
+				canalsU += WaterDlAt(c) * (RM_Volume.UnitsPerLevel / (double)RM_LevelSolve.U);
 			}
 			foreach (Thing t in map.listerThings.AllThings)
 			{
@@ -1947,6 +1950,7 @@ namespace RimMandrake.FlowWorks
 				+ " spilled(session)=" + Machinery.RM_LiquidSpill.SpilledUnits
 				+ " toLimitless=" + (limitlessReturnedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " | inputs: flowSources=" + (mapControlPouredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " fromLimitless(session, exact)=" + limitlessPaidDl * (RM_Volume.UnitsPerLevel / RM_LevelSolve.U)   // review day 2: was never read
 				+ " exits: flowSinks=" + (mapControlDrainedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " | limitless bodies=" + limitless + " (not summed)";
 		}

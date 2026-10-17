@@ -251,6 +251,41 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string dbg = RiverSwitchFlipChecks.Src(Path.Combine("Debug", "FlowWorksDebugActions.cs"));
                 RiverSwitchFlipChecks.Has(dbg, @"\[DebugAction\(CAT, ""Report water ledger \(L0\)""", "a dev action prints it");
             });
+
+            // Review day 2 (2026-10-17): under exact-level water the L0 ledger summed canals as whole notches (FillAt), so every
+            // sheet's part-notch was missing and water crossing a notch boundary read as a leak; ponds were summed through the
+            // float view; and the exact kernel's limitless input (LimitlessPaidDl) was counted but never printed.
+            Case("Ledger_report_counts_decilitres_and_limitless_input", () =>
+            {
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"canalsU \+= WaterDlAt\(c\) \* \(RM_Volume\.UnitsPerLevel / \(double\)RM_LevelSolve\.U\);", "can-fail: canals in decilitres, part-notch included");
+                Assert(!ex.Contains("canalsU += FillAt(c)"), "can-fail: not whole notches");
+                RiverSwitchFlipChecks.Has(ex, @"bodiesU \+= b\.stockDl \*", "ponds from the decilitre truth");
+                Assert(ex.Contains("\" fromLimitless(session, exact)=\" + limitlessPaidDl"), "can-fail: the limitless input is disclosed");
+            });
+
+            // Review day 2: the settings screen still told the player the pre-R7 absolute rules (depth "held to 0-4" on load
+            // though digs go to 20 m; "stopping power comes from superdeep cells and nothing else"; "three visible levels").
+            Case("Settings_text_no_absolute_pit_rules", () =>
+            {
+                string m = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                foreach (string dead in new[] { "depth is held to 0-4", "stopping power comes from superdeep", "three visible levels", "drowning at D=4" })
+                {
+                    Assert(!m.Contains(dead), "can-fail: stale settings text: " + dead);
+                }
+            });
+
+            // Review day 2: Refill wrote body.stock (the float view) every pulse; a big lake's decilitres went through a float and
+            // back, so its books moved by the float's rounding each pulse. The float really does lose them:
+            Case("Refill_stays_in_decilitres", () =>
+            {
+                long dl = 2_000_000_007L;   // a 200,000-notch lake, 7 dL over
+                float view = (float)(dl / (double)RM_LevelSolve.U);
+                Assert((long)Math.Round(view * (double)RM_LevelSolve.U) != dl, "control: the float view cannot hold this stock to the decilitre");
+                string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
+                Assert(!st.Contains("body.stock = RM_StockMath.ClampToCapacity(body.stock, gained, body.capacity);"), "can-fail: no float round trip");
+                RiverSwitchFlipChecks.Has(st, @"body\.stockDl = body\.stockDl \+ addDl > capDl \? capDl : body\.stockDl \+ addDl;", "refill adds whole dL, clamped at capacity");
+            });
         }
     }
 }
