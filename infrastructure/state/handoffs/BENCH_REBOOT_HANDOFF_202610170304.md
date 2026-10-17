@@ -100,7 +100,7 @@ M Transient/biome_ffar/census.json   not ours / pre-existing or another agent's 
  M conversations/2026-10-13-0007-b342a8ee.md   conversation records: the hourly sweep commits them
  M deployed/config/ModsConfig.before-tier-bridge.xml   not ours / pre-existing or another agent's derived output: left untouched
  M infrastructure/state/ledger/events/BENCH.jsonl   mine: committed in 4dcc51237c
- M infrastructure/state/ledger/events/OWNER.jsonl   owner-seat ledger shard: pre-existing, left untouched
+ M infrastructure/state/ledger/events/OWNER.jsonl   mine (rimflow writes --owner-said/--by-card events to the OWNER shard): committed in a38d7174ea
  M src/RimMandrake/FlowWorks/northstar/review/map/KEYSHEET.md   derived: review_map.py regenerates
  M src/RimMandrake/FlowWorks/northstar/review/map/keysheet.html   derived: review_map.py regenerates
  M src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnKitTools.cs   not ours / pre-existing or another agent's derived output: left untouched
