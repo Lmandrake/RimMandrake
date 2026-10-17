@@ -169,7 +169,7 @@
     <combatPower>30</combatPower>
     <ecoSystemWeight>0.70</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
-    <alternateGraphicChance>0.833</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 5 variants equally likely -->
+    <alternateGraphicChance>0.909</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 5 variants equally likely -->
     <alternateGraphics>
       <li>
         <texPath>swanimals/Gorg/GorgV_G</texPath>
@@ -185,6 +185,21 @@
       </li>
       <li>
         <texPath>swanimals/Gorg/GorgV_O</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_B</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_C</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_D</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_F</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_I</texPath>
       </li>
     </alternateGraphics>
     <lifeStages>
