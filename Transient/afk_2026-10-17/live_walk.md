@@ -62,4 +62,10 @@ Saves backed up first: `D:\Luke\dev\_rmscratch\saves_backup_walk_20261017` (337 
 - HARNESS fixed in stage_extra.py: sprinkler layout (pump over the pipe), joined weir walls run INTO the river along the weir axis (the bank-side version qualified 1-2 cells, none joined).
 
 ## 6. Left over
-(pending)
+- Not recorded in modcheck: every run here was a --chains / --only partial or a new standalone driver, which `modcheck record` refuses. The rows live in the result JSONs under `Transient/review_walk_2026-10-17/live/`. validation.py's THIRST_LIVE / SPRINKLER_LIVE rows still raise "UNMEASURED: live check owed": wiring them to read the newest thirst_live / sprinkler_live result is owed.
+- Thirst rows not driven: T14, T16, T18, T20, T23, T25, T26, T29; T1 needs Dubs lists. Sprinkler: liquid_key, two VFE rows.
+- Texture misses on our plants off the full list (RUT_LungerFry, RM_Glasskelle, RM_Rimebeard, RM_Pulsebead point at donor plant art).
+- Owner looks: the five keeper saves (WALK_GUIDE.md); weir_joined_wall_art_in_game; thin water reads very faint.
+- Dirty review marks: RM_ExplosiveGrowthProof.cs, RM_VenomvineIslands.cs, JawaBenchFlowWorksNorthstarTools.cs, northstar_driver/preflight.py, the two new drivers (no full-file review done).
+- The JawaBench companion was deployed with a peer's uncommitted one-line doc edit in JawaBenchPawnKitTools.cs (description text only).
+- Game left on `RM_walk_20261017_creatures`, paused; bridge released; ModsConfig is the 20-mod walk list (owner: no need to restore).
