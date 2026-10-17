@@ -117,10 +117,12 @@ north-star bars is his: `fill_tier_legible` (one more state for under 25 cm), `p
 
 - `WATER_SURFACE_REPAIR_LEVEL_OR_BUST` is superseded by `WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES`; its live rerun moved
   to `WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX`.
-- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`, `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES`, `WATER_DEPTH_RESKIN_HE_LOOKS_FIRST` and
-  `DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE` stay open as children of the epic. The rewire item's "pit stays 2 m (D5)"
+- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`, `WATER_DEPTH_RESKIN_HE_LOOKS_FIRST` and `DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE`
+  stay open as children of the epic; `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES` and `LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS`
+  were absorbed into P4 (`flowworks_ticket_consolidation_2026-10-17.md`). The rewire item's "pit stays 2 m (D5)"
   is reversed (R5); its item file says so.
-- `WATER_SCENES_JUDGE_S5_REDRAWN`: S5's whole-notch gravity limits are wrong under level water; S5 is redrawn again in
-  P10 before he approves it.
+- `WATER_SCENES_JUDGE_S5_REDRAWN` is superseded by `WATER_SCENES_S5_JUDGE_THIRD_DRAFT`: S5's whole-notch gravity
+  limits are wrong under level water; S5 is redrawn again in P10 before he approves it.
+- Every other FlowWorks ticket's verdict: `design/RimMandrake/flowworks_ticket_consolidation_2026-10-17.md`.
 - `PIT_SUPERDEEP_COLLAPSE_1` and `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` stay open; P2 discharges their live proofs.
 - T4 (real elevation) is dead (R8).

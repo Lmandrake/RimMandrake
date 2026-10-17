@@ -10,7 +10,18 @@ Supersedes `WATER_SURFACE_REPAIR_LEVEL_OR_BUST`; its first-fix notes (the dry-fr
 `infrastructure/state/items/closed/WATER_SURFACE_REPAIR_LEVEL_OR_BUST.md`. Its live rerun moved to
 `WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX`.
 
+Also absorbed (consolidation 2026-10-17, `design/RimMandrake/flowworks_ticket_consolidation_2026-10-17.md`):
+`WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND` (the whole-unit "gap >= 2" surface rule, built but never deployed; its
+station-1 walk showed 0/deep/0) and `KERNEL_SELFTEST_WIRE_SHIPPED_TUPLE_NEVER`. Natural water (ponds, lakes) joins
+when `WATER_NATURAL_DECIDE_ONE_SURFACE` brings his decisions.
+
 ## verify
-- Offline: S6 pond = nine squares at 1.44 m; full 3×3 pond + ten 0.5 m canal squares = every canal square 0.237 m wet;
-  one full pond square + same canal = all ten at 4.5 cm; litres conserved to the decilitre; Python oracle agrees.
-- The per-body surface-gap diagnostic reads under 1 cm in every scene.
+- L1 offline: S6 pond = nine squares at 1.44 m; full 3×3 pond + ten 0.5 m canal squares = every canal square 0.237 m
+  wet; one full pond square + same canal = all ten at 4.5 cm; litres conserved to the decilitre; Python oracle agrees.
+- L1: each connected body holds a whole number of decilitres; the sum over all bodies and containers is unchanged by
+  any pulse, split or merge (fuzz suite covers a falling pond splitting and a rising one merging).
+- L1: the per-body surface-gap diagnostic reads under 1 cm in every scene; it is the instrument
+  `northstar/level_surface_bar.py` reads live.
+- L1: the solver's selftests run at the full shipped flag combination (absorbed `KERNEL_SELFTEST_WIRE_SHIPPED_TUPLE_NEVER`).
+- L1: save migration logs a before/after per body; an old save loads with every body's litres unchanged.
+- L2 (proved in the epic's P10 walk): `still_water_one_surface_height` live on S5, S6 and the 4/7/7/4 square.

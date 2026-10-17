@@ -170,6 +170,8 @@ holds.
 - [ ] `depth_and_fill_jointly_legible` — in one view, cells holding the same depth of water
       in holes of different depth (shown by the walls and how low a pawn sits), and cells in
       holes of the same depth holding different depths of water, are all distinguishable.
+- [ ] `still_water_one_surface_height` — every square of a connected body of still water stands at the same
+      surface height, to within 1 cm, read from the game's state, not from the picture.
 
 **The reservoir paying for it**
 - [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, an enclosed
@@ -322,6 +324,7 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `canal_reads_as_same_liquid_as_reservoir` | *"extending the source"* |
 | `fill_fluid_distinct` | pit card round 3 — approved; generalises `slime_reads_as_viscous_not_water`; half of the old Pits `fitting_reads_distinct` |
 | `depth_and_fill_jointly_legible` | the depth ruling (*"All depths must be visually legible"*) held together with the four fill tiers |
+| `still_water_one_surface_height` | 2026-10-17: *"Yes, north star should check for level surfaces"*, on *"We need VERY smooth water. That's water's one primary characteristic: a level surface."* |
 | `reservoir_fill_visibly_drops` | *"the parent body of water reduces itself in proportion as well"*; ruling 34 makes it partial fill on a deeper cell |
 | `reservoir_shoreline_recedes` | *"a small pond visibly shrinks at its far edge"*, split out of `reservoir_fill_visibly_drops` |
 | `empty_reservoir_stops_flow` | *"Each source's square can supply up to five canal squares with liquid before it stops providing"* |

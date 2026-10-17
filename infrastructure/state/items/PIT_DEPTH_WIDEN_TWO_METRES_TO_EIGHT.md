@@ -23,5 +23,10 @@ ESTIMATE 3 to 5 agent-days. Starts after the level-surface solver (`WATER_LEVEL_
 | designator text "shallow, mid, deep, then SUPERDEEP" (`Designator_DigCanal.cs`), settings and Keyed strings | four names | metres; add "dig to N m" |
 
 ## verify
-Selftests: a 4/7/7/4 square digs (16 designations with dig-to-N), holds by band, renders distinct ledge and core walls,
-and reloads identically; lowering the cap never shallows a dug cell.
+- L1 selftests: a 4/7/7/4 square digs (16 designations with dig-to-N), holds by band, renders distinct ledge and core
+  walls, and reloads identically; lowering the cap never shallows a dug cell.
+- L1: Mod Setting "max colonist dig depth" defaults to 8 m, settable 2 to 20 m in 0.5 m steps; `Superdeep` (4) is a
+  separate constant from `MaxDigDepth`; no dig code reads the terrain for depth.
+- L1: the filled 4/7/7/4 square is one body with one surface (the P3 diagnostic under 1 cm).
+- L2 (P10 walk): a colonist digs one square to 8 m by "dig to N m" in game; the readout shows the hole depth.
+- Ships only after `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` passes and together with `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE`.
