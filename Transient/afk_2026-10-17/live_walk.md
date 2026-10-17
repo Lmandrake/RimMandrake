@@ -22,7 +22,7 @@ Load 2 (20 mods, via Steam): bridge token at 85 s; log 312 lines (`Transient/rev
 |---|---|---|---|---|
 | ExplosiveGrowth | probe_rules.ruled_rate_table_on_live_plants | PASS | - | twice (old + rebuilt proof DLL) |
 | ExplosiveGrowth | probe_tree_burst_off.tree_burst_off_trees_die_of_age | PASS | - | |
-| ExplosiveGrowth | probe_tree_life.trees_live_by_litres_and_burst_at_their_end | UNMEASURED | HARNESS | every arm in bar (jungle x4/x1 + end burst 10 logs 4 seedlings; AB_GiantStikehr dry x0.1 / wet x1, 400 L = 10 days, young gain 0.667, water burst 25 logs 4 seedlings; natural death falls, no burst) EXCEPT immortal=NONE: proof's FirstOf skipped interferesWithRoof, which Core TreeBase sets on every tree, so RM_Ollim never qualified. Fixed f6da84ad3c, deploys at next restart |
+| ExplosiveGrowth | probe_tree_life.trees_live_by_litres_and_burst_at_their_end | UNMEASURED -> PASS (load 4) | HARNESS | every arm in bar (jungle x4/x1 + end burst 10 logs 4 seedlings; AB_GiantStikehr dry x0.1 / wet x1, 400 L = 10 days, young gain 0.667, water burst 25 logs 4 seedlings; natural death falls, no burst) EXCEPT immortal=NONE: proof's FirstOf skipped interferesWithRoof, which Core TreeBase sets on every tree, so RM_Ollim never qualified. Fixed f6da84ad3c, deploys at next restart |
 | ExplosiveGrowth | 74 other suite rows (all chains) | 67 PASS first run | - | |
 | ExplosiveGrowth | vanilla_normal_ignores_water, master_off_refuses_soak | FAIL -> PASS | HARNESS | an arm that lifts the x0.1 dry penalty moves the control too (10 -> 100); now soaked vs control under the same arm (abae3c87e7) |
 | ExplosiveGrowth | ground_tell_on/off, suppression_dries_and_defuses | FAIL -> PASS | HARNESS | the ruled rewrite arms from a full-map wave (1/8 of plants per 250-tick pass); a 700-tick wait missed it; now polls to 2,450 ticks |
@@ -33,12 +33,26 @@ Load 2 (20 mods, via Steam): bridge token at 85 s; log 312 lines (`Transient/rev
 | SWBestiary | taozin_brine_tank_infuses_and_whitens x2 | PASS | - | off moves nothing; on 2 jars, 1 brine, grub pale |
 | SWBestiary | dragonsnake_pair.canon_dragonsnake_spawns | PASS | - | |
 | SWBestiary | dragonsnake_pair.albino_roster_follows_toggle | UNMEASURED -> PASS | MOD | RSW_Dragonsnake was never on the Greentide roster: WildAnimals_Greentide.xml's FindMod named the packageId (FindMod matches the mod NAME); the whole 21-row RSW_ cast never applied, likewise its Alpha Animals / VFE Insectoids blocks and TheRot's Alpha Animals wound-sharing block. Fixed 98f9074bcd |
+| LeaningScrub | islands.islands_laid_share | PASS | - | Scrub test site |
+| LeaningScrub | islands.creep_runner_unarmed | FAIL -> PASS (load 4) | HARNESS | live laid=300 besideTestStand=0: the proof's chance-1 sweep spent maxRunnersPerSweep on the map's existing stands first; proof now sweeps only its test stand (fa9cbb1332) |
+| LeaningScrub | islands.creep_toggle_off, creep_cap_stops, growth_exempt_from_explosive_growth | PASS | - | |
+| FlowWorks | extensions_rivers works.weir_joined_wall | PASS | - | river site save; the works chain's other 11 rows PASS too; weir_joined_wall_art_in_game owed (owner look) |
+| FlowWorks | L8_pond_shallows_before_mud | PASS (load 4) | - | first try UNMEASURED/HARNESS: jawa/flowworks_body_report NRE'd (RM_LiquidBody.stock became a property in P3); companion fixed 9cef395f0d |
+| FlowWorks | river colours (planet map) | PASS (by eye) | - | Harmony prefix on WorldDrawLayer_Paths.GeneratePaths owned by mandrake.rm.flowworks, riverColorsEnabled True; screenshot `Transient/review_walk_2026-10-17/live/fw/walk_river_colors_world2.png` shows red/orange/olive/green gradients along rivers |
+| FlowWorks thirst | T7, T2, T3, T6, T4, T5, T10, T9, T11, T12, T13 | PASS | - | new driver `src/RimMandrake/FlowWorks/northstar/thirst_live.py`; first-run FAILs on T5/T10/T12/T13/T6 were all HARNESS (wrong id form, short windows, a long GotoWander never re-thinking, a bottle left on the map, a disturbed map) |
+| FlowWorks thirst | T1_provider_line | UNMEASURED | HARNESS | one of the bar's three lists: no Dubs -> Own (arm OK) |
+| FlowWorks thirst | T27, T28, T19, T24 | PASS | - | T19/T24/T13 partial arms named in each row's notRun |
+| FlowWorks thirst | T14, T15, T16, T17, T18, T20, T23, T25, T26, T29 | UNMEASURED | - | not driven yet (biome/Dubs lists, salt break, bucket-to-dirty, snow, bill, bottle stock) |
+| FlowWorks sprinklers | draws_and_wets, no_pressure, flip_sprinklersEnabled, dries_when_starved, thick_clogs, walls_stop_spray, acid_hurts_fuel_puddles, T21_drinking_reserve, T22_no_brine_spray | PASS | - | new driver `src/RimMandrake/FlowWorks/northstar/sprinkler_live.py`; measured: the pump must stand OVER the pipe run (stage_extra.py's in-run pump split the net, fixed) |
+| FlowWorks sprinklers | liquid_key, vfe_boost_skipped, vfe_valve | UNMEASURED | SITE/HARNESS | key behind an out parameter; no VFE Farming on the list |
 
 ## 4. Bugs fixed
 - MOD `98f9074bcd`: FindMod by packageId (Greentide RSW_ cast, Alpha Animals, VFE Insectoids, TheRot wound sharing). Lesson filed.
 - HARNESS `abae3c87e7`, `f6da84ad3c`: ExplosiveGrowth suite + proof DLL (see rows).
 - HARNESS `98f9074bcd`: northstar preflight deployed_matches_repo ignored src/DEPLOY_HOLD.txt and the deploy's folded-id MayRequire rewrite (100 false diffs on SWBestiary).
 - HARNESS (commit 1): deploy_all.sh's game check matched `NOT RUNNING`.
+- HARNESS `fa9cbb1332` LeaningScrub creep proof; `9cef395f0d` JawaBench body_report; `c37ed41ae5` stage_extra sprinkler layout.
+- Restarts: 4 loads (walk list; minus StarWarsPatches; EG/FindMod/FlowWorks batch; proof DLLs + companion).
 
 ## 5. Keeper saves (RM_walk_20261017_<scene>)
 (pending)
