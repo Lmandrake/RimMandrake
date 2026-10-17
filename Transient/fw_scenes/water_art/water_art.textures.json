@@ -1,0 +1,290 @@
+{
+ "rows": [
+  {
+   "key": "FW_CANAL_LAKE_COLOUR",
+   "label": "Canal water vs lake water: one colour (CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES) (MOCK over screenshots; the IN GAME column is the screenshot today)",
+   "part": "Canal vs lake",
+   "look": "colour",
+   "section": "mock",
+   "resources": [
+    "Terrain/FlowWorks/RM_WaterThin"
+   ],
+   "size": {
+    "drawSize": [
+     12.07,
+     6.45
+    ],
+    "footprint": [
+     12.07,
+     6.45
+    ],
+    "source": "screenshot crop, 73 px per cell (S2_p60.png); mock, not a texture"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/fw_scenes/water_art/img/canal_A_tint.png",
+     "size": {
+      "drawSize": [
+       12.07,
+       6.45
+      ],
+      "footprint": [
+       12.07,
+       6.45
+      ],
+      "source": "crop of the live screenshot, 73 px per cell"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/canal_B_lake_texture.png",
+     "size": {
+      "drawSize": [
+       12.07,
+       6.45
+      ],
+      "footprint": [
+       12.07,
+       6.45
+      ],
+      "source": "crop of the live screenshot, 73 px per cell"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/canal_C_lake_texture_fadeRough.png",
+     "size": {
+      "drawSize": [
+       12.07,
+       6.45
+      ],
+      "footprint": [
+       12.07,
+       6.45
+      ],
+      "source": "crop of the live screenshot, 73 px per cell"
+     }
+    }
+   ],
+   "standin": {
+    "res": "Terrain/FlowWorks/RM_WaterThin",
+    "label": "the live screenshot today (mock base)",
+    "source": "Transient/fw_scenes/live",
+    "faces": {
+     "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/canal_0_now.png"
+    }
+   }
+  },
+  {
+   "key": "FW_VERY_SHALLOW",
+   "label": "Very shallow water, under 25 cm (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST)",
+   "part": "Very shallow",
+   "look": "under25cm",
+   "section": "mock",
+   "resources": [
+    "Terrain/FlowWorks/RM_WaterThin"
+   ],
+   "size": {
+    "drawSize": [
+     3,
+     3
+    ],
+    "footprint": [
+     3,
+     3
+    ],
+    "source": "3x3 cells of the 1024 tile at 8 cells per tile (repeat UNMEASURED)"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/fw_scenes/water_art/img/now_WaterThin_0p5m_tex1024.png",
+     "size": {
+      "drawSize": [
+       8,
+       8
+      ],
+      "footprint": [
+       8,
+       8
+      ],
+      "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/VS1_wet_bed_tex1024.png",
+     "size": {
+      "drawSize": [
+       8,
+       8
+      ],
+      "footprint": [
+       8,
+       8
+      ],
+      "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/VS2_faint_veil_tex1024.png",
+     "size": {
+      "drawSize": [
+       8,
+       8
+      ],
+      "footprint": [
+       8,
+       8
+      ],
+      "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/VS3_half_veil_tex1024.png",
+     "size": {
+      "drawSize": [
+       8,
+       8
+      ],
+      "footprint": [
+       8,
+       8
+      ],
+      "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+     }
+    }
+   ]
+  },
+  {
+   "key": "FW_WALL_BAND",
+   "label": "Wall band on wet canals: the gap between water and lip (MOCK over screenshots; the IN GAME column is the screenshot today)",
+   "part": "Wall band",
+   "look": "band",
+   "section": "mock",
+   "resources": [
+    "Terrain/FlowWorks/RM_WaterThin"
+   ],
+   "size": {
+    "drawSize": [
+     18.3,
+     11.0
+    ],
+    "footprint": [
+     18.3,
+     11.0
+    ],
+    "source": "screenshot crop, 83 px per cell (art_strip_labeled.png); mock"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/fw_scenes/water_art/img/wall_1_shadow_band.png",
+     "size": {
+      "drawSize": [
+       18.3,
+       11.0
+      ],
+      "footprint": [
+       18.3,
+       11.0
+      ],
+      "source": "crop of the live screenshot, 83 px per cell"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/wall_2_lit_face_lines.png",
+     "size": {
+      "drawSize": [
+       18.3,
+       11.0
+      ],
+      "footprint": [
+       18.3,
+       11.0
+      ],
+      "source": "crop of the live screenshot, 83 px per cell"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/wall_3_thin_ring.png",
+     "size": {
+      "drawSize": [
+       18.3,
+       11.0
+      ],
+      "footprint": [
+       18.3,
+       11.0
+      ],
+      "source": "crop of the live screenshot, 83 px per cell"
+     }
+    }
+   ],
+   "standin": {
+    "res": "Terrain/FlowWorks/RM_WaterThin",
+    "label": "the live screenshot today (mock base)",
+    "source": "Transient/fw_scenes/live",
+    "faces": {
+     "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/wall_0_now.png"
+    }
+   }
+  },
+  {
+   "key": "FW_DEEP_LAKE_TINTS",
+   "label": "Darker lake tints at 5 m and 10 m (MOCK over screenshots; the IN GAME column is the screenshot today)",
+   "part": "Deep tints",
+   "look": "tint",
+   "section": "mock",
+   "resources": [
+    "Terrain/FlowWorks/RM_WaterThin"
+   ],
+   "size": {
+    "drawSize": [
+     21.0,
+     3.4
+    ],
+    "footprint": [
+     21.0,
+     3.4
+    ],
+    "source": "three lake crops side by side, 73 px per cell; mock"
+   },
+   "reference_textures": [
+    {
+     "path": "Transient/fw_scenes/water_art/img/deep_T2_navy.png",
+     "size": {
+      "drawSize": [
+       21.0,
+       3.4
+      ],
+      "footprint": [
+       21.0,
+       3.4
+      ],
+      "source": "lake crops 73 px per cell"
+     }
+    },
+    {
+     "path": "Transient/fw_scenes/water_art/img/deep_T3_blue_shift.png",
+     "size": {
+      "drawSize": [
+       21.0,
+       3.4
+      ],
+      "footprint": [
+       21.0,
+       3.4
+      ],
+      "source": "lake crops 73 px per cell"
+     }
+    }
+   ],
+   "standin": {
+    "res": "Terrain/FlowWorks/RM_WaterThin",
+    "label": "the live screenshot today (mock base)",
+    "source": "Transient/fw_scenes/live",
+    "faces": {
+     "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/deep_T1_darker.png"
+    }
+   }
+  }
+ ],
+ "lead_html": "<p><b>Water art candidates, nothing installed.</b> Owner ruling 2026-10-17: new water art is approved in principle, he looks first. Every picture below is an offline mock made from the live screenshots (Transient/fw_scenes/live) or the procedural RM_WaterThin generator; no mod Textures or Defs were touched. Under-25 cm candidates are procedural (no donor pixels). RM_WaterThin is the 0.5 m look, not the under-25 cm one.</p>",
+ "ground_terrain": "Mud"
+}
