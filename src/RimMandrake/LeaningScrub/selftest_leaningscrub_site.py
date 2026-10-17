@@ -75,6 +75,8 @@ class Fake(object):
                 elif m == "headingDegrees":
                     vals[m] = "%s" % self.heading
             return {"success": True, "values": vals, "missing": []}
+        if tool == "jawa/list_pawns":     # biome_site.clear_colonist_ground reads the colonists' cells
+            return {"pawns": [{"id": "a", "isPlayer": True, "intelligence": "Humanlike", "x": 125, "z": 125}]}
         if tool == "jawa/name_colony":
             return {"settlements": [{"tile": 77}]}
         return {"success": True}
@@ -144,6 +146,8 @@ def run(check_ok=True, fake=None, reload_loses_heading=False):
 rec = run()
 check("good build order", events == ["clean", "check", "backup", "save:" + S.SAVE, "registry:%s:None" % S.SITE, "load",
                                      "registry:%s:True" % S.SITE], events)
+check("the recipe clears the plants around every colonist before the save (Yume on a dripping venomvine, 2026-10-16)",
+      rec.get("colonistGround") == ["123,123,5,5"], rec.get("colonistGround"))
 check("good build verified, heading recorded", rec.get("verified") is True
       and rec["census"]["probe"]["heading"] == 237.5, rec.get("census"))
 for kw, why in (({"check_ok": False}, "unclean check"), ({"fake": Fake(natives=0)}, "no natives"),

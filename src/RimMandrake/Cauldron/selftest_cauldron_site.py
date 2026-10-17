@@ -46,6 +46,8 @@ class Fake(object):
             if p.get("defName") == S.VENT:
                 return {"things": [{"id": 1}]}
             return {"things": []}
+        if tool == "jawa/list_pawns":     # biome_site.clear_colonist_ground reads the colonists' cells
+            return {"pawns": [{"id": "a", "isPlayer": True, "intelligence": "Humanlike", "x": 125, "z": 125}]}
         if tool == "jawa/name_colony":
             return {"settlements": [{"tile": 77, "namedByPlayer": True}]}
         return {"success": True}

@@ -287,29 +287,46 @@ def _rect(t, size=PAD_SIZE, dx=0, dz=0):
     return x - half + dx, z - half + dz, size, size
 
 
+def _remove_pawn(t, pid):
+    """Take one pawn off the map with NO death: Destroy(Vanish), no corpse, no death action, read back by
+    destroyedAfter. LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, HARNESS): the old kill was ONE
+    jawa/damage Bullet 5000, which lands on ONE body part; on a hand it takes the hand and the pawn lives. The
+    vent_exposure_is_local OFF arm's colonists Lu (MissingBodyPart/Hand, health 0.44) and Lili (BloodLoss, 0.6)
+    survived it and bled into vexxiss_drinks_vent's first 60-tick wait -- the 'colonist hurt near a vexxiss drink'
+    of 2 of 2 runs, before the vexxiss was even spawned. A suush would also detonate on a real death. Falls back to the
+    bullet only when the vanish does not read back. -> True when the pawn is gone."""
+    v = t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}
+    if v.get("destroyedAfter") is True:
+        return True
+    t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=pid, allowColonists=True)
+    return False
+
+
 def _kill_pawns_in(t, rect):
-    """Kill every living pawn in rect. jawa/destroy_batch NEVER removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1),
-    so each is killed by id with jawa/damage (allowColonists reaches player pawns); returns the count killed."""
+    """Remove every living pawn in rect (by id, _remove_pawn: destroy_batch NEVER removes pawns,
+    DESTROY_BATCH_NEVER_KILLS_PAWNS_1), except the site's own bystanders, which are settled, never shot; returns the
+    count removed."""
     r = t.bridge_call("jawa/list_pawns", limit=500, rect=_rs(rect))
+    keep = set(getattr(t, "_bystanders", ()) or ())
     n = 0
     for p in ((r or {}).get("pawns") or []):
-        if p.get("dead") or not p.get("id"):
+        if p.get("dead") or not p.get("id") or p["id"] in keep:
             continue
-        t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True)
+        _remove_pawn(t, p["id"])
         n += 1
     return n
 
 
 def _kill_kind_near(t, kind, radius=60):
-    """Kill every living `kind` pawn within `radius` of the anchor: a stray (a wild native, or one an earlier failed chain
-    left behind) drinks the vent first and silences it, which reads as the vent ignoring the test's own animal."""
+    """Remove every living `kind` pawn within `radius` of the anchor: a stray (a wild native, or one an earlier failed
+    chain left behind) drinks the vent first and silences it, which reads as the vent ignoring the test's own animal."""
     x, z = t.anchor
     r = t.bridge_call("jawa/list_pawns", limit=500, rect=_rs((x - radius, z - radius, 2 * radius, 2 * radius)))
     n = 0
     for p in ((r or {}).get("pawns") or []):
         if p.get("dead") or not p.get("id") or p.get("kindDef") != kind:
             continue
-        t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True)
+        _remove_pawn(t, p["id"])
         n += 1
     return n
 
@@ -383,6 +400,7 @@ def _settle_bystanders(t):
         return
     try:
         res = H.settle_bystanders(t.session)
+        t._bystanders = list(res.evidence.get("bystanders") or [])     # _kill_pawns_in never shoots these
         _note(t, "bystanders settled (mended / drafted / residue)",
               [res.evidence.get("removed"), res.evidence.get("drafted"), res.residue])
     except Exception as ex:    # upkeep: a failure is evidence, never a verdict (the vitals latch still guards the row)
@@ -1393,12 +1411,18 @@ def _pick_animals(t):
     biome = (mi or {}).get("mapBiome")
     if not biome:
         return None, None
-    r = t.bridge_call("jawa/biome_probe", biomes=biome, find=",".join(HERBIVORES))
+    # The biome's OWN natives are asked first. LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, HARNESS):
+    # asked only the stock herbivores, the picker read [None, "Deer"] on the RM_Cauldron site, because no stock
+    # herbivore is on RM_Cauldron's roster, and bloom_spares_natives went UNMEASURED. The row spawns its own pair, so
+    # the site's wildlife census is beside the point. Zisska first: a plain grazer (the suush detonates on death, the
+    # vexxiss drinks vents and beats fires, the eskith hushes in a falter).
+    pref = (ZISSKA, ESKITH, VEXXISS, SUUSH)
+    r = t.bridge_call("jawa/biome_probe", biomes=biome, find=",".join(pref + HERBIVORES))
     rows = (r or {}).get("biomes") or []
     if not rows:
         return None, None
     states = dict((x.get("defName"), x.get("state")) for x in (rows[0].get("findResults") or []))
-    native = [k for k in HERBIVORES if states.get(k) == "spawning"]
+    native = [k for k in pref + HERBIVORES if states.get(k) == "spawning"]
     non = [k for k in HERBIVORES if states.get(k) == "absent"]
     return (native[0] if native else None), (non[0] if non else None)
 
