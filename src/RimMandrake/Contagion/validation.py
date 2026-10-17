@@ -223,6 +223,10 @@ def _remove_pawns_in(call, rect):
     for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
         if p.get("dead") or not p.get("id"):
             continue
+        # LIVE round 2 2026-10-16: this vanished the site's own colonists standing in the natural pad. A humanlike
+        # player pawn is the SITE's (helpers.is_colonist); never remove one. Fixtures are session-tracked and cleaned there.
+        if p.get("isPlayer") and p.get("intelligence") == "Humanlike":
+            continue
         call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
         n += 1
     return n
@@ -812,15 +816,28 @@ def defs_chain(t):
             if r.get("foundCount") != 1 or r.get("notFound"):
                 _fail("get_defs(%s): foundCount=%r notFound=%r" % (BIOME, r.get("foundCount"), r.get("notFound")))
             wa = (((r.get("defs") or [{}])[0].get("fields")) or {}).get("wildAnimals")
-            if not isinstance(wa, (list, dict)):
-                _unmeasured(t, "wildAnimals is not serialisable by get_defs (non-public field): %r; the "
-                               "roster is checked statically from the XML" % (wa,))
             if not WILD_ANIMALS:
                 _fail("the XML roster parsed to 0 wildAnimals: nothing to compare (parser broken?)")
-            blob = json.dumps(wa)
-            missing = [a for a in WILD_ANIMALS if '"%s"' % a not in blob]   # exact quoted name, never a prefix
-            if missing:
-                _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
+            if isinstance(wa, (list, dict)):
+                blob = json.dumps(wa)
+                missing = [a for a in WILD_ANIMALS if '"%s"' % a not in blob]   # exact quoted name, never a prefix
+                if missing:
+                    _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
+            else:
+                # MEASURED live 2026-10-16 (round 2): BiomeDef.wildAnimals is a NON-PUBLIC list, get_defs answers a
+                # placeholder string and no supported tool serialises it. What CAN be measured live is that every
+                # rostered kind resolves as a PawnKindDef (a roster entry naming a dead def is discarded silently);
+                # the roster-vs-live-BiomeDef comparison itself is UNMEASURED BY DESIGN until a tool can read it.
+                kr = t.bridge_call("jawa/get_defs", defs=";".join("PawnKindDef/%s" % a for a in WILD_ANIMALS),
+                                   fields="defName", limit=500)
+                _ok(kr, "get_defs(rostered PawnKindDefs)")
+                if kr.get("notFound"):
+                    _fail("%d rostered wildAnimals kind(s) do not resolve live as PawnKindDefs: %s"
+                          % (len(kr["notFound"]), kr["notFound"][:8]))
+                _note(t, "roster kinds resolving live as PawnKindDef", [kr.get("foundCount"), len(WILD_ANIMALS)])
+                _unmeasured(t, "UNMEASURED BY DESIGN: BiomeDef.wildAnimals is non-public and not serialisable by "
+                               "get_defs (got %r); %d XML-rostered kinds all resolve live as PawnKindDefs, but "
+                               "the live BiomeDef roster itself cannot be compared" % (wa, len(WILD_ANIMALS)))
 
     # Owner Q5 (2026-10-15, by card: "Quests plus a visiting Helix trader"): the Utinni layer hangs RM_Caravan_HelixCurators
     # on the Ascendant Helix (UtinniPatches/Patches/HelixCurators_Contagion.xml). On a list without the campaign layer
@@ -1187,10 +1204,20 @@ def burn_forced(t):
                 b["armored"] = _spawn(t, ARMORED, x, z - 6)
                 _set(t, "burnDamageFactor", 1)
                 track, atrack, nhd = [], [], set()
-                for _ in range(8):                   # 8 x 100 = the same 800 ticks, sampling the dive
-                    _wait(t, 100)
+                respawns = 0
+                for _ in range(32):                  # 32 x 25 = the same 800 ticks, sampling the dive
+                    _wait(t, 25)
                     srows = _rows(t)
                     nrow = srows.get(b["native"])
+                    # LIVE round 2 2026-10-16: the native's row went absent (it dies fast under the Burn; list_pawns lists
+                    # no corpses) before any living sample carried Burn, so both native rows were UNMEASURED. A finer
+                    # sample catches the Burn while it lives; if it is lost with none seen, a fresh one is spawned beside
+                    # the patch (at most twice). Samples already kept stay: they are living reads.
+                    if (nrow is None or not _alive(nrow)) and "Burn" not in nhd and respawns < 2:
+                        respawns += 1
+                        b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
+                        track = []
+                        continue
                     arow = srows.get(b["armored"]) or {}
                     if nrow is not None and _alive(nrow):                 # only a living sample is a position or a hediff read
                         track.append((nrow.get("x"), nrow.get("z")))
@@ -1200,6 +1227,7 @@ def burn_forced(t):
                 # so the end-of-window row was absent and both native rows went UNMEASURED. What it carried and where it
                 # stood while ALIVE is kept, so a Burn and a dive seen before it died are still read.
                 b["native_track"], b["armored_track"], b["native_hd_alive"] = track, atrack, nhd
+                _note(t, "burn native respawns (lost before a Burn was read)", respawns)
                 rows = _rows(t)
                 if not _alive(rows.get(b["open"])):
                     _unmeasured(t, "the open visitor is not readable alive after the Burn: 'undosed' would mean nothing")
@@ -1572,16 +1600,34 @@ def zhool_haze(t):
             if _live(t):
                 if not _alive(_rows(t, _STATE["zrect"]).get(_STATE.get("zhool"))):
                     _unmeasured(t, "the zhool is not alive on the pad; nothing could turn")
+                # LIVE round 2 2026-10-16: the zhool WANDERED off the grass fill (haze radius 3.9 inside a +-7 fill), so
+                # "no lashgrass in 5000 ticks" was read at a bound (P(none) ~ 3e-4) that only holds while the haze
+                # sits on grass. An animal cannot be pinned (no supported teleport), so the bound is made honest:
+                # sample its cell every 250 ticks and count the samples inside the fill (haze fully on grass).
+                zx, zz = t.anchor
+                inside, samples = 0, []
                 with _setting(t, "zhoolConversionRate", 5.0):
-                    _wait(t, 5000)
+                    for _ in range(20):
+                        _wait(t, 250)
+                        zr = _rows(t).get(_STATE.get("zhool")) or {}
+                        px, pz = zr.get("x"), zr.get("z")
+                        samples.append((px, pz))
+                        if (px is not None and pz is not None and _alive(zr)
+                                and abs(px - zx) <= ZHOOL_FILL - 4 and abs(pz - zz) <= ZHOOL_FILL - 4):
+                            inside += 1
+                _note(t, "zhool samples inside the haze-on-grass core / 20", [inside, samples[:20:4]])
                 lash = len(_things(t, LASHGRASS, _STATE["zrect"]))
                 grass1 = len(_things(t, GRASS, _STATE["zrect"]))
                 if _STATE.get("grass0") is None:
                     _unmeasured(t, "no grass count from the off arm: the replacement check has no baseline")
                 lost = _STATE["grass0"] - grass1
                 _note(t, "zhool haze: grass before/after, lashgrass after", [_STATE.get("grass0"), grass1, lash])
+                if lash < 1 and inside < 10:
+                    _unmeasured(t, "no lashgrass, but the zhool stood in the grass core for only %d of 20 samples: "
+                                   "the ~3e-4 bound assumes the haze sat on grass for the whole 5000 ticks" % inside)
                 if lash < 1:
-                    _fail("no grass turned to lashgrass in 5000 ticks at 5x speed (expected ~8)")
+                    _fail("no grass turned to lashgrass in 5000 ticks at 5x speed with the zhool in the grass core "
+                          "%d of 20 samples (expected ~8)" % inside)
                 if lost > lash:
                     _fail("%d grass gone but only %d lashgrass stand: plants deleted without a replacement"
                           % (lost, lash))

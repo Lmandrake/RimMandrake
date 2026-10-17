@@ -126,6 +126,10 @@ def _remove_pawns_in(call, rect):
     for p in ((r or {}).get("pawns") or []) if isinstance(r, dict) else []:
         if p.get("dead") or not p.get("id"):
             continue
+        # LIVE round 2 2026-10-16: this vanished the site's own colonists standing in the natural pad. A humanlike
+        # player pawn is the SITE's (helpers.is_colonist); never remove one. Fixtures are session-tracked and cleaned there.
+        if p.get("isPlayer") and p.get("intelligence") == "Humanlike":
+            continue
         call("jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish")
         n += 1
     return n
@@ -275,6 +279,31 @@ def _prep(t, name, size=PAD_SIZE):
     _open_sky(t, r)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (SOIL, _rs(r)), layer="top")
     _settle_bystanders(t)
+    _clear_wildlife(t)
+
+
+def _clear_wildlife(t):
+    """SITE, LIVE round 2 2026-10-16: the map's own wildlife (a kreetle against a ribbonwhip / eopie) fought on the
+    site and broke gale_turbine_breakdown. No LeaningScrub row reads an animal it did not spawn, and every chain
+    spawns its fixtures after _prep, so factionless animals are removed here (no death, no corpse, no detonation;
+    helpers.kill_wildlife), as Contagion and Cauldron do. Also re-run after every clock jump (animals respawn)."""
+    if not _live(t):
+        return
+    try:
+        res = H.kill_wildlife(t.session)
+        if res.acted or res.residue:
+            _note(t, "mapgen wildlife removed", {"removed": res.acted, "verified": res.verified,
+                                                 "residue": res.residue[:8]})
+    except Exception as ex:    # upkeep: a failure is evidence, never a verdict
+        _note(t, "wildlife not cleared", str(ex)[:200])
+
+
+def _requiet(t):
+    """After a clock jump or chain boundary: plants regrow around the drafted bystanders (LIVE round 2: one took a
+    venomvine Scratch ~tick 380k inside scratch_drops_coat, after the 5.5-day jump) and wildlife respawns. Ground is
+    cleared again, bystanders mended and drafted, wildlife removed. Setup upkeep, never a verdict."""
+    _settle_bystanders(t)
+    _clear_wildlife(t)
 
 
 def _open_sky(t, rect, raw=False):
@@ -1250,8 +1279,18 @@ def dripping_chain(t):
                               rect="%d,%d,1,1" % (x, z))
                 t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Harvest",
                               targetAId=plant[0]["id"], queue=True, waitTicks=60)
-                t.wait_ticks(1200)
-                venom = _stack_total(t, "RM_RawVenom", _rs(rect))
+                # LIVE round 2: 0 venom after a flat 1200 ticks with the stand "Ready to harvest" -- the walk to a plant
+                # that RM_CompProperties_BodySizeBarrier makes costly (trappedMoveCost 450) plus harvestWork 250 can
+                # outlast one fixed window. Bounded wait instead: step 600 ticks, stop at the first venom, give up at
+                # 7200, and note the colonist's job each step so a stuck job is evidence, not silence.
+                venom, trail = 0, []
+                for _step in range(12):
+                    t.wait_ticks(600)
+                    venom = _stack_total(t, "RM_RawVenom", _rs(rect))
+                    trail.append((venom, _jobs(t).get(col)))
+                    if venom >= 1:
+                        break
+                _note(t, "dripping harvest wait trail (venom, colonist job) per 600 ticks", trail)
                 standing = _count(t, "RM_DrippingVenomvine", "%d,%d,1,1" % (x, z))
                 _, lines = _inspect(t, plant[0]["id"]) if standing else (None, [])
                 _note(t, "dripping harvest: venom items / stand standing / inspect",
@@ -1690,6 +1729,7 @@ def sweetline_chain(t):
                 # timeException=True: jump past the 5-day timer instead of simulating 5 days (safe-advance gate)
                 t.bridge_call("jawa/time_set_ticks", ticks=int(cur + 5.5 * 60000), timeException=True)   # past the 5-day timer
                 t.wait_ticks(2100)                                    # one Long tick
+                _requiet(t)                                           # the jump regrew plants round the bystanders
                 after = _stack_total(t, "RM_SweetlineWool", _rs(_rect(t)))
                 # LIVE 2026-10-07 (both runs): 0 felt, the tree mature ("Ready to harvest", timer 14 h / 3.7 d before the
                 # jump). The timer line now says which half broke: still "ready to fall" = RM_CompSweetlineStation.
@@ -1747,6 +1787,7 @@ def sweetline_chain(t):
                     # timeException=True: jump past the visit interval instead of simulating 13 days (safe-advance gate)
                     t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000), timeException=True)
                     t.wait_ticks(2100)
+                _requiet(t)
                 off_v = seen()     # toggle restored, no tick has passed: the line is visible again
                 _note(t, "sweetline visits before / after a 13-day jump, visitors OFF", [before_v, off_v])
                 ids["visits_seen"] = seen      # before the verdict: the ON arm reads these even when this one fails
@@ -1759,6 +1800,7 @@ def sweetline_chain(t):
                 # timeException=True: jump past the visit interval instead of simulating 13 days (safe-advance gate)
                 t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000), timeException=True)
                 t.wait_ticks(2100)
+                _requiet(t)
                 got = ids["visits_seen"]() - ids["visits_base"]
                 tok1 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))
                 _note(t, "sweetline visits recorded / tokens before-after, visitors ON", [got, tok0, tok1])
