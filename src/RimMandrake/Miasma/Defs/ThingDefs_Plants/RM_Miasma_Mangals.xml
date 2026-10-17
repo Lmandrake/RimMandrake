@@ -79,6 +79,7 @@
       <Flammability>0.05</Flammability>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Its harvest (RM_RawSalt) is not wood and stays; it is no longer cut as a tree. -->
       <fertilityMin>0</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>20</growDays>
@@ -89,6 +90,7 @@
       <visualSizeRange>1.0~1.6</visualSizeRange>
       <topWindExposure>0.02</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -111,6 +113,7 @@
       <Flammability>0.3</Flammability>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 8 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <!-- MIASMA_FLORA_ROSTER_1: the roster's own watch-out — "must only
            spawn adjacent to a thessamor, or it reads as an ordinary shrub" —
            is NOT mechanically enforced here. Vanilla wild-plant seeding has
@@ -122,12 +125,13 @@
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>15</growDays>
       <harvestWork>120</harvestWork>
-      <harvestYield>8</harvestYield>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>0</harvestYield>
+      <harvestedThingDef></harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <visualSizeRange>1.0~1.8</visualSizeRange>
       <topWindExposure>0.05</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
+      <harvestTag>Standard</harvestTag>
     </plant>
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
@@ -181,6 +185,7 @@
       <Flammability>0.9</Flammability>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 2 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <!-- Never sown, never a wildPlants row — RM_GradientAxisRepaint spawns
            this directly onto a cell whose living RM_Ilbareen just died to
            brine (see RM_Miasma.xml). fertilityMin 0 so it never itself dies
@@ -189,14 +194,15 @@
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>1</growDays>
       <harvestWork>40</harvestWork>
-      <harvestYield>2</harvestYield>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>0</harvestYield>
+      <harvestedThingDef></harvestedThingDef>
       <harvestMinGrowth>0.05</harvestMinGrowth>
       <visualSizeRange>1.3~2.0</visualSizeRange>
       <topWindExposure>0.4</topWindExposure>
       <dieIfLeafless>false</dieIfLeafless>
       <wildClusterRadius>0</wildClusterRadius>
       <wildClusterWeight>0</wildClusterWeight>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 

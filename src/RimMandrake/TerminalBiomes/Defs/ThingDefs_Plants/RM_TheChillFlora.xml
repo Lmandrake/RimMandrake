@@ -68,6 +68,7 @@
       <Flammability>1.0</Flammability>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 8 RM_SlackwaxTimber; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <wildTerrainTags>
@@ -88,9 +89,9 @@
            about. -->
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
-      <harvestTag>Wood</harvestTag>
-      <harvestedThingDef>RM_SlackwaxTimber</harvestedThingDef>
-      <harvestYield>8</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestYield>0</harvestYield>
       <harvestWork>200</harvestWork>
       <growDays>10</growDays>
       <visualSizeRange>0.7~1.1</visualSizeRange>

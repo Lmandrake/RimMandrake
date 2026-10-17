@@ -59,6 +59,7 @@
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationRead.cs" Link="Shared\FlowWorksIrrigationRead.cs" />
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="RM_TopResolver.cs" />
+    <Compile Include="RM_TreeLife.cs" />
     <Compile Include="RM_ExplosiveGrowthPatches.cs" />
     <Compile Include="RM_ChargeSelfTest.cs" />
     <Compile Include="RM_IncidentWorker_BloomBurst.cs" />

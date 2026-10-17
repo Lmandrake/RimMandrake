@@ -96,6 +96,8 @@
       <li>RUT_FeverWood</li>
       <li>RUT_Webwork</li>
       <li>RUT_Contagion</li>
+      <!-- tree_burst_design_2026-10-17.md §6 (Q8): the Rot follows the wet-biome rulings; its plants' rows are in the RM roster. -->
+      <li>RUT_TheRot</li>
     </wetNativeBiomes>
     <!-- OQ-3 (owner 2026-10-16): "Blowing snow melts like water and rain yes. It doesn't snow fuel." Snow in these two
          waters like rain (clean water, the same unroofed-cell rule). The five no-precipitation biomes need nothing here. -->

@@ -35,7 +35,7 @@ namespace RimMandrake.ExplosiveGrowth
                 "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}. " +
                 "Archetypes: dry {13}, wet {14}, fire {15}, exempt {16}, vanilla {17}; {18} stalled, {19} wet and {20} fire biome(s); " +
                 "{21} natural-water terrain(s), {22} water filth(s), {23} liquid set(s), tidally locked {24}. " +
-                "Scope (home mod {12}): {25} Baroque Biomes biome(s){26}.",
+                "Scope (home mod {12}): {25} Baroque Biomes biome(s){26}. Trees (3.0+, not fungi) {27}, fungi marked {28}.",
                 RM_ExplosiveGrowthRegistry.CountSoaking, t[0], t[1], t[2], t[3], t[4], t[5],
                 RM_ExplosiveGrowthRegistry.CountNone, RM_ExplosiveGrowthRegistry.RosterResolved,
                 RM_ExplosiveGrowthRegistry.RosterMissing, RM_ExplosiveGrowthRegistry.RupturePawnKinds.Count,
@@ -46,7 +46,8 @@ namespace RimMandrake.ExplosiveGrowth
                 RM_ExplosiveGrowthRegistry.FilthLiquidCount, RM_ExplosiveGrowthRegistry.LiquidSets.Count,
                 RM_ExplosiveGrowthRegistry.TidallyLocked, RM_ExplosiveGrowthRegistry.HomeBiomes.Count,
                 RM_ExplosiveGrowthRegistry.ScopeForcedBy != null ? ", every biome by roster " + RM_ExplosiveGrowthRegistry.ScopeForcedBy
-                : ExplosiveGrowthSettings.nativesSameRuleInOtherBiomes ? " (our plants everywhere by the unsupported option)" : " only"));
+                : ExplosiveGrowthSettings.nativesSameRuleInOtherBiomes ? " (our plants everywhere by the unsupported option)" : " only",
+                RM_ExplosiveGrowthRegistry.CountTrees, RM_ExplosiveGrowthRegistry.CountFungi));
         }
     }
 
@@ -98,6 +99,30 @@ namespace RimMandrake.ExplosiveGrowth
             float r = comp.MoistureFactorFor(__instance, p);
             int off = RM_ExplosiveGrowthKernel.AgeRemoval(r, Rand.Value);
             if (off > 0) ageRef(__instance) -= off;
+        }
+    }
+
+    /// <summary>
+    /// TREE LIFE (tree_burst_design_2026-10-17.md §3, §4, §6a; T3, T5): after the dormancy prefix (lower priority), a tree
+    /// drinks and may burst (RM_TreeLife). A PREFIX for the dormancy prefix's reason: vanilla adds its age step and checks
+    /// Dying in the same call, so a water-driven death must burst before vanilla's rot can claim it, and a natural crossing
+    /// is left to vanilla. Returns false (skip vanilla) only when the tree burst and is gone.
+    /// </summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.TickLong))]
+    [RimMandrake.Shared.PatchFeature("Tree life (litres buy days, end-of-life burst)", typeof(ExplosiveGrowthSettings), "enabled")]
+    public static class RM_Patch_Plant_TickLong_TreeLife
+    {
+        [HarmonyPrefix]
+        [HarmonyPriority(Priority.Low)]
+        public static bool Prefix(Plant __instance)
+        {
+            if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready) return true;
+            if (!__instance.Spawned || __instance.Destroyed) return true;
+            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
+            if (p == null || !p.isTree) return true;
+            RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
+            if (comp == null) return true;
+            return !RM_TreeLife.OnTickLong(__instance, p, comp);
         }
     }
 

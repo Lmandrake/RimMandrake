@@ -294,13 +294,27 @@ namespace RimMandrake.ExplosiveGrowth
             bool stalled = RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome);
             bool wet = prof.archetype != RM_Archetype.WetNative && !stalled && RM_WetSources.IsWet(this, c, prof.liquids, now);
             bool ash = prof.archetype == RM_Archetype.FireAdapted && !wet && AshFresh(c, now);
+            if (prof.isTree)
+                return RM_ExplosiveGrowthKernel.TreeMoistureFactor(prof.archetype, true, stalled, false, wet, ash,
+                    plant.Growth >= MatureGrowth, s);
             return RM_ExplosiveGrowthKernel.MoistureFactor(prof.archetype, true, stalled, false, wet, ash, prof.woody, false, s);
         }
 
-        /// <summary>The plant runs the cycle here (archetype, scope, not sealed or stalled, its top on).</summary>
+        /// <summary>The tree rules (tree_burst_design_2026-10-17.md §3, §4, §6a) run for this tree here: in scope, not sealed,
+        /// not in a stalled biome (where our plants never cycle and water does not move them). Elsewhere a tree is vanilla.</summary>
+        public bool TreeRulesHere(Plant plant, RM_PlantProfile prof)
+        {
+            if (prof == null || !prof.isTree || !plant.Spawned) return false;
+            BiomeDef biome = map.Biome;
+            return RM_ExplosiveGrowthRegistry.PlantInScope(prof, biome) && !RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome)
+                && !Sealed(plant);
+        }
+
+        /// <summary>The plant runs the cycle here (archetype, scope, not sealed or stalled, its top on). A tree never does: its
+        /// end of life is its event (§2 table, T4).</summary>
         public bool CyclesHere(Plant plant, RM_PlantProfile prof)
         {
-            if (prof == null || !prof.Soaks || RM_TopResolver.Effective(prof.top) == RM_GrowthTop.None) return false;
+            if (prof == null || prof.isTree || !prof.Soaks || RM_TopResolver.Effective(prof.top) == RM_GrowthTop.None) return false;
             BiomeDef biome = map.Biome;
             return RM_ExplosiveGrowthKernel.Cycles(prof.archetype, RM_ExplosiveGrowthRegistry.PlantInScope(prof, biome),
                 RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome), Sealed(plant));

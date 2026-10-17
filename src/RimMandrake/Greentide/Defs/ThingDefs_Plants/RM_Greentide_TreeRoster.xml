@@ -476,11 +476,14 @@
       <BeautyOutdoors>-1</BeautyOutdoors>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 8 (inherited WoodLog); its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <growDays>20</growDays>
-      <harvestYield>8</harvestYield>
+      <harvestYield>0</harvestYield>
       <visualSizeRange>1.2~2.0</visualSizeRange>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>9</wildClusterWeight>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 

@@ -45,11 +45,26 @@ def main():
     want("RM_Greentide", "RM_Veluthar", "ruptureOdds", "0", "§4.2 wet natives never rupture")
     want("RM_Greentide", "RM_Veluthar", "sprouts", "1~2", "C2 a few sprouts")
     want("RM_Webwork", "RM_Kollavane", "archetype", "WetNative", "WP3 Answer is (1)")
-    # C3: Pyrelands grass never ruptures and spreads super-fast; C5 fresh ash waters it
+    # C3 + tree_burst_design §5 (Q7 "Let Pyrelands grass burst too", 6-9 sprouts kept); C5 fresh ash waters it
     for g in ("RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass"):
         want("RM_Pyrelands", g, "archetype", "FireAdapted", "C5")
-        want("RM_Pyrelands", g, "ruptureOdds", "0", "C3 Pyrelands grass does not rupture")
-        want("RM_Pyrelands", g, "sprouts", "6~9", "C3 spread itself super-fast")
+        want("RM_Pyrelands", g, "ruptureOdds", "1 in 3", "Q7 Pyrelands grass bursts at the default odds")
+        want("RM_Pyrelands", g, "sprouts", "6~9", "C3 spread itself super-fast (Q7 keeps 6-9)")
+    # tree_burst_design §2 / §6: size 3.0+ natives are trees (Q2), fungi never (Q9), the greatbole is out (§0);
+    # the Rot is a wet biome (Q8) whose plants cycle (their NONE rows came off), Pale Tree / Skulltop stay out ("Immortal wins")
+    want("RM_Greentide", "RM_Veluthar", "tree", True, "Q2 size 3.0+ is a tree")
+    want("RM_Greentide", "RM_Greatbole", "tree", False, "§0 the greatbole is not part of the tree rules")
+    want("RM_TheRot", "RM_Arpeau", "tree", False, "Q9 fungi are never trees")
+    want("RM_TheRot", "RM_Arpeau", "fungus", True, "Q9 marked a fungus by the roster")
+    want("RM_TheRot", "RM_Dewshrooms", "archetype", "WetNative", "Q8 the Rot follows the wet-biome rulings")
+    want("RM_TheRot", "RM_Dewshrooms", "violentTop", "Churn", "Q8 the Rot's NONE rows came off")
+    want("RM_TheRot", "RM_PaleTree", "archetype", "DryNative", "Immortal wins: out of the wet-native cycle")
+    want("RM_TheRot", "RM_PaleTree", "ruptureOdds", "never cycles", "Immortal wins: never withers or bursts")
+    if not sheets.get("RM_TheRot", {}).get("wet"):
+        fails.append("RM_TheRot is not a wet biome in the rosters (Q8)")
+    trees = [r for r in rows if r.get("tree")]
+    if len(trees) < 20:
+        fails.append("probe: only %d tree rows (the size read went blind?)" % len(trees))
     # C3 default 1 in 3 for a dry native; exemptions stay exempt (venomvine, Blue Desert trio)
     want("RM_Wasteland", "RM_Scumgrass", "archetype", "DryNative", "§4.1 default archetype")
     want("RM_Wasteland", "RM_Scumgrass", "ruptureOdds", "1 in 3", "C3")

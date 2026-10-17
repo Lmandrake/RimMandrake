@@ -564,6 +564,7 @@
     <rotatable>false</rotatable>
     <blockWind>true</blockWind>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 4 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <dieIfNoSunlight>false</dieIfNoSunlight>
@@ -576,9 +577,9 @@
       <soundHarvesting>Harvest_Tree</soundHarvesting>
       <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
       <harvestWork>800</harvestWork>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
-      <harvestTag>Wood</harvestTag>
-      <harvestYield>4</harvestYield>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.4</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
       <visualSizeRange>2.0~2.8</visualSizeRange>

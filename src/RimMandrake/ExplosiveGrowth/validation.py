@@ -108,7 +108,7 @@ DEFAULTS = [
     ("cropSelfFruitEnabled", True), ("waterUseEnabled", True), ("cropDrawLevels", 1), ("dormancyEnabled", True),
     ("tidalLockNoRest", True), ("sealedGrowersVanilla", True), ("waveStaggerEnabled", False),
     ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True),
-    ("naturalWaterEnabled", True), ("spillWaterEnabled", True), ("irrigationSoakEnabled", True),
+    ("naturalWaterEnabled", True), ("spillWaterEnabled", True), ("irrigationSoakEnabled", True), ("sprinklersEnabled", True),
     ("rainWaterEnabled", True), ("rainLingerHours", 3.0), ("rainPuddlesEnabled", True), ("snowmeltEnabled", True),
     ("gradientSurgeSoakEnabled", True), ("ashFreshEnabled", True), ("ashFlushDays", 3.0),
     ("chargeHours", 6.0), ("maxOvergrowthScale", 2.0), ("reprintIntervalTicks", 250),
@@ -117,6 +117,8 @@ DEFAULTS = [
     ("slimeEnabled", True), ("ruptureEnabled", True), ("ruptureMutationChance", 0.08),
     ("flushEnabled", True), ("harvestJackpotEnabled", True), ("lastSwingGambleEnabled", True),
     ("suppressionEnabled", True),
+    ("treeDrinkEnabled", True), ("treeLitresPerDayOfLife", 40.0), ("treeDrinkLitresPerDay", 40.0),
+    ("treeBurstEnabled", True), ("treeBurstDefaultLogs", 10),
 ]
 DEFAULT_OF = dict(DEFAULTS)
 suite.toggles = [f for f, _ in DEFAULTS]
@@ -1115,6 +1117,7 @@ def scope_native_only(t):
 FLIPS = [
     ("minGrowDaysToSoak", 1.0, 2.0),        # registry rebuild only on WriteSettings/startup: not live
     ("irrigationSoakEnabled", True, False),  # needs FlowWorks
+    ("sprinklersEnabled", True, False),      # needs FlowWorks sprinklers
     ("gradientSurgeSoakEnabled", True, False),  # needs EnvironmentalHazards' gradient axis
     ("maxOvergrowthScale", 2.0, 1.5),        # visual (Plant.Print scale)
     ("reprintIntervalTicks", 250, 500),      # visual cadence / perf
@@ -1123,7 +1126,10 @@ FLIPS = [
     ("ruptureMutationChance", 0.08, 0.2),    # statistical, needs Contagion hediffs + a pawn in the cloud
     ("harvestJackpotEnabled", True, False),  # needs a harvesting pawn (YieldNow)
     ("lastSwingGambleEnabled", True, False),  # needs a cutting pawn, random (PlantCollected)
-    ("treeRatio", 0.625, 0.5),               # probe_rules reads the tree arm at the default
+    ("treeRatio", 0.625, 0.5),               # only a woody NON-tree reads it now (RM_Greatbole, tree_burst_design §0)
+    ("treeLitresPerDayOfLife", 40.0, 80.0),  # probe_tree_life reads the drink at the default
+    ("treeDrinkLitresPerDay", 40.0, 20.0),   # a continuous source's daily cap: needs a river tree over days
+    ("treeBurstDefaultLogs", 10, 5),         # a non-wood tree's burst: probe_tree_life reads the default when it picks one
     ("stuntedMultiplier", 0.4, 0.5),         # needs a stalled biome (PoisonForest), not on the solo tier
     ("wetNativeMultiplier", 4.0, 3.0),       # probe_rules reads it at the default
     ("dryDryMultiplier", 0.1, 0.2),
@@ -1301,8 +1307,11 @@ def probe_rules(t):
             if not _near(v.get("dryDry"), 0.1, 1e-3): bad.append("dry native on dry ground r=%s, want 0.1" % v.get("dryDry"))
             if v.get("drySpill") == "True" and not _near(v.get("dryWet"), 10.0, 1e-3): bad.append("dry native on a water spill r=%s, want 10" % v.get("dryWet"))
             if v.get("drySpill") == "True" and not _near(v.get("dryAfterUse"), 0.1, 1e-3): bad.append("after the plant drank the spill r=%s, want 0.1 (OQ-8)" % v.get("dryAfterUse"))
-            if v.get("tree", "NONE") != "NONE" and v.get("treeSpill") == "True" and not _near(v.get("treeWet"), 6.25, 1e-3):
-                bad.append("woody dry native wet r=%s, want 6.25 (EC1)" % v.get("treeWet"))
+            # tree_burst_design_2026-10-17.md T2: a tree takes no x10 and no tree ratio; dry x0.1 kept
+            if v.get("tree", "NONE") != "NONE":
+                if not _near(v.get("treeDry"), 0.1, 1e-3): bad.append("dry-land tree on dry ground r=%s, want 0.1 (T2)" % v.get("treeDry"))
+                if v.get("treeSpill") == "True" and not _near(v.get("treeWet"), 1.0, 1e-3):
+                    bad.append("dry-land tree on a spill r=%s, want 1 (T2: no x10; the water's effect is the drink)" % v.get("treeWet"))
             if v.get("wetn", "NONE") != "NONE":
                 if not (_near(v.get("wetnDry"), 4.0, 1e-3) and _near(v.get("wetnWet"), 4.0, 1e-3)):
                     bad.append("wet native r dry=%s wet=%s, want 4 both (C1)" % (v.get("wetnDry"), v.get("wetnWet")))
@@ -1315,6 +1324,98 @@ def probe_rules(t):
             if not _near(v.get("burstShare"), 0.3333, 0.04): bad.append("dry-native Burst share %s, want 1 in 3 (C3)" % v.get("burstShare"))
             if bad:
                 _fail("; ".join(bad) + " | " + raw[:400])
+
+
+# --------------------------------------------------------------------------- trees (TREE_BURST_BUILD_LITRES_BUY_YEARS)
+
+def _tree_life(t, **arm):
+    _prep(t, 40)
+    _suite_scope(t)
+    with _arm(t, **arm):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof", method="ProofTreeLife",
+                          args="current")
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    _note(t, "ProofTreeLife", text)
+    if _live(t) and (not text or text.startswith("ERROR")):
+        _unmeasured(t, "ProofTreeLife gave no read: %r" % text[:200])
+    v = dict(re.findall(r"(\w+)=([\w.\-/,:\[\]]+)", text))
+    return v, text
+
+
+@suite.chain("probe_tree_life")
+def probe_tree_life(t):
+    """tree_burst_design_2026-10-17.md, the T10 rows on real plants: a jungle tree survives maturity (never cycles; x4
+    young, x1 grown) and bursts at its end of life (Q11); a dry-land tree reads x0.1 dry / x1 wet (T2), a 400 L spill buys
+    400/40 = 10 days as growth (Q1/Q4), a drink past its lifespan bursts it with logs and seedlings (Q5/Q6, Q12, Q17); the
+    same tree crossing its lifespan dry falls (vanilla Dying, no burst); an unlimited-life tree drinks as growth and never
+    bursts (Q14). OWED: first live run."""
+    with _comp(t, "trees_live_by_litres_and_burst_at_their_end"):
+        v, raw = _tree_life(t)
+        if _live(t):
+            if v.get("rain") == "1":
+                _unmeasured(t, "SITE: it is raining on the map (every unroofed cell is wet): %s" % raw[:200])
+            if int(v.get("trees", "0") or 0) < 1:
+                _fail("the live registry holds no trees (the size read went blind): %s" % raw[:300])
+            bad, site = [], []
+            if v.get("jungle", "NONE") == "NONE":
+                site.append("no plantable jungle tree")
+            else:
+                if v.get("jungleCycles") != "False": bad.append("a grown jungle tree still cycles (Q11)")
+                if not _near(v.get("jungleMatureR"), 1.0, 1e-3): bad.append("grown jungle tree r=%s, want 1 (Q11)" % v.get("jungleMatureR"))
+                if not _near(v.get("jungleYoungR"), 4.0, 1e-3): bad.append("young jungle tree r=%s, want 4 (Q11)" % v.get("jungleYoungR"))
+                if v.get("jungleEndBurst") != "True": bad.append("a jungle tree at its end of life did not burst (Q11)")
+            if v.get("tree", "NONE") == "NONE":
+                site.append("no plantable dry-land tree")
+            else:
+                if v.get("treeCycles") != "False": bad.append("a dry-land tree still cycles")
+                if not _near(v.get("treeDryR"), 0.1, 1e-3): bad.append("dry-land tree dry r=%s, want 0.1" % v.get("treeDryR"))
+                if v.get("treeSpill") == "True" and not _near(v.get("treeWetR"), 1.0, 1e-3): bad.append("dry-land tree wet r=%s, want 1 (T2)" % v.get("treeWetR"))
+                try:
+                    grows = float(v.get("treeGrowthRate", "0") or 0) > 0.0
+                except ValueError:
+                    grows = False
+                if v.get("treeSpill") == "True" and grows:
+                    if not _near(v.get("treeDrinkDays"), 10.0, 0.01): bad.append("a 400 L spill bought %s days, want 10 (Q1)" % v.get("treeDrinkDays"))
+                    gd = float(v.get("treeGrowDays", "0") or 0)
+                    if gd > 0 and not _near(v.get("treeYoungGain"), min(0.8, 10.0 / gd), 0.02):
+                        bad.append("young tree grew %s from a spill, want ~%.3f (10 days of %s)" % (v.get("treeYoungGain"), 10.0 / gd, gd))
+                    if v.get("treeSpillUsed") != "True": bad.append("the tree did not use up the spill it drank")
+                    if v.get("treeWaterBurst") != "True": bad.append("a drink past the lifespan did not burst (Q5/Q6)")
+                    burst = v.get("treeBurst", "")
+                    # ProofTreeLife writes the burst as [logs:N,logDef:X,product:N,fruit:N,seedlings:N,waterDriven:B]
+                    if re.search(r"\blogs:0\b", burst) or "logs:" not in burst: bad.append("the water-driven burst threw no logs (Q12): %s" % burst)
+                    if re.search(r"\bseedlings:0\b", burst): site.append("no seedling found a free cell (2-4 expected, Q17)")
+                elif v.get("treeSpill") == "True":
+                    site.append("the dry-land tree cannot grow here now (GrowthRate 0: night or cold)")
+                if v.get("natural", "") == "NONE":
+                    site.append("no cell for the natural-death arm")
+                elif v.get("naturalWetCell") == "True":
+                    site.append("the natural-death cell is wet")
+                else:
+                    if v.get("naturalBurst") != "False": bad.append("a dry tree dying of plain old age burst (Q5/Q6: it should fall)")
+                    if v.get("naturalDying") != "True": bad.append("a tree past its lifespan is not Dying (vanilla death)")
+            if v.get("immortal", "NONE") == "NONE":
+                site.append("no plantable unlimited-life tree (RM_Ollim / RM_KneelOllim)")
+            else:
+                if v.get("immortalBurst") != "False" or v.get("immortalAlive") != "True": bad.append("an unlimited-life tree burst (Q14)")
+                if v.get("immortalSpill") == "True" and not float(v.get("immortalGain", "0") or 0) > 0.0:
+                    bad.append("an unlimited-life tree gained no growth from a spill (Q14: a growth spike)")
+            if bad:
+                _fail("; ".join(bad) + " | " + raw[:500])
+            if site:
+                _unmeasured(t, "SITE: " + "; ".join(site) + " | " + raw[:300])
+
+
+@suite.chain("probe_tree_burst_off")
+def probe_tree_burst_off(t):
+    """treeBurstEnabled=false: a drink past the lifespan no longer bursts, and a jungle tree at its end of life does not."""
+    with _comp(t, "tree_burst_off_trees_die_of_age", toggle="treeBurstEnabled"):
+        v, raw = _tree_life(t, treeBurstEnabled=False)
+        if _live(t):
+            if v.get("jungle", "NONE") != "NONE" and v.get("jungleEndBurst") == "True":
+                _fail("treeBurstEnabled=false but a jungle tree burst at its end of life: %s" % raw[:300])
+            if v.get("tree", "NONE") != "NONE" and v.get("treeWaterBurst") == "True":
+                _fail("treeBurstEnabled=false but a water-driven death burst: %s" % raw[:300])
 
 
 @suite.chain("settings_restored")

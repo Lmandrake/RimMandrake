@@ -102,6 +102,7 @@
     </statBases>
     <ingestible/>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was ? (inherited WoodLog); its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0.5</fertilitySensitivity>
       <minGrowthTemperature>50</minGrowthTemperature>
@@ -116,6 +117,9 @@
       <wildClusterWeight>2</wildClusterWeight>
       <wildOrder>1</wildOrder>
       <interferesWithRoof>false</interferesWithRoof>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestYield>0</harvestYield>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 

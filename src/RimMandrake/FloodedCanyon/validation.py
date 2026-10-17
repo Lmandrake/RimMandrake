@@ -97,7 +97,10 @@ def _flora_shape_findings():
     if "<RM_Veqma>" not in biome:
         bad.append("control: the original roster row RM_Veqma is missing, parser broke")
     want = {"RM_Nabbuq": "RM_NabbuqBladder", "RM_Ruqqal": "RM_RuqqalFibre", "RM_Sevvuq": "Dye",
-            "RM_Zennaq": "RM_ZennaqFilament", "RM_Harrovaq": "WoodLog"}
+            "RM_Zennaq": "RM_ZennaqFilament",
+            # tree_burst_design_2026-10-17.md Q3 (owner by card, "stop giving wood"): drawn at 2.4, under tree size, so the
+            # harrovaq gives no wood; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's (empty = no harvest).
+            "RM_Harrovaq": ""}
     for n in ("RM_Nabbuq", "RM_Ruqqal", "RM_Sevvuq", "RM_Zennaq", "RM_Luqqim", "RM_Harrovaq"):
         b = body(plants, n)
         if b is None:

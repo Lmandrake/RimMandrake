@@ -58,6 +58,12 @@ DEFAULTS = {
     "flushEnabled": "True",
     "harvestJackpotEnabled": "True",
     "lastSwingGambleEnabled": "True",
+    "sprinklersEnabled": "True",
+    "treeDrinkEnabled": "True",
+    "treeLitresPerDayOfLife": "40",
+    "treeDrinkLitresPerDay": "40",
+    "treeBurstEnabled": "True",
+    "treeBurstDefaultLogs": "10",
     "suppressionEnabled": "True",
 }
 

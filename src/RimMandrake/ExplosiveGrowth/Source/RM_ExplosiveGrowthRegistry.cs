@@ -14,8 +14,20 @@ namespace RimMandrake.ExplosiveGrowth
         public TerrainDef slimeTerrain;
         /// <summary>The ruled archetype (spec §4.3), seeded from the biomes' plant lists unless a row decides.</summary>
         public RM_Archetype archetype = RM_Archetype.Vanilla;
-        /// <summary>EC1: IsTree OR yields wood. Woody plants run the tree ratio (0.625) of their archetype's rate.</summary>
+        /// <summary>EC1's old tree rule, kept ONLY for a tree-rules-exempt plant that yields wood (RM_Greatbole, §0: "the build
+        /// leaves its ExplosiveGrowth handling as it is"): the tree ratio (0.625) of its archetype's rate. The tree rules
+        /// replaced it for every other plant (T1, T2: "treeRatio retired"); fungi take their archetype's rate (Q9).</summary>
         public bool woody;
+        /// <summary>tree_burst_design_2026-10-17.md §2 (Q2, Q9, §0): a native whose visual max is 3.0+, not a fungus, not
+        /// tree-exempt. No x10, never cycles; water buys it days of life; its end of life is a burst (§3, §4, §6a).</summary>
+        public bool isTree;
+        /// <summary>Q9: marked a fungus by a roster (never a tree).</summary>
+        public bool fungus;
+        /// <summary>The tree burst's logs (WoodLog) for a tree whose harvest is not wood; -1 = the Mod Setting default (Q12).</summary>
+        public int burstLogs = -1;
+        /// <summary>A log tree's own fruit at its burst (Q16), or null.</summary>
+        public ThingDef burstFruit;
+        public int burstFruitCount;
         /// <summary>-1 = the archetype default (kernel ResolveOutcome).</summary>
         public float ruptureChance = -1f;
         public IntRange sproutCount = IntRange.Zero;
@@ -62,7 +74,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         public static bool Ready { get; private set; }
 
-        public static int CountSoaking, CountNone, RosterResolved, RosterMissing;
+        public static int CountSoaking, CountNone, RosterResolved, RosterMissing, CountTrees, CountFungi;
         public static readonly int[] CountByTop = new int[7];
         public static readonly int[] CountByArchetype = new int[5];
         public static int TerminatorBiomeCount, WetBiomeCount, FireBiomeCount, NaturalWaterTerrainCount, FilthLiquidCount;
@@ -171,6 +183,9 @@ namespace RimMandrake.ExplosiveGrowth
             var snowBiomes = new HashSet<BiomeDef>();
             var waterTerrains = new HashSet<string>();
             var filth = new Dictionary<ThingDef, string>();
+            var fungi = new HashSet<string>();
+            var treeExempt = new HashSet<string>();
+            var treeBursts = new Dictionary<string, RM_TreeBurstEntry>();
             int missing = 0, resolved = 0;
 
             foreach (RM_ExplosiveGrowthRosterDef roster in DefDatabase<RM_ExplosiveGrowthRosterDef>.AllDefsListForReading)
@@ -211,6 +226,10 @@ namespace RimMandrake.ExplosiveGrowth
                     ThingDef fd = string.IsNullOrEmpty(f?.filth) ? null : DefDatabase<ThingDef>.GetNamedSilentFail(f.filth);
                     if (fd != null && !string.IsNullOrEmpty(f.liquid)) filth[fd] = f.liquid;
                 }
+                foreach (string s in roster.fungi) if (!string.IsNullOrEmpty(s)) fungi.Add(s);
+                foreach (string s in roster.treeRulesExempt) if (!string.IsNullOrEmpty(s)) treeExempt.Add(s);
+                foreach (RM_TreeBurstEntry b in roster.treeBursts)
+                    if (!string.IsNullOrEmpty(b?.plant)) treeBursts[b.plant] = b;
             }
             if (clean.Count == 0) clean.Add(CleanWater);
 
@@ -247,7 +266,7 @@ namespace RimMandrake.ExplosiveGrowth
             var table = new RM_PlantProfile[DefDatabase<ThingDef>.DefCount];
             var byTop = new int[CountByTop.Length];
             var byArch = new int[CountByArchetype.Length];
-            int soaking = 0, none = 0;
+            int soaking = 0, none = 0, trees = 0, fungusCount = 0;
 
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
@@ -311,7 +330,22 @@ namespace RimMandrake.ExplosiveGrowth
 
                 if (a == RM_Archetype.Exempt || a == RM_Archetype.Vanilla) p.top = RM_GrowthTop.None;
                 p.archetype = a;
-                p.woody = def.plant.IsTree || def.plant.harvestedThingDef == ThingDefOf.WoodLog;
+                p.fungus = fungi.Contains(def.defName);
+                bool native = a == RM_Archetype.DryNative || a == RM_Archetype.WetNative || a == RM_Archetype.FireAdapted;
+                p.isTree = native && !p.fungus && !treeExempt.Contains(def.defName)
+                    && def.plant.visualSizeRange.max >= RM_ExplosiveGrowthKernel.TreeMinVisualSize;
+                p.woody = treeExempt.Contains(def.defName) && (def.plant.IsTree || def.plant.harvestedThingDef == ThingDefOf.WoodLog);
+                if (p.isTree && treeBursts.TryGetValue(def.defName, out RM_TreeBurstEntry tb))
+                {
+                    p.burstLogs = tb.logs;
+                    if (!string.IsNullOrEmpty(tb.fruit) && tb.fruitCount > 0)
+                    {
+                        p.burstFruit = DefDatabase<ThingDef>.GetNamedSilentFail(tb.fruit);
+                        p.burstFruitCount = p.burstFruit != null ? tb.fruitCount : 0;
+                    }
+                }
+                if (p.isTree) trees++;
+                if (p.fungus) fungusCount++;
                 p.liquids = a == RM_Archetype.Vanilla ? cleanSet : Intern(adapted);
 
                 table[def.index] = p;
@@ -347,6 +381,8 @@ namespace RimMandrake.ExplosiveGrowth
             System.Array.Copy(byArch, CountByArchetype, byArch.Length);
             CountSoaking = soaking;
             CountNone = none;
+            CountTrees = trees;
+            CountFungi = fungusCount;
             RosterResolved = resolved;
             RosterMissing = missing;
             HomeBiomes = homeBiomes;

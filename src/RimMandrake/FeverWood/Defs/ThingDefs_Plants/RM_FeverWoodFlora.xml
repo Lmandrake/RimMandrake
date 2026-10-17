@@ -111,13 +111,14 @@
     <selectable>true</selectable>
     <pathCost>30</pathCost>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 60 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <fertilityMin>0.2</fertilityMin>
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>30</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <harvestYield>60</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestWork>900</harvestWork>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestedThingDef></harvestedThingDef>
       <harvestTag>Standard</harvestTag>
       <visualSizeRange>1.8~2.5</visualSizeRange>
       <wildOrder>1</wildOrder>
@@ -398,13 +399,14 @@
     <selectable>true</selectable>
     <pathCost>3</pathCost>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 10 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <fertilityMin>1.0</fertilityMin>
       <fertilitySensitivity>0.5</fertilitySensitivity>
       <growDays>17</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <harvestYield>10</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestWork>300</harvestWork>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestedThingDef></harvestedThingDef>
       <harvestTag>Standard</harvestTag>
       <visualSizeRange>0.9~1.4</visualSizeRange>
       <wildOrder>2</wildOrder>
@@ -509,13 +511,14 @@
     <selectable>true</selectable>
     <pathCost>6</pathCost>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 18 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <fertilityMin>0.2</fertilityMin>
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>22</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <harvestYield>18</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestWork>400</harvestWork>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestedThingDef></harvestedThingDef>
       <harvestTag>Standard</harvestTag>
       <visualSizeRange>1.4~2.0</visualSizeRange>
       <wildOrder>2</wildOrder>
