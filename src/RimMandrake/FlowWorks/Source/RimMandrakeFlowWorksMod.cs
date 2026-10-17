@@ -656,6 +656,7 @@ namespace RimMandrake.FlowWorks
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
             Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
+            RM_WaterMendSettings.ExposeData();       // FISH_ROLL_MEND_PONDS_BORN_BARREN (engine doc §2.3; Q5a/Q6a defaults)
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -1748,6 +1749,7 @@ namespace RimMandrake.FlowWorks
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
             Swimming.RM_SwimSettings.DoSettingsSection(list);
+            RM_WaterMendSettings.DoSettingsSection(list);
 
             lastListHeight = list.CurHeight;
             list.End();
