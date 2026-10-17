@@ -531,5 +531,30 @@
   "algo": "sha256",
   "over": "canonical JSON (sort_keys, compact) of legend+global+scenes",
   "value": "5244a13e6fdf097ef64089654c8f19552f06edf7c37a2de2fbcda08adc4c7184"
+ },
+ "owner_verdicts": {
+  "recorded": "2026-10-17, owner at the keyboard, by question card; recorded by a FOUNDRY helper. Outside the seal: the scenes are unchanged, so no re-seal.",
+  "S3.Q1": {
+   "answer": "c, refined by his words",
+   "by_card": true,
+   "owner_said": "If you place it in a canal, it fills the canal. If you place it on the surface, it needs a pipe or hose connection.",
+   "meaning": "A drill or Source tap standing IN/touching a dug canal cell pours straight into that canal. On undug surface ground it pours only into a connected pipe or hose network."
+  },
+  "S4.Q1": {
+   "answer": "a",
+   "by_card": true,
+   "meaning": "Water cut off downstream when a sealed gate is shut again stays exactly where it is until the gate opens, or a pump or the map-edge drain moves it."
+  },
+  "S5.Q1": {
+   "answer": "neither a nor b: OPEN, pending the unified depth design",
+   "by_card": true,
+   "owner_said": "We collectively ruled four across everywhere... but then we moved to meters depth and Liters. Please do a full deep design pass right now on how to reconcile all of this. It's ok to have some number of visual depths of liquid, as well as visual depths of canal. But we must not get confused on the depth of the water. So please, come up with a unified way to represent all of this and present it to me. Then let's adjust all the design docs and mechanics once and for all. As for natural sources, yes they should be able to go MUCH deeper than level 4 canals.",
+   "meaning": "S5 A and B stay untested against any count until he rules on design/RimMandrake/flowworks_unified_depth_2026-10-17.md."
+  },
+  "S6.Q1": {
+   "answer": "b",
+   "by_card": true,
+   "meaning": "A reloaded run must match the never-saved run in totals and end state; small differences on the way are fine."
+  }
  }
 }
