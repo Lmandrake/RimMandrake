@@ -192,6 +192,50 @@ _DEPLOY_SKIP_DIRS = {".git", ".vs", "Source", "__pycache__", "_artsrc", "art_can
 _DEPLOY_SKIP_EXTS = {".csproj", ".md", ".py", ".pyc", ".sln", ".user"}
 
 
+def _explain_deploy_transforms(mod_dir, diff, deployed):
+    """Drop the differences deploy_custom_mods.py makes ON PURPOSE (HARNESS, live walk 2026-10-17: SWBestiary's preflight
+    read 100 'differ/missing' on a copy the deploy plan called in sync): files src/DEPLOY_HOLD.txt holds (the global hold
+    file, not only a mod-local one), and XML whose MayRequire / FindMod guards name a packageId folded into Baroque
+    Biomes, which the deploy rewrites in the game copy only (biomes_compose.stage_rewritten). A rewritten file counts as
+    identical only when the rewrite reproduces the deployed bytes exactly."""
+    import fnmatch
+    src_root = os.path.dirname(os.path.dirname(os.path.abspath(mod_dir)))
+    name = os.path.basename(os.path.normpath(mod_dir))
+    pats = []
+    try:
+        with open(os.path.join(src_root, "DEPLOY_HOLD.txt"), encoding="utf-8", errors="replace") as fh:
+            pats = [l.partition("#")[0].strip().replace("\\", "/") for l in fh]
+        pats = [x for x in pats if x]
+    except OSError:
+        pass
+    diff = [k for k in diff if not any(fnmatch.fnmatch("%s/%s" % (name, k), x) for x in pats)]
+    xml = [k for k in diff if k.lower().endswith(".xml") and deployed.get(k)]
+    if not xml:
+        return diff
+    try:
+        utils = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import biomes_compose as bc
+        fmap, nmap = bc.folded_ids(src_root), bc.folded_names(src_root)
+    except Exception:                                            # noqa: BLE001 - no rewrite known: keep the diff
+        return diff
+    same = set()
+    for k in xml:
+        try:
+            with open(os.path.join(mod_dir, k), "rb") as fh:
+                txt = fh.read().decode("utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        if "MayRequire" in txt:
+            txt, _ = bc.rewrite_mayrequire(txt, fmap)
+        if nmap and "<mods>" in txt.lower():
+            txt, _ = bc.rewrite_findmod(txt, nmap)
+        if hashlib.sha1(txt.encode("utf-8")).hexdigest() == deployed.get(k):
+            same.add(k)
+    return [k for k in diff if k not in same]
+
+
 def check_deployed(mod_dir, deployed_dir):
     """Deployed copy == repo copy. Writing a file is not deploying it (CLAUDE.md)."""
     if not os.path.isdir(mod_dir):
@@ -209,6 +253,7 @@ def check_deployed(mod_dir, deployed_dir):
         a = {k: v for k, v in a.items() if k not in hold}
     diff = sorted(k for k in a if a.get(k) != b.get(k))
     diff = [k for k in diff if k != "DEPLOY_HOLD.txt"]
+    diff = _explain_deploy_transforms(mod_dir, diff, b)
     if diff:
         return Check("deployed_matches_repo", FAIL, "%d file(s) differ/missing, e.g. %s" % (len(diff), diff[:5]))
     return Check("deployed_matches_repo", PASS, "%d files identical (textures by size)" % len(a))
