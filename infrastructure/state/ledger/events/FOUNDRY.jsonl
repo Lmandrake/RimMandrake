@@ -5896,3 +5896,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"close game + restore ModsConfig","ts":"2026-10-17T01:39:07Z","tsn":1792201147514057851}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-17T01:39:17Z","tsn":1792201157100236791}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-17T01:39:28Z","tsn":1792201168483045802}
+{"seat":"FOUNDRY","event":"lease","id":"CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY","action":"take","token":"FOUNDRY.pid23190.4cbae323","expires":"2026-10-17T02:33:02Z","ts":"2026-10-17T01:48:02Z","tsn":1792201683113218608}
+{"seat":"FOUNDRY","event":"claim","id":"CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY","ts":"2026-10-17T01:48:03Z","tsn":1792201683358984618}
+{"seat":"FOUNDRY","event":"start","id":"CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY","ts":"2026-10-17T01:48:03Z","tsn":1792201683597965949}
+{"seat":"FOUNDRY","event":"start","id":"CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY","ts":"2026-10-17T01:48:04Z","tsn":1792201684613690519}
+{"seat":"FOUNDRY","event":"note","id":"CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY","text":"MOD, fixed offline at f11976b49: CellKey kept the wet mouth (wet outranks far-from-inflow) and levelSet forbids the drop-of-1 swap, so a fed D=1 run sat at 1,0,0,0 (source surface 0 = mouth surface 0, no feed). Mouth beside a supplying source now never counts as wet; kernel+oracle; mock 61/0, offline O1-O11 PASS, kernel==oracle 3000/3000 [levelset]. Fill now 1000,0100,1100,0110,1110,0111,1111 (full at 7, no stripes). O11 record replayed on pre-solve engine. NEXT: deploy DLL and rerun validation_v2 --live on calm, then close.","why":"offline diagnosis","ts":"2026-10-17T01:54:06Z","tsn":1792202046929371778}
