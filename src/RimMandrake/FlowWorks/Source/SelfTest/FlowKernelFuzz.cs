@@ -16,13 +16,23 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public override string ToString() => name;
 	}
 
-	internal sealed class ArrayWorld : RM_IFlowWorld
+	internal sealed class ArrayWorld : RM_IFlowWorld, RM_ILevelWorld
 	{
 		public static readonly Fluid Water = new Fluid { name = "water", tpt = 60 };
 		public static readonly Fluid Tar = new Fluid { name = "tar", tpt = 360 };
 		public static readonly Fluid Oil = new Fluid { name = "oil", tpt = 180 };
 
-		public sealed class Body { public int id; public bool limitless; public float stock; public Fluid fluid; public List<int> cells = new List<int>(); }
+		public sealed class Body
+		{
+			public int id; public bool limitless; public Fluid fluid; public List<int> cells = new List<int>();
+			/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the exact kernel's truth, whole decilitres (long.MinValue = not yet
+			/// read: taken from <see cref="stock"/> on first use). Every write keeps <see cref="stock"/> its float view.</summary>
+			public long dl = long.MinValue;
+			private float stockLevels;
+			public float stock { get => stockLevels; set { stockLevels = value; dl = long.MinValue; } }
+			public long Dl() { if (dl == long.MinValue) dl = (long)Math.Round(stockLevels * (double)RM_LevelSolve.U); return dl; }
+			public void SetDl(long v) { stockLevels = (float)(v / (double)RM_LevelSolve.U); dl = v; }
+		}
 
 		public readonly int w, h;
 		public readonly RM_FlowKernel k;
@@ -108,13 +118,33 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public bool IsSink(int idx) => sink[idx];
 		public void ComponentResolved(List<int> component) { }
 
+		// ── RM_ILevelWorld (the exact kernel): a limited body's dL, its bed histogram over its undug cells ──
+		public int LevelBodyOf(int src) { var b = BodyAt(src); return b == null || b.limitless ? -1 : b.id; }
+		public long BodyStockDl(int body) => bodies[body].Dl();
+		public void SetBodyStockDl(int body, long dl) => bodies[body].SetDl(dl);
+		public int BedAt(int src) => bed.TryGetValue(src, out int v) ? v : RM_FlowKernel.Superdeep;
+		public int[] BodyHistogram(int body)
+		{
+			var beds = new List<int>();
+			foreach (int c in bodies[body].cells) if (k.depth[c] == 0) beds.Add(BedAt(c));
+			return RM_PondDepthMath.Histogram(beds);
+		}
+		public void NoteLimitlessDl(object fluid, long dl)
+		{
+			Fluid f = (fluid as Fluid) ?? activeFluid;
+			externalIn[f] = externalIn.GetValueOrDefault(f) + dl / (float)RM_LevelSolve.U;
+		}
+
+		/// <summary>A cell's water in levels (fill + part / U): the exact kernel's view, the fill alone otherwise.</summary>
+		public float WaterLevels(int i) => k.part != null ? k.WaterOf(i) / (float)RM_LevelSolve.U : k.fill[i];
+
 		/// <summary>RM_MapComponent_Excavation.SyncFluidIdentity's grid half.</summary>
 		public void Sync()
 		{
 			for (int i = 0; i < w * h; i++)
 			{
 				if (k.depth[i] == 0) continue;
-				if (k.fill[i] == 0) cellFluid[i] = null;
+				if (k.fill[i] == 0 && (k.part == null || k.part[i] == 0)) cellFluid[i] = null;
 				else if (cellFluid[i] == null) cellFluid[i] = activeFluid;
 			}
 		}
@@ -125,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public Dictionary<Fluid, float> Totals()
 		{
 			var t = new Dictionary<Fluid, float>();
-			for (int i = 0; i < w * h; i++) if (k.depth[i] > 0 && k.fill[i] > 0) t[cellFluid[i]] = t.GetValueOrDefault(cellFluid[i]) + k.fill[i];
+			for (int i = 0; i < w * h; i++) if (k.depth[i] > 0 && WaterLevels(i) > 0) t[cellFluid[i]] = t.GetValueOrDefault(cellFluid[i]) + WaterLevels(i);
 			foreach (var b in bodies) if (!b.limitless) t[b.fluid] = t.GetValueOrDefault(b.fluid) + b.stock;
 			return t;
 		}
@@ -212,12 +242,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var w = Build(s, digs);
 			var seeds = SeedOrder(w, digs);
 			int n = w.w * w.h;
-			var prevFill = new byte[n];
+			var prevFill = new float[n];
 			var prevFluid = new Fluid[n];
 			var history = new List<string>();
 			for (int p = 0; p < s.pulses; p++)
 			{
-				Array.Copy(w.k.fill, prevFill, n);
+				for (int i = 0; i < n; i++) prevFill[i] = w.WaterLevels(i);
 				Array.Copy(w.cellFluid, prevFluid, n);
 				var t0 = w.Totals();
 				w.externalIn.Clear();
@@ -227,6 +257,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				for (int i = 0; i < n; i++)
 				{
 					if (w.k.fill[i] > w.k.depth[i] || w.k.depth[i] > 4) return $"pulse {p}: 0<=F<=D<=4 broken at {i}";
+					if (w.k.part != null && (w.k.part[i] >= RM_LevelSolve.U || (w.k.part[i] > 0 && w.k.fill[i] >= w.k.depth[i])))
+						return $"pulse {p}: exact water above the brim at {i} (fill {w.k.fill[i]}, part {w.k.part[i]}, D {w.k.depth[i]})";
 					// (A cell MAY change fluid across a pulse: it can give or drain its last level and then be claimed
 					// by another fluid in the same pulse - measured, seed 4764. "Never mix" is enforced below as
 					// per-fluid conservation, which a transmutation cannot pass.)
@@ -241,7 +273,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				if (s.sinks)
 					for (int i = 0; i < n; i++)
 						if (w.sink[i] && w.k.depth[i] > 0 && prevFill[i] > 0)
-							sunk[prevFluid[i]] = sunk.GetValueOrDefault(prevFluid[i]) + Math.Min(prevFill[i], w.k.flowPerPulse);
+							sunk[prevFluid[i]] = sunk.GetValueOrDefault(prevFluid[i]) + Math.Min(prevFill[i], (float)w.k.flowPerPulse);
 				if (Math.Abs(sunk.Values.Sum() - w.k.sinkDrained) > 1e-3) return $"pulse {p}: sink drained {w.k.sinkDrained}, cells account for {sunk.Values.Sum()}";
 				foreach (var f in t0.Keys.Union(t1.Keys))
 					{
@@ -260,7 +292,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return null;
 		}
 
-		private static string Snapshot(ArrayWorld w) => Convert.ToBase64String(w.k.fill);
+		private static string Snapshot(ArrayWorld w) => Convert.ToBase64String(w.k.fill)
+			+ (w.k.part != null ? Convert.ToBase64String(w.k.part.SelectMany(BitConverter.GetBytes).ToArray()) : "");
 
 		// A still-filling grid legitimately changes. Settled is expected when no source can still give.
 		private static bool SettledExpected(ArrayWorld w) => w.bodies.All(b => !b.limitless && b.stock < 1f);
@@ -812,7 +845,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 				for (int i = 0; i < 64; i++) { int x = i % 8, z = i / 8; w.sink[i] = band > 0 && (x < band || z < band || x >= 8 - band || z >= 8 - band); }
 				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = LevelSet;
-				float startTotal = w.k.fill.Sum(f => f) + (pond?.stock ?? 0f);
+				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: totals, rest and the level check read the WATER (fill + part) so the family
+				// holds at the shipped exact-level flags as well as at the whole-notch ones (part is null there: water = fill).
+				float startTotal = Enumerable.Range(0, 64).Sum(i => w.WaterLevels(i)) + (pond?.stock ?? 0f);
 				var digs = Enumerable.Range(0, 64).Where(i => w.k.depth[i] > 0).ToList();
 				string prev = null; int lastChange = 0; float worst = 0f, drained = 0f;
 				for (int p = 1; p <= 200; p++)
@@ -820,11 +855,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 					w.Pulse(digs);
 					worst = Math.Max(worst, w.k.worstImbalance);
 					drained += w.k.sinkDrained;
-					string now = string.Join(",", digs.Select(c => w.k.fill[c]));
+					string now = string.Join(",", digs.Select(c => w.k.part != null ? w.k.WaterOf(c) : w.k.fill[c]));
 					if (now != prev) lastChange = p;
 					prev = now;
 				}
-				float endTotal = w.k.fill.Sum(f => f) + (pond?.stock ?? 0f) + drained;
+				float endTotal = Enumerable.Range(0, 64).Sum(i => w.WaterLevels(i)) + (pond?.stock ?? 0f) + drained;
 				bool rest = lastChange <= 150, bal = worst <= 0.001f && Math.Abs(endTotal - startTotal) < 0.001f;
 				// At rest, no wet cell stands 2+ above a dug neighbour in its own network (sealed/sink-free scenes only;
 				// a sink band empties toward the edge, and a different-fluid wall cannot happen here: one fluid).
@@ -833,11 +868,16 @@ namespace RimMandrake.FlowWorks.SelfTest
 				{
 					for (int i = 0; i < 64 && level; i++)
 					{
-						if (w.k.depth[i] == 0 || w.k.fill[i] == 0) continue;
+						if (w.k.depth[i] == 0 || w.WaterLevels(i) == 0) continue;
 						for (int d = 0; d < 4; d++)
 						{
 							int n = w.k.Cardinal(i, d);
-							if (n >= 0 && w.k.depth[n] > 0 && (w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n]) >= 2) { level = false; break; }
+							if (n < 0 || w.k.depth[n] == 0) continue;
+							// exact: one surface to the decilitre (a step of 3 dL or more is not level); whole notches: within one notch
+							bool steepHere = w.k.part != null
+								? (w.k.WaterOf(i) - w.k.depth[i] * (long)RM_LevelSolve.U) - (w.k.WaterOf(n) - w.k.depth[n] * (long)RM_LevelSolve.U) >= 3
+								: (w.k.fill[i] - w.k.depth[i]) - (w.k.fill[n] - w.k.depth[n]) >= 2;
+							if (steepHere) { level = false; break; }
 						}
 					}
 				}
@@ -987,7 +1027,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 	internal static class OracleScenes
 	{
 		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false,
-			bool creep = false, bool headRule = false)
+			bool creep = false, bool headRule = false, bool exact = false)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -1033,14 +1073,18 @@ namespace RimMandrake.FlowWorks.SelfTest
 				world.k.levelSetEnabled = levelBySurface && levelSet;
 				world.k.creepWaterEnabled = creep;
 				world.k.creepEnabled = creep;
+				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: "exact" prints every dug cell's WATER in dL and each limited body's dL
+				// (northstar/level_water.py, PulseOracle(level_exact=True)).
+				world.k.levelExactEnabled = exact;
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{
 					world.Pulse(digs);
-					foreach (int c in digs) sb.Append(world.k.fill[c]).Append(' ');
+					foreach (int c in digs) sb.Append(exact ? world.k.WaterOf(c) : world.k.fill[c]).Append(' ');
 					sb.Append("| ");
+					if (exact && world.k.worstImbalance > 0) sb.Append("IMBALANCE ");
 				}
-				foreach (var b in world.bodies) sb.Append(b.limitless ? "L" : b.stock.ToString("F0")).Append(' ');
+				foreach (var b in world.bodies) sb.Append(b.limitless ? "L" : exact ? b.Dl().ToString() : b.stock.ToString("F0")).Append(' ');
 				output.WriteLine(sb.ToString().TrimEnd());
 			}
 			return 0;

@@ -334,7 +334,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "detach and reattach both size the pond by unit x beds");
                 RiverSwitchFlipChecks.Has(st, @"body\.levelUnit = RM_BedMath\.LevelUnit\(body\.capacity, BedSum\(body, owner\)\);", "the unit is fixed at formation");
                 // C2-F7: sticky-limitless off, a truncated LIMITED body's far squares bring their own capacity and water
-                RiverSwitchFlipChecks.Has(st, @"if \(!owned\.limitless\) \{ float add = LevelUnitOf\(owned, owner\) \* owner\.BedLevelsAt\(far\); owned\.capacity \+= add; owned\.stock \+= add; \}",
+                RiverSwitchFlipChecks.Has(st, @"if \(!owned\.limitless\) \{ float add = LevelUnitOf\(owned, owner\) \* owner\.BedLevelsAt\(far\); owned\.capacity \+= add; owned\.AddStock\(add\); \}",
                     "a limited body never grows squares without capacity");
             });
 

@@ -236,6 +236,45 @@ namespace RimMandrake.FlowWorks
 		/// fraction × capacity (a stand-in for pumps: the conservation of real pumping is the offline selftests'), then runs its
 		/// recession and restore to rest (RM_LiquidStock.SettleRecession); "shape;x,z" reads. BODY/SHAPE lines are
 		/// "key=value" tokens; REFUSED: reason otherwise.</summary>
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES, owner R9 (2026-10-17: every square of connected still water stands
+		/// at the same surface height, to within 1 cm, read from game state, not the picture): the per-body surface-gap read
+		/// northstar/level_surface_bar.py makes. <paramref name="arg"/> = "x,z,w,h" (a rect of the current map) or "-" (the whole
+		/// map). Returns "OK n worst G m;" then one "x,z:squares:gap:min:max" per body (metres; surfaces relative to ground,
+		/// first square named), largest gap first, ';'-separated. Read only.</summary>
+		public static string ProofLevelSurface(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation eng = map == null ? null : RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return "REFUSED no current map or no FlowWorks engine on it";
+			}
+			CellRect? rect = null;
+			string[] p = (arg ?? "-").Split(',');
+			if (p.Length == 4 && int.TryParse(p[0], out int x) && int.TryParse(p[1], out int z) && int.TryParse(p[2], out int w)
+				&& int.TryParse(p[3], out int h))
+			{
+				rect = new CellRect(x, z, w, h);
+			}
+			else if ((arg ?? "-").Trim() != "-")
+			{
+				return "REFUSED arg must be x,z,w,h or -";
+			}
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			System.Collections.Generic.List<RM_SurfaceGap.Body> bodies = eng.SurfaceGaps(rect);
+			var sb = new System.Text.StringBuilder();
+			sb.Append("OK ").Append(bodies.Count).Append(" worst ")
+				.Append((bodies.Count > 0 ? bodies[0].gapM : 0.0).ToString("F4", inv)).Append(" m;");
+			for (int i = 0; i < bodies.Count; i++)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(bodies[i].firstCell);
+				sb.Append(c.x).Append(',').Append(c.z).Append(':').Append(bodies[i].squares).Append(':')
+					.Append(bodies[i].gapM.ToString("F4", inv)).Append(':').Append(bodies[i].minM.ToString("F4", inv)).Append(':')
+					.Append(bodies[i].maxM.ToString("F4", inv)).Append(';');
+			}
+			return sb.ToString();
+		}
+
 		public static string ProofDeepLake(string arg)
 		{
 			Map map = Find.CurrentMap;

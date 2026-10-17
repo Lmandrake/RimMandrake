@@ -34,6 +34,26 @@ namespace RimMandrake.FlowWorks
 		void ComponentResolved(List<int> component);
 	}
 
+	/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: what the exact-level kernel (<see cref="RM_FlowKernel.levelExactEnabled"/>)
+	/// reads and writes about natural bodies, in decilitres. Implemented beside <see cref="RM_IFlowWorld"/> (the game on
+	/// RM_MapComponent_Excavation, the selftest on its array world); without it the kernel keeps the whole-notch engine.</summary>
+	public interface RM_ILevelWorld
+	{
+		/// <summary>The LIMITED body behind source <paramref name="src"/> (an id), or -1 when it never runs down (limitless, or
+		/// the source budget off).</summary>
+		int LevelBodyOf(int src);
+		/// <summary>The body's water, a whole number of decilitres.</summary>
+		long BodyStockDl(int body);
+		void SetBodyStockDl(int body, long dl);
+		/// <summary>H[L] over the body's undug footprint: squares whose bed is at least L notches, L = 0..maxBed.</summary>
+		int[] BodyHistogram(int body);
+		/// <summary>The bed (notches) of source square <paramref name="src"/>.</summary>
+		int BedAt(int src);
+		/// <summary>A limitless source paid <paramref name="dl"/> decilitres of <paramref name="fluid"/> into dug squares this pulse
+		/// (the disclosed external input; the old kernel's TryDebitLevel on a limitless body).</summary>
+		void NoteLimitlessDl(object fluid, long dl);
+	}
+
 	/// <summary>Approach B phase 2 (design/RimMandrake/flowworks_offline_kernel_B.md): the grid transition of one
 	/// flow pulse — component resolution, sink drain, flow order, recipient order, donor selection and the
 	/// per-component conservation ledger — on integer cell indices (z * width + x, Verse's CellIndices) and
@@ -128,6 +148,21 @@ namespace RimMandrake.FlowWorks
 		public Func<int, int, bool> returnLevel;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
+
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17: "We need VERY smooth water. That's water's one
+		/// primary characteristic: a level surface."; ruled exactly level by card). On, and with <see cref="part"/> set and the
+		/// world an <see cref="RM_ILevelWorld"/>, every component resolves by <see cref="ResolveExact"/>: a dug square holds
+		/// W = fill·U + part decilitres, a limited pond a whole number of dL, and each connected body is solved to ONE surface
+		/// (RM_LevelSolve), the mouth paced at flowPerPulse notches a mouth square a pulse. Python twin:
+		/// northstar/level_water.py. Off by default here; the adapter sets it (shipped ON).</summary>
+		public bool levelExactEnabled;
+		/// <summary>The decilitres below one whole notch per cell (0..U-1); W = fill·U + part. The adapter's scribed grid.</summary>
+		public ushort[] part;
+		/// <summary>Exact mode, this pulse: dL limitless sources paid in, dL sinks took out (the adapter's ledger).</summary>
+		public long exactCreditDl;
+		public long exactDrainDl;
+		private readonly RM_LevelSolve exactSolve = new RM_LevelSolve();
+		private readonly RM_LevelSolve canalSolve = new RM_LevelSolve();
 
 		// per-pulse outputs
 		public float sinkDrained;
@@ -275,6 +310,8 @@ namespace RimMandrake.FlowWorks
 		public void Pulse(IEnumerable<int> seedOrder, long pulseCount)
 		{
 			sinkDrained = 0f;
+			exactCreditDl = 0;
+			exactDrainDl = 0;
 			worstImbalance = 0f;
 			imbalanceReports.Clear();
 			visited.Clear();
@@ -357,6 +394,15 @@ namespace RimMandrake.FlowWorks
 
 		private void ResolveComponent(long pulseCount, bool networkOrder = false)
 		{
+			if (levelExactEnabled && world is RM_ILevelWorld levelWorld)
+			{
+				if (part == null || part.Length != width * height)
+				{
+					part = new ushort[width * height];   // a world that keeps no part grid (the offline worlds)
+				}
+				ResolveExact(levelWorld, pulseCount, networkOrder);
+				return;
+			}
 			float before = 0f;
 			for (int i = 0; i < component.Count; i++)
 			{
@@ -512,6 +558,563 @@ namespace RimMandrake.FlowWorks
 					" imbalance=" + imbalance.ToString("F1"));
 			}
 			world.ComponentResolved(component);
+		}
+
+		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the exact-level pulse ─────────────────────────────────────
+
+		/// <summary>The water (dL) a dug cell holds: fill·U + part.</summary>
+		public long WaterOf(int c)
+		{
+			return fill[c] * (long)RM_LevelSolve.U + (part != null ? part[c] : 0);
+		}
+
+		/// <summary>Writes a dug cell's water as whole notches plus the part.</summary>
+		public void SetWaterOf(int c, long w)
+		{
+			fill[c] = (byte)(w / RM_LevelSolve.U);
+			if (part != null)
+			{
+				part[c] = (ushort)(w % RM_LevelSolve.U);
+			}
+		}
+
+		private readonly List<int> exDug = new List<int>();
+		private readonly Dictionary<int, int> exHops = new Dictionary<int, int>();
+		private readonly HashSet<int> exAssigned = new HashSet<int>();
+		private readonly Dictionary<int, long> exPondBefore = new Dictionary<int, long>();
+		private readonly List<int> exCells = new List<int>();
+		private readonly HashSet<int> exInDom = new HashSet<int>();
+		private readonly List<int> exPonds = new List<int>();
+		private readonly HashSet<int> exPondSet = new HashSet<int>();
+		private readonly HashSet<int> exLimMouths = new HashSet<int>();
+		private readonly Dictionary<long, int> exMouthEdge = new Dictionary<long, int>();
+		private readonly List<int> exQueue = new List<int>();
+		private readonly Dictionary<int, int> exIndex = new Dictionary<int, int>();
+		private readonly Dictionary<int, HashSet<int>> exMouths = new Dictionary<int, HashSet<int>>();
+		private readonly List<int> exSrcScratch = new List<int>();
+		private long[] exOld = new long[16];
+		private long[] exTarget = new long[16];
+		private long[] exNew = new long[16];
+		private long exCredit;
+
+		/// <summary>One component, exact (northstar/level_water.py _exact_component): sinks drain up to flowPerPulse·U a sink
+		/// square; then from each wet square in cell-index order (or a dry square beside a source) a DOMAIN is grown and solved
+		/// (<see cref="ExactDomain"/>); the ledger balances to the dL.</summary>
+		private void ResolveExact(RM_ILevelWorld lw, long pulseCount, bool networkOrder)
+		{
+			int U = RM_LevelSolve.U;
+			// this partition's membership (a rotated network's partitions each resolve on their own cells)
+			componentSet.Clear();
+			for (int i = 0; i < component.Count; i++)
+			{
+				componentSet.Add(component[i]);
+			}
+			exDug.Clear();
+			for (int i = 0; i < component.Count; i++)
+			{
+				if (IsExcavated(component[i]))
+				{
+					exDug.Add(component[i]);
+				}
+			}
+			exDug.Sort();
+			long before = 0;
+			for (int i = 0; i < exDug.Count; i++)
+			{
+				before += WaterOf(exDug[i]);
+			}
+			long drained = 0;
+			if (edgeSinksEnabled)
+			{
+				long per = flowPerPulse * (long)U;
+				for (int i = 0; i < exDug.Count; i++)
+				{
+					int c = exDug[i];
+					if (!world.IsSink(c) || IsSealed(c))
+					{
+						continue;
+					}
+					long w = WaterOf(c);
+					long take = Math.Min(w, per);
+					if (take > 0)
+					{
+						SetWaterOf(c, w - take);
+						drained += take;
+					}
+				}
+				exactDrainDl += drained;
+				sinkDrained += drained / (float)U;
+			}
+			// sinkHops: BFS from every sink square through dug, unsealed squares of this partition; a draining domain lays its
+			// remainder nearest the sink first, so a run drains to the last dL.
+			exHops.Clear();
+			if (edgeSinksEnabled)
+			{
+				hopFrontier.Clear();
+				for (int i = 0; i < exDug.Count; i++)
+				{
+					int c = exDug[i];
+					if (world.IsSink(c) && !IsSealed(c))
+					{
+						exHops[c] = 0;
+						hopFrontier.Add(c);
+					}
+				}
+				for (int head = 0; head < hopFrontier.Count; head++)
+				{
+					int c = hopFrontier[head];
+					int hc = exHops[c];
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || exHops.ContainsKey(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+						{
+							continue;
+						}
+						exHops[nb] = hc + 1;
+						hopFrontier.Add(nb);
+					}
+				}
+				hopFrontier.Clear();
+			}
+			exPondBefore.Clear();
+			exCredit = 0;
+			exAssigned.Clear();
+			for (int i = 0; i < exDug.Count; i++)
+			{
+				int c = exDug[i];
+				if (exAssigned.Contains(c) || IsSealed(c))
+				{
+					continue;
+				}
+				object fl;
+				if (WaterOf(c) > 0)
+				{
+					fl = world.CellFluid(c);
+				}
+				else
+				{
+					int src = -1;
+					for (int d = 0; d < 4 && src < 0; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb >= 0 && componentSet.Contains(nb) && IsSource(nb) && !IsSealed(nb))
+						{
+							src = nb;
+						}
+					}
+					if (src < 0)
+					{
+						continue;
+					}
+					fl = world.DonorFluid(src, true);
+					if (!world.CanClaim(fl))
+					{
+						continue;
+					}
+				}
+				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fl)))
+				{
+					continue;
+				}
+				ExactDomain(lw, c, fl);
+			}
+			long after = 0;
+			for (int i = 0; i < exDug.Count; i++)
+			{
+				after += WaterOf(exDug[i]);
+			}
+			long pondChange = 0;
+			foreach (KeyValuePair<int, long> kv in exPondBefore)
+			{
+				pondChange += lw.BodyStockDl(kv.Key) - kv.Value;
+			}
+			exactCreditDl += exCredit;
+			long imbalance = after - before + drained + pondChange - exCredit;
+			if (imbalance != 0)
+			{
+				worstImbalance = Math.Max(worstImbalance, Math.Abs(imbalance) / (float)U);
+				imbalanceReports.Add("exact: before=" + before + " dL after=" + after + " dL pondChange=" + pondChange
+					+ " limitlessCredit=" + exCredit + " sinkDrain=" + drained + " imbalance=" + imbalance + " dL");
+			}
+			world.ComponentResolved(component);
+		}
+
+		private void ExactAddCell(int c)
+		{
+			if (exInDom.Contains(c) || exAssigned.Contains(c))
+			{
+				return;
+			}
+			exInDom.Add(c);
+			exCells.Add(c);
+			exQueue.Add(c);
+		}
+
+		private static bool SameFluid(object a, object b)
+		{
+			return ReferenceEquals(a, b);
+		}
+
+		private void ExactTouchSource(RM_ILevelWorld lw, int cell, int s, object fl)
+		{
+			if (!componentSet.Contains(s) || !IsSource(s) || IsSealed(s))
+			{
+				return;
+			}
+			object df = world.DonorFluid(s, true);
+			if (!RM_StockMath.FluidsCompatible(true, fl, df))
+			{
+				return;
+			}
+			int bid = lw.LevelBodyOf(s);
+			if (bid < 0)
+			{
+				exLimMouths.Add(cell);
+				return;
+			}
+			int cap = Math.Min(depth[cell], lw.BedAt(s));
+			long key = ((long)cell << 32) | (uint)bid;
+			if (!exMouthEdge.TryGetValue(key, out int have) || cap > have)
+			{
+				exMouthEdge[key] = cap;
+			}
+			if (exPondSet.Add(bid))
+			{
+				exPonds.Add(bid);
+				exQueue.Add(~bid);
+			}
+		}
+
+		/// <summary>Grows one domain from <paramref name="seed"/> (level_water._domain) and solves it.</summary>
+		private void ExactDomain(RM_ILevelWorld lw, int seed, object fl)
+		{
+			exCells.Clear();
+			exInDom.Clear();
+			exPonds.Clear();
+			exPondSet.Clear();
+			exLimMouths.Clear();
+			exMouthEdge.Clear();
+			exQueue.Clear();
+			ExactAddCell(seed);
+			for (int head = 0; head < exQueue.Count; head++)
+			{
+				int x = exQueue[head];
+				if (x >= 0)
+				{
+					int c = x;
+					bool wet = WaterOf(c) > 0;
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || !componentSet.Contains(nb))
+						{
+							continue;
+						}
+						if (IsExcavated(nb))
+						{
+							if (IsSealed(nb) || exInDom.Contains(nb) || exAssigned.Contains(nb))
+							{
+								continue;
+							}
+							if (WaterOf(nb) > 0)
+							{
+								if (SameFluid(world.CellFluid(nb), fl))
+								{
+									ExactAddCell(nb);
+								}
+							}
+							else if (wet && world.CanClaim(fl))
+							{
+								ExactAddCell(nb);   // the dry rim
+							}
+						}
+						else
+						{
+							ExactTouchSource(lw, c, nb, fl);
+						}
+					}
+				}
+				else
+				{
+					int bid = ~x;
+					exSrcScratch.Clear();
+					for (int i = 0; i < component.Count; i++)
+					{
+						int s = component[i];
+						if (IsSource(s) && lw.LevelBodyOf(s) == bid)
+						{
+							exSrcScratch.Add(s);
+						}
+					}
+					exSrcScratch.Sort();
+					for (int i = 0; i < exSrcScratch.Count; i++)
+					{
+						int s = exSrcScratch[i];
+						if (IsSealed(s))
+						{
+							continue;
+						}
+						for (int d = 0; d < 4; d++)
+						{
+							int nb = Cardinal(s, d);
+							if (nb < 0 || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb) || exAssigned.Contains(nb))
+							{
+								continue;
+							}
+							long wn = WaterOf(nb);
+							if (wn > 0 && !SameFluid(world.CellFluid(nb), fl))
+							{
+								continue;
+							}
+							if (wn == 0 && !exInDom.Contains(nb) && !world.CanClaim(fl))
+							{
+								continue;
+							}
+							ExactAddCell(nb);
+							ExactTouchSource(lw, nb, s, fl);
+						}
+					}
+				}
+			}
+			for (int i = 0; i < exCells.Count; i++)
+			{
+				exAssigned.Add(exCells[i]);
+			}
+			bool drains = false;
+			for (int i = 0; i < exCells.Count && !drains; i++)
+			{
+				drains = exHops.ContainsKey(exCells[i]);
+			}
+			const int Far = 1 << 20;
+			if (drains)
+			{
+				exCells.Sort((a, b) =>
+				{
+					int ha = exHops.TryGetValue(a, out int va) ? va : Far;
+					int hb = exHops.TryGetValue(b, out int vb) ? vb : Far;
+					return ha != hb ? ha.CompareTo(hb) : a.CompareTo(b);
+				});
+			}
+			else
+			{
+				exCells.Sort();
+			}
+			exPonds.Sort();
+			ExactSolveDomain(lw, fl);
+		}
+
+		private void ExactCellEdges(RM_LevelSolve solve)
+		{
+			for (int i = 0; i < exCells.Count; i++)
+			{
+				int c = exCells[i];
+				for (int d = 0; d < 2; d++)   // N and E: each undirected edge once (AddEdge adds both directions)
+				{
+					int nb = Cardinal(c, d);
+					if (nb >= 0 && exIndex.TryGetValue(nb, out int j))
+					{
+						solve.AddEdge(i, j, Math.Min(depth[c], depth[nb]));
+					}
+				}
+			}
+		}
+
+		/// <summary>level_water._solve_domain: the joint solve (or, beside a limitless source, every node full), the mouth pace
+		/// by lambda, the canal re-solve, the write.</summary>
+		private void ExactSolveDomain(RM_ILevelWorld lw, object fl)
+		{
+			int U = RM_LevelSolve.U;
+			int nCells = exCells.Count;
+			int nNodes = nCells + exPonds.Count;
+			if (exOld.Length < nNodes)
+			{
+				int cap = Math.Max(nNodes, exOld.Length * 2);
+				exOld = new long[cap];
+				exTarget = new long[cap];
+				exNew = new long[cap];
+			}
+			exIndex.Clear();
+			exactSolve.Clear();
+			for (int i = 0; i < nCells; i++)
+			{
+				int c = exCells[i];
+				exIndex[c] = i;
+				exactSolve.AddCell(depth[c], WaterOf(c));
+			}
+			long[] excess = new long[exPonds.Count];
+			for (int k = 0; k < exPonds.Count; k++)
+			{
+				int bid = exPonds[k];
+				int[] h = lw.BodyHistogram(bid);
+				long dl = lw.BodyStockDl(bid);
+				if (!exPondBefore.ContainsKey(bid))
+				{
+					exPondBefore[bid] = dl;
+				}
+				long cap = RM_LevelSolve.PondCapacity(h);
+				long w = Math.Min(Math.Max(dl, 0), cap);
+				excess[k] = dl - w;
+				exactSolve.AddPond(h, w);
+			}
+			for (int i = 0; i < nNodes; i++)
+			{
+				exOld[i] = exactSolve.WaterOf(i);
+			}
+			ExactCellEdges(exactSolve);
+			exMouths.Clear();
+			foreach (KeyValuePair<long, int> kv in exMouthEdge)
+			{
+				int c = (int)(kv.Key >> 32);
+				int bid = (int)(uint)kv.Key;
+				exactSolve.AddEdge(exIndex[c], nCells + exPonds.IndexOf(bid), kv.Value);
+				if (!exMouths.TryGetValue(bid, out HashSet<int> set))
+				{
+					set = exMouths[bid] = new HashSet<int>();
+				}
+				set.Add(c);
+			}
+			bool hasLim = exLimMouths.Count > 0;
+			if (hasLim)
+			{
+				for (int i = 0; i < nNodes; i++)
+				{
+					exTarget[i] = exactSolve.CapBelow(i, 1);
+				}
+			}
+			else
+			{
+				if (!exactSolve.Solve())
+				{
+					return;
+				}
+				for (int i = 0; i < nNodes; i++)
+				{
+					exTarget[i] = exactSolve.ResultOf(i);
+				}
+			}
+			long perU = flowPerPulse * (long)U;
+			long sumDelta = 0;
+			for (int i = 0; i < nNodes; i++)
+			{
+				sumDelta += exTarget[i] - exOld[i];
+			}
+			long limTotal = hasLim ? -sumDelta : 0;
+			long dead = nNodes;
+			bool exchange = hasLim;
+			for (int k = 0; k < exPonds.Count && !exchange; k++)
+			{
+				exchange = Math.Abs(exTarget[nCells + k] - exOld[nCells + k]) > dead;
+			}
+			for (int i = 0; i < nNodes; i++)
+			{
+				exNew[i] = exOld[i];
+			}
+			if (exchange)
+			{
+				long num = 1, den = 1;
+				for (int k = 0; k < exPonds.Count; k++)
+				{
+					long dd = Math.Abs(exTarget[nCells + k] - exOld[nCells + k]);
+					long limit = perU * (exMouths.TryGetValue(exPonds[k], out HashSet<int> ms) ? ms.Count : 0);
+					if (dd > limit && limit * den < num * dd)
+					{
+						num = limit;
+						den = dd;
+					}
+				}
+				if (hasLim)
+				{
+					long dd = Math.Abs(limTotal);
+					long limit = perU * exLimMouths.Count;
+					if (dd > limit && limit * den < num * dd)
+					{
+						num = limit;
+						den = dd;
+					}
+				}
+				if (num == den)
+				{
+					for (int i = 0; i < nNodes; i++)
+					{
+						exNew[i] = exTarget[i];
+					}
+				}
+				else
+				{
+					long r = 0;
+					for (int i = 0; i < nNodes; i++)
+					{
+						exNew[i] = exOld[i] + RM_LevelSolve.TruncDiv((exTarget[i] - exOld[i]) * num, den);
+						r += exNew[i] - exOld[i];
+					}
+					if (!hasLim)
+					{
+						int guard = 0;
+						while (r != 0 && guard < 4 * nNodes + 4)
+						{
+							guard++;
+							for (int i = 0; i < nCells && r != 0; i++)
+							{
+								long lo = Math.Min(exOld[i], exTarget[i]);
+								long hi = Math.Max(exOld[i], exTarget[i]);
+								if (r > 0 && exNew[i] > lo)
+								{
+									exNew[i]--;
+									r--;
+								}
+								else if (r < 0 && exNew[i] < hi)
+								{
+									exNew[i]++;
+									r++;
+								}
+							}
+						}
+						if (r != 0)
+						{
+							return;   // cannot happen; never write a step that would not conserve
+						}
+					}
+				}
+			}
+			if (hasLim)
+			{
+				long gain = 0;
+				for (int i = 0; i < nNodes; i++)
+				{
+					gain += exNew[i] - exOld[i];
+				}
+				exCredit += gain;
+				if (gain != 0)
+				{
+					lw.NoteLimitlessDl(fl, gain);
+				}
+			}
+			// the canal squares, re-solved on their own (the ponds keep what the exchange gave them)
+			canalSolve.Clear();
+			for (int i = 0; i < nCells; i++)
+			{
+				canalSolve.AddCell(depth[exCells[i]], exNew[i]);
+			}
+			ExactCellEdges(canalSolve);
+			if (!canalSolve.Solve())
+			{
+				return;
+			}
+			for (int i = 0; i < nCells; i++)
+			{
+				int c = exCells[i];
+				long w = canalSolve.ResultOf(i);
+				if (w > 0 && WaterOf(c) == 0)
+				{
+					world.Claim(c, fl);
+				}
+				SetWaterOf(c, w);
+			}
+			for (int k = 0; k < exPonds.Count; k++)
+			{
+				lw.SetBodyStockDl(exPonds[k], exNew[nCells + k] + excess[k]);
+			}
 		}
 
 		private readonly List<int> regionSeeds = new List<int>();

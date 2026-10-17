@@ -140,6 +140,33 @@ namespace RimMandrake.FlowWorks
 			return w == 2 ? Stage.Shallow : Stage.Thin;
 		}
 
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the stage for a square standing in <paramref name="waterDl"/> decilitres
+		/// of water (the pond's exact surface, RM_LevelSolve.PondSquareWater) over a bed of <paramref name="bed"/> notches: the
+		/// look nearest its TRUE metres (RM_LevelSolve.LookBand), and the square's own original terrain when that is the look it
+		/// had full. Under 25 cm (band 1) shows the 0.5 m stage until the very-shallow art lands
+		/// (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST). Under half a decilitre is dry (mud).</summary>
+		public static Stage StageForExact(double waterDl, int bed)
+		{
+			if (waterDl < 0.5)
+			{
+				return Stage.Mud;
+			}
+			long w = (long)Math.Round(waterDl);
+			int band = RM_LevelSolve.LookBand(w);
+			if (w >= (long)bed * RM_LevelSolve.U || band == RM_LevelSolve.LookBand((long)bed * RM_LevelSolve.U))
+			{
+				return Stage.Original;
+			}
+			switch (band)
+			{
+				case 1:
+				case 2: return Stage.Thin;
+				case 3: return Stage.Shallow;
+				case 4: return Stage.ChestDeep;
+				default: return Stage.Deep;
+			}
+		}
+
 		/// <summary>The r squares holding band s: of the squares with bed ≥ s (and <paramref name="eligible"/>, ruling 5: a
 		/// dry square with a pawn or building waits), grown best-first as ONE 4-connected patch from the deepest square
 		/// (deepest bed, then lowest cell index), so too little water for a sheet is one puddle at the minimum depth, never

@@ -32,9 +32,28 @@ namespace RimMandrake.FlowWorks
 		/// or its manager that assigns it a second time.</summary>
 		public bool limitless;
 
-		/// <summary>Fill-units remaining. Meaningless when
-		/// <see cref="limitless"/>; a limitless body is never debited.</summary>
-		public float stock;
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): the body's water in
+		/// whole DECILITRES of fill-units (fill-units × RM_LevelSolve.U; a fill-unit is a level when levelUnit is 1, as every
+		/// shipped liquid is). The truth since the exact-level model: transfers add and subtract whole dL, so a pond's books
+		/// balance to the decilitre however large it is. Meaningless when <see cref="limitless"/>.</summary>
+		public long stockDl;
+
+		/// <summary>Fill-units remaining: the float VIEW of <see cref="stockDl"/> every older reader keeps (a write rounds to
+		/// the nearest decilitre). Meaningless when <see cref="limitless"/>; a limitless body is never debited.</summary>
+		public float stock
+		{
+			get => (float)(stockDl / (double)RM_LevelSolve.U);
+			set => stockDl = (long)System.Math.Round(value * (double)RM_LevelSolve.U);
+		}
+
+		/// <summary>Add (or, negative, take) <paramref name="fillUnits"/> exactly as decilitres: the writers that move stock.</summary>
+		public void AddStock(double fillUnits)
+		{
+			stockDl += (long)System.Math.Round(fillUnits * RM_LevelSolve.U);
+		}
+
+		/// <summary>The float stock a save from before the exact-level model held (the migration's "before"; -1 = none read).</summary>
+		internal float legacyStock = -1f;
 
 		/// <summary>Σ bed levels of the footprint × volumePerTile × budget (POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK).</summary>
 		public float capacity;
@@ -106,7 +125,17 @@ namespace RimMandrake.FlowWorks
 		{
 			Scribe_Values.Look(ref id, "id", 0);
 			Scribe_Values.Look(ref limitless, "limitless", false);
-			Scribe_Values.Look(ref stock, "stock", 0f);
+			// The float "stock" is still written (a downgrade reads it); "stockDl" is the truth. A save without "stockDl" (from
+			// before WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES) takes it from the float, rounded to the decilitre.
+			float stockView = stock;
+			Scribe_Values.Look(ref stockView, "stock", 0f);
+			long dl = stockDl;
+			Scribe_Values.Look(ref dl, "stockDl", long.MinValue);
+			if (Scribe.mode == LoadSaveMode.LoadingVars)
+			{
+				legacyStock = stockView;
+				stockDl = dl != long.MinValue ? dl : (long)System.Math.Round(stockView * (double)RM_LevelSolve.U);
+			}
 			Scribe_Values.Look(ref capacity, "capacity", 0f);
 			Scribe_Values.Look(ref truncated, "truncated", false);
 			Scribe_Defs.Look(ref fluid, "fluid");

@@ -194,7 +194,7 @@ namespace RimMandrake.FlowWorks
 						{
 							float add = LevelUnitOf(owned, owner) * owner.BedLevelsAt(far);
 							owned.capacity += add;
-							owned.stock += add;
+							owned.AddStock(add);
 						}
 					}
 					cellToBody[fillFound[f]] = ownedId;
@@ -374,7 +374,7 @@ namespace RimMandrake.FlowWorks
 			}
 			body.capacity = RM_BedMath.CapacityForBeds(unit, BedSum(body, owner));
 			float excess = body.stock > body.capacity ? body.stock - body.capacity : 0f;
-			body.stock -= excess;
+			body.AddStock(-excess);
 			return excess;
 		}
 
@@ -441,7 +441,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			body.stock -= units;
+			body.AddStock(-units);
 			return true;
 		}
 
@@ -461,7 +461,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return taken;
 			}
-			body.stock += taken;
+			body.AddStock(taken);
 			return taken;
 		}
 
@@ -721,6 +721,49 @@ namespace RimMandrake.FlowWorks
 			return movingFluid != null && t.affordances != null && t.affordances.Contains(movingFluid);
 		}
 
+		// ── WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the exact kernel's view of a body ─────────────────────────────
+
+		/// <summary>The LIMITED body behind source cell <paramref name="c"/> (its id), or -1 when it never runs down: limitless,
+		/// unformed, or the source budget off (a body that is never debited).</summary>
+		public int LevelBodyOf(Map map, IntVec3 c, RM_MapComponent_Excavation owner)
+		{
+			if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
+			{
+				return -1;
+			}
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			return body == null || body.limitless ? -1 : body.id;
+		}
+
+		/// <summary>The body's water in decilitres of LEVELS (a level = 1,000 L in one square). Equal to stockDl when the body's
+		/// level unit is 1 (every shipped liquid); otherwise converted, and exact only to the rounding.</summary>
+		public long LevelStockDl(RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			if (body == null)
+			{
+				return 0;
+			}
+			float lu = LevelUnitOf(body, owner);
+			return lu == 1f || !(lu > 0f) ? body.stockDl : (long)Math.Round(body.stockDl / (double)lu);
+		}
+
+		public void SetLevelStockDl(RM_LiquidBody body, long levelDl, RM_MapComponent_Excavation owner)
+		{
+			if (body == null)
+			{
+				return;
+			}
+			float lu = LevelUnitOf(body, owner);
+			body.stockDl = lu == 1f || !(lu > 0f) ? levelDl : (long)Math.Round(levelDl * (double)lu);
+			body.depthStaged = true;   // the surface moved: re-lay its picture
+		}
+
+		/// <summary>H[L] over the body's undug footprint (cached a pulse): the exact kernel's pond histogram.</summary>
+		public int[] DepthHistogramOf(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			return body == null ? new int[1] : DepthHistogram(map, body, owner);
+		}
+
 		/// <summary>H[L] over the body's undug footprint, built at most once a pulse (the kernel asks per donor probe).</summary>
 		private int[] DepthHistogram(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
@@ -824,19 +867,29 @@ namespace RimMandrake.FlowWorks
 		private void StagePond(Map map, RM_LiquidBody body, FluidDef fluid, RM_MapComponent_Excavation owner)
 		{
 			int[] h = DepthHistogram(map, body, owner);
-			int levels = RM_BedMath.SupportedLevels(body.stock, LevelUnitOf(body, owner));
-			RM_PondDepthMath.Drawdown(levels, h, out int s, out int r);
 			bool waits = RimMandrakeFlowWorksSettings.refillWaitsForOccupants;
-			Func<int, bool> eligible = null;
-			if (waits && r > 0)
+			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level): the pond's ONE exact surface from
+			// its decilitres; every square shows the look for its own true metres of water (a flat 3x3 pond holding 26,000 L is
+			// nine squares at 1.44 m, never 8 at 1.5 m and 1 at 1 m). Off: the whole-notch drawdown and its one part-level patch.
+			bool exact = RimMandrakeFlowWorksSettings.levelExactEnabled;
+			double surface = exact ? RM_LevelSolve.PondSurfaceHeight(h, LevelStockDl(body, owner)) : 0.0;
+			int s = 0, r = 0;
+			HashSet<int> patch = null;
+			if (!exact)
 			{
-				eligible = i =>
+				int levels = RM_BedMath.SupportedLevels(body.stock, LevelUnitOf(body, owner));
+				RM_PondDepthMath.Drawdown(levels, h, out s, out r);
+				Func<int, bool> eligible = null;
+				if (waits && r > 0)
 				{
-					IntVec3 c = map.cellIndices.IndexToCell(i);
-					return owner.IsWaterNow(c) || !Occupied(map, c);
-				};
+					eligible = i =>
+					{
+						IntVec3 c = map.cellIndices.IndexToCell(i);
+						return owner.IsWaterNow(c) || !Occupied(map, c);
+					};
+				}
+				patch = RM_PondDepthMath.PickPatch(map.Size.x, map.Size.z, body.depthCells, body.depthBeds, s, r, eligible);
 			}
-			HashSet<int> patch = RM_PondDepthMath.PickPatch(map.Size.x, map.Size.z, body.depthCells, body.depthBeds, s, r, eligible);
 			int now = Find.TickManager != null ? Find.TickManager.TicksGame : 0;
 			int mudTicks = RimMandrakeFlowWorksSettings.PondMudTicks;
 			bool staged = false;
@@ -845,12 +898,23 @@ namespace RimMandrake.FlowWorks
 				int i = body.depthCells[k];
 				IntVec3 c = map.cellIndices.IndexToCell(i);
 				int bed = body.depthBeds[k];
-				int w = RM_PondDepthMath.WaterAt(bed, s, patch.Contains(i));
+				RM_PondDepthMath.Stage st;
+				int w;
+				if (exact)
+				{
+					double wd = RM_LevelSolve.PondSquareWater(bed, surface);
+					w = wd >= 0.5 ? 1 : 0;
+					st = RM_PondDepthMath.StageForExact(wd, bed);
+				}
+				else
+				{
+					w = RM_PondDepthMath.WaterAt(bed, s, patch.Contains(i));
+					st = w > 0 ? RM_PondDepthMath.StageFor(w, bed, false) : RM_PondDepthMath.Stage.Mud;
+				}
 				bool wetNow = owner.IsWaterNow(c);
 				TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
 				if (w > 0)
 				{
-					RM_PondDepthMath.Stage st = RM_PondDepthMath.StageFor(w, bed, false);
 					TerrainDef want = owner.PondStageTerrain(c, st, fluid);
 					if (want == null)
 					{

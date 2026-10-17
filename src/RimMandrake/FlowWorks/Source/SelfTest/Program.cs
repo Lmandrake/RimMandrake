@@ -138,8 +138,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                     string mode = args.Length > 2 ? args[2] : "";
                     // "pond" = shipped plus the pond head rule (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2).
                     bool shipped = mode == "shipped" || mode == "pond";
-                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || shipped,
-                        mode == "levelset" || shipped, shipped, mode == "pond");
+                    // "exact" = WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: levelExactEnabled on the shipped flags (decilitres, one
+                    // surface per body); prints water in dL. Against northstar/level_water.py.
+                    bool exact = mode == "exact";
+                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || shipped || exact,
+                        mode == "levelset" || shipped || exact, shipped || exact, mode == "pond", exact);
                 }
             }
 
@@ -1947,7 +1950,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
-            LevelSurfaceChecks.Run(Case);      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)
+            LevelSurfaceChecks.Run(Case);
+            LevelExactChecks.Run(Case);        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: exact decilitres, one surface per body (LevelExactChecks.cs)      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

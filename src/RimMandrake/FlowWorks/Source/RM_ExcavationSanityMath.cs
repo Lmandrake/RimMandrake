@@ -46,6 +46,31 @@ namespace RimMandrake.FlowWorks
 			return r;
 		}
 
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a cell's part-notch (decilitres below one whole notch of
+		/// <paramref name="unit"/>) must be under one notch, zero on an undug cell, and zero on a brim-full one (water never stands
+		/// above the brim). Returns the cells repaired. Null or mismatched grids are skipped.</summary>
+		public static int RepairPart(byte[] depth, byte[] fill, ushort[] part, int unit)
+		{
+			int n = 0;
+			if (depth == null || fill == null || part == null || part.Length != depth.Length || fill.Length != depth.Length)
+			{
+				return 0;
+			}
+			for (int i = 0; i < depth.Length; i++)
+			{
+				if (part[i] == 0)
+				{
+					continue;
+				}
+				if (part[i] >= unit || depth[i] == 0 || fill[i] >= depth[i])
+				{
+					part[i] = 0;
+					n++;
+				}
+			}
+			return n;
+		}
+
 		/// <summary>Which 1-based palette keys are referenced by any cell. Index 0 is unused.</summary>
 		public static bool[] KeysInUse(byte[] fluid, int paletteCount)
 		{
