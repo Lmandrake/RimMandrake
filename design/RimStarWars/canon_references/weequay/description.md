@@ -45,13 +45,13 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 >  but it was still cool seeing Hondo on-screen before my ride!
 
 ## Visual brief
-**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_two_weequays.jpg` (*Clone Wars* CGI, Hondo Ohnaka and a crewman). Added `wookieepedia_weequay_rotj_still.jpg`, a *Return of the Jedi* production still of the skiff guards beside Luke and Han — several live-action Weequays full-body, confirming the putty hide, topknots and workwear across individuals. Everything remaining is live-action.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_two_weequays.jpg` (*Clone Wars* CGI, Hondo Ohnaka and a crewman). Everything remaining is live-action.
 
 🔴 **The six-colour skin list ("blue, brown, gray, pink, red, yellow") badly
 misdescribes the canonical Weequay, and every image agrees against it.** The
-full-body reference costume, the *Return of the Jedi* skiff still and the live-action bartender
-all show a **desaturated putty grey-brown** — the colour of dried clay or weathered
-leather. There is no blue, red or yellow Weequay in any of the three images. Treat
+full-body reference costume and the live-action bartender
+both show a **desaturated putty grey-brown** — the colour of dried clay or weathered
+leather. There is no blue, red or yellow Weequay in either image. Treat
 the colour list as a menu of rare individual variation and the canonical hue as
 **grey-brown putty**.
 
@@ -84,9 +84,8 @@ Also from the images:
   spacer/guard workwear**. A Weequay should read as a person in workwear with a
   cracked-leather head and one topknot; the species has no costume of its own.
 - The **live-action bartender** confirms hue and furrowing in a modern production
-  and shows the topknot again; the *Return of the Jedi* skiff still (`wookieepedia_weequay_rotj_still.jpg`) confirms that the topknot
-  and the furrowed hide recur across individuals rather than being one character's
-  makeup.
+  and shows the topknot again, so the topknot and the furrowed hide recur across
+  productions rather than being one costume's makeup.
 
 **donor_current_sprite.png is weak evidence.** The copied file is
 `SWX/Pawn/HeadAttachments/weequay/ChinSpines_south.png`: two small clusters of
@@ -104,7 +103,7 @@ on disk supplies the cracked-hide surface texture either.**
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** Hondo Ohnaka (Galaxy's Edge animatronic/on-screen): leathery brown wrinkled skin, dark braided hair under a pilot cap and goggles, chin horns/tusks, red jacket. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the three live-action images (`wookieepedia_infobox_fullbody.jpg` of record) and the owner's 2026-10-08 realism ruling.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the live-action images (`wookieepedia_infobox_fullbody.jpg` of record) and the owner's 2026-10-08 realism ruling.*
 - [ ] BODY PLAN: fully humanoid proportions (about 1.9 m), in ordinary spacer/guard workwear; a bald, high, domed cranium with ONE thick coarse topknot/ponytail growing from the back of the skull and hanging forward over the shoulder past the chest
 - [ ] COLOUR LAYOUT: skin a desaturated grey-brown putty (dried clay / weathered leather) on face, cranium and hands, not blue, red or yellow; the topknot dark grey; small dark eyes the darkest points of the face
 - [ ] Deeply creased, furrowed, cracked-hide texture over the whole face and cranium (vertical and radial furrows like cracked mud or bark) — a whole-surface texture, not age wrinkles
@@ -121,7 +120,6 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
   `https://starwars.fandom.com/api.php?action=parse&page=Weequay&format=json&prop=wikitext`,
   31,517 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/5/54/PagettiRook-RotJAVA.png (File:PagettiRook-RotJAVA.png, the infobox image → wookieepedia_infobox_fullbody.jpg)
-- https://static.wikia.nocookie.net/starwars/images/6/65/WeequayLuke-ST.jpg (File:WeequayLuke-ST.jpg → wookieepedia_weequay_rotj_still.jpg)
 - https://static.wikia.nocookie.net/starwars/images/7/73/WeequayBartenderMando.png (File:WeequayBartenderMando.png → wookieepedia_bartender_liveaction.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/weequay (official Databank).
 - https://bloggathehutt.wordpress.com/2026/06/29/species-of-the-week-weequay/ (fan blog)
@@ -133,11 +131,13 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
   against the colour list, the whole-face cracked-hide furrowing, the bald dome, the
   single heavy topknot falling forward over the shoulder, the sunken dark eyes, the
   flat broad nose, the jaw nodules, and the ordinary leather-jerkin workwear.
-- `wookieepedia_weequay_rotj_still.jpg` — live-action *Return of the Jedi* production still, file `WeequayLuke-ST.jpg` (1600×1200): several Weequay skiff guards full-body beside Luke and Han — the hide, topknots and workwear recur across individuals — https://static.wikia.nocookie.net/starwars/images/6/65/WeequayLuke-ST.jpg/revision/latest?cb=20100114145741
 - `wookieepedia_bartender_liveaction.jpg` — a live-action Weequay from the
   Mandalorian era; independent modern-production confirmation of hue, furrowing and
   topknot.
 - `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2026/06/29/species-of-the-week-weequay/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove weequay_rotj_still"
+
+Deleted `weequay/wookieepedia_weequay_rotj_still.jpg`; skiff-still citations removed from the brief.

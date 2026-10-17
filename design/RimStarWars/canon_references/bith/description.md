@@ -178,7 +178,6 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
   teardrop** — it broadens sideways where the references swell up and to the rear.
 - ⚠️ **The eyes are flat black discs** with no specular highlight, so they lose the wet
   glassy read that the canon text specifically calls out ("black, **glassy** eyes").
-- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_jedi_concept.jpg`:** A tiny (95x164) comic/concept crop of a Bith Jedi: a bald domed head in tan-orange with a mask-like face, dark eyes, brown Jedi robes, green and purple sabers. Too small to be a real reference; weak evidence only.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as the visual brief reads them (Databank cantina still = live-action reference of record).*
@@ -290,8 +289,10 @@ as wrong. Encoding weak immunity ships that in-universe prejudice as fact.
   runtime-tinted greyscale mask, so colour absence is expected. Right on the creased bulbous
   cranium, eye placement and midface folds; **wrong on the red fanged mouth** (baked-in
   colour, no canon basis) and on the sideways-wide rather than backward-swelling skull.
-- NOT CANON (fan blog) - `bloggathehutt_jedi_concept.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2020/03/bith-jedi.jpg
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove bloggathehutt version"
+
+Deleted `bith/bloggathehutt_jedi_concept.jpg` and its brief, candidate-image bullets; the NOT CANON blog text section is kept.

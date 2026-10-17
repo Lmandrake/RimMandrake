@@ -32,7 +32,7 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 > I haven’t watched or read anything new recently so I’ve gone back to what was going to be a series before I abandoned it – the first species to appear in every Star Wars movie. I guess every time I have a sci-fi lull you’ll be getting more of these!
 
 ## Visual brief
-Three images viewed. `wookieepedia_tauntaun_swe.png` (Star Wars Encyclopedia render, 397x675,
+Two Wookieepedia images viewed. `wookieepedia_tauntaun_swe.png` (Star Wars Encyclopedia render, 397x675,
 front view) and `wookieepedia_tauntaun_riders_boxart.png` (Legion box art, 600x940, rider, 3/4
 front) agree on the animal; `donor_current_sprite.png` (128x128) does NOT.
 - **Bipedal, upright, digitigrade-to-plantigrade**: a long vertical **neck** carrying the head
@@ -49,9 +49,6 @@ front) agree on the animal; `donor_current_sprite.png` (128x128) does NOT.
   chest; leaner on the shins; bare scaly grey skin on feet.
 - **Tail**: a **long thin tail tapering to a point**, held low and slightly curved, used for
   balance (render: bare grey, narrow; box art: thicker, curving up).
-- Third image, `wookieepedia_wampa_eats_tauntaun_tesb.png` (film still, 1600x800), is a
-  **skeleton of a tauntaun in the wampa's cave**: weak evidence for body plan only (long neck,
-  curved ribcage, long skull with horn cores). Use it for nothing about colour.
 - **Donor sprite contradicts canon**: it is a tiny, front-facing, stubby white-grey creature
   with a small face under a tall pale spiralled cone/horn rising straight up. No ram horns
   curled at the sides, no long neck, no biped legs and feet, no tail. Treat the donor as a
@@ -77,15 +74,16 @@ none known. (Rider and saddle in the box art are not part of the animal. Smell a
 - https://starwars.fandom.com/wiki/Tauntaun (text via `api.php?action=parse&page=Tauntaun&prop=wikitext`, 22,164 chars, fully read)
 - https://static.wikia.nocookie.net/starwars/images/9/9c/Tauntaun-SWE.png (saved as `wookieepedia_tauntaun_swe.png`)
 - https://static.wikia.nocookie.net/starwars/images/e/ec/SWL40_Tauntaun_Riders_Unit_Epxansion_box_art.png (saved as `wookieepedia_tauntaun_riders_boxart.png`)
-- https://static.wikia.nocookie.net/starwars/images/9/9a/WampaChompTauntaun-TESB.png (saved as `wookieepedia_wampa_eats_tauntaun_tesb.png`)
 - https://bloggathehutt.wordpress.com/2021/11/22/species-of-the-week-tauntaun/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_tauntaun_swe.png` : Encyclopedia render, front view, white. Best anatomy reference.
 - `wookieepedia_tauntaun_riders_boxart.png` : painted 3/4 view with rider, slate-grey coat, chin tuft, curled tail.
-- `wookieepedia_wampa_eats_tauntaun_tesb.png` : film still, tauntaun skeleton only (weak).
 - `donor_current_sprite.png` : MLIE donor, 128x128. Contradicts canon shape (see Visual brief).
 - NOT CANON (fan blog) - `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2021/11/22/species-of-the-week-tauntaun/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this entry)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove wampa_eats_tauntaun as it does not actually show tauntaun. Agree with out claim."
+
+Deleted `tauntaun/wookieepedia_wampa_eats_tauntaun_tesb.png` (it shows no tauntaun); the blog image's NOT CANON labelling is unchanged.

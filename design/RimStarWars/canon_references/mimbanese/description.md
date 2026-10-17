@@ -80,7 +80,7 @@ masked at a glance.
 - 🔑 **The two rows of short horns above the brows are present and readable**: a **dark,
   serrated crown of short spikes running in a V across the forehead above each eye.** Clearest
   in `wookieepedia_trio_soldiers.jpg` and `wookieepedia_iasento_full.jpg`. This is the single
-  most species-identifying feature after the eyes.
+  most species-identifying feature after the eyes. Per the owner (2026-10-17) the brow horns are present on every individual, but leather face straps (as on the fan-blog image) may partly cover them.
 - **The cranium is smooth and domed**, hairless, with no ears visible.
 
 **Skin colour, and a trap.** The face is a **saturated salmon/brick red**, mottled and streaked
@@ -102,16 +102,16 @@ the sourced "improvised traps… covering themselves in mud for camouflage."
 limb thickness and shoulder width in all three references. **Nothing reads gaunt, thin or
 emaciated.**
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mimbanese_solo_ghillie.jpg` (480x240, Solo): brick-red face with two large round dark-rimmed pale eyes, a small round open mouth, crossing tan cloth straps wound over the head and eyes, an enormous cape of dried reeds/straw, and red armour plates on the shoulder. 🔴 Straps crossing the face and forehead read as a MASK/wrap, which the Must-show negative ('not a masked or goggled human') warns against; no brow horns are visible and the mouth is a small round O, not a flattened snout.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mimbanese_solo_ghillie.jpg` (480x240, Solo): brick-red face with two large round dark-rimmed pale eyes, a small round open mouth, crossing tan cloth straps wound over the head and eyes, an enormous cape of dried reeds/straw, and red armour plates on the shoulder. Owner ruling 2026-10-17: the brow horns are there, but the leather face straps are partly covering them. The straps are costume, not a mask, and the mouth reads as a small round O at this size.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Solo-era costume photographs as described in the visual brief and the sourced text.*
 - [ ] BODY PLAN: ordinary humanoid proportions (upright, human height, normal limb thickness and shoulder width); smooth, domed, hairless cranium with no visible ears; a broad, flattened, downward-tapering snout with paired nostril openings at its tip and no prominent mouth
 - [ ] Eyes: two large, round, protuberant pale-blue eyes set wide, with no eyelid fold and a dark orbital rim right round each (a lidless read, not goggle bezels, not a mask)
-- [ ] Two rows of short horns above the brows: a dark serrated crown of short spikes running in a V across the forehead above each eye
+- [ ] Two rows of short horns above the brows: a dark serrated crown of short spikes running in a V across the forehead above each eye (may be partly covered by leather face straps, per owner 2026-10-17)
 - [ ] COLOUR LAYOUT: face skin a saturated salmon/brick red (may weather toward brown or grey), mottled and streaked with dried mud; the face is the only bare skin, distinct from any similarly red clothing worn over the body
 - [ ] Silhouette buried in an enormous ragged ghillie cape of dried reeds/straw bundles hanging from shoulders, back and limbs, over wooden slat plates, with ammunition bandoliers; the camouflage layer bigger than the body
-- [ ] NEGATIVE: not a Tusken Raider (no blank wrapped head with two black dot eyes), not a masked or goggled human, not gaunt or thin, not red skin painted over the whole body
+- [ ] NEGATIVE: not a Tusken Raider (no blank wrapped head with two black dot eyes), not a masked or goggled human (leather face straps over the brow horns are costume, not a mask), not gaunt or thin, not red skin painted over the whole body
 
 ## Engine limits
 none known
@@ -208,4 +208,7 @@ none known
 - `bloggathehutt_mimbanese_solo_ghillie.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, a Mimbanese in a straw ghillie cape (Solo); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/05/25/species-of-the-week-mimbanese/ (image URL on the blog's CDN, post upload)
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "the brow horns are there, but the leather face straps are partly covering them."
+
+Observation, no files deleted; folded into the Visual brief and Must show (horns present, may be partly covered by leather face straps).

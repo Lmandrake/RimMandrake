@@ -63,10 +63,12 @@ The stylised Alien Archive illustration (`wookieepedia_alien_archive_illustratio
 graphic plate) was removed. The three remaining images are all live-action costume references; nothing
 in the look changes — the brief already treated the plate's orange as illustration licence.
 
-Three independent live-action images (a photographic four-figure costume reference, an in-show
-Mandalorian-era off-world individual, and an *A New Hope* still of taller individuals) agree on the silhouette and disagree sharply on
-palette. **On palette, trust the images: "Black" skin in the infobox is not a
-skin color at all.**
+**Owner ruling 2026-10-17: `wookieepedia_four_jawas_reference.jpg` is THE canon reference
+to follow.** Where the other two live-action images (an in-show Mandalorian-era off-world
+individual, and an *A New Hope* still of taller individuals) differ from it on palette, the
+four-figure reference wins; they are supporting evidence for silhouette, gear and scale.
+**On palette, trust the images: "Black" skin in the infobox is not a skin
+color at all.**
 
 - 🔴 **The infobox "skincolor = Black" is the VOID INSIDE THE HOOD, not pigment.**
   In every image the interior of the cowl is a flat, featureless, absolutely
@@ -77,25 +79,22 @@ skin color at all.**
   a text-only prompt makes from the word "Black".
 - **Two glowing eyes, ovoid, close-set, no visible pupil or sclera structure** —
   they read as two lamps, not as eyes with anatomy. Color: **yellow** in the
-  four-figure reference; **red-orange** in the
-  off-world Mandalorian-era individual. Both are attested by the infobox
-  (Yellow / Orange / Red) AND independently by image, so red-eyed and
-  yellow-eyed Jawas are both correct and either is safe to ship.
-- **Robe color is NOT one color.** The four-figure reference render is a warm
-  mid-**brown** (chocolate-to-russet, film-canonical). The off-world Mandalorian
-  individual is a desaturated **grey-brown/charcoal**, visibly dust-caked and
-  much colder; the *A New Hope* still reads russet-red under the desert sun.
-  So the honest range is warm brown to cold dusty grey-brown; bright saturated
-  orange is not the canonical hue.
+  four-figure reference (THE reference, so yellow is the default); the off-world
+  Mandalorian-era individual shows **red-orange**, which the infobox
+  (Yellow / Orange / Red) also attests, so red-orange is an acceptable variant.
+- **Robe color follows the four-figure reference: a warm
+  mid-**brown** (chocolate-to-russet, film-canonical).** The *A New Hope* still reads
+  russet under the desert sun; the off-world Mandalorian individual is a desaturated
+  **grey-brown/charcoal**, visibly dust-caked and colder, a secondary variant only.
+  Bright saturated orange or red is not the canonical hue.
 - **The cowl is a soft, fabric peak, not a rigid cone.** In every image it is a
   loose hood pulled well forward so the brow line overhangs the eyes, with the
   fabric slumping into an irregular point or fold at the crown. Some individuals
   have the hood peaked high and forward; others have it collapsed almost flat.
   Do not draw a stiff wizard cone.
-- **Hands are always covered, and covered in two different ways.** The
-  four-figure reference shows fitted **dark leather gloves**; the off-world
-  individual shows coarse **cloth mitts with heavily frayed cuffs** and no
-  separate fingers. Both are canonical; neither shows bare skin.
+- **Hands are always covered.** The four-figure reference (the one to follow) shows
+  fitted **dark leather gloves**; the off-world individual shows coarse **cloth mitts
+  with heavily frayed cuffs**. Neither shows bare skin.
 - **The hem is frayed/fringed** at the floor in the reference render and the
   off-world individual, consistent with the let-out-hem lore above.
 - **Gear is worn as crossed bandoliers over the chest**, not on a single belt:
@@ -127,17 +126,16 @@ the hood with a black void interior, the hem grammar, the crossed bandoliers —
 **does not exist as art yet.** For the player's own species that is the largest
 art gap in the roster.
 
-- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_jawa_game_render.png` (479x450, game render): two Jawas with RED/crimson robes and a brass backpack, glowing yellow eyes in a black hood void, bandoliers and large blasters. 🔴 CONTRADICTS the Must-show colour: robes here are saturated crimson-red, not brown/dusty grey-brown; stylised game render, not a realistic reference. Hood-void and glowing eyes agree.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images (four-figure costume reference, off-world Mandalorian-era individual, *A New Hope* tall Jawas) and the canon text.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Updated 2026-10-17: follows the four-figure reference (`wookieepedia_four_jawas_reference.jpg`), THE canon reference per the owner, with the other two live-action images as support.*
 - [ ] BODY PLAN: a short humanoid (about 1 m) that reads SHORT and WIDE, not a scaled-down human: a floor-length robe in a bell shape, roughly as wide as it is tall from the waist down, with a frayed/fringed hem; a soft fabric hood pulled forward over the brow (peaked or slumped), not a rigid cone
 - [ ] Face: the hood interior is a flat, featureless, opaque black void — no visible face, muzzle, chin or nose, only the two glowing eyes
-- [ ] Eyes: two ovoid, close-set glowing lamps with no visible pupil or sclera, glowing yellow OR red-orange (either is correct)
-- [ ] COLOUR LAYOUT: robe in the warm-brown to cold-dusty-grey-brown range (russet under desert sun), not bright saturated orange; hood interior black; the glowing eyes the brightest element
-- [ ] Hands always covered — dark leather gloves or frayed cloth mitts — never bare skin; gear worn as crossed bandoliers over the chest with pouches and tools, not a single belt
+- [ ] Eyes: two ovoid, close-set glowing lamps with no visible pupil or sclera, glowing yellow (per the four-figure reference; red-orange is an accepted variant)
+- [ ] COLOUR LAYOUT: robe a warm mid-brown, chocolate to russet, as in the four-figure reference (dusty grey-brown only as a secondary variant), not bright saturated orange or red; hood interior black; the glowing eyes the brightest element
+- [ ] Hands always covered — dark leather gloves per the four-figure reference — never bare skin; gear worn as crossed bandoliers over the chest with pouches and tools, not a single belt
 - [ ] Realistic rendering: coarse dusty woven-cloth robe texture and natural desert lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a dark-skinned face inside the hood, not a wizard in a stiff cone hat, not a rodent or furry animal with an exposed pelt; not a bright orange robe
+- [ ] NEGATIVE: not a dark-skinned face inside the hood, not a wizard in a stiff cone hat, not a rodent or furry animal with an exposed pelt; not a bright orange or red robe
 
 ## Engine limits
 none known — the missing hood/robe/bandolier art is a content gap (no sprite exists yet),
@@ -168,7 +166,10 @@ not a rendering constraint.
   crossed-bandolier gear rig (three-lens device, blade, canteen).
 - `wookieepedia_tall_jawas.jpg` — taller-than-normal individuals, confirming the
   lore's abnormal-height Jawas keep the identical silhouette at larger scale.
-- NOT CANON (fan blog) - `bloggathehutt_jawa_game_render.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Jawas in a Star Wars game render (Hunters-style); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/ (image URL on the blog's CDN, post upload)
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "four_jawas_reference is THE canon reference to follow here, you may remove bloggathehutt here."
+
+Deleted `jawa/bloggathehutt_jawa_game_render.png` and its brief and candidate-image lines; Visual brief and Must show now follow `wookieepedia_four_jawas_reference.jpg` (brown robe, yellow eyes, leather gloves) with the other images as support; the NOT CANON blog text section is kept.

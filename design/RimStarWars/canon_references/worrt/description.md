@@ -32,17 +32,17 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 > It was so cool seeing two Worrts on Batuu, one in the creature stall and one in a tank above the bar at Oga’s, with its eggs visible below it.
 
 ## Visual brief
-Four images, very consistent: a big warty toad.
+Three Wookieepedia images plus the blog card, very consistent: a big warty toad.
 - **Silhouette:** a squat, fat, **toad- or frog-like body, hunched forward with the weight on long, thin, powerful forelimbs** (the text's "dexterous forelimbs"), with a huge round belly and the hind legs folded away. The arms are long and spidery with large, long-fingered, splayed hands (very long, tapering fingers with rounded tips in `canon_1`).
-- **Head:** a broad, flat head, no visible neck, with **a very wide, thick-lipped, downturned toad mouth** (a heavy pouty upper lip in `canon_1`), two small nostrils, and **large bulging eyes on top, ringed with heavy lids**: orange-red in `canon_1`, amber/yellow-green in `canon_2` and `legends_1` and `legends_2`, vertical-slit pupils in the 3D renders. Between the eyes is a **ridged, grooved patch or brow plate** (banded folds, `canon_1` and `canon_2`).
+- **Head:** a broad, flat head, no visible neck, with **a very wide, thick-lipped, downturned toad mouth** (a heavy pouty upper lip in `canon_1`), two small nostrils, and **large bulging eyes on top, ringed with heavy lids**: orange-red in `canon_1`, amber/yellow-green in `canon_2` and `legends_1`, vertical-slit pupils in the 3D renders. Between the eyes is a **ridged, grooved patch or brow plate** (banded folds, `canon_1` and `canon_2`).
 - **Palps:** **two long, thin, curved stalk-like cranial palps (antennae) rise from the top of the head**, bending outward, with small knobbed tips in `canon_1`.
-- **Spikes and skin:** a **crest of conical horn-like spikes around the top and sides of the head, over the shoulders and down the arms and back**: orange-brown in `canon_1`, tan to rose in `canon_2`, grey-brown in `legends_1` and `legends_2`. The skin is **warty, bumpy and rough everywhere**, with small raised tubercles.
-- **Colour disagreement:** `canon_1` is **olive-green with a yellow-ochre belly and orange-brown spikes**; `canon_2` is **rosy brown to dusty pink-tan with tan warts**; `legends_1` (the film puppet) is **tan-brown**; `legends_2` is **grey-brown**. The text says "brown, warty skin", and the belly turns bright yellow when full. So brown is the baseline; olive-green and rose-tan are the render variants, and a yellow belly is a state change.
+- **Spikes and skin:** a **crest of conical horn-like spikes around the top and sides of the head, over the shoulders and down the arms and back**: orange-brown in `canon_1`, tan to rose in `canon_2`, grey-brown in `legends_1`. The skin is **warty, bumpy and rough everywhere**, with small raised tubercles.
+- **Colour disagreement:** `canon_1` is **olive-green with a yellow-ochre belly and orange-brown spikes**; `canon_2` is **rosy brown to dusty pink-tan with tan warts**; `legends_1` (the film puppet) is **tan-brown**. The text says "brown, warty skin", and the belly turns bright yellow when full. So brown is the baseline; olive-green and rose-tan are the render variants, and a yellow belly is a state change.
 - **Size:** 1.5 m tall per the text; it looks bigger than a human torso in the puppet shot.
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a Galaxy's Edge worrt in a red-lit tank: squat toad-like body, warty crest, two eye stalks on top, thick forelimbs; eggs visible below it (per text). Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three remaining Wookieepedia images.*
 - [ ] BODY PLAN: a squat round-bellied toad sitting upright and leaning forward, its weight on two long thin spidery FORELIMBS planted wide in front with big splayed long-fingered hands; hind legs folded out of sight under the belly; head sits directly on the body, no neck
 - [ ] COLOUR LAYOUT: one dominant body colour (brown baseline; olive-green or rose-tan acceptable as in `canon_1`/`canon_2`), with the belly/throat a visibly PALER yellow-ochre or tan, and the head/shoulder spikes a darker or more orange-brown tone than the skin
 - [ ] Very wide, thick-lipped, downturned mouth spanning nearly the full width of the head
@@ -63,8 +63,10 @@ Four images, very consistent: a big warty toad.
 - `wookieepedia_canon_1.webp` — CANON page `Worrt`; wiki caption: infobox image. File: `Worrt-SWJSurvivor.png` — https://static.wikia.nocookie.net/starwars/images/2/27/Worrt-SWJSurvivor.png/revision/latest?cb=20231129001827
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Worrt/Legends`; wiki caption: infobox image. File: `Worrt AA.jpg` — https://static.wikia.nocookie.net/starwars/images/e/e8/Worrt_AA.jpg/revision/latest?cb=20080709181804
 - `wookieepedia_canon_2.webp` — CANON page `Worrt`; wiki caption: Worrts were squat quadrupeds with bulbous eyes.. File: `Worrt-SoT2024.png` — https://static.wikia.nocookie.net/starwars/images/e/e0/Worrt-SoT2024.png/revision/latest?cb=20251201030012
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Worrt/Legends`; wiki caption: A worrt. File: `Worrt.jpg` — https://static.wikia.nocookie.net/starwars/images/9/97/Worrt.jpg/revision/latest?cb=20100917093108
 - `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2026/05/18/species-of-the-week-worrt/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove legends_2"
+
+Deleted `worrt/wookieepedia_legends_2.webp`; its candidate line and brief mentions removed.
