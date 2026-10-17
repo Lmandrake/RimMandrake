@@ -302,6 +302,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "Reapply compares against what the maps were computed under, not the tables");
                 Assert(sw.Contains("&& fp == tableFingerprint)"), "the tables keep their own fingerprint");
             });
+            // Review day 2 (2026-10-17): drowning in wadeable natural water (a downed person in 0.5 m shallows) is an open owner
+            // question; it stays shipped ON, but one setting must turn it off ALONE (deep water and pits keep the rule).
+            Case("Swim_shallow_drowning_switch_alone", () =>
+            {
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                Assert(sw.Contains("public static bool shallowWaterDrowningEnabled = true;"), "shipped on (behaviour unchanged)");
+                Assert(sw.Contains("Scribe_Values.Look(ref shallowWaterDrowningEnabled, \"shallowWaterDrowningEnabled\", true);"), "scribed, same default");
+                Assert(sw.Contains("ref shallowWaterDrowningEnabled,"), "shown in Mod Settings");
+                Assert(Regex.IsMatch(sw, @"bool wadeableOff = !dug && !RM_SwimSettings\.shallowWaterDrowningEnabled && t != null && t\.IsWater\s*&& t\.passability != Traversability\.Impassable;"),
+                    "can-fail: off = natural, vanilla-passable water only (never a dug cell, never deep water)");
+                Assert(Regex.IsMatch(sw, @"if \(!on \|\| p\.Flying \|\| wadeableOff \|\|"), "off: that square is footing (recover, no drowning check)");
+            });
         }
     }
 }
