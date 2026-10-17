@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lake Floor Variety</title>
+<style>
+:root{--bg:#f3ead9;--ink:#3b2a1a;--line:#c9b48d;--card:#fbf6ec}
+@media (prefers-color-scheme: dark){:root{--bg:#2a2017;--ink:#efe3cc;--line:#6b5638;--card:#33271b}}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 Georgia,serif;margin:0;padding:16px;max-width:1300px;margin:auto}
+table{border-collapse:collapse;margin:8px 0 20px;font-size:14px;display:block;overflow-x:auto}
+td,th{border:1px solid var(--line);padding:4px 8px;text-align:left}
+figure{background:var(--card);border:1px solid var(--line);margin:0 0 18px;padding:8px}
+img{max-width:100%;height:auto;display:block}
+</style></head><body>
+<h1>Lake floor variety (P11, offline preview)</h1>
+<p>Your ruling (R11): <i>"Vary it. Some lakes will be shallow and silted up. Others will be deep and chasm-like. Depends on
+the biome. The more mountainous, the deeper in general. The more plains-like, the smoother/shallower. They should also have
+some variation down there, not just a radial crater."</i></p>
+<p>Eight lakes on made-up maps, floors drawn by the game's own floor code at the shipped defaults. A full lake looks
+exactly as it does today; this is what the floor would show if the lake were drained. Each lake is one random draw from
+its band. To show every kind once, each lake takes the first draw of the kind its caption names (silted or open; the
+skipped draws are counted on the picture); the table below gives the real odds. Another lake in the same place could be
+shallower or deeper.</p>
+<h2>The roughness table (tuning; yours to approve)</h2>
+<p>Roughness is the map tile's hilliness plus a nudge from the biome (swamps, sumps and plains shallower; canyons,
+craters and mountains deeper). The deepest floor of a lake is drawn from the range, most lakes near the low end.</p>
+<table><tr><th>band</th><th>roughness</th><th>deepest floor, per lake</th><th>never deeper</th><th>silted up</th>
+<th>flat silt bottom</th><th>wall width (of the way to the middle)</th><th>shelves</th></tr><tr><td>plains</td><td>0.05</td><td>2 to 5 m</td><td>8 m</td><td>45%</td><td>55%</td><td>85%</td><td>10%</td></tr><tr><td>low hills</td><td>0.30</td><td>3 to 10 m</td><td>15 m</td><td>30%</td><td>40%</td><td>60%</td><td>25%</td></tr><tr><td>hills</td><td>0.55</td><td>5 to 20 m</td><td>30 m</td><td>15%</td><td>25%</td><td>40%</td><td>40%</td></tr><tr><td>mountains</td><td>0.80</td><td>8 to 35 m</td><td>50 m</td><td>8%</td><td>15%</td><td>22%</td><td>50%</td></tr><tr><td>chasm</td><td>0.95</td><td>12 to 56 m</td><td>50 m</td><td>5%</td><td>10%</td><td>14%</td><td>50%</td></tr></table>
+<p>Two safety rules (defaults you can veto): the outer ring of every lake is a 0.5 m shore shelf, and every floor square has a
+walked way out with no step over 1 m, so a drained lake never traps a person. A hole with no way down to the deep
+water is silted up to its rim, so a drained lake never splits into pools.</p>
+<figure><img src="lake_1.png" alt="Plains pond (Flat, grassland)"><figcaption>1. Plains pond (Flat, grassland): deepest 3.0 m</figcaption></figure><figure><img src="lake_2.png" alt="Plains lake, silted up (Flat)"><figcaption>2. Plains lake, silted up (Flat): deepest 2.0 m</figcaption></figure><figure><img src="lake_3.png" alt="Plains lake, open (Flat, swamp)"><figcaption>3. Plains lake, open (Flat, swamp): deepest 2.0 m</figcaption></figure><figure><img src="lake_4.png" alt="Low hills lake (SmallHills)"><figcaption>4. Low hills lake (SmallHills): deepest 3.5 m</figcaption></figure><figure><img src="lake_5.png" alt="Hills lake (LargeHills)"><figcaption>5. Hills lake (LargeHills): deepest 12.5 m</figcaption></figure><figure><img src="lake_6.png" alt="Hills lake (LargeHills, canyon country)"><figcaption>6. Hills lake (LargeHills, canyon country): deepest 16.0 m</figcaption></figure><figure><img src="lake_7.png" alt="Mountain lake (Mountainous)"><figcaption>7. Mountain lake (Mountainous): deepest 27.0 m</figcaption></figure><figure><img src="lake_8.png" alt="Chasm lake (Impassable)"><figcaption>8. Chasm lake (Impassable): deepest 46.0 m</figcaption></figure>
+</body></html>
