@@ -146,10 +146,11 @@ namespace RimMandrake.FlowWorks
 	/// never the hole: "one litre in a 7 m pit cannot drown its occupant", and 2 m of water in any hole drowns a standing person
 	/// (a brimming 1.5 m pocket reaches a person's chest, and drowns one lying down).
 	///
-	/// P12 HOOK. <see cref="keepsHeadUp"/> is the one place swimming plugs in: today it answers "a swimmer" (the kind's
-	/// swimming graphic, vanilla 1.6's marker). P12 replaces it with its swim rule (who swims, swim exhaustion, apparel and
-	/// weight) and calls <see cref="PerCheck"/> for pawns in natural deep water too; the head test, the lying test, the
-	/// exit-in-reach test and the rate stay here, so pits and lakes can never drown by two rules.
+	/// P12 HOOK. <see cref="keepsHeadUp"/> is the one place swimming plugs in. Its default answers "a swimmer" (the kind's
+	/// swimming graphic, vanilla 1.6's marker); Swimming.RM_SwimWater's static constructor (DEEP_WATER_BUILD_SWIM_OR_SINK)
+	/// replaces it with the swim rule (who swims, exhaustion, apparel and weight, the liquid) and Swimming.RM_Swim.Tick calls
+	/// <see cref="PerCheck"/> for pawns in natural deep water too; the head test, the lying test, the exit-in-reach test and
+	/// the rate stay here, so pits and lakes can never drown by two rules.
 	/// </summary>
 	public static class RM_Drowning
 	{
@@ -206,7 +207,8 @@ namespace RimMandrake.FlowWorks
 				}
 				int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, n);
 				bool joined = RM_ClimbJoins.ForPawn(map, eng, c, n, fromD, toD, p, out _, out _);
-				float w = eng.IsExcavated(n) ? eng.WaterMetresAt(n) : 0f;
+				// DEEP_WATER_BUILD_SWIM_OR_SINK: natural water counts too (a deep lake square beside you is not footing).
+				float w = Swimming.RM_SwimWater.WaterMetresAt(map, eng, n);
 				if (RM_RelativeRulesMath.ExitInReach(fromD, toD, k, joined, w, h, RimMandrakeFlowWorksSettings.pitDrowningHeadFraction))
 				{
 					return true;

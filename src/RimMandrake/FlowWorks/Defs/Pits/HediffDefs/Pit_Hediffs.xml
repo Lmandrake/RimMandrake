@@ -34,7 +34,7 @@
   <HediffDef>
     <defName>RM_PitDrowning</defName>
     <label>drowning</label>
-    <description>Treading water in a flooded pit with no way out and no air to spare.</description>
+    <description>Water over the head, in a flooded pit or deep water, with no footing in reach and no strength left to stay up.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.3, 0.5, 0.9)</defaultLabelColor>
     <lethalSeverity>1.0</lethalSeverity>
@@ -56,6 +56,55 @@
           <li>
             <capacity>Consciousness</capacity>
             <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12): swim exhaustion. Severity 0..1 is set by RimMandrake.FlowWorks.Swimming.RM_Swim.Tick
+       (rises while swimming, falls on footing); at 1 the swimmer can no longer keep its head up and RM_PitDrowning begins. -->
+  <HediffDef>
+    <defName>RM_SwimExhaustion</defName>
+    <label>swimming</label>
+    <description>Swimming in deep water. Swimming is slow and tiring, heavy gear and loads make it worse, and an exhausted swimmer goes under.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.45, 0.7, 0.95)</defaultLabelColor>
+    <isBad>false</isBad>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>fresh</label>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>tiring</label>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.7</minSeverity>
+        <label>exhausted</label>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>1.0</minSeverity>
+        <label>going under</label>
+        <painOffset>0.2</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
           </li>
         </capMods>
       </li>

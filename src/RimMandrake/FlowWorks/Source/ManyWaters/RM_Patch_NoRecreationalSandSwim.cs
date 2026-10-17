@@ -56,7 +56,7 @@ namespace RimMandrake.FlowWorks.ManyWaters
                 return;
             }
             Map map = pawn.Map;
-            if (CellIsMarkedNoSwim(__result.targetA.Cell, map))
+            if (Refused(__result.targetA.Cell, map, pawn))
             {
                 __result = null;
                 return;
@@ -65,13 +65,36 @@ namespace RimMandrake.FlowWorks.ManyWaters
             {
                 for (int i = 0; i < __result.targetQueueA.Count; i++)
                 {
-                    if (CellIsMarkedNoSwim(__result.targetQueueA[i].Cell, map))
+                    if (Refused(__result.targetQueueA[i].Cell, map, pawn))
                     {
                         __result = null;
                         return;
                     }
                 }
             }
+        }
+
+        private static bool Refused(IntVec3 cell, Map map, Pawn pawn)
+        {
+            if (!cell.IsValid || !cell.InBounds(map))
+            {
+                return false;
+            }
+            if (CellIsMarkedNoSwim(cell, map))
+            {
+                return true;
+            }
+            // DEEP_WATER_BUILD_SWIM_OR_SINK: a natural sea of a non-water liquid (brine, propane, boiling, poisoned) and a pit of
+            // one refuse too; deep water only for a rested swimmer, and only while deep swimming for fun is on.
+            if (Swimming.RM_SwimWater.On && Swimming.RM_SwimWater.LiquidRefusesAt(map, cell))
+            {
+                return true;
+            }
+            if (Swimming.RM_SwimWater.IsDeepSwimCell(map, cell))
+            {
+                return !Swimming.RM_Swim.JoySwimAllowed(pawn);
+            }
+            return false;
         }
 
         private static bool CellIsMarkedNoSwim(IntVec3 cell, Map map)

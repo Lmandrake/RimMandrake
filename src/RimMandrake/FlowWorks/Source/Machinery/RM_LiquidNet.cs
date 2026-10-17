@@ -1060,6 +1060,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			RM_LiquidNet.PruneDeadMaps();
 			RM_PitPathing.PruneDeadMaps();
 			RM_DigDiscovery.PruneDeadMaps();
+			Swimming.RM_SwimPathing.PruneDeadMaps();
 		}
 	}
 

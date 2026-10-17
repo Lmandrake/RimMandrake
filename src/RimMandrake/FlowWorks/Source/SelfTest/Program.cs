@@ -1940,6 +1940,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
+            SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
             RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)

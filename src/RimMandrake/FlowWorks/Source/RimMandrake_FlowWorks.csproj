@@ -115,6 +115,8 @@
     <Compile Include="RM_LiquidFire.cs" />
     <Compile Include="RM_FillEffectMath.cs" />
     <Compile Include="RM_RelativeRulesMath.cs" />
+    <Compile Include="RM_SwimMath.cs" />
+    <Compile Include="Swimming\RM_Swim.cs" />
     <Compile Include="RM_PitFillEffects.cs" />
     <Compile Include="RM_SlimeMath.cs" />
     <Compile Include="RM_SlimeSlip.cs" />

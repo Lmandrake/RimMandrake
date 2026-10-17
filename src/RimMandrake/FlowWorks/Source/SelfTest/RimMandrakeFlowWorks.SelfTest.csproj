@@ -67,6 +67,8 @@
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_RelativeRulesMath.cs" />
     <Compile Include="RelativeRulesChecks.cs" />
+    <Compile Include="..\RM_SwimMath.cs" />
+    <Compile Include="SwimChecks.cs" />
     <Compile Include="..\RM_SlimeMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />

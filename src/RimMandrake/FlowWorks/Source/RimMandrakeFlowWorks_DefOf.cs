@@ -77,6 +77,9 @@ namespace RimMandrake.FlowWorks
 
 		public static HediffDef RM_PitExposure;
 
+		/// <summary>DEEP_WATER_BUILD_SWIM_OR_SINK: swim exhaustion (severity 0..1, set by Swimming.RM_Swim.Tick).</summary>
+		public static HediffDef RM_SwimExhaustion;
+
 		// ── LIQUID_BOTTLE_LOOP_1: fill/use/dirty/wash ──────────────────────
 		public static JobDef RM_FillBottleJob;
 		public static JobDef RM_DouseFireWithBucket;
