@@ -26,6 +26,8 @@ in ~1.25 days, up to 3x in heat, death ~3 days after empty (OQ-3); all animals g
 long without an obvious reason"*, watering only for adapted plants. Project rulings: one kind of heat (vanilla
 temperature only); every DLC assumed; biome mechanics promised only inside our biomes; superb Mod Settings.
 
+**Owner rulings 2026-10-17 (by card) are recorded in `design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md` §8 and supersede this file's §3.2-§3.3 (access penalty, last-resort gate), §5 trigger, §6 per-kind table, §7.6 recommendation and §11 questions.**
+
 **This supersedes** the 2026-10-16 build's call that buckets and barrels cannot be drunk from
 (`RM_ThirstUtility.cs:71`, `thirst_bottles_design_2026-10-16.md` §3 row "bucket / barrel").
 
