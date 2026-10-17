@@ -285,6 +285,22 @@ def main(argv=None):
             raise RuntimeError("drinks still on the map after the purge: %s" % left)
 
     SITE = "%d,%d,40,40" % (X0, Z0)
+    WETS = POTABLE_TERRAIN + ("WaterOceanShallow", "WaterOceanDeep", "RM_WaterBrineShallow", "RM_WaterBrineDeep",
+                              "RM_WaterPoisonedShallow", "RM_Slime_Liquid", "RM_SlimeRedShallow", "RM_SlimeGreenShallow",
+                              "RM_SlimeWhiteShallow", "RM_SlimeYellowShallow")
+
+    def dry_all():
+        """Every liquid cell on the map -> Soil (potable, salt, brine, toxic, slime): the row paints its own."""
+        tb3 = B.call("jawa/get_terrain_batch", rects="0,0,250,250") or {}
+        wet3 = [op for op in (tb3.get("ops") or "").split(";") if op and op.split(":")[0] in WETS]
+        if wet3:
+            B.call("jawa/set_terrain_batch", ops=";".join("Soil:" + op.split(":")[1] for op in wet3))
+        # a player tank is a drink source too (round 2: T15's desperate pawns drank T20's leftover fresh tank): empty them
+        for t in (B.call("jawa/list_things", defName="RM_LiquidTank", limit=50) or {}).get("things") or []:
+            B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                   args="%s,%s;Store;RM_Liquid_FreshWater;0" % (t.get("x"), t.get("z")))
+        return len(wet3)
+
     saved = {}
     keys = ("thirstEnabled", "thirstRateMultiplier", "thirstHeatScaling", "animalsGetThirst", "drinkFromTerrain",
             "waterQualityEffects", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "snowGathering",
@@ -716,6 +732,10 @@ def main(argv=None):
             draft(pf)
         # ---------------------------------------------------------------- T15 slime last resort, four colours
         if want("T15"):
+            # HARNESS (full run, round 2, 2026-10-17): T13's toxic strip was still on the map, and toxic (quality 3) outranks
+            # slime (4) in JobGiver_RM_Drink's BetterPick, so all four desperate pawns walked to the toxic water (ToxicBuildup
+            # 0.118 each, no slime hediff): a correct pick by the ruled ranking. The row dries every liquid first.
+            dry_all()
             purge_drinks()
             cols = (("RM_SlimeRedShallow", "RM_ContagionTouched"), ("RM_SlimeGreenShallow", "RM_Slimification"),
                     ("RM_SlimeWhiteShallow", "RM_SporeFlesh"), ("RM_SlimeYellowShallow", "RM_SlimeNausea"))
@@ -808,21 +828,10 @@ def main(argv=None):
         # batch's ponds, salt strips and slime pools. Every row starts by drying it and quenching every bystander, so a
         # thirsty pawn from an earlier row never drinks the test's water or bottles.
         X3 = X0 + 45
-        WETS = POTABLE_TERRAIN + ("WaterOceanShallow", "WaterOceanDeep", "RM_WaterBrineShallow", "RM_WaterBrineDeep",
-                                  "RM_WaterPoisonedShallow", "RM_Slime_Liquid", "RM_SlimeRedShallow", "RM_SlimeGreenShallow",
-                                  "RM_SlimeWhiteShallow", "RM_SlimeYellowShallow")
         batch3 = [r_ for r_ in ("T14", "T16", "T18", "T20", "T23", "T25", "T26", "T29") if want(r_) and (only or True)]
         site3_ok = False
         if batch3:
             site3_ok = V.prepare_site(B, (X3, Z0, 50, 40), rows, "site3_ready")
-
-        def dry_all():
-            """Every liquid cell on the map -> Soil (potable, salt, brine, toxic, slime): the row paints its own."""
-            tb3 = B.call("jawa/get_terrain_batch", rects="0,0,250,250") or {}
-            wet3 = [op for op in (tb3.get("ops") or "").split(";") if op and op.split(":")[0] in WETS]
-            if wet3:
-                B.call("jawa/set_terrain_batch", ops=";".join("Soil:" + op.split(":")[1] for op in wet3))
-            return len(wet3)
 
         def quench_all(keep=()):
             for c in colonists():
@@ -850,13 +859,20 @@ def main(argv=None):
             return [t for t in (B.call("jawa/list_things", **kw) or {}).get("things") or [] if (t.get("def") or t.get("defName")) == defn]
 
         def worker(x, z, work=("Hauling",)):
-            """An undrafted fresh colonist with the given work types at priority 1 (every other bystander drafted)."""
-            pid = spawn_colonist(x, z)
-            UNDER_TEST.add(pid)
-            for w in work:
-                B.call("jawa/set_work_priority", pawnId=pid, workType=w, priority=1)
-            need(pid, 1.0)
-            return pid
+            """An undrafted fresh colonist with the given work types at priority 1 (every other bystander drafted).
+            HARNESS (full run, round 2, 2026-10-17): T25 sat idle for 3,000 ticks with snow and an empty bucket beside it,
+            and its pond arm filled nothing either: a generated colonist can be incapable of the work (set_work_priority
+            refuses a disabled type with success=false, which was not read). A refused pawn is drafted and replaced."""
+            for _ in range(6):
+                pid = spawn_colonist(x, z)
+                UNDER_TEST.add(pid)
+                ok = all((B.call("jawa/set_work_priority", pawnId=pid, workType=w, priority=1) or {}).get("success") is not False
+                         for w in work)
+                if ok:
+                    need(pid, 1.0)
+                    return pid
+                draft(pid)
+            raise RuntimeError("six colonists in a row were incapable of %s" % (work,))
 
         def draft_bystanders(keep):
             for c in colonists():
@@ -1070,15 +1086,23 @@ def main(argv=None):
             # HARNESS (first live run, 2026-10-17): a brine bucket CARRIED mid-pour is not on the ground when the others are
             # destroyed; stop_job drops it, and the Store arm then counted it as a new fill (1 bucket, no fill job seen).
             # The Store arm is judged against what is on the ground after the drop.
-            ticks(30)
+            # Full run, round 2: base2 read 0 after 30 ticks, yet one brine bucket lay beside the shore by the end with no
+            # fill job sampled (150-tick samples; brine tank unchanged; the only tank fill seen was from T20's FRESH tank).
+            # A mid-fill job stopped by stop_job can still finish its carry later, so the arm now settles 300 ticks,
+            # clears the ground again, then samples every 30 ticks and names where each new brine bucket lies.
+            ticks(300)
+            for t in things("RM_Bucket_Brine"):
+                B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t.get("x"), t.get("z")), categories="Item")
             base2 = count("RM_Bucket_Brine")
             seen2 = []
-            for _ in range(20):
-                ticks(150)
+            for _ in range(100):
+                ticks(30)
                 j = job(p23)
                 if j and (not seen2 or seen2[-1] != j):
                     seen2.append(j)
             made2 = count("RM_Bucket_Brine") - base2
+            where2 = [(t.get("x"), t.get("z")) for t in things("RM_Bucket_Brine")]
+            u2 = tank_units(TX, TZ)
             bad = []
             if u0 is None or u1 is None:
                 row("T23_fill_tank_is_the_order", "UNMEASURED", "HARNESS", {"tank": tank_r, "units": [u0, u1]})
@@ -1089,7 +1113,8 @@ def main(argv=None):
                     bad.append("Store tank: brine still gathered (%d buckets, jobs %s)" % (made2, seen2))
                 row("T23_fill_tank_is_the_order", "FAIL" if bad else "PASS", "MOD",
                     {"tank": tank_r, "units": [u0, u1], "brineBuckets": made, "jobsFill": seen, "jobsStore": seen2,
-                     "brineBucketsAfterStore": made2, "droppedAtSwitch": base2, "bad": bad})
+                     "brineBucketsAfterStore": made2, "droppedAtSwitch": base2, "brineAt": where2,
+                     "storeTankUnits": u2, "bad": bad})
             draft(p23)
 
         # ---------------------------------------------------------------- T25 snow into water
@@ -1117,11 +1142,22 @@ def main(argv=None):
             sd = B.call("jawa/set_weather_buildup", kind="snow", mode="add", rect="%d,%d,8,8" % (SX3, SZ3), depth=0.0) or {}
             fresh0 = count("RM_Bucket_FreshWater")
             melted = None
+            melt_trace = []
+            # Full run, round 2: the snow bucket was made but no melt was seen in 7,000 ticks (the isolated run melted at
+            # 5,000 at 31 C). The arm now traces the snow bucket itself every 500 ticks: where it lies, that cell's
+            # temperature and CompRM_Melt's own fields, so a haul into a cold room or a carry is visible.
             if snowb:
                 for k in range(14):
                     ticks(500)
                     quench_all()
-                    if count("RM_Bucket_FreshWater") > fresh0 and not count("RM_BucketSnow"):
+                    sb_ = things("RM_BucketSnow")
+                    smp = {"t": (k + 1) * 500, "snow": [(t.get("x"), t.get("z")) for t in sb_], "fresh": count("RM_Bucket_FreshWater")}
+                    if sb_:
+                        smp["cellC"] = (B.call("jawa/cell_temperature", cell="%s,%s" % (sb_[0].get("x"), sb_[0].get("z"))) or {}).get("temperature")
+                        cr = B.call("jawa/comp_read", thing=sb_[0].get("id"), comp="RM_Melt") or {}
+                        smp["comp"] = str(cr.get("fields") or cr.get("members") or cr.get("message"))[:160]
+                    melt_trace.append(smp)
+                    if smp["fresh"] > fresh0 and not sb_:
                         melted = (k + 1) * 500
                         break
             # arm 2: a pond near -> the bucket fills from it, no snow job
@@ -1150,7 +1186,7 @@ def main(argv=None):
                 bad.append("gathered snow with a pond near")
             row("T25_snow_to_water", "FAIL" if bad else "PASS", "MOD",
                 {"snowSet": {k: sb.get(k) for k in ("success", "cellsChanged")}, "jobs": seen, "bucketsSnow": snowb,
-                 "snowAfter": sd.get("sample") or sd.get("depths"), "meltTicks": melted, "temp": temp.get("temperature"),
+                 "snowAfter": sd.get("sample") or sd.get("depths"), "meltTicks": melted, "meltTrace": melt_trace[-5:], "temp": temp.get("temperature"),
                  "jobsPond": seen2, "bad": bad, "notRun": "snow depth drop 0.4 (read back is a sample only)"})
             draft(p25)
             paint("Soil", SX3 + 10, SZ3 + 8, 3, 2)
