@@ -48,6 +48,11 @@ namespace RimMandrake.FlowWorks.Swimming
 		public static float swimWarnAt = RM_SwimMath.DefaultWarnAt;
 		public static bool tiredSwimmersHeadForShore = true;
 		public static bool deepSwimJoyEnabled = true;
+		/// <summary>Drowning (and tiring) in WADEABLE natural water: shallow and chest-deep squares no pit dug (vanilla-passable
+		/// water). On (shipped): the one drowning rule runs there too, so a downed person (head under at 0.2 H lying) drowns in
+		/// 0.5 m shallows and a small animal tires and drowns in them. Off: those squares are footing. Owner question open
+		/// (review day 1 2026-10-17); this switch turns that behaviour off alone, deep water and pits unchanged.</summary>
+		public static bool shallowWaterDrowningEnabled = true;
 
 		public static void ExposeData()
 		{
@@ -65,6 +70,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			Scribe_Values.Look(ref swimWarnAt, "swimWarnAt", RM_SwimMath.DefaultWarnAt);
 			Scribe_Values.Look(ref tiredSwimmersHeadForShore, "tiredSwimmersHeadForShore", true);
 			Scribe_Values.Look(ref deepSwimJoyEnabled, "deepSwimJoyEnabled", true);
+			Scribe_Values.Look(ref shallowWaterDrowningEnabled, "shallowWaterDrowningEnabled", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -111,6 +117,10 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 			list.CheckboxLabeled("  Swimming for fun in deep water", ref deepSwimJoyEnabled,
 				"On: the Odyssey 'go swimming' pastime may use deep water, for rested swimmers only. Off: shallows only.");
+			list.CheckboxLabeled("  Drowning in shallow and chest-deep natural water", ref shallowWaterDrowningEnabled,
+				"On (shipped): the drowning rule also runs in wadeable lake, river and marsh water, so someone lying downed in "
+				+ "half a metre of water can drown, and small animals can tire and drown there. Off: wadeable natural water is "
+				+ "footing; deep water and dug pits keep the drowning rule.");
 			GUI.enabled = true;
 		}
 	}
@@ -467,7 +477,10 @@ namespace RimMandrake.FlowWorks.Swimming
 				{
 					continue;   // the common case: dry ground, never swam
 				}
-				if (!on || p.Flying || (dug && Pits.RM_PitCoverUtility.IsCovered(map, c)))
+				// wadeable natural water (vanilla-passable, no pit) is footing when its drowning switch is off
+				bool wadeableOff = !dug && !RM_SwimSettings.shallowWaterDrowningEnabled && t != null && t.IsWater
+					&& t.passability != Traversability.Impassable;
+				if (!on || p.Flying || wadeableOff || (dug && Pits.RM_PitCoverUtility.IsCovered(map, c)))
 				{
 					Recover(p, exh);
 					continue;
