@@ -1,0 +1,168 @@
+[lscrub-note] shipped defs resolved: 91
+[lscrub] 20:33:56 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 20:33:56 biome_weather_table PASS 
+[lscrub] 20:33:56 biome_density_and_flora PASS 
+[lscrub] 20:33:56 biome_lean_extension PASS 
+[lscrub] 20:33:56 rules_armed PASS 
+[lscrub] 20:33:56 thicket_smotherable PASS 
+[lscrub] 20:33:56 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[["Human73177", "Scratch", "Torso"], ["Human73177", "Bite", "Torso"]], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 18, "campfire": ["Fuel: 20 / 20 (2 days)"]}
+[lscrub] 20:34:20 dead_venomvine_fuels_fire PASS 
+[lscrub] 20:34:20 defaults PASS 
+[lscrub] 20:34:20 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 20:34:20 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 20:34:20 leanEnabled_roundtrip PASS 
+[lscrub] 20:34:20 leanScentEnabled_roundtrip PASS 
+[lscrub] 20:34:20 leanFireEnabled_roundtrip PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] wild kinds spawned: {"asked": 18, "lost": []}
+[lscrub] 20:34:21 fauna_spawns PASS 
+[lscrub] 20:34:21 dustflutter_can_fly PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] flora set: {"asked": 24, "lost": []}
+[lscrub] 20:34:22 flora_spawns PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] Stall: path lengths (cells) and sampled jobs over 1500 ticks: {"RM_Thornhold77335": {"alive": 13, "samples": 13, "path": 0.0, "jobs": [null, "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"]}, "RM_Shirrel77336": {"alive": 13, "samples": 13, "path": 16.89292222699217, "jobs": [null, "GotoWander", "GotoWander", "Wait_Wander", "GotoWander", "GotoWander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "GotoWander", "GotoWander"]}}
+[lscrub] 20:34:25 stall_freezes_small PASS 
+[lscrub-note] Stall, stallFreezeEnabled OFF: path: {"RM_Thornhold77335": {"alive": 7, "samples": 7, "path": 9.242640687119286, "jobs": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander"]}}
+[lscrub] 20:34:27 stall_toggle_off_wanders PASS 
+[lscrub-note] Stall, modEnabled OFF: path: {"RM_Thornhold77335": {"alive": 7, "samples": 7, "path": 12.625316113301073, "jobs": ["GotoWander", "Wait_Wander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander"]}}
+[lscrub] 20:34:30 stall_master_off_wanders PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub] 20:34:33 gale_site_ready PASS 
+[lscrub] 20:34:34 gale_deafens_outdoors PASS 
+[lscrub] 20:34:34 gale_spares_roofed PASS 
+[lscrub] 20:34:35 gale_deafen_toggle_off PASS 
+[lscrub-note] turbine output W (on, off, on): [4485.0, 3450.0, 4485.0]
+[lscrub] 20:34:41 gale_turbine_surge PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T03:34:46Z", "message": "safe_advance stopped after 1200 of 1200 tick(s): downed: downed (health 0.75)", "state": "stopped", "executed": 1200, "requested": 1200, "stopBy": {"seq": 42, "kind": "downed", "severity": "threat", "tick": 25862, "map": 1, "subjectId": 73160, "subject": "eopie", "critical": false, "declared": false, "detail": "downed (health 0.75)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 38, "kind": "hurt", "severity": "info", "tick": 25562, "map": 1, "subjectId": 73170, "subject": "kreetle", "critical": false, "declared": false, "detail": "health 1 -> 0.88"}, {"seq": 39, "kind": "hurt", "severity": "info", "tick": 25742, "map": 1, "subjectId": 73158, "subject": "ribbonwhip", "critical": false, "declared": false, "detail": "health 1 -> 0.78"}, {"seq": 40, "kind": "hurt", "severity": "info", "tick": 25742, "map": 1, "subjectId": 73170, "subject": "kreetle", "critical": false, "declared": false, "detail": "health 0.88 -> 0.75"}, {"seq": 41, "kind": "death", "severity": "info", "tick": 25845, "map": 1, "subjectId": 73158, "subject": "ribbonwhip", "critical": false, "declared": false, "detail": "died: Bite by RSW_Kreetle73170"}, {"seq": 42, "kind": "downed", "severity": "threat", "tick": 25862, "map": 1, "subjectId": 73160, "subject": "eopie", "critical": false, "declared": false, "detail": "downed (health 0.75)"}, {"seq": 43, "kind": "hurt", "severity": "info", "tick": 25862, "map": 1, "subjectId": 73160, "subject": "eopie", "critical": false, "declared": false, "detail": "health 0.83 -> 0.75"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "LeaningScrub", "--plan", "src/RimMandrake/LeaningScrub/northstar_plan.py"]}
+[lscrub] 20:34:46 gale_turbine_breakdown UNMEASURED surprise: safe_advance stopped after 1200 of 1200 tick(s): downed: downed (health 0.75)
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub] 20:34:49 lash_site_ready PASS 
+[lscrub-note] lash OFF: colonist hediffs after 300 ticks: []
+[lscrub] 20:34:50 lash_toggle_off_quiet PASS 
+[lscrub-note] lash: hediffs before / after strike / after the hour's first 600 ticks: [0, 3, 3]
+[lscrub] 20:34:51 lash_strikes_once PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub] 20:34:54 smother_site_ready PASS 
+[lscrub] 20:35:33 smother_claims_stands PASS 
+[lscrub-note] feature OFF, claim due: stands alive / inspect: [[1, 1], ["Mature.", "Smothered: dead through, ready to fall."]]
+[lscrub] 20:35:39 smother_off_holds_claims PASS 
+[lscrub-note] feature back ON: stands alive / dead venomvine: [[0, 0], 50]
+[lscrub] 20:35:41 smother_matures_to_dead_wood PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[["Human73171", "Scratch", "Foot"], ["Human73171", "Scratch", "Toe"], ["Human73174", "Scratch", "Leg"], ["Human73174", "Scratch", "Foot"]], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [3, 1, ["30% grown", "Growth rate: 0% (resting, needs light level 51%)"]]
+[lscrub] 20:35:58 dripping_survives_harvest PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub] 20:35:58 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand / sampled jobs: [[16.492422502470642, 17.0, 18.439088914585774], {"RM_Dustflutter78357": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter78358": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter78359": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"]}]
+[lscrub] 20:36:00 crown_toggle_off_stays_away PASS 
+[lscrub-note] crown trial ON: dustflutter distances to the stand / sampled jobs: [[2.0, 3.1622776601683795, 2.23606797749979], {"RM_Dustflutter78366": ["Goto", "Goto", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter78367": ["Goto", "Goto", "Goto", "Goto", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter78368": ["Goto", "Goto", "GotoWander", "Goto", "Goto", "Goto"]}]
+[lscrub] 20:36:02 crown_mob_gathers PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] bloom trial OFF: Flee seen per species / vissler arms shed / cohort present: [{"RM_Crustweevil": true, "RM_Fuzzrunner": true, "RM_Dustflutter": true, "RM_Vissler": true}, 0, {"RM_Crustweevil": true, "RM_Fuzzrunner": true, "RM_Dustflutter": true, "RM_Vissler": true}]
+[lscrub] 20:36:06 bloom_toggle_off_quiet PASS 
+[lscrub-note] bloom trial ON: Flee seen per species / vissler arms shed / cohort present: [{"RM_Crustweevil": true, "RM_Fuzzrunner": true, "RM_Dustflutter": true, "RM_Vissler": true}, 1, {"RM_Crustweevil": true, "RM_Fuzzrunner": true, "RM_Dustflutter": true, "RM_Vissler": true}]
+[lscrub] 20:36:10 bloom_answers_a_walker PASS 
+[lscrub-note] bloom visuals (SWAYING n HOLES +n ANSWERED n): "SWAYING 1 HOLES +1 ANSWERED 2"
+[lscrub] 20:36:10 bloom_sway_and_exit_hole PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] fire stamp proof (on): "PASS kind=RSW_ShrublandGiant small:sent=0/goto=False big:sent=1/toBlaze=True stamped=3 fires 6->3"
+[lscrub] 20:36:11 stamp_answers_a_blaze PASS 
+[lscrub-note] fire stamp proof (off): "PASS off kind=RSW_ShrublandGiant small:sent=0/goto=False big:sent=0/toBlaze=False stamped=0 fires 6->6"
+[lscrub] 20:36:11 stamp_toggle_off_ignores_fire PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] fuzz patch laid (cells): 225
+[lscrub-note] ripple proof (on): "PASS kind=GuineaPig wind=True stallStill=True"
+[lscrub] 20:36:11 ripple_hides_small_creatures PASS 
+[lscrub-note] ripple proof (off): "PASS off kind=GuineaPig wind=False stallStill=False"
+[lscrub] 20:36:11 ripple_toggle_off_nobody_hides PASS 
+[lscrub-note] stall hunt (on): "PASS hawk=RM_Zellik prey=GuineaPig started=1 hunting=True"
+[lscrub] 20:36:12 stallhawk_hunts_in_the_stall PASS 
+[lscrub-note] stall hunt (off): "PASS off hawk=RM_Zellik prey=GuineaPig started=0 hunting=False"
+[lscrub] 20:36:12 stallhawk_toggle_off_idle PASS 
+[lscrub-note] pyre defs: "PASS defs: 3 beliefs + ritual, all gated on the ritual/fire memes"
+[lscrub] 20:36:12 pyre_beliefs_gated_on_memes PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub-note] crop patch laid (cells): 225
+[lscrub-note] pyre fire: "PASS lit=6 came=3 raging=1"
+[lscrub] 20:36:12 pyre_lights_fields_and_calls_herd PASS 
+[lscrub-note] pyre off: "PASS off: gate refuses"
+[lscrub] 20:36:12 pyre_toggle_off_refuses PASS 
+[lscrub-note] vaporator defs: "PASS vaporator powered, spawns RM_FogWater, learned from Techprint_RM_WindVaporators"
+[lscrub] 20:36:12 vaporator_learned_from_farmstead PASS 
+[lscrub-note] injections (PLACED sites=n vaporatorWrecks=+n campPeople=+n): "PLACED sites=5 vaporatorWrecks=+3 campPeople=+4 farmers=True scavengers=True"
+[lscrub] 20:36:12 map_holds_ruins_and_camps PASS 
+[lscrub-note] rearing proof (on): "PASS reared=True"
+[lscrub] 20:36:12 rearing_acts PASS 
+[lscrub-note] rearing proof (off): "PASS off reared=False"
+[lscrub] 20:36:12 rearing_toggle_off PASS 
+[lscrub-note] walking proof (on): "PASS cells 72->99 runnerDownwind=True"
+[lscrub] 20:36:12 walking_acts PASS 
+[lscrub-note] walking proof (off): "PASS off cells 99->99 runnerDownwind=False"
+[lscrub] 20:36:12 walking_toggle_off PASS 
+[lscrub-note] hoard proof (on): "PASS held=3 steelGone=True steelBackOnCut=7"
+[lscrub] 20:36:12 hoard_acts PASS 
+[lscrub-note] hoard proof (off): "PASS off held=0 steelGone=False steelBackOnCut=7"
+[lscrub] 20:36:12 hoard_toggle_off PASS 
+[lscrub-note] quench proof (on): "PASS burst=1 spent=True foamCells=0"
+[lscrub] 20:36:12 quench_acts PASS 
+[lscrub-note] quench proof (off): "PASS off burst=0 spent=False foamCells=0"
+[lscrub] 20:36:12 quench_toggle_off PASS 
+[lscrub-note] sworn proof (on): "PASS marked 1->1 bare 2->4"
+[lscrub] 20:36:12 sworn_acts PASS 
+[lscrub-note] sworn proof (off): "PASS off marked 0->2 bare 0->2"
+[lscrub] 20:36:12 sworn_toggle_off PASS 
+[lscrub-note] shedding proof (on): "PASS litterCells 0->13 upwind=0"
+[lscrub] 20:36:12 shedding_acts PASS 
+[lscrub-note] shedding proof (off): "PASS off litterCells 0->0 upwind=0"
+[lscrub] 20:36:12 shedding_toggle_off PASS 
+[lscrub-note] strangler proof (on): "PASS strangler wrapped (40%, wall 195 -> 181)"
+[lscrub] 20:36:12 strangler_acts PASS 
+[lscrub-note] strangler proof (off): "PASS strangler toggle off left the wall alone"
+[lscrub] 20:36:12 strangler_toggle_off PASS 
+[lscrub-note] weeper proof (on): "PASS weeper 7 pools after 200 long ticks"
+[lscrub] 20:36:12 weeper_acts PASS 
+[lscrub-note] weeper proof (off): "PASS weeper toggle off shed nothing"
+[lscrub] 20:36:12 weeper_toggle_off PASS 
+[lscrub-note] sleeper proof (on): "PASS sleeper woke into a live stand"
+[lscrub] 20:36:12 sleeper_acts PASS 
+[lscrub-note] sleeper proof (off): "PASS sleeper toggle off stayed asleep"
+[lscrub] 20:36:12 sleeper_toggle_off PASS 
+[lscrub-note] lure proof (on): "PASS lure 3 fruit (cap 3)"
+[lscrub] 20:36:12 lure_acts PASS 
+[lscrub-note] lure proof (off): "PASS lure toggle off dropped none"
+[lscrub] 20:36:12 lure_toggle_off PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[], ["Human73171", "Human73174", "Human73177"], []]
+[lscrub] 20:36:13 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden79947", "RM_Barkwarden79948", "RM_Barkwarden79949"]
+[lscrub] 20:36:13 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Quiet Signpost (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 9 hours.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 20:36:13 station_named_and_timed PASS 
+[lscrub] 20:36:13 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump; tree inspect after: [0, 5, ["Ready to harvest.", "Loose sweetline felt falls in 5 days.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 20:36:15 station_sheds_wool PASS 
+[lscrub-note] scratch proof with scratching OFF: "REFUSED: scratching is off"
+[lscrub] 20:36:16 scratch_toggle_off_refused PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T03:36:17Z", "message": "safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "state": "stopped", "executed": 1320, "requested": 1500, "stopBy": {"seq": 105, "kind": "hurt", "severity": "damage", "tick": 380162, "map": 1, "subjectId": 73174, "subject": "Yume", "critical": false, "declared": false, "detail": "health 1 -> 0.86; newest hediff Scratch/Leg age 3"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 103, "kind": "hurt", "severity": "info", "tick": 378962, "map": 1, "subjectId": 79386, "subject": "Whitaker", "critical": false, "declared": false, "detail": "health 1 -> 0.9"}, {"seq": 104, "kind": "hurt", "severity": "info", "tick": 379982, "map": 1, "subjectId": 79373, "subject": "Rakosa", "critical": false, "declared": false, "detail": "health 1 -> 0.88"}, {"seq": 105, "kind": "hurt", "severity": "damage", "tick": 380162, "map": 1, "subjectId": 73174, "subject": "Yume", "critical": false, "declared": false, "detail": "health 1 -> 0.86; newest hediff Scratch/Leg age 3"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "LeaningScrub", "--plan", "src/RimMandrake/LeaningScrub/northstar_plan.py"]}
+[lscrub] 20:36:17 scratch_drops_coat UNMEASURED surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 visitors_toggle_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 visitors_come_and_leave_marks UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 felt_comfort_toggle_off_plain UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 felt_furniture_comfort UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 map_step_chance_zero_plants_none UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub] 20:36:17 map_step_plants_one_or_two UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 239}
+[lscrub] 20:36:18 log_clean PASS 
+component gale/gale_turbine_breakdown: {"toggle": "galeTurbineSurgeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 1200 of 1200 tick(s): downed: downed (health 0.75)", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 16958 examined.", "matched": 1, "examined": 16958, "threw": 0, "things": [{"id": "WindTurbine77843", "defName": "WindTurbine", "label": "wind turbine", "x": 129, "z": 74, "className": "Verse.Building", "inspect": ["Power output: 4485 W", "Grid excess: 4485 W (0 Wd stored)"]}], "ticksGame": 20
+component sweetline/scratch_drops_coat: {"toggle": "sweetlineScratchingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 15042, "countReturned": 0, "countMatched": 0, "isCompleteList": true, "truncated": 0, "pawnsSkipped": 35, "perDef": {}, "ticksGame": 378879, "message": "NOTHING MATCHED. 15042 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spell
+component sweetline/visitors_toggle_off_quiet: {"toggle": "sweetlineVisitorsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component sweetline/visitors_come_and_leave_marks: {"toggle": "sweetlineVisitorsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component sweetline/felt_comfort_toggle_off_plain: {"toggle": "sweetlineFeltComfortEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component sweetline/felt_furniture_comfort: {"toggle": "sweetlineFeltComfortEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component sweetline/map_step_chance_zero_plants_none: {"toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component sweetline/map_step_plants_one_or_two: {"toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1320 of 1500 tick(s): hurt: health 1 -> 0.86; newest hediff Scratch/Leg age 3", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+recorded LeaningScrub: RED at a37619f8f2bd (LeaningScrub/northstar_driver@LeaningScrub_20261017T033354Z.json)
+LeaningScrub: NOT GREEN  PASS=77 FAIL=0 UNMEASURED=8  calls=2140 mean=63.813ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\LeaningScrub_20261017T033354Z.json

@@ -1,0 +1,52 @@
+[contagion-note] shipped defs resolved: 126
+[contagion] 20:39:42 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 23, "plants": 12}
+[contagion] 20:39:42 biome_table_and_roster PASS 
+[contagion] 20:39:42 biome_roster_animals UNMEASURED UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"; the roster is checked statically from the XML
+[contagion] 20:39:42 helix_trader_wired PASS 
+[contagion] 20:39:42 visible_tells_wired PASS 
+[contagion] 20:39:43 organ_patch_comps PASS 
+[contagion] 20:39:44 defaults PASS 
+[contagion] 20:39:44 biomeRarityFactor_roundtrip PASS 
+[contagion] 20:39:44 burnDamageFactor_roundtrip PASS 
+[contagion] 20:39:44 burnEnabled_roundtrip PASS 
+[contagion] 20:39:45 burnFrequency_roundtrip PASS 
+[contagion] 20:39:45 burnTellsEnabled_roundtrip PASS 
+[contagion] 20:39:45 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 20:39:45 coalescenceEnabled_roundtrip PASS 
+[contagion] 20:39:46 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 20:39:46 grownLimbsEnabled_roundtrip PASS 
+[contagion] 20:39:46 mulchDropsEnabled_roundtrip PASS 
+[contagion] 20:39:46 sunbeamArrestEnabled_roundtrip PASS 
+[contagion] 20:39:47 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 20:39:47 touchedEnabled_roundtrip PASS 
+[contagion] 20:39:47 touchedExposureFactor_roundtrip PASS 
+[contagion] 20:39:47 touchedMutationRate_roundtrip PASS 
+[contagion] 20:39:48 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 20:39:48 zhoolConversionEnabled_roundtrip PASS 
+[contagion] 20:39:48 zhoolConversionRate_roundtrip PASS 
+[contagion] 20:39:48 zhoolConvertsCrops_roundtrip PASS 
+[contagion] 20:39:49 zhoolHazeDensity_roundtrip PASS 
+[contagion] 20:39:49 zhoolHazeEnabled_roundtrip PASS 
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\cli.py", line 435, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\cli.py", line 431, in main
+    return a.fn(a)
+           ~~~~^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\cli.py", line 162, in cmd_run
+    rows += _suite_rows(s, mod, exp, doc, only=_csv(args.chains), skip=_csv(args.skip_chains),
+            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        progress=lambda d: B.write_results(out, d), pre_rows=rows)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\cli.py", line 311, in _suite_rows
+    progress(part)
+    ~~~~~~~~^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\cli.py", line 163, in <lambda>
+    progress=lambda d: B.write_results(out, d), pre_rows=rows)
+                       ~~~~~~~~~~~~~~~^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\northstar_driver\bars.py", line 196, in write_results
+    os.replace(tmp, path)
+    ~~~~~~~~~~^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\northstar\\Contagion_20261017T033940Z.json.tmp' -> '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\northstar\\Contagion_20261017T033940Z.json'

@@ -1,0 +1,132 @@
+[cauldron]-note shipped defs resolved: 69
+[cauldron] 20:36:53 defs_resolve PASS 
+[cauldron] 20:36:53 acid_wiring_shape PASS 
+[cauldron] 20:36:53 flora_expansion_shape PASS 
+[cauldron] 20:36:53 fexxil_venom_shape PASS 
+[cauldron] 20:36:55 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 20:36:55 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 20:36:55 biome_roster PASS 
+[cauldron] 20:36:55 biome_worker_and_terrain PASS 
+[cauldron] 20:36:55 nettle_habitat_wired PASS 
+[cauldron] 20:36:55 vent_habitat_wired PASS 
+[cauldron] 20:36:55 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 20:36:55 weathers_selectable PASS 
+[cauldron] 20:36:56 defaults PASS 
+[cauldron] 20:36:56 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 20:36:56 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 20:36:56 ventsEnabled_roundtrip PASS 
+[cauldron] 20:36:56 ventFalterMessage_roundtrip PASS 
+[cauldron] 20:36:56 ventGardensEnabled_roundtrip PASS 
+[cauldron] 20:36:56 vexxithDoorEnabled_roundtrip PASS 
+[cauldron] 20:36:56 dewfallBeadsEnabled_roundtrip PASS 
+[cauldron] 20:36:56 dewfallSaturationEnabled_roundtrip PASS 
+[cauldron] 20:36:56 assayFlecksEnabled_roundtrip PASS 
+[cauldron] 20:36:56 vexxissPrintsEnabled_roundtrip PASS 
+[cauldron] 20:36:56 ventGasDrifts_roundtrip PASS 
+[cauldron] 20:36:56 ventGasToxicSmoke_roundtrip PASS 
+[cauldron] 20:36:56 ruinKitEnabled_roundtrip PASS 
+[cauldron] 20:36:56 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive"], "RM_Vexxiss": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties_TitanicWake"]}
+[cauldron] 20:36:56 suush_and_vexxiss_comps PASS 
+[cauldron] 20:36:56 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[["Human79122", "Gunshot", "Arm"], ["Human79122", "Gunshot", "Arm"], ["Human79127", "Bite", "Eye"]], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 7, "verified": true, "residue": []}
+[cauldron] 20:36:57 acid_site_ready PASS 
+[cauldron]-note AcidBurn 20: hp before/after: {"swall": [300, 280], "vdoor": [320, 320], "vwall": [480, 480]}
+[cauldron] 20:36:57 vexxith_acid_proof PASS 
+[cauldron]-note AcidBurn 20 with the toggle OFF: vexxith wall hp before/after: [480, 460]
+[cauldron] 20:36:57 vexxith_acid_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note wild kinds spawned: {"asked": 8, "lost": []}
+[cauldron] 20:36:57 fauna_spawns PASS 
+[cauldron] 20:36:57 suush_can_fly PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 20:36:59 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, true]
+[cauldron] 20:36:59 suush_detonates_when_shot PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note flora set: {"asked": 17, "lost": [], "why": {}}
+[cauldron] 20:37:00 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 20:37:00 assay_grades PASS 
+[cauldron] 20:37:00 assay_toggle_off PASS 
+[cauldron] 20:37:00 assay_factor_scales PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 20:37:01 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [15, 6]
+[cauldron] 20:37:19 harvest_pays_metal PASS 
+[cauldron]-note martyr harvest 2 (factor 2.0): wood / steel: [15, 12]
+[cauldron] 20:37:36 yield_factor_scales PASS 
+[cauldron]-note martyr harvest 3 (metalYieldEnabled OFF): wood / steel: [16, 0]
+[cauldron] 20:37:52 yield_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note map-biome native / non-native herbivore picked: ["RM_Zisska", "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 20:37:58 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.007396945}
+[cauldron] 20:37:58 bloom_loads_exposed PASS 
+[cauldron] 20:37:58 bloom_no_double_tax PASS 
+[cauldron]-note indoor colonist cell at the verdict: [73, 170]
+[cauldron] 20:37:58 bloom_spares_roofed PASS 
+[cauldron] 20:37:58 bloom_spares_natives PASS 
+[cauldron] 20:37:58 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.01479389, 0.007396945, 2.0]
+[cauldron] 20:37:58 bloom_factor_scales PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron] 20:37:59 water_site_ready PASS 
+[cauldron]-note pond A terrain after 300 ticks of a vexxiss wading: {"WaterShallow": 55, "ToxicWaterShallow": 9}
+[cauldron] 20:38:00 water_poison_on PASS 
+[cauldron] 20:38:00 water_letter_arrives PASS 
+[cauldron] 20:38:00 water_letter_cooldown PASS 
+[cauldron] 20:38:00 water_letter_toggle_off PASS 
+[cauldron] 20:38:01 water_poison_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note vexxiss job BeatFire seen / fire polls with a fire standing: [true, 3]
+[cauldron] 20:38:02 fire_warden_beats_fire PASS 
+[cauldron]-note OFF arm: BeatFire seen / fire polls: [false, 18]
+[cauldron] 20:38:05 fire_warden_toggle_off PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 20:38:06 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 20:38:06 vent_weather_multiplier PASS 
+[cauldron]-note ON: vent state / eskith job in the falter: ["faltering", "Wait_MaintainPosture"]
+[cauldron]-note OFF: vent state / eskith job in the falter: ["faltering", "Wait_Wander"]
+[cauldron] 20:38:16 fauna_hush_in_falter PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 20:38:19 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.012, 0.007876506]
+[cauldron]-note OFF arm: near / far: [0.012, 0.0117333336]
+[cauldron] 20:38:23 vent_exposure_is_local PASS 
+[cauldron]-note wild vexxiss took RM_VexxissDrinkVent: true
+[cauldron]-note vexxiss job / x / z / vent state per 150 ticks: [["RM_VexxissDrinkVent", 129, 38, "breathing"], ["RM_VexxissDrinkVent", 127, 39, "breathing"]]
+[cauldron]-note OFF arm: took the drink job: false
+[cauldron] 20:38:26 vexxiss_drinks_vent PASS 
+[cauldron]-note vent silenced by a drinking vexxiss: [true, 0.0, "silenced"]
+[cauldron]-note recovery output first / 3000 ticks later: [0.01, 0.06]
+[cauldron] 20:38:46 vent_silences_and_recovers PASS 
+[cauldron]-note bystanders settled (mended / drafted / residue): [[], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 6, "verified": true, "residue": []}
+[cauldron]-note vent gas after 1500 ticks: {"capped": false, "cells": 10, "peak": 36, "tox": 0, "burned": 0}
+[cauldron] 20:38:51 gas_site_ready PASS 
+[cauldron]-note ON / OFF arm: [{"capped": false, "cells": 10, "peak": 36, "tox": 0, "burned": 0}, {"capped": false, "cells": 2, "peak": 14, "tox": 0, "burned": 0}]
+[cauldron] 20:38:53 vent_gas_emits PASS 
+[cauldron]-note ON arm: before / after the fire: [{"capped": false, "cells": 10, "peak": 24, "tox": 0, "burned": 0}, {"capped": false, "cells": 8, "peak": 22, "tox": 3, "burned": 4}]
+[cauldron]-note OFF arm: burned before / after: [4, 4]
+[cauldron] 20:39:05 vent_gas_burns_toxic PASS 
+[cauldron]-note tap banked / delivered after 9000 ticks: [0.1, 2]
+[cauldron]-note OFF arm: banked+delivered before / after: [2.1, 2.1]
+[cauldron] 20:39:17 gas_tap_caps_and_banks PASS 
+[cauldron]-note tap HP before / after a drink: [180, 132]
+[cauldron]-note OFF arm: drank / HP before / after: [true, 132, 132]
+[cauldron] 20:39:23 vexxiss_pries_tap PASS 
+[cauldron]-note ruin pieces beside the rig: tanks / pipes: [2, 6]
+[cauldron] 20:39:24 ruin_kit_dresses PASS 
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 242}
+[cauldron] 20:39:24 log_clean PASS 
+recorded Cauldron: DRAFT-CHECKLIST at 40b9f318ed78 (Cauldron/northstar_driver@Cauldron_20261017T033651Z.json)
+Cauldron: GREEN  PASS=73 FAIL=0 UNMEASURED=0  calls=2227 mean=64.215ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\Cauldron_20261017T033651Z.json

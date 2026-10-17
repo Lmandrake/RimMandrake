@@ -1,0 +1,87 @@
+[contagion] 20:50:20 site_is_contagion PASS 
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 40, "verified": true, "residue": []}
+[contagion-note] pad zhool unroofed: {"cellsChanged": 52, "perDef": {"None": 52}}
+[contagion] 20:50:23 zhool_site_ready PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T03:50:25Z", "message": "safe_advance stopped after 1620 of 2000 tick(s): mental: mental state WanderConfused", "state": "stopped", "executed": 1620, "requested": 2000, "stopBy": {"seq": 439, "kind": "mental", "severity": "damage", "tick": 1622, "map": 1, "subjectId": 39831, "subject": "Ad\u00e8le", "critical": false, "declared": false, "detail": "mental state WanderConfused"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 439, "kind": "mental", "severity": "damage", "tick": 1622, "map": 1, "subjectId": 39831, "subject": "Ad\u00e8le", "critical": false, "declared": false, "detail": "mental state WanderConfused"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py", "--chains", "zhool_haze", "--no-record"]}
+[contagion] 20:50:26 conversion_off_turns_nothing UNMEASURED surprise: safe_advance stopped after 1620 of 2000 tick(s): mental: mental state WanderConfused
+[contagion] 20:50:26 haze_turns_grass_in_place UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 1620 of 2000 tick(s): mental: mental state WanderConfused
+component zhool_haze/conversion_off_turns_nothing: {"toggle": "zhoolConversionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 1620 of 2000 tick(s): mental: mental state WanderConfused", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "zhoolConversionRate", "fieldKind": "static", "valueBefore": "1", "valueAfter": "5", "ticksGame": 2, "operation": {"OperationId": "op_b5375d545f3348ef8276378accfb5cb5", "Status": "Completed", "Success": true, "DurationMs": 47}, "state": {"programState": "Playing", "hasCurrentGame": true, "p
+component zhool_haze/haze_turns_grass_in_place: {"toggle": "zhoolConversionRate", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 1620 of 2000 tick(s): mental: mental state WanderConfused", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component defs/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component defs/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component defs/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component defs/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component defs/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component defs/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_biomeRarityFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "biomeRarityFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_burnDamageFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnDamageFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_burnEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_burnFrequency/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_burnTellsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnTellsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_cloudRepulsorEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_coalescenceEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "coalescenceEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_genomeOrganGrowingEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "genomeOrganGrowingEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_grownLimbsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "grownLimbsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_mulchDropsEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "mulchDropsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_sunbeamArrestEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamArrestEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_sunbeamNativeFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamNativeFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_touchedEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_touchedExposureFactor/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedExposureFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_touchedMutationRate/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedMutationRate", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_unfinishedSpawnerEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_zhoolConversionEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_zhoolConversionRate/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConversionRate", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_zhoolConvertsCrops/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolConvertsCrops", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_zhoolHazeDensity/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolHazeDensity", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component settings_zhoolHazeEnabled/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "zhoolHazeEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component repulsor_clear/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component repulsor_clear/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component repulsor_clear/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component repulsor_clear/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "unfinishedSpawnerEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component spawner/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "mulchDropsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component site/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnDamageFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnDamageFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_forced/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "cloudRepulsorEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_natural/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_natural/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_natural/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_natural/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component burn_natural/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "burnFrequency", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component uv/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component uv/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component uv/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamNativeFactor", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component touched/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component touched/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component touched/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "touchedEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component touched/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "sunbeamArrestEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "coalescenceEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "coalescenceEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "grownLimbsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component coalescence/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "grownLimbsEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component genome/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component genome/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component genome/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "genomeOrganGrowingEnabled", "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component genome/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component genome/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component log/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+component site_restore/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains zhool_haze)"}
+Contagion: NOT GREEN  PASS=2 FAIL=0 UNMEASURED=78  calls=167 mean=56.541ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\Contagion_20261017T035018Z.json
