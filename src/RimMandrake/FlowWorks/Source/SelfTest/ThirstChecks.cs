@@ -407,6 +407,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string util = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
                 RiverSwitchFlipChecks.Has(util, @"until - now <= NoTerrainMarkTicks\) return false;", "B2: a mark more than 600 ticks ahead is stale (thing IDs repeat across saves)");
                 RiverSwitchFlipChecks.Has(util, @"noTerrainUntil\.Remove\(pawn\.thingIDNumber\);", "B2: expired and stale marks are dropped");
+                RiverSwitchFlipChecks.Has(util, @"g != Current\.Game\)\s*\{\s*noTerrainUntil\.Clear\(\);", "T15 live 2026-10-17: marks are cleared when the game changes (a reload reuses thing IDs at nearby ticks)");
                 string jobs = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
                 RiverSwitchFlipChecks.Has(jobs, @"!patient\.HostileTo\(pawn\)", "B3: no water for downed hostiles");
                 Assert(!jobs.Contains("patient.guest != null"), "can-fail: the vacuous guest test is gone (every humanlike has a guest tracker)");
