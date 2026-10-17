@@ -91,7 +91,7 @@ ROW_SHOWS = {
 }
 # bars only an extension chain claims (selftest_extensions asserts this list is exactly the difference)
 EXTENSION_ONLY_BARS = ["canal_fire_reaches_reservoir", "reservoir_recharge_progress_visible", "sluice_gate_state_legible",
-                       "spikes_read_distinct"]
+                       "spikes_read_distinct", "still_water_one_surface_height"]
 
 # core row -> the Mod Settings toggle it flips (both sides proven in the same row or its pair)
 ROW_TOGGLES = {
@@ -388,6 +388,18 @@ def flow_door_facing(t):
         if t._guard():
             raise ExpectationFailed("UNMEASURED: live check owed -- sluice and grate drawn across a N-S, an E-W and a "
                                     "superdeep canal, blueprint and finished door (SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR)")
+
+
+# still_water_one_surface_height (owner R9, 2026-10-17, OWNER.jsonl tsn 1792258162801304562): every square of a connected
+# still body at one surface height within 1 cm, read from game state. Measuring script: northstar/level_surface_bar.py, a
+# STUB that reports UNMEASURED until WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES lands the per-body surface-gap diagnostic.
+@suite.chain("water_level_surface")
+def water_level_surface(t):
+    """Live state read: the worst surface gap inside any connected still body is under 1 cm. UNMEASURED until built."""
+    with t.component("level_surface_within_1cm", shows=["still_water_one_surface_height"]):
+        if t._guard():
+            import level_surface_bar
+            level_surface_bar.measure(t)
 
 
 # PIT_LADDER_REDRAW_HUNG_ON_THE_WALL (owner 2026-10-16: "installed along a side of the pit, like a door to a room"): the
@@ -764,7 +776,7 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # DIG_ROCK_TUNE_STONE_FIGHTS_BACK (2026-10-16): digging rock takes longer and drops chunks; no live
                         # toggle chain yet (the rows are owed on the item)
                         "digRockGroundEnabled", "digRockChunksEnabled",
-                        # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16): the cell readout's depth/litres line is UI text
+                        # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16; absorbed into LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD): the cell readout's depth/litres line is UI text
                         # read by eye (review map station pond_bed); no live toggle chain yet
                         "mouseoverDepthEnabled",
                         # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
