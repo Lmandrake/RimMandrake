@@ -317,6 +317,8 @@ def _vacuous_check_probs(EXT):
             return {"result": "RESET x left=0"}
         if tool == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
             return {"result": "FILLED"}
+        if tool == "jawa/static_call" and p.get("method") == "ProofSetBodyFraction":   # plot D stages its small pond
+            return {"result": "SET #1 frac 0.200 stock 20.00 of 100.00"}
         if tool == "jawa/flowworks_excavation_drive" or tool == "jawa/flowworks_excavation_report":
             return {"success": True, "depth": 4, "fill": 0}
         if tool == "jawa/spawn_pawn":
@@ -573,6 +575,13 @@ def _repair_probes(EXT, base):
                             if tl == "jawa/flowworks_body_report" else base(tl, p))
     if _ext_run(EXT, "plot_D_limited_pond", sticky).get("pond_before_draw") != "UNMEASURED":
         out.append("pond_before_draw on an inherited body must be UNMEASURED")
+    # LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the small pond is staged by ProofSetBodyFraction (the budget slider is gone); an older
+    # DLL that refuses the call leaves pond_before_draw UNMEASURED, never a draw reading on a full pond
+    refused = lambda tl, p: ({"result": "REFUSED no such method"} if tl == "jawa/static_call" and p.get("method") == "ProofSetBodyFraction"  # noqa: E731
+                             else {"success": True, "formedByThisCall": True, "body": {"id": 1, "stock": 0.0, "limitless": False}}
+                             if tl == "jawa/flowworks_body_report" else base(tl, p))
+    if _ext_run(EXT, "plot_D_limited_pond", refused).get("pond_before_draw") != "UNMEASURED":
+        out.append("pond_before_draw with the pond staging refused must be UNMEASURED")
     got = _ext_run(EXT, "toggle_recession", sticky)
     if got != {"recession_on": "UNMEASURED", "recession_off": "UNMEASURED"}:
         out.append("toggle_recession on inherited bodies must be UNMEASURED: %s" % got)

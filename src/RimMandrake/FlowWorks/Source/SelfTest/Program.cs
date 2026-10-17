@@ -1148,12 +1148,27 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             // ── FLOWWORKS_BUILD_PROGRAM_1 Phase 6: ruling 7's burn rates and the travelling front ──
-            Case("Fire_burn_is_a_rate_on_the_ladder_one_level_a_day_source_one_per_five", () =>
+            Case("Fire_burn_is_one_rate_one_notch_a_day_canal_or_pond", () =>
             {
+                // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (D3): one rate for every burning square; the 5-day pond rate is gone
                 int canal = RM_FireMath.TicksPerCanalLevel(1f);
-                int source = RM_FireMath.TicksPerSourceLevel(5f);
-                Assert(canal == 60000, "one canal level per day");
-                Assert(source == 5 * canal, "source level takes five canal days (5:1)");
+                Assert(canal == 60000, "one notch per day");
+                string fm = RiverSwitchFlipChecks.Src("RM_FireMath.cs");
+                Assert(!fm.Contains("TicksPerSourceLevel"), "no second (pond) rate");
+                string lf = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                Assert(!lf.Contains("sourceBurnDaysPerLevel") && !lf.Contains("canalBurnDaysPerLevel"), "the fire reads the one setting");
+                RiverSwitchFlipChecks.Has(lf, @"int notchTicks = RM_FireMath\.TicksPerCanalLevel\(RimMandrakeFlowWorksSettings\.burnDaysPerNotch\);", "one rate");
+                RiverSwitchFlipChecks.Has(lf, @"long dl = RM_FireMath\.DlDue\(ref acc, pulseTicks, notchTicks, U\);", "a pond square burns at the same rate");
+                // in decilitres: 240 pulses of 250 ticks burn exactly one notch, and a 4.5 cm sheet (900 dL) burns in 2.16 h
+                int U = RM_Volume.UnitsPerLevel;
+                int a2 = 0; long dl = 0;
+                for (int p = 0; p < 240; p++) dl += RM_FireMath.DlDue(ref a2, 250, canal, U);
+                Assert(dl == U && a2 == 0, "240 pulses burn exactly one notch in dL, got " + dl + " acc " + a2);
+                a2 = 0; dl = 0; int pulses = 0;
+                while (dl < 900 && pulses < 1000) { dl += RM_FireMath.DlDue(ref a2, 250, canal, U); pulses++; }
+                Assert(pulses == 22, "a 4.5 cm sheet burns away in 22 pulses (~5,400 ticks), took " + pulses);
+                a2 = 0;
+                Assert(RM_FireMath.CanalDlToBurn(false, ref a2, 250, canal, U) == 0 && a2 == 0, "water that does not burn is not consumed");
                 int acc = 0, levels = 0;
                 for (int p = 0; p < 240; p++) levels += RM_FireMath.LevelsDue(ref acc, 250, canal);
                 Assert(levels == 1 && acc == 0, "240 pulses of 250 ticks burn exactly one level");

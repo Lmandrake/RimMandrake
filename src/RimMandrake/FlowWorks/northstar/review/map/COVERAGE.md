@@ -56,7 +56,7 @@ Inventory: 328 defs, 232 Mod Settings fields, 32 gizmo labels, 177 textures = 76
 | 17 | Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat | gizmo | - | "Fast", "Flows " + CompassNames[direction & 7], "Hold at " + setpoint.ToStringPercent(), "Hold at " + targetC.ToStringTemperature(), "Invert", "Radius: " + get().ToString("0.#"), "Read now", "Schedule...", EdgeNames[edge] + ": " + RM_MapControlMath.EdgeModeLabel(modes[edge]) | Source/MapControls/Building_RM_MapControl.cs, Source/MapControls/RM_CurrentPainter.cs, Source/MapControls/RM_EdgeSetter. |
 | 18 | The flow engine and its pulse | set | 2 | depthEngineEnabled, flowPerPulse, pulseIntervalTicks | Source/RimMandrakeFlowWorksMod.cs |
 | 19 | Viscosity: tar crawls | set | 3 | levelBySurfaceEnabled, levelSetEnabled, thickCreepEnabled, viscosityEnabled, waterFrontCreepEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 20 | Ponds pay out; map-edge lakes never run dry | set | 5 | minLimitlessBodyCells, sourceBudgetEnabled, sourceBudgetMultiplier, stickyLimitlessEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 20 | Ponds pay out; map-edge lakes never run dry | set | 5 | minLimitlessBodyCells, sourceBudgetEnabled, stickyLimitlessEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 21 | A pond visibly recedes | set | 6 | recedeKeepsLastCell, recedeSparesOutflow, recessionEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 22 | A drained pond leaves a hollow bed | set | 7 | deepBedCellsPerLevel, deepBedMaxDepth, deepBedsEnabled, drainableLakeMaxCells, dugBedLeavesPondEnabled, mouseoverDepthEnabled, pondBedHollowEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 23 | Lakebed ground | def | 7 | RM_Lakebed_Abyss, RM_Lakebed_Deep, RM_Lakebed_Shallow | Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml |
@@ -76,7 +76,7 @@ Inventory: 328 defs, 232 Mod Settings fields, 32 gizmo labels, 177 textures = 76
 | 37 | Trace/half/pit fill grounds of the other liquids | def | - | RM_Fill_Astrofuel_Half, RM_Fill_Astrofuel_Trace, RM_Fill_Blood_Half, RM_Fill_Blood_Trace, RM_Fill_BoilingWater_Half, RM_Fill_BoilingWater_Superdeep, RM_Fill_BoilingWater_Trace, RM_Fill_Chemfuel_Half, RM_Fill_Chemfuel_Trace, RM_Fill_IcyWater_Half, RM_Fill_IcyWater_Superdeep, RM_Fill_IcyWater_Trace, R ... (28 in all) | Defs/Canals/TerrainDefs/FlowWorks_PitFluidTerrain.xml, Defs/Canals/TerrainDefs/FlowWorks_SlimeTerrain.xml, Defs/Canals/T |
 | 38 | Liquid catches fire and the front travels | set | 17 | canalFireEnabled, explosionIgnitesLiquidEnabled, fireFrontSpeedMultiplier, liquidIgnitionEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 39 | Burning liquid | def | 17 | RM_LiquidFlame | Defs/Canals/ThingDefs/FlowWorks_LiquidFire.xml |
-| 40 | Burns for days, back into the pond | set | 18 | canalBurnDaysPerLevel, sourceBurnDaysPerLevel, sourceFireReach | Source/RimMandrakeFlowWorksMod.cs |
+| 40 | Burns for days, back into the pond | set | 18 | burnDaysPerNotch, sourceFireReach | Source/RimMandrakeFlowWorksMod.cs |
 | 41 | Foam and rain put it out | set | 19 | foamSmothersLiquidFireEnabled, rainDousesLiquidFireEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 42 | Corrosion | set | 20 | liquidCorrosionEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 43 | Chemfuel burns like gasoline | set | 21 | chemfuelBurnRate, chemfuelInfernoEnabled, chemfuelIntensity, chemfuelSpreadSpeed | Source/RimMandrakeFlowWorksMod.cs |

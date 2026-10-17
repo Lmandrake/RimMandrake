@@ -21,10 +21,11 @@ namespace RimMandrake.FlowWorks
 	///   detonation's own Flame blast inherits the front's reach, but a vanilla Fire that blast starts on land lights
 	///   the source cells beside it through the ignition hook at 0 hops, so a blast near a shore can restart the
 	///   reach there once per blast.
-	/// - BURN: ruling 7, a rate on the tier ladder: one canal fill level per day (a DETONATING liquid's canal
-	///   cell is instead consumed whole on the first pulse after it lights, ruling 13); a source cell costs its body one
-	///   level per five days, so a limitless source burns forever and a moat piped from a larger body burns as
-	///   long as inflow beats the burn. Burned liquid is GONE (the second disclosed exit, beside overflow):
+	/// - BURN: ruling 7, a rate: one notch (0.5 m) a day for every burning square, canal or pond alike (unified depth
+	///   spec §5.6, D3; LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), taken in decilitres so a thin sheet burns away in a fraction of
+	///   a day (a DETONATING liquid's canal cell is instead consumed whole on the first pulse after it lights, ruling 13).
+	///   A pond still outlasts a canal (the squares not burning share their water), a limitless source burns forever,
+	///   and a moat piped from a larger body burns as long as inflow beats the burn. Burned liquid is GONE (the second disclosed exit, beside overflow):
 	///   counted in <see cref="BurnedLevelsTotal"/>, debited outside the pulse's conservation ledger.
 	/// - EFFECT: pawns in the burning cell catch fire; one held in a D=4 pit always does (ruling 22).
 	/// - SPENT: a canal cell that burns dry is left scorched (ash) — the `canal_spent_after_burn` bar.
@@ -204,7 +205,7 @@ namespace RimMandrake.FlowWorks
 			FluidDef f = null;
 			if (ex.IsExcavated(c))
 			{
-				if (ex.FillAt(c) > 0)
+				if (ex.WaterDlAt(c) > 0)   // a thin sheet (no whole notch) burns too
 				{
 					f = ex.FluidAt(c) ?? ex.ActiveFluid;
 				}
@@ -562,15 +563,17 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Ruling 7, run once per flow pulse BEFORE the components resolve (so the burn never reads as a
-		/// ledger leak): canal cells lose a level per day; source cells debit their body a level per five days.</summary>
+		/// ledger leak): every burning square loses one notch a day, canal or pond (one rate, D3), in decilitres when
+		/// exact-level water is on (a 4.5 cm sheet burns; it never had a whole notch to lose).</summary>
 		public void BurnPulse(Map map, RM_MapComponent_Excavation ex, int pulseTicks)
 		{
 			if (burning.Count == 0 || !RimMandrakeFlowWorksSettings.canalFireEnabled)
 			{
 				return;
 			}
-			int canalTicks = RM_FireMath.TicksPerCanalLevel(RimMandrakeFlowWorksSettings.canalBurnDaysPerLevel);
-			int sourceTicks = RM_FireMath.TicksPerSourceLevel(RimMandrakeFlowWorksSettings.sourceBurnDaysPerLevel);
+			int notchTicks = RM_FireMath.TicksPerCanalLevel(RimMandrakeFlowWorksSettings.burnDaysPerNotch);
+			bool exact = RM_MapComponent_Excavation.LevelExact;
+			int U = RM_LevelSolve.U;
 			scratch.Clear();
 			scratch.AddRange(burning.Keys);
 			for (int k = 0; k < scratch.Count; k++)
@@ -583,31 +586,33 @@ namespace RimMandrake.FlowWorks
 					// Ruling 13 (2026-09-16): a detonating liquid "does not burn down a tier a day — it is consumed at once"
 					// (since the owner's card of 2026-10-15 that is astrofuel; chemfuel is an inferno). A detonating cell
 					// is normally emptied by its detonation schedule; one lit another way (a source-cell light, a setting
-					// switched mid-burn) burns ALL its levels on the first pulse after it lights, here, before the
+					// switched mid-burn) burns ALL its liquid on the first pulse after it lights, here, before the
 					// components resolve, like every other burn.
 					FluidDef lit = BurnableFluidAt(map, ex, c);
 					RM_FuelBurn litKind = BurnOf(lit);
 					if (lit != null && litKind == RM_FuelBurn.Detonation)
 					{
-						int guardLv = 0;
-						while (ex.FillAt(c) > 0 && guardLv++ < 16)
-						{
-							if (!ex.BurnOffLevel(c))
-							{
-								break;
-							}
-							burnedLevelsTotal += 1f;
-						}
-						if (ex.FillAt(c) == 0)
+						long all = ex.BurnOffDl(c, ex.WaterDlAt(c));
+						burnedLevelsTotal += all / (float)U;
+						Extinguish(map, c, i, true);
+						continue;
+					}
+					// P8: only a liquid that burns NOW is consumed (lit was read above, after any refill). An inferno burns
+					// down in seconds (RM_FuelFireMath.InfernoTicksPerLevel), not a notch a day.
+					int levelTicks = litKind == RM_FuelBurn.Inferno && lit != null
+						? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate) : notchTicks;
+					if (exact)
+					{
+						long dl = RM_FireMath.CanalDlToBurn(lit != null, ref acc, pulseTicks, levelTicks, U);
+						burning[i] = acc;
+						long took = dl > 0 ? ex.BurnOffDl(c, dl) : 0;
+						burnedLevelsTotal += took / (float)U;
+						if (ex.WaterDlAt(c) <= 0)
 						{
 							Extinguish(map, c, i, true);
 						}
 						continue;
 					}
-					// P8: only a liquid that burns NOW is consumed (lit was read above, after any refill). An inferno burns
-					// down in seconds (RM_FuelFireMath.InfernoTicksPerLevel), not a level a day.
-					int levelTicks = litKind == RM_FuelBurn.Inferno && lit != null
-						? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate) : canalTicks;
 					int levels = RM_FireMath.CanalLevelsToBurn(lit != null, ref acc, pulseTicks, levelTicks);
 					burning[i] = acc;
 					for (int l = 0; l < levels; l++)
@@ -625,21 +630,24 @@ namespace RimMandrake.FlowWorks
 				}
 				else
 				{
-					int levels = RM_FireMath.LevelsDue(ref acc, pulseTicks, sourceTicks);
+					// a source square costs its body at the SAME rate (D3), in stock units (a notch of the body = its level
+					// unit, 1 for every shipped liquid), so a sub-notch debit is exact to the decilitre
+					long dl = RM_FireMath.DlDue(ref acc, pulseTicks, notchTicks, U);
 					burning[i] = acc;
+					if (dl <= 0)
+					{
+						continue;
+					}
 					RM_LiquidBody body = ex.Stock.BodyAt(map, c, ex);
 					float unit = body?.fluid != null ? body.fluid.volumePerTile : 1f;
-					for (int l = 0; l < levels; l++)
+					if (!ex.Stock.TryDebit(map, c, unit * dl / U, ex))
 					{
-						if (!ex.Stock.TryDebit(map, c, unit, ex))
-						{
-							Extinguish(map, c, i, false);
-							break;
-						}
-						if (body != null && !body.limitless)
-						{
-							burnedLevelsTotal += 1f;
-						}
+						Extinguish(map, c, i, false);
+						continue;
+					}
+					if (body != null && !body.limitless)
+					{
+						burnedLevelsTotal += dl / (float)U;
 					}
 				}
 			}
@@ -798,14 +806,10 @@ namespace RimMandrake.FlowWorks
 		private void ConsumeDetonatedCell(Map map, RM_MapComponent_Excavation ex, IntVec3 c, int i, float scale, int nth)
 		{
 			detonating.Remove(i);
-			int guardLv = 0;
-			while (ex.FillAt(c) > 0 && guardLv++ < 16 && BurnOf(BurnableFluidAt(map, ex, c)) == RM_FuelBurn.Detonation)
+			if (BurnOf(BurnableFluidAt(map, ex, c)) == RM_FuelBurn.Detonation)
 			{
-				if (!ex.BurnOffLevel(c))
-				{
-					break;
-				}
-				burnedLevelsTotal += 1f;
+				// the whole cell, a part-notch included (a thin astrofuel sheet is consumed too)
+				burnedLevelsTotal += ex.BurnOffDl(c, ex.WaterDlAt(c)) / (float)RM_LevelSolve.U;
 			}
 			detonatedCells += 1f;
 			if (burning.ContainsKey(i))

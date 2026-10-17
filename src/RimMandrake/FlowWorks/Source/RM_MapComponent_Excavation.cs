@@ -119,6 +119,16 @@ namespace RimMandrake.FlowWorks
 		/// A new map starts current; a save without the key loads as 1 and is migrated once in FinalizeInit.</summary>
 		private int volumeModel = RM_Volume.CurrentModel;
 
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §9): 1 = the pond budget slider is gone and every limited
+		/// pond is sized by its floor alone (RM_LiquidStock.MigrateBudgetMultiplier ran). A new map starts at 1; a save without
+		/// the key loads as 0 and is migrated once in FinalizeInit.</summary>
+		private int pondBudgetModel = 1;
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §9, "RM_depthViewModel"): 1 = every wet dug square shows
+		/// the look of its metres of water. A save without the key (0) has looks chosen by fullness: each wet dug square is
+		/// re-picked once on load (a temp-terrain write; nothing about the water changes).</summary>
+		private int depthViewModel = 1;
+
 		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, owner ruling 6 (GPT #10's natural-bed record): cell index → id
 		/// of the pond a DUG dry-bed square was taken out of. Filling the square back in to the surface returns it there,
 		/// dry. Separate from originalTerrain (the excavation's record), so lake provenance survives the dig.</summary>
@@ -737,6 +747,8 @@ namespace RimMandrake.FlowWorks
 			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
 			Scribe_Deep.Look(ref digDiscovery, "RM_digDiscovery");
 			Scribe_Values.Look(ref volumeModel, "RM_volumeModel", 1);
+			Scribe_Values.Look(ref pondBudgetModel, "RM_pondBudgetModel", 0);
+			Scribe_Values.Look(ref depthViewModel, "RM_depthViewModel", 0);
 			Scribe_Collections.Look(ref detachedBedCells, "RM_detachedBedCells", LookMode.Value, LookMode.Value,
 				ref detachedBedKeys, ref detachedBedValues);
 			Scribe_Values.Look(ref burnedLevelsTotal, "RM_burnedLevelsTotal", 0f);
@@ -882,6 +894,29 @@ namespace RimMandrake.FlowWorks
 			RepairLoadedGrids();
 			SyncFluidIdentity();
 			MigrateLevelModel();
+			if (pondBudgetModel < 1)
+			{
+				int rescaled = stock.MigrateBudgetMultiplier(this);
+				Log.Message("[RimMandrake.FlowWorks] pond budget model 0 -> 1 (the slider is gone): " + rescaled
+					+ " limited pond(s) re-sized from their floor, each keeping its fill fraction.");
+				pondBudgetModel = 1;
+			}
+			if (depthViewModel < 1)
+			{
+				int relaid = 0;
+				foreach (IntVec3 c in excavatedCells)
+				{
+					int i = map.cellIndices.CellToIndex(c);
+					if (WetDug(i))
+					{
+						ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
+						relaid++;
+					}
+				}
+				Log.Message("[RimMandrake.FlowWorks] depth view model 0 -> 1: " + relaid
+					+ " wet dug square(s) re-pictured by their metres of water; no water moved.");
+				depthViewModel = 1;
+			}
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the
 			// loader drops them ("Could not load reference") — nothing to shed.
@@ -1086,6 +1121,102 @@ namespace RimMandrake.FlowWorks
 				return float.NaN;
 			}
 			return (float)RM_LevelSolve.Metres(WaterDl(i) - depthGrid[i] * (long)RM_LevelSolve.U);
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD / DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE: the decilitres on an UNDUG natural
+		/// liquid square, from the solver's numbers: its pond's one surface over this square's floor (RM_LiquidStock.SquareWaterDl).
+		/// Read-only: a body not yet formed is never formed here (<paramref name="body"/> null; the square reads as its full
+		/// floor). <paramref name="floor"/> is the square's natural floor in notches. 0 when the square is not natural liquid.</summary>
+		public double NaturalWaterDlAt(IntVec3 c, out RM_LiquidBody body, out int floor)
+		{
+			body = null;
+			floor = 0;
+			if (!IsSourceCell(c))
+			{
+				return 0.0;
+			}
+			floor = BedLevelsAt(c);
+			body = stock.IndexedBodyAt(map, c);
+			return stock.SquareWaterDl(map, body, c, floor, this);
+		}
+
+		/// <summary>R13: is this natural square part of a body that never runs dry? The formed body's sticky classification
+		/// (ruling 16) when it has one; a square not yet in a body reads limitless when it is vanilla's own limitless water,
+		/// a river or the ocean (R10: they stay vanilla and limitless).</summary>
+		public bool IsLimitlessWaterAt(IntVec3 c, RM_LiquidBody body)
+		{
+			if (body != null)
+			{
+				return body.limitless;
+			}
+			TerrainDef t = c.InBounds(map) ? map.terrainGrid.BaseTerrainAt(c) : null;
+			return t != null && t.IsWater && (t.IsRiver || t.defName.IndexOf("Ocean", System.StringComparison.Ordinal) >= 0);
+		}
+
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (owner R4; wording V8): the two-figure readout for a square, from the
+		/// solver's numbers, or null when the square is neither dug nor natural liquid. A dug square: "Hole 7 m (ledge 4 m) ·
+		/// Water 2.37 m (4,740 L)" (water = its own decilitres; a dry dug square reads Water 0.00 m). A limited pond square: the
+		/// same, the hole being its natural floor and the water the pond's surface over it. A limitless square (sea, edge
+		/// river): "Open water, never runs dry" (R13), never a litre count.</summary>
+		public string DepthReadoutAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return null;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			int hole;
+			double water;
+			if (depthGrid[i] != 0)
+			{
+				hole = depthGrid[i];
+				water = WaterDl(i);
+			}
+			else
+			{
+				water = NaturalWaterDlAt(c, out RM_LiquidBody body, out hole);
+				if (hole <= 0)
+				{
+					int dryBed = HollowDepthAt(c);
+					if (dryBed <= 0)
+					{
+						return null;
+					}
+					hole = dryBed;   // a dried pond bed is a hole with no water in it
+					water = 0.0;
+				}
+				else if (IsLimitlessWaterAt(c, body))
+				{
+					return RM_Volume.LimitlessReadout(hole);
+				}
+			}
+			return RM_Volume.Readout(hole, LedgeAt(c, hole), water);
+		}
+
+		/// <summary>The ledge for the readout: the shallowest floor among the four squares around <paramref name="c"/> that is
+		/// still below ground and above this hole's floor (the step a climber reaches first); 0 when the square opens straight
+		/// onto the ground or has no shallower neighbour.</summary>
+		private int LedgeAt(IntVec3 c, int hole)
+		{
+			int best = 0;
+			for (int d = 0; d < 4; d++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[d];
+				if (!n.InBounds(map))
+				{
+					continue;
+				}
+				int f = HollowDepthAt(n);
+				if (f <= 0)
+				{
+					return 0;   // ground next door: no ledge between this hole and the surface
+				}
+				if (f < hole && (best == 0 || f < best))
+				{
+					best = f;
+				}
+			}
+			return best;
 		}
 
 		/// <summary>Is the exact-level kernel running on this map now (the setting)? Readers that pick a look use it.</summary>
@@ -1987,6 +2118,62 @@ namespace RimMandrake.FlowWorks
 		public bool TryTakeLevel(IntVec3 c, out FluidDef fluid)
 		{
 			return TakeLevelCore(c, out fluid);
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: up to <paramref name="maxDl"/> decilitres off a dug cell, the part-notch
+		/// first and then whole notches, so a 4.5 cm sheet (900 dL, no whole notch) can be pumped or burned. Redrawn; the cell
+		/// forgets its fluid once dry. Returns the dL taken (0: not dug, dry, or nothing asked). Counts no exit.</summary>
+		private long TakeDlCore(IntVec3 c, long maxDl, out FluidDef fluid)
+		{
+			fluid = null;
+			if (maxDl <= 0 || !IsExcavated(c))
+			{
+				return 0;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			long w = WaterDl(i);
+			if (w <= 0)
+			{
+				return 0;
+			}
+			long take = maxDl < w ? maxDl : w;
+			long left = w - take;
+			fluid = FluidAt(c) ?? ActiveFluid;
+			fillGrid[i] = (byte)(left / RM_LevelSolve.U);
+			partGrid[i] = (ushort)(left % RM_LevelSolve.U);
+			if (fluid != null)
+			{
+				ApplyFillTerrain(c, fluid);
+			}
+			if (!WetDug(i))
+			{
+				fluidGrid[i] = 0;
+			}
+			return take;
+		}
+
+		/// <summary>A pump lifts up to <paramref name="maxDl"/> dL out of a dug cell (a thin sheet gives what it has). Moved, not
+		/// burned: no exit is counted. With exact-level water off a cell holds whole notches only, so only whole notches are
+		/// taken (the part grid stays empty).</summary>
+		public long TryTakeDl(IntVec3 c, long maxDl, out FluidDef fluid)
+		{
+			if (!LevelExact)
+			{
+				maxDl -= maxDl % RM_LevelSolve.U;
+			}
+			return TakeDlCore(c, maxDl, out fluid);
+		}
+
+		/// <summary>Burning takes up to <paramref name="dl"/> decilitres off a dug cell (ruling 7's rate, applied in decilitres
+		/// so a thin sheet burns away in a fraction of a day). The fire's disclosed exit; returns the dL burned.</summary>
+		internal long BurnOffDl(IntVec3 c, long dl)
+		{
+			long took = TakeDlCore(c, dl, out _);
+			if (took > 0)
+			{
+				burnedLevelsTotal += took / (float)RM_LevelSolve.U;
+			}
+			return took;
 		}
 
 		/// <summary>Liquid networks L6 (rev 2 §3.3): would <see cref="TryPourLevel"/> take a level of <paramref name="fluid"/> here?

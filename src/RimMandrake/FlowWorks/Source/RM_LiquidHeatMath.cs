@@ -35,7 +35,8 @@ namespace RimMandrake.FlowWorks
 		/// hall roofed over a lake does not jump to the target in one step.</summary>
 		public const float MaxRoomPerSecond = 8f * 21f;
 
-		/// <summary>A natural liquid cell (a pond, the Scald) counts as this many fill levels.</summary>
+		/// <summary>A natural liquid cell whose depth the engine does not know (no recorded floor) counts as this many notches.
+		/// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: a square the engine does know reads its real water (RM_LiquidHeat.NaturalLevels).</summary>
 		public const int NaturalCellLevels = 2;
 
 		/// <summary>At most this many cells are visited per interval per map; the rest are visited on later intervals
@@ -43,8 +44,9 @@ namespace RimMandrake.FlowWorks
 		public const int CellBudgetPerInterval = 3000;
 
 		/// <summary>Signed energy one cell pushes in one interval: + for hot, - for cold, 0 for neither, a dry cell, or
-		/// strength 0. <paramref name="levels"/> is the fill level (excavated) or NaturalCellLevels (terrain).</summary>
-		public static float CellEnergy(int heatKind, int levels, float strength)
+		/// strength 0. <paramref name="levels"/> is the liquid in notches, fractional (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the cell's
+		/// decilitres ÷ a notch, so a thin sheet warms a little, never nothing and never a whole notch's worth).</summary>
+		public static float CellEnergy(int heatKind, float levels, float strength)
 		{
 			if (levels <= 0 || strength <= 0f || heatKind == 0)
 			{

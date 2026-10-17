@@ -60,16 +60,16 @@ namespace RimMandrake.FlowWorks
         //  10. liquidIgnitionEnabled   — LiquidIgnitionMapComponent
         public static bool liquidCorrosionEnabled = true;
         public static bool liquidIgnitionEnabled = true;
-        // FLOWWORKS_BUILD_PROGRAM_1 Phase 6 — fire on the depth/fill engine (RM_LiquidFire). Ruling 7's numbers are
-        // the owner's (1 canal level/day, 1 source level/5 days); front speed and source reach are PROVISIONAL.
+        // FLOWWORKS_BUILD_PROGRAM_1 Phase 6 — fire on the depth/fill engine (RM_LiquidFire). Ruling 7: burning is a RATE.
+        // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §5.6, D3 defaulted, veto-able): ONE rate for every burning
+        // square, canal or pond, 0.5 m a day; front speed and source reach are PROVISIONAL.
         public static bool canalFireEnabled = true;
         // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).
         public static bool liquidHeatPushEnabled = true;
         // FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: fixes a vanilla water-body count bug when water changes type.
         public static bool waterBodyTypeFlipFixEnabled = true;
         public static float liquidHeatStrength = 1f;
-        public static float canalBurnDaysPerLevel = 1f;
-        public static float sourceBurnDaysPerLevel = 5f;
+        public static float burnDaysPerNotch = 1f;
         public static float fireFrontSpeedMultiplier = 1f;
         public static float sourceFireReach = 3f;
         public static bool explosionIgnitesLiquidEnabled = true;
@@ -100,7 +100,7 @@ namespace RimMandrake.FlowWorks
         // nothing receding, nothing refilling, nothing draining off-map.
         //  11. fillInEnabled              — the fill-in designator exists at all
         //  12. fillInDisplacementEnabled  — displaced liquid is credited back
-        //  13. sourceBudgetEnabled        — the 5:1 budget; off = limitless all
+        //  13. sourceBudgetEnabled        — a pond holds what its floor holds; off = limitless all
         //  14. stickyLimitlessEnabled     — edge + size classification
         //  15. recessionEnabled           — a spent body gives up cells
         //  16. refillEnabled              — seepage, rain and season
@@ -140,6 +140,9 @@ namespace RimMandrake.FlowWorks
         public static float pondMudDays = 2f;
         public static float pondStageWritesPerPulse = 400f;
         public static bool pondHeadRuleEnabled = true;
+        // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (absorbed LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES; owner D2 2026-10-17): the deepest natural
+        // floor, in NOTCHES (0.5 m), shown in metres, settable up to 250 = 125 m. The floor SHAPE per lake and biome is
+        // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R11); 20 (10 m) stays the default until that lands.
         public static float deepBedMaxDepth = 20f;
         public static float deepBedCellsPerLevel = 4f;
         public static float drainableLakeMaxCells = 40000f;
@@ -157,7 +160,6 @@ namespace RimMandrake.FlowWorks
         public static bool networkSeamsMoveEnabled = true;
         // The partition cap. 6000 is the shipped value; raising the default waits on one in-game timing.
         public static float maxNetworkCells = 6000f;
-        public static float sourceBudgetMultiplier = 1f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
         public static float rainFillPerPulse = 0.1f;
@@ -424,7 +426,7 @@ namespace RimMandrake.FlowWorks
         public static int PondMudTicks => Mathf.RoundToInt(Mathf.Clamp(pondMudDays, 0f, 30f) * 60000f);
         /// <summary>POND_DEPTH: terrain restages per pulse (the §8 cost guard), at least one.</summary>
         public static int PondStageWritesPerPulse => Mathf.Clamp(Mathf.RoundToInt(pondStageWritesPerPulse), 1, 5000);
-        public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, 40);
+        public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, RM_BedMath.MaxBedCeiling);
         public static int DeepBedCellsPerLevel => Mathf.Clamp(Mathf.RoundToInt(deepBedCellsPerLevel), 1, 12);
         public static int DrainableLakeMaxCells => Mathf.Clamp(Mathf.RoundToInt(drainableLakeMaxCells / 1000f) * 1000, RM_BedMath.OceanWalkCells, 62500);
 
@@ -448,8 +450,15 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidHeatPushEnabled, "liquidHeatPushEnabled", true);
             Scribe_Values.Look(ref waterBodyTypeFlipFixEnabled, "waterBodyTypeFlipFixEnabled", true);
             Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
-            Scribe_Values.Look(ref canalBurnDaysPerLevel, "canalBurnDaysPerLevel", 1f);
-            Scribe_Values.Look(ref sourceBurnDaysPerLevel, "sourceBurnDaysPerLevel", 5f);
+            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: one burn rate. A settings file from before it has no "burnDaysPerNotch": the old
+            // canal rate (the owner's ruling-7 day) is read once under its old name; the 5-day pond rate is dropped (D3).
+            Scribe_Values.Look(ref burnDaysPerNotch, "burnDaysPerNotch", -1f);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && burnDaysPerNotch < 0f)
+            {
+                burnDaysPerNotch = Scribe.loader.curXmlParent?["canalBurnDaysPerLevel"] is System.Xml.XmlNode oldCanal
+                    && float.TryParse(oldCanal.InnerText, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float days)
+                    ? days : 1f;
+            }
             Scribe_Values.Look(ref fireFrontSpeedMultiplier, "fireFrontSpeedMultiplier", 1f);
             Scribe_Values.Look(ref sourceFireReach, "sourceFireReach", 3f);
             Scribe_Values.Look(ref explosionIgnitesLiquidEnabled, "explosionIgnitesLiquidEnabled", true);
@@ -491,7 +500,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pumpFedSpreadEnabled, "pumpFedSpreadEnabled", true);
             Scribe_Values.Look(ref networkSeamsMoveEnabled, "networkSeamsMoveEnabled", true);
             Scribe_Values.Look(ref maxNetworkCells, "maxNetworkCells", 6000f);
-            Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
             Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
@@ -611,7 +619,6 @@ namespace RimMandrake.FlowWorks
         // SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: which switch is the master of which control on this screen. Each pair was
         // checked at its read site (2026-10-14): a dependent is declared only where the code that reads it is unreachable with the
         // master off. Left Independent on purpose: pulseIntervalTicks (the depth engine's own off-burn timer still uses it),
-        // sourceBudgetMultiplier (a pond's stock is sized when the map first finds it, budget on or off: RM_LiquidStock.FormBody),
         // digToDepthEnabled (digging works with the engine off), drillYieldChanceMultiplier (the survey runs whatever the drill
         // switch says), wardenFromLipEnabled. The controls stay visible and greyed with their values kept; they replace the old
         // "hide when off" blocks.
@@ -623,7 +630,7 @@ namespace RimMandrake.FlowWorks
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
             .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
-            .Declare("canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach",
+            .Declare("canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
                      "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
                      "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
             .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
@@ -646,7 +653,7 @@ namespace RimMandrake.FlowWorks
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
-            .Independent("pulseIntervalTicks", "sourceBudgetMultiplier", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled")
+            .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled")
             .Name("depthEngineEnabled", "Depth engine")
             .Name("pondDepthEnabled", "Ponds shallow out before they turn to mud")
                         .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
@@ -873,7 +880,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -894,19 +901,10 @@ namespace RimMandrake.FlowWorks
               + "happens. Off: displaced liquid is simply lost — still reported, never silent.");
 
             list.CheckboxLabeled("Sources have a stock", ref sourceBudgetEnabled,
-                "A natural body supplies a limited amount: each of its cells is worth a few "
-              + "canal cells and no more, however big the pond looks. Run it down and the "
-              + "canal stops filling. Off: every source is bottomless.");
-
-            list.Gap();
-            list.Label("Pond budget: x" + sourceBudgetMultiplier.ToString("F2") + "  (a deep pond square holds "
-                     + (RM_Volume.LevelsPerSquare * sourceBudgetMultiplier).ToString("F1") + " levels, a shallow one "
-                     + (RM_Volume.ShallowBedLevels * sourceBudgetMultiplier).ToString("F1") + ")");
-            sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
-            list.Label("The trade the whole stock model turns on. Lower makes water precious and "
-                     + "a canal a real commitment; higher makes ponds generous. Applies to ponds the map "
-                     + "finds from now on (new ponds only): a pond already tracked keeps its stock. "
-                     + "At x1 one deep pond square = one deep canal square = one tank square; any other value breaks that equality.");
+                "A natural pond or lake holds the water its floor holds and no more: a square 2 m deep holds "
+              + RM_Volume.FormatLitres(RM_Volume.LevelsPerSquare * RM_Volume.LitresPerNotch) + ", a 1 m shore square half that, "
+              + "however big the pond looks. Run it down and the canal stops filling. Seas and rivers at the map's edge "
+              + "never run dry. Off: every source is bottomless.");
 
             list.CheckboxLabeled("Big bodies are limitless", ref stickyLimitlessEnabled,
                 "A body that touches the map edge and is large enough is treated as fed from "
@@ -960,15 +958,16 @@ namespace RimMandrake.FlowWorks
               + "Climbing changes at once; squares already dry can keep their current look until they refill.");
 
             list.CheckboxLabeled("Lakes run deep", ref deepBedsEnabled,
-                "The middle of a big lake goes deeper than four levels: past a shore band its bed drops a level every few "
+                "The middle of a big lake goes deeper than 2 m: past a shore band its floor drops 0.5 m every few "
               + "squares, so a drained lake is a gentle bowl you can walk out of, darker toward its deepest floor. It holds that "
               + "much more water, drains off its shallow rim first and refills to its exact old shape. Applies to lakes the map "
-              + "finds from now on. Off: every deep square is four levels, and a pond dries by its average square, as before.");
+              + "finds from now on. Off: every deep square is 2 m, and a pond dries by its average square, as before.");
             using (Dependent(list, "deepBedMaxDepth", "deepBedCellsPerLevel"))
             {
-                list.Label("Deepest lake bed: " + DeepBedMaxDepth + " levels");
-                deepBedMaxDepth = list.Slider(deepBedMaxDepth, RM_Volume.LevelsPerSquare, 40f);
-                list.Label("Lake bed slope: one level deeper every " + DeepBedCellsPerLevel + " squares from the shore");
+                list.Label("Deepest lake floor: " + RM_Volume.FormatMetres(DeepBedMaxDepth) + " (2 m to "
+                    + RM_Volume.FormatMetres(RM_BedMath.MaxBedCeiling) + ")");
+                deepBedMaxDepth = list.Slider(deepBedMaxDepth, RM_Volume.LevelsPerSquare, RM_BedMath.MaxBedCeiling);
+                list.Label("Lake floor slope: 0.5 m deeper every " + DeepBedCellsPerLevel + " squares from the shore");
                 deepBedCellsPerLevel = list.Slider(deepBedCellsPerLevel, 1f, 12f);
             }
             list.CheckboxLabeled("Ponds shallow out before they turn to mud", ref pondDepthEnabled,
@@ -1073,22 +1072,21 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
+            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
               + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
               + "fire; anyone trapped in a superdeep pit always does. Off: liquid never burns.");
-            using (Dependent(list, "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
+            using (Dependent(list, "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
             {
-                list.Label("Channel burn: one fill level every " + canalBurnDaysPerLevel.ToString("F1") + " day(s)");
-                canalBurnDaysPerLevel = list.Slider(canalBurnDaysPerLevel, 0.1f, 5f);
-                list.Label("Source burn: one level every " + sourceBurnDaysPerLevel.ToString("F1") + " day(s)");
-                sourceBurnDaysPerLevel = list.Slider(sourceBurnDaysPerLevel, 0.5f, 25f);
-                list.Label("A channel three levels full burns about three times the first number. These are rates "
-                  + "on the fill ladder, so changing how many levels a channel holds changes how long it burns. "
-                  + "A small moat fed from a bigger unburning source can burn indefinitely; a limitless source "
-                  + "burns forever.");
+                list.Label("Burning liquid goes down " + RM_Volume.FormatMetres(1) + " every " + burnDaysPerNotch.ToString("F1")
+                    + " day(s), in a canal or a pond alike");
+                burnDaysPerNotch = list.Slider(burnDaysPerNotch, 0.1f, 5f);
+                list.Label("A rate, not a timer: 1.5 m of burning liquid lasts about three times this, and a thin sheet "
+                  + "burns away in a fraction of it. A pond still outlasts a canal, because the squares that are not "
+                  + "burning keep sharing their water with the ones that are; a moat fed from a bigger unburning source "
+                  + "can burn indefinitely, and a limitless source burns forever.");
                 list.Label("Fire front speed: x" + fireFrontSpeedMultiplier.ToString("F2"));
                 fireFrontSpeedMultiplier = list.Slider(fireFrontSpeedMultiplier, 0.25f, 4f);
                 list.Label("How far fire walks into a pond from where it enters: " + SourceFireReach + " cell(s)");
@@ -1449,7 +1447,7 @@ namespace RimMandrake.FlowWorks
             {
             list.Label("An empty container filled at a matching liquid's shore becomes a filled one; "
                      + "drinking or otherwise using one leaves a container behind to deal with. Buckets "
-                     + "hold five bottles' worth, barrels twenty-five — same chain, same labour. "
+                     + "hold " + RM_Volume.FormatLitres(15) + " (ten bottles), barrels " + RM_Volume.FormatLitres(208) + " — same chain, same labour. "
                      + "Containers are loot, not free.");
 
             list.CheckboxLabeled("Container fill/wash labour", ref bottleLoopEnabled,

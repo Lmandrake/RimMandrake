@@ -40,7 +40,7 @@ FIRE_SHAPES = [
     ("(kind == 0 && cells >= RM_FuelFireMath.MaxCellsConsumedPerTick) || (kind == 1 && blasts >= RM_FuelFireMath.MaxBlastsPerTick)",
      "RunDetonation stops at both per-tick budgets"),
     ("if (burning.ContainsKey(i) || detonating.Contains(i))", "a cell already planned to detonate is never re-queued"),
-    ("? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate) : canalTicks;",
+    ("? RM_FuelFireMath.InfernoTicksPerLevelAt(RimMandrakeFlowWorksSettings.chemfuelBurnRate) : notchTicks;",
      "an inferno canal cell burns at the chemfuel rate"),
     ("RM_FuelFireEvents.RaiseAstrofuelDetonation(map, origin, count);", "a detonation is announced"),
     ("RM_FuelFireEvents.RaiseLargeChemfuelFire(", "a large chemfuel fire is announced"),

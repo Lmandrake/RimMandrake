@@ -15,8 +15,9 @@ namespace RimMandrake.FlowWorks
 		/// (severity 1 = death; 24/day at full -> 0.1 per 250-tick check).</summary>
 		public const float DrowningPerDayAtBrim = 24f;
 
-		/// <summary>Fraction of the cell's depth that is liquid, 0..1.</summary>
-		public static float FillFraction(int fill, int depth)
+		/// <summary>Fraction of the cell's depth that is liquid, 0..1. <paramref name="fill"/> is in notches and may be fractional
+		/// (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the cell's decilitres ÷ a notch, so a 4.5 cm sheet counts as 0.09).</summary>
+		public static float FillFraction(float fill, int depth)
 		{
 			if (fill <= 0 || depth <= 0)
 			{
@@ -27,7 +28,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Drowning severity added per check: only at SUPERDEEP (D=4) with F &gt; 0, never for a swimmer
 		/// or a flier (the swimming test is the pawn's swimming graphic, never an "aquatic" substring).</summary>
-		public static float DrowningPerCheck(int fill, int depth, bool superdeep, bool swimmer, bool flying,
+		public static float DrowningPerCheck(float fill, int depth, bool superdeep, bool swimmer, bool flying,
 			float rateMultiplier)
 		{
 			if (!superdeep || swimmer || flying || fill <= 0)
@@ -40,7 +41,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Toxic buildup added per check by a poison fluid: its per-day rate at brim, times the fill
 		/// fraction, reduced by the pawn's toxic environment resistance. Any depth: standing in it is enough.</summary>
-		public static float ToxinPerCheck(int fill, int depth, float toxicPerDayAtBrim, float resistance, bool flying)
+		public static float ToxinPerCheck(float fill, int depth, float toxicPerDayAtBrim, float resistance, bool flying)
 		{
 			if (flying || fill <= 0 || toxicPerDayAtBrim <= 0f)
 			{

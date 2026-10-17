@@ -206,9 +206,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
             string world = channel
-                ? @"RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) > 0, k => ex\.TryTakeLevel\(cell, out _\)\)"
+                ? @"RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.WaterDlAt\(cell\) >= k, k => ex\.TryTakeDl\(cell, k, out _\) == k\)"
                 : @"RM_TransferLeg\.World\(k => ex\.Stock\.CanSupply\(Map, cell, ex\), k => ex\.Stock\.TryDebit\(Map, cell, f\.volumePerTile, ex\)\)";
-            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = " + world + @"; if \(RM_LiquidTransfer\.Move\(units, world, " + PlanInto("l") + @", out \w+\) == units\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in plan\) Machinery\.RM_LiquidNet\.Credit\(this, p\.tank, l, p\.units, RM_PumpMath\.CycleTicks\); // credit site: pump draw \(" + (channel ? "channel" : "source") + @"\)",
+            string amount = channel ? "take" : "units";   // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: a channel gives up to a notch, in dL
+            RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg world = " + world + @"; if \(RM_LiquidTransfer\.Move\(" + amount + @", world, " + PlanInto("l") + @", out \w+\) == " + amount + @"\) \{ foreach \(\(Building_LiquidTank tank, int units\) p in plan\) Machinery\.RM_LiquidNet\.Credit\(this, p\.tank, l, p\.units, RM_PumpMath\.CycleTicks\); // credit site: pump draw \(" + (channel ? "channel" : "source") + @"\)",
                 "pump draw " + (channel ? "(channel)" : "(source)") + ": world leg checked first, the tank leg in Move, credit inside the committed block");
         }
 
@@ -384,7 +385,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: sprinkler draw",
         };
 
-        private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryDebit(", ".TryPourLevel(", ".TryReturnLevels(", "addResource.Invoke(", "drawResource.Invoke(" };
+        private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryTakeDl(", ".TryDebit(", ".TryPourLevel(", ".TryReturnLevels(", "addResource.Invoke(", "drawResource.Invoke(" };
         private static readonly string[] TankMutations = { ".TryAddLiquid(", ".TryRemoveLiquid(" };
 
         private static void CallerCoverage()

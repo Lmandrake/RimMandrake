@@ -744,8 +744,7 @@ def plot_D_limited_pond(t):
     _plot_D_body(t, x0, z0)
 
 
-POND_BUDGET = 0.2
-SOURCE_BUDGET_DEFAULT = REG.S.SETTINGS[S_FW]["sourceBudgetMultiplier"]   # the shipped default (site_spec.SETTINGS)
+POND_FRACTION = 0.2   # the pond is staged at a fifth of its capacity (the deleted budget slider's old job)
 
 
 def _pond_stock(t, px, pz, size=5):
@@ -765,20 +764,20 @@ def _plot_D_body(t, x0, z0):
     shot = (px - 1, pz - 1, 18, 8)
     box = {}
     with t.component("pond_before_draw"):
-        # a SMALL pond: budget 0.2 -> 25 cells x at most 4 levels x 0.2 = 20 or less < the 36 the D=3 channel holds, so
-        # the draw really empties it (at the shipped 1.0 the pond holds up to 100 and the "empty" bar never had an empty pond). Capacity is fixed when
-        # the body classifies, so it is classified HERE under 0.2 and the multiplier restored at once (the pond keeps
-        # it). A body that did not form on this call is sticky from an earlier run on this map: UNMEASURED.
+        # a SMALL pond: 25 cells x at most 4 notches = 100 notches at capacity, staged at 0.2 of it = 20 or less < the 36 the
+        # D=3 channel holds, so the draw really empties it. LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD deleted the pond budget slider
+        # that used to size it (D4): the pond is classified at the shipped settings, then its stock is SET to 0.2 of capacity
+        # by RM_NorthstarProofs.ProofSetBodyFraction. A body that did not form on this call is sticky from an earlier run on
+        # this map: UNMEASURED.
         if t._guard():
-            t.set_setting(S_FW, {"sourceBudgetMultiplier": POND_BUDGET})
-            try:
-                r = t.bridge_call("jawa/flowworks_body_report", x=px + 2, z=pz + 2, classify=True) or {}
-            finally:
-                t.session.call("jawa/mod_settings_field", typeName=S_FW, action="set", field="sourceBudgetMultiplier",
-                               value=str(SOURCE_BUDGET_DEFAULT))
+            r = t.bridge_call("jawa/flowworks_body_report", x=px + 2, z=pz + 2, classify=True) or {}
             if not r.get("formedByThisCall") or (r.get("body") or {}).get("limitless") is not False:
-                raise ExpectationFailed("UNMEASURED: the pond did not form fresh and limited under budget %s: %r"
-                                        % (POND_BUDGET, r))
+                raise ExpectationFailed("UNMEASURED: the pond did not form fresh and limited: %r" % (r,))
+            rs = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofSetBodyFraction",
+                               args="%d;%d;%s" % (px + 2, pz + 2, POND_FRACTION))
+            res = str((rs or {}).get("result", ""))
+            if not res.startswith("SET"):
+                raise ExpectationFailed("UNMEASURED: could not stage the pond at %s of capacity: %s" % (POND_FRACTION, res or rs))
         box["before"] = _frame(t, *shot, name="D_before")
     with t.component("pond_drawn_down",
                      shows=["reservoir_fill_visibly_drops", "never_full_reservoir_after_heavy_draw"]):

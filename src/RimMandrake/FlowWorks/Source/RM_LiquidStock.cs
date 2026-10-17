@@ -6,7 +6,7 @@ using Verse;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>
-	/// Phase 4's stock model: the 5:1 budget, sticky-limitless classification,
+	/// Phase 4's stock model: each pond holds what its floor holds, sticky-limitless classification,
 	/// recession from the outside in, and refill from seepage, rain and season.
 	///
 	/// NOT A MapComponent, ON PURPOSE. Stock is debited at pulse boundaries by
@@ -286,14 +286,14 @@ namespace RimMandrake.FlowWorks
 			if (!(u > 0f))
 			{
 				FluidDef f = body.fluid;
-				u = (f != null ? f.volumePerTile : 1f) * RimMandrakeFlowWorksSettings.sourceBudgetMultiplier;
+				u = f != null ? f.volumePerTile : 1f;
 			}
 			body.levelUnit = u;
 			return u;
 		}
 
-		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: Σ bed levels over the footprint × the body's own fluid's
-		/// volumePerTile × the budget slider. Used at formation and by the one-time volume-model migration.</summary>
+		/// <summary>POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: Σ bed notches over the footprint × the body's own fluid's
+		/// volumePerTile (pinned to 1). Nothing multiplies it (D4). Used at formation and by the one-time migrations.</summary>
 		public static float CapacityOf(RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
 			int sum = 0;
@@ -302,8 +302,43 @@ namespace RimMandrake.FlowWorks
 				sum += owner.BedLevelsAt(body.cells[i]);
 			}
 			FluidDef fluid = body.fluid;
-			return RM_Volume.BodyCapacity(sum, body.cells.Count, fluid != null ? fluid.volumePerTile : 1f,
-				RimMandrakeFlowWorksSettings.sourceBudgetMultiplier);
+			return RM_Volume.BodyCapacity(sum, body.cells.Count, fluid != null ? fluid.volumePerTile : 1f);
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §9, D4): the pond budget slider is deleted. A body formed
+		/// while it was not 1 holds a scaled capacity (its level unit is not the fluid's own): it is re-sized from its floor and
+		/// keeps its FILL FRACTION, the same move as the 2026-10-12 migration. One log line per pond rescaled; a pond formed at
+		/// x1 is untouched. Returns how many were rescaled.</summary>
+		public int MigrateBudgetMultiplier(RM_MapComponent_Excavation owner)
+		{
+			int n = 0;
+			for (int b = 0; b < bodies.Count; b++)
+			{
+				RM_LiquidBody body = bodies[b];
+				if (body.limitless)
+				{
+					continue;
+				}
+				FluidDef f = body.fluid;
+				float want = f != null && f.volumePerTile > 0f ? f.volumePerTile : 1f;
+				float lu = LevelUnitOf(body, owner);
+				if (!(lu > 0f) || Math.Abs(lu - want) < 1e-4f)
+				{
+					continue;
+				}
+				float oldCap = body.capacity, oldStock = body.stock;
+				float newCap = CapacityOf(body, owner);
+				body.capacity = newCap;
+				body.levelUnit = want;
+				body.stock = RM_Volume.MigratedStock(oldStock, oldCap, newCap);
+				body.depthStaged = true;
+				n++;
+				Log.Message("[RimMandrake.FlowWorks] pond budget slider removed: pond #" + body.id + " (formed at x" + (lu / want).ToString("F2")
+					+ ") rescaled " + RM_Volume.FormatLitres(oldStock / lu * RM_Volume.LitresPerNotch) + " of "
+					+ RM_Volume.FormatLitres(oldCap / lu * RM_Volume.LitresPerNotch) + " -> " + RM_Volume.FormatLitres(body.stock / want * RM_Volume.LitresPerNotch)
+					+ " of " + RM_Volume.FormatLitres(newCap / want * RM_Volume.LitresPerNotch) + " (same fill fraction).");
+			}
+			return n;
 		}
 
 		/// <summary>§8.3: the one-time move of a save written under volume model 1 (5 levels a pond square) to model 2.
@@ -756,6 +791,47 @@ namespace RimMandrake.FlowWorks
 			float lu = LevelUnitOf(body, owner);
 			body.stockDl = lu == 1f || !(lu > 0f) ? levelDl : (long)Math.Round(levelDl * (double)lu);
 			body.depthStaged = true;   // the surface moved: re-lay its picture
+		}
+
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE: a limited pond's ONE surface (dL-per-square height; 0 = brim,
+		/// negative below ground) from its decilitres over its floor histogram, exactly as the exact kernel lays it
+		/// (RM_LevelSolve.PondSurfaceHeight). Cached per pulse and stock. 0 for a limitless body (it never runs down).</summary>
+		public double SurfaceHeightOf(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			if (body == null || body.limitless)
+			{
+				return 0.0;
+			}
+			long pulse = owner.PulseCount;
+			if (body.surfacePulse == pulse && body.surfaceStockDl == body.stockDl)
+			{
+				return body.surfaceHeight;
+			}
+			body.surfaceHeight = RM_LevelSolve.PondSurfaceHeight(DepthHistogram(map, body, owner), LevelStockDl(body, owner));
+			body.surfacePulse = pulse;
+			body.surfaceStockDl = body.stockDl;
+			return body.surfaceHeight;
+		}
+
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE / LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the decilitres standing on an UNDUG
+		/// natural square of <paramref name="body"/> with floor <paramref name="floorNotches"/>: the pond's one surface over this
+		/// floor (water depth = surface − floor) for a still-water pond; full or dry for the older full-or-empty model (another
+		/// liquid, the depth model off); the full floor for a limitless body (sea, edge river: its depth is a picture).</summary>
+		public double SquareWaterDl(Map map, RM_LiquidBody body, IntVec3 c, int floorNotches, RM_MapComponent_Excavation owner)
+		{
+			if (floorNotches <= 0)
+			{
+				return 0.0;
+			}
+			if (body == null || body.limitless || !RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
+			{
+				return floorNotches * (double)RM_LevelSolve.U;
+			}
+			if (RimMandrakeFlowWorksSettings.pondDepthEnabled && DepthModelApplies(map, body, owner))
+			{
+				return RM_LevelSolve.PondSquareWater(floorNotches, SurfaceHeightOf(map, body, owner));
+			}
+			return body.receded.Contains(c) ? 0.0 : floorNotches * (double)RM_LevelSolve.U;
 		}
 
 		/// <summary>H[L] over the body's undug footprint (cached a pulse): the exact kernel's pond histogram.</summary>

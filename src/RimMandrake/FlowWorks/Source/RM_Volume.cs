@@ -110,10 +110,51 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Depth for a player: "0.5 m", "2 m" (levels may be fractional: a part-drained pond square).</summary>
 		public static string FormatMetres(double levels) => (levels * MetresPerLevel).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m";
 
-		/// <summary>The mouseover line for a liquid square: "1.5 m deep, 3 kL" (levels of liquid standing in it).</summary>
-		public static string DepthReadout(double levels, double litres)
+		// ── DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (owner R4, 2026-10-17; wording V8, veto-able) ───────────────────────
+
+		/// <summary>Owner R13 (2026-10-17): <i>"Any natural body of water that is supposed to be 'clearly limitless' should be so
+		/// marked, so players aren't shocked."</i> The mark a sea or edge river square carries (wording: unified depth spec
+		/// §4.3). A limited body never carries it, nor any other limited/limitless indicator (ruling 35, narrowed).</summary>
+		public const string LimitlessMark = "Open water, never runs dry";
+
+		/// <summary>A floor or hole depth for a player: to the notch (0.5 m), "7 m", "3.5 m".</summary>
+		public static string FormatFloorMetres(int notches)
 		{
-			return FormatMetres(levels) + " deep, " + FormatLitres(litres);
+			return (Math.Max(0, notches) * (double)MetresPerNotch).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m";
+		}
+
+		/// <summary>Water depth for a player: continuous, two decimals, from decilitres in one square ("2.37 m", "0.05 m").</summary>
+		public static string FormatWaterMetres(double waterDl)
+		{
+			double m = Math.Max(0.0, waterDl) * MetresPerNotch / UnitsPerLevel;
+			return m.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + " m";
+		}
+
+		/// <summary>Litres for the readout: whole litres with a thousands separator ("4,740 L"), invariant culture.</summary>
+		public static string FormatReadoutLitres(double waterDl)
+		{
+			double l = Math.Round(Math.Max(0.0, waterDl) / UnitsPerLitre, MidpointRounding.AwayFromZero);
+			return l.ToString("#,0", System.Globalization.CultureInfo.InvariantCulture) + " L";
+		}
+
+		/// <summary>The readout: two figures, the hole and the water, water volume in parentheses (owner R4): "Hole 7 m (ledge
+		/// 4 m) · Water 2.37 m (4,740 L)". The ledge (the shallowest step around the square, between it and the ground) is shown
+		/// only when there is one (<paramref name="ledgeNotches"/> in 1..hole-1). Floors to 0.5 m, water to two decimals.</summary>
+		public static string Readout(int holeNotches, int ledgeNotches, double waterDl)
+		{
+			string hole = "Hole " + FormatFloorMetres(holeNotches);
+			if (ledgeNotches > 0 && ledgeNotches < holeNotches)
+			{
+				hole += " (ledge " + FormatFloorMetres(ledgeNotches) + ")";
+			}
+			return hole + " \u00b7 Water " + FormatWaterMetres(waterDl) + " (" + FormatReadoutLitres(waterDl) + ")";
+		}
+
+		/// <summary>A limitless square's readout (sea, edge river): the mark and its depth as a picture, never a litre count
+		/// (unified depth spec §5.3): "Open water, never runs dry (about 2 m deep)".</summary>
+		public static string LimitlessReadout(int floorNotches)
+		{
+			return floorNotches > 0 ? LimitlessMark + " (about " + FormatFloorMetres(floorNotches) + " deep)" : LimitlessMark;
 		}
 
 		/// <summary>Ruling 3/7 (2026-10-12): a shallow-water pond square holds 2 levels, which is also its bed depth.</summary>
@@ -196,15 +237,16 @@ namespace RimMandrake.FlowWorks
 			return dugDepth > 0 && fill > 0 && bedDepth > 0 && dugDepth - fill < bedDepth;
 		}
 
-		/// <summary>Body capacity in fill-units: Σ bed levels × volumePerTile × budgetMultiplier, never below the
-		/// stock model's per-cell floor (a slider at its lowest notch must not make every pond capacity 0).</summary>
-		public static float BodyCapacity(int bedLevelSum, int cellCount, float volumePerTile, float budgetMultiplier)
+		/// <summary>Body capacity in fill-units (notches): Σ bed notches × volumePerTile (pinned to 1: FluidDef.ConfigErrors), never
+		/// below the stock model's per-cell floor. NOTHING multiplies it (unified depth spec §2.4, D4: the pond budget slider
+		/// that made litres and metres disagree is deleted).</summary>
+		public static float BodyCapacity(int bedLevelSum, int cellCount, float volumePerTile)
 		{
 			if (cellCount <= 0 || bedLevelSum <= 0)
 			{
 				return 0f;
 			}
-			float cap = bedLevelSum * volumePerTile * budgetMultiplier;
+			float cap = bedLevelSum * volumePerTile;
 			float floor = cellCount * RM_StockMath.MinPerCellVolume;
 			return cap < floor ? floor : cap;
 		}

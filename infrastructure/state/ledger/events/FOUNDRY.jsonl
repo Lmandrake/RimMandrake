@@ -6077,3 +6077,9 @@
 {"seat":"FOUNDRY","event":"start","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","ts":"2026-10-17T18:54:08Z","tsn":1792263248547211674}
 {"seat":"FOUNDRY","event":"start","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","ts":"2026-10-17T18:54:09Z","tsn":1792263249793510725}
 {"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T18:56:59Z","expires":"2026-10-17T19:41:59Z","tsn":1792263419461367550}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:04:23Z","expires":"2026-10-17T19:49:23Z","tsn":1792263863718240749}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:11:04Z","expires":"2026-10-17T19:56:04Z","tsn":1792264265188032588}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:19:12Z","expires":"2026-10-17T20:04:12Z","tsn":1792264752515027936}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:20:59Z","expires":"2026-10-17T20:05:59Z","tsn":1792264859909249327}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:27:30Z","expires":"2026-10-17T20:12:30Z","tsn":1792265250393197613}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:36:36Z","expires":"2026-10-17T20:21:36Z","tsn":1792265796803705376}
