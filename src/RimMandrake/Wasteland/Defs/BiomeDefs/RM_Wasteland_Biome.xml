@@ -118,8 +118,8 @@
     <baseWeatherCommonalities>
       <Clear>30</Clear>
       <DryThunderstorm>1</DryThunderstorm>
-      <SnowGentle>1.5</SnowGentle>
-      <SnowHard>1</SnowHard>
+      <SnowGentle>0</SnowGentle>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
       <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
       <ToxRain MayRequire="Ludeon.RimWorld.Biotech">0</ToxRain>  <!-- owner 2026-09-30 by question card: no rain of any kind here, toxic included -->
       <Rain>0</Rain>

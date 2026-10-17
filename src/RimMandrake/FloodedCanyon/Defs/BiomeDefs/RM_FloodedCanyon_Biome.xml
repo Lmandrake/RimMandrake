@@ -114,11 +114,11 @@
     <baseWeatherCommonalities>
       <Clear>20</Clear>
       <RM_PeakstormLight>3</RM_PeakstormLight>
-      <Rain>0.5</Rain>
+      <Rain>0</Rain>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
       <DryThunderstorm>2</DryThunderstorm>
-      <RainyThunderstorm>0.3</RainyThunderstorm>
-      <SnowGentle>1</SnowGentle>
-      <SnowHard>1</SnowHard>
+      <RainyThunderstorm>0</RainyThunderstorm>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowGentle>0</SnowGentle>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
     </baseWeatherCommonalities>
 
     <!-- CRACKEDLANDS_RULED_CONTENT_1 (2026-09-28 bedazzle sitting): the vanilla

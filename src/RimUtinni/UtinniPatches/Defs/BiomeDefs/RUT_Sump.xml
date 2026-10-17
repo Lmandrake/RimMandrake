@@ -143,8 +143,8 @@
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <FoggyRain>0</FoggyRain>
-      <SnowGentle>2</SnowGentle>
-      <SnowHard>2</SnowHard>
+      <SnowGentle>0</SnowGentle>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
     </baseWeatherCommonalities>
     <wildAnimals>
       <AA_TarGuzzler MayRequire="sarg.alphaanimals">0.5</AA_TarGuzzler>  <!-- tar guzzler - tar-eater, adjust-keep -->
