@@ -62,6 +62,7 @@
     <Compile Include="..\RM_FireMath.cs" />
     <Compile Include="..\RM_FuelFireMath.cs" />
     <Compile Include="..\RM_ExcavationSanityMath.cs" />
+    <Compile Include="..\RM_DigDepthMath.cs" />
     <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_SlimeMath.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="PumpChecks.cs" />
     <Compile Include="VolumeChecks.cs" />
     <Compile Include="RewireChecks.cs" />
+    <Compile Include="DeepDigChecks.cs" />
     <Compile Include="PondReturnChecks.cs" />
     <Compile Include="DeepBedChecks.cs" />
     <Compile Include="PocketGridChecks.cs" />

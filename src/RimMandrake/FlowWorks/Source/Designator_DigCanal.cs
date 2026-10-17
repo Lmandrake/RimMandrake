@@ -15,8 +15,9 @@ namespace RimMandrake.FlowWorks
 		public Designator_DigCanal()
 		{
 			defaultLabel = "Dig canal";
-			defaultDesc = "Carve a channel one level deeper. Designating a channel that is "
-				+ "already dug deepens it again — shallow, mid, deep, then SUPERDEEP. "
+			defaultDesc = "Carve a channel half a metre deeper. Designating a channel that is "
+				+ "already dug deepens it another half-metre, down to the deepest dig set in this mod's settings "
+				+ "(8 m as shipped); from 2 m a cut is a pit. \"Dig to depth\" orders the whole depth at once. "
 				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
 				+ "it leaves the map, which is how you empty a canal on purpose. Bare rock ground "
@@ -30,6 +31,12 @@ namespace RimMandrake.FlowWorks
 		}
 
 		public override AcceptanceReport CanDesignateCell(IntVec3 c)
+		{
+			return CanDigCell(c, 0);
+		}
+
+		/// <summary>The shared gate. <paramref name="target"/>: a dig-to depth in notches (0 = one notch, this designator).</summary>
+		protected AcceptanceReport CanDigCell(IntVec3 c, int target)
 		{
 			if (!c.InBounds(Map) || c.Fogged(Map))
 			{
@@ -53,7 +60,7 @@ namespace RimMandrake.FlowWorks
 					return "TooCloseToMapEdge".Translate();
 				}
 			}
-			if (Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) != null)
+			if (target == 0 && Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) != null)
 			{
 				return "Already being dug as a canal.";
 			}
@@ -74,14 +81,22 @@ namespace RimMandrake.FlowWorks
 			{
 				return "Already water.";
 			}
-			// Digging an already-dug cell DEEPENS it (ruling 19): shallow, mid,
-			// deep, SUPERDEEP. Depth is set by digging and by nothing else.
-			byte depth = RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			// Digging an already-dug cell DEEPENS it (ruling 19), half a metre a cut, to the dig cap. Depth is set by digging
+			// and by nothing else. PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the depth is the GRID's (terrain says only "2 m or
+			// deeper"), so a 2 m pit is no longer refused as "as far down as digging goes".
+			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
+			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			int cap = RM_ExcavationDepth.MaxDigDepth;
 			if (depth != RM_ExcavationDepth.Surface)
 			{
-				if (depth >= RM_ExcavationDepth.MaxDepth)
+				if (!RM_DigDepthMath.MayDeepen(depth, cap))
 				{
-					return "Already SUPERDEEP — this is as far down as digging goes.";
+					return "Already " + RM_Volume.FormatFloorMetres(depth) + " deep: the deepest digging goes (" + RM_Volume.FormatFloorMetres(cap)
+						+ ", set in this mod's settings).";
+				}
+				if (target > 0 && depth >= RM_DigDepthMath.ClampTarget(target, cap))
+				{
+					return "Already " + RM_Volume.FormatFloorMetres(depth) + " deep.";
 				}
 				if (!RimMandrakeFlowWorksSettings.digToDepthEnabled)
 				{
@@ -94,12 +109,15 @@ namespace RimMandrake.FlowWorks
 				return "Must designate diggable soil or bare rock ground.";
 			}
 			// POND_BED (owner by card 2026-10-14): a dry pond bed is dug from its own depth, one deeper.
-			RM_MapComponent_Excavation eng = Map.GetComponent<RM_MapComponent_Excavation>();
 			if (eng != null && eng.NaturalBedDepthAt(c) > 0 && eng.FirstCutDepthAt(c) < 0)
 			{
 				return RimMandrakeFlowWorksSettings.digToDepthEnabled
-					? "This dried pond bed is already as deep as digging goes."
+					? "This dried pond bed is already as deep as digging goes (" + RM_Volume.FormatFloorMetres(cap) + ", set in this mod's settings)."
 					: "Deepening is switched off in this mod's settings.";
+			}
+			if (target > 0 && eng != null && eng.FirstCutDepthAt(c) > RM_DigDepthMath.ClampTarget(target, cap))
+			{
+				return "This dried pond bed is already deeper than " + RM_Volume.FormatFloorMetres(RM_DigDepthMath.ClampTarget(target, cap)) + ".";
 			}
 			return AcceptanceReport.WasAccepted;
 		}
@@ -110,6 +128,7 @@ namespace RimMandrake.FlowWorks
 			// fill in would have pawns dig a level and fill it back for no net change.
 			Map.designationManager.TryRemoveDesignation(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal);
 			Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
+			Map.GetComponent<RM_MapComponent_Excavation>()?.SetDigTarget(c, 0);   // a plain order is one notch
 		}
 
 		/// <summary>DIG_ROCK_TUNE_STONE_FIGHTS_BACK: say, beside the cursor, that the ground under it is rock and slow.</summary>
@@ -137,6 +156,73 @@ namespace RimMandrake.FlowWorks
 		public override void SelectedUpdate()
 		{
 			GenUI.RenderMouseoverBracket();
+		}
+	}
+
+	/// <summary>
+	/// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: "dig to N m". One order digs a square down to a chosen depth, half a metre a cut
+	/// (one designation per notch was 14 clicks a square for 7 m). Pick the depth from the menu that opens when the tool is
+	/// selected; drag over squares as with "Dig canal". A square already ordered is re-targeted. Each cut is the same job, cost
+	/// and rules as "Dig canal" (RM_DigCanal designation; JobDriver_DigCanal puts it back after each cut until the target).
+	/// The 4/7/7/4 square is 12 squares at 4 m and 4 at 7 m: two drags.
+	/// </summary>
+	public class Designator_DigCanalTo : Designator_DigCanal
+	{
+		/// <summary>The chosen depth in notches (default 4 m), held to the cap when used.</summary>
+		public static int chosenTarget = 8;
+
+		public Designator_DigCanalTo()
+		{
+			defaultLabel = "Dig to depth";
+			defaultDesc = "Order squares dug down to a chosen depth in one go, half a metre a cut, as deep as this mod's settings "
+				+ "allow (8 m as shipped). Pick the depth when you select this tool. Squares already ordered take the new depth. "
+				+ "Each cut costs what \"Dig canal\" costs at that depth: deeper is slower. Get in and out with a ladder or ramps.";
+			hotKey = null;
+		}
+
+		public static int Target => RM_DigDepthMath.ClampTarget(chosenTarget, RM_ExcavationDepth.MaxDigDepth);
+
+		public override string Label => "Dig to " + RM_Volume.FormatFloorMetres(Target);
+
+		public override void ProcessInput(Event ev)
+		{
+			if (!CheckCanInteract())
+			{
+				return;
+			}
+			var options = new System.Collections.Generic.List<FloatMenuOption>();
+			int cap = RM_ExcavationDepth.MaxDigDepth;
+			for (int n = 1; n <= cap; n++)
+			{
+				int pick = n;
+				options.Add(new FloatMenuOption("Dig to " + RM_Volume.FormatFloorMetres(n)
+					+ " (" + RM_DigDepthMath.DiggerDays(RM_DigDepthMath.WorkToDig(0, n, RimMandrakeFlowWorksSettings.digCostRisesWithDepth)).ToString("0.#")
+					+ " digger-days a square of soil)", delegate
+				{
+					chosenTarget = pick;
+					base.ProcessInput(ev);
+				}));
+			}
+			Find.WindowStack.Add(new FloatMenu(options));
+		}
+
+		public override AcceptanceReport CanDesignateCell(IntVec3 c)
+		{
+			if (!RimMandrakeFlowWorksSettings.digToDepthEnabled)
+			{
+				return "Deepening is switched off in this mod's settings.";
+			}
+			return CanDigCell(c, Target);
+		}
+
+		public override void DesignateSingleCell(IntVec3 c)
+		{
+			Map.designationManager.TryRemoveDesignation(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal);
+			if (Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) == null)
+			{
+				Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
+			}
+			Map.GetComponent<RM_MapComponent_Excavation>()?.SetDigTarget(c, Target);
 		}
 	}
 }

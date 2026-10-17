@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks
 	/// the staged planner (AvoidPits / StayInPit / PlanRoute) is retired while the relative rule is on.
 	///
 	/// RimWorld 1.6's Burst A* reads one byte per cell of allowed directions (ConnectivitySource, handed to every path job by
-	/// PathFinderMapData.ParameterizePathJob). We keep one derived array per climb band K = 1..MaxDepth-1: vanilla's byte AND
+	/// PathFinderMapData.ParameterizePathJob). We keep one derived array per climb band K = 1..RM_PitTrapMath.MaxClimbLimit: vanilla's byte AND
 	/// RM_CliffMaskMath.AllowedBits (the same StepAllowed / DiagonalAllowed the pocket grid labels with), with ramp and
 	/// structural-ladder edges restored. Vanilla's array is never written.
 	///
@@ -25,7 +25,7 @@ namespace RimMandrake.FlowWorks
 	///
 	/// THE SWAP: a prefix on the private PathFinder.ParameterizePathJob(…, request) notes the requesting pawn; the postfix on
 	/// PathFinderMapData.ParameterizePathJob, which runs next on the same thread, points job.connectivity at that pawn's band.
-	/// Flyers, K ≥ MaxDepth and a pawn too wide for the pocket it stands in keep vanilla's array; a pawnless request gets the
+	/// Flyers and a pawn too wide for the pocket it stands in keep vanilla's array; a pawnless request gets the
 	/// person band (K = 2).
 	///
 	/// Ladders: a LOWERED ladder is structural here (its edges are restored for everyone); the prison-door rule is per pawn,
@@ -35,7 +35,7 @@ namespace RimMandrake.FlowWorks
 	{
 		private sealed class Masks
 		{
-			public NativeArray<CellConnection>[] band; // index K, 1..MaxDepth-1
+			public NativeArray<CellConnection>[] band; // index K, 1..RM_PitTrapMath.MaxClimbLimit
 			public bool derived;     // the bands hold a derivation (false: never derived, or no hole: vanilla is right)
 			public long key = long.MinValue;
 			public bool disposed;
@@ -69,7 +69,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int n = map.cellIndices.NumGridCells;
-			var m = new Masks { band = new NativeArray<CellConnection>[RM_ExcavationDepth.MaxDepth] };
+			var m = new Masks { band = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands] };
 			for (int k = 1; k < m.band.Length; k++)
 			{
 				m.band[k] = new NativeArray<CellConnection>(n, Allocator.Persistent);
@@ -291,7 +291,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int k = p == null ? RM_PocketGrid.PersonBand : RM_PocketGrid.ClimbLimitOf(p);
-			int band = RM_PocketGridMath.BandFor(k, RM_ExcavationDepth.MaxDepth);
+			int band = RM_PocketGridMath.BandFor(k, RM_PitTrapMath.ClimbBands);
 			if (band <= 0 || band >= m.band.Length)
 			{
 				return;
@@ -309,7 +309,7 @@ namespace RimMandrake.FlowWorks
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			byte van = (byte)map.pathFinder.MapData.CellConnectionsAt(i);
-			int band = RM_PocketGridMath.BandFor(k, RM_ExcavationDepth.MaxDepth);
+			int band = RM_PocketGridMath.BandFor(k, RM_PitTrapMath.ClimbBands);
 			byte bits = band > 0 && band < m.band.Length && m.derived ? (byte)m.band[band][i] : van;
 			return "CLIFF k=" + k + " bits=0x" + bits.ToString("X2") + " vanilla=0x" + van.ToString("X2") + " derived=" + m.derived
 				+ " derives=" + FullDerives;

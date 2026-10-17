@@ -167,6 +167,14 @@ namespace RimMandrake.FlowWorks
 		private List<int> pondMudKeys;
 		private List<int> pondMudValues;
 
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: "dig to N m" — cell index → target depth in notches, for a square carrying
+		/// an RM_DigCanal designation made by Designator_DigCanalTo. After each cut the job puts the designation back while the
+		/// square is above its target (JobDriver_DigCanal). No entry = a plain one-notch dig. SCRIBED ("RM_digTargets"; absent in
+		/// an older save = none). Entries without a designation are dropped on save.</summary>
+		private Dictionary<int, int> digTargets = new Dictionary<int, int>();
+		private List<int> digTargetKeys;
+		private List<int> digTargetValues;
+
 		/// <summary>POND_DEPTH: terrain restages left this pulse (the §8 cost guard), reset by RM_LiquidStock.Pulse.</summary>
 		internal int pondStageWritesLeft;
 
@@ -538,7 +546,7 @@ namespace RimMandrake.FlowWorks
 		public int FirstCutDepthAt(IntVec3 c)
 		{
 			return RM_Volume.FirstCutDepth(NaturalBedDepthAt(c), RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
-				RM_ExcavationDepth.MaxDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+				RM_ExcavationDepth.MaxDigDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
 		}
 
 		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
@@ -562,8 +570,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: clamp to the 20 m ceiling, never to the cap setting (lowering the cap never
+			// shallows a dug cell).
 			RM_ExcavationSanityMath.Report r = RM_ExcavationSanityMath.Repair(depthGrid, fillGrid, fluidGrid,
-				fluidPalette.Count, RM_ExcavationDepth.MaxDepth);
+				fluidPalette.Count, RM_ExcavationDepth.MaxDigCeiling);
 			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a part never stands above the brim or on an undug cell.
 			r.fillClamped += RM_ExcavationSanityMath.RepairPart(depthGrid, fillGrid, partGrid, RM_LevelSolve.U);
 			int dropped = 0;
@@ -757,6 +767,11 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref mapControlDrainedTotal, "RM_mapControlDrainedTotal", 0f);
 			Scribe_Values.Look(ref pondDepthModel, "RM_pondDepthModel", 0);
 			Scribe_Collections.Look(ref pondMudSince, "RM_pondMudSince", LookMode.Value, LookMode.Value, ref pondMudKeys, ref pondMudValues);
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				PruneDigTargets();
+			}
+			Scribe_Collections.Look(ref digTargets, "RM_digTargets", LookMode.Value, LookMode.Value, ref digTargetKeys, ref digTargetValues);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -787,6 +802,67 @@ namespace RimMandrake.FlowWorks
 				if (pondMudSince == null)
 				{
 					pondMudSince = new Dictionary<int, int>();
+				}
+				if (digTargets == null)
+				{
+					digTargets = new Dictionary<int, int>();
+				}
+			}
+		}
+
+		// ── PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: "dig to N m" ───────────────────────────────────────
+
+		/// <summary>The dig-to target on this square in notches, 0 when none (a plain one-notch dig).</summary>
+		public int DigTargetAt(IntVec3 c)
+		{
+			return c.InBounds(map) && digTargets.TryGetValue(map.cellIndices.CellToIndex(c), out int t) ? t : 0;
+		}
+
+		/// <summary>Set (notches > 0) or clear (0) the dig-to target of a square.</summary>
+		public void SetDigTarget(IntVec3 c, int notches)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			if (notches > 0)
+			{
+				digTargets[i] = System.Math.Min(notches, RM_DigDepthMath.MaxDigCeiling);
+			}
+			else
+			{
+				digTargets.Remove(i);
+			}
+		}
+
+		/// <summary>Does this square still owe cuts toward its dig-to target under today's cap?</summary>
+		public bool DigToOwesWork(IntVec3 c)
+		{
+			return RM_DigDepthMath.DigToOwesWork(ExcavatedDepthAt(c), DigTargetAt(c), RM_ExcavationDepth.MaxDigDepth);
+		}
+
+		/// <summary>Drop targets whose square carries no dig designation any more (cancelled, finished, or never placed).</summary>
+		private void PruneDigTargets()
+		{
+			if (digTargets == null || digTargets.Count == 0 || map?.designationManager == null)
+			{
+				return;
+			}
+			List<int> dead = null;
+			foreach (KeyValuePair<int, int> kv in digTargets)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(kv.Key);
+				if (map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) == null)
+				{
+					(dead ??= new List<int>()).Add(kv.Key);
+				}
+			}
+			if (dead != null)
+			{
+				foreach (int k in dead)
+				{
+					digTargets.Remove(k);
 				}
 			}
 		}
@@ -1224,9 +1300,9 @@ namespace RimMandrake.FlowWorks
 
 		// ── digging ───────────────────────────────────────────────────────
 
-		/// <summary>Deepen a cell by one level, to SUPERDEEP at most. Returns the
-		/// new D. LAW 1: this is the only thing that ever sets D, and it only
-		/// ever goes down.</summary>
+		/// <summary>Deepen a cell by one notch (0.5 m), to the dig cap at most (PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the Mod
+		/// Setting, default 8 m). Returns the new D. LAW 1: this is the only thing that ever sets D, and it only ever goes
+		/// down. A cell already deeper than a lowered cap is left as it is (never shallowed).</summary>
 		public byte Deepen(IntVec3 c)
 		{
 			if (!c.InBounds(map))
@@ -1235,10 +1311,11 @@ namespace RimMandrake.FlowWorks
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			byte d = depthGrid[i];
-			if (d >= RM_ExcavationDepth.MaxDepth)
+			if (!RM_DigDepthMath.MayDeepen(d, RM_ExcavationDepth.MaxDigDepth))
 			{
 				return d;
 			}
+			byte before = d;
 			// PHASE 4: remember what was here BEFORE the first cut, so a fill-in
 			// can hand the exact terrain back instead of generic soil. Recorded
 			// on the transition out of surface only — deepening an existing
@@ -1249,7 +1326,7 @@ namespace RimMandrake.FlowWorks
 				// POND_BED (owner by card 2026-10-14: "Dig deeper from the bed"): a dry bed square's first cut starts at the
 				// bed's depth and goes one deeper; a bed already as deep as digging goes is left alone.
 				int first = RM_Volume.FirstCutDepth(IsNaturalBed(c) ? bedGrid[i] : 0, RimMandrakeFlowWorksSettings.pondBedHollowEnabled,
-					RM_ExcavationDepth.MaxDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
+					RM_ExcavationDepth.MaxDigDepth, RimMandrakeFlowWorksSettings.digToDepthEnabled);
 				if (first < 0)
 				{
 					return d;
@@ -1273,10 +1350,10 @@ namespace RimMandrake.FlowWorks
 			{
 				ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
 			}
-			// PHASE 5, ruling 26. The last cut is the one that makes the cell a
-			// trap. SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid byte itself
-			// (RM_SuperdeepTrap); no Thing is created by digging.
-			if (d >= RM_ExcavationDepth.Superdeep)
+			// PHASE 5, ruling 26. The cut that CROSSES 2 m makes the cell a pit (SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid
+			// byte itself, RM_SuperdeepTrap; no Thing is created by digging). PIT_DEPTH_WIDEN: only the crossing counts; a pit
+			// cut deeper is still one pit (the count used to rise on every cut past 2 m).
+			if (d >= RM_ExcavationDepth.Superdeep && before < RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount++;
 				// SUPERDEEP_PRISON_ROOM_1: the cell just crossed the pit wall; its rooms re-form.
@@ -1379,8 +1456,9 @@ namespace RimMandrake.FlowWorks
 			BumpClimbGeneration();
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
-			// Nobody is in a container, so nobody needs dropping out.
-			if (d >= RM_ExcavationDepth.Superdeep)
+			// Nobody is in a container, so nobody needs dropping out. PIT_DEPTH_WIDEN: only the fill that crosses back above
+			// 2 m (a 7 m pit filled to 6.5 m is still a pit).
+			if (d >= RM_ExcavationDepth.Superdeep && newD < RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount--;
 				RM_PitRooms.NotifyPitnessChanged(map, c);
@@ -2624,6 +2702,9 @@ namespace RimMandrake.FlowWorks
 		/// first being a limitless body). It runs before the ledger's "before"
 		/// is measured, so it can never be mistaken for a leak.
 		/// </summary>
+		/// <summary>The most rain one pulse can add to a square, in notches (a burst cap, not a depth).</summary>
+		private const int RainMaxNotchesPerPulse = 4;
+
 		private void ApplyRain()
 		{
 			if (!RimMandrakeFlowWorksSettings.rainFillsExcavationsEnabled || excavatedCells.Count == 0)
@@ -2637,7 +2718,9 @@ namespace RimMandrake.FlowWorks
 			}
 			rainAccumulator += rainRate * RimMandrakeFlowWorksSettings.rainFillPerPulse;
 			int levels = 0;
-			while (rainAccumulator >= 1f && levels < RM_ExcavationDepth.MaxDepth)
+			// A per-pulse cap on a downpour (4 notches), not a depth: each square takes at most its own room (RoomNotches below),
+			// so a 7 m pit fills by rain to its brim over pulses (PIT_DEPTH_WIDEN: no longer the dig cap's constant).
+			while (rainAccumulator >= 1f && levels < RainMaxNotchesPerPulse)
 			{
 				rainAccumulator -= 1f;
 				levels++;

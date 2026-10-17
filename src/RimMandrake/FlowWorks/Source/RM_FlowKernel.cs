@@ -149,6 +149,18 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the deepest a dug square can be (RM_DigDepthMath.MaxDigCeiling, 20 m).
+		/// The notch-level paths (exact level off) bucket surfaces over 0..this; they assumed 0..4 and indexed out of range on a
+		/// deeper square. The exact-level solver never needed it.</summary>
+		public const int DepthCeiling = 40;
+
+		/// <summary>Surface buckets: a dug square's surface (fill − depth) runs −DepthCeiling..0.</summary>
+		public const int SurfaceBuckets = DepthCeiling + 1;
+
+		/// <summary>Donor-score scale: bigger than any dug depth, so (surface, then depth) never collide; a source outranks all.</summary>
+		private const int ScoreScale = 64;
+		private const int SourceScore = 1000000;
+
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17: "We need VERY smooth water. That's water's one
 		/// primary characteristic: a level surface."; ruled exactly level by card). On, and with <see cref="part"/> set and the
 		/// world an <see cref="RM_ILevelWorld"/>, every component resolves by <see cref="ResolveExact"/>: a dug square holds
@@ -1124,9 +1136,19 @@ namespace RimMandrake.FlowWorks
 		private readonly HashSet<int> rimSet = new HashSet<int>();
 		private readonly Dictionary<int, int> gaveThisPulse = new Dictionary<int, int>();
 		private readonly Dictionary<int, int> gotThisPulse = new Dictionary<int, int>();
-		private readonly SortedSet<int>[] donorsBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
+		private readonly SortedSet<int>[] donorsBySurface = NewSets<int>(SurfaceBuckets);
 		/// <summary>Takers keyed by <see cref="TakerKey"/> (deepest bed, then lowest index first), so Min is the pick.</summary>
-		private readonly SortedSet<long>[] takersBySurface = { new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>() };
+		private readonly SortedSet<long>[] takersBySurface = NewSets<long>(SurfaceBuckets);
+
+		private static SortedSet<T>[] NewSets<T>(int n)
+		{
+			var a = new SortedSet<T>[n];
+			for (int i = 0; i < n; i++)
+			{
+				a[i] = new SortedSet<T>();
+			}
+			return a;
+		}
 
 		private readonly HashSet<int> receivedThisPass = new HashSet<int>();
 		private readonly List<int> topUpOrder = new List<int>();
@@ -1286,7 +1308,7 @@ namespace RimMandrake.FlowWorks
 						regionRim.Add(n);
 					}
 				}
-				for (int b = 0; b < 5; b++)
+				for (int b = 0; b < SurfaceBuckets; b++)
 				{
 					donorsBySurface[b].Clear();
 					takersBySurface[b].Clear();
@@ -1313,17 +1335,17 @@ namespace RimMandrake.FlowWorks
 				}
 				while (true)
 				{
-					int db = 4;
+					int db = SurfaceBuckets - 1;
 					while (db >= 0 && donorsBySurface[db].Count == 0)
 					{
 						db--;
 					}
 					int tb = 0;
-					while (tb < 5 && takersBySurface[tb].Count == 0)
+					while (tb < SurfaceBuckets && takersBySurface[tb].Count == 0)
 					{
 						tb++;
 					}
-					if (db < 0 || tb >= 5 || db - tb < 2)
+					if (db < 0 || tb >= SurfaceBuckets || db - tb < 2)
 					{
 						break;
 					}
@@ -1821,10 +1843,10 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Surface bucket 0..4 for surface fill - depth in -4..0.</summary>
+		/// <summary>Surface bucket 0..DepthCeiling for surface fill - depth in -DepthCeiling..0.</summary>
 		private int Bucket(int c)
 		{
-			return fill[c] - depth[c] + Superdeep;
+			return fill[c] - depth[c] + DepthCeiling;
 		}
 
 		private static int GotOrGave(Dictionary<int, int> counts, int c)
@@ -1836,7 +1858,7 @@ namespace RimMandrake.FlowWorks
 		/// change during the pass, so the key is stable).</summary>
 		private long TakerKey(int c)
 		{
-			return (long)(Superdeep - depth[c]) * (width * height) + c;
+			return (long)(DepthCeiling - depth[c]) * (width * height) + c;
 		}
 
 		private int CompareDeepestFirst(int a, int b)
@@ -2035,7 +2057,7 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					// Highest surface gives first; ties to the deeper bed, then the fixed direction order.
-					score = source ? 1000 : ((fn - dn + Superdeep + 1) * 10 + dn);
+					score = source ? SourceScore : ((fn - dn + DepthCeiling + 1) * ScoreScale + dn);
 				}
 				else
 				{
@@ -2050,7 +2072,7 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					score = source ? 1000 : (fn * 10 + dn);
+					score = source ? SourceScore : (fn * ScoreScale + dn);
 				}
 				if (score > bestScore)
 				{

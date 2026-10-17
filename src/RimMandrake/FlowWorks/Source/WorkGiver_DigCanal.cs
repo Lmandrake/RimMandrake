@@ -49,14 +49,19 @@ namespace RimMandrake.FlowWorks
 			// here silently deleted the designation of any channel that got wet
 			// (rain, a pulse) before a pawn arrived.
 			TerrainDef terrain = pawn.Map.terrainGrid.FoundationAt(c) ?? pawn.Map.terrainGrid.TopTerrainAt(c);
-			byte depth = RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the depth is the GRID's, never the terrain's (terrain says only "2 m or
+			// deeper": every square past 2 m is RM_Channel_Superdeep, so a terrain read stopped every dig at 2 m).
+			RM_MapComponent_Excavation eng = pawn.Map.GetComponent<RM_MapComponent_Excavation>();
+			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
+			int target = eng?.DigTargetAt(c) ?? 0;
 			bool stale = terrain.IsWater
 				|| c.GetEdifice(pawn.Map) != null
-				|| depth >= RM_ExcavationDepth.MaxDepth
+				|| !RM_DigDepthMath.MayDeepen(depth, RM_ExcavationDepth.MaxDigDepth)
+				|| (target > 0 && depth >= target)
 				|| (depth == RM_ExcavationDepth.Surface && !terrain.IsSoil && !(RimMandrakeFlowWorksSettings.digRockGroundEnabled && RM_DigDiscovery.RockOfTerrain(terrain) != null))
 				|| (depth != RM_ExcavationDepth.Surface && !RimMandrakeFlowWorksSettings.digToDepthEnabled)
 				// POND_BED (owner by card 2026-10-14): a dry bed already as deep as digging goes is never dug.
-				|| (depth == RM_ExcavationDepth.Surface && pawn.Map.GetComponent<RM_MapComponent_Excavation>()?.FirstCutDepthAt(c) < 0);
+				|| (depth == RM_ExcavationDepth.Surface && eng?.FirstCutDepthAt(c) < 0);
 			if (stale)
 			{
 				des.Delete();
