@@ -108,7 +108,7 @@ def goodwill_verdict(gw0, gw1, gc0, gc1, per, caught):
     if None in (gw0, gw1):
         return "UNMEASURED", "HARNESS", {"why": "goodwill not readable", "goodwill": [gw0, gw1]}
     det = {"goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per}
-    ok = int(gc1 or 0) - int(gc0 or 0) <= -int(per or 2) and gw1 < gw0
+    ok = float(gc1 or 0) - float(gc0 or 0) <= -float(per or 2) and gw1 < gw0   # settings read back as text: "1.5" is legal
     return ("PASS" if ok else "FAIL"), "MOD", det
 
 
@@ -655,7 +655,7 @@ def main(argv=None):
             "precondition: lay %s, Outflow %s, Capped %s, pump powered after %s" % (lay.get("success"), role, off, pw)
         sp0, sp1 = net0.get("spilledUnits"), net1.get("spilledUnits")
         lpf = sget(S_MACH, "litresPerFilth")
-        per = int(lpf) * UNITS_PER_LITRE if str(lpf).isdigit() else None
+        per = int(float(lpf)) * UNITS_PER_LITRE if re.match(r"^\d+(\.\d+)?$", str(lpf)) else None   # a float setting may read back "400.0"
         want = filth_pieces(sp1 - sp0, per) if per and isinstance(sp0, int) and isinstance(sp1, int) else None
         st, cls, det = spill_verdict(h0, h1, drained, n0, n1, u0, u1, pre, expected=want)
         row("L5_switched_off_hose_spills", st, cls, dict(det, heldLiquid=liq, rect=frect,
