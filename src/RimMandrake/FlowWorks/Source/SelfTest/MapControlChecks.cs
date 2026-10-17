@@ -248,7 +248,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_MapControlMath.TimerOn(P, 0f, 0, 0, 0, 24f, 6f, false), "period start not on");
                 Assert(!RM_MapControlMath.TimerOn(P, 0f, 0, 0, 2500L * 7, 24f, 6f, false), "hour 7 of a 6-on/24 period is on");
                 Assert(RM_MapControlMath.TimerOn(P, 0f, 0, 0, 2500L * 25, 24f, 6f, false), "the period does not repeat");
-                Assert(RM_MapControlMath.TimerOn(P, 0f, 0, 0, 2500L * 5, 0f, 1f, false) || true, "a zero period crashed");
+                RM_MapControlMath.TimerOn(P, 0f, 0, 0, 2500L * 5, 0f, 1f, false);   // a zero period must not throw (the answer is not asserted)
                 int onCount = 0;
                 for (long t = 0; t < 2500L * 24 * 10; t += 250) if (RM_MapControlMath.TimerOn(P, 0f, 0, 0, t, 12.4f, 1f, false)) onCount++;
                 double frac = onCount / (2500.0 * 24 * 10 / 250);
