@@ -44,7 +44,7 @@ THE SCOPE IS A BIOME (owner, 2026-10-16, PLANT_GROWTH_MERGE_NEVER_MEANT_APART). 
 (the former Jawa Plant Growth, now in this engine) and the soak run only on maps whose biome Baroque
 Biomes ships; a quicktest map's biome is rarely one. So every chain first puts every biome in scope
 through the TEST-ONLY, never-Scribed override (`_suite_scope` -> RM_ExplosiveGrowthProof.ProofTestScopeAllOn),
-never by writing the player's `applyInOtherBiomes`: a run that dies part-way cannot leave the option on in
+never by writing the player's `nativesSameRuleInOtherBiomes`: a run that dies part-way cannot leave the option on in
 a settings file. `scope_native_only` clears the override and proves the default (a foreign biome is out of
 scope). The option's ON state has NO row, by the owner's ruling: "we won't test or support that."
 `settings_restored` clears the override too.
@@ -1092,7 +1092,7 @@ def scope_native_only(t):
     """Option OFF (the shipped default), override cleared: a map whose biome Baroque Biomes does not ship is out of
     scope (no soak, no band). Can FAIL: an engine that ignored the scope would read biomeInScope=True. The option's ON
     state is deliberately untested (owner, 2026-10-16: "we won't test or support that")."""
-    with _comp(t, "default_runs_only_in_baroque_biomes_biomes", toggle="applyInOtherBiomes"):
+    with _comp(t, "default_runs_only_in_baroque_biomes_biomes", toggle="nativesSameRuleInOtherBiomes"):
         try:
             v, raw = _test_scope_all(t, False)
             _note(t, "scope_off", raw)
@@ -1104,7 +1104,7 @@ def scope_native_only(t):
                     _fail("the engine's home mod is %r, not Baroque Biomes (mandrake.rm.biomes): it is not composed, "
                           "or a standalone copy loaded: %s" % (v.get("home"), raw))
                 if v.get("option") != "False":
-                    _unmeasured(t, "SITE: applyInOtherBiomes is on in this player's settings: %s" % raw)
+                    _unmeasured(t, "SITE: nativesSameRuleInOtherBiomes is on in this player's settings: %s" % raw)
                 if int(v.get("homeBiomes", 0)) < 1:
                     _fail("no Baroque Biomes BiomeDef is in the scope table: %s" % raw)
                 if v.get("mapBiomeIsHome") == "True":

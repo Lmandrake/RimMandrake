@@ -38,7 +38,8 @@ HOW EACH ROW READS (PROVE / EXPECT / LIES), in the order run:
   T15R (opt-in: --only T15R; it RELOADS the --reload-site save twice, so it runs last and alone) the stale terrain mark.
        Load, spawn A first, need 0.2 with no water (its search fails: marked for 600 ticks); reload, spawn B first (same
        thingIDNumber, ticks restarted), a red pool beside it, need 0: B drinks within 300 ticks. LIES: B not holding A's
-       ID -> the collision was not reproduced -> UNMEASURED, never PASS.
+       ID, or B's search tick outside [A's mark tick, +600) -> the collision was not reproduced -> UNMEASURED, never PASS.
+       Not yet run live; its red against the pre-fix DLL (6f092b3ce8^) is inferred from the mechanism, not observed.
 
 DEBUG RECORD, T15 run 1 (live walk 2026-10-17, b5.json): the red pawn carried the WHITE slime's RM_SporeFlesh and no
 RM_ContagionTouched; a rerun from the same save (b6.json) was exact. Theories, in the order weighed:
@@ -143,7 +144,12 @@ def main(argv=None):
                 if len(res["governorStops"]) > 12:
                     raise
                 feed_all()
-                continue        # the stop's partial advance is re-measured by the t1-t0 top-up below
+                # review 2026-10-17: retrying the whole chunk overshot n by the stop's partial advance (T3 reads a rate
+                # over exactly n ticks); what is left is measured off the clock instead
+                now = tg()
+                if t0 is not None and now is not None:
+                    left = n - (now - t0)
+                continue
             left -= k
         t1 = tg()
         if t0 is not None and t1 is not None and t1 - t0 < n:
@@ -794,22 +800,27 @@ def main(argv=None):
             pa_ = spawn_colonist(RX, RZ)
             UNDER_TEST.add(pa_)
             need(pa_, 0.2)                       # thirsty, not desperate, no water on the map: the search fails -> marked
+            ta = tg()                            # the stop_job think runs at this tick: the mark is ta + 600
             B.call("jawa/stop_job", pawnId=pa_)
             ticks(60)
-            ta = tg()
             r2 = reload_site()
             pb_ = spawn_colonist(RX, RZ)
             UNDER_TEST.add(pb_)
             ticks(90)                            # past A's mark tick, so 'until - now' is inside the 600-tick window
             paint("RM_SlimeRedShallow", RX - 1, RZ + 2, 2, 2)
             need(pb_, 0.0)
+            tb = tg()                            # B's first search (poll_job's stop_job) runs at this tick
             t_drink, seen_r = poll_job(pb_, ("RM_DrinkFromTerrain",), 300, step=30)
-            det = {"pawnA": pa_, "pawnB": pb_, "tickA": ta, "jobsB": seen_r, "drinkAfter": t_drink,
+            det = {"pawnA": pa_, "pawnB": pb_, "tickA": ta, "tickB": tb, "jobsB": seen_r, "drinkAfter": t_drink,
                    "loads": [r1.get("verified"), r2.get("verified")], "hediffsB": hediffs(pb_)}
             if not (r1.get("verified") and r2.get("verified")):
                 row("T15R_reload_mark", "UNMEASURED", "HARNESS", dict(det, why="a site load did not verify"))
             elif pa_ != pb_:
                 row("T15R_reload_mark", "UNMEASURED", "HARNESS", dict(det, why="B did not get A's thing ID: collision not reproduced"))
+            elif None in (ta, tb) or not ta <= tb < ta + 600:
+                # the pre-fix guard honoured a mark only while now < until <= now + 600: outside that window the old DLL
+                # passes too, so a PASS here would prove nothing
+                row("T15R_reload_mark", "UNMEASURED", "HARNESS", dict(det, why="B's search is outside A's mark window"))
             else:
                 row("T15R_reload_mark", "PASS" if t_drink is not None else "FAIL", "MOD", det)
     finally:

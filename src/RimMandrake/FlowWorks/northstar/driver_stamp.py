@@ -1,8 +1,9 @@
 """Provenance for the standalone live drivers (thirst_live.py, sprinkler_live.py): what validation.py's driver_rows_at needs
 before it will read a result -- mode 'live', the mod, the mod hash of the repo tree at run start (modcheck status.mod_hash,
 the same hash `modcheck record` checks) and what the GAME is running: the live mod list and the sha256 of the FlowWorks
-assembly it loaded. The repo hash alone cannot say the deployed DLL is the repo's: a run against an undeployed fix would
-otherwise certify that fix. Never raises; a field it cannot read is None with the reason beside it."""
+assembly it loaded (jawa/type_probe; None unless the loaded MVID matches the file on disk). The repo hash alone cannot say
+the deployed DLL is the repo's: a run against an undeployed fix would otherwise certify that fix. Never raises; a field it
+cannot read is None with the reason beside it."""
 import os
 import sys
 
@@ -25,10 +26,18 @@ def stamp(res, call):
     try:
         rm = call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False) or {}
         env["running"] = [p.lower() for p in rm.get("packageIds") or []]
-        ms = (rm.get("assembly") or {}).get("matches") or []
-        env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
-        if len(ms) != 1:
-            env["assembly_why"] = "%d loaded assemblies match RimMandrakeFlowWorks" % len(ms)
     except Exception as ex:  # noqa: BLE001
-        env["running"], env["assembly_sha256"], env["assembly_why"] = None, None, repr(ex)
+        env["running"], env["running_why"] = None, repr(ex)
+    # the sha256 both tools report is of the file on disk NOW; only mvidMatchesFile says the process loaded that file
+    # (a redeploy after launch changes the file, not the loaded code) -- the validation_v2 assembly_identity rule
+    env["assembly_sha256"] = None
+    try:
+        tp = call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation") or {}
+        if tp.get("mvidMatchesFile") is True and tp.get("assemblyFileSha256"):
+            env["assembly_sha256"] = tp["assemblyFileSha256"]
+        else:
+            env["assembly_why"] = "type_probe: mvidMatchesFile=%r sha=%r error=%r" % (
+                tp.get("mvidMatchesFile"), tp.get("assemblyFileSha256"), tp.get("identityError"))
+    except Exception as ex:  # noqa: BLE001
+        env["assembly_why"] = repr(ex)
     return res

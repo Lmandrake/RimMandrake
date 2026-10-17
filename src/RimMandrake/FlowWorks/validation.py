@@ -331,8 +331,15 @@ RIVER_FLIP_TOGGLES = ["riverWorksEnabled", "scaleWithRiverSize", "floodSurgeEnab
                       "crossingHazardsEnabled", "pathfinderAvoidsCurrents", "weirCatchesDrift"]
 
 
+_SELFTEST_CASES = {}
+
+
 def _selftest_cases():
-    """Run the FlowWorks C# SelfTest once; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run."""
+    """Run the FlowWorks C# SelfTest once per process; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run.
+    Memoised (review 2026-10-17): ten chains read it and each run is ~80 s; the source cannot change within one suite run.
+    A failed run is not memoised, so each chain still reports its own UNMEASURED."""
+    if _SELFTEST_CASES:
+        return dict(_SELFTEST_CASES)
     import subprocess
     runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_stock.py")
     r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=1200)
@@ -343,7 +350,8 @@ def _selftest_cases():
     if not cases:
         raise ExpectationFailed("UNMEASURED: the FlowWorks SelfTest did not run (rc=%s): %s"
                                 % (r.returncode, (r.stderr or r.stdout)[-300:]))
-    return cases
+    _SELFTEST_CASES.update(cases)
+    return dict(cases)
 
 
 @suite.chain("rivers_switch_flips")
