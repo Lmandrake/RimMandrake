@@ -67,7 +67,7 @@ design only: nothing here was built, deployed or run live.
      pulse; `flammable` liquids lay their `spillFilth` at the normal spill rate (fire risk you can see). RULED (OQ-S5).
 9. **Power and pressure (RULED OQ-S2):** no electrical power for the native head, **but a pump must be on its network**: the pump is the pressure. A head on a net with no working pump reads "No pressure: no pump on this network" and draws nothing (cells dry at expiry, as §1.1). VFE's head keeps its own 250 W for its automation and, because it is a pipe consumer under this section, needs the same pump (inferred from the shared path; owner to confirm).
 10. **Scope:** the WET effect is read only where the water rule is in scope (our biomes; spec §6). Elsewhere a native head
-    still draws and wets; growth reads it only under setting B "same rule". VFE's waterless boost is removed everywhere while the adapter is on (§3, OQ-S3).
+    still draws and wets; growth reads it only under setting B "same rule". VFE's waterless boost is removed inside our biomes while the adapter is on; VFE is unchanged elsewhere (§3, OQ-S3).
 
 ## 2. Native FlowWorks head: `RM_SprinklerHead` (rudimentary)
 
@@ -105,15 +105,13 @@ coverage: a serious commitment of water). Its 250 W powers the brains; unpowered
    dose a fertility liquid that the plant economy item defines. Highest cost (two-liquid draw, per-cell liquid tag), and
    it depends on per-biome adaptation columns not yet filled. Last.
 
-**VFE's own +0.04 a day (§0). RULED 2026-10-16 (by card, OQ-S3): removed everywhere while our adapter is on.** A Harmony
-prefix on `VFEF.VFEF_SprinklersManager.BoostPlantAt` skips the boost on every map and biome, not only in water-rule
-scope; the sprinkler then does only what our pipe-fed pulse does. With `vfeSprinklerAdapterEnabled` off VFE runs exactly as shipped.
-Reason: a waterless boost would stack on the ruled rates (the 2026-08-04 rejection reason).
+**VFE's own +0.04 a day (§0). RULED 2026-10-16 (by card, after the OQ-S3 conflict with the 2026-10-15 rule): removed only
+inside our biomes; VFE runs exactly as shipped everywhere else.** A Harmony prefix on `VFEF.VFEF_SprinklersManager.BoostPlantAt`
+skips the boost when the plant's map is in water-rule scope (our biomes); elsewhere it returns true untouched. With
+`vfeSprinklerAdapterEnabled` off VFE runs exactly as shipped everywhere. Reason: a waterless boost would stack on the ruled rates
+(the 2026-08-04 rejection reason), and the 2026-10-15 rule keeps us out of other biomes.
 
-⚠️ **FLAG FOR THE OWNER (not resolved here):** this changes VFE behaviour outside our biomes, which sits against the
-2026-10-15 ruling that biome mechanics are promised inside OUR biomes only (*"We can't guarantee they will work in
-other biomes beyond our framework"*). The card answer was explicit, so the design follows it; the owner should say
-whether the 10-15 rule yields here or the removal should be scoped to our biomes after all.
+**VFE pump (RULED 2026-10-16, by card):** the adapted VFE head also needs a pump on its network, the same as ours (§2 item 9).
 
 **3.4 Mechanics of the adapter (no dependency on VFE):**
 - XML: `FlowWorks/Patches/Compat/RM_VFEFarming_Sprinkler.xml`, a `PatchOperationFindMod`
@@ -150,7 +148,7 @@ _Shared/FlowWorksSprinklerRead.cs  (reflection-soft, like FlowWorksIrrigationRea
 | FlowWorks | `sprinklerLitresPerCellHour` (slider 0.1–5) | 0.5 |
 | FlowWorks | `sprinklerNativeRadius` (1.9 / 2.9 / 3.9) | 2.9 |
 | FlowWorks | `sprinklerNonWaterEffects` (contact damage, flammable filth in spray) | on |
-| FlowWorks | `vfeSprinklerAdapterEnabled` (off = VFE exactly as shipped everywhere; on = VFE's waterless boost removed everywhere) | on |
+| FlowWorks | `vfeSprinklerAdapterEnabled` (off = VFE exactly as shipped everywhere; on = VFE's waterless boost removed inside our biomes, VFE unchanged elsewhere) | on |
 | FlowWorks | `vfeThirstValve` · `vfeBloomConductor` · `vfeFertigation` (each feature on/off) | on · on · on (as each ships) |
 | ExplosiveGrowth | source toggle `sprinklers` (spec §6 "one toggle per source") | on |
 
@@ -191,7 +189,7 @@ All off: no native head, VFE vanilla, growth ignores sprinkled cells: the game i
 
 - **RULED 2026-10-16 (by card), OQ-S1:** 0.5 L per cell per hour, about 350 L/day for a native head (§1.4).
 - **RULED 2026-10-16 (by card), OQ-S2:** no electrical power, but a pump must be on the head's network (§1.9, §2).
-- **RULED 2026-10-16 (by card), OQ-S3:** remove VFE's waterless boost everywhere when our adapter is on (§3). Against the recommendation; flagged for the owner against the 10-15 inside-our-biomes rule.
+- **RULED 2026-10-16 (by card), OQ-S3, settled by a follow-up card the same night:** VFE's waterless boost is removed only inside our biomes when our adapter is on; VFE unchanged elsewhere (§3). The adapted VFE head needs a pump, like ours.
 - **RULED 2026-10-16 (by card), OQ-S4:** the first VFE upgrade is the moisture valve (Thirst valve, bold #1).
 - **RULED 2026-10-16 (by card), OQ-S5:** acid or boiling liquids hurt pawns in the spray; fuels leave flammable filth (§1.8).
 - **RULED 2026-10-16 (by card), OQ-S6:** a nozzle in each of the four pipe looks plus spray; art commission approved (§2).
@@ -201,7 +199,7 @@ All off: no native head, VFE vanilla, growth ignores sprinkled cells: the game i
 
 1. The head draws only when a working pump is on its network; add the "No pressure" state, a probe field, and a validation line (head on a pump-less net reads No pressure and draws nothing; adding a pump flips it).
 2. Native head cost stays 5 steel, no power comp; the pump requirement makes the pump a prerequisite in the tutorial/research text.
-3. `BoostPlantAt` prefix is unconditional while the adapter is on; the setting `vfeKeepFlatBoostInOurBiomes` is deleted. Anything reading "VFE unchanged outside our biomes" is wrong.
+3. `BoostPlantAt` prefix skips the boost only in water-rule scope (our biomes); VFE is unchanged outside them. No `vfeKeepFlatBoostInOurBiomes` setting. The adapted VFE head reads "No pressure" without a pump, like ours.
 4. Art commission for the nozzle in four pipe looks plus spray mote may be filed now.
 5. Step 6 (Thirst valve) is the first VFE feature to build.
 6. Non-water spray effects and LOS are ON (not optional-by-default); keep the `sprinklerNonWaterEffects` setting only as a toggle.
