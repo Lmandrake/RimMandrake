@@ -8,6 +8,11 @@ kept verbatim beside this file as `flowworks_elevation_feasibility_2026-10-17.gp
 authority, and §7 says where it agrees and where it does not. **Every agent-day figure is an ESTIMATE**, not a
 measurement. An agent-day is one focused coding agent day including selftests, with no live game time.
 
+**RULED 2026-10-17 (by card, after this review):** Q1 (a) dig 8 m by default, a setting from 2 to 20 m; T1 and the
+relative rules are built in one rebuild together with level water (so Q3's order is replaced); the four 2 m-keyed rules
+become relative; **T4 is dead** (Q4 a). Q2 (dig cost) was not asked: the plan defaults to keeping the curve, veto-able.
+Build plan: `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`.
+
 The owner, 2026-10-17 (ledger note on `WATER_SURFACE_REPAIR_LEVEL_OR_BUST`): *"how should we determine the right number
 of quantized levels to support? The same goes for max pit depth. I'm starting to think we shouldn't limit the player to
 just four levels of canal. Please evaluate how much more effort would be required to allow them to make say a square of
@@ -44,9 +49,9 @@ it traps prisoners by the relative rule, and pawns go in and out by ladder.
 | **T1** deeper digs, same engine | dig to a set depth (recommend 8 m default, setting 2 to 20 m); the 4/7/7/4 square; deeper walls and pawn sink | **3 to 5 days** of new code, **4 to 8 with the owed climb live proofs** (GPT: 5 to 9, §7) | none: the byte grids already hold it |
 | **T2** relative everywhere | the rules that still say "a pit is 2 m deep, absolute" become "a drop relative to the neighbours": prison rooms, the shooting rule, exposure, spikes | **3 to 6 days** + owner rulings (ruling 23 is his words) | none |
 | **T3** land that heals | dug floors and dry lakebeds regain fertility over time; wild plants and crops grow there; returning water kills them | **2 to 4 days** + an owner look at any new art | one new byte grid; old saves start un-grown |
-| **T4** real elevation | raised ground, hills, line of sight and projectiles by height, cells above cells | weeks to months | everything | 
+| **T4** real elevation | raised ground, hills, line of sight and projectiles by height, cells above cells | **DEAD** (owner, by card, 2026-10-17) | — |
 
-T4 is out of scope and contradicts LAW 1 ("we dig down, we never build up", `RM_ExcavationDepth.cs:12`).
+T4 is dead, not deferred: it contradicts LAW 1 ("we dig down, we never build up", `RM_ExcavationDepth.cs:12`).
 
 **How many levels, and how deep (§3).** Keep the 0.5 m dig step. Water is now continuous (exactly level, ruled
 2026-10-17), so the step no longer limits water at all; it is only the size of one dig and of one climb. Containment
@@ -216,8 +221,8 @@ masks, ramps, ladders, dry-lake hollows: built offline, **never proven live**. W
   (6 and 8 notches) they have never seen. **Saves:** none.
 - **Subsumes / conflicts:** extends `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` (same constants; do in one pass); depends on
   `WATER_SURFACE_REPAIR_LEVEL_OR_BUST` for flow; changes the D5 ruling of `LIQUID_DEPTH_DESIGN_ONE_RULER_FOR_WATER`
-  (*"the deepest pit stays 2 m"*) **only if he rules so**. Reading: D5 can stay true as "the pit rules start at 2 m",
-  with digging allowed deeper. That is his call. Wall art: `EXCAVATION_WALL_ART_1` (validated) gains deeper drops.
+  (*"the deepest pit stays 2 m"*): **he reversed D5 by card the same day** (dig 8 m by default), and the pit rules
+  become relative rather than starting at an absolute 2 m. Wall art: `EXCAVATION_WALL_ART_1` (validated) gains deeper drops.
 
 ### T2 — relative everywhere (**3 to 6 agent-days** + rulings)
 
@@ -250,11 +255,11 @@ The rules that still say "a pit is any cell dug 2 m or more" become relative:
 - **Subsumes / conflicts:** `POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD` (doing) owns the mud timer: regrowth should start
   when mud ends. `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES` makes the bowls deeper; no conflict.
 
-### T4 — a real elevation engine (out of scope)
+### T4 — a real elevation engine: DEAD (owner, by card, 2026-10-17)
 
 Raised ground (berms, mounds), natural hills, line of sight and projectile arcs by height, cover by height, a cell above
 another cell (tunnels, bridges over pits). Every vanilla system assumes a flat map. **Weeks to months; very high risk.**
-It also breaks LAW 1. Recommend recording it as dead, not deferred.
+It also breaks LAW 1. **Ruled dead, not deferred.** No v2 parking.
 
 ### Order
 

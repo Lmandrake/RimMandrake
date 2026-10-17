@@ -1,7 +1,10 @@
 # Deeper digging: play, rules and coherence (PROPOSAL, 2026-10-17)
 
 Item: `WATER_SURFACE_REPAIR_LEVEL_OR_BUST` (the owner ordered this double review there, 2026-10-17 ledger note).
-**PROPOSAL, not ruled.** This is helper B of a double review: the **play, rules and coherence** lens. Engine cost is
+**RULED in part 2026-10-17 (by card, after this review):** Q1 (c) 8 m by default (a setting from 2 to 20 m); the four
+quietly absolute rules of §5 (drowning, falls, spikes, shooting) become relative to the height difference, built in one
+rebuild with level water; real elevation is dead. Q2, Q6, Q7, Q9, Q11 and Q12 are still unasked; Q3, Q4, Q5, Q8 and Q10
+are veto-able defaults in the build plan, `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`. The rest of this file was a proposal. This is helper B of a double review: the **play, rules and coherence** lens. Engine cost is
 helper A's file; it is not repeated here. Nothing in code, defs, docs, the bridge or the game was touched. Code claims
 are from a read-only look at `src/RimMandrake/FlowWorks` at `664f8dd1a`. One outside read (GPT, `gpt_consult.py`,
 gpt-6.1-sol) is kept verbatim beside this file as `flowworks_elevation_play_2026-10-17.gpt_read.md`; it is evidence,
@@ -267,7 +270,7 @@ Today every dug and lakebed terrain has fertility 0 (MEASURED, `FlowWorks_Terrai
 | ruling or bar (date) | verdict | why |
 |---|---|---|
 | *"it should be relative height ... so that gradual slopes never trap anyone"*; ramps 1.5 m, ladders any depth (2026-10-12, Q1-Q3) | **confirms** | His new sentence restates it. Built offline; deeper digging rides on it. |
-| D5 *"the deepest pit stays 2 m"* (by card, 2026-10-17 morning) | **contradicts** | He reopens it the same day. Card Q1. |
+| D5 *"the deepest pit stays 2 m"* (by card, 2026-10-17 morning) | **reversed** | He reopened it the same day and ruled Q1: 8 m by default, a setting from 2 to 20 m. |
 | D2 lake floors 20 m, to 125 m; *"very large lakes and oceans can absolutely go 50m"* (2026-10-17) | **confirms** | Drained lakes are already deep; the dig cap is a separate number. |
 | Exactly level water; a very-shallow look under 25 cm (by card, 2026-10-17) | **confirms** | Continuous water frees the dig step from the water step. |
 | Ruling 19, *"Four depths: shallow 0.5 m, mid 1 m, deep 1.5 m, SUPERDEEP 2 m"* (2026-09-16) | **strains** | It is about digging. A deeper cap replaces it. |

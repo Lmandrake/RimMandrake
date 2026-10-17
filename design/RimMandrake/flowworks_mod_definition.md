@@ -112,7 +112,7 @@ against the current source, not the previous pass's prose.)*
 | Limited vs limitless detection | **BUILT** | `RM_LiquidStock.FormBody` flood-fills a body's contiguous same-suite cells and sets `limitless` from map-edge contact (`touchesEdge`) plus a minimum size (`RimMandrakeFlowWorksSettings.MinLimitlessBodyCells`); gated by `stickyLimitlessEnabled` |
 | Strained-source graphic | **UNBUILT** | And no art to draw it with |
 | Partial fill / fill progression | **BUILT** | Four terrain tiers per liquid — `RM_Fill_<Liquid>_Trace/Half/Brim/Superdeep` — exist for both shipped `FluidDef`s (`RM_Fluid_Water`, `RM_Fluid_Tar`) in `Canals/TerrainDefs/FlowWorks_Terrain.xml` |
-| Parent body recedes in proportion | **BUILT** | `RM_LiquidStock` recession (gated `recessionEnabled`): fewest same-liquid neighbours first, tie-broken by centroid distance then a deterministic per-cell hash; refill restores in reverse order |
+| Parent body recedes in proportion | **BUILT** | `RM_LiquidStock` recession, LEGACY (gated `recessionEnabled`, used only while `pondDepthEnabled` is off; the level-surface solver replaces it): fewest same-liquid neighbours first, tie-broken by centroid distance then a deterministic per-cell hash; refill restores in reverse order |
 | Filled vs unfilled movement cost | **BUILT** | The dry ladder is differentiated (`pathCost` 30/45/80 on `RM_Channel_Empty/Mid/Deep`, 300 on `Superdeep`), and fill tiers vary too — water `Half` 42, `Brim`/`Superdeep` 300 (`Trace` inherits); tar `Trace` 100, `Half` 200, `Brim`/`Superdeep` 300. Not the flat `pathCost` 6 a stale reading once claimed |
 | Ignition, long burn, fire reaching the source | **BUILT OFFLINE 2026-10-05 (`RM_LiquidFire`, Phase 6), no live proof yet; the row below describes the superseded spike** | `LiquidIgnitionMapComponent` (`LIQUID_TYPES_SPIKES_1`) triggers only on an adjacent existing `Fire` Thing, then calls `FireUtility.TryStartFireIn` — vanilla's own entry point, which then rides vanilla's own `TrySpread`. Gated off by default (`liquidIgnitionEnabled = false`) and never ticked in a live game. The premise once flagged UNVERIFIED is now confirmed via RimSage against `RimWorld/FireUtility.cs:40-58,230-241` and `RimWorld/Fire.cs:242-280`: both read `TerrainDef.GetStatValueAbstract(StatDefOf.Flammability)` directly, with **no trigger of their own** — so a fluid terrain shipping `Flammability > 0` would auto-ignite on vanilla's own schedule with no thermal/electrical cause, violating the hard ban. That is exactly why fluid terrain must ship `Flammability ≈ 0` and the trigger lives in this component instead. "Burns for a very long time" and "lights its source" remain unbuilt |
 | Slime near-uncrossable, slow to escape | **BUILT OFFLINE 2026-10-16 (`SLIME_CROSSING_BUILD_SLIPPERY_SLOPE`), no live proof yet** | `RM_SlimeSlip` (FlowWorks, not GelatinousSlime): a pawn walking through a dug cell whose fluid has `FluidDef.slipperiness` > 0 (the four slimes ship 1) slips about once in three seconds at brim, each slip a stun with a "Slipped in the …" text; a slip on the climb out slides it back to the start of the step (×2 as often). Slime fill `pathCost` 200/300/450/450 so routes avoid it. Natural slime ground slips too (owner, 2026-10-16: *"Natural slime should also be slippery."*): `RM_SlipperyTerrain` on the 16 wet natural slime terrains (`Patches/Canals/RM_SlipperySlimeGround.xml`; hardened slime, slime grass and slime stone left out), no climb-out slide there; natural pools walk at 200 shallow / 450 deep. Mod Settings `slimeSlipEnabled` + three tuning numbers; math in `RM_SlimeMath` (SlimeChecks selftest); first script chain `slime_slip` in `northstar/extensions.py`; review map station 12 |
@@ -156,7 +156,8 @@ them), clamped to `bodyCapacity`. Tune `groundOoze` so a very small natural sour
 seasons — *less punishing* but *quite a while* means slow and certain, not random. A recovering body
 regains cells at its edge, so refill is visible.
 
-**Recession, cell by cell.** When stock falls below what the footprint represents, the body gives up
+**Recession, cell by cell (legacy path, used only while `pondDepthEnabled` is off; the level-surface solver in
+`design/RimMandrake/flowworks_level_surface_2026-10-17.md` replaces it).** When stock falls below what the footprint represents, the body gives up
 cells: fewest same-liquid neighbours first, tie-broken by greatest distance from the centroid, then
 by a deterministic per-cell hash so the order survives a save. That thins the body from the outside
 in and never fragments it; refill restores in reverse order. **A real problem here:** a *natural*
@@ -893,7 +894,7 @@ restatement, and it is the strongest single expression of the defense spine.
 
 ## 21. Ruling 19 + the scope discipline — four depths (in metres), and how to get terraces without a Z-system
 
-**Ruling 19 (owner, 2026-09-16).** Four depths: **shallow 0.5 m, mid 1 m, deep 1.5 m, SUPERDEEP (the pit) 2 m** (metres per `flowworks_unified_depth_2026-10-17.md`; the pit stays 2 m) — all read as "how
+**Ruling 19 (owner, 2026-09-16).** Four depths: **shallow 0.5 m, mid 1 m, deep 1.5 m, SUPERDEEP (the pit) 2 m** (metres per `flowworks_unified_depth_2026-10-17.md`; since 2026-10-17 colonists may dig deeper, to 8 m by default, and what traps is the step to the neighbour, per `flowworks_one_rebuild_plan_2026-10-17.md`) — all read as "how
 far below the surface are they?". The player may terrace terrain and fill the terraces with liquids at
 varying depths. Terraces can act as pits for capture. **SUPERDEEP is the trapping level.** **A natural
 square's depth is its own floor**: 1 m or 2 m at the shore, deeper out in a lake. **Ladders** can be built to climb up and down walls.
@@ -909,7 +910,7 @@ hills, no mounds, no raised earth, no ramps up.
 🔑 This one asymmetry kills most of the cost of a Z-system, and the reason is worth stating: a real
 elevation model makes height a property of **every** cell, which forces every subsystem to interpret it
 — pathing, rendering, line of sight, cover, roofing, projectile arcs. Because nothing is ever *above*
-0, none of that is touched: a dug cell is just a cell carrying an integer, and RimWorld already lets a
+0, none of that is touched: a dug cell is just a cell with a floor depth, and RimWorld already lets a
 cell carry a cost and a building.
 
 **Guard this law explicitly**, because every future request will erode it. "Can we have a raised
@@ -922,18 +923,19 @@ elevation model inside the combat system — and combat is the most interconnect
 
 **Cut and stay cut:** height advantage, shooting down into a pit for a bonus, cover from below,
 falling damage between levels, thrown objects across levels, multi-level buildings, roofs at
-different heights, and pressure/siphons/head-height flow. Every one is defensible in isolation and
+different heights, and pressure/siphons. Every one is defensible in isolation and
 each one alone converts this into a different project.
 
-### THE ALGORITHM — fill lowest first, then overflow. That is the whole "physics".
+### THE ALGORITHM — every connected body of water is exactly level.
 
-At each pulse (never per tick — pillar 2), over the connected set of excavated cells:
+At each pulse (never per tick — pillar 2), for each connected body of water (pond, canal, or both joined):
 
-1. Sort by depth, deepest first.
-2. Pour available volume into the deepest cells until each reaches `F = D`.
-3. **A cell at `F = D` overflows into adjacent cells that have room**, and the sort repeats.
+1. The body holds its volume as an exact whole number of decilitres.
+2. From that volume and the floors under the body, work out one surface height.
+3. Each square's water depth is max(0, surface - floor), computed on read.
 
-It is a sort plus an overflow. No pressure, no velocity, no simulation — and it produces every
+Water is not stored per square and does not move in whole 0.5 m notches. The notch is only the dig step and the
+picture-band step. No pressure, no velocity, no simulation. Full design: `design/RimMandrake/flowworks_level_surface_2026-10-17.md`. It still produces every
 behaviour he asked for:
 
 - **Terraces fill bottom-up.** The deep terrace fills before the shallow one, exactly as water does.
@@ -943,10 +945,10 @@ behaviour he asked for:
 - **Draining is a tactic.** Breach into a SUPERDEEP sink and the moat empties in one pulse.
 
 🔴 **The flaw this rule fixes, which the ruling as stated would otherwise have.** If natural sources
-are SUPERDEEP and flow is only "fill lowest first", liquid would **never leave a source** to fill a
-shallower canal — water does not run uphill, and the entire canal fantasy dies. The **overflow** step
-is what saves it: a natural source is a SUPERDEEP cell that is *already full*, so it spills into any
-shallower channel dug at its edge. Correct physics, produced by an integer comparison.
+are SUPERDEEP and flow is only "fill the lowest first", liquid would **never leave a source** to fill a
+shallower canal — water does not run uphill, and the entire canal fantasy dies. The **shared surface**
+is what saves it: a natural source is a SUPERDEEP cell that is *already full*, so its surface sits above any
+shallower channel dug at its edge, and the water floods in until both are level. Correct physics, produced by one shared surface height.
 
 ### The consequence worth taking: a SOURCE stops being a building
 

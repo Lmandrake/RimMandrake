@@ -6,6 +6,11 @@ authority for liquid depth, volume and their words and pictures; where another F
 and the other is wrong. Code claims come from a read-only census of `src/RimMandrake/FlowWorks` at HEAD on 2026-10-17
 (file:line given); the code is not yet changed (build items in §11).
 
+**Later the same day (2026-10-17) the owner ruled further, by card:** water is exactly level (one surface per connected
+body, exact decilitres, not whole notches); a new very-shallow look under 25 cm; colonists dig to 8 m by default
+(setting 2 to 20 m), which **reverses D5**; the 2 m-keyed rules become relative to the height difference; everything is
+built in one rebuild. This file is corrected to match. Build plan: `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`.
+
 The owner, 2026-10-17 (S5.Q1 write-in): *"We collectively ruled four across everywhere... but then we moved to meters
 depth and Liters. Please do a full deep design pass right now on how to reconcile all of this. It's ok to have some
 number of visual depths of liquid, as well as visual depths of canal. But we must not get confused on the depth of the
@@ -35,10 +40,11 @@ level 4 canals."*
    containers since 2026-10-16).
 2. **Ruler = metres below ground.** A square is 2 m² of floor (1.41 m on a side), so in one square **1,000 L = 0.5 m**.
    Depth is never shown as a fraction, a tier name or a "level"; it is shown in metres.
-3. **Step = 0.5 m, called a notch.** The engine still moves whole notches (one notch in one square = 1,000 L). Digging
-   goes in notches. "Notch" is the owner's own word (2026-10-12: *"at least 4 notches deep"*).
-4. **Every water picture is chosen by water depth in metres, the same for a canal, a pond or a pit:** 0.5 m, 1 m,
-   1.5 m, 2 m and deeper (plus darker "very deep" tints for lakes: ruled yes, owner sees them first). The **hole's** depth is shown separately,
+3. **Step = 0.5 m, called a notch.** One notch in one square = 1,000 L. Digging goes in notches, and the picture bands
+   are notches. **Water does not:** each connected body holds exact decilitres and has one level surface
+   (`flowworks_level_surface_2026-10-17.md`, ruled exactly level). "Notch" is the owner's own word (2026-10-12: *"at least 4 notches deep"*).
+4. **Every water picture is chosen by water depth in metres, the same for a canal, a pond or a pit:** under 25 cm (a
+   new very-shallow look; he sees it first), 0.5 m, 1 m, 1.5 m, 2 m and deeper (plus darker "very deep" tints for lakes: ruled yes, owner sees them first). The **hole's** depth is shown separately,
    by the canal's walls and how low a pawn sits. Water picture = water depth; walls = hole depth. Never one for the
    other.
 5. **Natural water goes much deeper.** A pond's shore is 1 m (shallow water) or 2 m (deep water); its floor then drops
@@ -46,22 +52,22 @@ level 4 canals."*
    default, settable to 125 m; very large lakes and oceans may reach 50 m** (owner: *"but very large lakes and oceans can
    absolutely go 50m"*). Oceans and edge rivers never run down, so their depth is a picture and a readout, never a
    litre count.
-6. **"Four" stays and is renamed the yardstick: 2 m = 4 notches = 4,000 L in one square.** This is the deepest dig,
-   one tank square and a shore-deep pond square. "Five" is deleted everywhere.
+6. **"Four" stays and is renamed the yardstick: 2 m = 4 notches = 4,000 L in one square.** This is one tank square and
+   a shore-deep pond square. It is no longer the deepest dig (8 m by default, setting 2 to 20 m). "Five" is deleted everywhere.
 
 **The S5 answer this gives.** One full 2 m pond square holds 4,000 L, enough for **four** 0.5 m canal squares **by
 pump**. **By gravity it gives far less.** Under the ruled leveling law (2026-10-16 D2: *"It should slosh around until it
 levels"*) a canal takes only the water that stands above its own floor. So a 0.5 m canal draws at most the top 0.5 m of
 the pond, and only until the two surfaces are level. To drain a pond by gravity you dig as deep as the pond; to empty it
-you pump. **Scene S5 as written (a 3×3 pond wets all 10 cells; one pond square wets 4 cells) contradicts the leveling
-law and must be redrawn either way** (§6).
+you pump. With exactly level water a 3×3 pond does wet all ten canal cells, but thinly (24 cm each), and one pond square
+wets all ten at 4.5 cm, not four full cells. **Scene S5 is redrawn with these level numbers** (§6).
 
 **Cost (ESTIMATED):** about 2 to 3 agent-days for Scheme A, no grid rescale, and one re-picture pass on load.
 Alternatives considered and not taken (§8): **B** a finer 0.1 m step; **C** abstract "levels" with no metres; **D**
 keep fullness pictures and only fix the numbers.
 
 **Decided (§10):** the owner ruled the scheme (A), the lake floor (20 m, to 125 m; 50 m for very large lakes and
-oceans), the pit (stays 2 m; "20% over the head" is a visual rule only) and the new art (yes, seen by him before it
+oceans), "20% over the head" as a visual rule only, and the new art (yes, seen by him before it
 ships). **Defaulted, veto-able:** one burn rate; delete the pond-volume multiplier; restate the two north-star bars in
 metres and have him re-validate them; redraw S5 with both a deep gravity canal and a pump.
 
@@ -101,7 +107,7 @@ chain and makes everything else obey it.
 | number | where | status |
 |---|---|---|
 | **4** = the yardstick | `RM_Volume.LevelsPerSquare`; ruling 2026-10-12 | **true, kept** |
-| **4** = deepest dig | `RM_ExcavationDepth.MaxDepth`, and three more hard copies: `RM_FlowKernel.Superdeep` (`.cs:123`), `RM_PitDrawMath.MaxDepth` (`.cs:28`), `RM_PitTrapMath.Superdeep` (`.cs:20`) | true, but **four separate literals**. All read `MaxDepth`. |
+| **4** = deepest dig | `RM_ExcavationDepth.MaxDepth`, and three more hard copies: `RM_FlowKernel.Superdeep` (`.cs:123`), `RM_PitDrawMath.MaxDepth` (`.cs:28`), `RM_PitTrapMath.Superdeep` (`.cs:20`) | **no longer true** (dig default 8 m, setting 2 to 20 m): split the dig cap from the 2 m pit constant (`PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT`); four separate literals today. All read `MaxDepth`. |
 | **4** = what a natural source "is" in the flow engine | `RM_FlowKernel.Superdeep`, used for every natural square whatever its floor | **wrong after deep beds**: a 1 m marsh flows as 2 m and a 10 m lake middle flows as 2 m. Fixed by the water-surface rewire (`WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND`, doing) if it reads the floor. |
 | **5** = canal squares per source square | `flowworks_mod_definition.md` §5 "each supplies up to five canal cells"; `FLOWWORKS_BUILD_PROGRAM_1`; `flowworks_northstar_interrogation_2026-10-02.md:75`; `flowworks_map_controls_design_2026-10-16.md:23`; comments `FlowWorks_Fluids.xml`, `RM_FlowKernel.cs:441`, `RM_LiquidStock.cs:9`, `RM_StockMath.cs:13`; settings label `RimMandrakeFlowWorksMod.cs:103` ("the 5:1 budget") | **dead in code** (replaced 2026-10-12 by floor depth), alive in text. Delete everywhere. |
 | **5** = days per source notch burned | `sourceBurnDaysPerLevel` = 5 (`RimMandrakeFlowWorksMod.cs:446-447`), from the 5:1 "density" argument | its reason is gone. One burn rate per burning square (§5.6). **Defaulted, veto-able** (D3). |
@@ -109,7 +115,7 @@ chain and makes everything else obey it.
 | **8** = lake "abyss" | `RM_Volume.AbyssBedLevels` (`.cs:148`), dry bed picture | 4 m. Restate in metres. |
 | **2** = notches in "a natural square" for heat | `RM_LiquidHeatMath.NaturalCellLevels` (`.cs:39`) | wrong for a 2 m or 10 m square; read the square's real water depth. |
 | **1.46 m vs 1.41 m** | `liquid_litres_2026-10-16.md` measured a cell at 1.46 m; 1,000 L per notch implies 1.41 m | settle by definition: **a square is 2 m² (1.41 m a side)**. The 3% gap is below the error of the "deep water is 2 m" assumption. |
-| **2 m pit vs walls 20% above the head** | `PIT_SUPERDEEP_COLLAPSE_1` (2026-09-17): *"the walls are higher than their head by 20%"*; a 1.75 m human ⇒ 2.1 m; the pit is 2 m | **Ruled (D5): the pit stays 2 m; "20% over the head" is a visual rule only**, carried by the pit's art and the pawn's sink offset. Text says "2 m". |
+| **2 m pit vs walls 20% above the head** | `PIT_SUPERDEEP_COLLAPSE_1` (2026-09-17): *"the walls are higher than their head by 20%"*; a 1.75 m human ⇒ 2.1 m; the pit is 2 m | **Ruled (D5): "20% over the head" is a visual rule only**, carried by the pit's art and the pawn's sink offset. (D5's "the pit stays 2 m" was reversed the same day: dig to 8 m by default.) |
 
 ### 2.3 Pictures
 
@@ -133,7 +139,7 @@ So two pictures say "water depth" and one says "fullness". That one is the sourc
 
 | quantity | canonical | derived views |
 |---|---|---|
-| amount of liquid | **litres** (stored as whole decilitres off the grid; as whole notches on the grid) | kL in text |
+| amount of liquid | **litres** (stored as whole decilitres: per tank and hose, and per connected water body, which has one level surface) | kL in text |
 | depth of water in a square | **metres** = litres in the square ÷ 2,000 | a picture band (§4); a notch count inside the engine |
 | depth of a hole or a floor | **metres below ground** | 4 dry canal looks; 3 dry lakebed looks; pawn sink |
 | water surface | **metres below ground** = floor − water depth | "the water levels out" |
@@ -153,6 +159,7 @@ settings text, oracle) reads these. Python reads them from the C# by regex, as
 
 | water depth | water look | source |
 |---|---|---|
+| under 25 cm | very shallow (**new art**, ruled by card 2026-10-17; he sees it first: `VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST`) | new |
 | 0.5 m | knee-deep (`RM_WaterThin` for water; the liquid's first fill look for others) | water: new art, already approved (D4, 2026-10-16) |
 | 1 m | shallow (vanilla `WaterShallow` look) | vanilla |
 | 1.5 m | chest-deep (`RM_WaterChestDeepStill`, vanilla chest-deep art) | def exists |
@@ -172,13 +179,13 @@ settings text, oracle) reads these. Python reads them from the C# by regex, as
   **wall band** at the cell's edge whose height is the gap between the water and the lip (0 when brim-full, up to 2 m).
   That is an overlay, not a new terrain. **New art: approved in principle; the owner sees a sheet or in-game shot before it ships.** Until then, the pawn sink offset and the
   mouseover carry it.
-- **Pawns** keep sinking by hole depth (0.3 cells a notch, capped at 2 m).
+- **Pawns** sink by the drop below the nearest lip, capped at the lip (`PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT`).
 
 ### 4.3 Text
 
 - Mouseover, one fixed form: **"Water 1.5 m deep (3 kL) · floor 2 m down"**. A lake square: "Water 6 m deep (12 kL) ·
   lakebed 6 m down". Open sea or edge river: "Open water, never runs dry".
-- Dig orders: "Dig to 0.5 m / 1 m / 1.5 m / 2 m (pit)".
+- Dig orders: "Dig to N m", in 0.5 m steps up to the dig cap (8 m by default).
 - Pond inspect: "Holds 340 kL; surface 0.5 m below the brim".
 - **Forbidden in player text:** "level N" as a count, "half", "brim", "trace", "5:1", "fill-units".
 
@@ -186,7 +193,8 @@ settings text, oracle) reads these. Python reads them from the C# by regex, as
 
 ### 5.1 Canal squares
 0.5, 1, 1.5 or 2 m deep; 1,000 to 4,000 L full. The 2 m canal is the pit (traps; ruled "superdeep only",
-2026-10-16 by card). Digging deeper than 2 m: no (D5: the deepest pit stays 2 m).
+2026-10-16 by card; the trap rules become relative to the height difference, 2026-10-17). Colonists may dig deeper: 8 m
+by default, a setting from 2 to 20 m (owner, by card, 2026-10-17).
 
 ### 5.2 Ponds and lakes (limited natural water)
 - Floor at the shore: shallow water 1 m, deep water 2 m (ruling 2026-10-12, unchanged).
@@ -230,14 +238,14 @@ There is no fixed number. It depends on how the water moves.
 | **gravity, canal as deep as the pond** | up to all of it, until the surfaces are level | leveling law |
 | **gravity, 0.5 m canal at the brim** | at most the top 0.5 m (1,000 L), and in practice less, because the canal and the pond settle to one surface between ground and 0.5 m | leveling law: water never climbs above its surface |
 
-**Worked S5 cases, under the leveling law and a 0.5 m step:**
-- **S5-A (3×3 pond, 2 m, at the brim; 10-cell 0.5 m canal):** the top notch of 19 squares (9 pond + 10 canal) is
-  shared by 9 notches of water, so 9 squares of that top notch end wet. Some canal cells wet, the rest dry, and **never
-  all 10**. The pond keeps at least 27 of its 36 notches.
-- **S5-B (one pond square, 2 m; same canal):** the top notch holds one notch of water, either on the pond square or on
-  canal cell 1. **At most one canal cell ever gets wet by gravity**, not four.
+**Worked S5 cases, under the leveling law with exactly level water** (`flowworks_level_surface_2026-10-17.md` §1):
+- **S5-A (3×3 pond, 2 m, at the brim, 36,000 L; 10-cell 0.5 m canal):** one surface settles 0.263 m below ground. The
+  pond stands 1.737 m deep and **all ten canal cells are wet, 0.237 m each**.
+- **S5-B (one full pond square, 2 m, 4,000 L; same canal):** one surface settles 0.455 m below ground: **all ten canal
+  cells wet at 4.5 cm**, not four full cells.
 
-So S5 is redrawn with both (D6, defaulted): parts A and B keep the 0.5 m canal and now claim the gravity limits above;
+So S5 is redrawn (D6, defaulted, and the owner's card 2026-10-17 to redraw with level numbers): parts A and B keep the
+0.5 m canal and claim the level numbers above;
 a new part F joins one 2 m pond square to one 2 m canal square by gravity (they level at 1 m of water each, 4,000 L in
 all); a new part G pumps one 2 m pond square into a 0.5 m canal (four 0.5 m squares' worth, 4,000 L, counting what the
 hoses hold). `design/RimMandrake/vv_methods/water_scenes_2026-10-16.scenes.json` is re-sealed and S5 awaits the owner's
@@ -270,7 +278,7 @@ law, not the shipped one.
 | `Source/RM_ExcavationDepth.cs` | `FillTier` by metres of water, not fraction; `LabelOf` in metres |
 | `Source/RM_LiquidLooks.cs:171` | tier map follows the new `FillTier` |
 | `Source/RM_FlowKernel.cs:123, :673-710` | a natural square's depth = its floor (not 4); band count from the deepest floor, not a literal 5 |
-| `Source/RM_PitDrawMath.cs:28`, `Source/RM_PitTrapMath.cs:20` | read `RM_ExcavationDepth.MaxDepth` |
+| `Source/RM_PitDrawMath.cs:28`, `Source/RM_PitTrapMath.cs:20` | read the split constants (2 m pit, dig cap setting); `PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT` |
 | `Source/RM_LiquidHeatMath.cs:39` | real water depth, not 2 |
 | `Source/RM_BedMath.cs:35`, `RimMandrakeFlowWorksMod.cs:143, :422` | cap default and range per D2, shown in metres |
 | `RimMandrakeFlowWorksMod.cs:103, :160, :446-447, :896-898, :964` | delete `sourceBudgetMultiplier` (D4) and the "5:1" label; burn rate per D3; strings in metres and litres |
@@ -295,12 +303,14 @@ law, not the shipped one.
 | save impact | none to grids; pictures re-laid once | all grids ×5, versioned | none | none |
 
 **Why A:** it is the smallest change that makes "how deep is this water" have one answer everywhere, and it keeps the
-grids, the selftests and the conservation proofs as they are. **B** is the right later step **if** leveling still looks
-lumpy after the water-surface rewire lands; A does not block it, because A's constants are the ones B would rescale.
+grids, the selftests and the conservation proofs as they are. B was never taken: the level-surface design showed a
+finer fixed step still leaves steps, and the owner ruled water exactly level instead (one surface per body, exact
+decilitres; `flowworks_level_surface_2026-10-17.md`).
 
 ## 9. Migration and saves (Scheme A)
 
-- **Grids** (`depthGrid`, `fillGrid`, `bedRecord`): unchanged; a notch stays 0.5 m.
+- **Grids** (`depthGrid`, `bedRecord`): unchanged; a notch stays 0.5 m. `fillGrid` becomes a view derived from each
+  body's volume and surface; body volumes are a new saved record (`flowworks_level_surface_2026-10-17.md` §3).
 - **Pictures:** a new scribed marker `RM_depthViewModel` (absent = 0). On the first load at 1, every wet dug cell
   re-picks its fill terrain by metres (a temp-terrain write, capped per pulse like `pondStageWritesPerPulse`).
   Nothing about the water changes.
@@ -319,7 +329,7 @@ lumpy after the water-surface rewire lands; A does not block it, because A's con
 |---|---|---|
 | D1 | scheme | **A**: litres true, metres shown, 0.5 m notch (1,000 L per square); "four" = the 2 m dig; "five" deleted everywhere |
 | D2 | lake floor cap | **20 m default, settable to 125 m**; *"but very large lakes and oceans can absolutely go 50m"* |
-| D5 | pit height | **the deepest pit stays 2 m**; his wall-height rule (walls 20% above the head) is a **visual rule only** |
+| D5 | pit height | his wall-height rule (walls 20% above the head) is a **visual rule only**. The morning's "the deepest pit stays 2 m" was **REVERSED** the same day by his own question: colonists dig to 8 m by default, setting 2 to 20 m (by card) |
 | art | wall band on wet canals (§4.2), darker deep-lake colours (§4.1) | **yes, but he sees it before it ships**: a review sheet or an in-game shot first (cosmetic permission gate) |
 
 **Defaulted to this spec's recommendation, veto-able** (he did not rule these; each stands until he says otherwise):
@@ -335,8 +345,11 @@ lumpy after the water-surface rewire lands; A does not block it, because A's con
 
 Filed 2026-10-17 from this spec; the code is untouched until they run:
 
-- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`: §7.2 code, defs, settings, strings and Python constants (Scheme A, D3, D4, D5).
+- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`: §7.2 code, defs, settings, strings and Python constants (Scheme A, D3, D4).
 - `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES`: D2: cap 20 m default, setting to 125 m, 50 m for very large lakes and oceans.
 - `WATER_DEPTH_RESKIN_HE_LOOKS_FIRST`: the wall band and the deep-lake tints; owner sees a sheet or in-game shot first.
 - `WATER_SCENES_JUDGE_S5_REDRAWN` (BENCH, needs owner): re-approve S5; re-validate the two metre-worded north-star bars;
   keep or veto D3, D4 and D6.
+
+All of these are children of `FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG` (one rebuild, ruled 2026-10-17); order and estimates:
+`design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`.
