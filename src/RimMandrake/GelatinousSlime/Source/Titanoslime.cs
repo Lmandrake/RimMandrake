@@ -944,6 +944,41 @@ namespace RimMandrake.GelatinousSlime
             return sb.ToString();
         }
 
+        // ── dev / proof surface (the DEV gizmos and RM_TitanoslimeProof) ──
+
+        /// <summary>Sets absorbedMass outright and re-locks the stage, bypassing
+        /// the growth toggles exactly as the DEV gizmos always did.</summary>
+        public void DevSetMass(float mass, bool announce)
+        {
+            absorbedMass = Mathf.Clamp(mass, 0f, Props.massCap);
+            ApplyStage(announce);
+        }
+
+        /// <summary>Routes a mass change through AddMass, the one function every
+        /// real growth source uses, so the grows/reversible toggles apply.</summary>
+        public void DevFeed(float delta)
+        {
+            AddMass(delta);
+        }
+
+        /// <summary>One line per held thing: id:ticksHeld/digestTicks.</summary>
+        public string DevHeldReport()
+        {
+            StringBuilder sb = new StringBuilder();
+            List<Thing> contents = innerContainer.InnerListForReading;
+            for (int i = 0; i < contents.Count; i++)
+            {
+                int idx = IndexOf(contents[i]);
+                if (sb.Length > 0) sb.Append(',');
+                sb.Append(contents[i].ThingID);
+                if (idx >= 0)
+                {
+                    sb.Append(':').Append(heldTicks[idx]).Append('/').Append(heldDigestTicks[idx]);
+                }
+            }
+            return sb.ToString();
+        }
+
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra())
@@ -957,20 +992,12 @@ namespace RimMandrake.GelatinousSlime
             yield return new Command_Action
             {
                 defaultLabel = "DEV: +6 absorbed mass",
-                action = delegate
-                {
-                    absorbedMass = Mathf.Clamp(absorbedMass + 6f, 0f, Props.massCap);
-                    ApplyStage(true);
-                }
+                action = delegate { DevSetMass(absorbedMass + 6f, true); }
             };
             yield return new Command_Action
             {
                 defaultLabel = "DEV: -6 absorbed mass",
-                action = delegate
-                {
-                    absorbedMass = Mathf.Clamp(absorbedMass - 6f, 0f, Props.massCap);
-                    ApplyStage(false);
-                }
+                action = delegate { DevSetMass(absorbedMass - 6f, false); }
             };
             yield return new Command_Action
             {
