@@ -169,6 +169,11 @@ SETTINGS = {
         "thirstEnabled": True, "thirstRateMultiplier": 1.0, "thirstHeatScaling": True, "animalsGetThirst": True,
         "drinkFromTerrain": True, "waterQualityEffects": True, "dbhBottleBridge": True,
     },
+    # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (2026-10-16, design §5): defaults = the ruled behaviour (OQ-S1..S7)
+    "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": {
+        "sprinklersEnabled": True, "sprinklerLitresPerCellHour": 0.5, "sprinklerNativeRadius": 2.9,
+        "sprinklerNonWaterEffects": True, "vfeSprinklerAdapterEnabled": True, "vfeThirstValve": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -182,6 +187,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": os.path.join("MapControls", "RM_MapControlSettings.cs"),
     "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": os.path.join("RiverColors", "RM_RiverColorsSettings.cs"),
     "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": os.path.join("Thirst", "RM_ThirstSettings.cs"),
+    "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": os.path.join("Sprinklers", "RM_SprinklerSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.

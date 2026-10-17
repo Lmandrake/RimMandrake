@@ -327,6 +327,12 @@
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
     <Compile Include="Machinery\Logistics\RM_SluiceGateSettings.cs" />
+    <Compile Include="Sprinklers\RM_SprinklerKernel.cs" />
+    <Compile Include="Sprinklers\RM_SprinklerSettings.cs" />
+    <Compile Include="Sprinklers\RM_MapComponent_Sprinklers.cs" />
+    <Compile Include="Sprinklers\RM_Sprinkle.cs" />
+    <Compile Include="Sprinklers\CompRM_SprinklerHead.cs" />
+    <Compile Include="Sprinklers\CompRM_SmartSprinkler.cs" />
     <Compile Include="Machinery\Logistics\RM_SluiceGate.cs" />
     <Compile Include="Machinery\Logistics\RM_SluiceGateMath.cs" />
   </ItemGroup>

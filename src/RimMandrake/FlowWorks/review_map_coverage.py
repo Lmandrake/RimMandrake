@@ -259,6 +259,14 @@ FEATURES = [
      "Thirst (need, dehydration, drinking jobs)", M + "behaviour with no look of its own; proven by validation.py's thirst chain"),
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
             r"|dbhBottleBridge)$", "Thirst", M + "as thirst"),
+    # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: no frozen station yet (a head needs a pump net and an hour of game time to show
+    # anything); proven by validation.py's sprinkler rows (owed live), art on its own review sheet
+    ("def", r"^(ThingDef/RM_SprinklerHead|ThingStyleDef/RM_SprinklerHead_\w+|ThingDef/RM_Mote_SprinklerSpray)$",
+     "Sprinkler heads on pipes", M + "no station yet; a pump net plus an hour of spray (validation.py sprinkler rows, owed live)"),
+    ("set", r"^(sprinklersEnabled|sprinklerLitresPerCellHour|sprinklerNativeRadius|sprinklerNonWaterEffects|vfeSprinklerAdapterEnabled"
+            r"|vfeThirstValve)$", "Sprinkler heads on pipes", M + "as sprinkler heads"),
+    ("gizmo", r'^"(Daily budget|Reserve floor): " \+', "Sprinkler heads on pipes", M + "VFE sprinkler valve gizmos (needs VFE Farming)"),
+    ("tex", r"FlowWorks/Sprinkler/", "Sprinkler heads on pipes", M + "art on its own true-scale review sheet"),
     ("def", r"^FleckDef/RM_Fleck_Steam_", "Coloured river steam", M + "rises only off a RIVER of a coloured water; no "
      "generated map here has one"),
     ("set", r"^(riverSteamEnabled|puffRateMultiplier)$", "River steam", M + "as coloured river steam"),

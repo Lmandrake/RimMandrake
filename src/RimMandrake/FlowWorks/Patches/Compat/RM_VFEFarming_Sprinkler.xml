@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design/RimMandrake/sprinklers_design_2026-10-16.md §3, §3.4): adapt Vanilla Furniture
+  Expanded - Farming's VFE_Sprinkler (MEASURED workshop 1957158779/1.6/Defs/Buildings/Buildings_Misc.xml) into a pipe consumer
+  that needs a pump (ruled by card 2026-10-16), with the moisture valve (OQ-S4). Its waterless +0.04/day boost is removed only
+  inside our biomes by a Harmony prefix (Source/Sprinklers/CompRM_SmartSprinkler.cs, OQ-S3). PatchOperationFindMod, never a
+  top-level MayRequire (ignored). Mod Setting vfeSprinklerAdapterEnabled off: the comp idles and VFE runs as shipped.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Furniture Expanded - Farming</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="VFE_Sprinkler"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Sprinklers.CompProperties_RM_SmartSprinkler" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

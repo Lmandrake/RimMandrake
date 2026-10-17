@@ -121,7 +121,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				return RM_NetRole.Machine;
 			}
 			if (t is ThingWithComps tw && (tw.GetComp<CompLiquidPipeAdapter>() != null || tw.GetComp<CompLiquidConverter>() != null
-			                               || tw.GetComp<CompLiquidReactor>() != null))
+			                               || tw.GetComp<CompLiquidReactor>() != null
+			                               || tw.GetComp<Sprinklers.CompRM_SprinklerBase>() != null))   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: a head is a consumer
 			{
 				return RM_NetRole.Machine;
 			}
