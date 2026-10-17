@@ -1,0 +1,119 @@
+[eg-note] startup lines read from Player.log on disk: {"lines": 2}
+[eg] 11:40:00 startup_log_clean PASS 
+[eg] 11:40:00 harmony_patches_attached PASS 
+[eg] 11:40:00 sound_defs_resolve PASS 
+[eg] 11:40:14 report_reads_registry PASS 
+[eg] 11:40:23 soak_cells_registered PASS 
+[eg-note] dry_native_ratio: {"rateA_before": 10.0, "rateA_after": 1000.0, "ctrl_before": 10.0, "ctrl_after": 10.0, "cells": 25}
+[eg] 11:40:32 dry_native_wet_is_100x_dry PASS 
+[eg-note] dry_native_x3: {"rateA_before": 10.0, "rateA_after": 300.0, "ctrl_before": 10.0, "ctrl_after": 10.0, "cells": 25}
+[eg] 11:40:41 dry_native_wet_multiplier_follows_setting PASS 
+[eg-note] vanilla_ratio: {"rateA_before": 10.0, "rateA_after": 100.0, "ctrl_before": 10.0, "ctrl_after": 10.0, "cells": 25}
+[eg] 11:40:50 vanilla_plant_x01_dry_x1_watered PASS 
+[eg-note] vanilla_normal: {"rateA_before": 10.0, "rateA_after": 100.0, "ctrl_before": 10.0, "ctrl_after": 100.0, "cells": 25}
+[eg] 11:40:59 vanilla_normal_ignores_water FAIL ExpectationFailed: the UNSOAKED control's rate moved 10.0 -> 100.0: the soak leaked or the site drifted
+[eg-note] master_off: {"rateA_before": 10.0, "rateA_after": 100.0, "ctrl_before": 10.0, "ctrl_after": 100.0, "cells": 0}
+[eg] 11:41:08 master_off_refuses_soak FAIL ExpectationFailed: the UNSOAKED control's rate moved 10.0 -> 100.0: the soak leaked or the site drifted
+[eg] 11:41:17 exempt_and_cave_plants_never_soak PASS 
+[eg] 11:41:27 mature_soaked_plant_charges_then_churns FAIL ExpectationFailed: a mature soaked AB_Slimecasia should be charging=1 after two passes; Report: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, '
+[eg] 11:41:37 ground_tell_darkens_without_sprouting FAIL ExpectationFailed: the soaked mature native should be charging=1: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowt
+[eg] 11:41:47 ground_tell_off_sows_nothing FAIL ExpectationFailed: with the tell off the plant must STILL charge (charging=1): {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_E
+[eg-note] churn_off: {"sprouts_when_armed": 1, "original_gone": false, "produce_things": 0, "plants_after_top": 1, "report_after": {"head": {"soaked": 25, "charging": 1, "suppressed": 0, "ruptures": 0, "biomeRefusesSoak": "False", "soaking": 330, "none": 240, "resolved": 126, "missing": 13, "biomeInScope": "True", "homeBiomes": 34, "forcedBy": "RUT_ExplosiveGrowthRoster_Campaign", "mechanicsOn": "True", "raining": "False", "rainLingerUntil": -1, "ashRestarts": 0, "tidallyLocked": "True"}, "tail": {"immature": 0, "matureDormant": 0, "charging": 1, "topNone/exempt": 0}}}
+[eg] 11:42:00 churn_off_plant_relaxes FAIL ExpectationFailed: the charge record should be dropped once the top resolves to nothing: {'head': {'soaked': 25, 'charging': 1, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedB
+[eg] 11:42:13 charge_hours_sets_the_clock PASS 
+[eg] 11:42:23 suppression_dries_and_defuses FAIL ExpectationFailed: precondition: the plant should be charging=1: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowth
+[eg] 11:42:32 suppression_off_is_inert PASS 
+[eg] 11:42:40 burst_pops_leaves_chaff UNMEASURED UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault
+[eg] 11:42:41 burst_off_falls_back_to_churn UNMEASURED UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault
+[eg-note] tinder_leaves_fuel: {"plant_at_cell": 0, "Hay": 1}
+[eg] 11:42:50 tinder_leaves_fuel PASS 
+[eg-note] tinder_off_falls_back_to_churn: {"plant_at_cell": 0, "Hay": 0}
+[eg] 11:42:51 tinder_off_falls_back_to_churn PASS 
+[eg-note] slime_turns_the_ground: {"plant_at_cell": 0, "Filth_Slime": 0, "slime_terrain_cells": 3, "slime_anywhere": 3}
+[eg] 11:43:00 slime_turns_the_ground PASS 
+[eg-note] slime_off_falls_back_to_churn: {"plant_at_cell": 0, "Filth_Slime": 0, "slime_terrain_cells": 0, "slime_anywhere": 0}
+[eg] 11:43:01 slime_off_falls_back_to_churn PASS 
+[eg-note] rupture_opens_a_cloud_zone: {"plant_at_cell": 0, "Filth_Blood": 10, "ruptures": 1}
+[eg] 11:43:10 rupture_opens_a_cloud_zone PASS 
+[eg-note] rupture_off_falls_back_to_churn: {"plant_at_cell": 0, "Filth_Blood": 0, "ruptures": 0}
+[eg] 11:43:11 rupture_off_falls_back_to_churn PASS 
+[eg-note] flush_plant_survives: {"plant_at_cell": 1}
+[eg] 11:43:20 flush_plant_survives PASS 
+[eg-note] flush_off_falls_back_to_churn: {"plant_at_cell": 0}
+[eg] 11:43:21 flush_off_falls_back_to_churn PASS 
+[eg] 11:43:29 burst_bruises_nearby_pawn UNMEASURED UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault
+[eg] 11:43:30 burst_hurt_off_spares_pawn UNMEASURED UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault
+[eg-note] scope_off: "home=mandrake.rm.biomes option=False forcedBy=RUT_ExplosiveGrowthRoster_Campaign testScopeAll=False mapBiome=AridShrubland mapBiomeIsHome=False biomeInScope=True homeBiomes=34 soaking=330 dry=217 wet=154 fire=2 exempt=33 vanilla=164 tidallyLocked=True"
+[eg] 11:43:38 default_runs_only_in_baroque_biomes_biomes UNMEASURED UNMEASURED: SITE: roster RUT_ExplosiveGrowthRoster_Campaign puts every biome in scope (a campaign layer is loaded), so the default scope cannot be seen on this list: home=mandrake.rm.biomes option=False forcedBy=RUT_ExplosiveGrowthRoster_Campaign testScopeAll=False mapBiome=AridShrubland mapBiomeIsH
+[eg] 11:43:46 minGrowDaysToSoak_setting_round_trips PASS 
+[eg] 11:43:54 irrigationSoakEnabled_setting_round_trips PASS 
+[eg] 11:44:03 sprinklersEnabled_setting_round_trips PASS 
+[eg] 11:44:11 gradientSurgeSoakEnabled_setting_round_trips PASS 
+[eg] 11:44:19 maxOvergrowthScale_setting_round_trips PASS 
+[eg] 11:44:28 reprintIntervalTicks_setting_round_trips PASS 
+[eg] 11:44:36 hueShiftEnabled_setting_round_trips PASS 
+[eg] 11:44:44 tellSoundsEnabled_setting_round_trips PASS 
+[eg] 11:44:53 ruptureMutationChance_setting_round_trips PASS 
+[eg] 11:45:01 harvestJackpotEnabled_setting_round_trips PASS 
+[eg] 11:45:10 lastSwingGambleEnabled_setting_round_trips PASS 
+[eg] 11:45:18 treeRatio_setting_round_trips PASS 
+[eg] 11:45:27 treeLitresPerDayOfLife_setting_round_trips PASS 
+[eg] 11:45:35 treeDrinkLitresPerDay_setting_round_trips PASS 
+[eg] 11:45:44 treeBurstDefaultLogs_setting_round_trips PASS 
+[eg] 11:45:52 stuntedMultiplier_setting_round_trips PASS 
+[eg] 11:46:01 wetNativeMultiplier_setting_round_trips PASS 
+[eg] 11:46:09 dryDryMultiplier_setting_round_trips PASS 
+[eg] 11:46:18 vanillaDryMultiplier_setting_round_trips PASS 
+[eg] 11:46:27 nearbyRadius_setting_round_trips PASS 
+[eg] 11:46:36 nativesSameRuleInOtherBiomes_setting_round_trips PASS 
+[eg] 11:46:44 wetFruitFactor_setting_round_trips PASS 
+[eg] 11:46:53 cropSelfFruitEnabled_setting_round_trips PASS 
+[eg] 11:47:01 waterUseEnabled_setting_round_trips PASS 
+[eg] 11:47:10 cropDrawLevels_setting_round_trips PASS 
+[eg] 11:47:19 dormancyEnabled_setting_round_trips PASS 
+[eg] 11:47:28 tidalLockNoRest_setting_round_trips PASS 
+[eg] 11:47:37 sealedGrowersVanilla_setting_round_trips PASS 
+[eg] 11:47:45 waveStaggerEnabled_setting_round_trips PASS 
+[eg] 11:47:54 naturalWaterEnabled_setting_round_trips PASS 
+[eg] 11:48:04 spillWaterEnabled_setting_round_trips PASS 
+[eg] 11:48:13 rainWaterEnabled_setting_round_trips PASS 
+[eg] 11:48:22 rainLingerHours_setting_round_trips PASS 
+[eg] 11:48:31 rainPuddlesEnabled_setting_round_trips PASS 
+[eg] 11:48:40 snowmeltEnabled_setting_round_trips PASS 
+[eg] 11:48:49 ashFreshEnabled_setting_round_trips PASS 
+[eg] 11:48:59 ashFlushDays_setting_round_trips PASS 
+[eg-note] ProofJackpot: "jackpotEnabled=True base=22.00 charged=44.00 ratio=2.00"
+[eg] 11:49:07 harvest_jackpot_doubles_at_full_charge PASS 
+[eg-note] ProofJackpot: "jackpotEnabled=False base=22.00 charged=22.00 ratio=1.00"
+[eg] 11:49:16 jackpot_off_pays_plain PASS 
+[eg-note] ProofGamble: "gambleEnabled=True chanceAt0.5=0.00 chanceAt0.7=0.15 chanceAt1=0.60 cutBelowTrembleDefused=True plantCollected=True"
+[eg] 11:49:25 cut_defuses_and_last_swing_is_a_gamble PASS 
+[eg-note] ProofGamble: "gambleEnabled=False chanceAt0.5=0.00 chanceAt0.7=0.00 chanceAt1=0.00 cutBelowTrembleDefused=True plantCollected=True"
+[eg] 11:49:34 gamble_off_never_fires PASS 
+[eg-note] ProofRupture: "pool=6 chance=0.080 inZone=True pulses=200 mutations=10"
+[eg] 11:49:43 rupture_cloud_mutates_the_unsealed PASS 
+[eg-note] ProofRupture: "pool=6 chance=0.000 inZone=True pulses=200 mutations=0"
+[eg] 11:49:52 rupture_chance_zero_mutates_nobody PASS 
+[eg-note] ProofTell: "maxScale=2.00 c0.10=Ground/1.000/0.00 c0.20=Swell/1.125/0.00 c0.50=Hue/1.500/0.25 c0.75=Tremble/1.811/0.75 c0.90=Creak/2.070/1.00 c0.97=Silence/2.000/1.00"
+[eg] 11:50:01 tell_ladder_stages_swell_and_hue PASS 
+[eg-note] ProofTell: "maxScale=1.00 c0.10=Ground/1.000/0.00 c0.20=Swell/1.000/0.00 c0.50=Hue/1.000/0.25 c0.75=Tremble/1.035/0.75 c0.90=Creak/1.035/1.00 c0.97=Silence/1.000/1.00"
+[eg] 11:50:10 max_scale_one_never_swells PASS 
+[eg] 11:50:21 all_settings_at_shipped_defaults PASS 
+[eg] 11:50:31 shipped_defs_resolve PASS 
+[eg] 11:50:31 control_absent_def_reads_absent PASS 
+component vanilla_normal_setting/vanilla_normal_ignores_water: {"toggle": "vanillaCropsNeedWater", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the UNSOAKED control's rate moved 10.0 -> 100.0: the soak leaked or the site drifted", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 321 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 321, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {"Item": 56, "Filth": 44, "Plant": 212, "Building": 9}, "samples": [{"x": 105, "z": 105, "def": "
+component master_switch_off/master_off_refuses_soak: {"toggle": "enabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the UNSOAKED control's rate moved 10.0 -> 100.0: the soak leaked or the site drifted", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 321 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 321, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {"Item": 56, "Filth": 44, "Plant": 212, "Building": 9}, "samples": [{"x": 105, "z": 105, "def": "ChunkGranite",
+component churn_cycle/mature_soaked_plant_charges_then_churns: {"toggle": "churnEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: a mature soaked AB_Slimecasia should be charging=1 after two passes; Report: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowthRoster_Campaign', 'mechanicsOn': 'True', 'raining': 'False', 'rainLingerUntil': -1, 'ashRestarts': 0, 'tidallyLocked': 'True'}, 'tail': {'immature': 0, 'matureDormant': 0, 'charging': 0, '
+component ground_tell_on/ground_tell_darkens_without_sprouting: {"toggle": "groundTellEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the soaked mature native should be charging=1: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowthRoster_Campaign', 'mechanicsOn': 'True', 'raining': 'False', 'rainLingerUntil': -1, 'ashRestarts': 0, 'tidallyLocked': 'True'}, 'tail': {'immature': 0, 'matureDormant': 0, 'charging': 0, 'topNone/exempt': 0}}", "e
+component ground_tell_off/ground_tell_off_sows_nothing: {"toggle": "groundTellEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: with the tell off the plant must STILL charge (charging=1): {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowthRoster_Campaign', 'mechanicsOn': 'True', 'raining': 'False', 'rainLingerUntil': -1, 'ashRestarts': 0, 'tidallyLocked': 'True'}, 'tail': {'immature': 0, 'matureDormant': 0, 'charging': 0, 'topNone/exem
+component churn_off/churn_off_plant_relaxes: {"toggle": "churnEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the charge record should be dropped once the top resolves to nothing: {'head': {'soaked': 25, 'charging': 1, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowthRoster_Campaign', 'mechanicsOn': 'True', 'raining': 'False', 'rainLingerUntil': -1, 'ashRestarts': 0, 'tidallyLocked': 'True'}, 'tail': {'immature': 0, 'matureDormant': 0, 'charging': 1, 'topNone
+component suppression_on/suppression_dries_and_defuses: {"toggle": "suppressionEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: precondition: the plant should be charging=1: {'head': {'soaked': 25, 'charging': 3, 'suppressed': 0, 'ruptures': 0, 'biomeRefusesSoak': 'False', 'soaking': 330, 'none': 240, 'resolved': 126, 'missing': 13, 'biomeInScope': 'True', 'homeBiomes': 34, 'forcedBy': 'RUT_ExplosiveGrowthRoster_Campaign', 'mechanicsOn': 'True', 'raining': 'False', 'rainLingerUntil': -1, 'ashRestarts': 0, 'tidallyLocked': 'True'}, 'tail': {'immature': 0, 'matureDormant': 0, 'charging': 0, 'topNone/exempt': 0}}", "e
+component top_burst/burst_pops_leaves_chaff: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 321 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 321, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {"Item": 56, "Filth": 44, "Plant": 212, "Building": 9
+component top_burst/burst_off_falls_back_to_churn: {"toggle": "burstEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 0, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {}, "samples": [], "ticksGame": 15002, "operati
+component burst_hurts_pawns/burst_bruises_nearby_pawn: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 321 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 321, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {"Item": 56, "Filth": 44, "Plant": 212, "Building": 9
+component burst_hurts_pawns/burst_hurt_off_spares_pawn: {"toggle": "burstHurtsPawns", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: donor plant RG_Plant_AridGrass is not loaded on this tier -- run on a list that carries it (Alpha Biomes / RG_ / Pyrelands); this is NOT a mod fault", "evidence": [{"call": "clear_area(40)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 1600 cell(s); 3 pawn(s) left alone; 4 non-destroyable thing(s) left alone.", "cellsExamined": 1600, "outOfBounds": 0, "destroyed": 0, "pawnsSkipped": 3, "undestroyableSkipped": 4, "perCategory": {}, "samples": [], "ticksGame": 15002, "oper
+component scope_native_only/default_runs_only_in_baroque_biomes_biomes: {"toggle": "applyInOtherBiomes", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: SITE: roster RUT_ExplosiveGrowthRoster_Campaign puts every biome in scope (a campaign layer is loaded), so the default scope cannot be seen on this list: home=mandrake.rm.biomes option=False forcedBy=RUT_ExplosiveGrowthRoster_Campaign testScopeAll=False mapBiome=AridShrubland mapBiomeIsHome=False biomeInScope=True homeBiomes=34 soaking=330 dry=217 wet=154 fire=2 exempt=33 vanilla=164 tidallyLocked=True", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "meth
+component probe_rules/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--skip-chains probe_rules,probe_tree_life,probe_tree_burst_off)"}
+component probe_tree_life/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--skip-chains probe_rules,probe_tree_life,probe_tree_burst_off)"}
+component probe_tree_burst_off/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "treeBurstEnabled", "detail": "UNMEASURED: chain not run (--skip-chains probe_rules,probe_tree_life,probe_tree_burst_off)"}
+ExplosiveGrowth: NOT GREEN  PASS=67 FAIL=7 UNMEASURED=8  calls=4009 mean=62.947ms  -> Transient/review_walk_2026-10-17/live/eg/rest.json

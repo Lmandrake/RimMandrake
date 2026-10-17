@@ -201,7 +201,7 @@ namespace RimMandrake.ExplosiveGrowth
         // ── EXPLOSIVE_GROWTH_RULED_REWRITE (spec 2026-10-16): state reads of the ruled rules ──
 
         /// <summary>The first plantable def of an archetype. tree: a tree (tree_burst_design §2) with a limited life, else a
-        /// non-tree, non-woody plant with a harvest that cycles. mortal: for trees, limited life (true) or unlimited (false).</summary>
+        /// non-tree, non-woody plant with a harvest that cycles on the default (Churn) top. mortal: for trees, limited life (true) or unlimited (false).</summary>
         private static ThingDef FirstOf(Map map, RM_Archetype a, bool tree, bool mortal = true, bool rupture = false)
         {
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -211,6 +211,10 @@ namespace RimMandrake.ExplosiveGrowth
                 if (p == null || p.archetype != a || p.isTree != tree) continue;
                 if (tree && (d.plant.LimitedLifespan != mortal || (p.top == RM_GrowthTop.Rupture) != rupture)) continue;
                 if (!tree && (p.woody || !p.Soaks || d.plant.harvestedThingDef == null || d.plant.harvestYield <= 0f)) continue;
+                // the dry/wet cycle subjects must run the DEFAULT top: a Slime/Tinder/Rupture/Flush/Burst row ends in its own
+                // top whatever churnEnabled says (live walk 2026-10-17: AB_Slimecasia, a Slime row, was picked and the churn
+                // chains read its slime top as "churn off still destroys the plant")
+                if (!tree && p.top != RM_GrowthTop.Churn) continue;
                 if (d.plant.cavePlant || d.plant.interferesWithRoof) continue;
                 if (CellFinder.TryFindRandomCellNear(map.Center, map, 25, c => d.CanEverPlantAt(c, map), out _)) return d;
             }

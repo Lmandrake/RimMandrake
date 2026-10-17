@@ -557,8 +557,16 @@ def _arm_charge(t, plant_def, x, z, growth=1.0):
     _env_grows(t)
     tid = _place(t, plant_def, x, z, growth)
     _soak(t, x, z)
+    # HARNESS 2026-10-17 (live walk): the ruled rewrite (846b07e973) arms from a FULL-MAP WAVE, one eighth of the map's
+    # plants offered per 250-tick pass, so a soaked mature plant can wait up to 8 passes (2000 ticks) to arm. The old
+    # 700-tick wait ("two passes") read tail all-zero (mature, wet, growing, not yet offered) as a MOD FAIL on 5 rows.
     _wait(t, 700)
     rep = _report(t)
+    for _ in range(7):
+        if not _live(t) or rep["tail"]["charging"] or rep["tail"]["matureDormant"]:
+            break
+        _wait(t, 250)
+        rep = _report(t)
     if _live(t):
         if rep["tail"]["matureDormant"] and not rep["tail"]["charging"]:
             _unmeasured(t, "SITE: the soaked mature %s is dormant (GrowthRate 0: cold, dark, or no fertility) "
@@ -703,14 +711,19 @@ def _soak_ratio_chain(t, comp_name, setting, expect, prefix, subject=None, **arm
             ra1, rb1 = _rate(t, a), _rate(t, b)
         _note(t, prefix, {"rateA_before": ra0, "rateA_after": ra1, "ctrl_before": rb0, "ctrl_after": rb1, "cells": n})
         if _live(t):
+            # HARNESS 2026-10-17 (live walk): an arm that lifts the dry penalty (vanillaCropsNeedWater=False, enabled=False)
+            # legitimately moves EVERY plant's rate (x0.1 dry -> x1), the control too (10 -> 100 live). So a refused-soak
+            # arm compares the soaked plant with the control under the SAME arm; the drift guard holds for the other arms.
+            if expect is None:
+                ratio = ra1 / rb1 if rb1 > 0 else 0.0
+                if abs(ratio - 1.0) > 0.05:
+                    _fail("soak was meant to be REFUSED (soaked = control) but soaked %s vs control %s (x%.2f); "
+                          "soaked %d cells" % (ra1, rb1, ratio, n))
+                return
             if abs(rb1 - rb0) > max(1.0, 0.02 * rb0):
                 _fail("the UNSOAKED control's rate moved %s -> %s: the soak leaked or the site drifted" % (rb0, rb1))
             ratio = ra1 / ra0 if ra0 > 0 else 0.0
-            if expect is None:
-                if abs(ratio - 1.0) > 0.05:
-                    _fail("soak was meant to be REFUSED (ratio 1.0) but the plant's rate went %s -> %s (x%.2f); "
-                          "soaked %d cells" % (ra0, ra1, ratio, n))
-            elif abs(ratio - expect) > 0.2 * expect:
+            if abs(ratio - expect) > 0.2 * expect:
                 _fail("soaked growth rate x%.2f, expected x%s (rate %s -> %s)" % (ratio, expect, ra0, ra1))
 
 
@@ -810,7 +823,7 @@ def churn_cycle(t):
     with _comp(t, "mature_soaked_plant_charges_then_churns", toggle="churnEnabled"):
         o = _churn_cycle(t, "churn_cycle", True, defaultRuptureChance=0.0)
         if _live(t):
-            if o["report"]["head"]["charging"] != 0:
+            if o["report"]["tail"]["charging"] != 0:   # HARNESS 2026-10-17: head is map-global; the wave arms other plants
                 _fail("charge did not complete in 2500 ticks from 0.9 (0.1 of a 15000-tick clock is ~1500): %r" % o["report"])
             if not o["gone"]:
                 _fail("the soaked, fully charged plant was not destroyed by its top (Churn)")
@@ -866,7 +879,7 @@ def churn_off(t):
                 _fail("churnEnabled=false but the charged plant was destroyed")
             if o["produce"] != 0:
                 _fail("churnEnabled=false but %d %s dropped" % (o["produce"], _N["produce"]))
-            if o["report"]["head"]["charging"] != 0:
+            if o["report"]["tail"]["charging"] != 0:   # HARNESS 2026-10-17: head is map-global; the wave arms other plants
                 _fail("the charge record should be dropped once the top resolves to nothing: %r" % o["report"])
 
 
@@ -914,7 +927,7 @@ def suppression_on(t):
                 _fail("suppression did not dry any soaked cell (%r -> %r)" % (rep0["head"]["soaked"], rep1["head"]["soaked"]))
             if n_again >= 29 - rep1["head"]["suppressed"] + 1:
                 _fail("a re-soak over suppressed ground still took %d cells; suppressed cells must refuse" % n_again)
-            if rep2["head"]["charging"] != 0:
+            if rep2["tail"]["charging"] != 0:   # HARNESS 2026-10-17: head is map-global; the wave arms other plants
                 _fail("the charge did not relax to zero within ~1800 ticks of drying: %r" % rep2)
             if not alive or produce:
                 _fail("a relaxed plant must live and fire no top (alive=%s, produce=%d)" % (alive, produce))
