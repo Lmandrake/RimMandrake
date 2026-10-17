@@ -1957,6 +1957,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
             AdapterChecks.Run(Case);           // liquid networks L10: adapter modes and the boundary (AdapterChecks.cs)
+            TakenIdentityChecks.Run(Case);     // RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS (TakenIdentityChecks.cs)
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
             WeirPoolChecks.Run(Case);          // WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: bank-edge slack pool (WeirPoolChecks.cs)
             SlimeChecks.Run(Case);             // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: slime slips, climb-out slides back (SlimeChecks.cs)

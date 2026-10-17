@@ -30,6 +30,11 @@ namespace RimMandrake.FlowWorks.TakenByLand
         /// <summary>The taker's direction of travel (the gale's wind); zero for a taker with none.</summary>
         public IntVec3 dir;
         public float aliveChance = 1f;
+        // RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: who the pawn belonged to when taken, so it comes back the same.
+        public bool captured;
+        public Faction faction;
+        public Faction hostFaction;
+        public int guestStatus = -1;
 
         public void ExposeData()
         {
@@ -42,6 +47,10 @@ namespace RimMandrake.FlowWorks.TakenByLand
             Scribe_Values.Look(ref origin, "origin");
             Scribe_Values.Look(ref dir, "dir");
             Scribe_Values.Look(ref aliveChance, "aliveChance", 1f);
+            Scribe_Values.Look(ref captured, "captured");
+            Scribe_References.Look(ref faction, "faction");
+            Scribe_References.Look(ref hostFaction, "hostFaction");
+            Scribe_Values.Look(ref guestStatus, "guestStatus", -1);
         }
     }
 
@@ -137,12 +146,79 @@ namespace RimMandrake.FlowWorks.TakenByLand
                 dir = dir,
                 aliveChance = aliveChance >= 0f ? aliveChance : policy.AliveChance,
             };
-            policy.Remove(p, map, r);
+            Capture(r, p);
+            // Held BEFORE the taker removes it: vanilla's faction swap (Pawn.Notify_PassedToWorld) fires inside PassToWorld.
+            Held.Hold(p.thingIDNumber);
+            try { policy.Remove(p, map, r); }
+            catch
+            {
+                if (p.Spawned) Held.Release(p.thingIDNumber);   // not taken after all
+                throw;
+            }
             comp.Add(r);
             LeaveTrace(map, origin);
             policy.TakenLetter(r, p, map, days, out string label, out string text, out LetterDef def);
             if (label != null) Find.LetterStack.ReceiveLetter(label, text, def ?? LetterDefOf.NegativeEvent, new LookTargets(new TargetInfo(origin, map)));
             return true;
+        }
+
+        // ── RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS ─────────────────────────────────────────────────────────────────
+        /// <summary>The pawns held right now (thingIDNumber). RM_Patch_TakenPawnNotFree reads it; the book rebuilds it on load.</summary>
+        public static readonly RM_TakenHoldSet Held = new RM_TakenHoldSet();
+
+        public static bool IsHeld(Pawn p) => p != null && Held.Contains(p.thingIDNumber);
+
+        public static RM_TakenByLandKernel.TakenState StateOf(Pawn p)
+        {
+            Faction host = p.guest?.HostFaction;
+            int gs = -1;
+            if (p.guest != null && (host != null || p.guest.IsSlave)) gs = (int)p.guest.GuestStatus;
+            return new RM_TakenByLandKernel.TakenState(p.Faction?.loadID ?? -1, host?.loadID ?? -1, gs);
+        }
+
+        public static RM_TakenByLandKernel.TakenState StateOf(RM_TakenRecord r) =>
+            new RM_TakenByLandKernel.TakenState(r.faction?.loadID ?? -1, r.hostFaction?.loadID ?? -1, r.guestStatus);
+
+        public static void Capture(RM_TakenRecord r, Pawn p)
+        {
+            r.captured = true;
+            r.faction = p.Faction;
+            r.hostFaction = p.guest?.HostFaction;
+            r.guestStatus = StateOf(p).guestStatus;
+        }
+
+        /// <summary>Put the returning pawn back in the state it was taken in (call before it spawns). Records saved before
+        /// the capture existed only know wasPlayer: such a pawn is made the player's again. Returns what was restored.</summary>
+        public static RM_TakenByLandKernel.RestoreNeed Restore(RM_TakenRecord r, Pawn p)
+        {
+            if (r == null || p == null || p.Dead) return RM_TakenByLandKernel.RestoreNeed.None;
+            if (!r.captured)
+            {
+                if (r.wasPlayer && p.Faction != Faction.OfPlayer)
+                {
+                    p.SetFaction(Faction.OfPlayer);
+                    return RM_TakenByLandKernel.RestoreNeed.Faction;
+                }
+                return RM_TakenByLandKernel.RestoreNeed.None;
+            }
+            RM_TakenByLandKernel.RestoreNeed need = RM_TakenByLandKernel.NeedsRestore(StateOf(r), StateOf(p));
+            if ((need & RM_TakenByLandKernel.RestoreNeed.Faction) != 0 && p.Faction != r.faction)
+            {
+                p.SetFaction(r.faction);
+            }
+            if ((need & RM_TakenByLandKernel.RestoreNeed.Guest) != 0 && p.guest != null
+                && RM_TakenByLandKernel.NeedsRestore(StateOf(r), StateOf(p)) != RM_TakenByLandKernel.RestoreNeed.None)
+            {
+                if (r.guestStatus < 0) p.guest.SetGuestStatus(null);
+                else if (r.guestStatus == (int)GuestStatus.Slave) p.guest.SetGuestStatus(r.faction, GuestStatus.Slave);
+                else p.guest.SetGuestStatus(r.hostFaction, (GuestStatus)r.guestStatus);
+            }
+            if (need != RM_TakenByLandKernel.RestoreNeed.None)
+            {
+                Log.Warning("[FlowWorks] taken-by-land: " + p + " came back changed (" + StateOf(p) + " vs taken " + StateOf(r)
+                    + "); restored " + need + ".");
+            }
+            return need;
         }
 
         /// <summary>Session counter for a dev/bridge read: ground traces left. Never saved.</summary>
@@ -170,12 +246,35 @@ namespace RimMandrake.FlowWorks.TakenByLand
         public const int ScanInterval = 250;
         private List<RM_TakenRecord> records = new List<RM_TakenRecord>();
 
-        public RM_WorldComponent_TakenByLand(World world) : base(world) { }
+        public RM_WorldComponent_TakenByLand(World world) : base(world) { RM_TakenByLand.Held.Clear(); }
 
         public int PendingCount => records.Count;
         public int PendingOfKind(string kind) { int n = 0; foreach (RM_TakenRecord r in records) if (r.kind == kind) n++; return n; }
 
         public void Add(RM_TakenRecord r) { records.Add(r); }
+
+        /// <summary>The held set from the book (load; also a dev read). Only pawns still waiting in the world's keeping.</summary>
+        public void RebuildHeld()
+        {
+            var ids = new List<int>();
+            foreach (RM_TakenRecord r in records)
+                if (r?.pawn != null && !r.pawn.Destroyed && !r.pawn.Spawned) ids.Add(r.pawn.thingIDNumber);
+            RM_TakenByLand.Held.Rebuild(ids);
+        }
+
+        /// <summary>Dev/proof read: every held pawn's state now vs taken ("id:Faction" pairs).</summary>
+        public string DescribeHeld()
+        {
+            var sb = new System.Text.StringBuilder();
+            foreach (RM_TakenRecord r in records)
+            {
+                if (r?.pawn == null) continue;
+                sb.Append(' ').Append(r.pawn.ThingID).Append(':').Append(r.pawn.Faction?.def?.defName ?? "none")
+                  .Append(r.faction == r.pawn.Faction ? "" : "(taken as " + (r.faction?.def?.defName ?? "none") + ")")
+                  .Append(RM_TakenByLand.IsHeld(r.pawn) ? "" : "[NOT HELD]");
+            }
+            return sb.ToString();
+        }
 
         public override void ExposeData()
         {
@@ -185,6 +284,7 @@ namespace RimMandrake.FlowWorks.TakenByLand
             {
                 records = records ?? new List<RM_TakenRecord>();
                 records.RemoveAll(r => r == null);
+                RebuildHeld();
             }
         }
 
@@ -230,6 +330,7 @@ namespace RimMandrake.FlowWorks.TakenByLand
                 Pawn p = r?.pawn;
                 if (p != null && !p.Destroyed && !p.Discarded && !p.Spawned)
                 {
+                    RM_TakenByLand.Held.Hold(p.thingIDNumber);
                     if (!Find.WorldPawns.Contains(p)) Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.KeepForever);
                     r.returnTick = Find.TickManager.TicksGame + GenDate.TicksPerHour;
                     return false;
@@ -250,6 +351,14 @@ namespace RimMandrake.FlowWorks.TakenByLand
             bool missing = p == null || p.Destroyed || p.Discarded;
             if (map == null && !missing) return false;   // nowhere to walk home to yet; keep waiting
             if (p != null && Find.WorldPawns.Contains(p)) Find.WorldPawns.RemovePawn(p);
+            if (p != null) RM_TakenByLand.Held.Release(p.thingIDNumber);
+            if (p != null && p.Spawned)
+            {
+                // Something else put the pawn on a map while it was held (it should not be able to now): take it back off
+                // so it walks home from the edge like the rest, instead of GenSpawn erroring on a spawned pawn.
+                Log.Warning("[FlowWorks] taken-by-land: " + p + " was spawned on " + p.Map + " while held; bringing it home.");
+                p.DeSpawn();
+            }
             bool alive = !missing && !p.Dead && Rand.Chance(r.aliveChance);
             TakenOutcome outcome = RM_TakenByLandKernel.Decide(missing, map == null, !missing && p.Dead, alive);
             if (outcome == TakenOutcome.LostMissing)
@@ -266,6 +375,7 @@ namespace RimMandrake.FlowWorks.TakenByLand
             }
             IntVec3 cell = policy.PickReturnCell(r, map);
             if (!cell.IsValid) cell = map.Center;
+            RM_TakenByLand.Restore(r, p);   // the same pawn, back as whose it was (colonist, prisoner, slave, guest, tamed)
             GenSpawn.Spawn(p, cell, map, WipeMode.VanishOrMoveAside);
             policy.AfterReturn(r, p);
             if (outcome == TakenOutcome.SpawnThenKill && !p.Dead) p.Kill(null);
@@ -316,6 +426,22 @@ namespace RimMandrake.FlowWorks.TakenByLand
             label = "Back from the river: " + p.LabelShortCap;
             text = p.LabelShortCap + " has walked back after being washed away downstream.";
             def = LetterDefOf.PositiveEvent;
+        }
+    }
+
+    /// <summary>RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: a pawn the service holds is not a Free world pawn. Free is what lets
+    /// vanilla hand a player's pawn to a random NPC faction as it enters the world (Pawn.Notify_PassedToWorld), redress it
+    /// into a raid or trader group (PawnGenerator), or pick it for a quest. ReservedByQuest is vanilla's "spoken for".</summary>
+    [RimMandrake.Shared.PatchFeature("Pawns taken by the land (river, gale) stay yours while away")]
+    [HarmonyLib.HarmonyPatch(typeof(WorldPawns), nameof(WorldPawns.GetSituation))]
+    public static class RM_Patch_TakenPawnNotFree
+    {
+        public static void Postfix(Pawn p, ref WorldPawnSituation __result)
+        {
+            if (RM_TakenByLandKernel.ShieldFromFree(__result == WorldPawnSituation.Free, RM_TakenByLand.IsHeld(p)))
+            {
+                __result = WorldPawnSituation.ReservedByQuest;
+            }
         }
     }
 

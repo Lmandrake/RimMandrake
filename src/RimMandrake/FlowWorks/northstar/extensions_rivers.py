@@ -181,6 +181,35 @@ def _map_pawn_ids(t):
     return {p.get("id") for p in ((t.bridge_call("jawa/list_pawns", limit=500) or {}).get("pawns") or []) if p.get("id")}
 
 
+def _pawn_get(t, pid):
+    """jawa/pawn_get's snapshot of one pawn (searches every map and the world), or {}."""
+    return (((t.bridge_call("jawa/pawn_get", pawn=pid) or {}).get("pawns") or [{}])[0]) or {}
+
+
+# RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS (live 2026-10-17, R3.c, 3 of 3 twice): the same pawn came back as TradersGuild /
+# PirateWaster / Outlander*. What must survive the trip: who it is and whose it is (identity, faction) and what it carries.
+IDENTITY_KEYS = ("thingIdNumber", "thingId", "name", "kindDef", "faction")
+
+
+def _gear(snap):
+    return (sorted(str(a.get("def")) for a in (snap.get("apparel") or [])),
+            sorted(str(e.get("def")) for e in (snap.get("equipment") or [])))
+
+
+def returned_same_pawn(before, after):
+    """[] when `after` is the same pawn as `before`, with the same faction and gear; else one string per difference.
+    `before`/`after` are jawa/pawn_get snapshots. Pure, so the offline self-test drives it with the live R3.c shape."""
+    if not after:
+        return ["not found anywhere after the return (jawa/pawn_get)"]
+    diffs = []
+    for k in IDENTITY_KEYS:
+        if before.get(k) != after.get(k):
+            diffs.append("%s %r -> %r" % (k, before.get(k), after.get(k)))
+    if _gear(before) != _gear(after):
+        diffs.append("gear %r -> %r" % (_gear(before), _gear(after)))
+    return diffs
+
+
 @suite.chain("swept")
 def swept(t):
     """Owner card 1: swept to the edge -> washed away, walks home, with a letter.
@@ -195,7 +224,7 @@ def swept(t):
             p0 = _pending(before)
             if not before.startswith("SWEPT pending=") or p0 is None:
                 raise ExpectationFailed("UNMEASURED: the swept book gave no pending count: %s" % before)
-            staged, swept_ids = [], set()
+            staged, swept_ids, snap0 = [], set(), {}
             try:
                 if p0 == 0:
                     mi = t.bridge_call("jawa/map_info") or {}
@@ -226,6 +255,11 @@ def swept(t):
                             t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)   # stays put; the current still carries
                     if not staged:
                         raise ExpectationFailed("UNMEASURED: no throwaway colonist spawned on %d edge river cells" % len(cells))
+                    snap0 = {pid: _pawn_get(t, pid) for pid in staged}
+                    not_player = {pid: s.get("faction") for pid, s in snap0.items() if not str(s.get("faction") or "").startswith("Player")}
+                    if not_player:
+                        raise ExpectationFailed("UNMEASURED: staged colonists are not the player's before the river touched them: %r"
+                                                % not_player)
                     _note(t, "staged colonists on edge river cells", "%d on %s" % (len(staged), cells))
                     waited, now = 0, p0
                     # TESTENV_SWEPT_BRUISE_HARDEN_OWN_HAZARD (r4 ce40347df6, r6 902b565c93): the current bruises the pawn
@@ -257,6 +291,19 @@ def swept(t):
                     raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
                 if swept_ids and not (swept_ids & _map_pawn_ids(t)):
                     raise ExpectationFailed("the book emptied but no washed-away colonist %s is back on the map" % sorted(swept_ids))
+                # RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: each one back is the SAME pawn (thingIDNumber/ThingID), still
+                # the player's (faction == the faction it was staged with, read from the game), carrying the same gear.
+                changed = {}
+                for pid in sorted(swept_ids):
+                    d = returned_same_pawn(snap0.get(pid) or {}, _pawn_get(t, pid))
+                    if d:
+                        changed[pid] = d
+                if changed:
+                    raise ExpectationFailed("washed-away colonists came back changed (must be the same pawn, still the player's): %r"
+                                            % changed)
+                if swept_ids:
+                    _note(t, "came back the same pawns, still the player's",
+                          {pid: (snap0[pid].get("thingId"), snap0[pid].get("faction")) for pid in sorted(swept_ids)})
             finally:
                 for pid in staged:
                     t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")

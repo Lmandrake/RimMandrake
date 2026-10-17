@@ -246,5 +246,20 @@ class StickyWorld(FakeWorld):
 w3 = StickyWorld({101: (FAST, ["north"], True), 102: (FAST, ["north", "west", "east"], False)})
 rc3, _ = run_main(w3)
 check("main can-fail: a candidate map that will not go is read back and fails the site (exit 3)", rc3 == 3, "rc %s" % rc3)
+# RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: the returns_home row's same-pawn predicate, on the live R3.c shape.
+_b = {"thingIdNumber": 54279, "thingId": "Human54279", "name": "Ann Lee", "kindDef": "Colonist", "faction": "PlayerColony",
+      "apparel": [{"def": "Apparel_Pants"}, {"def": "Apparel_BasicShirt"}], "equipment": [{"def": "Gun_Revolver"}]}
+check("returns_home: the same pawn, still the player's, same gear -> no difference",
+      RIV.returned_same_pawn(_b, dict(_b, apparel=list(reversed(_b["apparel"])))) == [])
+_live = dict(_b, faction="TradersGuild")
+d = RIV.returned_same_pawn(_b, _live)
+check("returns_home can-fail: the live 2026-10-17 return (same id, faction TradersGuild) is caught on faction",
+      len(d) == 1 and d[0].startswith("faction 'PlayerColony'"), d)
+d = RIV.returned_same_pawn(_b, dict(_b, thingIdNumber=60001, thingId="Human60001"))
+check("returns_home can-fail: a look-alike pawn (new thingIDNumber/ThingID) is not the same pawn",
+      any(x.startswith("thingIdNumber") for x in d) and any(x.startswith("thingId ") for x in d), d)
+d = RIV.returned_same_pawn(_b, dict(_b, apparel=[{"def": "Apparel_Duster"}], equipment=[]))
+check("returns_home can-fail: a redressed pawn (new apparel, no weapon) is caught on gear", any(x.startswith("gear") for x in d), d)
+check("returns_home can-fail: a pawn not found anywhere is a difference", RIV.returned_same_pawn(_b, {}) != [])
 print("selftest_river_site: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

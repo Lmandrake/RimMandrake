@@ -948,8 +948,9 @@ def _new_probes(EXT, RIV, base):
     # rivers (FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY): returns_home used to only READ the book, and nothing ever
     # put a pawn in the current, so it read UNMEASURED on every pass 4-8. It now stages throwaway colonists on edge
     # river cells and waits for the book to rise. A stateful fake: `wash` = whether the current carries anyone off.
-    def swept(before=0, wash=True, edge_water=True, comes_back=True):
-        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0}
+    # turns_npc: RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS, the live 2026-10-17 shape (the same pawn back, as TradersGuild)
+    def swept(before=0, wash=True, edge_water=True, comes_back=True, turns_npc=False):
+        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False}
 
         def h(tl, p):
             if tl == "jawa/static_call" and p.get("method") == "ProofSwept":
@@ -957,6 +958,7 @@ def _new_probes(EXT, RIV, base):
                     if comes_back:
                         st["gone"].clear()
                     st["pending"] = 0
+                    st["returned"] = True
                 elif wash and st["spawned"] and st["ticks"] >= 1:
                     st["pending"] = before + 1
                     st["gone"].add(st["spawned"][0])
@@ -977,10 +979,15 @@ def _new_probes(EXT, RIV, base):
                 return {"success": True, "pawns": [{"id": pid}]}
             if tl == "jawa/list_pawns":
                 return {"success": True, "pawns": [{"id": i} for i in st["spawned"] if i not in st["gone"]]}
+            if tl == "jawa/pawn_get":
+                pid = p.get("pawn")
+                fac = "TradersGuild" if (turns_npc and st["returned"]) else "PlayerColony"
+                return {"success": True, "pawns": [{"thingId": "Human%s" % pid, "thingIdNumber": pid, "name": "N " + pid,
+                                                    "kindDef": "Colonist", "faction": fac}]}
             return {"success": True}
         return run(RIV, "swept", h).get("returns_home"), st
     for kw, want in (({}, "PASS"), ({"before": 2}, "PASS"), ({"wash": False}, "UNMEASURED"),
-                     ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL")):
+                     ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL"), ({"turns_npc": True}, "FAIL")):
         got, st = swept(**kw)
         if got != want:
             out.append("returns_home %s: %s, want %s" % (kw, got, want))
@@ -1019,6 +1026,8 @@ def _new_probes(EXT, RIV, base):
             return {"success": True, "ops": "WaterMovingChestDeep:20,0,5,1;WaterMovingShallow:49,10,1,4"}
         if tl == "jawa/list_pawns":
             return {"success": True, "pawns": []}
+        if tl == "jawa/pawn_get":
+            return {"success": True, "pawns": [{"thingId": "Human460400", "thingIdNumber": 460400, "faction": "PlayerColony"}]}
         return {"success": True}
     run(RIV, "swept", bruise_game)
     if not (seen.get("own_bruise") or "").startswith("swept bruise") or seen.get("other_pawn") or seen.get("other_hediff"):
