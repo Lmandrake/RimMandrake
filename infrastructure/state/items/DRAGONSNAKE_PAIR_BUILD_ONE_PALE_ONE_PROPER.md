@@ -17,6 +17,7 @@ Build in `src/RimStarWars/SWBestiary` (the Star Wars fauna mod):
 - `design/RimStarWars/canon_references/dragonsnake_albino/description.md`
 
 ## Watch out
-- Albino is LIMBLESS — a different body plan from RSW_Dragonsnake's quadruped BodyDef; do not reuse it blindly.
+- Albino is LIMBLESS; the canon Dragonsnake is a quadruped. (The donor RSW_Dragonsnake BodyDef was itself a limbless
+  serpent, not a quadruped; this build rebuilt it with four legs and gave the albino its own serpent BodyDef.)
 - Art goes through the art ledger (`art install`); check existing regenerated art first.
 - Ships with its first functional script and Mod Settings toggle, like every new mod content.

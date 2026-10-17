@@ -24,6 +24,12 @@
   Textures/swanimals/Dragonsnake/ (extract_bundle.py against the same
   AssetBundle every prior wave used).
 
+  DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17): the owner split the species in two. THIS def
+  is the canon Dragonsnake, the Jedi: Fallen Order dark olive-slate crocodilian QUADRUPED; its BodyDef was
+  rebuilt with four clawed legs and the tail tool relabelled "tail lash" (a crocodilian does not
+  constrict). The pale limbless film serpent is the separate RSW_DragonsnakeAlbino
+  (RSW_DragonsnakeAlbino.xml), a rare variant in the same swamps.
+
   Wired into the live cast this same pass: BiomeCypreJungle (per
   cast_assignment.csv's current row for this species), repointed from the
   bare "Dragonsnake" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
@@ -75,7 +81,7 @@
         <chanceFactor>0.2</chanceFactor>
       </li>
       <li>
-        <label>bodily constriction</label>
+        <label>tail lash</label>
         <capacities>
           <li>Blunt</li>
         </capacities>

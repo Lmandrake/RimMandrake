@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_DragonsnakeAlbino.xml — DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17)
+
+  Owner, 2026-10-17 (canon blog-image review sheet, verbatim): "Split into two official versions. The two pale
+  versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake.
+  Comission both in our Star Wars fauna mod."
+  Spec: design/RimStarWars/canon_references/dragonsnake_albino/description.md (`## Must show` is the bar):
+  a gigantic pale bone-white LIMBLESS serpent, long narrow skull-like head with no visible eyes, many long needle
+  fangs dripping venom, glossy ringed coils (The Mandalorian and Grogu — the Hutt Twins' pit beast, whose venom
+  injured Din Djarin).
+
+  WHERE IT LIVES (design call, recorded in Transient/afk_2026-10-17/dragonsnake_build.md): a RARE pale variant in
+  exactly the swamps its canon parent RSW_Dragonsnake already holds — no new biome, no roster eviction. Canon gives
+  it no separate habitat (it is a dragonsnake of Nal Hutta's swamps, kept captive by the Hutts), so it follows the
+  parent: race.wildBiomes below mirror the parent's vanilla swamp rows at one sixth, and its Greentide rows
+  (RUT_Greentide + RM_Greentide, 0.02 against the parent's 0.12) are patch-added by
+  RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml, guarded on this def existing.
+
+  Body: its own limbless BodyDef below (the serpent plan the donor's dragonsnake body had, minus the hood the film
+  creature lacks); the canon Dragonsnake's body is now a quadruped. Eyes stay as parts, relabelled "vestigial eye
+  pit": canon shows no visible eyes, and an eyeless body would read as blind in the game's sight capacity.
+
+  Breeding: it lays the dragonsnake's own eggs, which hatch ordinary dragonsnakes (CompHatcher names one pawn kind) —
+  read in game as albinism being recessive: a pale parent does not breed true, so the albino stays rare.
+
+  Venom: its bite is vanilla ToxicBite (canon: its venom felled Din Djarin). Sounds reuse the dragonsnake's.
+
+  Mod Settings: "Albino dragonsnake" (RSW_BeastMechanicsSettings.albinoDragonsnakeEnabled, default on). Off, the
+  startup pass RSW_DragonsnakeAlbinoToggle removes it from every biome roster; nothing else changes.
+
+  Art: texPaths below are RimStarWars/SWBestiary/DragonsnakeAlbino/*. Until art.py installs them this file is held by
+  src/DEPLOY_HOLD.txt (pink squares otherwise). Candidate already rendered: artpipe regen_gt_canon_dragonsnake_v1
+  (the pale serpent currently installed on RSW_Dragonsnake's own path).
+-->
+<Defs>
+
+  <BodyDef>
+    <defName>RSW_DragonsnakeAlbino</defName>
+    <label>pale serpent</label>
+    <corePart>
+      <def>SnakeBody</def>
+      <customLabel>ringed bone-white coils</customLabel>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <customLabel>constricting tail</customLabel>
+          <coverage>0.12</coverage>
+          <parts>
+            <li>
+              <def>RSW_SW_Club</def>
+              <customLabel>heavy tail coil</customLabel>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>RSW_SWTailAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.03</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.05</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>SnakeHead</def>
+          <customLabel>long skull-like head</customLabel>
+          <coverage>0.18</coverage>
+          <groups>
+            <li>HeadAttackTool</li>
+          </groups>
+          <parts>
+            <li>
+              <def>Skull</def>
+              <coverage>0.30</coverage>
+              <depth>Inside</depth>
+              <parts>
+                <li>
+                  <def>Brain</def>
+                  <coverage>0.50</coverage>
+                  <depth>Inside</depth>
+                </li>
+              </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left vestigial eye pit</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right vestigial eye pit</customLabel>
+              <coverage>0.05</coverage>
+            </li>
+            <li>
+              <def>Nose</def>
+              <coverage>0.15</coverage>
+            </li>
+            <li>
+              <def>SnakeMouth</def>
+              <customLabel>needle-fanged jaw</customLabel>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>Mouth</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_DragonsnakeAlbino</defName>
+    <label>albino dragonsnake</label>
+    <description>A rare pale dragonsnake: a gigantic limbless serpent, bone-white from its long skull-like head to the end of its glossy ringed coils. It has no visible eyes, hunts by feel and heat under murky swamp water, and strikes with a mouth full of long needle fangs that drip a venom strong enough to drop an armoured hunter. The Hutts of Nal Hutta are said to keep one in a pit under their throne room. Its eggs hatch ordinary dragonsnakes: the pale strain does not breed true.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <MarketValue>3500</MarketValue>
+      <FilthRate>16</FilthRate>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.20</ArmorRating_Heat>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.90</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>needle fangs</label>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>32</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <label>bodily constriction</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggDragonsnakeUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggDragonsnakeFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>20</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_DragonsnakeAlbino</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseHungerRate>0.55</baseHungerRate>
+      <baseBodySize>5.0</baseBodySize>
+      <baseHealthScale>4.5</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <lifeExpectancy>60</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <!-- the parent's swamp rows (RSW_Dragonsnake.xml) at one sixth: a rare pale variant of the same swamps -->
+      <wildBiomes>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TropicalSwamp>0.13</TropicalSwamp>
+        <TemperateSwamp>0.1</TemperateSwamp>
+        <ColdBog>0.03</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>RSW_Pawn_Dragonsnake_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Dragonsnake_Death</soundDeath>
+          <soundCall>RSW_Pawn_Dragonsnake_Call</soundCall>
+          <soundAngry>RSW_Pawn_Dragonsnake_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_DragonsnakeAlbino</defName>
+    <label>albino dragonsnake</label>
+    <race>RSW_DragonsnakeAlbino</race>
+    <combatPower>360</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>albino dragonsnake neonate</label>
+        <labelPlural>albino dragonsnake neonates</labelPlural>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Dragonsnake/Dragonsnake_Dessicated</texPath>
+          <drawSize>5.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

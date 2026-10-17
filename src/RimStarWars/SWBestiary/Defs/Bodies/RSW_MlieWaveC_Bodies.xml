@@ -1623,21 +1623,29 @@
     </corePart>
   </BodyDef>
 <BodyDef>
+    <!-- DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17): rebuilt as the canon QUADRUPED. The owner's split
+         ruling made the Jedi: Fallen Order four variants the canon Dragonsnake: "a long, low crocodilian quadruped with
+         short splayed clawed limbs and a very long tapering eel-like tail" (canon_references/dragonsnake/description.md).
+         The donor body was a limbless serpent (no legs, a hood); that body plan now belongs to the separate pale,
+         limbless RSW_DragonsnakeAlbino (its own BodyDef in RSW_DragonsnakeAlbino.xml). Core part stays SnakeBody (a
+         MovingLimbCore torso) so the four Legs add to, not replace, its movement; the tail keeps the club part and the
+         RSW_SWTailAttackTool group the race's tail-lash tool links to. -->
     <defName>RSW_Dragonsnake</defName>
-    <label>large serpent</label>
+    <label>crocodilian dragonsnake</label>
     <corePart>
       <def>SnakeBody</def>
-      <customLabel>mottled bioluminous body</customLabel>
+      <customLabel>scaled crocodilian body</customLabel>
       <height>Middle</height>
       <depth>Outside</depth>
       <parts>
         <li>
           <def>Tail</def>
-          <customLabel>serpentine tail</customLabel>
+          <customLabel>long eel-like tail</customLabel>
           <coverage>0.10</coverage>
           <parts>
             <li>
               <def>RSW_SW_Club</def>
+              <customLabel>spined tail tip</customLabel>
               <coverage>0.20</coverage>
               <groups>
                 <li>RSW_SWTailAttackTool</li>
@@ -1647,8 +1655,8 @@
         </li>
         <li>
           <def>Hump</def>
-          <customLabel>frilled serpentine hood</customLabel>
-          <coverage>0.10</coverage>
+          <customLabel>dorsal spine ridge</customLabel>
+          <coverage>0.08</coverage>
           <height>Top</height>
         </li>
         <li>
@@ -1689,6 +1697,58 @@
           <def>Liver</def>
           <coverage>0.05</coverage>
           <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front left clawed foot</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>front right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>front right clawed foot</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left clawed foot</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.06</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear right clawed foot</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
         </li>
         <li>
           <def>SnakeHead</def>

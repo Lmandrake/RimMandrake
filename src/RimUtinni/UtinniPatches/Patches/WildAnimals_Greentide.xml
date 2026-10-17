@@ -134,4 +134,34 @@
     </match>
   </Operation>
 
+  <!-- DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17): the albino dragonsnake, a rare pale variant
+       of RSW_Dragonsnake (0.12 here), added to both Greentide rosters at 0.02. Guarded on the ThingDef itself, not
+       on the mod: the def ships held (src/DEPLOY_HOLD.txt) until its art is installed, and a roster row naming a
+       missing def is a load error. Reasoning: Transient/afk_2026-10-17/dragonsnake_build.md and the def header. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_DragonsnakeAlbino"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
+            <value>
+              <RSW_DragonsnakeAlbino>0.02</RSW_DragonsnakeAlbino>
+            </value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="RUT_Greentide"]/wildAnimals</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RUT_Greentide"]/wildAnimals</xpath>
+            <value>
+              <RSW_DragonsnakeAlbino>0.02</RSW_DragonsnakeAlbino>
+            </value>
+          </match>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
 </Patch>

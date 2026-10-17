@@ -84,6 +84,7 @@ Still not proven / likely first-live-run corrections:
      defect, that is the likely cause and is a spawn-tool limitation, not
      a mod defect.
 """
+import fnmatch
 import os
 import re
 import sys
@@ -101,13 +102,29 @@ SETTINGS_SOURCES = (
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 
 
+def deploy_held(path):
+    """True if src/DEPLOY_HOLD.txt holds this file back from the game (a held def is not live, so it cannot resolve)."""
+    src = os.path.normpath(os.path.join(HERE, "..", ".."))
+    rel = os.path.relpath(path, src).replace(os.sep, "/")
+    try:
+        lines = open(os.path.join(src, "DEPLOY_HOLD.txt"), encoding="utf-8").read().splitlines()
+    except OSError:
+        return False
+    for ln in lines:
+        glob = ln.split("#", 1)[0].strip()
+        if glob and fnmatch.fnmatchcase(rel, glob):
+            return True
+    return False
+
+
 def shipped_defs():
     """[(DefType, defName)] for every non-abstract, unconditional top-level def under Defs/ (a def carrying its own
-    MayRequire is skipped: it legitimately stays out when its donor is absent)."""
+    MayRequire is skipped: it legitimately stays out when its donor is absent; so is a file src/DEPLOY_HOLD.txt
+    holds back from the game)."""
     out = []
     for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
         for fn in sorted(files):
-            if fn.endswith(".xml"):
+            if fn.endswith(".xml") and not deploy_held(os.path.join(dp, fn)):
                 for el in ET.parse(os.path.join(dp, fn)).getroot():
                     nm = el.find("defName") if isinstance(el.tag, str) else None
                     if (nm is not None and nm.text and el.get("Abstract", "").lower() != "true"
@@ -131,8 +148,41 @@ SHIPPED = shipped_defs()
 PLAIN = [p for p in SHIPPED if "." not in p[0]]
 
 
-def static_checks():
+DRAGONSNAKE = "RSW_Dragonsnake"
+DRAGONSNAKE_ALBINO = "RSW_DragonsnakeAlbino"
+
+
+def body_part_defs(body_def):
+    """[part def name] of every part of the BodyDef named body_def anywhere under Defs/ (held files included);
+    None if no such BodyDef parses."""
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in sorted(files):
+            if not fn.endswith(".xml"):
+                continue
+            for el in ET.parse(os.path.join(dp, fn)).getroot():
+                if el.tag == "BodyDef" and (el.findtext("defName") or "").strip() == body_def:
+                    return [d.text.strip() for d in el.iter("def") if d.text]
+    return None
+
+
+def dragonsnake_body_plan_findings():
+    """DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER: the canon dragonsnake is a quadruped (four Legs), the albino a
+    limbless serpent (no Leg). Offline, deterministic: a body plan is a def fact, not a live one."""
     bad = []
+    canon, albino = body_part_defs(DRAGONSNAKE), body_part_defs(DRAGONSNAKE_ALBINO)
+    if canon is None or albino is None:
+        return ["dragonsnake BodyDefs not found (canon %s, albino %s)" % (canon is not None, albino is not None)]
+    if canon.count("Leg") != 4:
+        bad.append("%s body has %d Legs, canon is a quadruped (4)" % (DRAGONSNAKE, canon.count("Leg")))
+    if albino.count("Leg") != 0:
+        bad.append("%s body has %d Legs, canon is limbless" % (DRAGONSNAKE_ALBINO, albino.count("Leg")))
+    if "Hump" in albino:
+        bad.append("%s body has a hood (Hump); the film creature has none" % DRAGONSNAKE_ALBINO)
+    return bad
+
+
+def static_checks():
+    bad = list(dragonsnake_body_plan_findings())
     if len(SHIPPED) < 200:
         return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(SHIPPED)]
     fields = settings_fields()
@@ -181,6 +231,7 @@ suite.toggles = [
     "kilnBellyEnabled", "kilnCooldownMultiplier",
     "moornakGriefEnabled", "moornakReleaseDelayMultiplier",
     "innateAbilitiesEnabled", "scrapHoardingEnabled", "toxinDependenceEnabled",
+    "albinoDragonsnakeEnabled",
 ]
 
 IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
@@ -409,6 +460,55 @@ for (_cls, _f), (_ty, _dv) in sorted(settings_fields().items()):
     if _f in ("ikeeThoughtEnabled", "kilnBellyEnabled", "kilnCooldownMultiplier"):
         continue
     suite.chain("settings_%s_round_trips" % _f)(_make_roundtrip(_cls, _f, _ty, _dv))
+
+
+# ------------------------------------------------- DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17)
+# The canon dragonsnake (crocodilian quadruped) and its rare pale variant the albino dragonsnake (limbless serpent).
+# Body plans are proven OFFLINE (dragonsnake_body_plan_findings, in static_checks). Live: both spawn, and the Greentide
+# roster carries the albino exactly when its def is live and albinoDragonsnakeEnabled is on. The toggle is read once
+# at startup (RSW_DragonsnakeAlbinoToggle), so a live flip proves nothing until restart: this reads the CURRENT value
+# and checks the roster agrees with it. While the albino's def is held from deploy (no art yet) its rows read
+# UNMEASURED, never PASS.
+GREENTIDE = "RM_Greentide"
+
+
+@suite.chain("dragonsnake_pair")
+def dragonsnake_pair(t):
+    t.clear_area(size=30)
+    r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/" + DRAGONSNAKE_ALBINO, fields="defName", limit=2)
+    albino_live = isinstance(r, dict) and int(r.get("foundCount", 0)) == 1
+    with t.component("canon_dragonsnake_spawns", beyond_toggle=True):
+        t.spawn_pawn(DRAGONSNAKE, hostile=False)
+        if t._guard() and DRAGONSNAKE not in _races_present(t):
+            raise ExpectationFailed("%s spawned but is not listed afterwards" % DRAGONSNAKE)
+    with t.component("albino_roster_follows_toggle", toggle="albinoDragonsnakeEnabled"):
+        if t.session is None:
+            return
+        if not albino_live:
+            _unmeasured(t, "%s is not live (held in src/DEPLOY_HOLD.txt until its art is installed)" % DRAGONSNAKE_ALBINO)
+            return
+        rs = t.bridge_call("jawa/mod_settings_field", typeName=BEAST_SETTINGS, action="get", field="albinoDragonsnakeEnabled")
+        on = (rs or {}).get("value") if isinstance(rs, dict) else None
+        if on is None:
+            _unmeasured(t, "mod_settings_field could not read albinoDragonsnakeEnabled: %s" % str(rs)[:120])
+            return
+        on = str(on).lower() == "true"
+        pr = t.bridge_call("jawa/biome_probe", biomes=GREENTIDE, animals=True, limit=200,
+                           find=DRAGONSNAKE + "," + DRAGONSNAKE_ALBINO)
+        rows = (((pr or {}).get("biomes") or [{}])[0].get("animals") or []) if isinstance(pr, dict) else []
+        names = set(a.get("defName") for a in rows)
+        if DRAGONSNAKE not in names:
+            _unmeasured(t, "biome_probe %s does not list %s (control): cannot see the roster" % (GREENTIDE, DRAGONSNAKE))
+            return
+        if on and DRAGONSNAKE_ALBINO not in names:
+            raise ExpectationFailed("albino toggle on but %s is not on the %s roster" % (DRAGONSNAKE_ALBINO, GREENTIDE))
+        if not on and DRAGONSNAKE_ALBINO in names:
+            raise ExpectationFailed("albino toggle off but %s is still on the %s roster" % (DRAGONSNAKE_ALBINO, GREENTIDE))
+        if on:
+            t.spawn_pawn(DRAGONSNAKE_ALBINO, hostile=False)
+            if DRAGONSNAKE_ALBINO not in _races_present(t):
+                raise ExpectationFailed("%s spawned but is not listed afterwards" % DRAGONSNAKE_ALBINO)
+        t.screenshot()
 
 
 if __name__ == "__main__":
