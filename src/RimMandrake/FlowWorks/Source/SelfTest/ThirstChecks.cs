@@ -1,9 +1,9 @@
 // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md, OQ-1..OQ-5 ruled by card
 // 2026-10-16). Offline halves of the design's T-rows: the production arithmetic (Thirst/RM_ThirstMath.cs, compiled in) and
 // the shipped XML (need, hediff, generated bottles, DBH patch, think tree) plus the Harmony target and call sites. Each case
-// has a can-fail. NOT proven here (live, owed): the provider log line on three mod lists (T1), one need per colonist (T2),
-// the fall in game (T3), a drink raising the need (T4), salt-water poisoning odds (T5), dehydration on a live pawn (T6), a
-// clean log without DBH (T7) and animals drinking (T9).
+// has a can-fail. NOT proven here (the live halves are FlowWorks/northstar/thirst_live.py): the provider log line on three
+// mod lists (T1), one need per colonist (T2), the fall in game (T3), a drink raising the need (T4), salt-water poisoning
+// odds (T5), dehydration on a live pawn (T6), a clean log without DBH (T7) and animals drinking (T9).
 using System;
 using System.IO;
 using System.Linq;

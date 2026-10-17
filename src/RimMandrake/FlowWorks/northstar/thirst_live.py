@@ -57,6 +57,8 @@ whole map of liquid first and quenches every bystander (a thirsty earlier-row pa
        destroyed drops at stop_job and reads as a new fill (first run: FAIL 1 bucket, no fill job) -> judged from the drop.
   T25  snow depth 1 on 8x8 (jawa/set_weather_buildup), an empty bucket, no liquid water: RM_GatherSnow -> RM_BucketSnow,
        melts to RM_Bucket_FreshWater within 7,000 ticks above 0 C (first run: 5,000 at 31 C); with a pond near: no snow job.
+       LIES: several snow buckets gather at staggered times; waiting for ALL of them to go read a FAIL on a mod that
+       melted on time (full run 2) -> the bucket(s) seen at the gather are followed by ID (see the row's comment).
   T26  a refuelled Campfire, bill RM_MeltBlueIceIntoBucket (repeatMode 'repeatcount'; 'count' is refused), 5 RM_BlueIce + a
        WoodLog RM_BucketEmpty, a Cooking worker: a WoodLog RM_Bucket_FreshWater, no Player.log error line meanwhile.
   T29  target = filledBottlesPerColonist x FreeColonistsSpawned (all test colonists count), picked so the deficit is > 10;
@@ -288,7 +290,11 @@ def main(argv=None):
     SITE = "%d,%d,40,40" % (X0, Z0)
     WETS = POTABLE_TERRAIN + ("WaterOceanShallow", "WaterOceanDeep", "RM_WaterBrineShallow", "RM_WaterBrineDeep",
                               "RM_WaterPoisonedShallow", "RM_Slime_Liquid", "RM_SlimeRedShallow", "RM_SlimeGreenShallow",
-                              "RM_SlimeWhiteShallow", "RM_SlimeYellowShallow")
+                              "RM_SlimeWhiteShallow", "RM_SlimeYellowShallow",
+                              # review 2026-10-17: canal fill water is fresh water too (round 2's T25 replay ran
+                              # RM_FillBottleJob on the 'dried' map, so the 'no liquid water' arm was not). LIES: the canal
+                              # sim may repaint a cell it still holds depth for; a fill job in T25's jobs list says so.
+                              "RM_Fill_Water_Trace", "RM_Fill_Water_Half", "RM_Fill_Water_Brim", "RM_Fill_Water_Superdeep")
 
     def dry_all():
         """Every liquid cell on the map -> Soil (potable, salt, brine, toxic, slime): the row paints its own."""
@@ -829,7 +835,7 @@ def main(argv=None):
         # batch's ponds, salt strips and slime pools. Every row starts by drying it and quenching every bystander, so a
         # thirsty pawn from an earlier row never drinks the test's water or bottles.
         X3 = X0 + 45
-        batch3 = [r_ for r_ in ("T14", "T16", "T18", "T20", "T23", "T25", "T26", "T29") if want(r_) and (only or True)]
+        batch3 = [r_ for r_ in ("T14", "T16", "T18", "T20", "T23", "T25", "T26", "T29") if want(r_)]
         site3_ok = False
         if batch3:
             site3_ok = V.prepare_site(B, (X3, Z0, 50, 40), rows, "site3_ready")
@@ -1013,6 +1019,8 @@ def main(argv=None):
             for i in range(3):
                 need(p20, 0.1)
                 cur = things("RM_Bucket_FreshWater")
+                if not cur:          # review: an IndexError here lost the whole run; the pour arm then reads the absence
+                    break
                 B.call("jawa/ordered_job", pawnId=p20, jobDef="RM_DrinkFromContainer", targetAId=cur[0]["id"], waitTicks=30)
                 wait_job_end(p20, "RM_DrinkFromContainer", 900)
                 ticks(30)
@@ -1151,9 +1159,20 @@ def main(argv=None):
             fresh0 = count("RM_Bucket_FreshWater")
             melted = None
             melt_trace = []
-            # Full run, round 2: the snow bucket was made but no melt was seen in 7,000 ticks (the isolated run melted at
-            # 5,000 at 31 C). The arm now traces the snow bucket itself every 500 ticks: where it lies, that cell's
-            # temperature and CompRM_Melt's own fields, so a haul into a cold room or a carry is visible.
+            # Full run, round 2 (thirst_live_result_20261017T145433.json): FAIL "did not melt within 7,000 ticks". It DID
+            # melt: that run laid one empty and met three leftovers, so FOUR snow buckets were gathered at staggered times;
+            # at t=5000 three snow buckets lay and fresh read 1 (the first had melted on time; fresh0 was not recorded, but purge_drinks ran just before), at 6500 two lay and fresh 2.
+            # The old test 'fresh rose AND no snow bucket left' waited for the LAST-gathered bucket. HARNESS, not MOD. The
+            # arm now follows the snow bucket(s) that existed when the gather was seen, by ID: melted = all of those gone
+            # AND fresh water up by at least their count (a carry also drops an ID from the ground list, so fresh must rise).
+            # Theories weighed, from code + that trace (no replay): FALSE - temperature (the bucket's cell read 24.9-26.3 C,
+            # CompRM_Melt counts any rare tick above 0 C); FALSE - an earlier row's stove/bill (the only bill row, T26,
+            # runs after T25, and the passive melt needs no bill); FALSE - the worker busy or the bucket forbidden/reserved
+            # (all four were gathered; the melt comp reads neither); FALSE - a carried bucket not ticking (all three
+            # stayed on their scoop cells (205,145..147) through the trace). The 145433 'comp: None' was the instrument:
+            # that driver read comp_read's 'fields'/'members' keys, the tool answers 'values'.
+            first = [t_.get("id") for t_ in things("RM_BucketSnow")]
+            first_n = snowb
             if snowb:
                 for k in range(14):
                     ticks(500)
@@ -1163,11 +1182,12 @@ def main(argv=None):
                     if sb_:
                         smp["cellC"] = (B.call("jawa/cell_temperature", cell="%s,%s" % (sb_[0].get("x"), sb_[0].get("z"))) or {}).get("temperature")
                         cr = B.call("jawa/comp_read", thing=sb_[0].get("id"), comp="CompRM_Melt", members="warmTicks") or {}
-                        smp["comp"] = json.dumps({k: v for k, v in cr.items() if k not in ("operation", "state")}, default=str)[:200]
+                        smp["warmTicks"] = (cr.get("values") or {}).get("warmTicks")
                         for t_ in (B.call("jawa/inspect_string", thingIds=",".join(x.get("id") for x in sb_)) or {}).get("things") or []:
                             smp.setdefault("inspect", []).append(" | ".join(t_.get("inspect") or [])[:80])
                     melt_trace.append(smp)
-                    if smp["fresh"] > fresh0 and not sb_:
+                    ids_now = set(t.get("id") for t in sb_)
+                    if first and not ids_now.intersection(first) and smp["fresh"] >= fresh0 + first_n:
                         melted = (k + 1) * 500
                         break
             # arm 2: a pond near -> the bucket fills from it, no snow job
@@ -1196,7 +1216,7 @@ def main(argv=None):
                 bad.append("gathered snow with a pond near")
             row("T25_snow_to_water", "FAIL" if bad else "PASS", "MOD",
                 {"snowSet": {k: sb.get(k) for k in ("success", "cellsChanged")}, "jobs": seen, "bucketsSnow": snowb,
-                 "snowAfter": sd.get("sample") or sd.get("depths"), "meltTicks": melted, "meltTrace": melt_trace[-5:], "temp": temp.get("temperature"),
+                 "snowAfter": sd.get("sample") or sd.get("depths"), "meltTicks": melted, "followed": first, "meltTrace": melt_trace, "temp": temp.get("temperature"),
                  "jobsPond": seen2, "bad": bad, "notRun": "snow depth drop 0.4 (read back is a sample only)"})
             draft(p25)
             paint("Soil", SX3 + 10, SZ3 + 8, 3, 2)
@@ -1300,7 +1320,7 @@ def main(argv=None):
                 if not series or f != series[-1]:
                     series.append(f)
                     last_change = k
-                if f >= target and k - last_change >= 10:
+                if f is not None and f >= target and k - last_change >= 10:   # review: an unreadable Have crashed the row
                     break
             ticks(1500)
             final = have()
