@@ -169,8 +169,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "pour drains Dump tanks only (Store tanks are never poured)");
                 RiverSwitchFlipChecks.Has(pump, @"int levels = System\.Math\.Max\(1, Ext\?\.levelsPerCycle \?\? 1\); usedOutflows\.Clear\(\);", "one budget per cycle, outflows reset per cycle");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"public bool CanPourLevel\(IntVec3 c, FluidDef fluid\) \{[^}]*\} int f = FillAt\(c\); return f < DepthAt\(c\) && InputAllowed\(fluid\) && RM_StockMath\.FluidsCompatible\(f > 0, FluidAt\(c\), fluid\);",
-                    "CanPourLevel is TryPourLevel's own test, read-only");
+                RiverSwitchFlipChecks.Has(ex, @"public bool CanPourLevel\(IntVec3 c, FluidDef fluid\) \{[^}]*\} int i = map\.cellIndices\.CellToIndex\(c\); return RoomNotches\(i\) > 0 && InputAllowed\(fluid\) && RM_StockMath\.FluidsCompatible\(WetDug\(i\), FluidAt\(c\), fluid\);",
+                    "CanPourLevel is TryPourLevel's own test, read-only (room in decilitres' truth: WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)");
+                RiverSwitchFlipChecks.Has(ex, @"if \(RoomNotches\(map\.cellIndices\.CellToIndex\(c\)\) <= 0\) \{ return false;",
+                    "TryPourLevel refuses a part-filled top notch: no pour can push a cell past its brim");
             });
         }
     }

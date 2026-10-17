@@ -84,6 +84,7 @@ SETTINGS = {
         "waterFrontCreepEnabled": True,    # CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: water front advances one cell per pulse from the mouth
         "levelBySurfaceEnabled": True,     # WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: water levels by surface, not dug depth
         "levelSetEnabled": True,           # WATER_LEVELSET_SOLVE: each wet region solved to its flat level (one patch, never 0,1,0,1)
+        "levelExactEnabled": True,         # WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: decilitres, one surface per connected body
         "waterBodyTypeFlipFixEnabled": True,   # FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW: vanilla water-body count fix on type change
         "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
         "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load

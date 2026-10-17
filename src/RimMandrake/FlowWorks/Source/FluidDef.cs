@@ -38,6 +38,11 @@ namespace RimMandrake.FlowWorks
 		/// program 2 ships fall-in capture and ladders.</summary>
 		public TerrainDef fillTerrainSuperdeep;
 
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES / owner R2 (2026-10-17, by card): the look for water under 25 cm. New
+		/// art the owner sees first (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST); unset (every liquid today), the 0.5 m look
+		/// (<see cref="floodTerrain"/>) stands in. The hook <see cref="FillTerrainForLook"/> reads.</summary>
+		public TerrainDef fillTerrainVeryShallow;
+
 		/// <summary>FLOWWORKS_VISUAL_PRINCIPLES_1: the animated surface of this canal fluid's fill terrains, set by
 		/// Patches/LiquidTypes/RM_FluidSurfaceLooks.xml. When set it WINS: it overrides the look of any LiquidDef row that
 		/// names this fluid as canalFluid (boiling and icy water do this; RM_LiquidLooks.LookOfFluid and
@@ -157,6 +162,24 @@ namespace RimMandrake.FlowWorks
 			return fillTerrainBrim ?? fillTerrainHalf ?? floodTerrain;
 		}
 
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the fill look by TRUE metres of water (RM_LevelSolve.LookBand: 0 dry,
+		/// 1 under 25 cm, 2 ≈ 0.5 m, 3 ≈ 1 m, 4 ≈ 1.5 m, 5 = 2 m and deeper), the same in every hole, whatever its depth
+		/// (unified depth spec §4.1: the water picture says how deep the WATER is; the walls say how deep the hole is). The
+		/// four looks each liquid already has carry 0.5 / 1 / 1.5 / 2 m+; band 1 shows <see cref="fillTerrainVeryShallow"/>, the
+		/// hook for the very-shallow art (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST), and the 0.5 m look until it is authored.</summary>
+		public TerrainDef FillTerrainForLook(int band)
+		{
+			switch (band)
+			{
+				case 0: return null;
+				case 1: return fillTerrainVeryShallow ?? floodTerrain;
+				case 2: return floodTerrain;
+				case 3: return fillTerrainHalf ?? floodTerrain;
+				case 4: return fillTerrainBrim ?? fillTerrainHalf ?? floodTerrain;
+				default: return fillTerrainSuperdeep ?? fillTerrainBrim ?? floodTerrain;
+			}
+		}
+
 		/// <summary>True if this terrain is one THIS fluid's engine placed, so
 		/// the engine never strips a temp terrain some other system owns.</summary>
 		public bool OwnsFillTerrain(TerrainDef terrain)
@@ -166,7 +189,8 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			return terrain == floodTerrain || terrain == fillTerrainHalf
-				|| terrain == fillTerrainBrim || terrain == fillTerrainSuperdeep;
+				|| terrain == fillTerrainBrim || terrain == fillTerrainSuperdeep
+				|| (fillTerrainVeryShallow != null && terrain == fillTerrainVeryShallow);
 		}
 
 		public override IEnumerable<string> ConfigErrors()

@@ -6,7 +6,7 @@ Approach B phase 2 (design/RimMandrake/flowworks_offline_kernel_B.md). Generates
 (declared bodies, limited or limitless; digs in order, so seed order = dig order; optional sink band), runs both,
 and compares every dug cell's F after every pulse plus each body's final stock. Disagreement prints the seed.
 
-    python3 src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py [N]
+    python3 src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py [N] [mode,mode,...]
 """
 from __future__ import annotations
 
@@ -61,12 +61,12 @@ def pond_scene(seed):
     return (w, h, pulses, band, bodies, src, digs, beds)
 
 
-def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False):
+def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exact=False):
     w, h, pulses, band, bodies, src, digs = sc[:7]
     beds = sc[7] if len(sc) > 7 else None
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
                       sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set,
-                      creep_water=creep, creep_thick=creep, head_rule=head_rule, beds=beds)
+                      creep_water=creep, creep_thick=creep, head_rule=head_rule, beds=beds, level_exact=exact)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -75,8 +75,11 @@ def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False):
     parts = []
     for _ in range(pulses):
         o.pulse()
-        parts.append(" ".join(str(o.F[c]) for c in order))
-    tail = " ".join("L" if o.bodies[b]["limitless"] else "%.0f" % o.bodies[b]["stock"] for b in sorted(o.bodies))
+        parts.append(" ".join(str(o.W[c] if exact else o.F[c]) for c in order))
+    if exact:
+        tail = " ".join("L" if o.bodies[b]["limitless"] else str(v.level_water.pond_dl(o, b)) for b in sorted(o.bodies))
+    else:
+        tail = " ".join("L" if o.bodies[b]["limitless"] else "%.0f" % o.bodies[b]["stock"] for b in sorted(o.bodies))
     return " | ".join(p for p in parts) + " | " + tail if parts else tail
 
 
@@ -109,30 +112,47 @@ def main():
         sys.exit("dotnet.exe not found; UNMEASURED, not a pass or a fail")
     plain = [scene(s) for s in range(n)]
     ponds = [pond_scene(s) for s in range(n)]
+    # An ext4 clone cannot hand dotnet.exe its own path (\home\... is invalid): stage it on D: (selftest_winstage), and keep
+    # the scene files and the dll inside the stage, where a /mnt/d path converts.
+    from selftest_winstage import windows_project_path, stage_name_for
+    import winbuild
+    real = os.path.realpath(stock_wrapper.CSPROJ)
+    if real.startswith("/mnt/"):
+        stage_dir = os.path.dirname(real)
+    else:
+        stage_dir = os.path.join(winbuild.BUILD_ROOT, stage_name_for(real, winbuild.ROOT),
+                                 os.path.relpath(os.path.dirname(real), winbuild.ROOT))
     with stock_wrapper.dotnet_lock():
-        proj = stock_wrapper._to_windows_path(stock_wrapper.CSPROJ)
+        proj = windows_project_path(stock_wrapper.CSPROJ)
         # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
         b = subprocess.run([dotnet, "build", proj, "-c", "Release", "-nologo", "-v", "q", "-nodeReuse:false", "-p:UseSharedCompilation=false"], capture_output=True, text=True)
         if b.returncode != 0:
             print(b.stdout[-2000:], b.stderr[-2000:])
             sys.exit("selftest build failed")
-        dll = stock_wrapper._to_windows_path(os.path.join(HERE, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
+        dll = stock_wrapper._to_windows_path(os.path.join(stage_dir, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
         failed = []
         # Three engines: the pre-surface rule, levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND), and that plus
         # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON); "shipped" adds both creeps (and with them the mouth top-up,
         # CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME).
         # "pond" (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2): shipped plus the head rule, on scenes whose source cells carry
         # beds and whose ponds stand below their brims.
-        for mode in ("depth", "surface", "levelset", "shipped", "pond"):
-            scenes = ponds if mode == "pond" else plain
-            scene_file = os.path.join(HERE, "bin", "oracle_scenes_%s.txt" % mode)   # bin/ is gitignored
+        # "exact" / "exactpond" (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES): levelExactEnabled against northstar/level_water.py,
+        # every dug cell's water in dL after every pulse and each pond's dL at the end; on the plain scenes (beds read 4) and
+        # on the pond scenes (beds 2..6, ponds below their brims).
+        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond")
+        for mode in modes:
+            scenes = ponds if mode in ("pond", "exactpond") else plain
+            os.makedirs(os.path.join(stage_dir, "bin"), exist_ok=True)
+            scene_file = os.path.join(stage_dir, "bin", "oracle_scenes_%s.txt" % mode)   # in the stage, never the clone
             with open(scene_file, "w") as f:
                 f.write("\n".join(encode(sc) for sc in scenes) + "\n")
             t0 = time.time()
+            exact = mode in ("exact", "exactpond")
             want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
-                           mode == "pond") for sc in scenes]
+                           mode == "pond", exact) for sc in scenes]
             t1 = time.time()
-            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([mode] if mode != "depth" else [])
+            cs_mode = "exact" if exact else mode
+            args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([cs_mode] if mode != "depth" else [])
             res = subprocess.run(args, capture_output=True, text=True, timeout=300)
             t2 = time.time()
             if res.returncode != 0:
