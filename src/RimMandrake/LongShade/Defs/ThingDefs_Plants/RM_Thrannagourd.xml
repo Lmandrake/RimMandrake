@@ -27,7 +27,7 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <sowTags Inherit="False" />
-      <immatureGraphicPath>Things/Plant/RM_Thrannagourd</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_Thrannagourd</immatureGraphicPath>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>

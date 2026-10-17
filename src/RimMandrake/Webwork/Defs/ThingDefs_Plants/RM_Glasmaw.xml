@@ -34,7 +34,7 @@
       <growMinGlow>0.1</growMinGlow>
       <growOptimalGlow>1.0</growOptimalGlow>
       <allowAutoCut>false</allowAutoCut>
-      <immatureGraphicPath>Things/Plant/RM_Glasmaw</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_Glasmaw</immatureGraphicPath>
       <harvestTag>Standard</harvestTag>
       <drugForHarvestPurposes>True</drugForHarvestPurposes>
       <harvestedThingDef>RM_RawGlasmawRoot</harvestedThingDef>

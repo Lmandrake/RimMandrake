@@ -40,7 +40,7 @@
       <visualSizeRange>5~8</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
-      <immatureGraphicPath>Things/Plant/RM_LumbrelTree</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_LumbrelTree</immatureGraphicPath>
       <harvestWork>280</harvestWork>
       <harvestTag>Standard</harvestTag>
       <forceIsTree>true</forceIsTree>
