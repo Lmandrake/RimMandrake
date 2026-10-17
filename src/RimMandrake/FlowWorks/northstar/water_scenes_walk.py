@@ -63,7 +63,8 @@ SHIPPED = {"rainFillsExcavationsEnabled": True, "refillEnabled": True}
 # sit >= 30 cells from every edge.
 LAKE_W, LAKE_H = 14, 11
 BANDS = {"S1": 30, "S2": 50, "S4": 70, "S4g": 90, "S6g": 110, "S6g2": 130}     # lake bottom z per edge scene
-INTERIOR = {"S3": (40, 30), "S3q": (40, 50), "S5": (70, 30), "S5e": (70, 60), "S6": (110, 30), "S6b": (110, 50)}
+INTERIOR = {"S3": (40, 30), "S3q": (40, 50), "S5": (70, 30), "S5e": (70, 60), "S5f": (70, 76), "S5g": (70, 90),
+            "S6": (110, 30), "S6b": (110, 50)}
 
 
 def mid(band):
@@ -382,16 +383,9 @@ def _gizmo_cycle(w, cell, prefix, want, max_clicks=4):
         B.call("rimworld/clear_selection")
 
 
-def stage_S3(w):
-    g = s3_geom()
-    w.clear_site(g["rect"])
-    xs = [c[0] for c in g["pond"]]
-    zs = [c[1] for c in g["pond"]]
-    w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,%d,%d" % (min(xs), min(zs), 4, 3))
-    w.ticks(2)
-    b = w.body(g["pond"][0], classify=True)
-    for c in g["canal"]:
-        w.dig(c, 1)
+def _pump_rig(w, g):
+    """Pump + battery + two hose reels: hose A from reelA to g["intake"] set Intake, hose B from reelB to g["outflow"]
+    set Outflow. Shared by S3 and S5 part G. Returns staging notes (empty when every step read back right)."""
     notes = []
     r = w.build("RM_LiquidPump:%d,%d;RM_HoseReel:%d,%d;RM_HoseReel:%d,%d;Battery:%d,%d" % (
         g["pump"] + g["reelA"] + g["reelB"] + g["battery"]))
@@ -420,6 +414,20 @@ def stage_S3(w):
         notes.append("intake role: %s" % ra)
     if rb is not True:
         notes.append("outflow role: %s" % rb)
+    return notes
+
+
+def stage_S3(w):
+    g = s3_geom()
+    w.clear_site(g["rect"])
+    xs = [c[0] for c in g["pond"]]
+    zs = [c[1] for c in g["pond"]]
+    w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,%d,%d" % (min(xs), min(zs), 4, 3))
+    w.ticks(2)
+    b = w.body(g["pond"][0], classify=True)
+    for c in g["canal"]:
+        w.dig(c, 1)
+    notes = _pump_rig(w, g)
     fl = w.hp("flick:%d,%d=off" % g["pump"])
     w.say("S3 staged: enclosed pond of 12 deep squares (body %s limitless=%s stock=%s capacity=%s); pump %s on dry ground "
           "switched OFF (%s); hose A -> pond end Intake; hose B -> canal cell 1 end Outflow; 6-cell depth-1 canal dry" % (
@@ -429,9 +437,9 @@ def stage_S3(w):
     w.say("         screenshot: %s" % w.shot("S3_p00", g["rect"]))
 
 
-def _hose_held(w):
-    """Levels held inside the two S3 hoses: CompHoseReel.heldUnits (tank units) read off each reel."""
-    g = s3_geom()
+def _hose_held(w, g=None):
+    """Notches held inside the two hoses of a pump rig (S3 by default): CompHoseReel.heldUnits (decilitres) off each reel."""
+    g = g or s3_geom()
     tot = 0.0
     for reel in (g["reelA"], g["reelB"]):
         lt = w.call("jawa/list_things", defName="RM_HoseReel", rect="%d,%d,1,1" % reel, limit=2) or {}
@@ -629,6 +637,10 @@ def run_S4(w):
 
 
 # ---------------------------------------------------------------- S5
+# Redrawn 2026-10-17 (scenes file re-sealed) per design/RimMandrake/flowworks_unified_depth_2026-10-17.md: water moves
+# by the leveling law, so by gravity a 0.5 m canal takes only a pond's top 0.5 m (A, B); a 2 m canal levels with the
+# pond (F); a pump moves the whole 4,000 L (G). Amounts below are notches (1 notch = 0.5 m in one square = 1,000 L), the
+# unit both ProofFluidRow fills and the pond body's stock report.
 def s5_geom():
     ox, oz = INTERIOR["S5"]
     pondA = [(ox + 1 + i, oz + 1 + j) for i in range(3) for j in range(3)]
@@ -646,60 +658,107 @@ def s5e_geom():
     return dict(basin=basin, centre=centre, rect=(ox - 2, oz - 2, 12, 12))
 
 
+def s5f_geom():
+    ox, oz = INTERIOR["S5f"]
+    return dict(pond=(ox + 1, oz + 1), canal=(ox + 2, oz + 1), rect=(ox - 2, oz - 2, 8, 6))
+
+
+def s5g_geom():
+    """Part G: S3's pump rig, shrunk to a 1-square pond (same spacing: pump 5 east of the pond, canal 5 east of the pump)."""
+    ox, oz = INTERIOR["S5g"]
+    pond = (ox + 1, oz + 2)
+    canal = run(ox + 11, oz + 2, 6)
+    return dict(pond=pond, canal=canal, pump=(ox + 6, oz + 2), reelA=(ox + 6, oz + 3), reelB=(ox + 6, oz),
+                intake=pond, outflow=canal[0], battery=(ox + 9, oz + 6),
+                gap=[(ox + 2 + i, oz + 2) for i in range(3)] + [(ox + 8 + i, oz + 2) for i in range(3)],
+                rect=(ox - 4, oz - 6, 24, 16))
+
+
 def _overflow(w):
     return (w.call("jawa/flowworks_engine_state") or {}).get("overflowDestroyedTotal")
 
 
+def _f(v):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def stage_S5(w):
-    g, e = s5_geom(), s5e_geom()
-    w.clear_site(g["rect"])
-    w.clear_site(e["rect"])
+    g, e, f, q = s5_geom(), s5e_geom(), s5f_geom(), s5g_geom()
+    for rect in (g["rect"], e["rect"], f["rect"], q["rect"]):
+        w.clear_site(rect)
     xs = [c[0] for c in g["pondA"]]
     zs = [c[1] for c in g["pondA"]]
-    w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,3,3;WaterDeep:%d,%d,1,1" % (min(xs), min(zs), g["pondB"][0][0],
-                                                                                      g["pondB"][0][1]))
+    w.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,3,3;WaterDeep:%d,%d,1,1;WaterDeep:%d,%d,1,1;WaterDeep:%d,%d,1,1" % (
+        min(xs), min(zs), g["pondB"][0][0], g["pondB"][0][1], f["pond"][0], f["pond"][1], q["pond"][0], q["pond"][1]))
     w.ticks(2)
     bA = w.body(g["pondA"][4], classify=True)
     bB = w.body(g["pondB"][0], classify=True)
-    for c in g["canalA"] + g["canalB"]:
+    bF = w.body(f["pond"], classify=True)
+    bG = w.body(q["pond"], classify=True)
+    for c in g["canalA"] + g["canalB"] + q["canal"]:
         w.dig(c, 1)
+    w.dig(f["canal"], 4)
     for c in g["runD"]:
         w.dig(c, 1, fill=1)
-    w.say("S5 staged: A = 3x3 enclosed pond (stock %s, limitless=%s) + 10-cell depth-1 canal; B = 1-square pond (stock %s, "
-          "limitless=%s) + 10-cell canal; D = isolated 3-cell run at 1 level each (E, the basin, is dug when its turn comes)" % (
-              bA.get("stock"), bA.get("limitless"), bB.get("stock"), bB.get("limitless")))
+    notes = _pump_rig(w, q)
+    fl = w.hp("flick:%d,%d=off" % q["pump"])
+    w.say("S5 staged: A = 3x3 pond (stock %s, limitless=%s) + 10-cell 0.5 m canal; B = 1-square pond (stock %s, limitless=%s) "
+          "+ 10-cell 0.5 m canal; F = 1-square pond (stock %s) + one 2 m canal square; G = 1-square pond (stock %s) + pump "
+          "(OFF until part G: %s) + 6-cell 0.5 m canal; D = isolated 3-cell run full (E, the basin, is dug when its turn comes)" % (
+              bA.get("stock"), bA.get("limitless"), bB.get("stock"), bB.get("limitless"), bF.get("stock"), bG.get("stock"),
+              fl.get("success")))
+    for n in notes:
+        w.say("  STAGING NOTE (part G): " + n)
     w.say("         screenshot: %s" % w.shot("S5_p00", g["rect"]))
 
 
 def run_S5(w):
-    g, e = s5_geom(), s5e_geom()
+    g, e, f, q = s5_geom(), s5e_geom(), s5f_geom(), s5g_geom()
     sA0 = w.body(g["pondA"][4]).get("stock")
     sB0 = w.body(g["pondB"][0]).get("stock")
-    allc = g["canalA"] + g["canalB"] + g["runD"]
+    allc = g["canalA"] + g["canalB"] + g["runD"] + [f["canal"]]
 
     def tick(k, m, w_):
-        a, b = w_.body(g["pondA"][4]), w_.body(g["pondB"][0])
-        w_.say("  pulse %2d  A canal [%s] pond %s   B canal [%s] pond %s" % (
-            k, fills_str(m, g["canalA"]), a.get("stock"), fills_str(m, g["canalB"]), b.get("stock")))
-        return dict(a=a.get("stock"), b=b.get("stock"), aw=a.get("cellCount"), ar=a.get("recededCount"))
-    w.say("  parts A and B together, 54 pulses (A by 14, B by 10, then B's front must hold 40 more)")
-    h = pulse_loop(w, "S5AB", allc, 54, tick, g["rect"], shots_at=(10, 14, 54))
-    fa = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in g["canalA"]))
-    sa = h[-1][2]["a"]
-    expect_line(w, "S5", "S5.a", "A canal full first at pulse %s; pond A stock %s -> %s (doc wants 36 -> 26)" % (fa, sA0, sa),
-                fa is not None and fa <= 14 and sa is not None and abs(float(sa) - 26) < 1e-3)
-    expect_line(w, "S5", "S5.b", "pond A cells %s receded %s at the end (start stock %s, end %s)" % (
-        h[-1][2]["aw"], h[-1][2]["ar"], sA0, sa), None if sa is None else float(sa) < float(sA0 or 0))
-    mB = h[10][1] if len(h) > 10 else h[-1][1]
-    wetB = [i + 1 for i, c in enumerate(g["canalB"]) if mB.get(c, (0, 0))[1] > 0]
-    expect_line(w, "S5", "S5.c", "at pulse 10: B canal cells wet %s, pond B stock %s (start %s)" % (wetB, h[min(10, len(h) - 1)][2]["b"], sB0),
-                wetB == [1, 2, 3, 4] and float(h[min(10, len(h) - 1)][2]["b"] or 0) == 0)
+        a, b, fp = w_.body(g["pondA"][4]), w_.body(g["pondB"][0]), w_.body(f["pond"])
+        w_.say("  pulse %2d  A canal [%s] pond %s   B canal [%s] pond %s   F canal %s pond %s" % (
+            k, fills_str(m, g["canalA"]), a.get("stock"), fills_str(m, g["canalB"]), b.get("stock"),
+            fills_str(m, [f["canal"]]), fp.get("stock")))
+        return dict(a=a.get("stock"), b=b.get("stock"), f=fp.get("stock"), aw=a.get("cellCount"), ar=a.get("recededCount"))
+    w.say("  parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)")
+    h = pulse_loop(w, "S5AB", allc, 54, tick, g["rect"], shots_at=(10, 20, 54))
+    # A: never all 10 wet, total 36, one run; the pond gives at most its top notch
+    totA = [(k, (_f(x["a"]) or 0) + sum(m.get(c, (0, 0))[1] for c in g["canalA"])) for k, m, x in h if _f(x["a"]) is not None]
+    badA = [k for k, t in totA if abs(t - (_f(sA0) or 0)) > 1e-3]
+    wetA = [sum(1 for c in g["canalA"] if m.get(c, (0, 0))[1] > 0) for _, m, _ in h]
+    brokenA = [k for k, m, _ in h if not one_run(m, g["canalA"])]
+    expect_line(w, "S5", "S5.a", "A: most canal cells wet at once %s of 10; pulses where pond+canal != start %s: %s; not one run at: %s" % (
+        max(wetA), sA0, badA[:8] or "none", brokenA[:8] or "none"),
+        None if not totA else (max(wetA) <= 9 and not badA and not brokenA))
+    stA = [_f(x["a"]) for _, _, x in h if _f(x["a"]) is not None]
+    expect_line(w, "S5", "S5.b", "pond A stock %s -> %s, lowest %s (doc: lower than at start, never below 27)" % (
+        sA0, stA[-1] if stA else None, min(stA) if stA else None),
+        None if not stA or _f(sA0) is None else (stA[-1] < _f(sA0) and min(stA) >= 27 - 1e-3))
+    # B: at most cell 1 wet, pond keeps >= 3, total 4
+    wetB_ever = sorted({i + 1 for _, m, _ in h for i, c in enumerate(g["canalB"]) if m.get(c, (0, 0))[1] > 0})
+    stB = [_f(x["b"]) for _, _, x in h if _f(x["b"]) is not None]
+    k10 = min(10, len(h) - 1)
+    totB10 = (_f(h[k10][2]["b"]) or 0) + sum(h[k10][1].get(c, (0, 0))[1] for c in g["canalB"])
+    expect_line(w, "S5", "S5.c", "B canal cells ever wet %s; pond B lowest %s (start %s); total at pulse 10 = %s" % (
+        wetB_ever or "none", min(stB) if stB else None, sB0, totB10),
+        None if not stB else (set(wetB_ever) <= {1} and min(stB) >= 3 - 1e-3 and abs(totB10 - 4) < 1e-3))
     ref = h[14][1] if len(h) > 14 else None
     moved = [k for k, m, _ in h[14:] if ref is not None and [m.get(c) for c in g["canalB"]] != [ref.get(c) for c in g["canalB"]]]
-    flap = [k for k, _, x in h[14:] if x["b"] not in (None, 0, 0.0)]
-    expect_line(w, "S5", "S5.d", "B canal changed after pulse 14 at pulses: %s%s" % (moved[:12] or "never", (
-        " -- the pond and canal cell 1 trade one level back and forth (pond refills to 1 at pulses %s)" % flap[:8]) if flap else ""),
-                not moved)
+    expect_line(w, "S5", "S5.d", "B canal changed after pulse 14 at pulses: %s" % (moved[:12] or "never"), not moved)
+    # F: one pond square and one 2 m canal square level at 2 notches each
+    fh = [(k, _f(x["f"]), m.get(f["canal"], (0, 0))[1]) for k, m, x in h[:21]]
+    f10 = fh[min(10, len(fh) - 1)]
+    fmoved = [k for k, s_, c_ in fh[10:] if (s_, c_) != (f10[1], f10[2])]
+    expect_line(w, "S5", "S5.h", "pulse 10: pond F %s, 2 m canal %s (doc: 2 and 2, total 4); changed after pulse 10 at: %s" % (
+        f10[1], f10[2], fmoved or "never"),
+        None if f10[1] is None else (abs(f10[1] - 2) < 1e-3 and f10[2] == 2 and not fmoved))
     # C: fill in canal B cell 1
     totB0 = sum(h[-1][1].get(c, (0, 0))[1] for c in g["canalB"]) + float(w.body(g["pondB"][0]).get("stock") or 0)
     ov0 = _overflow(w)
@@ -721,14 +780,14 @@ def run_S5(w):
     d1 = sum(m1.get(c, (0, 0))[1] for c in g["runD"])
     ov1 = _overflow(w)
     lost = None if None in (ov0, ov1) else float(ov1) - float(ov0)
-    expect_line(w, "S5", "S5.f", "run held %s -> %s; game's destroyed-overflow total rose by %s (the message text is in the screenshot)" % (
+    expect_line(w, "S5", "S5.f", "run held %s -> %s notches; game's destroyed-overflow total rose by %s (the message text is in the screenshot)" % (
         d0, d1, lost), None if lost is None else abs(lost - 1) < 1e-3 and d0 - d1 == 1)
     # E: the basin
     for c in e["basin"]:
         w.dig(c, 2)
     for c in e["centre"]:
         w.set_fill(c, 2)
-    w.say("  part E: 6x6 depth-2 basin dug now, 8 levels heaped in the 4 centre cells, 20 pulses")
+    w.say("  part E: 6x6 basin 1 m deep dug now, 8 notches (8,000 L) heaped in the 4 centre cells, 20 pulses")
 
     def tickE(k, m, w_):
         row = lambda j: "".join(str(m.get((e["basin"][0][0] + i, e["basin"][0][1] + j), (0, 0))[1]) for i in range(6))
@@ -739,10 +798,32 @@ def run_S5(w):
     deep = [c for c in e["basin"] if mE.get(c, (0, 0))[1] >= 2]
     dry = [c for c in e["basin"] if mE.get(c, (0, 0))[1] == 0]
     tot = sum(mE.get(c, (0, 0))[1] for c in e["basin"])
-    expect_line(w, "S5", "S5.g", "pulse 20: %d cell(s) at 2 while %d dry; total %d (doc: none at 2 while any dry; total 8)" % (
+    expect_line(w, "S5", "S5.g", "pulse 20: %d cell(s) at 1 m while %d dry; total %d notches (doc: none at 1 m while any dry; total 8)" % (
         len(deep), len(dry), tot), not (deep and dry) and tot == 8)
-    ruling_line(w, "S5", "S5.Q1", "pond B (one square, stock %s at start) wet canal cells %s at pulse 10 -> %s" % (
-        sB0, wetB, "(a) four" if len(wetB) == 4 else "(b) five" if len(wetB) == 5 else "%d cells" % len(wetB)))
+    # G: the pump
+    sG0 = w.body(q["pond"]).get("stock")
+    fl = w.hp("flick:%d,%d=on" % q["pump"])
+    pw = w.hp("pump:%d,%d" % q["pump"])
+    w.say("  part G: pump ON (%s; powered=%s), pond G stock %s, 30 pulses" % (fl.get("success"), pw.get("powered"), sG0))
+
+    def tickG(k, m, w_):
+        st = _f(w_.body(q["pond"]).get("stock"))
+        held = _hose_held(w_, q)
+        cf = sum(m.get(c, (0, 0))[1] for c in q["canal"])
+        gapwet = [c for c in q["gap"] if m.get(c, (0, 0))[1] > 0]
+        w_.say("  pulse %2d  canal [%s]  pond stock=%s  hoses hold %.2f notches  ground between wet: %s" % (
+            k, fills_str(m, q["canal"]), st, held, gapwet or "none"))
+        return dict(stock=st, held=held, canal=cf, gapwet=gapwet)
+    hg = pulse_loop(w, "S5G", q["canal"] + q["gap"], 30, tickG, q["rect"], shots_at=(10, 30))
+    badG = [k for k, _, x in hg if x["stock"] is None or abs(x["stock"] + x["held"] + x["canal"] - (_f(sG0) or 0)) > 0.01]
+    mG = hg[-1][1]
+    wetG = [i + 1 for i, c in enumerate(q["canal"]) if mG.get(c, (0, 0))[1] > 0]
+    fifth = [k for k, m, _ in hg if any(m.get(c, (0, 0))[1] > 0 for c in q["canal"][4:])]
+    gw = sorted({c for _, _, x in hg for c in x["gapwet"]})
+    expect_line(w, "S5", "S5.i", "end: canal cells wet %s, pond %s, hoses %.2f; pulses where pond+hoses+canal != %s: %s; "
+                "5th/6th cell wet at: %s; undug ground wet: %s" % (
+                    wetG, hg[-1][2]["stock"], hg[-1][2]["held"], sG0, badG[:6] or "none", fifth[:6] or "never", gw or "never"),
+                None if _f(sG0) is None else (not badG and wetG in ([1, 2, 3], [1, 2, 3, 4]) and not fifth and not gw))
 
 
 # ---------------------------------------------------------------- S6

@@ -171,7 +171,7 @@ drain-the-moat. Viscosity is `ticksPerTile` (already a real per-fluid field).
 
 ## Phase 4 — Stock and conservation
 
-Volume accounting in fill-units; the **5:1 budget** (each source cell supplies five canal cells);
+Volume accounting in fill-units; a pond's stock is its floor depth in litres (no fixed number of canal cells per source square: by pump 4,000 L = four 0.5 m squares; by gravity the leveling law limits it);
 **sticky limitless** (edge contact AND a minimum size, classified once, never re-evaluated — no
 hysteresis, no flicker); recession cell-by-cell from the outside in, recording original terrain so a
 receding body does not launder the map; refill from rain, season and seepage, slowest for a small body;
@@ -214,8 +214,7 @@ validation.py `plot_E_fire` (rewired to this engine) and `toggle_canal_fire`. Th
 
 Per-liquid ignition behaviour from the registry row: a **creeping fuse** (tar, propane) or a
 **detonation** (astrofuel, chemfuel) — one travelling front, speed the only difference, so a player can
-just outrun it. Burn is a rate on the tier ladder: **one canal tier per day, one source level per five
-days** (the same 5:1 relation), so a small moat fed by a larger source burns indefinitely by design and
+just outrun it. Burn is a rate on the tier ladder: **one canal notch (0.5 m) per day** (one rate per burning square, defaulted 2026-10-17), so a small moat fed by a larger source burns indefinitely by design and
 a limitless source burns effectively forever. Fire travels back to the source. Liquid acting on a
 trapped occupant should be **very effective** (ruling 22).
 

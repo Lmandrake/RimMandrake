@@ -6,14 +6,16 @@ volume calculations..."* Then by card: *"Count in Litres, and also show meters o
 me that's not possible)"*.
 
 The standing ruling it builds on (2026-10-12, `natural_bodies_as_canals_design_2026-10-11.md` §8): one tank square = one
-deep pond square = one deep canal square = 4 levels (`RM_Volume.LevelsPerSquare`). That is unchanged.
+deep pond square = one deep canal square = 4 notches (`RM_Volume.LevelsPerSquare`). That is unchanged. (A notch is 0.5 m of water in one square; the word "level" is kept only for code names and for the water surface.)
 
 ## The computation (owner accepted the method)
 
-- A vanilla human draws 1.20 cells tall (MEASURED 2026-10-16) and is about 1.75 m, so **1 cell ≈ 1.46 m**.
-- Deep water is about 2 m (ASSUMPTION), and deep is 4 levels, so **1 level ≈ 0.5 m**.
-- One deep square ≈ 1.46² × 2 ≈ **4.26 m³ ≈ 4,300 L**; one level ≈ 1.07 m³.
-- The old tank unit was a fifth of a level: ≈ 213 L, a 55-gallon drum. Old containers held barrel 25 units, bucket 5,
+- **A square is 2 m² of floor, 1.41 m on a side (`SquareAreaM2 = 2`). This is a definition, not a measurement.**
+  A first measurement (a vanilla human draws 1.20 cells tall, about 1.75 m) gave 1.46 m a side; the 3% gap is below
+  the error of the "deep water is about 2 m" assumption, so the definition stands.
+- Deep water is about 2 m (ASSUMPTION), and deep is 4 notches, so **1 notch = 0.5 m** (`MetresPerLevel`).
+- One deep square = 2 m² × 2 m = **4 m³ = 4,000 L**; one notch = 2 m² × 0.5 m = 1 m³ = 1,000 L.
+- The old tank unit was a fifth of a notch: ≈ 213 L, a 55-gallon drum. Old containers held barrel 25 units, bucket 5,
   bottle 1 — about 5,300 L, 1,070 L and 213 L. Against real sizes (barrel 208 L, bucket 15 L, bottle 1.5 L) that is
   25×, 70× and 140× too big.
 
@@ -21,14 +23,15 @@ deep pond square = one deep canal square = 4 levels (`RM_Volume.LevelsPerSquare`
 
 | constant | value | why |
 |---|---|---|
-| `LitresPerLevel` | **1,000** (1 m³) | within 7 % of the computed 1,066 L. The 2 m depth assumption carries more error than that. A round number makes every readout legible: a level is 1 kL and a deep square is 4 kL. It implies a cell of √2 ≈ 1.41 m, 3 % under the measured 1.46 m. |
-| `MetresPerLevel` | 0.5 | deep (4 levels) = 2 m |
+| `LitresPerLevel` | **1,000** (1 m³) | `SquareAreaM2 × MetresPerLevel × 1000` = 2 × 0.5 × 1000. A round number makes every readout legible: a notch is 1 kL and a deep square is 4 kL. It follows from a square of 2 m² (1.41 m a side). |
+| `SquareAreaM2` | 2 | one square is 2 m² of floor (1.41 m a side); by definition |
+| `MetresPerLevel` | 0.5 | one notch = 0.5 m; deep (4 notches) = 2 m |
 | `LevelsPerSquare` | 4 | unchanged (ruling 2026-10-12) |
 | `UnitsPerLitre` | 10 | **the integer tank unit is a decilitre** |
 | `UnitsPerLevel` | 10,000 | `LitresPerLevel × UnitsPerLitre` |
 | `UnitsPerSquare` | 40,000 (4 kL) | |
 | `LegacyUnitsPerLevel` / `LegacyUnitLitres` / `LegacyUnitScale` | 5 / 200 L / 2,000 | one model-2 unit, for migration |
-| `CurrentModel` | 3 | 1 = before POND_VOLUME_UNIFY, 2 = 5 units a level, 3 = litres |
+| `CurrentModel` | 3 | 1 = before POND_VOLUME_UNIFY, 2 = 5 units a notch, 3 = litres |
 
 **Integer decilitres, not float litres.** Every ledger outside the flow kernel (tanks, hoses, pumps, nets, settle,
 converters, the transfer service) is integer and conservation-tested on exact integers. A 1.5 L bottle needs sub-litre
@@ -36,9 +39,9 @@ resolution. Decilitres keep all of it integer and exact (bottle 15, bucket 150, 
 litres: `RM_Volume.FormatLitres` / `FormatUnits` give "1.5 L", "208 L", "4 kL", "12.5 kL". The int range is ample: a
 64 kL extra-tall tank is 640,000 units.
 
-**The kernel stays in integer levels.** Canal and pit cells hold whole levels (`fillGrid`). Ponds keep their float stock
-in fill-units of levels (`volumePerTile` per level). Neither changed. The conversion is at the boundary: a level is
-`RM_Volume.UnitsPerLevel` tank units, so a pump moves 1,000 L per level.
+**The kernel stays in whole notches.** Canal and pit cells hold whole notches (`fillGrid`). Ponds keep their float stock
+in fill-units of notches (`volumePerTile` per notch). Neither changed. The conversion is at the boundary: a notch is
+`RM_Volume.UnitsPerLevel` tank units, so a pump moves 1,000 L per notch.
 
 ## Containers (owner's sizes)
 
@@ -51,10 +54,10 @@ in fill-units of levels (`volumePerTile` per level). Neither changed. The conver
 - `LiquidBottledForm.litresPerBottle / litresPerBucket / litresPerBarrel` (floats, litres) replace `unitsPer*`.
   `generate_liquid_suite.py` emits them from `CONTAINER_LITRES`; the registry XML is generated.
 - **A pond loses only the litres taken.** `RM_LiquidBottleUtility.TryDebitTerrain` debits
-  `units × volumePerTile ÷ UnitsPerLevel` fill-units. A bottle is 0.0015 of a level. A barrel is about a twentieth of a
+  `units × volumePerTile ÷ UnitsPerLevel` fill-units. A bottle is 0.0015 of a notch. A barrel is about a twentieth of a
   deep square.
 - Bottles do not fill from canals: canal fill terrains are not in any LiquidDef's terrain suite. That was true before
-  and is unchanged. A pump drawing a canal level yields 1,000 L into tanks.
+  and is unchanged. A pump drawing a canal notch yields 1,000 L into tanks.
 - **The adopted item forms keep the old unit's size, 200 L: the vanilla Chemfuel item and VGE astrofuel.** This leaves
   the fuel economy unchanged: tar refines 4:1 into Chemfuel items, and the VE pipe adapter's 1 item per 200 L. The
   owner may want a smaller item. **OWNER CALL.**
@@ -65,9 +68,9 @@ in fill-units of levels (`volumePerTile` per level). Neither changed. The conver
 |---|---|
 | tanks (`Building_LiquidTank`) | capacity via `RM_Volume.TankCapacity` (2×2 = 16 kL, tall/cargo 32 kL, extra-tall 64 kL); inspect "Holding: Water (8 kL / 16 kL)"; save migration |
 | cargo tank, tank styles | same constant (footprint × UnitsPerSquare × height) |
-| ponds (capacity, stock, refill, recession) | unchanged: fill-units of levels. Inspect `StockReport` and the level holder now say litres. |
-| canal fill levels, pits | unchanged integer levels; mouseover shows depth and litres |
-| pumps (per pulse) | `TankUnitsPerLevel` = 10,000 → 1 kL per level; `PourLevels` against the dump rate in units |
+| ponds (capacity, stock, refill, recession) | unchanged: fill-units of notches. Inspect `StockReport` and the Level Holder now say litres. |
+| canal fill (notches), pits | unchanged whole notches; mouseover shows depth and litres |
+| pumps (per pulse) | `TankUnitsPerLevel` = 10,000 → 1 kL per notch; `PourLevels` against the dump rate in units |
 | hoses | `hoseLitresPerCell` **5 L** (setting; a ~65 mm hose 1.46 m long holds 4.8 L). The old 0.2 units was 40 L a cell. A hose is a container, so it gets a real size. `heldUnits` migrated. |
 | tank-to-tank settle, Dump drain | `tankLitresPerCycle` 2,000 L, `dumpLitresPerCycle` 1,000 L (= the old 10 and 5 units) |
 | spills / filth | `litresPerFilth` 400 L (= old 2 units) |
@@ -76,14 +79,14 @@ in fill-units of levels (`volumePerTile` per level). Neither changed. The conver
 | reaction vat (`RM_LiquidReactionDef`) | `litresA`/`litresB`/`productLitres`/`productCount` (×200 L) |
 | liquid bath recipes | `litresPerCraft` 1,000 L (= old 5 units) |
 | VE pipe adapters | `litresPerRareTick` 2,000, `resourcePerLitre` 0.005 (1 VE item per 200 L, as before) |
-| ruins' starting stock | at least one level |
-| map controls (Source / Sink / Level holder) | count levels (unchanged); inspect adds litres; `RateLabel` says a level is 1 kL |
-| subsurface drill reserve | fill-units of levels (unchanged); report in litres |
-| liquid heat, fire burn | levels (unchanged) |
+| ruins' starting stock | at least one notch |
+| map controls (Source / Sink / Level holder) | count notches (unchanged); inspect adds litres; `RateLabel` says a notch is 1 kL |
+| subsurface drill reserve | fill-units of notches (unchanged); report in litres |
+| liquid heat, fire burn | notches (burn rate now one rate per square, 0.5 m a day; see `flowworks_unified_depth_2026-10-17.md` §5.6) |
 | Dubs Bad Hygiene bridge | terrain tags and drinkable items only, no units (unchanged) |
 | ExplosiveGrowth irrigation | no FlowWorks unit use found (`grep` 2026-10-16) |
 | other mods | Cauldron gas tap: one banked unit = 200 L into tanks via `RM_Volume.Units`. LuminousPigment GlowTank: one draw = 200 L, read by reflection off `RM_Volume.Units(float)`. WreckedMachines distillation module XML in litres. |
-| mod settings text | tank slider says kL; pump text says a level is 1,000 L (a cubic metre) |
+| mod settings text | tank slider says kL; pump text says a notch is 1,000 L (a cubic metre) |
 
 ## Save migration (model 2 → 3, once)
 
@@ -107,7 +110,7 @@ terrain label. `RM_Patch_MouseoverDepth` (Harmony prefix) writes the line itself
 plus "— 1.5 m deep, 3 kL". It then sets the cache keys so vanilla prints the line unchanged. On a dry square it clears
 the cache once, so vanilla rebuilds its own line.
 
-- Dug canals and pits read their fill levels.
+- Dug canals and pits read their fill in notches.
 - Natural water reads its bed depth (`BedLevelsAt`), scaled by the pond's fill when the pond is limited.
 - The setting `mouseoverDepthEnabled` (on) switches it off.
 

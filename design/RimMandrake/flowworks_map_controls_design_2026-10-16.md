@@ -20,7 +20,7 @@ keeps doing its job.** That gap is what Source and Sink fill, and what the list 
 
 | exists | what it gives a map maker | why it is not enough |
 |---|---|---|
-| FlowWorks natural bodies (`RM_LiquidBody`, `limitless` flag) and `RM_LiquidStock` (5:1 budget, recession, refill from seepage/rain/season) | a body read from terrain at map load; an edge-touching body is classified limitless, sticky | classified, not authored; you cannot say "this lake is finite" or "this edge drains" |
+| FlowWorks natural bodies (`RM_LiquidBody`, `limitless` flag) and `RM_LiquidStock` (floor-depth stock, recession, refill from seepage/rain/season) | a body read from terrain at map load; an edge-touching body is classified limitless, sticky | classified, not authored; you cannot say "this lake is finite" or "this edge drains" |
 | Pumps, tanks, hoses, pipe nets, `CompLiquidConverter`, stills (`Machinery/`) | move and convert liquid between buildings | buildable player kit, needs power/upkeep, not a map fixture |
 | Flow doors / sluices (`Superdeep/RM_FlowDoors.cs`), weirs (`Rivers/RM_Weir.cs`, arrest marker) | gate or stop flow and current on cells | gates only; nothing sets a level or a schedule |
 | River current (`Rivers/RM_MapComponent_RiverCurrent.cs`) | 8-way surface current from vanilla `riverFlowMap` | "Nothing is authored here": a map with no vanilla river has no current |

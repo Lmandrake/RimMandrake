@@ -72,7 +72,7 @@ There is **no bridge tool that resets a cell's D or F to 0 on undug ground**. Re
 **Sources and sinks**
 - **A source** is any natural `IsWater` base terrain, WaterShallow included. `DepthAt` reads it through as D=4, F=4.
 - **Limitless** requires *edge contact AND ≥ `minLimitlessBodyCells` (50)* (`RM_LiquidStock.cs:152`). Classification is sticky.
-- **A limited body's budget** is `canalCellsPerSourceCell` = 5 levels per source cell (`FlowWorks_Fluids.xml`). So a 5×5 pond holds 125 fill-levels.
+- **A limited body's stock** is its floor depth in litres: each square holds its floor depth (shore-deep 1 m or 2 m, deeper out) at 2,000 L a metre. There is no per-square supply number. Gravity feeds a canal only down to the common water surface; a pump moves litres (`design/RimMandrake/flowworks_unified_depth_2026-10-17.md` §6).
 - **A sink** is *any excavated cell within 10 cells of the edge* (`IsSinkCell`, `GenGrid.NoBuildEdgeWidth`). It drains `FlowPerPulse` every pulse.
 
 **🔴 A channel running east or north of its source never fills. It oscillates forever.**
@@ -210,7 +210,7 @@ contaminated:
 | liquidIgnitionEnabled | VACUOUS | water map. `n<=1` is true at 0 fires. The ON half asserts nothing |
 | fillInEnabled | PROVES | ShouldSkip gate. Depends on the spawned colonist doing the job |
 | fillInDisplacementEnabled | VACUOUS | no colonist in that chain, so the fill-in never runs and the sums stay trivially equal. Live it read "3→0". Explained: the cells were in the sink band (`isSinkCell: true`, x=240-242), so SITE |
-| sourceBudgetEnabled | **VACUOUS** (corrected after the GPT review; was PROVES) | the 30-cell east channel off the 2×2 pond (budget 20) oscillates and saturates at **16 wet with 4 stock left** (port), so the budget never binds. ON `wet<=20` passes regardless, and OFF `wet>20` can never pass. Live OFF read 16 |
+| sourceBudgetEnabled | **VACUOUS** (corrected after the GPT review; was PROVES) | the 30-cell east channel off the 2×2 pond (stock 20 fill-units, as the test set it) oscillates and saturates at **16 wet with 4 stock left** (port), so the budget never binds. ON `wet<=20` passes regardless, and OFF `wet>20` can never pass. Live OFF read 16 |
 | stickyLimitlessEnabled | VACUOUS | interior strip, so limited either way |
 | recessionEnabled | PROVES (contaminated) | corner-cell proxy, stale body |
 | refillEnabled | VACUOUS | 0.13 units/cell/day over 0.083 day |

@@ -16,6 +16,9 @@ GPT review: `design/RimMandrake/relative_depth_climb_gpt_review_2026-10-12.md`; 
 > gradual terrain so no chance to fall in and get stuck. But then we have the same issue when players dig wide
 > gradual pits too."*
 
+**Units (ruled 2026-10-17, `design/RimMandrake/flowworks_unified_depth_2026-10-17.md`).** `D` and `K` count notches. One notch is 0.5 m. Dug depths are D1 = 0.5 m,
+D2 = 1 m, D3 = 1.5 m, D4 = pit 2 m. So `K = 1` is a 0.5 m step and `K = 2` is a 1 m step. A "level" below means a notch.
+
 ## Summary (one screen)
 
 **Verdict: not so bad.** Two facts make it so.
@@ -38,8 +41,8 @@ rule is expressible in 1.6, map-wide.** It was not in 1.5, where the pathfinder 
 
 **Resolved (owner, 2026-10-12, §10; design §8):** trapping is relative and per creature. A pawn is trapped when no
 chain of N/S/E/W steps it can climb leads to the surface, and its climb limit comes from its height (a person climbs
-1 fast, 2 slow; 3 or more traps it; small creatures are trapped by 2). Gradual slopes never trap. A built ramp
-spans up to 3 levels at walking speed; a ladder spans any depth, slowly. The implementation is Alternative A: per-band
+a 0.5 m step is easy, a 1 m step is slow; 1.5 m or more traps it; small creatures are trapped by 1 m). Gradual slopes never trap. A built ramp
+spans up to 1.5 m (3 notches) at walking speed; a ladder spans any depth, slowly. The implementation is Alternative A: per-band
 connectivity masks plus a cached pocket grid. There is no elevation concept beyond the existing depth grid, and no
 trap indicator in v1.
 
@@ -63,7 +66,7 @@ core) would trap every enemy that wanders to its middle. That is the wrinkle.
 
 ### 1.2 Wanted: a RELATIVE rule
 
-Let `K` be the most levels a pawn can climb in one step (owner: *"one or two levels"*). An **edge** between
+Let `K` be the most notches (0.5 m each) a pawn can climb in one step (owner: *"one or two levels"*). An **edge** between
 neighbours `a` and `b` is a **cliff** when `|D(a) − D(b)| > K`. A pawn may walk along any non-cliff edge. A pawn is
 **trapped** when no chain of non-cliff edges (plus ladders and covers, which stay exits) leads from its cell to the
 surface.
@@ -309,10 +312,10 @@ Height is not a vanilla stat. We derive it from body size, using the draw scale 
 
 | band | body size | examples (vanilla) | K | trapped by a sheer step of |
 |---|---|---|---|---|
-| small | under 0.75 | rat, squirrel, hare, cat, dog, child | 1 | 2 or more |
-| person-sized | 0.75 to 1.65 | human, most xenotypes, deer, wolf (warg) | 2 | 3 or more |
-| large | 1.65 to 3.0 | muffalo, bear, tall aliens with a raised body size | 3 | 4 or more |
-| huge | 3.0 and over | thrumbo, elephant, megasloth | 4 | never, while `MaxDepth` is 4 |
+| small | under 0.75 | rat, squirrel, hare, cat, dog, child | 1 (0.5 m) | 2 notches (1 m) or more |
+| person-sized | 0.75 to 1.65 | human, most xenotypes, deer, wolf (warg) | 2 (1 m) | 3 notches (1.5 m) or more |
+| large | 1.65 to 3.0 | muffalo, bear, tall aliens with a raised body size | 3 (1.5 m) | 4 notches (2 m) or more |
+| huge | 3.0 and over | thrumbo, elephant, megasloth | 4 (2 m) | never, while `MaxDepth` is 4 (2 m) |
 
 Modifiers (each a `DefModExtension` `RM_ClimbAbility { int extraLevels; bool leaper; }`, patched onto races; also
 PROVISIONAL):
@@ -321,9 +324,9 @@ PROVISIONAL):
 - **flyers** (`MaxFlightTime` > 0, or flying right now): never trapped, as today.
 
 Speed of a climb, for a step up of `s` levels (`s ≤ K`):
-- `s < K`, or `K = 1`: a normal climb. Its cost is today's `DryStepBaseCost` climb cost, which charges the deeper
+- `s < K`, or `K = 1`: a normal climb (a 0.5 m step for a person). Its cost is today's `DryStepBaseCost` climb cost, which charges the deeper
   cell's dry path cost.
-- `s = K ≥ 2`: a **slow climb**, ×2 that cost (PROVISIONAL). So a person climbs 1 fast and 2 slow, as he ruled.
+- `s = K ≥ 2`: a **slow climb**, ×2 that cost (PROVISIONAL). So a person climbs 0.5 m easily and 1 m slowly, as he ruled.
 - Climbing down a step costs the same as climbing it up. Walking along equal depth costs 0 extra, as today.
 
 **Player-facing text.** He ruled that the size table is stated, not hidden. The FlowWorks pit guide entry and the
@@ -349,12 +352,12 @@ one line: "Climbs out of steps up to K deep."
 
 **Ramp (new building, `RM_PitRamp`)**
 - 1×1, built on a dug cell, rotatable. Its rotation points uphill.
-- It joins its own cell to the cardinal neighbour it faces, when that neighbour is 1 to 3 levels shallower. That
+- It joins its own cell to the cardinal neighbour it faces, when that neighbour is 0.5 to 1.5 m shallower. That
   step is allowed for **every** pawn, of any size, in both directions, with **no movement penalty**: the cost of a
   walk on flat ground. The owner's "swiftly (but not instantly)" is the normal walking tick cost.
 - A deeper drop takes a second ramp, or a ramp then a climbable step: for example D 4 →(ramp)→ D 1 → D 0.
 - Structural: it enters the pocket grid for every band. Enemies use it too. Deconstructing it re-seals the pit.
-- Placement refuses a facing neighbour that is not 1 to 3 levels shallower, and a cell already holding a ladder.
+- Placement refuses a facing neighbour that is not 0.5 to 1.5 m shallower, and a cell already holding a ladder.
 - Cost and art PROVISIONAL: 25 wood or stone blocks, one build job. Art is owed through the art ledger, with a
   placeholder until then.
 - Mod Settings: "Ramps" (on), "Levels a ramp spans" (1–3, default 3).

@@ -152,8 +152,8 @@ holds.
 **Fill**
 - [ ] `canal_partial_fill_distinct` — a partly filled canal is distinguishable at a glance
       from a full one.
-- [ ] `fill_tier_legible` — dry, trace, half and brimming fill in excavations of the same
-      depth are distinguishable from each other by looking.
+- [ ] `fill_tier_legible` — dry, and water 0.5 m, 1 m, 1.5 m and 2 m or more deep, are
+      distinguishable from each other by looking, whatever the depth of the hole holding them.
 - [ ] `canal_fill_spreads_along_itself` — an incompletely filled channel shows one
       continuous wet reach extending away from its inlet, not an isolated puddle at the inlet.
 - [ ] `canal_fill_front_watchable` (change) — the boundary between wet and dry is visibly
@@ -167,8 +167,9 @@ holds.
       as the body it came from.
 - [ ] `fill_fluid_distinct` — excavations holding different fluids are distinguishable from
       each other by looking.
-- [ ] `depth_and_fill_jointly_legible` — in one view, cells sharing a fill but differing in
-      depth, and cells sharing a depth but differing in fill, are all distinguishable.
+- [ ] `depth_and_fill_jointly_legible` — in one view, cells holding the same depth of water
+      in holes of different depth (shown by the walls and how low a pawn sits), and cells in
+      holes of the same depth holding different depths of water, are all distinguishable.
 
 **The reservoir paying for it**
 - [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, an enclosed
