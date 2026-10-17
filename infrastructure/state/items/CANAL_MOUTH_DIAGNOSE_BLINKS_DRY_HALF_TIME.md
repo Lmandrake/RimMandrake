@@ -66,3 +66,9 @@ Classify by reading `RM_FlowKernel` (the creep gate against the source→mouth m
 ## Owed
 
 - LIVE: deploy the rebuilt DLL and run `validation_v2.py --live`; E2 must read full at pulse 4, mouth wet every pulse.
+
+## LIVE result (FOUNDRY helper 2026-10-16, deployed DLL sha256 82f3943b…, byte-identical to the git-archive export; ratchet_pilot tier, 21 mods)
+
+- `validation_v2.py --live` on `RM_TestSite_calm_v1`: **61 PASS, 0 FAIL, 0 UNMEASURED**. E2 first-full pulse 4 in all four directions; the 4-cell run reads `1000, 1100, 1110, 1111` (mouth wet every pulse); E2_rerun_determinism and E2s shared-source PASS.
+- River `extension_proof --site river`: 20 PASS / 0 FAIL / 1 UNMEASURED (baseline 20/0/1).
+- Headline scene (`live_probes/fw_water_headline.py`): 8-cell trench full at **tick 2002** (8 pulses, one cell a pulse) against 3753 before (about 15 pulses); the save taken mid-fill and reloaded continued identically (A == B chunk for chunk, +1 tick offset). Evidence: `Transient/fw_mouth_live_20261016/`.
