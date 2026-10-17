@@ -60,7 +60,7 @@ SETTINGS = {
         "networkSeamsMoveEnabled": True, "maxNetworkCells": 6000.0,   # FLOW_ORDER_EXTERNAL_INPUT_1 part 2
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
-        "superdeepShootingRuleEnabled": True,
+        "superdeepShootingRuleEnabled": True, "shootingCliffMetres": 2.0,   # PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE V5
         "blastsBreakPitCovers": True,          # owner Q5/Q9 2026-10-06 (Explosive Knockback build)
         "pitWidthBodySizeMultiplier": 1.0,
         "pitRelativeClimbEnabled": True, "pitClimbAbilityMultiplier": 1.0,   # PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP
@@ -70,15 +70,15 @@ SETTINGS = {
         "liquidSeeThroughEnabled": True, "pitWalkNormalEnabled": True,   # 2026-10-06 looks round / ladder raise-lower
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
-        "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
-        "spikesEnabled": True, "spikeDamageMultiplier": 1.0,     # CANAL_BOTTOM_SPIKES_1
+        "fallDamageEnabled": True, "fallDamageMultiplier": 1.0, "fallDamagePerMetrePast2": 0.5, "fallDamageCap": 4.0,   # P7 V3
+        "spikesEnabled": True, "spikeDamageMultiplier": 1.0, "spikeMinDropMetres": 2.0,   # P7 V4;     # CANAL_BOTTOM_SPIKES_1
         "pitExposureEnabled": True, "pitExposureNarrowing": 8.0, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (narrowing: owner Q1 2026-10-11)
         "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.3,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
         "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "canalFireEnabled": True, "burnDaysPerNotch": 1.0,   # Phase 6 (ruling 7); one rate since LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD
         "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,                                  # Phase 6 (PROVISIONAL)
         "liquidHeatPushEnabled": True, "liquidHeatStrength": 1.0,                                 # LIQUID_HEAT_PUSH_1 (PROVISIONAL)
-        "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "poisonFillEnabled": True,   # PIT_FILL_EFFECTS_1
+        "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "pitDrowningHeadFraction": 0.9, "pitDrowningLyingFraction": 0.2, "poisonFillEnabled": True,   # P7 V2;   # PIT_FILL_EFFECTS_1
         "slimeSlipEnabled": True, "slimeSlipChanceMultiplier": 1.0, "slimeSlipStunSeconds": 2.0,
         "slimeClimbOutSlipFactor": 2.0,    # SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (PROVISIONAL)
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
@@ -98,7 +98,7 @@ SETTINGS = {
         "rainDousesLiquidFireEnabled": True,                    # Phase 6 owed (ignition by explosion, extinguishing)
         "chemfuelInfernoEnabled": True, "chemfuelIntensity": 1.0, "chemfuelSpreadSpeed": 1.0, "chemfuelBurnRate": 1.0,
         "astrofuelDetonationEnabled": True, "astrofuelBlastScale": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires
-        "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True,   # SUPERDEEP_PRISON_ROOM_1
+        "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True, "pitRoomMinDepthMetres": 0.0,   # P7 V6;   # SUPERDEEP_PRISON_ROOM_1
         "excavationWallFacesEnabled": True,                     # EXCAVATION_WALL_ART_1 carrier
         "bottleRevertEnabled": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer
         "liquidPumpEnabled": True,                              # Phase 8 slice 1 (universal pump)

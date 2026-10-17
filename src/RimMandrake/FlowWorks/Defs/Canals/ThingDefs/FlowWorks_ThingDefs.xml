@@ -206,7 +206,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Spikes</defName>
     <label>pit spikes</label>
-    <description>Sharpened stakes driven into the floor of a superdeep pit. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built on the floor of the deepest pits.</description>
+    <description>Sharpened stakes driven into a pit floor. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built at the foot of a sheer drop of 2 m or more (a mod setting), at any depth.</description>
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Canals/RM_Spikes</texPath>

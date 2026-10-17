@@ -147,13 +147,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitTrapMath.StepBlocked(true, 0), "a held pawn may not step onto ground (so onto a cover read as 0)");
                 Assert(!RM_PitTrapMath.StepBlocked(true, 4), "precondition: the raw D=4 under a cover never blocked the step");
             });
-            Case("PitRooms_pit_prison_room_is_superdeep_only", () =>
+            // PIT_PRISON_JUDGE_D3_ROOMS (card 2026-10-16, "Superdeep only") is now the 2 m position of the setting
+            // pitRoomMinDepthMetres; the shipped 0 is V6 of PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (any depth; veto-able).
+            Case("PitRooms_pit_room_is_a_pocket_at_the_setting_depth", () =>
             {
                 string s = Src("Superdeep", "RM_PitRooms.cs");
                 string f = Between(s, "public static bool IsPitCell(", "private sealed class Side");
-                Assert(f.Contains("eng.IsSuperdeepRaw(c) && RM_PocketGrid.IsPersonPocketCell(map, c)"),
-                    "can-fail: a pit room cell must be superdeep, so a sheer D3 pocket is no prison (PIT_PRISON_JUDGE_D3_ROOMS)");
-                Assert(!f.Contains("IsDugRaw"), "can-fail: the old dug-at-all test let a D3 pocket form a prison");
+                Assert(f.Contains("RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), MinRoomNotches)"),
+                    "a pit room cell is a person pocket at least the setting's depth");
+                Assert(!f.Contains("IsDugRaw"), "can-fail: the old dug-at-all test");
+                Assert(!RM_RelativeRulesMath.PitRoomCell(true, 3, RM_RelativeRulesMath.Notches(2f, 0)) && RM_RelativeRulesMath.PitRoomCell(true, 3, 0),
+                    "the 2 m setting reproduces the 2026-10-16 card; 0 (V6) takes a sheer D3 pocket");
             });
             Case("PitStepCost_stepping_off_a_cover_is_no_climb", () =>
             {

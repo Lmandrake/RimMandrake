@@ -2580,7 +2580,7 @@ def pit_prison_room(t):
     with t.component("warden_served_from_lip", toggle="wardenFromLipEnabled"):
         k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)))
         if t._guard():
-            _expect(k.get("serve") == "True" and k.get("kind") == "Interact" and k.get("lipSuperdeep") == "False"
+            _expect(k.get("serve") == "True" and k.get("kind") == "Interact" and k.get("lipInPit") == "False"
                     and float(k.get("dist", 99)) <= 6.0, "convert on a pit prisoner not served from a lip cell: %s" % k)
     with t.component("warden_lip_off", toggle="wardenFromLipEnabled"):
         with _setting(t, "wardenFromLipEnabled", False):

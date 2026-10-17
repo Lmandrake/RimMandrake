@@ -7,9 +7,10 @@ namespace RimMandrake.FlowWorks
 	/// <summary>
 	/// PIT_FILL_EFFECTS_1: what the fluid in a cell does to the pawn standing in it. No "water / oiled / poison
 	/// pit" def exists — every effect comes from the CELL's fluid (fluidGrid, LIQUID_BODY_FLUID_IDENTITY_1).
-	/// - DROWNING: F &gt; 0 at D = 4 (a pit is only a superdeep cell), any fluid, non-swimmers only. Swimmer =
-	///   the pawn's kind life stage carries a swimming graphic (1.6's own swimmer marker). RM_PitDrowning
-	///   recovers on its own once the pawn is out (its severityPerDay comp).
+	/// - DROWNING (PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE, owner R7, form V2): the liquid covers the creature's head
+	///   (over 0.9 H standing, 0.2 H lying down; H by size band, RM_RelativeRulesMath.HeightByBand), at ANY depth of hole,
+	///   any fluid, unless it keeps its head up (RM_Drowning.KeepsHeadUp: a swimmer today; P12's hook) or, standing, has a
+	///   step it can climb into water under its head. RM_PitDrowning recovers on its own once the pawn is out.
 	/// - POISON: a fluid with <c>toxicPerDayAtBrim</c> &gt; 0 adds vanilla ToxicBuildup keyed to fill, at any
 	///   depth, reduced by ToxicEnvironmentResistance.
 	/// - OIL: burns. That is Phase 6's RM_LiquidFire, which already knows the occupant (a D=4 occupant always
@@ -68,8 +69,7 @@ namespace RimMandrake.FlowWorks
 				bool flying = p.Flying;
 				if (drown && drowning != null)
 				{
-					float add = RM_FillEffectMath.DrowningPerCheck(fill, depth, ex.IsSuperdeepExcavation(c),
-						IsSwimmer(p), flying, RimMandrakeFlowWorksSettings.pitDrowningRateMultiplier);
+					float add = RM_Drowning.PerCheck(map, ex, p, c, ex.WaterMetresAt(c));
 					if (add > 0f)
 					{
 						HealthUtility.AdjustSeverity(p, drowning, add);
@@ -85,6 +85,35 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+		}
+
+		/// <summary>static_call surface: "x,z" -&gt; the drowning verdict for the first pawn on that cell:
+		/// "DROWN id H=1.75 lying=b water=2.10 under=b headUp=b exit=b perCheck=0.0417".</summary>
+		public static string ProofDrown(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			string[] a = (arg ?? "").Split(',');
+			if (ex == null || a.Length != 2 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z))
+			{
+				return "REFUSED: arg must be x,z on a map with the excavation component";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map))
+			{
+				return "REFUSED: out of bounds";
+			}
+			foreach (Thing t in c.GetThingList(map))
+			{
+				if (t is Pawn p)
+				{
+					float w = ex.WaterMetresAt(c);
+					return "DROWN " + p.ThingID + " H=" + RM_Drowning.HeightOf(p).ToString("0.00") + " lying=" + RM_Drowning.Lying(p)
+						+ " water=" + w.ToString("0.00") + " under=" + RM_Drowning.HeadUnder(p, w) + " headUp=" + RM_Drowning.KeepsHeadUp(p, c, w)
+						+ " exit=" + RM_Drowning.ExitInReach(map, ex, p, c) + " perCheck=" + RM_Drowning.PerCheck(map, ex, p, c, w).ToString("0.0000");
+				}
+			}
+			return "REFUSED: no pawn at " + c;
 		}
 
 		/// <summary>static_call surface: "" -&gt; per-pawn report of every pawn standing in liquid (cell, D, F,
@@ -108,6 +137,96 @@ namespace RimMandrake.FlowWorks
 					+ " burning=" + ex.LiquidFire.IsBurning(map, c));
 			}
 			return "FILLFX " + rows.Count + " | " + string.Join(" | ", rows);
+		}
+	}
+
+	/// <summary>
+	/// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, 2026-10-17 by card; form V2, veto-able): THE drowning rule, one rule for
+	/// pits and (P12, DEEP_WATER_BUILD_SWIM_OR_SINK, owner R12) lakes. Drowning follows the WATER against the creature's height,
+	/// never the hole: "one litre in a 7 m pit cannot drown its occupant", and 2 m of water in any hole drowns a standing person
+	/// (a brimming 1.5 m pocket reaches a person's chest, and drowns one lying down).
+	///
+	/// P12 HOOK. <see cref="keepsHeadUp"/> is the one place swimming plugs in: today it answers "a swimmer" (the kind's
+	/// swimming graphic, vanilla 1.6's marker). P12 replaces it with its swim rule (who swims, swim exhaustion, apparel and
+	/// weight) and calls <see cref="PerCheck"/> for pawns in natural deep water too; the head test, the lying test, the
+	/// exit-in-reach test and the rate stay here, so pits and lakes can never drown by two rules.
+	/// </summary>
+	public static class RM_Drowning
+	{
+		/// <summary>P12's hook: does this pawn keep its head above <paramref name="waterMetres"/> of water on cell c? Default: a
+		/// swimmer does (it treads water). Must be cheap (called per wet pawn every 250 ticks).</summary>
+		public static System.Func<Pawn, IntVec3, float, bool> keepsHeadUp = (p, c, w) => RM_PitFillEffects.IsSwimmer(p);
+
+		public static bool KeepsHeadUp(Pawn p, IntVec3 c, float waterMetres)
+		{
+			try
+			{
+				return keepsHeadUp != null && keepsHeadUp(p, c, waterMetres);
+			}
+			catch (System.Exception e)
+			{
+				Log.ErrorOnce("[FlowWorks] drowning keepsHeadUp hook threw: " + e.Message, 0x5D7A11);
+				return RM_PitFillEffects.IsSwimmer(p);
+			}
+		}
+
+		/// <summary>The creature's height H in metres: its climb size band (no climber/leaper bonus; the "creature height"
+		/// multiplier applies), so one size system serves climbing and water.</summary>
+		public static float HeightOf(Pawn p)
+		{
+			int band = RM_PitTrapMath.ClimbLimit(p?.BodySize ?? 1f, 0, RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier);
+			return RM_RelativeRulesMath.HeightMetres(band);
+		}
+
+		/// <summary>Lying down: downed, or any posture but standing (asleep, in bed).</summary>
+		public static bool Lying(Pawn p)
+		{
+			return p.Downed || p.GetPosture() != PawnPosture.Standing;
+		}
+
+		public static bool HeadUnder(Pawn p, float waterMetres)
+		{
+			return RM_RelativeRulesMath.HeadUnder(waterMetres, HeightOf(p), Lying(p),
+				RimMandrakeFlowWorksSettings.pitDrowningHeadFraction, RimMandrakeFlowWorksSettings.pitDrowningLyingFraction);
+		}
+
+		/// <summary>A cardinal neighbour this pawn can step to (within its climb limit, or by a ramp or a ladder it may use) whose
+		/// water is under its head standing. A downed pawn reaches nothing (PerCheck ignores this for lying pawns).</summary>
+		public static bool ExitInReach(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 c)
+		{
+			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+			int k = RM_PocketGrid.ClimbLimitOf(p);
+			float h = HeightOf(p);
+			for (int i = 0; i < 4; i++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[i];
+				if (!n.InBounds(map) || !n.Walkable(map))
+				{
+					continue;
+				}
+				int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, n);
+				bool joined = RM_ClimbJoins.ForPawn(map, eng, c, n, fromD, toD, p, out _, out _);
+				float w = eng.IsExcavated(n) ? eng.WaterMetresAt(n) : 0f;
+				if (RM_RelativeRulesMath.ExitInReach(fromD, toD, k, joined, w, h, RimMandrakeFlowWorksSettings.pitDrowningHeadFraction))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Severity of RM_PitDrowning to add this check (250 ticks) for pawn p standing in waterMetres of liquid on c.</summary>
+		public static float PerCheck(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 c, float waterMetres)
+		{
+			if (p == null || !(waterMetres > 0f) || p.Flying || !HeadUnder(p, waterMetres))
+			{
+				return 0f;
+			}
+			bool lying = Lying(p);
+			bool headUp = KeepsHeadUp(p, c, waterMetres);
+			bool exit = !lying && !headUp && ExitInReach(map, eng, p, c);
+			return RM_RelativeRulesMath.DrowningPerCheck(true, lying, headUp, false, exit,
+				RimMandrakeFlowWorksSettings.pitDrowningRateMultiplier);
 		}
 	}
 }

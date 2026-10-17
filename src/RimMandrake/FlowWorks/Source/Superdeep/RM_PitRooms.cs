@@ -59,12 +59,43 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.5 step 7): a pit room is a person-band POCKET — pawn-independent
-			// (GPT #11); a gentle bowl is no enclosure. PIT_PRISON_JUDGE_D3_ROOMS (owner card 2026-10-15): superdeep ONLY, a sheer D 3 pocket is no prison (capture-down and lip service need D4). The grid never rebuilds mid-flood.
+			// (GPT #11); a gentle bowl is no enclosure. PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V6, veto-able): at any depth, the
+			// 2 m clause dropped, unless "pit room floor at least N m" says otherwise (2 m = the 2026-10-16 card
+			// PIT_PRISON_JUDGE_D3_ROOMS, "Superdeep only, as designed"). Capture-down and lip service read the SAME test
+			// (IsPitFloor), so rooms and the jobs done into them never disagree. The grid never rebuilds mid-flood.
 			if (RM_PocketGrid.Relative)
 			{
-				return eng.IsSuperdeepRaw(c) && RM_PocketGrid.IsPersonPocketCell(map, c);
+				return RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), eng.ExcavatedDepthRaw(c), MinRoomNotches);
 			}
 			return eng.IsSuperdeepRaw(c);
+		}
+
+		/// <summary>The setting "a pit room's floor is at least N m down", in notches (0 = any depth, V6).</summary>
+		public static int MinRoomNotches => RM_RelativeRulesMath.Notches(RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, 0);
+
+		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: "down a pit" for everything that used to ask "is this cell dug 2 m":
+		/// lip service, capture-down, exposure, the pit-room temperature coupling, liquid fire's trapped occupant and the
+		/// knock-back exemption. Relative climb on: an uncovered dug square in a person-band pocket deep enough for a pit room
+		/// (the room test, with or without the rooms setting). Off: the old absolute rule, an uncovered dug 2 m square.</summary>
+		public static bool IsPitFloor(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (map == null || eng == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			if (RM_PocketGrid.Relative)
+			{
+				int d = eng.ExcavatedDepthAt(c);
+				return d > 0 && RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), d, MinRoomNotches)
+					&& !Pits.RM_PitCoverUtility.IsCovered(map, c);
+			}
+			return eng.IsSuperdeepExcavation(c) && !Pits.RM_PitCoverUtility.IsCovered(map, c);
+		}
+
+		/// <summary>The cheap "could any cell be a pit floor" early-out for IsPitFloor's callers.</summary>
+		public static bool AnyPitFloor(RM_MapComponent_Excavation eng)
+		{
+			return eng != null && (RM_PocketGrid.Relative ? eng.ExcavatedCellCount > 0 : eng.SuperdeepCellCount > 0);
 		}
 
 		private sealed class Side
@@ -131,6 +162,18 @@ namespace RimMandrake.FlowWorks
 				walkabilityChanged = AccessTools.Method(typeof(RegionDirtyer), "Notify_WalkabilityChanged");
 			}
 			walkabilityChanged?.Invoke(map.regionDirtyer, new object[] { c, c.Walkable(map) });
+		}
+
+		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: a cut or fill crossed the pit-room minimum depth (a setting other than
+		/// 0 or 2 m; the 2 m crossing is already notified, and pocket flips are notified by the pocket grid's rebuild).</summary>
+		public static void NotifyDepthCrossed(Map map, IntVec3 c, int before, int after)
+		{
+			int m = MinRoomNotches;
+			if (m <= 0 || m == RM_ExcavationDepth.Superdeep || (before >= m) == (after >= m))
+			{
+				return;
+			}
+			NotifyPitnessChanged(map, c);
 		}
 
 		/// <summary>The setting was flipped: every map's rooms are re-derived.</summary>
@@ -218,7 +261,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (!RM_PitRoomMath.LipCandidate(eng.IsSuperdeepExcavation(c), c.Standable(map),
+				if (!RM_PitRoomMath.LipCandidate(IsPitFloor(map, eng, c), c.Standable(map),
 					c.DistanceTo(target), radius))
 				{
 					continue;
@@ -263,12 +306,12 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(worker.Map);
-			if (eng == null || eng.SuperdeepCellCount == 0)
+			if (!AnyPitFloor(eng))
 			{
 				return false;
 			}
 			IntVec3 cell = dest.HasThing ? dest.Thing.Position : dest.Cell;
-			return eng.IsSuperdeepExcavation(cell) && !eng.IsSuperdeepExcavation(worker.Position);
+			return IsPitFloor(worker.Map, eng, cell) && !IsPitFloor(worker.Map, eng, worker.Position);
 		}
 
 		// ── capture down ─────────────────────────────────────────────────
@@ -563,7 +606,7 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(clickedPawn.Map);
-			if (eng == null || !eng.IsSuperdeepExcavation(clickedPawn.Position))
+			if (eng == null || !RM_PitRooms.IsPitFloor(clickedPawn.Map, eng, clickedPawn.Position))
 			{
 				return null;
 			}
@@ -612,7 +655,7 @@ namespace RimMandrake.FlowWorks
 			{
 				IntVec3 lip = job.targetB.Cell;
 				if (!lip.IsValid || !lip.AdjacentTo8WayOrInside(Victim.Position)
-					|| RM_SuperdeepTrap.EngineOf(pawn.Map).IsSuperdeepExcavation(lip))
+					|| RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), lip))
 				{
 					if (!RM_PitRooms.TryFindLipCell(pawn, Victim.Position, RM_PitRoomMath.LipKind.Touch, out lip))
 					{
@@ -628,7 +671,7 @@ namespace RimMandrake.FlowWorks
 			Toil hold = Toils_General.Wait(RM_PitRoomMath.CaptureDownTicks, TargetIndex.A)
 				.WithProgressBarToilDelay(TargetIndex.A);
 			hold.FailOn(() => !pawn.Position.AdjacentTo8WayOrInside(Victim.Position)
-				|| RM_SuperdeepTrap.EngineOf(pawn.Map).IsSuperdeepExcavation(pawn.Position));
+				|| RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position));
 			yield return hold;
 			yield return Toils_General.Do(delegate
 			{

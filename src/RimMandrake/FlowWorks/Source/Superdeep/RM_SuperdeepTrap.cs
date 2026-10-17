@@ -372,20 +372,31 @@ namespace RimMandrake.FlowWorks
 			float dmg = 0f;
 			if (RimMandrakeFlowWorksSettings.fallDamageEnabled)
 			{
-				float scale = 1f;
-				if (RM_PocketGrid.Relative)
-				{
-					// Design §8.5 step 8 (PROVISIONAL): damage scales by drop ÷ 2 m, capped (never by the dig cap: an 8 m cap would
-					// soften every fall; P7 owns metres fallen); unknown drop = from the surface.
-					RM_MapComponent_Excavation eng = EngineOf(p.Map);
-					int d = drop >= 0 ? drop : (eng?.ClimbDepthAt(cell) ?? RM_PitTrapMath.Superdeep);
-					scale = RM_PitTrapMath.FallDropScale(d, RM_PitTrapMath.Superdeep);
-				}
+				// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V3): damage by METRES FALLEN, in both climb modes: today's fall
+				// up to 2 m (linear: drop ÷ 2 m), +50 % a metre past it, capped at 4× (settings). Never by the cell's depth, never by
+				// the dig cap. Unknown drop = from the surface. Blunt, through the normal pipeline: never instant death.
+				RM_MapComponent_Excavation eng = EngineOf(p.Map);
+				int d = drop >= 0 ? drop : (eng?.ClimbDepthAt(cell) ?? RM_PitTrapMath.Superdeep);
+				float scale = FallScaleFor(d);
 				dmg = scale * RM_PitTrapMath.FallDamage(p.GetStatValue(StatDefOf.Mass), RimMandrakeFlowWorksSettings.fallDamageMultiplier);
-				p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
+				if (dmg > 0f && scale > 0f)
+				{
+					p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
+				}
+				else
+				{
+					dmg = 0f;
+				}
 			}
 			state.RecordDescent(p, cell, dmg);
 			PitDescent?.Invoke(p, cell);
+		}
+
+		/// <summary>V3: the fall's multiple of the 2 m fall for a drop of <paramref name="dropNotches"/>, under the settings.</summary>
+		public static float FallScaleFor(int dropNotches)
+		{
+			return RM_RelativeRulesMath.FallScaleNotches(dropNotches, RimMandrakeFlowWorksSettings.fallDamagePerMetrePast2,
+				RimMandrakeFlowWorksSettings.fallDamageCap);
 		}
 
 		/// <summary>FLOWWORKS_PIT_FALL_ONLY_FORCED_1: a forced arrival (skip, flyer landing, a cover
@@ -416,7 +427,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = EngineOf(p.Map);
-			if (eng == null || !eng.IsSuperdeepExcavation(cell) || eng.IsSuperdeepExcavation(p.Position)
+			if (eng == null || !IsJumpDrop(p, eng, p.Position, cell)
 				|| !cell.Standable(p.Map) || !p.Position.AdjacentTo8WayOrInside(cell))
 			{
 				return false;
@@ -437,19 +448,33 @@ namespace RimMandrake.FlowWorks
 		public static IntVec3 JumpTargetFor(Pawn p)
 		{
 			RM_MapComponent_Excavation eng = EngineOf(p?.Map);
-			if (eng == null || eng.SuperdeepCellCount == 0 || eng.IsSuperdeepExcavation(p.Position))
+			if (eng == null || !AnyHole(eng))
 			{
 				return IntVec3.Invalid;
 			}
 			for (int i = 0; i < 4; i++)
 			{
 				IntVec3 c = p.Position + GenAdj.CardinalDirections[i];
-				if (eng.IsSuperdeepExcavation(c) && c.Standable(p.Map))
+				if (c.InBounds(p.Map) && IsJumpDrop(p, eng, p.Position, c) && c.Standable(p.Map))
 				{
 					return c;
 				}
 			}
 			return IntVec3.Invalid;
+		}
+
+		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: is the step from <paramref name="from"/> down into <paramref name="to"/>
+		/// a jump? Relative climb on: a drop of more than this pawn climbs (a 3 m drop from a 4 m ledge into a 7 m core is one;
+		/// a 0.5 m step is a walk). Off: the absolute rule, from shallower than 2 m into a dug 2 m square.</summary>
+		public static bool IsJumpDrop(Pawn p, RM_MapComponent_Excavation eng, IntVec3 from, IntVec3 to)
+		{
+			if (RM_PocketGrid.Relative)
+			{
+				int fromD = StepDepthAt(p.Map, eng, from);
+				int toD = StepDepthAt(p.Map, eng, to);
+				return toD > fromD && RM_PitTrapMath.ArrivalDropsTooFar(fromD, toD, RM_PocketGrid.ClimbLimitOf(p));
+			}
+			return eng.IsSuperdeepExcavation(to) && !eng.IsSuperdeepExcavation(from);
 		}
 	}
 

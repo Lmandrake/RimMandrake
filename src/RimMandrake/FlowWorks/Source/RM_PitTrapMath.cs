@@ -507,19 +507,6 @@ namespace RimMandrake.FlowWorks
 			return toD - fromD > Math.Max(1, k);
 		}
 
-		/// <summary>Design §8.5 step 8 (PROVISIONAL): fall damage scales by drop ÷ <paramref name="maxDepth"/> (2 m), capped at
-		/// 1, so a drop from the surface into a D 4 cell costs exactly today's flat fall. PIT_DEPTH_WIDEN: the caller passes the
-		/// fixed 2 m, NOT the dig cap (dividing by an 8 m cap would soften every fall); falls deeper than 2 m deal the 2 m fall
-		/// until P7 (PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE, V3) scales them by metres fallen.</summary>
-		public static float FallDropScale(int drop, int maxDepth = Superdeep)
-		{
-			if (drop <= 0 || maxDepth <= 0)
-			{
-				return 0f;
-			}
-			return Math.Min(1f, (float)drop / maxDepth);
-		}
-
 		/// <summary>The relative hold (design §8.3): in a pocket of its band, no usable ladder in that pocket's cell, not flying
 		/// (or able to fly), wide enough. Same gate order as <see cref="Held"/>.</summary>
 		public static bool HeldRelative(bool ruleOn, bool inPocket, bool captured, bool flying, bool ladderUsableHere, bool wideEnough)
@@ -530,15 +517,17 @@ namespace RimMandrake.FlowWorks
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
 		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
 		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two
-		/// DRY cells: 0 (normal walking) between equal depths, 0 for a drop INTO a superdeep cell (a fall), otherwise
-		/// <paramref name="climbCost"/> (the deeper cell's dry path cost: climbing in or out, ladder included).</summary>
+		/// DRY cells: 0 (normal walking) between equal depths, 0 for a sheer drop of 2 m or more (a fall), otherwise
+		/// <paramref name="climbCost"/> (the deeper cell's dry path cost: climbing in or out, ladder included).
+		/// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: the fall is the DROP (RM_RelativeRulesMath.StepIsAFall), never "the
+		/// destination is 2 m deep" (that priced a 2 m to 2.5 m step and a 4 m ledge to a 7 m core alike as free falls).</summary>
 		public static int DryStepBaseCost(int fromDepth, int toDepth, int climbCost)
 		{
 			if (fromDepth == toDepth)
 			{
 				return 0;
 			}
-			if (toDepth >= Superdeep && toDepth > fromDepth)
+			if (RM_RelativeRulesMath.StepIsAFall(fromDepth, toDepth, Superdeep))
 			{
 				return 0;
 			}

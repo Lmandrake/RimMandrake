@@ -65,6 +65,8 @@
     <Compile Include="..\RM_DigDepthMath.cs" />
     <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
+    <Compile Include="..\RM_RelativeRulesMath.cs" />
+    <Compile Include="RelativeRulesChecks.cs" />
     <Compile Include="..\RM_SlimeMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />

@@ -30,7 +30,8 @@ namespace RimMandrake.FlowWorks
 		public static bool IsExposed(Map map, RM_MapComponent_Excavation eng, Pawn p)
 		{
 			IntVec3 c = p.Position;
-			return eng.IsSuperdeepExcavation(c) && !map.roofGrid.Roofed(c) && !Pits.RM_PitCoverUtility.IsCovered(map, c);
+			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit (a person-band pocket at any depth, V6), not "dug 2 m"
+			return RM_PitRooms.IsPitFloor(map, eng, c) && !map.roofGrid.Roofed(c);
 		}
 
 		/// <summary>
@@ -223,7 +224,7 @@ namespace RimMandrake.FlowWorks
 			Room room = roomField(__instance);
 			Map map = room?.Map;
 			RM_MapComponent_Excavation eng = RM_SuperdeepShooting.EngineFor(map);
-			if (eng == null || eng.SuperdeepCellCount == 0)
+			if (!RM_PitRooms.AnyPitFloor(eng))
 			{
 				return;
 			}
@@ -237,7 +238,7 @@ namespace RimMandrake.FlowWorks
 			int deep = 0;
 			foreach (IntVec3 c in room.Cells)
 			{
-				if (eng.IsSuperdeepExcavation(c))
+				if (RM_PitRooms.IsPitFloor(map, eng, c))   // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: the pit-room test, not D 4
 				{
 					deep++;
 				}

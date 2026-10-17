@@ -290,10 +290,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitTrapMath.IsPitDescent(0, 8) && !RM_PitTrapMath.IsPitDescent(8, 14) && !RM_PitTrapMath.StepBlocked(true, 8)
                     && RM_PitTrapMath.StepBlocked(true, 3), "a 7 m core under a 4 m ledge is one pit; a held pawn walks its floor at any depth");
                 Assert(RM_PitTrapMath.DryStepBaseCost(8, 14, 70) == 0 && RM_PitTrapMath.DryStepBaseCost(14, 8, 70) == 70, "down is a fall, up is a climb");
-                Assert(RM_PitTrapMath.FallDropScale(14, RM_PitTrapMath.Superdeep) == 1f && RM_PitTrapMath.FallDropScale(2, RM_PitTrapMath.Superdeep) == 0.5f,
-                    "a fall past 2 m is the full fall, never softened by the dig cap (P7 scales by metres)");
+                Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(14) - 3.5f) < 1e-6 && RM_RelativeRulesMath.FallScaleNotches(2) == 0.5f,
+                    "a 7 m fall is 3.5 times the 2 m fall, never softened by the dig cap (P7 V3)");
                 string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
-                RiverSwitchFlipChecks.Has(trap, @"scale = RM_PitTrapMath\.FallDropScale\(d, RM_PitTrapMath\.Superdeep\);", "the fall divides by 2 m, not the cap");
+                RiverSwitchFlipChecks.Has(trap, @"float scale = FallScaleFor\(d\);", "the fall scales by metres fallen, not the cap");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"if \(d >= RM_ExcavationDepth\.Superdeep && before < RM_ExcavationDepth\.Superdeep\) \{ superdeepCellCount\+\+;", "a pit is counted once, at the 2 m crossing");
                 RiverSwitchFlipChecks.Has(ex, @"if \(d >= RM_ExcavationDepth\.Superdeep && newD < RM_ExcavationDepth\.Superdeep\) \{ superdeepCellCount--;", "and uncounted only when filled back above 2 m");

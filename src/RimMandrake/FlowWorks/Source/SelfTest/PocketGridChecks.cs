@@ -86,9 +86,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitTrapMath.ArrivalDropsTooFar(0, 2, Rat), "0 -> 2 is a fall for a rat");
                 Assert(!RM_PitTrapMath.ArrivalDropsTooFar(4, 0, Rat), "climbing up is never a fall");
                 Assert(!RM_PitTrapMath.ArrivalDropsTooFar(0, 4, 4), "a thrumbo steps down 4");
-                Assert(Math.Abs(RM_PitTrapMath.FallDropScale(4) - 1f) < 1e-6, "surface to D 4 = today's flat fall");
-                Assert(Math.Abs(RM_PitTrapMath.FallDropScale(3) - 0.75f) < 1e-6, "3 of 4");
-                Assert(RM_PitTrapMath.FallDropScale(0) == 0f && RM_PitTrapMath.FallDropScale(-2) == 0f, "no drop, no damage scale");
+                Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(4) - 1f) < 1e-6, "surface to D 4 = today's flat fall");
+                Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(3) - 0.75f) < 1e-6, "3 of 4");
+                Assert(RM_RelativeRulesMath.FallScaleNotches(0) == 0f && RM_RelativeRulesMath.FallScaleNotches(-2) == 0f, "no drop, no damage scale");
             });
 
             Case("Pocket_dried_pond_never_traps_a_person", () =>
@@ -249,7 +249,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(trap.Contains("RM_PocketGrid.For(") && trap.Contains("RM_PitTrapMath.HeldRelative("),
                     "the hold reads the pocket grid when the relative rule is on");
                 Assert(trap.Contains("RM_PitTrapMath.ArrivalDropsTooFar("), "the descent detector falls by drop over K");
-                Assert(trap.Contains("RM_PitTrapMath.FallDropScale("), "fall damage scales by the drop");
+                Assert(trap.Contains("RM_RelativeRulesMath.FallScaleNotches("), "fall damage scales by the drop (metres fallen, P7 V3)");
                 Assert(trap.Contains("RM_PitTrapMath.StepAllowed(") && trap.Contains("RM_PitTrapMath.DiagonalAllowed("),
                     "the per-move floor uses the relative step rule");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");

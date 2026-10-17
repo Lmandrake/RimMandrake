@@ -5,9 +5,10 @@ using Verse;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>
-	/// CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a superdeep canal bottom, the same
+	/// CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a pit floor, the same
 	/// shape as the ladder (a Thing in the cell, a placeworker, a one-line cell query). Owner Q2,
-	/// 2026-10-02 (by card): spikes only in the deepest pits; shallower canals are just slow ground.
+	/// 2026-10-02 (by card): spikes only in the deepest pits; restated relative by owner R7 (2026-10-17, by card;
+	/// form V4): any square with a sheer drop of 2 m or more to a neighbour.
 	///
 	/// They fire on DESCENT into the cell only (RM_SuperdeepTrap.PitDescent, raised after the
 	/// fall): never on walking up to the lip, never on moving between two D = 4 cells. Spikes key
@@ -38,16 +39,33 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>The placement rule as a pure function of the cell's dug depth: D = 4 only.
+		/// <summary>The setting "Spikes need a sheer drop of N m", in notches (2 m shipped).</summary>
+		public static int MinDropNotches => RM_RelativeRulesMath.Notches(RimMandrakeFlowWorksSettings.spikeMinDropMetres, 1);
+
+		/// <summary>The tallest wall over a dug square: how many notches its highest neighbour stands above it (climb depths;
+		/// out of bounds skipped).</summary>
+		public static int TallestWallOver(RM_MapComponent_Excavation engine, IntVec3 c)
+		{
+			Map map = engine.map;
+			return RM_RelativeRulesMath.TallestWallOver((x, z) =>
+			{
+				IntVec3 n = new IntVec3(x, 0, z);
+				return n.InBounds(map) ? engine.ClimbDepthAt(n) : -1;
+			}, c.x, c.z);
+		}
+
+		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes stand on a DUG square with a sheer drop of
+		/// MinDropNotches (2 m) or more to a neighbour, at any absolute depth (was "D = 4 only", the deepest pit of 2026-10-02).
 		/// Null = accepted, otherwise the refusal reason.</summary>
 		public static string PlacementRefusal(RM_MapComponent_Excavation engine, IntVec3 c)
 		{
+			int need = MinDropNotches;
 			if (engine == null || !engine.IsExcavated(c))
 			{
-				return "RMFlow_SpikesNeedSuperdeep".Translate(0);
+				return "RMFlow_SpikesNeedDrop".Translate(RM_Volume.FormatMetres(0), RM_Volume.FormatMetres(need));
 			}
-			int depth = engine.ExcavatedDepthAt(c);
-			return depth >= 4 ? null : (string)"RMFlow_SpikesNeedSuperdeep".Translate(depth);
+			int wall = TallestWallOver(engine, c);
+			return wall >= need ? null : (string)"RMFlow_SpikesNeedDrop".Translate(RM_Volume.FormatMetres(wall), RM_Volume.FormatMetres(need));
 		}
 
 		/// <summary>Lands the spike hits on a pawn that just dropped into <paramref name="cell"/>.
@@ -80,8 +98,9 @@ namespace RimMandrake.FlowWorks
 		{
 			RM_MapComponent_Excavation engine = map?.GetComponent<RM_MapComponent_Excavation>();
 			int depth = engine != null && engine.IsExcavated(cell) ? engine.ExcavatedDepthAt(cell) : 0;
+			int wall = engine != null && engine.IsExcavated(cell) ? TallestWallOver(engine, cell) : 0;
 			string why = PlacementRefusal(engine, cell);
-			return why == null ? "ACCEPT depth " + depth : "REFUSE depth " + depth + ": " + why;
+			return (why == null ? "ACCEPT depth " : "REFUSE depth ") + depth + " drop " + wall + (why == null ? "" : ": " + why);
 		}
 
 		/// <summary>Bridge proof (jawa/static_call): the descent hook, fired directly on the pawn
@@ -122,8 +141,8 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>Spikes belong on a pit floor, and only the deepest (owner Q2): refused on open
-	/// ground and on depths 1-3, with the depth in the reason.</summary>
+	/// <summary>Spikes belong at the foot of a sheer drop (owner R7, V4: 2 m or more to a neighbour, at any depth): refused on
+	/// open ground and on gentle slopes, with the drop in the reason.</summary>
 	public class PlaceWorker_SpikesOnSuperdeep : PlaceWorker
 	{
 		public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot,
