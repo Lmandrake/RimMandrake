@@ -156,6 +156,10 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			float perTick = RM_KitMath.BatchesPerRareTick(Props.batchesPerDay, RM_KitSettings.reactionRateMultiplier);
 			accrued = System.Math.Min(accrued + perTick, System.Math.Max(1f, perTick));
 			List<Building_LiquidTank> tanks = RM_LiquidNet.TanksFor(parent);
+			// FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT: a supplied reaction that cannot run this tick (budget, product room,
+			// rotation, no draw/fill plan) no longer ends the shift; the next reaction is tried, and the first stall's status
+			// stands if none runs.
+			string stalled = null;
 			foreach (RM_LiquidReactionDef r in Candidates())
 			{
 				if (r?.reactantA == null || r.reactantB == null)
@@ -186,16 +190,16 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				}
 				if (n <= 0)
 				{
-					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
-					return;
+					stalled = stalled ?? (string)"RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
+					continue;
 				}
 				List<(Building_LiquidTank tank, int units)> pa = RM_LiquidNet.DrawPlan(parent, r.reactantA, n * r.UnitsA);
 				List<(Building_LiquidTank tank, int units)> pb = RM_LiquidNet.DrawPlan(parent, r.reactantB, n * r.UnitsB);
 				List<(Building_LiquidTank tank, int units)> pp = toTank ? RM_LiquidNet.FillPlan(parent, r.productLiquid, n * r.ProductUnits) : null;
 				if (pa == null || pb == null || (toTank && pp == null))
 				{
-					status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
-					return;
+					stalled = stalled ?? (string)"RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label, r.ProductLabel);
+					continue;
 				}
 				// L1 (§4): both reactants and the product are one committed move (in batches). A and B are removed first and put
 				// back together if the product tanks refuse; with no product tank the product is dropped as items, else it vents.
@@ -225,6 +229,11 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				}
 				status = "RMFlow_ReactorWorking".Translate(r.reactantA.label, r.reactantB.label,
 					made ? r.ProductLabel : "RMFlow_ReactorVented".Translate().ToString());
+				return;
+			}
+			if (stalled != null)
+			{
+				status = stalled;
 				return;
 			}
 			status = tanks.Count == 0 ? (RM_LiquidNet.TooLarge(parent) ? "RMFlow_NetTooLarge".Translate() : "RMFlow_ConverterNoTank".Translate()) : "RMFlow_ReactorNoPair".Translate();
