@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -101,7 +102,9 @@ namespace RimMandrake.ExplosiveGrowth
         public int SoakedCount => ledger.soakUntil.Count;
         public int ChargingCount => ledger.charges.Count;
         public int SuppressedCount => ledger.suppressedUntil.Count;
-        public IEnumerable<IntVec3> SoakedCells => ledger.soakUntil.Keys;
+        /// <summary>Live soaks only (EGROWTH_BLOOMBURST_FIX_STALE_FOOTPRINT): expired keys linger until the next
+        /// PruneExpired, up to a pass later.</summary>
+        public IEnumerable<IntVec3> SoakedCells => ledger.soakUntil.Keys.Where(IsSoaked);
         public bool AnyCharging => ledger.charges.Count > 0;
 
         // ── the soak ─────────────────────────────────────────────────────
@@ -241,12 +244,13 @@ namespace RimMandrake.ExplosiveGrowth
                 wobbleParity = !wobbleParity;
             }
 
+            // Rupture clouds BEFORE the charge pass (EGROWTH_RUPTURE_FIX_ROLLS_TWICE): a rupture fired by this pass already
+            // pulses once in RM_TopResolver.Rupture, so ticking after it rolled the new cloud twice on its birth tick.
+            if (ruptures.Count > 0) TickRuptures(now);
+
             // Arm what is soaked and mature, then run the charge (kernel; this component answers through Sink).
             float chargeTicks = RM_ExplosiveGrowthKernel.ChargeTicks(ExplosiveGrowthSettings.chargeHours);
             ledger.Pass(sink, now, dt, reprint, chargeTicks, ExplosiveGrowthSettings.tellSoundsEnabled);
-
-            // 3. Rupture clouds.
-            if (ruptures.Count > 0) TickRuptures(now);
         }
 
         /// <summary>What the kernel pass needs from the live map, and what it asks the game to do.</summary>
