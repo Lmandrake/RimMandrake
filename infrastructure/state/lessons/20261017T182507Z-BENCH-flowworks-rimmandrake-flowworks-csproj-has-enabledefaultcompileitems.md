@@ -1,0 +1,1 @@
+FlowWorks' RimMandrake_FlowWorks.csproj has EnableDefaultCompileItems false (like CreatureBehaviors): a new Source/*.cs referenced only from XML builds into nothing and winbuild still says BUILT. Check the .srchash lists the file, or a selftest that every folder file is in the Compile list.

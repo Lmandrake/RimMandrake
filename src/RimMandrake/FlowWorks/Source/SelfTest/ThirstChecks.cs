@@ -67,7 +67,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_ThirstMath.Better(P, RM_WaterQuality.Potable, 100f, P, RM_WaterQuality.Fouled, 1f), "quality before distance");
                 Assert(RM_ThirstMath.Better(P, RM_WaterQuality.Potable, 1f, P, RM_WaterQuality.Potable, 2f) && !RM_ThirstMath.Better(P, RM_WaterQuality.Toxic, 0f, P, RM_WaterQuality.Distilled, 99f), "then distance; can-fail");
                 Assert(Near(RM_ThirstMath.Hydration(1.5f, RM_WaterQuality.Slime, true), 0.3f, 0.001f), "slime x0.6");
-                Assert(RM_ThirstMath.FouledPoisonChance == 0.2f && RM_ThirstMath.ToxicBuildupPerDrink == 0.12f, "design §3 numbers");
+                Assert(RM_ThirstMath.ToxicBuildupPerDrink == 0.12f, "design §3 numbers");
             });
             Case("Thirst_use_class_gate_ruled", () =>
             {
@@ -116,7 +116,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
                 XElement Row(string d) => reg.Root.Elements().First(e => (string)e.Element("defName") == d);
                 string RimRoot = Path.GetDirectoryName(ModRoot);
-                string Pkg(string mod) => (string)XDocument.Load(Path.Combine(RimRoot, mod, "About", "About.xml")).Root.Element("packageId");
+                // a COMPOSED biome member's own packageId never loads: its MayRequire must name Baroque Biomes' id
+                string compose = File.ReadAllText(Path.Combine(RimRoot, "Biomes.compose.json"));
+                int wave = int.Parse(System.Text.RegularExpressions.Regex.Match(compose, @"""compose_wave""\s*:\s*(\d+)").Groups[1].Value);
+                string Pkg(string mod)
+                {
+                    var m = System.Text.RegularExpressions.Regex.Match(compose, @"""key"":\s*""" + mod + @""",\s*""source"":\s*""[^""]+"",\s*""group"":\s*""[^""]+"",\s*""wave"":\s*(\d+)");
+                    if (m.Success && int.Parse(m.Groups[1].Value) <= wave) return "mandrake.rm.biomes";
+                    return (string)XDocument.Load(Path.Combine(RimRoot, mod, "About", "About.xml")).Root.Element("packageId");
+                }
+                Assert(Pkg("TheRot") == "mandrake.rm.biomes", "can-fail: The Rot is composed (its own id would never load)");
                 bool DefOnDisk(string mod, string type, string def) => Directory.GetFiles(Path.Combine(RimRoot, mod, "Defs"), "*.xml", SearchOption.AllDirectories)
                     .Any(f => XDocument.Load(f).Descendants(type).Any(e => (string)e.Element("defName") == def));
                 var want = new[] { ("RM_Liquid_SlimeRed", "RM_ContagionTouched", "Contagion"), ("RM_Liquid_SlimeWhite", "RM_SporeFlesh", "TheRot"),
@@ -146,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
                 Assert((string)Row("RM_Liquid_SlimeRed").Descendants("severity").First() == "1", "red: Contagion at full right away");
-                Assert(Row("RM_Liquid_LivingSlime").Attribute("MayRequire") != null, "the living-slime row only with Gelatinous Slime");
+                Assert((string)Row("RM_Liquid_LivingSlime").Attribute("MayRequire") == Pkg("GelatinousSlime"), "the living-slime row only with Gelatinous Slime");
                 XDocument p = XDocument.Load(Path.Combine(ModRoot, "Patches", "Thirst", "RM_LivingSlimeDrinkable.xml"));
                 Assert((string)p.Root.Element("Operation").Attribute("Class") == "PatchOperationConditional" && p.Descendants("liquid").First().Value == "RM_Liquid_LivingSlime", "RM_Slime_Liquid points at the living-slime row, conditionally");
                 Assert(DefOnDisk("GelatinousSlime", "TerrainDef", "RM_Slime_Liquid"), "can-fail: the patched terrain exists");
@@ -160,6 +169,42 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string u = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
                 RiverSwitchFlipChecks.Has(u, @"QualityEffects\(pawn, q, source\);\s*RowEffects\(pawn, liquid, source\);", "every drink route runs the row's effects");
                 RiverSwitchFlipChecks.Has(u, @"GetModExtension<RM_DrinkableTerrainExtension>\(\)\?\.liquid", "the terrain adapter is read by DrinkLiquidAt");
+            });
+            Case("Thirst_salt_break_ruled", () =>
+            {
+                // Q8 (owner 2026-10-17): a mood break that also needs thirst; brine = salt; no re-entry while poisoned.
+                Assert(RM_ThirstMath.SaltBreakCan(0.05f, false, false, true), "parched, no potable, salt in reach: can break");
+                Assert(!RM_ThirstMath.SaltBreakCan(0.2f, false, false, true), "merely thirsty: no");
+                Assert(!RM_ThirstMath.SaltBreakCan(0.05f, true, false, true), "still salt-poisoned: no re-entry");
+                Assert(!RM_ThirstMath.SaltBreakCan(0.05f, false, true, true), "fresh water in reach: no");
+                Assert(!RM_ThirstMath.SaltBreakCan(0.0f, false, false, false), "can-fail: no salt to drink: no");
+                XDocument d = XDocument.Load(Path.Combine(ModRoot, "Defs", "Thirst", "RM_Thirst_SaltBreak.xml"));
+                XElement br = Def(d, "MentalBreakDef", "RM_Break_DrinkBrine");
+                Assert(br != null && (string)br.Element("intensity") == "Major" && (string)br.Element("mentalState") == "RM_DrinkBrine", "an ordinary mood-pool break (Q8 b: low mood like other breaks)");
+                XElement st = Def(d, "MentalStateDef", "RM_DrinkBrine");
+                Assert((string)st.Element("workerClass") == "RimMandrake.FlowWorks.Thirst.MentalStateWorker_RM_DrinkBrine", "the thirst half is the state worker");
+                XElement sp = Def(d, "HediffDef", "RM_SaltPoisoning");
+                Assert((string)sp.Element("lethalSeverity") == "1" && sp.Descendants("factor").First().Value == "3", "salt poisoning: lethal untreated, thirst x3");
+                Assert((string)sp.Element("tendable") == "true" && sp.Descendants("severityPerDayTended").Any(), "a doctor brings it down");
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                foreach (string row in new[] { "RM_Liquid_SaltWater", "RM_Liquid_Brine" })
+                {
+                    XElement r = reg.Root.Elements().First(e => (string)e.Element("defName") == row);
+                    Assert((string)r.Element("drinkThought") == "RM_Thought_SaltRelief" && r.Descendants("hediffDef").Any(h => h.Value == "RM_SaltPoisoning"), row + ": relief then poisoning");
+                }
+                XDocument tt = XDocument.Load(Path.Combine(ModRoot, "Patches", "Thirst", "RM_SaltBreakThinkTree.xml"));
+                Assert(tt.Descendants("xpath").First().Value.Contains("MentalStateNonCritical") && tt.Descendants("state").First().Value == "RM_DrinkBrine"
+                    && tt.ToString().Contains("JobGiver_RM_DrinkBrine"), "the state's job giver is wired into vanilla's mental-state tree");
+                // EnableDefaultCompileItems is false: a .cs missing from the Compile list builds into nothing, silently
+                string csproj = File.ReadAllText(Path.Combine(ModRoot, "Source", "RimMandrake_FlowWorks.csproj"));
+                foreach (string f in Directory.GetFiles(Path.Combine(ModRoot, "Source", "Thirst"), "*.cs"))
+                {
+                    Assert(csproj.Contains(@"Include=""Thirst\" + Path.GetFileName(f) + @""""), "csproj compiles Thirst\\" + Path.GetFileName(f));
+                }
+                string sb = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_SaltBreak.cs"));
+                RiverSwitchFlipChecks.Has(sb, @"RM_ThirstMath\.SaltBreakCan\(level, poisoned, RM_SaltBreakUtility\.PotableReachable\(pawn, level\)", "the worker asks the tested rule");
+                RiverSwitchFlipChecks.Has(sb, @"float level = RM_ThirstUtility\.LevelAny\(pawn\);", "Q11: the break reads whichever thirst runs (Dubs' too)");
+                Assert(!RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs")).Contains("AddFoodPoisoningHediff"), "can-fail: salt's routine food poisoning is gone (its harm is salt poisoning now)");
             });
             Case("Thirst_dehydration_ruled", () =>
             {

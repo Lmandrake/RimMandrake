@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimWorld;
 using RimWorld.Planet;
@@ -41,21 +42,59 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 
 		/// <summary>May this pawn drink this liquid now (RM_ThirstMath.MayDrink with the pawn's facts filled in)?
-		/// <paramref name="saltBreak"/>: the salt-water break's own search, which takes ONLY BreakOnly water.</summary>
-		public static bool MayDrink(Pawn pawn, LiquidDef liquid, float level, bool saltBreak = false)
+		/// <paramref name="only"/> narrows a search to one use class: BreakOnly is the salt-water break's own search (inside
+		/// the break salt is exactly what is wanted, so the rules are bypassed); LastResort is the Dubs-mode desperate search
+		/// (rules still apply).</summary>
+		public static bool MayDrink(Pawn pawn, LiquidDef liquid, float level, RM_DrinkUse? only = null)
 		{
 			if (!QualityOf(liquid).HasValue)
 			{
 				return false;
 			}
 			RM_DrinkUse use = UseOf(liquid);
-			if (saltBreak)
+			if (only.HasValue)
 			{
-				return use == RM_DrinkUse.BreakOnly;
+				if (use != only.Value)
+				{
+					return false;
+				}
+				if (use == RM_DrinkUse.BreakOnly)
+				{
+					return true;
+				}
 			}
 			bool humanlike = pawn.RaceProps.Humanlike;
 			return RM_ThirstMath.MayDrink(use, level, humanlike, !humanlike && use != RM_DrinkUse.Potable && NativeHere(pawn), false,
 				RM_ThirstSettings.lastResortDrinking);
+		}
+
+		private static NeedDef dbhThirst;
+		private static bool dbhThirstLooked;
+
+		/// <summary>The thirst need that is running for this pawn: ours in Own mode, Dubs' DBHThirst in Dbh mode (Q11, owner
+		/// 2026-10-17: "read Dubs' thirst"), null when neither runs (thirst off, or a pawn without it).</summary>
+		public static Need ThirstNeedAny(Pawn p)
+		{
+			if (p?.needs == null)
+			{
+				return null;
+			}
+			if (RM_ThirstProvider.Own)
+			{
+				return RM_ThirstProvider.OursLive ? NeedOf(p) : null;
+			}
+			if (!dbhThirstLooked)
+			{
+				dbhThirst = DefDatabase<NeedDef>.GetNamedSilentFail(RM_ThirstProvider.DbhThirstNeed);
+				dbhThirstLooked = true;
+			}
+			return dbhThirst == null ? null : p.needs.TryGetNeed(dbhThirst);
+		}
+
+		/// <summary>0..1 on whichever thirst need runs (1 = no thirst need at all).</summary>
+		public static float LevelAny(Pawn p)
+		{
+			return ThirstNeedAny(p)?.CurLevelPercentage ?? 1f;
 		}
 
 		public static RM_WaterQuality Effective(LiquidDef liquid)
@@ -141,10 +180,20 @@ namespace RimMandrake.FlowWorks.Thirst
 				return;
 			}
 			RM_WaterQuality q = Effective(liquid);
+			float hydrate = RM_ThirstMath.Hydration(litres, q, RM_ThirstSettings.waterQualityEffects);
 			Need_RM_Thirst need = NeedOf(pawn);
 			if (need != null && RM_ThirstProvider.OursLive)
 			{
-				need.CurLevel += RM_ThirstMath.Hydration(litres, q, RM_ThirstSettings.waterQualityEffects);
+				need.CurLevel += hydrate;
+			}
+			else if (!RM_ThirstProvider.Own && (source == null || !HasDubsWaterExt(source.def)))
+			{
+				// Q11 Dbh mode: a drink Dubs cannot see (terrain, a tank, an item without Dubs' WaterExt) fills Dubs' bar
+				Need dbh = ThirstNeedAny(pawn);
+				if (dbh != null)
+				{
+					dbh.CurLevel += hydrate * dbh.MaxLevel;
+				}
 			}
 			// Q12 part 2: a native animal drinks its biome's terrible water "without the human consequences"
 			if (!pawn.RaceProps.Humanlike && UseOf(liquid) != RM_DrinkUse.Potable)
@@ -186,6 +235,20 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 		}
 
+		private static readonly Dictionary<ThingDef, bool> dubsWaterExt = new Dictionary<ThingDef, bool>();
+
+		/// <summary>Does Dubs' own ingestion hydrate this item (it carries DubsBadHygiene.WaterExt)? Read by type name: this
+		/// mod never references Dubs' assembly.</summary>
+		public static bool HasDubsWaterExt(ThingDef def)
+		{
+			if (!dubsWaterExt.TryGetValue(def, out bool has))
+			{
+				has = def.modExtensions != null && def.modExtensions.Any(e => e.GetType().FullName == "DubsBadHygiene.WaterExt");
+				dubsWaterExt[def] = has;
+			}
+			return has;
+		}
+
 		public static void QualityEffects(Pawn pawn, RM_WaterQuality q, Thing source)
 		{
 			if (!RM_ThirstSettings.waterQualityEffects)
@@ -196,20 +259,6 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				case RM_WaterQuality.Distilled:
 					pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(RM_ThirstDefOf.RM_Thought_DrankDistilled);
-					break;
-				case RM_WaterQuality.Fouled:
-					// vanilla's rule: only humanlikes get food poisoning
-					if (pawn.RaceProps.Humanlike && Rand.Chance(RM_ThirstMath.FouledPoisonChance))
-					{
-						if (source != null)
-						{
-							FoodUtility.AddFoodPoisoningHediff(pawn, source, FoodPoisonCause.DangerousFoodType);
-						}
-						else if (!pawn.health.hediffSet.HasHediff(HediffDefOf.FoodPoisoning))
-						{
-							pawn.health.AddHediff(HediffMaker.MakeHediff(HediffDefOf.FoodPoisoning, pawn));
-						}
-					}
 					break;
 				case RM_WaterQuality.Toxic:
 					HealthUtility.AdjustSeverity(pawn, HediffDefOf.ToxicBuildup, RM_ThirstMath.ToxicBuildupPerDrink);
@@ -229,7 +278,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 
 		public static Thing BestBottle(Pawn pawn, float level, bool inventory, out RM_DrinkUse use, out RM_WaterQuality quality,
-			out float dist, Pawn drinker = null)
+			out float dist, Pawn drinker = null, RM_DrinkUse? only = null)
 		{
 			drinker = drinker ?? pawn;
 			use = RM_DrinkUse.Never;
@@ -241,7 +290,7 @@ namespace RimMandrake.FlowWorks.Thirst
 				foreach (Thing t in pawn.inventory.innerContainer)
 				{
 					LiquidDef l = LiquidOf(t);
-					if (!MayDrink(drinker, l, level))
+					if (!MayDrink(drinker, l, level, only))
 					{
 						continue;
 					}
@@ -269,7 +318,7 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					Thing t = things[i];
 					LiquidDef l = LiquidOf(t);
-					if (!MayDrink(drinker, l, level))
+					if (!MayDrink(drinker, l, level, only))
 					{
 						continue;
 					}
@@ -303,9 +352,9 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 
 		/// <summary>The best tank of the pawn's own faction holding a liquid this pawn may drink, with a drink's worth in it.
-		/// <paramref name="saltBreak"/>: only salt water and brine (the break's own search).</summary>
+		/// <paramref name="only"/>: one use class only (MayDrink).</summary>
 		public static Building_LiquidTank BestTank(Pawn pawn, float level, out RM_DrinkUse use, out RM_WaterQuality quality,
-			out float dist, bool saltBreak = false)
+			out float dist, RM_DrinkUse? only = null)
 		{
 			use = RM_DrinkUse.Never;
 			quality = RM_WaterQuality.Slime;
@@ -319,7 +368,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			int units = RM_Volume.Units(RM_ThirstMath.TankDrinkLitres);
 			foreach (Building b in map.listerBuildings.allBuildingsColonist)
 			{
-				if (!(b is Building_LiquidTank tank) || tank.Faction != pawn.Faction || !MayDrink(pawn, tank.storedLiquid, level, saltBreak)
+				if (!(b is Building_LiquidTank tank) || tank.Faction != pawn.Faction || !MayDrink(pawn, tank.storedLiquid, level, only)
 					|| !tank.CanProvide(units))
 				{
 					continue;
@@ -350,15 +399,15 @@ namespace RimMandrake.FlowWorks.Thirst
 		/// distance, so the first reachable cell of a class and quality is the nearest of it; the walk stops at the first
 		/// Potable-class, Potable-or-better hit. A pawn whose search found nothing is not searched again for 600 ticks (a dry
 		/// desert map must not pay a radial walk per think for every thirsty wild animal). The salt-water break's own search
-		/// (<paramref name="saltBreak"/>) takes only salt water and brine, and never marks.</summary>
+		/// and the Dubs-mode desperate search narrow it to one use class (<paramref name="only"/>) and never mark.</summary>
 		public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid,
-			out RM_WaterQuality quality, bool saltBreak = false)
+			out RM_WaterQuality quality, RM_DrinkUse? only = null)
 		{
-			return TryFindDrinkCell(pawn, level, out cell, out liquid, out _, out quality, saltBreak);
+			return TryFindDrinkCell(pawn, level, out cell, out liquid, out _, out quality, only);
 		}
 
 		public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid, out RM_DrinkUse use,
-			out RM_WaterQuality quality, bool saltBreak = false)
+			out RM_WaterQuality quality, RM_DrinkUse? only = null)
 		{
 			cell = IntVec3.Invalid;
 			liquid = null;
@@ -370,7 +419,7 @@ namespace RimMandrake.FlowWorks.Thirst
 				return false;
 			}
 			int now = Find.TickManager.TicksGame;
-			if (!saltBreak && noTerrainUntil.TryGetValue(pawn.thingIDNumber, out int until))
+			if (!only.HasValue && noTerrainUntil.TryGetValue(pawn.thingIDNumber, out int until))
 			{
 				// marks are now+600; one further ahead is a stale entry from another game (thing IDs repeat across saves)
 				if (now < until && until - now <= NoTerrainMarkTicks) return false;
@@ -386,7 +435,7 @@ namespace RimMandrake.FlowWorks.Thirst
 					continue;
 				}
 				LiquidDef l = DrinkLiquidAt(map.terrainGrid.TerrainAt(c));
-				if (l == null || !MayDrink(pawn, l, level, saltBreak))
+				if (l == null || !MayDrink(pawn, l, level, only))
 				{
 					continue;
 				}
@@ -413,12 +462,12 @@ namespace RimMandrake.FlowWorks.Thirst
 				use = u;
 				quality = q;
 				found = true;
-				if (u == RM_DrinkUse.Potable && (int)q <= (int)RM_WaterQuality.Potable || saltBreak)
+				if (u == RM_DrinkUse.Potable && (int)q <= (int)RM_WaterQuality.Potable || only.HasValue)
 				{
 					break;
 				}
 			}
-			if (!found && !saltBreak)
+			if (!found && !only.HasValue)
 			{
 				noTerrainUntil[pawn.thingIDNumber] = now + NoTerrainMarkTicks;
 			}

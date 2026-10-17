@@ -267,7 +267,8 @@ FEATURES = [
      "Thirst rules (slime last resort, salt break, rough drinking, buckets, snow)",
      M + "behaviour with no look of its own; proven by validation.py's thirst rows"),
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
-            r"|dbhBottleBridge|lastResortDrinking)$", "Thirst", M + "as thirst"),
+            r"|dbhBottleBridge|lastResortDrinking|saltBreakEnabled|roughDrinkPenalty|drinkingReserveLitres|bucketFirefighting"
+            r"|snowGathering|sanguophageBloodQuenches)$", "Thirst", M + "as thirst"),
     # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: no frozen station yet (a head needs a pump net and an hour of game time to show
     # anything); proven by validation.py's sprinkler rows (owed live), art on its own review sheet
     ("def", r"^(ThingDef/RM_SprinklerHead|ThingStyleDef/RM_SprinklerHead_\w+|ThingDef/RM_Mote_SprinklerSpray)$",

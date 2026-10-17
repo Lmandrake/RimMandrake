@@ -61,7 +61,6 @@ namespace RimMandrake.FlowWorks.Thirst
 		public const int TankDrinkTicks = 120;
 		public const float TankDrinkLitres = 1.5f;
 
-		public const float FouledPoisonChance = 0.2f;
 		public const float ToxicBuildupPerDrink = 0.12f;
 
 		/// <summary>OQ-1: DBH's thirst runs and ours steps aside when DBH's NeedDef loaded AND a mod that turns it on is
@@ -146,11 +145,25 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		public const float SlimeHydrateFactor = 0.6f;
 
+		/// <summary>Q8 (owner 2026-10-17): the salt-water break is an ordinary mood break (the mood pool brings the low mood)
+		/// that can only happen to a PARCHED pawn with no potable water in reach and no salt poisoning still in them (no
+		/// re-entry), and only where there is salt water or brine to drink.</summary>
+		public static bool SaltBreakCan(float level, bool saltPoisoned, bool potableReachable, bool saltReachable)
+		{
+			return level < ParchedBelow && !saltPoisoned && !potableReachable && saltReachable;
+		}
+
+		/// <summary>The break ends when the bar reads this full (2-4 salt drinks from parched).</summary>
+		public const float SaltBreakQuenched = 0.9f;
+
 		/// <summary>Owner, Q5 2026-10-17: slime (and toxic water, Q8) "should follow the same rules for when people eat rotten
 		/// food that makes them sick". Vanilla lets a pawn eat non-fresh food only when DESPERATE, which is hunger category
 		/// Starving: the need at zero (FoodUtility.BestFoodSourceOnMap's desperate flag, JobGiver_GetFood). The mirror: a
 		/// last-resort liquid only when the thirst need is empty.</summary>
-		public static bool Desperate(float level) => level <= 0f;
+		public static bool Desperate(float level) => level <= DesperateBelow;
+
+		/// <summary>"Empty", with float slack: a need clamps at 0, but another mod's bar (Dubs') may rest a hair above it.</summary>
+		public const float DesperateBelow = 0.005f;
 
 		/// <summary>The one gate every drink search runs (04-merged.md §8). Humanlikes: Potable always; LastResort only when
 		/// <see cref="Desperate"/> (and the setting allows it at all); BreakOnly (salt water, brine) only inside the salt-water

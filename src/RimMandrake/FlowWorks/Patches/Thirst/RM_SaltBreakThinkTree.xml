@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU: what a pawn in RM_DrinkBrine does, inserted into vanilla's
+  MentalStateNonCritical tree beside Binging_Food (each ThinkNode_ConditionalMentalState is exclusive to its state, so
+  the position does not change any other state). Drink salt; between drinks, wander like a binge.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThinkTreeDef[defName="MentalStateNonCritical"]/thinkRoot/subNodes</xpath>
+    <value>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RM_DrinkBrine</state>
+        <subNodes>
+          <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_DrinkBrine" />
+          <li Class="JobGiver_WanderColony" />
+        </subNodes>
+      </li>
+    </value>
+  </Operation>
+</Patch>

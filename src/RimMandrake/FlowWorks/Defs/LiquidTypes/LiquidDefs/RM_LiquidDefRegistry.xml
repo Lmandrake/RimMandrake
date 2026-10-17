@@ -77,6 +77,10 @@
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
     <useClass>BreakOnly</useClass>
+    <drinkThought>RM_Thought_SaltRelief</drinkThought>
+    <drinkOutcomes>
+      <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SaltPoisoning</hediffDef><severity>0.25</severity></li>
+    </drinkOutcomes>
     <surfaceLook>
       <overlay>false</overlay>
       <wake>1.0</wake>
@@ -403,6 +407,10 @@
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
     <useClass>BreakOnly</useClass>
+    <drinkThought>RM_Thought_SaltRelief</drinkThought>
+    <drinkOutcomes>
+      <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SaltPoisoning</hediffDef><severity>0.25</severity></li>
+    </drinkOutcomes>
     <surfaceLook>
       <tint>(0.86,0.97,0.93)</tint>
       <rippleDensity>0.7</rippleDensity>
@@ -523,7 +531,7 @@
     <drinkThought>RM_Thought_DrankSlime</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>
-      <li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.contagion"><hediffDef>RM_ContagionTouched</hediffDef><severity>1</severity></li>
+      <li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.biomes"><hediffDef>RM_ContagionTouched</hediffDef><severity>1</severity></li>
     </drinkOutcomes>
     <surfaceLook>
       <shader>Flow</shader>
@@ -571,7 +579,7 @@
     <drinkThought>RM_Thought_DrankSlime</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>
-      <li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.gelatinousslime" />
+      <li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.biomes" />
     </drinkOutcomes>
     <drinkOutcomeCount>5</drinkOutcomeCount>
     <surfaceLook>
@@ -617,7 +625,7 @@
     <drinkThought>RM_Thought_DrankSlime</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>
-      <li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.therot"><hediffDef>RM_SporeFlesh</hediffDef></li>
+      <li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.biomes"><hediffDef>RM_SporeFlesh</hediffDef></li>
     </drinkOutcomes>
     <surfaceLook>
       <shader>Flow</shader>
@@ -678,7 +686,7 @@
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
-  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef MayRequire="mandrake.rm.gelatinousslime">
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Liquid_LivingSlime</defName>
     <label>living slime</label>
     <description>The body of the Gelatinous Slime, running in its own channels. Drinking it is joining it, a little.</description>
@@ -689,7 +697,7 @@
     <drinkThought>RM_Thought_DrankSlime</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>
-      <li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.gelatinousslime" />
+      <li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.biomes" />
     </drinkOutcomes>
     <drinkOutcomeCount>5</drinkOutcomeCount>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
