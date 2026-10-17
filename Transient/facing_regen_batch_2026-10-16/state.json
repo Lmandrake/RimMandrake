@@ -13,22 +13,74 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "rimstarwars/swbestiary/gizka/gizka": {
-   "attempts": 2,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gizka/candidates/Gizka_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gizka/candidates/Gizka_south.png"
+   },
+   "canon": {
+    "standtall_b1_gizka_north": {
+     "flags": [
+      {
+       "line": "Realistic rendering: natural scaly reptile skin and lighting, no outlines, no cartoon shading, no low-poly game look (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Scaly texture and shaded volume are present, but conspicuous black contours and ink-like internal lines contradict the no-outlines requirement."
+      }
+     ],
+     "note": "",
+     "score": "3/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_gizka_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body held HORIZONTAL over two strong hind legs, a thick tapering TAIL extending behind for balance (part of the silhouette in every facing), tiny vestigial forelimbs tucked against the chest and never weight-bearing (owner ruling 2026-09-16: \"I see clear references to bipedal and no mention of four legs.\")",
+       "reason": "The torso stands vertically over two hind legs, with no visible balancing tail; the small forelimbs are tucked and non-weight-bearing."
+      },
+      {
+       "line": "Realistic rendering: natural scaly reptile skin and lighting, no outlines, no cartoon shading, no low-poly game look (owner ruling 2026-10-08: \"That's realistic, not these cartoon versions you keep using.\")",
+       "reason": "Heavy dark outlines and stylized facial contours give a cartoon appearance despite the detailed scales."
+      },
+      {
+       "line": "NEGATIVE: not a frog, not a toad, not an upright hopper (owner ruling 2026-09-16: \"You just made a frog. I don't want a frog.\"); not a four-legged sprawling lizard",
+       "reason": "The upright torso, squat stance and broad amphibian-like face read as an upright hopper rather than a horizontal theropod."
+      }
+     ],
+     "note": "",
+     "score": "3/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Gizka",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.097,
+     "e_north": 1.083,
+     "e_south": 1.097,
+     "ns": 0.987,
+     "nsw": 1.054,
+     "w_north": 0.312,
+     "w_south": 0.296
+    }
+   },
    "live_sha": {
     "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "seconds": 286,
-   "status": "retryable_failure",
+   "seconds": 210,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "RimStarWars/SWBestiary/Gizka/Gizka",
-   "why": "codex gen failed 3x on north: f)!r} is not in the subpath of {str(other)!r}\")\nValueError: '/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gizka/raw/Gizka_north_raw_1792175520.png' is not in the subpath of '/home/mandrake/rm/bench'\n",
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body hel; south: Realistic rendering: natural scaly reptile skin and lighting, no outlines, no ca; north: Realistic rendering: natural scaly reptile skin and lighting, no outlines, no ca",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Gizka",
    "worker": "codex_home_facing_regen"
   },
   "rimstarwars/swbestiary/gizka/gizkaw": {
@@ -1039,21 +1091,51 @@
    "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/green/jewelbug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_e043a793/candidates/Jewelbug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_e043a793/candidates/Jewelbug_south.png"
+   },
+   "canon": {},
    "def": "RM_Gembug",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "3c8d0707a7b5012dc24a6a5e4d44bc95eb5a9a0822a5cb8745c4f15d24e5ca2e",
+    "south": "78778a7045f1fa0794975af2100eab71e9f6d41d5496445b755a1747999b0559"
+   },
+   "jobs": [
+    "standtall_b1_jewelbug_e043a793_east",
+    "standtall_b1_jewelbug_e043a793_south",
+    "standtall_b1_jewelbug_e043a793_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.084,
+     "d_south": 1.119,
+     "e_north": 1.084,
+     "e_south": 1.119,
+     "ns": 0.969,
+     "nsw": 0.856,
+     "w_north": 0.285,
+     "w_south": 0.333
+    }
+   },
    "live_sha": {
     "north": "70d9604d24ad454677a6f4dcd2ee9617bb828d8c1d192a0c593905dc1cf81dc3",
     "south": "dc09c4df2fd6a84ad2d81d022507fa78221ff08c82cfe88dba021ae27bc7684b"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "needs_eyes",
+   "seconds": 154,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Green/Jewelbug",
-   "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_e043a793",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug": {
    "attempts": 1,
@@ -1103,21 +1185,51 @@
    "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/yellow/jewelbug": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_8a15a50e/candidates/Jewelbug_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_8a15a50e/candidates/Jewelbug_south.png"
+   },
+   "canon": {},
    "def": "RM_Gembug",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "4df690cf66b4e20227b757c8d8bd827e6711814beecb6190502a7e2c4191f7a2",
+    "south": "c231a0721516b7cf1016df8f9bbb192fb62612d19a33943cc02804a427d407a9"
+   },
+   "jobs": [
+    "standtall_b1_jewelbug_8a15a50e_east",
+    "standtall_b1_jewelbug_8a15a50e_south",
+    "standtall_b1_jewelbug_8a15a50e_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.084,
+     "d_south": 1.119,
+     "e_north": 1.084,
+     "e_south": 1.119,
+     "ns": 0.969,
+     "nsw": 1.037,
+     "w_north": 0.426,
+     "w_south": 0.411
+    }
+   },
    "live_sha": {
     "north": "39ec8477dc89734a688534004bc8b0f81e2cee42b709c985a82685773a4eb1be",
     "south": "87aba9f44e887916ed8b812b59a7bfa58190c2ca3d46cff6784b6121e52a9672"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "needs_eyes",
+   "seconds": 153,
+   "status": "installed",
    "sw": false,
    "texPath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug",
-   "why": "slug jewelbug collides with rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug (artpipe job id)"
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Jewelbug_8a15a50e",
+   "worker": "codex_home_facing_regen"
   },
   "rm_lanterndeeps/fauna/bmt_caverns/things/animal/megapleura/megapleura": {
    "attempts": 1,
@@ -3777,21 +3889,66 @@
    "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogapillar": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar_1f9f4812/candidates/Smogapillar_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar_1f9f4812/candidates/Smogapillar_south.png"
+   },
+   "canon": {
+    "standtall_b1_smogapillar_1f9f4812_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_smogapillar_1f9f4812_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_SmogMothLarvae",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "38d253d6d89a69133d7fb7d0481d653a039638286b4c5cc3746e5b5cc93dbced",
+    "south": "d43d324533fb9796cda5b865591796f38d595be2751b79eb58b6fd34009eae2f"
+   },
+   "jobs": [
+    "standtall_b1_smogapillar_1f9f4812_east",
+    "standtall_b1_smogapillar_1f9f4812_south",
+    "standtall_b1_smogapillar_1f9f4812_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.12,
+     "e_north": 1.08,
+     "e_south": 1.12,
+     "ns": 0.964,
+     "nsw": 1.014,
+     "w_north": 0.584,
+     "w_south": 0.576
+    }
+   },
    "live_sha": {
     "north": "37fec96c9af85a3a4d2ac7bfd0e7ea5ea1af03d22c6222e98ea6bcdbff1afad9",
     "south": "07c4fc955e9740167bc8e2159fb52ab6b045cdfaffeb6e69b7e52089936de7ee"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "needs_eyes",
+   "seconds": 189,
+   "status": "installed",
    "sw": true,
    "texPath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar",
-   "why": "slug smogapillar collides with rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar (artpipe job id)"
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Smogapillar_1f9f4812",
+   "worker": "codex_home_facing_regen"
   },
   "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogmoth": {
    "attempts": 0,

@@ -416,3 +416,11 @@
 {"key": "things/pawn/animal/seabeasts/siltlamprey/siltlamprey", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:41"}
 {"key": "things/pawn/animal/seabeasts/thornbackcolo/thornbackcolo", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:45"}
 {"key": "ysalamiri/ysalamiri", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:47"}
+{"event": "publish", "n_paths": 24, "result": "close with: rimflow close <ID> --sha 789c2ece06dc", "at": "2026-10-16T19:21:56"}
+{"key": "rimstarwars/swbestiary/gizka/gizka", "event": "done", "seconds": 210, "at": "2026-10-16T19:55:05"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/green/jewelbug", "event": "done", "seconds": 154, "at": "2026-10-16T19:57:39"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/yellow/jewelbug", "event": "done", "seconds": 153, "at": "2026-10-16T20:00:12"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogapillar", "event": "done", "seconds": 189, "at": "2026-10-16T20:03:21"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/green/jewelbug", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T20:03:26"}
+{"key": "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/yellow/jewelbug", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T20:03:30"}
+{"key": "swanimals/biomesteam/bmt_pollutedlands/things/animal/smogmoth/smogapillar", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T20:03:32"}
