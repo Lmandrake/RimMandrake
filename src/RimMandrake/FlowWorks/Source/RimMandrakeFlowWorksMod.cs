@@ -252,7 +252,8 @@ namespace RimMandrake.FlowWorks
         // coupling (kept until a live check), resistance loss rate (owner Q2: only while the elements hurt).
         public static bool pitExposureEnabled = true;
         public static float pitExposureNarrowing = 8f;   // = RM_PitExposureMath.DefaultNarrowing (a literal: the northstar settings registry parses it)
-        // PIT_FILL_EFFECTS_1 (PROVISIONAL rates): drowning at D=4 with any fill (non-swimmers), poison fluid toxin keyed to fill.
+        // PIT_FILL_EFFECTS_1 (PROVISIONAL rates): drowning when the water covers the head (any depth of hole, V2 below), poison
+        // fluid toxin keyed to fill.
         public static bool pitDrowningEnabled = true;
         public static float pitDrowningRateMultiplier = 1f;
         // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V2): drowning when the water covers the head: over this fraction of the
@@ -907,11 +908,9 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            list.Label("A channel holds three visible levels of liquid, and depth decides "
-                     + "how much a cell can hold. Those levels are also the unit burning "
-                     + "consumes, so anything that changes the depth ladder changes how "
-                     + "long a burning channel lasts. They are one number wearing two hats, "
-                     + "on purpose.");
+            list.Label("A dug square holds water up to its brim, half a metre (1,000 litres) for every half-metre "
+                     + "it was dug, and shows the look of how deep the water in it really is. Burning takes the "
+                     + "same water away at its own rate, so a deeper channel burns longer.");
             list.GapLine();
             list.Label("Sources are terrain, not buildings: a natural liquid body is itself "
                      + "the source — a superdeep cell that is already full, which is why it "
@@ -1095,7 +1094,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.CheckboxLabeled("Repair dig data on load", ref excavationLoadRepairEnabled,
-                "When a map loads, depth is held to 0-4, liquid never exceeds depth, and liquids "
+                "When a map loads, depth is held to 0-20 m, liquid never exceeds depth, and liquids "
               + "no cell uses are dropped from the map's list (one log line says what changed). "
               + "Takes effect the next time a map loads. Off: saves load exactly as stored.");
 
@@ -1152,7 +1151,7 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
               + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
-              + "fire; anyone trapped in a superdeep pit always does. Off: liquid never burns.");
+              + "fire; anyone trapped down a burning pit always does. Off: liquid never burns.");
             using (Dependent(list, "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "astrofuelDetonationEnabled"))
             {
                 list.Label("Burning liquid goes down " + RM_Volume.FormatMetres(1) + " every " + burnDaysPerNotch.ToString("F1")
@@ -1208,10 +1207,9 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
             {
-            list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
-                     + "Everything shallower is wadeable however full it is: a brimming deep canal is "
-                     + "a tax on crossing it, never a barrier, so stopping power comes from superdeep "
-                     + "cells and nothing else.");
+            list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
+                     + "What holds a creature is the height of the step it must climb against its own size, never the "
+                     + "depth alone: a slope it can climb a step at a time never traps it, however deep it goes.");
 
             list.CheckboxLabeled("Superdeep cells trap", ref superdeepCaptureEnabled,
                 "Anyone who walks, is pushed or jumps into a superdeep cell takes a fall and, if the "

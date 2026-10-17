@@ -713,7 +713,11 @@ namespace RimMandrake.FlowWorks
 				BandFor(GenLocalDate.Season(map)),
 				RimMandrakeFlowWorksSettings.refillRateMultiplier);
 			float gained = RM_StockMath.RefillForPulse(perDay, pulseTicks, GenDate.TicksPerDay);
-			body.stock = RM_StockMath.ClampToCapacity(body.stock, gained, body.capacity);
+			// review day 2: in decilitres, never through the float view (stock = stockDl / U as a float and back rounds a big
+			// lake's books by up to ~1e-7 of its stock, tens to hundreds of dL, every pulse, up or down)
+			long capDl = (long)Math.Round(body.capacity * (double)RM_LevelSolve.U);
+			long addDl = (long)Math.Round(gained * (double)RM_LevelSolve.U);
+			body.stockDl = body.stockDl + addDl > capDl ? capDl : body.stockDl + addDl;
 		}
 
 		/// <summary>Ruling 2's season term, mapped onto the Verse-free bands whose
