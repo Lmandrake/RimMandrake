@@ -144,7 +144,7 @@ def main(argv=None):
         n["pumpId"] = thing_at("RM_LiquidPump", ox + 3, oz)
         return n
 
-    def until_pulse(budget=None):
+    def until_pulse():
         """One full pulse interval: every head on the map pulses exactly once in any PULSE consecutive ticks.
         HARNESS (walk 2026-10-17): the first version waited on RM_MapComponent_Sprinklers.Pulses, a MAP-GLOBAL counter, so
         with several nets on the map it returned on ANOTHER head's pulse and read this head 60-130 ticks early (T21, T22 and
@@ -216,7 +216,7 @@ def main(argv=None):
                 sfield(S_SP, "sprinklersEnabled", False)
                 try:
                     u0 = units(*n["tank"])
-                    until_pulse(PULSE + 600)   # the counter is global: no head pulses with the switch off, so this may time out
+                    until_pulse()
                     line = inspect(n["headId"])
                     u1 = units(*n["tank"])
                 finally:
@@ -302,6 +302,8 @@ def main(argv=None):
             print(fill(tx, tz, "RM_Liquid_AcidWater", 50000))
             r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=hx + 1, z=hz + 1, count=1, faction="PlayerColony") or {}
             pid = ((r.get("pawns") or [{}])[0]).get("id")
+            if not pid:          # review 2026-10-17: a failed spawn read as "a pawn in the acid spray took no harm" (MOD)
+                raise RuntimeError("effects: jawa/spawn_pawn gave no pawn id: %s" % str(r)[:200])
             B.call("jawa/set_draft", pawnId=pid, drafted=True)
             B.call("rimworld/select_pawn", pawnId="Thing_" + str(pid))
             B.call("rimworld/execute_debug_action", path="Actions\\Wear apparel (selected)...\\*Remove all apparel")
@@ -366,6 +368,8 @@ def main(argv=None):
             last = trace[-1][1] if trace else None
             r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=tx - 2, z=tz + 3, count=1, faction="PlayerColony") or {}
             pid = ((r.get("pawns") or [{}])[0]).get("id")
+            if not pid:          # review 2026-10-17: a failed spawn read as "did not drink at the reserved tank" (MOD)
+                raise RuntimeError("reserve: jawa/spawn_pawn gave no pawn id: %s" % str(r)[:200])
             for nd in ("Food", "Rest", "Joy", "Mood"):
                 B.call("jawa/pawn_need", pawn=pid, action="need", need=nd, level=1.0)
             B.call("jawa/pawn_need", pawn=pid, action="need", need="RM_Thirst", level=0.2)

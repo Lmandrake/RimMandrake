@@ -21,8 +21,9 @@ Nothing here is a new tool: every bridge call below is copied from a script that
   rimworld/save_game saveName= ...................... Utils/stage_review.py save_game() (only when --save is given)
   The 'RM_Liquid_FreshWater' liquid key and 'RM_LiquidTank/RM_LiquidPump/RM_UniversalPipe/Battery/PowerConduit'
   def names are from review_map.py station carry_tanks / pump_pour / pipes.
-UNVERIFIED (no run yet): that a pump with no adjacent water counts as 'working' for the head; that four weirs placed side by side along a
-bank all pass the weir PlaceWorker (each reports survived 0/1 below -- read the output); the exact cells a 2x2 tank occupies (assumed origin..+1).
+MEASURED on the 2026-10-17 walk: the sprinkler layout (LAYOUT G below; a pump needs no adjacent water) and the joined weir wall
+(sections laid INTO the river along the crossing; side by side along the bank qualified 1-2 of 6, none joined). Still assumed: the
+cells a 2x2 tank occupies (origin..+1).
 """
 import argparse, os, sys, time, json
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -147,7 +148,7 @@ def weirs(B, a):
         say("%s: crossing bank %s dir %s, %d moving cells: %d wall sections planned" % (look, (bx, bz), d, n, len(cells)))
         xs = [c[0] for c in cells] + [c[0] + d[0] for c in cells]
         zs = [c[1] for c in cells] + [c[1] + d[1] for c in cells]
-        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (min(xs) - 2, min(zs) - 2, max(xs) - min(xs) + 5, max(zs) - min(zs) + 5), category="Plant")
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (min(xs) - 2, min(zs) - 2, max(xs) - min(xs) + 5, max(zs) - min(zs) + 5), categories="Plant")   # categories=, as above (review 2026-10-17: category= was the wrong name)
         got = 0
         for c in cells:
             if build(B, "RM_BankWeir", c[0], c[1], rot):
