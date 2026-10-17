@@ -912,13 +912,21 @@ def _conversions_xml(key):
 # (MayRequire on the line, so a missing mod drops only that line). Q7: slime is bottled, but only by order (its use class
 # is never auto-gathered). Owner's words, Q6: "Red is Contagion: full mutation exposure right away. Green is full exposure
 # to the absorption rules from that biome. White infects you with the Rot spores. Yellow is just nausea and vomiting."
+# The three biome mods are COMPOSED into Baroque Biomes, so their lines are guarded by its id, mandrake.rm.biomes: a
+# member's own packageId never loads (skills/rimworld-modding/references/project-engine-facts.md).
 _PURGE = """<li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>"""
-SLIME_RED_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.contagion"><hediffDef>RM_ContagionTouched</hediffDef><severity>1</severity></li>"""]
+SLIME_RED_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.biomes"><hediffDef>RM_ContagionTouched</hediffDef><severity>1</severity></li>"""]
 # the Gelatinous Slime "eating the body" doer (cures poisons, raises RM_Slimification 0.06 a dose); five doses = "full
 # exposure" (PROVISIONAL: 0.30 at once)
-SLIME_GREEN_OUT = [_PURGE, """<li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.gelatinousslime" />"""]
-SLIME_WHITE_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.therot"><hediffDef>RM_SporeFlesh</hediffDef></li>"""]
+SLIME_GREEN_OUT = [_PURGE, """<li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.biomes" />"""]
+SLIME_WHITE_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.biomes"><hediffDef>RM_SporeFlesh</hediffDef></li>"""]
 SLIME_YELLOW_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimeNausea</hediffDef></li>"""]
+
+
+# Q8: salt water and brine are drunk only inside the salt-water break (RM_Break_DrinkBrine); each drink is brief relief,
+# then salt poisoning (Defs/Thirst/RM_Thirst_SaltBreak.xml). 0.25 per 1.5 L: PROVISIONAL (design §5).
+SALT_DRINK = {"drinkThought": "RM_Thought_SaltRelief",
+              "drinkOutcomes": ["""<li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SaltPoisoning</hediffDef><severity>0.25</severity></li>"""]}
 
 
 def _slime_drink(outcomes, count=1):
@@ -960,6 +968,7 @@ LIQUID_DEF_ROWS = {
         "pH": 8,  # [INVENTED] real seawater runs ~8.1; mildly basic, below the pH>10 corrosion band
         "terrainSuite": {"shallow": "WaterOceanShallow", "deep": "WaterOceanDeep"},
         "thirstQuality": "Fouled",
+        **SALT_DRINK,
         "distillable": True,
         "bottled": {"bottle": "RM_Bottle_SaltWater", 
                     "bucket": "RM_Bucket_SaltWater", "barrel": "RM_Barrel_SaltWater"},
@@ -1068,6 +1077,7 @@ LIQUID_DEF_ROWS = {
         # whoever authors the brine canal's own temporary fill terrains.
         "worldTag": "RM_Liquid_Brine",  # frozen world's two brine seas, LIQUID_BIOMES_MAP_1
         "thirstQuality": "Fouled",
+        **SALT_DRINK,
         "distillable": True,
         "bottled": {"bottle": "RM_Bottle_Brine", 
                     "bucket": "RM_Bucket_Brine", "barrel": "RM_Barrel_Brine"},
@@ -1183,7 +1193,7 @@ LIQUID_DEF_ROWS = {
     # terrain at this row (RM_DrinkableTerrainExtension), so it is drunk as a last resort with green's absorption.
     "livingslime": {
         "defName": "RM_Liquid_LivingSlime",
-        "mayRequire": "mandrake.rm.gelatinousslime",
+        "mayRequire": "mandrake.rm.biomes",  # Gelatinous Slime is composed into Baroque Biomes: its own id never loads
         "label": "living slime",
         "description": "The body of the Gelatinous Slime, running in its own channels. Drinking it is joining it, a little.",
         "viscosityClass": "Heavy",

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU (design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md §8, owner Q8
+  2026-10-17): salt water and brine are drunk only inside this break, which "needs thirst plus low mood, like other
+  breaks". The mood pool supplies the low mood (an ordinary Major MentalBreakDef); MentalStateWorker_RM_DrinkBrine adds
+  the thirst half: parched, no potable water in reach, salt to drink, not still salt-poisoned (Source/Thirst/RM_SaltBreak.cs).
+  Each salt drink brings brief relief and salt poisoning (data on the salt and brine LiquidDef rows: drinkThought,
+  drinkOutcomes). Every number is PROVISIONAL first-pass tuning (the design's §5 proposals), all vanilla fields.
+-->
+<Defs>
+
+  <MentalBreakDef>
+    <defName>RM_Break_DrinkBrine</defName>
+    <mentalState>RM_DrinkBrine</mentalState>
+    <baseCommonality>2</baseCommonality>
+    <intensity>Major</intensity>
+  </MentalBreakDef>
+
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RM_DrinkBrine</defName>
+    <stateClass>RimMandrake.FlowWorks.Thirst.MentalState_RM_DrinkBrine</stateClass>
+    <workerClass>RimMandrake.FlowWorks.Thirst.MentalStateWorker_RM_DrinkBrine</workerClass>
+    <label>drinking salt water</label>
+    <category>Misc</category>
+    <prisonersCanDo>true</prisonersCanDo>
+    <colonistsOnly>false</colonistsOnly>
+    <minTicksBeforeRecovery>2500</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>15000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.5</recoveryMtbDays>
+    <nameColor>(0.55, 0.75, 0.90)</nameColor>
+    <beginLetterLabel>drinking salt water</beginLetterLabel>
+    <beginLetter>{0} can't stand the thirst any longer and is going to drink salt water.\n\nIt will help for an hour or two. Then the salt will make [PAWN_objective] sick. Fresh water and a doctor will be needed.</beginLetter>
+    <beginLetterDef>NegativeEvent</beginLetterDef>
+    <moodRecoveryThought>Catharsis</moodRecoveryThought>
+    <recoveryMessage>{0} has stopped drinking salt water.</recoveryMessage>
+    <baseInspectLine>Mental state: Drinking salt water</baseInspectLine>
+    <allowBeatfire>true</allowBeatfire>
+    <escapingPrisonersIgnore>true</escapingPrisonersIgnore>
+  </MentalStateDef>
+
+  <ThoughtDef>
+    <defName>RM_Thought_SaltRelief</defName>
+    <durationDays>0.125</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>wet mouth</label>
+        <description>Water. Salty, but water. For a moment I feel better.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Hypernatremia. 0.25 per 1.5 L of salt water (the salt rows' drinkOutcomes). Falls by itself, faster when tended;
+       while above 0.2 thirst falls three times as fast (RM_ThirstFallExtension), so the relief reverses within hours. -->
+  <HediffDef>
+    <defName>RM_SaltPoisoning</defName>
+    <label>salt poisoning</label>
+    <description>Too much salt in the blood, from drinking salt water. It pulls water out of the body and the brain: nausea first, then confusion, seizures and coma. Fresh water, rest and a doctor bring it down.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.85, 0.95)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <tendable>true</tendable>
+    <lethalSeverity>1</lethalSeverity>
+    <initialSeverity>0.25</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDurationHours>12</baseTendDurationHours>
+        <severityPerDayTended>-0.25</severityPerDayTended>
+      </li>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.15</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>mild</label>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.05</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.1</minSeverity>
+        <label>nausea</label>
+        <vomitMtbDays>1</vomitMtbDays>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.10</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.3</minSeverity>
+        <label>confusion</label>
+        <vomitMtbDays>1</vomitMtbDays>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.25</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.15</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>seizures</label>
+        <lifeThreatening>true</lifeThreatening>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.50</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.30</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.85</minSeverity>
+        <label>coma</label>
+        <lifeThreatening>true</lifeThreatening>
+        <capMods>
+          <li><capacity>Consciousness</capacity><setMax>0.1</setMax></li>
+        </capMods>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Thirst.RM_ThirstFallExtension">
+        <factor>3</factor>
+        <minSeverity>0.2</minSeverity>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+</Defs>

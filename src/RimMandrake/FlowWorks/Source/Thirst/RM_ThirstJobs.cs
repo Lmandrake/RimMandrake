@@ -41,19 +41,35 @@ namespace RimMandrake.FlowWorks.Thirst
 	{
 		protected override Job TryGiveJob(Pawn pawn)
 		{
-			if (!RM_ThirstUtility.IsThirsty(pawn) || pawn.Downed || pawn.Map == null)
+			if (pawn.Downed || pawn.Map == null)
 			{
 				return null;
 			}
-			float level = RM_ThirstUtility.Level(pawn);
-			Thing bottle = RM_ThirstUtility.BestBottle(pawn, level, true, out RM_DrinkUse bu, out RM_WaterQuality bq, out float bd);
-			Building_LiquidTank tank = RM_ThirstUtility.BestTank(pawn, level, out RM_DrinkUse tu, out RM_WaterQuality tq, out float td);
+			RM_DrinkUse? only = null;
+			if (!RM_ThirstProvider.Own)
+			{
+				// Q11 (owner 2026-10-17): under Dubs, Dubs' AI drinks the potable water; ours steps in only for the desperate
+				// last resort, read off Dubs' own bar
+				if (!RM_ThirstSettings.lastResortDrinking || RM_ThirstUtility.ThirstNeedAny(pawn) == null
+					|| !RM_ThirstMath.Desperate(RM_ThirstUtility.LevelAny(pawn)))
+				{
+					return null;
+				}
+				only = RM_DrinkUse.LastResort;
+			}
+			else if (!RM_ThirstUtility.IsThirsty(pawn))
+			{
+				return null;
+			}
+			float level = RM_ThirstUtility.LevelAny(pawn);
+			Thing bottle = RM_ThirstUtility.BestBottle(pawn, level, true, out RM_DrinkUse bu, out RM_WaterQuality bq, out float bd, null, only);
+			Building_LiquidTank tank = RM_ThirstUtility.BestTank(pawn, level, out RM_DrinkUse tu, out RM_WaterQuality tq, out float td, only);
 			IntVec3 cell = IntVec3.Invalid;
 			RM_DrinkUse cu = RM_DrinkUse.Never;
 			RM_WaterQuality cq = RM_WaterQuality.Slime;
 			float cd = float.MaxValue;
 			if (RM_ThirstSettings.drinkFromTerrain
-				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out cell, out LiquidDef _, out cu, out cq))
+				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out cell, out LiquidDef _, out cu, out cq, only))
 			{
 				cd = (cell - pawn.Position).LengthHorizontalSquared;
 			}

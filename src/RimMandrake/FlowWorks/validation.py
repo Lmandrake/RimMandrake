@@ -634,7 +634,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   # THIRST_RULES_BUILD_SALT_OFF_THE_MENU (04-merged.md §8): the use-class gate and the auto-fill fix
                   ("Tu_use_class_gate", "Thirst_use_class_gate_ruled"),
                   ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source"),
-                  ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled")]
+                  ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled"),
+                  ("Tb_salt_break", "Thirst_salt_break_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -643,8 +644,8 @@ THIRST_LIVE = [
     ("T3_need_falls", "thirstHeatScaling", "read RM_Thirst, advance 0.25 day at 20 C: drop 0.2 +/- 0.03 x thirstRateMultiplier"),
     ("T4_bottle_satisfies", None, "set need 0.2, give RM_Bottle_FreshWater, order Ingest: level rises >= 0.45 (Own) / DBH "
      "need rises (Dbh); a dirty bottle appears"),
-    ("T5_salt_water_quality", "waterQualityEffects", "drink RM_Bottle_SaltWater x10 on test pawns: hydrate x0.7; "
-     "FoodPoisoning in 1-4 of 10"),
+    ("T5_salt_water_quality", "waterQualityEffects", "ORDERED drink of RM_Bottle_SaltWater x4 on test pawns: hydrate x0.7; "
+     "RM_SaltPoisoning +0.25 each and RM_Thought_SaltRelief (no FoodPoisoning since THIRST_RULES_BUILD_SALT_OFF_THE_MENU)"),
     ("T6_dehydration_readable", None, "need held at 0, advance 1 day: RM_Dehydration 0.30 +/- 0.03 on the health tab"),
     ("T7_no_dbh_clean_log", None, "Player.log first exception since load names none of DubsBadHygiene, RM_Thirst, RM_Bottle_"),
     ("T9_animals_drink", "animalsGetThirst", "RM_Thirst on a wild and a tame animal (Own); advance until < 0.3 beside fresh "
@@ -664,6 +665,13 @@ THIRST_LIVE = [
      "RM_Slimification >= 0.3, white RM_SporeFlesh, yellow RM_SlimeNausea; a fifth at 0.05 does not drink"),
     ("T16_living_slime", "lastResortDrinking", "Gelatinous Slime map, colonist at 0 beside RM_Slime_Liquid only: drinks it, "
      "RM_Slimification rises; with lastResortDrinking off: no job"),
+    ("T17_salt_break", "saltBreakEnabled", "colonist at 0.05, mood forced below the Major threshold, only salt water in reach: "
+     "dev 'Mental break' list offers RM_Break_DrinkBrine; started: drinks salt until >= 0.9, RM_Thought_SaltRelief, "
+     "RM_SaltPoisoning 0.25 per drink, state ends; offered again only after the poisoning is gone; with a fresh bottle on "
+     "the map it is not offered. Informative false theory if it never fires: 'the worker is wrong' when mood was above the "
+     "Major threshold (the mood half is vanilla's)"),
+    ("T18_dubs_last_resort", "lastResortDrinking", "Dubs mode (Lite + Thirst add-on), DBHThirst forced to 0, only slime in "
+     "reach: JobGiver_RM_Drink drinks it and Dubs' bar rises; at DBHThirst 0.2 ours does nothing"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
@@ -753,7 +761,7 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
-                                 "drinkFromTerrain", "lastResortDrinking"] if t not in suite.toggles]
+                                 "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled"] if t not in suite.toggles]
 suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
                   if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS

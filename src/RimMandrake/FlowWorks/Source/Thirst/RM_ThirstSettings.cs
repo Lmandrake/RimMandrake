@@ -17,6 +17,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool waterQualityEffects = true;
 		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q5/Q8): a pawn desperate with thirst may drink slime or toxic water.</summary>
 		public static bool lastResortDrinking = true;
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q8): the salt-water mental break.</summary>
+		public static bool saltBreakEnabled = true;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -31,6 +33,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref drinkFromTerrain, "drinkFromTerrain", true);
 			Scribe_Values.Look(ref waterQualityEffects, "waterQualityEffects", true);
 			Scribe_Values.Look(ref lastResortDrinking, "lastResortDrinking", true);
+			Scribe_Values.Look(ref saltBreakEnabled, "saltBreakEnabled", true);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -55,14 +58,20 @@ namespace RimMandrake.FlowWorks.Thirst
 				"Slower than a bottle, at that water's quality. Off: pawns drink only from bottles and tanks (the hard scavenger "
 				+ "mode). Animals always drink from terrain.");
 			list.CheckboxLabeled("Water quality matters", ref waterQualityEffects,
-				"Distilled water lifts the mood a little; fouled water (salt, brine) quenches less and can cause food poisoning; "
+				"Distilled water lifts the mood a little; salt water and brine quench less; "
 				+ "toxic water quenches half and adds toxic buildup. Off: every drink hydrates like plain water with no side effects. "
 				+ "Either way, salt water and brine are never drunk outside the salt-water break, and slime and toxic water only "
 				+ "by a desperate pawn.");
 			list.CheckboxLabeled("Desperate pawns drink slime and toxic water", ref lastResortDrinking,
 				"Like eating rotten food: only when the thirst bar is empty and no clean water is in reach, and it is always the "
 				+ "last pick. Slime brings a massive mood hit, a day of purging and the slime's own harm; toxic water brings toxic "
-				+ "buildup. Off: they are never drunk, and a pawn with nothing else dehydrates.");
+				+ "buildup. Off: they are never drunk, and a pawn with nothing else dehydrates. Works under Dubs Bad Hygiene's "
+				+ "thirst too (read off Dubs' bar).");
+			list.CheckboxLabeled("Salt-water mental break", ref saltBreakEnabled,
+				"A parched pawn in a low mood, with no fresh water in reach, can break and drink salt water or brine until the bar "
+				+ "reads full. It feels better for an hour or two; then salt poisoning sets in (nausea, confusion, seizures, "
+				+ "death if untreated), and thirst comes back three times as fast. Fresh water and a doctor cure it. Never twice "
+				+ "while still poisoned. Off: salt water is simply never drunk.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
 				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
 				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");
