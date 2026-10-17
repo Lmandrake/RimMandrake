@@ -106,5 +106,73 @@ namespace RimMandrake.StarWars.SWBestiary
                 if (!p.Destroyed) p.Destroy();
             }
         }
+
+        /// <summary>TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE. Builds a player brine tank on an open cell, puts a fresh player grub in it
+        /// through the tank's own TryAcceptThing, pours in 3 brine and drives the tank's own TickRare: first with the tank switched
+        /// off (nothing may move), then on with short PROOF settings (0.5 day per jar, 1 day to white) for 1.1 days. Reports
+        /// the jars dropped, brine left, the grub's white flag and what vanilla's TryGetAlternate now answers. Everything it
+        /// spawns is destroyed and the settings restored before it returns.</summary>
+        public static string ProofBrineTank(Map map)
+        {
+            map = map ?? Find.CurrentMap;
+            ThingDef tankDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_TaozinBrineTank");
+            PawnKindDef grubKind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RSW_TaozinGrub");
+            ThingDef brineDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Brine");
+            if (map == null || tankDef == null || grubKind == null || brineDef == null)
+            {
+                return "ERROR missing map/RSW_TaozinBrineTank/RSW_TaozinGrub/RM_Brine (tank needs mandrake.rsw.cuisine + Stillsand)";
+            }
+            ThingDef output = tankDef.GetModExtension<RSW_BrineTankExtension>()?.output;
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 40, c => GenSpawn.CanSpawnAt(tankDef, c, map) && c.Standable(map)
+                    && c.GetFirstItem(map) == null && c.GetEdifice(map) == null
+                    && GenAdj.CellsAdjacent8Way(new TargetInfo(c, map)).All(a => a.InBounds(map) && a.Standable(map) && a.GetFirstItem(map) == null),
+                    out IntVec3 cell))
+            {
+                return "ERROR no open cell for the tank";
+            }
+            bool wasOn = RSW_BeastMechanicsSettings.taozinBrineTankEnabled;
+            float wasJar = RSW_BeastMechanicsSettings.taozinDaysPerJar, wasPale = RSW_BeastMechanicsSettings.taozinPaleDays;
+            Building_RSW_BrineTank tank = null;
+            Pawn grub = null;
+            try
+            {
+                tank = (Building_RSW_BrineTank)GenSpawn.Spawn(ThingMaker.MakeThing(tankDef), cell, map, WipeMode.Vanish);
+                tank.SetFaction(Faction.OfPlayer);
+                grub = PawnGenerator.GeneratePawn(new PawnGenerationRequest(grubKind, Faction.OfPlayer));
+                bool accepted = tank.TryAcceptThing(grub);
+                CompRefuelable fuel = tank.GetComp<CompRefuelable>();
+                fuel.Refuel(3f);
+                RSW_BeastMechanicsSettings.taozinDaysPerJar = 0.5f;
+                RSW_BeastMechanicsSettings.taozinPaleDays = 1f;
+                int ticks = (int)(1.1f * GenDate.TicksPerDay) / GenTicks.TickRareInterval;
+
+                RSW_BeastMechanicsSettings.taozinBrineTankEnabled = false;
+                for (int i = 0; i < ticks; i++) tank.TickRare();
+                int offJars = output == null ? -1 : map.listerThings.ThingsOfDef(output).Count(t => t.Position.InHorDistOf(cell, 4f));
+                float offFuel = fuel.Fuel;
+                bool offPale = grub.TryGetComp<RSW_CompTaozinBrining>()?.pale ?? false;
+
+                RSW_BeastMechanicsSettings.taozinBrineTankEnabled = true;
+                for (int i = 0; i < ticks; i++) tank.TickRare();
+                int jars = output == null ? -1 : map.listerThings.ThingsOfDef(output).Where(t => t.Position.InHorDistOf(cell, 4f)).Sum(t => t.stackCount);
+                RSW_CompTaozinBrining comp = grub.TryGetComp<RSW_CompTaozinBrining>();
+                bool alt = grub.TryGetAlternate(out AlternateGraphic _, out int index);
+                return "accepted=" + accepted + " off_jars=" + offJars + " off_brine=" + offFuel.ToString("0.##") + " off_pale=" + offPale
+                       + " jars=" + jars + " brine=" + fuel.Fuel.ToString("0.##") + " pale=" + (comp?.pale ?? false)
+                       + " alternate=" + (alt ? index.ToString() : "none");
+            }
+            finally
+            {
+                RSW_BeastMechanicsSettings.taozinBrineTankEnabled = wasOn;
+                RSW_BeastMechanicsSettings.taozinDaysPerJar = wasJar;
+                RSW_BeastMechanicsSettings.taozinPaleDays = wasPale;
+                if (output != null)
+                {
+                    foreach (Thing jar in map.listerThings.ThingsOfDef(output).Where(x => x.Position.InHorDistOf(cell, 4f)).ToList()) jar.Destroy();
+                }
+                if (tank != null && !tank.Destroyed) tank.Destroy();
+                if (grub != null && !grub.Destroyed) grub.Destroy();
+            }
+        }
     }
 }

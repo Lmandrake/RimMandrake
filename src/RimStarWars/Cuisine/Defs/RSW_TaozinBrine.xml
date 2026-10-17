@@ -5,8 +5,8 @@
   Owner by card 2026-10-17: the effect is "Both mood and break resistance".
     - mood: RSW_DrankTaozinBrine, a one-day memory (+8).
     - break resistance: RSW_TaozinBrineFortitude, MentalBreakThreshold -0.08, fading over ~2 days.
-  SOURCE: none yet in play. Production (a grub kept in a brine tank, RM_Brine in, taozin brine out; the grub goes
-  white after long brining) needs C# and is the filed follow-up TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE.
+  SOURCE: RSW_TaozinBrineTank (SWBestiary, Defs/TaozinBrineTank/; TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE): a tame
+  grub kept in it turns each RM_Brine into one jar of this, every 2 days by default (Mod Settings).
   Art: reuses vanilla's beer bottle tinted pale until an art job draws a brine jar. PROVISIONAL numbers.
 -->
 <Defs>

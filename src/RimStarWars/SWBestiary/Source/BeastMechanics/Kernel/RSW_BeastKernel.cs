@@ -159,4 +159,53 @@ namespace RimMandrake.StarWars.SWBestiary
         /// <summary>Is the cell (offset cx, cz from the pawn) inside the cone's angle?</summary>
         public static bool InCone(Cone c, int cx, int cz) { return Math.Abs(DeltaAngle(AngleOf(cx, cz), c.Heading)) <= c.HalfAngle; }
     }
+    /// <summary>TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: the taozin grub's brine tank. A tank with a grub inside and at least one
+    /// jar's worth of brine soaks the grub and fills a jar; brine is only spent when a jar is finished. The grub's soak time is
+    /// counted separately, on the grub, and turns it white for good past the threshold (owner: terracotta "until it is soaked in
+    /// the brine for a long period, whereupon it turns white").</summary>
+    public static class RSW_BrineTankKernel
+    {
+        public const int TicksPerDay = 60000, MinCycleTicks = 2500;
+
+        /// <summary>Does the tank work this tick? Off, empty, or short of one jar's brine: nothing soaks and nothing fills.</summary>
+        public static bool Active(bool enabled, bool hasGrub, float fuel, float brinePerJar)
+        {
+            return enabled && hasGrub && brinePerJar > 0f && fuel >= brinePerJar;
+        }
+
+        /// <summary>Ticks per jar from the settings' days; never under an hour, so a rare tick finishes at most one jar.</summary>
+        public static int CycleTicks(float daysPerJar)
+        {
+            double t = Math.Round((double)daysPerJar * TicksPerDay);
+            if (double.IsNaN(t) || t < MinCycleTicks) return MinCycleTicks;
+            if (t > int.MaxValue / 2) return int.MaxValue / 2;
+            return (int)t;
+        }
+
+        /// <summary>Adds elapsed ticks to the jar in progress. Returns true when a jar is finished; the overflow carries into
+        /// the next jar, capped below one cycle so a long gap can never owe a second jar the brine was not checked for.</summary>
+        public static bool Advance(ref int progress, int elapsed, int cycleTicks)
+        {
+            if (cycleTicks < 1) cycleTicks = 1;
+            if (progress < 0) progress = 0;
+            if (elapsed > 0) progress = (int)Math.Min((long)progress + elapsed, (long)int.MaxValue);
+            if (progress < cycleTicks) return false;
+            progress = Math.Min(progress - cycleTicks, cycleTicks - 1);
+            return true;
+        }
+
+        /// <summary>The grub's soak clock: grows while it soaks, never falls.</summary>
+        public static int Soak(int brinedTicks, int elapsed)
+        {
+            if (brinedTicks < 0) brinedTicks = 0;
+            if (elapsed <= 0) return brinedTicks;
+            return (int)Math.Min((long)brinedTicks + elapsed, (long)int.MaxValue);
+        }
+
+        /// <summary>White is permanent: once pale, always pale; otherwise pale at or past the threshold.</summary>
+        public static bool IsPale(bool alreadyPale, int brinedTicks, float paleDays)
+        {
+            return alreadyPale || brinedTicks >= CycleTicks(paleDays);
+        }
+    }
 }

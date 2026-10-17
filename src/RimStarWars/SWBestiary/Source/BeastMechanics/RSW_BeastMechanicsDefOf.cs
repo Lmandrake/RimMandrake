@@ -10,6 +10,9 @@ namespace RimMandrake.StarWars.SWBestiary
     {
         public static JobDef RSW_HoardScrap;
 
+        // TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: Defs/TaozinBrineTank/RSW_TaozinBrineTank.xml.
+        public static JobDef RSW_CarryGrubToBrineTank;
+
         static RSW_BeastMechanicsDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RSW_BeastMechanicsDefOf));

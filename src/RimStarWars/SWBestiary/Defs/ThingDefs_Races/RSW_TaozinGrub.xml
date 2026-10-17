@@ -9,8 +9,11 @@
     (MapGeneration/RSW_TaozinNest.xml) on Crags (RM_Abyss) maps, beside a guarding adult RSW_Taozin.
   - Tameable (Wildness 0.6), harmless, slow; it barely leaves the nest.
   - Colour (owner ruling, canon_references/taozin_grub ## ruling): terracotta by default; WHITE after long brine.
-    Today only the terracotta look is wired (texPath below). The white look and the brine-tank production that
-    triggers it need C# and are the filed follow-up TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE (art for both looks is queued).
+    TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE (2026-10-17): the white look is the PawnKindDef's alternateGraphics[0] at
+    alternateGraphicChance 0 (vanilla never rolls it); RSW_CompTaozinBrining (comps below) counts the grub's days in a
+    brine tank (Defs/TaozinBrineTank/) and, past the Mod Settings threshold, a Harmony postfix on
+    PawnGraphicUtils.TryGetAlternate hands it the white look for good. C#: Source/BeastMechanics/RSW_TaozinBrineTank.cs.
+    Art for both looks is queued (taozin_split_grub_v1 / taozin_split_grub_brined_v1).
   - Grub brine (RSW_TaozinBrine) lives in the Cuisine mod (mandrake.rsw.cuisine).
   PROVISIONAL numbers: every stat below is INVENTED for a forearm-length grub, pending the owner's review.
 -->
@@ -70,6 +73,9 @@
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
+    <comps>
+      <li Class="RimMandrake.StarWars.SWBestiary.RSW_CompProperties_TaozinBrining" />
+    </comps>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -78,6 +84,13 @@
     <race>RSW_TaozinGrub</race>
     <combatPower>15</combatPower>
     <ecoSystemWeight>0.05</ecoSystemWeight>
+    <!-- The white, long-brined look: never rolled (chance 0); RSW_TaozinPalePatch gives it to a brine-whitened grub. -->
+    <alternateGraphicChance>0</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub_Brined</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
