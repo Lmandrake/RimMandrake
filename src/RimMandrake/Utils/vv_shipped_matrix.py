@@ -288,6 +288,10 @@ def stage_flowworks(control=False):
     rels = ["src/RimMandrake/FlowWorks/Source/", "src/RimMandrake/FlowWorks/Defs/", "src/RimMandrake/FlowWorks/Patches/",
             "src/RimMandrake/FlowWorks/Tools/", "src/RimMandrake/_Shared/",
             "src/Directory.Build.targets", "src/Directory.Build.props"]
+    # ThirstChecks' Thirst_slime_last_resort_ruled reads OTHER mods (read-only copies): the compose manifest,
+    # the About/ and Defs/ of the slime-outcome mods, and GelatinousSlime's SlimeIngestion.cs
+    rels += ["src/RimMandrake/Biomes.compose.json", "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs"]
+    rels += ["src/RimMandrake/%s/%s/" % (m, sub) for m in ("Contagion", "TheRot", "GelatinousSlime") for sub in ("About", "Defs")]
     _rsync(rels, dest)
     st = os.path.join(dest, "src", "RimMandrake", "FlowWorks", "Source", "SelfTest")
     _patch(os.path.join(st, "FlowKernelFuzz.cs"), PULSE_ANCHOR, PULSE_HOOK)
