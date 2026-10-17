@@ -1,312 +1,350 @@
 {
-  "sheetId": "canon_blog_disputes_sheet_2026-10-17",
-  "posture": "whitelist",
-  "reviewStatus": {
-    "state": "prefill",
-    "by": null,
-    "at": null,
-    "evidence": "agent pre-fill, owner has not ruled"
-  },
+  "decidedCount": 60,
   "decisions": {
-    "dragonsnake": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "jawa": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "klatooinian": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "mirialan": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "ithorian": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "tauntaun": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "hutt": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
+    "aqualish": {
+      "at": "2026-10-17T16:06:45.901Z",
+      "decision": "keep",
+      "note": "Strangely, I see some of them have four eyes (two smaller ones beneath the major ones above) and some do not.",
+      "prefill": "keep"
     },
     "arkanian": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "feeorin": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "mimbanese": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "bothan": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "bith": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "trandoshan": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "kel_dor": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "rakata": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "nagai": {
-      "decision": "noncanon",
-      "prefill": "noncanon",
-      "note": ""
-    },
-    "aqualish": {
-      "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "at": "2026-10-17T16:01:16.515Z",
+      "decidedAt": "2026-10-17T16:01:16.515Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "noncanon"
     },
     "bantha": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "bith": {
+      "at": "2026-10-17T16:03:08.322Z",
+      "decision": "noncanon",
+      "note": "remove bloggathehutt version",
+      "prefill": "noncanon"
     },
     "blurrg": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "bothan": {
+      "at": "2026-10-17T16:02:56.265Z",
+      "decision": "noncanon",
+      "note": "remove canon_bothans_xed_out and bloggathehutt versions.",
+      "prefill": "noncanon"
     },
     "chiss": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "dragonsnake": {
+      "at": "2026-10-17T15:57:16.206Z",
+      "decision": "noncanon",
+      "note": "Split into two official versions. The two pale versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake. Comission both in our Star Wars fauna mod. Remove the huntforziro and cisualencyclopedia versions as crude and cartoonish. Regenerate the \"must have\" descriptions from these two new creature specs. ",
+      "prefill": "noncanon"
     },
     "duros": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "eopie": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "ewok": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "falleen": {
+      "at": "2026-10-17T16:07:33.755Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove colorshift_red",
+      "prefill": "keep"
+    },
+    "feeorin": {
+      "at": "2026-10-17T16:01:29.108Z",
+      "decidedAt": "2026-10-17T16:01:29.108Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "noncanon"
     },
     "gamorrean": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "gand": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "geonosian": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "gungan": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "hutt": {
+      "at": "2026-10-17T16:01:03.730Z",
+      "decidedAt": "2026-10-17T16:01:03.729Z",
+      "decision": "cut",
+      "note": "delete bloggathehutt version.",
+      "prefill": "noncanon"
     },
     "iktotchi": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "ithorian": {
+      "at": "2026-10-17T15:59:46.402Z",
+      "decidedAt": "2026-10-17T15:59:41.347Z",
+      "decision": "keep",
+      "note": "These are all valid",
+      "prefill": "noncanon"
+    },
+    "jawa": {
+      "at": "2026-10-17T15:57:50.374Z",
+      "decision": "noncanon",
+      "note": "four_jawas_reference is THE canon reference to follow here, you may remove bloggathehutt here. ",
+      "prefill": "noncanon"
+    },
+    "kel_dor": {
+      "at": "2026-10-17T16:04:46.766Z",
+      "decision": "noncanon",
+      "note": "remove plo_koon_prosthetic_unmasked. remove keldor_resistance_animated and unmasked_legends. ",
+      "prefill": "noncanon"
     },
     "kelldragon": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "klatooinian": {
+      "at": "2026-10-17T15:58:34.292Z",
+      "decision": "noncanon",
+      "note": "Accept slate blue-grey and olive/mud green as all valid.",
+      "prefill": "noncanon"
     },
     "kraytdragon": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "kubaz": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "lasat": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "massiff": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "mimbanese": {
+      "at": "2026-10-17T16:02:28.651Z",
+      "decidedAt": "2026-10-17T16:02:10.413Z",
+      "decision": "keep",
+      "note": "the brow horns are there, but the leather face straps are partly covering them. ",
+      "prefill": "noncanon"
+    },
+    "mirialan": {
+      "at": "2026-10-17T15:58:55.197Z",
+      "decision": "noncanon",
+      "note": "Remove bloggathehutt_mirialan_concept_art as non canon",
+      "prefill": "noncanon"
     },
     "mon_calamari": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "mudhorn": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "muun": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "mynock": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "nagai": {
+      "at": "2026-10-17T16:05:31.190Z",
+      "decidedAt": "2026-10-17T16:05:31.190Z",
+      "decision": "cut",
+      "note": "",
+      "prefill": "noncanon"
     },
     "nautolan": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "neebray": {
+      "at": "2026-10-17T16:09:10.832Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove canon_1.webp",
+      "prefill": "keep"
     },
     "neimoidian": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "nikto": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "orray": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "pantoran": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "porg": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "quarren": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "rakata": {
+      "at": "2026-10-17T16:05:02.807Z",
+      "decidedAt": "2026-10-17T16:05:02.807Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "noncanon"
     },
     "rancor": {
+      "at": "2026-10-17T16:10:08.939Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove canon_2.webp",
+      "prefill": "keep"
     },
     "selkath": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "sullustan": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "tauntaun": {
+      "at": "2026-10-17T16:00:35.567Z",
+      "decision": "noncanon",
+      "note": "remove wampa_eats_tauntaun as it does not actually show tauntaun. Agree with out claim. ",
+      "prefill": "noncanon"
     },
     "togruta": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
+    },
+    "trandoshan": {
+      "at": "2026-10-17T16:03:21.074Z",
+      "decidedAt": "2026-10-17T16:03:21.074Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": "noncanon"
     },
     "ugnaught": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "vulptex": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "wampa": {
+      "at": "2026-10-17T16:10:54.161Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove unused_concept",
+      "prefill": "keep"
     },
     "weequay": {
+      "at": "2026-10-17T16:11:05.616Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove weequay_rotj_still",
+      "prefill": "keep"
     },
     "womprat": {
+      "at": "2026-10-17T16:11:31.356Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove both legends references here",
+      "prefill": "keep"
     },
     "wookiee": {
+      "at": "2026-10-17T16:11:48.859Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove anatomy_diagram and lumpy and roar_rots",
+      "prefill": "keep"
     },
     "worrt": {
+      "at": "2026-10-17T16:12:01.672Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "remove legends_2",
+      "prefill": "keep"
     },
     "wyyyschokk": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "zeltron": {
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     },
     "zygerrian": {
+      "at": "2026-10-17T16:12:30.863Z",
       "decision": "keep",
-      "prefill": "keep",
-      "note": ""
+      "note": "",
+      "prefill": "keep"
     }
-  }
+  },
+  "posture": "whitelist",
+  "reviewStatus": {
+    "state": "ruled",
+    "by": "owner",
+    "at": "2026-10-17T09:16:05-07:00",
+    "evidence": "owner, 2026-10-17, verbatim: \"I finished the canon blog image rulings\" (server did not stamp; stamped by BENCH subagent on his word)"
+  },
+  "savedAt": "2026-10-17T09:12:31-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "canon_blog_disputes_sheet_2026-10-17",
+  "writeCount": 76
 }
