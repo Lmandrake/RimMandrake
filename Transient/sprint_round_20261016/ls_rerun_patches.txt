@@ -1,0 +1,89 @@
+[lscrub] 20:10:24 rules_armed PASS 
+[lscrub] 20:10:24 thicket_smotherable PASS 
+[lscrub] 20:10:24 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] bystanders settled (mended / drafted / residue): [[["Human73177", "Scratch", "Torso"], ["Human73177", "Bite", "Torso"]], ["Human73171", "Human73174", "Human73177"], []]
+GOVERNOR_STOP {"utc": "2026-10-17T03:10:26Z", "message": "safe_advance stopped after 120 of 2000 tick(s): hurt: health 1 -> 0.95; newest hediff Scratch/Leg age 54 from RM_DrippingVenomvine", "state": "stopped", "executed": 120, "requested": 2000, "stopBy": {"seq": 430, "kind": "hurt", "severity": "damage", "tick": 69, "map": 1, "subjectId": 73174, "subject": "Yume", "critical": false, "declared": false, "detail": "health 1 -> 0.95; newest hediff Scratch/Leg age 54 from RM_DrippingVenomvine"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 429, "kind": "death", "severity": "info", "tick": 30, "map": 1, "subjectId": 73165, "subject": "vissler", "critical": false, "declared": false, "detail": "died: RM_VenomvineScratch by RM_TwitcherVenomvine60945"}, {"seq": 430, "kind": "hurt", "severity": "damage", "tick": 69, "map": 1, "subjectId": 73174, "subject": "Yume", "critical": false, "declared": false, "detail": "health 1 -> 0.95; newest hediff Scratch/Leg age 54 from RM_DrippingVenomvine"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "LeaningScrub", "--plan", "src/RimMandrake/LeaningScrub/northstar_plan.py", "--chains", "patches", "--no-record"]}
+[lscrub] 20:10:26 dead_venomvine_fuels_fire UNMEASURED surprise: safe_advance stopped after 120 of 2000 tick(s): hurt: health 1 -> 0.95; newest hediff Scratch/Leg age 54 from RM_DrippingVenomvine
+component patches/dead_venomvine_fuels_fire: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 120 of 2000 tick(s): hurt: health 1 -> 0.95; newest hediff Scratch/Leg age 54 from RM_DrippingVenomvine", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "Clear", "after": "Clear", "lockInForce": true, "gamePaused": true, "notes": ["registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"], "ticksGame": 2, "operation": {"OperationId": "op_0e15aab0187a400491ee5c65762b044d", "Status": "Completed", "Succe
+component defs/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component defs/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component defs/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component defs/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "venomvinePassabilityEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeRaidWeightingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanScentEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component settings/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanFireEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component fauna/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component fauna/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component flora/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stall/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallFreezeEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallFreezeEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "modEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeTurbineSurgeEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component gale/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeTurbineSurgeEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component lash/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component lash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "twitcherLashEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component lash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "twitcherLashEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component smother/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component smother/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component smother/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component smother/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component dripping/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "drippingRegrowEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component crown/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component crown/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "crownMobEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component crown/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "crownMobEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component bloom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component bloom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component bloom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stamp/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireStampEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stamp/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireStampEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component ripple/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "rippleEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component ripple/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "rippleEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stallhunt/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallHuntEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component stallhunt/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallHuntEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component pyre/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component pyre/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "callingPyreEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component pyre/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "callingPyreEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component injections/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component injections/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scrubInjectionsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "rearingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "rearingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "walkingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "walkingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "hoardEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "hoardEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "quenchEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "quenchEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "swornSparesMarkedEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": "swornSparesMarkedEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#10: {"verdict": "UNMEASURED", "shows": [], "toggle": "sheddingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component forms/skipped#11: {"verdict": "UNMEASURED", "shows": [], "toggle": "sheddingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stranglerEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stranglerEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "weeperEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "weeperEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sleeperEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "sleeperEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "lureEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component four_forms/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "lureEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineGuardiansEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineScratchingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineScratchingEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineVisitorsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineVisitorsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineFeltComfortEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#10: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineFeltComfortEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#11: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component sweetline/skipped#12: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains patches)"}
+component log/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains patches)"}
+LeaningScrub: NOT GREEN  PASS=3 FAIL=0 UNMEASURED=82  calls=132 mean=47.621ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\LeaningScrub_20261017T031019Z.json
