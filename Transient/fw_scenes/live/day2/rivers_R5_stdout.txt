@@ -1,0 +1,8 @@
+====================================================================================================
+R5. A sluice box washes the river's gravel
+  R5.a    MATCHES    wash: site=10,72 rot=1 poolCount=2 lane=1 before=13.6 after=1.6 got=12 drawMatches=True inPool=True off=sluice=off pan=pan=nothing washe
+  R5.b    MATCHES    setting off: off=sluice=off
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R5_before.png
+  R5.c    MATCHES    sluice box at (126, 126): asked North, game reads North
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R5_after.png
+index: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\index.html

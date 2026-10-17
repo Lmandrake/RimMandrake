@@ -1,0 +1,22 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>FlowWorks river scenes: what to evaluate</title><style>body{font:20px sans-serif;background:#2b2118;color:#eee;margin:20px auto;max-width:1700px;padding:0 16px}section{background:#faf7f0;color:#222;padding:16px 24px;margin:26px 0;border-radius:6px}img{width:100%;border:1px solid #888}h2{margin:0 0 6px}.ver{margin-top:12px;font-size:22px}td,th{padding:3px 14px 3px 0;text-align:left;vertical-align:top}.MATCHES{color:#0a6b1f;font-weight:bold}.DIFFERS,.CRASHED{color:#a40000;font-weight:bold}.UNMEASURED{color:#8a5a00;font-weight:bold}.cap{color:#04508c;font-weight:bold;margin:10px 0 4px}pre{white-space:pre-wrap;background:#eee;padding:8px;font-size:15px}</style><h1>FlowWorks river scenes: what to evaluate</h1><p>Each scene has caption panels (what you look at, what to check, pass/fail, what the game measured). Tick your answer under each scene; &#x27;Copy my answers as JSON&#x27; puts them on the clipboard.</p>
+<section id='R2'><h2>R2. Ford stones: a safe crossing</h2>
+<p><b>What you are looking at.</b> A line of 4 flat-stone squares laid over the shallow water (a ford). One colonist stands ON the middle stone; a control colonist stands in open shallow water a few squares away.</p>
+<p><b>What to check</b></p><ul><li>The colonist on the stones should NOT move at all.</li><li>The control colonist in open water SHOULD drift (this proves the current was running).</li></ul>
+<p><b>Pass if:</b> Ford colonist unmoved, control moved, and the mod&#x27;s ford shove test reads MOVED 0.<br><b>Fails if:</b> The ford colonist is carried away, or the control does not move (then the test shows nothing).</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>R2.a: ford stones read back at [(128, 124), (129, 124), (130, 124), (131, 124)]: [&#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;]</td></tr><tr><td class='MATCHES'>MATCHES</td><td>R2.b: ford colonist moved 0; control moved 3</td></tr><tr><td class='MATCHES'>MATCHES</td><td>R2.c: ford shove test: MOVED 0 from 85,4 to 85,4 lane=1</td></tr></table>
+<div class=cap>Step 0: one colonist on the stones, a control colonist in open shallows</div><img src='R2_p00_panel.png' loading=lazy>
+<div class=cap>Step 6: the ford colonist should be where it started</div><img src='R2_p06_panel.png' loading=lazy>
+<p class=ver data-g='R2'>R2: <label><input type=radio name='r_R2' value=right> looks right</label> &nbsp; <label><input type=radio name='r_R2' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<p><button onclick='copyAll()'>Copy my answers as JSON</button> <span id=out></span></p>
+<script>
+var K='fwwalk_'+location.pathname;
+function load(){try{var s=JSON.parse(localStorage.getItem(K)||'{}');document.querySelectorAll('.ver').forEach(function(p){
+var g=p.dataset.g,v=s[g]||{};p.querySelectorAll('input[type=radio]').forEach(function(r){r.checked=(v.verdict==r.value)});
+p.querySelector('.note').value=v.note||''})}catch(e){}}
+function collect(){var o={};document.querySelectorAll('.ver').forEach(function(p){var c=p.querySelector('input[type=radio]:checked');
+o[p.dataset.g]={verdict:c?c.value:null,note:p.querySelector('.note').value}});return o}
+function save(){try{localStorage.setItem(K,JSON.stringify(collect()))}catch(e){}}
+function copyAll(){var t=JSON.stringify(collect(),null,1);document.getElementById('out').textContent=t.length+' chars copied';
+try{navigator.clipboard.writeText(t)}catch(e){document.getElementById('out').textContent=t}}
+document.addEventListener('change',save);document.addEventListener('input',save);load();
+</script>

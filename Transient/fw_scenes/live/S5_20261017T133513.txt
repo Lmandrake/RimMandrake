@@ -1,0 +1,182 @@
+quicktest map up: True (2 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [217, 235, 238]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+====================================================================================================
+S5. Nothing created or destroyed: a closed pond pays for its canal, by gravity and by pump
+    ...............
+    .PPP...........          A: 3x3 pond, 2 m (36,000 L); 10-cell 0.5 m canal
+    .PPP1111111111.
+    .PPP...........
+    ...............
+    .P1111111111...          B: 1-square pond, 2 m (4,000 L); 10-cell 0.5 m canal
+    ...............
+    .P4............          F: 1-square pond, 2 m; one 2 m canal square
+    ...............
+    .<====U====>111111.      G: '<' lies on a 1-square pond, 2 m; pump; 6-cell 0.5 m canal
+    ...............
+S5 staged: A = 3x3 pond (stock 36.0, limitless=False) + 10-cell 0.5 m canal; B = 1-square pond (stock 4.0, limitless=False) + 10-cell 0.5 m canal; F = 1-square pond (stock 4.0) + one 2 m canal square; G = 1-square pond (stock 4.0) + pump (OFF until part G: True) + 6-cell 0.5 m canal; D = isolated 3-cell run full (E, the basin, is dug when its turn comes)
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)
+  pulse  0  A canal [0 0 0 0 0 0 0 0 0 0] pond 36.0   B canal [0 0 0 0 0 0 0 0 0 0] pond 4.0   F canal 0 pond 4.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+         GOVERNOR STOP (fed colonists, resuming the last 70 tick(s) once): safe_advance stopped after 180 of 250 tick(s): threat_structure: present at arm: 2 hostile threat structure(s), e.g. Hive (Sorne Geneline, spawner, dormant)
+  pulse  1  A canal [0 0 0 0 0 0 0 0 0 0] pond 35.1   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.5   F canal 1 pond 3.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  2  A canal [0 0 0 0 0 0 0 0 0 0] pond 34.3636   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.3333   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  3  A canal [0 0 0 0 0 0 0 0 0 0] pond 33.75   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.25   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  4  A canal [0 0 0 0 0 0 0 0 0 0] pond 33.2307   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.2   F canal 2 pond 2.0
+  pulse  5  A canal [0 0 0 0 0 0 0 0 0 0] pond 32.7857   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.1666   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  6  A canal [0 0 0 0 0 0 0 0 0 0] pond 32.4   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.1428   F canal 2 pond 2.0
+  pulse  7  A canal [0 0 0 0 0 0 0 0 0 0] pond 32.0625   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.125   F canal 2 pond 2.0
+  pulse  8  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.7647   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.1111   F canal 2 pond 2.0
+  pulse  9  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.5   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.1   F canal 2 pond 2.0
+  pulse 10  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+         screenshot: None
+  pulse 11  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 12  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 13  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 14  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 15  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 16  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 17  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 18  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 19  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 20  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: None
+  pulse 21  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 22  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 23  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 24  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 25  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 26  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 27  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 28  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 29  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 30  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 31  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 32  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 33  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 34  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 35  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 36  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 37  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 38  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 39  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 40  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 41  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 42  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 43  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 44  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 45  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 46  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 47  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 48  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 49  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 50  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 51  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 52  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 53  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+  pulse 54  A canal [0 0 0 0 0 0 0 0 0 0] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal 2 pond 2.0
+         screenshot: None
+  S5.a   DIFFERS    doc: Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond.
+                    game: A: most canal cells wet at once 0 of 10; pulses where pond+canal != start 36.0: [1, 2, 3, 4, 5, 6, 7, 8]; not one run at: none
+  S5.b   MATCHES    doc: The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m.
+                    game: pond A stock 36.0 -> 31.2631, lowest 31.2631 (doc: lower than at start, never below 27)
+  S5.c   DIFFERS    doc: At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L.
+                    game: B canal cells ever wet none; pond B lowest 3.0909 (start 4.0); total at pulse 10 = 3.0909
+  S5.d   MATCHES    doc: The wet front does not move for 40 more pulses.
+                    game: B canal changed after pulse 14 at pulses: never
+  S5.h   MATCHES    doc: The pond square and the 2 m canal square settle to one surface: each holds 1 m of water (2,000 L); the total is 4,000 L; nothing changes for 10 more pulses.
+                    game: pulse 10: pond F 2.0, 2 m canal 2 (doc: 2 and 2, total 4); changed after pulse 10 at: never
+  part C: canal B cell 1 filled in
+  pulse  0  A canal [? ? ? ? ? ? ? ? ? ?] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal ? pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  1  A canal [? ? ? ? ? ? ? ? ? ?] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal ? pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: None
+  pulse  2  A canal [? ? ? ? ? ? ? ? ? ?] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal ? pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  3  A canal [? ? ? ? ? ? ? ? ? ?] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal ? pond 2.0
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  4  A canal [? ? ? ? ? ? ? ? ? ?] pond 31.2631   B canal [0 0 0 0 0 0 0 0 0 0] pond 3.0909   F canal ? pond 2.0
+  S5.e   DIFFERS    doc: Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears.
+                    game: B canal+pond total 3.0909 -> 3.0909; overflow destroyed 0.0 -> 0.091
+  part D: middle cell of the isolated 3-cell run filled in (look top-left for the message)
+         screenshot: None
+  S5.f   MATCHES    doc: Filling in the middle cell destroys exactly 1,000 L (0.5 m in one square), and the player sees a message that names the amount.
+                    game: run held 3 -> 2 notches; game's destroyed-overflow total rose by 1.0 (the message text is in the screenshot)
+  part E: 6x6 basin 1 m deep dug now, 8 notches (8,000 L) heaped in the 4 centre cells, 20 pulses
+  pulse  0  basin rows 000000 000000 002200 002200 000000 000000  total 8
+  pulse  1  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  2  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  3  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  4  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  5  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  6  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  7  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  8  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse  9  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 10  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 11  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 12  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 13  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 14  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 15  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 16  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 17  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 18  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 19  basin rows 000000 000000 000000 000000 000000 000000  total 0
+  pulse 20  basin rows 000000 000000 000000 000000 000000 000000  total 0
+         screenshot: None
+  S5.g   DIFFERS    doc: Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L.
+                    game: pulse 20: 0 cell(s) at 1 m while 36 dry; total 0 notches (doc: none at 1 m while any dry; total 8)
+  part G: pump ON (True; powered=False), pond G stock 4.0, 30 pulses
+  pulse  0  canal [0 0 0 0 0 0]  pond stock=4.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  1  canal [0 0 0 0 0 0]  pond stock=4.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  2  canal [0 0 0 0 0 0]  pond stock=3.0  hoses hold 1.00 notches  ground between wet: none
+  pulse  3  canal [0 0 0 0 0 0]  pond stock=2.0  hoses hold 1.00 notches  ground between wet: none
+  pulse  4  canal [0 0 0 0 0 0]  pond stock=2.0  hoses hold 1.00 notches  ground between wet: none
+  pulse  5  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse  6  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse  7  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse  8  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse  9  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 10  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+         screenshot: None
+  pulse 11  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 12  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 13  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 14  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 15  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 16  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 17  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 18  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 19  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 20  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 21  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 22  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 23  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 24  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 25  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 26  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 27  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 28  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 29  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+  pulse 30  canal [0 0 0 0 0 0]  pond stock=2.025  hoses hold 0.00 notches  ground between wet: none
+         screenshot: None
+  S5.i   DIFFERS    doc: Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet.
+                    game: end: canal cells wet [], pond 2.025, hoses 0.00; pulses where pond+hoses+canal != 4.0: [3, 4, 5, 6, 7, 8]; 5th/6th cell wet at: never; undug ground wet: never

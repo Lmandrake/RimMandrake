@@ -1,0 +1,20 @@
+[
+ {
+  "id": "R2.a",
+  "scene": "R2",
+  "status": "MATCHES",
+  "game": "ford stones read back at [(128, 124), (129, 124), (130, 124), (131, 124)]: ['RM_FordStones', 'RM_FordStones', 'RM_FordStones', 'RM_FordStones']"
+ },
+ {
+  "id": "R2.b",
+  "scene": "R2",
+  "status": "MATCHES",
+  "game": "ford colonist moved 0; control moved 3"
+ },
+ {
+  "id": "R2.c",
+  "scene": "R2",
+  "status": "MATCHES",
+  "game": "ford shove test: MOVED 0 from 85,4 to 85,4 lane=1"
+ }
+]

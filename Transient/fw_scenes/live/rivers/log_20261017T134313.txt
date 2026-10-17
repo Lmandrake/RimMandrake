@@ -1,0 +1,14 @@
+====================================================================================================
+R1. The river carries whoever stands in it
+  R1.a    MATCHES    mod grid: current=4086 fast=844 edge=3242
+  colonist Human54138 staged at (125, 125) in WaterMovingShallow
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R1_p00.png
+  step 1 (+60 ticks): colonist at None
+  step 2 (+60 ticks): colonist at None
+  step 3 (+60 ticks): colonist at None
+  step 4 (+60 ticks): colonist at None
+  step 5 (+60 ticks): colonist at None
+  step 6 (+60 ticks): colonist at None
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R1_p06.png
+  R1.b    UNMEASURED moved None squares: [None, None, None, None, None, None, None]
+  R1.c    MATCHES    fast-lane shove test: MOVED 4 from 2,75 to 5,77 lane=2

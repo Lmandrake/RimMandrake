@@ -9,13 +9,13 @@
   "id": "S2.a",
   "status": "MATCHES",
   "doc": "All 4 pond cells hold 4 levels.",
-  "game": "all 4 pond cells at 4 first at pulse 14"
+  "game": "all 4 pond cells at 4 first at pulse 11"
  },
  {
   "id": "S2.b",
   "status": "MATCHES",
   "doc": "All 6 trench cells hold 1 level.",
-  "game": "all 6 trench cells at 1 first at pulse 13"
+  "game": "all 6 trench cells at 1 first at pulse 12"
  },
  {
   "id": "S2.c",
@@ -25,8 +25,8 @@
  },
  {
   "id": "S2.d",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run.",
-  "game": "settled at pulse 14; changes after that: none"
+  "game": "settled at pulse 7; changes after that: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]"
  }
 ]

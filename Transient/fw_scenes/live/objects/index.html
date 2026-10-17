@@ -1,0 +1,85 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>FlowWorks canal objects: poses and styles</title><style>body{font:20px sans-serif;background:#2b2118;color:#eee;margin:20px auto;max-width:1700px;padding:0 16px}section{background:#faf7f0;color:#222;padding:16px 24px;margin:26px 0;border-radius:6px}img{width:100%;border:1px solid #888}h2{margin:0 0 6px}.ver{margin-top:12px;font-size:22px}td,th{padding:3px 14px 3px 0;text-align:left;vertical-align:top}.MATCHES{color:#0a6b1f;font-weight:bold}.DIFFERS,.CRASHED{color:#a40000;font-weight:bold}.UNMEASURED{color:#8a5a00;font-weight:bold}.cap{color:#04508c;font-weight:bold;margin:10px 0 4px}pre{white-space:pre-wrap;background:#eee;padding:8px;font-size:15px}</style><h1>FlowWorks canal objects: poses and styles</h1><p>One picture per group, rotations read back from the game. Tick your answer under each group; &#x27;Copy my answers as JSON&#x27; puts them on the clipboard.</p>
+<section id='ladders_lowered'><h2>Ladders, slid down: one per wall</h2>
+<p><b>What you are looking at.</b> A 3x3 pit, 3 levels deep, per wall. A ladder hangs on the middle square of one wall, slid DOWN: drawn pressed against that wall.</p>
+<p><b>What to check</b></p><ul><li>Each ladder is drawn against ITS wall (left to right: north, east, south, west).</li><li>It points the same way the caption says the game read back.</li></ul>
+<p><b>Pass if:</b> Every picture shows the ladder on the wall the caption names.<br><b>Fails if:</b> A ladder drawn on the wrong side, floating, or turned away from its wall.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>North wall (cell 191,152): asked North -&gt; game reads North</td></tr><tr><td class='MATCHES'>MATCHES</td><td>East wall (cell 198,151): asked East -&gt; game reads East</td></tr><tr><td class='MATCHES'>MATCHES</td><td>South wall (cell 203,150): asked South -&gt; game reads South</td></tr><tr><td class='MATCHES'>MATCHES</td><td>West wall (cell 208,151): asked West -&gt; game reads West</td></tr></table>
+<div class=cap>Ladders, slid down: one per wall</div><img src='ladders_lowered_labelled.png' loading=lazy>
+<p class=ver data-g='ladders_lowered'>ladders_lowered: <label><input type=radio name='r_ladders_lowered' value=right> looks right</label> &nbsp; <label><input type=radio name='r_ladders_lowered' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='ladders_raised'><h2>Ladders, slid up onto the rim: one per wall</h2>
+<p><b>What you are looking at.</b> The same four pits, ladders slid UP onto the rim: drawn lying on the rim beyond the wall.</p>
+<p><b>What to check</b></p><ul><li>Each ladder lies on the rim beyond its wall, not inside the pit.</li><li>Facing matches the caption.</li></ul>
+<p><b>Pass if:</b> Every picture shows the ladder on the wall the caption names.<br><b>Fails if:</b> A ladder drawn on the wrong side, floating, or turned away from its wall.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>North wall (cell 191,159): asked North -&gt; game reads North; raised=True</td></tr><tr><td class='MATCHES'>MATCHES</td><td>East wall (cell 198,158): asked East -&gt; game reads East; raised=True</td></tr><tr><td class='MATCHES'>MATCHES</td><td>South wall (cell 203,157): asked South -&gt; game reads South; raised=True</td></tr><tr><td class='MATCHES'>MATCHES</td><td>West wall (cell 208,158): asked West -&gt; game reads West; raised=True</td></tr></table>
+<div class=cap>Ladders, slid up onto the rim: one per wall</div><img src='ladders_raised_labelled.png' loading=lazy>
+<p><i>raise (191, 159): LADDER cell=191,159 present=True raised=True inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_</i></p>
+<p><i>raise (198, 158): LADDER cell=198,158 present=True raised=True inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_</i></p>
+<p><i>raise (203, 157): LADDER cell=203,157 present=True raised=True inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_</i></p>
+<p><i>raise (208, 158): LADDER cell=208,158 present=True raised=True inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_</i></p>
+<p class=ver data-g='ladders_raised'>ladders_raised: <label><input type=radio name='r_ladders_raised' value=right> looks right</label> &nbsp; <label><input type=radio name='r_ladders_raised' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='ladders_autoturn'><h2>Ladders placed facing away from the wall</h2>
+<p><b>What you are looking at.</b> A ladder placed with its facing pointing INTO the pit (away from any wall).</p>
+<p><b>What to check</b></p><ul><li>Each ladder turns itself to the wall; the caption &#x27;game reads&#x27; equals the wall name, not what we asked.</li></ul>
+<p><b>Pass if:</b> Every picture shows the ladder on the wall the caption names.<br><b>Fails if:</b> A ladder drawn on the wrong side, floating, or turned away from its wall.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>North wall (cell 191,166): asked South -&gt; game reads North</td></tr><tr><td class='MATCHES'>MATCHES</td><td>East wall (cell 198,165): asked West -&gt; game reads East</td></tr><tr><td class='MATCHES'>MATCHES</td><td>South wall (cell 203,164): asked North -&gt; game reads South</td></tr><tr><td class='MATCHES'>MATCHES</td><td>West wall (cell 208,165): asked East -&gt; game reads West</td></tr></table>
+<div class=cap>Ladders placed facing away from the wall</div><img src='ladders_autoturn_labelled.png' loading=lazy>
+<p class=ver data-g='ladders_autoturn'>ladders_autoturn: <label><input type=radio name='r_ladders_autoturn' value=right> looks right</label> &nbsp; <label><input type=radio name='r_ladders_autoturn' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='styles_RM_LiquidTank'><h2>Tank: default + Futuristic / Industrial / Modern / Scrapper</h2>
+<p><b>What you are looking at.</b> Five tank, left to right: default, Futuristic, Industrial, Modern, Scrapper.</p>
+<p><b>What to check</b></p><ul><li>The four styles are plainly different from each other and from the default.</li><li>Each reads as its style name (clean white-grey sci-fi, riveted plant, plain modern, scrap-built).</li></ul>
+<p><b>Pass if:</b> Five distinct, readable looks.<br><b>Fails if:</b> Two styles look alike, a style shows the default, or a picture is missing/placeholder.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTank default: 1 of 1 placed; game reads look default look = Scrapper</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTank Futuristic: 1 of 1 placed; game reads look Futuristic</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTank Industrial: 1 of 1 placed; game reads look Industrial</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTank Modern: 1 of 1 placed; game reads look Modern</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTank Scrapper: 1 of 1 placed; game reads look Scrapper</td></tr></table>
+<div class=cap>tank</div><img src='styles_RM_LiquidTank_labelled.png' loading=lazy>
+<p class=ver data-g='styles_RM_LiquidTank'>styles_RM_LiquidTank: <label><input type=radio name='r_styles_RM_LiquidTank' value=right> looks right</label> &nbsp; <label><input type=radio name='r_styles_RM_LiquidTank' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='styles_RM_LiquidTankTall'><h2>Tall tank: default + Futuristic / Industrial / Modern / Scrapper</h2>
+<p><b>What you are looking at.</b> Five tall tank, left to right: default, Futuristic, Industrial, Modern, Scrapper.</p>
+<p><b>What to check</b></p><ul><li>The four styles are plainly different from each other and from the default.</li><li>Each reads as its style name (clean white-grey sci-fi, riveted plant, plain modern, scrap-built).</li></ul>
+<p><b>Pass if:</b> Five distinct, readable looks.<br><b>Fails if:</b> Two styles look alike, a style shows the default, or a picture is missing/placeholder.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTankTall default: 1 of 1 placed; game reads look default look = Scrapper</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTankTall Futuristic: 1 of 1 placed; game reads look Futuristic</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTankTall Industrial: 1 of 1 placed; game reads look Industrial</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTankTall Modern: 1 of 1 placed; game reads look Modern</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_LiquidTankTall Scrapper: 1 of 1 placed; game reads look Scrapper</td></tr></table>
+<div class=cap>tall tank</div><img src='styles_RM_LiquidTankTall_labelled.png' loading=lazy>
+<p class=ver data-g='styles_RM_LiquidTankTall'>styles_RM_LiquidTankTall: <label><input type=radio name='r_styles_RM_LiquidTankTall' value=right> looks right</label> &nbsp; <label><input type=radio name='r_styles_RM_LiquidTankTall' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='styles_RM_HoseReel'><h2>Hose reel: default + Futuristic / Industrial / Modern / Scrapper</h2>
+<p><b>What you are looking at.</b> Five hose reel, left to right: default, Futuristic, Industrial, Modern, Scrapper.</p>
+<p><b>What to check</b></p><ul><li>The four styles are plainly different from each other and from the default.</li><li>Each reads as its style name (clean white-grey sci-fi, riveted plant, plain modern, scrap-built).</li></ul>
+<p><b>Pass if:</b> Five distinct, readable looks.<br><b>Fails if:</b> Two styles look alike, a style shows the default, or a picture is missing/placeholder.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>RM_HoseReel default: 1 of 1 placed; game reads look default look = Scrapper</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_HoseReel Futuristic: 1 of 1 placed; game reads look Futuristic</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_HoseReel Industrial: 1 of 1 placed; game reads look Industrial</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_HoseReel Modern: 1 of 1 placed; game reads look Modern</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_HoseReel Scrapper: 1 of 1 placed; game reads look Scrapper</td></tr></table>
+<div class=cap>hose reel</div><img src='styles_RM_HoseReel_labelled.png' loading=lazy>
+<p class=ver data-g='styles_RM_HoseReel'>styles_RM_HoseReel: <label><input type=radio name='r_styles_RM_HoseReel' value=right> looks right</label> &nbsp; <label><input type=radio name='r_styles_RM_HoseReel' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='styles_RM_UniversalPipe'><h2>Universal pipe: default + Futuristic / Industrial / Modern / Scrapper</h2>
+<p><b>What you are looking at.</b> Five universal pipe, left to right: default, Futuristic, Industrial, Modern, Scrapper.</p>
+<p><b>What to check</b></p><ul><li>The four styles are plainly different from each other and from the default.</li><li>Each reads as its style name (clean white-grey sci-fi, riveted plant, plain modern, scrap-built).</li></ul>
+<p><b>Pass if:</b> Five distinct, readable looks.<br><b>Fails if:</b> Two styles look alike, a style shows the default, or a picture is missing/placeholder.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>RM_UniversalPipe default: 3 of 3 placed; game reads look default look = Scrapper</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_UniversalPipe Futuristic: 3 of 3 placed; game reads look Futuristic</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_UniversalPipe Industrial: 3 of 3 placed; game reads look Industrial</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_UniversalPipe Modern: 3 of 3 placed; game reads look Modern</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_UniversalPipe Scrapper: 3 of 3 placed; game reads look Scrapper</td></tr></table>
+<div class=cap>universal pipe</div><img src='styles_RM_UniversalPipe_labelled.png' loading=lazy>
+<p class=ver data-g='styles_RM_UniversalPipe'>styles_RM_UniversalPipe: <label><input type=radio name='r_styles_RM_UniversalPipe' value=right> looks right</label> &nbsp; <label><input type=radio name='r_styles_RM_UniversalPipe' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='river_prereq'><h2>River map check</h2>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>moving river water found</td></tr></table>
+<p class=ver data-g='river_prereq'>river_prereq: <label><input type=radio name='r_river_prereq' value=right> looks right</label> &nbsp; <label><input type=radio name='r_river_prereq' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='river_weirs'><h2>Bank weirs: default + four styles on a river bank</h2>
+<p><b>What you are looking at.</b> Five bank weirs standing on the river&#x27;s bank edge, left to right in placing order: default, Futuristic, Industrial, Modern, Scrapper.</p>
+<p><b>What to check</b></p><ul><li>Each weir is a wall across the bank edge facing the water, in its own style.</li><li>The caption&#x27;s rotation equals the way it faces the water.</li></ul>
+<p><b>Pass if:</b> Five readable weirs on the bank, rotation as read.<br><b>Fails if:</b> A weir floating in the river, facing land, or two styles alike.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>RM_BankWeir default at 128,122: asked North -&gt; reads North; look Scrapper</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_BankWeir Futuristic at 130,129: asked West -&gt; reads West; look Futuristic</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_BankWeir Industrial at 125,115: asked North -&gt; reads North; look Industrial</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_BankWeir Modern at 131,136: asked West -&gt; reads West; look Modern</td></tr><tr><td class='MATCHES'>MATCHES</td><td>RM_BankWeir Scrapper at 141,121: asked East -&gt; reads East; look Scrapper</td></tr></table>
+<div class=cap>Bank weirs: default + four styles on a river bank</div><img src='river_weirs_labelled.png' loading=lazy>
+<p><i>Weirs are spread at least 7 cells apart, so the camera may frame them small.</i></p>
+<p class=ver data-g='river_weirs'>river_weirs: <label><input type=radio name='r_river_weirs' value=right> looks right</label> &nbsp; <label><input type=radio name='r_river_weirs' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<section id='river_fords'><h2>Ford stones across shallow water</h2>
+<p><b>What you are looking at.</b> RM_FordStones (needs the RM_Fordable affordance, which only shallow moving water has) laid as a 4-square line across the shallows.</p>
+<p><b>What to check</b></p><ul><li>The stones read as a crossing over the water, not as land or as a bridge.</li><li>The caption says what the game reads under each square.</li></ul>
+<p><b>Pass if:</b> Four ford squares visible in the shallows.<br><b>Fails if:</b> No stones drawn, stones over deep water, or the water vanishes.</p>
+<p><b>What the game measured</b></p><table><tr><td class='MATCHES'>MATCHES</td><td>top terrain read back at [(128, 122), (129, 122), (130, 122), (131, 122)]: [&#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;, &#x27;RM_FordStones&#x27;]</td></tr></table>
+<div class=cap>Ford stones across shallow water</div><img src='river_fords_labelled.png' loading=lazy>
+<p class=ver data-g='river_fords'>river_fords: <label><input type=radio name='r_river_fords' value=right> looks right</label> &nbsp; <label><input type=radio name='r_river_fords' value=wrong> looks wrong</label> &nbsp; note: <input size=60 class=note></p></section>
+<p><button onclick='copyAll()'>Copy my answers as JSON</button> <span id=out></span></p>
+<script>
+var K='fwwalk_'+location.pathname;
+function load(){try{var s=JSON.parse(localStorage.getItem(K)||'{}');document.querySelectorAll('.ver').forEach(function(p){
+var g=p.dataset.g,v=s[g]||{};p.querySelectorAll('input[type=radio]').forEach(function(r){r.checked=(v.verdict==r.value)});
+p.querySelector('.note').value=v.note||''})}catch(e){}}
+function collect(){var o={};document.querySelectorAll('.ver').forEach(function(p){var c=p.querySelector('input[type=radio]:checked');
+o[p.dataset.g]={verdict:c?c.value:null,note:p.querySelector('.note').value}});return o}
+function save(){try{localStorage.setItem(K,JSON.stringify(collect()))}catch(e){}}
+function copyAll(){var t=JSON.stringify(collect(),null,1);document.getElementById('out').textContent=t.length+' chars copied';
+try{navigator.clipboard.writeText(t)}catch(e){document.getElementById('out').textContent=t}}
+document.addEventListener('change',save);document.addEventListener('input',save);load();
+</script>

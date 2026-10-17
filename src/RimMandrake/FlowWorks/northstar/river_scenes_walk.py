@@ -126,9 +126,16 @@ def shallow_pair(terr, size, margin=14):
     return None if best is None else ((best[1], best[2]), best[3])
 
 
+def _num(pid):
+    """A pawn id as the HoseProbe reports it. LIVE 2026-10-17: jawa/spawn_pawn answers "Human54153" while the HoseProbe's
+    colonists list says 54153, so a plain == never matched (R1/R2 read every position as None, R3 saw nobody come home)."""
+    d = "".join(ch for ch in str(pid) if ch.isdigit())
+    return int(d) if d else pid
+
+
 def pawn_pos(w, pid):
     for c in w.hp("colonists").get("pawns") or []:
-        if c.get("id") == pid:
+        if _num(c.get("id")) == _num(pid):
             return C.thing_cell(c)
     return None
 
@@ -282,6 +289,11 @@ def scene_R3(w, env):
                 staged.append(pid)
         if not staged:
             return shots, [row(w, "R3", "R3.a", None, "no colonist spawned on the %d edge river cells" % len(cells))]
+        fac0 = {}
+        for i in staged:
+            pg = ((w.call("jawa/pawn_get", pawn=i) or {}).get("pawns") or [{}])[0]
+            fac0[i] = pg.get("faction")
+        w.say("  staged factions (game read): %s" % fac0)
         rect = view_rect(cells[:2], size, 40, 26)
         w.say("  %d colonists staged on edge river cells %s; pending %d" % (len(staged), cells, p0))
         shot(w, shots, "R3", "p00", "Start: colonists standing in the moving water at the map edge", rect)
@@ -292,14 +304,19 @@ def scene_R3(w, env):
                 waited += SWEPT_CHUNK
                 ok, txt = proof(w, PROOF, "ProofSwept", "read")
                 now = int(kv(txt).get("pending", now)) if ok else now
-                w.say("  after %d ticks: pending %d, still on map: %d of %d" % (waited, now, len([1 for c in (w.hp("colonists").get("pawns") or []) if c.get("id") in staged]), len(staged)))
+                w.say("  after %d ticks: pending %d, still on map: %d of %d" % (waited, now, len([1 for c in (w.hp("colonists").get("pawns") or []) if _num(c.get("id")) in {_num(i) for i in staged}]), len(staged)))
                 time.sleep(w.args.pace)
         shot(w, shots, "R3", "swept", "After %d ticks: whoever the current carried off the edge is gone" % waited, rect)
         rd.append(row(w, "R3", "R3.a", (now > p0), "pending %d -> %d after %d ticks (%d colonists staged)" % (p0, now, waited, len(staged))))
-        gone = set(staged) - {c.get("id") for c in (w.hp("colonists").get("pawns") or [])}
+        gone = {i for i in staged if _num(i) not in {_num(c.get("id")) for c in (w.hp("colonists").get("pawns") or [])}}
         ok, ret = proof(w, PROOF, "ProofSwept", "return")
         rd.append(row(w, "R3", "R3.b", ret.startswith("SWEPT pending=0") if ok else None, "walk-home call: %s" % ret[:100]))
-        back = gone & {c.get("id") for c in (w.hp("colonists").get("pawns") or [])}
+        back = {i for i in gone if _num(i) in {_num(c.get("id")) for c in (w.hp("colonists").get("pawns") or [])}}
+        # LIVE 2026-10-17: the HoseProbe lists only THIS map's colonists; a returned pawn may walk home to another loaded map.
+        # Ask the game where each washed-away pawn is now (jawa/pawn_get searches every map and the world).
+        for i in sorted(gone):
+            pg = ((w.call("jawa/pawn_get", pawn=i) or {}).get("pawns") or [{}])[0]
+            w.say("  after return, %s: faction %s (staged as %s), position %s" % (i, pg.get("faction"), fac0.get(i), pg.get("position")))
         rd.append(row(w, "R3", "R3.c", None if not gone else bool(back), "washed away %s; back on the map after return: %s" % (sorted(gone), sorted(back))))
         shot(w, shots, "R3", "home", "After the walk home: the washed-away colonists are back", rect)
         rd.append(row(w, "R3", "R3.d", None, "the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)"))

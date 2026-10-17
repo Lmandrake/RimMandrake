@@ -1,0 +1,20 @@
+[
+ {
+  "id": "R1.a",
+  "scene": "R1",
+  "status": "MATCHES",
+  "game": "mod grid: current=3646 fast=963 edge=2683"
+ },
+ {
+  "id": "R1.b",
+  "scene": "R1",
+  "status": "MATCHES",
+  "game": "moved 5 squares: [(128, 124), (128, 124), (128, 123), (128, 122), (128, 121), (128, 120), (128, 119)]"
+ },
+ {
+  "id": "R1.c",
+  "scene": "R1",
+  "status": "MATCHES",
+  "game": "fast-lane shove test: MOVED 4 from 92,5 to 89,2 lane=2"
+ }
+]

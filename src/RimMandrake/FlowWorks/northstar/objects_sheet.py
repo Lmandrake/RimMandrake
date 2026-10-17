@@ -127,19 +127,73 @@ def ladder_group(w, gid, title, row, mode, out_dir):
                 passif="Every picture shows the ladder on the wall the caption names.", fails="A ladder drawn on the wrong side, floating, or turned away from its wall.")
 
 
+def _style_menu(w, cell):
+    """Select the thing at `cell`, press its "Choose style" button, return (menuId, options) or (None, why)."""
+    B = w.B
+    B.call("rimworld/set_god_mode", enabled=True)
+    B.call("rimworld/clear_selection")
+    B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+    gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+    g = next((q for q in gz if str(q.get("label") or "").startswith("Choose style")), None)
+    if g is None:
+        return None, "no 'Choose style' button (have %s)" % [q.get("label") for q in gz][:6]
+    B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+    o = B.call("rimworld/get_context_menu_options") or {}
+    return o.get("menuId"), o.get("options") or []
+
+
+def current_look(w, cell):
+    """The look the game says this thing wears now (the menu's "(current)" entry); None = UNMEASURED."""
+    mid, opts = _style_menu(w, cell)
+    w.B.call("rimworld/close_context_menu")
+    w.B.call("rimworld/clear_selection")
+    if mid is None:
+        return None
+    cur = [str(o.get("label")).split(" (current)")[0] for o in opts if "(current)" in str(o.get("label"))]
+    return cur[0] if cur else None
+
+
+def choose_look(w, cell, look, run=False):
+    """Pick `look` for the thing at `cell` (the whole connected run for a pipe) and read the look back."""
+    mid, opts = _style_menu(w, cell)
+    if mid is None:
+        return None
+    # tanks/pipes read "<Look>: this tank" / "<Look>: whole connected run"; the reel's menu reads just "<Look>" (LIVE 2026-10-17)
+    want = [o for o in opts if str(o.get("label")).split(" (current)")[0].split(":")[0] == look]
+    pick = [o for o in want if ("whole connected run" in str(o.get("label"))) == run] or want
+    if not pick:
+        w.B.call("rimworld/close_context_menu")
+        return None
+    w.B.call("rimworld/execute_context_menu_option", optionIndex=pick[0].get("index"))
+    w.B.call("rimworld/clear_selection")
+    return current_look(w, cell)
+
+
 def style_group(w, gid, kind_label, base, size_, row, out_dir):
     x1, z1 = 150, 150 + row * 6
     rect = (x1 - 2, z1 - 2, len(STYLE_SUFFIX) * 5 + 3, 6)
     caps, readings = [], []
     w.clear_site(rect)
     for k, suf in enumerate(STYLE_SUFFIX):
-        d = base + suf
+        # LIVE 2026-10-17: the _<Look> names are ThingStyleDefs, not ThingDefs (build_batch: "no ThingDef"). Build the BASE def
+        # and pick the look through the game's own "Choose style" button; the look is read back from that menu's "(current)".
+        d = base
         cells = [(x1 + k * 5 + i, z1) for i in range(3)] if base == "RM_UniversalPipe" else [(x1 + k * 5, z1)]
         res = [C.place(w, d, c, rot=0) for c in cells]
-        ok = all(r["survived"] for r in res)
-        caps.append("%s = %s" % (STYLE_LABEL[k], d))
-        readings.append((status(ok), "%s: %d of %d placed%s" % (d, sum(r["survived"] for r in res), len(res),
-                                                               "; " + res[0]["note"] if res[0]["note"] else "")))
+        placed = all(r["survived"] for r in res)
+        look = STYLE_LABEL[k]
+        if not placed:
+            ok, got = False, "not placed"
+        elif not suf:
+            got = current_look(w, cells[0])
+            ok = None if got is None else True
+            got = "default look = %s" % got
+        else:
+            got = choose_look(w, cells[0], look, run=len(cells) > 1)
+            ok = None if got is None else (got == look)
+        caps.append("%s = %s (%s)" % (look, d, got))
+        readings.append((status(ok), "%s %s: %d of %d placed; game reads look %s%s" % (
+            d, look, sum(r["survived"] for r in res), len(res), got, "; " + res[0]["note"] if res[0]["note"] else "")))
         w.rows.append(dict(id="%s.%s" % (gid, STYLE_LABEL[k]), status=status(ok), game=readings[-1][1]))
     w.ticks(1)
     png = C.snap(w, gid, rect)
@@ -185,13 +239,19 @@ def weirs_group(w, out_dir, size, terr, why):
         return base
     readings, caps, cells = [], [], []
     for k, (c, r) in enumerate(picks):
-        d = WEIR + STYLE_SUFFIX[k]
-        res = C.place(w, d, c, rot=r)
+        # LIVE 2026-10-17: RM_BankWeir_<Look> are ThingStyleDefs; build the base weir and pick the look by its own button
+        d = WEIR
+        res = C.place(w, d, c, rot=r, wipe=True)   # LIVE 2026-10-17: bank grass/reeds refused wipeExisting=false
         cells.append(c)
+        look = None
+        if res["survived"]:
+            look = current_look(w, c) if not STYLE_SUFFIX[k] else choose_look(w, c, STYLE_LABEL[k])
         ok = None if (not res["survived"] or res["rot_read"] is None) else (res["rot_read"] == r)
-        caps.append("%s: asked %s, game reads %s" % (STYLE_LABEL[k], C.rot_text(r), C.rot_text(res["rot_read"])))
-        readings.append((status(ok), "%s at %d,%d: asked %s -> reads %s%s" % (d, c[0], c[1], C.rot_text(r), C.rot_text(res["rot_read"]),
-                                                                           "; " + res["note"] if res["note"] else "")))
+        if ok and STYLE_SUFFIX[k]:
+            ok = None if look is None else (look == STYLE_LABEL[k])
+        caps.append("%s: asked %s, game reads %s, look %s" % (STYLE_LABEL[k], C.rot_text(r), C.rot_text(res["rot_read"]), look))
+        readings.append((status(ok), "%s %s at %d,%d: asked %s -> reads %s; look %s%s" % (
+            d, STYLE_LABEL[k], c[0], c[1], C.rot_text(r), C.rot_text(res["rot_read"]), look, "; " + res["note"] if res["note"] else "")))
         w.rows.append(dict(id="%s.%s" % (gid, STYLE_LABEL[k]), status=status(ok), game=readings[-1][1]))
     w.say("  note: placed with god-mode build_batch (no PlaceWorker); the bank-edge rule itself is the river suite's place_weir_bank_edge")
     xs, zs = [c[0] for c in cells], [c[1] for c in cells]

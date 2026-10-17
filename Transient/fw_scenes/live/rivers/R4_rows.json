@@ -1,0 +1,26 @@
+[
+ {
+  "id": "R4.a",
+  "scene": "R4",
+  "status": "MATCHES",
+  "game": "place test: PLACE edge=True dry=False wet=False"
+ },
+ {
+  "id": "R4.b",
+  "scene": "R4",
+  "status": "MATCHES",
+  "game": "pool test: POOL cells=22 dropped=22 arrestedWet=True at=(12, 0, 72) wetCell=12,73 wetDir=0 nbr=1,0:0|1,1:0|0,1:0|-1,1:0|-"
+ },
+ {
+  "id": "R4.c",
+  "scene": "R4",
+  "status": "MATCHES",
+  "game": "join test: JOIN placeOk=True run=2 headIsBank=True joint=True poolSingle=22 poolJoined=40 poolGap=0 at=(12, 0, 72)+(12, 0, 74)"
+ },
+ {
+  "id": "R4.d",
+  "scene": "R4",
+  "status": "MATCHES",
+  "game": "weir at (124, 124): asked North, game reads North"
+ }
+]

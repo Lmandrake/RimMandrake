@@ -1,0 +1,87 @@
+quicktest map up: True (2 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [111, 114, 117]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+====================================================================================================
+S2. A shallow trench beside a source-fed pond fills
+    |~~~~~~~~..........
+    |~~~~~~~~44........
+    |~~~~~~~~44111111..
+    |~~~~~~~~..........
+S2 staged: lake 1 (limitless=True); a dug 2x2 depth-4 pond touching it; a 6-cell depth-1 trench off its far side; all dry
+         screenshot: Transient\fw_scenes\live\S2_p00.png
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.2 s pause
+  pulse  0  pond [0 0 0 0]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/0:RM_Cha 4/0:RM_Cha | 4/0:RM_Cha 4/0:RM_Cha
+  pulse  1  pond [1 0 1 0]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/1:RM_Fil 4/0:RM_Cha | 4/1:RM_Fil 4/0:RM_Cha
+  pulse  2  pond [1 1 0 0]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/1:RM_Fil 4/1:RM_Fil | 4/0:RM_Fil 4/0:RM_Fil
+  pulse  3  pond [1 1 1 1]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/1:RM_Fil 4/1:RM_Fil | 4/1:RM_Fil 4/1:RM_Fil
+  pulse  4  pond [1 1 1 1]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/1:RM_Fil 4/1:RM_Fil | 4/1:RM_Fil 4/1:RM_Fil
+  pulse  5  pond [2 2 2 2]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/2:RM_Fil 4/2:RM_Fil | 4/2:RM_Fil 4/2:RM_Fil
+  pulse  6  pond [2 2 2 2]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/2:RM_Fil 4/2:RM_Fil | 4/2:RM_Fil 4/2:RM_Fil
+  pulse  7  pond [3 3 3 3]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/3:RM_Fil 4/3:RM_Fil | 4/3:RM_Fil 4/3:RM_Fil
+  pulse  8  pond [3 3 3 3]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/3:RM_Fil 4/3:RM_Fil | 4/3:RM_Fil 4/3:RM_Fil
+  pulse  9  pond [3 3 3 3]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/3:RM_Fil 4/3:RM_Fil | 4/3:RM_Fil 4/3:RM_Fil
+  pulse 10  pond [3 3 3 3]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/3:RM_Fil 4/3:RM_Fil | 4/3:RM_Fil 4/3:RM_Fil
+         screenshot: Transient\fw_scenes\live\S2_p10.png
+  pulse 11  pond [4 4 4 4]  trench [1 1 1 1 1 0]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 12  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 13  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 14  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 15  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 16  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 17  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 18  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 19  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 20  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 21  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 22  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 23  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 24  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 25  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 26  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 27  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 28  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 29  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 30  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+         screenshot: Transient\fw_scenes\live\S2_p30.png
+  pulse 31  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 32  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 33  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 34  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 35  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 36  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 37  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 38  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 39  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 40  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 41  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 42  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 43  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 44  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 45  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 46  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 47  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 48  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 49  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 50  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 51  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 52  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 53  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 54  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 55  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 56  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 57  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 58  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 59  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+  pulse 60  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:RM_Fil 4/4:RM_Fil | 4/4:RM_Fil 4/4:RM_Fil
+         screenshot: Transient\fw_scenes\live\S2_p60.png
+  S2.lvl MATCHES    doc: Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0]). (plan P1 bar, not a scenes-file row)
+                    game: pulses with a gap over 1: none
+  S2.a   MATCHES    doc: All 4 pond cells hold 4 levels.
+                    game: all 4 pond cells at 4 first at pulse 11
+  S2.b   MATCHES    doc: All 6 trench cells hold 1 level.
+                    game: all 6 trench cells at 1 first at pulse 12
+  S2.c   MATCHES    doc: Wet trench cells always form one unbroken run starting at the cell touching the pond.
+                    game: pulses where the wet trench was NOT one run from the pond: none
+  S2.d   DIFFERS    doc: Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run.
+                    game: settled at pulse 7; changes after that: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]

@@ -1,0 +1,14 @@
+====================================================================================================
+R2. Ford stones: a safe crossing
+  R2.a    MATCHES    ford stones read back at [(128, 124), (129, 124), (130, 124), (131, 124)]: ['RM_FordStones', 'RM_FordStones', 'RM_FordStones', 'RM_FordStones']
+  ford colonist Human359268 on (130, 124); control Human359280 at (127, 119)
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R2_p00.png
+  step 1: ford colonist (130, 124), control (127, 119)
+  step 2: ford colonist (130, 124), control (127, 119)
+  step 3: ford colonist (130, 124), control (127, 119)
+  step 4: ford colonist (130, 124), control (127, 118)
+  step 5: ford colonist (130, 124), control (127, 117)
+  step 6: ford colonist (130, 124), control (127, 116)
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live2\Transient\fw_scenes\live\rivers\R2_p06.png
+  R2.b    MATCHES    ford colonist moved 0; control moved 3
+  R2.c    MATCHES    ford shove test: MOVED 0 from 85,4 to 85,4 lane=1
