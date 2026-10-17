@@ -574,11 +574,20 @@ class PulseOracle(object):
     def _ls_key(self, c, drains):
         """RM_FlowKernel.CellKey: the part-filled band's priority (lowest first)."""
         far = 1 << 20
-        wet = 0 if self.F.get(c, 0) > 0 else 1
+        wet = 0 if self.F.get(c, 0) > 0 and not self._ls_mouth(c) else 1
         if drains:
             return (self.dk.get(c, far), wet, self.idx(c))
         src = 0 if not self.ds else (far - self.ds[c] if c in self.ds else 2 * far)
         return (self.low.get(c, far), wet, src, self.idx(c))
+
+    def _ls_mouth(self, c):
+        """RM_FlowKernel.IsLiveMouth: a dug square beside a supplying source never keeps its unit for being wet, so a fed
+        D=1 run passes the unit on and the source refills the mouth (CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY)."""
+        for dx, dz in CARDINAL:
+            n = (c[0] + dx, c[1] + dz)
+            if self.inb(n) and self.is_source(n) and self.can_supply(n):
+                return True
+        return False
 
     def _levelset_regions(self, comp):
         """RM_FlowKernel.LevelSetWetRegions / SolveRegion / Assign / PickBand (WATER_LEVELSET_SOLVE): per wet region of one
@@ -1631,20 +1640,24 @@ def o11_creep_recorded():
     probs = []
     for d in "ENWS":
         _, _, h = _o6_channel("fixed", d, 4, pulses=12)
-        o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": True, "stock": 0}}, algo="fixed", **CREEP_LIVE)
         dx, dz = DIRS[d]
         cs = _run(100 + dx, 100 + dz, 4, dx, dz)
-        for c in cs:
-            o.dig(c)
-        hc = o.run(cs, 12)
-        if hc[:4] != O11_LIVE_E2:
-            probs.append("%s: creep oracle %s != recorded live %s" % (d, hc[:4], O11_LIVE_E2))
-        full = next((i + 1 for i, v in enumerate(hc) if v == [1] * 4), None)
-        if full != O11_LIVE_E2_FULL:
-            probs.append("%s: first full %s != live %s" % (d, full, O11_LIVE_E2_FULL))
+        # the record predates the level solve (2732aa5fa), so its vectors are replayed on that engine (level_set off);
+        # shipped (CREEP_LIVE) must keep its first-full pulse, without the 1,0,1,0 stripes the level solve removed
+        for kw, want_vec in ((dict(CREEP_LIVE, level_set=False), O11_LIVE_E2), (CREEP_LIVE, None)):
+            o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": True, "stock": 0}}, algo="fixed", **kw)
+            for c in cs:
+                o.dig(c)
+            hc = o.run(cs, 12)
+            tag = "pre-level-solve" if want_vec else "shipped"
+            if want_vec is not None and hc[:4] != want_vec:
+                probs.append("%s: %s creep oracle %s != recorded live %s" % (d, tag, hc[:4], want_vec))
+            full = next((i + 1 for i, v in enumerate(hc) if v == [1] * 4), None)
+            if full != O11_LIVE_E2_FULL:
+                probs.append("%s: %s first full %s != live %s" % (d, tag, full, O11_LIVE_E2_FULL))
         if next((i + 1 for i, v in enumerate(h) if v == [1] * 4), None) != 4:
             probs.append("%s: creep-off oracle lost the n*D brigade" % d)
-    return Check("O11", not probs, "; ".join(probs) or "creep oracle reproduces the recorded live E2 vectors (full at 7); creep off still 4")
+    return Check("O11", not probs, "; ".join(probs) or "pre-level-solve creep oracle reproduces the recorded live E2 vectors; shipped level solve also full at 7; creep off still 4")
 
 
 def run_offline():

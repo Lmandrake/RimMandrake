@@ -903,7 +903,7 @@ namespace RimMandrake.FlowWorks
 		{
 			const long Far = 1 << 20;
 			long n = width * height;
-			long wet = fill[c] > 0 ? 0 : 1;
+			long wet = fill[c] > 0 && !IsLiveMouth(c) ? 0 : 1;
 			if (drains)
 			{
 				return ((sinkHops.TryGetValue(c, out int k) ? k : Far) * 2 + wet) * n + c;
@@ -911,6 +911,22 @@ namespace RimMandrake.FlowWorks
 			long low = lowHops.TryGetValue(c, out int lh) ? lh : Far;
 			long src = sourceHops.Count == 0 ? 0 : sourceHops.TryGetValue(c, out int h) ? Far - h : 2 * Far;
 			return ((low * 2 + wet) * (2 * Far + 1) + src) * n + c;
+		}
+
+		/// <summary>CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY: a dug square beside a supplying source. Its unit never stays for being
+		/// wet: the source refills a brim mouth only once the mouth passes its unit on, and the neighbour pass no longer moves a
+		/// drop of one, so a wet-first mouth held a fed D=1 run at 1,0,0,0 for ever.</summary>
+		private bool IsLiveMouth(int c)
+		{
+			for (int d = 0; d < 4; d++)
+			{
+				int nb = Cardinal(c, d);
+				if (nb >= 0 && IsSource(nb) && world.CanSupply(nb))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>Lays <paramref name="amount"/> units into piece <paramref name="k"/> and its deeper pieces. Returns the units laid.</summary>
