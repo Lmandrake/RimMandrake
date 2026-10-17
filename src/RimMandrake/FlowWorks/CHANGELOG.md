@@ -4,8 +4,8 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## 1.0.0 — 2026-10-15 (release candidate, not published; repackaged 2026-10-16)
 
-Package DLL: `Assemblies/RimMandrakeFlowWorks.dll` sha256 `557d3a9a…c29c68eb` (its `.srchash` `# dll:` line),
-built at 31f335066b. A DLL whose hash differs from this line is not the packaged one: repackage. Still not signed off
+Package DLL: `Assemblies/RimMandrakeFlowWorks.dll` sha256 `c3dbac22…fa83fc` (its `.srchash` `# dll:` line),
+built at fead0c39b9cd (canal level-solve fix f11976b49; live-proved 2026-10-16: calm 61/0/0, river extensions 20/0/1). A DLL whose hash differs from this line is not the packaged one: repackage. Still not signed off
 by the owner (review walk in progress).
 
 - 2026-10-16 repackage: liquids measured in litres; water settles to one flat level (new setting "Water settles to one
