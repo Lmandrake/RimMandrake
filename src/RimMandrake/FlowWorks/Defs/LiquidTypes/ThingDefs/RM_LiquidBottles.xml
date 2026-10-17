@@ -25,9 +25,9 @@
   C#. The dirty-stage Mod Settings toggle ships
   (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled, default ON). Only
   a row with `thirstQuality` set gets an `<ingestible>` block, and only on
-  its bottle — never bucket or barrel, which are decanted, not drunk
-  (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) — see build_bottle_thingdef_xml's
-  own comment.
+  its bottle — a bucket or barrel is drunk 1.5 L at a time by the
+  RM_DrinkFromContainer job instead (THIRST_RULES_BUILD_SALT_OFF_THE_MENU) —
+  see build_bottle_thingdef_xml's own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
   Revert-on-bottle (boiling/icy -> fresh) is row data read by

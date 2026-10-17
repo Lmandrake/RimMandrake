@@ -13,8 +13,8 @@ rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.
   P6 validation_style_hose.py --offline (R0) is green
   P8 (step 4) the universal pipe: RM_UniversalPipe carries RM_UniversalPipeExtension; no live def is still RM_LiquidHose;
      the old extension name survives as an [Obsolete] subclass; the def alias is the third essential patch
-  P9 (step 6, widened to L7) caller coverage: each of the 20 credit sites (FINAL's 11 - pump draw x2, pour; converter in/out;
-     adapter in/out; reactor A/B/product; bath - plus the tank settle, the pump's 6 hose-end credits and the dump drain; the
+  P9 (step 6, widened to L7) caller coverage: each of the 21 credit sites (FINAL's 11 - pump draw x2, pour; converter in/out;
+     adapter in/out; reactor A/B/product; bath - plus the tank settle, the pump's 6 hose-end credits and the dump drain, the pond return and the sprinkler draw; the
      same list as Source/SelfTest/TransferChecks.cs CreditTags) credits only inside a COMMITTED transfer, and the reflection pump adapter,
      the relay provider, the hand tint table and the two dead settings are gone
   P7 (step 3) FlowWorks loads after Gimme Some Slack (ordering) without depending on it; GSS neither depends on nor orders by FlowWorks
@@ -67,7 +67,7 @@ def p1_planted():
     return shared, none
 
 
-# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (19 as of L7). Each tag must appear exactly
+# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (21: L7's 19 + pond return + sprinkler draw). Each tag must appear exactly
 # once, in its file, on a line that makes a credit call, inside the block of a committed transfer (an `RM_LiquidTransfer.Move(`
 # a few lines above; the pre-L1 Try*Liquid guard is still accepted).
 CREDIT_SITES = [
@@ -82,6 +82,7 @@ CREDIT_SITES = [
     ("LiquidTypes/Building_LiquidPump.cs", "credit site: outflow pour (tank)"), ("LiquidTypes/Building_LiquidPump.cs", "credit site: outflow pour (end)"),
     ("Machinery/RM_LiquidNet.cs", "credit site: dump drain"),
     ("LiquidTypes/Building_LiquidPump.cs", "credit site: pond return (pump)"),   # POND_RETURN_LEG_BUILD_WATER_GOES_HOME
+    ("Sprinklers/RM_Sprinkle.cs", "credit site: sprinkler draw"),   # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED
 ]
 CREDIT_CALL = re.compile(r"(?:RM_LiquidNet\.Credit|\bCreditTo|\bCreditRoute)\(")
 CREDIT_DEF = re.compile(r"static void (?:Credit|CreditTo|CreditRoute)\(")
@@ -254,7 +255,7 @@ def main():
           and "save-skip, type alias, def alias" in ess)
     # P9
     bad, calls = p9_credit_sites()
-    check("P9 %d credit sites (FINAL's 11 + tank settle + 6 pump hose ends + dump drain + pond return), each inside a committed transfer"
+    check("P9 %d credit sites (FINAL's 11 + tank settle + 6 pump hose ends + dump drain + pond return + sprinkler draw), each inside a committed transfer"
           % len(CREDIT_SITES), not bad and calls == len(CREDIT_SITES), (bad, calls))
     pbad, pcalls = p9_planted()
     check("P9 can-fail: a planted unguarded credit, a missing tag and an extra call are all caught", len(pbad) == 2 and pcalls == len(CREDIT_SITES) + 1,
