@@ -306,18 +306,30 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					RM_OutletKind kind = Outlet(ex, port, l, f, out IntVec3 dest);
 					// L8 (§3.7): while its hoses are not yet full, the level goes into them (taken from the move itself)
 					bool fillHoses = l != null && RM_LiquidNet.HoseNeed(this, new object[] { port, s.port }, l) > 0;
-					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, units))
+					// PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: the move is in DECILITRES (tank units): up to one level, what the source
+					// holds and what the outlet takes. A canal holding a sheet has no whole notch in any one square, so the old
+					// whole-level move stopped after the first level (live S3/S5.G, 1,000 L); it now runs until the canal is
+					// brim-full or the source is dry. Whole-notch water (exact-level off) still moves whole levels only.
+					long avail = s.channel ? ex.WaterDlAt(cell) : ex.Stock.SupplyDl(Map, cell, units, ex);
+					long room = fillHoses ? units : RM_LiquidSpill.OutletRoomDl(ex, kind, dest, f, units);
+					int amt = (int)System.Math.Min(units, System.Math.Min(avail, room));
+					if (amt <= 0 || (!RM_MapComponent_Excavation.LevelExact && amt < units))
+					{
+						usedOutflows.Add(oi);   // nothing to move through this end this cycle (a dry source, a full canal)
+						continue;
+					}
+					RM_TransferLeg into = fillHoses ? RM_TransferLeg.Sink(k => RM_LiquidNet.FillRoutes(this, new object[] { s.port, port }, l, k))
 						: RM_LiquidSpill.OutletLeg(Map, ex, kind, dest, l, f);
 					RM_TransferLeg from = s.channel
-						? RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _), k => ex.TryPourLevel(cell, f))
-						: RM_TransferLeg.World(k => ex.Stock.CanSupply(Map, cell, ex), k => ex.Stock.TryDebit(Map, cell, f.volumePerTile, ex), k => ex.Stock.CreditLevels(Map, cell, 1, f.volumePerTile, ex) == 1);   // GPT #5: put back a whole level or nothing
-					if (RM_LiquidTransfer.Move(1, from, into, out _) == 1)
+						? RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.WaterDlAt(cell) >= k, k => ex.TryTakeDl(cell, k, out _) == k, k => ex.TryPourDl(cell, f, k))
+						: RM_TransferLeg.World(k => ex.Stock.SupplyDl(Map, cell, k, ex) >= k, k => ex.Stock.TryDebitDl(Map, cell, k, ex), k => ex.Stock.CreditDl(Map, cell, k, ex) == k);   // GPT #5: put back exactly what was taken
+					if (RM_LiquidTransfer.Move(amt, from, into, out _) == amt)
 					{
-						Machinery.RM_LiquidNet.CreditTo(this, port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
-						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
+						Machinery.RM_LiquidNet.CreditTo(this, port, l, amt, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, amt, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
 						usedOutflows.Add(oi);
 						circle |= RM_LiquidSpill.WholeLevels(kind) && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
-						Stamp(units);
+						Stamp(amt);
 						Moved++;
 						return "RMFlow_PumpToOutflow".Translate(lastLiquidLabel);
 					}

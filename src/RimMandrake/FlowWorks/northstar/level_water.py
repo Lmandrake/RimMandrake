@@ -596,3 +596,104 @@ def oracle_gaps(o):
         else:
             ponds[bid] = (pond_hist(o, bid), pond_dl(o, bid), {s: o.beds.get(s, 4) for s in srcs})
     return surface_gaps(cells, ponds, lim)
+
+
+# ───────────── pours and fill-ins in decilitres (PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes) ─────────────
+# The reference for RM_LevelPour (Source/RM_LevelPour.cs) and the excavation's pour / fill-in: a pour lands on its square,
+# then spreads breadth-first (N E S W) over the dug squares it joins, each up to its room; a fill-in keeps what fits under
+# the raised brim, displaces the rest over the canal (the filled square only conducts), then into the ponds the walk
+# touched (nearest first, up to capacity); what is left is the disclosed overflow. Diffed against the C# by
+# selftest_flowworks_kernel_oracle.py, mode "exactops".
+
+POUR_WALK_CAP = 1024
+
+
+def _room(o, c):
+    if not o.exc(c):
+        return 0
+    return max(0, o.D[c] * U - o.W.get(c, 0))
+
+
+def spread(o, start, dl, credit_start, enter, is_source, room, cap):
+    """-> (placed, [(cell, dl)], [pond cells in walk order])"""
+    if dl <= 0:
+        return 0, [], []
+    remaining, credits, ponds = dl, [], []
+    seen, queue, walked = {start}, [start], 0
+    while queue and remaining > 0 and walked < cap:
+        c = queue.pop(0)
+        walked += 1
+        if c != start or credit_start:
+            if c != start and is_source is not None and is_source(c):
+                ponds.append(c)
+                continue
+            r = room(c)
+            if r > 0:
+                take = min(r, remaining)
+                credits.append((c, take))
+                remaining -= take
+        for dx, dz in CARDINAL:
+            n = (c[0] + dx, c[1] + dz)
+            if not o.inb(n) or n in seen:
+                continue
+            if enter(n):
+                seen.add(n)
+                queue.append(n)
+    return dl - remaining, credits, ponds
+
+
+def _credit(o, credits):
+    for c, v in credits:
+        o.W[c] = o.W.get(c, 0) + v
+        o.F[c] = o.W[c] // U
+        o.fluid.setdefault(c, WATER)
+
+
+def pour(o, c, dl):
+    """Pour up to dl at dug square c; returns the dL placed."""
+    if not o.exc(c) or dl <= 0:
+        return 0
+    placed, credits, _ = spread(o, c, dl, True, lambda n: o.exc(n) and not _sealed(o, n), None,
+                                lambda n: _room(o, n), POUR_WALK_CAP)
+    _credit(o, credits)
+    return placed
+
+
+def _natural(o, c):
+    return c in o.src and not o.exc(c)
+
+
+def fill_in(o, c):
+    """Raise c one notch; returns the dL destroyed (nowhere to go)."""
+    if not o.exc(c):
+        return 0
+    d = o.D[c]
+    nd = d - 1
+    water = min(o.W.get(c, 0), d * U)
+    kept = 0 if nd <= 0 else min(water, nd * U)
+    displaced = water - kept
+    o.D[c] = nd
+    o.W[c] = kept
+    o.F[c] = kept // U
+    if kept == 0:
+        o.fluid.pop(c, None)
+    if displaced <= 0:
+        return 0
+    placed, credits, ponds = spread(o, c, displaced, False,
+                                    lambda n: (o.exc(n) or _natural(o, n)) and not _sealed(o, n),
+                                    lambda n: _natural(o, n), lambda n: _room(o, n), o.w * o.h)
+    _credit(o, credits)
+    remaining = displaced - placed
+    for s in ponds:
+        if remaining <= 0:
+            break
+        bid = o.src[s]
+        b = o.bodies[bid]
+        if b["limitless"]:
+            remaining = 0
+            break
+        cap = U * sum(o.beds.get(x, 4) for x, i in o.src.items() if i == bid and not o.exc(x))
+        take = max(0, min(remaining, cap - pond_dl(o, bid)))
+        b["dl"] = pond_dl(o, bid) + take
+        remaining -= take
+    return remaining

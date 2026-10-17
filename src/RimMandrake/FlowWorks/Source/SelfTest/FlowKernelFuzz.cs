@@ -1059,6 +1059,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 					int nbed = N();
 					for (int i = 0; i < nbed; i++) { int idx = N(); world.bed[idx] = N(); }
 				}
+				// PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes ("exactops"): an optional tail of events (count, then
+				// pulse kind idx dl): after that pulse's line, kind 0 pours dl at idx (LevelOps.Pour), kind 1 fills idx in one
+				// notch (LevelOps.FillIn); each prints its result (dL placed / dL destroyed) as "e<n>".
+				var events = new List<(int p, int kind, int idx, int dl)>();
+				if (t.Count > 0)
+				{
+					int ne = N();
+					for (int i = 0; i < ne; i++) events.Add((N(), N(), N(), N()));
+				}
 				if (headRule)
 				{
 					world.k.sourceDrawdown = world.Drawdown;
@@ -1079,8 +1088,16 @@ namespace RimMandrake.FlowWorks.SelfTest
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{
-					world.Pulse(digs);
+					// a square filled back in to the surface leaves the excavation's seeds (RM_MapComponent_Excavation.FillIn removes
+					// it from excavatedCells), so it leaves the pulse's seeds here too
+					world.Pulse(events.Count == 0 ? digs : digs.Where(c => world.k.depth[c] > 0).ToList());
 					foreach (int c in digs) sb.Append(exact ? world.k.WaterOf(c) : world.k.fill[c]).Append(' ');
+					foreach (var e in events)
+					{
+						if (e.p != p) continue;
+						long r = e.kind == 0 ? LevelOps.Pour(world, e.idx, e.dl) : LevelOps.FillIn(world, e.idx);
+						sb.Append('e').Append(r).Append(' ');
+					}
 					sb.Append("| ");
 					if (exact && world.k.worstImbalance > 0) sb.Append("IMBALANCE ");
 				}

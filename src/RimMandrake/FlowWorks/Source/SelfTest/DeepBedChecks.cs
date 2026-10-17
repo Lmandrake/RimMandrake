@@ -345,10 +345,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // FILLIN_DISPLACE_FIX_DRY_POND_SNUB: C5-F8 the walk offered only WET pond squares, so a fully drained pond beside
                 // a filled-in canal took nothing and the liquid was destroyed; C5-F9 the walk stopped at 6000 squares.
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"if \(IsSourceCell\(c\) \|\| IsDisplaceBed\(c\)\) \{ sources\.Add\(c\); continue; \}", "a dry bed square is a destination");
-                RiverSwitchFlipChecks.Has(ex, @"if \(\(IsExcavated\(n\) \|\| IsSourceCell\(n\) \|\| IsDisplaceBed\(n\)\) && !RM_FlowDoorRules\.SealsLiquid", "and the walk reaches it");
+                RiverSwitchFlipChecks.Has(ex, @"return depthGrid\[i\] == 0 && \(IsSourceCell\(n\) \|\| IsDisplaceBed\(n\)\);", "a dry bed square is a destination");
+                RiverSwitchFlipChecks.Has(ex, @"return \(depthGrid\[i\] != 0 \|\| IsSourceCell\(n\) \|\| IsDisplaceBed\(n\)\) && !RM_FlowDoorRules\.SealsLiquid", "and the walk reaches it");
                 RiverSwitchFlipChecks.Has(ex, @"private bool IsDisplaceBed\(IntVec3 c\) \{ return RimMandrakeFlowWorksSettings\.pondReturnLegEnabled && IsNaturalBed\(c\); \}", "gated by the return leg's switch");
-                RiverSwitchFlipChecks.Has(ex, @"int walkCap = map\.cellIndices\.NumGridCells; while \(queue\.Count > 0 && remaining > 0 && walked < walkCap\)", "the walk is bounded by the map, not 6000");
+                RiverSwitchFlipChecks.Has(ex, @"RM_LevelPour\.Spread\(start, dl, false, NeighbourIndex, Enter, Pond, Room, map\.cellIndices\.NumGridCells,", "the walk is bounded by the map, not 6000");
                 Assert(!Regex.IsMatch(ex, @"walked < MaxComponentCells"), "the 6000 cap no longer stops the displacement walk");
             });
 

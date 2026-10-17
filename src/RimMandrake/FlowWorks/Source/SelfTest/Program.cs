@@ -1971,6 +1971,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
             LevelSurfaceChecks.Run(Case);
             LevelExactChecks.Run(Case);        // WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: exact decilitres, one surface per body (LevelExactChecks.cs)      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)
+            LevelPourChecks.Run(Case);         // PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes: pours and fill-ins in decilitres (LevelPourChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
