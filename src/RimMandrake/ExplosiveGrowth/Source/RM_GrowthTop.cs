@@ -114,6 +114,18 @@ namespace RimMandrake.ExplosiveGrowth
         public bool fireAdapted;
     }
 
+    /// <summary>TREE_BURST_BUILD_LITRES_BUY_YEARS (tree_burst_design_2026-10-17.md §4, Q12/Q16): what one tree's burst yields
+    /// beyond its own harvest. A log tree's wood is its own harvest; a tree whose harvest is not wood also gives logs (Q12
+    /// "logs PLUS their own product"): `logs` WoodLog, -1 = the Mod Setting's default (count owed by
+    /// PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE). `fruit` x `fruitCount`: a log tree's own fruit, if it has one (Q16).</summary>
+    public class RM_TreeBurstEntry
+    {
+        public string plant;
+        public int logs = -1;
+        public string fruit;
+        public int fruitCount;
+    }
+
     /// <summary>A filth def that IS a water source (D6): its liquid, by FlowWorks fluid defName.</summary>
     public class RM_FilthLiquidEntry
     {
@@ -185,5 +197,17 @@ namespace RimMandrake.ExplosiveGrowth
 
         /// <summary>Plants left at vanilla speed everywhere (their slowness is the point): the Exempt archetype.</summary>
         public List<string> bandExemptPlants = new List<string>();
+
+        // ── trees (tree_burst_design_2026-10-17.md §2; a tree is read from its def: visual max 3.0+, not a fungus) ──
+
+        /// <summary>Q9 "ALL FUNGI (no tree rules)": fungi are never trees, whatever their size. Marked here, never by name-matching.</summary>
+        public List<string> fungi = new List<string>();
+
+        /// <summary>§0: plants whose own mechanic replaces the tree rules (RM_Greatbole: its self-healing, owner 2026-10-17).
+        /// They keep the engine's handling they had before the tree rules.</summary>
+        public List<string> treeRulesExempt = new List<string>();
+
+        /// <summary>Per-tree burst yields (Q12, Q16); a tree with no entry takes the defaults.</summary>
+        public List<RM_TreeBurstEntry> treeBursts = new List<RM_TreeBurstEntry>();
     }
 }

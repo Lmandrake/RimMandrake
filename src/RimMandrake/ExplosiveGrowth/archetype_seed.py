@@ -10,7 +10,9 @@ seeded OFFLINE from the repo exactly as RM_ExplosiveGrowthRegistry.Rebuild seeds
   violent top    the roster top (Churn = the default cycle; Slime/Tinder/Rupture/Flush keep their own odds)
   liquids        clean water + the row's adaptedLiquids (T2)
   sprouts        the row's sproutCount, else dry 4~7 / wet 1~2
-  woody          harvestTag Wood / a Tree parent / harvestedThingDef WoodLog (EC1)
+  woody          harvestTag Wood / a Tree parent / harvestedThingDef WoodLog (EC1), and not a tree
+  tree           tree_burst_design_2026-10-17.md §2: a native drawn at visual max 3.0+ (the def's own visualSizeRange; an
+                 inherited one reads "UNMEASURED offline"), not a roster fungus, not treeRulesExempt (RM_Greatbole)
   conflict       a plant in both a wet and a dry biome's list: surfaced, never silently resolved (§9, evictions stopped)
 
 The sheet GENERATOR is not built here (UNMEASURED in the spec: owed with the biome review tooling); this is its data.
@@ -77,7 +79,8 @@ def load(files=None):
                 plants[d.findtext("defName")] = {
                     "growDays": pl.findtext("growDays"), "harvestTag": pl.findtext("harvestTag"),
                     "harvested": pl.findtext("harvestedThingDef"), "parent": d.get("ParentName") or "",
-                    "cave": (pl.findtext("cavePlant") or "").strip().lower() == "true"}
+                    "cave": (pl.findtext("cavePlant") or "").strip().lower() == "true",
+                    "visual": pl.findtext("visualSizeRange")}
     for b, extra in patched.items():
         if b in biomes:
             biomes[b]["plants"] = sorted(set(biomes[b]["plants"]) | extra)
@@ -87,7 +90,10 @@ def load(files=None):
 
 def seed(rosters, biomes, plants):
     rows, exempt, wet_b, fire_b = {}, set(BUILTIN_EXEMPT), set(), set()
+    fungi, tree_exempt = set(), set()
     for r in rosters:
+        fungi |= {(x.text or "").strip() for x in r.findall("fungi/li")}
+        tree_exempt |= {(x.text or "").strip() for x in r.findall("treeRulesExempt/li")}
         for li in r.findall("plants/li"):
             n = (li.findtext("plant") or "").strip()
             if n:
@@ -144,12 +150,22 @@ def seed(rosters, biomes, plants):
         sc = li.findtext("sproutCount") if li is not None else None
         sprouts = sc or ("1~2" if a == "WetNative" else "4~7" if a in ("DryNative", "FireAdapted") else "-")
         liquids = [CLEAN] + ([(x.text or "").strip() for x in li.findall("adaptedLiquids/li")] if li is not None else [])
-        woody = bool(pd and ((pd["harvestTag"] or "") == "Wood" or "Tree" in pd["parent"] or pd["harvested"] == "WoodLog"))
+        vmax = None
+        if pd and pd.get("visual"):
+            try:
+                vmax = float(pd["visual"].split("~")[-1])
+            except ValueError:
+                vmax = None
+        native = a in ("DryNative", "WetNative", "FireAdapted")
+        if native and name not in fungi and name not in tree_exempt and vmax is None and pd is not None:
+            notes.append("visualSizeRange inherited: tree or not UNMEASURED offline")
+        tree = bool(native and name not in fungi and name not in tree_exempt and vmax is not None and vmax >= 2.999)
+        woody = not tree and bool(pd and ((pd["harvestTag"] or "") == "Wood" or "Tree" in pd["parent"] or pd["harvested"] == "WoodLog"))
         conflict = name in wet_p and name in dry_b_p and choice == "Auto"
         if conflict:
             notes.append("multi-homed: in a wet AND a dry biome's list; seeded wet (the conservative rate) until its sheet rows decide")
         return {"plant": name, "archetype": a, "ruptureOdds": odds_label, "violentTop": top, "liquids": liquids,
-                "sprouts": sprouts, "woody": woody, "conflict": conflict, "notes": notes}
+                "sprouts": sprouts, "woody": woody, "tree": tree, "fungus": name in fungi, "conflict": conflict, "notes": notes}
 
     out = {}
     for b in sorted(ours_b):

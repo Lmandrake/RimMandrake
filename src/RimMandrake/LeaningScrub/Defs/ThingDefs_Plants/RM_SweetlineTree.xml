@@ -49,7 +49,10 @@
     </statBases>
     <plant>
       <visualSizeRange>7.7~10.0</visualSizeRange>
-      <growDays>240</growDays>
+      <!-- tree_burst_design_2026-10-17.md §6b (owner: "Sweetline trees should be VERY slow-growing and long lived"; follow-up
+           card "Accept 480 days, 12x life"): 480 grow days, a 5,760-day life. A spill is a growth spike, never an end. -->
+      <growDays>480</growDays>
+      <lifespanDaysPerGrowDays>12</lifespanDaysPerGrowDays>
       <harvestWork>4200</harvestWork>
       <harvestedThingDef>RM_SweetlineWool</harvestedThingDef>
       <harvestYield>20</harvestYield>

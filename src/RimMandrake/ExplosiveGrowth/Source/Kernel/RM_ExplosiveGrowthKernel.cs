@@ -156,6 +156,73 @@ namespace RimMandrake.ExplosiveGrowth
             }
         }
 
+        // ══════════════ TREES (design/RimMandrake/tree_burst_design_2026-10-17.md §2-§4, §6a; owner's card rulings) ══════════════
+        // A tree is a native whose visual max is 3.0 or more and that is not a fungus (Q2, Q9). It never cycles at maturity:
+        // water moves it along its life instead (Q1/Q4: litres buy days), and its end of life is the event (Q5/Q6, Q11).
+
+        public const int TicksPerDay = 60000;
+        /// <summary>Q2 "SIZE 3.0+ ONLY" (float slack for a def that writes 3.0).</summary>
+        public const float TreeMinVisualSize = 2.999f;
+
+        /// <summary>The §2.5 factor r for a TREE (T2): no x10 and no tree ratio. A dry-land tree on watered ground grows at
+        /// vanilla speed (the water's effect is the drink, §3); on dry ground it keeps the ruled x0.1 and dormancy (RS §5.2). A
+        /// jungle tree runs x4 to maturity, then x1 (Q11 "x4 to maturity, then normal ageing").</summary>
+        public static float TreeMoistureFactor(RM_Archetype a, bool inScope, bool stalled, bool sealedGrower, bool wet, bool ashFresh,
+                                               bool mature, RM_RateSettings s)
+        {
+            if (!inScope || sealedGrower || a == RM_Archetype.Exempt || a == RM_Archetype.Vanilla) return 1f;
+            if (stalled) return s.stunted;
+            if (a == RM_Archetype.WetNative) return mature ? 1f : s.wetNative;
+            bool watered = wet || (a == RM_Archetype.FireAdapted && ashFresh);
+            return watered ? 1f : s.dryDry;
+        }
+
+        /// <summary>Litres a tree on a continuous source (river, mud, a running flood, rain, a channel) drinks in
+        /// <paramref name="ticks"/> at the cap (§3: at most treeDrinkLitresPerDay).</summary>
+        public static float ContinuousDrinkLitres(int ticks, float litresPerDay)
+        {
+            if (!(litresPerDay > 0f) || ticks <= 0) return 0f;
+            return litresPerDay * ticks / TicksPerDay;
+        }
+
+        /// <summary>One drink (§3, Q1/Q4): every litresPerDayOfLife litres moves the tree one day along its life: growth while
+        /// immature (+1/growDays per day), then age once mature. An unlimited-life tree only grows (Q14: water is a growth
+        /// spike, never an end). waterDeath: this step carried the age past the lifespan (Q5/Q6: a water-driven death bursts);
+        /// a tree already past its lifespan (dying of age) is never re-killed by water.</summary>
+        public static RM_DrinkResult Drink(float growth, int age, float growDays, bool limitedLife, int lifespanTicks, float litres,
+                                           float litresPerDayOfLife)
+        {
+            var r = new RM_DrinkResult { growth = growth, age = age };
+            if (!(litres > 0f) || !(litresPerDayOfLife > 0f) || !(growDays > 0f)) return r;
+            double days = litres / (double)litresPerDayOfLife;
+            r.days = (float)days;
+            if (growth < 1f)
+            {
+                double need = (1.0 - growth) * growDays;
+                if (days < need)
+                {
+                    r.growth = (float)(growth + days / growDays);
+                    if (r.growth > 1f) r.growth = 1f;
+                    return r;
+                }
+                r.growth = 1f;
+                days -= need;
+            }
+            if (!limitedLife || days <= 0.0) return r;
+            long next = age + (long)Math.Round(days * TicksPerDay);
+            if (next > int.MaxValue) next = int.MaxValue;
+            r.age = (int)next;
+            r.waterDeath = age <= lifespanTicks && r.age > lifespanTicks;
+            return r;
+        }
+
+        /// <summary>Q11: a jungle tree bursts at its end of life: the age step vanilla is about to add (step) carries it past the
+        /// lifespan (or it is already past it, e.g. an old save). An unlimited-life tree never ends (Q14).</summary>
+        public static bool JungleEndOfLife(int age, int step, bool limitedLife, int lifespanTicks)
+        {
+            return limitedLife && (long)age + step > lifespanTicks;
+        }
+
         /// <summary>Does this archetype run the cycle (charge, tells, outcome) at maturity? Only natives, in scope, unsealed,
         /// outside a stalled biome.</summary>
         public static bool Cycles(RM_Archetype a, bool inScope, bool stalled, bool sealedGrower)
@@ -231,6 +298,16 @@ namespace RimMandrake.ExplosiveGrowth
 
     /// <summary>The ruled archetypes (§4). Vanilla = a plant our tiers do not ship (setting A governs it).</summary>
     public enum RM_Archetype : byte { DryNative = 0, WetNative = 1, FireAdapted = 2, Exempt = 3, Vanilla = 4 }
+
+    /// <summary>One tree drink (RM_ExplosiveGrowthKernel.Drink): the new growth and age, the days of life it bought, and whether
+    /// it carried the age past the lifespan.</summary>
+    public struct RM_DrinkResult
+    {
+        public float growth;
+        public int age;
+        public float days;
+        public bool waterDeath;
+    }
 
     /// <summary>What a fully charged plant does (§4).</summary>
     public enum RM_Outcome : byte { None = 0, Fruit = 1, Burst = 2, Wither = 3, SelfFruit = 4, OwnTop = 5 }

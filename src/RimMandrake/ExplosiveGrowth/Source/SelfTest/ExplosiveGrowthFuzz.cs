@@ -6,6 +6,8 @@
 //   top     EffectiveTop exhaustively (7 tops x 6 flags)
 //   rate    the ruled moisture factor (spec §2.5) exhaustively, plus Cycles / CycleWet
 //   outcome ResolveOutcome exhaustively and its Burst share, AgeRemoval, StaggerOpen, RainWet, SizeStep
+//   tree    TreeMoistureFactor exhaustively, Drink (litres buy days) against a day-by-day spec world, the owner's worked
+//           numbers (tree_burst_design_2026-10-17.md §3, §6b), JungleEndOfLife, ContinuousDrinkLitres
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -655,6 +657,106 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
             return fails;
         }
 
+        // ════════════════════════ tree ════════════════════════
+        // tree_burst_design_2026-10-17.md: T2 (no x10, no tree ratio; dry x0.1 kept; jungle x4 young, x1 grown), Q1/Q4 (40 L
+        // per day of life: growth while young, then age), Q5/Q6 (a drink past the lifespan is a water-driven death), Q14
+        // (unlimited life: growth only, never an end), Q11 (a jungle tree's end of life).
+        private static float SpecTreeRate(RM_Archetype a, bool scope, bool stalled, bool sealedG, bool wet, bool ash, bool mature, RM_RateSettings s)
+        {
+            if (!scope || sealedG) return 1f;
+            if (a == RM_Archetype.Exempt || a == RM_Archetype.Vanilla) return 1f;    // never trees; neutral
+            if (stalled) return s.stunted;
+            if (a == RM_Archetype.WetNative) return mature ? 1f : s.wetNative;        // Q11
+            return (wet || (a == RM_Archetype.FireAdapted && ash)) ? 1f : s.dryDry;   // T2: the water's effect is the drink
+        }
+
+        private static List<string> Tree(int n, int seed0)
+        {
+            var fails = new List<string>();
+            try
+            {
+                var rnd = new Random(seed0);
+                // rate, exhaustive over archetype x 6 flags, ruled and random sliders
+                for (int k = 0; k < Math.Max(1, n / 50); k++)
+                {
+                    RM_RateSettings s = k == 0 ? RM_RateSettings.Ruled : new RM_RateSettings
+                    {
+                        dryWet = 1f + (float)rnd.NextDouble() * 19f, dryDry = 0.01f + (float)rnd.NextDouble(), wetNative = 1f + (float)rnd.NextDouble() * 9f,
+                        treeRatio = 0.1f + (float)rnd.NextDouble() * 0.9f, stunted = 0.1f + (float)rnd.NextDouble() * 1.9f,
+                        vanillaDry = 0.01f + (float)rnd.NextDouble(), vanillaNeedsWater = rnd.Next(2) == 0,
+                    };
+                    for (int ai = 0; ai < 5; ai++)
+                        for (int m = 0; m < 64; m++)
+                        {
+                            var a = (RM_Archetype)ai;
+                            bool sc = (m & 1) != 0, st = (m & 2) != 0, se = (m & 4) != 0, w = (m & 8) != 0, ash = (m & 16) != 0, mat = (m & 32) != 0;
+                            float got = RM_ExplosiveGrowthKernel.TreeMoistureFactor(a, sc, st, se, w, ash, mat, s);
+                            float want = SpecTreeRate(a, sc, st, se, w, ash, mat, s);
+                            Check(Math.Abs(got - want) < 1e-6f, $"TreeMoistureFactor({a}, scope {sc}, stalled {st}, sealed {se}, wet {w}, ash {ash}, mature {mat}) = {got}, want {want}");
+                            Check(got <= Math.Max(Math.Max(1f, s.wetNative), s.stunted) + 1e-6f, $"a tree above every ruled ceiling ({a}, wet {w}): {got}");
+                            Cases++; Steps++;
+                        }
+                }
+                RM_RateSettings d = RM_RateSettings.Ruled;
+                Check(RM_ExplosiveGrowthKernel.TreeMoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, false, d) == 1f, "dry tree wet != x1 (T2)");
+                Check(RM_ExplosiveGrowthKernel.TreeMoistureFactor(RM_Archetype.DryNative, true, false, false, false, false, true, d) == 0.1f, "dry tree dry != x0.1 (RS §5.2)");
+                Check(RM_ExplosiveGrowthKernel.TreeMoistureFactor(RM_Archetype.WetNative, true, false, false, false, false, false, d) == 4f, "jungle tree young != x4 (Q11)");
+                Check(RM_ExplosiveGrowthKernel.TreeMoistureFactor(RM_Archetype.WetNative, true, false, false, true, false, true, d) == 1f, "jungle tree grown != x1 (Q11)");
+
+                // the owner's worked numbers (§3 table, §6b): a 400 L spill at 40 L/day buys 10 days
+                RM_DrinkResult sw = RM_ExplosiveGrowthKernel.Drink(0f, 0, 480f, true, 480 * 12 * 60000, 400f, 40f);
+                Check(Math.Abs(sw.days - 10f) < 1e-5f && Math.Abs(sw.growth - 10f / 480f) < 1e-6f && sw.age == 0 && !sw.waterDeath, "Sweetline 480 d: one spill is +10/480 growth, no age");
+                RM_DrinkResult vr = RM_ExplosiveGrowthKernel.Drink(0f, 0, 18f, true, 810 * 60000, 400f, 40f);
+                Check(Math.Abs(vr.growth - 10f / 18f) < 1e-5f, "Vault Root: one spill is +56% growth");
+                // litres to the end of life from maturity = remaining life days x 40 (§3)
+                int life = 5760 * 60000;
+                RM_DrinkResult edge = RM_ExplosiveGrowthKernel.Drink(1f, 480 * 60000, 480f, true, life, (5760 - 480) * 40f, 40f);
+                Check(!edge.waterDeath && edge.age == life, "exactly the remaining life's litres lands ON the lifespan, not past it");
+                RM_DrinkResult over = RM_ExplosiveGrowthKernel.Drink(1f, 480 * 60000, 480f, true, life, (5760 - 480) * 40f + 1f, 40f);
+                Check(over.waterDeath, "one litre more is a water-driven death");
+                RM_DrinkResult im = RM_ExplosiveGrowthKernel.Drink(0.5f, 123, 400f, false, 0, 1e9f, 40f);
+                Check(im.growth == 1f && im.age == 123 && !im.waterDeath, "Q14: an unlimited-life tree only grows, never ages by water, never dies of it");
+                Check(Math.Abs(RM_ExplosiveGrowthKernel.ContinuousDrinkLitres(2000, 40f) - 40f / 30f) < 1e-6f, "a TickLong of river = 40/30 L");
+                Check(RM_ExplosiveGrowthKernel.ContinuousDrinkLitres(60000, 40f) == 40f, "a day of river = the cap");
+                Check(RM_ExplosiveGrowthKernel.ContinuousDrinkLitres(2000, 0f) == 0f && RM_ExplosiveGrowthKernel.ContinuousDrinkLitres(-5, 40f) == 0f, "no cap / no time = no water");
+                Check(!RM_ExplosiveGrowthKernel.JungleEndOfLife(1000, 2000, false, 0), "Q14: an immortal jungle tree never ends");
+                Check(RM_ExplosiveGrowthKernel.JungleEndOfLife(99000, 2000, true, 100000) && !RM_ExplosiveGrowthKernel.JungleEndOfLife(98000, 2000, true, 100000)
+                      && RM_ExplosiveGrowthKernel.JungleEndOfLife(200000, 2000, true, 100000), "JungleEndOfLife edges (vanilla Dying is age > lifespan)");
+                Check(RM_ExplosiveGrowthKernel.JungleEndOfLife(int.MaxValue - 10, 2000, true, int.MaxValue), "JungleEndOfLife must not overflow");
+                Cases += 12;
+
+                // random drinks against a day-by-day spec world
+                for (int k = 0; k < n; k++)
+                {
+                    float growDays = (float)(0.5 + rnd.NextDouble() * 600);
+                    bool limited = rnd.Next(4) != 0;
+                    float lifeDays = limited ? growDays * (float)(1 + rnd.NextDouble() * 60) : 0f;
+                    int lifespan = limited ? (int)Math.Min(int.MaxValue, lifeDays * 60000.0) : 0;
+                    float growth = rnd.Next(3) == 0 ? 1f : (float)rnd.NextDouble();
+                    int age = rnd.Next(3) == 0 ? (int)(rnd.NextDouble() * Math.Min(int.MaxValue, Math.Max(1.0, lifespan * 1.2))) : rnd.Next(0, 6000000);
+                    float perDay = (float)(1 + rnd.NextDouble() * 200);
+                    float litres = rnd.Next(5) == 0 ? 0f : (float)(rnd.NextDouble() * rnd.NextDouble() * 400000);
+                    RM_DrinkResult r = RM_ExplosiveGrowthKernel.Drink(growth, age, growDays, limited, lifespan, litres, perDay);
+                    double days = litres > 0 ? litres / (double)perDay : 0;
+                    // spec: growth first, the rest is age; age only when limited
+                    double toMature = growth < 1f ? (1.0 - growth) * growDays : 0;
+                    double wantGrowth = growth < 1f ? Math.Min(1.0, growth + days / growDays) : growth;
+                    double rest = Math.Max(0, days - toMature);
+                    long wantAge = limited && growth + days / growDays >= 1.0 ? Math.Min(int.MaxValue, age + (long)Math.Round(rest * 60000)) : age;
+                    Check(Math.Abs(r.growth - wantGrowth) < 1e-4, $"seed {seed0} case {k}: growth {r.growth}, want {wantGrowth} (g0 {growth}, days {days}, growDays {growDays})");
+                    Check(Math.Abs(r.age - wantAge) <= 1, $"seed {seed0} case {k}: age {r.age}, want {wantAge}");
+                    Check(r.growth >= growth - 1e-6f && r.age >= age && r.growth <= 1f, "a drink never takes growth or age away");
+                    bool wantDeath = limited && age <= lifespan && r.age > lifespan;
+                    Check(r.waterDeath == wantDeath, $"waterDeath {r.waterDeath}, want {wantDeath} (age {age} -> {r.age}, lifespan {lifespan})");
+                    if (!limited) Check(!r.waterDeath && r.age == age, "Q14: immortal never ages or dies by water");
+                    if (limited && age > lifespan) Check(!r.waterDeath, "a tree dying of age is never re-killed by water");
+                    Cases++; Steps++;
+                }
+            }
+            catch (Exception e) { fails.Add("tree: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -670,6 +772,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 ("scope", () => Scope()),
                 ("rate", () => Rate(N(40), S(1))),
                 ("outcome", () => Outcome(N(200), S(1))),
+                ("tree", () => Tree(N(20000), S(1))),
             };
             foreach (var f in fam)
             {

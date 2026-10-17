@@ -31,7 +31,7 @@ namespace RimMandrake.ExplosiveGrowth
         public static float dryWetMultiplier = 10f;       // C6 / W3: a dry native on wet, lit ground
         public static float dryDryMultiplier = 0.1f;      // C6 "Tenth speed": a dry native on dry ground
         public static float wetNativeMultiplier = 4f;     // C1 "x4, always": a wet native, wet or dry
-        public static float treeRatio = 0.625f;           // EC1: anything yielding wood runs this share of its rate (2.5/4)
+        public static float treeRatio = 0.625f;           // EC1, kept only for the tree-rules-exempt greatbole (§0); trees and fungi never read it
         public static float stuntedMultiplier = 0.4f;     // stalled (terminator) biomes, unchanged by the rulings
         public static bool vanillaCropsNeedWater = true;  // setting A (C4): default "need water nearby"
         public static float vanillaDryMultiplier = 0.1f;  // OQ-16: a vanilla plant with no water nearby grows AND ages x0.1
@@ -51,6 +51,13 @@ namespace RimMandrake.ExplosiveGrowth
         // R-G5's under-a-day clause and the fungal carve-out: these plants are Exempt (vanilla speed, no cycle).
         public static float minGrowDaysToSoak = 1f;
         public static bool cavePlantsNeverSoak = true;
+
+        // ── trees (tree_burst_design_2026-10-17.md; a tree = one of our plants drawn 3.0+, not a fungus) ──
+        public static bool treeDrinkEnabled = true;       // Q1/Q4: water moves a dry-land tree along its life (litres buy days)
+        public static float treeLitresPerDayOfLife = 40f; // Q1 ruled: 40 L per day of life
+        public static float treeDrinkLitresPerDay = 40f;  // §3 PROPOSED: the most a tree drinks from a continuous source a day
+        public static bool treeBurstEnabled = true;       // Q5/Q6, Q11: a water-driven death (and a jungle tree's end of life) bursts
+        public static int treeBurstDefaultLogs = 10;      // Q12 interim (PROPOSED): logs from a tree whose harvest is not wood
 
         // ── the water sources (§3; one switch each) ──────────────────────
         public static bool naturalWaterEnabled = true;    // W2: river / fresh water / marsh / mud cells
@@ -123,6 +130,11 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref waveStaggerEnabled, "waveStaggerEnabled", false);
             Scribe_Values.Look(ref minGrowDaysToSoak, "minGrowDaysToSoak", 1f);
             Scribe_Values.Look(ref cavePlantsNeverSoak, "cavePlantsNeverSoak", true);
+            Scribe_Values.Look(ref treeDrinkEnabled, "treeDrinkEnabled", true);
+            Scribe_Values.Look(ref treeLitresPerDayOfLife, "treeLitresPerDayOfLife", 40f);
+            Scribe_Values.Look(ref treeDrinkLitresPerDay, "treeDrinkLitresPerDay", 40f);
+            Scribe_Values.Look(ref treeBurstEnabled, "treeBurstEnabled", true);
+            Scribe_Values.Look(ref treeBurstDefaultLogs, "treeBurstDefaultLogs", 10);
             Scribe_Values.Look(ref naturalWaterEnabled, "naturalWaterEnabled", true);
             Scribe_Values.Look(ref spillWaterEnabled, "spillWaterEnabled", true);
             Scribe_Values.Look(ref irrigationSoakEnabled, "irrigationSoakEnabled", true);
@@ -189,8 +201,27 @@ namespace RimMandrake.ExplosiveGrowth
                 Pct(list, "Dry-land natives on wet ground", ref dryWetMultiplier, 1f, 20f, "0.0");
                 Pct(list, "Dry-land natives on dry ground", ref dryDryMultiplier, 0.01f, 1f);
                 Pct(list, "Jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion), wet or dry", ref wetNativeMultiplier, 1f, 10f, "0.0");
-                Pct(list, "Anything that yields wood grows at this share of its kind's rate", ref treeRatio, 0.1f, 1f, "0.000");
+                Pct(list, "The greatbole grows at this share of its kind's rate (trees follow the Trees section)", ref treeRatio, 0.1f, 1f, "0.000");
                 Pct(list, "Stalled biomes (terminator / poison forest)", ref stuntedMultiplier, 0.1f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Trees (our plants drawn 3.0 or larger, fungi excepted)", RimMandrake.Shared.SettingScope.Now, new[] { "treeDrinkEnabled", "treeLitresPerDayOfLife", "treeDrinkLitresPerDay", "treeBurstEnabled", "treeBurstDefaultLogs" }))
+            {
+                list.Label("A tree never takes the x10 and never fruits and dies at maturity. Water moves it along its life instead; "
+                           + "a long-lived tree needs a lot of water to reach its end. Jungle trees grow x4 to maturity, then age normally.");
+                list.CheckboxLabeled("Water moves a dry-land tree along its life", ref treeDrinkEnabled,
+                    "A spill on its cell is drunk whole; a river, mud, rain, a flood or a channel is drunk a little each day. "
+                    + "A growing tree grows; a grown one ages. A tree with an unlimited life only grows.");
+                list.Label("  Litres for one day of life: " + treeLitresPerDayOfLife.ToString("0"));
+                treeLitresPerDayOfLife = UnityEngine.Mathf.Round(list.Slider(treeLitresPerDayOfLife, 5f, 400f));
+                list.Label("  Most it drinks a day from running or standing water: " + treeDrinkLitresPerDay.ToString("0") + " L");
+                treeDrinkLitresPerDay = UnityEngine.Mathf.Round(list.Slider(treeDrinkLitresPerDay, 0f, 400f));
+                list.CheckboxLabeled("A tree that drinks past the end of its life bursts", ref treeBurstEnabled,
+                    "Logs, its own produce and two to four seedlings, with a blast. Jungle trees burst at the end of their life too. "
+                    + "A tree that dies of plain old age just falls over dead. Off: every tree dies of old age.");
+                list.Label("  Logs from a burst tree whose harvest is not wood: " + treeBurstDefaultLogs);
+                treeBurstDefaultLogs = UnityEngine.Mathf.RoundToInt(list.Slider(treeBurstDefaultLogs, 0f, 60f));
                 list.GapLine();
             }
 
@@ -316,7 +347,8 @@ namespace RimMandrake.ExplosiveGrowth
             {
                 int[] a = RM_ExplosiveGrowthRegistry.CountByArchetype;
                 list.Label("Plant kinds now: dry natives " + a[0] + ", jungle natives " + a[1] + ", fire-adapted " + a[2]
-                           + ", vanilla speed (exempt) " + a[3] + ", vanilla " + a[4] + ". Biomes: " + RM_ExplosiveGrowthRegistry.HomeBiomes.Count + " of ours.");
+                           + ", vanilla speed (exempt) " + a[3] + ", vanilla " + a[4] + "; trees " + RM_ExplosiveGrowthRegistry.CountTrees
+                           + ", fungi " + RM_ExplosiveGrowthRegistry.CountFungi + ". Biomes: " + RM_ExplosiveGrowthRegistry.HomeBiomes.Count + " of ours.");
             }
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);

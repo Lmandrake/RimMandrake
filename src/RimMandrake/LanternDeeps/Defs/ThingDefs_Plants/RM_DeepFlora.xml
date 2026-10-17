@@ -269,6 +269,7 @@
       <Beauty>6</Beauty>
     </statBases>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 40 (inherited WoodLog); its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <fertilitySensitivity>0.0</fertilitySensitivity>
@@ -278,11 +279,13 @@
       <topWindExposure>0</topWindExposure>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestWork>1000</harvestWork>
-      <harvestYield>40</harvestYield>
+      <harvestYield>0</harvestYield>
       <wildOrder>3</wildOrder>
       <neverBlightable>true</neverBlightable>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
       <interferesWithRoof>false</interferesWithRoof>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -360,6 +363,7 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 20 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
       <fertilitySensitivity>0.5</fertilitySensitivity>
       <soundHarvesting>Harvest_Tree</soundHarvesting>
@@ -380,10 +384,10 @@
       <growDays>5</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestWork>800</harvestWork>
-      <harvestYield>20</harvestYield>
+      <harvestYield>0</harvestYield>
       <wildOrder>1</wildOrder>
       <neverBlightable>true</neverBlightable>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestedThingDef></harvestedThingDef>
       <harvestMinGrowth>0.40</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
       <blockAdjacentSow>true</blockAdjacentSow>
@@ -392,7 +396,7 @@
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <interferesWithRoof>false</interferesWithRoof>
-      <harvestTag>Wood</harvestTag>
+      <harvestTag>Standard</harvestTag>
       <visualSizeRange>1.5~2.5</visualSizeRange>
       <topWindExposure>0.05</topWindExposure>
     </plant>

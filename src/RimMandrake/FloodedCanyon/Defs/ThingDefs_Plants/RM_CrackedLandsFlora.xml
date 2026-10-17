@@ -203,18 +203,20 @@
       <preferability>NeverForNutrition</preferability>
     </ingestible>
     <plant>
+      <!-- TREE_BURST_BUILD_LITRES_BUY_YEARS (Q3 by card, 2026-10-17: "stop giving wood"): drawn under tree size (3.0), so no wood. Was 14 WoodLog; its new harvest is PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE's. -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>20</growDays>
       <harvestWork>400</harvestWork>
-      <harvestYield>14</harvestYield>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>0</harvestYield>
+      <harvestedThingDef></harvestedThingDef>
       <harvestMinGrowth>0.3</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <visualSizeRange>1.4~2.4</visualSizeRange>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 </Defs>

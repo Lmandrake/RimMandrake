@@ -82,6 +82,12 @@ namespace RimMandrake.ExplosiveGrowth
         public static void Fire(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
         {
             if (plant == null || !plant.Spawned || prof == null || comp == null) return;
+            // A tree never runs the maturity cycle (tree_burst_design §2); a forced top (debug action, API) is its burst.
+            if (prof.isTree)
+            {
+                TreeBurst(plant, prof, comp, waterDriven: false);
+                return;
+            }
             RM_GrowthTop top = Effective(prof.top);
             Map map = plant.Map;
             IntVec3 c = plant.Position;
@@ -241,6 +247,91 @@ namespace RimMandrake.ExplosiveGrowth
             }
         }
 
+        // ── THE TREE BURST (tree_burst_design_2026-10-17.md §4, T4): a tree's end of life, never a maturity cycle. Fired by a
+        // water-driven death (Q5/Q6: "Every tree that hits a water-driven death bursts") and by a jungle tree's end of life
+        // (Q11). Yields (Q12, Q16/Q17): its logs (its own wood, or WoodLog for a tree whose harvest is not wood), its own
+        // product, its own fruit if a roster names one, 2-4 seedlings on ground the player has not built; the Burst's blast.
+        // A Contagion tree's contaminated Rupture IS its burst (Q15).
+
+        private static readonly IntRange TreeSeedlings = new IntRange(2, 4);   // Q17
+
+        /// <summary>The last tree burst's yields (proof read-out only): logs, product, fruit, seedlings, waterDriven.</summary>
+        public static string LastTreeBurst = "";
+
+        /// <summary>Wood: WoodLog or any Woody-stuff log (RM_OllimWood, RM_SlackwaxTimber...).</summary>
+        public static bool IsWood(ThingDef t)
+        {
+            if (t == null) return false;
+            if (t == ThingDefOf.WoodLog) return true;
+            List<StuffCategoryDef> cats = t.stuffProps?.categories;
+            return cats != null && cats.Contains(StuffCategoryDefOf.Woody);
+        }
+
+        public static void TreeBurst(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp, bool waterDriven)
+        {
+            if (plant == null || !plant.Spawned || plant.Destroyed || prof == null || comp == null) return;
+            Map map = plant.Map;
+            IntVec3 c = plant.Position;
+            ThingDef def = plant.def;
+            if (prof.top == RM_GrowthTop.Rupture && ExplosiveGrowthSettings.ruptureEnabled)
+            {
+                LastTreeBurst = "rupture=1 waterDriven=" + waterDriven;
+                Rupture(plant, prof, comp);
+                comp.Dirty(c);
+                return;
+            }
+
+            ThingDef harvest = def.plant.harvestedThingDef;
+            float yield = def.plant.harvestYield;
+            bool woodHarvest = IsWood(harvest) && yield > 0f;
+            ThingDef logDef = woodHarvest ? harvest : ThingDefOf.WoodLog;
+            int logs = woodHarvest ? GenMath.RoundRandom(yield)
+                : Mathf.Max(0, prof.burstLogs >= 0 ? prof.burstLogs : ExplosiveGrowthSettings.treeBurstDefaultLogs);
+            int product = !woodHarvest && harvest != null && yield > 0f && prof.produceFactor > 0f
+                ? GenMath.RoundRandom(yield * prof.produceFactor) : 0;
+            int fruit = prof.burstFruit != null ? prof.burstFruitCount : 0;
+
+            Scatter(logDef, logs, c, map);
+            if (product > 0) Scatter(harvest, product, c, map);
+            if (fruit > 0) Scatter(prof.burstFruit, fruit, c, map);
+
+            RM_ExplosiveGrowthDefOf.RM_EG_Pop?.PlayOneShot(new TargetInfo(c, map));
+            for (int i = 0; i < 8; i++) FleckMaker.ThrowDustPuff(c.ToVector3Shifted() + Gen.RandomHorizontalVector(1.6f), map, 1.8f);
+            foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
+            {
+                if (f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
+            }
+            if (ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
+
+            SplitAndDie(plant);
+            int sown = RM_SproutRing.Sow(map, c, def, SproutRadius, TreeSeedlings.RandomInRange, respectBuiltGround: true, comp, growth: 0.05f);
+            LastTreeBurst = string.Format("logs={0} logDef={1} product={2} fruit={3} seedlings={4} waterDriven={5}",
+                logs, logDef.defName, product, fruit, sown, waterDriven);
+
+            if (map.IsPlayerHome && MessagesRepeatAvoider.MessageShowAllowed("RM_EG_TreeBurst", 60f))
+            {
+                Messages.Message(waterDriven
+                        ? Find.ActiveLanguageWorker.WithIndefiniteArticle(def.label).CapitalizeFirst() + " drank past the end of its life and burst, throwing logs and seedlings."
+                        : "An old " + def.label + " burst at the end of its life, throwing logs and seedlings.",
+                    new TargetInfo(c, map), MessageTypeDefOf.NeutralEvent);
+            }
+            comp.Dirty(c);
+        }
+
+        /// <summary>A stack scattered in a few clumps across the burst radius (the Burst's "premium yield, scattered").</summary>
+        private static void Scatter(ThingDef def, int count, IntVec3 c, Map map)
+        {
+            if (def == null || count <= 0) return;
+            int clumps = Mathf.Clamp(count / 4, 1, 4);
+            for (int i = 0; i < clumps; i++)
+            {
+                int n = i == clumps - 1 ? count : count / clumps;
+                count -= n;
+                IntVec3 at = c + GenRadial.RadialPattern[Rand.Range(0, GenRadial.NumCellsInRadius(BurstRadius))];
+                SpawnNear(def, n, at.InBounds(map) ? at : c, map);
+            }
+        }
+
         // ── SLIME: Churn-shaped; the ring turns to slime, not sprouts.
 
         private static void Slime(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
@@ -373,7 +464,8 @@ namespace RimMandrake.ExplosiveGrowth
         private static void DropProduce(Plant plant, float factor, bool scatter)
         {
             ThingDef produce = plant.def.plant.harvestedThingDef;
-            // §4.1 / §5.1 (EC1): "Wood is never a cycle drop." A woody plant grows at the tree rate and is cut for its logs.
+            // §4.1 / §5.1 (EC1): "Wood is never a cycle drop." Trees no longer cycle (tree_burst_design §4: their burst has its
+            // own drop path, TreeBurst); this guard stays for every non-tree outcome.
             if (produce == null || produce == ThingDefOf.WoodLog || plant.def.plant.harvestYield <= 0f || factor <= 0f) return;
             int count = GenMath.RoundRandom(plant.def.plant.harvestYield * factor);
             if (count <= 0) return;
@@ -382,15 +474,7 @@ namespace RimMandrake.ExplosiveGrowth
                 SpawnNear(produce, count, plant.Position, plant.Map);
                 return;
             }
-            // Scattered in a few clumps across the burst radius.
-            int clumps = Mathf.Clamp(count / 4, 1, 4);
-            for (int i = 0; i < clumps; i++)
-            {
-                int n = i == clumps - 1 ? count : count / clumps;
-                count -= n;
-                IntVec3 at = plant.Position + GenRadial.RadialPattern[Rand.Range(0, GenRadial.NumCellsInRadius(BurstRadius))];
-                SpawnNear(produce, n, at.InBounds(plant.Map) ? at : plant.Position, plant.Map);
-            }
+            Scatter(produce, count, plant.Position, plant.Map);
         }
 
         private static void SpawnNear(ThingDef def, int count, IntVec3 at, Map map)

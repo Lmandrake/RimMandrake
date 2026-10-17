@@ -24,11 +24,11 @@
 
     <plants>
       <!-- TINDER — fire-loop genetics (roster §TINDER). Ring: quickgrass. -->
-      <!-- PYRELANDS GRASS (C3, owner 2026-10-16: "Pyrelands grass does not rupture but does grow violently quickly and
-           spread itself super-fast"): no Tinder, never a Burst, many sprouts, fresh ash waters it (C5). Ruling over the
-           2026-09-21 roster's Tinder row. -->
-      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><ruptureChance>0</ruptureChance><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
-      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><ruptureChance>0</ruptureChance><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
+      <!-- PYRELANDS GRASS (C3, owner 2026-10-16: "grow violently quickly and spread itself super-fast"): no Tinder, many
+           sprouts, fresh ash waters it (C5). It BURSTS at the default 1 in 3 (tree_burst_design_2026-10-17.md §5, Q7 by card:
+           "Let Pyrelands grass burst too", keeping 6-9 sprouts), reversing the build's reading of C3. -->
+      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
+      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
       <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
 
       <!-- SLIME — slime-fed genetics (roster §SLIME). Ring terrain: the
@@ -83,6 +83,45 @@
       <li><plant>AB_MangrovePalm</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>AB_ParasiticMangrove</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
       <li><plant>Plant_Reeds</plant><top>Churn</top><produceFactor>2.5</produceFactor></li>
+      <!-- THE ROT (tree_burst_design_2026-10-17.md §6, Q8 by card): the Rot's plants are WET natives now (RM_TheRot joins
+           wetNativeBiomes below) and cycle like wet natives, so their NONE rows came off. Rows are kept (plain Churn) so
+           they stay enrolled: an unlisted cave plant would fall to the cave carve-out. RM_Skulltop and RM_PaleTree are the
+           exception ("Immortal wins", follow-up card): never wither or burst, water a growth spike only, so they keep NONE
+           and stay dry natives (out of the wet-native cycle), as before. -->
+      <li><plant>AB_Bryolux</plant><top>Churn</top></li>
+      <li><plant>AB_Glowstool</plant><top>Churn</top></li>
+      <li><plant>AB_GiantAgarilux</plant><top>Churn</top></li>
+      <li><plant>AB_GlowingAgarilux</plant><top>Churn</top></li>
+      <li><plant>AB_LilacBeacon</plant><top>Churn</top></li>
+      <li><plant>AB_WitchesOyster</plant><top>Churn</top></li>
+      <li><plant>RM_Dewshrooms</plant><top>Churn</top></li>
+      <li><plant>RM_FruitingBodies</plant><top>Churn</top></li>
+      <li><plant>RM_Nuitae</plant><top>Churn</top></li>
+      <li><plant>RM_Wrinklecap</plant><top>Churn</top></li>
+      <li><plant>RM_Arpeau</plant><top>Churn</top></li>
+      <li><plant>AB_RecurvedStropharia</plant><top>Churn</top></li>
+      <li><plant>RM_FlakespireFungus</plant><top>Churn</top></li>
+      <li><plant>RM_Pusmelon</plant><top>Churn</top></li>
+      <li><plant>RM_Sagecrust</plant><top>Churn</top></li>
+      <li><plant>AB_ArbuscularMycorrhiza</plant><top>Churn</top></li>
+      <li><plant>AB_SlimyPholiota</plant><top>Churn</top></li>
+      <li><plant>RM_BleedingTooth</plant><top>Churn</top></li>
+      <li><plant>RM_Brightbell</plant><top>Churn</top></li>
+      <li><plant>RM_CrimsonCap</plant><top>Churn</top></li>
+      <li><plant>RM_GreyLady</plant><top>Churn</top></li>
+      <li><plant>RM_Shinecap</plant><top>Churn</top></li>
+      <li><plant>RM_VioletWimple</plant><top>Churn</top></li>
+      <li><plant>RM_MortalMorelPlant</plant><top>Churn</top></li>
+      <li><plant>AB_AgaricusDomeCap</plant><top>Churn</top></li>
+      <li><plant>AB_DribblingCap</plant><top>Churn</top></li>
+      <li><plant>RM_BlastpodShroom</plant><top>Churn</top></li>
+      <li><plant>AB_AgariluxPrime</plant><top>Churn</top></li>
+      <li><plant>RM_AgelessCap</plant><top>Churn</top></li>
+      <li><plant>RM_RegenerantVeil</plant><top>Churn</top></li>
+      <li><plant>RM_EuphoricCrown</plant><top>Churn</top></li>
+      <li><plant>RM_FalseFruit</plant><top>Churn</top></li>
+      <li><plant>RM_Skulltop</plant><top>None</top><archetype>DryNative</archetype></li>
+      <li><plant>RM_PaleTree</plant><top>None</top><archetype>DryNative</archetype></li>
       <!-- NONE — roster "plants that deliberately do NOT": fungal, crystal, terminator phototrophs,
            chemotrophs, and the hoarders (🄸 hard call 1, the roster's stated default, unruled). -->
       <li><plant>RM_PaleMoss</plant><top>None</top></li>
@@ -90,36 +129,15 @@
       <li><plant>RM_ScorchedStars</plant><top>None</top></li>
       <li><plant>RM_WastelandScorchedStars</plant><top>None</top></li>
       <li><plant>RM_TreeMartyr</plant><top>None</top></li>
-      <li><plant>RM_Skulltop</plant><top>None</top></li>
-      <li><plant>RM_Dewshrooms</plant><top>None</top></li>
-      <li><plant>RM_FruitingBodies</plant><top>None</top></li>
-      <li><plant>RM_Nuitae</plant><top>None</top></li>
       <li><plant>RM_NuitaeMarsh</plant><top>None</top></li>
-      <li><plant>RM_Wrinklecap</plant><top>None</top></li>
       <li><plant>RM_WrinklecapMarsh</plant><top>None</top></li>
-      <li><plant>RM_Arpeau</plant><top>None</top></li>
       <li><plant>RM_GreenArpeau</plant><top>None</top></li>
       <li><plant>RM_Nogtyl</plant><top>None</top></li>
       <li><plant>RM_NogtylMarsh</plant><top>None</top></li>
-      <li><plant>RM_FlakespireFungus</plant><top>None</top></li>
-      <li><plant>RM_Pusmelon</plant><top>None</top></li>
-      <li><plant>RM_Sagecrust</plant><top>None</top></li>
-      <li><plant>RM_BleedingTooth</plant><top>None</top></li>
-      <li><plant>RM_CrimsonCap</plant><top>None</top></li>
-      <li><plant>RM_GreyLady</plant><top>None</top></li>
-      <li><plant>RM_Shinecap</plant><top>None</top></li>
-      <li><plant>RM_Brightbell</plant><top>None</top></li>
-      <li><plant>RM_VioletWimple</plant><top>None</top></li>
-      <li><plant>RM_MortalMorelPlant</plant><top>None</top></li>
       <li><plant>RM_MortalMorelPlantGrowable</plant><top>None</top></li>
       <li><plant>RM_MoonlessStripesPlant</plant><top>None</top></li>
       <li><plant>RM_DulcisPlant</plant><top>None</top></li>
-      <li><plant>RM_BlastpodShroom</plant><top>None</top></li>
       <li><plant>RM_FurnaceCap</plant><top>None</top></li>
-      <li><plant>RM_AgelessCap</plant><top>None</top></li>
-      <li><plant>RM_RegenerantVeil</plant><top>None</top></li>
-      <li><plant>RM_EuphoricCrown</plant><top>None</top></li>
-      <li><plant>RM_FalseFruit</plant><top>None</top></li>
       <li><plant>RM_DeepMycelium</plant><top>None</top></li>
       <li><plant>RM_ZivvitTaper</plant><top>None</top></li>
       <li><plant>RM_QuorrFern</plant><top>None</top></li>
@@ -144,22 +162,9 @@
       <li><plant>AB_RedBugloss</plant><top>None</top></li>
       <li><plant>AB_GiantToxicFlower</plant><top>None</top></li>
       <li><plant>AB_GiantAgariTox</plant><top>None</top></li>
-      <li><plant>AB_AgaricusDomeCap</plant><top>None</top></li>
       <li><plant>AB_Agarilux</plant><top>None</top></li>
-      <li><plant>AB_AgariluxPrime</plant><top>None</top></li>
-      <li><plant>AB_GiantAgarilux</plant><top>None</top></li>
-      <li><plant>AB_GlowingAgarilux</plant><top>None</top></li>
-      <li><plant>AB_ArbuscularMycorrhiza</plant><top>None</top></li>
-      <li><plant>AB_Bryolux</plant><top>None</top></li>
-      <li><plant>AB_DribblingCap</plant><top>None</top></li>
-      <li><plant>AB_Glowstool</plant><top>None</top></li>
-      <li><plant>AB_LilacBeacon</plant><top>None</top></li>
-      <li><plant>AB_RecurvedStropharia</plant><top>None</top></li>
-      <li><plant>AB_SlimyPholiota</plant><top>None</top></li>
-      <li><plant>AB_WitchesOyster</plant><top>None</top></li>
       <li><plant>AB_TarPuddle</plant><top>None</top></li>
       <!-- NONE — RM-tier and vanilla/DLC plants the roster excludes. -->
-      <li><plant>RM_PaleTree</plant><top>None</top></li>
       <li><plant>Plant_MagmaCactus</plant><top>None</top></li>   <!-- hoarder, hard call 1 (INVENTED, unruled) -->
     </plants>
 
@@ -235,6 +240,8 @@
       <li>RM_FeverWood</li>
       <li>RM_Webwork</li>
       <li>RM_Contagion</li>
+      <!-- tree_burst_design_2026-10-17.md §6 (owner 2026-10-17: "the Rot should likely follow wet-biome rulings"; Q8). -->
+      <li>RM_TheRot</li>
     </wetNativeBiomes>
     <!-- C5 "A burnt cell counts as fresh": the Pyrelands natives are fire-adapted. -->
     <fireAdaptedBiomes>
@@ -248,6 +255,39 @@
       <li>RM_Glassfern</li>
       <li>RM_Chimeglobe</li>
     </bandExemptPlants>
+
+    <!-- TREES (tree_burst_design_2026-10-17.md §2): a tree is one of our plants drawn at visual max 3.0+ (Q2, read from the
+         def) that is not a fungus. Q9 "ALL FUNGI (no tree rules)": the giant fungi are marked here, never by name-matching.
+         The ten of the design's census, plus RM_DulcisPlant (tamma sweetcap, a mushroom drawn at 3.0) by the same principle,
+         plus the donor agarics this roster already lists (their sizes UNMEASURED offline). -->
+    <fungi>
+      <li>RM_TreeMushroom</li>
+      <li>RM_GiantAgariTox</li>
+      <li>RM_Arpeau</li>
+      <li>RM_GreenArpeau</li>
+      <li>RM_FlakespireFungus</li>
+      <li>RM_Nogtyl</li>
+      <li>RM_NogtylMarsh</li>
+      <li>RM_PaleTree</li>
+      <li>RM_Shinecap</li>
+      <li>RM_Skulltop</li>
+      <li>RM_DulcisPlant</li>
+      <li>AB_GiantAgariTox</li>
+      <li>AB_GiantAgarilux</li>
+      <li>AB_AgariluxPrime</li>
+      <li>AB_Agarilux</li>
+      <li>AB_GlowingAgarilux</li>
+      <li>AB_AgaricusDomeCap</li>
+    </fungi>
+    <!-- §0 (owner 2026-10-17): "Greatbole have an entirely different mechanic that's well articulated, NOT part of the
+         bursting discussion. They express the same mechanic through their self healing." Kept on its old handling. -->
+    <treeRulesExempt>
+      <li>RM_Greatbole</li>
+    </treeRulesExempt>
+    <!-- Per-tree burst yields (Q12 logs for a non-wood tree, Q16 a log tree's own fruit). None set: every count is owed by
+         PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE; until then a non-wood tree gives the Mod Setting's default logs. Shape:
+         <li><plant>RM_X</plant><logs>12</logs><fruit>RM_XFruit</fruit><fruitCount>8</fruitCount></li> -->
+    <treeBursts />
   </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
 
 </Defs>
