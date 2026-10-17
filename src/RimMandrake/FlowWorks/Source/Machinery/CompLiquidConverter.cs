@@ -265,10 +265,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				batches.Add(n);
 			}
 			int pick = RM_ConversionMath.NextRunnable(batches, cand.FindIndex(c => c.input == lastInput));
-			if (cand.Count > 0)
-			{
-				accrued = cand[pick >= 0 ? pick : 0].capped;
-			}
+			accrued = RM_ConversionMath.AccruedAfterPick(accrued, cand.Select(c => c.capped).ToList(), pick);
 			if (pick >= 0)
 			{
 				var (inputLiquid, step, _) = cand[pick];
