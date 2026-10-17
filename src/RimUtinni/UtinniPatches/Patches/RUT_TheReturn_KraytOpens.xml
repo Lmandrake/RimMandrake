@@ -23,7 +23,7 @@
         <li>RimMandrake: SW — Bestiary</li>
       </mods>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_KraytDragon" or defName="RSW_GreaterKraytDragon"]/comps</xpath>
+        <xpath>/Defs/ThingDef[defName="RSW_GreaterKraytDragon"]/comps</xpath>
         <value>
           <li Class="RimMandrake.Stillsand.RM_CompProperties_OpensWaterReturn">
             <reason>a krayt dragon has been killed</reason>

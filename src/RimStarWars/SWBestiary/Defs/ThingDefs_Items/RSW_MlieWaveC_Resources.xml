@@ -1637,10 +1637,8 @@
 <!-- Pass 14 (2026-09-18): KraytDragon needs its own butcher-body-part trophy
   (`RSW_KraytDragonSkull`, texPath swresource/Trophies/KraytDragonSkull,
   newly extracted this pass, `ParentName` kept as the donor's own
-  `ResourceBase`, same as RSW_HoraxMaw) and 2 eggs
-  (RSW_EggKraytDragonFertilized/UnFertilized, texPath swresource/EggSpiked —
-  ALREADY EXTRACTED, Pass 12/RSW_GreaterKraytDragon, reused unchanged;
-  `hatcherPawn` repointed to `RSW_KraytDragon`). Its `leatherDef`
+  `ResourceBase`, same as RSW_HoraxMaw); the skull still drops from the krayt
+  skeletons and den after the lesser krayt and its 2 eggs were CUT (owner 2026-10-17). Its `leatherDef`
   (`Leather_KraytDragon`) and `specificMeatDef` (`Krayt_Meat`) both already
   exist as `RSW_Leather_KraytDragon`/`RSW_Krayt_Meat` (Pass 12, ported for
   GreaterKraytDragon which shares the same 2 donor resource defNames,
@@ -1689,39 +1687,6 @@
     <tradeTags>
       <li>Exotic</li>
     </tradeTags>
-  </ThingDef>
-<ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggKraytDragonFertilized</defName>
-    <label>krayt dragon egg (fert.)</label>
-    <description>Fertilized Krayt Dragon egg.</description>
-    <graphicData>
-      <texPath>swresource/EggSpiked</texPath>
-      <color>(156,148,125)</color>
-      <drawSize>1.0</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>140.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>15</hatcherDaystoHatch>
-        <hatcherPawn>RSW_KraytDragon</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-<ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggKraytDragonUnFertilized</defName>
-    <label>krayt dragon egg (unfert.)</label>
-    <description>Unfertilized Krayt Dragon egg.</description>
-    <graphicData>
-      <texPath>swresource/EggSpiked</texPath>
-      <color>(156,148,125)</color>
-      <drawSize>1.0</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>140.0</MarketValue>
-      <Nutrition>0.5</Nutrition>
-    </statBases>
   </ThingDef>
 <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
     <defName>RSW_Anthropoid_Meat</defName>
