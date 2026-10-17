@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SW_SEA_MONSTERS_ART_1 — scavenger swarm, the bottom-feeders. Numbers per
-     sea_beasts_def_spec.md §5.5. Label RENAMED by the owner 2026-09-02:
-     "pale yobshrimp" (not "yobshrimp") — SWAC's mlie.starwarsanimalcollection
-     Yobshrimp (bs 0.4) stays; ours (RSW_Yobshrimp, bs 0.2) is a different
-     animal under a different label, no Cherry Picker cut needed.
+     sea_beasts_def_spec.md §5.5. Owner 2026-10-17 (facings sheet): "There should be
+     only one Yobshrimp, consolidate." RSW_YobshrimpLand was merged into RSW_Yobshrimp
+     (its canon description, products and voice moved here; its def, body, eggs and
+     art removed), so the 2026-09-02 "pale yobshrimp" label, which existed only to tell
+     the two apart, is back to "yobshrimp".
 
      🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_SiltLamprey and
      RSW_RustNipper (with their SeaBeasts_NurseryJuveniles.xml juveniles) are
@@ -22,8 +23,8 @@
 
   <ThingDef ParentName="AnimalThingBase" Name="RSW_Yobshrimp">
     <defName>RSW_Yobshrimp</defName>
-    <label>pale yobshrimp</label>
-    <description>A pale, feather-antennaed isopod of the Naboo shallows that arrives at a carcass in dozens and leaves a clean frame. Harmless alone; the smell of blood is what makes it many.</description>
+    <label>yobshrimp</label>
+    <description>Yobshrimp are a carnivorous crustacean of the Naboo shallows: a shell carried low over four walking legs, a pair of pincer claws held high off the back of the shell, and long antennae. They are preyed on by blarths and larger scalefish, and swarm a carcass in numbers. Many consider them a delicacy, and the fishing families who farm them for the table have carried them to many worlds.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>40</MarketValue>
@@ -63,6 +64,8 @@
       <baseHungerRate>0.08</baseHungerRate>
       <foodType>CarnivoreAnimal</foodType>
       <canFishForFood>true</canFishForFood>
+      <leatherDef>RSW_Leather_Crustapod</leatherDef>  <!-- owner 2026-10-17: "There should be only one Yobshrimp, consolidate." — products and voice taken over from the merged RSW_YobshrimpLand -->
+      <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <gestationPeriodDays>5.661</gestationPeriodDays>
@@ -89,6 +92,10 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.25</minAge>
+          <soundWounded>RSW_Pawn_Yobshrimp_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Yobshrimp_Death</soundDeath>
+          <soundCall>RSW_Pawn_Yobshrimp_Call</soundCall>
+          <soundAngry>RSW_Pawn_Yobshrimp_Angry</soundAngry>
         </li>
       </lifeStageAges>
     </race>
@@ -96,7 +103,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase" Name="RSW_Yobshrimp_Kind">
     <defName>RSW_Yobshrimp</defName>
-    <label>pale yobshrimp</label>
+    <label>yobshrimp</label>
     <race>RSW_Yobshrimp</race>
     <combatPower>30</combatPower>
     <wildGroupSize>6~12</wildGroupSize>

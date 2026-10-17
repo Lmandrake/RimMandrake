@@ -2544,48 +2544,4 @@
      same precedent as RSW_MlieWaveB_Resources.xml's own use of it for
      RSW_Crustapod_Meat - resolves fine while Mlie stays active, no RSW_
      ThoughtDef ported for it. -->
-<ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggYobshrimpFertilized</defName>
-    <label>yobshrimp roe (fert.)</label>
-    <description>A fertilized yobshrimp egg. If all goes well, it should hatch into a baby yobshrimp. It can be eaten raw, but it's much better cooked.</description>
-    <possessionCount>1</possessionCount>
-    <graphicData>
-      <texPath>swresource/EggRoe</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(100,00,200)</color>
-      <drawSize>0.5</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>0.25</Nutrition>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_YobshrimpLand</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-<ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggYobshrimpUnFertilized</defName>
-    <label>yobshrimp roe (unfert.)</label>
-    <description>An unfertilized yobshrimp egg. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swresource/EggRoe</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(100,00,200)</color>
-      <drawSize>0.5</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>0.25</Nutrition>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-    <ingestible>
-      <joy>0.12</joy>
-      <joyKind>Gluttonous</joyKind>
-      <tasteThought>RSW_AteCrustapodRoe</tasteThought>
-      <specialThoughtAsIngredient>RSW_AteCrustapodRoe</specialThoughtAsIngredient>
-      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
-    </ingestible>
-  </ThingDef>
 </Defs>
