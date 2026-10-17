@@ -20,9 +20,25 @@ Load 2 (20 mods, via Steam): bridge token at 85 s; log 312 lines (`Transient/rev
 ## 3. Live rows (MOD / SITE / HARNESS)
 | build | row | status | class | note |
 |---|---|---|---|---|
+| ExplosiveGrowth | probe_rules.ruled_rate_table_on_live_plants | PASS | - | twice (old + rebuilt proof DLL) |
+| ExplosiveGrowth | probe_tree_burst_off.tree_burst_off_trees_die_of_age | PASS | - | |
+| ExplosiveGrowth | probe_tree_life.trees_live_by_litres_and_burst_at_their_end | UNMEASURED | HARNESS | every arm in bar (jungle x4/x1 + end burst 10 logs 4 seedlings; AB_GiantStikehr dry x0.1 / wet x1, 400 L = 10 days, young gain 0.667, water burst 25 logs 4 seedlings; natural death falls, no burst) EXCEPT immortal=NONE: proof's FirstOf skipped interferesWithRoof, which Core TreeBase sets on every tree, so RM_Ollim never qualified. Fixed f6da84ad3c, deploys at next restart |
+| ExplosiveGrowth | 74 other suite rows (all chains) | 67 PASS first run | - | |
+| ExplosiveGrowth | vanilla_normal_ignores_water, master_off_refuses_soak | FAIL -> PASS | HARNESS | an arm that lifts the x0.1 dry penalty moves the control too (10 -> 100); now soaked vs control under the same arm (abae3c87e7) |
+| ExplosiveGrowth | ground_tell_on/off, suppression_dries_and_defuses | FAIL -> PASS | HARNESS | the ruled rewrite arms from a full-map wave (1/8 of plants per 250-tick pass); a 700-tick wait missed it; now polls to 2,450 ticks |
+| ExplosiveGrowth | churn_cycle, churn_off | FAIL -> PASS | HARNESS | the dry-native subject was AB_Slimecasia, a Slime-top row (churn off cannot stop its own top: live LastOutcome=OwnTop, ground -> RM_Slime_Rich); proof now picks a Churn-top plant (DLL rebuilt, restart 3) |
+| ExplosiveGrowth | top_burst x2, burst_hurts_pawns x2 | UNMEASURED | SITE | donor RG_Plant_AridGrass not on the walk list |
+| ExplosiveGrowth | scope_native_only.default_runs_only_in_baroque_biomes_biomes | UNMEASURED | SITE | UtinniPatches' campaign roster forces every biome in scope on this list (by design) |
+| SWBestiary | defs_resolve x2 | PASS | - | |
+| SWBestiary | taozin_brine_tank_infuses_and_whitens x2 | PASS | - | off moves nothing; on 2 jars, 1 brine, grub pale |
+| SWBestiary | dragonsnake_pair.canon_dragonsnake_spawns | PASS | - | |
+| SWBestiary | dragonsnake_pair.albino_roster_follows_toggle | UNMEASURED -> PASS | MOD | RSW_Dragonsnake was never on the Greentide roster: WildAnimals_Greentide.xml's FindMod named the packageId (FindMod matches the mod NAME); the whole 21-row RSW_ cast never applied, likewise its Alpha Animals / VFE Insectoids blocks and TheRot's Alpha Animals wound-sharing block. Fixed 98f9074bcd |
 
 ## 4. Bugs fixed
-(pending)
+- MOD `98f9074bcd`: FindMod by packageId (Greentide RSW_ cast, Alpha Animals, VFE Insectoids, TheRot wound sharing). Lesson filed.
+- HARNESS `abae3c87e7`, `f6da84ad3c`: ExplosiveGrowth suite + proof DLL (see rows).
+- HARNESS `98f9074bcd`: northstar preflight deployed_matches_repo ignored src/DEPLOY_HOLD.txt and the deploy's folded-id MayRequire rewrite (100 false diffs on SWBestiary).
+- HARNESS (commit 1): deploy_all.sh's game check matched `NOT RUNNING`.
 
 ## 5. Keeper saves (RM_walk_20261017_<scene>)
 (pending)
