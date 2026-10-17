@@ -36,6 +36,7 @@ Jedi Order included several Mirialans (Luminara Unduli, Cyslin Myr, Katri, Verne
 Rwoh, Barriss Offee, and the fallen Seventh Sister).
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/10/19/species-of-the-week-mirialan/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 *Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
 
@@ -83,7 +84,7 @@ correct for a humanlike head mask (tinted at runtime from the skin-colour gene).
 one fixed pattern shared by every Mirialan, where canon says the tattoos **symbolize personal achievements** and so
 differ per individual — a variation opportunity, not an error.
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mirialan_concept_art.jpeg` (1262x631, painted concept art): a young woman with distinctly GREEN skin (yellow-olive green), violet-purple hair in a bun, violet-blue eyes, light cream-and-white Jedi robes, and NO facial markings. 🔴 Disagrees with the Must show: skin is saturated green with no ochre cast, and no diamond chin lattice is drawn. Painted art, so treat as non-authoritative for markings.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mirialan_concept_art.jpeg` (1262x631, painted concept art): a young woman with distinctly GREEN skin (yellow-olive green), violet-purple hair in a bun, violet-blue eyes, light cream-and-white Jedi robes, and NO facial markings. 🔴 Disagrees with the Must show: skin is saturated green with no ochre cast, and no diamond chin lattice is drawn. Painted art, so treat as non-authoritative for markings.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Luminara Unduli images and the painting as described in the visual brief, the sourced text, and the owner ruling in the brief.*
@@ -156,7 +157,7 @@ none known
   https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png
 - `donor_current_sprite.png` — the repo's own greyscale `RSW_MirialanHead` mask. Kept as a **positive** reference: it
   already carries canonically-placed forehead, inter-brow and chin-lattice diamond markings.
-- `bloggathehutt_mirialan_concept_art.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, a young Mirialan Jedi (concept art, Jedi Temple-era); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2020/10/19/species-of-the-week-mirialan/ (image URL on the blog's CDN, post upload)
+- NOT CANON (fan blog) - `bloggathehutt_mirialan_concept_art.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, a young Mirialan Jedi (concept art, Jedi Temple-era); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2020/10/19/species-of-the-week-mirialan/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 
