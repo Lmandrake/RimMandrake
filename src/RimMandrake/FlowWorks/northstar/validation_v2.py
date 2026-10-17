@@ -214,6 +214,9 @@ class PulseOracle(object):
         # RM_FlowKernel levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON, needs level_surface): each wet region + dry rim is
         # SOLVED to its flat level (_levelset_regions); a drop of exactly 1 between two dug cells no longer moves in _pick.
         self.level_set = level_set and self.level_surface
+        # RM_FlowKernel.TopUpWaterMouths (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME), on with creep_water. False replays the
+        # engine before it (the recorded live E2 vectors of 2026-10-12, O11), whose mouth read dry every other pulse.
+        self.mouth_top_up = True
         self.ds, self.dk = {}, {}
         self.received = {}                # cell -> pulse_n it last received a level
         # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
@@ -477,6 +480,7 @@ class PulseOracle(object):
             else:
                 rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
                              key=lambda c: (-self.D[c], self.idx(c)))
+            took = set()
             for r in rec:
                 moved = 0
                 while moved < self.per and self.F[r] < self.D[r]:
@@ -501,12 +505,46 @@ class PulseOracle(object):
                     self.F[r] += 1
                     self.received[r] = self.pulse_n
                     moved += 1
+                if moved:
+                    took.add(r)
             if self.level_set:
                 self._levelset_regions(comp)
             elif self.level_surface:
                 self._level_regions(comp)
+            if self.creep_water and self.mouth_top_up:
+                self._top_up_mouths(comp, took)
         for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
             del self.fluid[c]
+
+    def _top_up_mouths(self, comp, took):
+        """RM_FlowKernel.TopUpWaterMouths (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME): after the pass and the solve, a dug
+        cell beside a supplying (water) source that took nothing this pulse and has room takes up to `per` from it, in
+        cell-index order; otherwise a brim mouth that passed its unit on read dry every other pulse."""
+        for r in sorted((c for c in comp if self.exc(c) and self.F[c] < self.D[c] and c not in took), key=self.idx):
+            moved = 0
+            while moved < self.per and self.F[r] < self.D[r]:
+                d = None
+                for dx, dz in CARDINAL:
+                    n = (r[0] + dx, r[1] + dz)
+                    if not self.inb(n) or not self.is_source(n) or not self.can_supply(n):
+                        continue
+                    if self.F.get(r, 0) > 0 and self.fluid.get(r, "RM_Fluid_Water") != "RM_Fluid_Water":
+                        continue                                 # no-mix: a source pays water only
+                    d = n
+                    break
+                if d is None:
+                    break
+                b = self.bodies[self.src[d]]
+                if self.budget and not b["limitless"]:
+                    if b["stock"] < 1:
+                        break
+                    b["stock"] -= 1
+                self.credited += 1
+                if self.F[r] == 0:
+                    self.fluid.pop(r, None)
+                self.F[r] += 1
+                self.received[r] = self.pulse_n
+                moved += 1
 
     def _held(self, c, fl):
         if self.received.get(c) != self.pulse_n:
@@ -1448,7 +1486,8 @@ def o7_scene_predictions():
     probs = []
     for k in ("E2_east_A", "E2_east_B", "E2_north", "E2_south", "E2_west", "E2_rerun"):
         v = oracle_for(k, 8, recession=True)
-        if v[6] != [1, 1, 1, 1] or v[0] != [1, 0, 0, 0]:       # creep: the front leaves the mouth, full at 2n-1 = 7
+        # creep + mouth top-up (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME): one cell a pulse from the mouth, full at n = 4
+        if v[3] != [1, 1, 1, 1] or v[2] == [1, 1, 1, 1] or v[0] != [1, 0, 0, 0]:
             probs.append("%s: %s" % (k, v[:4]))
     v = oracle_for("E3b_recede", 14, recession=True)
     if v[-1] != [1, 1, 1, 1]:
@@ -1457,7 +1496,7 @@ def o7_scene_predictions():
     want = int(BODIES["W2"]["capacity"])
     if sum(v[-1]) != want or v[-1] != v[-2]:
         probs.append("E3 budget (recession OFF) should deliver %d and rest: %s" % (want, v[-2:]))
-    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 7 (water front creep), mouth end first; E3b fills its 4-cell run; E3 delivers its pond capacity then rests")
+    return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 4 (water front creep, mouth topped up), mouth end first; E3b fills its 4-cell run; E3 delivers its pond capacity then rests")
 
 
 def o9_shared_source(claim=False):
@@ -1621,12 +1660,15 @@ def _offline_negative_controls():
     finally:
         PulseOracle._downstream = real
     real_pick = PulseOracle._pick
+    real_top = PulseOracle._top_up_mouths
     PulseOracle._pick = lambda self, r, dr: None                                    # an engine that never flows
+    PulseOracle._top_up_mouths = lambda self, comp, took: None                      # (the source tops up no mouth either)
     try:
         out.append(("O5 inert engine", o5_oracle_selftest().ok))
         out.append(("O7 inert engine", o7_scene_predictions().ok))
     finally:
         PulseOracle._pick = real_pick
+        PulseOracle._top_up_mouths = real_top
     out.append(("O9 shared-source walk with the source claimed (pre-fix)", o9_shared_source(claim=True).ok))
     # the retired holder model: any D=4 cell held any pawn
     out.append(("O10 holder model (any D=4 cell holds anything)",
@@ -1639,8 +1681,11 @@ def _offline_negative_controls():
 # Recorded live case, v2_20261012e.json (Transient/bench_live_20261012e, 2026-10-12): E2 4-cell D=1 channel off a
 # limitless source on the shipped mod (waterFrontCreepEnabled ON), first four pulses' F vectors, first-full pulse 7.
 # The pre-creep oracle predicted the brigade (full at pulse 4) and 12 live rows went red on that alone.
+# The record shows the mouth dry on pulses 2 and 4: CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME, fixed by the mouth top-up, so
+# the record is replayed with the top-up OFF, and the shipped engine is first full at n = 4 (one cell a pulse, no brigade).
 O11_LIVE_E2 = [[1, 0, 0, 0], [0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1]]
 O11_LIVE_E2_FULL = 7
+O11_SHIPPED_FULL = 4
 
 
 def o11_creep_recorded():
@@ -1650,9 +1695,10 @@ def o11_creep_recorded():
         dx, dz = DIRS[d]
         cs = _run(100 + dx, 100 + dz, 4, dx, dz)
         # the record predates the level solve (2732aa5fa), so its vectors are replayed on that engine (level_set off);
-        # shipped (CREEP_LIVE) must keep its first-full pulse, without the 1,0,1,0 stripes the level solve removed
+        # and before the mouth top-up; shipped (CREEP_LIVE) fills one cell a pulse from the mouth, full at n
         for kw, want_vec in ((dict(CREEP_LIVE, level_set=False), O11_LIVE_E2), (CREEP_LIVE, None)):
             o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": True, "stock": 0}}, algo="fixed", **kw)
+            o.mouth_top_up = want_vec is None
             for c in cs:
                 o.dig(c)
             hc = o.run(cs, 12)
@@ -1660,11 +1706,14 @@ def o11_creep_recorded():
             if want_vec is not None and hc[:4] != want_vec:
                 probs.append("%s: %s creep oracle %s != recorded live %s" % (d, tag, hc[:4], want_vec))
             full = next((i + 1 for i, v in enumerate(hc) if v == [1] * 4), None)
-            if full != O11_LIVE_E2_FULL:
-                probs.append("%s: %s first full %s != live %s" % (d, tag, full, O11_LIVE_E2_FULL))
+            want_full = O11_LIVE_E2_FULL if want_vec else O11_SHIPPED_FULL
+            if full != want_full:
+                probs.append("%s: %s first full %s != %s" % (d, tag, full, want_full))
+            if want_vec is None and hc[:4] != [[1, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [1, 1, 1, 1]]:
+                probs.append("%s: shipped front is not one cell a pulse from a wet mouth: %s" % (d, hc[:4]))
         if next((i + 1 for i, v in enumerate(h) if v == [1] * 4), None) != 4:
             probs.append("%s: creep-off oracle lost the n*D brigade" % d)
-    return Check("O11", not probs, "; ".join(probs) or "pre-level-solve creep oracle reproduces the recorded live E2 vectors; shipped level solve also full at 7; creep off still 4")
+    return Check("O11", not probs, "; ".join(probs) or "pre-top-up creep oracle reproduces the recorded live E2 vectors (full at 7); shipped fills one cell a pulse, mouth wet, full at 4; creep off still 4")
 
 
 def run_offline():
@@ -2286,10 +2335,11 @@ def phase_A(L, args):
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
                 for k in ("E2_east_A", "E2_north", "E2_south", "E2_west")}
         # shipped waterFrontCreepEnabled: the front advances one cell per pulse from the mouth (no brigade), so a
-        # 4-cell D=1 channel is first full at 2n-1 = 7 (the creep oracle reproduces the live vectors, 2026-10-12e)
+        # 4-cell D=1 channel is first full at n = 4 now the source tops the mouth up in the pulse it passes its unit on
+        # (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME; the live vectors of 2026-10-12e read 2n-1 = 7, the blink, before it)
         full_want = next((p + 1 for p, v in enumerate(oracle_for("E2_east_A", 12)) if v == [1] * 4), None)
-        L.row("E2_channels_fill_every_direction", full_want == 7 and all(v == full_want for v in full.values()), "MOD",
-              "first-full pulse by direction %s (creep oracle %s = 2n-1; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)" % (full, full_want))
+        L.row("E2_channels_fill_every_direction", full_want == 4 and all(v == full_want for v in full.values()), "MOD",
+              "first-full pulse by direction %s (creep oracle %s = n; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)" % (full, full_want))
         ring_bad = []
         for k in ("E2_east_A", "E2_north", "E2_south", "E2_west"):
             m, _ = L.rect(*_bbox(SCENES[k]["cells"], 1))

@@ -43,3 +43,26 @@ second pulse.
 Classify by reading `RM_FlowKernel` (the creep gate against the source→mouth move). If confirmed: fix in the kernel, mirror it in
 `validation_v2.PulseOracle`, and make the case check the mouth after EVERY pulse while the run fills. Ask the owner only if the
 1-cell-per-2-pulses speed turns out to be a trade against the ruling.
+
+## Verdict (independent re-derivation, FOUNDRY helper 2026-10-16): REAL kernel bug, fixed offline
+
+- Reproduced exactly from a D: scratch build of HEAD `eb0c40d9f` (own trace, not the pilot's probe): limited and limitless
+  bodies, D=1 and D=2 runs. The off-configs (level-by-surface off, level-set off) stripe 1010 for the same root cause.
+- Mechanism (traced, not inferred): `ResolveComponent` builds its recipient list before anything moves, so a brim mouth is
+  not a recipient in the pulse it passes its unit on (the level solve's `CellKey` deliberately puts the part band away
+  from the live mouth); the source refilled it only next pulse. The owner's ruling (flood front from the mouth) and the
+  creep flag's own promise (one cell a pulse) both say this is wrong; nothing in the rulings asks for a blinking mouth.
+- Already seen live: the recorded E2 vectors of 2026-10-12e (`validation_v2.O11_LIVE_E2`) read the mouth 0 on pulses 2 and
+  4, first full at 2n-1 = 7. The 8-cell trench full at tick 3753 is ~15 pulses = 2n-1 as well: the blink slowed it, it
+  did not stall it.
+- Fix: `RM_FlowKernel.TopUpWaterMouths` (water creep on): after the pass and the solve, a dug cell beside a supplying water
+  source that took nothing this pulse and has room takes up to flowPerPulse from it, cell-index order. Mirrored in
+  `PulseOracle._top_up_mouths`. Shipped trace now `1000000000 1100000000 ... 1111111111` (full at pulse 10, was 19); the
+  source pays one level a pulse. The case checks EVERY pulse while the run fills (fails on the old kernel at pulse 2).
+- The differential test gained a `shipped` mode (creeps on): 3000/3000 agree; with the oracle mirror removed 804/3000
+  disagree. The live rows `E2_channels_fill_every_direction`/O7/O11 now expect first full at n = 4 (O11 replays the
+  recorded vectors with the top-up off).
+
+## Owed
+
+- LIVE: deploy the rebuilt DLL and run `validation_v2.py --live`; E2 must read full at pulse 4, mouth wet every pulse.

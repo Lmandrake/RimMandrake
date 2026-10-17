@@ -46,10 +46,11 @@ def scene(seed):
     return w, h, pulses, band, bodies, src, digs
 
 
-def oracle(sc, surface=False, level_set=False):
+def oracle(sc, surface=False, level_set=False, creep=False):
     w, h, pulses, band, bodies, src, digs = sc
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
-                      sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set)
+                      sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set,
+                      creep_water=creep, creep_thick=creep)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -100,10 +101,11 @@ def main():
             f.write("\n".join(encode(sc) for sc in scenes) + "\n")
         failed = []
         # Three engines: the pre-surface rule, levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND), and that plus
-        # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON).
-        for mode in ("depth", "surface", "levelset"):
+        # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON); "shipped" adds both creeps (and with them the mouth top-up,
+        # CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME).
+        for mode in ("depth", "surface", "levelset", "shipped"):
             t0 = time.time()
-            want = [oracle(sc, mode != "depth", mode == "levelset") for sc in scenes]
+            want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped"), mode == "shipped") for sc in scenes]
             t1 = time.time()
             args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([mode] if mode != "depth" else [])
             res = subprocess.run(args, capture_output=True, text=True, timeout=300)

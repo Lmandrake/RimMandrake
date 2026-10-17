@@ -131,11 +131,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
                 // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND);
-                // "levelset" adds levelSetEnabled (WATER_LEVELSET_SOLVE).
+                // "levelset" adds levelSetEnabled (WATER_LEVELSET_SOLVE); "shipped" adds both creeps on top
+                // (CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: the mouth top-up runs only with water creep on).
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
-                    return OracleScenes.Run(reader, Console.Out, args.Length > 2 && (args[2] == "surface" || args[2] == "levelset"),
-                        args.Length > 2 && args[2] == "levelset");
+                    string mode = args.Length > 2 ? args[2] : "";
+                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || mode == "shipped",
+                        mode == "levelset" || mode == "shipped", mode == "shipped");
                 }
             }
 
