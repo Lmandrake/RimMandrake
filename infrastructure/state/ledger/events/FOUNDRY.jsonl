@@ -6041,3 +6041,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-17T06:17:37Z","tsn":1792217857997079004}
 {"seat":"FOUNDRY","event":"verify","id":"CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME","result":"pass","config":"ratchet_pilot 21 mods, RM_TestSite_calm_v1 + river + headline trench","evidence":"Transient/fw_mouth_live_20261016/validation_v2_result_20261016T231546.json","sha":"491966496","level":"L2","why":"live: validation_v2 61 PASS/0 FAIL, E2 full at pulse 4; river 20/0/1; headline full at tick 2002 vs 3753","ts":"2026-10-17T06:18:14Z","tsn":1792217894130162595}
 {"seat":"FOUNDRY","event":"close","id":"CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME","sha":"491966496","why":"live E2 full at pulse 4, mouth wet every pulse","ts":"2026-10-17T06:18:15Z","tsn":1792217895271184509}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-17T15:37:51Z","tsn":1792251471298742141}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FlowWorks water-scene walkthrough","ts":"2026-10-17T15:40:59Z","tsn":1792251659661065275}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-17T15:42:51Z","tsn":1792251771165614703}
