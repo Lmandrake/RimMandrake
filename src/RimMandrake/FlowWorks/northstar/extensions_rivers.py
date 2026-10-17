@@ -301,6 +301,26 @@ def works(t):
             kv = _kv(_works(t, "ProofWeirPool"))
             if kv.get("arrestedWet") != "True" or int(kv.get("dropped", 0)) <= 0:
                 raise ExpectationFailed("weir did not arrest or calm upstream: %r" % kv)
+    # RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16 by card: "Weirs join into one continuous wall"). LIVE RUN OWED
+    # (written 2026-10-17 while the game was up on another task; never run). PROVE ProofWeirJoin: an all-water section
+    # set end to end beyond a bank weir's wet end is accepted and joins it. EXPECT run=2, headIsBank (one catch roll per
+    # wall, on the bank end), joint (both see the joint, so no post is drawn there), poolJoined >= poolSingle > 0 (the
+    # pool rises behind every wet cell), poolGap = 0 (one broken section drains the wall's pool). LIES: a river one cell
+    # wide has no wet cell beyond the first weir -> UNMEASURED, never PASS; poolSingle = 0 (an edge-lane site with no
+    # upstream) makes the joined comparison vacuous, so it is UNMEASURED too.
+    with t.component("weir_joined_wall", toggle="bankWorksEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofWeirJoin"))
+            if int(kv.get("poolSingle", 0)) <= 0:
+                raise ExpectationFailed("UNMEASURED: the first weir pooled nothing, so joining cannot be compared: %r" % kv)
+            if (kv.get("placeOk") != "True" or kv.get("run") != "2" or kv.get("headIsBank") != "True"
+                    or kv.get("joint") != "True" or int(kv.get("poolJoined", 0)) < int(kv.get("poolSingle", 0))
+                    or int(kv.get("poolGap", -1)) != 0):
+                raise ExpectationFailed("joined weir wall wrong: %r" % kv)
+    # The art half of the joined wall (one continuous wall, a post only at free ends, spill on the downstream side) is a
+    # LOOK, judged in a joint session per the visual-review rule; owed, no predicate (the sheet shows the offline composite).
+    with _owed(t, "weir_joined_wall_art_in_game", "joined weir art seen in game at ordinary zoom: owner joint look"):
+        pass
     with t.component("weir_fish_draws_stock", toggle="weirCatchesFish"):
         if t._guard():
             kv = _kv(_works(t, "ProofWeirCatch", "20"))

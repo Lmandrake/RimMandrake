@@ -439,5 +439,100 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			return moved;
 		}
+
+		// ── RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16, by card: "Weirs join into one continuous wall") ──
+		// A weir section is 1x2. The first section straddles the bank (one moving-water cell, one solid); a further section
+		// may stand wholly in moving water when it continues a run end-to-end along the same axis, so a chain of sections
+		// spans the river bank to bank. Verse-free so WeirPoolChecks can drive it.
+
+		/// <summary>Placement rule: a bank straddler (1 water + 1 bank) always; an all-water section only when it continues a
+		/// run (a weir, blueprint or frame on the same axis touches one of its ends).</summary>
+		public static bool WeirPlacementOk(int waterCells, int bankCells, bool continuesRun)
+		{
+			if (waterCells == 1 && bankCells == 1)
+			{
+				return true;
+			}
+			return waterCells == 2 && bankCells == 0 && continuesRun;
+		}
+
+		/// <summary>The joined run holding <paramref name="start"/>: every section reachable through end-to-end neighbours
+		/// (breadth-first, start first), capped at <paramref name="cap"/> sections.</summary>
+		public static List<T> WeirRun<T>(T start, Func<T, IEnumerable<T>> neighbours, int cap)
+		{
+			List<T> run = new List<T> { start };
+			HashSet<T> seen = new HashSet<T> { start };
+			for (int i = 0; i < run.Count && run.Count < cap; i++)
+			{
+				foreach (T n in neighbours(run[i]))
+				{
+					if (n != null && seen.Add(n))
+					{
+						run.Add(n);
+						if (run.Count >= cap)
+						{
+							break;
+						}
+					}
+				}
+			}
+			return run;
+		}
+
+		/// <summary>The run's head - the one section that rolls the catch and holds it on its bank end: the lowest id among
+		/// bank-anchored sections, else the lowest id (a run cut off from both banks still catches once).</summary>
+		public static T WeirRunHead<T>(IList<T> run, Func<T, bool> anchored, Func<T, int> id)
+		{
+			T best = default(T);
+			bool bestAnchored = false;
+			int bestId = int.MaxValue;
+			for (int i = 0; i < run.Count; i++)
+			{
+				bool a = anchored(run[i]);
+				int k = id(run[i]);
+				if ((a && !bestAnchored) || (a == bestAnchored && k < bestId))
+				{
+					best = run[i];
+					bestAnchored = a;
+					bestId = k;
+				}
+			}
+			return best;
+		}
+
+		/// <summary>The run's slack pool stands only while every section holds: one breached or broken section is a gap,
+		/// and a gap leaks (the stake-line's rule).</summary>
+		public static bool WeirRunHolds(IList<bool> sectionSound)
+		{
+			for (int i = 0; i < sectionSound.Count; i++)
+			{
+				if (!sectionSound[i])
+				{
+					return false;
+				}
+			}
+			return sectionSound.Count > 0;
+		}
+
+		/// <summary>The art's facing (Rot4 int: 0 N, 1 E, 2 S, 3 W) from the section's axis and the current at its wet end:
+		/// the downstream side carries the spill face. Horizontal wall (E/W rotation, runs along x): downstream south shows
+		/// the spill face to the camera (East art), downstream north shows the upstream boards (West art). Vertical wall
+		/// (N/S rotation): downstream east = North art, west = South art. A current running along the wall, or none, keeps
+		/// <paramref name="placedRot"/>.</summary>
+		public static int WeirArtRot(int placedRot, int flowDir)
+		{
+			bool horizontal = (placedRot & 1) == 1;
+			if (flowDir < 0 || flowDir > 7)
+			{
+				return placedRot;
+			}
+			if (horizontal)
+			{
+				int dz = StepZ[flowDir];
+				return dz < 0 ? 1 : dz > 0 ? 3 : placedRot;
+			}
+			int dx = StepX[flowDir];
+			return dx > 0 ? 0 : dx < 0 ? 2 : placedRot;
+		}
 }
 }

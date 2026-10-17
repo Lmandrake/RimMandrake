@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The weir's four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16: "(1) but in the four art styles"): one
+     ThingStyleDef per look, RM_BankWeir_<Look>, picked through the shared style picker (Machinery/PipeLook.cs) like the pipes and
+     tanks. Each set: RM_BankWeir_{north,east,south,west} (the wall per heading, seamless along it so sections join), RM_BankWeirCap
+     (free-end post) and RM_BankWeirSpill_{facing} (the water sheet over the crest), under RimMandrake/FlowWorks/Weir/<Look>/.
+     Sources: art_source/Weir/. No StyleCategoryDef lists these. -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_BankWeir_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir_east</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Weir/Scrapper/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankWeir_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir_east</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Weir/Industrial/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankWeir_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir_east</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Weir/Modern/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_BankWeir_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir_east</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Weir/Futuristic/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

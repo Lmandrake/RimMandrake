@@ -188,6 +188,50 @@ namespace RimMandrake.FlowWorks.SelfTest
                     foreach (int[] s in sp) Assert(seen.Add((s[0], s[1])), "revisited a cell");
                 }
             });
+
+            // RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16, by card: "Weirs join into one continuous wall")
+            Case("WeirJoin_placement_straddle_or_continue", () =>
+            {
+                Assert(RM_RiverMath.WeirPlacementOk(1, 1, false), "a bank straddler stands alone");
+                Assert(!RM_RiverMath.WeirPlacementOk(2, 0, false), "can-fail: an all-water section alone has no anchor");
+                Assert(RM_RiverMath.WeirPlacementOk(2, 0, true), "an all-water section continuing a run is allowed");
+                Assert(!RM_RiverMath.WeirPlacementOk(0, 2, true), "an all-dry section is never a weir");
+                Assert(!RM_RiverMath.WeirPlacementOk(1, 0, true), "a half-unbuildable section is refused");
+            });
+
+            Case("WeirJoin_run_head_and_gap", () =>
+            {
+                // a chain 0-1-2-3 bank to bank (0 and 3 anchored), 4 is a separate weir
+                Dictionary<int, int[]> links = new Dictionary<int, int[]>
+                {
+                    [0] = new[] { 1 }, [1] = new[] { 0, 2 }, [2] = new[] { 1, 3 }, [3] = new[] { 2 }, [4] = new int[0],
+                };
+                List<int> run = RM_RiverMath.WeirRun(2, i => links[i], 64);
+                Assert(run.Count == 4 && run[0] == 2, "run from the middle reaches all four, start first: " + string.Join(",", run));
+                Assert(RM_RiverMath.WeirRun(4, i => links[i], 64).Count == 1, "a lone weir is a run of one");
+                Assert(RM_RiverMath.WeirRun(0, i => links[i], 2).Count == 2, "the cap holds");
+                Func<int, bool> anchored = i => i == 0 || i == 3;
+                Assert(RM_RiverMath.WeirRunHead(run, anchored, i => 100 - i) == 3, "head = lowest id among anchored (ids 100-i)");
+                Assert(RM_RiverMath.WeirRunHead(new List<int> { 1, 2 }, anchored, i => i) == 1, "no anchor: lowest id");
+                Assert(RM_RiverMath.WeirRunHolds(new List<bool> { true, true, true }), "sound run holds");
+                Assert(!RM_RiverMath.WeirRunHolds(new List<bool> { true, false, true }), "one gap drains the run's pool");
+                Assert(!RM_RiverMath.WeirRunHolds(new List<bool>()), "an empty run holds nothing");
+            });
+
+            Case("WeirArt_facing_follows_the_current", () =>
+            {
+                // horizontal wall (placed East=1 or West=3): current south (dir 6) -> East art (spill face to camera)
+                Assert(RM_RiverMath.WeirArtRot(3, 6) == 1, "E-W wall, flow S -> East art");
+                Assert(RM_RiverMath.WeirArtRot(1, 2) == 3, "E-W wall, flow N -> West art");
+                Assert(RM_RiverMath.WeirArtRot(1, 5) == 1, "E-W wall, flow SW -> East art");
+                Assert(RM_RiverMath.WeirArtRot(1, 0) == 1 && RM_RiverMath.WeirArtRot(3, 4) == 3, "flow along the wall keeps the placed facing");
+                // vertical wall (placed North=0 or South=2): flow east (0) -> North art, west (4) -> South art
+                Assert(RM_RiverMath.WeirArtRot(2, 0) == 0 && RM_RiverMath.WeirArtRot(0, 4) == 2, "N-S wall follows the flow's x");
+                Assert(RM_RiverMath.WeirArtRot(0, -1) == 0 && RM_RiverMath.WeirArtRot(2, 9) == 2, "no current keeps the placed facing");
+                for (int r = 0; r < 4; r++)
+                    for (int d = -1; d < 8; d++)
+                        Assert((RM_RiverMath.WeirArtRot(r, d) & 1) == (r & 1), "the art never changes the wall's axis");
+            });
         }
     }
 }
