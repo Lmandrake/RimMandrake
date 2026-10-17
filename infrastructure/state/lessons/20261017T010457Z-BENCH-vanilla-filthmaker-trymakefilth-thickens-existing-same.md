@@ -1,0 +1,1 @@
+Vanilla FilthMaker.TryMakeFilth thickens an existing same-def filth (to 5) instead of spawning a second; a check that counts filth things under-reads a spill — sum thickness (liquid_checks L5, 90ce684e78)
