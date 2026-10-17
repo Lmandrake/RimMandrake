@@ -111,7 +111,7 @@
       "bloom.bloom_loads_exposed": "PASS",
       "bloom.bloom_no_double_tax": "PASS",
       "bloom.bloom_site_ready": "PASS",
-      "bloom.bloom_spares_natives": "UNMEASURED",
+      "bloom.bloom_spares_natives": "PASS",
       "bloom.bloom_spares_roofed": "PASS",
       "bloom.bloom_toggle_off": "PASS",
       "fauna.fauna_spawns": "PASS",
@@ -161,10 +161,10 @@
       "vents.fauna_hush_in_falter": "PASS",
       "vents.vent_exposure_is_local": "PASS",
       "vents.vent_falter_precedes_bloom": "PASS",
-      "vents.vent_silences_and_recovers": "UNMEASURED",
+      "vents.vent_silences_and_recovers": "PASS",
       "vents.vent_weather_multiplier": "PASS",
       "vents.vents_site_ready": "PASS",
-      "vents.vexxiss_drinks_vent": "UNMEASURED",
+      "vents.vexxiss_drinks_vent": "PASS",
       "water.water_letter_arrives": "PASS",
       "water.water_letter_cooldown": "PASS",
       "water.water_letter_toggle_off": "PASS",
@@ -180,54 +180,49 @@
     },
     "components": {
       "counts": {
-        "PASS": 70,
-        "UNMEASURED": 3
+        "PASS": 73
       },
-      "not_ok": [
-        "bloom.bloom_spares_natives",
-        "vents.vexxiss_drinks_vent",
-        "vents.vent_silences_and_recovers"
-      ]
+      "not_ok": []
     },
-    "hash": "56f9fe873873bb471af953de5c44523f2ae5e93b7e4ca8fb5ff05810f1f4be48",
+    "hash": "40b9f318ed78003b8a4dc0f9e93de3dda5bf7568876b7d162708a34601b090da",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Cauldron/northstar_driver@Cauldron_20261017T024004Z.json",
+    "run_id": "Cauldron/northstar_driver@Cauldron_20261017T033651Z.json",
     "source": {
       "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
       "mode": "live",
-      "result": "Transient/northstar/Cauldron_20261017T024004Z.json",
-      "started": "2026-10-17T02:40:04Z",
+      "result": "Transient/northstar/Cauldron_20261017T033651Z.json",
+      "started": "2026-10-17T03:36:51Z",
       "verb": "northstar_driver run"
     },
-    "status": "RED",
-    "ts": 1792204993.26417
+    "status": "DRAFT-CHECKLIST",
+    "ts": 1792208366.521631
   },
   "Contagion": {
     "bars": {
       "burn_forced.burn_doses_the_exposed_visitor": "PASS",
       "burn_forced.burn_harmless_at_zero_damage": "PASS",
-      "burn_forced.burn_hurts_native_spares_armored": "PASS",
+      "burn_forced.burn_hurts_native_spares_armored": "UNMEASURED",
       "burn_forced.burn_off_means_no_harm": "PASS",
       "burn_forced.burn_site_ready": "PASS",
-      "burn_forced.native_dives_for_roof": "PASS",
+      "burn_forced.native_dives_for_roof": "UNMEASURED",
       "burn_forced.repulsor_forces_burn": "PASS",
-      "burn_forced.repulsor_off_lapses_burn": "UNMEASURED",
+      "burn_forced.repulsor_off_lapses_burn": "PASS",
       "burn_forced.site_is_contagion": "PASS",
       "burn_natural.burn_off_never_schedules": "PASS",
       "burn_natural.natural_burn_arrives_on_schedule": "PASS",
       "burn_natural.natural_site_ready": "PASS",
       "burn_natural.site_is_contagion": "PASS",
       "burn_natural.slow_frequency_defers_burn": "PASS",
-      "coalescence.burn_collapses_it_into_monstrous_samples": "UNMEASURED",
-      "coalescence.coalescence_absorbs_and_grows_a_stage": "UNMEASURED",
-      "coalescence.coalescence_emits_manhunters_and_grows_on_its_own": "UNMEASURED",
-      "coalescence.coalescence_off_absorbs_nothing": "UNMEASURED",
+      "coalescence.burn_collapses_it_into_monstrous_samples": "PASS",
+      "coalescence.coalescence_absorbs_and_grows_a_stage": "PASS",
+      "coalescence.coalescence_emits_manhunters_and_grows_on_its_own": "PASS",
+      "coalescence.coalescence_off_absorbs_nothing": "PASS",
       "coalescence.coalescence_site_ready": "PASS",
-      "coalescence.grown_limbs_off_grows_organs": "UNMEASURED",
-      "coalescence.monstrous_fixture": "UNMEASURED",
-      "coalescence.monstrous_gestation_grows_one_limb": "UNMEASURED",
+      "coalescence.grown_limbs_off_grows_organs": "PASS",
+      "coalescence.monstrous_fixture": "PASS",
+      "coalescence.monstrous_gestation_grows_one_limb": "PASS",
       "coalescence.site_is_contagion": "PASS",
       "defs.biome_roster_animals": "UNMEASURED",
       "defs.biome_table_and_roster": "PASS",
@@ -241,9 +236,9 @@
       "genome.inject_starts_gestation": "PASS",
       "genome.site_is_contagion": "PASS",
       "log.log_clean": "PASS",
-      "repulsor_clear.holds_sky_clear": "UNMEASURED",
-      "repulsor_clear.lapses_without_power": "UNMEASURED",
-      "repulsor_clear.off_when_setting_off": "UNMEASURED",
+      "repulsor_clear.holds_sky_clear": "PASS",
+      "repulsor_clear.lapses_without_power": "PASS",
+      "repulsor_clear.off_when_setting_off": "PASS",
       "repulsor_clear.site_ready_baseline": "PASS",
       "settings.defaults": "PASS",
       "settings_biomeRarityFactor.biomeRarityFactor_roundtrip": "PASS",
@@ -282,47 +277,38 @@
       "uv.site_is_contagion": "PASS",
       "uv.uv_native_multiplier": "PASS",
       "uv.uv_site_ready": "PASS",
-      "zhool_haze.conversion_off_turns_nothing": "UNMEASURED",
-      "zhool_haze.haze_turns_grass_in_place": "UNMEASURED",
+      "zhool_haze.conversion_off_turns_nothing": "PASS",
+      "zhool_haze.haze_turns_grass_in_place": "FAIL",
       "zhool_haze.site_is_contagion": "PASS",
       "zhool_haze.zhool_site_ready": "PASS"
     },
     "components": {
       "counts": {
-        "PASS": 66,
-        "UNMEASURED": 14
+        "FAIL": 1,
+        "PASS": 76,
+        "UNMEASURED": 3
       },
       "not_ok": [
         "defs.biome_roster_animals",
-        "repulsor_clear.off_when_setting_off",
-        "repulsor_clear.holds_sky_clear",
-        "repulsor_clear.lapses_without_power",
-        "burn_forced.repulsor_off_lapses_burn",
-        "zhool_haze.conversion_off_turns_nothing",
-        "zhool_haze.haze_turns_grass_in_place",
-        "coalescence.coalescence_off_absorbs_nothing",
-        "coalescence.coalescence_absorbs_and_grows_a_stage",
-        "coalescence.coalescence_emits_manhunters_and_grows_on_its_own",
-        "coalescence.burn_collapses_it_into_monstrous_samples",
-        "coalescence.monstrous_fixture",
-        "coalescence.monstrous_gestation_grows_one_limb",
-        "coalescence.grown_limbs_off_grows_organs"
+        "burn_forced.burn_hurts_native_spares_armored",
+        "burn_forced.native_dives_for_roof",
+        "zhool_haze.haze_turns_grass_in_place"
       ]
     },
-    "hash": "6d5e56f25c5c7779bea8fde8403d18f0dc5887bfdc184043cc020c7f921cb1aa",
+    "hash": "04743d1c36cb2f206e05feae2420c17612f46a9b5ef972ce0b79027b7743033f",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Contagion/northstar_driver@Contagion_20261017T024739Z.json",
+    "run_id": "Contagion/northstar_driver@Contagion_20261017T034640Z.json",
     "source": {
       "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
       "mode": "live",
-      "result": "Transient/northstar/Contagion_20261017T024739Z.json",
-      "started": "2026-10-17T02:47:39Z",
+      "result": "Transient/northstar/Contagion_20261017T034640Z.json",
+      "started": "2026-10-17T03:46:40Z",
       "verb": "northstar_driver run"
     },
     "status": "RED",
-    "ts": 1792205376.3843791
+    "ts": 1792208974.4542832
   },
   "CreatureBehaviors": {
     "hash": "a586d2030240e8527689557c20970c24e0a4346bf902a064cf57fdd6ea4b9425",
@@ -376,7 +362,7 @@
       "bands_x4_default.everyday_band_multiplies_growth_x4": "PASS",
       "boot_defs.harmony_patches_attached": "PASS",
       "boot_defs.sound_defs_resolve": "PASS",
-      "boot_defs.startup_log_clean": "UNMEASURED",
+      "boot_defs.startup_log_clean": "PASS",
       "burst_hurts_pawns.burst_bruises_nearby_pawn": "UNMEASURED",
       "burst_hurts_pawns.burst_hurt_off_spares_pawn": "UNMEASURED",
       "charge_hours.charge_hours_sets_the_clock": "PASS",
@@ -426,7 +412,7 @@
       "top_burst.burst_pops_leaves_chaff": "UNMEASURED",
       "top_flush.flush_off_falls_back_to_churn": "PASS",
       "top_flush.flush_plant_survives": "PASS",
-      "top_rupture.rupture_off_falls_back_to_churn": "FAIL",
+      "top_rupture.rupture_off_falls_back_to_churn": "PASS",
       "top_rupture.rupture_opens_a_cloud_zone": "PASS",
       "top_slime.slime_off_falls_back_to_churn": "PASS",
       "top_slime.slime_turns_the_ground": "PASS",
@@ -435,34 +421,31 @@
     },
     "components": {
       "counts": {
-        "FAIL": 1,
-        "PASS": 52,
-        "UNMEASURED": 6
+        "PASS": 54,
+        "UNMEASURED": 5
       },
       "not_ok": [
-        "boot_defs.startup_log_clean",
         "top_burst.burst_pops_leaves_chaff",
         "top_burst.burst_off_falls_back_to_churn",
         "burst_hurts_pawns.burst_bruises_nearby_pawn",
         "burst_hurts_pawns.burst_hurt_off_spares_pawn",
-        "scope_native_only.default_runs_only_in_baroque_biomes_biomes",
-        "top_rupture.rupture_off_falls_back_to_churn"
+        "scope_native_only.default_runs_only_in_baroque_biomes_biomes"
       ]
     },
     "hash": "83dae66af2e51a2ad4a4bc313772ece7e4742feb5cc8d2da3535c847e8302e30",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "ExplosiveGrowth/northstar_driver@ExplosiveGrowth_20261017T030107Z.json",
+    "run_id": "ExplosiveGrowth/northstar_driver@ExplosiveGrowth_20261017T035142Z.json",
     "source": {
       "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\ExplosiveGrowth.md)",
       "mode": "live",
-      "result": "Transient/northstar/ExplosiveGrowth_20261017T030107Z.json",
-      "started": "2026-10-17T03:01:07Z",
+      "result": "Transient/northstar/ExplosiveGrowth_20261017T035142Z.json",
+      "started": "2026-10-17T03:51:42Z",
       "verb": "northstar_driver run"
     },
     "status": "RED",
-    "ts": 1792206558.7599478
+    "ts": 1792209585.2619834
   },
   "FallLineArrivals": {
     "hash": "f7b94c606729693c1792d334f52060fa3aae75d97b1c35025f11c204d4526bf2",
@@ -723,15 +706,15 @@
       "gale.gale_deafens_outdoors": "PASS",
       "gale.gale_site_ready": "PASS",
       "gale.gale_spares_roofed": "PASS",
-      "gale.gale_turbine_breakdown": "UNMEASURED",
-      "gale.gale_turbine_surge": "UNMEASURED",
+      "gale.gale_turbine_breakdown": "PASS",
+      "gale.gale_turbine_surge": "PASS",
       "injections.map_holds_ruins_and_camps": "PASS",
       "injections.vaporator_learned_from_farmstead": "PASS",
       "lash.lash_site_ready": "PASS",
-      "lash.lash_strikes_once": "UNMEASURED",
+      "lash.lash_strikes_once": "PASS",
       "lash.lash_toggle_off_quiet": "PASS",
       "log.log_clean": "PASS",
-      "patches.dead_venomvine_fuels_fire": "UNMEASURED",
+      "patches.dead_venomvine_fuels_fire": "PASS",
       "patches.rules_armed": "PASS",
       "patches.thicket_smotherable": "PASS",
       "patches.vissler_arm_is_rotting_meat": "PASS",
@@ -747,7 +730,7 @@
       "settings.leanScentEnabled_roundtrip": "PASS",
       "settings.venomvinePassabilityEnabled_roundtrip": "PASS",
       "smother.smother_claims_stands": "PASS",
-      "smother.smother_matures_to_dead_wood": "UNMEASURED",
+      "smother.smother_matures_to_dead_wood": "PASS",
       "smother.smother_off_holds_claims": "PASS",
       "smother.smother_site_ready": "PASS",
       "stall.stall_freezes_small": "PASS",
@@ -773,15 +756,10 @@
     },
     "components": {
       "counts": {
-        "PASS": 72,
-        "UNMEASURED": 13
+        "PASS": 77,
+        "UNMEASURED": 8
       },
       "not_ok": [
-        "patches.dead_venomvine_fuels_fire",
-        "gale.gale_turbine_surge",
-        "gale.gale_turbine_breakdown",
-        "lash.lash_strikes_once",
-        "smother.smother_matures_to_dead_wood",
         "dripping.dripping_survives_harvest",
         "sweetline.scratch_drops_coat",
         "sweetline.visitors_toggle_off_quiet",
@@ -792,20 +770,20 @@
         "sweetline.map_step_plants_one_or_two"
       ]
     },
-    "hash": "3a4e676305432475b1ff11e49dc51e17a874da2b96dd17c203d2440c6b4989ba",
+    "hash": "a37619f8f2bde79771679bd407fe5dc8b6af72f0e2f8ab8f4ab6d87f19d1a68e",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "LeaningScrub/northstar_driver@LeaningScrub_20261017T024340Z.json",
+    "run_id": "LeaningScrub/northstar_driver@LeaningScrub_20261017T040005Z.json",
     "source": {
       "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
       "mode": "live",
-      "result": "Transient/northstar/LeaningScrub_20261017T024340Z.json",
-      "started": "2026-10-17T02:43:40Z",
+      "result": "Transient/northstar/LeaningScrub_20261017T040005Z.json",
+      "started": "2026-10-17T04:00:05Z",
       "verb": "northstar_driver run"
     },
     "status": "RED",
-    "ts": 1792205202.3493845
+    "ts": 1792209823.879328
   },
   "LongShade": {
     "hash": "9046fcbdd2c0692d316716c64a4672050de8365b0a3c84068bb06bdc14850228",

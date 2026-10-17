@@ -1,0 +1,117 @@
+[contagion-note] shipped defs resolved: 126
+[contagion] 20:46:42 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 23, "plants": 12}
+[contagion] 20:46:42 biome_table_and_roster PASS 
+[contagion] 20:46:42 biome_roster_animals UNMEASURED UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"; the roster is checked statically from the XML
+[contagion] 20:46:42 helix_trader_wired PASS 
+[contagion] 20:46:42 visible_tells_wired PASS 
+[contagion] 20:46:42 organ_patch_comps PASS 
+[contagion] 20:46:43 defaults PASS 
+[contagion] 20:46:43 biomeRarityFactor_roundtrip PASS 
+[contagion] 20:46:44 burnDamageFactor_roundtrip PASS 
+[contagion] 20:46:44 burnEnabled_roundtrip PASS 
+[contagion] 20:46:44 burnFrequency_roundtrip PASS 
+[contagion] 20:46:44 burnTellsEnabled_roundtrip PASS 
+[contagion] 20:46:45 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 20:46:45 coalescenceEnabled_roundtrip PASS 
+[contagion] 20:46:45 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 20:46:45 grownLimbsEnabled_roundtrip PASS 
+[contagion] 20:46:46 mulchDropsEnabled_roundtrip PASS 
+[contagion] 20:46:46 sunbeamArrestEnabled_roundtrip PASS 
+[contagion] 20:46:46 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 20:46:46 touchedEnabled_roundtrip PASS 
+[contagion] 20:46:47 touchedExposureFactor_roundtrip PASS 
+[contagion] 20:46:47 touchedMutationRate_roundtrip PASS 
+[contagion] 20:46:47 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 20:46:47 zhoolConversionEnabled_roundtrip PASS 
+[contagion] 20:46:48 zhoolConversionRate_roundtrip PASS 
+[contagion] 20:46:48 zhoolConvertsCrops_roundtrip PASS 
+[contagion] 20:46:48 zhoolHazeDensity_roundtrip PASS 
+[contagion] 20:46:48 zhoolHazeEnabled_roundtrip PASS 
+[contagion-note] sick start taken off the Contagion: {"tile": 3, "from": "RM_Contagion", "to": "AridShrubland"}
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 40, "verified": true, "residue": []}
+[contagion-note] pad repulsor unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 20:46:53 site_ready_baseline PASS 
+[contagion] 20:46:57 off_when_setting_off PASS 
+[contagion-note] weather after the condition registered (vanilla's forcing, not ours): "Rain"
+[contagion] 20:47:01 holds_sky_clear PASS 
+[contagion] 20:47:03 lapses_without_power PASS 
+[contagion-note] pad spawner unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 20:47:07 site_ready_spawner PASS 
+[contagion] 20:47:08 spawner_off_buds_nothing PASS 
+[contagion] 20:47:10 spawner_buds_unfinished PASS 
+[contagion] 20:47:10 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 20:47:11 unfinished_dissolves_on_death PASS 
+[contagion-note] mulch heaps: [4]
+[contagion] 20:47:11 unfinished_leaves_mulch PASS 
+[contagion-note] clock rewound after a declared jump: {"back": 90000, "from": 98672, "to": 8672}
+[contagion-note] retiled: {"tile": 3, "from": "AridShrubland", "to": "RM_Contagion"}
+[contagion] 20:47:15 retile_to_contagion PASS 
+[contagion] 20:47:15 site_is_contagion PASS 
+[contagion-note] pad burn unroofed: {"cellsChanged": 358, "perDef": {"None": 358}}
+[contagion] 20:47:22 burn_site_ready PASS 
+[contagion] 20:47:26 repulsor_forces_burn PASS 
+[contagion] 20:47:28 burn_harmless_at_zero_damage PASS 
+[contagion] 20:47:40 burn_doses_the_exposed_visitor PASS 
+[contagion] 20:47:40 burn_hurts_native_spares_armored UNMEASURED UNMEASURED: the UV-shy native's row is absent and no living sample carried Burn: its damage cannot be read (living hediffs [])
+[contagion] 20:47:40 native_dives_for_roof UNMEASURED UNMEASURED: the native died before its dive could be read (living positions [(124, 85)])
+[contagion] 20:47:45 burn_off_means_no_harm PASS 
+[contagion] 20:47:49 repulsor_off_lapses_burn PASS 
+[contagion] 20:47:53 site_is_contagion PASS 
+[contagion-note] pad burn unroofed: {"cellsChanged": 64, "perDef": {"None": 64}}
+[contagion] 20:47:56 natural_site_ready PASS 
+[contagion] 20:47:57 burn_off_never_schedules PASS 
+[contagion] 20:48:03 slow_frequency_defers_burn PASS 
+[contagion-note] natural burn condition row: [{"def": "RM_ContagionBurnCondition", "ticksLeft": 3028}]
+[contagion] 20:48:06 natural_burn_arrives_on_schedule PASS 
+[contagion-note] clock rewound after a declared jump: {"back": 640000, "from": 660678, "to": 20678}
+[contagion] 20:48:09 site_is_contagion PASS 
+[contagion-note] pad uv unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 20:48:10 uv_site_ready PASS 
+[contagion-note] UV sunburn severity (native@6x, native@1x, person@6x): [30.0, 5.0, 5.0]
+[contagion] 20:48:11 uv_native_multiplier PASS 
+[contagion-note] pad touched unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 20:48:16 touched_site_ready PASS 
+[contagion] 20:48:19 touched_off_doses_nothing PASS 
+[contagion-note] touched severity (contact, far control): [0.04, 0.0]
+[contagion] 20:48:21 touched_contact_doses PASS 
+[contagion] 20:48:21 sunbeam_hit_arrests PASS 
+[contagion] 20:48:25 site_is_contagion PASS 
+[contagion-note] pad zhool unroofed: {"cellsChanged": 52, "perDef": {"None": 52}}
+[contagion] 20:48:26 zhool_site_ready PASS 
+[contagion] 20:48:30 conversion_off_turns_nothing PASS 
+[contagion-note] zhool haze: grass before/after, lashgrass after: [225, 225, 0]
+[contagion] 20:48:35 haze_turns_grass_in_place FAIL ExpectationFailed: no grass turned to lashgrass in 5000 ticks at 5x speed (expected ~8)
+[contagion] 20:48:37 site_is_contagion PASS 
+[contagion-note] pad coal unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 20:48:39 coalescence_site_ready PASS 
+[contagion] 20:48:41 coalescence_off_absorbs_nothing PASS 
+[contagion-note] after absorbing 6: {"left": 0, "stage": 2, "mass": 6}
+[contagion] 20:48:45 coalescence_absorbs_and_grows_a_stage PASS 
+[contagion-note] Unfinished new since the jump: {"RM_TheUnfinished42912": ["Manhunter", false, false, [167, 138]]}
+[contagion] 20:48:47 coalescence_emits_manhunters_and_grows_on_its_own PASS 
+[contagion] 20:48:49 burn_collapses_it_into_monstrous_samples PASS 
+[contagion] 20:48:49 monstrous_fixture PASS 
+[contagion-note] inject: gestation read after: {"ticks": 450}
+[contagion] 20:48:56 monstrous_gestation_grows_one_limb PASS 
+[contagion-note] inject: gestation read after: {"ticks": 750}
+[contagion] 20:49:05 grown_limbs_off_grows_organs PASS 
+[contagion-note] clock rewound after a declared jump: {"back": 7000, "from": 43434, "to": 36434}
+[contagion] 20:49:10 site_is_contagion PASS 
+[contagion-note] pad genome unroofed: {"cellsChanged": 115, "perDef": {"None": 115}}
+[contagion] 20:49:11 genome_site_ready PASS 
+[contagion] 20:49:20 extraction_surgery_yields_sample PASS 
+[contagion-note] inject: gestation read after: {"ticks": 300}
+[contagion] 20:49:24 inject_starts_gestation PASS 
+[contagion] 20:49:27 gestation_dies_producing_one_organ_batch PASS 
+[contagion-note] log scan: {"contagion errors": 0, "xref naming our defs": 0, "bufferLines": 266}
+[contagion] 20:49:30 log_clean PASS 
+[contagion] 20:49:30 restore_tile PASS 
+[contagion-note] quiet-site restore: ok
+component defs/biome_roster_animals: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"; the roster is checked statically from the XML", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": [], "malformed": [], "fieldsAsked": ["wildAnimals"], "defs": [{"requested": "BiomeDef/RM_Contagion", "found": true, "defName": "RM_Contagion", "defType": "Biome
+component burn_forced/burn_hurts_native_spares_armored: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the UV-shy native's row is absent and no living sample carried Burn: its damage cannot be read (living hediffs [])", "evidence": [{"call": "UNMEASURED", "result": "the UV-shy native's row is absent and no living sample carried Burn: its damage cannot be read (living hediffs [])"}], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/native_dives_for_roof: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the native died before its dive could be read (living positions [(124, 85)])", "evidence": [{"call": "UNMEASURED", "result": "the native died before its dive could be read (living positions [(124, 85)])"}], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component zhool_haze/haze_turns_grass_in_place: {"toggle": "zhoolConversionRate", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no grass turned to lashgrass in 5000 ticks at 5x speed (expected ~8)", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "1 pawn(s), 3 outside the rect.", "pawns": [{"id": "RM_OcularJelly42843", "name": "Zhool", "kind": "RM_OcularJelly", "kindDef": "RM_OcularJelly", "def": "RM_OcularJelly", "hasGenes": false, "uniqueXenotype": false, "isPlayer": false, "hostile": false, "x": 88, "z": 177, "spawned": true, "dead": false, "downed": false, "stunned":
+recorded Contagion: RED at 04743d1c36cb (Contagion/northstar_driver@Contagion_20261017T034640Z.json)
+Contagion: NOT GREEN  PASS=76 FAIL=1 UNMEASURED=3  calls=2679 mean=62.008ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\Contagion_20261017T034640Z.json
