@@ -1,0 +1,190 @@
+{
+ "script": "pond_pump.py",
+ "started": "2026-10-17T12:58:34",
+ "rows": [
+  {
+   "id": "POND_PUMP_pond_limited",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "body": {
+     "id": 1,
+     "limitless": false,
+     "stock": 12.0,
+     "capacity": 12.0,
+     "cellCount": 6,
+     "recededCount": 0,
+     "activeCellCount": 6,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "id": "POND_PUMP_draw_conserves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankGained": 40000,
+    "stockFell": 4.0,
+    "stockFellInTankUnits": 40000.0,
+    "diff": 0.0,
+    "rawEqual": false,
+    "u0": 0,
+    "u1": 40000,
+    "s0": 12.0,
+    "s1": 8.0,
+    "trace": [
+     {
+      "tick": 205,
+      "units": 0,
+      "stock": 12.0,
+      "receded": 0
+     },
+     {
+      "tick": 455,
+      "units": 10000,
+      "stock": 11.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 705,
+      "units": 20000,
+      "stock": 10.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 955,
+      "units": 30000,
+      "stock": 9.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 1205,
+      "units": 40000,
+      "stock": 8.0,
+      "receded": 0,
+      "pump": null
+     }
+    ],
+    "capacity": 12.0,
+    "pumpPoweredAfterTicks": 170
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/fw/pond_pump2.json",
+  "origin": "180,40",
+  "fresh_map": true,
+  "cycles": 4,
+  "refill_days": 1.0
+ },
+ "running": 20,
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "recessionEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "classify": {
+  "success": true,
+  "cell": {
+   "x": 183,
+   "z": 46
+  },
+  "classified": true,
+  "formedByThisCall": true,
+  "indexAgrees": true,
+  "isSourceCell": true,
+  "body": {
+   "id": 1,
+   "limitless": false,
+   "stock": 12.0,
+   "capacity": 12.0,
+   "cellCount": 6,
+   "recededCount": 0,
+   "activeCellCount": 6,
+   "truncated": false
+  },
+  "bodyCount": 1,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_934d5144a6734245bef030a9c9c99b6d",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 45
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "engine_before": {
+  "success": true,
+  "nextPulseTick": 251,
+  "ticksUntilNextPulse": 218,
+  "pulseIntervalTicks": 250,
+  "depthEngineEnabled": true,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "rainAccumulator": 0.0,
+  "excavatedCellCount": 0,
+  "superdeepCellCount": 0,
+  "bodyCount": 1,
+  "sinkTransferredTotal": 0.0,
+  "overflowDestroyedTotal": 0.0,
+  "mapId": 0,
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_112702859eb24965b30cc93605193827",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 41
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "terrain_fresh": {
+  "182,45": "WaterShallow",
+  "183,45": "WaterShallow",
+  "184,45": "WaterShallow",
+  "182,46": "WaterShallow",
+  "183,46": "WaterShallow",
+  "184,46": "WaterShallow"
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "pumpPoweredAfterTicks": 170,
+ "terrain_after_draw": {
+  "182,45": "WaterShallow",
+  "183,45": "WaterShallow",
+  "184,45": "WaterShallow",
+  "182,46": "WaterShallow",
+  "183,46": "WaterShallow",
+  "184,46": "WaterShallow"
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "recessionEnabled": true,
+  "liquidPumpEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-17T12:59:45"
+}

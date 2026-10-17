@@ -1,0 +1,1489 @@
+{
+  "mod": "LeaningScrub",
+  "mode": "live",
+  "started_utc": "2026-10-17T19:58:22Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "islands.islands_laid_share",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "islands.creep_runner_unarmed",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "islands.creep_toggle_off",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "islands.creep_cap_stops",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "islands.growth_exempt_from_explosive_growth",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "defs.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "defs.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "defs.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "patches.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "patches.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "patches.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "patches.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "settings.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "fauna.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "fauna.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "flora.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stall.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stall.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stall.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "gale.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "lash.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "lash.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "lash.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "smother.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "smother.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "smother.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "smother.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "dripping.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "crown.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "crown.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "crown.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "bloom.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "bloom.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "bloom.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stamp.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stamp.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "ripple.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "ripple.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stallhunt.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "stallhunt.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "pyre.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "pyre.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "pyre.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "injections.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "injections.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "forms.skipped#11",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "four_forms.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#3",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#4",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#5",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#6",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#7",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#8",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#9",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#10",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#11",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "sweetline.skipped#12",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    },
+    {
+      "id": "log.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains islands)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "541 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=2 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 2 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "20 active, sha256 8107435ab3602f94 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "islands"
+  ],
+  "chains_skipped": [
+    "defs",
+    "patches",
+    "settings",
+    "fauna",
+    "flora",
+    "stall",
+    "gale",
+    "lash",
+    "smother",
+    "dripping",
+    "crown",
+    "bloom",
+    "stamp",
+    "ripple",
+    "stallhunt",
+    "pyre",
+    "injections",
+    "forms",
+    "four_forms",
+    "sweetline",
+    "log"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "islands",
+      "name": "islands_laid_share",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "islands",
+      "name": "creep_runner_unarmed",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "islands",
+      "name": "creep_toggle_off",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "islands",
+      "name": "creep_cap_stops",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "islands",
+      "name": "growth_exempt_from_explosive_growth",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dripping",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stamp",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stamp",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ripple",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ripple",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stallhunt",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stallhunt",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pyre",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pyre",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pyre",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "injections",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "injections",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forms",
+      "name": "skipped#11",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "four_forms",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#3",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#4",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#5",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#6",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#7",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#8",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#9",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#10",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#11",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "skipped#12",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "log",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains islands)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 5,
+    "FAIL": 0,
+    "UNMEASURED": 85
+  },
+  "all_green": false,
+  "timing": {
+    "n": 98,
+    "total_ms": 5492.088,
+    "mean_ms": 56.0417,
+    "p50_ms": 49.9857,
+    "p95_ms": 50.3289,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 6,
+        "mean_ms": 166.2453,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 16.3585,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 3,
+        "mean_ms": 48.5983,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.744,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.2667,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 49.8713,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 80,
+        "mean_ms": 50.829,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 1,
+        "mean_ms": 50.0314,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 1,
+        "mean_ms": 50.1554,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "2ac8c26912d839482569b232aa132c26ffd21050d70a94521eb656096a363515"
+}
