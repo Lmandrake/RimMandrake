@@ -20,3 +20,10 @@ base: b54435fe9
 - RimMandrakeFlowWorksMod.cs (1862): read whole; every field scribed with matching key/default (scripted check), every field read outside the file (no dead settings). FIXED stale player text (leftover absolute rules: load repair "0-4", "superdeep cells and nothing else", "three visible levels", fire "superdeep pit", comment "drowning at D=4"); SelfTest Settings_text_no_absolute_pit_rules. Stays DIRTY (edited). DOUBT :684 pitDrowningHeadFraction greyed under pitDrowningEnabled but RM_Swim reads it for swimming/footing with drowning off.
 - now: building + selftest of fixes, then RM_LiquidFire whole? no (diff-scoped done); next Rivers/RM_Weir.cs
 - SelfTest via vv probe: AUTHORED 560/560 (4 new cases pass)
+- Rivers/RM_Weir.cs (924): read whole; nothing found -> CLEAN candidate. Note :239-246 ResolveEnds puts a section's 2nd wet cell in bankCell (a wholly-wet run head deposits catch Near a water cell; head prefers anchored, harmless).
+- Superdeep/RM_PitPathing.cs (576): read whole; swim/pit customizer Combine, grid retire/dispose, prefix mirrors vanilla; nothing found -> CLEAN candidate
+- Superdeep/RM_CliffMask.cs (467): read whole; swap note is single-threaded (vanilla PathFinder calls ParameterizePathJob pair from the scheduler / FindPathNow, checked in vanilla source); derive reads Verse state only inside GatherData with main blocked; nothing found -> CLEAN candidate
+- Superdeep/RM_PocketGrid.cs (446): read whole; nothing found -> CLEAN candidate
+- Superdeep/RM_PitRooms.cs (686): read whole; nothing found -> CLEAN candidate
+- SelfTest/*.cs: NOT reviewed this round (~40 files); claimable
+- fetching + rebasing onto origin
