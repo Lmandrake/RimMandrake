@@ -1,0 +1,71 @@
+<!doctype html><meta charset=utf-8><title>FlowWorks water scenes</title><style>body{font:18px sans-serif;background:#2b2118;color:#eee;margin:20px auto;max-width:1700px}section{background:#faf7f0;color:#222;padding:16px 24px;margin:24px 0;border-radius:6px}img{width:100%;border:1px solid #888}h2{margin:0 0 6px}.st{color:#a63c00;font-weight:bold}.cap{color:#04508c;font-weight:bold;margin:10px 0 4px}td{padding:2px 12px 2px 0;vertical-align:top}.v{margin-top:12px;font-size:20px}</style><h1>FlowWorks water scenes: what to evaluate</h1>
+<section><h2>S1. A canal dug from a lake fills end to end</h2>
+<p><b>What you are looking at.</b> Map from the left: the big dark-grey area is a LAKE (never runs out). Thin strips of dug ground to its right are CANALS: 1 square deep, dry brown until water arrives (blue-grey). Here: one 8-square canal touching the lake.</p><p><b>What to check</b></p><ul><li>Water should creep along the canal ONE square per pulse, starting at the lake end.</li><li>The wet part must always be one unbroken run from the lake. No wet square with a dry gap before it.</li><li>By pulse 10 all 8 squares are wet. The lake must not shrink.</li></ul>
+<p><b>Pass if:</b> All 8 squares wet by pulse 10, never a gap, a wet square never dries again.<br><b>Fails if:</b> Only the first square gets wet and then it stops (the 2026-10-16 bug).</p>
+<p><b>What the game measured</b></p><ul><li>MATCHES the rule: All 8 canal cells hold 1 level.  Game: all 8 hold 1 level first at pulse 8</li><li>MATCHES the rule: At every pulse the wet canal cells form one unbroken run starting at cell 1 (no isolated puddle, no gap).  Game: pulses where the wet part was NOT one run from the lake: none</li><li>MATCHES the rule: Once a canal cell is wet it never goes dry again during the scene.  Game: a wet cell went dry at pulses: never</li><li>MATCHES the rule: The lake never visibly shrinks (LIMITLESS).  Game: lake limitless at every pulse: True (stock 616.0 -&gt; 616.0)</li></ul>
+<p class=v>S1: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Start: canal dug, completely dry.</div><img src='S1_p00.png'><br>
+<div class=cap style='color:#9cf'>Pulse 3: expect the first 3 squares wet.</div><img src='S1_p03.png'><br>
+<div class=cap style='color:#9cf'>Pulse 10 (deadline): all 8 squares wet.</div><img src='S1_p10.png'><br>
+<div class=cap style='color:#9cf'>Pulse 14: settled, nothing should have changed since pulse 10.</div><img src='S1_p14.png'><br>
+</section>
+<section><h2>S2. A shallow trench beside a lake-fed pond fills</h2>
+<p><b>What you are looking at.</b> Map from the left: the big dark-grey area is a LAKE (never runs out). Thin strips of dug ground to its right are CANALS: 1 square deep, dry brown until water arrives (blue-grey). Here: a dug 2x2 POND (4 deep) touching the lake, plus a 6-square 1-deep TRENCH off the pond&#x27;s far side.</p><p><b>What to check</b></p><ul><li>The pond should fill first (4 levels in each of its 4 squares).</li><li>Then water spills into the trench, one square per pulse, always one run from the pond end.</li><li>After that, nothing changes.</li></ul>
+<p><b>Pass if:</b> By pulse 30 pond full and all 6 trench squares wet; trench is one unbroken run.<br><b>Fails if:</b> Pond fills but the trench stays dry, or only the trench&#x27;s first square gets wet.</p>
+<p><b>What the game measured</b></p><ul><li>MATCHES the rule: All 4 pond cells hold 4 levels.  Game: all 4 pond cells at 4 first at pulse 8</li><li>MATCHES the rule: All 6 trench cells hold 1 level.  Game: all 6 trench cells at 1 first at pulse 14</li><li>MATCHES the rule: Wet trench cells always form one unbroken run starting at the cell touching the pond.  Game: pulses where the wet trench was NOT one run from the pond: none</li><li>MATCHES the rule: Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run.  Game: settled at pulse 14; changes after that: none</li></ul>
+<p class=v>S2: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Start: pond and trench dug, all dry.</div><img src='S2_p00.png'><br>
+<div class=cap style='color:#9cf'>Pulse 10: pond already full, trench filling (first 2 squares).</div><img src='S2_p10.png'><br>
+<div class=cap style='color:#9cf'>Pulse 30 (deadline): pond full, all 6 trench squares wet.</div><img src='S2_p30.png'><br>
+<div class=cap style='color:#9cf'>Pulse 60: still settled.</div><img src='S2_p60.png'><br>
+</section>
+<section><h2>S3. A pump fills a canal that touches no water</h2>
+<p class=st>Ruled: a tap in a canal fills it; a tap on the surface needs a hose.</p>
+<p><b>What you are looking at.</b> Left: an enclosed POND (12 squares, 48 levels, touches no map edge). A HOSE with an Intake end sits in the pond, runs to a PUMP, then a second hose with an Outflow end sits in a 6-square CANAL on the right. Ground between pond and canal must stay dry.</p><p><b>What to check</b></p><ul><li>Pump OFF for 20 pulses: NOTHING moves, canal stays dry.</li><li>Pump ON: canal fills one square per pulse; every litre the canal and hoses gain is a litre the pond lost.</li><li>The ground between pond and canal never gets wet.</li></ul>
+<p><b>Pass if:</b> Pump off = no water in canal. Pump on = all 6 canal squares wet in time; pond loss equals canal+hose gain.<br><b>Fails if:</b> Water reaches the canal with the pump off, or the pond loses less than the canal gains.</p>
+<p><b>What the game measured</b></p><ul><li>MATCHES the rule: Unpowered: the canal stays dry and the pond keeps all 48 levels.  Game: canal wet at pulses never; pond below its start (48.0) at pulses never</li><li>MATCHES the rule: All 6 canal cells hold 1 level.  Game: all 6 canal cells at 1 first at pulse 7 of step B</li><li>DIFFERS from the rule: Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse.  Game: pulses where canal+hoses gain != pond loss: [&#x27;p9 lost 6.98 gained 6.00&#x27;, &#x27;p10 lost 6.98 gained 6.00&#x27;, &#x27;p11 lost 6.98 gained 6.00&#x27;, &#x27;p12 lost 6.98 gained 6.00&#x27;]</li><li>MATCHES the rule: The undug cells between pond and canal stay dry (G1).  Game: undug ground between pond and canal ever wet: never</li><li>not measured: Variant: two equal dug 3x3 depth-4 reservoirs A (full, 36 levels) and B (empty), pump + one tank between them. Pump A to B, then B back to A. At the end A holds 36 levels, B 0, tank 0, hoses 0.  Game: not staged in this walk (round trip A-&gt;tank-&gt;B-&gt;A needs tank jobs and two pump legs)</li></ul>
+<p class=v>S3: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Start: pump switched OFF, everything dry.</div><img src='S3_p00.png'><br>
+<div class=cap style='color:#9cf'>Pump OFF, pulse 20: canal must still be dry.</div><img src='S3A_p20.png'><br>
+<div class=cap style='color:#9cf'>Pump ON, pulse 6: canal part-filled.</div><img src='S3B_p06.png'><br>
+<div class=cap style='color:#9cf'>Pump ON, pulse 16: canal full, pond lower than at start.</div><img src='S3B_p16.png'><br>
+<div class=cap style='color:#9cf'>Ruling check: a tap standing beside a dug canal. RULED: it fills the canal directly.</div><img src='S3q_p10.png'><br>
+</section>
+<section><h2>S4. A sluice gate shut, then open, then shut again</h2>
+<p class=st>Ruled: water trapped behind a re-shut gate stays where it is.</p>
+<p><b>What you are looking at.</b> Map from the left: the big dark-grey area is a LAKE (never runs out). Thin strips of dug ground to its right are CANALS: 1 square deep, dry brown until water arrives (blue-grey). Here: 3 canal squares, a GATE square (sealed sluice, or the metal-grate kind that always lets water through), then 4 more squares.</p><p><b>What to check</b></p><ul><li>Gate SHUT: the 3 squares before the gate fill; the 4 after it stay DRY.</li><li>Gate OPENED: the 4 downstream squares fill.</li><li>Gate shut again: water already downstream stays put.</li><li>Metal-grate gate (never opened): downstream fills anyway.</li></ul>
+<p><b>Pass if:</b> Sealed gate blocks water while shut; opens and passes it; grate always passes.<br><b>Fails if:</b> Water gets past a SHUT sealed gate, or a grate holds water back.</p>
+<p><b>What the game measured</b></p><ul><li>MATCHES the rule: The 3 upstream cells hold 1 level.  Game: 3 upstream cells at 1 first at pulse 3</li><li>MATCHES the rule: The 4 downstream cells stay dry while the gate is shut.  Game: downstream wet while shut at pulses: never</li><li>MATCHES the rule: Grate gate, never opened: all 4 downstream cells hold 1 level.  Game: grate: 4 downstream cells at 1 first at pulse 8</li><li>MATCHES the rule: After opening, all 4 downstream cells hold 1 level.  Game: 4 downstream cells at 1 first at pulse 4 after opening</li><li>MATCHES the rule: Shut again: the upstream cells stay full.  Game: an upstream cell below 1 at pulses: never</li></ul>
+<p class=v>S4: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Start: gate shut, canal dry.</div><img src='S4_p00.png'><br>
+<div class=cap style='color:#9cf'>Gate SHUT, pulse 6: upstream wet, downstream dry.</div><img src='S4A_p06.png'><br>
+<div class=cap style='color:#9cf'>Gate SHUT, pulse 12: the metal-grate twin should already be wet downstream; the sealed gate must not.</div><img src='S4A_p12.png'><br>
+<div class=cap style='color:#9cf'>Gate SHUT, pulse 20: downstream still dry behind the sealed gate.</div><img src='S4A_p20.png'><br>
+<div class=cap style='color:#9cf'>Gate OPENED, 8 pulses later: all 4 downstream squares wet.</div><img src='S4B_p08.png'><br>
+<div class=cap style='color:#9cf'>Gate still open, pulse 20: everything full.</div><img src='S4B_p20.png'><br>
+<div class=cap style='color:#9cf'>Gate SHUT AGAIN, pulse 20: downstream water stays (ruled).</div><img src='S4C_p20.png'><br>
+</section>
+<section><h2>S5 under redesign</h2>
+<p class=st>S5 UNDER REDESIGN: do not judge this picture or its numbers.</p>
+<p><b>What you are looking at.</b> Left: an enclosed pond with a 10-square canal off it, drawn for the old version of the scene.</p><p><b>What to check</b></p><ul><li>Nothing to judge here yet. The scene is being redrawn.</li></ul>
+<p><b>Pass if:</b> (not applicable until the redraw)<br><b>Fails if:</b> (not applicable until the redraw)</p>
+<p><b>What the game measured</b></p><ul><li>Not shown: this scene is being redesigned.</li></ul>
+<p class=v>S5: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Old S5 start picture.</div><img src='S5_p00.png'><br>
+</section>
+<section><h2>S6. Save and reload mid-flow, and the flow carries on</h2>
+<p class=st>Ruled: the reloaded run must match on totals and END state (not every pulse).</p>
+<p><b>What you are looking at.</b> The same pond + canal and gate scenes as S5 part A and S4, saved partway and reloaded. Compare the &#x27;run 1&#x27; (never saved) and &#x27;run 2&#x27; (saved and reloaded) pictures.</p><p><b>What to check</b></p><ul><li>Right after reload, every square, the pond stock and the gate open/shut state look exactly like before the save.</li><li>The flow must CONTINUE from where it was, not restart from the lake end.</li><li>At pulse 30 run 2 looks identical to run 1.</li></ul>
+<p><b>Pass if:</b> Same totals, same end state at pulse 30; gate keeps its state.<br><b>Fails if:</b> Fill restarts, water appears or vanishes, a shut gate comes back open.</p>
+<p><b>What the game measured</b></p><ul><li>MATCHES the rule: Straight after the reload, every cell&#x27;s depth and fill, the pond&#x27;s stock, and the gate&#x27;s open/shut state equal what they were at the save.  Game: after reload: cells, pond stock and gate EQUAL the save</li><li>MATCHES the rule: Total liquid in Run 2 is the same before the save and after the reload.  Game: total liquid before save 41.0, after reload 41.0</li><li>MATCHES the rule: Run 2 ends in the same settled state as Run 1, cell for cell.  Game: pulse 30: cells equal; pond run 1 26.0, run 2 26.0</li></ul>
+<p class=v>S6: &#9744; looks right &nbsp; &#9744; looks wrong &nbsp; note: <input size=70></p>
+</section><section style='background:#3a2e22;color:#eee;padding:8px'>
+<div class=cap style='color:#9cf'>Run 1 start (never saved).</div><img src='S6_p00.png'><br>
+<div class=cap style='color:#9cf'>Run 1 (never saved) at pulse 30: this is the target end state.</div><img src='S6_run1_p30.png'><br>
+<div class=cap style='color:#9cf'>Run 2 (saved, reloaded) at pulse 30: must look the same as run 1.</div><img src='S6_run2_p30.png'><br>
+</section>
