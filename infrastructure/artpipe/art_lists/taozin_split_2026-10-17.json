@@ -1,0 +1,120 @@
+[
+ {
+  "rimflow_item_id": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "background": "transparent",
+  "priority": 5,
+  "owner_note": "This needs to be redone into two creatures. The first is a huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a major predator placed in the Crags Biome we have. The second creature is the Taozin Grub, a much smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in Taozin nests. See canon as to why they are sought after. They too should be findable as treasure in the Crags. Please make two such creatures now and regenerate their art accordingly, removing the existing art as unacceptable. Regenerate the Canon image requirements based on this input.",
+  "id": "taozin_split_adult_v1",
+  "target_def": "RSW_Taozin",
+  "target_texpath": "Things/Pawn/Animal/RSW_Taozin/RSW_Taozin",
+  "canon": "taozin",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/taozin/wookieepedia_legends_1.webp"
+  ],
+  "prompt": "RimWorld animal sprite of the ADULT taozin, the Legends 'force dragon': a GIANT segmented armoured centipede-annelid, its long ringed body banded in alternating red-brown and cream plates, many short jointed legs and small grasping arms along its whole length, a blunt armoured head with mandibles and green eyes, the shell faintly translucent at the plate edges. Drawn in RimWorld's flat painterly house style with a dark outline, lit from above. The body coils in a loose S so the whole length fits the square canvas; it is drawn at drawSize 10, ten times a man's height. Transparent background, no ground or shadow.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "NEGATIVE: not the rejected donor sprite (canon_references/taozin/donor_current_sprite.png); not a grub; not a smooth worm; not a domed beetle. West mirrors east.",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_Taozin/RSW_Taozin_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "rimflow_item_id": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "background": "transparent",
+  "priority": 5,
+  "owner_note": "This needs to be redone into two creatures. The first is a huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a major predator placed in the Crags Biome we have. The second creature is the Taozin Grub, a much smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in Taozin nests. See canon as to why they are sought after. They too should be findable as treasure in the Crags. Please make two such creatures now and regenerate their art accordingly, removing the existing art as unacceptable. Regenerate the Canon image requirements based on this input.",
+  "id": "taozin_split_adult_dessicated_v1",
+  "target_def": "RSW_Taozin",
+  "target_texpath": "Things/Pawn/Animal/RSW_Taozin/Dessicated_RSW_Taozin",
+  "canon": "taozin",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/taozin/wookieepedia_legends_1.webp"
+  ],
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "prompt": "RimWorld dessicated-corpse sprite of the giant adult taozin: the same long coiled segmented centipede body as the live sprite, now a dried grey-brown husk of hollow ringed plates and bare leg stalks, no flesh colour. Flat painterly RimWorld style, transparent background.",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_Taozin/Dessicated_RSW_Taozin_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "rimflow_item_id": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "background": "transparent",
+  "priority": 5,
+  "owner_note": "This needs to be redone into two creatures. The first is a huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a major predator placed in the Crags Biome we have. The second creature is the Taozin Grub, a much smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in Taozin nests. See canon as to why they are sought after. They too should be findable as treasure in the Crags. Please make two such creatures now and regenerate their art accordingly, removing the existing art as unacceptable. Regenerate the Canon image requirements based on this input.",
+  "id": "taozin_split_grub_v1",
+  "target_def": "RSW_TaozinGrub",
+  "target_texpath": "Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub",
+  "canon": "taozin_grub",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/taozin_grub/owner_supplied_grub_hanging.png"
+  ],
+  "prompt": "RimWorld animal sprite of a TAOZIN GRUB, forearm-length: a heavy wrinkled ringed head-end curling downward like a C, one small round black eye with a raised lid ridge on a blunt bulbous head, a dense cluster of eight pairs of short dark-brown/black jointed legs under the front third directly behind the head, a cream banded collar about mid-body, then a very long smooth legless tapering tail longer than the head-and-leg section. COLOUR: terracotta / rust red-brown body, dark legs, cream collar, pale pink-white tail. Flat painterly RimWorld house style, dark outline. Transparent background, no ground or shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Owner colour ruling (verbatim): \"I would suggest the grub to be terra cotta in coloration until it is soaked in the brine for a long period, whereupon it turns white\" — this is the DEFAULT terracotta look. West mirrors east.",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "rimflow_item_id": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "background": "transparent",
+  "priority": 5,
+  "owner_note": "This needs to be redone into two creatures. The first is a huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a major predator placed in the Crags Biome we have. The second creature is the Taozin Grub, a much smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in Taozin nests. See canon as to why they are sought after. They too should be findable as treasure in the Crags. Please make two such creatures now and regenerate their art accordingly, removing the existing art as unacceptable. Regenerate the Canon image requirements based on this input.",
+  "id": "taozin_split_grub_brined_v1",
+  "target_def": "RSW_TaozinGrub",
+  "target_texpath": "Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub_Brined",
+  "canon": "taozin_grub",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/taozin_grub/wookieepedia_canon_1.webp"
+  ],
+  "prompt": "RimWorld animal sprite of a TAOZIN GRUB, forearm-length: a heavy wrinkled ringed head-end curling downward like a C, one small round black eye with a raised lid ridge on a blunt bulbous head, a dense cluster of eight pairs of short dark-brown/black jointed legs under the front third directly behind the head, a cream banded collar about mid-body, then a very long smooth legless tapering tail longer than the head-and-leg section. COLOUR: the LONG-BRINED look — the whole body pale WHITE (bone/ivory), legs pale grey, collar faintly cream, tail white; same shape and markings as the terracotta grub, only bleached. Flat painterly RimWorld house style, dark outline. Transparent background, no ground or shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Owner colour ruling (verbatim): \"I would suggest the grub to be terra cotta in coloration until it is soaked in the brine for a long period, whereupon it turns white\" — this is the WHITE long-brined look; wired by TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE. West mirrors east.",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub_Brined_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "rimflow_item_id": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "background": "transparent",
+  "priority": 5,
+  "owner_note": "This needs to be redone into two creatures. The first is a huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a major predator placed in the Crags Biome we have. The second creature is the Taozin Grub, a much smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in Taozin nests. See canon as to why they are sought after. They too should be findable as treasure in the Crags. Please make two such creatures now and regenerate their art accordingly, removing the existing art as unacceptable. Regenerate the Canon image requirements based on this input.",
+  "id": "taozin_split_grub_dessicated_v1",
+  "target_def": "RSW_TaozinGrub",
+  "target_texpath": "Things/Pawn/Animal/RSW_TaozinGrub/Dessicated_RSW_TaozinGrub",
+  "canon": "taozin_grub",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/taozin_grub/owner_supplied_grub_hanging.png"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "prompt": "RimWorld dessicated-corpse sprite of a taozin grub: the same curled head, clustered legs and long tapering tail, now a shrivelled dry grey-brown husk. Flat painterly RimWorld style, transparent background.",
+  "install_to": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_TaozinGrub/Dessicated_RSW_TaozinGrub_{facing}.png",
+  "biome_neutral": true
+ }
+]
