@@ -388,6 +388,10 @@ namespace RimMandrake.FlowWorks
 					}
 					moved++;
 				}
+				if (moved > 0)
+				{
+					receivedThisPass.Add(r);
+				}
 			}
 
 			if (levelBySurfaceEnabled)
@@ -401,6 +405,11 @@ namespace RimMandrake.FlowWorks
 					LevelWetRegions(pulseCount);
 				}
 			}
+			if (creepWaterEnabled)
+			{
+				externalCredit += TopUpWaterMouths(pulseCount, perCell);
+			}
+			receivedThisPass.Clear();
 
 			float after = 0f;
 			for (int i = 0; i < component.Count; i++)
@@ -432,6 +441,70 @@ namespace RimMandrake.FlowWorks
 		private readonly SortedSet<int>[] donorsBySurface = { new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>(), new SortedSet<int>() };
 		/// <summary>Takers keyed by <see cref="TakerKey"/> (deepest bed, then lowest index first), so Min is the pick.</summary>
 		private readonly SortedSet<long>[] takersBySurface = { new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>(), new SortedSet<long>() };
+
+		private readonly HashSet<int> receivedThisPass = new HashSet<int>();
+		private readonly List<int> topUpOrder = new List<int>();
+
+		/// <summary>CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: the recipient list is fixed before anything moves, so a brim
+		/// mouth is not a recipient in the pulse it passes its unit on (the neighbour pass or the level solve moves it), and
+		/// with water creep on the source refilled it only NEXT pulse: the mouth read dry every other pulse behind a wet front,
+		/// and the front and the source's payments ran at half the one-cell-a-pulse the creep rule promises. After the pass
+		/// and the solve, a dug square beside a supplying WATER source that took nothing this pulse and has room takes up to
+		/// <paramref name="perCell"/> from that source (cell-index order, so a scarce body still pays by map position). The
+		/// unit it takes is held by creep like any other. Returns the levels the sources paid (the ledger's credit).</summary>
+		private float TopUpWaterMouths(long pulseCount, int perCell)
+		{
+			float credit = 0f;
+			topUpOrder.Clear();
+			for (int i = 0; i < component.Count; i++)
+			{
+				int c = component[i];
+				if (IsExcavated(c) && fill[c] < depth[c] && !IsSealed(c) && !receivedThisPass.Contains(c) && componentSet.Contains(c))
+				{
+					topUpOrder.Add(c);
+				}
+			}
+			topUpOrder.Sort();
+			for (int i = 0; i < topUpOrder.Count; i++)
+			{
+				int r = topUpOrder[i];
+				int moved = 0;
+				while (moved < perCell && fill[r] < depth[r])
+				{
+					int donor = -1;
+					for (int d = 0; d < 4 && donor < 0; d++)
+					{
+						int n = Cardinal(r, d);
+						if (n < 0 || IsSealed(n) || !IsSource(n) || !world.CanSupply(n))
+						{
+							continue;
+						}
+						object fl = world.DonorFluid(n, true);
+						if (RM_StockMath.ViscosityStride(world.TicksPerTile(fl)) > 1
+							|| !RM_StockMath.FluidsCompatible(fill[r] > 0, world.CellFluid(r), fl)
+							|| (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fl)))
+							|| (fill[r] == 0 && !world.CanClaim(fl)))
+						{
+							continue;
+						}
+						donor = n;
+					}
+					if (donor < 0 || !world.TryDebitLevel(donor))
+					{
+						break;
+					}
+					credit += 1f;
+					if (fill[r] == 0)
+					{
+						world.Claim(r, world.DonorFluid(donor, true));
+					}
+					fill[r] += 1;
+					(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
+					moved++;
+				}
+			}
+			return credit;
+		}
 
 		/// <summary>True when the creep rule holds this cell's level back this pulse (it received a level of a fluid
 		/// whose creep switch is on).</summary>

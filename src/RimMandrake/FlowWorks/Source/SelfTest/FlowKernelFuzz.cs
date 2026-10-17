@@ -576,9 +576,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 		/// <summary>CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY / CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: plot C's live shape offline. A
 		/// LIMITED 60-cell water body (stock 300) beside the mouth of a dead-end 1x10 D=1 channel. With water creep OFF the
 		/// level the mouth takes is pulled on in the same pulse (the old race): after 3 pulses the far end is wet and the mouth
-		/// dry. With it ON (the shipped default) the wet front advances outward from the mouth, at most one cell a pulse: after
-		/// each of the first 3 pulses the mouth is the first wet cell, the farthest wet cell is within p cells of it, and the
-		/// body paid exactly the levels the channel holds; after 20 pulses the run is full.</summary>
+		/// dry. With it ON, at the SHIPPED flags (level by surface, level set, viscosity, both creeps), the wet front advances
+		/// outward from the mouth one cell a pulse: after EVERY pulse while the run fills, the wet cells are exactly the first p
+		/// from the mouth (so the mouth never reads dry behind the front), the body paid exactly the levels the channel holds,
+		/// and the run is full at pulse 10. CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME: before the mouth top-up this read
+		/// 1000000000 0100000000 1100000000 ... (mouth dry every even pulse, full only at pulse 19), and the old check looked at
+		/// pulse 1 only.</summary>
 		public static string CanalMouthDeadEndFillsFromFarEnd()
 		{
 			string race = CanalRun(false, 3, out string raceAt, out bool _r, out float _w1);
@@ -592,8 +595,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var digs = Enumerable.Range(10, 10).Select(x => 2 * 20 + x).ToList();
 			foreach (int c in digs) w.k.depth[c] = 1;
 			w.k.creepWaterEnabled = true;
+			w.k.creepEnabled = true;
+			w.k.viscosityEnabled = true;
+			w.k.levelBySurfaceEnabled = true;
+			w.k.levelSetEnabled = true;
 			var trace = new List<string>();
-			for (int p = 1; p <= 3; p++)
+			for (int p = 1; p <= 10; p++)
 			{
 				w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance);
 				string at = string.Join("", digs.Select(c => w.k.fill[c]));
@@ -601,12 +608,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 				int last = at.LastIndexOf('1');
 				if (last >= p) bounded = false;
 				if (Math.Abs((300f - body.stock) - at.Count(ch => ch == '1')) > 1f) conserved = false;
-				if (p == 1 && at != "1000000000") order = false;
+				if (at != new string('1', p) + new string('0', 10 - p)) order = false;
 			}
-			for (int p = 3; p < 20; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
-			string at20 = string.Join("", digs.Select(c => w.k.fill[c]));
+			string at20 = trace[trace.Count - 1];
 			bool full = at20 == "1111111111";
-			string line = $"race(off) after 3 = {raceAt}; creep(on) per pulse {string.Join(" ", trace)}, after 20 {at20}, stock {body.stock:F1}; worst imbalance {worst:F3}";
+			string line = $"race(off) after 3 = {raceAt}; shipped per pulse {string.Join(" ", trace)}, stock {body.stock:F1}; worst imbalance {worst:F3}";
 			return raceShape && order && bounded && conserved && full && worst <= 0.001f
 				? "OK: " + line
 				: $"BROKEN: raceShape={raceShape} mouthFirst={order} bounded={bounded} conserved={conserved} full={full} ({line})";
@@ -963,7 +969,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 	/// pulse, then each body's final stock.</summary>
 	internal static class OracleScenes
 	{
-		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false)
+		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false,
+			bool creep = false)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -996,6 +1003,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 				world.k.viscosityEnabled = true;
 				world.k.levelBySurfaceEnabled = levelBySurface;
 				world.k.levelSetEnabled = levelBySurface && levelSet;
+				world.k.creepWaterEnabled = creep;
+				world.k.creepEnabled = creep;
 				var sb = new System.Text.StringBuilder();
 				for (int p = 0; p < pulses; p++)
 				{

@@ -175,10 +175,11 @@ and a limitless body:
 The case's docstring states the property *"after each of the first 3 pulses the mouth is the first wet cell"*, but its code
 checks pulse 1 only, so it passes. The ruling it implements is "the wet front must visibly advance outward from the mouth like
 a flood front" (owner by card, 2026-10-12). Classification:
-- **REAL (provisional):** shipped behaviour breaks the case's own stated, ruling-derived property, and the test is too weak to
-  notice.
-- The mechanism is INFERRED: the water-creep gate, with no source top-up of the mouth that gave this pulse.
-- It is not observed live, and the fix is not made. Kernel code is out of this helper's scope.
+- **REAL, confirmed independently and fixed** (`CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME`). The recipient list is built
+  before anything moves, so a brim mouth that passes its unit on (neighbour pass or level solve) is not refilled by the
+  source until the next pulse. It was also seen live: the recorded E2 vectors of 2026-10-12e (`validation_v2.O11_LIVE_E2`)
+  read the mouth 0 on pulses 2 and 4, first full at 2n-1. Fix: `RM_FlowKernel.TopUpWaterMouths`, mirrored in
+  `PulseOracle._top_up_mouths`; the case now checks every pulse while the run fills (full at pulse 10, was 19).
 
 Shipped-flag string for the reproducer:
 `creepEnabled=1;creepWaterEnabled=1;edgeSinksEnabled=1;flowPerPulse=1;levelBySurfaceEnabled=1;levelSetEnabled=1;maxComponentCells=6000;seamRotationEnabled=1;viscosityEnabled=1`.
@@ -187,7 +188,7 @@ Shipped-flag string for the reproducer:
 
 | failure family | where | rate | class | evidence |
 |---|---|---|---|---|
-| mouth dry every other pulse | CanalMouth scene, SHIPPED | deterministic, 9/18 filling pulses | **real (provisional)** — filed | trace above; docstring vs check |
+| mouth dry every other pulse | CanalMouth scene, SHIPPED | deterministic, 9/18 filling pulses | **real** — fixed (mouth top-up) | trace above; docstring vs check |
 | sink drain mismatch | kernel_fuzz, OFF edgeSinks | 163/2000 | test-oracle coupling | oracle reads `s.sinks`, not the kernel flag |
 | wet step of 2+ | surface_random, OFF levelBySurface | 668/1000 | by design | the family asserts the switched-off rule |
 | control arm cannot fail | 11 cases, every forced config | 11/435 | by design (forcing artefact) | each failing clause is the control/old-rule arm |
