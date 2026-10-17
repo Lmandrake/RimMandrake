@@ -193,7 +193,7 @@
 
   <ThingDef ParentName="RSW_Yobshrimp">
     <defName>RSW_YobshrimpJuv</defName>
-    <label>young pale yobshrimp</label>
+    <label>young yobshrimp</label>
     <description>A pale yobshrimp too small yet to swarm a carcass with the rest of its kind, picking over what the shallows offer instead.</description>
     <race>
       <lifeStageAges Inherit="False">
@@ -211,7 +211,7 @@
 
   <PawnKindDef ParentName="RSW_Yobshrimp_Kind">
     <defName>RSW_YobshrimpJuv</defName>
-    <label>young pale yobshrimp</label>
+    <label>young yobshrimp</label>
     <race>RSW_YobshrimpJuv</race>
     <lifeStages Inherit="False">
       <li>
