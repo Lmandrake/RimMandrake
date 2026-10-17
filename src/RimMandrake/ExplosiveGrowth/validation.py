@@ -940,7 +940,10 @@ def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_
     """Fire the donor plant's top directly (no charge needed). `observe(t, x, z)` returns a dict;
     `expect_on`/`expect_off` map a key to a predicate (True = must hold)."""
     x, z = t.anchor
-    for name, arm, expect, tog in ((comp_on, {}, expect_on, None), (comp_off, {setting: False}, expect_off, setting)):
+    # The OFF arm falls back to the default dry cycle, which bursts 1 in 3 (C3): defaultRuptureChance 0 pins it to the
+    # non-violent fallback so "no hay / no cloud" is deterministic (the share itself is probe_rules' row).
+    for name, arm, expect, tog in ((comp_on, {}, expect_on, None),
+                                   (comp_off, {setting: False, "defaultRuptureChance": 0.0}, expect_off, setting)):
         with _comp(t, name, toggle=tog):
             _prep(t, 40)
             _donor(t, donor)

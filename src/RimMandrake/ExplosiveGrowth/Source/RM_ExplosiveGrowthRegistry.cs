@@ -290,8 +290,12 @@ namespace RimMandrake.ExplosiveGrowth
                 // A Burst-top row is "1 in 1" unless it says otherwise (C3: "Some plants are 1 in 1").
                 if (p.ruptureChance < 0f && p.top == RM_GrowthTop.Burst) p.ruptureChance = 1f;
 
+                // A row that DECIDES the plant's kind (an archetype, or fireAdapted) outranks the under-a-day clause: the
+                // owner's Pyrelands-grass ruling (C3, "grow violently quickly and spread itself super-fast") names
+                // RM_FE_Plant_EmberGrass (growDays 0.8), which the clause alone would leave at vanilla speed.
+                bool decided = choice != RM_ArchetypeChoice.Auto || fireFlag;
                 bool isExempt = exempt.Contains(def.defName)
-                    || def.plant.growDays < ExplosiveGrowthSettings.minGrowDaysToSoak
+                    || (!decided && def.plant.growDays < ExplosiveGrowthSettings.minGrowDaysToSoak)
                     || (ExplosiveGrowthSettings.cavePlantsNeverSoak && def.plant.cavePlant && !enrolled);
 
                 RM_Archetype a;

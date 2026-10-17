@@ -28,20 +28,22 @@
          rewrite of MayRequire guards that still name mandrake.rm.explosivegrowth). -->
     <li>sarg.alphabiomes</li>
   </loadAfter>
-  <description>EXPLOSIVE_PLANT_GROWTH_1. Plants grow fast every day, and water-soaked plants grow where you can watch them — and every soaked plant is a countdown.
+  <description>EXPLOSIVE_GROWTH_RULED_REWRITE (design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md). Water decides how plants grow, and a watered native is a countdown.
 
 Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own toggle on the Baroque Biomes settings page, and its own settings page). RM tier: nothing here knows what campaign or planet uses it.
 
-EVERYDAY GROWTH (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth, mandrake.rut.plantgrowth, fused in 2026-10-16). Plants grow faster every day, no water needed: wild plants and crops x4, trees x2.5; the wet jungles (Greentide, Miasma, Fever Wood) x10, trees x6.25, instead; stalled biomes a roster names x0.4 instead. Exactly one band applies; the soak multiplies on top. It scales the composite growth rate, so light, temperature and fertility still apply. Anima, gauranlen, ambrosia, a roster's bandExemptPlants and plants under a grow-day are left alone. Every number is a Mod Settings slider.
+ONE RATE PER PLANT, by its kind and its cell, multiplying its normal growth and only while it has light: dry-land natives x10 on wet ground and x0.1 on dry ground; jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion) x4, wet or dry; anything yielding wood at 0.625 of its kind's rate; vanilla crops and plants x0.1 unless water lies within 2 cells (an option makes them normal); basins, pots and hydroponics at vanilla speed. A plant growing slower than normal also ages slower.
 
-WHERE. Both tiers run only on maps whose biome Baroque Biomes ships, for every plant growing there. An option (off by default, UNSUPPORTED and untested) extends them to every biome; a campaign layer's roster can do the same for its whole world (scopeAllBiomes).
+WET GROUND is ground with water on it, and only while it is there: rivers, fresh water, marsh and mud (their own cells), a flood (RimMandrake: Flooded Canyon), spilled or poured water, a dug FlowWorks channel and the ground beside it, rain on open ground (and a few hours after, shown by puddles), snow in the biomes that say so, a salt-line surge's fresh side; fresh ash for fire-adapted plants. Clean water waters every plant; other liquids only plants adapted to them. Every fruiting plant uses the water on its cell.
 
-THE SOAK. Ground becomes SOAKED when qualifying fresh water arrives in quantity, and dries back over hours to a day. Routes: a flood pushed in by another mod (RimMandrake: Flooded Canyon), irrigation (a dug FlowWorks channel holding fresh water soaks the ground beside it — rivers and lakes never do), a salt-line surge's fresh side (Environmental Hazards' gradient axis), and any weather a roster names as soaking. Soaked plants grow x10 ON TOP of the everyday band. Salt, fungus, and plants whose slowness is a mechanic (anima, gauranlen, ambrosia) never soak.
+WHERE. Only on maps whose biome Baroque Biomes ships; outside them our plants grow at vanilla speed (an UNSUPPORTED option applies the same rule elsewhere). A campaign layer's roster can put its whole world in scope (scopeAllBiomes).
 
-THE CHARGE. A soaked plant that reaches full size keeps going: it swells past natural size, and it tells you, in a fixed order — the ground darkens and sprouts, it swells, its hue shifts wrong, it trembles, it creaks, and then it goes silent. Then the top.
+THE CHARGE. A soaked plant that reaches full size keeps going: it swells past natural size, and it tells you, in a fixed order — the ground darkens, it swells, its hue shifts wrong, it trembles, it creaks, and then it goes silent. Then the top.
 
 THE TOP belongs to the PLANT, never the ground it stands on:
-  - Churn (the default): it splits, dies, drops its produce and sows a ring of sprouts that keep going. It respects your floors and walls.
+  - The dry cycle (the default for dry-land natives): it fruits, throws many sprouts and dies; its seedlings carry the cycle on. One time in three it bursts instead. It respects your floors and walls.
+  - The wet cycle (jungle natives): it fruits heavily, then withers, leaving a few sprouts.
+  - A native sown as a crop drops its full harvest by itself, and its water is used up.
   - Burst (dry-adapted plants only): a pop, chaff, bruises and knockdown nearby (never lethal on its own), premium produce scattered — and a sown ring that ignores your zones, floors and doorways.
   - Tinder: a burst whose debris is fuel.
   - Slime: the ring turns the ground to slime.
