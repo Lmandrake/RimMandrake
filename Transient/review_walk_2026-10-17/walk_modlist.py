@@ -21,7 +21,8 @@ ROOTS = ["brrainz.harmony", "ludeon.rimworld", "ludeon.rimworld.royalty", "ludeo
          "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey",
          "brrainz.rimbridgeserver", "ray1203.simplecamerasetting",          # the bridge + camera helpers the live list carries
          "mandrake.rm.gimmesomeslack", "mandrake.rm.flowworks", "mandrake.rm.biomes",
-         "mandrake.rut.patches", "mandrake.rsw.swbestiary", "mandrake.rsw.patches"]
+         "mandrake.rut.patches", "mandrake.rsw.swbestiary",   # mandrake.rsw.patches DROPPED 2026-10-17: off its full list its RSW_Jawa_Spawn_* kinds lose parent RimMandrake_ColonyPawnKind (StarWarsRaces) and 332 ResolveIcon NREs follow; no walk creature lives there
+         "mandrake.rsw.cuisine"]          # taozin grub food + brine tank (MayRequire cuisine), added 2026-10-17 live walk
 LIVE_ONLY_OK = {"ray1203.simplecamerasetting"}   # on the live list, absent from FULL
 
 
