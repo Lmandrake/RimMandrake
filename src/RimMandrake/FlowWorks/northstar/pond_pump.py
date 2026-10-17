@@ -40,8 +40,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-UNITS_PER_LEVEL = 10000      # RM_PumpMath.TankUnitsPerLevel = LitresPerLevel x UnitsPerLitre (was 5)
-STOCK_PER_LEVEL = 1.0        # FluidDef.volumePerTile of fresh water (FlowWorks_Fluids.xml)
+from level_water import _volume_const  # noqa: E402  (constants read from RM_Volume.cs, never restated)
+
+UNITS_PER_LEVEL = _volume_const("UnitsPerLevel", None)   # RM_PumpMath.TankUnitsPerLevel = LitresPerNotch x UnitsPerLitre
+STOCK_PER_LEVEL = 1.0        # a pond stock unit is one notch (FluidDef.volumePerTile is pinned to 1: ConfigErrors)
 EPS = 1e-3
 
 

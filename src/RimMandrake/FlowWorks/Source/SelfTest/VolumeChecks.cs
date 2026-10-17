@@ -39,6 +39,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_Volume.TankCapacity(1, false, 0.01f) == RM_Volume.UnitsPerLevel, "never below one level at the lowest slider");
             });
 
+            Case("Volume_one_ruler_scheme_A", () =>
+            {
+                // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §3): a square is 2 m², a notch 0.5 m, so 1,000 L a notch,
+                // DERIVED from the two (never a third literal); the yardstick is 2 m = 4 notches = 4,000 L
+                Assert(RM_Volume.SquareAreaM2 == 2 && RM_Volume.CentimetresPerNotch == 50, "a square is 2 m², a notch 50 cm");
+                Assert(RM_Volume.LitresPerNotch == RM_Volume.SquareAreaM2 * RM_Volume.CentimetresPerNotch * 10 && RM_Volume.LitresPerNotch == 1000,
+                    "litres per notch derived: 2 m² x 0.5 m = 1 m³ = 1,000 L");
+                Assert(RM_Volume.LitresPerLevel == RM_Volume.LitresPerNotch && RM_Volume.MetresPerLevel == RM_Volume.MetresPerNotch,
+                    "the code's 'level' is the notch");
+                Assert(RM_Volume.LevelsPerSquare * RM_Volume.MetresPerNotch == 2f && RM_Volume.LevelsPerSquare * RM_Volume.LitresPerNotch == 4000,
+                    "the yardstick: 2 m, 4,000 L");
+                Assert(RM_Volume.AbyssBedLevels == 8 && RM_Volume.LakebedFor(3) == "RM_Lakebed_Shallow" && RM_Volume.LakebedFor(4) == "RM_Lakebed_Deep"
+                    && RM_Volume.LakebedFor(7) == "RM_Lakebed_Deep" && RM_Volume.LakebedFor(8) == "RM_Lakebed_Abyss", "lakebeds: 2 m deep, 4 m abyss");
+                string vol = RiverSwitchFlipChecks.Src("RM_Volume.cs");
+                Assert(Regex.IsMatch(vol, @"public const int LitresPerNotch = SquareAreaM2 \* CentimetresPerNotch \* LitresPerM2Cm;"),
+                    "LitresPerNotch is the product, not a literal");
+            });
+
             Case("Volume_bed_depth_follows_the_water", () =>
             {
                 // vanilla Core Terrain_Water.xml: WaterDeepBase Impassable/300, WaterChestDeepBase 42, WaterShallowBase 30

@@ -45,7 +45,8 @@ CYCLE = 250                 # RM_LiquidTheft.TheftTick cadence
 # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: the filltank probe verb takes raw tank units (decilitres). The old "100" (drums) was
 # above a 2x2 tank's 80; 120,000 = 12 kL = 75% of today's 160,000 capacity, the same "well filled" intent.
 FILL_UNITS = 120000
-LEVEL = 10000               # RM_Volume.UnitsPerLevel: one level = 1,000 L = 10,000 tank units
+from level_water import _volume_const  # noqa: E402  (constants read from RM_Volume.cs, never restated)
+LEVEL = _volume_const("UnitsPerLevel", None)   # RM_Volume.UnitsPerLevel: one notch = 1,000 L = 10,000 dL
 CHECK_PHASE = 7             # TicksGame % 250 == 7
 WITNESS_PHASE = 4           # spawn here: 3 ticks before the check
 REFILL_EVERY = 2000
@@ -58,7 +59,7 @@ S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 L7_STATIONS = ("flow_drains", "flow_spreads")   # review-map stations 1 and 2 (review_map.station_list)
 SPILL = "RimMandrake.FlowWorks.Machinery.RM_LiquidSpill"
 SPILL_FILTH = "RM_Filth_LiquidSpill"   # FreshWater has no LiquidDef.spillFilth of its own
-UNITS_PER_LITRE = 10                   # RM_Volume.UnitsPerLitre (tank units are decilitres)
+UNITS_PER_LITRE = _volume_const("UnitsPerLitre", None)   # RM_Volume.UnitsPerLitre (tank units are decilitres)
 FW_PKG = "mandrake.rm.flowworks"
 
 
