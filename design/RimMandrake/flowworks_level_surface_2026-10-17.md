@@ -1,6 +1,9 @@
 # A level water surface: ruling audit and design (PROPOSAL, 2026-10-17)
 
-Item: `WATER_SURFACE_REPAIR_LEVEL_OR_BUST`. **PROPOSAL, not ruled.** Nothing in code, defs, the bridge or the game was
+Item: `WATER_SURFACE_REPAIR_LEVEL_OR_BUST` (superseded by `WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES`). **RULED 2026-10-17
+(by card):** Q1 (a) exactly level; Q2 (b) a new very-shallow look under 25 cm; Q4 (a) redraw S5; Q5 (a) one rebuild;
+Q6 (a) the level north-star bar (owner said). Q3 was answered by ordering the elevation review. Digging is no longer
+capped at 2 m (8 m by default). Build plan: `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`. Before the rulings this was a proposal. Nothing in code, defs, the bridge or the game was
 touched to write this, and no existing doc was changed. It sits beside the ruled depth spec
 `design/RimMandrake/flowworks_unified_depth_2026-10-17.md` and proposes re-opening one part of it (the step that water
 *amounts* move in). Code claims are file:line from a read-only census of `src/RimMandrake/FlowWorks` at `f1168b0c2`.
@@ -41,8 +44,8 @@ pictures (four bands), which can show depth but not a continuously moving shorel
   floors under it.
 - Every square's water depth = surface − its floor, computed when read. Every square of one body therefore sits at
   exactly the same surface. Level to well under a millimetre, by construction.
-- Digging stays 0, 0.5, 1, 1.5, 2 m. Floors and lakebeds stay as they are. Saves keep their grids.
-- Pictures stay four water bands chosen by water depth in metres. Over a flat floor, every square shows the **same**
+- Digging stays in 0.5 m steps (to 8 m by default since the same day's ruling). Floors and lakebeds stay as they are. Saves keep their grids.
+- Pictures are water bands chosen by water depth in metres: a new very-shallow look under 25 cm (ruled), then the four. Over a flat floor, every square shows the **same**
   picture, so the water **looks** level too. A smooth shaded surface is a later, cosmetic step he sees first.
 - The readout shows the real figure: "Hole 2 m · Water 1.44 m (2,889 L)" (feeds `DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE`).
 
@@ -114,7 +117,7 @@ more picture state).
 
 ## 3. Options
 
-All three keep: digging in 0.5 m steps to 2 m; natural floors in 0.5 m steps (to the ruled 20/50/125 m); litres as the
+All three keep: digging in 0.5 m steps (then to 2 m; now to 8 m by default); natural floors in 0.5 m steps (to the ruled 20/50/125 m); litres as the
 truth; the mouth pace ("flowing through the mouth", row 4); conservation and the single overflow; pumps pouring 1,000 L.
 
 ### Option 1 — One surface per body, exact litres (RECOMMENDED)

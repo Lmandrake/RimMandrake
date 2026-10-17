@@ -2,7 +2,7 @@
 
 **Status:** DRAFT, complete, awaiting his rulings on §9. **Item:**
 `PIT_SUPERDEEP_COLLAPSE_1`. Written 2026-09-17 on the Mac laptop, offline.
-**Depth names (2026-10-17):** D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m, D4 = pit 2 m; fill pictures go by metres of water (0.5 / 1 / 1.5 / 2+ m), not by fraction. The pit stays 2 m; the "walls 20% over the head" ruling is a visual rule only (art and pawn sink offset). Authority: `design/RimMandrake/flowworks_unified_depth_2026-10-17.md`.
+**Depth names (2026-10-17):** D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m, D4 = pit 2 m; fill pictures go by metres of water (0.5 / 1 / 1.5 / 2+ m), not by fraction. The "walls 20% over the head" ruling is a visual rule only (art and pawn sink offset). Colonists dig to 8 m by default (setting 2-20 m), and the 2 m-keyed rules (drowning, falls, spikes, shooting) become relative to the height difference (owner, by card, 2026-10-17). Authority: `design/RimMandrake/flowworks_unified_depth_2026-10-17.md` and `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md`.
 
 **One sentence:** A pit is not a building; it is a SUPERDEEP excavated cell on the
 D/F (depth + fill) primitive that FlowWorks already implements — this spec carries

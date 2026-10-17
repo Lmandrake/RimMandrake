@@ -39,9 +39,10 @@ resolution. Decilitres keep all of it integer and exact (bottle 15, bucket 150, 
 litres: `RM_Volume.FormatLitres` / `FormatUnits` give "1.5 L", "208 L", "4 kL", "12.5 kL". The int range is ample: a
 64 kL extra-tall tank is 640,000 units.
 
-**The kernel stays in whole notches.** Canal and pit cells hold whole notches (`fillGrid`). Ponds keep their float stock
-in fill-units of notches (`volumePerTile` per notch). Neither changed. The conversion is at the boundary: a notch is
-`RM_Volume.UnitsPerLevel` tank units, so a pump moves 1,000 L per notch.
+**Water is exactly level (owner, 2026-10-17).** Each connected body of water (pond, canal, or both joined) holds its
+volume as an exact whole number of decilitres and has one surface height, worked out from that volume and the floors
+under it. A square's water depth is max(0, surface - floor), computed on read. The 0.5 m notch is only the dig step and
+the picture-band step. A pump moves litres, not notches. Design: `design/RimMandrake/flowworks_level_surface_2026-10-17.md`.
 
 ## Containers (owner's sizes)
 
@@ -69,7 +70,7 @@ in fill-units of notches (`volumePerTile` per notch). Neither changed. The conve
 | tanks (`Building_LiquidTank`) | capacity via `RM_Volume.TankCapacity` (2×2 = 16 kL, tall/cargo 32 kL, extra-tall 64 kL); inspect "Holding: Water (8 kL / 16 kL)"; save migration |
 | cargo tank, tank styles | same constant (footprint × UnitsPerSquare × height) |
 | ponds (capacity, stock, refill, recession) | unchanged: fill-units of notches. Inspect `StockReport` and the Level Holder now say litres. |
-| canal fill (notches), pits | unchanged whole notches; mouseover shows depth and litres |
+| canal and pit water | one surface per connected body; mouseover shows depth (surface minus floor) and litres |
 | pumps (per pulse) | `TankUnitsPerLevel` = 10,000 → 1 kL per notch; `PourLevels` against the dump rate in units |
 | hoses | `hoseLitresPerCell` **5 L** (setting; a ~65 mm hose 1.46 m long holds 4.8 L). The old 0.2 units was 40 L a cell. A hose is a container, so it gets a real size. `heldUnits` migrated. |
 | tank-to-tank settle, Dump drain | `tankLitresPerCycle` 2,000 L, `dumpLitresPerCycle` 1,000 L (= the old 10 and 5 units) |
