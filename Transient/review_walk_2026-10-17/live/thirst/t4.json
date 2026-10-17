@@ -1,0 +1,111 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T12:30:09",
+ "rows": [
+  {
+   "id": "T11_autofill_skips_salt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fresh": [
+     0,
+     3
+    ],
+    "salt": [
+     0,
+     0
+    ],
+    "jobsSeen": [
+     "RM_FillBottleJob",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "RM_FillBottleJob",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander"
+    ]
+   }
+  },
+  {
+   "id": "T12_no_routine_salt",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "jobsSalt": [
+     "Ingest"
+    ],
+    "jobsAfterBottle": [
+     "Ingest"
+    ],
+    "bottleGone": false,
+    "saltBottles": 0,
+    "level0": 0.2,
+    "bad": [
+     "a drink job ran with only salt in reach: ['Ingest']"
+    ]
+   }
+  },
+  {
+   "id": "T13_desperate_toxic_last",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "jobsAt005": [
+     "Ingest",
+     "GotoWander"
+    ],
+    "jobsAt0": [
+     "GotoWander",
+     "Ingest"
+    ],
+    "hediffs": {
+     "RM_Dehydration": 0.00750000076
+    },
+    "bad": [
+     "at need 0 no RM_DrinkFromTerrain on the toxic strip (jobs ['GotoWander', 'Ingest'])"
+    ],
+    "notRun": "the 'fresh bottle on the map wins' arm"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/thirst/t4.json",
+  "only": "T11,T12,T13",
+  "site": "150,130",
+  "log": ""
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 4,
+  "bottlesOnMap": [],
+  "draftedOwn": 15
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "ended": "2026-10-17T12:30:35"
+}

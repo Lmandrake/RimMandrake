@@ -1,0 +1,79 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T12:29:56",
+ "rows": [
+  {
+   "id": "T10_terrain_drink",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobAtTick": 60,
+    "jobsSeen": [
+     "RM_DrinkFromTerrain"
+    ],
+    "levels": [
+     0.2,
+     0.694
+    ],
+    "trace": [
+     [
+      "RM_DrinkFromTerrain",
+      0.198
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.196
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.193999991
+     ],
+     [
+      "GotoWander",
+      0.694
+     ]
+    ],
+    "offJobsSeen": [
+     "GotoWander"
+    ],
+    "bad": []
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/thirst/t3.json",
+  "only": "T10",
+  "site": "150,130",
+  "log": ""
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 4,
+  "bottlesOnMap": [],
+  "draftedOwn": 13
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "ended": "2026-10-17T12:30:06"
+}
