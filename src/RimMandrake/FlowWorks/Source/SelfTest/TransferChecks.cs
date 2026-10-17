@@ -360,6 +360,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             { "LiquidTypes/Building_LiquidTank.cs", "the definitions themselves" },
             { "LiquidTypes/JobDriver_EmptyBottleIntoTank.cs", "a pawn pours a carried container: the item is consumed only on a successful add" },
             { "LiquidTypes/JobDriver_FillBottleFromTank.cs", "a pawn fills a container: the item is made only on a successful remove" },
+            { "Thirst/RM_ThirstJobs.cs", "a pawn drinks 1.5 L from a tank: the drink happens only on a successful remove (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY)" },
             { "Machinery/RM_LiquidWorksRuins.cs", "ruin stock placed at map generation (no source leg exists)" },
             { "Hose/HoseNetProbe.cs", "the dev probe's filltank verb (test setup)" },
             { "RM_NorthstarProofs.cs", "ProofTank: the extension harness's tank staging (test setup, like the probe's filltank)" },

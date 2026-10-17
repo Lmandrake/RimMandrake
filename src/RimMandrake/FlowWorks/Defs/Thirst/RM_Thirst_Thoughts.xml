@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY design §2: need-level moods (the shape of vanilla Hungry), and the one positive
+     thought: distilled water. No positive thought for plain water. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RM_Thought_Thirsty</defName>
+    <workerClass>RimMandrake.FlowWorks.Thirst.ThoughtWorker_RM_Thirsty</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>thirsty</label>
+        <description>My mouth is dry. I need a drink.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Thought_Parched</defName>
+    <workerClass>RimMandrake.FlowWorks.Thirst.ThoughtWorker_RM_Parched</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>parched</label>
+        <description>I can't think about anything but water.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Thought_Dehydrated</defName>
+    <workerClass>RimMandrake.FlowWorks.Thirst.ThoughtWorker_RM_Dehydrated</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>dehydrated</label>
+        <description>There's no water in me. My head pounds and the world swims.</description>
+        <baseMoodEffect>-18</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Thought_DrankDistilled</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>0.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>drank distilled water</label>
+        <description>Clean, clear water. Nothing in it but water.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

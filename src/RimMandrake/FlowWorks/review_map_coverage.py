@@ -247,7 +247,18 @@ FEATURES = [
     ("def", r"^GenStepDef/RM_LiquidShores$", "Typed liquid shores", M + "map generation only (the shores of a new map)"),
     ("set", r"^typedLiquidShoresEnabled$", "Typed shores", M + "map generation only"),
     ("set", r"^(liquidHeatPushEnabled|liquidHeatStrength)$", "Hot liquid warms the air", "land_shores"),
-    ("def", r"^(TerrainDef/RM_(Water|Slime)_|(ThingDef/)?RM_WaterBottle_)", "Coloured waters and slimes", "many_waters"),
+    ("def", r"^(TerrainDef/RM_(Water|Slime)_|(ThingDef/)?RM_(Bottle|Bucket|Barrel)_(Rust|Verdigris|Amber|Violet|Chalk)Water$)",
+     "Coloured waters and slimes", "many_waters"),
+    # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): its settings section had no coverage row
+    ("set", r"^(riverColorsEnabled|headwaterColor|jungleColor|terminusColor)$", "River colours",
+     M + "the planet-map river gradient, read on the world map"),
+    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: behaviour with no look of its own (a need bar, a hediff, jobs)
+    ("def", r"^(NeedDef/RM_Thirst|HediffDef/RM_Dehydration|ThoughtDef/RM_Thought_(Thirsty|Parched|Dehydrated|DrankDistilled)"
+            r"|JobDef/RM_(DrinkFromTerrain|DrinkFromTank|AdministerWater)|WorkGiverDef/RM_AdministerWater(Prisoner)?"
+            r"|ThinkTreeDef/RM_Thirst\w+)$",
+     "Thirst (need, dehydration, drinking jobs)", M + "behaviour with no look of its own; proven by validation.py's thirst chain"),
+    ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
+            r"|dbhBottleBridge)$", "Thirst", M + "as thirst"),
     ("def", r"^FleckDef/RM_Fleck_Steam_", "Coloured river steam", M + "rises only off a RIVER of a coloured water; no "
      "generated map here has one"),
     ("set", r"^(riverSteamEnabled|puffRateMultiplier)$", "River steam", M + "as coloured river steam"),

@@ -11,17 +11,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// IngestibleProperties.outcomeDoers, the one vanilla extension point
     /// every ingestion path already calls through Thing.Ingested. That is
     /// what "drinkable-agnostic" means in practice: this class never checks
-    /// for DBH, and DBH's own drinkable registration (LIQUID_THIRST_CHAIN_1)
-    /// stays free to layer its own hydration/thirst effects on the SAME
-    /// ingestion without this doer knowing it exists.
+    /// for DBH. The drink itself is IngestionOutcomeDoer_RM_Hydrate (FlowWorks'
+    /// own thirst), and DBH's drinkable registration (the generated
+    /// Patches/LiquidTypes/RM_DBH_BottleWaterExt.xml) layers DBH's thirst on the
+    /// SAME ingestion: design/RimMandrake/thirst_bottles_design_2026-10-16.md.
     ///
     /// Same shape as the local precedent, GelatinousSlime's
     /// IngestionOutcomeDoer_SlimeDose (Source/SlimeIngestion.cs) -- a try/
     /// catch around the whole body, because an outcome doer throwing must
     /// never turn "drank a bottle" into a stuck job.
     ///
-    /// Only wired onto bottled rows with a thirstQuality set (fresh/salt/
-    /// toxic/brine water, generate_liquid_suite.py's own gate) -- boiling,
+    /// Only wired onto BOTTLES of rows with a thirstQuality set (fresh/salt/
+    /// toxic/brine/coloured water, generate_liquid_suite.py's own gate; buckets
+    /// and barrels are decanted, never drunk) -- boiling,
     /// icy, acid, tar and propane bottles carry no ingestible block at all,
     /// so this class is never called for them. "Use" for those (revert-on-
     /// bottle, industrial consumption) is separate, unbuilt work, not a case

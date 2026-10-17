@@ -245,6 +245,13 @@
     <Compile Include="LiquidTypes\WorkGiver_WashBottle.cs" />
     <Compile Include="LiquidTypes\JobDriver_WashBottle.cs" />
     <Compile Include="LiquidTypes\IngestionOutcomeDoer_BottleResidue.cs" />
+    <Compile Include="Thirst\RM_ThirstMath.cs" />
+    <Compile Include="Thirst\RM_ThirstSettings.cs" />
+    <Compile Include="Thirst\RM_ThirstProvider.cs" />
+    <Compile Include="Thirst\Need_RM_Thirst.cs" />
+    <Compile Include="Thirst\RM_ThirstUtility.cs" />
+    <Compile Include="Thirst\RM_ThirstJobs.cs" />
+    <Compile Include="Thirst\RM_ThirstCaravan.cs" />
     <!-- LIQUID_BOTTLE_LOOP_1: the tank half, fill/empty at Building_LiquidTank. -->
     <Compile Include="LiquidTypes\Building_LiquidTank.cs" />
     <Compile Include="LiquidTypes\RM_LiquidTankUtility.cs" />

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY design §3, §5: the three thirst jobs (a bottle is drunk through vanilla Ingest)
+     and the two administer-water work givers (Doctor: patients; Warden: prisoners). -->
+<Defs>
+  <JobDef>
+    <defName>RM_DrinkFromTerrain</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_DrinkFromTerrain</driverClass>
+    <reportString>drinking water.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+  <JobDef>
+    <defName>RM_DrinkFromTank</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_DrinkFromTank</driverClass>
+    <reportString>drinking from TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+  <JobDef>
+    <defName>RM_AdministerWater</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_AdministerWater</driverClass>
+    <reportString>giving TargetB a drink.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_AdministerWater</defName>
+    <label>give patients water</label>
+    <giverClass>RimMandrake.FlowWorks.Thirst.WorkGiver_RM_AdministerWater</giverClass>
+    <workType>Doctor</workType>
+    <verb>give water to</verb>
+    <gerund>giving water to</gerund>
+    <priorityInType>79</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_AdministerWaterPrisoner</defName>
+    <label>give prisoners water</label>
+    <giverClass>RimMandrake.FlowWorks.Thirst.WorkGiver_RM_AdministerWaterPrisoner</giverClass>
+    <workType>Warden</workType>
+    <verb>give water to</verb>
+    <gerund>giving water to</gerund>
+    <priorityInType>79</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+</Defs>

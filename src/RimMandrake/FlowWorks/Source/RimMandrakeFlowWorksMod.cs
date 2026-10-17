@@ -579,6 +579,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
             Hose.RM_HoseSettings.ExposeData();
+            Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -1584,6 +1585,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
             Hose.RM_HoseSettings.DoSettingsSection(list);
+            Thirst.RM_ThirstSettings.DoSettingsSection(list);
 
             lastListHeight = list.CurHeight;
             list.End();
@@ -1685,6 +1687,8 @@ namespace RimMandrake.FlowWorks
             base.WriteSettings();
             // C6-F3: the river avoidance cost lives on the TerrainDefs; a mid-game switch re-applies it, no restart
             Rivers.RM_RiverPathCost.Reapply();
+            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst on/off or animals on/off adds or removes RM_Thirst on live pawns
+            Thirst.RM_ThirstProvider.Reapply();
         }
     }
 }
