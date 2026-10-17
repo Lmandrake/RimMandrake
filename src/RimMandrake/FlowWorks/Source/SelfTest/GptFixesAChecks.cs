@@ -106,9 +106,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(util, @"return ex\.Stock\.TryDebit\(map, c, stock, ex\);", "terrain debit spends the body");
                 RiverSwitchFlipChecks.Has(util, @"if \(ex\?\.Stock != null && !ex\.Stock\.CanSupply\(map, c, ex\)\)", "the search skips a spent body");
                 string fill = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_FillBottle.cs"));
-                RiverSwitchFlipChecks.Has(fill, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, RM_ContainerMaterials\.UnitsIn\(carried, liquid, size\)\)\) \{ return; \} Thing filled", "fill debits before it makes the bottle");
+                // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: fill and wash run per container of a carried batch, so a failed debit breaks out
+                // of the loop instead of returning; the invariant (debit before the container is made) is unchanged
+                RiverSwitchFlipChecks.Has(fill, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, RM_ContainerMaterials\.UnitsIn\(carried, liquid, size\)\)\) \{ break; \} Thing filled", "fill debits before it makes the bottle");
                 string wash = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_WashBottle.cs"));
-                RiverSwitchFlipChecks.Has(wash, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, liquid\.UnitsFor\(size\)\)\) \{ return; \} Thing empty", "wash debits before it cleans");
+                RiverSwitchFlipChecks.Has(wash, @"if \(!RM_LiquidBottleUtility\.TryDebitTerrain\(Map, job\.targetB\.Cell, liquid\.UnitsFor\(size\)\)\) \{ break; \} Thing empty", "wash debits before it cleans");
             });
 
             // TANK_SETTLE_FIX_DOUBLE_DIPPED C1-F5: a Store tank in two components is settled once per cycle, not once per component.

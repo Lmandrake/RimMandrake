@@ -27,6 +27,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool bucketFirefighting = true;
 		public static bool snowGathering = true;
 		public static bool sanguophageBloodQuenches = true;
+		/// <summary>§8.2 step 8: the colony stock of filled potable bottles pawns keep on their own (0 = no limit).</summary>
+		public static int filledBottlesPerColonist = 3;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -47,6 +49,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref bucketFirefighting, "bucketFirefighting", true);
 			Scribe_Values.Look(ref snowGathering, "snowGathering", true);
 			Scribe_Values.Look(ref sanguophageBloodQuenches, "sanguophageBloodQuenches", true);
+			Scribe_Values.Look(ref filledBottlesPerColonist, "filledBottlesPerColonist", 3);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -102,6 +105,11 @@ namespace RimMandrake.FlowWorks.Thirst
 				"Where no liquid fresh water is in reach, an empty bucket is filled with snow or ice chips. A bucket of snow melts "
 				+ "into a bucket of water after a couple of hours above freezing, or at once over a fire. Ice blocks melt into "
 				+ "buckets of water at a campfire or stove. Off: snow is never gathered (the melt bills stay).");
+			list.Label("Filled water bottles kept per colonist: " + (filledBottlesPerColonist <= 0 ? "no limit" : filledBottlesPerColonist.ToString()),
+				tooltip: "Pawns fill bottles on their own only until the colony holds this many filled bottles of drinkable water "
+				+ "per colonist (packed ones count), up to ten per trip. Bottles are for the road; at home pawns drink at taps "
+				+ "and ponds. Buckets and barrels are not limited. 0 = fill every empty bottle.");
+			filledBottlesPerColonist = (int)list.Slider(filledBottlesPerColonist, 0f, 10f);
 			list.CheckboxLabeled("Sanguophages quench thirst with blood", ref sanguophageBloodQuenches,
 				"For a pawn with a hemogen gene, a hemogen pack is also a full drink of water. Off: packs only give hemogen.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,

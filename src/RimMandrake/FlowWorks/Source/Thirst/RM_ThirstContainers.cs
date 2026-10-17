@@ -108,6 +108,75 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 	}
 
+	/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU, 04-merged.md §8.2 step 8 ("batched fill/wash and a stock target remain;
+	/// bottles still serve travel"): pawns fill bottles on their own only up to a colony stock of filled potable bottles,
+	/// counted on the map AND in colonists' inventories (so packed bottles count), and carry up to ten at a time. Buckets
+	/// and barrels keep filling as before (they are the fire and bulk stock), one per trip.</summary>
+	public static class RM_BottleStock
+	{
+		public const int BatchSize = 10;
+		private const int CacheTicks = 250;
+		private static readonly Dictionary<int, (int tick, int have)> cache = new Dictionary<int, (int, int)>();
+
+		/// <summary>Filled potable bottles the colony on this map holds (spawned, plus colonists' inventories).</summary>
+		public static int Have(Map map)
+		{
+			int now = Find.TickManager.TicksGame;
+			if (cache.TryGetValue(map.uniqueID, out var hit) && now >= hit.tick && now - hit.tick < CacheTicks)
+			{
+				return hit.have;
+			}
+			int have = 0;
+			foreach (ThingDef def in RM_ThirstUtility.DrinkableBottles)
+			{
+				if (RM_ThirstUtility.UseOf(def.GetModExtension<RM_BottledLiquidExtension>().liquid) != RM_DrinkUse.Potable)
+				{
+					continue;
+				}
+				foreach (Thing t in map.listerThings.ThingsOfDef(def))
+				{
+					have += t.stackCount;
+				}
+			}
+			foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+			{
+				if (p.inventory == null)
+				{
+					continue;
+				}
+				foreach (Thing t in p.inventory.innerContainer)
+				{
+					if (RM_ThirstUtility.IsDrinkableBottle(t) && RM_ThirstUtility.UseOf(RM_ThirstUtility.LiquidOf(t)) == RM_DrinkUse.Potable)
+					{
+						have += t.stackCount;
+					}
+				}
+			}
+			cache[map.uniqueID] = (now, have);
+			return have;
+		}
+
+		/// <summary>How many more bottles pawns may fill unasked (int.MaxValue with the target off).</summary>
+		public static int Deficit(Map map)
+		{
+			int per = RM_ThirstSettings.filledBottlesPerColonist;
+			if (per <= 0)
+			{
+				return int.MaxValue;
+			}
+			return RM_ThirstMath.BottleDeficit(per, map.mapPawns.FreeColonistsSpawnedCount, Have(map));
+		}
+
+		/// <summary>A filled bottle was just made: count it now, not at the next cache refresh.</summary>
+		public static void Notify_Filled(Map map, int n)
+		{
+			if (map != null && cache.TryGetValue(map.uniqueID, out var hit))
+			{
+				cache[map.uniqueID] = (hit.tick, hit.have + n);
+			}
+		}
+	}
+
 	public static class RM_ThirstContainerUtility
 	{
 		private static List<ThingDef> drinkableContainers;

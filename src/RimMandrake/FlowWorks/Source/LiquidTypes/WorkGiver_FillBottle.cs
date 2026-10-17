@@ -37,6 +37,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return false;
             }
+            if (!forced && ext.size == RM_ContainerSize.Bottle && Thirst.RM_BottleStock.Deficit(pawn.Map) <= 0)
+            {
+                return false;   // THIRST_RULES_BUILD_SALT_OFF_THE_MENU §8.2 step 8: the colony has its bottles
+            }
             IntVec3 cell;
             LiquidDef liquid;
             string refusal;
@@ -67,7 +71,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return null;
             }
             Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_FillBottleJob, t, cell);
-            job.count = 1;
+            // §8.2 step 8: bottles in batches of up to ten (never past the stock target unless ordered); a bucket or barrel one at a time
+            job.count = ext.size != RM_ContainerSize.Bottle ? 1
+                : System.Math.Max(1, System.Math.Min(System.Math.Min(t.stackCount, Thirst.RM_BottleStock.BatchSize),
+                    forced ? int.MaxValue : Thirst.RM_BottleStock.Deficit(pawn.Map)));
             return job;
         }
     }

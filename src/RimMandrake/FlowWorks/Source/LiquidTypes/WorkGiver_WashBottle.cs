@@ -52,7 +52,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return null;
             }
             Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_WashBottleJob, t, cell);
-            job.count = 1;
+            // THIRST_RULES_BUILD_SALT_OFF_THE_MENU §8.2 step 8: dirty bottles washed in batches of up to ten
+            job.count = ext.size != RM_ContainerSize.Bottle ? 1 : System.Math.Min(t.stackCount, Thirst.RM_BottleStock.BatchSize);
             return job;
         }
     }
