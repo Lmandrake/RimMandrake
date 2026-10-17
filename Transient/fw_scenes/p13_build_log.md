@@ -31,3 +31,8 @@ Scratch clone `/home/mandrake/rm/scratch/FOUNDRY/p13`, base 54fe4ef75. FOUNDRY o
   matching element" in RemoveCellFromExistingBody: an unsplit body's piece swallowed by another body leaves a stale root; pinned
   as Body_split_stale_body_vanilla_throws_mended_clean (ported vanilla, not seen live).
 - next: full oracle 3000 all modes, vv_shipped_matrix, run_selftests --only.
+- tests at publish: oracle 3000/3000 x 9 modes PASS (8 old + bodies); vv_shipped_matrix --skip-ep: SHIPPED 0 everywhere,
+  OFF_edgeSinks kernel_fuzz 142/2000 (known), VERDICT FAIL only Thirst_slime_last_resort_ruled (known), forced-flag suite
+  fails 24 (known count); run_selftests --only FlowWorks python + Utils flowworks/settings: 15/16, red = settings_screens
+  (LeaningScrub, TheForge, ExplosiveGrowth, SWBestiary; FlowWorks rows ok; known).
+- stage 5 publish: source f6ff94442 (rebased on b44313c20). DLL rebuilt on that tree; SelfTest there 555/555.
