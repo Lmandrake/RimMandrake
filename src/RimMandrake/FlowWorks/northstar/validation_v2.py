@@ -225,6 +225,9 @@ class PulseOracle(object):
         self.mouth_top_up = True
         self.ds, self.dk = {}, {}
         self.received = {}                # cell -> pulse_n it last received a level
+        # WATER_SURFACE_REPAIR_LEVEL_OR_BUST (owner 2026-10-17, "a level surface"): the WATER creep hold is on the FRONT only,
+        # a cell that was DRY when it took its first level this pulse (RM_FlowKernel.frontStamp); thick liquids keep `received`.
+        self.front = {}                   # cell -> pulse_n it went from dry to wet
         # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
         # marked in the visited set SHARED across components, so the first-seeded channel claims it).
         # Default: True for algo="old" (as measured 2026-10-01), False for "fixed" (the shipped fix,
@@ -348,10 +351,8 @@ class PulseOracle(object):
                 continue                                     # no-mix (owner Q3)
             if self.viscosity and not fluid_moves(self.pulse_n, fl_n):
                 continue                                     # viscosity: a viscous donor waits its stride
-            if not src and self.received.get(n) == self.pulse_n:
-                thick = viscosity_stride(_ticks_per_tile(fl_n)) > 1
-                if self.creep_thick if thick else self.creep_water:
-                    continue                                 # creep: filled THIS pulse, passes nothing on until the next
+            if not src and self._held(n, fl_n):
+                continue                                     # creep: filled THIS pulse, passes nothing on until the next
             if self.level_surface:
                 drop = (fn - dn) - (self.F.get(r, 0) - dr)
                 if drop < 1 or (drop == 1 and not src and self.level_set):
@@ -534,6 +535,7 @@ class PulseOracle(object):
                     else:
                         self.F[d] -= 1
                     if self.F[r] == 0:                       # first level claims a dry cell for its fluid
+                        self.front[r] = self.pulse_n
                         fl = "RM_Fluid_Water" if self.is_source(d) else self.fluid.get(d, "RM_Fluid_Water")
                         if fl == "RM_Fluid_Water":
                             self.fluid.pop(r, None)
@@ -579,14 +581,15 @@ class PulseOracle(object):
                 self.credited += 1
                 if self.F[r] == 0:
                     self.fluid.pop(r, None)
+                    self.front[r] = self.pulse_n
                 self.F[r] += 1
                 self.received[r] = self.pulse_n
                 moved += 1
 
     def _held(self, c, fl):
-        if self.received.get(c) != self.pulse_n:
-            return False
-        return self.creep_thick if viscosity_stride(_ticks_per_tile(fl)) > 1 else self.creep_water
+        if viscosity_stride(_ticks_per_tile(fl)) > 1:
+            return self.creep_thick and self.received.get(c) == self.pulse_n
+        return self.creep_water and self.front.get(c) == self.pulse_n
 
     def _level_regions(self, comp):
         """RM_FlowKernel.LevelWetRegions (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND): per connected wet region of one
