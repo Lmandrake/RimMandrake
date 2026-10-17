@@ -70,6 +70,7 @@
     <Compile Include="ToxinDependence.cs" />
     <Compile Include="RSW_BeastMechanicsProof.cs" />
     <Compile Include="RSW_TaozinBrineTank.cs" />
+    <Compile Include="RSW_DragonsnakeAlbinoToggle.cs" />
   </ItemGroup>
 
   <ItemGroup>

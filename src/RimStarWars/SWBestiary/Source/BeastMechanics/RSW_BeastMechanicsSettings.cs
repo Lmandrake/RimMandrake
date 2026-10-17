@@ -67,6 +67,11 @@ namespace RimMandrake.StarWars.SWBestiary
         // generated afterwards. Off: no nest, so no grubs anywhere (they are found only in nests).
         public static bool taozinNestEnabled = true;
 
+        // DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (RSW_DragonsnakeAlbinoToggle.cs). The albino dragonsnake, a rare pale
+        // variant living in the canon dragonsnake's swamps. Read once at startup, when its roster rows are stripped: so a
+        // change applies the next time the game starts. Off: it never spawns wild; one already on a map stays.
+        public static bool albinoDragonsnakeEnabled = true;
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -80,6 +85,7 @@ namespace RimMandrake.StarWars.SWBestiary
             Scribe_Values.Look(ref taozinDaysPerJar, "taozinDaysPerJar", 2f);
             Scribe_Values.Look(ref taozinPaleDays, "taozinPaleDays", 15f);
             Scribe_Values.Look(ref taozinNestEnabled, "taozinNestEnabled", true);
+            Scribe_Values.Look(ref albinoDragonsnakeEnabled, "albinoDragonsnakeEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -109,7 +115,7 @@ namespace RimMandrake.StarWars.SWBestiary
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]; the taozin brine tank's three settings are read by the tank's rare tick, so [now]; the taozin nest is read only when a new map generates: [new maps only] (added 2026-10-17, TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]; the taozin brine tank's three settings are read by the tank's rare tick, so [now]; the taozin nest is read only when a new map generates: [new maps only] (added 2026-10-17, TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE); the albino dragonsnake is read once by a startup static constructor: [next game start] (added 2026-10-17, DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -193,6 +199,13 @@ namespace RimMandrake.StarWars.SWBestiary
             {
                 list.CheckboxLabeled("Taozin nests on Crags maps", ref taozinNestEnabled,
                     "A new map in the Crags (the Abyss) holds one taozin nest: a giant taozin guarding a few grubs and stacks of silk. Grubs are found nowhere else. Off: new maps have no nest. Maps already made keep theirs.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Albino dragonsnake", RimMandrake.Shared.SettingScope.Now, new[] { "albinoDragonsnakeEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Albino dragonsnake (rare pale variant)", ref albinoDragonsnakeEnabled,
+                    "A rare, pale, limbless dragonsnake lives in the same swamps as the ordinary dragonsnake, far less often. Off: it never appears in the wild. One already on a map stays. Takes effect the next time the game starts.");
                 list.GapLine();
             }
 
