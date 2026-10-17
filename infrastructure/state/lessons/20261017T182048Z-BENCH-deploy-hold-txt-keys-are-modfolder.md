@@ -1,0 +1,1 @@
+DEPLOY_HOLD.txt keys are '<ModFolder>/<path in mod>' (deploy_custom_mods.hold_for), NOT src-relative: a line starting 'RimStarWars/...' or 'RimMandrake/...' silently holds nothing. After adding a hold, run deploy_custom_mods.py --mod <Mod> and confirm the file shows 'H', not '+'. (SWBestiary albino dragonsnake, 2026-10-17)
