@@ -4,7 +4,9 @@ using Verse.AI;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
 {
-    /// <summary>Opportunistic, like vanilla's own automatic WorkGivers
+    /// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU: on its own a pawn fills only with Potable-class liquid; a forced
+    /// (player-ordered) fill may take any liquid the container can hold.
+    /// Opportunistic, like vanilla's own automatic WorkGivers
     /// (Refuel, FillFermentingBarrel) -- no player designation needed. Any
     /// spawned, unforbidden empty container (bottle/bucket/barrel, read
     /// generically off RM_BottledLiquidExtension) near a matching liquid
@@ -38,7 +40,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             IntVec3 cell;
             LiquidDef liquid;
             string refusal;
-            if (RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal))
+            if (RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal, forced))
             {
                 return true;
             }
@@ -60,7 +62,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             IntVec3 cell;
             LiquidDef liquid;
             string refusal;
-            if (!RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal))
+            if (!RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal, forced))
             {
                 return null;
             }

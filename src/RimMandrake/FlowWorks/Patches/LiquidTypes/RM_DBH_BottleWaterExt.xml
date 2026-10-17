@@ -40,6 +40,16 @@
             </value>
           </li>
           <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_Bottle_IcyWater"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>true</SeekForThirst>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
             <xpath>Defs/ThingDef[defName="RM_Bottle_ToxicWater"]</xpath>
             <value>
               <li Class="DubsBadHygiene.WaterExt">

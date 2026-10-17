@@ -15,6 +15,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool animalsGetThirst = true;
 		public static bool drinkFromTerrain = true;
 		public static bool waterQualityEffects = true;
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q5/Q8): a pawn desperate with thirst may drink slime or toxic water.</summary>
+		public static bool lastResortDrinking = true;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -28,6 +30,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref animalsGetThirst, "animalsGetThirst", true);
 			Scribe_Values.Look(ref drinkFromTerrain, "drinkFromTerrain", true);
 			Scribe_Values.Look(ref waterQualityEffects, "waterQualityEffects", true);
+			Scribe_Values.Look(ref lastResortDrinking, "lastResortDrinking", true);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -53,8 +56,13 @@ namespace RimMandrake.FlowWorks.Thirst
 				+ "mode). Animals always drink from terrain.");
 			list.CheckboxLabeled("Water quality matters", ref waterQualityEffects,
 				"Distilled water lifts the mood a little; fouled water (salt, brine) quenches less and can cause food poisoning; "
-				+ "toxic water quenches half and adds toxic buildup, and is drunk only when parched. Off: all drinkable water counts "
-				+ "as plain potable water.");
+				+ "toxic water quenches half and adds toxic buildup. Off: every drink hydrates like plain water with no side effects. "
+				+ "Either way, salt water and brine are never drunk outside the salt-water break, and slime and toxic water only "
+				+ "by a desperate pawn.");
+			list.CheckboxLabeled("Desperate pawns drink slime and toxic water", ref lastResortDrinking,
+				"Like eating rotten food: only when the thirst bar is empty and no clean water is in reach, and it is always the "
+				+ "last pick. Slime brings a massive mood hit, a day of purging and the slime's own harm; toxic water brings toxic "
+				+ "buildup. Off: they are never drunk, and a pawn with nothing else dehydrates.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
 				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
 				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");

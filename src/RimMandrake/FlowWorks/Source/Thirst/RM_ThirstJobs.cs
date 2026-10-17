@@ -33,9 +33,10 @@ namespace RimMandrake.FlowWorks.Thirst
 	}
 
 	/// <summary>Humanlikes (inserted at Humanlike_PostDuty, the tag DBH's own ConditionalThirst uses): below 0.3, drink from
-	/// the best reachable source by quality, then distance: Distilled > Potable > Fouled > Toxic, Toxic only when Parched.
-	/// Sources: a drinkable bottle (inventory first, then the map) through the vanilla Ingest job; a tank of the pawn's own
-	/// faction; a terrain edge (setting drinkFromTerrain).</summary>
+	/// the best reachable source the use-class gate allows (RM_ThirstUtility.MayDrink: potable always, slime and toxic water
+	/// only when desperate, salt water and brine never outside the salt-water break), ranked by use class, then quality, then
+	/// distance. Sources: a drinkable bottle (inventory first, then the map) through the vanilla Ingest job; a tank of the
+	/// pawn's own faction; a terrain edge (setting drinkFromTerrain).</summary>
 	public class JobGiver_RM_Drink : ThinkNode_JobGiver
 	{
 		protected override Job TryGiveJob(Pawn pawn)
@@ -45,22 +46,24 @@ namespace RimMandrake.FlowWorks.Thirst
 				return null;
 			}
 			float level = RM_ThirstUtility.Level(pawn);
-			Thing bottle = RM_ThirstUtility.BestBottle(pawn, level, true, out RM_WaterQuality bq, out float bd);
-			Building_LiquidTank tank = RM_ThirstUtility.BestTank(pawn, level, out RM_WaterQuality tq, out float td);
+			Thing bottle = RM_ThirstUtility.BestBottle(pawn, level, true, out RM_DrinkUse bu, out RM_WaterQuality bq, out float bd);
+			Building_LiquidTank tank = RM_ThirstUtility.BestTank(pawn, level, out RM_DrinkUse tu, out RM_WaterQuality tq, out float td);
 			IntVec3 cell = IntVec3.Invalid;
-			RM_WaterQuality cq = RM_WaterQuality.Toxic;
+			RM_DrinkUse cu = RM_DrinkUse.Never;
+			RM_WaterQuality cq = RM_WaterQuality.Slime;
 			float cd = float.MaxValue;
 			if (RM_ThirstSettings.drinkFromTerrain
-				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out cell, out LiquidDef _, out cq))
+				&& RM_ThirstUtility.TryFindDrinkCell(pawn, level, out cell, out LiquidDef _, out cu, out cq))
 			{
 				cd = (cell - pawn.Position).LengthHorizontalSquared;
 			}
 			int pick = -1;   // 0 bottle, 1 tank, 2 terrain
-			RM_WaterQuality pq = RM_WaterQuality.Toxic;
+			RM_DrinkUse pu = RM_DrinkUse.Never;
+			RM_WaterQuality pq = RM_WaterQuality.Slime;
 			float pd = float.MaxValue;
-			if (bottle != null) { pick = 0; pq = bq; pd = bd; }
-			if (tank != null && (pick < 0 || RM_ThirstMath.Better(tq, td, pq, pd))) { pick = 1; pq = tq; pd = td; }
-			if (cell.IsValid && (pick < 0 || RM_ThirstMath.Better(cq, cd, pq, pd))) { pick = 2; }
+			if (bottle != null) { pick = 0; pu = bu; pq = bq; pd = bd; }
+			if (tank != null && (pick < 0 || RM_ThirstMath.Better(tu, tq, td, pu, pq, pd))) { pick = 1; pu = tu; pq = tq; pd = td; }
+			if (cell.IsValid && (pick < 0 || RM_ThirstMath.Better(cu, cq, cd, pu, pq, pd))) { pick = 2; }
 			switch (pick)
 			{
 				case 0:
@@ -77,7 +80,8 @@ namespace RimMandrake.FlowWorks.Thirst
 	}
 
 	/// <summary>Animals (Animal_PreMain), wild and tame: below 0.3, walk to the nearest drinkable terrain edge and drink.
-	/// Terrain only, never bottles or tanks (OQ-5). drinkFromTerrain does not gate animals.</summary>
+	/// Terrain only, never bottles or tanks (OQ-5). drinkFromTerrain does not gate animals. Any potable water; salt, brine,
+	/// toxic water and slime only for an animal native to the map's biome (Q12 part 2, RM_ThirstUtility.MayDrink).</summary>
 	public class JobGiver_RM_AnimalDrink : ThinkNode_JobGiver
 	{
 		protected override Job TryGiveJob(Pawn pawn)
@@ -102,6 +106,13 @@ namespace RimMandrake.FlowWorks.Thirst
 		public const int Want = 2;
 		public const int LeaveOnMap = 4;
 
+		/// <summary>Only potable-class water at potable quality or better is packed (never salt, slime or toxic, whatever
+		/// the quality-effects setting says).</summary>
+		private static bool PackWorthy(LiquidDef l)
+		{
+			return RM_ThirstUtility.UseOf(l) == RM_DrinkUse.Potable && (int)RM_ThirstUtility.Effective(l) <= (int)RM_WaterQuality.Potable;
+		}
+
 		protected override Job TryGiveJob(Pawn pawn)
 		{
 			if (!RM_ThirstProvider.OursLive || pawn.inventory == null || pawn.Map == null || !pawn.IsColonist
@@ -112,7 +123,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			int have = 0;
 			foreach (Thing t in pawn.inventory.innerContainer)
 			{
-				if (RM_ThirstUtility.IsDrinkableBottle(t) && (int)RM_ThirstUtility.Effective(RM_ThirstUtility.LiquidOf(t)) <= (int)RM_WaterQuality.Potable)
+				if (RM_ThirstUtility.IsDrinkableBottle(t) && PackWorthy(RM_ThirstUtility.LiquidOf(t)))
 				{
 					have += t.stackCount;
 				}
@@ -127,7 +138,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				foreach (Thing t in pawn.Map.listerThings.ThingsOfDef(def))
 				{
-					if ((int)RM_ThirstUtility.Effective(RM_ThirstUtility.LiquidOf(t)) <= (int)RM_WaterQuality.Potable)
+					if (PackWorthy(RM_ThirstUtility.LiquidOf(t)))
 					{
 						onMap += t.stackCount;
 						pool.Add(t);
@@ -284,13 +295,13 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return false;
 			}
-			return RM_ThirstUtility.BestBottle(pawn, RM_ThirstUtility.Level(patient), false, out _, out _) != null;
+			return RM_ThirstUtility.BestBottle(pawn, RM_ThirstUtility.Level(patient), false, out _, out _, patient) != null;
 		}
 
 		public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			Pawn patient = t as Pawn;
-			Thing bottle = RM_ThirstUtility.BestBottle(pawn, RM_ThirstUtility.Level(patient), false, out _, out _);
+			Thing bottle = RM_ThirstUtility.BestBottle(pawn, RM_ThirstUtility.Level(patient), false, out _, out _, patient);
 			if (bottle == null)
 			{
 				return null;

@@ -16,6 +16,16 @@ namespace RimMandrake.FlowWorks.Thirst
 		Potable = 1,
 		Fouled = 2,
 		Toxic = 3,
+		Slime = 4,
+	}
+
+	/// <summary>Mirrors LiquidTypes.LiquidUseClass value for value (THIRST_RULES_BUILD_SALT_OFF_THE_MENU, 04-merged.md §1/§8).</summary>
+	public enum RM_DrinkUse
+	{
+		Potable = 0,
+		LastResort = 1,
+		BreakOnly = 2,
+		Never = 3,
 	}
 
 	public enum RM_ThirstProviderMode
@@ -121,6 +131,8 @@ namespace RimMandrake.FlowWorks.Thirst
 					return 0.7f;
 				case RM_WaterQuality.Toxic:
 					return 0.5f;
+				case RM_WaterQuality.Slime:
+					return SlimeHydrateFactor;
 				default:
 					return 1f;
 			}
@@ -132,15 +144,48 @@ namespace RimMandrake.FlowWorks.Thirst
 			return qualityEffects ? quality : RM_WaterQuality.Potable;
 		}
 
-		/// <summary>Toxic water is taken only by a Parched drinker (vanilla's desperate-food rule).</summary>
-		public static bool Acceptable(RM_WaterQuality quality, float level)
+		public const float SlimeHydrateFactor = 0.6f;
+
+		/// <summary>Owner, Q5 2026-10-17: slime (and toxic water, Q8) "should follow the same rules for when people eat rotten
+		/// food that makes them sick". Vanilla lets a pawn eat non-fresh food only when DESPERATE, which is hunger category
+		/// Starving: the need at zero (FoodUtility.BestFoodSourceOnMap's desperate flag, JobGiver_GetFood). The mirror: a
+		/// last-resort liquid only when the thirst need is empty.</summary>
+		public static bool Desperate(float level) => level <= 0f;
+
+		/// <summary>The one gate every drink search runs (04-merged.md §8). Humanlikes: Potable always; LastResort only when
+		/// <see cref="Desperate"/> (and the setting allows it at all); BreakOnly (salt water, brine) only inside the salt-water
+		/// break; Never never. Animals (Q12 part 2, "all animals can drink water and animals from biomes with terrible water can
+		/// drink that terrible water"): Potable always; any other drinkable class only when native to the map's biome;
+		/// Never never.</summary>
+		public static bool MayDrink(RM_DrinkUse use, float level, bool humanlike, bool native, bool inSaltBreak,
+			bool lastResortAllowed)
 		{
-			return quality != RM_WaterQuality.Toxic || level < ParchedBelow;
+			switch (use)
+			{
+				case RM_DrinkUse.Potable:
+					return true;
+				case RM_DrinkUse.Never:
+					return false;
+			}
+			if (!humanlike)
+			{
+				return native;
+			}
+			if (use == RM_DrinkUse.LastResort)
+			{
+				return lastResortAllowed && Desperate(level);
+			}
+			return inSaltBreak;   // BreakOnly
 		}
 
-		/// <summary>True when <paramref name="a"/> is the better source: higher quality first, then nearer.</summary>
-		public static bool Better(RM_WaterQuality a, float distA, RM_WaterQuality b, float distB)
+		/// <summary>True when source a is the better pick: use class first (any potable source beats any last resort, as a
+		/// desperate pawn still ranks better food first), then quality, then nearer.</summary>
+		public static bool Better(RM_DrinkUse useA, RM_WaterQuality a, float distA, RM_DrinkUse useB, RM_WaterQuality b, float distB)
 		{
+			if (useA != useB)
+			{
+				return (int)useA < (int)useB;
+			}
 			if (a != b)
 			{
 				return (int)a < (int)b;

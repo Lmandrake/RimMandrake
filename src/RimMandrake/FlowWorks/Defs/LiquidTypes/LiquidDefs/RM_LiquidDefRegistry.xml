@@ -47,6 +47,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <overlay>false</overlay>
       <wake>1.0</wake>
@@ -75,6 +76,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
+    <useClass>BreakOnly</useClass>
     <surfaceLook>
       <overlay>false</overlay>
       <wake>1.0</wake>
@@ -123,6 +125,7 @@
       <revertTicks>2500</revertTicks>
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
+    <useClass>Never</useClass>
     <surfaceLook>
       <texture>Terrain/Surfaces/HotSpringRamp</texture>
       <rippleDensity>1.8</rippleDensity>
@@ -179,6 +182,8 @@
       <revertsTo>RM_Liquid_FreshWater</revertsTo>
       <revertTicks>5000</revertTicks>
     </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <texture>Terrain/Surfaces/Ice</texture>
       <tint>(0.80,0.88,0.95)</tint>
@@ -219,6 +224,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Toxic</thirstQuality>
+    <useClass>LastResort</useClass>
     <surfaceLook>
       <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
       <overlay>false</overlay>
@@ -271,6 +277,7 @@
       <barrel>RM_Barrel_AcidWater</barrel>
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
+    <useClass>Never</useClass>
     <surfaceLook>
       <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
       <tint>(1.05,1.30,0.30)</tint>
@@ -313,6 +320,7 @@
       <shallow>RM_ReactionLiquorShallow</shallow>
       <deep>RM_ReactionLiquorDeep</deep>
     </terrainSuite>
+    <useClass>Never</useClass>
     <surfaceLook>
       <tint>(0.95,0.88,1.08)</tint>
       <overlay>true</overlay>
@@ -345,6 +353,7 @@
       <barrel>RM_Barrel_Tar</barrel>
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
+    <useClass>Never</useClass>
     <surfaceLook>
       <shader>Solid</shader>
       <texture>White</texture>
@@ -393,6 +402,7 @@
     </bottled>
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
+    <useClass>BreakOnly</useClass>
     <surfaceLook>
       <tint>(0.86,0.97,0.93)</tint>
       <rippleDensity>0.7</rippleDensity>
@@ -440,6 +450,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
+    <useClass>Never</useClass>
     <surfaceLook>
       <texture>White</texture>
       <tint>(0.66,0.66,0.67)</tint>
@@ -465,6 +476,7 @@
       <bottle>Chemfuel</bottle>
       <litresPerBottle>200</litresPerBottle>
     </bottled>
+    <useClass>Never</useClass>
     <surfaceLook>
       <tint>(1.10,0.95,0.70)</tint>
       <overlay>true</overlay>
@@ -498,6 +510,7 @@
       <deep>RM_SlimeRedDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeRed</canalFluid>
+    <useClass>LastResort</useClass>
     <surfaceLook>
       <shader>Flow</shader>
       <texture>Other/Perlin</texture>
@@ -531,6 +544,7 @@
       <deep>RM_SlimeGreenDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeGreen</canalFluid>
+    <useClass>LastResort</useClass>
     <surfaceLook>
       <shader>Flow</shader>
       <texture>Other/Perlin</texture>
@@ -561,6 +575,7 @@
       <deep>RM_SlimeWhiteDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeWhite</canalFluid>
+    <useClass>LastResort</useClass>
     <surfaceLook>
       <shader>Flow</shader>
       <texture>Other/Perlin</texture>
@@ -589,6 +604,7 @@
       <deep>RM_SlimeYellowDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeYellow</canalFluid>
+    <useClass>LastResort</useClass>
     <surfaceLook>
       <shader>Flow</shader>
       <texture>Other/Perlin</texture>
@@ -615,6 +631,7 @@
       <shallow>LavaShallow</shallow>
       <deep>LavaDeep</deep>
     </terrainSuite>
+    <useClass>Never</useClass>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -636,6 +653,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <tint>(0.66,0.36,0.23)</tint>
       <overlay>false</overlay>
@@ -663,6 +681,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <tint>(0.27,0.66,0.55)</tint>
       <overlay>false</overlay>
@@ -690,6 +709,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <tint>(0.78,0.59,0.24)</tint>
       <overlay>false</overlay>
@@ -717,6 +737,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <tint>(0.47,0.31,0.66)</tint>
       <overlay>false</overlay>
@@ -744,6 +765,7 @@
       <litresPerBarrel>208</litresPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <useClass>Potable</useClass>
     <surfaceLook>
       <tint>(0.78,0.77,0.70)</tint>
       <overlay>false</overlay>

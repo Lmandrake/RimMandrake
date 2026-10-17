@@ -63,10 +63,52 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Near(RM_ThirstMath.Hydration(1.5f, RM_WaterQuality.Toxic, true), 0.25f, 0.001f), "toxic x0.5");
                 Assert(Near(RM_ThirstMath.Hydration(1.5f, RM_WaterQuality.Toxic, false), 0.5f, 0.001f), "quality off: all potable");
                 Assert(RM_ThirstMath.Effective(RM_WaterQuality.Toxic, false) == RM_WaterQuality.Potable, "quality off: toxic counts as potable");
-                Assert(!RM_ThirstMath.Acceptable(RM_WaterQuality.Toxic, 0.2f) && RM_ThirstMath.Acceptable(RM_WaterQuality.Toxic, 0.05f), "toxic only when parched");
-                Assert(RM_ThirstMath.Better(RM_WaterQuality.Potable, 100f, RM_WaterQuality.Fouled, 1f), "quality before distance");
-                Assert(RM_ThirstMath.Better(RM_WaterQuality.Potable, 1f, RM_WaterQuality.Potable, 2f) && !RM_ThirstMath.Better(RM_WaterQuality.Toxic, 0f, RM_WaterQuality.Distilled, 99f), "then distance; can-fail");
+                var P = RM_DrinkUse.Potable;
+                Assert(RM_ThirstMath.Better(P, RM_WaterQuality.Potable, 100f, P, RM_WaterQuality.Fouled, 1f), "quality before distance");
+                Assert(RM_ThirstMath.Better(P, RM_WaterQuality.Potable, 1f, P, RM_WaterQuality.Potable, 2f) && !RM_ThirstMath.Better(P, RM_WaterQuality.Toxic, 0f, P, RM_WaterQuality.Distilled, 99f), "then distance; can-fail");
+                Assert(Near(RM_ThirstMath.Hydration(1.5f, RM_WaterQuality.Slime, true), 0.3f, 0.001f), "slime x0.6");
                 Assert(RM_ThirstMath.FouledPoisonChance == 0.2f && RM_ThirstMath.ToxicBuildupPerDrink == 0.12f, "design §3 numbers");
+            });
+            Case("Thirst_use_class_gate_ruled", () =>
+            {
+                // THIRST_RULES_BUILD_SALT_OFF_THE_MENU, 04-merged.md §8 (owner 2026-10-17). Rule break 2: salt was drunk
+                // routinely by any thirsty pawn. Now: salt/brine (BreakOnly) only inside the salt break.
+                var B = RM_DrinkUse.BreakOnly; var L = RM_DrinkUse.LastResort; var P = RM_DrinkUse.Potable; var N = RM_DrinkUse.Never;
+                Assert(!RM_ThirstMath.MayDrink(B, 0.2f, true, false, false, true), "a thirsty human never drinks salt routinely");
+                Assert(!RM_ThirstMath.MayDrink(B, 0f, true, false, false, true), "not even dehydrated (salt is break-only, Q8)");
+                Assert(RM_ThirstMath.MayDrink(B, 0.05f, true, false, true, true), "inside the salt break it is drunk");
+                Assert(!RM_ThirstMath.MayDrink(L, 0.05f, true, false, false, true), "slime/toxic not while merely parched");
+                Assert(RM_ThirstMath.MayDrink(L, 0f, true, false, false, true), "Q5: slime/toxic when desperate (need empty, vanilla's rotten-food rule)");
+                Assert(!RM_ThirstMath.MayDrink(L, 0f, true, false, false, false), "last-resort setting off: never");
+                Assert(!RM_ThirstMath.MayDrink(N, 0f, true, true, true, true), "Never is never, break or not");
+                Assert(RM_ThirstMath.MayDrink(P, 0.29f, false, false, false, true), "Q12: all animals drink potable water");
+                Assert(!RM_ThirstMath.MayDrink(B, 0f, false, false, false, true) && !RM_ThirstMath.MayDrink(L, 0f, false, false, false, true), "a non-native animal never drinks terrible water");
+                Assert(RM_ThirstMath.MayDrink(B, 0.2f, false, true, false, true) && RM_ThirstMath.MayDrink(L, 0.2f, false, true, false, true), "Q12: a native animal drinks its biome's terrible water");
+                Assert(RM_ThirstMath.Better(P, RM_WaterQuality.Potable, 999f, L, RM_WaterQuality.Toxic, 0f), "any potable beats a last resort at any distance");
+                Assert(!RM_ThirstMath.Better(L, RM_WaterQuality.Distilled, 0f, P, RM_WaterQuality.Fouled, 99f), "can-fail: class before quality");
+                // the shipped rows (generated registry)
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                string Use(string d) => (string)reg.Root.Elements().First(e => (string)e.Element("defName") == d).Element("useClass");
+                Assert(Use("RM_Liquid_SaltWater") == "BreakOnly" && Use("RM_Liquid_Brine") == "BreakOnly", "Q8: salt and brine break-only");
+                Assert(Use("RM_Liquid_ToxicWater") == "LastResort" && Use("RM_Liquid_SlimeRed") == "LastResort", "Q8/Q5: toxic and slime last resort");
+                Assert(Use("RM_Liquid_FreshWater") == "Potable" && Use("RM_Liquid_IcyWater") == "Potable" && Use("RM_Liquid_RustWater") == "Potable", "fresh, icy, coloured potable");
+                Assert(Use("RM_Liquid_AcidWater") == "Never" && Use("RM_Liquid_BoilingWater") == "Never" && Use("RM_Liquid_Chemfuel") == "Never", "acid, boiling (until cooled), fuel never");
+                Assert(reg.Root.Elements().All(e => e.Element("useClass") != null), "every row carries a use class");
+            });
+            Case("Thirst_autofill_potable_only_in_source", () =>
+            {
+                // rule break 1: auto-fill gathered ANY liquid. The unforced fill and fill-from-tank now take Potable only.
+                string b = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
+                RiverSwitchFlipChecks.Has(b, @"potableOnly: !ordered\)", "the fill search is potable-only unless ordered");
+                RiverSwitchFlipChecks.Has(b, @"if \(potableOnly && !candidate\.AutoGathered\)", "non-potable cells are skipped");
+                string g = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottle.cs"));
+                Assert(System.Text.RegularExpressions.Regex.Matches(g, @"TryFindFillCell\(pawn, t, out cell, out liquid, out refusal, forced\)").Count == 2, "both fill-giver calls pass forced as the order");
+                string t = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidTankUtility.cs"));
+                RiverSwitchFlipChecks.Has(t, @"if \(!ordered && !candidate\.storedLiquid\.AutoGathered\)", "a brine tank drains into containers only by order");
+                string tg = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottleFromTank.cs"));
+                Assert(System.Text.RegularExpressions.Regex.Matches(tg, @"out refusal, forced\)").Count == 2, "can-fail: both drain calls pass forced");
+                string u = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
+                Assert(!u.Contains("Acceptable("), "the old quality-only gate is gone from the drink searches");
             });
             Case("Thirst_dehydration_ruled", () =>
             {
