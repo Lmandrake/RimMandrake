@@ -1,0 +1,535 @@
+{
+ "schema": "rm.vv.water_scenes/1",
+ "status": "AWAITING_OWNER",
+ "approval_doc": "design/RimMandrake/vv_methods/water_scenes_for_approval_2026-10-16.md",
+ "provenance": "Written 2026-10-16 by a FOUNDRY helper from owner rulings only; RM_FlowKernel.cs and the Python oracle were not read. Item: STAGE3 section 7 decision 1.",
+ "rules_for_test_writer": [
+  "Read this file and the world interface only; never the kernel or the oracle.",
+  "Never weaken a claim to make it pass. A red is a question for a referee who is neither author.",
+  "A scene whose verdict is not 'approve' is not tested. A claim under an open needs_ruling is tested only as its until_ruled line says.",
+  "Editing 'scenes' breaks the seal; a changed scene needs the owner's approval again."
+ ],
+ "legend": {
+  "|": "map edge",
+  "~": "natural water body that touches the map edge and is large (LIMITLESS, sticky); drawn truncated",
+  "P": "natural enclosed deep-water pond square (LIMITED); holds 4 levels when full",
+  ".": "undug ground, depth 0; never holds liquid",
+  "1": "dug cell, depth 1, dry at start unless the scene says otherwise",
+  "2": "dug cell, depth 2",
+  "4": "dug cell, depth 4 (SUPERDEEP)",
+  "G": "sealed sluice gate standing on a depth-1 dug cell",
+  "#": "metal grate gate standing on a depth-1 dug cell",
+  "U": "powered pump (unless the step says unpowered)",
+  "=": "laid hose",
+  "<": "hose free end set to Intake, lying in liquid",
+  ">": "hose free end set to Outflow, lying in a dug cell",
+  "T": "1x1 tank, Store mode"
+ },
+ "global": {
+  "units": "levels; 1 level = 1,000 L (liquid_litres_2026-10-16.md). A dug cell of depth D holds 0..D levels.",
+  "liquid": "water in every scene",
+  "pulse": "one step of the liquid engine at its shipped cadence; horizons are UPPER BOUNDS ('by pulse H'), never exact timings",
+  "settled": "no cell's fill changes for 3 consecutive pulses",
+  "settings": "shipped defaults, except: rain off, refill/seepage off, fire off, weather clear. Every dug cell sits well outside the map-edge sink band (ruling 28).",
+  "invariants_every_scene": [
+   {
+    "id": "G1_no_open_ground",
+    "claim": "No undug cell ('.') ever holds liquid.",
+    "source": "design/validation_walks/RimMandrake/FlowWorks.md cannot show: never_liquid_on_open_ground"
+   },
+   {
+    "id": "G2_fill_within_depth",
+    "claim": "Every dug cell always has 0 <= fill <= depth.",
+    "source": "design/RimMandrake/flowworks_mod_definition.md section 20 (ruling 18)"
+   },
+   {
+    "id": "G3_no_creation",
+    "claim": "In a scene with no LIMITLESS body and no pump drawing from one, the total of all liquid (cells + ponds + tanks + hoses) never rises, and falls only by an amount the game discloses to the player as destroyed overflow.",
+    "source": "design/RimMandrake/flowworks_mod_definition.md section 5 and ruling 6"
+   }
+  ],
+  "excluded_everywhere": [
+   "how anything looks (art, ripples, fill-tier graphics)",
+   "pawns, movement cost, capture, ladders",
+   "fire and burning",
+   "liquids other than water, and viscosity",
+   "exact timing inside the horizon, and which of two equally valid cells fills first",
+   "rain, season refill and seepage (switched off)"
+  ]
+ },
+ "scenes": [
+  {
+   "id": "S1",
+   "title": "A source-fed 1-deep canal fills end to end",
+   "grid": [
+    "|~~~~~~~~..........",
+    "|~~~~~~~~11111111..",
+    "|~~~~~~~~.........."
+   ],
+   "setup": "A large edge-touching lake (LIMITLESS). An 8-cell depth-1 canal, cell 1 touching the lake shore, dug dry; the last dig completes at pulse 0.",
+   "rulings": [
+    {
+     "quote": "liquid then flows into the canal to fill it, extending the source ... Any source that touches the map edge is determined to be limitless.",
+     "date": "2026-09-16",
+     "file": "design/validation_walks/RimMandrake/FlowWorks.md (the experience)",
+     "verbatim": true
+    },
+    {
+     "quote": "Natural sources are treated as SUPERDEEP.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 21 (ruling 19)",
+     "verbatim": false
+    },
+    {
+     "quote": "a large body shouldn't be able to 'flap between' because it can't be reduced, it's limitless once and for all.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 17 (ruling 16)",
+     "verbatim": true
+    }
+   ],
+   "expected": [
+    {
+     "id": "S1.a",
+     "kind": "eventual",
+     "by_pulse": 10,
+     "claim": "All 8 canal cells hold 1 level."
+    },
+    {
+     "id": "S1.b",
+     "kind": "invariant",
+     "claim": "At every pulse the wet canal cells form one unbroken run starting at cell 1 (no isolated puddle, no gap)."
+    },
+    {
+     "id": "S1.c",
+     "kind": "invariant",
+     "claim": "Once a canal cell is wet it never goes dry again during the scene."
+    },
+    {
+     "id": "S1.d",
+     "kind": "invariant",
+     "claim": "The lake never visibly shrinks (LIMITLESS)."
+    }
+   ],
+   "fails_if": [
+    "the canal stops at its first cell (1,0,0,0,...) and stays there"
+   ],
+   "exclusions": [
+    "the lake's stock number",
+    "speed per cell within the 10-pulse bound"
+   ],
+   "needs_ruling": []
+  },
+  {
+   "id": "S2",
+   "title": "A shallow trench beside a source-fed pond fills",
+   "grid": [
+    "|~~~~~~~~..........",
+    "|~~~~~~~~44........",
+    "|~~~~~~~~44111111..",
+    "|~~~~~~~~.........."
+   ],
+   "setup": "The same LIMITLESS lake. A player-dug 2x2 depth-4 pond touching the lake. A 6-cell depth-1 trench leaving the pond's far side; the trench does not touch the lake. All dry at pulse 0.",
+   "rulings": [
+    {
+     "quote": "Strained isn't a thing anymore. We replaced 'sources' with just placed deep liquid reservoirs just like a player would normally place on the map. Filled very deep tiles. Everything follows from that.",
+     "date": "2026-09-17",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 25 (ruling 34)",
+     "verbatim": true
+    },
+    {
+     "quote": "A full cell overflows into neighbours with room ... a natural source is simply a full deep cell that spills into any channel dug at its edge.",
+     "date": "2026-09-16",
+     "file": "infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md Phase 3",
+     "verbatim": false
+    }
+   ],
+   "expected": [
+    {
+     "id": "S2.a",
+     "kind": "eventual",
+     "by_pulse": 30,
+     "claim": "All 4 pond cells hold 4 levels."
+    },
+    {
+     "id": "S2.b",
+     "kind": "eventual",
+     "by_pulse": 30,
+     "claim": "All 6 trench cells hold 1 level."
+    },
+    {
+     "id": "S2.c",
+     "kind": "invariant",
+     "claim": "Wet trench cells always form one unbroken run starting at the cell touching the pond."
+    },
+    {
+     "id": "S2.d",
+     "kind": "settled",
+     "claim": "Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run."
+    }
+   ],
+   "fails_if": [
+    "the pond fills but the trench stays dry",
+    "the trench wets only its first cell"
+   ],
+   "exclusions": [
+    "whether the pond is full before the trench starts",
+    "the order the four pond cells fill in"
+   ],
+   "needs_ruling": []
+  },
+  {
+   "id": "S3",
+   "title": "A pump fills a canal that touches no water",
+   "grid": [
+    "...................",
+    ".PPPP..............",
+    ".PPP<====U====>11111.",
+    ".PPPP..............",
+    "..................."
+   ],
+   "setup": "An enclosed natural pond of 12 deep squares (the Intake end lies on one) (LIMITED, 48 levels), not touching any edge. A pump on dry ground; one hose from the pump to the pond with its end set to Intake; one hose from the pump to cell 1 of a 6-cell depth-1 canal with its end set to Outflow. No tank. The canal is at least 2 undug cells from the pond. Step A: pump unpowered for 20 pulses. Step B: pump powered.",
+   "rulings": [
+    {
+     "quote": "No, intake needs a pump. Adding liquid to any storage takes work (pump). Taking liquid out of storage to the outside world does not (drainage). Use the mental model that all storage is \"above\" the in-world liquid availability.",
+     "date": "2026-10-11",
+     "file": "design/RimMandrake/gss_flowworks_rulings_2026-10-11.md ruling 3",
+     "verbatim": true
+    },
+    {
+     "quote": "How could we also support having a pump suck water from a lake and put it in a disconnected canal? ... we could have one hose be intake, and another be outflow, and the pump does the rest. Wouldn't even need to have a tank in the mix really.",
+     "date": "2026-10-11",
+     "file": "design/RimMandrake/liquid_network_semantics_design_2026-10-11.md section 0",
+     "verbatim": true
+    },
+    {
+     "quote": "Where fill/empty is set: hose ENDS + tank JOBS (card pick).",
+     "date": "2026-10-11",
+     "file": "design/RimMandrake/gss_flowworks_rulings_2026-10-11.md ruling 12",
+     "verbatim": false
+    },
+    {
+     "quote": "We should also have some tests if you don't already showing pumping water between two equal-volume reservoirs through a tank gets you the same water in the end (conservation of volume).",
+     "date": "2026-10-12",
+     "file": "infrastructure/state/ledger/events/OWNER.jsonl (POND_BED_DESIGN_LAKES_ARE_TALL_CANALS)",
+     "verbatim": true
+    }
+   ],
+   "expected": [
+    {
+     "id": "S3.a",
+     "kind": "invariant",
+     "during": "step A",
+     "claim": "Unpowered: the canal stays dry and the pond keeps all 48 levels."
+    },
+    {
+     "id": "S3.b",
+     "kind": "eventual",
+     "during": "step B",
+     "by_pulse": "6 pump cycles + 10 pulses",
+     "claim": "All 6 canal cells hold 1 level."
+    },
+    {
+     "id": "S3.c",
+     "kind": "invariant",
+     "during": "step B",
+     "claim": "Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse."
+    },
+    {
+     "id": "S3.d",
+     "kind": "invariant",
+     "claim": "The undug cells between pond and canal stay dry (G1)."
+    },
+    {
+     "id": "S3.e",
+     "kind": "eventual",
+     "during": "step C (round trip)",
+     "claim": "Variant: two equal dug 3x3 depth-4 reservoirs A (full, 36 levels) and B (empty), pump + one tank between them. Pump A to B, then B back to A. At the end A holds 36 levels, B 0, tank 0, hoses 0."
+    }
+   ],
+   "fails_if": [
+    "liquid appears in the canal with the pump unpowered",
+    "the pond loses less than the canal gains"
+   ],
+   "exclusions": [
+    "which pond cells give up their water",
+    "the shape of A after the round trip (only its total)",
+    "pump speed within the bound"
+   ],
+   "needs_ruling": [
+    {
+     "id": "S3.Q1",
+     "question": "A drill (ruling 3, 'part of Many Waters') or the new mapmaker Source tap (2026-10-16) stands beside a dug canal. Does it pour straight into the touching dug cell, or only into a tank/hose network that then needs an Outflow end?",
+     "options": {
+      "a": "straight into the touching dug cell",
+      "b": "only into a network; the canal is fed through an Outflow end",
+      "c": "both: it fills the touching cell if there is one, else the network"
+     },
+     "until_ruled": "the drill/tap variant is not tested"
+    }
+   ]
+  },
+  {
+   "id": "S4",
+   "title": "A sluice gate shut, then open, then shut again",
+   "grid": [
+    "|~~~~~~~~..........",
+    "|~~~~~~~~111G1111..",
+    "|~~~~~~~~.........."
+   ],
+   "setup": "The LIMITLESS lake. A depth-1 canal: 3 cells upstream, a sealed sluice gate on cell 4, 4 cells downstream. Gate shut at pulse 0, canal dry. Step A: 20 pulses shut. Step B: open the gate for 20 pulses. Step C: shut it for 40 pulses. Variant: the same with a metal grate gate, never opened.",
+   "rulings": [
+    {
+     "quote": "Sluice gates: YES. A buildable gate cell that holds liquid back until opened.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 16 (ruling 12)",
+     "verbatim": false
+    },
+    {
+     "quote": "There are sealed sluice gates (standard) and the ones made of metal grates that always allow liquid (this is just a gate, not a sluice gate then). Yes, both, two kinds of door.",
+     "date": "2026-10-06",
+     "file": "infrastructure/state/ledger/events/OWNER.jsonl (FLOWWORKS_SLUICE_TWO_DOORS_1)",
+     "verbatim": true
+    },
+    {
+     "quote": "Sluice doors and grates may be placed on wet canal cells (card pick).",
+     "date": "2026-10-11",
+     "file": "design/RimMandrake/gss_flowworks_rulings_2026-10-11.md ruling 18",
+     "verbatim": false
+    }
+   ],
+   "expected": [
+    {
+     "id": "S4.a",
+     "kind": "eventual",
+     "during": "step A",
+     "by_pulse": 6,
+     "claim": "The 3 upstream cells hold 1 level."
+    },
+    {
+     "id": "S4.b",
+     "kind": "invariant",
+     "during": "step A",
+     "claim": "The 4 downstream cells stay dry while the gate is shut."
+    },
+    {
+     "id": "S4.c",
+     "kind": "eventual",
+     "during": "step B",
+     "by_pulse": 8,
+     "claim": "After opening, all 4 downstream cells hold 1 level."
+    },
+    {
+     "id": "S4.d",
+     "kind": "invariant",
+     "during": "step C",
+     "claim": "Shut again: the upstream cells stay full."
+    },
+    {
+     "id": "S4.e",
+     "kind": "eventual",
+     "during": "variant",
+     "by_pulse": 12,
+     "claim": "Grate gate, never opened: all 4 downstream cells hold 1 level."
+    }
+   ],
+   "fails_if": [
+    "water passes a shut sealed sluice",
+    "a grate holds water back"
+   ],
+   "exclusions": [
+    "the fill of the gate's own cell",
+    "gate art and which way it turns",
+    "pawns passing the gate"
+   ],
+   "needs_ruling": [
+    {
+     "id": "S4.Q1",
+     "question": "Step C: the gate is shut again with the 4 downstream cells full. That water is now cut off from the lake. What should it do?",
+     "options": {
+      "a": "stay exactly as it is until the gate opens or a pump/sink moves it",
+      "b": "slowly drain back through the shut gate to the lake (a leaky gate)",
+      "c": "slowly drain away and vanish (evaporation) - this would be a second exception to conservation"
+     },
+     "until_ruled": "S4 step C makes no claim about the downstream cells"
+    }
+   ]
+  },
+  {
+   "id": "S5",
+   "title": "Nothing created or destroyed: a closed pond pays for its canal",
+   "grid": [
+    "...............",
+    ".PPP...........",
+    ".PPP1111111111.",
+    ".PPP...........",
+    "..............."
+   ],
+   "setup": "Nothing touches a map edge. Part A: a 3x3 enclosed deep pond (9 squares, 36 levels) and a 10-cell depth-1 canal dug dry off it. Part B: the same canal off a 1-square pond (4 levels). Part C: in Part B's end state, fill in canal cell 1. Part D: an isolated 3-cell depth-1 run, every cell authored at 1 level, touching nothing; fill in the middle cell. Part E: an enclosed 6x6 depth-2 basin with 8 levels authored as 4 centre cells at 2 levels, the rest dry.",
+   "rulings": [
+    {
+     "quote": "Scarcity is stock, not rate ... conservation of mass is true everywhere.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 2 (ruling 4, summary form)",
+     "verbatim": false
+    },
+    {
+     "quote": "There should also be a way to 'fill in' a canal that displaces liquid BACK. It does not destroy liquid if there's a place for it to go, but if it would 'overflow' it is destroyed.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 5",
+     "verbatim": true
+    },
+    {
+     "quote": "1 tank square, 1 deep water square/pond, 1 deep canal square should all be the same volume. Right now that's 4 I believe.",
+     "date": "2026-10-12",
+     "file": "infrastructure/state/ledger/events/OWNER.jsonl (POND_BED_DESIGN_LAKES_ARE_TALL_CANALS)",
+     "verbatim": true
+    },
+    {
+     "quote": "Volume per pond square: depends on the water - shallow 2 levels, deep 4 (card).",
+     "date": "2026-10-12",
+     "file": "design/RimMandrake/natural_bodies_as_canals_design_2026-10-11.md owner rulings 7",
+     "verbatim": false
+    },
+    {
+     "quote": "Please select an algorithm that will allow the fluid to levelset down to a smooth 0 or 1 across a too-wide field like this, not 0, deep, 0",
+     "date": "2026-10-16",
+     "file": "infrastructure/state/ledger/events/OWNER.jsonl (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND)",
+     "verbatim": true
+    }
+   ],
+   "expected": [
+    {
+     "id": "S5.a",
+     "kind": "eventual",
+     "during": "A",
+     "by_pulse": 14,
+     "claim": "All 10 canal cells hold 1 level and the pond holds exactly 26 levels (36 - 10)."
+    },
+    {
+     "id": "S5.b",
+     "kind": "eventual",
+     "during": "A",
+     "claim": "The pond shows fewer wet squares or lower fill than at the start."
+    },
+    {
+     "id": "S5.c",
+     "kind": "eventual",
+     "during": "B",
+     "by_pulse": 10,
+     "claim": "Exactly 4 canal cells are wet, they are cells 1-4, and the pond is empty (if S5.Q1 = a)."
+    },
+    {
+     "id": "S5.d",
+     "kind": "invariant",
+     "during": "B after settling",
+     "claim": "The wet front does not move for 40 more pulses."
+    },
+    {
+     "id": "S5.e",
+     "kind": "eventual",
+     "during": "C",
+     "claim": "Filling in cell 1 destroys nothing: canal + pond still hold 4 levels in total, and no overflow message appears."
+    },
+    {
+     "id": "S5.f",
+     "kind": "eventual",
+     "during": "D",
+     "claim": "Filling in the middle cell destroys exactly 1 level, and the player sees a message that names the amount."
+    },
+    {
+     "id": "S5.g",
+     "kind": "eventual",
+     "during": "E",
+     "by_pulse": 20,
+     "claim": "Settled: no cell holds 2 levels while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8."
+    }
+   ],
+   "fails_if": [
+    "any total changes except Part D's disclosed level",
+    "Part E stays 0, deep, 0"
+   ],
+   "exclusions": [
+    "whether Part C's displaced level lands in the canal or the pond",
+    "which pond squares recede first",
+    "which 8 basin cells end wet in Part E",
+    "the wording of the overflow message"
+   ],
+   "needs_ruling": [
+    {
+     "id": "S5.Q1",
+     "question": "How many 1-deep canal cells does one full deep pond square fill? Your 2026-09-16 words were 'Each source's square can supply up to five canal squares'; your 2026-10-12 ruling made a deep pond square 4 levels, the same as a deep canal square.",
+     "options": {
+      "a": "4 - the 2026-10-12 volume ruling replaces the old 'five'",
+      "b": "5 - the old supply rule stands on top of the volume ruling"
+     },
+     "until_ruled": "S5.a and S5.c are tested against 4 (option a)"
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "title": "Save and reload mid-flow, and the flow carries on",
+   "grid": [
+    "...............",
+    ".PPP...........",
+    ".PPP1111111111.",
+    ".PPP...........",
+    "..............."
+   ],
+   "setup": "S5 Part A, plus S4's gate scene with the gate shut and the downstream half full. Run 1: uninterrupted to pulse 30. Run 2: the same start; save at pulse 4 (canal partly wet), reload, continue to pulse 30.",
+   "rulings": [
+    {
+     "quote": "Scarcity is stock, not rate ... conservation of mass is true everywhere.",
+     "date": "2026-09-16",
+     "file": "design/RimMandrake/flowworks_mod_definition.md section 2 (ruling 4, summary form)",
+     "verbatim": false
+    }
+   ],
+   "rulings_note": "No owner ruling speaks about save and reload. This scene rests on conservation alone, which is why S6.Q1 exists.",
+   "expected": [
+    {
+     "id": "S6.a",
+     "kind": "at_reload",
+     "claim": "Straight after the reload, every cell's depth and fill, the pond's stock, and the gate's open/shut state equal what they were at the save."
+    },
+    {
+     "id": "S6.b",
+     "kind": "invariant",
+     "claim": "Total liquid in Run 2 is the same before the save and after the reload."
+    },
+    {
+     "id": "S6.c",
+     "kind": "eventual",
+     "by_pulse": 30,
+     "claim": "Run 2 ends in the same settled state as Run 1, cell for cell."
+    }
+   ],
+   "fails_if": [
+    "a fill front that restarts from the mouth after reload",
+    "water gained or lost across the reload",
+    "a shut gate that comes back open"
+   ],
+   "exclusions": [
+    "load time",
+    "save-file format",
+    "saves made by older mod versions (migration)"
+   ],
+   "needs_ruling": [
+    {
+     "id": "S6.Q1",
+     "question": "After a reload, must the flow be identical pulse by pulse to a run that was never saved, or only end in the same place?",
+     "options": {
+      "a": "identical at every pulse (strict; the strongest test)",
+      "b": "same totals and same final settled state; small differences on the way are fine"
+     },
+     "until_ruled": "S6.c (the final state) is tested; pulse-by-pulse identity is not"
+    }
+   ]
+  }
+ ],
+ "seal": {
+  "algo": "sha256",
+  "over": "canonical JSON (sort_keys, compact) of legend+global+scenes",
+  "value": "5244a13e6fdf097ef64089654c8f19552f06edf7c37a2de2fbcda08adc4c7184"
+ }
+}
