@@ -6,6 +6,7 @@
     facing_regen_batch.py plan     # write STATE (refuses to overwrite one that exists)
     facing_regen_batch.py run -j 3 # gen -> conform -> lint (judge + feet row) -> register -> canon (SW) -> install
     facing_regen_batch.py status
+    facing_regen_batch.py requeue <texPath substring>...   # reset non-installed rows to pending
 
 STATE (Transient/facing_regen_batch_2026-10-16/state.json, committed) holds one record per picture with a
 semantic status: pending | in_progress | ready | installed | needs_eyes | retryable_failure | skipped.
@@ -120,6 +121,17 @@ def plan() -> int:
     BATCH.mkdir(parents=True, exist_ok=True)
     save({"schema": 1, "rows": str(ROWS.relative_to(REPO)), "tag": TAG, "items": items})
     print(status())
+    return 0
+
+
+def requeue(subs: list[str]) -> int:
+    """Reset matching non-installed rows to pending (attempts 0) so `run` picks them up again."""
+    if not subs:
+        sys.exit("requeue needs at least one texPath substring")
+    for k, v in load()["items"].items():
+        if v["status"] != "installed" and any(s.lower() in k for s in subs):
+            update(k, status="pending", attempts=0, why="")
+            print("requeued", k)
     return 0
 
 
@@ -422,9 +434,12 @@ def montage(per_page: int = 24, ppu: int = 110) -> list[str]:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "run", "status", "install", "montage"])
+    ap.add_argument("cmd", choices=["plan", "run", "status", "install", "montage", "requeue"])
+    ap.add_argument("keys", nargs="*", help="requeue: texPath substrings (lowercase) of rows to reset to pending")
     ap.add_argument("-j", "--jobs", type=int, default=1)
     a = ap.parse_args(argv)
+    if a.cmd == "requeue":
+        return requeue(a.keys)
     if a.cmd == "plan":
         return plan()
     if a.cmd == "montage":
