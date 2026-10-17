@@ -157,7 +157,10 @@ namespace RimMandrake.FlowWorks.RiverColors
                 return null;
 
             var byRoot = new Dictionary<int, List<int>>();
-            foreach (int tileId in parent.Keys)
+            // Snapshot: Find_ path-compresses (writes parent[]), and Mono's
+            // Dictionary bumps its version on overwrite, so enumerating
+            // parent.Keys live would throw InvalidOperationException.
+            foreach (int tileId in new List<int>(parent.Keys))
             {
                 int r = Find_(tileId);
                 if (!byRoot.TryGetValue(r, out List<int> list))
