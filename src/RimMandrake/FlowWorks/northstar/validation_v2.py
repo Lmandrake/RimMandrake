@@ -599,7 +599,6 @@ class PulseOracle(object):
         before its own band, and a part-filled band is grown best-first by _ls_key from the piece's best square."""
         compset = set(comp)
         flu = lambda c: self.fluid.get(c, "RM_Fluid_Water")
-        drains = len(self.dk) > 0
         member = set()
         seeds = sorted((c for c in comp if self.exc(c) and self.F[c] > 0), key=self.idx)
         for seed in seeds:
@@ -641,6 +640,8 @@ class PulseOracle(object):
                         continue
                     dset.add(n)
                     domain.append(n)
+            # FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK: the region drains only if a sink is reachable from its own domain
+            drains = any(c in self.dk for c in domain)
             volume = sum(self.F[c] for c in region)
             maxband = max(self.D[c] for c in domain)
             comps, comp_of = [], {}             # comp: dict(band, cells, children); comp_of[(band, cell)] = comp index

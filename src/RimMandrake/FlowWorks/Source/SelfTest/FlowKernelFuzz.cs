@@ -873,6 +873,36 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: shut F={held} holds={holds} opened={opened} grate={grate} worstImbalance={worst}";
 		}
 
+		/// <summary>FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK (GPT 1core #6): a D=1 canal from a limitless source, shut sluice at
+		/// x=4, edge sink beyond it. The region above the sluice reaches no sink, so it must solve as FED (mouth deferred), not as
+		/// draining because the component has a sink somewhere: drained by index the mouth kept its unit and x=2,3 stayed dry
+		/// in one direction only. Both directions must fill the upstream cells. Returns "OK ..." or "BROKEN ...".</summary>
+		public static string SealedSinkBelowSourceFillsUpstream()
+		{
+			string Run(bool west)
+			{
+				const int len = 8;
+				int X(int x) => west ? len - 1 - x : x;
+				var w = new ArrayWorld(len, 1);
+				w.AddBody(true, 0f, new[] { X(0) });
+				var digs = Enumerable.Range(1, len - 1).Select(X).ToList();
+				foreach (int c in digs) w.k.depth[c] = 1;
+				w.sink[X(len - 1)] = true;
+				w.k.edgeSinksEnabled = true;
+				w.k.viscosityEnabled = true;
+				w.k.creepWaterEnabled = true;
+				w.k.levelBySurfaceEnabled = true;
+				w.k.levelSetEnabled = true;
+				w.k.sealedCell = idx => idx == X(4);
+				for (int p = 0; p < 60; p++) { w.Pulse(digs); Pulses++; }
+				return string.Join(",", Enumerable.Range(1, 3).Select(x => w.k.fill[X(x)]));
+			}
+			string east = Run(false), west = Run(true);
+			return east == "1,1,1" && west == "1,1,1"
+				? "OK: upstream of a shut sluice fills from the source both ways (x=1..3: 1,1,1)"
+				: $"BROKEN: upstream x=1..3 east {east}, west {west} (want 1,1,1 both)";
+		}
+
 		/// <summary>GPT FlowWorks review #10: a shut sluice in the sink band neither drains nor fills.</summary>
 		public static string SealedSinkHolds()
 		{
