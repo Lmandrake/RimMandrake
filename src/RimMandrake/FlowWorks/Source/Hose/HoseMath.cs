@@ -138,6 +138,15 @@ namespace RimMandrake.FlowWorks.Hose
 
     public static class HoseMath
     {
+        /// <summary>FLOWWORKS_HOSE_FIX_NAN_WINDING_INSTANT: a setting clamped to [lo, hi], with a non-finite value (a hand-edited
+        /// or corrupt "NaN" in the settings file, which float.Parse accepts) read as <paramref name="fallback"/>. Mathf.Clamp
+        /// passes NaN through, and a NaN winding speed finished every retraction on its first tick.</summary>
+        public static float FiniteClamp(float v, float lo, float hi, float fallback)
+        {
+            if (float.IsNaN(v)) return fallback;
+            return v < lo ? lo : v > hi ? hi : v;
+        }
+
         /// <summary>Round 6 (owner 2026-10-04): a reel's hose is 40 cells by default (was 30). The route rule is unchanged: a
         /// route fits when its taut length x RouteMargin (5%) is within the hose.</summary>
         public const double DefaultMaxLength = 40;
