@@ -1,0 +1,1 @@
+FlowWorks thirst full runs: a later row's desperate pawns drink an EARLIER row's leftovers (toxic outranks slime in JobGiver_RM_Drink's BetterPick; a leftover player tank is a drink source). Colonists also PACK filled bottles, so the bottle stock is RM_BottleStock.Have (ground + packed), never a ground count. thirst_live.py dry_all/quench_all/have() encode this.
