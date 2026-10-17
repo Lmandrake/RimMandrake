@@ -1311,6 +1311,10 @@ USE_CLASS = {
     "lava": "Never",
 }
 
+# Owner Q12 part 2, 2026-10-17: "Sprinklers shouldn't offer spraying brine" (replacing the held default "brine kills a
+# watered crop"): a sprinkler never picks these off its net.
+NEVER_SPRAYED = {"saltwater", "brine"}
+
 # Rows whose whole terrain form is a base-game terrain and which have no canal fluid: RM_LiquidSurface and
 # RM_LiquidLooks never restyle an official terrain, so a surfaceLook here could never be seen. They keep the
 # engine's own look and owe no SURFACE_LOOKS entry (selftest_liquid_looks.py exempts exactly these).
@@ -1608,6 +1612,8 @@ def build_liquiddef_xml(row):
     if row.get("thirstQuality"):
         lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
     lines.append(f"    <useClass>{USE_CLASS[row['_key']]}</useClass>")
+    if row["_key"] in NEVER_SPRAYED:
+        lines.append("    <neverSprayed>true</neverSprayed>")
     if row.get("drinkThought"):
         lines.append(f"    <drinkThought>{row['drinkThought']}</drinkThought>")
     if row.get("drinkOutcomes"):

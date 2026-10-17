@@ -162,6 +162,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
         }
 
+        /// <summary>Owner Q12 part 2, 2026-10-17: "Sprinklers shouldn't offer spraying brine" -- a sprinkler never picks this
+        /// liquid off its net (salt water and brine; generator table NEVER_SPRAYED).</summary>
+        public bool neverSprayed;
+
         /// <summary>Potable: the only class a pawn gathers on its own (fill, fill from a tank, snow). Everything else moves
         /// by an order (a forced job, or a machine's bill).</summary>
         public bool AutoGathered => UseClass == LiquidUseClass.Potable;

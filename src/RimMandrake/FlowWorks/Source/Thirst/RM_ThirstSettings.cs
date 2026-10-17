@@ -21,6 +21,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool saltBreakEnabled = true;
 		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q1): the small mood penalty for an awkward drink.</summary>
 		public static bool roughDrinkPenalty = true;
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q10): litres of potable water every net keeps back for drinkers. 0 = off.</summary>
+		public static float drinkingReserveLitres = 200f;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -37,6 +39,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref lastResortDrinking, "lastResortDrinking", true);
 			Scribe_Values.Look(ref saltBreakEnabled, "saltBreakEnabled", true);
 			Scribe_Values.Look(ref roughDrinkPenalty, "roughDrinkPenalty", true);
+			Scribe_Values.Look(ref drinkingReserveLitres, "drinkingReserveLitres", 200f);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -79,6 +82,11 @@ namespace RimMandrake.FlowWorks.Thirst
 				"Cups, bottles and taps at home are free, and so are ponds and rivers. Drinking on the road, out in the field away "
 				+ "from home, or scooped out of a bucket or barrel gives a small mood penalty for a few hours. Ascetic, tough and "
 				+ "undergrounder pawns, wild people and tribal folk never mind. Off: no drink ever costs mood.");
+			list.Label("Drinking reserve on every pipe network: " + (drinkingReserveLitres < 1f ? "off" : drinkingReserveLitres.ToString("F0") + " L"),
+				tooltip: "Sprinklers and machines stop drawing drinkable water when a network is down to this much, so crops and "
+				+ "industry never drink the colony dry. Pawns drinking at a tank are never held back. Salt water, fuel and other "
+				+ "undrinkable liquids keep no reserve. 0 = off.");
+			drinkingReserveLitres = UnityEngine.Mathf.Round(list.Slider(drinkingReserveLitres, 0f, 2000f) / 50f) * 50f;
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
 				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
 				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");

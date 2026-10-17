@@ -239,7 +239,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				int room = step.product != null
 					? RM_LiquidNet.Room(parent, step.product)
 					: (step.productThing != null ? -1 : 0);
-				int n = RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, RM_LiquidNet.Available(parent, liquid), room);
+				int n = RM_ConversionMath.Batches(capped, step.InputUnits, step.OutputUnits, Thirst.RM_DrinkReserve.Spendable(parent, liquid), room);   // Q10: drinkers first
 				// "went without" (G9) means went without the LIQUID: budget and output room allowed a batch but the input did not,
 				// or the rotation held us back. A machine idle for budget or a full output tank must not hold the other one back
 				// (it would starve forever, and the machine that drew last could never draw again).

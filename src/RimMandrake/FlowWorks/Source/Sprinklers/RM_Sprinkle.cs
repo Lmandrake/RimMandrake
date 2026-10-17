@@ -53,14 +53,15 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			var byName = new Dictionary<string, LiquidDef>();
 			foreach (Building_LiquidTank t in RM_LiquidNet.TanksFor(head))
 			{
-				if (t.Empty || !t.GivesToMachines) continue;
+				// owner Q12 part 2, 2026-10-17: "Sprinklers shouldn't offer spraying brine" (nor salt water): never picked
+				if (t.Empty || !t.GivesToMachines || t.storedLiquid.neverSprayed) continue;
 				parts.Add(new KeyValuePair<string, int>(t.storedLiquid.defName, t.storedUnits));
 				byName[t.storedLiquid.defName] = t.storedLiquid;
 			}
 			string pick = RM_SprinklerKernel.PickLiquid(parts);
 			if (pick == null) return null;
 			LiquidDef l = byName[pick];
-			held = RM_LiquidNet.Available(head, l);
+			held = Thirst.RM_DrinkReserve.Spendable(head, l);   // Q10: drinkers first
 			return l;
 		}
 

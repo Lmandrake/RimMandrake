@@ -171,7 +171,8 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				int now = Find.TickManager.TicksGame;
 				RM_ConsumerRotation rotation = RM_LiquidNet.Rotation(parent.Map);
 				object rotKey = RM_ConsumerRotation.Key(r.reactantA, tanks.Count > 0 ? tanks.Min(t => t.thingIDNumber) : 0);   // C1-F4: per store
-				int haveA = RM_LiquidNet.Available(parent, r.reactantA), haveB = RM_LiquidNet.Available(parent, r.reactantB);
+				// Q10: drinkers first (a potable reactant keeps the drinking reserve back)
+				int haveA = Thirst.RM_DrinkReserve.Spendable(parent, r.reactantA), haveB = Thirst.RM_DrinkReserve.Spendable(parent, r.reactantB);
 				if (haveA < r.UnitsA || haveB < r.UnitsB)
 				{
 					if (haveA > 0 && haveB > 0)

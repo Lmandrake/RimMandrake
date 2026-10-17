@@ -100,7 +100,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // rule break 1: auto-fill gathered ANY liquid. The unforced fill and fill-from-tank now take Potable only.
                 string b = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
                 RiverSwitchFlipChecks.Has(b, @"potableOnly: !ordered\)", "the fill search is potable-only unless ordered");
-                RiverSwitchFlipChecks.Has(b, @"if \(potableOnly && !candidate\.AutoGathered\)", "non-potable cells are skipped");
+                RiverSwitchFlipChecks.Has(b, @"if \(potableOnly && !candidate\.AutoGathered", "non-potable cells are skipped");
                 string g = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottle.cs"));
                 Assert(System.Text.RegularExpressions.Regex.Matches(g, @"TryFindFillCell\(pawn, t, out cell, out liquid, out refusal, forced\)").Count == 2, "both fill-giver calls pass forced as the order");
                 string t = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidTankUtility.cs"));
@@ -236,6 +236,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string j = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
                 RiverSwitchFlipChecks.Has(j, @"RM_ThirstMath\.BetterPick\(u, a, q, d, pu, pa, pq, pd\)", "the giver ranks awkward sources after free ones");
                 RiverSwitchFlipChecks.Has(j, @"RM_DrinkSource\.Terrain\);", "a pond drink is marked terrain (free)");
+            });
+            Case("Thirst_reserve_orders_sprinklers_ruled", () =>
+            {
+                // Q10: drinkers first on a shared net; Q9: a Fill tank holding the liquid is the standing order; Q12: no brine spray
+                Assert(RM_ThirstMath.Spendable(5000, 2000, true) == 3000 && RM_ThirstMath.Spendable(1500, 2000, true) == 0, "potable: the reserve is kept back");
+                Assert(RM_ThirstMath.Spendable(1500, 2000, false) == 1500, "can-fail: salt/fuel keep no reserve");
+                Assert(RM_ThirstMath.Spendable(1500, 0, true) == 1500, "reserve 0 = off");
+                string r = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_DrinkReserve.cs"));
+                RiverSwitchFlipChecks.Has(r, @"RM_ThirstMath\.Spendable\(available, ReserveUnits, liquid != null && liquid\.AutoGathered\)", "the reserve applies to potable liquid only");
+                foreach (var (file, what) in new[] { ("Machinery/CompLiquidConverter.cs", "stills and converters"), ("Machinery/Kits/RM_LiquidBath.cs", "baths"),
+                                                     ("Machinery/Kits/RM_LiquidReaction.cs", "reaction vats"), ("Sprinklers/RM_Sprinkle.cs", "sprinklers") })
+                {
+                    Assert(RiverSwitchFlipChecks.Src(file.Replace('/', Path.DirectorySeparatorChar)).Contains("RM_DrinkReserve.Spendable("), what + " read the reserve");
+                }
+                Assert(!RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "CompLiquidPipeAdapter.cs")).Contains("RM_DrinkReserve"), "the VE pipe adapter may be feeding taps: not held back");
+                string sp = RiverSwitchFlipChecks.Src(Path.Combine("Sprinklers", "RM_Sprinkle.cs"));
+                RiverSwitchFlipChecks.Has(sp, @"t\.storedLiquid\.neverSprayed\) continue;", "a sprinkler never picks salt or brine");
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                var sprayless = reg.Root.Elements().Where(e => (string)e.Element("neverSprayed") == "true").Select(e => (string)e.Element("defName")).OrderBy(x => x).ToList();
+                Assert(sprayless.SequenceEqual(new[] { "RM_Liquid_Brine", "RM_Liquid_SaltWater" }), "exactly salt and brine are never sprayed: " + string.Join(",", sprayless));
+                string b = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
+                RiverSwitchFlipChecks.Has(b, @"if \(potableOnly && !candidate\.AutoGathered && !standing\.Contains\(candidate\)\)", "Q9: a standing order lets pawns gather that liquid");
+                RiverSwitchFlipChecks.Has(b, @"!l\.AutoGathered && t\.TakesBottles\(false\) && t\.CanAccept\(", "the order is a Fill tank already holding it, with room");
             });
             Case("Thirst_dehydration_ruled", () =>
             {
