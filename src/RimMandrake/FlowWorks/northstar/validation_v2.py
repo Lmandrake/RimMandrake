@@ -3806,7 +3806,7 @@ class MockBridge(object):
         present = (self.jobs.get(c) or [None])[0] == des
         if kind == "dig":
             if d >= 4:
-                acc, why = False, "Already SUPERDEEP — this is as far down as digging goes."
+                acc, why = False, "Already 2 m deep: the deepest digging goes (2 m, set in this mod's settings)."  # mirrors Designator_DigCanal (6f6eb1d262; phase S runs at the 2 m cap)
             elif d and not self.S("digToDepthEnabled") and "deepen_gate_ignored" not in self.faults:
                 acc, why = False, "Deepening is switched off in this mod's settings."
             else:
