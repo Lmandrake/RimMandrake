@@ -103,7 +103,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return 0;
             }
             RM_ContainerMaterialRule rule = RuleFor(container);
-            return RM_ContainerMaterialMath.ScaledUnits(liquid.UnitsFor(size), rule?.capacityFactor ?? 1f);
+            int full = RM_ContainerMaterialMath.ScaledUnits(liquid.UnitsFor(size), rule?.capacityFactor ?? 1f);
+            // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: a part-drunk bucket or barrel holds only what is left in it
+            return System.Math.Max(0, full - Thirst.CompRM_DrawnLitres.DrawnUnits(container));
         }
     }
 

@@ -172,8 +172,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			return QualityOf(LiquidOf(t)).HasValue;
 		}
 
-		/// <summary>One drink. <paramref name="source"/> is the bottle (null for terrain or a tank).</summary>
-		public static void Drink(Pawn pawn, LiquidDef liquid, float litres, Thing source)
+		/// <summary>One drink. <paramref name="source"/> is the bottle (null for terrain or a tank); <paramref name="kind"/>
+		/// says where it came from, for the awkward-access thought (a bottle drunk by a caravan member counts as travel).</summary>
+		public static void Drink(Pawn pawn, LiquidDef liquid, float litres, Thing source, RM_DrinkSource kind = RM_DrinkSource.Bottle)
 		{
 			if (pawn == null || pawn.Dead)
 			{
@@ -202,6 +203,28 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 			QualityEffects(pawn, q, source);
 			RowEffects(pawn, liquid, source);
+			RoughDrink(pawn, kind);
+		}
+
+		/// <summary>Q1/Q3/Q4 (owner 2026-10-17): RM_Thought_DrankRough after an awkward drink (RM_ThirstMath.Awkward), unless
+		/// the pawn never minds (RoughExempt; the hardy traits are the thought's nullifyingTraits).</summary>
+		public static void RoughDrink(Pawn pawn, RM_DrinkSource kind)
+		{
+			if (!RM_ThirstSettings.roughDrinkPenalty || RM_ThirstDefOf.RM_Thought_DrankRough == null)
+			{
+				return;
+			}
+			if (kind == RM_DrinkSource.Bottle && pawn.IsCaravanMember())
+			{
+				kind = RM_DrinkSource.Caravan;
+			}
+			bool atHome = pawn.MapHeld != null && pawn.MapHeld.IsPlayerHome;
+			bool tribal = pawn.Faction?.def != null && pawn.Faction.def.techLevel <= TechLevel.Neolithic;
+			if (!RM_ThirstMath.Awkward(kind, atHome) || RM_ThirstMath.RoughExempt(pawn.RaceProps.Humanlike, pawn.IsWildMan(), tribal))
+			{
+				return;
+			}
+			pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(RM_ThirstDefOf.RM_Thought_DrankRough);
 		}
 
 		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q6): the row's own drink effects, once per drink by every route: the

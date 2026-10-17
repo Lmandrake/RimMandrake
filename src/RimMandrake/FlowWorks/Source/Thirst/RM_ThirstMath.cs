@@ -28,6 +28,16 @@ namespace RimMandrake.FlowWorks.Thirst
 		Never = 3,
 	}
 
+	/// <summary>Where a drink came from (the awkward-access rule, owner Q1 2026-10-17).</summary>
+	public enum RM_DrinkSource
+	{
+		Bottle,
+		Tank,
+		Terrain,
+		Container,
+		Caravan,
+	}
+
 	public enum RM_ThirstProviderMode
 	{
 		Own,
@@ -151,6 +161,47 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool SaltBreakCan(float level, bool saltPoisoned, bool potableReachable, bool saltReachable)
 		{
 			return level < ParchedBelow && !saltPoisoned && !potableReachable && saltReachable;
+		}
+
+		/// <summary>Owner, Q1 2026-10-17: "cups, piped taps, any civilized access. Only where it's awkward and difficult is
+		/// penalized, like on travel or out in the field." Q2: ponds and rivers are free. So: a drink while travelling (a
+		/// caravan), or scooped out of a bucket or barrel, is awkward anywhere; a bottle or a tank tap is awkward only away
+		/// from home (out in the field); terrain never is.</summary>
+		public static bool Awkward(RM_DrinkSource source, bool atHome)
+		{
+			switch (source)
+			{
+				case RM_DrinkSource.Terrain:
+					return false;
+				case RM_DrinkSource.Caravan:
+				case RM_DrinkSource.Container:
+					return true;
+				default:
+					return !atHome;
+			}
+		}
+
+		/// <summary>Q3/Q4: who never minds. Hardy traits are the thought's own nullifyingTraits (Ascetic, Tough,
+		/// Undergrounder); here the rest: anything not humanlike, wild people, tribal-faction pawns.</summary>
+		public static bool RoughExempt(bool humanlike, bool wildMan, bool tribal)
+		{
+			return !humanlike || wildMan || tribal;
+		}
+
+		/// <summary>The giver's pick order: use class, then not-awkward over awkward (a pawn walks to the tap before it
+		/// scoops from a bucket), then quality, then distance.</summary>
+		public static bool BetterPick(RM_DrinkUse useA, bool awkA, RM_WaterQuality a, float distA,
+			RM_DrinkUse useB, bool awkB, RM_WaterQuality b, float distB)
+		{
+			if (useA != useB)
+			{
+				return (int)useA < (int)useB;
+			}
+			if (awkA != awkB)
+			{
+				return !awkA;
+			}
+			return Better(useA, a, distA, useB, b, distB);
 		}
 
 		/// <summary>The break ends when the bar reads this full (2-4 salt drinks from parched).</summary>

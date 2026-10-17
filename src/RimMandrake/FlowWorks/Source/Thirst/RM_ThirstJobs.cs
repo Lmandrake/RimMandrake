@@ -73,13 +73,25 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				cd = (cell - pawn.Position).LengthHorizontalSquared;
 			}
-			int pick = -1;   // 0 bottle, 1 tank, 2 terrain
+			Thing container = RM_ThirstContainerUtility.BestContainer(pawn, level, out RM_DrinkUse ku, out RM_WaterQuality kq, out float kd, only);
+			bool home = pawn.Map.IsPlayerHome;
+			int pick = -1;   // 0 bottle, 1 tank, 2 terrain, 3 bucket/barrel
 			RM_DrinkUse pu = RM_DrinkUse.Never;
+			bool pa = false;
 			RM_WaterQuality pq = RM_WaterQuality.Slime;
 			float pd = float.MaxValue;
-			if (bottle != null) { pick = 0; pu = bu; pq = bq; pd = bd; }
-			if (tank != null && (pick < 0 || RM_ThirstMath.Better(tu, tq, td, pu, pq, pd))) { pick = 1; pu = tu; pq = tq; pd = td; }
-			if (cell.IsValid && (pick < 0 || RM_ThirstMath.Better(cu, cq, cd, pu, pq, pd))) { pick = 2; }
+			void Offer(int k, RM_DrinkUse u, RM_DrinkSource src, RM_WaterQuality q, float d)
+			{
+				bool a = RM_ThirstMath.Awkward(src, home);
+				if (pick < 0 || RM_ThirstMath.BetterPick(u, a, q, d, pu, pa, pq, pd))
+				{
+					pick = k; pu = u; pa = a; pq = q; pd = d;
+				}
+			}
+			if (bottle != null) Offer(0, bu, RM_DrinkSource.Bottle, bq, bd);
+			if (tank != null) Offer(1, tu, RM_DrinkSource.Tank, tq, td);
+			if (cell.IsValid) Offer(2, cu, RM_DrinkSource.Terrain, cq, cd);
+			if (container != null) Offer(3, ku, RM_DrinkSource.Container, kq, kd);
 			switch (pick)
 			{
 				case 0:
@@ -90,6 +102,8 @@ namespace RimMandrake.FlowWorks.Thirst
 					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkFromTank, tank);
 				case 2:
 					return RM_ThirstUtility.TerrainJob(cell);
+				case 3:
+					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkFromContainer, container);
 			}
 			return null;
 		}
@@ -200,7 +214,7 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					return;
 				}
-				RM_ThirstUtility.Drink(pawn, liquid, RM_ThirstMath.TerrainDrinkLitres, null);
+				RM_ThirstUtility.Drink(pawn, liquid, RM_ThirstMath.TerrainDrinkLitres, null, RM_DrinkSource.Terrain);
 			};
 			finish.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return finish;
@@ -231,7 +245,7 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					return;
 				}
-				RM_ThirstUtility.Drink(pawn, liquid, RM_ThirstMath.TankDrinkLitres, null);
+				RM_ThirstUtility.Drink(pawn, liquid, RM_ThirstMath.TankDrinkLitres, null, RM_DrinkSource.Tank);
 			};
 			finish.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return finish;

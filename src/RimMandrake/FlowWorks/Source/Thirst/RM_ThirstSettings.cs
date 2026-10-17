@@ -19,6 +19,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool lastResortDrinking = true;
 		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q8): the salt-water mental break.</summary>
 		public static bool saltBreakEnabled = true;
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q1): the small mood penalty for an awkward drink.</summary>
+		public static bool roughDrinkPenalty = true;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -34,6 +36,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref waterQualityEffects, "waterQualityEffects", true);
 			Scribe_Values.Look(ref lastResortDrinking, "lastResortDrinking", true);
 			Scribe_Values.Look(ref saltBreakEnabled, "saltBreakEnabled", true);
+			Scribe_Values.Look(ref roughDrinkPenalty, "roughDrinkPenalty", true);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -72,6 +75,10 @@ namespace RimMandrake.FlowWorks.Thirst
 				+ "reads full. It feels better for an hour or two; then salt poisoning sets in (nausea, confusion, seizures, "
 				+ "death if untreated), and thirst comes back three times as fast. Fresh water and a doctor cure it. Never twice "
 				+ "while still poisoned. Off: salt water is simply never drunk.");
+			list.CheckboxLabeled("Awkward drinking is a little unpleasant", ref roughDrinkPenalty,
+				"Cups, bottles and taps at home are free, and so are ponds and rivers. Drinking on the road, out in the field away "
+				+ "from home, or scooped out of a bucket or barrel gives a small mood penalty for a few hours. Ascetic, tough and "
+				+ "undergrounder pawns, wild people and tribal folk never mind. Off: no drink ever costs mood.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
 				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
 				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");
