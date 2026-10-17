@@ -2252,6 +2252,17 @@ def _in_any(c, rects):
 
 # ---------------------------------------------------------------------------- phase S (0 ticks)
 def phase_S(L, args):
+    # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the dig cap is a Mod Setting (8 m shipped). Phase S's ladder rows (S1n, S6)
+    # prove the cap at its 2 m setting, the four-depth ladder they were written for; restored after (restore_settings
+    # also covers it). The 8 m rows (the 4/7/7/4 square) are P10's.
+    L.sset(S_FW, "maxDigDepth", 4.0)
+    try:
+        _phase_S_body(L, args)
+    finally:
+        L.sset(S_FW, "maxDigDepth", 16.0)
+
+
+def _phase_S_body(L, args):
     B = L.B
     with L.step("S_state", 0):
         e0 = L.eng()
@@ -2334,7 +2345,7 @@ def phase_S(L, args):
                     L.o.bodies[k]["capacity"] = float(g.get("capacity") or 0)
         # S6 (was UNCOVERED until jawa/flowworks_job_probe, 2026-10-02): designate_batch bypasses
         # Designator_DigCanal.CanDesignateCell, so ask the designator itself. D=1 deepens with the
-        # toggle ON and is refused OFF; D=4 is refused either way; undug soil is accepted even OFF
+        # toggle ON and is refused OFF; D=4 is refused either way (at the 2 m cap phase_S sets); undug soil is accepted even OFF
         # (the toggle gates DEEPENING only -- the control that makes "refused OFF" mean something).
         undug = SCENES["S2_clamp"]["cells"][1]
         on1, on4 = L.probe(cells[0]), L.probe(cells[3])
@@ -2353,7 +2364,7 @@ def phase_S(L, args):
         else:
             acc = lambda g: (g.get("designator") or {}).get("accepted")          # noqa: E731
             why = lambda g: (g.get("designator") or {}).get("reason") or ""      # noqa: E731
-            L.row("S6_digToDepth_gate", acc(on1) is True and acc(on4) is False and "SUPERDEEP" in why(on4)
+            L.row("S6_digToDepth_gate", acc(on1) is True and acc(on4) is False and "deepest digging goes" in why(on4)
                   and acc(off1) is False and "Deepening" in why(off1) and acc(off0) is True, "MOD",
                   "Designator_DigCanal: D1 ON %s; D4 %s (%s); D1 OFF %s (%s); undug soil OFF %s" % (
                       acc(on1), acc(on4), why(on4)[:40], acc(off1), why(off1)[:50], acc(off0)))

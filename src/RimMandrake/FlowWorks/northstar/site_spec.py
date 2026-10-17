@@ -42,6 +42,7 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
         "depthEngineEnabled": True, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
         "digToDepthEnabled": True,
+        "maxDigDepth": 16.0, "digCostRisesWithDepth": True,   # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: 8 m cap; P6 curve
         "liquidCorrosionEnabled": True, "liquidIgnitionEnabled": True,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,

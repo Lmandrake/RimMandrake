@@ -37,11 +37,12 @@ FEATURES = [
     ("def", r"^TerrainDef/RM_Channel_", "Four dug depths (channel grounds D1-D4)", "dig_canal"),
     ("def", r"RM_FillInCanal", "Fill-in order", "dig_fill_in"),
     ("gizmo", r"Dig canal", "Dig canal designator", "dig_canal"),
+    ("gizmo", r"Dig to depth", "Dig to depth designator (dig to N m)", "dig_canal"),   # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT
     ("gizmo", r"Fill in canal", "Fill in canal designator", "dig_fill_in"),
     ("tex", r"FlowWorks/Tank/", "Tank look art", "tank_styles"),
     ("tex", r"UI/Designators/FlowWorks/RM_DigCanal", "Dig canal icon", "dig_canal"),
     ("tex", r"UI/Designators/FlowWorks/RM_FillInCanal", "Fill in icon", "dig_fill_in"),
-    ("set", r"^digToDepthEnabled$", "Dig deeper", "dig_canal"),
+    ("set", r"^(digToDepthEnabled|maxDigDepth|digCostRisesWithDepth)$", "Dig deeper, to the dig cap (8 m shipped), each half-metre dearer", "dig_canal"),   # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT
     ("set", r"^fillIn", "Fill-in and its push-back", "dig_fill_in"),
     ("set", r"^digFind", "Digging turns up minerals", "dig_finds"),
     ("set", r"^(digRock|digSoilChunk)", "Digging rock takes longer and drops chunks (soil less)", "dig_canal"),   # DIG_ROCK_TUNE_STONE_FIGHTS_BACK: no rock-dig station, so the canal-dig one
