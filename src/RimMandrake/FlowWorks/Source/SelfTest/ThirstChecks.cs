@@ -206,6 +206,37 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(sb, @"float level = RM_ThirstUtility\.LevelAny\(pawn\);", "Q11: the break reads whichever thirst runs (Dubs' too)");
                 Assert(!RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs")).Contains("AddFoodPoisoningHediff"), "can-fail: salt's routine food poisoning is gone (its harm is salt poisoning now)");
             });
+            Case("Thirst_awkward_access_ruled", () =>
+            {
+                // Q1-Q4 (owner 2026-10-17): civilized access is free, awkward access costs a little; hardy and wild never mind.
+                Assert(!RM_ThirstMath.Awkward(RM_DrinkSource.Bottle, true) && !RM_ThirstMath.Awkward(RM_DrinkSource.Tank, true), "Q1: a bottle or a tap at home is free");
+                Assert(!RM_ThirstMath.Awkward(RM_DrinkSource.Terrain, false) && !RM_ThirstMath.Awkward(RM_DrinkSource.Terrain, true), "Q2: ponds and rivers are free, anywhere");
+                Assert(RM_ThirstMath.Awkward(RM_DrinkSource.Caravan, true) && RM_ThirstMath.Awkward(RM_DrinkSource.Container, true), "travel and scooping from a bucket/barrel are awkward");
+                Assert(RM_ThirstMath.Awkward(RM_DrinkSource.Bottle, false), "can-fail: a bottle out in the field is awkward");
+                Assert(RM_ThirstMath.RoughExempt(false, false, false) && RM_ThirstMath.RoughExempt(true, true, false) && RM_ThirstMath.RoughExempt(true, false, true), "Q4: animals, wild people, tribals exempt");
+                Assert(!RM_ThirstMath.RoughExempt(true, false, false), "a civilized colonist is not");
+                var P = RM_DrinkUse.Potable; var q = RM_WaterQuality.Potable;
+                Assert(RM_ThirstMath.BetterPick(P, false, q, 900f, P, true, q, 1f), "a free tap far away beats a bucket at the feet");
+                Assert(RM_ThirstMath.BetterPick(P, true, q, 1f, RM_DrinkUse.LastResort, false, q, 1f), "can-fail: but use class still comes first");
+                XDocument th = XDocument.Load(Path.Combine(ModRoot, "Defs", "Thirst", "RM_Thirst_Thoughts.xml"));
+                XElement rough = Def(th, "ThoughtDef", "RM_Thought_DrankRough");
+                var nul = rough.Element("nullifyingTraits").Elements("li").Select(e => e.Value).ToList();
+                Assert(nul.Count == 3 && nul.Contains("Ascetic") && nul.Contains("Tough") && nul.Contains("Undergrounder"), "Q3: Ascetic, Tough, Undergrounder (and no genes)");
+                Assert((string)rough.Descendants("baseMoodEffect").First() == "-3", "small");
+                XDocument b = XDocument.Load(Path.Combine(LiquidDefs, "ThingDefs", "RM_LiquidBottles_Base.xml"));
+                foreach (string bse in new[] { "RM_BucketItemBase", "RM_BarrelItemBase" })
+                {
+                    XElement d = b.Descendants("ThingDef").First(e => (string)e.Attribute("Name") == bse);
+                    Assert(d.Element("comps").Elements("li").Any(li => (string)li.Attribute("Class") == "RimMandrake.FlowWorks.Thirst.CompProperties_RM_DrawnLitres"), bse + ": remembers what was drawn");
+                }
+                XElement bottleBase = b.Descendants("ThingDef").First(e => (string)e.Attribute("Name") == "RM_BottleItemBase");
+                Assert(!bottleBase.ToString().Contains("DrawnLitres"), "can-fail: a bottle is drunk whole, no partial state");
+                string m = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_ContainerMaterials.cs"));
+                RiverSwitchFlipChecks.Has(m, @"full - Thirst\.CompRM_DrawnLitres\.DrawnUnits\(container\)", "every content read subtracts what was drunk");
+                string j = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstJobs.cs"));
+                RiverSwitchFlipChecks.Has(j, @"RM_ThirstMath\.BetterPick\(u, a, q, d, pu, pa, pq, pd\)", "the giver ranks awkward sources after free ones");
+                RiverSwitchFlipChecks.Has(j, @"RM_DrinkSource\.Terrain\);", "a pond drink is marked terrain (free)");
+            });
             Case("Thirst_dehydration_ruled", () =>
             {
                 // T6 offline: need held at 0 for 1 day -> 0.30

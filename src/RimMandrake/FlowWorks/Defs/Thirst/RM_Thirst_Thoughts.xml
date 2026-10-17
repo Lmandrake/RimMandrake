@@ -51,4 +51,24 @@
       </li>
     </stages>
   </ThoughtDef>
+  <!-- THIRST_RULES_BUILD_SALT_OFF_THE_MENU, owner Q1 2026-10-17: "Only where it's awkward and difficult is penalized, like on
+       travel or out in the field." Small (PROVISIONAL -3 for six hours). Q3: hardy pawns never mind (nullifyingTraits);
+       Q4: wild people, animals and tribal folk are exempted in code (RM_ThirstMath.RoughExempt). -->
+  <ThoughtDef>
+    <defName>RM_Thought_DrankRough</defName>
+    <durationDays>0.25</durationDays>
+    <stackLimit>1</stackLimit>
+    <nullifyingTraits>
+      <li>Ascetic</li>
+      <li>Tough</li>
+      <li>Undergrounder</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>drank rough</label>
+        <description>No cup, no tap, no proper place to drink. Just a mouthful scooped out of whatever was there.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
 </Defs>

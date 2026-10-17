@@ -635,7 +635,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Tu_use_class_gate", "Thirst_use_class_gate_ruled"),
                   ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source"),
                   ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled"),
-                  ("Tb_salt_break", "Thirst_salt_break_ruled")]
+                  ("Tb_salt_break", "Thirst_salt_break_ruled"),
+                  ("Tk_awkward_access", "Thirst_awkward_access_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -672,6 +673,11 @@ THIRST_LIVE = [
      "Major threshold (the mood half is vanilla's)"),
     ("T18_dubs_last_resort", "lastResortDrinking", "Dubs mode (Lite + Thirst add-on), DBHThirst forced to 0, only slime in "
      "reach: JobGiver_RM_Drink drinks it and Dubs' bar rises; at DBHThirst 0.2 ours does nothing"),
+    ("T19_awkward_access", "roughDrinkPenalty", "home map: colonist drinks a bottle and a tank: no RM_Thought_DrankRough; "
+     "only a filled RM_Bucket_FreshWater in reach: RM_DrinkFromContainer, -3 thought, the bucket reads 'Partly drunk: 1.5 L' "
+     "and no longer stacks; an Ascetic and a tribal pawn drinking the same: no thought; a pond: no thought"),
+    ("T20_bucket_drunk_dry", None, "a 15 L bucket drunk 10 times becomes RM_BucketDirty (or Empty with the dirty stage off); "
+     "emptying a part-drunk bucket into a tank adds only what is left"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
@@ -761,7 +767,7 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
-                                 "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled"] if t not in suite.toggles]
+                                 "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty"] if t not in suite.toggles]
 suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
                   if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS

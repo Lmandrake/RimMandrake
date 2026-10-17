@@ -15,6 +15,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static JobDef RM_DrinkFromTank;
 		public static JobDef RM_AdministerWater;
 		public static HediffDef RM_SaltPoisoning;
+		public static ThoughtDef RM_Thought_DrankRough;
+		public static JobDef RM_DrinkFromContainer;
 
 		static RM_ThirstDefOf()
 		{

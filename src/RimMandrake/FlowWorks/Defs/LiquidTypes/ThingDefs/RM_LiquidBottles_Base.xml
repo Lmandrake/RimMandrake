@@ -229,6 +229,8 @@
       <li>
         <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerStyle</compClass>
       </li>
+      <!-- THIRST_RULES_BUILD_SALT_OFF_THE_MENU: buckets and barrels are drunk 1.5 L at a time; this remembers what was drawn -->
+      <li Class="RimMandrake.FlowWorks.Thirst.CompProperties_RM_DrawnLitres" />
     </comps>
   </ThingDef>
 
@@ -327,6 +329,8 @@
       <li>
         <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerStyle</compClass>
       </li>
+      <!-- THIRST_RULES_BUILD_SALT_OFF_THE_MENU: buckets and barrels are drunk 1.5 L at a time; this remembers what was drawn -->
+      <li Class="RimMandrake.FlowWorks.Thirst.CompProperties_RM_DrawnLitres" />
     </comps>
   </ThingDef>
 

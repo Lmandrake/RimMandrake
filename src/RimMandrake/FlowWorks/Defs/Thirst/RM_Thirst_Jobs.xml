@@ -14,6 +14,13 @@
     <reportString>drinking from TargetA.</reportString>
     <suspendable>false</suspendable>
   </JobDef>
+  <!-- THIRST_RULES_BUILD_SALT_OFF_THE_MENU: a 1.5 L draw from a filled bucket or barrel (awkward: a small mood penalty) -->
+  <JobDef>
+    <defName>RM_DrinkFromContainer</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_DrinkFromContainer</driverClass>
+    <reportString>drinking from TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
   <JobDef>
     <defName>RM_AdministerWater</defName>
     <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_AdministerWater</driverClass>

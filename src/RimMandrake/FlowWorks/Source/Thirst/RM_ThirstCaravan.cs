@@ -52,7 +52,8 @@ namespace RimMandrake.FlowWorks.Thirst
 				}
 				if (river)
 				{
-					RM_ThirstUtility.Drink(p, RimMandrakeFlowWorks_DefOf.RM_Liquid_FreshWater, RM_ThirstMath.TerrainDrinkLitres, null);
+					RM_ThirstUtility.Drink(p, RimMandrakeFlowWorks_DefOf.RM_Liquid_FreshWater, RM_ThirstMath.TerrainDrinkLitres, null,
+						RM_DrinkSource.Terrain);   // Q2: rivers are free, on the road too
 				}
 			}
 		}
