@@ -134,7 +134,6 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                                     int cd = (int)Math.Round(rules.FireCooldownTicks * rules.CooldownMultiplier);
                                     Check(nextReady == now + cd, $"next ready {nextReady} vs {now + cd}");
                                     Check(now >= nrBefore, "fired during the cooldown");
-                                    if (lastFire != int.MinValue) Check(now - lastFire >= lastNextReady - lastFire || true, "-");
                                     if (lastFire != int.MinValue) Check(now >= lastNextReady, $"fired at {now} before the previous cooldown ended at {lastNextReady}");
                                     lastFire = now; lastNextReady = nextReady;
                                     if (count) { Fires++; if (spaced) Good++; else Bad++; }
@@ -603,7 +602,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                     }
                     Check(jars <= activeTicks / cycle, $"{jars} jars from {activeTicks} working ticks at {cycle} per jar");
                 }
-                catch (Exception e) { fails.Add($"brine seed {seed}: {e.Message}"); }
+                catch (Exception e) { fails.Add($"brine seed {seed}: {e.Message}"); if (fails.Count >= 3) break; }
             }
             return fails;
         }

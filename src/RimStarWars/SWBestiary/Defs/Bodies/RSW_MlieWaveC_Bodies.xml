@@ -74,12 +74,9 @@
   reuses) — no new body part needed. Every other part (Body, Stomach, Heart,
   Lung, Kidney, Liver, Neck, Head, Brain, Eye, Ear, Nose, AnimalJaw, Teeth,
   HeadAttackTool) is vanilla Core, confirmed against the same donor file read
-  directly. Dragonsnake's custom `Dragonsnake` BodyDef uses vanilla Core's
-  `SnakeBody`/`SnakeHead`/`SnakeMouth` parts (confirmed present in Core's
-  BodyParts_Animal.xml) unchanged, plus one donor-custom tail part (`SW_Club`)
-  and its attack-tool group (`SWTailAttackTool`) — both ALREADY PORTED in Wave
-  B (RSW_SW_Club, RSW_SWTailAttackTool, the same club/tail-tool Boma already
-  reuses) — repointed here, no new body part needed. Eopie's custom `Eopie`
+  directly. RSW_Dragonsnake was rebuilt 2026-10-17 as the canon
+  quadruped (see its own comment below); it keeps the Wave B tail part
+  RSW_SW_Club and group RSW_SWTailAttackTool. Eopie's custom `Eopie`
   BodyDef is, like Anooba/Borcatu/Cannok/Clodhopper, entirely vanilla-part
   composition (Spine, Stomach, Heart, Lung, Kidney, Liver, Neck, Head, Skull,
   Brain, Eye, Ear, Trunk, AnimalJaw, Leg, Hoof, plus the vanilla
@@ -275,7 +272,7 @@
         <li>
           <def>Leg</def>
           <customLabel>rear left leg</customLabel>
-          <coverage>0.07</coverage>
+          <coverage>0.03</coverage>
           <height>Bottom</height>
           <parts>
             <li>
@@ -630,7 +627,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Boma</defName>
-    <label>tusked horned quadrapedal animal</label>
+    <label>tusked horned quadrupedal animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -1127,7 +1124,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Cannok</defName>
-    <label>spiny reptillian animal</label>
+    <label>spiny reptilian animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -1304,7 +1301,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Clodhopper</defName>
-    <label>semi-bepedal avian animal</label>
+    <label>semi-bipedal avian animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -1487,7 +1484,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Dianoga</defName>
-    <label>cyclopean octupoda animal</label>
+    <label>cyclopean octopoda animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -2302,7 +2299,7 @@
         </li>
         <li>
           <def>RSW_SW_RightFlipper</def>
-          <customLabel>middle secong right proleg</customLabel>
+          <customLabel>middle second right proleg</customLabel>
           <coverage>0.02</coverage>
           <height>Bottom</height>
         </li>
@@ -2320,7 +2317,7 @@
         </li>
         <li>
           <def>RSW_SW_LeftFlipper</def>
-          <customLabel>rear secong left proleg</customLabel>
+          <customLabel>rear second left proleg</customLabel>
           <coverage>0.02</coverage>
           <height>Bottom</height>
         </li>
@@ -2991,7 +2988,7 @@
                 </li>
                 <li>
                   <def>Paw</def>
-                  <customLabel>right  sickled claw</customLabel>
+                  <customLabel>right sickled claw</customLabel>
                   <coverage>0.25</coverage>
                   <height>Bottom</height>
                   <groups>
@@ -3026,7 +3023,7 @@
           <parts>
             <li>
               <def>Foot</def>
-              <customLabel>left back support claw</customLabel>
+              <customLabel>right back support claw</customLabel>
               <coverage>0.3</coverage>
               <groups>
                 <li>Feet</li>
@@ -3226,7 +3223,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Igitz</defName>
-    <label>amphibious crested quadrupredal animal</label>
+    <label>amphibious crested quadrupedal animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -3623,7 +3620,7 @@
 
   <BodyDef>
     <defName>RSW_Jakobeast</defName>
-    <label>tusked horn quadrapedal animal</label>
+    <label>tusked horn quadrupedal animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -3812,7 +3809,7 @@
         </li>
         <li>
           <def>Leg</def>
-          <customLabel>rear left paw</customLabel>
+          <customLabel>rear left leg</customLabel>
           <coverage>0.065</coverage>
           <height>Bottom</height>
           <parts>
@@ -4053,7 +4050,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Gizka</defName>
-    <label>bidpedal reptilian animal</label>
+    <label>bipedal reptilian animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -5090,7 +5087,7 @@
                 </li>
                 <li>
                   <def>InsectNostril</def>
-                  <customLabel>pheremone receptor tubule</customLabel>
+                  <customLabel>pheromone receptor tubule</customLabel>
                   <coverage>0.07</coverage>
                 </li>
                 <li>
@@ -5436,6 +5433,7 @@
                     <li>
                       <def>Brain</def>
                       <coverage>0.7</coverage>
+                      <depth>Inside</depth>
                     </li>
                   </parts>
                 </li>
@@ -5999,7 +5997,7 @@
                 </li>
                 <li>
                   <def>Eye</def>
-                  <customLabel>left compund eye</customLabel>
+                  <customLabel>left compound eye</customLabel>
                   <coverage>0.15</coverage>
                 </li>
                 <li>
@@ -6013,7 +6011,7 @@
                 </li>
                 <li>
                   <def>InsectMouth</def>
-                  <customLabel>serated insectoid mandible</customLabel>
+                  <customLabel>serrated insectoid mandible</customLabel>
                   <coverage>0.10</coverage>
                   <groups>
                     <li>Mouth</li>
@@ -6242,7 +6240,7 @@
                 </li>
                 <li>
                   <def>Paw</def>
-                  <customLabel>right clawed paw</customLabel>
+                  <customLabel>right upper clawed paw</customLabel>
                   <coverage>0.25</coverage>
                   <height>Bottom</height>
                   <groups>
@@ -6277,7 +6275,7 @@
           <parts>
             <li>
               <def>Paw</def>
-              <customLabel>rear clawed foot</customLabel>
+              <customLabel>rear right clawed foot</customLabel>
               <coverage>0.15</coverage>
               <groups>
                 <li>Feet</li>
@@ -7132,7 +7130,7 @@
         </li>
         <li>
           <def>Hump</def>
-          <customLabel>elipsical camouflage dewlap</customLabel>
+          <customLabel>elliptical camouflage dewlap</customLabel>
           <coverage>0.10</coverage>
           <height>Top</height>
         </li>
@@ -7605,6 +7603,7 @@
                   <def>Ear</def>
                   <customLabel>right ear</customLabel>
                   <coverage>0.08</coverage>
+                  <depth>Inside</depth>
                 </li>
                 <li>
                   <def>Nose</def>
@@ -7708,7 +7707,7 @@
         <li>
           <def>Leg</def>
           <customLabel>bottom right leg</customLabel>
-          <coverage>0.03</coverage>
+          <coverage>0.07</coverage>
           <height>Bottom</height>
           <parts>
             <li>
@@ -8420,6 +8419,7 @@
                   <def>Ear</def>
                   <customLabel>right ear</customLabel>
                   <coverage>0.08</coverage>
+                  <depth>Inside</depth>
                 </li>
                 <li>
                   <def>Nose</def>
@@ -8523,7 +8523,7 @@
         <li>
           <def>Leg</def>
           <customLabel>bottom right leg</customLabel>
-          <coverage>0.03</coverage>
+          <coverage>0.07</coverage>
           <height>Bottom</height>
           <parts>
             <li>
@@ -8852,7 +8852,7 @@
       <parts>
         <li>
           <def>RSW_SW_DexterousTail</def>
-          <customLabel>Serrated paddled tail</customLabel>
+          <customLabel>serrated paddled tail</customLabel>
           <coverage>0.10</coverage>
           <parts>
             <li>
@@ -10001,7 +10001,7 @@
   </BodyDef>
 <BodyDef>
     <defName>RSW_Worrt</defName>
-    <label>scaley amphibian animal</label>
+    <label>scaly amphibian animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
@@ -10433,7 +10433,7 @@
   -->
   <BodyDef>
     <defName>RSW_Vornskyr</defName>
-    <label>medium poisonous quadrapedal animal</label>
+    <label>medium poisonous quadrupedal animal</label>
     <corePart>
       <def>Body</def>
       <height>Middle</height>
