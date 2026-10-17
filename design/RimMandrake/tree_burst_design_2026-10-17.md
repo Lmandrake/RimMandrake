@@ -77,7 +77,7 @@ rule of §6a; the build leaves its ExplosiveGrowth handling as it is.
   Arpeau, Nogtyl, Shinecap, Flakespire, and the Abyss Tree Mushroom by name; `RM_GiantAgariTox` (Cauldron, a giant
   agaric at 4.5) is a fungus by the same principle though not on his list (FLAGGED for the sitting). The build marks
   fungi by a roster field, not by name-matching.
-- **A plant under 3.0 stops giving wood** (Q3, by card: "stop giving wood"). Sixteen defs today
+- **A plant under 3.0 stops giving wood** (Q3, by card: "stop giving wood"). Fifteen defs today
   (section 7, "stops giving wood"). The new harvest per def is owned by `PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE`;
   until then the build's interim is no `WoodLog` in their harvest.
 - Grass never yields wood (his words); Pyrelands grass included.
@@ -105,7 +105,7 @@ Ruled (Q1/Q4, by card): **litres buy days of life**, at **40 L per day of life**
 - The swell tell (`Kernel/RM_ExplosiveGrowthKernel.cs:53-61`) plays once per drink event: a spill on a tree reads as
   "it drank and grew".
 - **Immortal trees** (unlimited life, `lifespanDaysPerGrowDays` 0): **never burst; water still gives a growth spike**
-  (Q14, by card). Of the four he named, only `RM_Ollim` is a tree under Q2; see §8 for the other three.
+  (Q14, by card). Follow-up card: "Immortal wins" for Pale Tree and Skulltop (no wither, no burst), and Kneeling Ollim is raised to 3.0 (§8).
 - **Jungle trees** (wet-biome trees) are not advanced by litres: §6a.
 
 Worked through (spill 400 L, `design/RimMandrake/liquid_litres_2026-10-16.md:73`):
@@ -186,8 +186,8 @@ and their end of life is a full burst (§4).
 will almost certainly not cause it to reach an end of life event."* Q13 (by card): **both slower growth (more than 240
 days) and a longer life.** Today: growDays 240, lifespan ×8 (1,920 days), and it is not "woody", so a spill speeds it
 ×10 (§1 point 4). Under this note it is a tree (visual 7.7-10): a spill is a growth spike (+40 L/day of life), and
-its burst gives logs plus wool (Q12) plus 2-4 seedlings. The numbers are not given: PROPOSED growDays **480**,
-`lifespanDaysPerGrowDays` **12** (5,760 days, ~576 spills from maturity), for him to confirm; its wool re-grows from
+its burst gives logs plus wool (Q12) plus 2-4 seedlings. Ruled (follow-up card): growDays **480**,
+`lifespanDaysPerGrowDays` **12** (5,760 days, ~528 spills from maturity); its wool re-grows from
 0.05 growth (`RM_SweetlineTree.xml:57`), so slower growth slows the wool too.
 
 ---
@@ -196,8 +196,8 @@ its burst gives logs plus wool (Q12) plus 2-4 seedlings. The numbers are not giv
 
 **Census (MEASURED 2026-10-17, re-run on the Q2 ruling):** every `ThingDef` under `src/` with its `ParentName` chain
 resolved; a row is here if it yields wood, inherits `TreeBase`, or draws at visual max ≥ 4. **65 plants** (with
-`RM_Greatbole` removed, §0): **38 trees** (≥ 3.0, not fungi), **10 fungi**, **17 not trees** (16 of which stop giving
-wood). "life days" = `growDays × lifespanDaysPerGrowDays` (default 8). Current behaviour from both rosters as built.
+`RM_Greatbole` removed, §0): **39 trees** (≥ 3.0, not fungi; Kneeling Ollim raised to 3.0 by ruling), **10 fungi**, **16 not trees** (15 of which stop
+giving wood). "life days" = `growDays × lifespanDaysPerGrowDays` (default 8). Current behaviour from both rosters as built.
 Water-to-burst uses the ruled 40 L per day of life and the 400 L spill. Yields are not tuned here
 (`PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE`).
 
@@ -257,7 +257,7 @@ test. `RUT_Placeholder_GreentideGiantTree` is a dead roster row (def retired).
 | `RM_Thessamor` | Miasma | 25 | 8 (default) (200) | 3.4 | wet native, ×2.5 always; withers at maturity, dies; drops no logs | tree | none: ×4 to maturity, normal ageing, bursts at end of life (Q11) | 22 WoodLog + own fruit if any + 2-4 seedlings | |
 | `RSW_Plant_HydenockTree_Wild` | SWBestiary | 10 | 8 (default) (80) | 10.0 | dry native, ×10 wet / ×0.1 dry; Flush: survives, drops produce | tree | 2,800 L ≈ 7 spills; river ~70 d | logs (count owed) + 30 Dye + 2-4 seedlings (Q12) | |
 | `RSW_Plant_JoganTree_Wild` | SWBestiary | 10 | 8 (default) (80) | 8.0 | dry native, ×10 wet / ×0.1 dry; 1/3 Burst else fruit + 4-7 sprouts; dies | tree | 2,800 L ≈ 7 spills; river ~70 d | logs (count owed) + 40 RSW_RawJoganFruit + 2-4 seedlings (Q12) | |
-| `RM_KneelOllim` | Stillsand | 400 | 0 (unlimited) (unlimited) | 2.6 | dry native, ×6.25 wet / ×0.0625 dry; 1/3 Burst else fruit + 4-7 sprouts; dies | not a tree (< 3.0) | ruled cycle (RS §4) | **stops giving wood** (Q3) | Q14 names it immortal; at 2.6 it is not a tree under Q2 (stops wood, keeps unlimited life) |
+| `RM_KneelOllim` | Stillsand | 400 | 0 (unlimited) (unlimited) | 2.6 → 3.0 (ruled) | dry native, ×6.25 wet / ×0.0625 dry; 1/3 Burst else fruit + 4-7 sprouts; dies | tree (raised to 3.0) | never bursts; water = growth spike (Q14) | 5 RM_OllimWood (keeps wood) | immortal like Ollim |
 | `RM_Ollim` | Stillsand | 400 | 0 (unlimited) (unlimited) | 5.5 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | tree | never bursts; water = growth spike (Q14) | 15 RM_OllimWood + own fruit if any + 2-4 seedlings | immortal: never bursts, water = growth spike (Q14) |
 | `RM_Slackwax` | TerminalBiomes | 10 | 8 (default) (80) | 1.1 | dry native, ×6.25 wet / ×0.0625 dry; 1/3 Burst else fruit + 4-7 sprouts; dies | not a tree (< 3.0) | ruled cycle (RS §4) | **stops giving wood** (Q3) | |
 | `RM_HeatsinkFungus` | TheForge | 5.5 | 8 (default) (44) | 0.6 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | not a tree (< 3.0) | ruled cycle (RS §4) | **stops giving wood** (Q3) | |
@@ -266,9 +266,9 @@ test. `RUT_Placeholder_GreentideGiantTree` is a dead roster row (def retired).
 | `RM_GreenArpeau` | TheRot | 5 | 9 (45) | 2.5 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | |
 | `RM_Nogtyl` | TheRot | 7 | 9 (63) | 12.0 | wet native, ×2.5 always; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | |
 | `RM_NogtylMarsh` | TheRot | 7 | 9 (63) | 2.5 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | |
-| `RM_PaleTree` | TheRot | 25 | 0 (unlimited) (unlimited) | 6.0 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | Q9 fungus + Q14 never bursts: as a Rot wet native it would WITHER at maturity (conflict, see §8) |
+| `RM_PaleTree` | TheRot | 25 | 0 (unlimited) (unlimited) | 6.0 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus, immortal | "Immortal wins": never withers or bursts; growth spike only | as today (harvest only) | follow-up card |
 | `RM_Shinecap` | TheRot | 30 | 8 (default) (240) | 3.0 | dry native, ×10 wet / ×0.1 dry; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | |
-| `RM_Skulltop` | TheRot | 8 | 0 (unlimited) (unlimited) | 0.7 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus (Q9) | no tree rules; Rot: wet-native cycle, ×4, fruit, wither, few sprouts (Q8) | as its cycle | Q14 never bursts; Rot wet native withers at maturity (conflict, see §8) |
+| `RM_Skulltop` | TheRot | 8 | 0 (unlimited) (unlimited) | 0.7 | dry native, ×6.25 wet / ×0.0625 dry; rate only, never cycles | fungus, immortal | "Immortal wins": never withers or bursts; growth spike only | as today (harvest only) | follow-up card |
 | `RM_Brindeth` | TheSump | 18 | 8 (default) (144) | 1.15 | dry native, ×6.25 wet / ×0.0625 dry; 1/3 Burst else fruit + 4-7 sprouts; dies; drops no logs | not a tree (< 3.0) | ruled cycle (RS §4) | **stops giving wood** (Q3) | |
 | `RM_Pusberry` | Wasteland | 9 | 30 (270) | 1.6 | dry native, ×10 wet / ×0.1 dry; 1/3 Burst else fruit + 4-7 sprouts; dies | not a tree (< 3.0) | ruled cycle (RS §4) | as its cycle | |
 | `RM_VaultRoot` | Wasteland | 18 | 45 (810) | 5.2 | dry native, ×6.25 wet / ×0.0625 dry; 1/3 Burst else fruit + 4-7 sprouts; dies; drops no logs | tree | 31,680 L ≈ 79 spills; river ~792 d | 22 WoodLog + own fruit if any + 2-4 seedlings | |
@@ -298,12 +298,14 @@ test. `RUT_Placeholder_GreentideGiantTree` is a dead roster row (def retired).
 | Q16/Q17 | burst yield | own fruit if it has one + 2-4 seedlings |
 | Greatbole | — | *"Greatbole have an entirely different mechanic that's well articulated, NOT part of the bursting discussion. They express the same mechanic through their self healing"* (§0) |
 
-**Left for the sitting (rulings that meet, not new questions):**
-- `RM_PaleTree` and `RM_Skulltop` are Rot fungi (Q9) and so wet natives (Q8), which **wither at maturity**; Q14 says
-  they never burst. Withering is not bursting, but it is a death. Read as: they wither like any Rot native, or Q14
-  exempts them from the cycle too?
-- `RM_KneelOllim` (2.6) is named in Q14 but is not a tree under Q2: it stops giving wood and keeps its unlimited life.
-- `RM_GiantAgariTox` treated as a fungus by Q9's principle; Sweetline's numbers (480 / ×12) PROPOSED.
+**Follow-up rulings (by card, 2026-10-17):**
+
+| item | ruling |
+|---|---|
+| `RM_PaleTree`, `RM_Skulltop` (Q9 fungus vs Q14 immortal) | **"Immortal wins"**: they never wither or burst; water gives a growth spike only (they stay out of the wet-native cycle) |
+| `RM_KneelOllim` (2.6, named in Q14) | write-in *"Make it 3.0"*: its visual size is raised to 3.0, so it is a tree, immortal like `RM_Ollim` (never bursts, growth spike only); it keeps its wood |
+| Sweetline numbers | **"Accept 480 days, 12x life"**: growDays 480, `lifespanDaysPerGrowDays` 12 (5,760 days) |
+| `RM_GiantAgariTox` | treated as a fungus by Q9's principle (not on his list; unchanged) |
 
 ## 9. Build delta (ruled; for FOUNDRY, sizes INFERRED)
 
@@ -314,8 +316,9 @@ test. `RUT_Placeholder_GreentideGiantTree` is a dead roster row (def retired).
 | T3 | new: tree drink pass | litres from spill / poured / channel, capped 40 L/day on continuous sources; 40 L = one day of life (growth, then age); swell tell per drink; unlimited-life trees grow only | M |
 | T4 | `RM_TopResolver.cs` | trees never run `Fire` at maturity; new end-of-life burst: logs (own path past the `WoodLog` guard at :376-377), own product / `burstFruit`, 2-4 seedlings, Burst top; Contagion trees use Rupture | M |
 | T5 | `Plant.TickLong` prefix (RS D13) | an age step bought by drinking that crosses `LifespanDays` → T4; a natural crossing → vanilla death | S |
-| T6 | 16 defs under 3.0 (section 7) | drop `WoodLog`/log harvests (interim, pending the economy item) | S |
+| T6 | 15 defs under 3.0 (section 7) | drop `WoodLog`/log harvests (interim, pending the economy item) | S |
 | T7 | `RM_ExplosiveGrowthRoster.xml:27-31`, `selftest_explosivegrowth_archetype_seed.py:48-51` | Pyrelands grass bursts, 6-9 sprouts kept | S |
 | T8 | both rosters | `RM_TheRot`/`RUT_TheRot` into `<wetNativeBiomes>`; drop the `None` rows of Rot plants | S |
-| T9 | `RM_SweetlineTree.xml` | growDays and lifespan raised (PROPOSED 480 / ×12, confirm) | S |
+| T9 | `RM_SweetlineTree.xml`, Stillsand `RM_KneelOllim` | Sweetline growDays 480, `lifespanDaysPerGrowDays` 12 (ruled); Kneeling Ollim `visualSizeRange` max to 3.0 (ruled), so it is a tree and keeps its wood | S |
+| T11 | registry | immortal plants (`RM_Ollim`, `RM_KneelOllim`, `RM_PaleTree`, `RM_Skulltop`): never wither or burst, water = growth spike only (overrides the Rot wet-native cycle for the two fungi) | S |
 | T10 | `validation.py`, fuzz, proof `FirstOf(..., woody)` (`RM_ExplosiveGrowthProof.cs:203-210,269`) | the ×6.25 chain becomes drink/advance; rows: jungle tree survives maturity, water-driven death bursts, natural death falls, Ollim never bursts | M |
