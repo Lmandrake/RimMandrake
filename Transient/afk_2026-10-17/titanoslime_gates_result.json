@@ -1,0 +1,227 @@
+{
+ "mode": "live",
+ "mods": 22,
+ "rows": [
+  {
+   "gate": "pre",
+   "check": "running_list",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "len(env.running)=22 missing=[]"
+  },
+  {
+   "gate": "pre",
+   "check": "site",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "map 250x250 centre 125,125; settings at shipped defaults"
+  },
+  {
+   "gate": "g1",
+   "check": "def_resolves_live",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "notFound=[]"
+  },
+  {
+   "gate": "g1",
+   "check": "spawn_places_and_rolls_stage_1_to_3",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "5 spawned, stage idx [0, 2, 0, 1, 0]"
+  },
+  {
+   "gate": "g1",
+   "check": "bodysize_6_at_stage_1",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "stage1 RM_Titanoslime24061 bodySize=6; per-stage mismatches []"
+  },
+  {
+   "gate": "g1",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g2",
+   "check": "mass12_bodysize16_draw6_T2_3x3",
+   "status": "PASS",
+   "cls": null,
+   "evidence": {
+    "bodySize": "16.02",
+    "drawSize": "6",
+    "tier": "T2",
+    "footprint": "3",
+    "stage": "2",
+    "mass": "12"
+   }
+  },
+  {
+   "gate": "g2",
+   "check": "survives_save_reload",
+   "status": "PASS",
+   "cls": null,
+   "evidence": {
+    "before": {
+     "bodySize": "16.02",
+     "drawSize": "6",
+     "tier": "T2",
+     "footprint": "3",
+     "stage": "2",
+     "mass": "12"
+    },
+    "after": {
+     "bodySize": "16.02",
+     "drawSize": "6",
+     "tier": "T2",
+     "footprint": "3",
+     "stage": "2",
+     "mass": "12"
+    }
+   }
+  },
+  {
+   "gate": "g2",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+43 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g3",
+   "check": "colonist_swallowed_within_60s_natural",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "4 replicates (stage-1 vs 4 drafted colonists): ['swallow@120', 'swallow@120', 'nothing', 'nothing']"
+  },
+  {
+   "gate": "g3",
+   "check": "inspect_shows_countdown",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "Digesting Duster: 75 s left"
+  },
+  {
+   "gate": "g3",
+   "check": "downed_slime_releases_stunned_acid_slimified",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "before slim=none | after spawned=True stunned=True acid=2 slim=0.16"
+  },
+  {
+   "gate": "g3",
+   "check": "timer_absorbs_no_corpse_gear_mass_food",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "victim corpse=none destroyed=True | slime mass=1 food=0.999 | worn ['Apparel_CollarShirt', 'Apparel_Pants'], on ground near slime ['Apparel_CollarShirt', 'Apparel_Pants'], smear True"
+  },
+  {
+   "gate": "g3",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+2 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g4",
+   "check": "muffalo_bursts_out_most_runs_60s",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "9/10 burst out within 3600 ticks (model: ~86 %)"
+  },
+  {
+   "gate": "g4",
+   "check": "cut_stage2_to_half_sheds_3_holds_stage_default",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "stage 1 -> 1, shed 14, health 0.492, mass 4"
+  },
+  {
+   "gate": "g4",
+   "check": "cut_stage2_to_half_sheds_3_and_drops_to_1_reversible_on",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "stage 1 -> 0, shed 6, health 0.494, mass 2"
+  },
+  {
+   "gate": "g4",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g5",
+   "check": "maxStage2_refuses_stage3_at_mass12",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "stage idx 1 mass 12"
+  },
+  {
+   "gate": "g5",
+   "check": "grows_toggle",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "off: mass 0 | on: mass 4 stage 1"
+  },
+  {
+   "gate": "g5",
+   "check": "reversible_toggle",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "off: mass 12 stage 2 | on: mass 6 stage 1"
+  },
+  {
+   "gate": "g5",
+   "check": "engulfs_toggle_gate_and_midhold_release",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "off:canEngulf=False on:canEngulf=True | after switch-off held=0 muffalo spawned=True"
+  },
+  {
+   "gate": "g5",
+   "check": "sheds_toggle_off_sheds_nothing",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "8 x 12 Cut on a stage-2 with sheds off: 0 gelatids"
+  },
+  {
+   "gate": "g5",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g6",
+   "check": "stage4_kill_corpse_site_and_held_released",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "stage 3 bodySize 24 tier T3 | sites 1 | muffalo spawned=True dead=False | killedAt=107,123 map=0 | id=RM_Titanoslime38253 def=RM_Titanoslime spawned=False"
+  },
+  {
+   "gate": "g6",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  },
+  {
+   "gate": "g7",
+   "check": "art_screenshots_stage1_and_5_three_facings",
+   "status": "UNMEASURED",
+   "cls": null,
+   "evidence": "captured for judging (a look, not a state read): ['C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage1_south_165713.png', 'C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage1_east_165715.png', 'C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage1_north_165718.png', 'C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage5_south_165720.png', 'C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage5_east_165723.png', 'C:\\\\Users\\\\Mandrake\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld by Ludeon Studios\\\\Screenshots\\\\titano_g7_stage5_north_165725.png']"
+  },
+  {
+   "gate": "g7",
+   "check": "log_budget",
+   "status": "PASS",
+   "cls": null,
+   "evidence": "+2 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime"
+  }
+ ],
+ "when": "2026-10-17T16:57:27"
+}
