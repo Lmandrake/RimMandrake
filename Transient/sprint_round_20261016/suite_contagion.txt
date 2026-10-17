@@ -1,0 +1,124 @@
+[contagion-note] shipped defs resolved: 126
+[contagion] 19:47:41 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 23, "plants": 12}
+[contagion] 19:47:41 biome_table_and_roster PASS 
+[contagion] 19:47:41 biome_roster_animals UNMEASURED UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"; the roster is checked statically from the XML
+[contagion] 19:47:41 helix_trader_wired PASS 
+[contagion] 19:47:41 visible_tells_wired PASS 
+[contagion] 19:47:42 organ_patch_comps PASS 
+[contagion] 19:47:43 defaults PASS 
+[contagion] 19:47:43 biomeRarityFactor_roundtrip PASS 
+[contagion] 19:47:43 burnDamageFactor_roundtrip PASS 
+[contagion] 19:47:43 burnEnabled_roundtrip PASS 
+[contagion] 19:47:44 burnFrequency_roundtrip PASS 
+[contagion] 19:47:44 burnTellsEnabled_roundtrip PASS 
+[contagion] 19:47:44 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 19:47:44 coalescenceEnabled_roundtrip PASS 
+[contagion] 19:47:45 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 19:47:45 grownLimbsEnabled_roundtrip PASS 
+[contagion] 19:47:45 mulchDropsEnabled_roundtrip PASS 
+[contagion] 19:47:45 sunbeamArrestEnabled_roundtrip PASS 
+[contagion] 19:47:46 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 19:47:46 touchedEnabled_roundtrip PASS 
+[contagion] 19:47:46 touchedExposureFactor_roundtrip PASS 
+[contagion] 19:47:46 touchedMutationRate_roundtrip PASS 
+[contagion] 19:47:47 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 19:47:47 zhoolConversionEnabled_roundtrip PASS 
+[contagion] 19:47:47 zhoolConversionRate_roundtrip PASS 
+[contagion] 19:47:47 zhoolConvertsCrops_roundtrip PASS 
+[contagion] 19:47:48 zhoolHazeDensity_roundtrip PASS 
+[contagion] 19:47:48 zhoolHazeEnabled_roundtrip PASS 
+[contagion-note] sick start taken off the Contagion: {"tile": 3, "from": "RM_Contagion", "to": "AridShrubland"}
+[contagion-note] quiet-site profile (once per run): {"storyteller/mental/disease": {"enableStoryteller": false, "enableRandomMentalStates": false, "enableRandomDiseases": false, "logRaidInfo": true, "threatScale": 0.0, "allowBigThreats": false}, "wildSpawner": "blocked (read back)", "problems": [], "error": null}
+[contagion-note] mapgen wildlife removed: {"removed": 40, "verified": true, "residue": []}
+[contagion-note] pad repulsor unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 19:47:53 site_ready_baseline PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T02:47:54Z", "message": "safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused", "state": "stopped", "executed": 900, "requested": 2000, "stopBy": {"seq": 178, "kind": "mental", "severity": "damage", "tick": 1150, "map": 1, "subjectId": 39831, "subject": "Ad\u00e8le", "critical": false, "declared": false, "detail": "mental state WanderConfused"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 138, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39778, "subject": "zhool", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 139, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39779, "subject": "ogleknot", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 140, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39780, "subject": "bloody mess", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 141, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39781, "subject": "eyestinger", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 142, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39782, "subject": "eyestinger", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 143, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39783, "subject": "crispling", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 144, "kind": "departed", "severity": "info", "tick": 310, "map": 1, "subjectId": 39784, "subject": "crispling", "critical": false, "declared": 
+[contagion] 19:47:54 off_when_setting_off UNMEASURED surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused
+[contagion] 19:47:54 holds_sky_clear UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused
+[contagion] 19:47:54 lapses_without_power UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused
+[contagion-note] support upkeep: {"calmed": 1, "calmResidue": [], "fed": []}
+[contagion-note] pad spawner unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 19:47:58 site_ready_spawner PASS 
+[contagion] 19:47:59 spawner_off_buds_nothing PASS 
+[contagion] 19:48:01 spawner_buds_unfinished PASS 
+[contagion] 19:48:01 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 19:48:02 unfinished_dissolves_on_death PASS 
+[contagion-note] mulch heaps: [2]
+[contagion] 19:48:02 unfinished_leaves_mulch PASS 
+[contagion-note] retiled: {"tile": 3, "from": "AridShrubland", "to": "RM_Contagion"}
+[contagion] 19:48:05 retile_to_contagion PASS 
+[contagion] 19:48:05 site_is_contagion PASS 
+[contagion-note] pad burn unroofed: {"cellsChanged": 358, "perDef": {"None": 358}}
+[contagion] 19:48:12 burn_site_ready PASS 
+[contagion] 19:48:16 repulsor_forces_burn PASS 
+[contagion] 19:48:18 burn_harmless_at_zero_damage PASS 
+[contagion] 19:48:30 burn_doses_the_exposed_visitor PASS 
+[contagion-note] native alive at the end / Burn seen while alive: [true, true]
+[contagion] 19:48:30 burn_hurts_native_spares_armored PASS 
+[contagion] 19:48:30 native_dives_for_roof PASS 
+[contagion] 19:48:36 burn_off_means_no_harm PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T02:48:38Z", "message": "safe_advance stopped after 600 of 1200 tick(s): downed: downed (health 0.44)", "state": "stopped", "executed": 600, "requested": 1200, "stopBy": {"seq": 189, "kind": "downed", "severity": "threat", "tick": 98350, "map": 1, "subjectId": 42587, "subject": "gnashling", "critical": false, "declared": false, "detail": "downed (health 0.44)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 187, "kind": "death", "severity": "info", "tick": 97828, "map": 1, "subjectId": 42564, "subject": "gnashling", "critical": false, "declared": false, "detail": "died: Burn"}, {"seq": 188, "kind": "hurt", "severity": "info", "tick": 97870, "map": 1, "subjectId": 42587, "subject": "gnashling", "critical": false, "declared": false, "detail": "health 0.68 -> 0.57"}, {"seq": 189, "kind": "downed", "severity": "threat", "tick": 98350, "map": 1, "subjectId": 42587, "subject": "gnashling", "critical": false, "declared": false, "detail": "downed (health 0.44)"}, {"seq": 190, "kind": "hurt", "severity": "info", "tick": 98350, "map": 1, "subjectId": 42587, "subject": "gnashling", "critical": false, "declared": false, "detail": "health 0.57 -> 0.44"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py"]}
+[contagion] 19:48:38 repulsor_off_lapses_burn UNMEASURED surprise: safe_advance stopped after 600 of 1200 tick(s): downed: downed (health 0.44)
+[contagion] 19:48:41 site_is_contagion PASS 
+[contagion-note] pad burn unroofed: {"cellsChanged": 64, "perDef": {"None": 64}}
+[contagion] 19:48:43 natural_site_ready PASS 
+[contagion] 19:48:44 burn_off_never_schedules PASS 
+[contagion] 19:48:49 slow_frequency_defers_burn PASS 
+[contagion-note] natural burn condition row: [{"def": "RM_ContagionBurnCondition", "ticksLeft": 2160}]
+[contagion] 19:48:51 natural_burn_arrives_on_schedule PASS 
+[contagion] 19:48:53 site_is_contagion PASS 
+[contagion-note] pad uv unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 19:48:54 uv_site_ready PASS 
+[contagion-note] UV sunburn severity (native@6x, native@1x, person@6x): [30.0, 5.0, 5.0]
+[contagion] 19:48:55 uv_native_multiplier PASS 
+[contagion-note] pad touched unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 19:48:59 touched_site_ready PASS 
+[contagion] 19:49:01 touched_off_doses_nothing PASS 
+[contagion-note] touched severity (contact, far control): [0.04, 0.0]
+[contagion] 19:49:03 touched_contact_doses PASS 
+[contagion] 19:49:03 sunbeam_hit_arrests PASS 
+[contagion] 19:49:06 site_is_contagion PASS 
+[contagion-note] pad zhool unroofed: {"cellsChanged": 52, "perDef": {"None": 52}}
+[contagion] 19:49:07 zhool_site_ready PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T02:49:07Z", "message": "safe_advance stopped after 60 of 2000 tick(s): colony_loss: alive colonists 0 on every map (map scope)", "state": "stopped", "executed": 60, "requested": 2000, "stopBy": {"seq": 210, "kind": "colony_loss", "severity": "damage", "tick": 745190, "map": -1, "subjectId": -1, "critical": false, "declared": false, "detail": "alive colonists 0 on every map (map scope)"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 208, "kind": "departed", "severity": "info", "tick": 745190, "map": 1, "subjectId": 42623, "subject": "Bertha", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 209, "kind": "departed", "severity": "info", "tick": 745190, "map": 1, "subjectId": 42635, "subject": "Vicky", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 210, "kind": "colony_loss", "severity": "damage", "tick": 745190, "map": -1, "subjectId": -1, "critical": false, "declared": false, "detail": "alive colonists 0 on every map (map scope)"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py"]}
+[contagion] 19:49:08 conversion_off_turns_nothing UNMEASURED surprise: safe_advance stopped after 60 of 2000 tick(s): colony_loss: alive colonists 0 on every map (map scope)
+[contagion] 19:49:08 haze_turns_grass_in_place UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 2000 tick(s): colony_loss: alive colonists 0 on every map (map scope)
+[contagion] 19:49:10 site_is_contagion PASS 
+[contagion-note] pad coal unroofed: {"cellsChanged": 0, "perDef": {}}
+[contagion] 19:49:11 coalescence_site_ready PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T02:49:12Z", "message": "safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "state": "stopped", "executed": 420, "requested": 1500, "stopBy": {"seq": 212, "kind": "colony_loss", "severity": "damage", "tick": 745610, "map": -1, "subjectId": -1, "subject": "Game Over", "critical": false, "declared": false, "detail": "GameEnded letter: Game Over"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 211, "kind": "departed", "severity": "info", "tick": 745250, "map": 1, "subjectId": 42864, "subject": "zhool", "critical": false, "declared": false, "detail": "left the spawned set (not a death unless a tombstone says so)"}, {"seq": 212, "kind": "colony_loss", "severity": "damage", "tick": 745610, "map": -1, "subjectId": -1, "subject": "Game Over", "critical": false, "declared": false, "detail": "GameEnded letter: Game Over"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Contagion", "--plan", "src/RimMandrake/Contagion/northstar_plan.py"]}
+[contagion] 19:49:12 coalescence_off_absorbs_nothing UNMEASURED surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 coalescence_absorbs_and_grows_a_stage UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 coalescence_emits_manhunters_and_grows_on_its_own UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 burn_collapses_it_into_monstrous_samples UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 monstrous_fixture UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 monstrous_gestation_grows_one_limb UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:12 grown_limbs_off_grows_organs UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over
+[contagion] 19:49:15 site_is_contagion PASS 
+[contagion-note] pad genome unroofed: {"cellsChanged": 115, "perDef": {"None": 115}}
+[contagion] 19:49:15 genome_site_ready PASS 
+[contagion] 19:49:24 extraction_surgery_yields_sample PASS 
+[contagion-note] inject: gestation read after: {"ticks": 450}
+[contagion] 19:49:28 inject_starts_gestation PASS 
+[contagion] 19:49:30 gestation_dies_producing_one_organ_batch PASS 
+[contagion-note] log scan: {"contagion errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[contagion] 19:49:33 log_clean PASS 
+[contagion] 19:49:33 restore_tile PASS 
+[contagion-note] quiet-site restore: ok
+component defs/biome_roster_animals: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\"; the roster is checked statically from the XML", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": [], "malformed": [], "fieldsAsked": ["wildAnimals"], "defs": [{"requested": "BiomeDef/RM_Contagion", "found": true, "defName": "RM_Contagion", "defType": "Biome
+component repulsor_clear/off_when_setting_off: {"toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "cloudRepulsorEnabled", "fieldKind": "static", "valueBefore": "True", "valueAfter": "False", "ticksGame": 302, "operation": {"OperationId": "op_1e1a85e8f83545c58cc1bc09af0de3d8", "Status": "Completed", "Success": true, "DurationMs": 41}, "state": {"programState": "Playing", "hasCurrentGame": t
+component repulsor_clear/holds_sky_clear: {"toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component repulsor_clear/lapses_without_power: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 900 of 2000 tick(s): mental: mental state WanderConfused", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component burn_forced/repulsor_off_lapses_burn: {"toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 600 of 1200 tick(s): downed: downed (health 0.44)", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "cloudRepulsorEnabled", "fieldKind": "static", "valueBefore": "True", "valueAfter": "False", "ticksGame": 97784, "operation": {"OperationId": "op_ddabdf2447b8449cb08e013fcb87fed3", "Status": "Completed", "Success": true, "DurationMs": 48}, "state": {"programState": "Playing", "hasCurrentGame": true, 
+component zhool_haze/conversion_off_turns_nothing: {"toggle": "zhoolConversionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 60 of 2000 tick(s): colony_loss: alive colonists 0 on every map (map scope)", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "zhoolConversionRate", "fieldKind": "static", "valueBefore": "1", "valueAfter": "5", "ticksGame": 745184, "operation": {"OperationId": "op_505be973fbe14fd289ec2fdaaa16c1d5", "Status": "Completed", "Success": true, "DurationMs": 47}, "state": {"programState": "Playing", "ha
+component zhool_haze/haze_turns_grass_in_place: {"toggle": "zhoolConversionRate", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 2000 tick(s): colony_loss: alive colonists 0 on every map (map scope)", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/coalescence_off_absorbs_nothing: {"toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "coalescenceEnabled", "fieldKind": "static", "valueBefore": "True", "valueAfter": "False", "ticksGame": 745244, "operation": {"OperationId": "op_4ad000df9118411aae42b7dd94f8361b", "Status": "Completed", "Success": true, "DurationMs": 47}, "state": {"programState": "Playing", "hasCurrentGame
+component coalescence/coalescence_absorbs_and_grows_a_stage: {"toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/coalescence_emits_manhunters_and_grows_on_its_own: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/burn_collapses_it_into_monstrous_samples: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_fixture: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/monstrous_gestation_grows_one_limb: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component coalescence/grown_limbs_off_grows_organs: {"toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 420 of 1500 tick(s): colony_loss: GameEnded letter: Game Over", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+recorded Contagion: RED at 6d5e56f25c5c (Contagion/northstar_driver@Contagion_20261017T024739Z.json)
+Contagion: NOT GREEN  PASS=66 FAIL=0 UNMEASURED=14  calls=1800 mean=62.806ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\Contagion_20261017T024739Z.json
