@@ -480,7 +480,15 @@ def main(argv=None):
         cout = os.path.join(run_dir, "control.jsonl")
         global BASE_SEED
         keep, BASE_SEED = BASE_SEED, 1000
-        rates(cdll, cout, "CONTROL_prefix_SHIPPED", shipped, {"fills_from_limitless": 2000}, a.cap_seconds, 1)
+        # the pre-fix kernel has none of the fields added after it (levelExactEnabled, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES):
+        # MatrixFlags refuses an unknown field, so the control forces only the shipped fields that kernel declares
+        old_kernel = subprocess.run(["git", "show", "%s:src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs" % CONTROL_REV],
+                                    cwd=ROOT, capture_output=True, text=True, check=True).stdout
+        old_fields = set(kernel_defaults(old_kernel))
+        control_cfg = {k: v for k, v in shipped.items() if k in old_fields}
+        print("  control forces %d of %d shipped fields (absent from %s: %s)" % (
+            len(control_cfg), len(shipped), CONTROL_REV, sorted(set(shipped) - old_fields) or "none"))
+        rates(cdll, cout, "CONTROL_prefix_SHIPPED", control_cfg, {"fills_from_limitless": 2000}, a.cap_seconds, 1)
         rates(cdll, cout, "CONTROL_prefix_AUTHORED", None, {"fills_from_limitless": 2000}, a.cap_seconds, 1)
         BASE_SEED = keep
         cr = {r["config"]: r for r in map(json.loads, open(cout))}
