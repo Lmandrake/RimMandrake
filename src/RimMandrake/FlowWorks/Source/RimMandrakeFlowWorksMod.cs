@@ -133,8 +133,8 @@ namespace RimMandrake.FlowWorks
         /// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner by card 2026-10-16): the bottom-left cell readout shows the
         /// liquid standing in the square, metres deep and litres (RM_Patch_MouseoverDepth). Off: vanilla's line only.</summary>
         public static bool mouseoverDepthEnabled = true;
-        // POND_ELEVATION_BUILD_LAKES_RUN_DEEP (owner by card 2026-10-15, "Build it today"; design §9): a lake's deep middle runs
-        // deeper than 4 (one level per deepBedCellsPerLevel squares past the shore band, capped at deepBedMaxDepth), it drains
+        // POND_ELEVATION_BUILD_LAKES_RUN_DEEP (owner by card 2026-10-15, "Build it today"; design §9): a lake's floor is its own
+        // (LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP, R11: per lake and the map's roughness, capped at deepBedMaxDepth), it drains
         // off its shallow rim first and refills to its exact shape; an inland lake up to drainableLakeMaxCells squares is
         // drainable (4000 = the old ocean cap). Each applies to lakes the map finds from now on; a tracked pond keeps its bed.
         public static bool deepBedsEnabled = true;
@@ -146,11 +146,17 @@ namespace RimMandrake.FlowWorks
         public static float pondMudDays = 2f;
         public static float pondStageWritesPerPulse = 400f;
         public static bool pondHeadRuleEnabled = true;
-        // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (absorbed LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES; owner D2 2026-10-17): the deepest natural
-        // floor, in NOTCHES (0.5 m), shown in metres, settable up to 250 = 125 m. The floor SHAPE per lake and biome is
-        // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R11); 20 (10 m) stays the default until that lands.
-        public static float deepBedMaxDepth = 20f;
-        public static float deepBedCellsPerLevel = 4f;
+        // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (owner D2 2026-10-17): the deepest natural floor, in NOTCHES (0.5 m), shown in metres,
+        // settable up to 250 = 125 m. LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R11): default 100 = 50 m, a bound only the mountain
+        // and chasm bands reach; each lake's floor is drawn by RM_LakeFloorMath (per lake, per the map's roughness).
+        public static float deepBedMaxDepth = 100f;
+        // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (veto-able defaults): depth scale (x the band's range and cap), floor roughness (x
+        // its grain, trenches and holes), the shore shelf (the outer ring's floor, metres; 0 = off, 1 m / 2 m as before) and the
+        // way out (the biggest step on a drained lake's guaranteed route to land, metres; 0 = off, chasms may strand).
+        public static float lakeDepthScale = 1f;
+        public static float lakeFloorRoughness = 1f;
+        public static float lakeShoreShelfMetres = 0.5f;
+        public static float lakeWayOutMetres = 1f;
         public static float drainableLakeMaxCells = 40000f;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
@@ -452,7 +458,8 @@ namespace RimMandrake.FlowWorks
         /// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the colonist dig cap in notches (4..40; default 16 = 8 m).</summary>
         public static int MaxDigDepth => RM_DigDepthMath.ClampCap(maxDigDepth);
         public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, RM_BedMath.MaxBedCeiling);
-        public static int DeepBedCellsPerLevel => Mathf.Clamp(Mathf.RoundToInt(deepBedCellsPerLevel), 1, 12);
+        public static int LakeShoreShelfNotches => Mathf.Clamp(Mathf.RoundToInt(lakeShoreShelfMetres * 2f), 0, 4);
+        public static int LakeWayOutNotches => Mathf.Clamp(Mathf.RoundToInt(lakeWayOutMetres * 2f), 0, 8);
         public static int DrainableLakeMaxCells => Mathf.Clamp(Mathf.RoundToInt(drainableLakeMaxCells / 1000f) * 1000, RM_BedMath.OceanWalkCells, 62500);
 
         public static int PulseIntervalTicks => Mathf.Max(RM_FireMath.MinFlowPulseTicks, Mathf.RoundToInt(pulseIntervalTicks));
@@ -516,8 +523,11 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pondMudDays, "pondMudDays", 2f);
             Scribe_Values.Look(ref pondStageWritesPerPulse, "pondStageWritesPerPulse", 400f);
             Scribe_Values.Look(ref pondHeadRuleEnabled, "pondHeadRuleEnabled", true);
-            Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 20f);
-            Scribe_Values.Look(ref deepBedCellsPerLevel, "deepBedCellsPerLevel", 4f);
+            Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 100f);
+            Scribe_Values.Look(ref lakeDepthScale, "lakeDepthScale", 1f);
+            Scribe_Values.Look(ref lakeFloorRoughness, "lakeFloorRoughness", 1f);
+            Scribe_Values.Look(ref lakeShoreShelfMetres, "lakeShoreShelfMetres", 0.5f);
+            Scribe_Values.Look(ref lakeWayOutMetres, "lakeWayOutMetres", 1f);
             Scribe_Values.Look(ref drainableLakeMaxCells, "drainableLakeMaxCells", 40000f);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
@@ -660,7 +670,7 @@ namespace RimMandrake.FlowWorks
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("depthEngineEnabled", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled")
             .Declare("refillEnabled", "refillRateMultiplier")
-            .Declare("deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel")
+            .Declare("deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres")
             .Declare("pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
             .Declare("viscosityEnabled", "thickCreepEnabled")
@@ -934,7 +944,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -1011,18 +1021,28 @@ namespace RimMandrake.FlowWorks
               + "squares in the reverse order they dried, to the exact old shape. Off: a dried square is flat ground. "
               + "Climbing changes at once; squares already dry can keep their current look until they refill.");
 
-            list.CheckboxLabeled("Lakes run deep", ref deepBedsEnabled,
-                "The middle of a big lake goes deeper than 2 m: past a shore band its floor drops 0.5 m every few "
-              + "squares, so a drained lake is a gentle bowl you can walk out of, darker toward its deepest floor. It holds that "
-              + "much more water, drains off its shallow rim first and refills to its exact old shape. Applies to lakes the map "
-              + "finds from now on. Off: every deep square is 2 m, and a pond dries by its average square, as before.");
-            using (Dependent(list, "deepBedMaxDepth", "deepBedCellsPerLevel"))
+            list.CheckboxLabeled("Lakes have their own floors", ref deepBedsEnabled,
+                "Each natural lake gets its own floor when the map is made, by the land around it: on plains most lakes are "
+              + "shallow and silted, in hills deeper, in mountains deep and chasm-like, with shelves, trenches and holes down "
+              + "there, never a plain crater. A full lake looks exactly as before; the floor shows as it is drawn down, and it "
+              + "holds that much water. Applies to lakes the map finds from now on; a lake already found keeps its floor. Off: "
+              + "shallow water is 1 m, deep water 2 m.");
+            using (Dependent(list, "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres"))
             {
-                list.Label("Deepest lake floor: " + RM_Volume.FormatMetres(DeepBedMaxDepth) + " (2 m to "
-                    + RM_Volume.FormatMetres(RM_BedMath.MaxBedCeiling) + ")");
+                list.Label("Deepest lake floor anywhere: " + RM_Volume.FormatMetres(DeepBedMaxDepth) + " (2 m to "
+                    + RM_Volume.FormatMetres(RM_BedMath.MaxBedCeiling) + "; mountain lakes reach 50 m by default, plains about 8 m)");
                 deepBedMaxDepth = list.Slider(deepBedMaxDepth, RM_Volume.LevelsPerSquare, RM_BedMath.MaxBedCeiling);
-                list.Label("Lake floor slope: 0.5 m deeper every " + DeepBedCellsPerLevel + " squares from the shore");
-                deepBedCellsPerLevel = list.Slider(deepBedCellsPerLevel, 1f, 12f);
+                list.Label("Lake depth: x" + lakeDepthScale.ToString("F2") + " (every lake's depth range and its biome's cap)");
+                lakeDepthScale = list.Slider(lakeDepthScale, 0.25f, 3f);
+                list.Label("Lake floor roughness: x" + lakeFloorRoughness.ToString("F2") + " (shelves, trenches and holes; 0 = smooth bowls)");
+                lakeFloorRoughness = list.Slider(lakeFloorRoughness, 0f, 2f);
+                list.Label("Shore shelf: " + (LakeShoreShelfNotches == 0 ? "off (the shore is 1 m, or 2 m beside deep water)"
+                    : RM_Volume.FormatMetres(LakeShoreShelfNotches) + " deep along every lake's edge, so a drained lake leaves a step small animals can take"));
+                lakeShoreShelfMetres = list.Slider(lakeShoreShelfMetres, 0f, 2f);
+                list.Label("Way out of a drained lake: " + (LakeWayOutNotches == 0 ? "off (a chasm-like lake can strand what falls in)"
+                    : "every floor square has a route to land with no step over " + RM_Volume.FormatMetres(LakeWayOutNotches)
+                    + " (1 m: people walk out; 0.5 m: small animals too, lakes come out shallower)"));
+                lakeWayOutMetres = list.Slider(lakeWayOutMetres, 0f, 4f);
             }
             list.CheckboxLabeled("Ponds shallow out before they turn to mud", ref pondDepthEnabled,
                 "A drawn-down pond keeps one flat surface and gets shallower all over: deep water, then chest-deep, then "

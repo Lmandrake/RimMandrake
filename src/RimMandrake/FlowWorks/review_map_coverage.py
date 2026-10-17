@@ -66,7 +66,7 @@ FEATURES = [
     ("def", r"^TerrainDef/RM_(WaterChestDeepStill|WaterThin)$", "Pond stage waters (still chest-deep, thin)", "flow_shrinks"),
     ("tex", r"^RimMandrake/FlowWorks/Terrain/RM_WaterThin\.png$", "Thin water art (provisional, owner judges in situ)", "flow_shrinks"),
     ("set", r"^pondHeadRuleEnabled$", "A pond feeds a canal only while its surface is higher", "flow_ponds"),
-    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|mouseoverDepthEnabled|deepBedsEnabled|deepBedMaxDepth|deepBedCellsPerLevel|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
+    ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|mouseoverDepthEnabled|deepBedsEnabled|deepBedMaxDepth|lakeDepthScale|lakeFloorRoughness|lakeShoreShelfMetres|lakeWayOutMetres|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
     ("def", r"^TerrainDef/RM_Lakebed_", "Lakebed ground", "pond_bed"),
     ("tex", r"Terrain/FlowWorks/RM_Lakebed_", "Lakebed art", "pond_bed"),
     ("set", r"^(refillEnabled|refillWaitsForOccupants|refillRateMultiplier)$", "Refill, and waiting for occupants",
