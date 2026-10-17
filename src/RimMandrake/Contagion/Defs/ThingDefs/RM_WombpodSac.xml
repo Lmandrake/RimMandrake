@@ -12,6 +12,7 @@
     <label>wombpod sac</label>
     <description>A translucent sac cut from a wombpod, something part-made turning slowly inside. Left alone it hatches into a bloody mess, the host a genome sample can be injected into.</description>
     <thingClass>ThingWithComps</thingClass>
+    <tickerType>Normal</tickerType>   <!-- CompHatcher hatches in CompTick only (Core EggFertBase is Normal); ResourceBase leaves Never -->
     <graphicData>
       <texPath>Things/Plant/RM_Wombpod/RM_Wombpod</texPath>
       <graphicClass>Graphic_Single</graphicClass>

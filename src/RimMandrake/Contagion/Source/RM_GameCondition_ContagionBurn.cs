@@ -91,12 +91,15 @@ namespace RimMandrake.Contagion
                 if (!c.InBounds(map) || !c.Standable(map)) continue;
                 if (RM_ContagionSky.Exposed(c, map)) continue;
                 sheltered.Add(c);
-                if (sheltered.Count > 4) break;   // only the first four are ever tried
+                if (sheltered.Count >= RM_SkyKernel.DiveCandidates) break;
             }
-            int pick = RM_SkyKernel.PickDive(sheltered.Count, i => p.CanReach(sheltered[i], PathEndMode.OnCell, Danger.Deadly));
+            // Four reachability checks a pulse, but a different window of four each pulse (DiveOffset).
+            int n = sheltered.Count;
+            int off = RM_SkyKernel.DiveOffset(Find.TickManager.TicksGame / RM_ContagionSky.Interval, n);
+            int pick = RM_SkyKernel.PickDive(n, i => p.CanReach(sheltered[(off + i) % n], PathEndMode.OnCell, Danger.Deadly));
             if (pick >= 0)
             {
-                Job job = JobMaker.MakeJob(JobDefOf.Goto, sheltered[pick]);
+                Job job = JobMaker.MakeJob(JobDefOf.Goto, sheltered[(off + pick) % n]);
                 job.locomotionUrgency = LocomotionUrgency.Sprint;
                 job.expiryInterval = 2000;
                 p.jobs.StartJob(job, JobCondition.InterruptForced);

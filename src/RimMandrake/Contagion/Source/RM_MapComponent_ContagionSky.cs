@@ -51,6 +51,10 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref nextBurnTick, "nextBurnTick", -1);
             Scribe_Values.Look(ref tellsBegun, "tellsBegun", false);
             Scribe_Values.Look(ref bloomSinceTick, "bloomSinceTick", -1);
+            // A load mid-tell must not look like the tells just began (the sink would snap back to 0 and re-settle):
+            // seed the edge detector from the saved state and leave tellsBeganTick -1, which SinkFraction reads as
+            // "from the window's start".
+            if (Scribe.mode == LoadSaveMode.PostLoadInit) wasTellsBegun = tellsBegun;
         }
 
         public bool BurnActive => BurnCondition() != null;

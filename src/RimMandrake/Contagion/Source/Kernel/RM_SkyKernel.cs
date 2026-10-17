@@ -144,6 +144,19 @@ namespace RimMandrake.Contagion
             return -1;
         }
 
+        // Which window of four sheltered cells this pulse tries (CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS). The candidates are
+        // in fixed radial order, so trying the same first four every pulse starves a native whose nearest four are sealed
+        // in; successive pulses step through windows 0, 4, 8, ... so every candidate is tried within ceil(count/4) pulses.
+        public const int DiveCandidates = 16;
+        public static int DiveOffset(int pulse, int count)
+        {
+            if (count <= 4) return 0;
+            int windows = (count + 3) / 4;
+            int w = pulse % windows;
+            if (w < 0) w += windows;
+            return w * 4;
+        }
+
         // ---- the Cloud Repulsor --------------------------------------------------------------------
         // One poll: off or unpowered resets the warm-up; warming accrues; warm holds (and the caller re-asserts the effect).
         public static RepulsorStep RepulsorTick(ref int warmTicks, bool enabled, bool powered, int interval, int warmupTicks)
