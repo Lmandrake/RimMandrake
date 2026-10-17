@@ -191,13 +191,14 @@ namespace RimMandrake.LeaningScrub
             return guardians.Count;
         }
 
-        private void Prune()
+        private void Prune(Map home = null)
         {
+            home = home ?? parent.MapHeld;
             for (int i = guardians.Count - 1; i >= 0; i--)
             {
                 Pawn p = guardians[i];
                 if (p == null || p.Dead || p.Destroyed || p.Faction != null
-                    || p.MapHeld != parent.MapHeld
+                    || p.MapHeld != home
                     || p.TryGetComp<RM_CompRoostGuardian>()?.homeTree != parent)
                 {
                     guardians.RemoveAt(i);
@@ -323,7 +324,7 @@ namespace RimMandrake.LeaningScrub
         {
             foreach (Pawn p in guardians)
             {
-                if (p != null && p.Spawned && !p.Dead)
+                if (p != null && p.Spawned && !p.Dead && p.Faction == null)
                 {
                     return p == pawn;
                 }
@@ -477,9 +478,12 @@ namespace RimMandrake.LeaningScrub
         }
 
         /// <summary>Settings switched off: every warden wakes and is an ordinary wild animal (never despawned).</summary>
-        public void ReleaseAll(string why)
+        public void ReleaseAll(string why, Map home = null)
         {
-            Prune();
+            // From PostDestroy the tree is already despawned (MapHeld null): prune against the map it stood on, or
+            // every warden is pruned away unreleased and no message is sent.
+            home = home ?? parent.MapHeld;
+            Prune(home);
             foreach (Pawn p in guardians.ToArray())
             {
                 RM_CompRoostGuardian g = p.TryGetComp<RM_CompRoostGuardian>();
@@ -489,7 +493,7 @@ namespace RimMandrake.LeaningScrub
                 }
                 p.TryGetComp<CompCanBeDormant>()?.WakeUp();
             }
-            if (guardians.Count > 0 && why != null && parent.MapHeld != null)
+            if (guardians.Count > 0 && why != null && home != null)
             {
                 Messages.Message(why, new LookTargets(guardians), MessageTypeDefOf.NeutralEvent, false);
             }
@@ -502,7 +506,7 @@ namespace RimMandrake.LeaningScrub
             base.PostDestroy(mode, previousMap);
             if (guardians.Count > 0 && previousMap != null)
             {
-                ReleaseAll("The bark-wardens of " + TreeName + " have lost their tree.");
+                ReleaseAll("The bark-wardens of " + TreeName + " have lost their tree.", previousMap);
             }
         }
 

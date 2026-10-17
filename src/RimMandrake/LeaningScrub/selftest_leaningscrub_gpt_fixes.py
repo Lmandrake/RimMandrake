@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Source pins for the LeaningScrub fixes from the GPT edge-case consult
+(design/RimMandrake/gpt_consults/LeaningScrub_edge_cases_2026-10-16.md). Each check names its rimflow item; each
+fails on the pre-fix source (control run by restoring the old line by hand, 2026-10-16).
+
+    python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py
+"""
+import os
+import re
+import sys
+
+SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source")
+fails = []
+
+
+def check(name, ok, detail=""):
+    print(("ok    " if ok else "FAIL  ") + name + ("" if ok else "  " + str(detail)))
+    if not ok:
+        fails.append(name)
+
+
+def read(rel):
+    with open(os.path.join(SRC, rel), encoding="utf-8") as f:
+        return f.read()
+
+
+def method_body(src, signature):
+    i = src.find(signature)
+    if i < 0:
+        return ""
+    j = src.find("{", i)
+    depth, k = 0, j
+    while k < len(src):
+        depth += {"{": 1, "}": -1}.get(src[k], 0)
+        if depth == 0:
+            return src[j:k + 1]
+        k += 1
+    return ""
+
+
+def main():
+    # SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY: residents and in-flight mobbers are counted before any dispatch
+    rooms = read("RM_VenomvineRooms.cs")
+    tick = method_body(rooms, "public override void MapComponentTick()")
+    check("sanity: crown mob tick found", "TrySendToStand(p, stand, ext)" in tick)
+    count_at = tick.find("|| HeadingTo(p, stand, settleSq)))")
+    held_at = tick.find("held++", count_at)
+    send_at = tick.find("TrySendToStand(p, stand, ext)")
+    check("SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY: in-flight mobbers counted into held before dispatch",
+          0 < count_at < held_at < send_at, (count_at, held_at, send_at))
+
+    g = read("RM_SweetlineGuardians.cs")
+    # SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: PostDestroy prunes against the map the tree stood on
+    check("SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: PostDestroy passes previousMap to ReleaseAll",
+          re.search(r'ReleaseAll\("The bark-wardens of " \+ TreeName \+ " have lost their tree\.", previousMap\);', g)
+          is not None)
+    rel = method_body(g, "public void ReleaseAll(")
+    check("SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST: ReleaseAll prunes against its home map",
+          "Prune(home);" in rel and "p.MapHeld != home" in method_body(g, "private void Prune("))
+    # SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS
+    lead = method_body(g, "public bool IsLead(Pawn pawn)")
+    check("SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS: a tamed warden is never the lead",
+          "p.Faction == null" in lead, lead)
+
+    f = read("RM_VenomvineForms.cs")
+    # SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM
+    ftick = method_body(f, "public override void MapComponentTick()")
+    off = ftick[:ftick.find("return;")]
+    check("SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM: Gale latch updated inside the mod-off branch",
+          "!RM_LeaningScrubSettings.modEnabled" in off and "wasGale = RM_WindCalendar.IsGale(map);" in off, off)
+    # SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING
+    check("SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING: Scratch reports whether damage was dealt",
+          "private static bool Scratch(" in f)
+    sweep = method_body(f, "public void SweepThorns(int now)")
+    for clock in ("nextThornTick", "nextLitterTick"):
+        check("SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING: %s set only after a landed Scratch" % clock,
+              re.search(r"if \(Scratch\([^;]*\)\)\s*\{\s*%s\[p\] =" % clock, sweep) is not None)
+
+    b = read("RM_RunwayBloom.cs")
+    ans = method_body(b, "private void Answer(Pawn a, IntVec3 from)")
+    # SCRUB_BLOOM_FIX_ERUPTOR_FLEES_GROUNDED
+    nul = ans[ans.find("if (flee == null)"):ans.find("a.jobs.StartJob(flee")]
+    check("SCRUB_BLOOM_FIX_ERUPTOR_FLEES_GROUNDED: an already-fleeing eruptor still launches",
+          "RM_Flight.TryLaunch(a);" in nul and "JobDefOf.Flee" in nul, nul)
+    # SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY
+    check("SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY: Answer skips a mental-state animal", "a.InMentalState" in ans)
+    check("SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY: Bloom skips a mental-state animal",
+          "a.InMentalState" in method_body(b, "private void Bloom(IntVec3 center, int now)"))
+
+    # SCRUB_SMOTHER_FIX_BLANKET_IGNORES_OFF
+    s = method_body(read("RM_SmotherCraft.cs"), "protected override IEnumerable<Toil> MakeNewToils()")
+    check("SCRUB_SMOTHER_FIX_BLANKET_IGNORES_OFF: job fails when smother-craft is switched off",
+          "this.FailOn(() => !RM_WindCalendar.On(RM_LeaningScrubSettings.smotherCraftEnabled));" in s)
+
+    # SCRUB_REGISTRY_FIX_GHOST_MAP_TENANTS
+    d = method_body(read("RM_SweetlineScratching.cs"), "public static void Deregister(Thing tree, Map map)")
+    check("SCRUB_REGISTRY_FIX_GHOST_MAP_TENANTS: Deregister drops an emptied map entry",
+          "trees.Remove(map);" in d, d)
+
+    # SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS
+    p = method_body(read("RM_CallingPyre.cs"), "protected override void ApplyExtraOutcome(")
+    check("SCRUB_PYRE_FIX_FIVE_FIRES_FIVE_ISLANDS: 'too little caught' asks FindBlaze, not the fire count",
+          "FindBlaze().IsValid" in p and "lit < RM_MapComponent_FireStamp.MinOpenFires" not in p)
+
+    # SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS
+    pl = method_body(read("RM_GenStep_SweetlineTrees.cs"), "private bool Plant(IntVec3 c, Map map)")
+    refuse, destroy = pl.find("return false;"), pl.find("t.Destroy();")
+    check("SCRUB_GENSTEP_FIX_TIDIES_THEN_QUITS: occupied cell refused before anything is destroyed",
+          0 < refuse < destroy, (refuse, destroy))
+
+    print("%d failed" % len(fails) if fails else "all ok")
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

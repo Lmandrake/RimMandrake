@@ -128,20 +128,26 @@ namespace RimMandrake.LeaningScrub
                 int held = 0;
                 float drawSq = ext.drawRadius * ext.drawRadius;
                 float settleSq = (ext.settleRadius + 1f) * (ext.settleRadius + 1f);
+                // Count residents AND mobbers already in flight first, so a later pass never sends a second wave
+                // past the cap (in-flight pawns are on a Goto job, which IsIdle rejects).
+                for (int i = 0; i < tmpPawns.Count; i++)
+                {
+                    Pawn p = tmpPawns[i];
+                    if (IsMobber(p, ext)
+                        && ((p.Position - stand.Position).LengthHorizontalSquared <= settleSq || HeadingTo(p, stand, settleSq)))
+                    {
+                        held++;
+                    }
+                }
                 for (int i = 0; i < tmpPawns.Count && held < ext.maxMobbers; i++)
                 {
                     Pawn p = tmpPawns[i];
-                    if (p.def != ext.mobber || !p.Spawned || p.Dead || p.Downed || p.Faction != null)
+                    if (!IsMobber(p, ext))
                     {
                         continue;
                     }
                     float distSq = (p.Position - stand.Position).LengthHorizontalSquared;
-                    if (distSq <= settleSq)
-                    {
-                        held++;
-                        continue;
-                    }
-                    if (distSq > drawSq || !IsIdle(p) || HeadingTo(p, stand, settleSq))
+                    if (distSq <= settleSq || distSq > drawSq || !IsIdle(p) || HeadingTo(p, stand, settleSq))
                     {
                         continue;
                     }
@@ -153,6 +159,11 @@ namespace RimMandrake.LeaningScrub
             }
             tmpStands.Clear();
             tmpPawns.Clear();
+        }
+
+        private static bool IsMobber(Pawn p, RM_StallMobExtension ext)
+        {
+            return p.def == ext.mobber && p.Spawned && !p.Dead && !p.Downed && p.Faction == null;
         }
 
         private static bool IsIdle(Pawn p)

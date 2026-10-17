@@ -151,7 +151,7 @@ namespace RimMandrake.LeaningScrub
             {
                 Pawn a = all[i];
                 RM_RunwayBloomExtension ext = a.def.GetModExtension<RM_RunwayBloomExtension>();
-                if (ext == null || a.Faction != null || a.Downed || a.Dead
+                if (ext == null || a.Faction != null || a.Downed || a.Dead || a.InMentalState
                     || !RM_CoatKernel.InBloomRadius(a.Position.x, a.Position.z, center.x, center.z))
                 {
                     continue;
@@ -167,7 +167,8 @@ namespace RimMandrake.LeaningScrub
 
         private void Answer(Pawn a, IntVec3 from)
         {
-            if (a == null || !a.Spawned || a.Map != map || a.Dead || a.Downed || a.Faction != null)
+            // A manhunting (mental-state) animal keeps its rage: a forced Flee/posture job would cancel it.
+            if (a == null || !a.Spawned || a.Map != map || a.Dead || a.Downed || a.Faction != null || a.InMentalState)
             {
                 return;
             }
@@ -194,6 +195,11 @@ namespace RimMandrake.LeaningScrub
             Job flee = FleeFrom(a, from, ext.fleeDistance);
             if (flee == null)
             {
+                // Already fleeing (FleeFrom leaves a running Flee be): an eruptor still takes off.
+                if (ext.response == RM_RunwayBloomResponse.Erupt && a.CurJob?.def == JobDefOf.Flee)
+                {
+                    RM_Flight.TryLaunch(a);
+                }
                 return;
             }
             a.jobs.StartJob(flee, JobCondition.InterruptForced);

@@ -201,12 +201,15 @@ namespace RimMandrake.LeaningScrub
             int herd = RM_PyreKernel.HerdCount(tier, RM_LeaningScrubSettings.callingPyreHerdFactor);
             int raging = RM_PyreKernel.RagingCount(tier, herd);
             List<Pawn> came = RM_CallingPyre.CallHerd(map, kind, herd, raging);
-            map.GetComponent<RM_MapComponent_FireStamp>()?.ConvergePass(sendMessage: false);
+            RM_MapComponent_FireStamp stamp = map.GetComponent<RM_MapComponent_FireStamp>();
+            // "Too little caught" asks the stampers' own question: is there a blaze (MinOpenFires within ClusterRadius)?
+            bool blaze = stamp != null && stamp.FindBlaze().IsValid;
+            stamp?.ConvergePass(sendMessage: false);
             if (organizer != null)
             {
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RM_CallingPyreDefOf.RM_CalledTheHerds, organizer.Named(HistoryEventArgsNames.Doer)));
             }
-            string thin = lit < RM_MapComponent_FireStamp.MinOpenFires ? " Too little caught to draw the giants already on the map." : "";
+            string thin = !blaze ? " Too little caught to draw the giants already on the map." : "";
             if (came.Count > 0)
             {
                 letterLookTargets = new LookTargets(came[0]);

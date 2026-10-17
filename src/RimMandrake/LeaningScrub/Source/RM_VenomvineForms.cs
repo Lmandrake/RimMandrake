@@ -567,11 +567,16 @@ namespace RimMandrake.LeaningScrub
 
         public override void MapComponentTick()
         {
+            int now = Find.TickManager.TicksGame;
             if (!RM_LeaningScrubSettings.modEnabled)
             {
+                // Keep the Gale latch tracking the weather while off, so switching on mid-Gale is no false onset.
+                if (now % HoardInterval == 0)
+                {
+                    wasGale = RM_WindCalendar.IsGale(map);
+                }
                 return;
             }
-            int now = Find.TickManager.TicksGame;
 
             if (now % ThornInterval == 0)
             {
@@ -627,8 +632,10 @@ namespace RimMandrake.LeaningScrub
                 if (thorns != null && RM_FormsKernel.ThornsHurt(thorns.Growth, thorns.Props.minGrowth, thorns.Spares(p), Due(nextThornTick, p, now)))
                 {
                     RM_CompProperties_MarkedThorns pr = thorns.Props;
-                    nextThornTick[p] = RM_FormsKernel.NextScratch(now, pr.contactIntervalTicks);
-                    Scratch(p, pr.damageDef, pr.damageAmount, pr.armorPenetration, pr.bodyHeight, plant);
+                    if (Scratch(p, pr.damageDef, pr.damageAmount, pr.armorPenetration, pr.bodyHeight, plant))
+                    {
+                        nextThornTick[p] = RM_FormsKernel.NextScratch(now, pr.contactIntervalTicks);
+                    }
                     continue;
                 }
                 if (!RM_WindCalendar.On(RM_LeaningScrubSettings.sheddingEnabled))
@@ -650,8 +657,10 @@ namespace RimMandrake.LeaningScrub
                     }
                     if (Due(nextLitterTick, p, now))
                     {
-                        nextLitterTick[p] = RM_FormsKernel.NextScratch(now, lit.contactIntervalTicks);
-                        Scratch(p, lit.damageDef, lit.damageAmount, lit.armorPenetration, BodyPartHeight.Bottom, t);
+                        if (Scratch(p, lit.damageDef, lit.damageAmount, lit.armorPenetration, BodyPartHeight.Bottom, t))
+                        {
+                            nextLitterTick[p] = RM_FormsKernel.NextScratch(now, lit.contactIntervalTicks);
+                        }
                     }
                     break;
                 }
@@ -693,19 +702,20 @@ namespace RimMandrake.LeaningScrub
                 || (p.kindDef != null && p.kindDef.immuneToTraps);
         }
 
-        // MapComponent_ContactVenom.Scratch's shape, honouring the kit's own venom settings.
-        private static void Scratch(Pawn p, DamageDef damageDef, float baseAmount, float ap, BodyPartHeight height, Thing source)
+        // MapComponent_ContactVenom.Scratch's shape, honouring the kit's own venom settings. True when damage was dealt:
+        // only then does the caller start the pawn's contact cooldown (venom off or zero damage spends nothing).
+        private static bool Scratch(Pawn p, DamageDef damageDef, float baseAmount, float ap, BodyPartHeight height, Thing source)
         {
             if (!RM_EnvironmentalHazardsSettings.contactVenomEnabled)
             {
-                return;
+                return false;
             }
             DamageDef damage = damageDef ?? DamageDefOf.Scratch;
             float amount = baseAmount * RM_EnvironmentalHazardsSettings.hazardDamageMultiplier
                 * RM_EnvironmentalHazardsSettings.contactVenomScratchMultiplier;
             if (amount <= 0f)
             {
-                return;
+                return false;
             }
             DamageInfo dinfo = new DamageInfo(damage, amount, ap, -1f, source, null, source.def,
                 DamageInfo.SourceCategory.ThingOrUnknown, source);
@@ -713,7 +723,7 @@ namespace RimMandrake.LeaningScrub
             p.TakeDamage(dinfo);
             if (RM_EnvironmentalHazardsSettings.contactVenomLethal || damage.additionalHediffs == null || p.health == null)
             {
-                return;
+                return true;
             }
             for (int i = 0; i < damage.additionalHediffs.Count; i++)
             {
@@ -728,6 +738,7 @@ namespace RimMandrake.LeaningScrub
                     h.Severity = hd.lethalSeverity * 0.99f;
                 }
             }
+            return true;
         }
 
         // ── rearing ──
