@@ -63,6 +63,7 @@ FEATURES = [
     ("set", r"^(recessionEnabled|recedeKeepsLastCell|recedeSparesOutflow)$", "A pond visibly recedes", "flow_shrinks"),
     ("set", r"^(pondDepthEnabled|pondMudDays|pondStageWritesPerPulse)$", "A drying pond shallows all over, then mud", "flow_shrinks"),
     ("def", r"^TerrainDef/RM_(WaterChestDeepStill|WaterThin)$", "Pond stage waters (still chest-deep, thin)", "flow_shrinks"),
+    ("tex", r"^RimMandrake/FlowWorks/Terrain/RM_WaterThin\.png$", "Thin water art (provisional, owner judges in situ)", "flow_shrinks"),
     ("set", r"^pondHeadRuleEnabled$", "A pond feeds a canal only while its surface is higher", "flow_ponds"),
     ("set", r"^(dugBedLeavesPondEnabled|pondBedHollowEnabled|mouseoverDepthEnabled|deepBedsEnabled|deepBedMaxDepth|deepBedCellsPerLevel|drainableLakeMaxCells)$", "A drained pond leaves a hollow bed", "pond_bed"),
     ("def", r"^TerrainDef/RM_Lakebed_", "Lakebed ground", "pond_bed"),

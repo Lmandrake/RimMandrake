@@ -1117,11 +1117,10 @@ LIQUID_DEF_ROWS = {
     # Ties each colour's natural-body terrain suite (LIQUID_ROWS'
     # slime_red/green/white/yellow above, generated into
     # Defs/LiquidTypes/TerrainDefs/RM_Slime<Colour>.xml) to its own canal
-    # FluidDef (FlowWorks_Fluids.xml). No bottled/worldTag/thirstQuality on
-    # any of the four -- not asked for by this item, and inventing a bottle
-    # ThingDef or a frozen-world body tag ahead of a consumer is exactly the
-    # risk LIQUID_REGISTRY_CORE_1's own notes already flagged for every
-    # other row here. pH/damage/flammable per-row match the extension
+    # FluidDef (FlowWorks_Fluids.xml). No worldTag on any of the four. Bottled
+    # forms and thirstQuality "Slime" (a last-resort drink, USE_CLASS below) came
+    # later, with THIRST_RULES_BUILD_SALT_OFF_THE_MENU (owner Q5-Q7, 2026-10-17);
+    # slime is bottled only by order. pH/damage/flammable per-row match the extension
     # already written into that row's own terrain (see this table's own
     # module comment above the four slime_* LIQUID_ROWS entries for why
     # each was chosen) -- kept in agreement by hand, the same way "acid" and
@@ -1658,7 +1657,10 @@ def build_liquiddef_registry(out_dir: Path):
   canal FluidDef (no MayRequire gate — see the table's own module comment
   above the slime_* rows for how the previous blocker was solved). Plus
   lava (LAVA_LIQUID_BUILD_PROMISED_BY_CARD), adopting Odyssey's LavaShallow/
-  LavaDeep. Astrofuel is adopted conditionally (Vanilla Gravship Expanded) by
+  LavaDeep; the five ManyWaters coloured waters (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY),
+  adopting their RM_Water_<Colour> terrains; and living slime
+  (THIRST_RULES_BUILD_SALT_OFF_THE_MENU), MayRequire mandrake.rm.biomes, no terrain
+  suite (Gelatinous Slime's RM_Slime_Liquid points at it by patch). Astrofuel is adopted conditionally (Vanilla Gravship Expanded) by
   Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml; blood exists only as a
   canal FluidDef (Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml).
   ============================================================================
@@ -1691,8 +1693,9 @@ def build_liquiddef_registry(out_dir: Path):
 _CONTAINER_SIZE_META = {
     # size key -> (bottled-dict key, ParentName, defName prefix, noun, gets-ingestible-block)
     "bottle": ("bottle", "RM_BottleItemBase", "RM_Bottle_", "bottle", True),
-    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §3/§4): buckets and barrels are NOT drunk directly (items are
-    # consumed whole); the tank and fill jobs decant them to bottles. Only bottles get an <ingestible> block.
+    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §3/§4): only bottles get an <ingestible> block (an ingested item is
+    # consumed whole). A bucket or barrel is drunk 1.5 L at a time by the RM_DrinkFromContainer job instead
+    # (THIRST_RULES_BUILD_SALT_OFF_THE_MENU, awkward access; CompRM_DrawnLitres on the size's ItemBase).
     "bucket": ("bucket", "RM_BucketItemBase", "RM_Bucket_", "bucket", False),
     "barrel": ("barrel", "RM_BarrelItemBase", "RM_Barrel_", "barrel", False),
 }
@@ -1713,12 +1716,13 @@ def build_bottle_thingdef_xml(container_defname, liquid_defname, liquid_label, d
     lines.append("      </li>")
     lines.append("    </modExtensions>")
     # LIQUID_BOTTLE_LOOP_1: only a row the registry already marked drinkable
-    # (thirstQuality set -- fresh/salt/toxic/brine/coloured water) becomes ingestible
-    # at all, and only for the bottle size tier (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY). That is an existing,
-    # non-invented signal: boiling water would scald, icy water gives
-    # frostbite, and acid/tar/propane are hazards or fuel, never a drink --
-    # none of those five rows carry thirstQuality, so none of them get this
-    # block. IngestionOutcomeDoer_BottleResidue (Source/LiquidTypes/) reads
+    # (thirstQuality set -- fresh/icy/salt/toxic/brine/coloured water and the four
+    # slimes) becomes ingestible at all, and only for the bottle size tier
+    # (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY). Boiling water would scald (its
+    # bottle cools to fresh instead, revertsTo), and acid/tar/propane/chemfuel
+    # are hazards or fuel, never a drink -- none of them carry thirstQuality.
+    # Who may drink WHICH ingestible bottle is USE_CLASS, gated in C#
+    # (RM_ThirstMath.MayDrink). IngestionOutcomeDoer_BottleResidue (Source/LiquidTypes/) reads
     # RM_BottledLiquidExtension generically and leaves a dirty/empty
     # same-sized container behind per the Mod Settings toggle;
     # IngestionOutcomeDoer_RM_Hydrate is the drink itself. With Dubs Bad Hygiene
@@ -1806,9 +1810,9 @@ def build_bottle_thingdefs(out_dir: Path):
   C#. The dirty-stage Mod Settings toggle ships
   (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled, default ON). Only
   a row with `thirstQuality` set gets an `<ingestible>` block, and only on
-  its bottle — never bucket or barrel, which are decanted, not drunk
-  (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) — see build_bottle_thingdef_xml's
-  own comment.
+  its bottle — a bucket or barrel is drunk 1.5 L at a time by the
+  RM_DrinkFromContainer job instead (THIRST_RULES_BUILD_SALT_OFF_THE_MENU) —
+  see build_bottle_thingdef_xml's own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
   Revert-on-bottle (boiling/icy -> fresh) is row data read by
