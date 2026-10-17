@@ -25,3 +25,5 @@
 - 5 oracle 3000: 8 modes PASS, 0 FAIL; vv_shipped_matrix --quick? no: full shipped 15:32
 - 5 vv_shipped_matrix --skip-ep: SHIPPED all families 0 (kernel_fuzz 0/10000, fills 0/10000, hose 0/2798...), control 194/2000; VERDICT FAIL only on known AUTHORED Thirst_slime_last_resort_ruled; OFF_edgeSinks kernel_fuzz 142/2000 known. run_selftests --only 15:40
 - 5 run_selftests --only river_site/extensions/flowworks_stock: see commit msg (fixed extensions fakes to answer pawn_get; new turns_npc can-fail -> FAIL) 15:43
+- 6 committed source d21e7ab33, rebased onto origin 0fe44a6ea -> bf1e344d1; SelfTest on merged tree 15:44
+- 6 merged tree green (3/3 --only); fetch: origin unmoved; winbuild on bf1e344d1 OK; committing DLL + pushing 15:46
