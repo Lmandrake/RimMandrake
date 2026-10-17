@@ -47,7 +47,7 @@
       <wildClusterWeight>12</wildClusterWeight>
       <wildOrder>2</wildOrder>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <visualSizeRange>1.8~2.4</visualSizeRange>  <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q2 (owner card 2026-10-16): tree-tall, 1.8-2.4 cells -->
       <topWindExposure>0.1</topWindExposure>
       <harvestedThingDef>RM_RawVenom</harvestedThingDef>
       <harvestYield>3</harvestYield>
@@ -114,7 +114,7 @@
       <wildClusterWeight>12</wildClusterWeight>
       <wildOrder>2</wildOrder>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <visualSizeRange>1.8~2.4</visualSizeRange>  <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q2 (owner card 2026-10-16): tree-tall, 1.8-2.4 cells -->
       <topWindExposure>0.1</topWindExposure>
       <harvestWork>1400</harvestWork>
       <allowAutoCut>false</allowAutoCut>
@@ -179,7 +179,7 @@
       <wildClusterWeight>12</wildClusterWeight>
       <wildOrder>2</wildOrder>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <visualSizeRange>1.8~2.4</visualSizeRange>  <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q2 (owner card 2026-10-16): tree-tall, 1.8-2.4 cells -->
       <topWindExposure>0.1</topWindExposure>
       <harvestWork>900</harvestWork>
       <allowAutoCut>false</allowAutoCut>
@@ -230,7 +230,7 @@
       <wildClusterWeight>1</wildClusterWeight>
       <wildOrder>2</wildOrder>
       <maxMeshCount>1</maxMeshCount>
-      <visualSizeRange>1.0~1.0</visualSizeRange>
+      <visualSizeRange>2.2~2.4</visualSizeRange>  <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q2: the tallest venomvine -->
       <topWindExposure>0.1</topWindExposure>
       <harvestWork>2200</harvestWork>
       <allowAutoCut>false</allowAutoCut>

@@ -433,6 +433,18 @@ class Fake(object):
                 n = 1
                 self.new(V.TREE, 5, 5, growth=1.0, stackCount=1)
             return {"success": True, "result": "PLANTED %d" % n}
+        if method == "ProofIslands":
+            return {"success": True, "result": "FAIL: laid under half the target share islands=0" if "no_islands" in self.broken
+                    else "PASS islands=40 planned=42 planted=8100 target=8250 rooms=70"}
+        if method == "ProofCreep":
+            if args == "on":
+                return {"success": True, "result": "FAIL: a grown stand put no runner" if "no_creep" in self.broken
+                        else "PASS mode=on laid=1 besideTestStand=1 runnerGrowth=0.05"}
+            ran = (args == "off" and "creep_ignores_toggle" in self.broken) or (args == "cap" and "creep_ignores_cap" in self.broken)
+            return {"success": True, "result": "FAIL: creep ran with %s" % args if ran else "PASS mode=%s laid=0" % args}
+        if method == "ProofExempt":
+            return {"success": True, "result": "FAIL: the venomvine exemption roster did not load" if "no_exempt" in self.broken
+                    else "PASS roster RM_LeaningScrub_VenomvineExempt loaded"}
         if method == "ProofForm" and type and type.endswith("RM_FourFormsProof"):
             form, mode = args.split("|")
             on = self.on(dict(V.FOUR)[form])
@@ -689,6 +701,11 @@ BREAKS = {
     "vaporator_unlearnable": "injections.vaporator_learned_from_farmstead",
     "no_farmstead": "injections.map_holds_ruins_and_camps",
     "no_camp_people": "injections.map_holds_ruins_and_camps",
+    "no_islands": "islands.islands_laid_share",
+    "no_creep": "islands.creep_runner_unarmed",
+    "creep_ignores_toggle": "islands.creep_toggle_off",
+    "creep_ignores_cap": "islands.creep_cap_stops",
+    "no_exempt": "islands.growth_exempt_from_explosive_growth",
 }
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form

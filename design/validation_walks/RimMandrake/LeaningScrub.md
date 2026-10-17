@@ -72,6 +72,16 @@ Venomvine rooms, the runway bloom, sweetline trees
 - `venomvinePassabilityEnabled` exists, defaults on and is writable. → settings.venomvinePassabilityEnabled_roundtrip
 - The canopy reads as one even fuzz carpet all leaning the same way; the Stall reads as still. → UNCOVERED: visual; left to the judge pass (debug_process §4)
 
+Venomvine islands and creep (VENOMVINE_BUILD_SCRUB_GROWS_TEETH, owner cards 2026-10-16; live rows written, OWED a run)
+- The island map step lays venomvine over about 15% of open ground (at least half the target on any map), keeps the start clear and the start's open ground reachable, and grows at least one room of a rarer form. → islands.islands_laid_share
+- A grown stand puts a runner into a free natural neighbour cell, and the runner is under half grown (no venom yet). → islands.creep_runner_unarmed
+- With `venomvineCreepEnabled` off no runner is laid. → islands.creep_toggle_off
+- At the map cap (`venomvineCreepCap`, default 22%) no runner is laid. → islands.creep_cap_stops
+- Explosive Growth leaves venomvine alone (our exemption roster loads). → islands.growth_exempt_from_explosive_growth
+- About 3 in 4 runners go downwind; island counts, sizes, gaps, the cut-the-map refusal and room roles follow the kernel. → UNCOVERED live: the proof map does not lean; offline in SelfTest/LeaningScrubIslandCheck.cs (selftest_leaningscrub_fuzz.py)
+- Islands on a real Scrub map at generation, with pathing and perf inside bounds at 15%. → UNCOVERED: needs a Scrub-tile site (LEANING_SCRUB_LEAN_SITE_1)
+- Venomvine stands 1.8 to 2.4 cells tall at play zoom. → UNCOVERED: visual; tall-canvas renders queued (tallvv_* artpipe jobs)
+
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger).
 2. [B] `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod LeaningScrub --plan src/RimMandrake/LeaningScrub/northstar_plan.py` → results JSON in `Transient/northstar/`.

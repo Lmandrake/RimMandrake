@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH (design/RimMandrake/venomvine_design_2026-10-16.md §10 RULED, owner cards 2026-10-16).
+     1. Q2 tree-tall: RM_VenomvineThicket (def in EnvironmentalHazards) draws 1.8-2.4 cells, like the forms in this mod.
+     2. Q3 creep: the forms that put runners carry RM_CompProperties_VenomvineCreep (Source/RM_VenomvineIslands.cs), which
+        marks them for RM_MapComponent_VenomvineCreep and gives the inspect line. Not Sworn (a crop: only where sown),
+        not Crown (never creeps), not the dormant Sleeper.
+     3. §3 "a runner is safe for its first days": contact venom only from half growth (CompProperties_ContactVenom.minGrowth,
+        default 0 elsewhere). The desert RM_Venomvine is untouched. -->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="RM_VenomvineThicket"]/plant/visualSizeRange</xpath>
+    <value>
+      <visualSizeRange>1.8~2.4</visualSizeRange>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="RM_VenomvineThicket" or defName="RM_DrippingVenomvine" or defName="RM_TwitcherVenomvine" or defName="RM_HollowVenomvine" or defName="RM_RearingVenomvine" or defName="RM_WalkingVenomvine" or defName="RM_HoardVenomvine" or defName="RM_QuenchVenomvine" or defName="RM_SheddingVenomvine" or defName="RM_StranglerVenomvine" or defName="RM_WeeperVenomvine" or defName="RM_SleeperVenomvineAwake" or defName="RM_LureVenomvine"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_VenomvineCreep" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="RM_VenomvineThicket" or defName="RM_DrippingVenomvine" or defName="RM_TwitcherVenomvine" or defName="RM_CrownVenomvine" or defName="RM_RearingVenomvine" or defName="RM_HoardVenomvine" or defName="RM_QuenchVenomvine" or defName="RM_SheddingVenomvine" or defName="RM_StranglerVenomvine" or defName="RM_WeeperVenomvine" or defName="RM_SleeperVenomvineAwake" or defName="RM_LureVenomvine"]/comps/li[@Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom"]</xpath>
+    <value>
+      <minGrowth>0.5</minGrowth>
+    </value>
+  </Operation>
+</Patch>

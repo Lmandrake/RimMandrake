@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q3 (owner card 2026-10-16): venomvine grows on its own clock, outside Explosive Growth.
+     A roster def of our own: the engine (ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs) unions exemptPlants (no soak)
+     and bandExemptPlants (no everyday band) across EVERY RM_ExplosiveGrowthRosterDef loaded, so no edit to that mod is needed.
+     Guarded by MayRequire: deploy rewrites the folded id to the composed Baroque Biomes id. If Explosive Growth renames
+     these two fields, this def throws config errors at load: re-point it then. -->
+<Defs>
+  <RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef MayRequire="mandrake.rm.explosivegrowth">
+    <defName>RM_LeaningScrub_VenomvineExempt</defName>
+    <exemptPlants>
+      <li>RM_VenomvineThicket</li>
+      <li>RM_DrippingVenomvine</li>
+      <li>RM_TwitcherVenomvine</li>
+      <li>RM_HollowVenomvine</li>
+      <li>RM_CrownVenomvine</li>
+      <li>RM_RearingVenomvine</li>
+      <li>RM_WalkingVenomvine</li>
+      <li>RM_HoardVenomvine</li>
+      <li>RM_QuenchVenomvine</li>
+      <li>RM_SwornVenomvine</li>
+      <li>RM_SheddingVenomvine</li>
+      <li>RM_StranglerVenomvine</li>
+      <li>RM_WeeperVenomvine</li>
+      <li>RM_SleeperVenomvine</li>
+      <li>RM_SleeperVenomvineAwake</li>
+      <li>RM_LureVenomvine</li>
+      <li>RM_Venomvine</li>
+    </exemptPlants>
+    <bandExemptPlants>
+      <li>RM_VenomvineThicket</li>
+      <li>RM_DrippingVenomvine</li>
+      <li>RM_TwitcherVenomvine</li>
+      <li>RM_HollowVenomvine</li>
+      <li>RM_CrownVenomvine</li>
+      <li>RM_RearingVenomvine</li>
+      <li>RM_WalkingVenomvine</li>
+      <li>RM_HoardVenomvine</li>
+      <li>RM_QuenchVenomvine</li>
+      <li>RM_SwornVenomvine</li>
+      <li>RM_SheddingVenomvine</li>
+      <li>RM_StranglerVenomvine</li>
+      <li>RM_WeeperVenomvine</li>
+      <li>RM_SleeperVenomvine</li>
+      <li>RM_SleeperVenomvineAwake</li>
+      <li>RM_LureVenomvine</li>
+      <li>RM_Venomvine</li>
+    </bandExemptPlants>
+  </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
+</Defs>

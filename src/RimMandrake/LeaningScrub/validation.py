@@ -88,6 +88,11 @@ DEFAULTS = {
     # the four further forms (RM_VenomvineFourForms.cs; owner card 2026-10-08)
     "stranglerEnabled": True, "stranglerDamageFactor": 1.0, "stranglerAutoTrim": True,
     "weeperEnabled": True, "weeperPollutes": True, "sleeperEnabled": True, "lureEnabled": True,
+    # VENOMVINE_BUILD_SCRUB_GROWS_TEETH (RM_VenomvineIslands.cs; owner cards 2026-10-16 Q1 15%, Q3 cap 22%)
+    "venomvineIslandsEnabled": True, "venomvineIslandShare": 0.15, "venomvineIslandsMin": 8, "venomvineIslandsMax": 14,
+    "venomvineIslandMaxCells": 200, "venomvineIslandRoomsEnabled": True, "venomvineStartClearance": 30.0,
+    "venomvineCreepEnabled": True, "venomvineCreepDays": 10.0, "venomvineCreepDownwindShare": 0.75,
+    "venomvineCreepCap": 0.22,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1664,6 +1669,27 @@ def four_forms_chain(t):
                         _fail("%s (%s): %s" % (form, mode, txt[:400]))
                     if not txt.startswith("PASS"):
                         _unmeasured(t, "%s proof did not answer PASS/FAIL: %s" % (form, txt[:200]))
+
+
+# --------------------------------------------------------------------------- chain: venomvine islands and creep
+
+@suite.chain("islands")
+def islands_chain(t):
+    """VENOMVINE_BUILD_SCRUB_GROWS_TEETH (RM_VenomvineIslands.cs; design venomvine_design_2026-10-16.md §10 RULED).
+    RM_VenomvineIslandsProof runs the SHIPPED pieces on the current (disposable) map with the RM_LeaningScrub island
+    extension: ProofIslands lays the islands (share, start clearance, reach, rooms), ProofCreep plants one grown thicket
+    and drives the gated creep pass on / off / at the cap (the runner must be unarmed, under half grown), ProofExempt
+    reads that our Explosive Growth exemption roster loaded. Offline: the kernel (count, sizes, growth, gap, reach,
+    rooms, runner chance, cap, downwind pick) is table-tested in SelfTest/LeaningScrubIslandCheck.cs.
+    LIVE ROWS OWED (written 2026-10-16, not yet run: the game was up without a bridge for BENCH). UNCOVERED: the step
+    inside real map generation on a Scrub tile (LEANING_SCRUB_LEAN_SITE_1), the downwind bias on a leaning map (the
+    proof map does not lean), and perf/pathing at 15% islands."""
+    _proof(t, "islands_laid_share", "RM_VenomvineIslandsProof", "ProofIslands", "", "islands laid",
+           toggle="venomvineIslandsEnabled")
+    for mode, name in (("on", "creep_runner_unarmed"), ("off", "creep_toggle_off"), ("cap", "creep_cap_stops")):
+        _proof(t, name, "RM_VenomvineIslandsProof", "ProofCreep", mode, "creep (%s)" % mode,
+               toggle="venomvineCreepEnabled")
+    _proof(t, "growth_exempt_from_explosive_growth", "RM_VenomvineIslandsProof", "ProofExempt", "", "EG exemption")
 
 
 # --------------------------------------------------------------------------- chain: sweetline (last: jumps the clock)
