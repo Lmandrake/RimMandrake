@@ -16,8 +16,9 @@ moves in whole notches (exactly level). Build neither. Everything else in the ti
   veto on `DEPTH_DEFAULTS_ASK_ELEVEN_VETOES`); one burn rate (D3 default).
 - L1: `FillTier` by metres of water; every whole-notch reader (pumps, burn, heat, drowning, mouseover, Level Holder,
   drilling reserves) reads metres/litres; the Python oracle reads the C# constants; changed in the same commit.
-- L1: lake floors: natural lake/pond floor default 20 m, setting to 125 m; very large lakes and oceans may reach 50 m
-  (propose the size class for "very large" and show it to him); oceans/edge rivers stay limitless; settings in metres.
+- L1: lake-floor settings in metres with a ceiling settable up to 125 m; oceans/edge rivers stay limitless. The floor
+  SHAPE (per lake, per biome roughness, irregular; 50 m only an upper bound for mountainous/deep biomes) moved to
+  `LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP` (owner R11, 2026-10-17); the fixed 20 m default / 50 m large-lake rule is gone.
 - L1: containers in litres: bottle 1.5 L, bucket 15 L, barrel 208 L; a save from before the litres base migrates with
   every container's contents unchanged.
 - L2 (P10 walk): mouseover and settings show metres and litres in game; a pre-litres save loads with the same liquid.

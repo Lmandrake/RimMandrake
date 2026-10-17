@@ -285,7 +285,8 @@ what went, because each was previously called load-bearing here:
   so a drawn-down reservoir is *asset 2* (partial fill) on a deeper cell. One art system covers both
   halves of the mod. §5's note that "no depletion-indicating graphic exists in ANY mod in this repo"
   described a gap that no longer needs filling.
-- **Limited vs limitless indicator** — cut by ruling 35. Nothing renders the distinction.
+- **Limited vs limitless indicator** — cut by ruling 35 as art (no glyph, no overlay). **Narrowed 2026-10-17:** a
+  limitless body (sea, edge river) carries a "never runs dry" mark in the depth readout (owner, 2026-10-17: *"Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."*); a limited body shows nothing.
 - **Irrigated soil** — cut by ruling 36. This list used to say "the whole irrigation motivation rests
   on this one visual"; he ruled the yield is enough, so the ring is not drawn.
 
@@ -729,9 +730,9 @@ able to 'flap between' because it can't be reduced, it's limitless once and for 
 never re-evaluated — which removes the hysteresis problem the size floor would otherwise create, with
 no tuning and no flicker.
 
-⚠️ **Still true, but no longer visible.** Ruling 35 (2026-09-17) cut every indicator of limited versus
-limitless, so this classification is now a simulation fact the player is never shown. It still governs
-whether a body can be drawn down; it just has no art and no overlay. Do not re-add one as a "fix".
+⚠️ **Shown only on the limitless side.** Ruling 35 (2026-09-17) cut the indicator; on 2026-10-17 he narrowed it
+(owner, 2026-10-17: *"Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."*): a limitless body carries a "never runs dry" mark in the depth readout
+(`DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE`); a limited body shows nothing, and there is still no glyph or overlay art.
 
 **17. A dry channel slows heavily — `pathCost` 30, matching Pits.** Makes his own line about "other
 established dug barriers" true for the first time; today's flat 6 is a fifth of a dug pit. Raiders
@@ -1162,13 +1163,11 @@ primitive and the same code path as a partly filled channel. So:
 of mass are untouched. What is deleted is the source-as-object and every graphic that expressed its
 condition — not the fact that liquid spent is liquid gone.
 
-**35. Limited versus limitless is never shown to the player.** Card answer: "Stock replaced it — cut
+**35. No limited-vs-limitless indicator — NARROWED 2026-10-17.** Card answer (2026-09-17): "Stock replaced it — cut
 the idea." The classification stays real in the simulation (ruling 16, sticky) and governs whether a
-body can be drawn down; it gets **no overlay glyph, no inspect indicator, no art.**
-
-⚠️ Cost he accepted, stated on the card: a map-edge body genuinely is effectively endless, so the
-player loses a real planning signal and can over-commit labour to a small pond. ⛔ Do not re-add an
-indicator later as a usability "fix" — this is the ruling, not an oversight.
+body can be drawn down; it gets **no overlay glyph and no art.** On 2026-10-17 he narrowed it: owner, 2026-10-17: *"Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."*
+So a **limitless** body's depth readout says it never runs dry (`DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE`); a
+**limited** body shows no indicator (the player learns its size by drawing on it).
 
 **36. Irrigation needs no visual. The yield is enough.** Card answer: "Neither — yield is enough."
 Neither the soil nor the plants require a distinct watered look, so the damp ring is deleted.

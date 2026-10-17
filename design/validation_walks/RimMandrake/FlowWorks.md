@@ -301,8 +301,8 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 
 **Empty by decision.** Resolved with him and not to be re-added:
 
-- `limited_vs_limitless_legible` — **cut** by ruling 35. The classification is real in the
-  simulation and shown nowhere.
+- `limited_vs_limitless_legible` — **cut** by ruling 35 (2026-09-17); **narrowed 2026-10-17**: limitless bodies are
+  marked in the readout, limited ones are not. A narrowed bar is offered at `FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING`.
 - `source_exhausted_distinct_from_strained` — **cut.** Incoherent after ruling 34, which
   removed the source object and the strained state.
 - `irrigated_ground_visibly_differs` — **cut** by ruling 36, above.

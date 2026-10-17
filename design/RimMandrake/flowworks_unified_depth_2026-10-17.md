@@ -47,10 +47,7 @@ level 4 canals."*
    new very-shallow look; he sees it first), 0.5 m, 1 m, 1.5 m, 2 m and deeper (plus darker "very deep" tints for lakes: ruled yes, owner sees them first). The **hole's** depth is shown separately,
    by the canal's walls and how low a pawn sits. Water picture = water depth; walls = hole depth. Never one for the
    other.
-5. **Natural water goes much deeper.** A pond's shore is 1 m (shallow water) or 2 m (deep water); its floor then drops
-   0.5 m every 4 squares out from shore. Today the floor stops at 10 m. **Ruled: ponds and lakes stop at 20 m by
-   default, settable to 125 m; very large lakes and oceans may reach 50 m** (owner: *"but very large lakes and oceans can
-   absolutely go 50m"*). Oceans and edge rivers never run down, so their depth is a picture and a readout, never a
+5. **Natural water goes much deeper.** A pond's shore is 1 m (shallow water) or 2 m (deep water). **Lake floors, owner R11 (2026-10-17, supersedes D2's fixed numbers):** floors vary per lake and per biome roughness (mountainous deep and chasm-like, plains shallow and silted), irregular, not a radial slope; the ceiling stays settable to 125 m; 50 m is an upper bound for mountainous/deep biomes only (`LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP`). Oceans and edge rivers never run down, so their depth is a picture and a readout, never a
    litre count.
 6. **"Four" stays and is renamed the yardstick: 2 m = 4 notches = 4,000 L in one square.** This is one tank square and
    a shore-deep pond square. It is no longer the deepest dig (8 m by default, setting 2 to 20 m). "Five" is deleted everywhere.
@@ -66,8 +63,7 @@ wets all ten at 4.5 cm, not four full cells. **Scene S5 is redrawn with these le
 Alternatives considered and not taken (§8): **B** a finer 0.1 m step; **C** abstract "levels" with no metres; **D**
 keep fullness pictures and only fix the numbers.
 
-**Decided (§10):** the owner ruled the scheme (A), the lake floor (20 m, to 125 m; 50 m for very large lakes and
-oceans), "20% over the head" as a visual rule only, and the new art (yes, seen by him before it
+**Decided (§10):** the owner ruled the scheme (A), the lake floor ceiling (to 125 m; the floor shape was re-ruled later the same day, R11, §5.2), "20% over the head" as a visual rule only, and the new art (yes, seen by him before it
 ships). **Defaulted, veto-able:** one burn rate; delete the pond-volume multiplier; restate the two north-star bars in
 metres and have him re-validate them; redraw S5 with both a deep gravity canal and a pump.
 
@@ -198,12 +194,7 @@ by default, a setting from 2 to 20 m (owner, by card, 2026-10-17).
 
 ### 5.2 Ponds and lakes (limited natural water)
 - Floor at the shore: shallow water 1 m, deep water 2 m (ruling 2026-10-12, unchanged).
-- Floor beyond 3 squares from shore: 0.5 m deeper every 4 squares (unchanged).
-- **Cap (ruled D2):** today 10 m (20 notches), settable 2 to 20 m. **Ruled: default 20 m, settable to 125 m** (the
-  byte grid stores 250 notches). **Very large lakes and oceans may reach 50 m** (owner: *"but very large lakes and oceans
-  can absolutely go 50m"*); what counts as "very large" is the build item's to propose, by size class, and his to
-  approve. The slope, not the cap, decides most depths: a 20 m middle needs about 150 squares to shore. The slope stays
-  0.5 m per 4 squares (not ruled steeper).
+- Beyond the shore: **Lake floors, owner R11 (2026-10-17, supersedes D2's fixed numbers):** floors vary per lake and per biome roughness (mountainous deep and chasm-like, plains shallow and silted), irregular, not a radial slope; the ceiling stays settable to 125 m; 50 m is an upper bound for mountainous/deep biomes only (`LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP`). The byte grid stores 250 notches (125 m).
 - A pond's water = Σ (floor depth × 2,000 L) over its squares. **Nothing multiplies it** (§2.4).
 - Each lake square shows its own water depth. A drawn-down lake shallows all over (`pond_depth_design`, D1 and D2).
 
@@ -328,7 +319,7 @@ decilitres; `flowworks_level_surface_2026-10-17.md`).
 | # | decision | ruling |
 |---|---|---|
 | D1 | scheme | **A**: litres true, metres shown, 0.5 m notch (1,000 L per square); "four" = the 2 m dig; "five" deleted everywhere |
-| D2 | lake floor cap | **20 m default, settable to 125 m**; *"but very large lakes and oceans can absolutely go 50m"* |
+| D2 | lake floor cap | settable to 125 m. Its 20 m default / 50 m large-lake numbers were **replaced** later the same day by R11 (floors per lake and biome roughness; 50 m only for mountainous/deep biomes) |
 | D5 | pit height | his wall-height rule (walls 20% above the head) is a **visual rule only**. The morning's "the deepest pit stays 2 m" was **REVERSED** the same day by his own question: colonists dig to 8 m by default, setting 2 to 20 m (by card) |
 | art | wall band on wet canals (§4.2), darker deep-lake colours (§4.1) | **yes, but he sees it before it ships**: a review sheet or an in-game shot first (cosmetic permission gate) |
 
@@ -346,7 +337,7 @@ decilitres; `flowworks_level_surface_2026-10-17.md`).
 Filed 2026-10-17 from this spec; the code is untouched until they run:
 
 - `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD`: §7.2 code, defs, settings, strings and Python constants (Scheme A, D3, D4).
-- `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES`: D2: cap 20 m default, setting to 125 m, 50 m for very large lakes and oceans.
+- `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES` (absorbed into P4): the 125 m ceiling setting; floor shape is `LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP` (R11).
 - `WATER_DEPTH_RESKIN_HE_LOOKS_FIRST`: the wall band and the deep-lake tints; owner sees a sheet or in-game shot first.
 - `WATER_SCENES_JUDGE_S5_REDRAWN` (BENCH, needs owner): re-approve S5; re-validate the two metre-worded north-star bars;
   keep or veto D3, D4 and D6.
