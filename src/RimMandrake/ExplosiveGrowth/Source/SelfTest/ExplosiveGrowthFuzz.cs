@@ -693,7 +693,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                             float got = RM_ExplosiveGrowthKernel.TreeMoistureFactor(a, sc, st, se, w, ash, mat, s);
                             float want = SpecTreeRate(a, sc, st, se, w, ash, mat, s);
                             Check(Math.Abs(got - want) < 1e-6f, $"TreeMoistureFactor({a}, scope {sc}, stalled {st}, sealed {se}, wet {w}, ash {ash}, mature {mat}) = {got}, want {want}");
-                            Check(got <= Math.Max(Math.Max(1f, s.wetNative), s.stunted) + 1e-6f, $"a tree above every ruled ceiling ({a}, wet {w}): {got}");
+                            Check(got <= Math.Max(Math.Max(Math.Max(1f, s.wetNative), s.stunted), s.dryDry) + 1e-6f, $"a tree above every ruled ceiling ({a}, wet {w}): {got}");
                             Cases++; Steps++;
                         }
                 }

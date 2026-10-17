@@ -1378,12 +1378,14 @@ def probe_tree_life(t):
                     if not _near(v.get("treeDrinkDays"), 10.0, 0.01): bad.append("a 400 L spill bought %s days, want 10 (Q1)" % v.get("treeDrinkDays"))
                     gd = float(v.get("treeGrowDays", "0") or 0)
                     if gd > 0 and not _near(v.get("treeYoungGain"), min(0.8, 10.0 / gd), 0.02):
-                        bad.append("young tree grew %s from a spill, want ~%.3f (10 days of %s)" % (v.get("treeYoungGain"), 10.0 / gd, gd))
+                        bad.append("young tree grew %s from a spill, want ~%.3f (10 days of %s, from growth 0.2)" % (v.get("treeYoungGain"), min(0.8, 10.0 / gd), gd))
                     if v.get("treeSpillUsed") != "True": bad.append("the tree did not use up the spill it drank")
                     if v.get("treeWaterBurst") != "True": bad.append("a drink past the lifespan did not burst (Q5/Q6)")
                     burst = v.get("treeBurst", "")
                     # ProofTreeLife writes the burst as [logs:N,logDef:X,product:N,fruit:N,seedlings:N,waterDriven:B]
-                    if re.search(r"\blogs:0\b", burst) or "logs:" not in burst: bad.append("the water-driven burst threw no logs (Q12): %s" % burst)
+                    # a Contagion (Rupture-top) tree's burst IS its Rupture (Q15): "rupture:1", no logs by design
+                    if "rupture:1" not in burst and (re.search(r"\blogs:0\b", burst) or "logs:" not in burst):
+                        bad.append("the water-driven burst threw no logs (Q12): %s" % burst)
                     if re.search(r"\bseedlings:0\b", burst): site.append("no seedling found a free cell (2-4 expected, Q17)")
                 elif v.get("treeSpill") == "True":
                     site.append("the dry-land tree cannot grow here now (GrowthRate 0: night or cold)")
