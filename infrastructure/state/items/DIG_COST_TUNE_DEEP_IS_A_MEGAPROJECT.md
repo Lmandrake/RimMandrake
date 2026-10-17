@@ -7,3 +7,7 @@ Plan P6 of `FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG` (`design/RimMandrake/flowworks_
 - L1: work for notch n is 3,200 × n at every depth to the 20 m cap; one 7 m square ≈ 5½ digger-days and the 4/7/7/4
   square ≈ 45 (state the measured figures, not these estimates).
 - L1: settings text says metres; lowering the cap never shallows a dug cell.
+
+## criteria
+- A1 L0: offline built cb8194587 — SelfTest DeepDig_cost_curve_numbers_measured (3,200 x notch to 20 m; 7 m square 3.29 digger-days, 4/7/7/4 square 26.73, flat option 16.06, at vanilla's 1.7 work a tick).
+- A2 L2: P10 walk — a dig past 2 m takes the curve's work (progress-bar time) in game.
