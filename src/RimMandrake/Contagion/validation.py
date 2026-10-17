@@ -549,8 +549,31 @@ def _jump(t, delta):
             w.gate.observe(after, epoch_change=True, reason="time_set_ticks declared jump")
     # read the clock back ourselves: a reply without ticksGameAfter must not make a no-op jump look taken
     after = t.session._ticks()
+    if delta > 0:
+        _STATE["jumped"] = _STATE.get("jumped", 0) + int(delta)   # unwound by _stable: a chain never leaves the clock moved
     if after is None or after < now + delta - 5:
         _fail("time_set_ticks did not take: clock %r after asking for %d (%r)" % (after, now + delta, r))
+
+
+def _unjump(t):
+    """Put the clock back by whatever this chain jumped (LIVE 2026-10-16: spawner + burn_natural jumped ~730000
+    ticks and the later chains (zhool, coalescence) ran at tick 745k with the colony dead). A refused or failed
+    rewind is noted, never a verdict. Nothing the later chains read is tick-absolute."""
+    back = _STATE.pop("jumped", 0)
+    if not back or t.session is None:
+        return
+    try:
+        now = t.session._ticks()
+        if now is None:
+            raise RuntimeError("clock unreadable")
+        t.session.call("jawa/time_set_ticks", ticks=max(int(now) - back, 0), timeException=True)
+        w = getattr(t, "watch", None)
+        after = t.session._ticks()
+        if w is not None and getattr(w, "gate", None) is not None and after is not None:
+            w.gate.observe(after, epoch_change=True, reason="time_set_ticks rewind of a declared jump")
+        _note(t, "clock rewound after a declared jump", {"back": back, "from": now, "to": after})
+    except Exception as ex:                                     # noqa: BLE001 - upkeep, never a verdict
+        _note(t, "clock rewind failed", "%s: %s" % (type(ex).__name__, ex))
 
 
 def _map_biome(t):
@@ -711,6 +734,8 @@ def _stable(t, fn):
     finally:
         if t.session is not None:
             _end_conditions(t)
+            _unjump(t)
+            _support_upkeep(t)
             for f in DEFAULTS:
                 _restore(t, f)
             try:
@@ -1272,7 +1297,19 @@ def burn_forced(t):
                     _, lines = _inspect(t, _STATE["rep_id"])
                     if "Disabled in Mod Settings" not in lines:
                         _fail("inspect string does not say it is disabled: %r" % lines)
-    _stable(t, body)
+    try:
+        _stable(t, body)
+    finally:
+        # drafted colonists never eat; the fixture pair must not outlive the chain drafted (they sit on the pad,
+        # but a colonist the pad cleanup missed would starve through the later chains' waits)
+        b = _STATE.pop("burn", None) or {}
+        if t.session is not None:
+            for k in ("open", "roofed"):
+                if b.get(k):
+                    try:
+                        t.session.call("jawa/set_draft", pawnId=b[k], drafted=False)
+                    except Exception:                           # noqa: BLE001 - already removed
+                        pass
 
 
 # --------------------------------------------------------------------------- chain: burn_natural
