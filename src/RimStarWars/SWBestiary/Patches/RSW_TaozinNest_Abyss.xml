@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TAOZIN SPLIT 2026-10-17: the taozin nest on every new Crags (RM_Abyss) map. Conditional on both the biome and
+     the GenStepDef (each MayRequire'd away when its mod is absent), so it is silent when either is missing. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/GenStepDef[defName="RSW_GenStep_TaozinNest"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/BiomeDef[defName="RM_Abyss"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Abyss"]/extraGenSteps</xpath>
+        <value>
+          <li>RSW_GenStep_TaozinNest</li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>

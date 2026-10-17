@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- Ported by src/RimMandrake/Utils/donor_pack_port.py port (DONOR_DEFS_PORT_TO_OURS_1, batch W3e) from mlie.starwarsanimalcollection (MIT; workshop 3497316713, 1.6/Defs). Donor-only names renamed RSW_; values verbatim. A texPath under swanimals/ or swresource/ keeps the donor path; its PNGs are extracted donor art installed in SWBestiary/Textures through the art ledger (owner 2026-10-14: ports may re-use extracted donor art until we regenerate). Canon brief: design/RimStarWars/canon_references/(see tracker). Our own patches that targeted the donor defName were applied BEFORE the rename (so this is the creature the game showed): src/RimStarWars/SWBestiary/Patches/BeastNorm/BeastNorm_Law3.xml (14 ops), src/RimStarWars/SWBestiary/Patches/Silooth/Silooth_Warbeast.xml (9 ops), src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml (1 ops), src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml (6 ops), src/RimUtinni/UtinniPatches/Patches/BiomeCastEvictions_WildBiomes.xml (23 ops). Those patch ops still name the donor and go dead when it is retired. -->
+  <!-- TAOZIN SPLIT, 2026-10-17 (owner, facings sheet; design/RimStarWars/taozin_split_proposal_2026-10-17.md):
+       this def is now the Legends ADULT only, a giant wild-only predator (owner by card: "Wild only").
+       The grub is its own creature, RSW_TaozinGrub (RSW_TaozinGrub.xml). Lair: RSW_GenStep_TaozinNest
+       (MapGeneration/RSW_TaozinNest.xml) on Crags (RM_Abyss) maps; wild row: UtinniPatches WildAnimals_Abyss.xml.
+       Canon brief: design/RimStarWars/canon_references/taozin/description.md. Art: owner rejected the donor
+       swanimals/Taozin art 2026-10-17; the texPath below names the regenerated art (artpipe job queued). -->
   <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Taozin</defName>
     <label>taozin</label>
-    <description>The Taozin (also known as a 'force dragon') was a giant predatory annelid with many arms and legs native to the jungle moon of Va'art. Finding their way all over the galaxy, Taozin were thought to be extinct but this may in fact be due to their highly elusive nature. They produce an rare curiosity from their skin when butchered known as a 'Taozin nodule'.</description>
+    <description>A taozin, the 'force dragon': a giant armoured annelid many times a man's length, ringed in red-brown and cream, with a mandibled head and countless short legs. It spits silken webbing to bind its prey, its translucent shell turns aside blaster bolts and blades, and Force-sensitives cannot sense it at all. Taozin guard their nests, where their grubs lie in silk. A rare curiosity, the taozin nodule, can be cut from its skin. It cannot be tamed.</description>
     <statBases>
       <MoveSpeed>2</MoveSpeed>
       <ComfyTemperatureMin>-5</ComfyTemperatureMin>
       <ComfyTemperatureMax>80</ComfyTemperatureMax>
-      <MarketValue>2800</MarketValue>
+      <MarketValue>3500</MarketValue>
       <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
-      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Sharp>0.80</ArmorRating_Sharp>
       <ArmorRating_Heat>0.99</ArmorRating_Heat>
       <ToxicResistance>1.0</ToxicResistance>
       <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
       <PsychicSensitivityOffset>-1.0</PsychicSensitivityOffset>
       <HuntingStealth>2.0</HuntingStealth>
-      <Wildness>0.95</Wildness>
+      <Wildness>1</Wildness>
     </statBases>
     <tools>
       <li>
@@ -119,22 +125,19 @@
       </mergeCompatibilityTags>
     </ingredient>
     <comps>
-      <li Class="CompProperties_EggLayer">
-        <eggUnfertilizedDef>RSW_EggTaozinUnFertilized</eggUnfertilizedDef>
-        <eggFertilizedDef>RSW_EggTaozinFertilized</eggFertilizedDef>
-        <eggFertilizationCountMax>1</eggFertilizationCountMax>
-        <eggLayIntervalDays>30</eggLayIntervalDays>
-        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
-        <eggCountRange>1~3</eggCountRange>
-      </li>
       <li Class="CompProperties_CanBeDormant" />
       <li Class="CompProperties_WakeUpDormant">
         <wakeUpOnDamage>true</wakeUpOnDamage>
       </li>
-      <li Class="CompProperties_Shearable">
-        <woolDef>RSW_WoolTaozin</woolDef>
-        <shearIntervalDays>15</shearIntervalDays>
-        <woolAmount>60</woolAmount>
+      <!-- Web-spit: the shipped Webwork mouth-loom (RM_Gun_LoomSpit, binds prey), reused not rebuilt. -->
+      <li Class="CompProperties_TurretGun" MayRequire="mandrake.rm.webwork">
+        <turretDef>RM_Gun_LoomSpit</turretDef>
+        <autoAttack>true</autoAttack>
+      </li>
+      <!-- Guards its nest: RSW_GenStep_TaozinNest anchors it there; a roster-spawned adult anchors where it spawns. -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor" MayRequire="mandrake.rm.environmentalhazards">
+        <dutyDef>RM_AnchorGuard</dutyDef>
+        <anchorRadius>18</anchorRadius>
       </li>
     </comps>
     <receivesSignals>true</receivesSignals>
@@ -146,13 +149,13 @@
     <race>
       <body>RSW_Taozin</body>
       <predator>true</predator>
-      <maxPreyBodySize>5.0</maxPreyBodySize>
+      <maxPreyBodySize>6.0</maxPreyBodySize>
       <baseHungerRate>1.0</baseHungerRate>
-      <baseBodySize>6.0</baseBodySize>
-      <baseHealthScale>4.5</baseHealthScale>
+      <baseBodySize>8.0</baseBodySize>
+      <baseHealthScale>6</baseHealthScale>
       <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <lifeExpectancy>250</lifeExpectancy>
-      <trainability>Intermediate</trainability>
+      <trainability>None</trainability>
       <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
       <nameGenerator>RSW_SWAnimalNamerMale</nameGenerator>
@@ -162,31 +165,11 @@
       <useMeatFrom>Megaspider</useMeatFrom>
       <fleshType>Insectoid</fleshType>
       <bloodDef>Filth_BloodInsect</bloodDef>
-      <specialTrainables>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceInvisibility</li>
-      </specialTrainables>
-      <wildBiomes>
-        <TropicalRainforest>0.01</TropicalRainforest>
-        <TropicalSwamp>0.01</TropicalSwamp>
-        <TemperateSwamp>0.0</TemperateSwamp>
-        <TemperateForest>0.0</TemperateForest>
-        <BorealForest>0.0</BorealForest>
-        <Tundra>0.0</Tundra>
-        <ColdBog>0.0</ColdBog>
-        <IceSheet>0.0</IceSheet>
-      </wildBiomes>
+      <!-- No wildBiomes: wild only in the Crags (RM_Abyss), patch-added by UtinniPatches WildAnimals_Abyss.xml. Never tameable: no trainables. -->
       <lifeStageAges>
         <li>
-          <def>AnimalBaby</def>
-          <minAge>0</minAge>
-        </li>
-        <li>
-          <def>AnimalJuvenile</def>
-          <minAge>0.5</minAge>
-        </li>
-        <li>
           <def>AnimalAdult</def>
-          <minAge>1.0</minAge>
+          <minAge>0</minAge>
           <soundWounded>RSW_Pawn_Taozin_Wounded</soundWounded>
           <soundDeath>RSW_Pawn_Taozin_Death</soundDeath>
           <soundCall>RSW_Pawn_Taozin_Call</soundCall>
@@ -198,51 +181,30 @@
       <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
       <soundEating>Insectoid_Eat</soundEating>
     </race>
-    <tradeTags>
-      <li>AnimalExotic</li>
-      <li>AnimalFighter</li>
-    </tradeTags>
+    <butcherProducts>
+      <RSW_WoolTaozin>60</RSW_WoolTaozin>
+    </butcherProducts>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Taozin</defName>
     <label>taozin</label>
     <race>RSW_Taozin</race>
-    <combatPower>500</combatPower>
+    <combatPower>650</combatPower>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <abilities>
       <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_ForceInvisibility</li>
     </abilities>
     <lifeStages>
       <li>
-        <label>taozin grub</label>
-        <labelPlural>taozin grubs</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin_j</texPath>
-          <drawSize>1.0</drawSize>
+          <texPath>Things/Pawn/Animal/RSW_Taozin/RSW_Taozin</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin_j_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin</texPath>
-          <drawSize>2.0</drawSize>
-        </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin_Dessicated</texPath>
-          <drawSize>2.0</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin</texPath>
-          <drawSize>4.0</drawSize>
-        </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>swanimals/Taozin/Taozin_Dessicated</texPath>
-          <drawSize>4.0</drawSize>
+          <texPath>Things/Pawn/Animal/RSW_Taozin/Dessicated_RSW_Taozin</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10</drawSize>
         </dessicatedBodyGraphicData>
         <butcherBodyPart>
           <bodyPartGroup>HeadAttackTool</bodyPartGroup>
