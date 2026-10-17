@@ -260,3 +260,44 @@
 {"key": "things/pawn/animal/rm_eesh/rm_eesh", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:42:30"}
 {"key": "things/pawn/animal/rm_essarn/rm_essarn", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:42:34"}
 {"key": "things/pawn/animal/rm_fuzzrunner/rm_fuzzrunner", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T16:42:39"}
+{"event": "publish", "n_paths": 32, "result": "close with: rimflow close <ID> --sha 04c6c578c94d", "at": "2026-10-16T16:42:48"}
+{"key": "things/pawn/animal/rm_fuzzviper/rm_fuzzviper", "event": "done", "seconds": 142, "at": "2026-10-16T16:45:10"}
+{"key": "things/pawn/animal/rm_gennok/rm_gennok", "event": "done", "seconds": 59, "at": "2026-10-16T16:46:09"}
+{"key": "things/pawn/animal/rm_glomvar/rm_glomvar", "event": "done", "seconds": 110, "at": "2026-10-16T16:47:59"}
+{"key": "things/pawn/animal/rm_grolth/rm_grolth", "event": "done", "seconds": 125, "at": "2026-10-16T16:50:04"}
+{"key": "things/pawn/animal/rm_gulloth/rm_gulloth", "event": "done", "seconds": 173, "at": "2026-10-16T16:52:58"}
+{"key": "things/pawn/animal/rm_gulveth/rm_gulveth", "event": "done", "seconds": 105, "at": "2026-10-16T16:54:43"}
+{"key": "things/pawn/animal/rm_iliss/rm_iliss", "event": "done", "seconds": 143, "at": "2026-10-16T16:57:06"}
+{"key": "things/pawn/animal/rm_illisk/rm_illisk", "event": "done", "seconds": 85, "at": "2026-10-16T16:58:32"}
+{"key": "things/pawn/animal/rm_ivvol/rm_ivvol", "event": "done", "seconds": 101, "at": "2026-10-16T17:00:13"}
+{"key": "things/pawn/animal/rm_julmox/rm_julmox", "event": "done", "seconds": 56, "at": "2026-10-16T17:01:09"}
+{"key": "things/pawn/animal/rm_karrek/rm_karrek", "event": "done", "seconds": 56, "at": "2026-10-16T17:02:05"}
+{"key": "things/pawn/animal/rm_karrobel/rm_karrobel", "event": "done", "seconds": 111, "at": "2026-10-16T17:03:56"}
+{"key": "things/pawn/animal/rm_karrud/rm_karrud", "event": "done", "seconds": 62, "at": "2026-10-16T17:04:58"}
+{"key": "things/pawn/animal/rm_kellu/rm_kellu", "event": "done", "seconds": 146, "at": "2026-10-16T17:07:24"}
+{"key": "things/pawn/animal/rm_kroffa/rm_kroffa", "event": "done", "seconds": 61, "at": "2026-10-16T17:08:25"}
+{"key": "things/pawn/animal/rm_kroffa/rm_kroffafemale", "event": "done", "seconds": 61, "at": "2026-10-16T17:09:26"}
+{"key": "things/pawn/animal/rm_loohn/rm_loohn", "event": "done", "seconds": 150, "at": "2026-10-16T17:11:56"}
+{"key": "things/pawn/animal/rm_meltgut/rm_meltgut", "event": "done", "seconds": 164, "at": "2026-10-16T17:14:39"}
+{"key": "things/pawn/animal/rm_muddal/rm_muddal", "event": "done", "seconds": 98, "at": "2026-10-16T17:16:17"}
+{"key": "things/pawn/animal/rm_mullgoth/rm_mullgoth", "event": "done", "seconds": 67, "at": "2026-10-16T17:17:24"}
+{"key": "things/pawn/animal/rm_fuzzviper/rm_fuzzviper", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:29"}
+{"key": "things/pawn/animal/rm_gennok/rm_gennok", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:32"}
+{"key": "things/pawn/animal/rm_glomvar/rm_glomvar", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:33"}
+{"key": "things/pawn/animal/rm_grolth/rm_grolth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:37"}
+{"key": "things/pawn/animal/rm_gulloth/rm_gulloth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:39"}
+{"key": "things/pawn/animal/rm_gulveth/rm_gulveth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:44"}
+{"key": "things/pawn/animal/rm_iliss/rm_iliss", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:46"}
+{"key": "things/pawn/animal/rm_illisk/rm_illisk", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:47"}
+{"key": "things/pawn/animal/rm_ivvol/rm_ivvol", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:49"}
+{"key": "things/pawn/animal/rm_julmox/rm_julmox", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:51"}
+{"key": "things/pawn/animal/rm_karrek/rm_karrek", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:17:53"}
+{"key": "things/pawn/animal/rm_karrobel/rm_karrobel", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:17:58"}
+{"key": "things/pawn/animal/rm_karrud/rm_karrud", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:18:00"}
+{"key": "things/pawn/animal/rm_kellu/rm_kellu", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:04"}
+{"key": "things/pawn/animal/rm_kroffa/rm_kroffa", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:18:05"}
+{"key": "things/pawn/animal/rm_kroffa/rm_kroffafemale", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:18:06"}
+{"key": "things/pawn/animal/rm_loohn/rm_loohn", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:10"}
+{"key": "things/pawn/animal/rm_meltgut/rm_meltgut", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:15"}
+{"key": "things/pawn/animal/rm_muddal/rm_muddal", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:20"}
+{"key": "things/pawn/animal/rm_mullgoth/rm_mullgoth", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:18:22"}
