@@ -17,5 +17,4 @@ desperate rotten food; slime effects through Contagion, Gelatinous Slime absorpt
 nausea/vomiting; salt break + `RM_SaltPoisoning`; slime containers by order; per-net drinking reserve; Dubs mode
 reads `DBHThirst`. Ships with its functional script rows.
 
-**Not in scope:** Q12's six held defaults (cooled boiling water, ice/snow, sanguophage blood, animals and
-slime/salt, brine on crops, buckets on fires) — the owner will rule them later.
+**Also in scope (Q12, ruled 2026-10-17):** `04-merged.md` §8.3 — cooled boiled water, bucket firefighting, ice/snow to water, no brine sprinklers, animal drinking. **Not in scope:** sanguophage blood (open).
