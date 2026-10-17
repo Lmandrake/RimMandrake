@@ -58,14 +58,15 @@ sounds. Two redraw jobs from the enact are queued against that one def's art.
    and silk; generates on Crags maps).
 2. Adult → **"Wild only"** (never tameable).
 3. Grub brine in Cuisine → **"Both mood and break resistance"**.
+4. Crags → **"Yes, the Abyss"** (card "Is the Abyss the Crags you meant?"): the Crags is `RM_Abyss`.
 
 ## Built (2026-10-17)
 
 - Canon library: `canon_references/taozin/` (adult, Legends) and `canon_references/taozin_grub/` (grub; owner photo,
   blog photo and both canon tank images moved there), each with its own `## Must show`; INDEX regenerated.
 - "The Crags Biome we have" is read as `RM_Abyss` — the former Forsaken Crags (`AB_RockyCrags`), built as its own mod
-  by FORSAKENCRAGS_RM_MOD_BUILD_1, now labelled "the Abyss". No BiomeDef named Crags exists. If the owner meant
-  another biome, only two patch files change.
+  by FORSAKENCRAGS_RM_MOD_BUILD_1, now labelled "the Abyss". No BiomeDef named Crags exists; the owner confirmed
+  the Abyss by card 2026-10-17 (ruling 4).
 - `RSW_Taozin` (SWBestiary): adult only, body size 8, drawn 10 cells, Wildness 1 (vanilla `TameUtility.CanTame`
   refuses Wildness ≥ 1), Sharp armour 0.80 / Heat 0.99, web-spit = the shipped Webwork mouth-loom
   (`RM_Gun_LoomSpit`), territorial anchor (`RM_AnchorGuard`), no eggs, silk + nodule on butchering, no
