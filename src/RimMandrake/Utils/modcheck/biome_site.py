@@ -163,6 +163,21 @@ def site_problems(call, spec, probe=None, phase="save", saved=None):
     return P, info
 
 
+def clear_colonist_ground(s, radius=2):
+    """Remove the plants within `radius` of every colonist, so no colonist is SAVED standing in a stand that hurts it.
+    LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, SITE): RM_TestSite_leaningscrub_v1 saved colonist Yume
+    on an RM_DrippingVenomvine cell (colonists spawn on random standable cells around the centre, and a venomvine stand
+    is standable); the contact venom scratched Yume ~15 ticks into every load and every 2500 ticks after, and 13 rows
+    went UNMEASURED. -> the rects cleared. Raises when the colonists cannot be read. HIDES: nothing reads the cleared
+    cells back; a plant that regrows there before the save is not caught (a save follows within seconds)."""
+    import helpers as H
+    r = s.call("jawa/list_pawns", limit=500) or {}
+    if r.get("success") is False or not isinstance(r.get("pawns"), list):
+        raise SiteError("list_pawns unreadable before clearing colonist ground: %s" % str(r)[:200])
+    rows = [p for p in r["pawns"] if H.is_colonist(p) and not p.get("dead")]
+    return H.clear_bystander_ground(s, rows, radius)
+
+
 def build_site_save(s, spec, work_dir, saves_dir=None, sleep=time.sleep, probe=None):
     """The whole recipe (steps()). `s` has .call(tool, **kw) (FastSession, or a fake in a selftest). Raises before
     saving on any unclean read-back. Returns the receipt; receipt['verified'] after the reload check."""
@@ -190,6 +205,7 @@ def build_site_save(s, spec, work_dir, saves_dir=None, sleep=time.sleep, probe=N
     rec["clean"] = TS.clean_map(s.call, spec.PROFILE)
     if rec["clean"]["problems"]:
         raise SiteError("clean_map not clean: %s" % rec["clean"]["problems"])
+    rec["colonistGround"] = clear_colonist_ground(s)
     rec["check"] = TS.check_map(s.call, spec.SITE)
     extra, rec["census"] = site_problems(s.call, spec, probe, "save")
     if not rec["check"]["verified"] or extra:
@@ -225,7 +241,8 @@ def steps(spec, probe_lines=""):
  5 colony_found + world_tile_map_generate %(size)dx%(size)d -> fresh, failedSteps == []   (Pyrelands generate)
  6 set_current_map -> %(cols)d colonists -> abandon the quicktest colony (all colonists on the site)
    -> jawa/name_colony "%(name)s" -> %(food)d MealSurvivalPack east of %(foodat)s + needs topped
- 7 test_site_saves.clean_map(profile=%(profile)s)
+ 7 test_site_saves.clean_map(profile=%(profile)s) -> plants within 2 cells of every colonist removed
+   (clear_colonist_ground: no colonist is saved standing in a venomvine stand)
  8 read-back: check_map(%(site)s) [size, fog 0, triggers, danger, hostiles, threats, fires, rain, outdoor %(band)s C,
    >= %(cols)d colonists, map biome %(biome)s] + census: >= %(minn)d living native of %(natives)s
 %(probe)s 9 back up Saves/ -> save_game %(save)s -> stat (new file, nothing else touched) -> registry test_site_saves.json

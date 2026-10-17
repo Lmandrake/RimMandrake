@@ -18,6 +18,7 @@ import importlib.util
 import os
 import re
 import sys
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -260,7 +261,8 @@ class Fake(object):
                     continue
                 if self.roofed(p) and "exposure_ignores_roof" not in b:
                     continue
-                if p["kind"] == NATIVE_KIND and "exposure_hits_natives" not in b:
+                if p["kind"] in (V.NATIVES if "map_is_cauldron" in b else (NATIVE_KIND,)) \
+                        and "exposure_hits_natives" not in b:
                     continue
                 f = 1.0 if "factor_ignored_bloom" in b else self.factor("ventBloomExposureFactor")
                 self.add_hediff(p, V.HEDIFF, 0.012 * f * self.exposure_weight(p))
@@ -351,7 +353,9 @@ class Fake(object):
         return {"success": True, "value": self.settings[field]}
 
     def t_map_info(self, **k):
-        return {"success": True, "sizeX": 250, "sizeZ": 250, "mapBiome": "TemperateForest"}
+        # map_is_cauldron: the real RM_Cauldron site (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES, live 2026-10-16)
+        return {"success": True, "sizeX": 250, "sizeZ": 250,
+                "mapBiome": V.BIOME if "map_is_cauldron" in self.broken else "TemperateForest"}
 
     # ------------------------------------------------------------ tools: defs
     def t_get_defs(self, defs="", fields=None, limit=200, deep=False, **k):
@@ -434,7 +438,8 @@ class Fake(object):
             if n.endswith("NoSuchBeast_Probe"):
                 st = "absent"
             elif biomes == V.BIOME:
-                st = "zeroed" if ("roster_zeroed" in self.broken and n == V.VEXXISS) else "spawning"
+                st = "zeroed" if ("roster_zeroed" in self.broken and n == V.VEXXISS) else (
+                    "spawning" if n.startswith("RM_") else "absent")      # no stock herbivore is on the roster
             else:
                 st = "spawning" if n in (NATIVE_KIND, "Muffalo") else "absent"
             rows.append({"defName": n, "state": st})
@@ -458,6 +463,14 @@ class Fake(object):
             return {"success": True, "pawns": [{"id": pid}]}          # reported, never actually there
         self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[])
         return {"success": True, "pawns": [{"id": pid}]}
+
+    def t_pawn_force_incapacitate(self, pawn=None, action="kill", **k):
+        """vanish: Destroy(Vanish), read back as destroyedAfter (the live shape, test_site_saves._vanish_pawns).
+        vanish_noop: says success and leaves the pawn (the suite must fall back, never assume)."""
+        if action == "vanish" and pawn in self.pawns and "vanish_noop" not in self.broken:
+            del self.pawns[pawn]
+            return {"success": True, "destroyedAfter": True}
+        return {"success": True, "destroyedAfter": False}
 
     def t_list_pawns(self, rect=None, includeHealth=False, limit=500, **k):
         rr = V_rect(rect) if rect else None
@@ -855,6 +868,26 @@ def main():
     if reds or got != "UNMEASURED":
         bad.append("site break mountain_site+no_roof_strip: expected vent_gas_emits UNMEASURED and no red, got %s / %s"
                    % (got, reds))
+    # SITE (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES): on the real RM_Cauldron site no stock herbivore is native, so
+    # the native of the bloom pair must come from the biome's own roster; the row then measures, and still fails
+    # when the natives are taxed.
+    res = run(["map_is_cauldron"])
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH"))
+    got = res.get("bloom.bloom_spares_natives", ("?",))[0]
+    if reds or got != "PASS":
+        bad.append("site break map_is_cauldron: expected bloom_spares_natives PASS and no red, got %s / %s" % (got, reds))
+    res = run(["map_is_cauldron", "exposure_hits_natives"])
+    if res.get("bloom.bloom_spares_natives", ("?",))[0] != "FAIL":
+        bad.append("map_is_cauldron + exposure_hits_natives: bloom_spares_natives did not FAIL (%s)"
+                   % (res.get("bloom.bloom_spares_natives"),))
+    # HARNESS: a cleanup removal is a vanish read back, with the bullet only as the fallback (Lu/Lili, 2026-10-16:
+    # one Bullet 5000 took a hand and left the pawn bleeding into the next row).
+    for brk, want in (((), True), (("vanish_noop",), False)):
+        g = Fake(brk)
+        g.pawns["Q1"] = dict(id="Q1", kind="Colonist", x=1, z=1, faction="player", dead=False, hediffs=[])
+        got = V._remove_pawn(types.SimpleNamespace(bridge_call=g.call), "Q1")
+        if got is not want or "Q1" in g.pawns:
+            bad.append("_remove_pawn %s: returned %r, pawn left %r" % (brk or "healthy", got, "Q1" in g.pawns))
     print("selftest Cauldron: %d components, healthy-PASS %d/%d; %d breaks, each turning exactly its own "
           "component red" % (n_comp, n_comp - len(notpass), n_comp,
                              len(BREAKS) - len([1 for b in bad if b.startswith("break ")])))

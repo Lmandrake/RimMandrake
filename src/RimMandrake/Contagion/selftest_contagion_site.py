@@ -73,6 +73,8 @@ class Fake(object):
             assert p["comp"] == S.SKY_COMP
             return {"success": True, "missing": [],
                     "values": {"BurnActive": str(self.burn), "NextBurnTick": "180000", "TellsBegun": "False"}}
+        if tool == "jawa/list_pawns":     # biome_site.clear_colonist_ground reads the colonists' cells
+            return {"pawns": [{"id": "a", "isPlayer": True, "intelligence": "Humanlike", "x": 125, "z": 125}]}
         if tool == "jawa/name_colony":
             return {"settlements": [{"tile": 77}]}
         return {"success": True}

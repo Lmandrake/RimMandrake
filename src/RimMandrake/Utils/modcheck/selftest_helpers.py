@@ -252,6 +252,19 @@ def main():
     w._t_jawa_pawn_health = lambda **p: {"success": False, "message": "refused"}
     r = H.settle_bystanders(w)
     check("control: a remove that does not take is residue, never verified", (not r.verified) and r.residue, str(r.residue))
+    # --- a bystander standing in a venomvine stand is not drafted INTO it: the plants around it go first
+    #     (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES: Yume scratched at tick ~15 of every LeaningScrub load)
+    w = FakeWorld(pawns=[pawn_row("Yume", x=124, z=126), pawn_row("Fix1", x=10, z=10)])
+    r = H.settle_bystanders(w, fixture_ids=["Fix1"])
+    plant = [p for t, p in w.calls if t == "jawa/destroy_batch" and p.get("categories") == "Plant"]
+    check("settle_bystanders clears the plants in a 5x5 around each bystander before drafting, never a fixture's",
+          len(plant) == 1 and plant[0]["rects"] == "122,124,5,5" and r.evidence["groundCleared"] == ["122,124,5,5"]
+          and [t for t, _ in w.calls].index("jawa/destroy_batch") < [t for t, _ in w.calls].index("jawa/set_draft"),
+          str((plant, r.evidence)))
+    w = FakeWorld(pawns=[pawn_row("Yume", x=124, z=126)])
+    H.settle_bystanders(w, clear_ground=None)
+    check("control: clear_ground=None clears nothing",
+          not [p for t, p in w.calls if t == "jawa/destroy_batch"], str(w.calls))
 
     n_ok = sum(1 for _, c in _results if c)
     print("\n%d/%d passed" % (n_ok, len(_results)))

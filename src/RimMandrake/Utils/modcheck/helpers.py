@@ -462,7 +462,26 @@ def restore_colonists(session, baseline, resurrect=False):
                         residue=residue)
 
 
-def settle_bystanders(session, fixture_ids=(), draft=True):
+def clear_bystander_ground(session, rows, radius=2):
+    """Remove every PLANT within `radius` (Chebyshev) of each bystander row, so a bystander drafted in place is not
+    drafted INTO a stand that hurts it. LIVE 2026-10-16 (SPRINT_SITES_DIAGNOSE_VENOMVINE_SCRATCHES): LeaningScrub site
+    colonist Yume stood on an RM_DrippingVenomvine cell in the saved site; MapComponent_ContactVenom scratches on first
+    contact (the first 15-tick sample after every load: 'Scratch/Leg age ~51' at tick ~65 on 6 of 6 reruns) and again
+    every contactIntervalTicks (2500) while the pawn lingers, and settle_bystanders' draft pinned Yume there, so every
+    chain's safe_advance stopped on a bystander hurt. Radius 2 covers the weeper venomvine's radius-2 pool. -> the
+    rects cleared (upkeep: destroy_batch never touches pawns)."""
+    rects = []
+    for row in rows:
+        x, z = row.get("x"), row.get("z")
+        if x is None or z is None:
+            continue
+        rects.append("%d,%d,%d,%d" % (x - radius, z - radius, 2 * radius + 1, 2 * radius + 1))
+    if rects and radius >= 0:
+        session.call("jawa/destroy_batch", rects=";".join(rects), categories="Plant")
+    return rects
+
+
+def settle_bystanders(session, fixture_ids=(), draft=True, clear_ground=2):
     """Bring the site's OWN colonists (every living, spawned colonist NOT in `fixture_ids`) to a sound state BEFORE a
     chain starts: remove every INJURY_DEFS hediff they carry (harm left by earlier suites on the same saved site),
     refill Food/Rest/Joy, end mental states and draft them in place so they stay off the test pads and out of the
@@ -473,10 +492,12 @@ def settle_bystanders(session, fixture_ids=(), draft=True):
     It runs at SETUP, never during a row: harm the mod deals to a bystander during the row still stops the clock and
     is still reported. It never touches a fixture (the row's own actors). Verified by re-read: residue lists any
     injury hediff left on a bystander. Drafting is upkeep, not verified (a session without set_draft is not a defect).
-    HIDES: chronic conditions outside INJURY_DEFS are left as they are (heart artery blockage, addictions)."""
+    HIDES: chronic conditions outside INJURY_DEFS are left as they are (heart artery blockage, addictions).
+    `clear_ground` (cells, None = off): the plants around each bystander go first (clear_bystander_ground)."""
     fix = set(str(i) for i in fixture_ids or ())
     rows = [r for r in read_pawns(session) if is_colonist(r) and not r.get("dead") and r.get("spawned", True)
             and str(r["id"]) not in fix]
+    ground = clear_bystander_ground(session, rows, clear_ground) if clear_ground is not None else []
     acted, removed = 0, []
     for row in rows:
         for h in (row.get("health") or {}).get("hediffs") or []:
@@ -505,7 +526,7 @@ def settle_bystanders(session, fixture_ids=(), draft=True):
     residue.extend(c.residue)
     residue.extend(n.residue)
     return HelperResult("settle_bystanders", acted=acted + c.acted + n.acted, verified=not residue, residue=residue,
-                        evidence={"bystanders": ids, "removed": removed, "drafted": drafted})
+                        evidence={"bystanders": ids, "removed": removed, "drafted": drafted, "groundCleared": ground})
 
 
 # ------------------------------------------------------------------ bland map
