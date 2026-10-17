@@ -58,3 +58,9 @@ No MOD bug found.
   holds the FULL list (548; modcheck's restore), so the NEXT launch is the owner's list.
 - Bridge released. Lessons filed (worker incapable of work; full-run leftovers + packed bottles).
 - Dirty review marks: thirst_live.py, ThirstChecks.cs (diff-reviewed only).
+
+## 7. Credit check (after publish)
+FOUNDRY pushed P12, decilitre pours and P11 (FlowWorks DLL now 05fabdc5, built on a tree that includes 3b33f2bbfe) while this
+round ran, so the mod hash moved (db263f99 at the runs -> 18127a54 now). `validation.driver_rows_at` credits 0 rows at HEAD:
+THIRST_LIVE / SPRINKLER_LIVE read UNMEASURED again. Owed: deploy the current DLL, then rerun the full thirst_live + sprinkler_live
+once FOUNDRY's FlowWorks commits settle (about 25 min of live time).
