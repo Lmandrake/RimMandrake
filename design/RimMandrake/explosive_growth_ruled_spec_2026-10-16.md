@@ -210,7 +210,7 @@ Plants native to Greentide, Miasma, Fever Wood (the ruled jungles) and Webwork, 
   kill the plant first (G High finding 3).
 - Fractional remainder kept per plant (or `GenMath.RoundRandom`); age clamped ≥ 0.
 - Darkness, blight, temperature and drought never slow ageing: only our moisture factor does.
-- `r = 0` (vanilla crop, default setting, no water nearby) means the crop neither grows nor ages. RULED OQ-16 (by card): it ages slowly instead, at x0.1 like its growth, so a never-watered crop still dies in the end.
+- A vanilla crop under the default setting with no water nearby has `r = 0.1`: RULED OQ-16 (by card, confirmed by a follow-up card 2026-10-16): it grows AND ages at ×0.1, the same dry rate as every plant, so a forgotten field creeps along and slowly dies of age.
 
 ---
 
@@ -222,7 +222,7 @@ they simply grow normally in other biomes, or they do the same x10 when watered 
 
 | setting | options | default | replaces |
 |---|---|---|---|
-| **A. Vanilla crops in our biomes** | `normal` (vanilla speed) · `need water nearby` (×0 unless an accepted source within `nearbyRadius` = 2 cells (RULED OQ-17), then ×1; ageing without water is ×0.1, RULED OQ-16) | **need water nearby** (ruled) | the everyday ×4 band, which today also speeds vanilla crops (MEASURED setting comment `ExplosiveGrowthMod.cs:37`) |
+| **A. Vanilla crops in our biomes** | `normal` (vanilla speed) · `need water nearby` (×0.1 growth and ageing unless an accepted source within `nearbyRadius` = 2 cells (RULED OQ-17, OQ-16), then ×1) | **need water nearby** (ruled) | the everyday ×4 band, which today also speeds vanilla crops (MEASURED setting comment `ExplosiveGrowthMod.cs:37`) |
 | **B. Our plants outside our biomes** | `vanilla` (×1, no cycle) · `same rule` (§2.5 rates and cycles) | RULED OQ-10 (by card): `vanilla`, labelled unsupported (CLAUDE.md 2026-10-15: *"We can't guarantee they will work in other biomes beyond our framework"*) | `applyInOtherBiomes` (MEASURED `ExplosiveGrowthMod.cs:62`), which today extends BOTH tiers to ALL plants, vanilla included; B touches our plants only (OQ-10) |
 
 - Scope otherwise unchanged: our biomes (MEASURED `BiomeInScope`, `Source/RM_ExplosiveGrowthRegistry.cs:62-64`);
@@ -373,7 +373,7 @@ Bar (ruled S0-6): **≥ 90% of mechanic-off TPS**. Everything else PROPOSED.
 - **OQ-13 RULED (by card):** the miasma salt-line stays a water source, as today.
 - **OQ-14 RULED (by card):** jackpot and last swing stay on wild plants, off for crops.
 - **OQ-15 RULED (by card):** only our native plants sown as crops self-fruit.
-- **OQ-16 RULED (by card):** a vanilla crop with no water nearby ages slowly, x0.1 "like its growth". (Growth stays x0 per setting A; the card text can be read as x0.1 growth too: owner to confirm if that was meant.)
+- **OQ-16 RULED (by card, confirmed by a follow-up card):** a vanilla crop with no water nearby grows and ages at ×0.1.
 - **OQ-17 RULED (by card):** "water nearby" is within 2 cells of a source.
 
 ## 13. Build consequences
