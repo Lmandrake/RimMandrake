@@ -61,9 +61,29 @@ def pond_scene(seed):
     return (w, h, pulses, band, bodies, src, digs, beds)
 
 
+def ops_scene(seed):
+    """PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes: a plain scene plus 1..4 events after random pulses: a pour of
+    1..2 notches (a pump level, a hose leftover) at a dug square, or a fill-in of a dug square (thin sheets included: the
+    pulses before it have usually spread the water thin)."""
+    sc = scene(seed)
+    w, h, pulses, band, bodies, src, digs = sc
+    r = random.Random(7_000_001 + seed)
+    cells = [c for c, _ in digs]
+    events = []
+    for _ in range(r.randint(1, 4)):
+        p = r.randrange(pulses)
+        c = r.choice(cells) if cells else (0, 0)
+        if r.random() < 0.5:
+            events.append((p, 0, c, r.randint(1, 2 * v.level_water.U)))
+        else:
+            events.append((p, 1, c, 0))
+    return sc + ({}, events)
+
+
 def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exact=False):
     w, h, pulses, band, bodies, src, digs = sc[:7]
-    beds = sc[7] if len(sc) > 7 else None
+    beds = (sc[7] or None) if len(sc) > 7 else None
+    events = sc[8] if len(sc) > 8 else []
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
                       sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set,
                       creep_water=creep, creep_thick=creep, head_rule=head_rule, beds=beds, level_exact=exact)
@@ -75,7 +95,11 @@ def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exa
     parts = []
     for _ in range(pulses):
         o.pulse()
-        parts.append(" ".join(str(o.W[c] if exact else o.F[c]) for c in order))
+        line = [str(o.W[c] if exact else o.F[c]) for c in order]
+        for (p, kind, c, dl) in events:
+            if p == len(parts):
+                line.append("e%d" % (v.level_water.pour(o, c, dl) if kind == 0 else v.level_water.fill_in(o, c)))
+        parts.append(" ".join(line))
     if exact:
         tail = " ".join("L" if o.bodies[b]["limitless"] else str(v.level_water.pond_dl(o, b)) for b in sorted(o.bodies))
     else:
@@ -98,6 +122,10 @@ def encode(sc):
         out.append(len(sc[7]))
         for (x, z), b in sc[7].items():
             out += [z * w + x, b]
+    if len(sc) > 8:
+        out.append(len(sc[8]))
+        for p, kind, (x, z), dl in sc[8]:
+            out += [p, kind, z * w + x, dl]
     return " ".join(map(str, out))
 
 
@@ -112,6 +140,7 @@ def main():
         sys.exit("dotnet.exe not found; UNMEASURED, not a pass or a fail")
     plain = [scene(s) for s in range(n)]
     ponds = [pond_scene(s) for s in range(n)]
+    opsc = [ops_scene(s) for s in range(n)]
     # An ext4 clone cannot hand dotnet.exe its own path (\home\... is invalid): stage it on D: (selftest_winstage), and keep
     # the scene files and the dll inside the stage, where a /mnt/d path converts.
     from selftest_winstage import windows_project_path, stage_name_for
@@ -139,15 +168,17 @@ def main():
         # "exact" / "exactpond" (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES): levelExactEnabled against northstar/level_water.py,
         # every dug cell's water in dL after every pulse and each pond's dL at the end; on the plain scenes (beds read 4) and
         # on the pond scenes (beds 2..6, ponds below their brims).
-        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond")
+        # "exactops" (PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes): exact, plus pours and fill-ins between pulses
+        # (LevelOps over the production RM_LevelPour against level_water.pour / fill_in), each event's dL in the line.
+        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops")
         for mode in modes:
-            scenes = ponds if mode in ("pond", "exactpond") else plain
+            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else plain
             os.makedirs(os.path.join(stage_dir, "bin"), exist_ok=True)
             scene_file = os.path.join(stage_dir, "bin", "oracle_scenes_%s.txt" % mode)   # in the stage, never the clone
             with open(scene_file, "w") as f:
                 f.write("\n".join(encode(sc) for sc in scenes) + "\n")
             t0 = time.time()
-            exact = mode in ("exact", "exactpond")
+            exact = mode in ("exact", "exactpond", "exactops")
             want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
                            mode == "pond", exact) for sc in scenes]
             t1 = time.time()

@@ -219,8 +219,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("GptA_hose_drain_and_spill_go_back_to_the_pond", () =>
             {
                 string sp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidSpill.cs"));
-                RiverSwitchFlipChecks.Has(sp, @": kind == RM_OutletKind\.Body && ex\.TryReturnLevels\(c, liquid\.canalFluid, 1\);", "C1-F10: held liquid drains whole levels back into a pond");
-                RiverSwitchFlipChecks.Has(sp, @"units -= ReturnToPond\(map, cell, liquid, units\); if \(units <= 0\) \{ return; \} SpilledUnits \+= units;", "C1-F11: a spill over its pond returns to the pond before it counts as filth");
+                RiverSwitchFlipChecks.Has(sp, @": BodyTake\(ex, c, fluid, room\);", "C1-F10: held liquid drains back into a pond (in dL since HOSE_LEFTOVER_FIX)");
+                RiverSwitchFlipChecks.Has(sp, @"units -= ReturnToPond\(map, cell, liquid, units\); if \(units <= 0\) \{ return; \}[\s\S]*?SpilledUnits \+= recorded;", "C1-F11: a spill over its pond returns to the pond before it counts as filth");
                 RiverSwitchFlipChecks.Has(sp, @"if \(onEnd != null && onEnd\.def\.passability == Traversability\.Impassable\) \{ return RM_OutletKind\.Blocked; \} if \(ex != null && fluid != null\)", "C1-F12: an end under a wall is blocked before any neighbour is tried");
             });
 

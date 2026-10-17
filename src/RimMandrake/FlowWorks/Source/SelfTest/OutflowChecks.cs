@@ -54,7 +54,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Outflow_production_outlet_spill_and_drain", () =>
             {
                 string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
-                RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && ex\.CanPourLevel\(c, fluid\)\)", "a channel outlet pours only where the cell can take the liquid");
+                RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && \(RM_MapComponent_Excavation\.LevelExact \? ex\.PourRoomDl\(c, fluid, 1\) > 0 : ex\.CanPourLevel\(c, fluid\)\)\)", "a channel outlet pours only where the cell can take the liquid");
                 RiverSwitchFlipChecks.Has(sp, @"if \(RM_PumpMath\.PickPour\(tk, cd, out _, out int ci\)\) \{ cell = cells\[ci\]; return RM_OutletKind\.Channel; \}", "the best cell within 1.5 of the end (PickPour, A14)");
                 RiverSwitchFlipChecks.Has(sp, @"if \(\(ex != null && ex\.IsExcavated\(end\)\) \|\| !end\.Standable\(map\) \|\| end\.GetTerrain\(map\)\.IsWater\) \{ return RM_OutletKind\.Blocked; \}",
                     "a full or foreign channel, a wall or water is blocked");

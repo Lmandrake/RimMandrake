@@ -1445,22 +1445,15 @@ namespace RimMandrake.FlowWorks
 			FluidDef cellFluid = FluidAt(c) ?? ActiveFluid;
 			// The F - (D-1) clamp lives in RM_StockMath so the selftest covers the
 			// production arithmetic rather than a copy of it.
-			int displaced = backToBed ? f : RM_StockMath.DisplacedLevels(d, f);
-			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: a part-filled top notch (F = D-1 plus a part) no longer fits under the
-			// raised floor either: one whole level goes, the part stays. Filled in to the surface, the part (under one level)
-			// has no level to travel as: it is the disclosed overflow, never silent.
-			if (!backToBed && displaced == 0 && partGrid[i] > 0 && newD > 0 && f + 1 > newD)
-			{
-				displaced = 1;
-			}
-			int partLost = (newD == RM_ExcavationDepth.Surface || backToBed) ? partGrid[i] : 0;
+			// CANAL_FILLIN_FIX_SHEET_WATER_DESTROYED: displacement is in DECILITRES. What no longer fits under the raised brim
+			// (everything, filled to the surface or back to a pond bed) is displaced; a sheet under the new brim just sits higher.
+			// A 4.5 cm sheet filled in used to be "destroyed" for want of a whole level to travel as; now it travels.
+			long water = System.Math.Min(WaterDl(i), d * (long)RM_LevelSolve.U);
+			long kept = RM_LevelPour.KeptOnFillIn(water, newD, newD == RM_ExcavationDepth.Surface || backToBed);
+			long displacedDl = water - kept;
 			depthGrid[i] = newD;
-			fillGrid[i] = (byte)(f - displaced);
-			if (partLost > 0)
-			{
-				partGrid[i] = 0;
-				NotifyOverflowDestroyed(partLost / (float)RM_LevelSolve.U);
-			}
+			fillGrid[i] = (byte)(kept / RM_LevelSolve.U);
+			partGrid[i] = (ushort)(kept % RM_LevelSolve.U);
 			BumpClimbGeneration();
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
@@ -1501,9 +1494,9 @@ namespace RimMandrake.FlowWorks
 				}
 				ApplyFillTerrain(c, cellFluid);
 			}
-			if (displaced > 0)
+			if (displacedDl > 0)
 			{
-				Displace(c, displaced, cellFluid);
+				Displace(c, displacedDl, cellFluid);
 			}
 			return newD;
 		}
@@ -1536,7 +1529,7 @@ namespace RimMandrake.FlowWorks
 		/// The body's stock is in fill-units of volume, so phase 2 converts —
 		/// see <see cref="RM_LiquidStock.CreditLevels"/>.
 		/// </summary>
-		private void Displace(IntVec3 from, int units, FluidDef fluid)
+		private void Displace(IntVec3 from, long dl, FluidDef fluid)
 		{
 			if (!RimMandrakeFlowWorksSettings.fillInDisplacementEnabled)
 			{
@@ -1545,105 +1538,85 @@ namespace RimMandrake.FlowWorks
 				// silent just because the mechanic is switched off, which is why
 				// this takes the same reporting exit as a real overflow rather
 				// than only writing a DevMode log.
-				ReportOverflow(from, units);
+				ReportOverflow(from, dl);
 				return;
 			}
-			int remaining = units;
-			// LOCAL collections, not the pulse's shared scratch. A fill-in runs
-			// from a JobDriver, not from inside DoPulse, so today they cannot
-			// collide — but "cannot collide today" is how a reentrancy bug gets
-			// written, and the walk is bounded and infrequent enough that the
-			// allocation is free.
-			HashSet<IntVec3> seen = new HashSet<IntVec3>();
-			Queue<IntVec3> queue = new Queue<IntVec3>();
-			List<IntVec3> credited = new List<IntVec3>();
-			// Source cells in the order the walk reached them, i.e. nearest
-			// first. They are NOT credited during phase 1 (see above) and are
-			// never expanded through — the channel is what conducts, a pond is a
-			// destination.
-			List<IntVec3> sources = new List<IntVec3>();
-			seen.Add(from);
-			queue.Enqueue(from);
-			int walked = 0;
-
 			// ── phase 1: the channel, below the brim, nearest first ────────
+			// CANAL_FILLIN_FIX_SHEET_WATER_DESTROYED: in DECILITRES (RM_LevelPour.Spread, the walk the pour shares and the
+			// oracle differential checks), so a sheet's part-notch finds room a whole level never would.
 			// FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F9): the walk is bounded by the map, not by the pulse's partition cap: a
 			// network past 6000 squares used to stop the walk and destroy liquid its far channel had room for.
-			int walkCap = map.cellIndices.NumGridCells;
-			while (queue.Count > 0 && remaining > 0 && walked < walkCap)
+			// FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F8): a dry bed square of a pond is a destination too (the return leg's own
+			// rule), so a fully drained pond takes back the water it has room for instead of it being lost.
+			// A shut sluice seals its cell for displacement exactly as for the pulse (the kernel's sealedCell): liquid is
+			// neither credited into it nor conducted past it (GPT FlowWorks review #7). Pond squares are destinations, never
+			// conductors (phase 2).
+			int start = map.cellIndices.CellToIndex(from);
+			bool keyOk = TryPaletteKey(fluid, out byte claimKey);
+			bool Enter(int i)
 			{
-				IntVec3 c = queue.Dequeue();
-				walked++;
-				if (c != from)
+				IntVec3 n = map.cellIndices.IndexToCell(i);
+				return (depthGrid[i] != 0 || IsSourceCell(n) || IsDisplaceBed(n)) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[i]);
+			}
+			bool Pond(int i)
+			{
+				IntVec3 n = map.cellIndices.IndexToCell(i);
+				return depthGrid[i] == 0 && (IsSourceCell(n) || IsDisplaceBed(n));
+			}
+			long Room(int i)
+			{
+				// Fluids never mix (Q3): only a dry cell (which it then claims) or a same-fluid cell takes the water; the walk
+				// still conducts through a foreign cell. P7: a dry cell that cannot record this fluid takes nothing.
+				if (depthGrid[i] == 0 || !RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(map.cellIndices.IndexToCell(i)), fluid)
+					|| (!WetDug(i) && !keyOk))
 				{
-					// FILLIN_DISPLACE_FIX_DRY_POND_SNUB (C5-F8): a dry bed square of a pond is a destination too (the return
-					// leg's own rule), so a fully drained pond takes back the water it has room for instead of it being lost.
-					if (IsSourceCell(c) || IsDisplaceBed(c))
-					{
-						sources.Add(c);
-						continue;
-					}
-					int ci = map.cellIndices.CellToIndex(c);
-					int room = RoomNotches(ci);   // exact-level: a part-filled top notch has no whole level of room
-					// Fluids never mix (Q3): only a dry cell (which it then claims) or a same-fluid cell takes the levels;
-					// the rest is the disclosed overflow. The walk still conducts through a foreign cell.
-					if (room > 0 && !RM_StockMath.FluidsCompatible(WetDug(ci), FluidAt(c), fluid))
-					{
-						room = 0;
-					}
-					// P7: a dry cell that cannot record this fluid takes nothing (the remainder is the disclosed overflow).
-					byte claimKey = 0;
-					if (room > 0 && !WetDug(ci) && !TryPaletteKey(fluid, out claimKey))
-					{
-						room = 0;
-					}
-					if (room > 0)
-					{
-						int take = room < remaining ? room : remaining;
-						if (!WetDug(ci))
-						{
-							fluidGrid[ci] = claimKey;
-						}
-						fillGrid[ci] += (byte)take;
-						remaining -= take;
-						credited.Add(c);
-					}
+					return 0;
 				}
-				for (int i = 0; i < 4; i++)
+				long r = depthGrid[i] * (long)RM_LevelSolve.U - WaterDl(i);
+				return r > 0 ? r : 0;
+			}
+			var credits = new List<KeyValuePair<int, long>>();
+			var sources = new List<int>();
+			long remaining = dl - RM_LevelPour.Spread(start, dl, false, NeighbourIndex, Enter, Pond, Room, map.cellIndices.NumGridCells,
+				credits, sources);
+			foreach (KeyValuePair<int, long> cr in credits)
+			{
+				int ci = cr.Key;
+				if (!WetDug(ci))
 				{
-					IntVec3 n = c + GenAdj.CardinalDirections[i];
-					if (!n.InBounds(map) || seen.Contains(n))
-					{
-						continue;
-					}
-					// A shut sluice seals its cell for displacement exactly as for the pulse (the kernel's sealedCell):
-					// liquid is neither credited into it nor conducted past it (GPT FlowWorks review #7).
-					if ((IsExcavated(n) || IsSourceCell(n) || IsDisplaceBed(n)) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]))
-					{
-						seen.Add(n);
-						queue.Enqueue(n);
-					}
+					fluidGrid[ci] = claimKey;
 				}
+				long w = WaterDl(ci) + cr.Value;
+				fillGrid[ci] = (byte)(w / RM_LevelSolve.U);
+				partGrid[ci] = (ushort)(w % RM_LevelSolve.U);
 			}
 
 			// ── phase 2: the natural body, nearest source cell first ───────
 			// The body is the last resort and the reason a fill-in is
 			// REVERSIBLE: liquid you spent digging comes back to the pond you
-			// took it from, in the same fill-units the pulse debited to get it.
+			// took it from. Exact-level water: in decilitres (a part-notch goes home too); off: whole levels, as before.
 			float unitPerLevel = fluid != null ? fluid.volumePerTile : 1f;
 			for (int i = 0; i < sources.Count && remaining > 0; i++)
 			{
-				FluidDef bodyFluid = stock.BodyAt(map, sources[i], this)?.fluid;
+				IntVec3 sc = map.cellIndices.IndexToCell(sources[i]);
+				FluidDef bodyFluid = stock.BodyAt(map, sc, this)?.fluid;
 				if (bodyFluid != null && fluid != null && bodyFluid != fluid)
 				{
 					continue;
 				}
-				remaining -= stock.CreditLevels(map, sources[i], remaining, unitPerLevel, this);
+				if (LevelExact)
+				{
+					remaining -= stock.CreditDl(map, sc, remaining, this);
+				}
+				else
+				{
+					remaining -= stock.CreditLevels(map, sc, (int)(remaining / RM_LevelSolve.U), unitPerLevel, this) * (long)RM_LevelSolve.U;
+				}
 			}
 
-			for (int i = 0; i < credited.Count; i++)
+			foreach (KeyValuePair<int, long> cr in credits)
 			{
-				ApplyFillTerrain(credited[i], fluid);
+				ApplyFillTerrain(map.cellIndices.IndexToCell(cr.Key), fluid);
 			}
 			ReportOverflow(from, remaining);
 		}
@@ -1662,17 +1635,17 @@ namespace RimMandrake.FlowWorks
 		///
 		/// Zero destroyed says nothing, which is not silence about a loss: it is
 		/// the case where there was no loss.</summary>
-		private void ReportOverflow(IntVec3 at, int levels)
+		private void ReportOverflow(IntVec3 at, long dl)
 		{
-			if (levels <= 0)
+			if (dl <= 0)
 			{
 				return;
 			}
-			NotifyOverflowDestroyed(levels);
+			NotifyOverflowDestroyed(dl / (float)RM_LevelSolve.U);
 			Messages.Message(
 				"Filling in displaced more liquid than the channel could hold — "
-				+ levels + " level(s) overflowed and were lost. "
-				+ "Lost this way on this map so far: " + overflowDestroyedTotal.ToString("F0") + ".",
+				+ RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre) + " overflowed and were lost. "
+				+ "Lost this way on this map so far: " + RM_Volume.FormatLitres(overflowDestroyedTotal * (double)RM_Volume.LitresPerLevel) + ".",
 				new TargetInfo(at, map), MessageTypeDefOf.NeutralEvent, false);
 		}
 
@@ -2272,23 +2245,196 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			if (LevelExact)
+			{
+				return PourRoomDl(c, fluid, RM_LevelSolve.U) >= RM_LevelSolve.U;   // PUMP_CANAL_FEED_FIX: the canal's room, not one square's
+			}
 			int i = map.cellIndices.CellToIndex(c);
 			return RoomNotches(i) > 0 && InputAllowed(fluid) && RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid);
 		}
 
-		/// <summary>Phase 8: a pump pours one level into an excavated cell with room (fluids never mix).</summary>
+		/// <summary>Phase 8: a pump pours one level into an excavated cell with room (fluids never mix). Exact-level water:
+		/// the level spreads from the cell over the canal it joins (<see cref="TryPourDl"/>), so a canal holding a sheet still
+		/// takes it (PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY).</summary>
 		public bool TryPourLevel(IntVec3 c, FluidDef fluid)
 		{
 			if (!IsExcavated(c) || fluid == null)
 			{
 				return false;
 			}
+			if (LevelExact)
+			{
+				return TryPourDl(c, fluid, RM_LevelSolve.U);
+			}
 			int f = FillAt(c);
 			if (RoomNotches(map.cellIndices.CellToIndex(c)) <= 0)
 			{
-				return false;   // exact-level: a part-filled top notch has no room for a whole level
+				return false;
 			}
 			return TrySetDriverFill(c, f + 1, fluid);
+		}
+
+		// ── PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY / HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: pours in decilitres ──
+
+		private int NeighbourIndex(int i, int dir)
+		{
+			IntVec3 n = map.cellIndices.IndexToCell(i) + GenAdj.CardinalDirections[dir];
+			return n.InBounds(map) ? map.cellIndices.CellToIndex(n) : -1;
+		}
+
+		/// <summary>The pour walk (RM_LevelPour.Spread) from <paramref name="c"/> for up to <paramref name="want"/> dL of
+		/// <paramref name="fluid"/>: dug squares not sealed by a shut sluice and holding no other liquid, each up to its room.
+		/// Read-only on the grids; null credits = a refusal (liquid switched off, foreign start, no palette key).</summary>
+		private long PlanPour(IntVec3 c, FluidDef fluid, long want, List<KeyValuePair<int, long>> credits, out byte claimKey)
+		{
+			claimKey = 0;
+			if (fluid == null || want <= 0 || !c.InBounds(map) || !IsExcavated(c) || !InputAllowed(fluid))
+			{
+				return 0;
+			}
+			int start = map.cellIndices.CellToIndex(c);
+			if (!RM_StockMath.FluidsCompatible(WetDug(start), FluidAt(c), fluid) || RM_FlowDoorRules.SealsLiquid(map.edificeGrid[c]))
+			{
+				return 0;
+			}
+			bool keyOk = TryPaletteKey(fluid, out claimKey);
+			bool Joins(int i) => depthGrid[i] != 0 && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[i])
+				&& RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(map.cellIndices.IndexToCell(i)), fluid);
+			long Room(int i)
+			{
+				if (!WetDug(i) && !keyOk)
+				{
+					return 0;
+				}
+				long r = depthGrid[i] * (long)RM_LevelSolve.U - WaterDl(i);
+				return r > 0 ? r : 0;
+			}
+			return RM_LevelPour.Spread(start, want, true, NeighbourIndex, Joins, null, Room, RM_LevelPour.PourWalkCap, credits, null);
+		}
+
+		/// <summary>How many of <paramref name="want"/> dL of <paramref name="fluid"/> a pour at <paramref name="c"/> would place
+		/// (the square, then the canal it joins). Exact-level off: one whole level if the square has a whole notch of room.</summary>
+		public long PourRoomDl(IntVec3 c, FluidDef fluid, long want)
+		{
+			if (!LevelExact)
+			{
+				return want >= RM_LevelSolve.U && CanPourLevelWhole(c, fluid) ? RM_LevelSolve.U : 0;
+			}
+			return PlanPour(c, fluid, want, null, out _);
+		}
+
+		private bool CanPourLevelWhole(IntVec3 c, FluidDef fluid)
+		{
+			if (fluid == null || !c.InBounds(map) || !IsExcavated(c))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			return RoomNotches(i) > 0 && InputAllowed(fluid) && RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid);
+		}
+
+		/// <summary>Pour exactly <paramref name="dl"/> decilitres of <paramref name="fluid"/> at <paramref name="c"/>, all or
+		/// nothing: the square first, the rest over the dug squares it joins, nearest first (the pulse then levels it). A dry
+		/// square claims the fluid. Exact-level off: whole levels only, into the square itself.</summary>
+		public bool TryPourDl(IntVec3 c, FluidDef fluid, long dl)
+		{
+			if (dl <= 0 || fluid == null)
+			{
+				return false;
+			}
+			if (!LevelExact)
+			{
+				if (dl % RM_LevelSolve.U != 0)
+				{
+					return false;
+				}
+				for (long k = 0; k < dl / RM_LevelSolve.U; k++)
+				{
+					if (!CanPourLevelWhole(c, fluid))
+					{
+						return false;   // checked per level before each write: the first refusal moves nothing more
+					}
+					if (!TrySetDriverFill(c, FillAt(c) + 1, fluid))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+			var credits = new List<KeyValuePair<int, long>>();
+			if (PlanPour(c, fluid, dl, credits, out byte key) != dl)
+			{
+				return false;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			foreach (KeyValuePair<int, long> cr in credits)
+			{
+				int i = cr.Key;
+				int before = fillGrid[i];
+				if (!WetDug(i))
+				{
+					fluidGrid[i] = key;
+				}
+				long w = WaterDl(i) + cr.Value;
+				fillGrid[i] = (byte)(w / RM_LevelSolve.U);
+				partGrid[i] = (ushort)(w % RM_LevelSolve.U);
+				driverInputs.NoteWrite(i, before, fillGrid[i], now);
+				ApplyFillTerrain(map.cellIndices.IndexToCell(i), fluid);
+			}
+			return true;
+		}
+
+		/// <summary>dL of <paramref name="fluid"/> the natural body at <paramref name="c"/> (a wet or dried pond square, never a
+		/// dug one) would take back, up to <paramref name="want"/> (the return leg's rule, in decilitres: a limited pond up to its
+		/// capacity, a limitless one anything).</summary>
+		public long ReturnRoomDl(IntVec3 c, FluidDef fluid, long want)
+		{
+			if (!RimMandrakeFlowWorksSettings.pondReturnLegEnabled || want <= 0 || fluid == null || !c.InBounds(map) || IsExcavated(c))
+			{
+				return 0;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			if (body == null || (body.fluid ?? ActiveFluid) != fluid)
+			{
+				return 0;
+			}
+			if (body.limitless)
+			{
+				return want;
+			}
+			long room = (long)System.Math.Round(body.capacity * (double)RM_LevelSolve.U) - body.stockDl;
+			return room <= 0 ? 0 : room < want ? room : want;
+		}
+
+		/// <summary>Credit exactly <paramref name="dl"/> to the body at <paramref name="c"/>, all or nothing.</summary>
+		public bool TryReturnDl(IntVec3 c, FluidDef fluid, long dl)
+		{
+			if (dl <= 0 || ReturnRoomDl(c, fluid, dl) != dl)
+			{
+				return false;
+			}
+			RM_LiquidBody body = stock.IndexedBodyAt(map, c);
+			if (body.limitless)
+			{
+				limitlessReturnedTotal += dl / (float)RM_LevelSolve.U;
+				return true;
+			}
+			body.stockDl += dl;
+			return true;
+		}
+
+		/// <summary>HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: liquid with truly nowhere to go is the disclosed loss (owner: overflow
+		/// destroys only where the game announces the amount): counted with the fill-in overflow and announced in litres.</summary>
+		public void ReportLiquidLost(IntVec3 at, long dl, string what)
+		{
+			if (dl <= 0)
+			{
+				return;
+			}
+			NotifyOverflowDestroyed(dl / (float)RM_LevelSolve.U);
+			Messages.Message(what + " had nowhere to go: " + RM_Volume.FormatLitres(dl / (double)RM_Volume.UnitsPerLitre) + " were lost. "
+				+ "Lost this way on this map so far: " + RM_Volume.FormatLitres(overflowDestroyedTotal * (double)RM_Volume.LitresPerLevel) + ".",
+				new TargetInfo(at, map), MessageTypeDefOf.NeutralEvent, false);
 		}
 
 		public override void MapRemoved()

@@ -121,10 +121,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "Pour: dug cells first, then a pond in reach, then outflow ends");
                 RiverSwitchFlipChecks.Has(pump, @"if \(!c\.InBounds\(Map\) \|\| !ex\.CanReturnLevels\(c, fluid, 1\)\) \{ continue; \}", "a pond square in reach is checked read-only first");
                 RiverSwitchFlipChecks.Has(pump, @"RM_LiquidSpill\.OutletLeg\(Map, ex, RM_OutletKind\.Body, cell, poured, fluid\), out _\) == units\)", "the pond pour is the one Body outlet leg, tank removed first");
-                RiverSwitchFlipChecks.Has(pump, @"k => ex\.Stock\.CreditLevels\(Map, cell, 1, f\.volumePerTile, ex\) == 1\);", "a refused world-to-world move puts back a WHOLE level (GPT #5)");
+                RiverSwitchFlipChecks.Has(pump, @"k => ex\.Stock\.CreditDl\(Map, cell, k, ex\) == k\);", "a refused world-to-world move puts back exactly what it took (GPT #5)");
                 string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
                 RiverSwitchFlipChecks.Has(sp, @"if \(c\.InBounds\(map\) && ex\.CanReturnLevels\(c, fluid, 1\)\) \{ cell = c; return RM_OutletKind\.Body; \}", "an outflow end over a pond or its bed returns the level (G1)");
-                RiverSwitchFlipChecks.Has(sp, @"case RM_OutletKind\.Body: return RM_TransferLeg\.World\(k => ex\.CanReturnLevels\(cell, fluid, 1\), k => ex\.TryReturnLevels\(cell, fluid, 1\)\);", "the Body leg");
+                RiverSwitchFlipChecks.Has(sp, @"case RM_OutletKind\.Body: return RM_TransferLeg\.World\(k => BodyRoomDl\(ex, cell, fluid, k\) >= k, k => BodyTake\(ex, cell, fluid, k\)\);", "the Body leg");
                 Assert(sp.IndexOf("return RM_OutletKind.Body;") < sp.IndexOf("end.GetTerrain(map).IsWater) { return RM_OutletKind.Blocked; }"),
                     "the pond check runs before water terrain is called Blocked");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
@@ -163,13 +163,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pump, @"return p\?\.Cell is IntVec3 end \? RM_LiquidSpill\.Outlet\(Map, ex, end, liquid \?\? LiquidFor\(fluid\), fluid, out cell\) : RM_OutletKind\.Blocked;",
                     "an outflow's cell comes from RM_LiquidSpill.Outlet (CanPourLevel + PickPour within 1.5; OutflowChecks pins it)");
                 RiverSwitchFlipChecks.Has(pump, @": RM_LiquidSpill\.OutletLeg\(Map, ex, kind, dest, l, f\);", "world to world: the destination leg is the one outlet leg (checked first)");
-                RiverSwitchFlipChecks.Has(pump, @"\? RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.FillAt\(cell\) > 0, k => ex\.TryTakeLevel\(cell, out _\), k => ex\.TryPourLevel\(cell, f\)\)",
+                RiverSwitchFlipChecks.Has(pump, @"\? RM_TransferLeg\.World\(k => ex\.IsExcavated\(cell\) && ex\.WaterDlAt\(cell\) >= k, k => ex\.TryTakeDl\(cell, k, out _\) == k, k => ex\.TryPourDl\(cell, f, k\)\)",
                     "world to world: a channel take is put back on a refusal");
                 RiverSwitchFlipChecks.Has(pump, @"List<Building_LiquidTank> tanks = NetTanks\(\)\.Where\(t => !Hose\.RM_HoseSettings\.tankModesEnabled \|\| t\.EffectiveMode == RM_TankMode\.Dump\)\.ToList\(\);",
                     "pour drains Dump tanks only (Store tanks are never poured)");
                 RiverSwitchFlipChecks.Has(pump, @"int levels = System\.Math\.Max\(1, Ext\?\.levelsPerCycle \?\? 1\); usedOutflows\.Clear\(\);", "one budget per cycle, outflows reset per cycle");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"public bool CanPourLevel\(IntVec3 c, FluidDef fluid\) \{[^}]*\} int i = map\.cellIndices\.CellToIndex\(c\); return RoomNotches\(i\) > 0 && InputAllowed\(fluid\) && RM_StockMath\.FluidsCompatible\(WetDug\(i\), FluidAt\(c\), fluid\);",
+                RiverSwitchFlipChecks.Has(ex, @"private bool CanPourLevelWhole\(IntVec3 c, FluidDef fluid\) \{[^}]*\} int i = map\.cellIndices\.CellToIndex\(c\); return RoomNotches\(i\) > 0 && InputAllowed\(fluid\) && RM_StockMath\.FluidsCompatible\(WetDug\(i\), FluidAt\(c\), fluid\);",
                     "CanPourLevel is TryPourLevel's own test, read-only (room in decilitres' truth: WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)");
                 RiverSwitchFlipChecks.Has(ex, @"if \(RoomNotches\(map\.cellIndices\.CellToIndex\(c\)\) <= 0\) \{ return false;",
                     "TryPourLevel refuses a part-filled top notch: no pour can push a cell past its brim");

@@ -98,13 +98,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"RM_HoseHold\.Fill\(ref hl, ref held, r\.HeldCap, liquid, take, \(old, u\) => \{[^}]*RM_LiquidSpill\.DrainHeld\(r, map, RM_LiquidSpill\.DrainCell\(r, map\)\);", "a change of liquid flushes the old one out of the far end");
                 string sp = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidSpill.cs"));
                 RiverSwitchFlipChecks.Has(sp, @"RM_TransferLeg world = RM_TransferLeg\.Sink\(k => PlaceHeld\(map, ex, cell, liquid, k\)\);", "a drain goes to the world, never a tank");
-                RiverSwitchFlipChecks.Has(sp, @"bool placed = kind == RM_OutletKind\.Channel \? ex\.TryPourLevel\(c, liquid\.canalFluid\) : kind == RM_OutletKind\.Body && ex\.TryReturnLevels\(c, liquid\.canalFluid, 1\);",
+                RiverSwitchFlipChecks.Has(sp, @"units -= PlaceInWater\(map, ex, cell, liquid, units\); if \(units > 0\) \{ Spill\(map, cell, liquid, units\); \}[\s\S]*bool ok = kind == RM_OutletKind\.Channel \? ex\.TryPourDl\(c, fluid, room\) : BodyTake\(ex, c, fluid, room\);",
                     "whole levels into a channel (or back into a pond) that takes them, the rest spilled");
                 string hoses = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
                 RiverSwitchFlipChecks.Has(hoses, @"RimMandrake\.FlowWorks\.Machinery\.RM_HoseHold\.ShouldDrain\(r\.heldUnits, RM_HoseSettings\.hoseHoldsLiquid, RimMandrake\.FlowWorks\.Machinery\.RM_HoseLinks\.Eligible\(r\), RimMandrake\.FlowWorks\.Machinery\.RM_LiquidNetKernel\.Flowing\(r\.flowUntil, now\)\)\)",
                     "every pump cycle a stopped hose empties");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
-                RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg into = fillHoses \? RM_TransferLeg\.Sink\(k => RM_LiquidNet\.FillRoutes\(this, new object\[\] \{ s\.port, port \}, l, units\)\)", "world to world: the first levels fill the hoses");
+                RiverSwitchFlipChecks.Has(pump, @"RM_TransferLeg into = fillHoses \? RM_TransferLeg\.Sink\(k => RM_LiquidNet\.FillRoutes\(this, new object\[\] \{ s\.port, port \}, l, k\)\)", "world to world: the first levels fill the hoses");
             });
         }
     }

@@ -158,7 +158,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RiverSwitchFlipChecks.Src("JobDriver_DigCanal.cs").Contains("FirstCutDepthAt(c)"), "the dig work is the level below the bed");
                 // review 2026-10-14: filling a bed cut back in ends AT the bed (2 -> 3 -> 2), never 3 -> 2 -> 1 -> 0 then a hollow of 2
                 RiverSwitchFlipChecks.Has(ex, @"bool backToBed = bedFloor > 0 && newD <= bedFloor;", "fill-in stops at the bed's floor");
-                RiverSwitchFlipChecks.Has(ex, @"int displaced = backToBed \? f : RM_StockMath\.DisplacedLevels\(d, f\);", "and displaces all the cell held");
+                RiverSwitchFlipChecks.Has(ex, @"long kept = RM_LevelPour\.KeptOnFillIn\(water, newD, newD == RM_ExcavationDepth\.Surface \|\| backToBed\);", "and displaces all the cell held");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 // review 2026-10-14: every route that flips it (control, section reset, confirmed Reset-all) re-pockets and redraws
                 Assert(set.Contains("bool hollow = appliedHollow != pondBedHollowEnabled;") && set.Contains("appliedHollow = pondBedHollowEnabled;"),

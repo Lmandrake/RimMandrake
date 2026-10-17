@@ -539,6 +539,70 @@ namespace RimMandrake.FlowWorks
 			return take;
 		}
 
+		/// <summary>PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: the decilitres the body behind source cell <paramref name="c"/> can hand
+		/// out now, up to <paramref name="want"/> (a limitless body, no body, or the budget off: all of it). Read-only.</summary>
+		public long SupplyDl(Map map, IntVec3 c, long want, RM_MapComponent_Excavation owner)
+		{
+			if (want <= 0)
+			{
+				return 0;
+			}
+			if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
+			{
+				return want;
+			}
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			if (body == null || body.limitless)
+			{
+				return want;
+			}
+			return body.stockDl <= 0 ? 0 : body.stockDl < want ? body.stockDl : want;
+		}
+
+		/// <summary>Spend exactly <paramref name="dl"/> decilitres from the body behind <paramref name="c"/>, all or nothing (the
+		/// same free cases as <see cref="TryDebit"/>).</summary>
+		public bool TryDebitDl(Map map, IntVec3 c, long dl, RM_MapComponent_Excavation owner)
+		{
+			if (dl <= 0 || SupplyDl(map, c, dl, owner) != dl)
+			{
+				return false;
+			}
+			if (!RimMandrakeFlowWorksSettings.sourceBudgetEnabled)
+			{
+				return true;
+			}
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			if (body == null || body.limitless)
+			{
+				return true;
+			}
+			body.stockDl -= dl;
+			return true;
+		}
+
+		/// <summary>CANAL_FILLIN_FIX_SHEET_WATER_DESTROYED: give back up to <paramref name="dl"/> decilitres (exact-level water,
+		/// volumePerTile pinned to 1): a limited body up to its capacity, a limitless one all of it. Returns the dL accepted.</summary>
+		public long CreditDl(Map map, IntVec3 c, long dl, RM_MapComponent_Excavation owner)
+		{
+			if (dl <= 0)
+			{
+				return 0;
+			}
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			if (body == null)
+			{
+				return 0;
+			}
+			if (body.limitless)
+			{
+				return dl;
+			}
+			long room = (long)System.Math.Round(body.capacity * (double)RM_LevelSolve.U) - body.stockDl;
+			long take = room <= 0 ? 0 : room < dl ? room : dl;
+			body.stockDl += take;
+			return take;
+		}
+
 		// ── recession and refill, once per pulse ──────────────────────────
 
 		public void Pulse(Map map, RM_MapComponent_Excavation owner, int pulseTicks)

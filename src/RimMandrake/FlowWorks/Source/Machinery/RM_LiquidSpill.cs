@@ -45,7 +45,9 @@ namespace RimMandrake.FlowWorks.Machinery
 				var cd = new List<(int room, bool wet, FluidDef fill)>();
 				foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
 				{
-					if (c.InBounds(map) && ex.CanPourLevel(c, fluid))
+					// PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: exact-level water: any room in the canal the square joins (a sheet's canal
+					// has no whole notch in any one square); whole-notch water: a whole notch in the square
+					if (c.InBounds(map) && (RM_MapComponent_Excavation.LevelExact ? ex.PourRoomDl(c, fluid, 1) > 0 : ex.CanPourLevel(c, fluid)))
 					{
 						cells.Add(c);
 						cd.Add((ex.DepthAt(c) - ex.FillAt(c), ex.FillAt(c) > 0, ex.FluidAt(c)));
@@ -85,12 +87,52 @@ namespace RimMandrake.FlowWorks.Machinery
 			switch (kind)
 			{
 				case RM_OutletKind.Channel:
-					return RM_TransferLeg.World(k => ex.CanPourLevel(cell, fluid), k => ex.TryPourLevel(cell, fluid));
+					// k is tank units = decilitres (a level is RM_Volume.UnitsPerLevel): the pour spreads over the canal it joins
+					return RM_TransferLeg.World(k => ex.PourRoomDl(cell, fluid, k) >= k, k => ex.TryPourDl(cell, fluid, k));
 				case RM_OutletKind.Body:
-					return RM_TransferLeg.World(k => ex.CanReturnLevels(cell, fluid, 1), k => ex.TryReturnLevels(cell, fluid, 1));
+					return RM_TransferLeg.World(k => BodyRoomDl(ex, cell, fluid, k) >= k, k => BodyTake(ex, cell, fluid, k));
 				default:
 					return RM_TransferLeg.Sink(k => Spill(map, cell, liquid, k));
 			}
+		}
+
+		/// <summary>PUMP_CANAL_FEED_FIX_ONE_NOTCH_ONLY: the decilitres (tank units) an outlet <paramref name="kind"/> at
+		/// <paramref name="cell"/> would take now, up to <paramref name="want"/>: a canal its room (the square, then the squares
+		/// it joins), a pond its room, dry ground anything (a spill), blocked nothing.</summary>
+		public static long OutletRoomDl(RM_MapComponent_Excavation ex, RM_OutletKind kind, IntVec3 cell, FluidDef fluid, long want)
+		{
+			switch (kind)
+			{
+				case RM_OutletKind.Channel:
+					return ex.PourRoomDl(cell, fluid, want);
+				case RM_OutletKind.Body:
+					return BodyRoomDl(ex, cell, fluid, want);
+				case RM_OutletKind.Ground:
+					return want;
+				default:
+					return 0;
+			}
+		}
+
+		/// <summary>A pond's room in dL (exact-level), or one whole level or nothing (whole-notch water).</summary>
+		private static long BodyRoomDl(RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef fluid, long want)
+		{
+			if (RM_MapComponent_Excavation.LevelExact)
+			{
+				return ex.ReturnRoomDl(cell, fluid, want);
+			}
+			int level = RM_PumpMath.TankUnitsPerLevel;
+			return want >= level && ex.CanReturnLevels(cell, fluid, (int)(want / level)) ? want - want % level : 0;
+		}
+
+		private static bool BodyTake(RM_MapComponent_Excavation ex, IntVec3 cell, FluidDef fluid, long dl)
+		{
+			if (RM_MapComponent_Excavation.LevelExact)
+			{
+				return ex.TryReturnDl(cell, fluid, dl);
+			}
+			int level = RM_PumpMath.TankUnitsPerLevel;
+			return dl % level == 0 && ex.TryReturnLevels(cell, fluid, (int)(dl / level));
 		}
 
 		/// <summary>True when the outlet takes whole levels only (a channel or a pond), false for a spill.</summary>
@@ -147,27 +189,86 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 		}
 
-		/// <summary>Held liquid reaching the world: whole levels into a channel cell at or near <paramref name="cell"/>, or back
-		/// into the pond there (C1-F10: an Intake end lying in its pond drains into the pond, not as lost filth), the rest (and any
-		/// liquid with no channel form) spilled as filth there.</summary>
+		/// <summary>Held liquid reaching the world (HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES): into the water it lands in first, in
+		/// DECILITRES (a canal at or beside <paramref name="cell"/>, spreading over the squares it joins; or the pond there,
+		/// C1-F10), then <see cref="Spill"/> for the rest, which never lets a litre leave unannounced.</summary>
 		private static void PlaceHeld(Map map, RM_MapComponent_Excavation ex, IntVec3 cell, LiquidDef liquid, int units)
 		{
-			int level = RM_PumpMath.TankUnitsPerLevel;
-			while (units >= level)
-			{
-				RM_OutletKind kind = Outlet(map, ex, cell, liquid, liquid?.canalFluid, out IntVec3 c);
-				bool placed = kind == RM_OutletKind.Channel ? ex.TryPourLevel(c, liquid.canalFluid)
-					: kind == RM_OutletKind.Body && ex.TryReturnLevels(c, liquid.canalFluid, 1);
-				if (!placed)
-				{
-					break;
-				}
-				units -= level;
-			}
+			units -= PlaceInWater(map, ex, cell, liquid, units);
 			if (units > 0)
 			{
 				Spill(map, cell, liquid, units);
 			}
+		}
+
+		/// <summary>Put up to <paramref name="units"/> (dL) of <paramref name="liquid"/> into the canal or pond at or beside
+		/// <paramref name="cell"/> (the outlet's own choice of square, repeated while one takes more). Returns the units placed.</summary>
+		private static int PlaceInWater(Map map, RM_MapComponent_Excavation ex, IntVec3 cell, LiquidDef liquid, int units)
+		{
+			FluidDef fluid = liquid?.canalFluid;
+			if (ex == null || fluid == null || units <= 0 || map == null || !cell.IsValid)
+			{
+				return 0;
+			}
+			int placed = 0;
+			for (int guard = 0; guard < 9 && units > placed; guard++)
+			{
+				RM_OutletKind kind = Outlet(map, ex, cell, liquid, fluid, out IntVec3 c);
+				if (!WholeLevels(kind))
+				{
+					break;
+				}
+				long room = OutletRoomDl(ex, kind, c, fluid, units - placed);
+				if (room <= 0)
+				{
+					break;
+				}
+				bool ok = kind == RM_OutletKind.Channel ? ex.TryPourDl(c, fluid, room) : BodyTake(ex, c, fluid, room);
+				if (!ok)
+				{
+					break;
+				}
+				placed += (int)room;
+			}
+			return placed;
+		}
+
+		/// <summary>The squares searched for water to take liquid that would otherwise be lost (a spill over water or a wall,
+		/// a filth that will not lie): the nearest canal or pond of the liquid within this radius.</summary>
+		public const float HomeRadius = 6.9f;
+
+		/// <summary>HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES, the conserving default (owner question on the item: "is a filth puddle
+		/// an allowed destination?"): liquid no filth can record goes into the nearest canal or pond of its kind within
+		/// <see cref="HomeRadius"/>, nearest first. Returns the units placed.</summary>
+		private static int PlaceNearby(Map map, IntVec3 cell, LiquidDef liquid, int units)
+		{
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (ex == null || liquid?.canalFluid == null || units <= 0 || !cell.InBounds(map))
+			{
+				return 0;
+			}
+			int placed = 0;
+			int n = GenRadial.NumCellsInRadius(HomeRadius);
+			for (int i = 0; i < n && placed < units; i++)
+			{
+				IntVec3 c = cell + GenRadial.RadialPattern[i];
+				if (!c.InBounds(map))
+				{
+					continue;
+				}
+				FluidDef f = liquid.canalFluid;
+				long room = ex.IsExcavated(c) ? ex.PourRoomDl(c, f, units - placed) : BodyRoomDl(ex, c, f, units - placed);
+				if (room <= 0)
+				{
+					continue;
+				}
+				bool ok = ex.IsExcavated(c) ? ex.TryPourDl(c, f, room) : BodyTake(ex, c, f, room);
+				if (ok)
+				{
+					placed += (int)room;
+				}
+			}
+			return placed;
 		}
 
 		/// <summary>Spill <paramref name="units"/> of <paramref name="liquid"/> at <paramref name="cell"/> as filth (rev 2 §3.7):
@@ -186,21 +287,53 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
-			SpilledUnits += units;
+			// HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: over water (a canal square, a pond no filth lies on) or a wall, the liquid
+			// goes into the water it lands in or the nearest canal or pond of its kind first: never out of the ledger silently
+			bool dryGround = cell.InBounds(map) && cell.Standable(map) && !cell.GetTerrain(map).IsWater;
+			if (!dryGround)
+			{
+				units -= PlaceInWater(map, RM_SuperdeepTrap.EngineOf(map), cell, liquid, units);
+				units -= PlaceNearby(map, cell, liquid, units);
+				if (units <= 0)
+				{
+					return;
+				}
+			}
 			int n = RM_LiquidNetKernel.FilthCount(units, RM_MachinerySettings.UnitsPerFilth);
 			ThingDef own = liquid?.spillFilth ?? RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill;
+			int made = 0;
 			for (int i = 0; i < n; i++)
 			{
 				if (FilthMaker.TryMakeFilth(cell, map, own) || (own != RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill
 				    && RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill != null && FilthMaker.TryMakeFilth(cell, map, RimMandrakeFlowWorks_DefOf.RM_Filth_LiquidSpill)))
 				{
+					made++;
 					continue;
 				}
 				Unplaced++;
-				Log.WarningOnce("[FlowWorks] a spill of " + liquid?.defName + " at " + cell + " found no cell that takes filth; the liquid left the network anyway", 0x5B1117);
 				break;
 			}
+			// the filth that lay records its share of the spill; the share no filth recorded is still liquid that must land
+			int recorded = n <= 0 ? units : made >= n ? units : (int)((long)units * made / n);
+			SpilledUnits += recorded;
+			int rest = units - recorded;
+			if (rest > 0)
+			{
+				rest -= PlaceNearby(map, cell, liquid, rest);
+			}
+			if (rest > 0)
+			{
+				// truly nowhere: the disclosed loss, announced with its amount (owner: overflow destroys only where the game
+				// announces it); counted with the fill-in overflow in the L0 ledger
+				LostUnits += rest;
+				RM_SuperdeepTrap.EngineOf(map)?.ReportLiquidLost(cell, rest, "Spilled " + (liquid?.label ?? "liquid"));
+				Log.WarningOnce("[FlowWorks] a spill of " + liquid?.defName + " at " + cell + " found no filth cell and no water within "
+					+ HomeRadius + " squares; " + rest + " units were lost (announced)", 0x5B1117);
+			}
 		}
+
+		/// <summary>State read: spilled units that found no filth cell and no water nearby and were lost, announced.</summary>
+		public static int LostUnits;
 
 		/// <summary>State read: spilled units that went back into a pond instead of lying as filth (C1-F11).</summary>
 		public static int ReturnedUnits;

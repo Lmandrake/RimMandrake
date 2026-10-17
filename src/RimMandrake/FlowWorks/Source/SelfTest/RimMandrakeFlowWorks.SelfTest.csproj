@@ -48,6 +48,7 @@
     <Compile Include="PondDepthChecks.cs" />
     <Compile Include="LevelSurfaceChecks.cs" />
     <Compile Include="LevelExactChecks.cs" />
+    <Compile Include="LevelPourChecks.cs" />
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\Sprinklers\RM_SprinklerKernel.cs" />
     <Compile Include="SprinklerChecks.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="..\RM_WallFaceMath.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_LevelSolve.cs" />
+    <Compile Include="..\RM_LevelPour.cs" />
     <Compile Include="..\MapControls\RM_MapControlMath.cs" />
     <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
