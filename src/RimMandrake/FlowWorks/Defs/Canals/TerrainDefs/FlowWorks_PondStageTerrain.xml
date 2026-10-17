@@ -8,9 +8,8 @@
   square stays a natural source (RM_MapComponent_Excavation.IsNaturalLiquid) and its body keeps the default water fluid
   (RM_FluidIdentity: no LiquidDef claims them).
 
-  🔴 RM_WaterThin's texture is a PLACEHOLDER (vanilla WaterShallowRamp through the water shader) until the owner judges the
-  new art on its true-scale review sheet (D4). Installing the approved art changes texturePath here (and drops the shader
-  lines if the art is a plain picture); nothing else.
+  RM_WaterThin's texture is the PROVISIONAL candidate (art_source/WaterThin, installed 2026-10-17 for in-game judging; owner:
+  "Same with the thin water. Must see it in situ"): a plain tiled picture, no water-depth shader. Not yet accepted by the owner.
 -->
 <Defs>
 
@@ -34,9 +33,7 @@
     <defName>RM_WaterThin</defName>
     <label>thin water</label>
     <description>An ankle-deep sheet of still water over a pond's bed, the silt showing through. What is left of a pond just before its floor turns to mud.</description>
-    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
-    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <texturePath>RimMandrake/FlowWorks/Terrain/RM_WaterThin</texturePath>
     <renderPrecedence>392</renderPrecedence>
     <pathCost>18</pathCost>
     <driesTo>Mud</driesTo>
