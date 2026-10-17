@@ -84,3 +84,142 @@ crops, machines) has to be shaped so pawn job load stays sane.
 
 **Finding to carry:** the slime rows have no bottled form, so "drinking slime" today can only mean drinking from
 slime terrain (or a tank holding slime). Whether slime gets bottles at all is an open question (Q-S4).
+
+---
+
+## 3. The common core: every option below shares this drink model
+
+The rulings are about **behaviour**, so the core change is to replace the quality ladder's "Fouled/Toxic when
+desperate" with a **drink class** on every `LiquidDef` row, read by one decision function used by every drinker
+(own think tree, administer-water, caravans; in Dbh mode only our bridge flags).
+
+### 3.1 Drink class (new row field `drinkClass`, generated; `thirstQuality` stays as the hydrate/effect strength)
+
+| drinkClass | meaning | voluntary drinking | auto-gathered | rows (PROPOSED) |
+|---|---|---|---|---|
+| `Potable` | water you drink | yes | **yes** | FreshWater, IcyWater, five coloured waters, distilled outputs; BoilingWater once cooled (Q-F2) |
+| `LastResort` | slime | only when **no potable source is reachable** (§3.3) | **never** (order only) | SlimeRed, SlimeGreen, SlimeWhite, SlimeYellow |
+| `BreakOnly` | salt water | **never**; only inside `RM_BrineMadness` (§5) | **never** | SaltWater, Brine (Q-F1) |
+| `Never` | not a drink | never, not even in the break | never (order only, for its real use) | AcidWater, ToxicWater (Q-F3), Propane, Chemfuel, Tar, ReactionLiquor, Lava, Astrofuel, Blood (Q-F4) |
+
+"Auto-gathered" means any work giver a pawn takes on its own: fill bottle, fill from tank, empty into tank, haul to
+a tank. **Non-potable liquids move only by an order** (§4). One row field means a future liquid is classified by its
+row, never by new C#.
+
+### 3.2 Vessel access tiers (who drinks from what, ruling 2)
+
+| tier | source | mood | exemptions |
+|---|---|---|---|
+| A | **a filled bottle** (inventory, then stockpile) | none (Distilled +2 stays) | — |
+| B | **tap**: a tank tap (`RM_DrinkFromTank`), a bucket, or a barrel, *only when no bottle is reachable* | `RM_Thought_DrankFromTap` −3 for 0.5 day, stacking to 1 (PROPOSED "small") | hardy traits/genes and wild/uncivilized pawns (§3.4) |
+| C | **potable terrain** edge (pond, river) | none today; Q-V2 asks whether a pond is a "tap" | — |
+| D | **slime** (terrain or tank) when no tier A-C potable source is reachable | §6 | none: massive is massive (Q-S1) |
+
+A bucket or barrel drink takes 1.5 L from the vessel, like a tank drink; a barrel is never consumed whole. A
+bucket emptied by drinking becomes `RM_BucketEmpty` (or dirty), same as a bottle (the residue doer already does
+this for bottles). The ruling says *"even barrels if there are no other choices"*: so the order inside tier B is
+tank tap = bucket < barrel (barrel last), PROPOSED.
+
+### 3.3 "No potable water available" — the definition the slime rule needs
+
+The ruling turns on *available*, so the definition is load-bearing. PROPOSED: a potable source is available if any
+tier A-C source is **reachable, not forbidden, not reserved, not in a cell the pawn's allowed area excludes, and
+within the drink search radius** (vanilla food uses ~unlimited for colonists; PROPOSED: the same as the current
+`JobGiver_RM_Drink` search). Not counted: potable water locked in a tank with no tap, frozen (§9.6), or behind a
+hostile. Q-S2 asks whether "available" means *reachable right now* (pawn-centric) or *anywhere on the map*
+(colony-centric; a pawn locked in a room with slime then drinks slime).
+
+### 3.4 Hardy and wild exemptions (ruling 2: "hardier traits that ignore such things, or they are wild and uncivilized")
+
+Real defs, MEASURED from the installed game (`Data/Core/Defs/TraitDefs/Traits_Singular.xml`,
+`Data/Biotech/Defs/GeneDefs/GeneDefs_Misc.xml`, `GeneDefs_Spectrum.xml`, Biotech xenotype list):
+
+| kind | candidates | why it fits | proposed |
+|---|---|---|---|
+| trait | `Ascetic` | already ignores bad rooms and plain food | **exempt** |
+| trait | `Tough` | physical toughness, not fastidiousness | Q-T1 |
+| trait | `Undergrounder` | indifferent to grim surroundings | Q-T1 |
+| trait | `Cannibal` | vanilla already lets it ignore `AteRawFood` | Q-T1 |
+| gene | `StrongStomach` (strong stomach), `RobustDigestion` (robust digestion) | "can eat anything" genes | **exempt** |
+| xenotype | `Neanderthal`, `Dirtmole`, `Waster` (Biotech) | hardy-by-design xenotypes; exemption comes through their genes where they carry `StrongStomach`/`RobustDigestion` (gene lists UNMEASURED) | Q-T2: by gene only, or by xenotype too |
+| wild | wild men (`Pawn.IsWildMan()`), animals | ruling text | **exempt** |
+| uncivilized | tribal-tech factions (`Faction.def.techLevel <= Neolithic`), our Jawa xenotype (defName UNMEASURED) | "uncivilized" is the owner's word; tribal is the RimWorld meaning nearest it | Q-T3 |
+
+Exemption is a data list (`RM_ThirstExemptionsDef`: traits, genes, xenotypes, a tech-level cap), so a race mod
+patches in, and the same list feeds a `nullifyingTraits`/gene check on the thought. The slime and salt
+consequences are **not** exempted by these (Q-S1).
+
+---
+
+## 4. Gathering: auto versus ordered (ruling 1)
+
+**Rule.** Every auto work giver that moves liquid into a container or tank checks `drinkClass == Potable`. Today
+`WorkGiver_FillBottle` fills any empty container at any fillable cell (§2 finding), so this is a **bug against the
+ruling** in built code, fixable in one place (`RM_LiquidBottleUtility.TryFindFillCell` gets a `allowNonPotable`
+flag, true only for orders).
+
+**How an order is given** (three mechanisms; the options in §7 pick among them):
+1. **Forced float-menu** ("Fill bucket with brine here"): vanilla-style, one container, one job. Exists in spirit
+   (`forced` path of `HasJobOnThing`).
+2. **Designator** "Gather <liquid>" on a liquid cell with a count (like a mining designation): the cell becomes a
+   fill source for that liquid until the count is met.
+3. **Bill** on a tank or a fill spot: "Fill N buckets of brine" (vanilla `RecipeDef` bill with a count/"until you
+   have"): the most RimWorld-shaped way to say "keep 10 brine buckets in stock".
+
+**Potable auto-gather also needs a stop.** Today the fill giver fills every empty bottle it can reach. PROPOSED: a
+colony-wide target ("keep N filled potable bottles per colonist", default 3 = one day, Mod Setting), so filling is
+demand-driven, like vanilla's meal bills. Without a target, a stack of 50 empties produces 50 fill jobs.
+
+---
+
+## 5. Salt water as a mental break (ruling 5)
+
+**Trigger (PROPOSED).** A `MentalBreakDef` `RM_Break_DrinkBrine` (intensity Major) whose worker is only eligible
+when the pawn's thirst is at `Parched` (<0.1) or `RM_Dehydration` ≥ 0.4 (moderate) **and** a SaltWater/Brine source
+is reachable. Two trigger routes, Q-B1:
+- **mood route**: it joins the normal mental-break pool (vanilla `MentalBreakWorker` with a `CommonalityFor`
+  override), so it fires only when mood is also low; or
+- **thirst route**: the need itself rolls a break when dehydration crosses a stage (like a hunger-driven break that
+  vanilla does not have), so a happy but parched pawn can still crack.
+
+**The state** `RM_MentalState_BrineMadness`: the pawn walks to the nearest salt source (terrain, bucket, barrel,
+tank) and drinks until the need reads full (2-4 drinks), ignoring orders, then the state ends.
+
+**Brief relief.** Each drink raises the need by the normal amount and adds `RM_Thought_SaltRelief` +8 for 3 hours
+(PROPOSED). The need bar truly fills: *"it briefly makes them feel better"*.
+
+**Then the danger.** `RM_SaltPoisoning` (hypernatremia), severity from litres drunk (0.25 per 1.5 L, PROPOSED):
+- the need is drained: thirst falls ×3 while the hediff is above 0.2, so the relief reverses within hours;
+- stages: 0.1 nausea (vanilla `Vomit` job chance, Consciousness −10%) · 0.3 confusion (−25%, Moving −15%,
+  social fights possible) · 0.6 seizures (periodic `Downed` episodes via a hediff comp, −50%) · 0.85 coma ·
+  1.0 death;
+- recovery: severity falls 0.4/day while the pawn drinks potable water and is **tended** (Doctor, a tend
+  increases fall rate by tend quality), and rises 0.1/day while thirst is 0 — so the cure is fresh water plus
+  medicine, and a colony with no fresh water is in real trouble;
+- the hediff names its cause, so nobody dies without a readable sign.
+
+`RM_BrineShock` (`src/RimMandrake/Wasteland`) is a different thing (a brineleech's charge) and is not reused.
+
+---
+
+## 6. Slime as a last resort (ruling 4)
+
+When §3.3 says no potable source is available, `JobGiver_RM_Drink` may pick a slime source. Consequences, all
+on top of the hydrate (PROPOSED ×0.6, slime is thick):
+
+| part | def | effect (PROPOSED numbers) |
+|---|---|---|
+| massive mood | `RM_Thought_DrankSlime` | −20 for 1 day, stacks ×2 (−30 max). Compare vanilla `AteHumanlikeMeatDirect` −20 |
+| laxative, one day | `RM_SlimePurge` hediff | 1 day, then gone. Thirst falls ×1.5 (fluid loss), Consciousness −5%, and every ~2 h (mtb) a short `RM_SlimePurgeJob` that interrupts work and drops a filth; Dubs' bladder/hygiene need (if loaded) is hit too |
+| per kind | see table | applied once per drink |
+
+| slime | its row says | proposed effect when drunk | opens |
+|---|---|---|---|
+| **red** | pH 4, AcidBurn on contact, corrodes apparel | a small chemical burn on the stomach (1 AcidBurn to `Stomach`), pain for a day | Q-S3 |
+| **green** | pH 9, Rotting on immersion, "nothing immersed comes out the way it went in" | **if green slime is the Gelatinous body:** cures poison and starts `RM_Slimification` exactly like `RM_RawSlime` (reuse, do not rebuild); **if not:** a gut infection (vanilla `GutWorms`) chance 20% | Q-S3, the biggest: is liquid green slime the living body? |
+| **white** | flammable, ignites at 150 °C | the most nutritious: +0.15 food (it is fat); no extra harm | Q-S3 |
+| **yellow** | snot, the "disgusting" example row | extra −10 disgust mood (`RM_Thought_DrankSnot`), 10% `FoodPoisoning` | Q-S3 |
+
+Per-kind effects are a list on the row (`ingestEffects`: hediff, severity, body part, chance, thought), so the
+generator writes them and a new slime needs no C#. Slime has no bottled form (§2); Q-S4 asks whether to add one or
+keep slime drinkable only from terrain and tanks (which keeps it a desperate act and avoids slime stockpiles).
