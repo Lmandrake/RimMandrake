@@ -283,6 +283,8 @@ FEATURES = [
     ("tex", r"Rivers/RM_FerryRope", "Ferry rope art (drawn only between paired posts)", "R:r_ferry"),
     ("tex", r"Rivers/RM_(SluiceBox|PanningSpot)", "Sluice box and panning art", "land_panning"),
     ("tex", r"Rivers/", "Bank works art", "river_works_looks"),
+    ("tex", r"FlowWorks/Weir/", "Weir art: four looks, per heading, joined wall, water overlay", "river_works_looks"),
+    ("def", r"^ThingStyleDef/RM_BankWeir_(Scrapper|Industrial|Modern|Futuristic)$", "Weir looks", "river_works_looks"),
     ("def", r"^ThingDef/RM_(BankWeir|BankStake|SiltTrap|FerryPost)$", "Bank works", "river_works_looks"),
     ("def", r"^(ThingDef/RM_(SluiceBox|PanningSpot)|JobDef/RM_PanForPlacerJob|WorkGiverDef/RM_PanForPlacer)$",
      "Sluice box and panning", "land_panning"),

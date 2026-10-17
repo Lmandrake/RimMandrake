@@ -30,6 +30,10 @@ namespace RimMandrake.FlowWorks.Machinery
                 if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(t, PipeStyles.Scrapper)) != null) tanks.Add(t);
             }
             if (tanks.Count > 0) Core.Register(tanks, PipeStyles.StyleDefName);
+            // RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16: "(1) but in the four art styles"): the weir joins the same
+            // picker once its style defs (Defs/Rivers/RM_BankWeirStyles.xml, RM_BankWeir_<Look>) are loaded
+            if (DefDatabase<ThingStyleDef>.GetNamedSilentFail(PipeStyles.StyleDefName(PipeStyles.WeirDef, PipeStyles.Scrapper)) != null)
+                Core.Register(new[] { PipeStyles.WeirDef }, PipeStyles.StyleDefName);
             PipeStyleIndex.core = Core;
         }
 

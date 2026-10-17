@@ -185,6 +185,80 @@ namespace RimMandrake.FlowWorks.Rivers
 				: RM_RiverMath.StepX[step] + "," + RM_RiverMath.StepZ[step]);
 		}
 
+		/// <summary>weir.joined_wall (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16 by card: "Weirs join into one
+		/// continuous wall"): spawns a bank weir, then an all-water section end to end beyond its wet end. "JOIN placeOk=B
+		/// run=N headIsBank=B joint=B poolSingle=N poolJoined=N poolGap=N". EXPECT placeOk run=2 headIsBank joint,
+		/// poolJoined >= poolSingle > 0, poolGap = 0 (one broken section drains the run). LIES: no wet cell beyond the
+		/// first weir's wet end (a one-cell-wide river) returns UNMEASURED, never a pass.</summary>
+		public static string ProofWeirJoin(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
+			{
+				return "UNMEASURED no map or no current component";
+			}
+			RM_Building_BankWeir w = SpawnWeir(map, out string why);
+			if (w == null)
+			{
+				return why;
+			}
+			RM_Building_BankWeir w2 = null;
+			try
+			{
+				HashSet<int> single = new HashSet<int>();
+				w.AddPoolCells(comp, single);
+				CellRect own = w.OccupiedRect();
+				IntVec3 lo = RM_WeirRun.EndCell(w.Position, w.Rotation, w.def.Size, false);
+				IntVec3 hi = RM_WeirRun.EndCell(w.Position, w.Rotation, w.def.Size, true);
+				IntVec3 end = lo.DistanceToSquared(w.WaterCell) <= hi.DistanceToSquared(w.WaterCell) ? lo : hi;
+				IntVec3 axis = w.Rotation.IsHorizontal ? IntVec3.East : IntVec3.North;
+				IntVec3 found = IntVec3.Invalid;
+				foreach (IntVec3 cand in new[] { end, end + axis, end - axis })
+				{
+					CellRect r = GenAdj.OccupiedRect(cand, w.Rotation, w.def.Size);
+					if (!r.InBounds(map) || !r.Contains(end) || r.Overlaps(own))
+					{
+						continue;
+					}
+					if (Allowed(map, cand, w.Rotation))
+					{
+						found = cand;
+						break;
+					}
+				}
+				if (!found.IsValid)
+				{
+					return "UNMEASURED no all-water section fits beyond the weir's wet end at " + end;
+				}
+				Thing t = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankWeir);
+				t.SetFaction(Faction.OfPlayer);
+				w2 = GenSpawn.Spawn(t, found, map, w.Rotation) as RM_Building_BankWeir;
+				comp.MarkWorksDirty();
+				HashSet<int> joined = new HashSet<int>();
+				w.AddPoolCells(comp, joined);
+				w2.AddPoolCells(comp, joined);
+				bool headIsBank = w.RunHead() == w && w2.RunHead() == w;
+				bool joint = RM_WeirRun.JoinedAt(w, end == hi) && w2.Run().Count == 2;
+				int run = w.Run().Count;
+				w2.Arrester.Active = false;
+				HashSet<int> gap = new HashSet<int>();
+				w.AddPoolCells(comp, gap);
+				w2.AddPoolCells(comp, gap);
+				w2.Arrester.Active = true;
+				return "JOIN placeOk=True run=" + run + " headIsBank=" + headIsBank + " joint=" + joint + " poolSingle=" + single.Count
+					+ " poolJoined=" + joined.Count + " poolGap=" + gap.Count + " at=" + w.Position + "+" + found;
+			}
+			finally
+			{
+				if (arg != "keep")
+				{
+					if (w2 != null && !w2.Destroyed) w2.Destroy();
+					if (!w.Destroyed) w.Destroy();
+				}
+			}
+		}
+
 		/// <summary>weir.fish_draws_stock: spawns a weir and forces N catch rolls; reports the stock.</summary>
 		public static string ProofWeirCatch(string arg)
 		{

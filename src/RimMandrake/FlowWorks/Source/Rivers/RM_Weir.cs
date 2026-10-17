@@ -34,6 +34,10 @@ namespace RimMandrake.FlowWorks.Rivers
 				}
 				active = value;
 				parent?.MapHeld?.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkWorksDirty();
+				if (parent != null && parent.Spawned)
+				{
+					parent.DirtyMapMesh(parent.Map); // the weir's water overlay shows only while it holds
+				}
 			}
 		}
 
@@ -65,7 +69,9 @@ namespace RimMandrake.FlowWorks.Rivers
 	/// <summary>
 	/// Design §3.3: the weir straddles the bank edge like the watermill - exactly one cell in moving
 	/// water, exactly one on solid (Light-affordance) ground. Rotation-agnostic: it counts the
-	/// occupied rect rather than assuming which end is which.
+	/// occupied rect rather than assuming which end is which. RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS (owner 2026-10-16,
+	/// by card: "Weirs join into one continuous wall"): a section standing wholly in moving water is also allowed when it
+	/// continues a run end to end on the same axis (a weir, its blueprint or its frame), so sections chain bank to bank.
 	/// </summary>
 	public class RM_PlaceWorker_RiverWeir : PlaceWorker
 	{
@@ -89,9 +95,12 @@ namespace RimMandrake.FlowWorks.Rivers
 					bank++;
 				}
 			}
-			if (water != 1 || bank != 1)
+			bool continues = water == 2 && RM_WeirRun.ContinuesRun(map, loc, rot, checkingDef.Size, thingToIgnore);
+			if (!RM_RiverMath.WeirPlacementOk(water, bank, continues))
 			{
-				return new AcceptanceReport("A weir must straddle the bank: one end in moving water, one on solid ground.");
+				return new AcceptanceReport(water == 2
+					? "A weir out in the current must continue a weir: set it end to end with one, on the same line."
+					: "A weir must straddle the bank (one end in moving water, one on solid ground) or continue a weir out into the current.");
 			}
 			return true;
 		}
@@ -164,13 +173,59 @@ namespace RimMandrake.FlowWorks.Rivers
 			base.SpawnSetup(map, respawningAfterLoad);
 			waterCell = IntVec3.Invalid;
 			map.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkWorksDirty();
+			RM_WeirRun.DirtyNeighbours(this, map); // their free-end posts become a joint
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;
+			List<RM_Building_BankWeir> was = RM_WeirRun.Neighbours(this);
 			base.DeSpawn(mode);
 			map?.GetComponent<RM_MapComponent_RiverCurrent>()?.MarkWorksDirty();
+			for (int i = 0; i < was.Count; i++)
+			{
+				was[i].DirtyMapMesh(map); // the joint they shared is a free end again
+			}
+		}
+
+		// ── the joined run (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16 by card) ──
+
+		/// <summary>True when one end of this section stands on solid ground (a bank straddler).</summary>
+		public bool Anchored
+		{
+			get
+			{
+				if (!Spawned)
+				{
+					return false;
+				}
+				foreach (IntVec3 c in this.OccupiedRect())
+				{
+					if (!RM_RiverWorks.IsWaterCell(Map, c))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
+		/// <summary>Every section joined to this one end to end on the same axis (this one first).</summary>
+		public List<RM_Building_BankWeir> Run() => RM_RiverMath.WeirRun(this, w => RM_WeirRun.Neighbours(w), RM_WeirRun.MaxRun);
+
+		/// <summary>The one section of the run that rolls the catch and holds it on its bank end.</summary>
+		public RM_Building_BankWeir RunHead() => RM_RiverMath.WeirRunHead(Run(), w => w.Anchored, w => w.thingIDNumber);
+
+		/// <summary>The run's pool stands only while every section holds (a gap leaks).</summary>
+		public bool RunHolds()
+		{
+			List<RM_Building_BankWeir> run = Run();
+			List<bool> sound = new List<bool>(run.Count);
+			for (int i = 0; i < run.Count; i++)
+			{
+				sound.Add(run[i].ArrestActive && !run[i].Breaching);
+			}
+			return RM_RiverMath.WeirRunHolds(sound);
 		}
 
 		private void ResolveEnds()
@@ -245,7 +300,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			else if (now >= nextCatchTick)
 			{
 				nextCatchTick = now + CatchIntervalTicks();
-				if (ArrestActive)
+				// a joined run catches once, through its head (its bank end holds the catch); PROVISIONAL: one roll per run
+				if (ArrestActive && RunHead() == this)
 				{
 					TryCatch();
 				}
@@ -533,13 +589,25 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// neighbours as well (a 3-wide pool, PROVISIONAL), so a colony can cross or work the river there.</summary>
 		public void AddPoolCells(RM_MapComponent_RiverCurrent comp, HashSet<int> into)
 		{
-			if (!Spawned || !ArrestActive || breaching || RM_RiversSettings.weirPoolLength <= 0)
+			if (!Spawned || !ArrestActive || breaching || RM_RiversSettings.weirPoolLength <= 0 || !RunHolds())
 			{
 				return;
 			}
 			Map map = Map;
 			Func<int, int, int> dirAt = (x, z) => comp.FlowDirAt(new IntVec3(x, 0, z)); // -1 out of bounds
-			IntVec3 wet = WaterCell;
+			// a joined section out in the current has two wet cells: the pool rises behind both, so a run pools its width
+			foreach (IntVec3 wet in this.OccupiedRect())
+			{
+				if (wet != WaterCell && !RM_RiverWorks.IsWaterCell(map, wet))
+				{
+					continue;
+				}
+				PoolFrom(comp, into, map, dirAt, wet);
+			}
+		}
+
+		private static void PoolFrom(RM_MapComponent_RiverCurrent comp, HashSet<int> into, Map map, Func<int, int, int> dirAt, IntVec3 wet)
+		{
 			RM_RiverMath.UpstreamWalk(wet.x, wet.z, RM_RiversSettings.weirPoolLength, dirAt, (x, z) =>
 			{
 				IntVec3 up = new IntVec3(x, 0, z);
@@ -557,11 +625,142 @@ namespace RimMandrake.FlowWorks.Rivers
 			});
 		}
 
+		// ── art (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16: "(1) but in the four art styles") ──
+		// A low timber wall per heading (Graphic_Multi _north/_east/_south/_west in the section's look), its facing taken
+		// from the current so the spill face is always downstream. Body textures are seamless along the wall, so joined
+		// sections read as one wall; a stout post is drawn only at a free end. Water is a separate overlay layer:
+		// RM_BankWeirWater_<facing> (calm pool tint upstream, white foam toe downstream; under the wall, look-free) and
+		// <look>/RM_BankWeirSpill_<facing> (the sheet over the crest; above it), drawn on water cells while the weir holds.
+
+		/// <summary>The facing the art is drawn in (RM_RiverMath.WeirArtRot): the placed axis, its downstream side from the
+		/// current at the wet end.</summary>
+		public Rot4 ArtRot
+		{
+			get
+			{
+				int flow = Spawned ? Map.GetComponent<RM_MapComponent_RiverCurrent>()?.FlowDirAt(WaterCell) ?? -1 : -1;
+				return new Rot4(RM_RiverMath.WeirArtRot(Rotation.AsInt, flow));
+			}
+		}
+
+		public override void Print(SectionLayer layer)
+		{
+			Graphic g = Graphic;
+			Rot4 rot = ArtRot;
+			if (g == null || def.dontPrint)
+			{
+				base.Print(layer);
+				return;
+			}
+			Vector3 center = this.TrueCenter();
+			Vector2 size = rot.IsHorizontal ? g.drawSize.Rotated() : g.drawSize;
+			bool flip = (rot == Rot4.West && g.WestFlipped) || (rot == Rot4.East && g.EastFlipped);
+			Printer_Plane.PrintPlane(layer, center, size, g.MatAt(rot, this), 0f, flip);
+
+			string basePath = StyleDef?.graphicData?.texPath ?? def.graphicData?.texPath;
+			bool holding = ArrestActive && !breaching && RM_RiversSettings.WorksActive;
+			if (holding)
+			{
+				Material water = RM_WeirArt.Mat(RM_WeirArt.WaterRoot + "_" + RM_WeirArt.FacingName(rot), ShaderDatabase.Transparent);
+				Material spill = basePath == null ? null : RM_WeirArt.Mat(basePath + "Spill_" + RM_WeirArt.FacingName(rot), ShaderDatabase.Transparent);
+				float underY = AltitudeLayer.FloorEmplacement.AltitudeFor();
+				foreach (IntVec3 c in this.OccupiedRect())
+				{
+					if (!RM_RiverWorks.IsWaterCell(Map, c))
+					{
+						continue;
+					}
+					Vector3 cc = c.ToVector3Shifted();
+					if (water != null)
+					{
+						// 1 cell along the wall, 3 across it: pool cell upstream, the wall's own cell, foam cell downstream
+						Printer_Plane.PrintPlane(layer, new Vector3(cc.x, underY, cc.z), rot.IsHorizontal ? new Vector2(1f, 3f) : new Vector2(3f, 1f), water);
+					}
+					if (spill != null)
+					{
+						Vector3 sc = rot.IsHorizontal ? new Vector3(cc.x, center.y + Altitudes.AltInc * 0.25f, center.z)
+							: new Vector3(center.x, center.y + Altitudes.AltInc * 0.25f, cc.z);
+						Printer_Plane.PrintPlane(layer, sc, Vector2.one, spill);
+					}
+				}
+			}
+			Material cap = basePath == null ? null : RM_WeirArt.Mat(basePath + "Cap", ShaderDatabase.Cutout);
+			if (cap != null)
+			{
+				CellRect r = this.OccupiedRect();
+				bool lowJoined = RM_WeirRun.JoinedAt(this, false);
+				bool highJoined = RM_WeirRun.JoinedAt(this, true);
+				float capY = center.y + Altitudes.AltInc * 0.5f;
+				Vector2 capSize = new Vector2(RM_WeirArt.CapSize, RM_WeirArt.CapSize);
+				if (rot.IsHorizontal)
+				{
+					if (!lowJoined) Printer_Plane.PrintPlane(layer, new Vector3(r.minX, capY, center.z + RM_WeirArt.CapLift), capSize, cap);
+					if (!highJoined) Printer_Plane.PrintPlane(layer, new Vector3(r.maxX + 1f, capY, center.z + RM_WeirArt.CapLift), capSize, cap);
+				}
+				else
+				{
+					if (!lowJoined) Printer_Plane.PrintPlane(layer, new Vector3(center.x, capY, r.minZ + RM_WeirArt.CapLift), capSize, cap);
+					if (!highJoined) Printer_Plane.PrintPlane(layer, new Vector3(center.x, capY + Altitudes.AltInc * 0.1f, r.maxZ + 1f + RM_WeirArt.CapLift), capSize, cap);
+				}
+			}
+		}
+
+		public override IEnumerable<Gizmo> GetGizmos()
+		{
+			foreach (Gizmo g in base.GetGizmos())
+			{
+				yield return g;
+			}
+			if (Faction != Faction.OfPlayer || !Machinery.PipeLook.IsStyled(def))
+			{
+				yield break;
+			}
+			RM_Building_BankWeir self = this;
+			yield return new Command_Action
+			{
+				defaultLabel = "Choose style",
+				defaultDesc = "Change how this weir looks (scrapper, industrial, modern, futuristic): this section, or the whole joined wall. "
+					+ "Free and instant; it changes art only, never cost or function.",
+				icon = StyleDef?.UIIcon ?? (Texture2D)def.uiIcon,
+				action = () =>
+				{
+					string cur = Machinery.PipeLook.LookOfThing(self);
+					List<FloatMenuOption> opts = new List<FloatMenuOption>();
+					foreach (string look in Machinery.PipeStyles.Looks)
+					{
+						ThingStyleDef sd = Machinery.PipeLook.StyleFor(self.def, look);
+						if (sd == null)
+						{
+							continue;
+						}
+						string l = look;
+						opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": this section", () => Machinery.CompTankLook.SetLook(self, l), sd.UIIcon, Color.white));
+						opts.Add(new FloatMenuOption(look + ": the whole joined wall", () =>
+						{
+							foreach (RM_Building_BankWeir w in self.Run())
+							{
+								Machinery.CompTankLook.SetLook(w, l);
+							}
+						}, sd.UIIcon, Color.white));
+					}
+					Find.WindowStack.Add(new FloatMenu(opts));
+				}
+			};
+		}
+
 		public override string GetInspectString()
 		{
 			string s = base.GetInspectString();
 			string mine = breaching ? "Breached - the flood is through." : (ArrestActive ? "Holding." : "Broken: repair above "
 				+ RM_RiversSettings.breachHpFraction.ToStringPercent() + " to re-arm.");
+			if (Spawned)
+			{
+				int n = Run().Count;
+				if (n > 1)
+				{
+					mine += "\nJoined wall: " + n + " sections" + (RunHolds() ? "" : " - a gap: the pool behind it has drained") + (RunHead() == this ? " (catches for the wall)" : "") + ".";
+				}
+			}
 			return s.NullOrEmpty() ? mine : s + "\n" + mine;
 		}
 
@@ -587,6 +786,125 @@ namespace RimMandrake.FlowWorks.Rivers
 					}
 				}
 			}
+		}
+	}
+
+	/// <summary>The joined-wall geometry (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS): a section's two ends are the cells just beyond
+	/// its long axis; another weir (or its blueprint or frame, for placement) on the same axis there joins it.</summary>
+	public static class RM_WeirRun
+	{
+		public const int MaxRun = 64;
+
+		/// <summary>The cell beyond the low (min x / min z) or high end of a section's long axis.</summary>
+		public static IntVec3 EndCell(IntVec3 loc, Rot4 rot, IntVec2 size, bool high)
+		{
+			CellRect r = GenAdj.OccupiedRect(loc, rot, size);
+			if (rot.IsHorizontal)
+			{
+				return new IntVec3(high ? r.maxX + 1 : r.minX - 1, 0, r.minZ);
+			}
+			return new IntVec3(r.minX, 0, high ? r.maxZ + 1 : r.minZ - 1);
+		}
+
+		private static bool IsWeirOnAxis(Thing t, bool horizontal)
+		{
+			ThingDef weir = RM_RiverWorksDefOf.RM_BankWeir;
+			if (t == null || weir == null)
+			{
+				return false;
+			}
+			bool isWeir = t.def == weir || ((t is Blueprint || t is Frame) && t.def.entityDefToBuild == weir);
+			return isWeir && t.Rotation.IsHorizontal == horizontal;
+		}
+
+		/// <summary>Placement: does a weir, blueprint or frame on the same axis touch either end?</summary>
+		public static bool ContinuesRun(Map map, IntVec3 loc, Rot4 rot, IntVec2 size, Thing ignore = null)
+		{
+			for (int e = 0; e < 2; e++)
+			{
+				IntVec3 c = EndCell(loc, rot, size, e == 1);
+				if (!c.InBounds(map))
+				{
+					continue;
+				}
+				List<Thing> things = c.GetThingList(map);
+				for (int i = 0; i < things.Count; i++)
+				{
+					if (things[i] != ignore && IsWeirOnAxis(things[i], rot.IsHorizontal))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <summary>The built section joined at one end, or null.</summary>
+		public static RM_Building_BankWeir At(RM_Building_BankWeir w, bool high)
+		{
+			if (w == null || !w.Spawned)
+			{
+				return null;
+			}
+			IntVec3 c = EndCell(w.Position, w.Rotation, w.def.Size, high);
+			if (!c.InBounds(w.Map))
+			{
+				return null;
+			}
+			List<Thing> things = c.GetThingList(w.Map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is RM_Building_BankWeir o && o != w && o.Rotation.IsHorizontal == w.Rotation.IsHorizontal)
+				{
+					return o;
+				}
+			}
+			return null;
+		}
+
+		public static bool JoinedAt(RM_Building_BankWeir w, bool high) => At(w, high) != null;
+
+		public static List<RM_Building_BankWeir> Neighbours(RM_Building_BankWeir w)
+		{
+			List<RM_Building_BankWeir> n = new List<RM_Building_BankWeir>(2);
+			RM_Building_BankWeir lo = At(w, false);
+			RM_Building_BankWeir hi = At(w, true);
+			if (lo != null) n.Add(lo);
+			if (hi != null && hi != lo) n.Add(hi);
+			return n;
+		}
+
+		public static void DirtyNeighbours(RM_Building_BankWeir w, Map map)
+		{
+			foreach (RM_Building_BankWeir o in Neighbours(w))
+			{
+				o.DirtyMapMesh(map);
+			}
+		}
+	}
+
+	/// <summary>The weir's art paths and draw constants; materials are cached per path (null when the texture is absent,
+	/// so a missing overlay draws nothing rather than magenta).</summary>
+	[StaticConstructorOnStartup]
+	public static class RM_WeirArt
+	{
+		public const string WaterRoot = "RimMandrake/FlowWorks/Weir/RM_BankWeirWater";
+		public const float CapSize = 0.7f;
+		public const float CapLift = 0.08f;
+		private static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
+
+		public static string FacingName(Rot4 r) => r == Rot4.North ? "north" : r == Rot4.East ? "east" : r == Rot4.South ? "south" : "west";
+
+		public static Material Mat(string path, Shader shader)
+		{
+			if (mats.TryGetValue(path, out Material m))
+			{
+				return m;
+			}
+			Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+			m = tex == null ? null : MaterialPool.MatFrom(path, shader);
+			mats[path] = m;
+			return m;
 		}
 	}
 
