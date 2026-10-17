@@ -352,6 +352,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             "LiquidTypes/Building_LiquidPump.cs", "Machinery/CompLiquidConverter.cs", "Machinery/CompLiquidPipeAdapter.cs",
             "Machinery/Kits/RM_LiquidReaction.cs", "Machinery/Kits/RM_LiquidBath.cs", "Machinery/RM_LiquidNet.cs",
+            "Sprinklers/RM_Sprinkle.cs",   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: the sprinkler draw
         };
 
         /// <summary>Files that may mutate a tank outside the transfer service, each with its reason (anything new fails).</summary>
@@ -379,6 +380,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: dump drain",
             // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: a pump pours a level back into a pond in reach
             "credit site: pond return (pump)",
+            // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: a sprinkler head's hourly draw to its spray (a Sink)
+            "credit site: sprinkler draw",
         };
 
         private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryDebit(", ".TryPourLevel(", ".TryReturnLevels(", "addResource.Invoke(", "drawResource.Invoke(" };

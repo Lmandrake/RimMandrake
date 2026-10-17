@@ -657,6 +657,58 @@ def thirst(t):
                 raise ExpectationFailed("UNMEASURED: live check owed (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) -- " + bar)
 
 
+# SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design/RimMandrake/sprinklers_design_2026-10-16.md §6, §8; OQ-S1..S7 ruled by the owner
+# by card 2026-10-16). Offline halves run off the C# SelfTest (Source/SelfTest/SprinklerChecks.cs: the production
+# RM_SprinklerKernel, the shipped defs, the VFE FindMod patch, the draw call sites); every live row is written and reports
+# UNMEASURED with its call and pass bar until a bridge session runs it (owed). Staging for every live row: a quicktest map,
+# spawn a RM_LiquidTank + 3 RM_UniversalPipe + RM_SprinklerHead on the last pipe + a Building_LiquidPump on the run (powered),
+# fill the tank through the probe's filltank verb, advance 2,600 ticks, read the head's inspect line and the tank's units.
+SPRINKLER_OFFLINE = [("S0_ruled_cost", "Sprinkler_ruled_cost"), ("S1o_all_or_nothing", "Sprinkler_pulse_all_or_nothing"),
+                     ("S2o_needs_a_pump", "Sprinkler_needs_a_pump"), ("S3o_thick_clogs", "Sprinkler_thick_liquid_clogs"),
+                     ("S4o_expiry", "Sprinkler_expiry_one_pulse_plus_grace"), ("S5o_spend", "Sprinkler_spend_dries_until_next_pulse"),
+                     ("S6o_liquid_key", "Sprinkler_liquid_key_per_cell"), ("S7o_sealed", "Sprinkler_sealed_cells_never_charged"),
+                     ("S8o_valve", "Sprinkler_valve_budget_and_reserve"), ("S9o_conserves", "Sprinkler_conserves_litres"),
+                     ("S10o_walls_effects", "Sprinkler_walls_and_effects_wired"), ("S11o_defs", "Sprinkler_shipped_defs"),
+                     ("S12o_vfe_patch", "Sprinkler_vfe_patch_findmod")]
+SPRINKLER_LIVE = [
+    ("sprinkler.draws_and_wets", None, "1 kL water tank, pump on: after one pulse the tank lost cells x 5 units (145 for 29 "
+     "cells) and the head reads 'Spraying water'; ExplosiveGrowth's wet read says 'sprinkled' on a covered cell"),
+    ("sprinkler.dries_when_starved", None, "empty the tank: the head reads 'Dry' and covered cells read dry within 2,750 ticks"),
+    ("sprinkler.no_pressure", None, "despawn the pump: next pulse reads 'No pressure: no pump on this network', tank unchanged; "
+     "respawn it: the next pulse sprays (design §8 item 1)"),
+    ("sprinkler.thick_clogs", None, "a tar tank: the head reads 'Clogged: tar too thick to spray' and the tank is unchanged"),
+    ("sprinkler.liquid_key", None, "a slime tank: covered cells' liquid key = that slime's FluidDef (probe RM_MapComponent_Sprinklers.WetAt)"),
+    ("sprinkler.acid_hurts_fuel_puddles", "sprinklerNonWaterEffects", "an acid tank with a colonist in the spray: one contact "
+     "hit per pulse; a chemfuel tank: its spill filth on covered cells; setting off: neither"),
+    ("sprinkler.walls_stop_spray", None, "a wall between the head and a cell: that cell never reads sprinkled"),
+    ("sprinkler_switch_flips.flip_sprinklersEnabled", "sprinklersEnabled", "setting off: the head draws nothing and reads "
+     "'Sprinklers are off in Mod Settings'"),
+    ("sprinkler.vfe_boost_skipped", "vfeSprinklerAdapterEnabled", "VFE Farming list, our biome: RM_SprinklerVFE.BoostsSkipped "
+     "rises at hour 7 and a plant's Growth is not +0.04; a vanilla biome: BoostsPassed rises"),
+    ("sprinkler.vfe_valve", "vfeThirstValve", "VFE head on a pump net, powered, half its cells bare: inspect 'Thirst valve: "
+     "watering N of M cells' with N < M; daily budget 100 L stops it after ~100 L"),
+]
+
+
+@suite.chain("sprinklers")
+def sprinklers(t):
+    """Offline: FlowWorks sprinklers (SprinklerChecks.cs cases), 0 ticks, no bridge. Live rows: UNMEASURED, owed."""
+    cases = {}
+    with t.component("sprinkler_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for rid, name in SPRINKLER_OFFLINE:
+        with t.component(rid):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    for rid, toggle, bar in SPRINKLER_LIVE:
+        with t.component(rid, toggle=toggle):
+            if t._guard():
+                raise ExpectationFailed("UNMEASURED: live check owed (SPRINKLER_HEADS_BUILD_PUMP_REQUIRED) -- " + bar)
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -671,6 +723,8 @@ HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByCo
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
                                  "drinkFromTerrain"] if t not in suite.toggles]
+suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
+                  if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
 # until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
 # 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting

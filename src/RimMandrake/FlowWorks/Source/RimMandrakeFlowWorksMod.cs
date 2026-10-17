@@ -580,6 +580,7 @@ namespace RimMandrake.FlowWorks
             Quarry.RM_QuarrySettings.ExposeData();
             Hose.RM_HoseSettings.ExposeData();
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
+            Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -1586,6 +1587,7 @@ namespace RimMandrake.FlowWorks
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
             Hose.RM_HoseSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
+            Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
 
             lastListHeight = list.CurHeight;
             list.End();

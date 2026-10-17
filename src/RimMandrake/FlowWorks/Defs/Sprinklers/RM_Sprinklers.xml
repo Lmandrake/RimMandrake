@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design/RimMandrake/sprinklers_design_2026-10-16.md §2, every OQ ruled by card 2026-10-16).
+  * RM_SprinklerHead: the native, rudimentary head. A nozzle set ON a universal pipe (PlaceWorker_RM_OnPipe); no electrical
+    power, but a working pump must be on its network (OQ-S2, "No pressure" otherwise). Once an hour it draws 0.5 L per covered
+    cell (OQ-S1, Mod Setting sprinklerLitresPerCellHour) from the tanks on its pipe run and keeps those cells sprinkled until
+    the next spray; walls stop the spray (OQ-S7). Radius 2.9 (29 cells) PROVISIONAL; cost and work PROVISIONAL.
+  * Four looks (OQ-S6 art, owner-approved), one ThingStyleDef per pipe look; a new head takes the look of the pipe it is built on.
+  * RM_Mote_SprinklerSpray: the spray, tinted by the liquid's colour.
+  Code: Source/Sprinklers/. Settings: RM_SprinklerSettings (sprinklersEnabled, ...).
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SprinklerHead</defName>
+    <label>sprinkler head</label>
+    <description>A simple nozzle set on a universal pipe. Once an hour it sprays the liquid its pipe network holds most of onto the ground around it, and the ground stays wet until the next spray. It needs no power, but a working pump must be on its network to give it pressure. Each spray costs half a litre for every cell it reaches, so a head drinks about 350 litres a day: an expensive way to share water. Walls stop the spray. Thick liquids such as tar clog it; acid or boiling liquid hurts anyone standing in the spray, and fuel leaves flammable puddles.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.3,0.3,0.4,0.4)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</uiIconPath>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>   <!-- the pulse clock is RM_MapComponent_Sprinklers -->
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <clearBuildingArea>false</clearBuildingArea>
+    <designationCategory>VCHE_PipeNetworks</designationCategory>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>      <!-- PROVISIONAL -->
+      <WorkToBuild>200</WorkToBuild>       <!-- PROVISIONAL (§2) -->
+      <Flammability>0.2</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>5</Steel>                     <!-- PROVISIONAL (§2) -->
+    </costList>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Sprinklers.PlaceWorker_RM_OnPipe</li>
+    </placeWorkers>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_Styleable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.FlowWorks.Sprinklers.CompProperties_RM_SprinklerHead" />
+    </comps>
+  </ThingDef>
+
+  <ThingStyleDef>
+    <defName>RM_SprinklerHead_Scrapper</defName>
+    <label>scrapper</label>
+    <uiIconPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SprinklerHead_Industrial</defName>
+    <label>industrial</label>
+    <uiIconPath>RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SprinklerHead_Modern</defName>
+    <label>modern</label>
+    <uiIconPath>RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_SprinklerHead_Futuristic</defName>
+    <label>futuristic</label>
+    <uiIconPath>RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead</uiIconPath>
+    <graphicData>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingDef ParentName="MoteBase">
+    <defName>RM_Mote_SprinklerSpray</defName>
+    <thingClass>MoteThrown</thingClass>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <mote>
+      <fadeInTime>0.05</fadeInTime>
+      <solidTime>0.25</solidTime>
+      <fadeOutTime>0.6</fadeOutTime>
+    </mote>
+    <graphicData>
+      <graphicClass>Graphic_Mote</graphicClass>
+      <texPath>RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+</Defs>
