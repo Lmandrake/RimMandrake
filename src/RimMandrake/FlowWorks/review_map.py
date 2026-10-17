@@ -64,8 +64,9 @@ OUT = os.path.join(HERE, "northstar", "review", "map")       # under northstar/:
 TAG = "fw_review"
 MAP_SIZE = 250
 SW, SH = 16, 14                     # a gallery station's footprint
+EDGE_SINK = 10                      # GenGrid.NoBuildEdgeWidth: cells within 10 of any map edge drain (RM_MapControls.EdgeSinkAt)
 PITCH_X, PITCH_Z = 22, 20           # 6 cells between stations both ways: labels sit in the gap, liquids never join
-GX0, TOP_Z = 52, 228                # gallery grid: columns x 52..244, rows from z 228 down by PITCH_Z
+GX0, TOP_Z = 48, 226                # gallery grid: columns x 48..239, rows from z 226 down by PITCH_Z (all cells outside the 10-cell edge-sink strip)
 NCOL = 9
 VIS_BASE = (10, 6)                  # visuals block: 4 columns x 10 rows of 6x5 plots, pitch 8 x 7 -> x 10..41, z 6..75
 VIS_RECT = (VIS_BASE[0] - 2, VIS_BASE[1] - 2, 4 * (VIS.PLOT_W + VIS.GAP) + 2, 10 * (VIS.PLOT_H + VIS.GAP) + 4)
@@ -1139,6 +1140,20 @@ def layout_check(S, doc=None):
                 probs.append("station %d (%s): cell %s outside its %dx%d footprint" % (s["n"], s["id"], c, SW, SH))
             if s["origin"][0] + c[0] < 0:
                 probs.append("station %d: cell %s off the map" % (s["n"], c))
+        if not u.get("west_edge"):
+            for k in ("dig", "fluid", "terrain"):
+                for r in u.get(k, []):
+                    rr = r[1:5] if isinstance(r[0], str) else r[:4]
+                    for x in range(rr[0], rr[0] + rr[2]):
+                        for z in range(rr[1], rr[1] + rr[3]):
+                            gx, gz = s["origin"][0] + x, s["origin"][1] + z
+                            if min(gx, gz, MAP_SIZE - 1 - gx, MAP_SIZE - 1 - gz) < EDGE_SINK:
+                                probs.append("station %d (%s): %s cell (%d,%d) lies in the %d-cell map-edge sink strip "
+                                             "(its water drains off the map)" % (s["n"], s["id"], k, gx, gz, EDGE_SINK))
+                                break
+                        else:
+                            continue
+                        break
         if u.get("west_edge") and s["origin"][0] + min(r[0] for r in u["dig"]) != 0:
             probs.append("station %d: the drain canal does not reach the map edge" % s["n"])
     for k, s in enumerate(S):
