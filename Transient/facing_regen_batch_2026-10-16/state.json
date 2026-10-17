@@ -11582,238 +11582,813 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "things/pawn/animal/rsw_tunnelsnake/rsw_tunnelsnake": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RSW_TunnelSnake/candidates/RSW_TunnelSnake_north.png"
+   },
+   "canon": {
+    "standtall_b1_rsw_tunnelsnake_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_TunnelSnake",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "530897c7cbd9fbcc67b8a0875d09942084ae5c4d7ab6583b215bca1cda138068"
+   },
+   "jobs": [
+    "standtall_b1_rsw_tunnelsnake_east",
+    "standtall_b1_rsw_tunnelsnake_south",
+    "standtall_b1_rsw_tunnelsnake_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.086,
+     "d_south": 1.148,
+     "e_north": 1.086,
+     "e_south": 1.148,
+     "ns": 0.946,
+     "nsw": 0.564,
+     "w_north": 0.409,
+     "w_south": 0.725
+    }
+   },
    "live_sha": {
     "north": "640204f1eb8cfc3bc9bd87c7c1229fa9f5c9fbd94329e267651028655c8edb29"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 61,
+   "status": "installed",
    "sw": true,
    "texPath": "Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RSW_TunnelSnake",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rsw_vozzik/rsw_vozzik": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RSW_Vozzik/candidates/RSW_Vozzik_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RSW_Vozzik/candidates/RSW_Vozzik_south.png"
+   },
+   "canon": {
+    "standtall_b1_rsw_vozzik_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_rsw_vozzik_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_Vozzik",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "1848c970fea85ca22815ad7180f6570a6943b75398822da6d20c20282cc9bc28",
+    "south": "a7e86717d4593b5144eca4941c780437cff30f08d39596bf7d00c296af4f10d9"
+   },
+   "jobs": [
+    "standtall_b1_rsw_vozzik_east",
+    "standtall_b1_rsw_vozzik_south",
+    "standtall_b1_rsw_vozzik_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.082,
+     "d_south": 1.125,
+     "e_north": 1.082,
+     "e_south": 1.125,
+     "ns": 0.962,
+     "nsw": 0.837,
+     "w_north": 0.459,
+     "w_south": 0.547
+    }
+   },
    "live_sha": {
     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 124,
+   "status": "installed",
    "sw": true,
    "texPath": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RSW_Vozzik",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rut_fleetflier/rut_fleetflier": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RUT_FleetFlier/candidates/RUT_FleetFlier_north.png"
+   },
+   "canon": {},
    "def": "RUT_FleetFlier",
    "facings": [
     "north"
    ],
+   "installed": {
+    "north": "b73818aaddf7aeddaa92b66b4ccc31e3f8c1ce902a51e9348a649ba05a1e6c99"
+   },
+   "jobs": [
+    "standtall_b1_rut_fleetflier_east",
+    "standtall_b1_rut_fleetflier_south",
+    "standtall_b1_rut_fleetflier_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.0,
+     "d_south": 0.974,
+     "e_north": 1.0,
+     "e_south": 0.974,
+     "ns": 1.027,
+     "nsw": 0.962,
+     "w_north": 1.071,
+     "w_south": 1.114
+    }
+   },
    "live_sha": {
     "north": "45f264f99ec62ba4d6f720bedadef69b4e7a2aeee5dbf1f715a5b6d1ac5a7304"
    },
    "mod": "RimUtinni Patches (Jawa campaign)",
-   "status": "pending",
+   "seconds": 50,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RUT_FleetFlier",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rut_greentideant/dessicated_rut_greentideant": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/dessicated_RUT_GreentideAnt/candidates/dessicated_RUT_GreentideAnt_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/dessicated_RUT_GreentideAnt/candidates/dessicated_RUT_GreentideAnt_south.png"
+   },
+   "canon": {},
    "def": "RUT_GreentideAnt",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "adfe214964c0536803bd2ccc1a9b652ea9303951e0d69c551e88da580e9feaf4",
+    "south": "4971d48b761803d57a15f89701446b7a18e7a724acc7e0303684dc69d7d27a6c"
+   },
+   "jobs": [
+    "standtall_b1_dessicated_rut_greentideant_east",
+    "standtall_b1_dessicated_rut_greentideant_south",
+    "standtall_b1_dessicated_rut_greentideant_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.119,
+     "e_north": 1.08,
+     "e_south": 1.119,
+     "ns": 0.964,
+     "nsw": 0.822,
+     "w_north": 0.565,
+     "w_south": 0.688
+    }
+   },
    "live_sha": {
     "north": "0dc8cfb18821de58a81e3704eff0ef87814e40f53ba2c1df1a83c04ac009685a",
     "south": "1b2acd7f42152c4131ffbf0ef12318d5948aa45319db5fdd1bbf7a197eb1506f"
    },
    "mod": "RimUtinni: Greentide Raid Ant",
-   "status": "pending",
+   "seconds": 115,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RUT_GreentideAnt/dessicated_RUT_GreentideAnt",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/dessicated_RUT_GreentideAnt",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/rut_vwake/rut_vwake": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RUT_VWake/candidates/RUT_VWake_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RUT_VWake/candidates/RUT_VWake_south.png"
+   },
+   "canon": {},
    "def": "RUT_VWake",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "fc199fedad69ffd9bd8392e076d4429f18c100b0cdd5baa96659906db1983bf3",
+    "south": "401fa0835e29fad897853f90b1f74ac9bd463fb375afd2c46335614e0ddb71c2"
+   },
+   "jobs": [
+    "standtall_b1_rut_vwake_east",
+    "standtall_b1_rut_vwake_south",
+    "standtall_b1_rut_vwake_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.081,
+     "d_south": 1.135,
+     "e_north": 1.081,
+     "e_south": 1.135,
+     "ns": 0.952,
+     "nsw": 1.216,
+     "w_north": 0.184,
+     "w_south": 0.152
+    }
+   },
    "live_sha": {
     "north": "61c816fccb1cc04d36babc554bfafc58a0c7d6b62aa2b9f41002b8746873b854",
     "south": "c5156278cbeb2d15f42c326325c1a6fd44936344ef9896a4e2450db5af086a59"
    },
    "mod": "RimUtinni Patches (Jawa campaign)",
-   "status": "pending",
+   "seconds": 130,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/RUT_VWake/RUT_VWake",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/RUT_VWake",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/abyssalcolo/abyssalcolo": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/AbyssalColo/candidates/AbyssalColo_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/AbyssalColo/candidates/AbyssalColo_south.png"
+   },
+   "canon": {},
    "def": "RM_AbyssalColo",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "eadae812ea938fe14ad9dbddee5c8c1a9735e0dab239dcb87ddac5c7402b8bcb",
+    "south": "e63e48c4a5a7385f272650d6a48f67de5ef17e014f0246d3173c7994211aa58f"
+   },
+   "jobs": [
+    "standtall_b1_abyssalcolo_east",
+    "standtall_b1_abyssalcolo_south",
+    "standtall_b1_abyssalcolo_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.075,
+     "d_south": 1.122,
+     "e_north": 1.075,
+     "e_south": 1.122,
+     "h_west": 1.0,
+     "ns": 0.958,
+     "nsw": 1.363,
+     "w_north": 0.39,
+     "w_south": 0.286
+    }
+   },
    "live_sha": {
     "north": "0621cd5e33359faa9b20687582872707a86eb95bb626877d59f0a825468e0b49",
     "south": "a2a96c2dbeafa8e1b65dc56455bbfc5ac98516747ccc36b34d44db6d91be7ba8"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 159,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/AbyssalColo",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/coloclawfish/coloclawfish": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ColoClawFish/candidates/ColoClawFish_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ColoClawFish/candidates/ColoClawFish_south.png"
+   },
+   "canon": {
+    "standtall_b1_coloclawfish_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body \u2014 a thick crocodilian head and neck at one end, tapering back into a long ribbon tail ending in a flat paddle \u2014 with a pair of jointed, clawed arm-like appendages directly behind the head, ending in large curved talons; not a stout fish, no paired fins along the body",
+       "reason": "The visible tail is a layered, pointed leaf shape rather than a ribbon ending in a flat paddle; multiple curved dorsal tendrils add noncanonical anatomy."
+      },
+      {
+       "line": "COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scattered dark blue-black spots; belly a grey/grey-blue band distinct from the khaki back; a glowing cyan/teal fringe along the edge between back and belly and a row of glowing teal nodules down the spine and flanks; yellow eye",
+       "reason": "Back and flanks are ivory-lavender with purple ridges, lacking khaki colouring and dark flank spots; cyan appears on tendrils rather than the required fringe and nodules."
+      }
+     ],
+     "note": "",
+     "score": "2/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_coloclawfish_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body \u2014 a thick crocodilian head and neck at one end, tapering back into a long ribbon tail ending in a flat paddle \u2014 with a pair of jointed, clawed arm-like appendages directly behind the head, ending in large curved talons; not a stout fish, no paired fins along the body",
+       "reason": "Two clawed arms are visible, but the broad, short-faced head and tall crest contradict the crocodilian anatomy; body length and tail are obscured by this facing."
+      },
+      {
+       "line": "COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scattered dark blue-black spots; belly a grey/grey-blue band distinct from the khaki back; a glowing cyan/teal fringe along the edge between back and belly and a row of glowing teal nodules down the spine and flanks; yellow eye",
+       "reason": "Hide is pale lavender and purple, with pale violet eyes; the khaki hide, dark flank spots, grey belly band and yellow eyes are missing."
+      },
+      {
+       "line": "Crocodile-like head with a long snout, large curved white/cream front fangs, and a yellow slit-pupil eye set high on a bony brow",
+       "reason": "Cream fangs are present, but the snout is short and rounded, and the eyes lack yellow irises and clear slit pupils."
+      },
+      {
+       "line": "NEGATIVE: not a plain eel or moray (must have the croc head and the two clawed arms), not a crocodile or sea serpent with legs/flippers; not the deleted comic's plain unspotted olive body with small tucked claws and bright red mouth",
+       "reason": "Despite its two clawed arms, the rounded gaping face, luminous feelers and tall crest read as a different monster rather than the required crocodilian eel."
+      }
+     ],
+     "note": "",
+     "score": "2/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_ColoClawFish",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.058,
+     "d_south": 1.124,
+     "e_north": 1.058,
+     "e_south": 1.124,
+     "h_west": 1.0,
+     "ns": 0.942,
+     "nsw": 0.987,
+     "w_north": 0.352,
+     "w_south": 0.357
+    }
+   },
    "live_sha": {
     "north": "54aa5f970955fc886254f4edf5167b8da116ec34451e391baddc85e6d9d03cf5",
     "south": "4ee05f946cdaa661da7f0ad777fb1cef03db279527bf020cd014a50ad98ca25f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 197,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFish",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body \u2014 a thic; south: COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scatte; north: BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body \u2014 a thic; north: COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scatte",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ColoClawFish",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/eldersando/eldersando": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ElderSando/candidates/ElderSando_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ElderSando/candidates/ElderSando_south.png"
+   },
+   "canon": {
+    "standtall_b1_eldersando_north": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    },
+    "standtall_b1_eldersando_south": {
+     "flags": [],
+     "note": "",
+     "score": null,
+     "status": "checked",
+     "verdict": "skipped"
+    }
+   },
    "def": "RSW_ElderSando",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "95a404ee84d4e234bcbeb9bead8bf156d3c3c9a234e9282d5d07a2ee0ec7e603",
+    "south": "50fb7206c6ae48cc0ad87d4979d107e7dc5d4d4bbbb1bdb1b9c498f2fe42fa0a"
+   },
+   "jobs": [
+    "standtall_b1_eldersando_east",
+    "standtall_b1_eldersando_south",
+    "standtall_b1_eldersando_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.115,
+     "e_north": 1.054,
+     "e_south": 1.115,
+     "h_west": 1.0,
+     "ns": 0.945,
+     "nsw": 0.927,
+     "w_north": 0.442,
+     "w_south": 0.477
+    }
+   },
    "live_sha": {
     "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
     "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 177,
+   "status": "installed",
    "sw": true,
    "texPath": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ElderSando",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/faa/faa": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Faa/candidates/Faa_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Faa/candidates/Faa_south.png"
+   },
+   "canon": {
+    "standtall_b1_faa_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: about two-thirds of the fish is one huge deep round head; behind it the body pinches abruptly into a long THIN stalk (narrower than the eye) that ends in a single large fan-shaped tail; overall outline like a tadpole or a frying pan with a fan on the handle",
+       "reason": "The body is a compact scaled oval with a directly attached tail; the abrupt pinch into a thin stalk is missing."
+      },
+      {
+       "line": "COLOUR LAYOUT: orange concentrated on the top of the head and back, fading to pale cream-peach on the cheeks, belly, stalk and tail fan; thin vertical blue-violet stripes and blue speckle on the upper head behind the eye only",
+       "reason": "Gold and dark teal dominate, with bright cyan spots along both sides; the orange-to-cream layout and blue-violet head markings are absent."
+      },
+      {
+       "line": "Small round pectoral fin low on the cheek; low crest along the top of the head; tail fan pale with radiating ribs",
+       "reason": "The crest is tall and pointed, and the ribbed tail is dark teal and gold rather than pale cream-orange."
+      },
+      {
+       "line": "Realistic rendering: wet fish skin with fine scales and natural lighting, no outlines, no cartoon shading",
+       "reason": "Fine scales are visible, but their metallic gold appearance and luminous cyan spots contradict natural wet fish skin."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_faa_south": {
+     "flags": [
+      {
+       "line": "Big downturned, thick-lipped sulking mouth set low at the front with small needle teeth; heavy underslung chin",
+       "reason": "The mouth is a small puckered oval, lacking the huge sulking gape, visible needle teeth and heavy underslung chin."
+      },
+      {
+       "line": "COLOUR LAYOUT: orange concentrated on the top of the head and back, fading to pale cream-peach on the cheeks, belly, stalk and tail fan; thin vertical blue-violet stripes and blue speckle on the upper head behind the eye only",
+       "reason": "Bright yellow-gold and teal dominate, replacing the orange-to-cream gradient and localized blue-violet bands."
+      },
+      {
+       "line": "Small round pectoral fin low on the cheek; low crest along the top of the head; tail fan pale with radiating ribs",
+       "reason": "The cheek fins are elongated, pointed fans rather than small round fins."
+      },
+      {
+       "line": "Realistic rendering: wet fish skin with fine scales and natural lighting, no outlines, no cartoon shading",
+       "reason": "Fine scales and sheen are present, but prominent black outlines contradict the explicit no-outlines requirement."
+      }
+     ],
+     "note": "",
+     "score": "2/6",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Faa",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.079,
+     "d_south": 1.127,
+     "e_north": 1.079,
+     "e_south": 1.127,
+     "h_west": 1.0,
+     "ns": 0.958,
+     "nsw": 0.908,
+     "w_north": 0.541,
+     "w_south": 0.596
+    }
+   },
    "live_sha": {
     "north": "16bf54ac8baa12239db06f4d50d1df80c471a8e8cd8d4771dc0473ea399bb7f5",
     "south": "f4d721d5a0ab356c6eba8cd8c85d6cf8ad8a2c11107ade307aa371caae791beb"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 251,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
-   "why": ""
+   "why": "canon Must-show FAIL: south: Big downturned, thick-lipped sulking mouth set low at the front with small needl; south: COLOUR LAYOUT: orange concentrated on the top of the head and back, fading to pa; north: BODY PLAN: about two-thirds of the fish is one huge deep round head; behind it t; north: COLOUR LAYOUT: orange concentrated on the top of the head and back, fading to pa",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Faa",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/grippingterror/grippingterror": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GrippingTerror/candidates/GrippingTerror_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GrippingTerror/candidates/GrippingTerror_south.png"
+   },
+   "canon": {},
    "def": "RM_GrippingTerror",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "235b0ebfc43df61fc02fc2bca908149d9e60faf0d864786f7be2af89d925692e",
+    "south": "596e24865f40e0106c75123d5f07571872ffb0a93739aeb4466ff774e3edc6cb"
+   },
+   "jobs": [
+    "standtall_b1_grippingterror_east",
+    "standtall_b1_grippingterror_south",
+    "standtall_b1_grippingterror_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.054,
+     "d_south": 1.117,
+     "e_north": 1.054,
+     "e_south": 1.117,
+     "h_west": 1.0,
+     "ns": 0.943,
+     "nsw": 1.121,
+     "w_north": 0.586,
+     "w_south": 0.523
+    }
+   },
    "live_sha": {
     "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
     "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 167,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/GrippingTerror",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/lanternwhale/lanternwhale": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Lanternwhale/candidates/Lanternwhale_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Lanternwhale/candidates/Lanternwhale_south.png"
+   },
+   "canon": {},
    "def": "RM_Lanternwhale",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "95b20ae1aac51cdf7bd6c54d2c701f8bc9af43c237e881aee02391b9e3e8d383",
+    "south": "ccc27e3845f416871c28b9083d13bb5921e1eb6f9f317291bbad09bf633465b8"
+   },
+   "jobs": [
+    "standtall_b1_lanternwhale_east",
+    "standtall_b1_lanternwhale_south",
+    "standtall_b1_lanternwhale_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.056,
+     "d_south": 1.117,
+     "e_north": 1.056,
+     "e_south": 1.117,
+     "h_west": 1.0,
+     "ns": 0.946,
+     "nsw": 0.863,
+     "w_north": 0.761,
+     "w_south": 0.881
+    }
+   },
    "live_sha": {
     "north": "716edd7d0942e4415ad8dceb2bb662cef248bdbcd65f0ce2195ac750b6ef1496",
     "south": "3a09151bee3a60501c11c0bc34c16056e14949c16e92c76ca3b3ec2579ac34b9"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 171,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Lanternwhale",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/opeeseakiller/opeeseakiller": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/OpeeSeaKiller/candidates/OpeeSeaKiller_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/OpeeSeaKiller/candidates/OpeeSeaKiller_south.png"
+   },
+   "canon": {
+    "standtall_b1_opeeseakiller_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a stocky, torpedo-shaped crustacean-fish hybrid: a huge fish-like head at the front whose mouth takes up most of the front, behind it a long, segmented, arched armour-plated back (overlapping ridged plates) tapering to a pointed rear like a lobster tail; three pairs of thin jointed crab-like legs hanging under the rear body, each ending in a flat paddle or blunt claw; a pair of broad, finely ribbed fan-shaped pectoral fins behind the head",
+       "reason": "The plated back is present, but thick curled limbs replace thin jointed walking legs, and the rear ends in a broad fan rather than a point."
+      },
+      {
+       "line": "COLOUR LAYOUT: reddish-orange/coral-red skin and plates overall, paler blue-grey on the plate edges and underside; mouth interior purple-lilac; antenna lure tips dark blue-purple",
+       "reason": "The visible body is ochre-gold and brown, lacking coral-red plates and pale blue-grey edges."
+      },
+      {
+       "line": "Long, thin, whip-like antennae (one to three) from stubs on the top of the head, orange-tan at the base, with dark blue-purple lure tips",
+       "reason": "No long whip-like antennae or dark blue-purple lure bulbs are visible above or around the body."
+      },
+      {
+       "line": "NEGATIVE: not a plain fish or shark (no smooth scaled body, the back is segmented armour plates), not a lobster or crab with claws at the front (the front is a giant fish mouth; the legs are thin and under the rear)",
+       "reason": "Although the back is segmented, the bulky curled claw-like limbs contradict the required thin legs beneath the rear."
+      }
+     ],
+     "note": "",
+     "score": "0/4",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_opeeseakiller_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a stocky, torpedo-shaped crustacean-fish hybrid: a huge fish-like head at the front whose mouth takes up most of the front, behind it a long, segmented, arched armour-plated back (overlapping ridged plates) tapering to a pointed rear like a lobster tail; three pairs of thin jointed crab-like legs hanging under the rear body, each ending in a flat paddle or blunt claw; a pair of broad, finely ribbed fan-shaped pectoral fins behind the head",
+       "reason": "The large mouth is present, but thick curled claw-like appendages flank it; broad fan-shaped pectoral fins and thin walking legs are absent."
+      },
+      {
+       "line": "COLOUR LAYOUT: reddish-orange/coral-red skin and plates overall, paler blue-grey on the plate edges and underside; mouth interior purple-lilac; antenna lure tips dark blue-purple",
+       "reason": "The creature is predominantly golden brown, with a dark red mouth and cream-yellow lure tips; the required coral, blue-grey and lilac layout is missing."
+      },
+      {
+       "line": "Enormous, rounded gaping mouth edged by thick wrinkled lips, with double rows of long pale cream conical teeth",
+       "reason": "The rounded gape has a thick rim, but its radial triangular teeth do not show double rows of long pale cream conical teeth."
+      },
+      {
+       "line": "Long, thin, whip-like antennae (one to three) from stubs on the top of the head, orange-tan at the base, with dark blue-purple lure tips",
+       "reason": "Two short curled stalks end in bright cream-yellow bulbs rather than very long whip-like antennae with dark blue-purple tips."
+      }
+     ],
+     "note": "",
+     "score": "0/7",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_OpeeSeaKiller",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.063,
+     "d_south": 1.118,
+     "e_north": 1.063,
+     "e_south": 1.118,
+     "h_west": 1.0,
+     "ns": 0.951,
+     "nsw": 0.819,
+     "w_north": 0.604,
+     "w_south": 0.737
+    }
+   },
    "live_sha": {
     "north": "8dce0c0b15708be5424b76377e490fde8deca3b17ad5cb4bcf3f2e67ede196c8",
     "south": "c5cca4d71538c005cc70304f06f392657ff90f132b60384bab0c7a57a094a75f"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 202,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a stocky, torpedo-shaped crustacean-fish hybrid: a huge fish-like hea; south: COLOUR LAYOUT: reddish-orange/coral-red skin and plates overall, paler blue-grey; north: BODY PLAN: a stocky, torpedo-shaped crustacean-fish hybrid: a huge fish-like hea; north: COLOUR LAYOUT: reddish-orange/coral-red skin and plates overall, paler blue-grey",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/OpeeSeaKiller",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/reefback/reefback": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reefback/candidates/Reefback_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reefback/candidates/Reefback_south.png"
+   },
+   "canon": {},
    "def": "RM_Reefback",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "e185ca49deea693647aba4ec71993b8f4d9f7aba6742193a3e3531c0a6b7389d",
+    "south": "93f8bcffc6c07953e28cb803d77e550373a5caddaffacfd054924b76e72b8b83"
+   },
+   "jobs": [
+    "standtall_b1_reefback_east",
+    "standtall_b1_reefback_south",
+    "standtall_b1_reefback_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.055,
+     "d_south": 1.115,
+     "e_north": 1.055,
+     "e_south": 1.115,
+     "h_west": 1.0,
+     "ns": 0.947,
+     "nsw": 1.01,
+     "w_north": 0.609,
+     "w_south": 0.603
+    }
+   },
    "live_sha": {
     "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
     "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 166,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Reefback",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/siltlamprey/siltlamprey": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SiltLamprey/candidates/SiltLamprey_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SiltLamprey/candidates/SiltLamprey_south.png"
+   },
+   "canon": {},
    "def": "RM_SiltLamprey",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "d03cf4392a85fa3c1fa015c3e7eabb22fa632a26bde7e6e748a2d89ab00a0ac5",
+    "south": "c170650ae040ebdc32af7b43bbc767a3c37a752df3923b8fe384ffb1dea3e3eb"
+   },
+   "jobs": [
+    "standtall_b1_siltlamprey_east",
+    "standtall_b1_siltlamprey_south",
+    "standtall_b1_siltlamprey_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.086,
+     "d_south": 1.121,
+     "e_north": 1.086,
+     "e_south": 1.121,
+     "h_west": 1.0,
+     "ns": 0.969,
+     "nsw": 0.886,
+     "w_north": 0.284,
+     "w_south": 0.321
+    }
+   },
    "live_sha": {
     "north": "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
     "south": "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 144,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/SiltLamprey",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/stormsando/stormsando": {
    "attempts": 0,
@@ -11828,38 +12403,140 @@
    "why": "pilot set (installed 17b63dfb21) or Dewback (owner reconcile)"
   },
   "things/pawn/animal/seabeasts/thornbackcolo/thornbackcolo": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ThornbackColo/candidates/ThornbackColo_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ThornbackColo/candidates/ThornbackColo_south.png"
+   },
+   "canon": {},
    "def": "RM_ThornbackColo",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "76ae1cb4dc57a8276435d49d2e20769e596ae4522ea45f6c4bd582da19d28e32",
+    "south": "0d126f400d9de1c622164fe64d95e18280cd372ebd8012ab4d2acd9ac733595f"
+   },
+   "jobs": [
+    "standtall_b1_thornbackcolo_east",
+    "standtall_b1_thornbackcolo_south",
+    "standtall_b1_thornbackcolo_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.078,
+     "d_south": 1.113,
+     "e_north": 1.078,
+     "e_south": 1.113,
+     "h_west": 1.0,
+     "ns": 0.968,
+     "nsw": 0.887,
+     "w_north": 0.198,
+     "w_south": 0.224
+    }
+   },
    "live_sha": {
     "north": "8884c74be0073453f2a39214c3e9608517f1eec1ad455276714a125ae4bdefcc",
     "south": "16f1d74486bd94b5794e3230b075a24c24c96a318646ebaa022f371b3e294b87"
    },
    "mod": "RimMandrake: Baroque Biomes",
-   "status": "pending",
+   "seconds": 160,
+   "status": "installed",
    "sw": false,
    "texPath": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ThornbackColo",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/seabeasts/yobshrimp/yobshrimp": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp/candidates/Yobshrimp_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp/candidates/Yobshrimp_south.png"
+   },
+   "canon": {
+    "standtall_b1_yobshrimp_north": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low crab/crayfish-like crustacean: a flat, wedge-shaped carapace tapering to a sharp forward rostrum like a spear-point; eight short, bristly, segmented walking legs under the body in a crab-like stance",
+       "reason": "The carapace is a rounded, overlapping stack of plates rather than a flat wedge; the legs lack the required crab-like spread."
+      },
+      {
+       "line": "COLOUR LAYOUT: purple/lilac shell with dark violet mottling and small raised speckles, paler lilac belly; bright green eyes and green feeler bulbs the only non-purple accents",
+       "reason": "The visible shell is ivory and tan with dark outlines, lacking purple/lilac colouring and violet mottling."
+      },
+      {
+       "line": "Two very long jointed arms ending in huge thin scissor claws (claws about as long as the whole body), raised up and back over the body",
+       "reason": "No long raised jointed arms or enormous thin scissor claws are visible."
+      },
+      {
+       "line": "Face: a bright green round-pupilled eye, a pair of small green bead-tipped feelers on short stalks, and two long thin whip antennae trailing back behind the head, many times the body length",
+       "reason": "The rear view conceals facial details, but the required long trailing whip antennae should extend visibly and are absent."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    },
+    "standtall_b1_yobshrimp_south": {
+     "flags": [
+      {
+       "line": "BODY PLAN: a small, low crab/crayfish-like crustacean: a flat, wedge-shaped carapace tapering to a sharp forward rostrum like a spear-point; eight short, bristly, segmented walking legs under the body in a crab-like stance",
+       "reason": "The carapace is rounded and prominently segmented, without the flat wedge shape or sharp forward rostrum."
+      },
+      {
+       "line": "COLOUR LAYOUT: purple/lilac shell with dark violet mottling and small raised speckles, paler lilac belly; bright green eyes and green feeler bulbs the only non-purple accents",
+       "reason": "The shell is ivory and cream, without purple/lilac colouring, violet mottling, or visible green accents."
+      },
+      {
+       "line": "Two very long jointed arms ending in huge thin scissor claws (claws about as long as the whole body), raised up and back over the body",
+       "reason": "No long jointed arms or enormous raised scissor claws are visible."
+      },
+      {
+       "line": "Face: a bright green round-pupilled eye, a pair of small green bead-tipped feelers on short stalks, and two long thin whip antennae trailing back behind the head, many times the body length",
+       "reason": "No green eyes or green bead-tipped feelers are visible; the bristly antennae are far shorter than the required trailing whips."
+      }
+     ],
+     "note": "",
+     "score": "1/5",
+     "status": "checked",
+     "verdict": "FAIL"
+    }
+   },
    "def": "RSW_Yobshrimp",
    "facings": [
     "south",
     "north"
    ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.083,
+     "d_south": 1.115,
+     "e_north": 1.083,
+     "e_south": 1.115,
+     "h_west": 1.0,
+     "ns": 0.972,
+     "nsw": 0.818,
+     "w_north": 0.5,
+     "w_south": 0.611
+    }
+   },
    "live_sha": {
     "north": "bbb416bfa70b9cc06aec2dda3c42b50bea040c00c56939ad575dcb31f84f7820",
     "south": "7f02236c0f4a73884d72354cf513f638086b20e1de4efeb47b9478e75ca402bf"
    },
    "mod": "RimMandrake: SW \u2014 Bestiary",
-   "status": "pending",
+   "seconds": 153,
+   "status": "needs_eyes",
    "sw": true,
    "texPath": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
-   "why": ""
+   "why": "canon Must-show FAIL: south: BODY PLAN: a small, low crab/crayfish-like crustacean: a flat, wedge-shaped cara; south: COLOUR LAYOUT: purple/lilac shell with dark violet mottling and small raised spe; north: BODY PLAN: a small, low crab/crayfish-like crustacean: a flat, wedge-shaped cara; north: COLOUR LAYOUT: purple/lilac shell with dark violet mottling and small raised spe",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/Yobshrimp",
+   "worker": "codex_home_facing_regen"
   },
   "things/pawn/animal/squirrel/dessicated_squirrel": {
    "attempts": 0,
@@ -11874,21 +12551,51 @@
    "why": "live picture is not in this repo (vanilla/donor/workshop path)"
   },
   "ysalamiri/ysalamiri": {
-   "attempts": 0,
+   "attempts": 1,
+   "cands": {
+    "north": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ysalamiri/candidates/ysalamiri_north.png",
+    "south": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ysalamiri/candidates/ysalamiri_south.png"
+   },
+   "canon": {},
    "def": "SWPotF_ysalamir",
    "facings": [
     "south",
     "north"
    ],
+   "installed": {
+    "north": "d030cded51c3478e7ef86c8e9ba8c3b4d664426b65b06150d8ce1f3813dfedb1",
+    "south": "5b1e448f140a3b85136644aedc5347e0f1117593610cc6c1d795806bbd12cabf"
+   },
+   "jobs": [
+    "standtall_b1_ysalamiri_east",
+    "standtall_b1_ysalamiri_south",
+    "standtall_b1_ysalamiri_north"
+   ],
+   "lint": {
+    "flags": [],
+    "ratios": {
+     "d_north": 1.08,
+     "d_south": 1.127,
+     "e_north": 1.08,
+     "e_south": 1.127,
+     "ns": 0.959,
+     "nsw": 0.54,
+     "w_north": 0.226,
+     "w_south": 0.418
+    }
+   },
    "live_sha": {
     "north": "e8fc5dde10d2cadf95454404b93e6bb8e5f93373ab4a2a7c58e88da0393b0af1",
     "south": "796d22f56e0f56747d58be28c1e32f6f5c6f3f3da4010594075f12612f13ed69"
    },
    "mod": "Jawa Armoury Rebalance",
-   "status": "pending",
+   "seconds": 146,
+   "status": "installed",
    "sw": false,
    "texPath": "ysalamiri/ysalamiri",
-   "why": ""
+   "why": "",
+   "work": "/mnt/d/Luke/dev/_rmscratch/facing_regen_batch/ysalamiri",
+   "worker": "codex_home_facing_regen"
   }
  },
  "rows": "Transient/facing_rescale_2026-10-16/lint_after_reseat.json",
