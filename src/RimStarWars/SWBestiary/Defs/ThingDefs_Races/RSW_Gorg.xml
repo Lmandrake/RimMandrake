@@ -169,7 +169,7 @@
     <combatPower>30</combatPower>
     <ecoSystemWeight>0.70</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
-    <alternateGraphicChance>0.909</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 5 variants equally likely -->
+    <alternateGraphicChance>0.923</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 5 variants equally likely -->
     <alternateGraphics>
       <li>
         <texPath>swanimals/Gorg/GorgV_G</texPath>
@@ -200,6 +200,12 @@
       </li>
       <li>
         <texPath>swanimals/Gorg/GorgV_I</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_E</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Gorg/GorgV_G2</texPath>  <!-- variant G (longshade v2) ticked 2026-10-17; GorgV_G itself keeps his pick M -->
       </li>
     </alternateGraphics>
     <lifeStages>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "Gorg's should only be 0.5 cell" (adult drawSize 1.05 -> 0.5, younger stages in proportion) -->
