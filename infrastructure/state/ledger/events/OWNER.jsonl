@@ -1074,3 +1074,7 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"menu up","ts":"2026-10-17T21:54:24Z","tsn":1792274064436622116}
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"modcheck run FlowWorks (swaps to minimal + restarts)","ts":"2026-10-17T22:15:22Z","tsn":1792275322792487798}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"walk creatures save loaded, paused","ts":"2026-10-17T22:26:48Z","tsn":1792276008660913050}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"credited rerun: deploy FlowWorks HEAD 8cdc885d99 and restart on the walk list","ts":"2026-10-17T22:33:30Z","tsn":1792276410505714082}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for the credited-rerun deploy","ts":"2026-10-17T22:33:34Z","tsn":1792276414133001960}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"credited rerun launch via Steam, 20-mod walk list","ts":"2026-10-17T22:34:02Z","tsn":1792276442946854269}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"credited rerun done; walk save loaded","ts":"2026-10-17T22:56:40Z","tsn":1792277800714713374}
