@@ -10,7 +10,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow oil</label>
+    <label>knee-deep oil (under 0.75 m)</label>
     <description>Oil standing ankle-to-knee deep. Wading it is easy. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -33,7 +33,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>chest-deep oil</label>
+    <label>shallow oil (about 1 m)</label>
     <description>Oil standing chest-deep. Wading it is slow work. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -59,7 +59,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>deep oil</label>
+    <label>chest-deep oil (about 1.5 m)</label>
     <description>Oil standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -85,7 +85,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>very deep oil</label>
+    <label>deep oil (2 m or more)</label>
     <description>Oil filling a very deep pit. Whatever falls in is held there, and the oil goes to work on it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -108,7 +108,7 @@
        over it whenever looks are on): poison is thin and splashes; oil and blood are thick and do not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Trace</defName>
-    <label>shallow poison</label>
+    <label>knee-deep poison (under 0.75 m)</label>
     <description>Poison standing ankle-to-knee deep. Wading it is easy. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -128,7 +128,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Half</defName>
-    <label>chest-deep poison</label>
+    <label>shallow poison (about 1 m)</label>
     <description>Poison standing chest-deep. Wading it is slow work. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -151,7 +151,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Brim</defName>
-    <label>deep poison</label>
+    <label>chest-deep poison (about 1.5 m)</label>
     <description>Poison standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -174,7 +174,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Superdeep</defName>
-    <label>very deep poison</label>
+    <label>deep poison (2 m or more)</label>
     <description>Poison filling a very deep pit. Whatever falls in is held there, and the poison goes to work on it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -199,7 +199,7 @@
        words differ, and blood does not burn. Surface looks: Tools/generate_liquid_suite.py FLUID_SURFACE_LOOKS. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Trace</defName>
-    <label>shallow blood</label>
+    <label>knee-deep blood (under 0.75 m)</label>
     <description>Blood standing ankle-to-knee deep. Wading it is easy. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -219,7 +219,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Half</defName>
-    <label>chest-deep blood</label>
+    <label>shallow blood (about 1 m)</label>
     <description>Blood standing chest-deep. Wading it is slow work. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -242,7 +242,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Brim</defName>
-    <label>deep blood</label>
+    <label>chest-deep blood (about 1.5 m)</label>
     <description>Blood standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -265,7 +265,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Superdeep</defName>
-    <label>very deep blood</label>
+    <label>deep blood (2 m or more)</label>
     <description>Blood filling a very deep pit. Whatever falls in is held there, and the blood goes to work on it. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -289,7 +289,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow chemfuel</label>
+    <label>knee-deep chemfuel (under 0.75 m)</label>
     <description>Chemfuel standing ankle-to-knee deep. Wading it is easy. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -312,7 +312,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>chest-deep chemfuel</label>
+    <label>shallow chemfuel (about 1 m)</label>
     <description>Chemfuel standing chest-deep. Wading it is slow work. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -338,7 +338,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>deep chemfuel</label>
+    <label>chest-deep chemfuel (about 1.5 m)</label>
     <description>Chemfuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -364,7 +364,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>very deep chemfuel</label>
+    <label>deep chemfuel (2 m or more)</label>
     <description>Chemfuel filling a very deep pit. Whatever falls in is held there, and the chemfuel goes to work on it. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -388,7 +388,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow astrofuel</label>
+    <label>knee-deep astrofuel (under 0.75 m)</label>
     <description>Astrofuel standing ankle-to-knee deep. Wading it is easy. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -411,7 +411,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>chest-deep astrofuel</label>
+    <label>shallow astrofuel (about 1 m)</label>
     <description>Astrofuel standing chest-deep. Wading it is slow work. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -437,7 +437,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>deep astrofuel</label>
+    <label>chest-deep astrofuel (about 1.5 m)</label>
     <description>Astrofuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -463,7 +463,7 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>very deep astrofuel</label>
+    <label>deep astrofuel (2 m or more)</label>
     <description>Astrofuel filling a very deep pit. Whatever falls in is held there, and the astrofuel goes to work on it. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -486,7 +486,7 @@
        boiling carries RM_WaterBoilingShallow's burnDamage (3 every 300 ticks) on every tier, Brim and Superdeep included. Heat comes from FluidDef.hot/cold (RM_LiquidHeat). -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Trace</defName>
-    <label>shallow boiling water</label>
+    <label>knee-deep boiling water (under 0.75 m)</label>
     <description>Boiling water standing ankle-to-knee deep. Wading it is easy. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -508,7 +508,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Half</defName>
-    <label>chest-deep boiling water</label>
+    <label>shallow boiling water (about 1 m)</label>
     <description>Boiling water standing chest-deep. Wading it is slow work. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -533,7 +533,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Brim</defName>
-    <label>deep boiling water</label>
+    <label>chest-deep boiling water (about 1.5 m)</label>
     <description>Boiling water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -558,7 +558,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Superdeep</defName>
-    <label>very deep boiling water</label>
+    <label>deep boiling water (2 m or more)</label>
     <description>Boiling water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -581,7 +581,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Trace</defName>
-    <label>shallow icy water</label>
+    <label>knee-deep icy water (under 0.75 m)</label>
     <description>Icy water standing ankle-to-knee deep. Wading it is easy. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
@@ -601,7 +601,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Half</defName>
-    <label>chest-deep icy water</label>
+    <label>shallow icy water (about 1 m)</label>
     <description>Icy water standing chest-deep. Wading it is slow work. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -624,7 +624,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Brim</defName>
-    <label>deep icy water</label>
+    <label>chest-deep icy water (about 1.5 m)</label>
     <description>Icy water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -647,7 +647,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Superdeep</defName>
-    <label>very deep icy water</label>
+    <label>deep icy water (2 m or more)</label>
     <description>Icy water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>

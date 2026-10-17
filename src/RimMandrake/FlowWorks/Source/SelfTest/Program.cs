@@ -1923,6 +1923,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+            RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
             DeepBedChecks.Run(Case);           // POND_ELEVATION_BUILD_LAKES_RUN_DEEP + POND_CAPACITY / FILLIN_DISPLACE fixes (DeepBedChecks.cs)

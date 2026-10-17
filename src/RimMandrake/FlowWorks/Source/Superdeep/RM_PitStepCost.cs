@@ -109,6 +109,43 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): a wet pit now shows the look of the water standing in
+	/// it (4 cm is a thin sheet, 1 m is shallow water), and those looks cost less to cross than a pit (90/120 against 300).
+	/// The pit's own fill terrain used to carry its 300 for every depth of water; this prefix keeps that: a wet pit cell is
+	/// priced at least as the dry pit, so route planning still treats a pit as a place nobody crosses by choice and the walked
+	/// step costs what it did. Runs after the pit cover's prefix (a covered pit costs the cover) and yields to any override
+	/// already set. Capture, hold and climb read the depth grid, never the terrain (ruling 26).</summary>
+	[HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
+	[RimMandrake.Shared.PatchFeature("A wet pit costs a pit to cross")]
+	public static class RM_Patch_WetPitPlanningCost
+	{
+		[HarmonyPrefix]
+		[HarmonyPriority(Priority.Low)]
+		public static void Prefix(PathGrid __instance, IntVec3 c, ref int? baseCostOverride)
+		{
+			if (baseCostOverride.HasValue)
+			{
+				return;
+			}
+			Map map = __instance.map;
+			if (map == null || !c.InBounds(map))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null || eng.SuperdeepCellCount == 0 || !eng.IsSuperdeepRaw(c))
+			{
+				return;
+			}
+			TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
+			int pit = RimMandrakeFlowWorks_DefOf.RM_Channel_Superdeep?.pathCost ?? 0;
+			if (temp != null && temp.pathCost < pit)
+			{
+				baseCostOverride = pit;
+			}
+		}
+	}
+
 	/// <summary>Notes which pawn CostToMoveIntoCell is pricing, so the step cost knows its climb limit (CalculatedCostAt has no
 	/// pawn). Re-entrant: locomotionUrgencySameAs prices another pawn inside the call, so the previous one is restored.</summary>
 	[HarmonyPatch(typeof(Pawn_PathFollower), "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) })]

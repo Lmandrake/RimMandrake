@@ -37,7 +37,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Trace</defName>
-    <label>shallow red slime</label>
+    <label>knee-deep red slime (under 0.75 m)</label>
     <description>Red slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
@@ -56,7 +56,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Half</defName>
-    <label>chest-deep red slime</label>
+    <label>shallow red slime (about 1 m)</label>
     <description>Red slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -78,7 +78,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Brim</defName>
-    <label>deep red slime</label>
+    <label>chest-deep red slime (about 1.5 m)</label>
     <description>Red slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -100,7 +100,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Superdeep</defName>
-    <label>very deep red slime</label>
+    <label>deep red slime (2 m or more)</label>
     <description>Red slime filling a very deep pit. Whatever falls in is held there, and the red slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -122,7 +122,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Trace</defName>
-    <label>shallow green slime</label>
+    <label>knee-deep green slime (under 0.75 m)</label>
     <description>Green slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
@@ -141,7 +141,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Half</defName>
-    <label>chest-deep green slime</label>
+    <label>shallow green slime (about 1 m)</label>
     <description>Green slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -163,7 +163,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Brim</defName>
-    <label>deep green slime</label>
+    <label>chest-deep green slime (about 1.5 m)</label>
     <description>Green slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -185,7 +185,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Superdeep</defName>
-    <label>very deep green slime</label>
+    <label>deep green slime (2 m or more)</label>
     <description>Green slime filling a very deep pit. Whatever falls in is held there, and the green slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -207,7 +207,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Trace</defName>
-    <label>shallow white slime</label>
+    <label>knee-deep white slime (under 0.75 m)</label>
     <description>White slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
@@ -227,7 +227,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Half</defName>
-    <label>chest-deep white slime</label>
+    <label>shallow white slime (about 1 m)</label>
     <description>White slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -250,7 +250,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Brim</defName>
-    <label>deep white slime</label>
+    <label>chest-deep white slime (about 1.5 m)</label>
     <description>White slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -273,7 +273,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Superdeep</defName>
-    <label>very deep white slime</label>
+    <label>deep white slime (2 m or more)</label>
     <description>White slime filling a very deep pit. Whatever falls in is held there, and the white slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -296,7 +296,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Trace</defName>
-    <label>shallow yellow slime</label>
+    <label>knee-deep yellow slime (under 0.75 m)</label>
     <description>Yellow slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
@@ -315,7 +315,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Half</defName>
-    <label>chest-deep yellow slime</label>
+    <label>shallow yellow slime (about 1 m)</label>
     <description>Yellow slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
@@ -337,7 +337,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Brim</defName>
-    <label>deep yellow slime</label>
+    <label>chest-deep yellow slime (about 1.5 m)</label>
     <description>Yellow slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -359,7 +359,7 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Superdeep</defName>
-    <label>very deep yellow slime</label>
+    <label>deep yellow slime (2 m or more)</label>
     <description>Yellow slime filling a very deep pit. Whatever falls in is held there, and the yellow slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>

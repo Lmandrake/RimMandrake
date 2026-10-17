@@ -499,15 +499,15 @@ SETUPS = {
                       marks=[(2, 4, "D1"), (6, 4, "D2"), (10, 4, "D3"), (14, 4, "D4")],
                       try_=["undraft one and order it out: it rises step by step"],
                       look="weak spot: the D4 head showing over the wall; a snap instead of a step on the way out"),
-    # D3, not D2: RM_ExcavationDepth.FillTier is fill/depth (<=0.34 trace, <=0.67 half, else brim), so D2 cannot show a
-    # trace (F1/D2 = 0.5 is half). F1/F2/F3 at D3 are trace/half/brim.
-    "look_canal": dict(short="A canal looks dug and shows how full", notice="D3 cells: empty, trace, half, brim; and a "
-                       "brimming pit",
+    # D3: F1/F2/F3 are 0.5 / 1 / 1.5 m of water, three looks (RM_ExcavationDepth.FillTier is by metres of water, not by
+    # how full the hole is); the brimming pit is 2 m of water, the fourth.
+    "look_canal": dict(short="A canal looks dug and shows how deep its water is", notice="1.5 m cells: dry, 0.5 m, 1 m and "
+                       "1.5 m of water; and a brimming pit (2 m of water)",
                        dig=[(1, 5, 2, 3, 3), (4, 5, 2, 3, 3), (7, 5, 2, 3, 3), (10, 5, 2, 3, 3), (13, 5, 3, 3, 4)],
                        fluid=[(4, 5, 2, 3, 1, W), (7, 5, 2, 3, 2, W), (10, 5, 2, 3, 3, W), (13, 5, 3, 3, 4, W)],
-                       marks=[(1, 4, "empty"), (4, 4, "trace"), (7, 4, "half"), (10, 4, "brim"), (14, 4, "pit")],
-                       try_=["hover each: the fill reads empty, trace, half, brim"],
-                       look="weak spot: trace and half drawn the same"),
+                       marks=[(1, 4, "dry"), (4, 4, "0.5 m"), (7, 4, "1 m"), (10, 4, "1.5 m"), (14, 4, "pit 2 m")],
+                       try_=["hover each: the readout says the hole and the water in metres"],
+                       look="weak spot: 0.5 m and 1 m of water drawn the same"),
     "canal_fluids_more": dict(short="Four more canal liquids", notice="D3 canals brimming with poison, yellow slime, "
                               "boiling water and icy water", s="look", after="look_canal",
                               probes=["xml:defName>RM_Fluid_Poison<", "xml:defName>RM_Fluid_SlimeYellow<",
@@ -1777,11 +1777,11 @@ RIVER_SAVE_HINT = "RM_fw_review_rivers_<date>"
 
 
 def fill_tier(fill, depth):
-    """Mirror of RM_ExcavationDepth.FillTier: 0 none, 1 trace, 2 half, 3 brim."""
+    """Mirror of RM_ExcavationDepth.FillTier (= RM_LevelSolve.LookBand) for whole notches: the look by METRES OF WATER, the
+    hole's depth is not an input (unified depth spec §4.1): 0 dry, 2 ~0.5 m, 3 ~1 m, 4 ~1.5 m, 5 = 2 m and more."""
     if fill <= 0 or depth <= 0:
         return 0
-    r = fill / depth
-    return 1 if r <= 0.34 else 2 if r <= 0.67 else 3
+    return min(5, 1 + int(fill))
 
 
 def build_exit(vis_ok, n_vis, gal_ok, n_gal):

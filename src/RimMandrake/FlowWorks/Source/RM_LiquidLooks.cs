@@ -165,9 +165,12 @@ namespace RimMandrake.FlowWorks
 
 		public static IEnumerable<Member> FluidMembers(FluidDef f)
 		{
+			// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): the fill looks are keyed to METRES OF WATER (0.5 / 1 /
+			// 1.5 / 2 m+), so the surface tier follows the water: 0.5 m and 1 m shallow, 1.5 m chest-deep, 2 m and more deep.
+			if (f.fillTerrainVeryShallow != null) yield return new Member { terrain = f.fillTerrainVeryShallow, tier = 0 };
 			if (f.floodTerrain != null) yield return new Member { terrain = f.floodTerrain, tier = 0 };
-			if (f.fillTerrainHalf != null) yield return new Member { terrain = f.fillTerrainHalf, tier = 1 };
-			if (f.fillTerrainBrim != null) yield return new Member { terrain = f.fillTerrainBrim, tier = 2 };
+			if (f.fillTerrainHalf != null) yield return new Member { terrain = f.fillTerrainHalf, tier = 0 };
+			if (f.fillTerrainBrim != null) yield return new Member { terrain = f.fillTerrainBrim, tier = 1 };
 			if (f.fillTerrainSuperdeep != null) yield return new Member { terrain = f.fillTerrainSuperdeep, tier = 2 };
 		}
 

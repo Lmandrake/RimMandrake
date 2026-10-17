@@ -61,16 +61,16 @@ namespace RimMandrake.FlowWorks
 			return WorkPerLevel * toLevel;
 		}
 
+		/// <summary>A hole's depth for a player, in metres (unified depth spec §2.1: "deep" is never a number): "0.5 m",
+		/// "1 m", "1.5 m", "pit 2 m", deeper "pit 3.5 m". "surface" for 0.</summary>
 		public static string LabelOf(byte depth)
 		{
-			switch (depth)
+			if (depth == Surface)
 			{
-				case Shallow: return "shallow";
-				case Mid: return "mid";
-				case Deep: return "deep";
-				case Superdeep: return "SUPERDEEP";
-				default: return "surface";
+				return "surface";
 			}
+			string m = RM_Volume.FormatMetres(depth);
+			return depth >= Superdeep ? "pit " + m : m;
 		}
 
 		/// <summary>The dry terrain that expresses a given D (a lake bed deeper than <see cref="MaxDepth"/> reads as SUPERDEEP's). This is how an
@@ -107,19 +107,19 @@ namespace RimMandrake.FlowWorks
 			return Surface;
 		}
 
-		/// <summary>Ruling 5's three-tier read of F, quantised against the
-		/// cell's own D so a brimming shallow trench and a brimming deep one
-		/// both read as brimming. 0 means dry.</summary>
-		public static int FillTier(byte fill, byte depth)
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): the water picture band by METRES OF WATER, never
+		/// by how full the hole is: 0 dry, 1 under 25 cm, 2 ≈ 0.5 m, 3 ≈ 1 m, 4 ≈ 1.5 m, 5 = 2 m and deeper
+		/// (<see cref="RM_LevelSolve.LookBand"/>). The same in a canal, a pit or a pond: 1 m of water looks like 1 m of water
+		/// in a 1 m canal and in a 2 m pit. The hole's own depth is the walls' and the readout's to show.</summary>
+		public static int FillTier(long waterDl)
 		{
-			if (fill <= 0 || depth <= 0)
-			{
-				return 0;
-			}
-			float ratio = (float)fill / depth;
-			if (ratio <= 0.34f) return 1;
-			if (ratio <= 0.67f) return 2;
-			return 3;
+			return RM_LevelSolve.LookBand(waterDl);
+		}
+
+		/// <summary><see cref="FillTier(long)"/> of whole notches of liquid (the hole's depth is not an input).</summary>
+		public static int FillTier(byte fill)
+		{
+			return RM_LevelSolve.LookBand(fill * (long)RM_LevelSolve.U);
 		}
 	}
 }
