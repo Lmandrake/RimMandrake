@@ -267,7 +267,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		// ── single-fluid liveness: a limitless water source fills every cell connected to it ──
 
-		public static List<string> FillsFromLimitless(int n, int baseSeed)
+		/// <param name="shipped">LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY: run under the SHIPPED kernel flags (level by surface, the
+		/// level-set solve, viscosity, water creep; RimMandrakeFlowWorksMod's defaults). At the C# defaults (all off) this
+		/// family passed while the shipped solve left a shallow rim dry beside a limitless source in 194/2000 scenes.</param>
+		public static List<string> FillsFromLimitless(int n, int baseSeed, bool shipped = false)
 		{
 			var fails = new List<string>();
 			for (int k = 0; k < n && fails.Count < 5; k++)
@@ -276,6 +279,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Cases++;
 				int W = r.Next(3, 10), H = r.Next(3, 10);
 				var w = new ArrayWorld(W, H);
+				if (shipped) { w.k.levelBySurfaceEnabled = true; w.k.levelSetEnabled = true; w.k.viscosityEnabled = true; w.k.creepWaterEnabled = true; }
 				int src = r.Next(W * H);
 				w.natural[src] = true; w.terrainFluid[src] = ArrayWorld.Water;
 				var digs = new List<int>();
