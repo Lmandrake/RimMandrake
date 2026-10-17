@@ -1004,7 +1004,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Hot and icy liquid", new[] { "liquidHeatPushEnabled", "liquidHeatStrength" }))
+            if (Section(list, "Hot and icy liquid", new[] { "liquidHeatPushEnabled", "liquidHeatStrength", "waterBodyTypeFlipFixEnabled" }))
             {
             list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
                 "Boiling water (and any hot liquid) warms the room it stands in, the same way a heater does; icy water "
