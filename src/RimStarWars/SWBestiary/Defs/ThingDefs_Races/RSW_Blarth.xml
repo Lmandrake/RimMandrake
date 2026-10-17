@@ -145,6 +145,13 @@
         <value>1.25</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <alternateGraphicChance>0.5</alternateGraphicChance>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "C & D are valid random variants" (D is the base texPath) -->
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Blarth/BlarthV_C</texPath>
+        <swimmingTexPath>swanimals/Blarth/Blarth_Swimming</swimmingTexPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <label>blarth puppy</label>

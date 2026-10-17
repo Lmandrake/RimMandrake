@@ -4,7 +4,7 @@
   <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_MastiffPhalone</defName>
     <label>mastiff phalone</label>
-    <description>Mastiff phalone were carnivorous flightless avians native to the savannas of Maridun. The mastiff phalones had turkey-like heads with a sharp beak and a mane of large brown feathers which males of the species used in courtship displays. Mastiff phalones descended from flying creatures, with their wings evolved back into powerful limbs and tended to hunt in packs of two to four. They were popular big game animals due to their speed and ferocity and were exported to various worlds for such purposes.</description>
+    <description>A large, long-bodied four-legged avian predator of the Maridun savannas, built like a griffin: a coat of grey feathers barred with dark blue, a mane of dark feathers over neck and shoulders, and a long feathered tail. Its wings have dwindled to remnants at the front legs, which end, like the hind legs, in long talons big enough to wrap around a man's waist; the head carries a heavy hooked beak and a patch of bare blue skin at the throat. Mastiff phalones hunt in packs of two or more, stalking through tall grass. They will break off from prey that fights back too hard, only to return and strike again later, and an agitated one is said to be as dangerous as a rancor and just as hard to bring down.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>1000</MarketValue>

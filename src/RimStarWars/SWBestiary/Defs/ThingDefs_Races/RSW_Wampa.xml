@@ -204,7 +204,7 @@
         <label>wampa cub</label>
         <labelPlural>wampa cubs</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Wampa/Wampa_j</texPath>
+          <texPath>swanimals/Wampa/Wampa</texPath>  <!-- owner 2026-10-17: "Don't need a baby version." cubs draw the adult picture, smaller -->
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
@@ -212,7 +212,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/Wampa/Wampa_j_Dessicated</texPath>
+          <texPath>swanimals/Wampa/Wampa_Dessicated</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>

@@ -215,21 +215,8 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
-    <alternateGraphicChance>0.75</alternateGraphicChance>
-    <alternateGraphics>
-      <li>
-        <texPath>swanimals/Hssiss/HssissA</texPath>
-        <swimmingTexPath>swanimals/Hssiss/HssissA_Swimming</swimmingTexPath>
-      </li>
-      <li>
-        <texPath>swanimals/Hssiss/HssissB</texPath>
-        <swimmingTexPath>swanimals/Hssiss/HssissB_Swimming</swimmingTexPath>
-      </li>
-      <li>
-        <texPath>swanimals/Hssiss/HssissC</texPath>
-        <swimmingTexPath>swanimals/Hssiss/HssissC_Swimming</swimmingTexPath>
-      </li>
-    </alternateGraphics>
+    <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: took E/G/I (the in-game HssissA/B/C pictures) out of the random pool;
+         redraws of HssissA/B/C are queued — re-add an alternateGraphics entry for each one he keeps. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
