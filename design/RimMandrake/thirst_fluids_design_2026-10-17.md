@@ -223,3 +223,84 @@ on top of the hydrate (PROPOSED ×0.6, slime is thick):
 Per-kind effects are a list on the row (`ingestEffects`: hediff, severity, body part, chance, thought), so the
 generator writes them and a new slime needs no C#. Slime has no bottled form (§2); Q-S4 asks whether to add one or
 keep slime drinkable only from terrain and tanks (which keeps it a desperate act and avoids slime stockpiles).
+
+---
+
+## 7. Three solutions for the traffic: how liquid moves to mouths, crops and machines
+
+The drink model (§3-§6) is shared. What differs is **who carries the liquid**, which decides the job load.
+
+**Traffic arithmetic (from ruled numbers).** 3 L/day per pawn = 2 bottle drinks/day (ruled 1.5 L bottle, OQ-3
+rate); ×3 in heat = up to 6. A bottle drink today costs **1 drink + 1 fill + 1 wash** (dirty stage on) + hauls.
+10 colonists in desert heat: 60 drinks + 60 fills + 60 washes ≈ **180 water jobs/day**, before crops and
+machines (estimated, arithmetic on ruled numbers). A tap drink costs 1 job; the tank is filled by pipe (0 jobs) or
+by a barrel haul (1 job per 139 drinks).
+
+### Solution A — "Bottles first, demand-capped" (smallest change to what is built)
+
+Pawns drink bottles; taps are the fallback the ruling describes. The fill giver gets a stock target (§4: N filled
+bottles per colonist) so filling is demand-driven, fills come from the nearest **tank** first (one short walk) and
+terrain second, and wash is batched (a wash job takes up to 10 dirty bottles; PROPOSED). Crops and machines: pipes
+and hoses only (§7.4); buckets for machines out of hose reach.
+- **Buys:** the ruling's intent read literally (bottles normal, taps a mild hardship); least new code (a target,
+  a batch wash, the drink-class filter).
+- **Costs:** still ~2-3 jobs per drink. ~120-180 water jobs/day for 10 hot pawns (estimated).
+- **Dominates when** colonies are small (≤ 6), the dirty stage is off, or the player wants water to be a
+  visible chore.
+
+### Solution B — "Drinking stations" (taps are the default, bottles are for travel)
+
+A **water station** is a tank (or a barrel placed as a building) with a tap; pawns drink there in 1 job. The
+"small debuff for drinking from a tap without bottles" is met by giving each station a **cup rack** (a cheap
+attachment, or bottles stored adjacent): drinking at a station that has cups counts as "from a bottle" (no
+debuff), so the debuff bites only colonies that never made bottles. Bottles exist for caravans, work far from a
+station (`RM_ThirstPackBottles` already packs 2), and patients. Tanks fill by pipe, or by a barrel haul.
+- **Buys:** ~1 job per drink; ~60-70 jobs/day for 10 hot pawns (estimated) and the bottle loop shrinks to
+  caravans. Placing stations is a fun base-design decision (like placing a dining room).
+- **Costs:** a new attachment/building and a new reading of the ruling ("cups count as bottles") that the owner
+  must accept (Q-V1); pawns walk to stations, which costs time instead of jobs.
+- **Dominates when** colonies are large or hot, or the owner reads "no bottles" as "no clean drinking vessel"
+  rather than "no sealed bottle in hand".
+
+### Solution C — "Network-first logistics tiers" (each vessel gets one job)
+
+Each vessel is assigned **one kind of traffic**, by litres per trip:
+
+| vessel | litres | job it owns | never used for |
+|---|---|---|---|
+| bottle 1.5 L | personal | drinking, caravans, patients | crops, machines |
+| bucket 15 L | 10 bottles | a machine top-up out of hose reach; a small garden patch; firefighting (Q-M2) | bulk hauling |
+| barrel 208 L | 139 bottles | bulk transport between bases/tanks, trade, tanker raids | drinking (except the ruled fallback) |
+| hose | reach from a reel | temporary runs to a machine, a field, a new tank | permanent supply |
+| pipe/canal | network | permanent supply to taps, sprinklers, machines | — |
+
+Machines that consume a liquid read a **liquid input port** (pipe or hose end) first and accept a bucket/barrel
+"refuel" only when unconnected (vanilla `CompRefuelable`-style job, one job per 15 or 208 L). Sprinklers are pipe
+heads (already designed). Drinking uses B's stations on the network.
+- **Buys:** the lowest steady-state job load (pipes do the carrying); a clear rule a player learns once.
+- **Costs:** the most build: a liquid input port comp for machines, refuel-by-container jobs, bill-driven
+  non-potable orders; mid-game before pipes is still A.
+- **Dominates when** the colony is established and the map has pipes; it is also the shape the tanker-raid loop
+  (`liquids_framework_design.md`, barrels and cargo tanks) already assumes.
+
+### 7.4 Crops (shared)
+
+Per the ruled sprinkler design: no field irrigation; only adapted plants want water; water comes from a sprinkler on
+a pipe, or a pawn watering by hand. Hand watering is the traffic risk: PROPOSED one job per **bucket** (15 L waters
+a 3×3 patch, number from `explosive_growth_ruled_spec_2026-10-16.md` UNMEASURED) and never per bottle. Watering
+uses potable or "fresh" water only; does brine kill a crop (Q-C1)?
+
+### 7.5 Machines (shared)
+
+Fluids loaded into machines (chemfuel generators, propane, astrofuel for gravships, a still that distils brine,
+slime compressors): one rule, PROPOSED: **a machine takes liquid from a port first, then from a bucket/barrel by a
+refuel job; never from bottles.** Non-potable fuel loading is *its real use*, so ruling 1 is read as covering
+**gathering from the world**, not moving an already-stored fuel into the machine that burns it (Q-G1).
+
+### 7.6 Recommendation
+
+**C as the target, reached through A then B**: ship A now (the drink-class filter and the stock target fix a
+ruling violation in built code), add B's stations as the first logistics feature (it cuts jobs by about two
+thirds on the arithmetic above), then C's machine ports when the first fluid-burning machine of ours needs one.
+What would change it: if the owner reads "no bottles" strictly (Q-V1 = sealed bottles only), B's cup rack is out
+and B degrades to "taps with a debuff", which is still fewer jobs but punishes good colonies; then A + C.
