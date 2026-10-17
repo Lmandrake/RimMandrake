@@ -40,6 +40,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             return (fp, deep);
         }
 
+        /// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the production floor generator over a model lake.</summary>
+        internal static int[] Floor(int w, int h, List<int> fp, HashSet<int> deep, RM_LakeFloorMath.Params p)
+        {
+            int[] beds = new int[fp.Count];
+            RM_LakeFloorMath.Floor(w, h, fp, i => deep.Contains(i), p, beds);
+            return beds;
+        }
+
         /// <summary>The map's climb depth: the lake's beds, 0 on land.</summary>
         internal static byte[] Bowl(int w, int h, List<int> fp, int[] beds)
         {
@@ -81,88 +89,56 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            Case("DeepBed_transform_is_a_gradual_bowl", () =>
+            Case("DeepBed_drained_lake_holds_nobody", () =>
             {
+                // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor is RM_LakeFloorMath's (owner R11), no longer a gradual bowl; its
+                // way-out pass (default 1 m) keeps owner ruling 4 for people: a drained lake, chasm-like or not, holds no person.
                 int w = 120, h = 120;
                 var (fp, deep) = Lake(w, h, 60, 60, 44, 48);
-                int[] beds = new int[fp.Count];
-                RM_BedMath.BedDepths(w, h, fp, i => deep.Contains(i), RM_BedMath.DefaultCellsPerLevel, RM_BedMath.DefaultMaxBedDepth, beds);
-                int max = beds.Max();
-                Assert(max > RM_Volume.LevelsPerSquare, "a 88-wide deep lake runs deeper than 4 in the middle: " + max);
-                Assert(max <= RM_BedMath.DefaultMaxBedDepth, "capped at the max bed: " + max);
-                int centre = fp.IndexOf(60 * w + 60);
-                Assert(beds[centre] == max, "the deepest square is the middle: " + beds[centre] + " vs " + max);
-                for (int k = 0; k < fp.Count; k++)
+                foreach (float r in new[] { 0.05f, 0.55f, 0.95f })
                 {
-                    if (!deep.Contains(fp[k])) Assert(beds[k] == RM_Volume.ShallowBedLevels, "shallow water is a 2 bed (ruling 3)");
-                    else Assert(beds[k] >= RM_Volume.LevelsPerSquare, "deep water is at least the deep notch (owner: 'at least 4 notches')");
-                }
-                // §9.4: 4 + floor((d - 3) / 4): d = 1..6 → 4, d = 7 → 5, d = 11 → 6
-                Assert(RM_BedMath.DeepBedLevels(1, 4, 20) == 4 && RM_BedMath.DeepBedLevels(6, 4, 20) == 4 && RM_BedMath.DeepBedLevels(7, 4, 20) == 5
-                    && RM_BedMath.DeepBedLevels(11, 4, 20) == 6, "the design's slope (d0 3, s 4)");
-                Assert(RM_BedMath.DeepBedLevels(1000, 1, 20) == 20 && RM_BedMath.DeepBedLevels(1000, 1, 999) == RM_BedMath.MaxStorableDepth,
-                    "capped by the setting, and by the byte the record keeps");
-                Assert(RM_BedMath.DeepBedLevels(1000, 4, 2) == RM_Volume.LevelsPerSquare, "a cap below the notch still leaves deep water 4");
-                // gradual: every N/S/E/W step on the map (lake and land) is at most the deep notch, and inside the deep water at
-                // most one level -- so no climb band (K = 2..RM_PitTrapMath.MaxClimbLimit) sees a pocket at all (owner ruling 4).
-                byte[] map = Bowl(w, h, fp, beds);
-                int worstInside = 0, worstAny = 0;
-                for (int z = 0; z < h; z++)
-                {
-                    for (int x = 0; x + 1 < w; x++)
+                    for (int seed = 1; seed <= 6; seed++)
                     {
-                        int a = z * w + x;
-                        foreach (int b in new[] { a + 1, z + 1 < h ? a + w : -1 })
+                        int[] beds = Floor(w, h, fp, deep, RM_LakeFloorMath.Params.Defaults(seed * 7919, r));
+                        int max = beds.Max();
+                        Assert(max <= RM_LakeFloorMath.DefaultCeilingNotches, "capped at the ceiling: " + max);
+                        for (int k = 0; k < fp.Count; k++)
+                            Assert(beds[k] >= 1, "every lake square has a floor");
+                        byte[] map = Bowl(w, h, fp, beds);
+                        for (int k = 2; k < RM_ExcavationDepth_MaxDepth(); k++)
                         {
-                            if (b < 0) continue;
-                            int s = Math.Abs(map[a] - map[b]);
-                            worstAny = Math.Max(worstAny, s);
-                            if (deep.Contains(a) && deep.Contains(b)) worstInside = Math.Max(worstInside, s);
+                            var lab = RM_PocketGridMath.Label(map, w, h, k);
+                            int pockets = 0;
+                            for (int i = 0; i < w * h; i++) if (lab.IsPocketCell(i)) pockets++;
+                            Assert(pockets == 0, "r " + r + " seed " + seed + " band K " + k + ": a drained " + max + "-deep floor holds nobody, got " + pockets + " pocket squares");
+                        }
+                        if (r >= 0.9f && seed == 1)
+                        {
+                            // the control: the same floor without the way out traps a person somewhere (chasm walls are sheer)
+                            var p0 = RM_LakeFloorMath.Params.Defaults(seed * 7919, r); p0.wayOutNotches = 0;
+                            byte[] raw = Bowl(w, h, fp, Floor(w, h, fp, deep, p0));
+                            var l2 = RM_PocketGridMath.Label(raw, w, h, 2);
+                            int trapped = 0;
+                            for (int i = 0; i < w * h; i++) if (l2.IsPocketCell(i)) trapped++;
+                            Assert(trapped > 0, "control: a chasm floor with the way out off holds a person somewhere");
                         }
                     }
                 }
-                Assert(worstInside <= 1, "inside the deep water neighbours differ by one level at most: " + worstInside);
-                Assert(worstAny <= RM_Volume.LevelsPerSquare, "nowhere a step past the deep notch: " + worstAny);
-                for (int k = 1; k < RM_ExcavationDepth_MaxDepth(); k++)
-                {
-                    var lab = RM_PocketGridMath.Label(map, w, h, k);
-                    int pockets = 0;
-                    for (int i = 0; i < w * h; i++) if (lab.IsPocketCell(i)) pockets++;
-                    if (k >= 2) Assert(pockets == 0, "band K " + k + ": a drained " + max + "-deep bowl holds nobody, got " + pockets + " pocket squares");
-                }
-                // the same depth as a SHEER hole would trap a person: the gradual shape is what frees them
-                var sheer = new byte[w * h];
-                foreach (int i in fp) sheer[i] = (byte)max;
-                var ls = RM_PocketGridMath.Label(sheer, w, h, 2);
-                Assert(ls.IsPocketCell(60 * w + 60), "the control: a sheer " + max + "-deep hole is a pocket for a person");
-                // slope setting: steeper (1 square a level) reaches the cap sooner, still ≤ 1 per cardinal step inside
-                int[] steep = new int[fp.Count];
-                RM_BedMath.BedDepths(w, h, fp, i => deep.Contains(i), 1, 12, steep);
-                Assert(steep.Max() == 12, "slope 1 hits the 12 cap: " + steep.Max());
             });
 
-            Case("DeepBed_small_ponds_unchanged", () =>
+            Case("DeepBed_map_edge_is_shore", () =>
             {
-                // a 9x9 deep pond: every square is within 4 of the shore, so no bed passes 4 and nothing is recorded
                 int w = 30, h = 30;
-                var fp = new List<int>(); var deep = new HashSet<int>();
-                for (int z = 10; z < 19; z++) for (int x = 10; x < 19; x++) { fp.Add(z * w + x); deep.Add(z * w + x); }
-                int[] beds = new int[fp.Count];
-                RM_BedMath.BedDepths(w, h, fp, i => deep.Contains(i), RM_BedMath.DefaultCellsPerLevel, RM_BedMath.DefaultMaxBedDepth, beds);
-                Assert(beds.All(b => b == RM_Volume.LevelsPerSquare), "a pond under 13 squares across keeps the old 4 everywhere");
-                // edge squares count as shore
                 var e = new List<int> { 0, 1, w, w + 1 };
-                int[] eb = new int[4];
-                RM_BedMath.BedDepths(w, h, e, i => true, 1, 20, eb);
-                Assert(eb.All(b => b == 4), "out of the map is shore");
+                int[] eb = Floor(w, h, e, new HashSet<int>(e), RM_LakeFloorMath.Params.Defaults(3, 0.5f));
+                Assert(eb.All(b => b == RM_LakeFloorMath.DefaultShelfNotches), "out of the map is shore: the shelf ring");
             });
 
             Case("DeepBed_drawdown_sheds_shallowest_first_and_refills_lifo_exact", () =>
             {
                 int w = 70, h = 70;
                 var (fp, deep) = Lake(w, h, 35, 35, 26, 29);
-                int[] beds = new int[fp.Count];
-                RM_BedMath.BedDepths(w, h, fp, i => deep.Contains(i), 2, 20, beds);
+                int[] beds = Floor(w, h, fp, deep, RM_LakeFloorMath.Params.Defaults(11, 0.55f));
                 var bedOf = new Dictionary<int, int>();
                 long total = 0;
                 for (int k = 0; k < fp.Count; k++) { bedOf[fp[k]] = beds[k]; total += beds[k]; }
@@ -296,8 +272,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("DeepBed_wiring_and_settings", () =>
             {
                 string st = RiverSwitchFlipChecks.Src("RM_LiquidStock.cs");
-                RiverSwitchFlipChecks.Has(st, @"if \(!body\.limitless && RimMandrakeFlowWorksSettings\.deepBedsEnabled\) \{ RecordDeepBeds\(map, fillFound, owner\); \}", "deep beds recorded at formation, limited lakes only");
-                Assert(st.IndexOf("RecordDeepBeds(map, fillFound, owner)") < st.IndexOf("body.capacity = CapacityOf(body, owner);"), "recorded before the capacity is summed");
+                RiverSwitchFlipChecks.Has(st, @"if \(!body\.limitless && RimMandrakeFlowWorksSettings\.deepBedsEnabled && !AnyMovingWater\(map, found\)\) \{ RecordLakeFloor\(map, body, fillFound, owner\); \}", "lake floors recorded at formation, limited still lakes only");
+                Assert(st.IndexOf("RecordLakeFloor(map, body, fillFound, owner)") < st.IndexOf("body.capacity = CapacityOf(body, owner);"), "recorded before the capacity is summed");
                 RiverSwitchFlipChecks.Has(st, @"if \(ownedId < 0 && truncated && !touchesEdge && lakeCap > MaxBodyCells\)", "the ocean cap re-walks an inland lake");
                 RiverSwitchFlipChecks.Has(st, @"if \(lakeOwned < 0 && !lakeEdge && !lakeTruncated\)", "only a complete inland body is kept as a lake");
                 RiverSwitchFlipChecks.Has(st, @"if \(body\.receded\.Count == 0 && body\.stock >= body\.capacity && \(!depth \|\| !body\.depthStaged\)\) \{ continue; \}", "a full untouched lake costs no scan per pulse (POND_DEPTH: once laid back to its own water)");
@@ -306,10 +282,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(body, @"Scribe_Values\.Look\(ref levelUnit, ""levelUnit"", 0f\);", "the level unit is saved");
                 RiverSwitchFlipChecks.Has(body, @"if \(Scribe\.mode == LoadSaveMode\.Saving && cells != null && cells\.Count > PackFootprintOver\)", "a big footprint saves packed");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
-                foreach (string f in new[] { @"deepBedsEnabled, ""deepBedsEnabled"", true", @"deepBedMaxDepth, ""deepBedMaxDepth"", 20f", @"deepBedCellsPerLevel, ""deepBedCellsPerLevel"", 4f", @"drainableLakeMaxCells, ""drainableLakeMaxCells"", 40000f" })
+                foreach (string f in new[] { @"deepBedsEnabled, ""deepBedsEnabled"", true", @"deepBedMaxDepth, ""deepBedMaxDepth"", 100f", @"lakeDepthScale, ""lakeDepthScale"", 1f", @"lakeFloorRoughness, ""lakeFloorRoughness"", 1f", @"lakeShoreShelfMetres, ""lakeShoreShelfMetres"", 0\.5f", @"lakeWayOutMetres, ""lakeWayOutMetres"", 1f", @"drainableLakeMaxCells, ""drainableLakeMaxCells"", 40000f" })
                     RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref " + f + @"\);", "saved Mod Setting " + f);
-                RiverSwitchFlipChecks.Has(set, @"""pondBedHollowEnabled"", ""deepBedsEnabled"", ""deepBedMaxDepth"", ""deepBedCellsPerLevel"", ""drainableLakeMaxCells""", "listed in its settings section");
-                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""deepBedsEnabled"", ""deepBedMaxDepth"", ""deepBedCellsPerLevel""\)", "the sliders grey with their switch");
+                RiverSwitchFlipChecks.Has(set, @"""pondBedHollowEnabled"", ""deepBedsEnabled"", ""deepBedMaxDepth"", ""lakeDepthScale"", ""lakeFloorRoughness"", ""lakeShoreShelfMetres"", ""lakeWayOutMetres"", ""drainableLakeMaxCells""", "listed in its settings section");
+                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""deepBedsEnabled"", ""deepBedMaxDepth"", ""lakeDepthScale"", ""lakeFloorRoughness"", ""lakeShoreShelfMetres"", ""lakeWayOutMetres""\)", "the sliders grey with their switch");
                 // footprint packing round-trips in order (the recession stack's order is the refill order)
                 var xs = new[] { 0, 1, 249, 300, 65535 }; var zs = new[] { 5, 0, 248, 1, 2 };
                 byte[] p = RM_BedMath.PackXZ(xs.Length, k => xs[k], k => zs[k]);
@@ -365,8 +341,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 double walkMs = sw.Elapsed.TotalMilliseconds;
                 Assert(found.Count == fp.Count && !edge && !trunc, "the lake walk finds the whole inland lake: " + found.Count + "/" + fp.Count);
                 sw.Restart();
-                int[] beds = new int[fp.Count];
-                RM_BedMath.BedDepths(w, h, fp, i => deep.Contains(i), 4, 20, beds);
+                int[] beds = Floor(w, h, fp, deep, RM_LakeFloorMath.Params.Defaults(5, 0.95f));
                 double bedMs = sw.Elapsed.TotalMilliseconds;
                 var bedOf = new Dictionary<int, int>(); long total = 0;
                 for (int k = 0; k < fp.Count; k++) { bedOf[fp[k]] = beds[k]; total += beds[k]; }

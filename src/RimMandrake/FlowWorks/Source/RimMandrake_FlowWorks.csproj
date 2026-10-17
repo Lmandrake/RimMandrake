@@ -134,6 +134,7 @@
     <Compile Include="RM_BedMath.cs" />
     <Compile Include="RM_PondDepthMath.cs" />
     <Compile Include="RM_FlowKernel.cs" />
+    <Compile Include="RM_LakeFloorMath.cs" />
     <Compile Include="RM_LevelSolve.cs" />
     <Compile Include="RM_LevelPour.cs" />
     <Compile Include="RM_LiquidBody.cs" />

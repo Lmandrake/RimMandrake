@@ -44,8 +44,10 @@
     <Compile Include="..\RM_StockMath.cs" />
     <Compile Include="..\RM_Volume.cs" />
     <Compile Include="..\RM_BedMath.cs" />
+    <Compile Include="..\RM_LakeFloorMath.cs" />
     <Compile Include="..\RM_PondDepthMath.cs" />
     <Compile Include="PondDepthChecks.cs" />
+    <Compile Include="LakeFloorChecks.cs" />
     <Compile Include="LevelSurfaceChecks.cs" />
     <Compile Include="LevelExactChecks.cs" />
     <Compile Include="LevelPourChecks.cs" />

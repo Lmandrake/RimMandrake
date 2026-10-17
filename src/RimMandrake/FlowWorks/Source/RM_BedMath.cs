@@ -10,11 +10,9 @@ namespace RimMandrake.FlowWorks
 	///
 	/// Three pieces, all Verse-free so Source/SelfTest/ compiles THIS production file:
 	/// <list type="bullet">
-	/// <item>§9.4 the bed: a deep square's bed is 4 plus one level per <c>cellsPerLevel</c> squares it lies beyond
-	/// <see cref="ShoreCells"/> from the nearest non-deep square (one 4-way BFS over the footprint, at formation), capped.
-	/// Cardinal neighbours differ by at most one level, so a drained lake is a gradual bowl and never a trap (owner ruling 4:
-	/// <i>"Natural ponds and lakes when pumped dry would leave just such gradual terrain so no chance to fall in and get
-	/// stuck"</i>). A pure function of the map's own water terrain: not worldgen.</item>
+	/// <item>The floor: RM_LakeFloorMath (LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP, owner R11), per lake and per the map's
+	/// roughness, recorded once at formation. Its way-out pass keeps owner ruling 4 (<i>"Natural ponds and lakes when pumped
+	/// dry would leave just such gradual terrain so no chance to fall in and get stuck"</i>) for people.</item>
 	/// <item>§9.3 the drawdown: a pond's stock covers a number of LEVELS (stock ÷ the fill-units one level is worth), and its
 	/// wet squares are the ones whose beds those levels fill. Recession sheds the SHALLOWEST bed first (the rim, then the
 	/// shelves, the deep middle last, as a real lake drops), then the old outside-in order; Restore re-wets last-in-first-out,
@@ -25,15 +23,9 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_BedMath
 	{
-		/// <summary>§9.4 d0 (PROVISIONAL): deep squares this close to the shore keep the deep notch (4).</summary>
-		public const int ShoreCells = 3;
-
-		/// <summary>§9.4 s (PROVISIONAL): squares further out per extra level. Mod Setting "deepBedCellsPerLevel".</summary>
-		public const int DefaultCellsPerLevel = 4;
-
-		/// <summary>§9.4 cap (PROVISIONAL): the deepest natural bed in notches (20 = 10 m). Mod Setting "deepBedMaxDepth"; its floor
-		/// SHAPE per lake and biome is LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11).</summary>
-		public const int DefaultMaxBedDepth = 20;
+		/// <summary>The deepest natural floor by default, in notches (100 = 50 m). Mod Setting "deepBedMaxDepth". Each lake's floor
+		/// is RM_LakeFloorMath's (LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP, owner R11), which replaced §9.4's radial slope.</summary>
+		public const int DefaultMaxBedDepth = RM_LakeFloorMath.DefaultCeilingNotches;
 
 		/// <summary>The bed record is a byte grid; nothing deeper is storable.</summary>
 		public const int MaxStorableDepth = 250;
@@ -49,65 +41,6 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Mod Setting "drainableLakeMaxCells" default: an inland (not edge-touching) body up to this many squares is
 		/// a drainable lake. A 250×250 map has 62,500 squares.</summary>
 		public const int DefaultDrainableLakeCells = 40000;
-
-		/// <summary>Bed depth of a deep square <paramref name="d"/> squares (4-way, ≥ 1) from the nearest non-deep square.</summary>
-		public static int DeepBedLevels(int d, int cellsPerLevel, int maxBed)
-		{
-			int s = Math.Max(1, cellsPerLevel);
-			int extra = d > ShoreCells ? (d - ShoreCells) / s : 0;
-			int cap = Math.Max(RM_Volume.LevelsPerSquare, Math.Min(maxBed, MaxStorableDepth));
-			return Math.Min(RM_Volume.LevelsPerSquare + extra, cap);
-		}
-
-		/// <summary>§9.4: the bed of every footprint square, into <paramref name="outBeds"/> (parallel to
-		/// <paramref name="footprint"/>, cell index z × width + x). <paramref name="deep"/>: the square holds deep water
-		/// (RM_Volume.BedLevels' rule); the others are shallow (2). Out of the map counts as shore.</summary>
-		public static void BedDepths(int width, int height, IList<int> footprint, Func<int, bool> deep, int cellsPerLevel, int maxBed,
-			int[] outBeds)
-		{
-			int n = width * height;
-			int[] dist = new int[n];          // 0 = not a deep footprint square; else 4-way squares to the shore
-			const int Unset = int.MaxValue;
-			for (int k = 0; k < footprint.Count; k++)
-			{
-				int i = footprint[k];
-				if (deep(i))
-				{
-					dist[i] = Unset;
-				}
-			}
-			var queue = new Queue<int>();
-			for (int k = 0; k < footprint.Count; k++)
-			{
-				int i = footprint[k];
-				if (dist[i] != Unset)
-				{
-					continue;
-				}
-				int x = i % width, z = i / width;
-				if (x == 0 || z == 0 || x == width - 1 || z == height - 1
-					|| dist[i - 1] == 0 || dist[i + 1] == 0 || dist[i - width] == 0 || dist[i + width] == 0)
-				{
-					dist[i] = 1;
-					queue.Enqueue(i);
-				}
-			}
-			while (queue.Count > 0)
-			{
-				int c = queue.Dequeue();
-				int x = c % width, z = c / width;
-				int next = dist[c] + 1;
-				if (x > 0 && dist[c - 1] == Unset) { dist[c - 1] = next; queue.Enqueue(c - 1); }
-				if (x < width - 1 && dist[c + 1] == Unset) { dist[c + 1] = next; queue.Enqueue(c + 1); }
-				if (z > 0 && dist[c - width] == Unset) { dist[c - width] = next; queue.Enqueue(c - width); }
-				if (z < height - 1 && dist[c + width] == Unset) { dist[c + width] = next; queue.Enqueue(c + width); }
-			}
-			for (int k = 0; k < footprint.Count; k++)
-			{
-				int d = dist[footprint[k]];
-				outBeds[k] = d == 0 ? RM_Volume.ShallowBedLevels : DeepBedLevels(d == Unset ? 1 : d, cellsPerLevel, maxBed);
-			}
-		}
 
 		/// <summary>The whole levels a stock covers: stock ÷ <paramref name="levelUnit"/> (fill-units per level), floored,
 		/// with a hair of slack so a full pond (stock == capacity) never reads one level short to float rounding.</summary>

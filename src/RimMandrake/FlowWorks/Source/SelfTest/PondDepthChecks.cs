@@ -285,7 +285,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     {
                         int d = Math.Min(Math.Min(x, w - 1 - x), Math.Min(z, h - 1 - z));
                         cells.Add(z * w + x);
-                        beds.Add(d == 0 ? 2 : RM_BedMath.DeepBedLevels(d, RM_BedMath.DefaultCellsPerLevel, RM_BedMath.DefaultMaxBedDepth));
+                        beds.Add(d == 0 ? 2 : Math.Min(20, 4 + Math.Max(0, (d - 3) / 4)));   // the retired §9.4 slope, kept as this bench's input
                     }
                 long cap = beds.Sum();
                 var sw = Stopwatch.StartNew();

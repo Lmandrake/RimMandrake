@@ -219,11 +219,12 @@ namespace RimMandrake.FlowWorks
 				found.Count,
 				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
 			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
-			// POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.4): a drainable lake's deep middle runs deeper than 4, recorded once now
-			// (before its capacity is summed), so reloads, recession and refill all read the same bowl.
-			if (!body.limitless && RimMandrakeFlowWorksSettings.deepBedsEnabled)
+			// LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11): a limited lake's floor, per lake and per the map's roughness, is
+			// recorded once now (before its capacity is summed), so reloads, recession and refill all read the same floor. Moving
+			// water keeps the terrain rule (rivers stay vanilla, R10). No terrain is written (R10).
+			if (!body.limitless && RimMandrakeFlowWorksSettings.deepBedsEnabled && !AnyMovingWater(map, found))
 			{
-				RecordDeepBeds(map, fillFound, owner);
+				RecordLakeFloor(map, body, fillFound, owner);
 			}
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: capacity is the body's OWN fluid's, never the map's.
 			// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: each square holds its own bed depth (shallow 2, deep 4).
@@ -246,21 +247,54 @@ namespace RimMandrake.FlowWorks
 			return body;
 		}
 
-		/// <summary>§9.4: write the bed of every footprint square deeper than the deep notch (RM_BedMath.BedDepths over the
-		/// map's own water terrain). Shallow and shore squares keep the terrain rule, so a small pond records nothing.</summary>
-		private static void RecordDeepBeds(Map map, List<int> footprint, RM_MapComponent_Excavation owner)
+		/// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: write the floor of EVERY footprint square (RM_LakeFloorMath.Floor over the
+		/// map's own water terrain, its seed and roughness), the shelf and the way out included. Water terrain is not touched.</summary>
+		private static void RecordLakeFloor(Map map, RM_LiquidBody body, List<int> footprint, RM_MapComponent_Excavation owner)
 		{
-			int[] beds = new int[footprint.Count];
-			RM_BedMath.BedDepths(map.Size.x, map.Size.z, footprint,
+			int[] floor = new int[footprint.Count];
+			RM_LakeFloorMath.Traits tr = RM_LakeFloorMath.Floor(map.Size.x, map.Size.z, footprint,
 				i => owner.BedLevelsAt(map.cellIndices.IndexToCell(i)) >= RM_Volume.LevelsPerSquare,
-				RimMandrakeFlowWorksSettings.DeepBedCellsPerLevel, RimMandrakeFlowWorksSettings.DeepBedMaxDepth, beds);
+				owner.LakeFloorParams(), floor);
 			for (int k = 0; k < footprint.Count; k++)
 			{
-				if (beds[k] > RM_Volume.LevelsPerSquare)
+				owner.RecordBedDepth(footprint[k], floor[k]);
+			}
+			if (Prefs.DevMode)
+			{
+				Log.Message("[RimMandrake.FlowWorks] lake floor #" + body.id + ": " + footprint.Count + " squares, " + tr.band
+					+ " (roughness " + tr.roughness.ToString("F2") + ")" + (tr.silted ? ", silted" : "") + ", deepest "
+					+ RM_Volume.FormatMetres(tr.deepestNotches) + ", way out moved " + tr.wayOutRaised + ".");
+			}
+		}
+
+		/// <summary>Any square of the footprint is a current (River tag or MovingFluid): its floor keeps the terrain rule.</summary>
+		private static bool AnyMovingWater(Map map, List<IntVec3> cells)
+		{
+			for (int i = 0; i < cells.Count; i++)
+			{
+				TerrainDef t = map.terrainGrid.BaseTerrainAt(cells[i]);
+				if (t != null && IsMovingWater(t))
 				{
-					owner.RecordBedDepth(footprint[k], beds[k]);
+					return true;
 				}
 			}
+			return false;
+		}
+
+		/// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R10 step 1): form every natural body on the map now, so each limited
+		/// lake has its floor recorded before the first tick (a new map) or once on the first load of an older save. A square
+		/// already indexed keeps its body and its recorded floor. No terrain is written. Returns how many bodies were formed.</summary>
+		public int FormAllBodies(Map map, RM_MapComponent_Excavation owner)
+		{
+			int before = bodies.Count;
+			foreach (IntVec3 c in map.AllCells)
+			{
+				if (owner.IsSourceCell(c))
+				{
+					BodyAt(map, c, owner);
+				}
+			}
+			return bodies.Count - before;
 		}
 
 		/// <summary>Σ bed levels over a body's footprint.</summary>

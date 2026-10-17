@@ -127,6 +127,11 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             // Differential mode: selftest_flowworks_kernel_oracle.py passes a scene file (stdin if none) and compares the
             // kernel's fill vectors with the Python PulseOracle (northstar/validation_v2.py).
+            // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor preview's data (lake_floor_preview.py renders it).
+            if (args.Length > 1 && args[0] == "--lake-floors")
+            {
+                return LakeFloorChecks.Preview(args[1]);
+            }
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
@@ -1945,6 +1950,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)
             DeepBedChecks.Run(Case);           // POND_ELEVATION_BUILD_LAKES_RUN_DEEP + POND_CAPACITY / FILLIN_DISPLACE fixes (DeepBedChecks.cs)
+            LakeFloorChecks.Run(Case);         // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: per-lake, per-roughness floors (LakeFloorChecks.cs)
             PocketGridChecks.Run(Case);        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: relative climb, pocket grid (PocketGridChecks.cs)
             CliffMaskChecks.Run(Case);         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: per-band connectivity masks (CliffMaskChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)

@@ -144,11 +144,14 @@ namespace RimMandrake.FlowWorks
 		/// <summary>POND_BED step 2: how many bedGrid entries are non-zero (the climb rule's early-out), kept by SetBed.</summary>
 		private int bedCellCount;
 
-		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP (§9.4): the bed depth of every lake square deeper than the deep notch,
-		/// recorded once when its body formed (RM_BedMath.BedDepths), 0 elsewhere (BedLevelsAt then reads the water terrain:
-		/// shallow 2, deep 4). SCRIBED: the shape a drained lake leaves and refills to must survive a reload exactly, and the
+		/// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor of every limited lake square, recorded once when its body
+		/// formed (RM_LakeFloorMath.Floor), 0 elsewhere (BedLevelsAt then reads the water terrain: shallow 2, deep 4). SCRIBED: the shape a drained lake leaves and refills to must survive a reload exactly, and the
 		/// water terrain it was derived from is gone once the lake is dry. A map with no big lake saves an all-zero grid.</summary>
 		private byte[] bedRecord;
+
+		/// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R10 step 1): every natural body on this map has been formed (and each
+		/// limited lake's floor recorded). False on a new map and on a save from before the flag: FinalizeInit forms them once.</summary>
+		private bool lakeFloorsFormed;
 
 		/// <summary>L0 ledger (G10): fill levels burned off by liquid fire, the fire's disclosed exit.</summary>
 		private float burnedLevelsTotal;
@@ -457,6 +460,32 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor generator's inputs for this map. The seed is the world's
+		/// persistent value and the map's constant seed (both saved, so an old save forms its lakes the same on every machine);
+		/// roughness is the tile's hilliness as the map generator used it, plus the biome's bias.</summary>
+		public RM_LakeFloorMath.Params LakeFloorParams()
+		{
+			int seed = Gen.HashCombineInt(Find.World?.info?.persistentRandomValue ?? 0, map.ConstantRandSeed);
+			int hill = 2;
+			string biome = null;
+			try
+			{
+				hill = (int)map.TileInfo.HillinessForElevationGen;
+				biome = map.Biome?.defName;
+			}
+			catch (System.Exception)
+			{
+				// a map with no world tile (a pocket map): small hills
+			}
+			RM_LakeFloorMath.Params p = RM_LakeFloorMath.Params.Defaults(seed, RM_LakeFloorMath.Roughness(hill, biome));
+			p.depthScale = RimMandrakeFlowWorksSettings.lakeDepthScale;
+			p.roughnessScale = RimMandrakeFlowWorksSettings.lakeFloorRoughness;
+			p.ceilingNotches = RimMandrakeFlowWorksSettings.DeepBedMaxDepth;
+			p.shelfNotches = RimMandrakeFlowWorksSettings.LakeShoreShelfNotches;
+			p.wayOutNotches = RimMandrakeFlowWorksSettings.LakeWayOutNotches;
+			return p;
+		}
+
 		/// <summary>The deepest bed recorded on this map (0 = none past the deep notch): the proof's read.</summary>
 		public int DeepestRecordedBed()
 		{
@@ -745,6 +774,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref levelModel, "RM_levelModel", 0);
 			DataExposeUtility.LookByteArray(ref fluidGrid, "RM_excavationFluidGrid");
 			DataExposeUtility.LookByteArray(ref bedRecord, "RM_bedDepthRecord");
+			Scribe_Values.Look(ref lakeFloorsFormed, "RM_lakeFloorsFormed", false);
 			Scribe_Collections.Look(ref fluidPalette, "RM_excavationFluidPalette", LookMode.Def);
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
@@ -999,6 +1029,18 @@ namespace RimMandrake.FlowWorks
 				Log.Message("[RimMandrake.FlowWorks] depth view model 0 -> 1: " + relaid
 					+ " wet dug square(s) re-pictured by their metres of water; no water moved.");
 				depthViewModel = 1;
+			}
+			// LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R10): every lake gets its floor before the first tick (a new map), or once on
+			// the first load of an older save; a lake already formed keeps its recorded floor. Books only: no terrain changes.
+			if (!lakeFloorsFormed)
+			{
+				int formed = stock.FormAllBodies(map, this);
+				lakeFloorsFormed = true;
+				if (formed > 0)
+				{
+					Log.Message("[RimMandrake.FlowWorks] lake floors: " + formed + " natural body(ies) formed at map load, each limited"
+						+ " lake's floor recorded (" + RM_Volume.FormatMetres(DeepestRecordedBed()) + " deepest); no terrain changed.");
+				}
 			}
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the

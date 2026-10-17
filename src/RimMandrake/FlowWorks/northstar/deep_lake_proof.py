@@ -13,8 +13,8 @@ terrain so no chance to fall in and get stuck." · ruling 7 a refilled pond retu
 
 Scene: a SIZE x SIZE rectangular lake (default 72 = 5,184 squares, past the old 4,000-square ocean cap) painted at --origin
 (default 60,60) by RM_NorthstarProofs.ProofDeepLake "paint" (WaterShallow 3 squares deep at the edge, WaterDeep inside), the
-site cleared first by validation_core.prepare_site. For the run deepBedCellsPerLevel = 1 (a steep, fast bowl: bed 5 four
-squares in from the deep edge) and deepBedMaxDepth = 20; both restored after. Every read is jawa/static_call
+site cleared first by validation_core.prepare_site. For the run lakeDepthScale = 2 (a deep floor whatever the debug
+map's hilliness; LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP replaced the radial slope) and deepBedMaxDepth = 20; restored after. Every read is jawa/static_call
 RM_NorthstarProofs.ProofDeepLake ("BODY ..." / "STOCK ..." / "SHAPE ...", key=value tokens) or ProofClimb "pawn:<id>".
 The stock is SET by the proof (a stand-in for pumps); conservation of real pumping is the offline selftests'
 (DeepBed_drawdown_sheds_shallowest_first_and_refills_lifo_exact, northstar/selftest_conservation_roundtrip.py).
@@ -76,13 +76,14 @@ def body_verdict(kv, size):
 
 
 def hollow_verdict(kv):
-    """DL_drained_reads_gradual_hollow: part drained, the dry bowl deeper than 4, every step inside the deep bed <= 1 and
-    nowhere past the deep notch, the abyss bed laid, hollows on."""
+    """DL_drained_reads_gradual_hollow: part drained, the dry floor deeper than 4, the abyss bed laid, hollows on.
+    LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11): floors are irregular and may be chasm-like, so the old "every step <= 1"
+    bowl rule is gone (stepDeep / stepAll are recorded, not judged); that nobody is trapped is DL_colonist_walks_out's row
+    (the way-out pass: no step over lakeWayOutMetres on a route to land)."""
     need = ("wet", "dry", "deepestDry", "stepDeep", "stepAll", "lakebedAbyss")
     if any(_int(kv, k) is None for k in need) or kv.get("hollows") != "True":
         return "UNMEASURED", {"why": "no SHAPE line, or hollows are off", "kv": kv}
-    ok = (_int(kv, "dry") > 0 and _int(kv, "wet") > 0 and _int(kv, "deepestDry") > 4 and _int(kv, "stepDeep") <= 1
-          and _int(kv, "stepAll") <= 4 and _int(kv, "lakebedAbyss") > 0)
+    ok = _int(kv, "dry") > 0 and _int(kv, "wet") > 0 and _int(kv, "deepestDry") > 4 and _int(kv, "lakebedAbyss") > 0
     return ("PASS" if ok else "FAIL"), {"kv": kv}
 
 
@@ -188,7 +189,7 @@ def main():
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
     ok, _ = V._wait_playing(B, leave_s=0)
-    FIELDS = ("deepBedsEnabled", "deepBedCellsPerLevel", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
+    FIELDS = ("deepBedsEnabled", "lakeDepthScale", "deepBedMaxDepth", "drainableLakeMaxCells", "pondBedHollowEnabled",
               "recessionEnabled", "refillWaitsForOccupants")
     before = {f: sget(f) for f in FIELDS}
     res["settings_before"] = before
@@ -196,7 +197,7 @@ def main():
         if not ok or not V.prepare_site(B, (ox - 4, oz - 4, n + 8, n + 8), rows, "DL_site_ready"):
             row("DL_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
             return 2
-        for f, v in (("deepBedsEnabled", True), ("deepBedCellsPerLevel", 1), ("deepBedMaxDepth", 20),
+        for f, v in (("deepBedsEnabled", True), ("lakeDepthScale", 2.0), ("deepBedMaxDepth", 20),
                      ("drainableLakeMaxCells", 40000), ("pondBedHollowEnabled", True), ("recessionEnabled", True),
                      ("refillWaitsForOccupants", False)):
             sset(f, v)

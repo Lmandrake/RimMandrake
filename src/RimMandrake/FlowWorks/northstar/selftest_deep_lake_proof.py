@@ -28,8 +28,9 @@ SHAPE = ("SHAPE wet=900 dry=4284 receded=4284 deepestDry=19 maxDryBed=19 minWetB
          "lakebedDeep=900 lakebedAbyss=2000 deepestCell=96,96 shelfCell=66,70 hollows=True stock=15000.0 capacity=60000.0 hash=123")
 s = D.parse(SHAPE)
 check("a gradual drained bowl: PASS", D.hollow_verdict(s)[0] == "PASS")
-check("can-fail: a sheer step inside the deep bed is FAIL", D.hollow_verdict(D.parse(SHAPE.replace("stepDeep=1", "stepDeep=3")))[0] == "FAIL")
-check("can-fail: a step past the notch anywhere is FAIL", D.hollow_verdict(D.parse(SHAPE.replace("stepAll=2", "stepAll=6")))[0] == "FAIL")
+# LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11): chasm-like floors are allowed, so sheer steps are recorded, not judged
+check("a sheer step inside the deep bed is no longer a FAIL (R11)", D.hollow_verdict(D.parse(SHAPE.replace("stepDeep=1", "stepDeep=3")))[0] == "PASS")
+check("can-fail: no dry squares is FAIL", D.hollow_verdict(D.parse(SHAPE.replace("dry=", "dry=0 x=")))[0] != "PASS")
 check("can-fail: no bowl past 4 is FAIL", D.hollow_verdict(D.parse(SHAPE.replace("deepestDry=19", "deepestDry=4")))[0] == "FAIL")
 check("hollows off is UNMEASURED", D.hollow_verdict(D.parse(SHAPE.replace("hollows=True", "hollows=False")))[0] == "UNMEASURED")
 check("shallow dries first: PASS", D.drawdown_verdict(s)[0] == "PASS")
