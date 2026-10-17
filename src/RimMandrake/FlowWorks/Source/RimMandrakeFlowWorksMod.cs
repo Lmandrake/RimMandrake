@@ -570,6 +570,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
             Rivers.RM_RiversSettings.ExposeData();
+            RiverColors.RM_RiverColorsSettings.ExposeData();   // River Colors merged 2026-10-16 (was mandrake.rut.rivercolors)
             Machinery.RM_MachinerySettings.ExposeData();
             // Builder Y sections (2026-10-05): sluice gates, quarry. One line each. (The empty tanker and bottled-blood stubs were
             // deleted 2026-10-11: neither feature is built; its settings arrive with it.)
@@ -1576,6 +1577,7 @@ namespace RimMandrake.FlowWorks
 
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
+            RiverColors.RM_RiverColorsSettings.DoSettingsSection(list);
             Machinery.RM_MachinerySettings.DoSettingsSection(list);
             Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
             MapControls.RM_MapControlSettings.DoSettingsSection(list);

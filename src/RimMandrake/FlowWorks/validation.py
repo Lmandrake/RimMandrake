@@ -665,7 +665,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "sluiceGatesEnabled",
                         # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY / FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW (site_spec 2026-10-16):
                         # art/diagnostic switches, no live row flips them yet
-                        "pipeLinksIntoMachines", "joinFittings", "waterBodyTypeFlipFixEnabled"]
+                        "pipeLinksIntoMachines", "joinFittings", "waterBodyTypeFlipFixEnabled",
+                        # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): the planet-map river gradient; what it
+                        # paints is read by eye on the world map (the old mod's script had no live row for it either)
+                        "riverColorsEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))

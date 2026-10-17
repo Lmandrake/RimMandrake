@@ -2,6 +2,13 @@
 
 Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.md` is skipped by deploy_custom_mods.py).
 
+## Unreleased
+
+- 2026-10-16: River Colors merged in (was its own mod, `mandrake.rut.rivercolors`, `src/RimUtinni/RiverColors`):
+  the planet-map river gradient now lives in `Source/RiverColors/`, its settings are the "River colours" section of
+  this mod's settings (`riverColors_`-prefixed keys; old standalone values are not imported), and its check is
+  `selftest_flowworks_river_colors.py`. Remove `Mods\RiverColors` and `mandrake.rut.rivercolors` from mod lists.
+
 ## 1.0.0 — 2026-10-15 (release candidate, not published; repackaged 2026-10-16)
 
 Package DLL: `Assemblies/RimMandrakeFlowWorks.dll` sha256 `c3dbac22…fa83fc` (its `.srchash` `# dll:` line),

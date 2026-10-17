@@ -7,7 +7,7 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.RiverColors
+namespace RimMandrake.FlowWorks.RiverColors
 {
     // WORLD_RIVER_COLORS_1 (design/Jawa/worldbuilding/, owner 2026-09-06, verbatim:
     // "Red rivers in the mountains, turning immediately to brackish green/brown in the
@@ -54,20 +54,11 @@ namespace RimMandrake.Utinni.RiverColors
     // (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml currently points
     // it at World/Biomes/Jawa_SickWater). Retinting the lake is a texture-art task on
     // that field, not a C# patch, and is left undone here.
-    // Renamed from RiverColorsMod (MOD_OPTIONS_RETROFIT_1): that name now belongs
-    // to the RimWorld `Mod` subclass in RiverColorsMod.cs, which owns Mod Settings.
-    // This class is the Harmony bootstrap only — unrelated responsibility.
-    [StaticConstructorOnStartup]
-    public static class RiverColorsHarmonyLoader
-    {
-        static RiverColorsHarmonyLoader()
-        {
-            Harmony h = new Harmony("mandrake.rut.rivercolors");
-            RimMandrake.Shared.PatchApplier.Apply(h, Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.RiverColors");
-            Log.Message("[RimMandrake.Utinni.RiverColors] loaded: WorldDrawLayer_Rivers "
-                      + "will draw the headwater/jungle/terminus gradient.");
-        }
-    }
+    // RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (owner 2026-10-16: "Add river colors into flowworks as part of
+    // adding liquids to the world."): was the standalone mod mandrake.rut.rivercolors (src/RimUtinni/RiverColors).
+    // No Harmony bootstrap of its own any more: RM_FlowWorksHarmony (RM_Patch_SuperdeepShooting.cs) applies every
+    // [HarmonyPatch] class in this assembly, this one included, under the Harmony id mandrake.rm.flowworks.
+    // Settings are the "River colours" section of FlowWorks' Mod Settings (RM_RiverColorsSettings).
 
     public static class RiverGradient
     {
@@ -76,7 +67,7 @@ namespace RimMandrake.Utinni.RiverColors
         // interpolated continuously rather than three hard bands.
         //
         // MOD_OPTIONS_RETROFIT_1: the three anchor colours are now owned by
-        // RiverColorsSettings (in-game Mod Settings, RGB sliders + swatch); these
+        // RM_RiverColorsSettings (FlowWorks' Mod Settings, RGB sliders + swatch); these
         // are read live in ColorFor below, not cached here.
 
         // Grounded biome anchors (design/Jawa/worldbuilding/biomes/*.md; real defNames,
@@ -101,9 +92,9 @@ namespace RimMandrake.Utinni.RiverColors
             if (tilePosition != null)
                 tilePosition.TryGetValue(tile.tileId, out t);
             return Lerp3(
-                RiverColorsSettings.headwaterColor,
-                RiverColorsSettings.jungleColor,
-                RiverColorsSettings.terminusColor,
+                RM_RiverColorsSettings.headwaterColor,
+                RM_RiverColorsSettings.jungleColor,
+                RM_RiverColorsSettings.terminusColor,
                 t);
         }
 
@@ -210,14 +201,14 @@ namespace RimMandrake.Utinni.RiverColors
 
     // Scoped to WorldDrawLayer_Rivers only -- WorldDrawLayer_Roads shares this exact
     // base-class method and must render unmodified.
-    [RimMandrake.Shared.PatchFeature("Patch_WorldDrawLayer_Paths_GeneratePaths", typeof(RiverColorsSettings), "enabled")]
+    [RimMandrake.Shared.PatchFeature("River colours on the planet map", typeof(RM_RiverColorsSettings), "riverColorsEnabled")]
     [HarmonyPatch(typeof(WorldDrawLayer_Paths), nameof(WorldDrawLayer_Paths.GeneratePaths))]
     public static class Patch_WorldDrawLayer_Paths_GeneratePaths
     {
         [HarmonyPrefix]
         public static void Prefix(WorldDrawLayer_Paths __instance, PlanetTile tile, ref Color32 color)
         {
-            if (RiverColorsSettings.enabled && __instance is WorldDrawLayer_Rivers)
+            if (RM_RiverColorsSettings.riverColorsEnabled && __instance is WorldDrawLayer_Rivers)
                 color = RiverGradient.ColorFor(tile);
         }
     }

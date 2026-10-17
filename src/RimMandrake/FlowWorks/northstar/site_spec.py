@@ -159,6 +159,11 @@ SETTINGS = {
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": {
         "mapControlsEnabled": True,
     },
+    # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): River Colors (was mandrake.rut.rivercolors); its three
+    # anchor Colors are not in this bool/float table
+    "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": {
+        "riverColorsEnabled": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -170,6 +175,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings": os.path.join("Machinery", "Kits", "RM_KitSettings.cs"),
     "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": os.path.join("Machinery", "Logistics", "RM_SluiceGateSettings.cs"),
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": os.path.join("MapControls", "RM_MapControlSettings.cs"),
+    "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": os.path.join("RiverColors", "RM_RiverColorsSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
