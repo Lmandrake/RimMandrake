@@ -8,7 +8,7 @@
 //   RM_Dehydration +0.30 / day while the need is 0, -0.6 / day while it is above 0.3; lethal at 1.0 (~3.3 days at zero).
 namespace RimMandrake.FlowWorks.Thirst
 {
-	/// <summary>Distilled > Potable > Fouled > Toxic. Mirrors LiquidTypes.LiquidThirstQuality value for value (kept apart so
+	/// <summary>Distilled > Potable > Fouled > Toxic > Slime. Mirrors LiquidTypes.LiquidThirstQuality value for value (kept apart so
 	/// this file needs no Verse); RM_ThirstUtility converts.</summary>
 	public enum RM_WaterQuality
 	{
