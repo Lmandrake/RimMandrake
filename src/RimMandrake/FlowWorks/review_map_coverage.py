@@ -186,7 +186,11 @@ FEATURES = [
     ("gizmo", r"(hose|Hose|Fitting|Free end|DEV:)", "Hose reel buttons", "hose_reel"),
     ("set", r"^(freeEndRolesEnabled|dumpLitresPerCycle|minBendRadius|plumpAmount|transitionTicks|releaseTicks|minPlumpDwell|"
      r"maxLength|maxLengthDefaults|couplingSpacing|handlingTime|windCellsPerSecond|autoResumeDroppedHose|slack|"
-     r"tintByContents|fillWobble)$", "Hose behaviour and look", "hose_reel"),
+     r"tintByContents|fillWobble|thickness)$", "Hose behaviour and look", "hose_reel"),
+    ("set", r"^(pipeLinksIntoMachines|joinFittings)$", "Pipe-to-machine joins and connector fittings",
+     M + "art only, and the connector art awaits the owner's ruling on design/RimMandrake/liquid_connections_visuals_2026-10-16.md; stage it once ruled"),
+    ("set", r"^waterBodyTypeFlipFixEnabled$", "Water-body count fix",
+     M + "fixes vanilla bookkeeping when water changes type; nothing on the map to look at"),
     ("set", r"^(hoseHoldsLiquid|hoseLitresPerCell|litresPerFilth)$", "A hose holds liquid and spills it", "liquid_spill"),
     ("def", r"^ThingDef/RM_Filth_", "Spilled liquid and tracked tar", "liquid_spill"),
     ("tex", r"Filth/RM_FilthTar", "Tar filth art", "liquid_spill"),
