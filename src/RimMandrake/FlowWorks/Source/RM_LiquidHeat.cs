@@ -114,8 +114,8 @@ namespace RimMandrake.FlowWorks
 			energies.Clear();
 			foreach (IntVec3 c in ex.ExcavatedCells)
 			{
-				int f = ex.FillAt(c);
-				if (f <= 0)
+				float f = ex.WaterDlAt(c) / (float)RM_LevelSolve.U;   // notches, a part-notch included
+				if (f <= 0f)
 				{
 					continue;
 				}
@@ -146,12 +146,21 @@ namespace RimMandrake.FlowWorks
 				int r = RM_LiquidHeatMath.Rotate(ref cursor, natural);
 				int i = naturalCells[r];
 				int k = naturalKinds[r];
-				Credit(map, map.cellIndices.IndexToCell(i),
-					RM_LiquidHeatMath.CellEnergy(k, RM_LiquidHeatMath.NaturalCellLevels, strength) * natScale);
+				IntVec3 nc = map.cellIndices.IndexToCell(i);
+				Credit(map, nc, RM_LiquidHeatMath.CellEnergy(k, NaturalLevels(ex, nc), strength) * natScale);
 			}
 			lastEnergy = 0f;
 			lastRoomsWarmed = Apply(hotByRoom, strength);
 			lastRoomsChilled = Apply(coldByRoom, strength);
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §2.2): a natural square's real water in notches (its pond's
+		/// surface over its floor; a limitless body's full floor), not a flat 2; RM_LiquidHeatMath.NaturalCellLevels only when
+		/// the engine knows no floor there.</summary>
+		private static float NaturalLevels(RM_MapComponent_Excavation ex, IntVec3 c)
+		{
+			double dl = ex.NaturalWaterDlAt(c, out _, out int floor);
+			return floor > 0 ? (float)(dl / RM_LevelSolve.U) : RM_LiquidHeatMath.NaturalCellLevels;
 		}
 
 		/// <summary>Vanilla GenTemperature.PushHeat's own routing: the cell's room, else split over its neighbours'
@@ -330,7 +339,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: out of bounds";
 			}
-			int kind = ex.IsExcavated(c) && ex.FillAt(c) > 0
+			int kind = ex.IsExcavated(c) && ex.WaterDlAt(c) > 0
 				? RM_LiquidHeat.KindOfFluid(ex.FluidAt(c) ?? ex.ActiveFluid)
 				: RM_LiquidHeat.KindOfTerrain(c.GetTerrain(map));
 			Room room = c.GetRoom(map);

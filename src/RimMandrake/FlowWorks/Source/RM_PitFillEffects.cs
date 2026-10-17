@@ -50,8 +50,10 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				int fill = ex.FillAt(c);
-				if (fill <= 0)
+				// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the liquid in notches from the cell's DECILITRES (a part-notch counts: a
+				// 4.5 cm sheet is 0.09 of a notch), never whole notches only
+				float fill = ex.WaterDlAt(c) / (float)RM_LevelSolve.U;
+				if (fill <= 0f)
 				{
 					continue;
 				}
@@ -96,7 +98,7 @@ namespace RimMandrake.FlowWorks
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{
 				IntVec3 c = p.Position;
-				if (!ex.IsExcavated(c) || ex.FillAt(c) == 0) continue;
+				if (!ex.IsExcavated(c) || ex.WaterDlAt(c) <= 0) continue;
 				Hediff d = RimMandrakeFlowWorks_DefOf.RM_PitDrowning != null
 					? p.health?.hediffSet.GetFirstHediffOfDef(RimMandrakeFlowWorks_DefOf.RM_PitDrowning) : null;
 				Hediff t = p.health?.hediffSet.GetFirstHediffOfDef(HediffDefOf.ToxicBuildup);

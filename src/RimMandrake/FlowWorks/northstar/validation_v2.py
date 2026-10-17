@@ -119,7 +119,7 @@ FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPer
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
                   "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,
                   "pitSinkPerLevel": 0.3,
-                  "canalBurnDaysPerLevel": 1.0, "sourceBurnDaysPerLevel": 5.0,     # Phase 6, ruling 7
+                  "burnDaysPerNotch": 1.0,     # Phase 6, ruling 7 (one rate: LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD)
                   "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,
                   "pitDrowningRateMultiplier": 1.0}
 # PIT_LEGACY_CODE_RETIRE_1: every def the building-pit model shipped (26). O1 asserts each is ABSENT.
@@ -843,7 +843,7 @@ def _rm_volume_const(name, default):
         return default
 
 
-# a shallow natural pond square holds ShallowBedLevels levels x volumePerTile (water 1.0) x sourceBudgetMultiplier (1.0 default)
+# a shallow natural pond square holds ShallowBedLevels notches x volumePerTile (pinned to 1); nothing multiplies it
 POND_LEVELS_PER_CELL = _rm_volume_const("ShallowBedLevels", 2)
 
 
@@ -3234,7 +3234,7 @@ def phase_X(L, args):
 
 FIRE_TYPE = "RimMandrake.FlowWorks.RM_LiquidFireProof"
 FLAME, ASH = "RM_LiquidFlame", "Filth_Ash"
-FIRE_FAST_BURN_DAYS = 0.02         # canalBurnDaysPerLevel for X10 only: 1,200 ticks per level instead of a day
+FIRE_FAST_BURN_DAYS = 0.02         # burnDaysPerNotch for X10 only: 1,200 ticks per level instead of a day
 
 
 def _things_at(B, def_name, cells):
@@ -3249,7 +3249,7 @@ def _x10_canal_fire(L):
     """X10 (promoted 2026-10-05 from the extension plot_E_fire): a 1x6 D=1 tar run lit at its far end by
     RM_LiquidFireProof.ProofIgnite (the engine's IgniteNow, same queue a vanilla Fire or a bomb feeds).
     canal_burning: the creeping front (tar 120 ticks/cell) puts a flame on >= 3 run cells and on NO cell off the run;
-    canal_fire_persists: still alight 250 ticks later; canal_spent: with canalBurnDaysPerLevel cut to 0.02 for this
+    canal_fire_persists: still alight 250 ticks later; canal_spent: with burnDaysPerNotch cut to 0.02 for this
     row only (a rate knob, restored in finally) every cell burns to F=0, >= 3 of the 6 are left ashed, nothing alight.
     canal_fire_reaches_reservoir stays in the extension (it needs a tar BODY; the core map's bodies are water)."""
     B = L.B
@@ -3267,7 +3267,7 @@ def _x10_canal_fire(L):
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     L.sset(S_FW, "rainFillsExcavationsEnabled", False)
     L.sset(S_FW, "rainDousesLiquidFireEnabled", False)
-    L.sset(S_FW, "canalBurnDaysPerLevel", FIRE_FAST_BURN_DAYS)
+    L.sset(S_FW, "burnDaysPerNotch", FIRE_FAST_BURN_DAYS)
     try:
         ok, _, lit = _proof(B, "ProofIgnite", "%d,%d" % run[-1], typ=FIRE_TYPE)
         if not (ok and lit.startswith("LIT")):
@@ -3293,7 +3293,7 @@ def _x10_canal_fire(L):
         _, rows, _ = _fluid_row(L, run)
         _, _, rep = _proof(B, "ProofReport", " ", typ=FIRE_TYPE)    # " ": static_call reads "" as ZERO args
     finally:
-        L.sset(S_FW, "canalBurnDaysPerLevel", 1.0)
+        L.sset(S_FW, "burnDaysPerNotch", 1.0)
         L.sset(S_FW, "rainDousesLiquidFireEnabled", True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", True)
     if None in (burn1, burn2, burn3, ash):        # an unread flame list is not "no flames" (burn3 None read as "none alight")
@@ -3889,7 +3889,7 @@ class MockBridge(object):
                 self.do_pulse()
         return dict(success=True)
 
-    # ---- X10 fire model (RM_LiquidFire, CreepingFuse tar 120 ticks/cell; burn = canalBurnDaysPerLevel per level)
+    # ---- X10 fire model (RM_LiquidFire, CreepingFuse tar 120 ticks/cell; burn = burnDaysPerNotch per notch)
     BURNABLE = ("RM_Fluid_Tar", "RM_Fluid_Oil")
 
     def burnable(self, c):
@@ -3918,7 +3918,7 @@ class MockBridge(object):
     def fire_burn(self, pulse_ticks):
         if "fire_never_burns" in self.faults:
             return
-        per = max(1, int(round(60000 * max(0.01, float(self.S("canalBurnDaysPerLevel"))))))
+        per = max(1, int(round(60000 * max(0.01, float(self.S("burnDaysPerNotch"))))))
         for c in list(self.fire):
             self.fire[c] += pulse_ticks
             while self.fire.get(c, 0) >= per:

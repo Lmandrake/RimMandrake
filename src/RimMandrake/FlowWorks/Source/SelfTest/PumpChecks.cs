@@ -158,7 +158,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "TryDraw chooses through PumpNext: outflows that can take the source's liquid, then the tanks");
                 RiverSwitchFlipChecks.Has(pump, @"foreach \(IntVec3 c in ReachCells\(\)\) \{ if \(Drawable\(ex, c, out Source s\)\) \{ list\.Add\(s\); \} \} foreach \(RM_NetPort p in RM_LiquidNet\.PortsOf\(this, RM_FreeEndRole\.Intake\)\)",
                     "sources: the pump's own reach first, then its Intake ends");
-                RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.FillAt\(c\) > 0\) \{[^}]*\} if \(ex\.IsSourceCell\(c\) && ex\.Stock\.CanSupply\(Map, c, ex\)\)",
+                RiverSwitchFlipChecks.Has(pump, @"if \(ex\.IsExcavated\(c\) && ex\.WaterDlAt\(c\) > 0\) // a thin sheet \(no whole notch\) is drawable too \{[^}]*\} if \(ex\.IsSourceCell\(c\) && ex\.Stock\.CanSupply\(Map, c, ex\)\)",
                     "a source is a channel cell with fill or a body's source cell (never a dry nozzle cell, A13)");
                 RiverSwitchFlipChecks.Has(pump, @"return p\?\.Cell is IntVec3 end \? RM_LiquidSpill\.Outlet\(Map, ex, end, liquid \?\? LiquidFor\(fluid\), fluid, out cell\) : RM_OutletKind\.Blocked;",
                     "an outflow's cell comes from RM_LiquidSpill.Outlet (CanPourLevel + PickPour within 1.5; OutflowChecks pins it)");

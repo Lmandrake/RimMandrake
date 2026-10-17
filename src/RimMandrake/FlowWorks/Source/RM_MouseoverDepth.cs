@@ -7,8 +7,8 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner by card 2026-10-16: "show meters of depth when hovering over liquid"):
-	/// the bottom-left cell readout's terrain line gains the liquid standing in the square, "Deep water (Walk speed 30%) —
-	/// 2 m deep, 4 kL".
+	/// the bottom-left cell readout's terrain line gains the square's two figures, "Deep water (Walk speed 30%) — Hole 2 m ·
+	/// Water 2.00 m (4,000 L)" (DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE, owner R4).
 	///
 	/// Vanilla 1.6 MouseoverReadout.MouseoverReadoutOnGUI caches the terrain line per TerrainDef (cachedTerrain /
 	/// cachedPolluted / cachedTerrainString) and rebuilds it only when the terrain under the mouse changes, so a per-square
@@ -67,8 +67,10 @@ namespace RimMandrake.FlowWorks
 			ours = true;
 		}
 
-		/// <summary>"1.5 m deep, 3 kL" for a square holding liquid, else null. A dug square (canal, pit) reads its fill
-		/// levels; a natural water square reads its bed depth, scaled by its pond's fill when the pond is limited.</summary>
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (owner R4; wording V8, veto-able): "Hole 7 m (ledge 4 m) · Water 2.37 m
+		/// (4,740 L)" for a dug square (dry ones too) or a limited pond square, from the solver's numbers
+		/// (RM_MapComponent_Excavation.DepthReadoutAt); "Open water, never runs dry" over a sea or edge river (R13); else
+		/// null. A natural liquid terrain the engine does not track as a source reads its full floor.</summary>
 		public static string DepthSuffix(Map map, IntVec3 c)
 		{
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
@@ -76,25 +78,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
-			if (ex.IsExcavated(c))
+			string line = ex.DepthReadoutAt(c);
+			if (line != null)
 			{
-				int f = ex.FillAt(c);
-				return f > 0 ? RM_Volume.DepthReadout(f, f * (double)RM_Volume.LitresPerLevel) : null;
+				return line;
 			}
 			TerrainDef t = c.GetTerrain(map);
-			if (t == null || !(t.IsWater || RM_LiquidBottleUtility.LiquidAt(t) != null))
+			if (t == null || RM_LiquidBottleUtility.LiquidAt(t) == null)
 			{
 				return null;
 			}
-			int bed = ex.BedLevelsAt(c);
-			if (bed <= 0)
-			{
-				bed = RM_Volume.BedLevels(t.passability == Traversability.Impassable, t.pathCost);
-			}
-			RM_LiquidBody body = ex.Stock?.IndexedBodyAt(map, c);
-			double frac = body != null && !body.limitless && body.capacity > 0f
-				? System.Math.Max(0.0, System.Math.Min(1.0, body.stock / (double)body.capacity)) : 1.0;
-			return RM_Volume.DepthReadout(bed * frac, bed * frac * RM_Volume.LitresPerLevel);
+			int bed = RM_Volume.BedLevels(t.passability == Traversability.Impassable, t.pathCost);
+			return RM_Volume.Readout(bed, 0, bed * (double)RM_Volume.UnitsPerLevel);
 		}
 	}
 }

@@ -47,8 +47,8 @@ namespace RimMandrake.FlowWorks
 			int d = RM_SuperdeepTrap.StepDepthAt(map, eng, Position);
 			int u = up.InBounds(map) ? RM_SuperdeepTrap.StepDepthAt(map, eng, up) : d;
 			string line = RM_PitRamp.Usable && RM_CliffMaskMath.RampJoins(d, u, RM_PitRamp.MaxSpan)
-				? "RMFlow_RampJoins".Translate(d - u)
-				: "RMFlow_RampJoinsNothing".Translate();
+				? "RMFlow_RampJoins".Translate(RM_Volume.FormatMetres(d - u))
+				: "RMFlow_RampJoinsNothing".Translate(RM_Volume.FormatMetres(RM_PitRamp.MaxSpan));
 			return string.IsNullOrEmpty(s) ? line : s + "\n" + line;
 		}
 	}
@@ -156,7 +156,7 @@ namespace RimMandrake.FlowWorks
 			int u = up.InBounds(map) ? eng.ClimbDepthAt(up) : d;
 			if (!RM_CliffMaskMath.RampJoins(d, u, RM_PitRamp.MaxSpan))
 			{
-				return "RMFlow_RampMustFaceUphill".Translate(RM_PitRamp.MaxSpan);
+				return "RMFlow_RampMustFaceUphill".Translate(RM_Volume.FormatMetres(RM_PitRamp.MaxSpan));
 			}
 			return true;
 		}

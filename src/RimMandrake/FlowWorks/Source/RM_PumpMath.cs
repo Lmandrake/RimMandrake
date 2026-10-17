@@ -16,13 +16,24 @@ namespace RimMandrake.FlowWorks
 		/// PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY (ruling Q3, <i>"Keep it as faster draining"</i>): the levels a pump on Pour
 		/// moves per cycle. A Dump tank drains <paramref name="dumpUnitsPerCycle"/> units per settle with no pump, so a pouring
 		/// pump moves at least one level more than that gravity rate, whatever the Mod Settings slider says; a station already
-		/// faster keeps its own <paramref name="levelsPerCycle"/>. The basic pump (1 level) at the default 5 units pours 2 levels
-		/// (10 units). Never below 1.
+		/// faster keeps its own <paramref name="levelsPerCycle"/>; both are in notches (1,000 L) and decilitres. Never below 1.
 		/// </summary>
 		public static int PourLevels(int levelsPerCycle, int dumpUnitsPerCycle)
 		{
 			int gravityLevels = System.Math.Max(0, dumpUnitsPerCycle) / TankUnitsPerLevel;
 			return System.Math.Max(System.Math.Max(1, levelsPerCycle), gravityLevels + 1);
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the decilitres a pump lifts from a dug cell this cycle: a notch
+		/// (<paramref name="units"/>) when the cell holds one, else what it holds, so a thin sheet (4.5 cm = 900 dL) is pumped
+		/// rather than stranded for want of a whole notch. 0 for a dry cell.</summary>
+		public static int ChannelTakeUnits(int units, long cellDl)
+		{
+			if (units <= 0 || cellDl <= 0)
+			{
+				return 0;
+			}
+			return cellDl < units ? (int)cellDl : units;
 		}
 
 		/// <summary>

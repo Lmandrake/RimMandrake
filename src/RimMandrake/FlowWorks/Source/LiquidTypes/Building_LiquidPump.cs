@@ -162,7 +162,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				return false;
 			}
-			if (ex.IsExcavated(c) && ex.FillAt(c) > 0)
+			if (ex.IsExcavated(c) && ex.WaterDlAt(c) > 0)   // a thin sheet (no whole notch) is drawable too
 			{
 				s.channel = true;
 				s.fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
@@ -333,14 +333,26 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				}
 				if (s.channel)
 				{
-					// L1 (§4): the tank leg is reserved first, the channel level (TryTakeLevel, never undone) taken last
-					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.FillAt(cell) > 0, k => ex.TryTakeLevel(cell, out _));
-					if (RM_LiquidTransfer.Move(units, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == units)
+					// L1 (§4): the tank leg is reserved first, the channel water (TryTakeDl, never undone) taken last.
+					// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: up to one notch in DECILITRES, so a thin sheet (4.5 cm = 900 dL) is
+					// pumped dry rather than left behind for want of a whole notch; the tank plan is for what is taken.
+					int take = RM_PumpMath.ChannelTakeUnits(units, ex.WaterDlAt(cell));
+					if (take != units)
+					{
+						plan = take > 0 ? Machinery.RM_LiquidNet.FillPlan(this, l, take) : null;
+						if (plan == null)
+						{
+							deadSources.Add(Map.cellIndices.CellToIndex(s.cell));
+							continue;
+						}
+					}
+					RM_TransferLeg world = RM_TransferLeg.World(k => ex.IsExcavated(cell) && ex.WaterDlAt(cell) >= k, k => ex.TryTakeDl(cell, k, out _) == k);
+					if (RM_LiquidTransfer.Move(take, world, RM_TransferLeg.Split(plan.Count, i => plan[i].units, (i, k) => plan[i].tank.CanAccept(l, k), (i, k) => plan[i].tank.TryAddLiquid(l, k), (i, k) => plan[i].tank.TryRemoveLiquid(k)), out _) == take)
 					{
 						foreach ((Building_LiquidTank tank, int units) p in plan) Machinery.RM_LiquidNet.Credit(this, p.tank, l, p.units, RM_PumpMath.CycleTicks);   // credit site: pump draw (channel)
-						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, units, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (channel)
+						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, take, RM_PumpMath.CycleTicks, Machinery.RM_LiquidNet.FillFrom(plan[0].tank, l));   // credit site: pump intake (channel)
 						filledPastOutflow |= outflows.Count > 0;
-						Stamp(units);
+						Stamp(take);
 						Moved++;
 						return "RMFlow_PumpDrew".Translate(l.label);
 					}

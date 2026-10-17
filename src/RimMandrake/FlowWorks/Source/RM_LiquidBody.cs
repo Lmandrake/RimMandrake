@@ -18,8 +18,8 @@ namespace RimMandrake.FlowWorks
 	/// without a finite ledger, and nobody has to pick, serialize or render a
 	/// magic literal.
 	///
-	/// LIMITED bodies carry a real stock in fill-units, capped by the 5:1
-	/// budget. They run down as a canal draws, recede cell by cell from the
+	/// LIMITED bodies carry a real stock in fill-units (notches), capped by what
+	/// their floor holds. They run down as a canal draws, recede cell by cell from the
 	/// outside in when the stock no longer supports the footprint, and refill
 	/// from seepage, rain and season.
 	/// </summary>
@@ -96,6 +96,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>H[L] over the undug footprint (RM_PondDepthMath.Histogram), valid for pulse <see cref="depthHistPulse"/>.</summary>
 		internal int[] depthHist;
 		internal long depthHistPulse = -1;
+
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE: the exact surface (dL-per-square height, 0 = brim) cached for one
+		/// pulse and one stock (RM_LiquidStock.SurfaceHeightOf); never saved.</summary>
+		internal long surfacePulse = -1;
+		internal long surfaceStockDl = long.MinValue;
+		internal double surfaceHeight;
 		internal readonly List<int> depthCells = new List<int>();
 		internal readonly List<int> depthBeds = new List<int>();
 

@@ -26,9 +26,8 @@
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
-    <!-- Phase 4. The 5:1 budget is the owner's number, stated per SOURCE CELL:
-         a five-cell pond supports twenty-five canal cells and no more, however
-         much water a five-cell pond "obviously" holds. recededTerrain is what a
+    <!-- Phase 4. A pond holds the water its floor holds (a square 2 m deep = 4,000 L;
+         unified depth spec §5.2). recededTerrain is what a
          dried lakebed cell shows while the body is down; the ORIGINAL terrain is
          recorded per cell before the write and restored on refill, so recession
          cannot launder the map. -->

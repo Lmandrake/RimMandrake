@@ -4,24 +4,40 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// FLOWWORKS_BUILD_PROGRAM_1 Phase 6 (fire), the Verse-free arithmetic so the selftest drives the production
-	/// numbers. Ruling 7 (owner, 2026-09-16): burn is a RATE on the tier ladder, never a timer —
-	/// one canal fill level per day while alight, one source level per five days (the 5:1 density relation).
+	/// numbers. Ruling 7 (owner, 2026-09-16): burn is a RATE, never a timer. LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth
+	/// spec §5.6, D3 defaulted, veto-able): ONE rate for every burning square, canal or pond, 0.5 m (one notch) a day,
+	/// applied in decilitres so a thin sheet burns away in a fraction of it.
 	/// </summary>
 	public static class RM_FireMath
 	{
 		public const int TicksPerDay = 60000;
 
-		/// <summary>Ticks for one burning canal cell to lose one fill level. Ruling 7: one day at 1.</summary>
+		/// <summary>Ticks for one burning square to lose one notch (0.5 m). Ruling 7: one day at 1. The one rate, canal or pond.</summary>
 		public static int TicksPerCanalLevel(float burnDaysPerLevel)
 		{
 			return Math.Max(1, (int)Math.Round(TicksPerDay * Math.Max(0.01f, burnDaysPerLevel)));
 		}
 
-		/// <summary>Ticks for a burning source cell to cost its body one level's worth of stock. Ruling 7: five
-		/// days, the same 5:1 the supply budget uses. Kept a separate dial so the settings screen can say so.</summary>
-		public static int TicksPerSourceLevel(float sourceBurnDaysPerLevel)
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: add elapsed burn ticks and return the DECILITRES due at
+		/// <paramref name="ticksPerNotch"/> ticks per notch (<paramref name="unitsPerNotch"/> dL). The accumulator keeps the
+		/// remainder in tick-decilitres (always below ticksPerNotch), so nothing is lost between pulses: 240 pulses of 250
+		/// ticks at a day a notch burn exactly one notch.</summary>
+		public static long DlDue(ref int accumulator, int addTicks, int ticksPerNotch, int unitsPerNotch)
 		{
-			return TicksPerCanalLevel(sourceBurnDaysPerLevel);
+			if (ticksPerNotch <= 0 || addTicks <= 0 || unitsPerNotch <= 0)
+			{
+				return 0;
+			}
+			long total = (accumulator < 0 ? 0 : accumulator % ticksPerNotch) + (long)addTicks * unitsPerNotch;
+			long dl = total / ticksPerNotch;
+			accumulator = (int)(total % ticksPerNotch);
+			return dl;
+		}
+
+		/// <summary><see cref="DlDue"/>, nothing unless the liquid standing there NOW burns (P8, as <see cref="CanalLevelsToBurn"/>).</summary>
+		public static long CanalDlToBurn(bool burnableNow, ref int accumulator, int addTicks, int ticksPerNotch, int unitsPerNotch)
+		{
+			return burnableNow ? DlDue(ref accumulator, addTicks, ticksPerNotch, unitsPerNotch) : 0;
 		}
 
 		/// <summary>How often RM_LiquidFire's Maintain re-reads every burning cell (and drops one whose liquid stopped burning).</summary>

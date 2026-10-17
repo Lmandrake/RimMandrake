@@ -275,6 +275,60 @@ namespace RimMandrake.FlowWorks
 			return sb.ToString();
 		}
 
+		/// <summary>DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE: the readout line a player sees over "x,z" (the bridge-readable form of
+		/// the mouseover), "OK &lt;line&gt;" or "OK -" when the square has none. Read-only: never forms a body.</summary>
+		public static string ProofReadout(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation eng = map == null ? null : RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return "REFUSED no current map or no FlowWorks engine on it";
+			}
+			string[] p = (arg ?? "").Split(',');
+			if (p.Length != 2 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z))
+			{
+				return "REFUSED arg must be x,z";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map))
+			{
+				return "REFUSED out of bounds";
+			}
+			return "OK " + (eng.DepthReadoutAt(c) ?? "-");
+		}
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: test staging that replaces the deleted pond budget slider. Sets the LIMITED body
+		/// at "x;z" to <c>frac</c> of its capacity (0..1), forming it first if the square has none yet: "SET #id frac F stock S
+		/// of C" or REFUSED (no body, limitless). Dev surface only (extensions plot D draws a SMALL pond down).</summary>
+		public static string ProofSetBodyFraction(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation eng = map == null ? null : RM_SuperdeepTrap.EngineOf(map);
+			string[] a = (arg ?? "").Split(';');
+			if (eng == null || a.Length != 3 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)
+				|| !float.TryParse(a[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float frac))
+			{
+				return "REFUSED arg must be x;z;fraction on a map with the FlowWorks engine";
+			}
+			IntVec3 c = new IntVec3(x, 0, z);
+			RM_LiquidBody body = c.InBounds(map) ? eng.Stock.BodyAt(map, c, eng) : null;
+			if (body == null)
+			{
+				return "REFUSED no body at " + x + "," + z;
+			}
+			if (body.limitless)
+			{
+				return "REFUSED body #" + body.id + " is limitless";
+			}
+			frac = frac < 0f ? 0f : (frac > 1f ? 1f : frac);
+			body.stock = body.capacity * frac;
+			body.depthStaged = true;
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			return "SET #" + body.id + " frac " + frac.ToString("F3", inv) + " stock " + body.stock.ToString("F2", inv)
+				+ " of " + body.capacity.ToString("F2", inv);
+		}
+
 		public static string ProofDeepLake(string arg)
 		{
 			Map map = Find.CurrentMap;

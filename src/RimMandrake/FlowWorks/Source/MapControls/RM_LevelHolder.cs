@@ -205,7 +205,8 @@ namespace RimMandrake.FlowWorks.MapControls
 				+ RM_MapControlMath.RateLabel(ratePerPulse, RimMandrakeFlowWorksSettings.PulseIntervalTicks));
 			if (lastMode == "channel" || lastMode == "body")
 			{
-				sb.AppendLine("Now: " + lastHeld + " of " + lastCapacity + " level(s), " + RM_Volume.FormatLitres(lastHeld * (double)RM_Volume.LitresPerLevel)
+				// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.3): litres, never "level N" as a count
+				sb.AppendLine("Now: " + RM_Volume.FormatLitres(lastHeld * (double)RM_Volume.LitresPerLevel)
 					+ " of " + RM_Volume.FormatLitres(lastCapacity * (double)RM_Volume.LitresPerLevel) + " (" + lastMode + ")"
 					+ (lastNeed > 0 ? ", filling" : (lastNeed < 0 ? ", draining" : ", holding")));
 			}
@@ -215,7 +216,8 @@ namespace RimMandrake.FlowWorks.MapControls
 			}
 			// body counters are fill-units; a level of this body is lastUnit of them and 1,000 L (LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS)
 			float perLevel = lastUnit > 0f ? lastUnit : 1f;
-			sb.Append("Poured " + pouredTotal + ", taken " + takenTotal + " level(s) in a channel; body +"
+			sb.Append("Poured " + RM_Volume.FormatLitres(pouredTotal * (double)RM_Volume.LitresPerLevel) + ", taken "
+				+ RM_Volume.FormatLitres(takenTotal * (double)RM_Volume.LitresPerLevel) + " in a channel; body +"
 				+ RM_Volume.FormatLitres(bodyCreditedUnits / perLevel * RM_Volume.LitresPerLevel) + " / -"
 				+ RM_Volume.FormatLitres(bodyDebitedUnits / perLevel * RM_Volume.LitresPerLevel));
 		}

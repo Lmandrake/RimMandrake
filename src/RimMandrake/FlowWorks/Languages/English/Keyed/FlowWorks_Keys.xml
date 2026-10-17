@@ -18,9 +18,9 @@
   <RMFlow_LadderWall3>west</RMFlow_LadderWall3>
   <RMFlow_RampNeedsPit>Must be built in a dug pit or a dry pond bed.</RMFlow_RampNeedsPit>
   <RMFlow_RampNotOnLadder>A square holds a ramp or a ladder, not both.</RMFlow_RampNotOnLadder>
-  <RMFlow_RampMustFaceUphill>Must point uphill at a square 1 to {0} levels shallower.</RMFlow_RampMustFaceUphill>
-  <RMFlow_RampJoins>Ramp: walks up {0} level(s) to the square it faces.</RMFlow_RampJoins>
-  <RMFlow_RampJoinsNothing>Ramp: leads nowhere (the square it faces is not 1 to 3 levels shallower, or ramps are off).</RMFlow_RampJoinsNothing>
+  <RMFlow_RampMustFaceUphill>Must point uphill at a square 0.5 m to {0} shallower.</RMFlow_RampMustFaceUphill>
+  <RMFlow_RampJoins>Ramp: walks up {0} to the square it faces.</RMFlow_RampJoins>
+  <RMFlow_RampJoinsNothing>Ramp: leads nowhere (the square it faces is not 0.5 m to {0} shallower, or ramps are off).</RMFlow_RampJoinsNothing>
   <RMFlow_ClimbsSteps>Climbs out of steps up to {0} deep.</RMFlow_ClimbsSteps>
   <!-- FLOWWORKS_LADDER_RAISE_LOWER_1: owner, "ladder up, ladder down". -->
   <RMFlow_LadderUp>Ladder up</RMFlow_LadderUp>

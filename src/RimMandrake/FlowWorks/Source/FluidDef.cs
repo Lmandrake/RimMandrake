@@ -49,8 +49,9 @@ namespace RimMandrake.FlowWorks
 		/// RM_LiquidSurface.BuildLookTable both read it first). Unset, the row's <c>surfaceLook</c> is used.</summary>
 		public RM_LiquidSurfaceLook surfaceLook;
 
-		/// <summary>Reservoir volume consumed per flooded tile. Lower = a
-		/// given reservoir reaches further before running dry.</summary>
+		/// <summary>Reservoir volume consumed per flooded tile, in notches. LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth
+		/// spec §2.4): PINNED to 1 for every liquid, so a notch costs the same 1,000 L in a pond, a canal and a tank (any other
+		/// value is a hidden unit that makes the depth readout lie); ConfigErrors refuses anything else.</summary>
 		public float volumePerTile = 1f;
 
 		/// <summary>Ticks between one flooded tile and the next: the fluid's own
@@ -92,14 +93,14 @@ namespace RimMandrake.FlowWorks
 
 		// ── PHASE 4: stock, recession and refill ──────────────────────────
 
-		// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the 5:1 budget field (canalCellsPerSourceCell) is gone. A pond
+		// POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: the old per-source-cell budget field (canalCellsPerSourceCell) is gone. A pond
 		// square holds its own bed depth (RM_Volume.BedLevels: shallow 2, deep RM_Volume.LevelsPerSquare), so one
 		// deep pond square is exactly one deep canal square and one tank square.
 
 		/// <summary>Ruling 2's seepage baseline: fill-units a LIMITED body regains
 		/// per source cell per in-game day with no weather at all. Tuned so a
-		/// one-cell seep takes multiple seasons to refill the five canal cells it
-		/// can support — "slow and certain", never random.</summary>
+		/// one-cell seep takes multiple seasons to refill — "slow and certain",
+		/// never random.</summary>
 		public float groundOozePerSourceCellPerDay = 0.13f;
 
 		/// <summary>Multiplier on <see cref="groundOozePerSourceCellPerDay"/> at a
@@ -198,6 +199,11 @@ namespace RimMandrake.FlowWorks
 			if (volumePerTile <= 0f)
 			{
 				yield return "volumePerTile must be > 0 -- a reservoir spending 0 per tile never runs dry.";
+			}
+			else if (System.Math.Abs(volumePerTile - 1f) > 1e-4f)
+			{
+				yield return "volumePerTile must be 1 (it is " + volumePerTile + "): a notch is 1,000 L in a pond, a canal and a tank "
+					+ "alike (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD); any other value makes litres and metres disagree.";
 			}
 			if (ticksPerTile < 1)
 			{

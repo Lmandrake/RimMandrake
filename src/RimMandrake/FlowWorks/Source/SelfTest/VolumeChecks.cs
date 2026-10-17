@@ -23,7 +23,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PumpMath.TankUnitsPerLevel == RM_Volume.UnitsPerLevel, "the pump's level is the yardstick's level");
                 // deep pond square, in levels -> units
                 int deepBed = RM_Volume.BedLevels(true, 300);
-                float pondSquareUnits = RM_Volume.BodyCapacity(deepBed, 1, 1f, 1f) * RM_Volume.UnitsPerLevel;
+                float pondSquareUnits = RM_Volume.BodyCapacity(deepBed, 1, 1f) * RM_Volume.UnitsPerLevel;
                 Assert(Math.Abs(pondSquareUnits - RM_Volume.UnitsPerSquare) < 1e-6, "deep pond square " + pondSquareUnits + " != " + RM_Volume.UnitsPerSquare);
                 // deep canal square: MaxDepth levels
                 Assert(RM_ExcavationDepthLevels() * RM_Volume.UnitsPerLevel == RM_Volume.UnitsPerSquare, "deep canal square = one tank square");
@@ -64,10 +64,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_Volume.BedLevels(false, 42) == 4, "chest-deep moving water = 4");
                 Assert(RM_Volume.BedLevels(false, 30) == 2, "shallow water, marsh = 2 (ruling 3/7)");
                 // a mixed pond: 10 shallow + 10 deep holds 60 levels (trip 12)
-                float mixed = RM_Volume.BodyCapacity(10 * 2 + 10 * 4, 20, 1f, 1f);
+                float mixed = RM_Volume.BodyCapacity(10 * 2 + 10 * 4, 20, 1f);
                 Assert(Math.Abs(mixed - 60f) < 1e-6, "mixed pond holds 60, got " + mixed);
-                Assert(RM_Volume.BodyCapacity(40, 20, 1f, 0f) > 0f, "a zero budget slider still gives a positive capacity");
-                Assert(RM_Volume.BodyCapacity(0, 0, 1f, 1f) == 0f, "no cells, no capacity");
+                Assert(RM_Volume.BodyCapacity(1, 20, 1f) >= 20 * RM_StockMath.MinPerCellVolume, "never below the per-cell floor");
+                Assert(RM_Volume.BodyCapacity(0, 0, 1f) == 0f, "no cells, no capacity");
             });
 
             Case("Volume_migration_keeps_the_fill_fraction_and_every_tank_unit", () =>
@@ -100,8 +100,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "container sizes read 1.5 L / 15 L / 208 L: " + RM_Volume.FormatLitres(1.5) + " " + RM_Volume.FormatLitres(208));
                 Assert(RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare) == "4 kL" && RM_Volume.FormatUnits(160000) == "16 kL" && RM_Volume.FormatLitres(12500) == "12.5 kL",
                     "squares and tanks read in kL: " + RM_Volume.FormatUnits(RM_Volume.UnitsPerSquare));
-                Assert(RM_Volume.DepthReadout(4, 4000) == "2 m deep, 4 kL" && RM_Volume.DepthReadout(3, 3000) == "1.5 m deep, 3 kL"
-                    && RM_Volume.DepthReadout(1, 1000) == "0.5 m deep, 1 kL", "mouseover: " + RM_Volume.DepthReadout(3, 3000));
+                Assert(RM_Volume.Readout(4, 0, 40000) == "Hole 2 m \u00b7 Water 2.00 m (4,000 L)", "mouseover: " + RM_Volume.Readout(4, 0, 40000));
                 // a bottle from a deep pond square barely dents it (C2-F2 debit in fill-units: 15 units of a 40,000-unit square)
                 float bottleStock = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.BodyStockFor(15, 1f, RM_Volume.UnitsPerLevel);
                 Assert(Math.Abs(bottleStock - 0.0015f) < 1e-7, "a bottle costs 0.0015 of a level, got " + bottleStock);

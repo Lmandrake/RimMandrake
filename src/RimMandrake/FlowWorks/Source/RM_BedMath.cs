@@ -31,11 +31,16 @@ namespace RimMandrake.FlowWorks
 		/// <summary>§9.4 s (PROVISIONAL): squares further out per extra level. Mod Setting "deepBedCellsPerLevel".</summary>
 		public const int DefaultCellsPerLevel = 4;
 
-		/// <summary>§9.4 cap (PROVISIONAL): the deepest natural bed. Mod Setting "deepBedMaxDepth".</summary>
+		/// <summary>§9.4 cap (PROVISIONAL): the deepest natural bed in notches (20 = 10 m). Mod Setting "deepBedMaxDepth"; its floor
+		/// SHAPE per lake and biome is LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11).</summary>
 		public const int DefaultMaxBedDepth = 20;
 
 		/// <summary>The bed record is a byte grid; nothing deeper is storable.</summary>
 		public const int MaxStorableDepth = 250;
+
+		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (owner D2 by card 2026-10-17: the lake floor ceiling is settable to 125 m):
+		/// the top of the "deepBedMaxDepth" slider, in notches (250 = 125 m, the byte grid's limit).</summary>
+		public const int MaxBedCeiling = MaxStorableDepth;
 
 		/// <summary>The old flood-fill cap (RM_LiquidStock.MaxBodyCells): a body bigger than this was limitless whatever it
 		/// touched. Kept for oceans; an inland lake is now walked up to <see cref="DefaultDrainableLakeCells"/>.</summary>

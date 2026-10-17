@@ -491,7 +491,7 @@ namespace RimMandrake.FlowWorks
 					}
 					if (IsSource(donor))
 					{
-						// The 5:1 budget bites here and nowhere else. A failed debit must NOT move liquid.
+						// The pond's stock bites here and nowhere else. A failed debit must NOT move liquid.
 						if (!world.TryDebitLevel(donor))
 						{
 							break;

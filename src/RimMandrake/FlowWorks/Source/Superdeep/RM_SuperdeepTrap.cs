@@ -966,7 +966,7 @@ namespace RimMandrake.FlowWorks
 			// PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (design §8.2: "Climbs out of steps up to K deep."), for anyone in a hole.
 			if (relative && !RM_PocketGrid.CanFly(__instance))
 			{
-				string climb = "RMFlow_ClimbsSteps".Translate(RM_PocketGrid.ClimbLimitOf(__instance));
+				string climb = "RMFlow_ClimbsSteps".Translate(RM_Volume.FormatMetres(RM_PocketGrid.ClimbLimitOf(__instance)));
 				__result = string.IsNullOrEmpty(__result) ? climb : __result + "\n" + climb;
 			}
 			if (!RM_SuperdeepTrap.Captures(__instance))
