@@ -960,6 +960,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		private readonly SortedSet<long> lsFrontier = new SortedSet<long>();
+		private readonly List<int> lsDeferred = new List<int>();
 
 		/// <summary>The r squares of <paramref name="comp"/> that hold its band: grown best-first (by <see cref="CellKey"/>)
 		/// from the comp's best square through its own squares, so the part-filled band is always ONE contiguous patch.</summary>
@@ -987,12 +988,25 @@ namespace RimMandrake.FlowWorks
 			lsFrontier.Clear();
 			lsFrontier.Add(best);
 			lsPicked.Add((int)(best % n));
+			// LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY: a live mouth is passed THROUGH and filled last. The solve only re-lays the
+			// region's own volume, and the source adds a unit only when a mouth has room, so a brim mouth that kept its band
+			// left a shallow rim (or a square beyond the mouth) dry for ever beside a limitless source (FillsFromLimitless at
+			// the shipped flags: 194/2000 scenes). Deferred, the mouth is the square left short and the source tops it up.
+			bool fed = !drains && sourceHops.Count > 0;
+			lsDeferred.Clear();
 			while (lsPick.Count < r && lsFrontier.Count > 0)
 			{
 				long top = lsFrontier.Min;
 				lsFrontier.Remove(top);
 				int c = (int)(top % n);
-				lsPick.Add(c);
+				if (fed && IsLiveMouth(c))
+				{
+					lsDeferred.Add(c);
+				}
+				else
+				{
+					lsPick.Add(c);
+				}
 				for (int d = 0; d < 4; d++)
 				{
 					int nb = Cardinal(c, d);
@@ -1002,6 +1016,10 @@ namespace RimMandrake.FlowWorks
 					}
 					lsFrontier.Add(CellKey(nb, drains));
 				}
+			}
+			for (int i = 0; i < lsDeferred.Count && lsPick.Count < r; i++)
+			{
+				lsPick.Add(lsDeferred[i]);
 			}
 		}
 

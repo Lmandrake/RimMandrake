@@ -674,17 +674,21 @@ class PulseOracle(object):
                     return list(cp["cells"])
                 band, k = cp["band"], comp_of[(cp["band"], cp["cells"][0])]
                 start = min(cp["cells"], key=lambda c: self._ls_key(c, drains))
-                frontier, seen, out = [(self._ls_key(start, drains), start)], {start}, []
+                frontier, seen, out, deferred = [(self._ls_key(start, drains), start)], {start}, [], []
+                fed = not drains and bool(self.ds)
                 while len(out) < r and frontier:
                     frontier.sort()
                     _, c = frontier.pop(0)
-                    out.append(c)
+                    if fed and self._ls_mouth(c):
+                        deferred.append(c)   # LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY: a live mouth is passed through, filled last
+                    else:
+                        out.append(c)
                     for dx, dz in CARDINAL:
                         n = (c[0] + dx, c[1] + dz)
                         if comp_of.get((band, n)) == k and n not in seen:
                             seen.add(n)
                             frontier.append((self._ls_key(n, drains), n))
-                return out
+                return out + deferred[:max(0, r - len(out))]
 
             def assign(k, amount):
                 cp = comps[k]

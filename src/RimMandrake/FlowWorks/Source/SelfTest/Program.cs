@@ -1730,6 +1730,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             var kernelClock = System.Diagnostics.Stopwatch.StartNew();
             KernelCase("Kernel_fuzz_ledger_bounds_nomix_settles", () => FlowKernelFuzz.Fuzz(5000, 101));
             KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
+            KernelCase("LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY_limitless_source_fills_at_shipped_flags", () => FlowKernelFuzz.FillsFromLimitless(2000, 1000, shipped: true));
             Case("FLOW_ORDER_EXTERNAL_INPUT_1_pump_fed_channel_spreads_and_settles", () =>
             {
                 string r = FlowKernelFuzz.PumpFedChannelSpreads();
