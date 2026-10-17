@@ -171,6 +171,10 @@ SETTINGS = {
     "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": {
         "thirstEnabled": True, "thirstRateMultiplier": 1.0, "thirstHeatScaling": True, "animalsGetThirst": True,
         "drinkFromTerrain": True, "waterQualityEffects": True, "dbhBottleBridge": True,
+        # THIRST_RULES_BUILD_SALT_OFF_THE_MENU + owner Q12 (2026-10-17, c72cea8a08)
+        "lastResortDrinking": True, "saltBreakEnabled": True, "roughDrinkPenalty": True,
+        "drinkingReserveLitres": 200.0, "bucketFirefighting": True, "snowGathering": True,
+        "sanguophageBloodQuenches": True, "filledBottlesPerColonist": 3,
     },
     # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (2026-10-16, design §5): defaults = the ruled behaviour (OQ-S1..S7)
     "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": {
