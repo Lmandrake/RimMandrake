@@ -291,6 +291,15 @@
     <Compile Include="Rivers\RM_RiverWorksProofWorks.cs" />
   </ItemGroup>
 
+  <!-- River colours: River Colors (was mandrake.rut.rivercolors, WORLD_RIVER_COLORS_1), merged 2026-10-16
+       (RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW; owner: "Add river colors into flowworks as part of adding liquids to
+       the world."). Namespace RimMandrake.FlowWorks.RiverColors. A planet-map river gradient (WorldDrawLayer_Paths.
+       GeneratePaths prefix, applied by RM_FlowWorksHarmony); its settings are a section of RimMandrakeFlowWorksSettings. -->
+  <ItemGroup>
+    <Compile Include="RiverColors\RM_RiverColors.cs" />
+    <Compile Include="RiverColors\RM_RiverColorsSettings.cs" />
+  </ItemGroup>
+
   <!-- Liquid kits: Machinery\Kits\ (namespace RimMandrake.FlowWorks.Machinery.Kits). Kits-only files go in this group. -->
   <ItemGroup>
     <Compile Include="Machinery\Kits\RM_KitMath.cs" />
