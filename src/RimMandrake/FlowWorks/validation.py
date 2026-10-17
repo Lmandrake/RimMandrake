@@ -662,7 +662,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # the liquid-kit and sluice-gate sections, registered in site_spec 2026-10-15 (they were scribed
                         # all along but missing from the registry): no live row flips them yet
                         "fluidResidueEnabled", "hotLiquidEnabled", "liquidBathRecipesEnabled", "liquidReactionsEnabled",
-                        "sluiceGatesEnabled"]
+                        "sluiceGatesEnabled",
+                        # HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY / FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW (site_spec 2026-10-16):
+                        # art/diagnostic switches, no live row flips them yet
+                        "pipeLinksIntoMachines", "joinFittings", "waterBodyTypeFlipFixEnabled"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
