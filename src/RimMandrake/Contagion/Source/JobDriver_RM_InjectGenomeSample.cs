@@ -17,6 +17,7 @@ namespace RimMandrake.Contagion
     public class JobDriver_RM_InjectGenomeSample : JobDriver
     {
         private const int InjectDurationTicks = 180;
+        private const float InjectReach = 4f;   // GotoInteractablePosition hands over within 3 cells
 
         private Pawn Host => (Pawn)job.GetTarget(TargetIndex.A).Thing;
 
@@ -36,6 +37,7 @@ namespace RimMandrake.Contagion
             this.FailOnDowned(TargetIndex.A);
             this.FailOn(() => !AmoebaHostUtility.IsEligibleHost(Host));
             this.FailOn(() => !pawn.inventory.innerContainer.Any(t => t.def == RM_ContagionDefOf.RM_GenomeSample));
+            this.FailOn(() => !RM_ContagionSettings.genomeOrganGrowingEnabled);   // the setting stops a job already running
 
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
@@ -45,7 +47,16 @@ namespace RimMandrake.Contagion
             inject.defaultCompleteMode = ToilCompleteMode.Delay;
             inject.defaultDuration = InjectDurationTicks;
             inject.WithProgressBarToilDelay(TargetIndex.A);
-            inject.AddFinishAction(delegate
+            // A wild host can wander off mid-injection. Not FailOnCannotTouch: GotoInteractablePosition stops within 3 cells,
+            // not adjacent, so the reach is that interaction distance plus one cell of slack.
+            inject.FailOn(() => !pawn.Position.InHorDistOf(Host.Position, InjectReach));
+            yield return inject;
+
+            // Instant toil after the delay: runs only when the delay COMPLETED. A finish action would also run on an
+            // interrupt or FailOn and start gestation with the injection unfinished (JobDriver_RM_SampleDraftprint shape).
+            Toil finish = ToilMaker.MakeToil("FinishGenomeInjection");
+            finish.defaultCompleteMode = ToilCompleteMode.Instant;
+            finish.initAction = delegate
             {
                 Thing sample = AmoebaHostUtility.FindSampleToInject(pawn);
                 if (sample == null)
@@ -62,8 +73,8 @@ namespace RimMandrake.Contagion
                     pawn.inventory.innerContainer.Remove(sample);
                     sample.Destroy();
                 }
-            });
-            yield return inject;
+            };
+            yield return finish;
         }
     }
 }

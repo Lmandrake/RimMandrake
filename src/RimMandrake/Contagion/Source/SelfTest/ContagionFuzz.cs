@@ -378,6 +378,19 @@ namespace RimMandrake.Contagion.SelfTest
                     Check(got == want, $"PickDive(count {count}, mask {mask}) = {got}, want {want}");
                     Check(asked <= 4 && asked == (want >= 0 ? want + 1 : Math.Min(count, 4)), $"PickDive asked {asked} reachability checks");
                 }
+                // CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS: successive pulses step through every window, so each candidate is tried
+                for (int count = 0; count <= RM_SkyKernel.DiveCandidates; count++) for (int start = -3; start < 40; start += 7)
+                {
+                    var tried = new bool[count]; int windows = Math.Max(1, (count + 3) / 4); Steps++;
+                    for (int k = 0; k < windows; k++)
+                    {
+                        int off = RM_SkyKernel.DiveOffset(start + k, count);
+                        Check(off >= 0 && (count == 0 || off < count) && off % 4 == 0, $"DiveOffset({start + k}, {count}) = {off}");
+                        for (int i = 0; i < Math.Min(count, 4); i++) tried[(off + i) % count] = true;
+                    }
+                    Check(Array.TrueForAll(tried, t => t), $"DiveOffset leaves a candidate untried (count {count}, start {start})");
+                }
+                Check(RM_SkyKernel.DiveOffset(0, 4) == 0 && RM_SkyKernel.DiveOffset(1, 5) == 4 && RM_SkyKernel.DiveOffset(2, 5) == 0, "DiveOffset rows");
             }
             catch (Exception e) { fails.Add("burn: " + e.Message); }
             return fails;
