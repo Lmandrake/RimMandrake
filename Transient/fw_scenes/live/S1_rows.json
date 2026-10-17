@@ -1,0 +1,26 @@
+[
+ {
+  "id": "S1.a",
+  "status": "MATCHES",
+  "doc": "All 8 canal cells hold 1 level.",
+  "game": "all 8 hold 1 level first at pulse 8"
+ },
+ {
+  "id": "S1.b",
+  "status": "MATCHES",
+  "doc": "At every pulse the wet canal cells form one unbroken run starting at cell 1 (no isolated puddle, no gap).",
+  "game": "pulses where the wet part was NOT one run from the lake: none"
+ },
+ {
+  "id": "S1.c",
+  "status": "MATCHES",
+  "doc": "Once a canal cell is wet it never goes dry again during the scene.",
+  "game": "a wet cell went dry at pulses: never"
+ },
+ {
+  "id": "S1.d",
+  "status": "MATCHES",
+  "doc": "The lake never visibly shrinks (LIMITLESS).",
+  "game": "lake limitless at every pulse: True (stock 616.0 -> 616.0)"
+ }
+]

@@ -441,7 +441,8 @@ def s3_geom():
     pond = [(ox + 1 + i, oz + 1 + j) for i in range(4) for j in range(3)]
     canal = run(ox + 15, oz + 2, 6)
     return dict(pond=pond, canal=canal, pump=(ox + 9, oz + 2), reelA=(ox + 9, oz + 3), reelB=(ox + 9, oz),
-                intake=(ox + 4, oz + 2), outflow=canal[0], battery=(ox + 12, oz + 6),
+                intake=(ox + 4, oz + 2), intake_alt=[(ox + 4, oz + 1), (ox + 4, oz + 3)], outflow=canal[0],
+                battery=(ox + 12, oz + 6),
                 gap=[(ox + 5 + i, oz + 2) for i in range(3)] + [(ox + 12 + i, oz + 2) for i in range(3)],
                 rect=(ox - 4, oz - 6, 30, 16))
 
@@ -479,6 +480,14 @@ def _pump_rig(w, g):
     if bid is not None:
         w.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
     la = w.hp("lay:%d,%d,%d,%d" % (g["reelA"] + g["intake"]))
+    # LIVE 2026-10-17 (fresh map, S3): the lay to the pond's middle edge square refused "no room for the straight
+    # lead-out from the nozzle" while the same call one square south laid at once; the earlier walk's S3.b "pulse None"
+    # runs had the same unlaid intake. Any other edge square of the same pond is the same scene: try them in turn.
+    for alt in g.get("intake_alt") or ():
+        if la.get("success"):
+            break
+        notes.append("intake hose to %s refused (%s); tried %s" % (g["intake"], la.get("reason"), alt))
+        la = w.hp("lay:%d,%d,%d,%d" % (g["reelA"] + alt))
     lb = w.hp("lay:%d,%d,%d,%d" % (g["reelB"] + g["outflow"]))
     if not la.get("success"):
         notes.append("intake hose not laid: %s" % la.get("reason"))

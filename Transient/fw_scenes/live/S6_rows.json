@@ -1,0 +1,25 @@
+[
+ {
+  "id": "S6.a",
+  "status": "MATCHES",
+  "doc": "Straight after the reload, every cell's depth and fill, the pond's stock, and the gate's open/shut state equal what they were at the save.",
+  "game": "after reload: cells, pond stock and gate EQUAL the save"
+ },
+ {
+  "id": "S6.b",
+  "status": "MATCHES",
+  "doc": "Total liquid in Run 2 is the same before the save and after the reload.",
+  "game": "total liquid before save 41.0, after reload 41.0"
+ },
+ {
+  "id": "S6.c",
+  "status": "MATCHES",
+  "doc": "Run 2 ends in the same settled state as Run 1, cell for cell.",
+  "game": "pulse 30: cells equal; pond run 1 35.0, run 2 35.0"
+ },
+ {
+  "id": "S6.Q1",
+  "status": "OPEN RULING",
+  "game": "pulse-by-pulse after the reload, run 2 differed from run 1 at pulses: none"
+ }
+]

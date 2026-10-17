@@ -115,7 +115,8 @@ def measured(s, step, pulse):
     for r in rows(s):
         if r["status"] == "OPEN RULING": continue
         st = {"MATCHES": "MATCHES the rule", "DIFFERS": "DIFFERS from the rule", "UNMEASURED": "not measured"}.get(r["status"], r["status"])
-        out.append(f"{st}: {r['doc']}  Game: {r.get('game','')}")
+        # rows without a doc claim (S3.audit's MEASURED ledger, a scene's CRASHED row) are named by their id
+        out.append(f"{st}: {r.get('doc', r.get('id', ''))}  Game: {r.get('game','')}")
     return out
 
 def wrap(d, text, font, w):
