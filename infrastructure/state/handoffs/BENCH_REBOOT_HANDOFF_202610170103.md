@@ -30,6 +30,10 @@ The FlowWorks level solve (2732aa5faa + body fix 50da06da8b, DLL 31f335066b, dep
 - `ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL` — batch RUNNING (140 installed, 72 needs_eyes, 35 pending at 01:03Z; auto-installs/commits per 20); NEXT: when `facing_regen_batch.py status` shows pending 0, build the needs_eyes sheet for the owner with `facing_regen_batch.py montage`.
 - `LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK` — bill round trip PASS live (747999af5b); NEXT: state-read the right-click menu and unpowered reason on the review map, then close.
 
+- `SELF_MATCHING_WAITS` (no ledger item; Machinist) — carried from 202610161821 unchanged; NEXT: when knowledge/wait_loop_census/<laptop>-*.json appears in Machinist, check the hook's macOS pgrep assumption against it.
+- `PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE` — biomes/UtinniPatches/SWBestiary deployed, AshkarrFlora moved to D:\Luke\dev\_rmbuild\retired_mods and off his list; ratchet_pilot startup had no unresolved RM_/RSW_/RUT_ refs; NEXT: on his next full-list load grep Player.log for missing plant defs, then close.
+- `VENOMVINE_BUILD_SCRUB_GROWS_TEETH` — unchanged; NEXT: put its 4 card questions to the owner after the growth OQ cards.
+
 ## Traps learned
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
