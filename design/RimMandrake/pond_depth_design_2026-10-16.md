@@ -64,15 +64,16 @@ V      = stock / levelUnit                       (levels the stock covers, RM_Be
 H[L]   = squares of the body whose bed ≥ L        (L = 1 .. maxBed; the band histogram)
 s      = the smallest drawdown with Σ_{L > s} H[L] ≤ V
 r      = V − Σ_{L > s} H[L]                        (whole levels left over for band s, 0 ≤ r < H[s])
-w(sq)  = bed(sq) − s     if bed > s
-       = 1               if bed == s and sq is in the r-patch
-       = 0               otherwise
+w(sq)  = bed(sq) − s + 1  if bed ≥ s and sq is in the r-patch   (band s is owned by EVERY square of bed ≥ s)
+       = bed(sq) − s      if bed > s, not in the patch
+       = 0                otherwise
 ```
+So Σw = V exactly (`RM_PondDepthMath`, selftest `PondDepth_S1`).
 
 - **Shallow vs deep vs marsh:** set by the bed, as today. Shallow water and marsh are bed 2; deep water is bed 4; a
   lake middle is 4–20 from `bedRecord`. Marsh shallows exactly like shallow water. Its full-stage look stays
   `Marsh`.
-- **The r-patch** is the band-*s* squares grown best-first as ONE connected patch. The order: nearest a draining mouth
+- **The r-patch** is r of the H[s] squares that own band *s* (bed ≥ *s*), grown best-first as ONE connected patch. The order: nearest a draining mouth
   (when the pond is being drawn), else the deepest neighbourhood, then cell index. This is the same rule the dug solve
   uses (`RM_FlowKernel.CellKey`, `:899-912`; patch growth `:946-990`). So a pond with less than a level left is one
   puddle at the minimum depth, never a scatter.
