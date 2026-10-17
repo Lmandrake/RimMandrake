@@ -25,7 +25,18 @@ namespace RimMandrake.FlowWorks.Sprinklers
 
 		public IReadOnlyList<CompRM_SprinklerBase> Heads => heads;
 
-		public static RM_MapComponent_Sprinklers Of(Map map) => map?.GetComponent<RM_MapComponent_Sprinklers>();
+		private static Map cachedMap;
+		private static RM_MapComponent_Sprinklers cachedComp;
+
+		/// <summary>One-slot cache: WetAt is read per plant tick by ExplosiveGrowth; GetComponent walks the component list.</summary>
+		public static RM_MapComponent_Sprinklers Of(Map map)
+		{
+			if (map == null) return null;
+			if (map == cachedMap && cachedComp != null && cachedComp.map == map) return cachedComp;
+			RM_MapComponent_Sprinklers c = map.GetComponent<RM_MapComponent_Sprinklers>();
+			if (c != null) { cachedMap = map; cachedComp = c; }
+			return c;
+		}
 
 		private RM_SprinkledGrid Grid => grid ?? (grid = new RM_SprinkledGrid(map.cellIndices.NumGridCells));
 
@@ -116,7 +127,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			Scribe_Collections.Look(ref untils, "sprinkledUntil", LookMode.Value);
 			Scribe_Collections.Look(ref owners, "sprinkledOwner", LookMode.Value);
 			Scribe_Collections.Look(ref keys, "sprinkledLiquid", LookMode.Value);
-			if (Scribe.mode == LoadSaveMode.PostLoadInit && cells != null && untils != null && keys != null
+			if (Scribe.mode == LoadSaveMode.LoadingVars && cells != null && untils != null && keys != null
 			    && cells.Count == untils.Count && cells.Count == keys.Count)
 			{
 				RM_SprinkledGrid g = Grid;

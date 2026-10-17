@@ -154,6 +154,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(c.Contains("InOurBiomes(__instance?.map)") && c.Contains("return true;"), "OQ-S3: skipped only in our biomes");
                 Assert(!c.Contains("using VFEF"), "can-fail: no compile reference to VFEF");
             });
+
+            Case("Sprinkler_review_fixes_B1_P1_in_source", () =>
+            {
+                string m = Src("Sprinklers/RM_MapComponent_Sprinklers.cs");
+                Assert(m.Contains("Scribe.mode == LoadSaveMode.LoadingVars && cells != null"), "B1: the wet grid is rebuilt in LoadingVars, where the lists are filled");
+                Assert(!m.Contains("LoadSaveMode.PostLoadInit"), "can-fail: PostLoadInit sees fresh null locals, so the rebuild never ran");
+                Assert(m.Contains("cachedMap") && m.Contains("cachedComp.map == map"), "P1: Of() keeps a one-slot map-component cache");
+            });
         }
 
         private static KeyValuePair<string, int> KV(string k, int v) => new KeyValuePair<string, int>(k, v);
