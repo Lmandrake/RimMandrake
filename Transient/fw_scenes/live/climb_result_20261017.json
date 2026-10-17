@@ -1,0 +1,366 @@
+{
+ "script": "climb_proof.py",
+ "started": "2026-10-17T11:16:36",
+ "rows": [
+  {
+   "id": "CLIMB_pond_person_free",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "held": "False",
+     "trapped": "False",
+     "cell": "124,124",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62473",
+     "depth": "4",
+     "gen": "173",
+     "built": "173",
+     "rebuilds": "49"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=2 held=False trapped=False cell=124,124 | POCKET k=2 comp=0 pocket=False size=62473 depth=4 gen=173 built=173 rebuilds=49"
+   }
+  },
+  {
+   "id": "CLIMB_pond_person_walks_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     124,
+     129
+    ],
+    "rect": [
+     122,
+     122,
+     5,
+     5
+    ],
+    "wantOut": true
+   }
+  },
+  {
+   "id": "CLIMB_D3_person_trapped",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "held": "True",
+     "trapped": "True",
+     "cell": "131,123",
+     "comp": "1",
+     "pocket": "True",
+     "size": "9",
+     "depth": "3",
+     "gen": "173",
+     "built": "173",
+     "rebuilds": "49"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=2 held=True trapped=True cell=131,123 | POCKET k=2 comp=1 pocket=True size=9 depth=3 gen=173 built=173 rebuilds=49"
+   }
+  },
+  {
+   "id": "CLIMB_D3_person_cannot_walk_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     131,
+     123
+    ],
+    "rect": [
+     130,
+     122,
+     3,
+     3
+    ],
+    "wantOut": false
+   }
+  },
+  {
+   "id": "CLIMB_D3_muffalo_free",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "3",
+     "held": "False",
+     "trapped": "False",
+     "cell": "127,127",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62491",
+     "depth": "0",
+     "gen": "173",
+     "built": "173",
+     "rebuilds": "49"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=3 held=False trapped=False cell=127,127 | POCKET k=3 comp=0 pocket=False size=62491 depth=0 gen=173 built=173 rebuilds=49"
+   }
+  },
+  {
+   "id": "CLIMB_D2_rat_trapped",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "1",
+     "held": "True",
+     "trapped": "True",
+     "cell": "136,123",
+     "comp": "6",
+     "pocket": "True",
+     "size": "1",
+     "depth": "2",
+     "gen": "173",
+     "built": "173",
+     "rebuilds": "49"
+    },
+    "mismatch": {},
+    "txt": "CLIMB k=1 held=True trapped=True cell=136,123 | POCKET k=1 comp=6 pocket=True size=1 depth=2 gen=173 built=173 rebuilds=49"
+   }
+  },
+  {
+   "id": "CLIMB_ladder_prison_door",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "colonist": {
+     "kv": {
+      "k": "2",
+      "held": "True",
+      "trapped": "False",
+      "cell": "140,122",
+      "comp": "2",
+      "pocket": "True",
+      "size": "9",
+      "depth": "4",
+      "gen": "173",
+      "built": "173",
+      "rebuilds": "49"
+     },
+     "mismatch": {}
+    },
+    "rat": {
+     "kv": {
+      "k": "1",
+      "held": "True",
+      "trapped": "True",
+      "cell": "142,124",
+      "comp": "3",
+      "pocket": "True",
+      "size": "9",
+      "depth": "4",
+      "gen": "173",
+      "built": "173",
+      "rebuilds": "49"
+     },
+     "mismatch": {}
+    },
+    "txt": [
+     "CLIMB k=2 held=True trapped=False cell=140,122 | POCKET k=2 comp=2 pocket=True size=9 depth=4 gen=173 built=173 rebuilds=49",
+     "CLIMB k=1 held=True trapped=True cell=142,124 | POCKET k=1 comp=3 pocket=True size=9 depth=4 gen=173 built=173 rebuilds=49"
+    ]
+   }
+  },
+  {
+   "id": "CLIMB_mask_seals_cliff_edge",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "person": "CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=13 | POCKET k=2 comp=0 pocket=False size=62473 depth=0 gen=173 built=173 rebuilds=49",
+    "muffalo": "CLIFF k=3 bits=0xFF vanilla=0xFF derived=True derives=13 | POCKET k=3 comp=0 pocket=False size=62491 depth=0 gen=173 built=173 rebuilds=49"
+   }
+  },
+  {
+   "id": "CLIMB_ramp_walk_out",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "end": [
+     145,
+     129
+    ],
+    "rect": [
+     144,
+     122,
+     3,
+     3
+    ],
+    "wantOut": true,
+    "ramp": {
+     "success": true,
+     "method": "System.String ProofRamp(System.String)",
+     "result": "RAMP 146,123 rot=1 joins=True gen=174",
+     "thingArgs": [],
+     "ticksGame": 1994,
+     "operation": {
+      "OperationId": "op_6701849313464ec48c6685f145139eab",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 48
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 1994
+     }
+    }
+   }
+  },
+  {
+   "id": "CLIMB_ramp_frees_and_retraps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "txt": [
+     "POCKET k=2 comp=3 pocket=True size=9 depth=4 gen=173 built=173 rebuilds=49",
+     "POCKET k=2 comp=0 pocket=False size=62482 depth=4 gen=174 built=174 rebuilds=50",
+     "POCKET k=2 comp=3 pocket=True size=9 depth=4 gen=175 built=175 rebuilds=51"
+    ],
+    "ramp": [
+     {
+      "success": true,
+      "method": "System.String ProofRamp(System.String)",
+      "result": "RAMP 146,123 rot=1 joins=True gen=174",
+      "thingArgs": [],
+      "ticksGame": 1994,
+      "operation": {
+       "OperationId": "op_6701849313464ec48c6685f145139eab",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 48
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 1994
+      }
+     },
+     {
+      "success": true,
+      "method": "System.String ProofRamp(System.String)",
+      "result": "RAMP 146,123 removed gen=175",
+      "thingArgs": [],
+      "ticksGame": 2966,
+      "operation": {
+       "OperationId": "op_c52e9b7565124378b727671096d21804",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 39
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 2966
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "CLIMB_step_cost_slow_at_K",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "txt": [
+     "COST from=121,124 to=122,124 fromD=0 toD=2 k=2 mask=True climb=45 factor=2 cost=90",
+     "COST from=122,123 to=122,124 fromD=2 toD=2 k=2 mask=True climb=45 factor=2 cost=0",
+     "COST from=148,123 to=147,123 fromD=0 toD=1 k=2 mask=True climb=30 factor=2 cost=30"
+    ]
+   }
+  },
+  {
+   "id": "CLIMB_rebuild_follows_fill",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kv": {
+     "k": "2",
+     "comp": "0",
+     "pocket": "False",
+     "size": "62482",
+     "depth": "3",
+     "gen": "177",
+     "built": "177",
+     "rebuilds": "52"
+    },
+    "fill": {
+     "success": true,
+     "cell": {
+      "x": 132,
+      "z": 123
+     },
+     "depth": 1,
+     "fillSet": false,
+     "fill": 0,
+     "ticksGame": 3036,
+     "operation": {
+      "OperationId": "op_84443cdaf1d8417b985c9444ca3a3767",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 41
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 3036
+     }
+    }
+   }
+  },
+  {
+   "id": "CLIMB_raider_never_crosses_ramped_moat",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs ramps (\u00a78.4); the masks are in (\u00a78.5 step 2)"
+   }
+  },
+  {
+   "id": "CLIMB_hauler_fetches_ramped_floor",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs ramps (\u00a78.4)"
+   }
+  },
+  {
+   "id": "CLIMB_save_reload_pockets_identical",
+   "status": "UNMEASURED",
+   "class": "OWED",
+   "detail": {
+    "why": "needs a save + reload cycle on the bridge; the grid is derived, never scribed"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/fw_scenes/live/climb_result_20261017.json",
+  "origin": "120,120",
+  "fresh_map": true
+ },
+ "settings_before": {
+  "superdeepCapturesOwnFaction": "False",
+  "pitRelativeClimbEnabled": "True",
+  "ladderPrisonDoorEnabled": "True"
+ },
+ "settings_restored": {
+  "superdeepCapturesOwnFaction": "False",
+  "pitRelativeClimbEnabled": "True",
+  "ladderPrisonDoorEnabled": "True"
+ }
+}
