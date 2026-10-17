@@ -48,7 +48,27 @@ List: `Transient/afk_2026-10-17/dragonsnake_art/art_list.json`; 9 jobs filed to 
 East/south/north per rimworld-sprite-facings (west mirrors east); north/south derive from the east master.
 
 ## Validation / selftests / script row
-(pending)
+- `src/RimStarWars/SWBestiary/validation.py`: new chain `dragonsnake_pair` (canon spawns; Greentide roster carries the albino iff its def is
+  live and `albinoDragonsnakeEnabled` is on — UNMEASURED while the def is held); offline `dragonsnake_body_plan_findings` in static_checks
+  (canon 4 Legs, albino 0 Legs/no hood) — passes; `shipped_defs` now skips DEPLOY_HOLD files so `defs_resolve` does not fail on a held def.
+  Static run still FAILs on 6 pre-existing/other-agent rows (scrapBird*, taozin* not in suite.toggles) — not mine.
+- Selftests GREEN 4/4: selftest_swbestiary, selftest_swbestiary_fuzz, selftest_greentide_fuzz, selftest_greentide_spine.
+- validate_patch WildAnimals_Greentide.xml: 0 errors (static; live match UNMEASURED until deploy).
+- Lesson filed: infrastructure/state/lessons/20261017T181051Z-BENCH-item-s-description-existing-def-can.md
 
 ## Owed (deploys, live rows)
-(pending)
+1. WIRE THE TOGGLE (blocked only on the taozin agent committing its BeastMechanics edits): in
+   `src/RimStarWars/SWBestiary/Source/BeastMechanics/RSW_BeastMechanicsSettings.cs` add
+   `public static bool albinoDragonsnakeEnabled = true;` (before shippedDefaults), `Scribe_Values.Look(ref albinoDragonsnakeEnabled, "albinoDragonsnakeEnabled", true);`,
+   and a Group "Albino dragonsnake" (tagOverride "[next game start]") with CheckboxLabeled "Albino dragonsnake (rare pale variant)";
+   add `<Compile Include="RSW_DragonsnakeAlbinoToggle.cs" />` to `RimMandrakeBeastMechanicsRSW.csproj`; `winbuild.py` the csproj;
+   commit DLL + .srchash; full-file review then mark-clean. The toggle class itself is committed (not compiled yet).
+2. Art: install existing pale render `regen_gt_canon_dragonsnake_v1_{east,south,north}` to
+   `RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino_{east,south,north}.png`; install `dragonsnake_albino_v1_swim_*` to
+   `.../DragonsnakeAlbino_Swimming_*`; install `dragonsnake_jfo_v1_*` over `RimStarWars/SWBestiary/Dragonsnake/Dragonsnake_*` and
+   `dragonsnake_jfo_v1_swim_*` over `swanimals/Dragonsnake/Dragonsnake_Swimming_*` once rendered and passed.
+3. Then delete the RSW_DragonsnakeAlbino.xml line in `src/DEPLOY_HOLD.txt` and deploy SWBestiary + UtinniPatches
+   (game is RUNNING now — no deploy this shift). Owed deploy NOW regardless: SWBestiary (Bodies, RSW_Dragonsnake.xml) and
+   UtinniPatches (WildAnimals_Greentide.xml, a no-op until the albino is live).
+4. Live rows: `modcheck run SWBestiary` chain `dragonsnake_pair` + `defs_resolve`; check Player.log for body-part errors on RSW_Dragonsnake
+   (body restructured: an existing saved dragonsnake's injuries may map onto different parts).
