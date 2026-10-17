@@ -206,6 +206,20 @@ Kumumgah of Tatooine, Noghri, Humans of Coruscant; by transporting slaves they
 "were believed to have **inadvertently seeded swaths of the galaxy with sentient
 life**."
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/07/06/species-of-the-week-rakata/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Rakata Prime (Lehon)
+> Notable members: Skal’nas, Tul’kar
+> Fandom: Star Wars [Legends]
+> Appearances: Knights of the Old Republic, Dawn of the Jedi
+> The Rakata were a species that dominated the known galaxy before the Old Republic was formed. They harnessed the dark side of the force to power technology that let them navigate hyperspace, build energy weapons and construct the StarForge which converted stellar material into ships and weapons at incredible rates. They formed an Infinite Empire, coming into conflict with many other powers, including the early Jedi Order. A plague stripped them of their power and they were overthrown and cast into obscurity.
+> I really like how 
+> Dawn of the Jedi
+>  let us have a look at the Rakata in their prime. Don’t forget their homeworld is canon now so we may see them pop up in future stories
+
 ## Visual brief
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action or photoreal Rakata exists (Wookieepedia carries no REAL-labelled image for `Rakatan`, `Rakata` or `Rakata/Legends`; only KOTOR/SWTOR game art and comics). The three comic panels were deleted: `wookieepedia_comic_closeup.jpg` and `wookieepedia_poe_dameron_comic.jpg` (both wiki-disowned — a mislabelled Mon Calamari and Lucasfilm's "generic alien extra #3457") and `wookieepedia_warrior_combat.jpg` (TUR comic). 🔑 **The realistic painted RPG illustrations are now the lead references:** `wookieepedia_group_weapons.jpg` (*The Unknown Regions*) for head, skin and class, and `wookieepedia_ancient_empire_art.jpg` (*Journal of Master Gnost-Dural*) for dress and digitigrade legs. The KOTOR renders (`legends_infobox`, `temple_group`) and the SWTOR bust (`profile_game_render`) are kept as **stylised-game anatomy references only** — they uniquely show the whole body on one figure and the temple — render the species realistically (moist mottled amphibian skin, natural light), not in their dated low-poly gloss.
@@ -310,6 +324,7 @@ the digitigrade legs, the tridactyl clawed hands, or the crest-sheathing hood.
   injuries"), `Hair_BaldOnly` + `Beard_NoBeardOnly` ("typically none").
   `Outland_WebbedFeet` is defensible from "amphibious," but the only *sourced*
   foot detail is clawed and, per the images, digitigrade.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Legends Rakata (Dawn of the Jedi comic art): tall conical yellow-tan bald head, wide-set eyes on side stalks, flat lipless mouth, ridged high-collared armoured tunic. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the painted RPG illustrations the visual brief makes lead references, with the KOTOR renders for anatomy only (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
@@ -357,6 +372,7 @@ none known
   *The New Essential Chronology*, *Dawn of the Jedi: Force War* 1,
   *The Essential Atlas*. Every quotation above is Wookieepedia's wording of
   them, not the books'.
+- https://bloggathehutt.wordpress.com/2020/07/06/species-of-the-week-rakata/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_legends_infobox.jpg` — **stylised KOTOR game render, anatomy only** (kept because it is the only single full-body figure). File:Rakata_kotor.jpg, the Legends infobox: a full-body KOTOR game render at 448×720 on black. The only image that settles the whole body at once — backswept pointed cranial crest, lateral eyestalks, small downturned mouth, **digitigrade clawed legs**, three-digit clawed hands, lean long-limbed build, and the warrior kit (pale asymmetric shoulder-drape, segmented maroon chest harness, heavy boxy belt).
@@ -365,6 +381,7 @@ none known
 - `wookieepedia_temple_group.png` — **stylised KOTOR game render, anatomy/architecture only.** File:RakataTemple.png, 876×550: a 3D render of Rakata outside the **Temple of the Ancients** on Lehon. Second independent confirmation of the digitigrade leg and the crest, plus a long slender polearm (a shocklance read) and a stepped ziggurat with a ribbed spire for ruin design.
 - `wookieepedia_profile_game_render.jpg` — File:Rakata_profile.png, 290×290: the bust used in the Legends *Biology and appearance* section. Legitimate but small and cropped; settles the head only. Superseded for whole-body purposes by `wookieepedia_legends_infobox.jpg`.
 - `donor_current_sprite.png` — the mod's current Rakatan head, `Normal_south.png` (one head, no variants). A greyscale runtime-tinted mask that does land the tall cranium and lateral eyestalks but gives the crest no backsweep or point, draws the eyestalks as plain balls, and has no mouth.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2020/07/06/species-of-the-week-rakata/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this species yet)

@@ -98,6 +98,23 @@ so a Selkath pawn clawing raiders is canonically a Selkath who has *lost it*. Th
 flavour note the owner may want, not a defect. `RSW_Head_selkath` and `RSW_Beard_fishmouth`
 are real, dedicated Selkath art.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/08/17/species-of-the-week-selkath/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Manaan
+> Notable members: Mantu
+> Fandom: Star Wars
+> Appearances: Knights of the Old Republic, The Clone Wars, The Acolyte, Ahsoka
+> Selkath are a humanoid species native to the ocean planet of Manaan. For centuries they rose to prominence as the source of the healing substance Kolto, which was extracted from the sea floor and was popular across the galaxy until it was superseded by agrarian product Bacta in the High Republic era. Selkath have thick skins and prominent wattles either side of their large mouths. They are capable of living out of the water but wear special suits to keep themselves moisturised on terrestrial planets.  
+> Matty T
+>  spotted a Selkath in the 
+> Ahsoka
+>  trailer – I love that this awesome species made it into live action thanks to 
+> The Acolyte
+> .
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the two *Clone Wars* Mantu renders (`wookieepedia_infobox_mantu_canon.jpg`, `wookieepedia_mantu_detail_encyclopedia.jpg`) and the two KotOR game renders (`wookieepedia_legends_infobox_kotor_fullbody.jpg`, `wookieepedia_legends_headshot.jpg`). The gap the old entry named is now closed: **Peex Curando from *The Acolyte* is the first live-action Selkath** (`wookieepedia_peex_curando_acolyte.jpg`), backed by its painted design art (`wookieepedia_peex_curando_concept_acolyte.jpg`) and the realistic KotOR concept painting (`wookieepedia_legends_concept_art.jpg`).
 
@@ -137,6 +154,7 @@ patterning cannot be produced by a skin-colour gene at all.** Patterning needs a
 render node or a baked variant, so if the owner wants it, that is new art, not a colour
 change. There is **no Selkath body art on disk**, so the short stature, the claws and the
 paddle feet are unrepresented.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a Selkath (The Acolyte/Clone Wars live action): smooth grey hammer-shaped head, broad wattles either side of a wide mouth, side-set eyes, dressed in plain brown robes. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Peex Curando (*The Acolyte*), its painted design art, the KotOR concept painting and the Legends text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
@@ -168,11 +186,13 @@ The head is built from single-channel greyscale tint masks (`RSW_Head_selkath` +
 - https://static.wikia.nocookie.net/starwars/images/1/16/PeexCurando-ArtOfAcolyte.png
   (File:PeexCurando-ArtOfAcolyte.png, *The Art of Star Wars: The Acolyte* → `wookieepedia_peex_curando_concept_acolyte.jpg`)
 - NOT fetched: `File:Selkath_female.jpg` (318×402, a *Dawn of the Jedi* comic panel) — the one image that would show the female tendrils, but it is a comic, so it was left out under the realism ruling.
+- https://bloggathehutt.wordpress.com/2026/08/17/species-of-the-week-selkath/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_peex_curando_acolyte.jpg` — **the reference of record.** Live-action, *The Acolyte*: Peex Curando head and shoulders — cracked polygonal blue-grey head skin, hanging lobes, nostril pits, amber side eye, wrinkled tan throat, robes; file `PeexCurando-DayEpisodeGuide.jpg` — https://static.wikia.nocookie.net/starwars/images/8/83/PeexCurando-DayEpisodeGuide.jpg/revision/latest?cb=20250606035059
 - `wookieepedia_peex_curando_concept_acolyte.jpg` — realistic painted design art, *The Art of Star Wars: The Acolyte*: full-body Peex in robes, splayed paddle feet visible; file `PeexCurando-ArtOfAcolyte.png` (286×421) — https://static.wikia.nocookie.net/starwars/images/1/16/PeexCurando-ArtOfAcolyte.png/revision/latest?cb=20260227034340
 - `wookieepedia_legends_concept_art.jpg` — realistic KotOR concept painting, 800×1300: full figure, crest/snout profile, lobes at full length, splayed feet; the collar is costume. File `Selkath concept.png` — https://static.wikia.nocookie.net/starwars/images/e/e9/Selkath_concept.png
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2026/08/17/species-of-the-week-selkath/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

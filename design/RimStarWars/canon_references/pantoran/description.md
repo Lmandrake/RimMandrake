@@ -47,6 +47,21 @@ species**: Pantoran = gold/yellow, Chiss = red. Note that this repo's **Nagai** 
 also pairs pale-blue-white skin with the wrong eye colour — see `nagai/description.md`.
 Blue-skinned humanoids need their eyes right or they collapse into each other.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/12/08/species-of-the-week-pantoran/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Pantora
+> Notable members: Baron Paponoida, Ryio Chuchi, Tarro Blackfeather
+> Fandom: Star Wars
+> Appearances: Revenge of the Sith, Clone Wars, Squadrons
+> Pantorans are very similar to humans apart from their distinct light blue skin, often adorned with yellow markings. They come from the moon of Pantora in orbit of  Orto Plutonia which they believed uninhabited until the native Talz disrupted their operations there. Through the Clone Wars they remained loyal to the Republic and it’s successor the Empire. Pantorans were one of the few non-human species allowed to fly in the Imperial Starfighter Corps
+> .
+> I bought 
+> Squadrons 
+>  at the right time. Because of an update I was able to select the Pantoran as my Imperial character Tarro Blackfeather from the beginning of the campaign and it’s really cool to see him in cutscenes!
+
 ## Visual brief
 
 **The def's description ("blue skinned… commonly have golden facial markings…
@@ -128,6 +143,7 @@ makes the tattoos **clan- and family-specific and only present on some individua
   **indigo when blushing**; the tattoos being clan-specific, childhood-applied, and
   present on only *some* individuals; and the speculative different-visual-spectrum
   line (which should stay speculative).
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Pantoran (Tarro Blackfeather, Squadrons CGI): human-shaped with light blue skin and pale blue-white hair, no yellow facial markings visible in this shot. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Papanoida infobox image (reference of record), the Black Sun close-up and the camping painting.*
@@ -160,6 +176,7 @@ none known — the current `RSW_PantoranHead` mask already bakes in real gold fa
   and not read: *Star Wars: The Visual Encyclopedia* (marshy-tundra habitat, tattoos
   as status symbol), *The High Republic: Path of Deceit* (tattoos given in childhood,
   the light-spectrum speculation), and *Thrawn* (the Chiss/Pantoran confusion).
+- https://bloggathehutt.wordpress.com/2020/12/08/species-of-the-week-pantoran/ (fan blog)
 
 ## Candidate images
 
@@ -180,6 +197,7 @@ none known — the current `RSW_PantoranHead` mask already bakes in real gold fa
   real gold**, which is canon-correct in colour, character and placement. Its only
   limitation is being one fixed pattern on every Pantoran, where canon makes the
   tattoos clan-specific and optional.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2020/12/08/species-of-the-week-pantoran/; post card image (not Lucasfilm).
 
 ## ruling
 

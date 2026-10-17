@@ -32,6 +32,17 @@ Designers cited "crystal glass chandeliers" as a visual reference for the
 coat's faceted, light-catching quality. The creature was built as a
 practical animatronic for the film.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/02/24/rhywogaeth-yr-wythnos-vulptex/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, Welsh original, summarised: skin and fur crystalline to hide in the salt fields and caves; live in groups called 'skulks'; verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Dynodiad: Diymdeiladol
+> Byd Cartrefol: Crait
+> Trwydded: Star Wars
+> Ymddangosiadau: The Last Jedi
+> Mae’r Vulptex yn greaduriaid sydd wedi addasu i amgylchedd unigryw. Mae’u croen ai’i ffwr wedi datblygu i fod yn grisialaidd i helpu nhw i guddio ym maesi halen ac ogofau eu planed. Mae nhw’n byw mewn carfanau o’r enw ‘skulk’. 
+> Dw yng nghanol gwneud fideo am fy’m hoff bethau or ffilmiau newydd ac roedd hi’n agos iawn rhwng y’r rhein a rhywogaeth aral felly dw’i wedi swgenu am rhain fel gysur iddyn nhw!!
+
 ## Visual brief
 All four candidate images agree closely with each other and with the text.
 The vulptex is NOT a smooth-furred fox with sparkly highlights — the
@@ -69,6 +80,7 @@ Any regen should prioritize the spiked/faceted coat texture first — it's
 the one feature that makes a vulptex recognizable as a vulptex rather than
 a generic white fox — and correct the body proportions toward a taller,
 longer-legged stance.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpeg`):** a vulptex on Crait: white crystalline-furred fox-like body with tall upright ears, long legs and bushy tail, standing in the salt flat before a ship wreck. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of all four images and the `## ruling` below (owner 2026-09-14 ruled `wookieepedia_infobox.jpg` as the reference).*
@@ -89,6 +101,7 @@ none known — the donor sprite's mismatch (a low-slung, short-legged, smoothly-
 - https://static.wikia.nocookie.net/starwars/images/8/80/Vulptex-Masterwork2018.png (Masterwork 2018 promotional render, sitting pose)
 - https://static.wikia.nocookie.net/starwars/images/f/fb/Vulptex_2.png (in-film screencap, Crait cave/salt surface, night lighting)
 - https://static.wikia.nocookie.net/starwars/images/9/9a/Crait_crystal_creature.png (in-film screencap, Battle of Crait, daylight, Millennium Falcon overhead)
+- https://bloggathehutt.wordpress.com/2020/02/24/rhywogaeth-yr-wythnos-vulptex/ (fan blog)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, east-facing base variant), flat white/pale-blue cartoon icon, low-slung body, no crystal texture
@@ -96,6 +109,7 @@ none known — the donor sprite's mismatch (a low-slung, short-legged, smoothly-
 - `wookieepedia_masterwork.jpg` — alternate promotional render, sitting pose on white background, shows tail and ear detail
 - `wookieepedia_craitsurface.jpg` — in-film screencap, dark cave/salt-boulder environment, glowing orange/amber eyes
 - `wookieepedia_battlescreencap.jpg` — in-film screencap, Battle of Crait daylight scene with Millennium Falcon overhead, clearly blue eyes
+- `bloggathehutt_post_image.jpeg` — FAN BLOG https://bloggathehutt.wordpress.com/2020/02/24/rhywogaeth-yr-wythnos-vulptex/; post card image (not Lucasfilm).
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`

@@ -43,6 +43,27 @@ clothing that covered most of their body, though left their heads unadorned.**
 While Quarrenese was their native language, they could also speak fluent Galactic
 Basic Standard.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/11/17/species-of-the-week-quarren/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Mon Cala
+> Notable members: Tessek, Darth Azard
+> Fandom: Star Wars
+> Appearances: Return of the Jedi, Clone Wars, The Mandalorian, Legacy
+> The Quarren are a humanoid aquatic race native to Mon Cala. They have squid-like faces with tentacled mouths
+> and are capable of spitting ink
+> . 
+> They share their homeworld and also colonies, such as the estuary moon Trask, with the Mon Calamari. They have coexisted for centuries, though the Quarren are more isolationist and live in the depths of the ocean
+> while the Mon Cala built settlements near the surface and developed a bustling starship building business. During the Clone Wars tensions between the two species were stokes with the Quarren siding with the Seperatists while the Mon Calamari stayed loyal to the Republic. Despite their aquatic nature Quarren have been seen on environments as diverse as frozen Maldo Kreis and the hot desert of Tatooine
+> . 
+> It was so cool to see so many Quarren and Mon Calamari in the latest 
+> Mandalorian
+>  episode. It made the galaxy feel so rich and the quarren are such a cool design – it reminded me of the two awesome Quarren Sith, Darth Meleval and Darth Azard from the 
+> Legacy
+>  comic series.
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The comic panel `wookieepedia_ink_spit_comic.jpg` (Calgriz spitting ink at Maul) was deleted; the ink ability is now sourced from text only. Two live-action stills were added: `wookieepedia_drunk.jpg` (a staggering Quarren in a Tatooine street, *The Mandalorian*-era live action) and `wookieepedia_pirate.jpg` (a full-body Quarren pirate in long dark coat). Both agree with the costume photo below on ear-fins, tentacle beard and peaked dome; the live-action skin reads **mauve-pink to salmon-brown with darker mottling**, slightly pinker than the promo photo — still not saturated orange or purple.
 
@@ -99,6 +120,7 @@ features have textures. **A later pass should verify which genes consume
 list; this entry did not check that specific wiring, and given the confirmed orphan
 found for the Nikto facespines it should not be assumed.** Nothing on disk supplies
 the long pointed nails.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a Quarren (Mandalorian): bulbous mottled pink-brown head with a pointed top, large fins/ears at the sides, four thick tentacles hanging from the mouth, small eyes. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three-Quarren infobox photo (reference of record) and the live-action stills the visual brief names (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
@@ -121,6 +143,7 @@ none known
 - https://static.wikia.nocookie.net/starwars/images/1/15/The_Quarren.png (File:The_Quarren.png, the infobox image → wookieepedia_infobox_three_quarren.jpg)
 - https://static.wikia.nocookie.net/starwars/images/9/97/Quarren_-_SW_Battlefront.png (File:Quarren_-_SW_Battlefront.png → wookieepedia_game_render.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/quarren (official Databank).
+- https://bloggathehutt.wordpress.com/2020/11/17/species-of-the-week-quarren/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_infobox_three_quarren.jpg` — **the reference of record.** The infobox
@@ -135,6 +158,7 @@ none known
   confirmation of ear-fin and tentacle geometry from a different production.
 - `wookieepedia_drunk.jpg` — live-action still, file `Drunk Quarren.png`: a pinkish Quarren staggering with a drink, full upper body, ear-fins and tentacles — https://static.wikia.nocookie.net/starwars/images/e/e3/Drunk_Quarren.png/revision/latest?cb=20230330171125
 - `wookieepedia_pirate.jpg` — live-action still, file `AQuarrenPirate.png`: full-body Quarren pirate in a long dark coat with a blaster (dim lighting) — https://static.wikia.nocookie.net/starwars/images/a/a1/AQuarrenPirate.png/revision/latest?cb=20250221191523
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2020/11/17/species-of-the-week-quarren/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

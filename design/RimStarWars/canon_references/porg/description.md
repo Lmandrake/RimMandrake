@@ -27,6 +27,20 @@ that the Lanai and visitors hunt as tasty food (Chewbacca roasts two in
 *The Last Jedi*), and later stowaways aboard the *Millennium Falcon*; kept as
 pets and sold in the Creature Stall on Batuu; not combatants, not sentient.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/01/29/species-of-the-week-porg/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Non-Sentient
+> Homeworld: Ahch-To
+> Notable members: Terbus
+> Fandom: Star Wars
+> Appearances: The Last Jedi
+> Porgs are small avians that live in great numbers on the islands of Ahch-To. Porgs are naturally curious creatures not used to outside threats and will readily approach the sentient life on the planet with little fear. Porgs build their nests high on the clifftops, diving into the seas to feed their Porglets. Some Porgs have migrated from their isolated homeworld by stowing away on the Millenium Falcon
+> I did a rewatch of 
+> The Last Jedi
+>  and I’d forgotten how hilarious the Porgs were!!
+
 ## Visual brief
 All three candidate images agree closely with the sourced text and with
 each other: porgs are **round, egg/teardrop-shaped birds** with a
@@ -55,6 +69,7 @@ with only a tiny nostril crease, no protruding beak shape at all. Body
 silhouette (round egg shape, big head, tiny legs, short wings) and the
 white belly / dark back split are otherwise correctly captured by the donor
 sprite.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** four porgs on Ahch-To: round cream/tan feathered bodies, huge black round eyes, short beaks tucked into a frowning look, orange webbed feet. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images, with the infobox image as the reference per the `## ruling` below (owner ruling 2026-09-13: `wookieepedia_infobox.jpg`).*
@@ -79,6 +94,7 @@ none known
 - https://static.wikia.nocookie.net/starwars/images/2/24/Hey_look_its_a_lightsaber.png
   (film still — two porgs investigating a discarded lightsaber on a cliff,
   *Star Wars: The Last Jedi*)
+- https://bloggathehutt.wordpress.com/2024/01/29/species-of-the-week-porg/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_infobox.jpg` — Wookieepedia infobox render/puppet photo,
@@ -89,6 +105,7 @@ none known
 - `wookieepedia_shiny_lightsaber.jpg` — film still, two porgs on a grassy
   cliff investigating a dropped lightsaber, shows wings spread, habitat,
   and the curious/shiny-object-seeking behavior from the text
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2024/01/29/species-of-the-week-porg/; post card image (not Lucasfilm).
 
 ## ruling
 **RULED** (owner, 2026-09-13, review sheet): `wookieepedia_infobox.jpg`

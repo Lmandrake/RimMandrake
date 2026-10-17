@@ -26,6 +26,24 @@ their hair long.
   only — do not inflate it into telepathy or long-range comms.)
 - **Weequays could also be Force-sensitive.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/06/29/species-of-the-week-weequay/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Sriluur
+> Notable members: Hondo Ohnaka
+> Fandom: Star Wars
+> Appearances: Return of the Jedi, The Clone Wars, Galaxy’s Edge
+> Weequay hail from the harsh desert planet of Sriluur
+> , 
+> their tough, leathery skin adapted to the harsh climate of their home. They have dark hair, which they grow in braids, and keratin horns on their chins
+> . 
+> Living on the border of Hutt Space, many Weequay are pressed into service for the Hutts, leading to an association with them and the criminal underworld. The Pirate Hondo Ohnaka was a famous Weequay. 
+> Sadly, the Hondo animatronic was down when I did 
+> Smugglers Run
+>  but it was still cool seeing Hondo on-screen before my ride!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_two_weequays.jpg` (*Clone Wars* CGI, Hondo Ohnaka and a crewman). Added `wookieepedia_weequay_rotj_still.jpg`, a *Return of the Jedi* production still of the skiff guards beside Luke and Han — several live-action Weequays full-body, confirming the putty hide, topknots and workwear across individuals. Everything remaining is live-action.
 
@@ -83,6 +101,7 @@ nodules land. 🔴 **But `Hair_BaldOnly` is wired, which means the single most
 recognizable Weequay feature — the one heavy topknot — cannot appear at all**, and
 the four hair-colour genes present alongside it have nothing to colour. **Nothing
 on disk supplies the cracked-hide surface texture either.**
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** Hondo Ohnaka (Galaxy's Edge animatronic/on-screen): leathery brown wrinkled skin, dark braided hair under a pilot cap and goggles, chin horns/tusks, red jacket. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the three live-action images (`wookieepedia_infobox_fullbody.jpg` of record) and the owner's 2026-10-08 realism ruling.*
@@ -105,6 +124,7 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
 - https://static.wikia.nocookie.net/starwars/images/6/65/WeequayLuke-ST.jpg (File:WeequayLuke-ST.jpg → wookieepedia_weequay_rotj_still.jpg)
 - https://static.wikia.nocookie.net/starwars/images/7/73/WeequayBartenderMando.png (File:WeequayBartenderMando.png → wookieepedia_bartender_liveaction.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/weequay (official Databank).
+- https://bloggathehutt.wordpress.com/2026/06/29/species-of-the-week-weequay/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_infobox_fullbody.jpg` — **the reference of record.** The infobox
@@ -117,6 +137,7 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
 - `wookieepedia_bartender_liveaction.jpg` — a live-action Weequay from the
   Mandalorian era; independent modern-production confirmation of hue, furrowing and
   topknot.
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2026/06/29/species-of-the-week-weequay/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

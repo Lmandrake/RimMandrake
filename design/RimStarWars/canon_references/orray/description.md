@@ -17,6 +17,17 @@ Geonosis. Design notes (behind-the-scenes): built for AOTC, designed by Doug Chi
 with the final sculpt by Michael Murnane; the design has been described as a cross
 between an alligator and a horse. Orrays used their long snouts to dig into nests and their teeth to crush eggs (Star Wars: The Visual Encyclopedia; https://starwars.fandom.com/wiki/Orray). The species is considered extinct per The Galactic Explorer's Guide. Lifespan is not stated.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/06/06/species-of-the-week-orray/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Non-sentient
+> Homeworld: Geonosis
+> Fandom: Star Wars
+> Appearances: Attack of the Clones
+> Orrays are large reptilian creatures native to Geonosis, where they are used as mounts and beasts of burden by the Geonosians. They have long snouts and tails but domesticated orrays have their tails docked and replaced with a metal cap. 
+> Always had a soft spot for these creatures as they get overshadowed by the arena beasts that appear soon after them!!
+
 ## Visual brief
 All three candidate images agree closely — there is no text/image conflict here, and
 no meaningful disagreement between the images themselves. The creature reads as a
@@ -36,6 +47,7 @@ are direct screen captures of the theatrical color grade, and use the infobox re
 only for unobstructed body-plan/proportion detail (leg count, snout length, tail stub).
 No image shows a metal tail cap in clear detail, so that detail is text-only, unverified
 visually in this candidate set.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a live-action-CGI orray from Attack of the Clones: long crocodile-like snout, stocky four-legged body, tan-brown mottled hide, tail ending in a docked cap, harness on the back. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two film stills (hue anchor) and the infobox render (body plan).*
@@ -60,6 +72,7 @@ none known
 - https://steamcommunity.com/sharedfiles/filedetails/?id=2903582351 (Steam Workshop,
   "[Legacy] Star Wars Animal Collection (Continued)" — Orray also confirmed present in
   this earlier listing's roster text)
+- https://bloggathehutt.wordpress.com/2022/06/06/species-of-the-week-orray/ (fan blog)
 
 ## Candidate images
 - wookieepedia_infobox.jpg — Species infobox render: a Geonosian drone riding an orray
@@ -77,6 +90,7 @@ page confirms "Orray" is present in the mod's animal roster (text list), but the
 workshop page's preview images could not be individually attributed to a specific
 creature from the fetched page content, so no Orray-specific in-game screenshot from
 the mod was captured this pass.
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2022/06/06/species-of-the-week-orray/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

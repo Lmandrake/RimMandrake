@@ -24,11 +24,13 @@ Taozin nodules were small, roughly spherical objects taken from the skin of a ta
 
 After the Galactic Empire came to power in 19 BBY, the members of the Inquisitorius were equipped with taozin amulets, which would mask their presence while on the hunt for rogue Jedi.
 
-### Owner-supplied grub text (2026-10-17, verbatim; source not named)
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/08/24/species-of-the-week-taozin-grub/
+
+(Fan blog, not Lucasfilm. Text supplied by the owner 2026-10-17 and now traced to this post; verbatim. Describes the Galaxy's Edge park prop.)
 
 Taozin grubs are rare creatures favoured by the wealthy for their excretions. When kept in brine the creatures infuse the liquid with a substance that is considered a delicacy and believed to bestow enhanced mental fortitude upon the consumer, making them a prized commodity. Crime lord Dryden Voss was gifted a Taozin Grub for his personal collection by Moff Doelsor Triggant while another crime boss, Oga Garra, kept a Taozin in her cantina for top shelf customers to her cantina on Batuu. Curiously, visitors to Batuu claim to have also sighted a grub hanging in Docking Bay 7 among fleek eels and other common creatures.
 
-(Agrees with the canon page on brine, Vos and Oga's Cantina; adds the gift by Moff Doelsor Triggant and the Docking Bay 7 sighting, which the Wookieepedia lead does not carry. "Voss" is the pasted spelling; canon spells it Vos.)
+(Blog metadata: non-sentient, homeworld Va'art, appearances SOLO and Galaxy's Edge. Agrees with the canon page on brine, Vos and Oga's Cantina; adds the gift by Moff Doelsor Triggant and the Docking Bay 7 sighting, which the Wookieepedia lead does not carry. "Voss" is the pasted spelling; canon spells it Vos.)
 
 ## Visual brief
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Solo: a Taozin grub curled in a lit brine tank), `wookieepedia_canon_2.webp`
@@ -43,6 +45,7 @@ Viewed 2026-10-17: `owner_supplied_grub_hanging.png` (owner-supplied photo of a 
   side of a blunt, bulbous head. A dense cluster of **short dark-brown/black jointed legs** hangs under the front third,
   directly behind the head. A **cream/white banded collar** sits about mid-body; behind it the body narrows into a very long,
   smooth, **pale pink-white tapering tail**, longer than the head-and-leg section. Trust the image on appearance.
+- **Blog photo (2026-10-17):** `bloggathehutt_grub_post_photo.jpg` is the same terracotta hanging grub as the owner photo (source of it); it disagrees with the canon-prose white, per the owner ruling below both are valid states.
 - **Adult (Legends painting):** a giant segmented centipede-like insectoid many times human size, with a long armoured
   ringed body (red-brown and cream bands), many short legs, and a head with mandibles and green eyes.
 - **Donor sprites:** juvenile a dark red segmented grub with green eyes; the colour follows the Legends adult, not the
@@ -50,7 +53,7 @@ Viewed 2026-10-17: `owner_supplied_grub_hanging.png` (owner-supplied photo of a 
 
 ## Must show
 - [ ] BODY PLAN: a long segmented, many-legged centipede/grub body with legs clustered behind the head (grub) or along the body (adult)
-- [ ] COLOUR LAYOUT: grub terracotta red-brown front with dark legs, a cream collar and a pale pink-white tapering tail (owner photo; the canon prose says white — open for the owner's ruling); adult red-brown and cream ringed bands with green eyes (Legends)
+- [ ] COLOUR LAYOUT: grub terracotta red-brown with dark legs, cream collar and pale pink-white tail; a long-brined grub turns white (owner ruling 2026-10-17); adult as before (red-brown and cream ringed bands with green eyes, Legends)
 - [ ] Head with mandibles
 - [ ] GRUB SHAPE: legs clustered only under the front, behind the head; long legless whip-like tail (owner photo)
 - [ ] NEGATIVE: not a smooth worm; not a beetle with a domed shell
@@ -59,14 +62,17 @@ Viewed 2026-10-17: `owner_supplied_grub_hanging.png` (owner-supplied photo of a 
 none known.
 
 ## Source URLs
+- https://bloggathehutt.wordpress.com/2026/08/24/species-of-the-week-taozin-grub/ (fan blog)
 - https://starwars.fandom.com/wiki/Taozin (canon; wikitext pulled via the API 2026-10-14)
 - https://starwars.fandom.com/wiki/Taozin/Legends (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
+- `bloggathehutt_grub_post_photo.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2026/08/24/species-of-the-week-taozin-grub/ ; Galaxy's Edge hanging grub photo (same as owner photo).
 - `owner_supplied_grub_hanging.png` — OWNER-SUPPLIED 2026-10-17, photo of a hanging Taozin grub; 1506×2000 PNG; provenance not stated beyond the pasted text.
 - `wookieepedia_canon_1.webp` — CANON page `Taozin`; wiki caption: infobox image. File: `Taozin-Grub.png` — https://static.wikia.nocookie.net/starwars/images/f/f8/Taozin-Grub.png/revision/latest?cb=20211204210919
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Taozin/Legends`; wiki caption: infobox image. File: `Taozin.jpg` — https://static.wikia.nocookie.net/starwars/images/1/19/Taozin.jpg/revision/latest?cb=20120612164506
 - `wookieepedia_canon_2.webp` — CANON page `Taozin`; wiki caption: Dryden Vos kept a Taozin (left jar) on board the First Light.. File: `Taozin-Vynock-Solo.png` — https://static.wikia.nocookie.net/starwars/images/f/f9/Taozin-Vynock-Solo.png/revision/latest?cb=20200713093329
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+2026-10-17, owner (verbatim): "I would suggest the grub to be terra cotta in coloration until it is soaked in the brine for a long period, whereupon it turns white"
+→ Grub default colour is terracotta (matches owner_supplied_grub_hanging.png); a grub long kept in brine turns white (matches the canon prose and the Solo tank image). Both looks are valid states of one creature.

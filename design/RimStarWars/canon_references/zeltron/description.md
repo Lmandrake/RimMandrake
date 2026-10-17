@@ -60,6 +60,22 @@ calming effect (canon *"allegedly"*, Legends flatly); **limited telepathic proje
 reading of emotion** (Legends only); **skin deepens in colour with anger** (canon);
 **two livers → alcohol tolerance** (Legends). Nothing here is a Force power.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/11/29/species-of-the-week-zeltron/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Zeltros
+> Notable members: Deliah Blue, Lorica Demaris
+> Fandom: Star Wars
+> Appearances: Squadrons,  A New Dawn, Join the Resistance, Legacy
+> Zeltrons are a humanoid species with striking skin in shades of red and pink. They were known for their party-going nature as their kind were naturally very empathic and could be deeply affected by the emotions of those around them. This makes them eager to please by nature and they exude pheromones that make other beings relaxed and comfortable in their presence. 
+> I picked up 
+> Squadrons
+>  in the Black Friday sale and was excited to see Zeltron as a playable class for the Empire. I am a huge fan of the 
+> Legacy
+>  comic which featured a Zeltron named Deliah Blue, girlfriend of Cade Skywalker and one of my favourite Star Wars characters. This character was inspired by their appearance in the original Marvel Star Wars comic back in the day.
+
 ## Visual brief
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action or photoreal Zeltron exists (searched `Images of Zeltrons`: comics, Marvel UK covers, *History of the Mandalorians* comic art, one *Legacy Era Campaign Guide* painting). Deleted: the inked Legends comic plate `wookieepedia_legends_dani.jpg`. 🔑 **The painted portrait `wookieepedia_legends_female.jpg` is now the look to render** — coral-red skin with real light modelling on a human face. The canon infobox comic `wookieepedia_dani_comic_infobox.jpg` is **kept only as an animated/comic reference for the canon's pink-magenta hair**, which no realistic image shows; do not copy its flat comic fill. Render a Zeltron as a real human with naturally pigmented pink-to-crimson skin under natural light.
@@ -136,6 +152,7 @@ lands on a **gene choice**.
    it rests on the weakest evidence in the entry.
 7. **Not represented: two livers / alcohol tolerance** (Legends), and the **80-year
    lifespan**, which happens to match RimWorld baseline anyway.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Zeltron (Squadrons CGI): pink skin, dark purple hair swept back, otherwise human proportions. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon and Legends text and both images as described in the visual brief (the painted Legends portrait is the look of record).*
@@ -171,6 +188,7 @@ lands on a **gene choice**.
   in 2015 only by an author's blog note about an unnamed background youngling, and
   starwars.com has never given it a Databank article. Nothing was omitted here; there is
   nothing to omit.
+- https://bloggathehutt.wordpress.com/2020/11/29/species-of-the-week-zeltron/ (fan blog)
 
 ## Candidate images
 
@@ -185,6 +203,7 @@ lands on a **gene choice**.
 - `donor_current_sprite.png` — the repo's `Xenotype_Zeltron` UI icon, kept only to record
   that **the sole Zeltron-specific texture in the repo is a menu glyph.** Its absence of
   pawn art is correct for this species rather than a defect.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2020/11/29/species-of-the-week-zeltron/; post card image (not Lucasfilm).
 
 ## ruling
 

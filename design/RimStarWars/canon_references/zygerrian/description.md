@@ -65,6 +65,18 @@ Culture: Queen Miraj Scintel, verbatim — *"Slavery is the natural order of thi
 weak deserve nothing more than to kneel before the strong, bound to our service."*
 They **favoured cruel methods of control, like electro-whips**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/06/07/species-of-the-week-zygerrian/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Zygerria
+> Notable members: Miraj Scintel, Darts D’Nar
+> Fandom: Star Wars
+> Appearances: The Clone Wars, The Bad Batch
+> Zygerrians are feline humanoids notorious for their slave empire. At one time they were the most prominent slavers in the galaxy until the Jedi ended their reign. They used the chaos of the Clone Wars to regain some of their former glory
+> I’ve been enjoying dipping into season 4 of The Clone Wars and this was a cool arc
+
 ## Visual brief
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action Zygerrian exists (searched `Images of Zygerrians`: *Clone Wars*/*Bad Batch* CGI, comics and sourcebook paintings). Deleted: `wookieepedia_dartsdnar_tcwcejtb.png` (*Clone Wars* Darts D'Nar) and `wookieepedia_zygerriansareback_tbb.png` (*Bad Batch* wide shot). Added two realistic paintings: `wookieepedia_zygerrian_slaver_painting.jpg` (*Friends Like These* / *Knowledge and Defense* art — a snarling furred slaver with an electro-whip) and `wookieepedia_zygerrian_slave_auction_painting.jpg` (*Scum and Villainy* — a street of Zygerrian slavers leading chained captives). 🔑 **These paintings are now the look to render**: real fur, natural light. `wookieepedia_zygerrian_atai_molec.jpg` and `wookieepedia_zygerrians_swe.png` (*Clone Wars* CGI) are **kept only as animated, anatomy-only references** — the first is the sole image of the ear-horn spurs and bare pale face, the second the sole image of the female form; do not copy their shading.
@@ -166,6 +178,7 @@ black-outlined triangular cat ears. Against the references:
   Worth checking whether it is gated by sex in the gene def itself.
 - **Not representable, and worth recording rather than hiding**: the pronounced accent,
   the obesity variation, and "sallow complexion" as distinct from a flat light skin.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpeg`):** a Zygerrian (Clone Wars CGI, Miraj Scintel type): pink-cream feline face with a flared fin-like ear crest, small horns, scowling, in a dark maroon high-collared uniform. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon and Legends text, the two realistic paintings (look of record) and the two anatomy-only CGI images, as described in the visual brief.*
@@ -203,6 +216,7 @@ none known — every finding recorded here (red rather than "Light" skin, an und
   by Ewoks and Other Galactic Survival Skills* (the **feline** class), the
   *Build the Millennium Falcon* "Guide to the Galaxy" issue 91 (the **horned sentient
   canine ancestor**), and *Star Wars: The Visual Encyclopedia* (rocky habitat).
+- https://bloggathehutt.wordpress.com/2021/06/07/species-of-the-week-zygerrian/ (fan blog)
 
 ## Candidate images
 
@@ -213,6 +227,7 @@ none known — every finding recorded here (red rather than "Light" skin, an und
 - `donor_current_sprite.png` — the repo's `RSW_Ears_BigCat` attachment. 🔴 **The
   weakest donor asset in this batch**: two small flat triangular cat ears, **far too
   small, no ear-horns, no internal ridging, no cupped shell.**
+- `bloggathehutt_post_image.jpeg` — FAN BLOG https://bloggathehutt.wordpress.com/2021/06/07/species-of-the-week-zygerrian/; post card image (not Lucasfilm).
 
 ## ruling
 
