@@ -69,6 +69,7 @@
     <Compile Include="..\..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="ToxinDependence.cs" />
     <Compile Include="RSW_BeastMechanicsProof.cs" />
+    <Compile Include="RSW_TaozinBrineTank.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,6 +87,12 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: RM_MechanicGates.Register for the taozin nest switch. The shared
+         assembly ships in mandrake.rm.biomes (Biomes/_Kits/EnvironmentalHazards), a hard modDependency of this mod. -->
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\..\..\RimMandrake\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">

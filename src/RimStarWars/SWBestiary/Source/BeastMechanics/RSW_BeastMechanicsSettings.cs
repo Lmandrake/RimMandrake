@@ -55,6 +55,18 @@ namespace RimMandrake.StarWars.SWBestiary
         // elsewhere, with a lethal withdrawal stage. Off: the need is held full.
         public static bool toxinDependenceEnabled = true;
 
+        // TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE (RSW_TaozinBrineTank.cs). The brine tank: a tame taozin grub kept in brine
+        // fills jars of taozin brine and, soaked long enough, turns white for good. Off: a tank holds its grub but nothing
+        // soaks and nothing fills; brine is not spent. PROVISIONAL numbers (owner: white after "a long period").
+        public static bool taozinBrineTankEnabled = true;
+        public static float taozinDaysPerJar = 2f;
+        public static float taozinPaleDays = 15f;
+
+        // The taozin nest on new Crags (RM_Abyss) maps: a guarding adult, 2-4 grubs, silk. Read through the shared
+        // RM_MechanicGates key "RSW.TaozinNest" by RM_GenStep_PlacedSetPieces.ShouldSkipMap, so it only matters for maps
+        // generated afterwards. Off: no nest, so no grubs anywhere (they are found only in nests).
+        public static bool taozinNestEnabled = true;
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -64,6 +76,10 @@ namespace RimMandrake.StarWars.SWBestiary
             Scribe_Values.Look(ref scrapBirdBaseTheftEnabled, "scrapBirdBaseTheftEnabled", true);
             Scribe_Values.Look(ref scrapThiefFlockEnabled, "scrapThiefFlockEnabled", true);
             Scribe_Values.Look(ref toxinDependenceEnabled, "toxinDependenceEnabled", true);
+            Scribe_Values.Look(ref taozinBrineTankEnabled, "taozinBrineTankEnabled", true);
+            Scribe_Values.Look(ref taozinDaysPerJar, "taozinDaysPerJar", 2f);
+            Scribe_Values.Look(ref taozinPaleDays, "taozinPaleDays", 15f);
+            Scribe_Values.Look(ref taozinNestEnabled, "taozinNestEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -93,7 +109,7 @@ namespace RimMandrake.StarWars.SWBestiary
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]. Nothing is read at map or world generation.</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]; the taozin brine tank's three settings are read by the tank's rare tick, so [now]; the taozin nest is read only when a new map generates: [new maps only] (added 2026-10-17, TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -162,6 +178,24 @@ namespace RimMandrake.StarWars.SWBestiary
                 list.GapLine();
             }
 
+            if (Group(list, "Taozin brine tank", RimMandrake.Shared.SettingScope.Now, new[] { "taozinBrineTankEnabled", "taozinDaysPerJar", "taozinPaleDays" }))
+            {
+                list.CheckboxLabeled("Taozin brine tank", ref taozinBrineTankEnabled,
+                    "A tame taozin grub carried into a brine tank slowly infuses the brine: each jar of taozin brine costs one brine. A grub soaked long enough turns from terracotta to white, for good. Off: tanks keep their grub but nothing infuses, no brine is spent and no grub whitens.");
+                list.Label("Days per jar of taozin brine: " + taozinDaysPerJar.ToString("0.0"));
+                taozinDaysPerJar = Mathf.Round(list.Slider(taozinDaysPerJar, 0.5f, 10f) * 2f) / 2f;
+                list.Label("Days in brine before a grub turns white: " + taozinPaleDays.ToString("0"));
+                taozinPaleDays = Mathf.Round(list.Slider(taozinPaleDays, 1f, 60f));
+                list.GapLine();
+            }
+
+            if (Group(list, "Taozin nests", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "taozinNestEnabled" }))
+            {
+                list.CheckboxLabeled("Taozin nests on Crags maps", ref taozinNestEnabled,
+                    "A new map in the Crags (the Abyss) holds one taozin nest: a giant taozin guarding a few grubs and stacks of silk. Grubs are found nowhere else. Off: new maps have no nest. Maps already made keep theirs.");
+                list.GapLine();
+            }
+
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -173,6 +207,9 @@ namespace RimMandrake.StarWars.SWBestiary
         public RSW_BeastMechanicsMod(ModContentPack content) : base(content)
         {
             GetSettings<RSW_BeastMechanicsSettings>();
+            // The nest GenStepDef (Defs/MapGeneration/RSW_TaozinNest.xml) carries RM_MechanicGateExtension gateKey
+            // "RSW.TaozinNest"; the shared assembly ships in mandrake.rm.biomes, a hard dependency of this mod.
+            RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register("RSW.TaozinNest", () => RSW_BeastMechanicsSettings.taozinNestEnabled);
             RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rsw.swbestiary.beastmechanics"), typeof(RSW_BeastMechanicsMod).Assembly, "RimStarWars.SWBestiary.BeastMechanics");
         }
 

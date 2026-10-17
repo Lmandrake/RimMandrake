@@ -13,8 +13,9 @@
       precious cave they fall back to the cells within ~4 of the site): 2-4 grubs, 2-3 stacks of taozin silk.
   Wired onto the Crags (RM_Abyss, the former Forsaken Crags / AB_RockyCrags, FORSAKENCRAGS_RM_MOD_BUILD_1) through
   BiomeDef.extraGenSteps by ../../Patches/RSW_TaozinNest_Abyss.xml.
-  OWED: a Mod Settings on/off (needs an RM_MechanicGates.Register call in SWBestiary C#) — part of the follow-up
-  TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE. PROVISIONAL counts.
+  Mod Settings on/off (TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE): the RM_MechanicGateExtension below names gate key
+  "RSW.TaozinNest", which RM_GenStep_PlacedSetPieces.ShouldSkipMap reads; RSW_BeastMechanicsMod registers it against
+  RSW_BeastMechanicsSettings.taozinNestEnabled ("Taozin nests", new maps only). PROVISIONAL counts.
 -->
 <Defs>
   <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.stillsand">
@@ -43,5 +44,10 @@
         </li>
       </elements>
     </genStep>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>RSW.TaozinNest</gateKey>
+      </li>
+    </modExtensions>
   </GenStepDef>
 </Defs>

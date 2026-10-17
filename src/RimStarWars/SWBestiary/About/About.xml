@@ -90,6 +90,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer` (retired 2026-10
     <li>mandrake.rsw.starwarsraces</li>
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>kentington.saveourship2</li>
+    <li>mandrake.rsw.cuisine</li>  <!-- TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: RSW_TaozinBrineTank is MayRequire'd on it (its output, RSW_TaozinBrine) -->
     <li>ludeon.rimworld.anomaly</li>
     <li>ludeon.rimworld.biotech</li>
     <li>ludeon.rimworld.ideology</li>

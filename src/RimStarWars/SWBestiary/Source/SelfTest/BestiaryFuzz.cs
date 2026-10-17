@@ -5,6 +5,7 @@
 //                                                      toxin  the norphea's need: rise, fall, thresholds, hediff stage, clamp
 //                                                      spew   the fuel-spew cone geometry
 //                                                      ability the innate-ability grant steps
+//                                                      brine  the taozin brine tank: jar progress, brine spend, grub soak, white flag
 //   ../JawaIkee/Kernel/RSW_IkeeKernel.cs               ikee   the creep / comfort thought stage and radius
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -19,6 +20,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
 {
     internal static class BestiaryFuzz
     {
+        public static long Jars, Whitened;
         public static long Cases, Steps, Fires, Good, Bad, Cooled, Joins, Releases, Spiked, Nests, Builds, Refused, Withdrawals, Spews, ShapesChecked;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
@@ -550,6 +552,86 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
             return fails;
         }
 
+        // TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: the tank's rare tick replayed against random switches, grub swaps, brine
+        // deliveries and gaps, the way Building_RSW_BrineTank.TickRare calls the kernel.
+        private static List<string> BrineCases(int n, int seed0)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n; k++)
+            {
+                int seed = seed0 + k;
+                var r = new Random(seed);
+                Cases++;
+                try
+                {
+                    bool enabled = true, hasGrub = r.Next(2) == 0, pale = false;
+                    float fuel = r.Next(0, 11), perJar = r.Next(1, 4), daysPerJar = (float)(r.NextDouble() * 10.0), paleDays = 1f + r.Next(60);
+                    int progress = 0, soak = 0, cycle = RSW_BrineTankKernel.CycleTicks(daysPerJar), jars = 0;
+                    long activeTicks = 0;
+                    for (int step = 0; step < 6000; step++)
+                    {
+                        Steps++;
+                        int op = r.Next(1000);
+                        if (op < 3) enabled = !enabled;
+                        else if (op < 5) { hasGrub = !hasGrub; if (hasGrub) { soak = 0; pale = false; } }
+                        else if (op < 60) fuel = Math.Min(10f, fuel + r.Next(1, 6));
+                        else
+                        {
+                            int elapsed = 250;
+                            bool active = RSW_BrineTankKernel.Active(enabled, hasGrub, fuel, perJar);
+                            Check(active == (enabled && hasGrub && fuel >= perJar), "Active disagrees with its own rule");
+                            if (!active) continue;
+                            int soak0 = soak;
+                            soak = RSW_BrineTankKernel.Soak(soak, elapsed);
+                            Check(soak == soak0 + elapsed, "soak did not grow by the elapsed ticks");
+                            bool wasPale = pale;
+                            pale = RSW_BrineTankKernel.IsPale(pale, soak, paleDays);
+                            Check(!wasPale || pale, "a white grub went back to terracotta");
+                            if (pale && !wasPale) { Whitened++; Check(soak >= RSW_BrineTankKernel.CycleTicks(paleDays), "whitened before the threshold"); }
+                            activeTicks += elapsed;
+                            int p0 = progress;
+                            bool done = RSW_BrineTankKernel.Advance(ref progress, elapsed, cycle);
+                            Check(progress >= 0 && progress < cycle, $"progress {progress} outside [0,{cycle})");
+                            if (done)
+                            {
+                                Check(p0 + elapsed >= cycle, "a jar finished early");
+                                fuel -= perJar; jars++; Jars++;
+                                Check(fuel >= 0f, "brine went negative");
+                            }
+                            else Check(progress == p0 + elapsed, "progress lost ticks without finishing a jar");
+                        }
+                    }
+                    Check(jars <= activeTicks / cycle, $"{jars} jars from {activeTicks} working ticks at {cycle} per jar");
+                }
+                catch (Exception e) { fails.Add($"brine seed {seed}: {e.Message}"); }
+            }
+            return fails;
+        }
+
+        private static List<string> BrineTables()
+        {
+            var fails = new List<string>();
+            Cases++;
+            try
+            {
+                Check(RSW_BrineTankKernel.CycleTicks(2f) == 120000 && RSW_BrineTankKernel.CycleTicks(0f) == RSW_BrineTankKernel.MinCycleTicks
+                      && RSW_BrineTankKernel.CycleTicks(float.NaN) == RSW_BrineTankKernel.MinCycleTicks && RSW_BrineTankKernel.CycleTicks(-3f) == RSW_BrineTankKernel.MinCycleTicks
+                      && RSW_BrineTankKernel.CycleTicks(1e12f) == int.MaxValue / 2, "CycleTicks anchors (2 days, floor, NaN, negative, huge)");
+                Check(!RSW_BrineTankKernel.Active(false, true, 5f, 1f) && !RSW_BrineTankKernel.Active(true, false, 5f, 1f)
+                      && !RSW_BrineTankKernel.Active(true, true, 0.5f, 1f) && RSW_BrineTankKernel.Active(true, true, 1f, 1f)
+                      && !RSW_BrineTankKernel.Active(true, true, 5f, 0f), "Active anchors (off, empty, dry, exactly one jar, zero cost)");
+                int p = 2499; Check(!RSW_BrineTankKernel.Advance(ref p, 0, 2500) && p == 2499, "no elapsed, no jar");
+                p = 2400; Check(RSW_BrineTankKernel.Advance(ref p, 250, 2500) && p == 150, "overflow carries into the next jar");
+                p = 0; Check(RSW_BrineTankKernel.Advance(ref p, 100000, 2500) && p == 2499, "a long gap owes one jar, not many");
+                p = int.MaxValue - 10; Check(RSW_BrineTankKernel.Advance(ref p, 1000, 2500) && p == 2499, "progress cannot overflow");
+                Check(RSW_BrineTankKernel.Soak(int.MaxValue - 5, 250) == int.MaxValue && RSW_BrineTankKernel.Soak(-4, 0) == 0, "Soak clamps");
+                Check(!RSW_BrineTankKernel.IsPale(false, 15 * 60000 - 1, 15f) && RSW_BrineTankKernel.IsPale(false, 15 * 60000, 15f)
+                      && RSW_BrineTankKernel.IsPale(true, 0, 15f), "IsPale edges (one tick short, exactly, permanent)");
+            }
+            catch (Exception e) { fails.Add("brine tables: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -564,6 +646,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                 ("hoard", () => HoardCases(N(1500), S(1))),
                 ("toxin", () => { var f = Family("toxin", N(5000), S(1), new[] { 40, 10, 6, 6, 8, 30 }, 20, 160, RunToxin); if (tables) f.AddRange(ToxinTables()); return f; }),
                 ("spew", () => SpewCases(N(600), S(1))),
+                ("brine", () => { var f = BrineCases(N(400), S(1)); if (tables) f.AddRange(BrineTables()); return f; }),
                 ("ikee", () => tables || oneSeed.HasValue ? AbilityIkee() : new List<string>()),
             };
             foreach (var f in fam)
@@ -577,7 +660,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: fires {Fires} (good {Good}, cracked {Bad}), cooled {Cooled}, joins {Joins}, releases {Releases}, nests {Nests} from {Builds} builds ({Refused} refused at the cap), withdrawals {Withdrawals}, spews {Spews}");
+            Console.WriteLine($"reached: fires {Fires} (good {Good}, cracked {Bad}), cooled {Cooled}, joins {Joins}, releases {Releases}, nests {Nests} from {Builds} builds ({Refused} refused at the cap), withdrawals {Withdrawals}, spews {Spews}, brine jars {Jars}, whitened {Whitened}");
             if (!oneSeed.HasValue && scale >= 1)
             {
                 bool all = only == null;
@@ -585,6 +668,7 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                 if ((all || only == "grief") && (Joins == 0 || Releases == 0)) { Console.WriteLine("FAIL grief fuzz never joined or released (blind)"); ok = false; }
                 if ((all || only == "hoard") && (Nests == 0 || Refused == 0)) { Console.WriteLine("FAIL hoard fuzz never built a nest or never hit the cap (blind)"); ok = false; }
                 if ((all || only == "toxin") && Withdrawals == 0) { Console.WriteLine("FAIL toxin fuzz never reached withdrawal (blind)"); ok = false; }
+                if ((all || only == "brine") && (Jars == 0 || Whitened == 0)) { Console.WriteLine("FAIL brine fuzz never filled a jar or never whitened a grub (blind)"); ok = false; }
                 if ((all || only == "spew") && ShapesChecked == 0) { Console.WriteLine("FAIL spew fuzz never produced a non-empty cone (blind)"); ok = false; }
             }
             Console.WriteLine($"swbestiary fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE, 2026-10-17. Design: design/RimStarWars/taozin_split_proposal_2026-10-17.md.
+  Canon: a taozin grub kept in brine infuses it with a delicacy said to steady the mind. Owner colour ruling (verbatim):
+  "I would suggest the grub to be terra cotta in coloration until it is soaked in the brine for a long period, whereupon
+  it turns white".
+
+  RSW_TaozinBrineTank: holds one tame RSW_TaozinGrub (a colonist carries it in: right-click the grub). Brine (RM_Brine,
+  Stillsand, folded into mandrake.rm.biomes) is hauled in as its fuel; every finished jar spends one brine and drops one
+  RSW_TaozinBrine (Cuisine). C#: Source/BeastMechanics/RSW_TaozinBrineTank.cs. Settings: Bestiary (beast mechanics) ->
+  "Taozin brine tank" (on/off, days per jar, days to turn white).
+  MayRequire: the tank needs both the Cuisine output and the Stillsand brine; without either it simply is not offered.
+  ART: none of its own yet - vanilla fermenting barrel, tinted brine-green, as a placeholder (owed: an art job).
+  PROVISIONAL numbers: cost, capacity, work.
+-->
+<Defs>
+  <JobDef>
+    <defName>RSW_CarryGrubToBrineTank</defName>
+    <driverClass>RimMandrake.StarWars.SWBestiary.JobDriver_RSW_CarryGrubToBrineTank</driverClass>
+    <reportString>carrying TargetA to the brine tank.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rsw.cuisine,mandrake.rm.stillsand">
+    <defName>RSW_TaozinBrineTank</defName>
+    <label>taozin brine tank</label>
+    <description>A sealed tub of brine for keeping a taozin grub. The grub lies sedated in the brine, neither eating nor ageing, and slowly infuses it: each jar of taozin brine costs one measure of brine, and the jars collect beside the tank. A grub kept in brine long enough fades from terracotta to white, for good.\n\nTo fill it, haul brine in; to stock it, right-click a tame taozin grub with a colonist selected.</description>
+    <thingClass>RimMandrake.StarWars.SWBestiary.Building_RSW_BrineTank</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <color>(170,200,185)</color>
+      <damageData>
+        <rect>(0.05,0.1,0.9,0.9)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(0.75, 0.35, 0.33)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <rotatable>true</rotatable>
+    <tickerType>Rare</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2711</uiOrder>
+    <costList>
+      <Steel>30</Steel>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>12</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <building>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+      <destroySound>BuildingDestroyed_Wood_Small</destroySound>
+    </building>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <constructEffect>ConstructWood</constructEffect>
+    <repairEffect>Repair</repairEffect>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>10</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_Brine</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>0</initialFuelPercent>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelLabel>brine</fuelLabel>
+        <fuelGizmoLabel>Brine</fuelGizmoLabel>
+        <outOfFuelMessage>Needs brine</outOfFuelMessage>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.SWBestiary.RSW_BrineTankExtension">
+        <output>RSW_TaozinBrine</output>
+        <grubRace>RSW_TaozinGrub</grubRace>
+        <brinePerJar>1</brinePerJar>
+        <jarsPerCycle>1</jarsPerCycle>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

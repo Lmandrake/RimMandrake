@@ -199,6 +199,14 @@ def static_checks():
             ui = src.split("void DoWindowContents", 1)[-1] if "void DoWindowContents" in src else ""
             if not re.search(r"\b%s\b" % f, ui):
                 bad.append("%s.%s has no settings-window control" % (cls.rsplit(".", 1)[1], f))
+    # TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE: the nest's on/off only works if the GenStepDef's gate key is the one the
+    # Mod constructor registers (an unregistered key reads ENABLED, silently).
+    nest = open(os.path.join(HERE, "Defs", "MapGeneration", "RSW_TaozinNest.xml"), encoding="utf-8").read()
+    bm = open(os.path.join(HERE, "Source", "BeastMechanics", "RSW_BeastMechanicsSettings.cs"), encoding="utf-8").read()
+    if "<gateKey>RSW.TaozinNest</gateKey>" not in nest:
+        bad.append("RSW_TaozinNest.xml carries no RM_MechanicGateExtension gateKey RSW.TaozinNest")
+    if 'RM_MechanicGates.Register("RSW.TaozinNest"' not in bm:
+        bad.append("RSW_BeastMechanicsMod never registers gate RSW.TaozinNest")
     toggled = set(suite.toggles) if "suite" in globals() and suite is not None else set()
     if toggled:
         for (_c, f) in fields:
@@ -232,6 +240,10 @@ suite.toggles = [
     "moornakGriefEnabled", "moornakReleaseDelayMultiplier",
     "innateAbilitiesEnabled", "scrapHoardingEnabled", "toxinDependenceEnabled",
     "albinoDragonsnakeEnabled",
+    # scrapBirdBaseTheftEnabled / scrapThiefFlockEnabled were round-tripped below but missing here (static_checks
+    # flagged both, 2026-10-17); the four taozin settings are TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE.
+    "scrapBirdBaseTheftEnabled", "scrapThiefFlockEnabled",
+    "taozinBrineTankEnabled", "taozinDaysPerJar", "taozinPaleDays", "taozinNestEnabled",
 ]
 
 IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
@@ -431,6 +443,28 @@ def scrap_hoarder_carries_to_its_nest(t):
                                         % (kv.get("hoarder"), kv.get("scrap"), kv.get("nest"), kv.get("on"), want))
             if kv.get("off") != "none":
                 raise ExpectationFailed("scrapHoardingEnabled off still hoards: %s" % kv.get("off"))
+
+
+@suite.chain("taozin_brine_tank_infuses_and_whitens")
+def taozin_brine_tank_infuses_and_whitens(t):
+    # TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE. RSW_BeastMechanicsProof.ProofBrineTank drives the shipped tank's own
+    # TryAcceptThing + TickRare for 1.1 days twice (switch off, then on at 0.5 day/jar and 1 day to white) with 3 brine.
+    # Expect: off moves nothing; on drops 2 jars, leaves 1 brine, whitens the grub, and vanilla TryGetAlternate answers 0.
+    # NOT proven: the colonist carry job (needs ticks and a colonist), the white texture itself (art not installed yet).
+    kv, text = {}, ""
+    with t.component("tank_switch_off_does_nothing", toggle="taozinBrineTankEnabled"):
+        kv, text = _proof(t, "ProofBrineTank")
+        if t.session is not None and not t.upstream_failed:
+            if text.startswith("ERROR") or kv.get("accepted") != "True":
+                raise ExpectationFailed("ProofBrineTank: %s" % text)
+            if (kv.get("off_jars"), kv.get("off_brine"), kv.get("off_pale")) != ("0", "3", "False"):
+                raise ExpectationFailed("switched-off tank still worked: %s" % text)
+    with t.component("tank_fills_jars_and_whitens_grub", toggle="taozinPaleDays"):
+        if t.session is not None and not t.upstream_failed:
+            want = {"jars": "2", "brine": "1", "pale": "True", "alternate": "0"}
+            got = {k: kv.get(k) for k in want}
+            if got != want:
+                raise ExpectationFailed("brine tank got %s, want %s (%s)" % (got, want, text))
 
 
 def _make_roundtrip(cls, field, ty, default):
