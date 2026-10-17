@@ -42,6 +42,10 @@ namespace RimMandrake.EnvironmentalHazards
         // Thorns take the legs (design §1b "damage shape").
         public BodyPartHeight bodyHeight = BodyPartHeight.Bottom;
 
+        // A plant under this growth does not scratch (VENOMVINE_BUILD_SCRUB_GROWS_TEETH: a fresh runner is safe until half
+        // grown). 0 = always armed, every def that does not set it.
+        public float minGrowth = 0f;
+
         public CompProperties_ContactVenom()
         {
             compClass = typeof(CompContactVenom);

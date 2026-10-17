@@ -160,6 +160,12 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                // Unarmed while young (minGrowth): no scratch and no clock, as if the stand were not there.
+                if (vine.Props.minGrowth > 0f && vine.parent is Plant young && young.Growth < vine.Props.minGrowth)
+                {
+                    continue;
+                }
+
                 int index = IndexOf(pawn);
                 if (index < 0)
                 {
