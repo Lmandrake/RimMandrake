@@ -75,7 +75,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 Thing empty = RM_LiquidBottleUtility.MakeContainer(emptyDef, carried);
                 carried.Destroy();
                 empty.stackCount = 1;
-                GenPlace.TryPlaceThing(empty, pawn.Position, Map, ThingPlaceMode.Near);
+                RM_LiquidBottleUtility.PlacePaidFor(empty, pawn.Position, Map);   // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: input already spent
             };
             finish.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return finish;
