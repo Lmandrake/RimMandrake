@@ -2282,18 +2282,22 @@ def _reference_panels(row: dict, size: dict, imgdir: Path) -> list[dict]:
     ONLY: never a graphic, column, letter, snapshot entry, decision or enact target, and never put in the art store."""
     import scale_panel as SP
     out = []
-    for rel in row.get("reference_textures") or []:
+    for ent in row.get("reference_textures") or []:
+        # an entry is a repo-relative path (shown at the row's size) or {path, size: {drawSize, footprint, source}}: a
+        # composite with its own true size, e.g. several pieces laid out as the code draws them (a joined weir wall)
+        rel = ent["path"] if isinstance(ent, dict) else ent
+        esize = SP.runtime_size(row["key"] + " reference", ent["size"]) if isinstance(ent, dict) and ent.get("size") else size
         f = L.REPO_ROOT / rel
         if not f.is_file():
             out.append({"path": rel, "missing": True})
             continue
         b = f.read_bytes()
         stem = "ref_" + re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + hashlib.sha256(b).hexdigest()[:10] + "_" + hashlib.sha1(
-            json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh")]).encode()
+            json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, esize.get("drawSize"), esize.get("quad"), esize.get("mesh")]).encode()
         ).hexdigest()[:6]
         comp, full = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png"
         if not (comp.exists() and full.exists()):
-            SP.render_panel(b, size, comp, full)
+            SP.render_panel(b, esize, comp, full)
         out.append({"path": rel, "img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}"})
     return out
 
@@ -3293,7 +3297,8 @@ def standin_col(sd: dict) -> dict:
 def textures_census(name: str, manifest: Path, label: str | None = None) -> tuple[Path, str]:
     """A census from a TEXTURE manifest: art C# draws with no def naming it (a mod's cords, decals, overlays).
     Manifest {"rows": [{key, label, part, look, variant, section, resources: [texPath], former: [old texPath],
-    size: {drawSize, footprint, source}, render_match?, standin?}], "lead_html"?, "ground_terrain"?}. standin =
+    size: {drawSize, footprint, source}, render_match?, standin?, reference_textures?}], "lead_html"?, "ground_terrain"?}.
+    reference_textures: read-only pictures beside the row (repo-relative PNG, or {path, size} at their own true size). standin =
     {res, label, source, faces: {facing: png}} — the picture the game draws today when the row's texture is an
     engine/vanilla one no ledger holds (Core's resources.assets): shown as that resource's IN GAME column. ground_terrain is the
     TerrainDef the panels sit on (default vanilla Soil) — the biome ground where the art will be seen. Each row's size is the one its code sets
@@ -3316,6 +3321,7 @@ def textures_census(name: str, manifest: Path, label: str | None = None) -> tupl
                                for k in by_part[(mr.get("section"), mr.get("part"))] if k != mr["key"]],
                      "artpipe_state_jobs": sorted(mr.get("jobs") or []), "render_match": mr.get("render_match"),
                      "standin": mr.get("standin"),
+                     "reference_textures": mr.get("reference_textures") or [],
                      "runtimeSize": sz,
                      "runtimeDesc": {"def": mr["key"], "label": mr["label"],
                                      "description": f"{mr.get('part')} · look {mr.get('look')} · texture "
