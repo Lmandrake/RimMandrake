@@ -656,6 +656,89 @@ def main(argv=None):
                     {"jobs": seen, "fires": [fires0, fires1], "emptyBuckets": [empty0, empty1], "bad": bad,
                      "notRun": "the no-bucket BeatFire arm"})
             draft(pf)
+        # ---------------------------------------------------------------- T15 slime last resort, four colours
+        if want("T15"):
+            purge_drinks()
+            cols = (("RM_SlimeRedShallow", "RM_ContagionTouched"), ("RM_SlimeGreenShallow", "RM_Slimification"),
+                    ("RM_SlimeWhiteShallow", "RM_SporeFlesh"), ("RM_SlimeYellowShallow", "RM_SlimeNausea"))
+            subj = []
+            for i, (terr, hd) in enumerate(cols):
+                bx, bz = X0 + 2 + 10 * i, Z0 + 34
+                paint(terr, bx, bz, 2, 2)
+                pid = spawn_colonist(bx, bz + 3)
+                UNDER_TEST.add(pid)
+                subj.append((terr, hd, pid))
+            p5 = spawn_colonist(X0 + 36, Z0 + 37)
+            UNDER_TEST.add(p5)
+            need(p5, 0.05)
+            for _, _, pid in subj:
+                need(pid, 0.0)
+                B.call("jawa/stop_job", pawnId=pid)
+            B.call("jawa/stop_job", pawnId=p5)
+            jobs = {pid: [] for _, _, pid in subj + [(0, 0, p5)]}
+            for _ in range(20):
+                ticks(60)
+                for pid in jobs:
+                    j = job(pid)
+                    if j and (not jobs[pid] or jobs[pid][-1] != j):
+                        jobs[pid].append(j)
+            ticks(600)
+            out15, bad = {}, []
+            for terr, hd, pid in subj:
+                h, m = hediffs(pid), mems(pid)
+                out15[terr] = {"jobs": jobs[pid], "hediffs": h, "memories": m}
+                if "RM_DrinkFromTerrain" not in jobs[pid]:
+                    bad.append("%s: no terrain drink" % terr)
+                    continue
+                if "RM_Thought_DrankSlime" not in m:
+                    bad.append("%s: no RM_Thought_DrankSlime" % terr)
+                if "RM_SlimePurge" not in h:
+                    bad.append("%s: no RM_SlimePurge" % terr)
+                want_sev = {"RM_ContagionTouched": 1.0, "RM_Slimification": 0.3}.get(hd)
+                if hd not in h or (want_sev is not None and h[hd] < want_sev - 0.01):
+                    bad.append("%s: %s %s" % (terr, hd, h.get(hd)))
+            if "RM_DrinkFromTerrain" in jobs[p5]:
+                bad.append("a pawn at 0.05 drank slime")
+            out15["at0.05"] = jobs[p5]
+            row("T15_slime_effects", "FAIL" if bad else "PASS", "MOD", dict(out15, bad=bad))
+            for _, _, pid in subj + [(0, 0, p5)]:
+                draft(pid)
+
+        # ---------------------------------------------------------------- T17 salt break (forced start)
+        if want("T17"):
+            purge_drinks()
+            SX2, SZ2 = X0 + 2, Z0 + 2
+            paint("WaterOceanShallow", SX2, SZ2, 6, 2)
+            ps = spawn_colonist(SX2 + 2, SZ2 + 4)
+            UNDER_TEST.add(ps)
+            need(ps, 0.05)
+            B.call("jawa/pawn_need", pawn=ps, action="need", need="Mood", level=0.05)
+            r = B.call("jawa/pawn_force_mental_break", pawn=ps, breakDef="RM_Break_DrinkBrine") or {}
+            trace = []
+            for _ in range(30):
+                ticks(100)
+                ms = B.call("jawa/pawn_mental", pawn=ps, action="list") or {}
+                st = json.dumps(ms.get("pawns") or ms.get("state") or ms)[:120]
+                trace.append([job(ps), need(ps), st])
+                if need(ps) is not None and need(ps) >= 0.9 and "DrinkBrine" not in st:
+                    break
+            h, m = hediffs(ps), mems(ps)
+            lvl = need(ps)
+            bad = []
+            if not r.get("started"):
+                row("T17_salt_break", "UNMEASURED", "HARNESS", {"force": {k: r.get(k) for k in ("started", "message", "breakDef")}})
+            else:
+                if lvl is None or lvl < 0.9:
+                    bad.append("the break ended with thirst %s (want >= 0.9)" % lvl)
+                if "RM_Thought_SaltRelief" not in m:
+                    bad.append("no RM_Thought_SaltRelief")
+                sp = h.get("RM_SaltPoisoning")
+                if sp is None or abs(sp / 0.25 - round(sp / 0.25)) > 0.05:
+                    bad.append("RM_SaltPoisoning %s is not 0.25 a drink" % sp)
+                row("T17_salt_break", "FAIL" if bad else "PASS", "MOD",
+                    {"force": {k: r.get(k) for k in ("started", "breakDef")}, "trace": trace[-4:], "hediffs": h, "memories": m,
+                     "bad": bad, "notRun": "the break being OFFERED (mood gate, dev list) and not offered with a fresh bottle: the start is forced"})
+            draft(ps)
     finally:
         for k, v in saved.items():
             try:
