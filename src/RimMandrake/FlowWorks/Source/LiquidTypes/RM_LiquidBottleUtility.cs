@@ -199,6 +199,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return ex.Stock.TryDebit(map, c, stock, ex);
         }
 
+        /// <summary>Q9: the non-potable liquids a player tank is asking for right now (Fill mode, already holding it, room
+        /// for at least a bottle).</summary>
+        public static System.Collections.Generic.HashSet<LiquidDef> StandingOrders(Map map)
+        {
+            var set = new System.Collections.Generic.HashSet<LiquidDef>();
+            foreach (Building_LiquidTank t in map.listerBuildings.AllBuildingsColonistOfClass<Building_LiquidTank>())
+            {
+                LiquidDef l = t.storedLiquid;
+                if (l != null && !l.AutoGathered && t.TakesBottles(false) && t.CanAccept(l, l.UnitsFor(RM_ContainerSize.Bottle)))
+                {
+                    set.Add(l);
+                }
+            }
+            return set;
+        }
+
         /// <summary>Nearest reachable FRESH water edge -- the spec's "wash
         /// job (consumes water)" always means fresh water, never whatever
         /// the bottle was last dirty with.</summary>
@@ -269,6 +285,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return false;
             }
             RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+            // Q9 (owner 2026-10-17): "a bill on that machine counts as your order". FlowWorks machines are fed from tanks,
+            // so the standing order is a player tank set to Fill that already holds the liquid and has room: the still's
+            // brine tank asks for brine, and pawns may gather brine for it on their own.
+            System.Collections.Generic.HashSet<LiquidDef> standing = potableOnly ? StandingOrders(map) : null;
             // GenRadial's offsets are precomputed in increasing distance
             // order, so the first match found while walking them IS the
             // nearest -- the same closest-cell idiom vanilla itself uses,
@@ -292,7 +312,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     continue;
                 }
-                if (potableOnly && !candidate.AutoGathered)
+                if (potableOnly && !candidate.AutoGathered && !standing.Contains(candidate))
                 {
                     continue;   // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: non-potable liquid moves only by an order
                 }

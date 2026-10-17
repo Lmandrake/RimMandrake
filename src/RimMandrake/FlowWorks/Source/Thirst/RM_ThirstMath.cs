@@ -204,6 +204,17 @@ namespace RimMandrake.FlowWorks.Thirst
 			return Better(useA, a, distA, useB, b, distB);
 		}
 
+		/// <summary>Q10: what a sprinkler or machine may draw of a net holding <paramref name="available"/> units: a potable
+		/// liquid keeps <paramref name="reserveUnits"/> back for drinkers; anything else has no reserve.</summary>
+		public static int Spendable(int available, int reserveUnits, bool potable)
+		{
+			if (!potable || reserveUnits <= 0)
+			{
+				return available;
+			}
+			return available > reserveUnits ? available - reserveUnits : 0;
+		}
+
 		/// <summary>The break ends when the bar reads this full (2-4 salt drinks from parched).</summary>
 		public const float SaltBreakQuenched = 0.9f;
 

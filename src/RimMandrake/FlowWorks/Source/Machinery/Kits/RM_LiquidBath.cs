@@ -98,7 +98,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			{
 				foreach (LiquidDef l in ext.liquids)
 				{
-					int have = RM_LiquidNet.Available(bench, l);
+					int have = Thirst.RM_DrinkReserve.Spendable(bench, l);   // Q10: drinkers first
 					if (have >= ext.UnitsPerCraft && have > 0)
 					{
 						liquid = l;

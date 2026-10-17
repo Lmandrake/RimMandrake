@@ -636,7 +636,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source"),
                   ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled"),
                   ("Tb_salt_break", "Thirst_salt_break_ruled"),
-                  ("Tk_awkward_access", "Thirst_awkward_access_ruled")]
+                  ("Tk_awkward_access", "Thirst_awkward_access_ruled"),
+                  ("Tr_reserve_orders_sprinklers", "Thirst_reserve_orders_sprinklers_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -678,6 +679,11 @@ THIRST_LIVE = [
      "and no longer stacks; an Ascetic and a tribal pawn drinking the same: no thought; a pond: no thought"),
     ("T20_bucket_drunk_dry", None, "a 15 L bucket drunk 10 times becomes RM_BucketDirty (or Empty with the dirty stage off); "
      "emptying a part-drunk bucket into a tank adds only what is left"),
+    ("T21_drinking_reserve", None, "net: one fresh tank at 300 L, a sprinkler over crops, reserve 200 L: the "
+     "head sprays until 200 L, then reads Dry; a colonist still drinks at the tank; a salt tank on a still drains to 0"),
+    ("T22_no_brine_spray", None, "a sprinkler net holding only brine: head reads 'No liquid'; brine + a little fresh: sprays fresh"),
+    ("T23_fill_tank_is_the_order", None, "a Fill-mode tank holding brine with room, empty buckets, brine shore: pawns fill "
+     "buckets with brine unforced and pour them in; set the tank to Store: the brine fills stop"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]

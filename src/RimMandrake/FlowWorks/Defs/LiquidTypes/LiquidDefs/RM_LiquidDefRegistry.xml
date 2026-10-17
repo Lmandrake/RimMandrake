@@ -77,6 +77,7 @@
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
     <useClass>BreakOnly</useClass>
+    <neverSprayed>true</neverSprayed>
     <drinkThought>RM_Thought_SaltRelief</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SaltPoisoning</hediffDef><severity>0.25</severity></li>
@@ -407,6 +408,7 @@
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
     <useClass>BreakOnly</useClass>
+    <neverSprayed>true</neverSprayed>
     <drinkThought>RM_Thought_SaltRelief</drinkThought>
     <drinkOutcomes>
       <li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SaltPoisoning</hediffDef><severity>0.25</severity></li>
