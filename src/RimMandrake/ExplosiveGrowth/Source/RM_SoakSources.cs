@@ -8,39 +8,19 @@ using Verse;
 namespace RimMandrake.ExplosiveGrowth
 {
     // ════════════════════════════════════════════════════════════════════
-    // THE §1 SOAK ROUTES THIS ENGINE READS FOR ITSELF.
-    //
-    //   crack_flood      PUSHED, not read: mandrake.rm.floodedcanyon calls
-    //                    ExplosiveGrowthAPI.Soak on every cell its flood
-    //                    wets. (That mod's own light soak stub is retired.)
-    //   player irrigation  READ here from FlowWorks: a DUG cell holding a
-    //                    qualifying fresh fluid soaks itself and its 8
-    //                    neighbours. FlowWorks' own header names this:
-    //                    "irrigation wants a per-cell soak map". Natural
-    //                    liquid (rivers, lakes) reads through as SUPERDEEP
-    //                    with depth-grid 0 and is deliberately NOT a soak —
-    //                    river_steam stopped being one on 2026-09-21.
-    //   miasma_axis      READ here from EnvironmentalHazards' gradient axis:
-    //                    while a surge shift is running, the fresh side of
-    //                    the salt line soaks ("the surge line decides which
-    //                    half blooms"). Miasma plants churn, never burst.
-    //   red_water etc.   A roster-named WEATHER soaks open ground while it
-    //                    runs. No weather is named by default: the Contagion
-    //                    rain, scald_melt and slime_flood have no def/system
-    //                    yet (OWED, see the item file).
-    //   Greentide extract  NOT BUILT (the item does not exist yet) — OWED.
-    //
-    // Both READ routes are reflection-soft: neither mod is a dependency, and
-    // with either absent that route is simply silent.
+    // THE PUSHED (TIMED) SOURCES THIS ENGINE READS FOR ITSELF. Every other water source (natural water, spills, channels,
+    // rain, ash) is read ON DEMAND by RM_WetSources (the presence model, ruled spec §2-3); only the salt-line surge still
+    // writes timed soaks here, as the miasma surge always did (OQ-13: it stays a water source, unchanged).
+    //   crack_flood   PUSHED by mandrake.rm.floodedcanyon through ExplosiveGrowthAPI.SoakCells while the flood runs.
+    //   miasma_axis   READ here from EnvironmentalHazards' gradient axis: while a surge shift runs, the fresh side soaks.
+    // Reflection-soft: with Environmental Hazards absent the route is silent.
     // ════════════════════════════════════════════════════════════════════
     public static class RM_SoakSources
     {
         // 🄸 INVENTED: an irrigated cell stays soaked a day after its last
         // re-read; a full grid sweep takes 8 passes (2000 ticks).
-        private const int IrrigationSoakTicks = GenDate.TicksPerDay;
         // 🄸 INVENTED: the band of the fresh side that blooms in a surge.
         private const int SurgeSoakTicks = GenDate.TicksPerDay;
-        private const int WeatherSoakTicks = GenDate.TicksPerDay / 2;
 
         private static bool resolved;
         private static Type gradientType;
@@ -74,9 +54,7 @@ namespace RimMandrake.ExplosiveGrowth
             if (RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome)) return;
             try
             {
-                if (ExplosiveGrowthSettings.irrigationSoakEnabled && RimMandrake.Shared.FlowWorksIrrigationRead.Available) PulseIrrigation(comp, map);
                 if (ExplosiveGrowthSettings.gradientSurgeSoakEnabled && gradientType != null) PulseSurge(comp, map);
-                if (ExplosiveGrowthSettings.weatherSoakEnabled && RM_ExplosiveGrowthRegistry.SoakWeathers.Count > 0) PulseWeather(comp, map);
             }
             catch (Exception e)
             {
@@ -92,23 +70,6 @@ namespace RimMandrake.ExplosiveGrowth
                 if (list[i] != null && t.IsInstanceOfType(list[i])) return list[i];
             }
             return null;
-        }
-
-        // The cell rule itself lives in _Shared/FlowWorksIrrigation (Pyrelands' ash field reads the same rule).
-        private static void PulseIrrigation(RM_MapComponent_ExplosiveGrowth comp, Map map)
-        {
-            if (!RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, RM_ExplosiveGrowthRegistry.IrrigationFluids, out RimMandrake.Shared.FlowWorksIrrigationRead.Grids grids)) return;
-
-            int n = grids.Length;
-            RM_ExplosiveGrowthKernel.SliceRange(n, comp.irrigationCursor, out int start, out int end);
-            comp.irrigationCursor = RM_ExplosiveGrowthKernel.NextCursor(comp.irrigationCursor);
-
-            CellIndices idx = map.cellIndices;
-            for (int i = start; i < end; i++)
-            {
-                if (!grids.IsSource(i)) continue;   // per cell: a tar or oil canal is not water
-                RimMandrake.Shared.FlowWorksIrrigationRead.ForWatered(map, idx.IndexToCell(i), c => comp.TrySoak(c, IrrigationSoakTicks));
-            }
         }
 
         private static void PulseSurge(RM_MapComponent_ExplosiveGrowth comp, Map map)
@@ -128,24 +89,6 @@ namespace RimMandrake.ExplosiveGrowth
                 float s = sal[i];
                 if (!RM_ExplosiveGrowthKernel.InSurgeBand(s)) continue;
                 comp.TrySoak(idx.IndexToCell(i), SurgeSoakTicks);
-            }
-        }
-
-        private static void PulseWeather(RM_MapComponent_ExplosiveGrowth comp, Map map)
-        {
-            WeatherDef w = map.weatherManager?.curWeather;
-            if (w == null || !RM_ExplosiveGrowthRegistry.SoakWeathers.Contains(w)) return;
-            // 🄸 INVENTED: rain soaks a scatter of open, unroofed ground each
-            // pulse rather than the whole map at once — the soak spreads while
-            // the rain lasts.
-            int tries = Math.Max(20, map.Area / 300);
-            for (int i = 0; i < tries; i++)
-            {
-                IntVec3 c = CellFinder.RandomCell(map);
-                if (c.Roofed(map)) continue;
-                TerrainDef t = c.GetTerrain(map);
-                if (t == null || t.IsWater) continue;
-                comp.TrySoak(c, WeatherSoakTicks);
             }
         }
     }

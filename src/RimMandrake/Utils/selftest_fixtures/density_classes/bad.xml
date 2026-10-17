@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <BiomeDef>
+    <defName>RM_FixtureDriftedBiome</defName>
+    <!-- RM_DENSITY_CLASS: dense -->
+    <plantDensity>0.99</plantDensity>
+    <wildPlantRegrowDays>16</wildPlantRegrowDays>
+  </BiomeDef>
+  <BiomeDef>
+    <defName>RM_FixtureUnknownClassBiome</defName>
+    <!-- RM_DENSITY_CLASS: lush -->
+    <plantDensity>0.5</plantDensity>
+  </BiomeDef>
+</Defs>

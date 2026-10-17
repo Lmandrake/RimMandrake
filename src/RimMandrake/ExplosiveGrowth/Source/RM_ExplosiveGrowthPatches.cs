@@ -29,72 +29,94 @@ namespace RimMandrake.ExplosiveGrowth
             else Log.Message("[RM ExplosiveGrowth] " + selfTest);
 
             int[] t = RM_ExplosiveGrowthRegistry.CountByTop;
+            int[] k = RM_ExplosiveGrowthRegistry.CountByArchetype;
             Log.Message(string.Format(
                 "[RM ExplosiveGrowth] {0} plant defs soak (churn {1}, burst {2}, slime {3}, tinder {4}, rupture {5}, flush {6}), {7} never soak; " +
                 "roster rows resolved {8}, absent {9}; rupture kinds {10}, mutation hediffs {11}. " +
-                "Everyday bands: {13} plant defs scaled, {14} left alone; {15} stalled and {16} wet biome(s) loaded. " +
-                "Scope (home mod {12}): {17} Baroque Biomes biome(s){18}.",
+                "Archetypes: dry {13}, wet {14}, fire {15}, exempt {16}, vanilla {17}; {18} stalled, {19} wet and {20} fire biome(s); " +
+                "{21} natural-water terrain(s), {22} water filth(s), {23} liquid set(s), tidally locked {24}. " +
+                "Scope (home mod {12}): {25} Baroque Biomes biome(s){26}.",
                 RM_ExplosiveGrowthRegistry.CountSoaking, t[0], t[1], t[2], t[3], t[4], t[5],
                 RM_ExplosiveGrowthRegistry.CountNone, RM_ExplosiveGrowthRegistry.RosterResolved,
                 RM_ExplosiveGrowthRegistry.RosterMissing, RM_ExplosiveGrowthRegistry.RupturePawnKinds.Count,
                 RM_ExplosiveGrowthRegistry.RuptureMutationHediffs.Count,
-                ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", RM_ExplosiveGrowthRegistry.BandedCount,
-                RM_ExplosiveGrowthRegistry.BandExemptCount, RM_ExplosiveGrowthRegistry.TerminatorBiomeCount,
-                RM_ExplosiveGrowthRegistry.WetAmbientBiomeCount, RM_ExplosiveGrowthRegistry.HomeBiomes.Count,
+                ExplosiveGrowthMod.Home?.PackageId ?? "UNKNOWN", k[0], k[1], k[2], k[3], k[4],
+                RM_ExplosiveGrowthRegistry.TerminatorBiomeCount, RM_ExplosiveGrowthRegistry.WetBiomeCount,
+                RM_ExplosiveGrowthRegistry.FireBiomeCount, RM_ExplosiveGrowthRegistry.NaturalWaterTerrainCount,
+                RM_ExplosiveGrowthRegistry.FilthLiquidCount, RM_ExplosiveGrowthRegistry.LiquidSets.Count,
+                RM_ExplosiveGrowthRegistry.TidallyLocked, RM_ExplosiveGrowthRegistry.HomeBiomes.Count,
                 RM_ExplosiveGrowthRegistry.ScopeForcedBy != null ? ", every biome by roster " + RM_ExplosiveGrowthRegistry.ScopeForcedBy
-                : ExplosiveGrowthSettings.applyInOtherBiomes ? ", every biome by the unsupported option" : " only"));
+                : ExplosiveGrowthSettings.nativesSameRuleInOtherBiomes ? " (our plants everywhere by the unsupported option)" : " only"));
         }
     }
 
     /// <summary>
-    /// The AMBIENT tier (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth, mandrake.rut.plantgrowth,
-    /// now part of this engine). Scales the COMPOSITE GrowthRate, so light, temperature, fertility and drought penalties
-    /// still apply and the stalled band genuinely comes out slower than vanilla. Exactly one band applies per plant
-    /// (kernel AmbientBand). Scope is the soak's scope: the map's biome (RM_ExplosiveGrowthRegistry.BiomeInScope). Runs
-    /// on every plant tick: one array read and three hash lookups, no allocation.
+    /// THE RULED RATE (spec §2.5, D1+D2): ONE postfix multiplies vanilla's COMPOSITE GrowthRate by the plant's moisture
+    /// factor r (archetype x the cell's water state x the tree ratio; setting A for vanilla plants; sealed growers x1). It
+    /// REPLACES the old everyday band and soak, never stacks. The composite already holds light, temperature, fertility and
+    /// drought, so a dark cell stays 0: r never lifts a zero (the 12:28 light ruling). Pure read: no writes, no allocation.
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
-    [RimMandrake.Shared.PatchFeature("Everyday growth bands", typeof(ExplosiveGrowthSettings), "bandsEnabled")]
-    public static class RM_Patch_Plant_GrowthRate_Bands
+    [RimMandrake.Shared.PatchFeature("Ruled growth rate", typeof(ExplosiveGrowthSettings), "enabled")]
+    public static class RM_Patch_Plant_GrowthRate_Rule
     {
         [HarmonyPostfix]
         public static void Postfix(Plant __instance, ref float __result)
         {
-            if (__result <= 0f || !RM_ExplosiveGrowthRegistry.Ready || !ExplosiveGrowthSettings.BandsOn) return;
-            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
-            if (p == null || !p.banded) return;
-            // Scope is the map's biome (owner, 2026-10-16). Unspawned or held (caravan, pod, minified): no biome, so
-            // out of scope unless every biome is; then the normal band.
-            BiomeDef biome = __instance.Map?.Biome;
-            if (!RM_ExplosiveGrowthRegistry.BiomeInScope(biome)) return;
-            __result *= RM_ExplosiveGrowthKernel.AmbientBand(true, false,
-                RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome), RM_ExplosiveGrowthRegistry.IsWetAmbientBiome(biome), p.tree,
-                ExplosiveGrowthSettings.defaultMultiplier, ExplosiveGrowthSettings.treeMultiplier,
-                ExplosiveGrowthSettings.terminatorMultiplier, ExplosiveGrowthSettings.wetAmbientMultiplier,
-                ExplosiveGrowthSettings.wetAmbientTreeMultiplier);
-        }
-    }
-
-    /// <summary>
-    /// The EVENT tier (design doc §0): a soaked plant's composite GrowthRate is
-    /// multiplied again, on top of the ambient band above (x4 / x10 / x0.4).
-    /// Postfix order between the two does not matter — both multiply. This REPLACES FloodedCanyon's own
-    /// soak postfix (retired in the same change), so flooded ground is
-    /// multiplied once, not twice.
-    /// </summary>
-    [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
-    [RimMandrake.Shared.PatchFeature("Explosive growth soak", typeof(ExplosiveGrowthSettings), "enabled")]
-    public static class RM_Patch_Plant_GrowthRate_Soak
-    {
-        [HarmonyPostfix]
-        public static void Postfix(Plant __instance, ref float __result)
-        {
-            if (__result <= 0f || !ExplosiveGrowthSettings.On) return;
+            if (__result <= 0f || !RM_ExplosiveGrowthRegistry.Ready || !ExplosiveGrowthSettings.On) return;
             Map map = __instance.Map;
-            if (map == null) return;
+            if (map == null) return;   // unspawned or held: vanilla
+            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
+            if (p == null) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(map);
-            if (comp == null || comp.SoakedCount == 0 || !RM_ExplosiveGrowthRegistry.BiomeInScope(map.Biome)) return;
-            __result *= comp.GrowthFactorFor(__instance);
+            if (comp == null) return;
+            __result *= comp.MoistureFactorFor(__instance, p);
+        }
+    }
+
+    /// <summary>
+    /// DORMANCY (WP2 "Yes, age at the slowed rate"; spec §5.2, D13): a PREFIX on Plant.TickLong takes (1 - r) x 2000 off
+    /// the age step vanilla is about to add, so a plant below x1 ages at r. A prefix because vanilla adds ageInt += 2000 and
+    /// checks Dying in the same call (RimSage RimWorld/Plant.cs:810-868): a postfix would let vanilla kill it first. Only
+    /// the moisture factor slows ageing; darkness, blight, temperature and drought never do.
+    /// </summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.TickLong))]
+    [RimMandrake.Shared.PatchFeature("Dormancy (slowed ageing)", typeof(ExplosiveGrowthSettings), "enabled")]
+    public static class RM_Patch_Plant_TickLong_Dormancy
+    {
+        private static readonly AccessTools.FieldRef<Plant, int> ageRef = AccessTools.FieldRefAccess<Plant, int>("ageInt");
+
+        [HarmonyPrefix]
+        public static void Prefix(Plant __instance)
+        {
+            if (!ExplosiveGrowthSettings.dormancyEnabled || !ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready) return;
+            if (!__instance.Spawned || __instance.Destroyed) return;
+            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
+            if (p == null) return;
+            RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
+            if (comp == null) return;
+            float r = comp.MoistureFactorFor(__instance, p);
+            int off = RM_ExplosiveGrowthKernel.AgeRemoval(r, Rand.Value);
+            if (off > 0) ageRef(__instance) -= off;
+        }
+    }
+
+    /// <summary>
+    /// TIDAL LOCK (OQ-7 by card: "no rest; always lit means always growing"; D14). Vanilla rests every plant by the CLOCK,
+    /// not the light (Resting = DayPercent &lt; 0.25 || &gt; 0.8, RimSage RimWorld/Plant.cs:277-284), so a permanently lit
+    /// cell on Ash'karr would still rest 45% of each day. On a world a loaded roster marks tidallyLockedWorld, a plant with
+    /// light never rests. A dark cell is untouched (its growth is 0 anyway).
+    /// </summary>
+    [HarmonyPatch(typeof(Plant), "Resting", MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Tidal lock: lit plants never rest", typeof(ExplosiveGrowthSettings), "enabled")]
+    public static class RM_Patch_Plant_Resting_TidalLock
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Plant __instance, ref bool __result)
+        {
+            if (!__result || !ExplosiveGrowthSettings.tidalLockNoRest || !RM_ExplosiveGrowthRegistry.TidallyLocked || !ExplosiveGrowthSettings.On) return;
+            if (!__instance.Spawned) return;
+            if (__instance.GrowthRateFactor_Light > 0.001f) __result = false;
         }
     }
 
@@ -177,7 +199,7 @@ namespace RimMandrake.ExplosiveGrowth
         }
     }
 
-    /// <summary>HARVEST — "the jackpot window" (§4): a swollen plant harvested
+    /// <summary>HARVEST — "the jackpot window" (§4): a swollen WILD plant (OQ-14) harvested
     /// before the top yields swollen produce, up to double at full charge.
     /// 🄸 INVENTED scale.</summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.YieldNow))]
@@ -191,6 +213,7 @@ namespace RimMandrake.ExplosiveGrowth
             if (!__instance.Spawned) return;
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
             if (comp == null || !comp.AnyCharging) return;
+            if (__instance.IsCrop) return;   // OQ-14: a crop's harvest is exactly its full YieldNow
             float charge = comp.ChargeOf(__instance);
             if (charge > 0f) __result = GenMath.RoundRandom(__result * (1f + charge));
         }
@@ -221,6 +244,7 @@ namespace RimMandrake.ExplosiveGrowth
             float charge = comp.TakeCharge(__instance);
             if (charge <= 0f) return true;
             comp.Dirty(__instance.Position);
+            if (__instance.IsCrop) return true;   // OQ-14: cutting a crop defuses it, never a gamble
 
             float chance = GambleChance(charge);
             if (chance <= 0f || !Rand.Chance(chance)) return true;

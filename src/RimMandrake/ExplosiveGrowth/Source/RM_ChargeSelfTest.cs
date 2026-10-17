@@ -46,7 +46,23 @@ namespace RimMandrake.ExplosiveGrowth
                 if (passes > 16) fail = "dry charge took " + passes + " passes to relax";
             }
 
-            return fail == null ? "charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry relaxes)" : "charge clock self-test FAIL: " + fail;
+            string head = fail == null ? "charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry relaxes)" : "charge clock self-test FAIL: " + fail;
+
+            // 4. The ruled rate table at the ruled defaults (spec §2.5): one factor, replacing, never stacking.
+            string rf = null;
+            RM_RateSettings s = RM_RateSettings.Ruled;
+            void Want(string what, float got, float want) { if (rf == null && System.Math.Abs(got - want) > 1e-5f) rf = what + " " + got + " != " + want; }
+            Want("dry wet", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, false, false, s), 10f);
+            Want("dry dry", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, false, false, false, false, s), 0.1f);
+            Want("dry tree wet", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, false, true, false, true, false, s), 6.25f);
+            Want("wet native", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.WetNative, true, false, false, false, false, false, false, s), 4f);
+            Want("vanilla dry", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.Vanilla, true, false, false, false, false, false, false, s), 0.1f);
+            Want("vanilla near", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.Vanilla, true, false, false, false, false, false, true, s), 1f);
+            Want("sealed", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, true, false, true, true, false, false, false, s), 1f);
+            Want("out of scope", RM_ExplosiveGrowthKernel.MoistureFactor(RM_Archetype.DryNative, false, false, false, true, false, false, false, s), 1f);
+            Want("age step at x0.1", 2000 - RM_ExplosiveGrowthKernel.AgeRemoval(0.1f, 0.5f), 200f);
+            return head + (rf == null ? " | ruled rates PASS (x10 wet, x0.1 dry, x4 jungle, x6.25 tree, vanilla x0.1/x1, sealed x1, age x0.1)"
+                                      : " | ruled rates FAIL: " + rf);
         }
     }
 }

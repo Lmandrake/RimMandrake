@@ -150,7 +150,7 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         /// <summary>TEST-ONLY: put every biome in scope (RM_ExplosiveGrowthRegistry.TestScopeAll, never Scribed) and
-        /// rebuild, so the suite can stage on a quicktest map without writing the player's applyInOtherBiomes.</summary>
+        /// rebuild, so the suite can stage on a quicktest map without writing the player's settings.</summary>
         public static string ProofTestScopeAllOn(Map map)
         {
             return SetTestScopeAll(map, true);
@@ -182,7 +182,7 @@ namespace RimMandrake.ExplosiveGrowth
         {
             BiomeDef biome = map?.Biome;
             return "home=" + (ExplosiveGrowthMod.Home?.PackageId ?? "NONE")
-                   + " option=" + ExplosiveGrowthSettings.applyInOtherBiomes
+                   + " option=" + ExplosiveGrowthSettings.nativesSameRuleInOtherBiomes
                    + " forcedBy=" + (RM_ExplosiveGrowthRegistry.ScopeForcedBy ?? "none")
                    + " testScopeAll=" + RM_ExplosiveGrowthRegistry.TestScopeAll
                    + " mapBiome=" + (biome?.defName ?? "NONE")
@@ -190,7 +190,128 @@ namespace RimMandrake.ExplosiveGrowth
                    + " biomeInScope=" + RM_ExplosiveGrowthRegistry.BiomeInScope(biome)
                    + " homeBiomes=" + RM_ExplosiveGrowthRegistry.HomeBiomes.Count
                    + " soaking=" + RM_ExplosiveGrowthRegistry.CountSoaking
-                   + " banded=" + RM_ExplosiveGrowthRegistry.BandedCount;
+                   + " dry=" + RM_ExplosiveGrowthRegistry.CountByArchetype[0]
+                   + " wet=" + RM_ExplosiveGrowthRegistry.CountByArchetype[1]
+                   + " fire=" + RM_ExplosiveGrowthRegistry.CountByArchetype[2]
+                   + " exempt=" + RM_ExplosiveGrowthRegistry.CountByArchetype[3]
+                   + " vanilla=" + RM_ExplosiveGrowthRegistry.CountByArchetype[4]
+                   + " tidallyLocked=" + RM_ExplosiveGrowthRegistry.TidallyLocked;
+        }
+
+        // ── EXPLOSIVE_GROWTH_RULED_REWRITE (spec 2026-10-16): state reads of the ruled rules ──
+
+        private static ThingDef FirstOf(Map map, RM_Archetype a, bool woody)
+        {
+            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (d.plant == null || d.plant.growDays < 1f) continue;
+                RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(d);
+                if (p == null || p.archetype != a || p.woody != woody || !p.Soaks) continue;
+                if (!woody && (d.plant.harvestedThingDef == null || d.plant.harvestYield <= 0f)) continue;
+                if (d.plant.cavePlant || d.plant.interferesWithRoof) continue;
+                if (CellFinder.TryFindRandomCellNear(map.Center, map, 25, c => d.CanEverPlantAt(c, map), out _)) return d;
+            }
+            return null;
+        }
+
+        private static Plant PlaceDef(Map map, ThingDef def, float growth)
+        {
+            if (def == null) return null;
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 25, c => c.Standable(map) && c.GetPlant(map) == null
+                    && c.GetEdifice(map) == null && !c.Roofed(map) && def.CanEverPlantAt(c, map)
+                    && !RM_ExplosiveGrowthRegistry.IsNaturalWater(c.GetTerrain(map)), out IntVec3 cell)) return null;
+            Plant p = (Plant)ThingMaker.MakeThing(def);
+            p.Growth = growth;
+            GenSpawn.Spawn(p, cell, map);
+            return p;
+        }
+
+        private static Thing Spill(Map map, IntVec3 c)
+        {
+            ThingDef f = RM_ExplosiveGrowthDefOf.RM_Filth_WaterSpill;
+            if (f == null || !FilthMaker.TryMakeFilth(c, map, f)) return null;
+            return c.GetThingList(map).FirstOrDefault(t => t.def == f);
+        }
+
+        /// <summary>The §2.5 rate table, live: r for a dry native dry and on a water spill, a woody dry native, a wet native,
+        /// a vanilla plant with and without water 2 cells away, then the spill consumed by a fire. rain=1 means it is raining
+        /// on the map (every unroofed cell is wet): the dry arms then read UNMEASURED.</summary>
+        public static string ProofRules(Map map)
+        {
+            map = map ?? Find.CurrentMap;
+            var comp = RM_MapComponent_ExplosiveGrowth.For(map);
+            if (comp == null) return "ERROR no map component";
+            var parts = new List<string>();
+            int now = Find.TickManager.TicksGame;
+            parts.Add("rain=" + (map.weatherManager.RainRate > 0.05f ? 1 : 0));
+            var placed = new List<Thing>();
+            try
+            {
+                void Arm(string key, ThingDef def)
+                {
+                    Plant p = PlaceDef(map, def, 0.5f);
+                    if (p == null) { parts.Add(key + "=NONE"); return; }
+                    placed.Add(p);
+                    RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(p.def);
+                    float dry = comp.MoistureFactorFor(p, prof);
+                    Thing w = Spill(map, p.Position);
+                    float wet = comp.MoistureFactorFor(p, prof);
+                    parts.Add(string.Format("{0}={1} {0}Produce={5} {0}Dry={2:0.0000} {0}Wet={3:0.0000} {0}Spill={4}", key, p.def.defName, dry, wet, w != null,
+                        p.def.plant.harvestedThingDef?.defName ?? "NONE"));
+                    if (w != null)
+                    {
+                        int used = RM_WetSources.Consume(comp, p.Position, prof.liquids, now);
+                        parts.Add(string.Format("{0}Consumed={1} {0}AfterUse={2:0.0000}", key, used, comp.MoistureFactorFor(p, prof)));
+                        if (!w.Destroyed) w.Destroy();
+                    }
+                }
+                Arm("dry", FirstOf(map, RM_Archetype.DryNative, false));
+                Arm("tree", FirstOf(map, RM_Archetype.DryNative, true));
+                Arm("wetn", FirstOf(map, RM_Archetype.WetNative, false));
+
+                Plant v = PlaceDef(map, DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Rice"), 0.5f);
+                if (v == null) parts.Add("van=NONE");
+                else
+                {
+                    placed.Add(v);
+                    RM_PlantProfile vp = RM_ExplosiveGrowthRegistry.For(v.def);
+                    float vDry = comp.MoistureFactorFor(v, vp);
+                    IntVec3 near = v.Position + new IntVec3(2, 0, 0), far = v.Position + new IntVec3(3, 0, 0);
+                    Thing wn = near.InBounds(map) ? Spill(map, near) : null;
+                    float vNear = comp.MoistureFactorFor(v, vp);
+                    if (wn != null && !wn.Destroyed) wn.Destroy();
+                    Thing wf = far.InBounds(map) ? Spill(map, far) : null;
+                    float vFar = comp.MoistureFactorFor(v, vp);
+                    if (wf != null && !wf.Destroyed) wf.Destroy();
+                    parts.Add(string.Format("van={0} vanArch={1} vanDry={2:0.0000} vanNear2={3:0.0000} vanFar3={4:0.0000} vanSpills={5}{6}",
+                        v.def.defName, vp?.archetype, vDry, vNear, vFar, wn != null ? 1 : 0, wf != null ? 1 : 0));
+                    // dormancy: one TickLong at r 0.1 adds ~200 to the age, not 2000
+                    var ageRef = HarmonyLib.AccessTools.FieldRefAccess<Plant, int>("ageInt");
+                    int a0 = ageRef(v);
+                    v.TickLong();
+                    parts.Add("vanAgeStep=" + (v.Destroyed ? -1 : ageRef(v) - a0));
+                }
+                // the outcome odds with the live settings
+                ThingDef dd = FirstOf(map, RM_Archetype.DryNative, false);
+                RM_PlantProfile dp = dd != null ? RM_ExplosiveGrowthRegistry.For(dd) : null;
+                if (dp != null)
+                {
+                    int burst = 0, fruit = 0, n = 3000;
+                    for (int i = 0; i < n; i++)
+                    {
+                        RM_Outcome o = RM_ExplosiveGrowthKernel.ResolveOutcome(dp.archetype, (byte)RM_TopResolver.Effective(RM_GrowthTop.Churn),
+                            -1f, ExplosiveGrowthSettings.defaultRuptureChance, Rand.Value, false, true, ExplosiveGrowthSettings.burstEnabled);
+                        if (o == RM_Outcome.Burst) burst++; else if (o == RM_Outcome.Fruit) fruit++;
+                    }
+                    parts.Add(string.Format("burstShare={0:0.000} fruitShare={1:0.000}", burst / (float)n, fruit / (float)n));
+                }
+                parts.Add("tidallyLocked=" + RM_ExplosiveGrowthRegistry.TidallyLocked);
+            }
+            finally
+            {
+                foreach (Thing t in placed) if (!t.Destroyed) t.Destroy();
+            }
+            return string.Join(" ", parts);
         }
     }
 }

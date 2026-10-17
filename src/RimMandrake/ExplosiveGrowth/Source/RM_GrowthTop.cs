@@ -74,7 +74,30 @@ namespace RimMandrake.ExplosiveGrowth
 
         /// <summary>SLIME: the terrain the ring converts ground to.</summary>
         public TerrainDef slimeTerrain;
+
+        /// <summary>The ruled archetype (spec §4). Auto = seeded from the biomes' plant lists (§4.3); a biome review
+        /// sheet row that decides otherwise lands here.</summary>
+        public RM_ArchetypeChoice archetype = RM_ArchetypeChoice.Auto;
+
+        /// <summary>The Burst odds at the top of a dry cycle (C3: "1 in 3 ... Some plants are 1 in 1. Some plants
+        /// (groundcover) never rupture"). -1 = the default (the Mod Setting for dry natives, 0 for wet natives; 1 for a
+        /// Burst-top row).</summary>
+        public float ruptureChance = -1f;
+
+        /// <summary>Sprouts the outcome sows (§4: dry "many", wet "few", Pyrelands grass "super-fast"). 0~0 = the
+        /// archetype default.</summary>
+        public IntRange sproutCount = IntRange.Zero;
+
+        /// <summary>T2 "Only for adapted plants": liquids besides clean water that water this plant (FlowWorks fluid
+        /// defNames: RM_Fluid_SlimeRed, ...).</summary>
+        public List<string> adaptedLiquids = new List<string>();
+
+        /// <summary>C5: fresh ash counts as fresh water for this plant (the Pyrelands natives).</summary>
+        public bool fireAdapted;
     }
+
+    /// <summary>A sheet row's archetype decision; Auto = the seed.</summary>
+    public enum RM_ArchetypeChoice : byte { Auto = 0, DryNative = 1, WetNative = 2, FireAdapted = 3, Exempt = 4 }
 
     /// <summary>One row of a roster def. All names are strings on purpose.</summary>
     public class RM_ExplosiveGrowthRosterEntry
@@ -84,6 +107,18 @@ namespace RimMandrake.ExplosiveGrowth
         public float produceFactor = 1f;
         public string ringPlant;
         public string slimeTerrain;
+        public RM_ArchetypeChoice archetype = RM_ArchetypeChoice.Auto;
+        public float ruptureChance = -1f;
+        public IntRange sproutCount = IntRange.Zero;
+        public List<string> adaptedLiquids = new List<string>();
+        public bool fireAdapted;
+    }
+
+    /// <summary>A filth def that IS a water source (D6): its liquid, by FlowWorks fluid defName.</summary>
+    public class RM_FilthLiquidEntry
+    {
+        public string filth;
+        public string liquid;
     }
 
     /// <summary>
@@ -118,26 +153,37 @@ namespace RimMandrake.ExplosiveGrowth
         /// un-missing leaf body part.</summary>
         public List<string> ruptureMutationHediffs = new List<string>();
 
-        /// <summary>FlowWorks fluids that count as fresh irrigation water.</summary>
-        public List<string> irrigationFluids = new List<string>();
+        /// <summary>T2: the liquids that are CLEAN water and water every plant (FlowWorks fluid defNames). Every other
+        /// liquid waters only a plant that lists it in adaptedLiquids. Empty in every roster = RM_Fluid_Water.</summary>
+        public List<string> cleanWaterFluids = new List<string>();
 
-        /// <summary>Weathers that soak open ground while they run (design doc
-        /// §1 "hit by a qualifying rain"). Empty by default — the one ruled
-        /// rain route (red_water / Contagion rain) has no WeatherDef yet.</summary>
+        /// <summary>Extra weathers whose fall counts as rain (the engine already counts any weather with rainRate &gt; 0).</summary>
         public List<string> soakWeathers = new List<string>();
 
-        // ── the ambient bands (PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the former Jawa Plant Growth) ──
+        /// <summary>OQ-3: biomes where SNOW waters like rain ("Blowing snow melts like water and rain yes").</summary>
+        public List<string> snowmeltBiomes = new List<string>();
 
-        /// <summary>Biomes where growth has STALLED: in-scope plants there run the terminator band (below 1.0) instead
-        /// of the default band. Names, not references: an absent biome is skipped.</summary>
+        /// <summary>W2: natural water and mud terrains that keep their own cell wet, permanently, never consumed.</summary>
+        public List<string> naturalWaterTerrains = new List<string>();
+
+        /// <summary>D6: filth that is standing water (a hose spill, a poured can, a rain puddle).</summary>
+        public List<RM_FilthLiquidEntry> filthLiquids = new List<RM_FilthLiquidEntry>();
+
+        /// <summary>OQ-7: this roster's world is tidally locked (Ash'karr): a lit plant never rests by the clock.</summary>
+        public bool tidallyLockedWorld;
+
+        // ── archetype seeds (§4.3; OQ-1: no biome water label, the plant lists decide) ──
+
+        /// <summary>Stunted biomes (terminator / poison forest): our plants there run the stunted rate and never cycle.</summary>
         public List<string> terminatorBiomes = new List<string>();
 
-        /// <summary>The always-on wet jungles (ruling 6, 2026-09-21): in-scope plants there run the wet band (x10, trees
-        /// x6.25) INSTEAD of the default band, never on top of it.</summary>
-        public List<string> wetAmbientBiomes = new List<string>();
+        /// <summary>The wet biomes (C1, WP3): a plant in one of these biomes' wildPlants is a WET native.</summary>
+        public List<string> wetNativeBiomes = new List<string>();
 
-        /// <summary>Plants the ambient bands leave alone in every biome (their slowness is the point). Separate from
-        /// exemptPlants, which only stops the soak; the vanilla anima/gauranlen/ambrosia trio is built in for both.</summary>
+        /// <summary>C5: a plant in one of these biomes' wildPlants is FIRE-ADAPTED (fresh ash waters it).</summary>
+        public List<string> fireAdaptedBiomes = new List<string>();
+
+        /// <summary>Plants left at vanilla speed everywhere (their slowness is the point): the Exempt archetype.</summary>
         public List<string> bandExemptPlants = new List<string>();
     }
 }
