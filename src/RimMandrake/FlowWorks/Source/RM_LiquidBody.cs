@@ -72,6 +72,21 @@ namespace RimMandrake.FlowWorks
 		/// bodies keep the old form, so every existing save is written exactly as before.</summary>
 		public const int PackFootprintOver = RM_BedMath.OceanWalkCells;
 
+		// ── POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: derived, never scribed (rebuilt from the footprint and the bed record) ──
+
+		/// <summary>H[L] over the undug footprint (RM_PondDepthMath.Histogram), valid for pulse <see cref="depthHistPulse"/>.</summary>
+		internal int[] depthHist;
+		internal long depthHistPulse = -1;
+		internal readonly List<int> depthCells = new List<int>();
+		internal readonly List<int> depthBeds = new List<int>();
+
+		/// <summary>The body may show a part-depth picture that must be re-laid (true after load, a stage write, or the
+		/// toggle), so a full pond is not skipped until it has been laid back to its own water once.</summary>
+		internal bool depthStaged = true;
+
+		/// <summary>-1 unknown, 0 the depth model applies, 1 exempt (moving water: a current has no still-water picture, §6).</summary>
+		internal int depthExempt = -1;
+
 		public RM_LiquidBody()
 		{
 		}

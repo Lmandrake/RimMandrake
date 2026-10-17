@@ -213,6 +213,10 @@
       <li>Marsh</li>
       <li>MarshFlood</li>
       <li>Mud</li>
+      <!-- POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (FlowWorks): a drawn-down pond's stage waters are its own water (W2/W3: fresh
+           while it is there); its exposed mud is Mud above. The cracked RM_Lakebed_* is not listed (W2: dry). -->
+      <li>RM_WaterChestDeepStill</li>
+      <li>RM_WaterThin</li>
     </naturalWaterTerrains>
 
     <!-- D6 / OQ-9: standing water that is a source (Defs/ThingDefs_Filth/RM_WaterFilth.xml). -->

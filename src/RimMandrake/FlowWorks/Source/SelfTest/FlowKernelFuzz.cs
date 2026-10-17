@@ -69,6 +69,23 @@ namespace RimMandrake.FlowWorks.SelfTest
 			return b;
 		}
 
+		/// <summary>POND_DEPTH: bed levels of a natural cell (absent = no bed record, drawdown 0).</summary>
+		public readonly Dictionary<int, int> bed = new Dictionary<int, int>();
+
+		/// <summary>POND_DEPTH: the drawdown s of the limited body behind source idx (RM_PondDepthMath over its undug cells'
+		/// beds; 0 when limitless or bedless). The adapter's RM_LiquidStock.DrawdownOf does the same over the game's body.</summary>
+		public int Drawdown(int idx)
+		{
+			if (bodyOf[idx] < 0) return 0;
+			var b = bodies[bodyOf[idx]];
+			if (b.limitless) return 0;
+			var beds = new List<int>();
+			foreach (int c in b.cells) if (k.depth[c] == 0 && bed.TryGetValue(c, out int v)) beds.Add(v);
+			if (beds.Count == 0) return 0;
+			RM_PondDepthMath.Drawdown(RM_BedMath.SupportedLevels(b.stock, (b.fluid ?? activeFluid).vpt), RM_PondDepthMath.Histogram(beds), out int s, out _);
+			return s;
+		}
+
 		public bool IsNaturalLiquid(int idx) => natural[idx];
 		public bool CanSupply(int idx) { var b = BodyAt(idx); return b == null || RM_StockMath.CanSupply(b.limitless, b.stock, (b.fluid ?? activeFluid).vpt); }
 		public bool TryDebitLevel(int idx)
@@ -970,7 +987,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 	internal static class OracleScenes
 	{
 		public static int Run(System.IO.TextReader input, System.IO.TextWriter output, bool levelBySurface = false, bool levelSet = false,
-			bool creep = false)
+			bool creep = false, bool headRule = false)
 		{
 			string line;
 			while ((line = input.ReadLine()) != null)
@@ -994,6 +1011,17 @@ namespace RimMandrake.FlowWorks.SelfTest
 					int idx = N(), d = N();
 					world.k.depth[idx] = (byte)Math.Min(4, world.k.depth[idx] + d);
 					if (!digs.Contains(idx)) digs.Add(idx);
+				}
+				// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: an optional tail of source beds (count, then idx bed pairs) for the
+				// head-rule mode; the drawdown is RM_PondDepthMath's, as the adapter computes it.
+				if (t.Count > 0)
+				{
+					int nbed = N();
+					for (int i = 0; i < nbed; i++) { int idx = N(); world.bed[idx] = N(); }
+				}
+				if (headRule)
+				{
+					world.k.sourceDrawdown = world.Drawdown;
 				}
 				if (band > 0)
 				{

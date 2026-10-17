@@ -512,6 +512,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			// POND_DEPTH §7: switch the pond picture model (migration on, re-lay back off) before any body runs.
+			bool depthModelOn = SyncPondDepthModel(map, owner);
+			owner.pondStageWritesLeft = RimMandrakeFlowWorksSettings.PondStageWritesPerPulse;
 			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: refill and recession read each body's own fluid;
 			// ActiveFluid survives only as the default for a body a save left unstamped.
 			for (int b = 0; b < bodies.Count; b++)
@@ -533,9 +536,17 @@ namespace RimMandrake.FlowWorks
 				}
 				if (RimMandrakeFlowWorksSettings.recessionEnabled)
 				{
+					// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: a still-water pond keeps one flat surface (StagePond) instead of
+					// shedding whole squares; every other body (another liquid, moving water) keeps full-or-empty squares.
+					bool depth = depthModelOn && DepthModelApplies(map, body, owner);
 					// A full pond with nothing dried has nothing to shed or re-wet: skip its footprint scan (big lakes idle free).
-					if (body.receded.Count == 0 && body.stock >= body.capacity)
+					if (body.receded.Count == 0 && body.stock >= body.capacity && (!depth || !body.depthStaged))
 					{
+						continue;
+					}
+					if (depth)
+					{
+						StagePond(map, body, fluid, owner);
 						continue;
 					}
 					BeginRecession(map, body, owner);
@@ -655,6 +666,270 @@ namespace RimMandrake.FlowWorks
 		private float RecessionUnit(RM_LiquidBody body, RM_MapComponent_Excavation owner)
 		{
 			return RimMandrakeFlowWorksSettings.deepBedsEnabled ? LevelUnitOf(body, owner) : body.PerCellVolume;
+		}
+
+		// ── POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (design/RimMandrake/pond_depth_design_2026-10-16.md) ─────────────
+
+		/// <summary>§6: the depth model applies to a LIMITED body of still WATER only. Limitless bodies never run down (ruling
+		/// 16); a current (River tag or MovingFluid, judged on the square's first recorded terrain) has no still-water picture;
+		/// another liquid keeps full-or-empty squares until its stage looks are authored (OWED).</summary>
+		public bool DepthModelApplies(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			if (body == null || body.limitless)
+			{
+				return false;
+			}
+			FluidDef f = body.fluid ?? owner.ActiveFluid;
+			if (f != null && f != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water)
+			{
+				return false;
+			}
+			if (body.depthExempt < 0)
+			{
+				body.depthExempt = 0;
+				for (int i = 0; i < body.cells.Count && body.depthExempt == 0; i++)
+				{
+					IntVec3 c = body.cells[i];
+					if (!c.InBounds(map))
+					{
+						continue;
+					}
+					TerrainDef t = owner.OriginalTerrainAt(c) ?? map.terrainGrid.BaseTerrainAt(c);
+					if (t != null && IsMovingWater(t))
+					{
+						body.depthExempt = 1;
+					}
+				}
+			}
+			return body.depthExempt == 0;
+		}
+
+		private static TerrainAffordanceDef movingFluid;
+		private static bool movingFluidLooked;
+
+		private static bool IsMovingWater(TerrainDef t)
+		{
+			if (t.tags != null && t.tags.Contains("River"))
+			{
+				return true;
+			}
+			if (!movingFluidLooked)
+			{
+				movingFluidLooked = true;
+				movingFluid = DefDatabase<TerrainAffordanceDef>.GetNamedSilentFail("MovingFluid");
+			}
+			return movingFluid != null && t.affordances != null && t.affordances.Contains(movingFluid);
+		}
+
+		/// <summary>H[L] over the body's undug footprint, built at most once a pulse (the kernel asks per donor probe).</summary>
+		private int[] DepthHistogram(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		{
+			long pulse = owner.PulseCount;
+			if (body.depthHist != null && body.depthHistPulse == pulse)
+			{
+				return body.depthHist;
+			}
+			body.depthCells.Clear();
+			body.depthBeds.Clear();
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				IntVec3 c = body.cells[i];
+				if (!c.InBounds(map) || owner.IsExcavated(c))
+				{
+					continue;
+				}
+				body.depthCells.Add(map.cellIndices.CellToIndex(c));
+				body.depthBeds.Add(owner.BedLevelsAt(c));
+			}
+			body.depthHist = RM_PondDepthMath.Histogram(body.depthBeds);
+			body.depthHistPulse = pulse;
+			return body.depthHist;
+		}
+
+		/// <summary>D2: the drawdown s of the pond behind source cell <paramref name="c"/> (its surface is −s); 0 for a
+		/// limitless body, another liquid, moving water, or a full pond — so the kernel's head rule is today's rule there.</summary>
+		public int DrawdownAt(Map map, IntVec3 c, RM_MapComponent_Excavation owner)
+		{
+			RM_LiquidBody body = BodyAt(map, c, owner);
+			if (body == null || !DepthModelApplies(map, body, owner) || body.stock >= body.capacity)
+			{
+				return 0;
+			}
+			int[] h = DepthHistogram(map, body, owner);
+			RM_PondDepthMath.Drawdown(RM_BedMath.SupportedLevels(body.stock, LevelUnitOf(body, owner)), h, out int s, out _);
+			return s;
+		}
+
+		/// <summary>The pond's surface for reports: s, r and the wet count (squares with w ≥ 1 in the picture).</summary>
+		public void DepthReport(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner, out int s, out int r, out int wet)
+		{
+			int[] h = DepthHistogram(map, body, owner);
+			RM_PondDepthMath.Drawdown(RM_BedMath.SupportedLevels(body.stock, LevelUnitOf(body, owner)), h, out s, out r);
+			wet = (s < h.Length ? (s + 1 < h.Length ? h[s + 1] : 0) : 0) + r;
+		}
+
+		/// <summary>§7: model 0 ↔ 1. On (first pulse with "pondDepthEnabled"): every limited water body is marked to re-lay
+		/// once (StagePond), the stock untouched. Off: every staged square goes back to its own water, mud times end, and
+		/// the old shed/restore takes over from the same stock. Returns whether the depth model runs this pulse.</summary>
+		private bool SyncPondDepthModel(Map map, RM_MapComponent_Excavation owner)
+		{
+			bool on = RimMandrakeFlowWorksSettings.pondDepthEnabled;
+			if (on && owner.PondDepthModel == 0)
+			{
+				for (int b = 0; b < bodies.Count; b++)
+				{
+					bodies[b].depthStaged = true;
+				}
+				owner.PondDepthModel = 1;
+				Log.Message("[RimMandrake.FlowWorks] pond depth model 0 -> 1: " + bodies.Count + " body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.");
+			}
+			else if (!on && owner.PondDepthModel == 1)
+			{
+				int restored = 0;
+				for (int b = 0; b < bodies.Count; b++)
+				{
+					RM_LiquidBody body = bodies[b];
+					if (body.limitless)
+					{
+						continue;
+					}
+					for (int i = 0; i < body.cells.Count; i++)
+					{
+						IntVec3 c = body.cells[i];
+						if (!c.InBounds(map) || owner.IsExcavated(c) || !owner.IsWaterNow(c))
+						{
+							continue;
+						}
+						TerrainDef first = owner.OriginalTerrainAt(c);
+						if (first != null && first.IsWater && map.terrainGrid.BaseTerrainAt(c) != first
+							&& owner.RestoreOriginalTerrain(c) == RM_RestoreResult.Restored)
+						{
+							restored++;
+						}
+					}
+					body.depthStaged = true;
+				}
+				owner.ClearPondMud();
+				owner.PondDepthModel = 0;
+				Log.Message("[RimMandrake.FlowWorks] pond depth model 1 -> 0: " + restored + " part-depth square(s) laid back to their own water; the old full-or-empty recession takes over.");
+			}
+			return on;
+		}
+
+		/// <summary>§2-§5: lay one pond's picture from its stock. One flat surface s; every square of bed &gt; s shows bed − s
+		/// levels (the r-patch one more), the stage terrain for that depth (§4); squares at or above the surface are mud
+		/// for the mud time, then lakebed. Ruling 5: a dry square with a pawn or building waits (its band share goes to the
+		/// next square; the stock is the truth and is never spent on the picture). Terrain writes are capped per pulse
+		/// (pondStageWritesPerPulse); the rest catch up next pulse. The receded list is derived: the squares now dry.</summary>
+		private void StagePond(Map map, RM_LiquidBody body, FluidDef fluid, RM_MapComponent_Excavation owner)
+		{
+			int[] h = DepthHistogram(map, body, owner);
+			int levels = RM_BedMath.SupportedLevels(body.stock, LevelUnitOf(body, owner));
+			RM_PondDepthMath.Drawdown(levels, h, out int s, out int r);
+			bool waits = RimMandrakeFlowWorksSettings.refillWaitsForOccupants;
+			Func<int, bool> eligible = null;
+			if (waits && r > 0)
+			{
+				eligible = i =>
+				{
+					IntVec3 c = map.cellIndices.IndexToCell(i);
+					return owner.IsWaterNow(c) || !Occupied(map, c);
+				};
+			}
+			HashSet<int> patch = RM_PondDepthMath.PickPatch(map.Size.x, map.Size.z, body.depthCells, body.depthBeds, s, r, eligible);
+			int now = Find.TickManager != null ? Find.TickManager.TicksGame : 0;
+			int mudTicks = RimMandrakeFlowWorksSettings.PondMudTicks;
+			bool staged = false;
+			for (int k = 0; k < body.depthCells.Count; k++)
+			{
+				int i = body.depthCells[k];
+				IntVec3 c = map.cellIndices.IndexToCell(i);
+				int bed = body.depthBeds[k];
+				int w = RM_PondDepthMath.WaterAt(bed, s, patch.Contains(i));
+				bool wetNow = owner.IsWaterNow(c);
+				TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
+				if (w > 0)
+				{
+					RM_PondDepthMath.Stage st = RM_PondDepthMath.StageFor(w, bed, false);
+					TerrainDef want = owner.PondStageTerrain(c, st, fluid);
+					if (want == null)
+					{
+						continue;   // no look for this stage on this map: leave the square as it is
+					}
+					if (cur != want)
+					{
+						if (owner.pondStageWritesLeft <= 0)
+						{
+							staged = true;
+							continue;
+						}
+						// Ruling 5: water returning to a DRY square waits for pawns and buildings; items wash ashore.
+						if (!wetNow && waits && !ClearForRefill(map, c, body, owner))
+						{
+							staged = true;
+							continue;
+						}
+						owner.pondStageWritesLeft--;
+						owner.StageNaturalCell(c, want);
+					}
+					if (st != RM_PondDepthMath.Stage.Original)
+					{
+						staged = true;
+					}
+				}
+				else if (wetNow)
+				{
+					if (owner.pondStageWritesLeft <= 0)
+					{
+						staged = true;
+						continue;
+					}
+					owner.pondStageWritesLeft--;
+					if (!owner.MudNaturalCell(c, fluid, now))
+					{
+						// The liquid authors no receded terrain: the stock still ran down; only the look is missing.
+						continue;
+					}
+					staged = true;
+				}
+				else if (owner.PondMudTimed(c))
+				{
+					if (owner.PondMudExpired(c, now, mudTicks) && owner.pondStageWritesLeft > 0)
+					{
+						owner.pondStageWritesLeft--;
+						owner.CrackPondMud(c, fluid);
+					}
+					else
+					{
+						staged = true;   // mud still has time to run: keep visiting
+					}
+				}
+			}
+			// The receded list is DERIVED now: the footprint squares that are dry (kept in the save so a downgrade loads, §2).
+			body.receded.Clear();
+			for (int k = 0; k < body.depthCells.Count; k++)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(body.depthCells[k]);
+				if (!owner.IsWaterNow(c))
+				{
+					body.receded.Add(c);
+				}
+			}
+			body.depthStaged = staged;
+		}
+
+		private static bool Occupied(Map map, IntVec3 c)
+		{
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				Thing t = things[i];
+				if (t is Pawn || (t.def.category == ThingCategory.Building && !(t is Blueprint)))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>Give up cells while the stock no longer covers the wet beds (POND_ELEVATION_BUILD_LAKES_RUN_DEEP §9.3: the

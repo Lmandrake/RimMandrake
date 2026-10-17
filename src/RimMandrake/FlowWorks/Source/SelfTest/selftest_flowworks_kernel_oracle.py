@@ -46,11 +46,27 @@ def scene(seed):
     return w, h, pulses, band, bodies, src, digs
 
 
-def oracle(sc, surface=False, level_set=False, creep=False):
-    w, h, pulses, band, bodies, src, digs = sc
+def pond_scene(seed):
+    """POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (D2 head rule): a scene whose source cells carry beds (2/4 like vanilla water,
+    deeper like a lake middle) and whose limited bodies hold LESS than their beds, so the pond stands below its brim and
+    the head rule decides which ditches still draw. Returned as a scene tuple plus the bed map."""
+    r = random.Random(1_000_003 + seed)
+    w, h, pulses, band, bodies, src, digs = scene(1_000_003 + seed)
+    beds = {c: r.choice([2, 2, 4, 4, 5, 6]) for c in src}
+    for b, d in bodies.items():
+        total = sum(beds[c] for c, i in src.items() if i == b)
+        d["limitless"] = r.random() < 0.15
+        d["stock"] = float(r.randint(0, total))
+    digs = [(c, r.randint(1, 4)) for c, _ in digs]
+    return (w, h, pulses, band, bodies, src, digs, beds)
+
+
+def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False):
+    w, h, pulses, band, bodies, src, digs = sc[:7]
+    beds = sc[7] if len(sc) > 7 else None
     o = v.PulseOracle(w, h, dict(src), {b: dict(d) for b, d in bodies.items()}, per=1, budget=True,
                       sink_band=band or None, algo="fixed", level_surface=surface, level_set=level_set,
-                      creep_water=creep, creep_thick=creep)
+                      creep_water=creep, creep_thick=creep, head_rule=head_rule, beds=beds)
     order = []
     for c, d in digs:
         o.dig(c, d)
@@ -65,7 +81,7 @@ def oracle(sc, surface=False, level_set=False, creep=False):
 
 
 def encode(sc):
-    w, h, pulses, band, bodies, src, digs = sc
+    w, h, pulses, band, bodies, src, digs = sc[:7]
     out = [w, h, pulses, band, len(bodies)]
     for b in range(len(bodies)):
         out += [1 if bodies[b]["limitless"] else 0, int(bodies[b]["stock"])]
@@ -75,6 +91,10 @@ def encode(sc):
     out.append(len(digs))
     for (x, z), d in digs:
         out += [z * w + x, d]
+    if len(sc) > 7:
+        out.append(len(sc[7]))
+        for (x, z), b in sc[7].items():
+            out += [z * w + x, b]
     return " ".join(map(str, out))
 
 
@@ -87,7 +107,8 @@ def main():
     dotnet = stock_wrapper._find_dotnet()
     if dotnet is None:
         sys.exit("dotnet.exe not found; UNMEASURED, not a pass or a fail")
-    scenes = [scene(s) for s in range(n)]
+    plain = [scene(s) for s in range(n)]
+    ponds = [pond_scene(s) for s in range(n)]
     with stock_wrapper.dotnet_lock():
         proj = stock_wrapper._to_windows_path(stock_wrapper.CSPROJ)
         # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
@@ -96,16 +117,20 @@ def main():
             print(b.stdout[-2000:], b.stderr[-2000:])
             sys.exit("selftest build failed")
         dll = stock_wrapper._to_windows_path(os.path.join(HERE, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
-        scene_file = os.path.join(HERE, "bin", "oracle_scenes.txt")   # bin/ is gitignored
-        with open(scene_file, "w") as f:
-            f.write("\n".join(encode(sc) for sc in scenes) + "\n")
         failed = []
         # Three engines: the pre-surface rule, levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND), and that plus
         # levelSetEnabled (WATER_LEVELSET_SOLVE, shipped ON); "shipped" adds both creeps (and with them the mouth top-up,
         # CANAL_MOUTH_DIAGNOSE_BLINKS_DRY_HALF_TIME).
-        for mode in ("depth", "surface", "levelset", "shipped"):
+        # "pond" (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2): shipped plus the head rule, on scenes whose source cells carry
+        # beds and whose ponds stand below their brims.
+        for mode in ("depth", "surface", "levelset", "shipped", "pond"):
+            scenes = ponds if mode == "pond" else plain
+            scene_file = os.path.join(HERE, "bin", "oracle_scenes_%s.txt" % mode)   # bin/ is gitignored
+            with open(scene_file, "w") as f:
+                f.write("\n".join(encode(sc) for sc in scenes) + "\n")
             t0 = time.time()
-            want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped"), mode == "shipped") for sc in scenes]
+            want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
+                           mode == "pond") for sc in scenes]
             t1 = time.time()
             args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([mode] if mode != "depth" else [])
             res = subprocess.run(args, capture_output=True, text=True, timeout=300)

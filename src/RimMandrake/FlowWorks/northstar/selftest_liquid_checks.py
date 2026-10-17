@@ -80,6 +80,20 @@ case(LC.levelset_verdict(_rows([2, 0, 0], x0=1, source_at=0))[0], "PASS", "L7: t
 case(LC.levelset_verdict(_rows([1, 1, 0, 1, 0, 0]), _rows([1, 0, 1, 1, 0, 0]))[0], "PASS", "L7: a gap that moved since the last pulse is flow in transit")
 case(LC.levelset_verdict(_rows([1, 0, 1, 0, 1, 0]), _rows([1, 0, 1, 0, 1, 0]))[0], "FAIL", "L7: a stripe standing in both reads")
 case(LC.levelset_verdict(_rows([1, 1, 0, 1, 0, 0]), _rows([1, 0, 1, 1, 0, 0]))[2]["movingStripes"], [(2, 0)], "L7: the moving gap is named")
+# L8 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): each bar can go red.
+def _P(s_, r_, wet, applies=True, **cen):
+    c = dict(deep=0, chest=0, shallow=0, thin=0, own=0, mud=0, lakebed=0, other=0)
+    c.update(cen)
+    return LC.parse_pond("POND id=1 pulse=9 model=1 applies=%s limitless=False stock=10.00 capacity=20.00 s=%d r=%d wet=%d census=%s"
+                         % (applies, s_, r_, wet, ",".join("%s:%d" % kv for kv in c.items())))
+case(LC.parse_pond("POND id=3 s=2 r=1 wet=7 applies=True census=deep:1,thin:2")["census"]["thin"], 2, "L8: the reply parses")
+case(LC.parse_pond("REFUSED: no formed pond"), None, "L8: a refusal is no read")
+case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 100, chest=64, thin=36)])[0], "PASS", "L8: one level down, nothing dried, stages show")
+case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 64, own=64, mud=36)])[0], "FAIL", "L8: the old shrink-from-the-rim is a FAIL")
+case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(1, 0, 100, own=100)])[0], "FAIL", "L8: s fell but no part-depth square")
+case(LC.pond_depth_verdict([_P(0, 0, 100, own=100), _P(0, 0, 100, own=100)])[0], "UNMEASURED", "L8: the pump drew nothing is SITE")
+case(LC.pond_depth_verdict([_P(0, 0, 9, False), _P(1, 0, 9, False)])[1], "SITE", "L8: model not applying is SITE")
+case(LC.pond_depth_verdict([_P(0, 0, 9)])[0], "UNMEASURED", "L8: one read is not a trace")
 bad = [(g, w, y) for g, w, y in cases if g != w]
 for g, w, y in bad:
     print("FAIL", y, "got", g, "want", w)

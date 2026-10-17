@@ -128,6 +128,7 @@
     <Compile Include="RM_Volume.cs" />
     <Compile Include="RM_MouseoverDepth.cs" />
     <Compile Include="RM_BedMath.cs" />
+    <Compile Include="RM_PondDepthMath.cs" />
     <Compile Include="RM_FlowKernel.cs" />
     <Compile Include="RM_LiquidBody.cs" />
     <Compile Include="RM_FluidIdentity.cs" />

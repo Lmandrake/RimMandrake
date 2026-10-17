@@ -50,6 +50,7 @@ SETTINGS = {
         "mouseoverDepthEnabled": True,   # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: depth + litres in the cell readout
         "deepBedsEnabled": True, "deepBedMaxDepth": 20.0, "deepBedCellsPerLevel": 4.0,   # POND_ELEVATION_BUILD_LAKES_RUN_DEEP
         "drainableLakeMaxCells": 40000.0,
+        "pondDepthEnabled": True, "pondMudDays": 2.0, "pondStageWritesPerPulse": 400.0, "pondHeadRuleEnabled": True,   # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
         "sourceBudgetMultiplier": 1.0, "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1,
