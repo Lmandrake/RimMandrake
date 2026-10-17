@@ -139,15 +139,15 @@ def weirs(B, a):
         raise SystemExit("only %d crossings on this river; need %d" % (len(anchors), len(LOOKS)))
     for look, cr in zip(LOOKS, anchors):
         (bx, bz), d, n, e = cr
-        p = (-d[1], d[0]); rot = RV.ROT[d]
-        # the joined run: --run adjacent bank cells along the bank, each a land cell whose water neighbour (cell+d) is moving water
-        cells = []
-        for k in range(-a.run // 2, a.run - a.run // 2):
-            c = (bx + p[0] * k, bz + p[1] * k)
-            if RV.is_land(terr.get(c)) and RV.is_moving(terr.get((c[0] + d[0], c[1] + d[1]))):
-                cells.append(c)
-        say("%s: crossing bank %s dir %s; %d of %d wanted bank cells qualify" % (look, (bx, bz), d, len(cells), a.run))
-        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (min(c[0] for c in cells) - 2, min(c[1] for c in cells) - 2, a.run + 5, a.run + 5), category="Plant") if cells else None
+        rot = RV.ROT[d]
+        # The joined wall (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS; RM_RiverWorksProofWorks.ProofWeirJoin): a 1x2 weir faces the
+        # water, so the next section of the wall starts 2 cells further INTO the river along d, same rotation, and so on
+        # toward the far bank. (The first version laid weirs side by side ALONG the bank: 1-2 of 6 qualified, none joined.)
+        cells = [(bx + d[0] * 2 * k, bz + d[1] * 2 * k) for k in range(a.run) if 2 * k < max(2, n)]
+        say("%s: crossing bank %s dir %s, %d moving cells: %d wall sections planned" % (look, (bx, bz), d, n, len(cells)))
+        xs = [c[0] for c in cells] + [c[0] + d[0] for c in cells]
+        zs = [c[1] for c in cells] + [c[1] + d[1] for c in cells]
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (min(xs) - 2, min(zs) - 2, max(xs) - min(xs) + 5, max(zs) - min(zs) + 5), category="Plant")
         got = 0
         for c in cells:
             if build(B, "RM_BankWeir", c[0], c[1], rot):
@@ -155,7 +155,7 @@ def weirs(B, a):
                 style(B, "RM_BankWeir", c[0], c[1], "RM_BankWeir_" + look)
         say("%s: %d weirs built and styled" % (look, got))
         if cells:
-            shoot(B, min(c[0] for c in cells) - 6, min(c[1] for c in cells) - 6, a.run + 14, a.run + 14, "extra_weirs_%s" % look.lower())
+            shoot(B, min(xs) - 6, min(zs) - 6, max(xs) - min(xs) + 13, max(zs) - min(zs) + 13, "extra_weirs_%s" % look.lower())
     say("unpause a few hours (<=2000-tick steps) for slack pools; re-pause before looking")
     if a.save:
         save(B, a.save)

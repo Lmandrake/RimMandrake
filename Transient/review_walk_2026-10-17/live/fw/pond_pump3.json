@@ -1,0 +1,224 @@
+{
+ "script": "pond_pump.py",
+ "started": "2026-10-17T13:07:54",
+ "rows": [
+  {
+   "id": "POND_PUMP_pond_limited",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "body": {
+     "id": 1,
+     "limitless": false,
+     "stock": 12.0,
+     "capacity": 12.0,
+     "cellCount": 6,
+     "recededCount": 0,
+     "activeCellCount": 6,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "id": "POND_PUMP_draw_conserves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tankGained": 20000,
+    "stockFell": 2.0,
+    "stockFellInTankUnits": 20000.0,
+    "diff": 0.0,
+    "rawEqual": false,
+    "u0": 0,
+    "u1": 20000,
+    "s0": 12.0,
+    "s1": 10.0,
+    "trace": [
+     {
+      "tick": 205,
+      "units": 0,
+      "stock": 12.0,
+      "receded": 0
+     },
+     {
+      "tick": 455,
+      "units": 10000,
+      "stock": 11.0,
+      "receded": 0,
+      "pump": null
+     },
+     {
+      "tick": 705,
+      "units": 20000,
+      "stock": 10.0,
+      "receded": 0,
+      "pump": null
+     }
+    ],
+    "capacity": 12.0,
+    "pumpPoweredAfterTicks": 170
+   }
+  },
+  {
+   "id": "POND_PUMP_refill_rewets",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no body reads in the refill window",
+    "trace": [],
+    "tankAfter": 20000,
+    "terrainAfter": {
+     "182,45": "WaterShallow",
+     "183,45": "WaterShallow",
+     "184,45": "WaterShallow",
+     "182,46": "WaterShallow",
+     "183,46": "WaterShallow",
+     "184,46": "WaterShallow"
+    },
+    "engine": {
+     "success": true,
+     "nextPulseTick": 1001,
+     "ticksUntilNextPulse": 36,
+     "pulseIntervalTicks": 250,
+     "depthEngineEnabled": true,
+     "activeFluid": "RM_Fluid_Water",
+     "activeFluidRaw": "RM_Fluid_Water",
+     "rainAccumulator": 0.0,
+     "excavatedCellCount": 0,
+     "superdeepCellCount": 0,
+     "bodyCount": 1,
+     "sinkTransferredTotal": 0.0,
+     "overflowDestroyedTotal": 0.0,
+     "mapId": 0,
+     "ticksGame": 965,
+     "operation": {
+      "OperationId": "op_a778817bd4dc400dbea0445bf0754358",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 965
+     }
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/fw/pond_pump3.json",
+  "origin": "180,40",
+  "fresh_map": true,
+  "cycles": 2,
+  "refill_days": 0.0
+ },
+ "running": 20,
+ "settings_before": {
+  "refillEnabled": "True",
+  "refillRateMultiplier": "1",
+  "recessionEnabled": "True",
+  "liquidPumpEnabled": "True",
+  "depthEngineEnabled": "True"
+ },
+ "classify": {
+  "success": true,
+  "cell": {
+   "x": 183,
+   "z": 46
+  },
+  "classified": true,
+  "formedByThisCall": true,
+  "indexAgrees": true,
+  "isSourceCell": true,
+  "body": {
+   "id": 1,
+   "limitless": false,
+   "stock": 12.0,
+   "capacity": 12.0,
+   "cellCount": 6,
+   "recededCount": 0,
+   "activeCellCount": 6,
+   "truncated": false
+  },
+  "bodyCount": 1,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_4ed56ff42f7b4796a43e7589127d3dec",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 47
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "engine_before": {
+  "success": true,
+  "nextPulseTick": 251,
+  "ticksUntilNextPulse": 218,
+  "pulseIntervalTicks": 250,
+  "depthEngineEnabled": true,
+  "activeFluid": "RM_Fluid_Water",
+  "activeFluidRaw": "RM_Fluid_Water",
+  "rainAccumulator": 0.0,
+  "excavatedCellCount": 0,
+  "superdeepCellCount": 0,
+  "bodyCount": 1,
+  "sinkTransferredTotal": 0.0,
+  "overflowDestroyedTotal": 0.0,
+  "mapId": 0,
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_382a331a3c6f4a4eb7aedff9a82228f8",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "terrain_fresh": {
+  "182,45": "WaterShallow",
+  "183,45": "WaterShallow",
+  "184,45": "WaterShallow",
+  "182,46": "WaterShallow",
+  "183,46": "WaterShallow",
+  "184,46": "WaterShallow"
+ },
+ "build": {
+  "success": true,
+  "built": null,
+  "failed": []
+ },
+ "pumpPoweredAfterTicks": 170,
+ "terrain_after_draw": {
+  "182,45": "WaterShallow",
+  "183,45": "WaterShallow",
+  "184,45": "WaterShallow",
+  "182,46": "WaterShallow",
+  "183,46": "WaterShallow",
+  "184,46": "WaterShallow"
+ },
+ "settings_restored": {
+  "refillEnabled": true,
+  "refillRateMultiplier": true,
+  "recessionEnabled": true,
+  "liquidPumpEnabled": true,
+  "depthEngineEnabled": true
+ },
+ "finished": "2026-10-17T13:08:35"
+}
