@@ -139,6 +139,21 @@ namespace RimMandrake.LeaningScrub
         public static bool lureEnabled = true;
         public static int sheddingLength = 8;
 
+        // VENOMVINE_BUILD_SCRUB_GROWS_TEETH (RM_VenomvineIslands.cs; design venomvine_design_2026-10-16.md §8, §10 RULED).
+        // Islands: owner card Q1 2026-10-16, about 15% of open ground. New maps only.
+        public static bool venomvineIslandsEnabled = true;
+        public static float venomvineIslandShare = 0.15f;
+        public static int venomvineIslandsMin = 8;
+        public static int venomvineIslandsMax = 14;
+        public static int venomvineIslandMaxCells = 200;
+        public static bool venomvineIslandRoomsEnabled = true;
+        public static float venomvineStartClearance = 30f;
+        // Creep: owner card Q3 2026-10-16, its own slow downwind creep, capped above the laid share. PROVISIONAL numbers.
+        public static bool venomvineCreepEnabled = true;
+        public static float venomvineCreepDays = 10f;
+        public static float venomvineCreepDownwindShare = 0.75f;
+        public static float venomvineCreepCap = 0.22f;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -214,6 +229,17 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref weeperPollutes, "weeperPollutes", true, true);
             Scribe_Values.Look(ref sleeperEnabled, "sleeperEnabled", true, true);
             Scribe_Values.Look(ref lureEnabled, "lureEnabled", true, true);
+            Scribe_Values.Look(ref venomvineIslandsEnabled, "venomvineIslandsEnabled", true, true);
+            Scribe_Values.Look(ref venomvineIslandShare, "venomvineIslandShare", 0.15f, true);
+            Scribe_Values.Look(ref venomvineIslandsMin, "venomvineIslandsMin", 8, true);
+            Scribe_Values.Look(ref venomvineIslandsMax, "venomvineIslandsMax", 14, true);
+            Scribe_Values.Look(ref venomvineIslandMaxCells, "venomvineIslandMaxCells", 200, true);
+            Scribe_Values.Look(ref venomvineIslandRoomsEnabled, "venomvineIslandRoomsEnabled", true, true);
+            Scribe_Values.Look(ref venomvineStartClearance, "venomvineStartClearance", 30f, true);
+            Scribe_Values.Look(ref venomvineCreepEnabled, "venomvineCreepEnabled", true, true);
+            Scribe_Values.Look(ref venomvineCreepDays, "venomvineCreepDays", 10f, true);
+            Scribe_Values.Look(ref venomvineCreepDownwindShare, "venomvineCreepDownwindShare", 0.75f, true);
+            Scribe_Values.Look(ref venomvineCreepCap, "venomvineCreepCap", 0.22f, true);
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
@@ -589,6 +615,53 @@ namespace RimMandrake.LeaningScrub
                 {
                     list.Label("Length of the thorn V: " + sheddingLength + " cells");
                     sheddingLength = Mathf.RoundToInt(list.Slider(sheddingLength, 2f, 16f));
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Venomvine islands", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance" }))
+            {
+                list.CheckboxLabeled("New Leaning Scrub maps grow venomvine islands", ref venomvineIslandsEnabled,
+                    "AFFECTS NEW MAPS ONLY (not worldgen). Lays near-black islands of venomvine thicket over a share of the "
+                    + "map's open ground, stretched along the Lean, with corridors between them and your landing site kept "
+                    + "clear. An island that would cut the map in two is not laid. Off: venomvine is scattered single stands.");
+                if (venomvineIslandsEnabled)
+                {
+                    list.Label("Share of open ground: " + venomvineIslandShare.ToStringPercent("0"));
+                    venomvineIslandShare = Mathf.Round(list.Slider(venomvineIslandShare, 0.02f, 0.30f) * 100f) / 100f;
+                    list.Label("Islands per map (raised if needed to reach the share): " + venomvineIslandsMin + " to " + venomvineIslandsMax);
+                    venomvineIslandsMin = Mathf.RoundToInt(list.Slider(venomvineIslandsMin, 1f, 40f));
+                    venomvineIslandsMax = Mathf.Max(venomvineIslandsMin, Mathf.RoundToInt(list.Slider(venomvineIslandsMax, 1f, 40f)));
+                    list.Label("Largest island: " + venomvineIslandMaxCells + " cells");
+                    venomvineIslandMaxCells = Mathf.RoundToInt(list.Slider(venomvineIslandMaxCells, 60f, 600f) / 10f) * 10;
+                    list.Label("Clear ground around the landing site: " + venomvineStartClearance.ToString("0") + " cells");
+                    venomvineStartClearance = Mathf.Round(list.Slider(venomvineStartClearance, 10f, 60f));
+                    list.CheckboxLabeled("  Rarer forms grow as rooms inside the islands", ref venomvineIslandRoomsEnabled,
+                        "Each island gets one to three rooms of a rarer form (a dripping harvest room, twitcher gatekeepers, "
+                        + "hollow galleries, a hoard, a lure, and so on), and the biggest island holds the crown at its heart.");
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Venomvine creep", RimMandrake.Shared.SettingScope.Now, new[] { "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap" }))
+            {
+                list.CheckboxLabeled("Venomvine creeps slowly downwind", ref venomvineCreepEnabled,
+                    "AFFECTS THE MAP. Every few hours a fully grown venomvine stand may put one soft young runner into a free "
+                    + "neighbouring cell of natural ground, mostly downwind. Never onto floors, buildings, zones or under roofs. "
+                    + "Runners carry no venom until half grown. A smothered stand does not spread. Its own clock: Explosive "
+                    + "Growth does not touch venomvine. Selecting a stand shows how much of the map it holds.");
+                if (venomvineCreepEnabled)
+                {
+                    list.Label("Days between runners from one stand (average): " + venomvineCreepDays.ToString("0"));
+                    venomvineCreepDays = Mathf.Round(list.Slider(venomvineCreepDays, 2f, 60f));
+                    list.Label("Runners that go downwind: " + venomvineCreepDownwindShare.ToStringPercent("0"));
+                    venomvineCreepDownwindShare = Mathf.Round(list.Slider(venomvineCreepDownwindShare, 0f, 1f) * 20f) / 20f;
+                    list.Label("Map cap (creep stops at this share of open ground): " + venomvineCreepCap.ToStringPercent("0"));
+                    venomvineCreepCap = Mathf.Round(list.Slider(venomvineCreepCap, 0.05f, 0.5f) * 100f) / 100f;
+                    if (venomvineCreepCap <= venomvineIslandShare)
+                    {
+                        list.Label("  The cap is at or under the island share: creep will barely run on new maps.");
+                    }
                 }
                 list.GapLine();
             }

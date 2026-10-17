@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q1/Q4 (owner cards 2026-10-16): the venomvine islands map step
+     (Source/RM_VenomvineIslands.cs). Reached only through RM_LeaningScrub's extraGenSteps, and acts only on a biome
+     carrying RM_VenomvineIslandsExtension. Order 920: after Plants (900), the sweetline trees (910) and the
+     injections (915), so it steps around their ruins; before Animals (1200). Settings: venomvineIslands* (new maps only). -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_VenomvineIslands</defName>
+    <order>920</order>
+    <genStep Class="RimMandrake.LeaningScrub.RM_GenStep_VenomvineIslands" />
+  </GenStepDef>
+</Defs>

@@ -216,6 +216,11 @@
       <RM_SheddingVenomvine>0.02</RM_SheddingVenomvine>
       <!-- LEANINGSCRUB_SLEEPER_VINE_1: looks dead until a body of size >= 0.5 passes. PROVISIONAL placement, rare -->
       <RM_SleeperVenomvine>0.01</RM_SleeperVenomvine>
+      <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q4 (owner card 2026-10-16): Strangler, Weeper and Lure go on the wild list.
+           Weights low on purpose: the island map step's rooms place most of them, not scatter. PROVISIONAL. -->
+      <RM_StranglerVenomvine>0.005</RM_StranglerVenomvine>
+      <RM_WeeperVenomvine>0.005</RM_WeeperVenomvine>
+      <RM_LureVenomvine>0.005</RM_LureVenomvine>
       <RM_Salvessa>0.22</RM_Salvessa>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_Nysyllin_Wild; same weight as that canon row, which still injects on top when SW is loaded -->
     </wildPlants>
     <!-- RM_SweetlineTree is a landmark, not scatter: it is NOT in wildPlants. It reaches maps
@@ -227,11 +232,39 @@
       <li>RM_SweetlineTrees</li>
       <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 8: ruins and living camps (Source/RM_ScrubInjections.cs). -->
       <li>RM_ScrubInjections</li>
+      <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH Q1/Q4: venomvine islands with rooms (Source/RM_VenomvineIslands.cs). -->
+      <li>RM_VenomvineIslands</li>
     </extraGenSteps>
     <modExtensions>
       <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 2: the Lean - each map locks one wind
            heading (Source/RM_TheLean.cs). -->
       <li Class="RimMandrake.LeaningScrub.RM_LeanExtension" />
+      <!-- VENOMVINE_BUILD_SCRUB_GROWS_TEETH (design/RimMandrake/venomvine_design_2026-10-16.md §10 RULED): this biome grows
+           venomvine islands (about 15% of open ground, Q1) with rarer forms as rooms (Q4), and lets venomvine creep slowly
+           downwind to a map cap (22%, Q3). Room roles: §5 "room?" column. Numbers here are shape, PROVISIONAL; the
+           player's numbers are Mod Settings. Sworn is absent on purpose (hedge homesteads only, never a wild island). -->
+      <li Class="RimMandrake.LeaningScrub.RM_VenomvineIslandsExtension">
+        <thicketDef>RM_VenomvineThicket</thicketDef>
+        <crownDef>RM_CrownVenomvine</crownDef>
+        <countedForms>
+          <li>RM_SwornVenomvine</li>
+          <li>RM_SleeperVenomvineAwake</li>
+        </countedForms>
+        <rooms>
+          <li><form>RM_DrippingVenomvine</form><role>edge</role><weight>1.0</weight><cells>3~6</cells></li>
+          <li><form>RM_TwitcherVenomvine</form><role>edge</role><weight>1.0</weight><cells>1~3</cells></li>
+          <li><form>RM_HollowVenomvine</form><role>interior</role><weight>0.8</weight><cells>4~10</cells></li>
+          <li><form>RM_RearingVenomvine</form><role>edge</role><weight>0.6</weight><cells>3~6</cells></li>
+          <li><form>RM_WalkingVenomvine</form><role>downwind</role><weight>0.4</weight><cells>3~6</cells></li>
+          <li><form>RM_HoardVenomvine</form><role>interior</role><weight>0.4</weight><cells>1~3</cells></li>
+          <li><form>RM_QuenchVenomvine</form><role>interior</role><weight>0.6</weight><cells>2~4</cells></li>
+          <li><form>RM_SheddingVenomvine</form><role>downwind</role><weight>0.4</weight><cells>3~6</cells></li>
+          <li><form>RM_StranglerVenomvine</form><role>edge</role><weight>0.4</weight><cells>2~4</cells></li>
+          <li><form>RM_WeeperVenomvine</form><role>interior</role><weight>0.4</weight><cells>2~4</cells></li>
+          <li><form>RM_SleeperVenomvine</form><role>interior</role><weight>0.3</weight><cells>2~5</cells></li>
+          <li><form>RM_LureVenomvine</form><role>edge</role><weight>0.5</weight><cells>2~4</cells></li>
+        </rooms>
+      </li>
     </modExtensions>
   </BiomeDef>
 
