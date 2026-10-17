@@ -54,6 +54,8 @@
     <Compile Include="RM_MapComponent_ExplosiveGrowth.cs" />
     <Compile Include="RM_SoakSources.cs" />
     <Compile Include="RM_WetSources.cs" />
+    <Compile Include="RM_SprinklerWetSource.cs" />
+    <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksSprinklerRead.cs" Link="Shared\FlowWorksSprinklerRead.cs" />
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationRead.cs" Link="Shared\FlowWorksIrrigationRead.cs" />
     <Compile Include="..\..\_Shared\FlowWorksIrrigation\FlowWorksIrrigationKernel.cs" Link="Shared\FlowWorksIrrigationKernel.cs" />
     <Compile Include="RM_TopResolver.cs" />

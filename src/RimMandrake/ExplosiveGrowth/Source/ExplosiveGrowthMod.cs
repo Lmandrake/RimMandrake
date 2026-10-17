@@ -56,6 +56,7 @@ namespace RimMandrake.ExplosiveGrowth
         public static bool naturalWaterEnabled = true;    // W2: river / fresh water / marsh / mud cells
         public static bool spillWaterEnabled = true;      // W4: hose spills and poured water (standing-water filth)
         public static bool irrigationSoakEnabled = true;  // a dug FlowWorks channel and its 8 neighbours
+        public static bool sprinklersEnabled = true;      // a FlowWorks sprinkler's sprayed cells while it runs (SPRINKLER_HEADS_BUILD_PUMP_REQUIRED, §5)
         public static bool rainWaterEnabled = true;       // unroofed ground while it rains, and a few hours after (OQ-9)
         public static float rainLingerHours = 3f;         // OQ-9 "a few hours" (PROPOSED 3)
         public static bool rainPuddlesEnabled = true;     // OQ-9 "shown by puddles"
@@ -125,6 +126,7 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref naturalWaterEnabled, "naturalWaterEnabled", true);
             Scribe_Values.Look(ref spillWaterEnabled, "spillWaterEnabled", true);
             Scribe_Values.Look(ref irrigationSoakEnabled, "irrigationSoakEnabled", true);
+            Scribe_Values.Look(ref sprinklersEnabled, "sprinklersEnabled", true);
             Scribe_Values.Look(ref rainWaterEnabled, "rainWaterEnabled", true);
             Scribe_Values.Look(ref rainLingerHours, "rainLingerHours", 3f);
             Scribe_Values.Look(ref rainPuddlesEnabled, "rainPuddlesEnabled", true);
@@ -247,12 +249,13 @@ namespace RimMandrake.ExplosiveGrowth
                 list.GapLine();
             }
 
-            if (Group(list, "Water sources", RimMandrake.Shared.SettingScope.Now, new[] { "naturalWaterEnabled", "spillWaterEnabled", "irrigationSoakEnabled", "rainWaterEnabled", "snowmeltEnabled", "gradientSurgeSoakEnabled", "ashFreshEnabled", "ashFlushDays" }))
+            if (Group(list, "Water sources", RimMandrake.Shared.SettingScope.Now, new[] { "naturalWaterEnabled", "spillWaterEnabled", "irrigationSoakEnabled", "sprinklersEnabled", "rainWaterEnabled", "snowmeltEnabled", "gradientSurgeSoakEnabled", "ashFreshEnabled", "ashFlushDays" }))
             {
                 list.Label("Ground is wet while water is on it, and only then. Clean water waters every plant; other liquids only plants adapted to them.");
                 list.CheckboxLabeled("Rivers, fresh water, marsh and mud (the cell itself)", ref naturalWaterEnabled);
                 list.CheckboxLabeled("Spilled and poured water", ref spillWaterEnabled, "A hose spill of water lies as standing water until a plant drinks it or it soaks away.");
                 list.CheckboxLabeled("Dug channels holding water (FlowWorks): the channel and the ground beside it", ref irrigationSoakEnabled);
+                list.CheckboxLabeled("Sprinkled ground (FlowWorks sprinklers): while the sprinkler keeps spraying", ref sprinklersEnabled, "Needs FlowWorks. A fruiting crop uses up its cell's water until the next spray.");
                 list.CheckboxLabeled("Rain on open ground", ref rainWaterEnabled);
                 list.CheckboxLabeled("Falling snow melts like rain where the biome says so", ref snowmeltEnabled);
                 list.CheckboxLabeled("Salt-line surges water the fresh side", ref gradientSurgeSoakEnabled,
