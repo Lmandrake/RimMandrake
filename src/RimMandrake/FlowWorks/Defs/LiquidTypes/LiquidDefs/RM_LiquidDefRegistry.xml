@@ -617,4 +617,139 @@
     </terrainSuite>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_RustWater</defName>
+    <label>rust-tinted water</label>
+    <description>Water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable; just don't ask where it came from.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>7</pH>
+    <color>(0.66,0.36,0.23)</color>
+    <terrainSuite>
+      <shallow>RM_Water_Rust</shallow>
+    </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_RustWater</bottle>
+      <litresPerBottle>1.5</litresPerBottle>
+      <bucket>RM_Bucket_RustWater</bucket>
+      <litresPerBucket>15</litresPerBucket>
+      <barrel>RM_Barrel_RustWater</barrel>
+      <litresPerBarrel>208</litresPerBarrel>
+    </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <tint>(0.66,0.36,0.23)</tint>
+      <overlay>false</overlay>
+      <wake>1.0</wake>
+      <seeThrough>0.35</seeThrough>
+    </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_VerdigrisWater</defName>
+    <label>verdigris water</label>
+    <description>Water tinted teal-green by dissolved copper salts, the colour a bronze hull turns after long enough underwater.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>7</pH>
+    <color>(0.27,0.66,0.55)</color>
+    <terrainSuite>
+      <shallow>RM_Water_Verdigris</shallow>
+    </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_VerdigrisWater</bottle>
+      <litresPerBottle>1.5</litresPerBottle>
+      <bucket>RM_Bucket_VerdigrisWater</bucket>
+      <litresPerBucket>15</litresPerBucket>
+      <barrel>RM_Barrel_VerdigrisWater</barrel>
+      <litresPerBarrel>208</litresPerBarrel>
+    </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <tint>(0.27,0.66,0.55)</tint>
+      <overlay>false</overlay>
+      <wake>1.0</wake>
+      <seeThrough>0.35</seeThrough>
+    </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_AmberWater</defName>
+    <label>amber water</label>
+    <description>Water gone gold-brown with dissolved resin or spice residue.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>7</pH>
+    <color>(0.78,0.59,0.24)</color>
+    <terrainSuite>
+      <shallow>RM_Water_Amber</shallow>
+    </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_AmberWater</bottle>
+      <litresPerBottle>1.5</litresPerBottle>
+      <bucket>RM_Bucket_AmberWater</bucket>
+      <litresPerBucket>15</litresPerBucket>
+      <barrel>RM_Barrel_AmberWater</barrel>
+      <litresPerBarrel>208</litresPerBarrel>
+    </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <tint>(0.78,0.59,0.24)</tint>
+      <overlay>false</overlay>
+      <wake>1.0</wake>
+      <seeThrough>0.35</seeThrough>
+    </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_VioletWater</defName>
+    <label>violet water</label>
+    <description>Water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>7</pH>
+    <color>(0.47,0.31,0.66)</color>
+    <terrainSuite>
+      <shallow>RM_Water_Violet</shallow>
+    </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_VioletWater</bottle>
+      <litresPerBottle>1.5</litresPerBottle>
+      <bucket>RM_Bucket_VioletWater</bucket>
+      <litresPerBucket>15</litresPerBucket>
+      <barrel>RM_Barrel_VioletWater</barrel>
+      <litresPerBarrel>208</litresPerBarrel>
+    </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <tint>(0.47,0.31,0.66)</tint>
+      <overlay>false</overlay>
+      <wake>1.0</wake>
+      <seeThrough>0.35</seeThrough>
+    </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_ChalkWater</defName>
+    <label>chalky water</label>
+    <description>Water clouded pale with dissolved minerals.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>7</pH>
+    <color>(0.78,0.77,0.70)</color>
+    <terrainSuite>
+      <shallow>RM_Water_Chalk</shallow>
+    </terrainSuite>
+    <bottled>
+      <bottle>RM_Bottle_ChalkWater</bottle>
+      <litresPerBottle>1.5</litresPerBottle>
+      <bucket>RM_Bucket_ChalkWater</bucket>
+      <litresPerBucket>15</litresPerBucket>
+      <barrel>RM_Barrel_ChalkWater</barrel>
+      <litresPerBarrel>208</litresPerBarrel>
+    </bottled>
+    <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <tint>(0.78,0.77,0.70)</tint>
+      <overlay>false</overlay>
+      <wake>1.0</wake>
+      <seeThrough>0.35</seeThrough>
+    </surfaceLook>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
 </Defs>

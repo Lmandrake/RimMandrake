@@ -46,7 +46,8 @@
   three sizes generically — no new C# class per size. Filled
   RM_Bucket_&lt;Liquid&gt;/RM_Barrel_&lt;Liquid&gt; siblings are generated
   the same way as RM_Bottle_&lt;Liquid&gt;, in RM_LiquidBottles.xml.
-  Barrels carry no &lt;ingestible&gt; block — they are the bulk TRADE good
+  Buckets carry no &lt;ingestible&gt; block either (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: they are decanted
+  to bottles, never drunk). Barrels carry none — they are the bulk TRADE good
   (tradeable for free via ResourceBase, "zero patches" per the spec), not a
   food item a pawn drinks from directly. "Fill/empty bills at a tank" (the
   spec's other named barrel behavior) now ships too — RM_LiquidTank.xml,

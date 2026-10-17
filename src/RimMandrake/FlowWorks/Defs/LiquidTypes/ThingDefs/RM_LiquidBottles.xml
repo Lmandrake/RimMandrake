@@ -25,8 +25,9 @@
   C#. The dirty-stage Mod Settings toggle ships
   (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled, default ON). Only
   a row with `thirstQuality` set gets an `<ingestible>` block, and only on
-  its bottle/bucket siblings — never barrel, the bulk TRADE good — see
-  build_bottle_thingdef_xml's own comment.
+  its bottle — never bucket or barrel, which are decanted, not drunk
+  (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) — see build_bottle_thingdef_xml's
+  own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
   Revert-on-bottle (boiling/icy -> fresh) is row data read by
@@ -51,7 +52,11 @@
     <ingestible>
       <foodType>Fluid</foodType>
       <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
       <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
     </ingestible>
@@ -67,16 +72,6 @@
         <size>Bucket</size>
       </li>
     </modExtensions>
-    <statBases>
-      <Nutrition>0</Nutrition>
-    </statBases>
-    <ingestible>
-      <foodType>Fluid</foodType>
-      <preferability>NeverForNutrition</preferability>
-      <outcomeDoers>
-        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
-      </outcomeDoers>
-    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">
@@ -106,7 +101,11 @@
     <ingestible>
       <foodType>Fluid</foodType>
       <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
       <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
     </ingestible>
@@ -122,16 +121,6 @@
         <size>Bucket</size>
       </li>
     </modExtensions>
-    <statBases>
-      <Nutrition>0</Nutrition>
-    </statBases>
-    <ingestible>
-      <foodType>Fluid</foodType>
-      <preferability>NeverForNutrition</preferability>
-      <outcomeDoers>
-        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
-      </outcomeDoers>
-    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">
@@ -231,7 +220,11 @@
     <ingestible>
       <foodType>Fluid</foodType>
       <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
       <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
     </ingestible>
@@ -247,16 +240,6 @@
         <size>Bucket</size>
       </li>
     </modExtensions>
-    <statBases>
-      <Nutrition>0</Nutrition>
-    </statBases>
-    <ingestible>
-      <foodType>Fluid</foodType>
-      <preferability>NeverForNutrition</preferability>
-      <outcomeDoers>
-        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
-      </outcomeDoers>
-    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">
@@ -356,7 +339,11 @@
     <ingestible>
       <foodType>Fluid</foodType>
       <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
       <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
         <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
       </outcomeDoers>
     </ingestible>
@@ -372,16 +359,6 @@
         <size>Bucket</size>
       </li>
     </modExtensions>
-    <statBases>
-      <Nutrition>0</Nutrition>
-    </statBases>
-    <ingestible>
-      <foodType>Fluid</foodType>
-      <preferability>NeverForNutrition</preferability>
-      <outcomeDoers>
-        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
-      </outcomeDoers>
-    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">
@@ -426,6 +403,251 @@
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
         <liquid>RM_Liquid_Propane</liquid>
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_Bottle_RustWater</defName>
+    <label>bottled rust-tinted water</label>
+    <description>A bottle holding rust-tinted water. Water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable; just don't ask where it came from.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_RustWater</liquid>
+      </li>
+    </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_Bucket_RustWater</defName>
+    <label>bucketed rust-tinted water</label>
+    <description>A bucket holding rust-tinted water. Water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable; just don't ask where it came from.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_RustWater</liquid>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_Barrel_RustWater</defName>
+    <label>barreled rust-tinted water</label>
+    <description>A barrel holding rust-tinted water. Water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable; just don't ask where it came from.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_RustWater</liquid>
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_Bottle_VerdigrisWater</defName>
+    <label>bottled verdigris water</label>
+    <description>A bottle holding verdigris water. Water tinted teal-green by dissolved copper salts, the colour a bronze hull turns after long enough underwater.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VerdigrisWater</liquid>
+      </li>
+    </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_Bucket_VerdigrisWater</defName>
+    <label>bucketed verdigris water</label>
+    <description>A bucket holding verdigris water. Water tinted teal-green by dissolved copper salts, the colour a bronze hull turns after long enough underwater.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VerdigrisWater</liquid>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_Barrel_VerdigrisWater</defName>
+    <label>barreled verdigris water</label>
+    <description>A barrel holding verdigris water. Water tinted teal-green by dissolved copper salts, the colour a bronze hull turns after long enough underwater.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VerdigrisWater</liquid>
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_Bottle_AmberWater</defName>
+    <label>bottled amber water</label>
+    <description>A bottle holding amber water. Water gone gold-brown with dissolved resin or spice residue.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_AmberWater</liquid>
+      </li>
+    </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_Bucket_AmberWater</defName>
+    <label>bucketed amber water</label>
+    <description>A bucket holding amber water. Water gone gold-brown with dissolved resin or spice residue.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_AmberWater</liquid>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_Barrel_AmberWater</defName>
+    <label>barreled amber water</label>
+    <description>A barrel holding amber water. Water gone gold-brown with dissolved resin or spice residue.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_AmberWater</liquid>
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_Bottle_VioletWater</defName>
+    <label>bottled violet water</label>
+    <description>A bottle holding violet water. Water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VioletWater</liquid>
+      </li>
+    </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_Bucket_VioletWater</defName>
+    <label>bucketed violet water</label>
+    <description>A bucket holding violet water. Water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VioletWater</liquid>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_Barrel_VioletWater</defName>
+    <label>barreled violet water</label>
+    <description>A barrel holding violet water. Water stained a deep violet. Nobody at the trading post could say by what.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_VioletWater</liquid>
+        <size>Barrel</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BottleItemBase">
+    <defName>RM_Bottle_ChalkWater</defName>
+    <label>bottled chalky water</label>
+    <description>A bottle holding chalky water. Water clouded pale with dissolved minerals.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_ChalkWater</liquid>
+      </li>
+    </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BucketItemBase">
+    <defName>RM_Bucket_ChalkWater</defName>
+    <label>bucketed chalky water</label>
+    <description>A bucket holding chalky water. Water clouded pale with dissolved minerals.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_ChalkWater</liquid>
+        <size>Bucket</size>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BarrelItemBase">
+    <defName>RM_Barrel_ChalkWater</defName>
+    <label>barreled chalky water</label>
+    <description>A barrel holding chalky water. Water clouded pale with dissolved minerals.</description>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_BottledLiquidExtension">
+        <liquid>RM_Liquid_ChalkWater</liquid>
         <size>Barrel</size>
       </li>
     </modExtensions>

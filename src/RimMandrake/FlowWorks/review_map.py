@@ -899,11 +899,10 @@ SETUPS = {
                             ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
                         marks=[(1, 12, "rust"), (4, 12, "verdigris"), (7, 12, "amber"), (10, 12, "violet"),
                                (13, 12, "chalk")],
-                        items=[("RM_WaterBottle_" + c, 5, 1 + 3 * i, 1) for i, c in enumerate(
+                        # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (OQ-4): generated RM_Bottle_<Colour>Water, loaded with or
+                        # without Dubs Bad Hygiene (the DBH-only RM_WaterBottle_<Colour> are gone)
+                        items=[("RM_Bottle_" + c + "Water", 5, 1 + 3 * i, 1) for i, c in enumerate(
                             ("Rust", "Verdigris", "Amber", "Violet", "Chalk"))],
-                        # Patches/RM_ColoredWaterBottles_Patch.xml adds the bottles only when Dubs Bad Hygiene (Lite or
-                        # full) defines ResourceBasedMom; the FlowWorks pilot tier has no DBH, so the bottle row is empty
-                        items_need="Dubs Bad Hygiene (Lite or full)",
                         try_=["hover each; the bottles along the bottom are each water bottled",
                               "coloured steam rises only off a RIVER of these waters (not here)"],
                         look="weak spot: two colours that read the same; a slime that looks like its water"),

@@ -122,19 +122,21 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("ContainerStyle_dbh_bottles_masked", () =>
             {
-                XDocument p = XDocument.Load(Path.Combine(ModRoot, "Patches", "RM_ColoredWaterBottles_Patch.xml"));
-                XElement cond = p.Descendants("Operation").FirstOrDefault(o => (string)o.Attribute("Class") == "PatchOperationConditional");
-                Assert(cond != null && ((string)cond.Element("xpath")).Contains("ResourceBasedMom"), "still added only when Dubs Bad Hygiene is loaded");
-                var bottles = cond.Descendants("ThingDef").Where(t => ((string)t.Element("defName")).StartsWith("RM_WaterBottle_")).ToList();
-                Assert(bottles.Count == 5, "five coloured-water bottles, found " + bottles.Count);
-                foreach (XElement t in bottles)
+                // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (OQ-4, owner by card 2026-10-16): the five DBH-only RM_WaterBottle_<Colour>
+                // defs are gone; the coloured waters are registry rows whose generated RM_Bottle_<Colour>Water inherit the
+                // masked Industrial bottle (RM_BottleItemBase) and get their window colour from the LiquidDef, like every bottle.
+                Assert(!File.Exists(Path.Combine(ModRoot, "Patches", "RM_ColoredWaterBottles_Patch.xml")), "the DBH-only coloured-bottle patch is deleted");
+                XDocument gen = XDocument.Load(Path.Combine(LiquidDefs, "ThingDefs", "RM_LiquidBottles.xml"));
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                foreach (string c in new[] { "Rust", "Verdigris", "Amber", "Violet", "Chalk" })
                 {
-                    XElement g = t.Element("graphicData");
-                    Assert((string)g.Element("texPath") == RM_ContainerStyleMath.TexPath("Bottle", "Industrial"), t.Element("defName") + ": our Industrial water bottle");
-                    Assert((string)g.Element("shaderType") == "CutoutComplex" && (string)g.Element("graphicClass") == "Graphic_Single", t.Element("defName") + ": colour on the window only");
-                    Assert(g.Element("color") != null, t.Element("defName") + ": keeps its own colour");
+                    XElement t = gen.Descendants("ThingDef").FirstOrDefault(e => (string)e.Element("defName") == "RM_Bottle_" + c + "Water");
+                    Assert(t != null, "RM_Bottle_" + c + "Water generated");
+                    Assert((string)t.Attribute("ParentName") == "RM_BottleItemBase" && t.Element("graphicData") == null, c + ": the masked Industrial bottle, no own graphic");
+                    XElement row = reg.Root.Elements().FirstOrDefault(e => (string)e.Element("defName") == "RM_Liquid_" + c + "Water");
+                    Assert(row != null && row.Element("color") != null && (string)row.Element("thirstQuality") == "Potable", c + ": a Potable row with its own window colour");
                 }
-                Assert(!p.ToString().Contains("DBH/Things/Resource/WaterBottles</texPath>"), "can-fail: no bottle still on the whole-tinted DBH texture");
+                Assert(!gen.ToString().Contains("RM_WaterBottle_"), "can-fail: no old DBH-only defName survives");
             });
             Case("ContainerStyle_call_sites", () =>
             {

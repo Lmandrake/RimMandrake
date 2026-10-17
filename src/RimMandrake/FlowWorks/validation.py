@@ -608,6 +608,55 @@ def container_styles(t):
                                     "(LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS)")
 
 
+# THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §9; OQ-1..OQ-5 ruled by the
+# owner by card 2026-10-16). The design's T-rows: the offline halves run here off the C# SelfTest (Source/SelfTest/
+# ThirstChecks.cs: the production RM_ThirstMath, the shipped XML, the DBH patch, the Harmony target and call sites); every
+# live row is written and reports UNMEASURED with its call and pass bar until a bridge session runs it (owed).
+# Informative false theory to record if met (design §9): "the pawn has no thirst" when T1 says Dbh may mean DBH's own
+# thirst setting is off, not our bug.
+THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate", "Thirst_fall_rate_ruled"),
+                  ("T3h_heat_cap", "Thirst_heat_cap_ruled"), ("T4o_bottle_and_quality", "Thirst_bottle_and_quality"),
+                  ("T6o_dehydration", "Thirst_dehydration_ruled"), ("T8_coloured_bottles_without_dbh", "Thirst_bottles_generated"),
+                  ("Td_defs_shipped", "Thirst_defs_shipped"), ("Tb_dbh_bridge_patch", "Thirst_dbh_bridge_patch"),
+                  ("Th_harmony_target", "Thirst_harmony_target_and_call_sites")]
+THIRST_LIVE = [
+    ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
+     "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
+    ("T2_one_thirst_need", "thirstEnabled", "bridge pawn needs read on every free colonist: count(RM_Thirst)+count(DBHThirst) "
+     "== 1 (== 0 with thirstEnabled off in Own mode)"),
+    ("T3_need_falls", "thirstHeatScaling", "read RM_Thirst, advance 0.25 day at 20 C: drop 0.2 +/- 0.03 x thirstRateMultiplier"),
+    ("T4_bottle_satisfies", None, "set need 0.2, give RM_Bottle_FreshWater, order Ingest: level rises >= 0.45 (Own) / DBH "
+     "need rises (Dbh); a dirty bottle appears"),
+    ("T5_salt_water_quality", "waterQualityEffects", "drink RM_Bottle_SaltWater x10 on test pawns: hydrate x0.7; "
+     "FoodPoisoning in 1-4 of 10"),
+    ("T6_dehydration_readable", None, "need held at 0, advance 1 day: RM_Dehydration 0.30 +/- 0.03 on the health tab"),
+    ("T7_no_dbh_clean_log", None, "Player.log first exception since load names none of DubsBadHygiene, RM_Thirst, RM_Bottle_"),
+    ("T9_animals_drink", "animalsGetThirst", "RM_Thirst on a wild and a tame animal (Own); advance until < 0.3 beside fresh "
+     "water: each reaches RM_DrinkFromTerrain, level rises, no bottle touched"),
+    ("T10_terrain_drink", "drinkFromTerrain", "colonist at 0.2, no bottles, pond 10 cells away: RM_DrinkFromTerrain job, "
+     "+0.5 after ~300 ticks; with drinkFromTerrain off: no job"),
+]
+
+
+@suite.chain("thirst")
+def thirst(t):
+    """Offline: FlowWorks thirst + bottles (ThirstChecks.cs cases), 0 ticks, no bridge. Live T-rows: UNMEASURED, owed."""
+    cases = {}
+    with t.component("thirst_selftest_ran"):
+        if t._guard():
+            cases = _selftest_cases()
+    for rid, name in THIRST_OFFLINE:
+        with t.component(rid):
+            if t._guard():
+                got = cases.get(name)
+                if got != "ok":
+                    raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
+    for rid, toggle, bar in THIRST_LIVE:
+        with t.component(rid, toggle=toggle):
+            if t._guard():
+                raise ExpectationFailed("UNMEASURED: live check owed (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) -- " + bar)
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -620,6 +669,8 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 # live rows flip minBendRadius / maxLength, numbers), so they are owed, named and fixed-size like the rivers' list.
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
+suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
+                                 "drinkFromTerrain"] if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
 # until 2026-10-11): on the floor, claimed by no component, named and fixed-size like the lists above.
 # 2026-10-11 re-review: liquidIgnition (water fill + vanilla Fire could not tell ON from OFF), riverSteam (setting
@@ -668,7 +719,10 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         "pipeLinksIntoMachines", "joinFittings", "waterBodyTypeFlipFixEnabled",
                         # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): the planet-map river gradient; what it
                         # paints is read by eye on the world map (the old mod's script had no live row for it either)
-                        "riverColorsEnabled"]
+                        "riverColorsEnabled",
+                        # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (2026-10-16): restart-only (read while patches apply), so a
+                        # live row flipping it needs two loads with Dubs Bad Hygiene; owed
+                        "dbhBottleBridge"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
