@@ -263,7 +263,8 @@ FEATURES = [
     # THIRST_RULES_BUILD_SALT_OFF_THE_MENU: the ruled drink rules (moods, purges, the salt break) are behaviour too
     ("def", r"^(ThoughtDef/RM_Thought_(DrankSlime|SaltRelief|DrankRough)|HediffDef/RM_(SlimePurge|SlimeNausea|SaltPoisoning)"
             r"|MentalBreakDef/RM_Break_DrinkBrine|MentalStateDef/RM_DrinkBrine|JobDef/RM_(DrinkBrineBinge|DrinkFromContainer"
-            r"|DouseFireWithBucket|GatherSnow|DrinkWaterItem)|WorkGiverDef/RM_(DouseFireWithBucket|GatherSnow))$",
+            r"|DouseFireWithBucket|GatherSnow|DrinkWaterItem)|WorkGiverDef/RM_(DouseFireWithBucket|GatherSnow)"
+            r"|ThingDef/RM_BucketSnow|RecipeDef/RM_Melt(SnowBucket|BlueIceIntoBucket|StonewaterIceIntoBucket))$",
      "Thirst rules (slime last resort, salt break, rough drinking, buckets, snow)",
      M + "behaviour with no look of its own; proven by validation.py's thirst rows"),
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"

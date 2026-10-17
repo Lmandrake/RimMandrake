@@ -74,8 +74,9 @@ namespace RimMandrake.FlowWorks.Thirst
 				cd = (cell - pawn.Position).LengthHorizontalSquared;
 			}
 			Thing container = RM_ThirstContainerUtility.BestContainer(pawn, level, out RM_DrinkUse ku, out RM_WaterQuality kq, out float kd, only);
+			Thing item = RM_WaterItemUtility.BestItem(pawn, level, out RM_DrinkUse iu, out RM_WaterQuality iq, out float id, only);
 			bool home = pawn.Map.IsPlayerHome;
-			int pick = -1;   // 0 bottle, 1 tank, 2 terrain, 3 bucket/barrel
+			int pick = -1;   // 0 bottle, 1 tank, 2 terrain, 3 bucket/barrel, 4 water item
 			RM_DrinkUse pu = RM_DrinkUse.Never;
 			bool pa = false;
 			RM_WaterQuality pq = RM_WaterQuality.Slime;
@@ -92,6 +93,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			if (tank != null) Offer(1, tu, RM_DrinkSource.Tank, tq, td);
 			if (cell.IsValid) Offer(2, cu, RM_DrinkSource.Terrain, cq, cd);
 			if (container != null) Offer(3, ku, RM_DrinkSource.Container, kq, kd);
+			if (item != null) Offer(4, iu, RM_DrinkSource.Bottle, iq, id);
 			switch (pick)
 			{
 				case 0:
@@ -104,6 +106,8 @@ namespace RimMandrake.FlowWorks.Thirst
 					return RM_ThirstUtility.TerrainJob(cell);
 				case 3:
 					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkFromContainer, container);
+				case 4:
+					return JobMaker.MakeJob(RM_ThirstDefOf.RM_DrinkWaterItem, item);
 			}
 			return null;
 		}

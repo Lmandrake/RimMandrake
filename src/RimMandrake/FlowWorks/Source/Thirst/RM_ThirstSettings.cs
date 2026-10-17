@@ -23,6 +23,10 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool roughDrinkPenalty = true;
 		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q10): litres of potable water every net keeps back for drinkers. 0 = off.</summary>
 		public static float drinkingReserveLitres = 200f;
+		/// <summary>Owner Q12 (2026-10-17): buckets fight fires; snow and ice gathered into water; blood quenches sanguophages.</summary>
+		public static bool bucketFirefighting = true;
+		public static bool snowGathering = true;
+		public static bool sanguophageBloodQuenches = true;
 		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
 		public static bool dbhBottleBridge = true;
 
@@ -40,6 +44,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref saltBreakEnabled, "saltBreakEnabled", true);
 			Scribe_Values.Look(ref roughDrinkPenalty, "roughDrinkPenalty", true);
 			Scribe_Values.Look(ref drinkingReserveLitres, "drinkingReserveLitres", 200f);
+			Scribe_Values.Look(ref bucketFirefighting, "bucketFirefighting", true);
+			Scribe_Values.Look(ref snowGathering, "snowGathering", true);
+			Scribe_Values.Look(ref sanguophageBloodQuenches, "sanguophageBloodQuenches", true);
 			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 		}
 
@@ -87,6 +94,16 @@ namespace RimMandrake.FlowWorks.Thirst
 				+ "industry never drink the colony dry. Pawns drinking at a tank are never held back. Salt water, fuel and other "
 				+ "undrinkable liquids keep no reserve. 0 = off.");
 			drinkingReserveLitres = UnityEngine.Mathf.Round(list.Slider(drinkingReserveLitres, 0f, 2000f) / 50f) * 50f;
+			list.CheckboxLabeled("Buckets fight fires", ref bucketFirefighting,
+				"A firefighter with a filled bucket of water near at hand throws it on a fire in the home area: the fire and its "
+				+ "neighbours go out at once, and the bucket comes back empty. With no bucket near, fires are beaten out as usual. "
+				+ "Off: buckets are never thrown.");
+			list.CheckboxLabeled("Snow and ice can be gathered into water", ref snowGathering,
+				"Where no liquid fresh water is in reach, an empty bucket is filled with snow or ice chips. A bucket of snow melts "
+				+ "into a bucket of water after a couple of hours above freezing, or at once over a fire. Ice blocks melt into "
+				+ "buckets of water at a campfire or stove. Off: snow is never gathered (the melt bills stay).");
+			list.CheckboxLabeled("Sanguophages quench thirst with blood", ref sanguophageBloodQuenches,
+				"For a pawn with a hemogen gene, a hemogen pack is also a full drink of water. Off: packs only give hemogen.");
 			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
 				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
 				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");

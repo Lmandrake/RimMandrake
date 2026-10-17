@@ -256,6 +256,8 @@
     <Compile Include="Thirst\RM_SaltBreak.cs" />
     <Compile Include="Thirst\RM_ThirstContainers.cs" />
     <Compile Include="Thirst\RM_DrinkReserve.cs" />
+    <Compile Include="Thirst\RM_ThirstWaterSources.cs" />
+    <Compile Include="LiquidTypes\RM_BucketFirefighting.cs" />
     <!-- LIQUID_BOTTLE_LOOP_1: the tank half, fill/empty at Building_LiquidTank. -->
     <Compile Include="LiquidTypes\Building_LiquidTank.cs" />
     <Compile Include="LiquidTypes\RM_LiquidTankUtility.cs" />

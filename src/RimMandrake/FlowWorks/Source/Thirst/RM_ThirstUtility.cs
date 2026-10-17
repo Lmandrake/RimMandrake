@@ -174,13 +174,14 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		/// <summary>One drink. <paramref name="source"/> is the bottle (null for terrain or a tank); <paramref name="kind"/>
 		/// says where it came from, for the awkward-access thought (a bottle drunk by a caravan member counts as travel).</summary>
-		public static void Drink(Pawn pawn, LiquidDef liquid, float litres, Thing source, RM_DrinkSource kind = RM_DrinkSource.Bottle)
+		public static void Drink(Pawn pawn, LiquidDef liquid, float litres, Thing source, RM_DrinkSource kind = RM_DrinkSource.Bottle,
+			RM_WaterQuality? quality = null)
 		{
 			if (pawn == null || pawn.Dead)
 			{
 				return;
 			}
-			RM_WaterQuality q = Effective(liquid);
+			RM_WaterQuality q = quality ?? Effective(liquid);
 			float hydrate = RM_ThirstMath.Hydration(litres, q, RM_ThirstSettings.waterQualityEffects);
 			Need_RM_Thirst need = NeedOf(pawn);
 			if (need != null && RM_ThirstProvider.OursLive)

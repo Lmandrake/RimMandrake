@@ -260,6 +260,39 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(b, @"if \(potableOnly && !candidate\.AutoGathered && !standing\.Contains\(candidate\)\)", "Q9: a standing order lets pawns gather that liquid");
                 RiverSwitchFlipChecks.Has(b, @"!l\.AutoGathered && t\.TakesBottles\(false\) && t\.CanAccept\(", "the order is a Fill tank already holding it, with room");
             });
+            Case("Thirst_q12_defaults_ruled", () =>
+            {
+                // owner Q12 2026-10-17: buckets fight fires; snow/ice gathered into water; water items folded in; blood for sanguophages
+                XDocument si = XDocument.Load(Path.Combine(ModRoot, "Defs", "Thirst", "RM_Thirst_SnowIce.xml"));
+                XElement snow = Def(si, "ThingDef", "RM_BucketSnow");
+                Assert(snow.Descendants("meltsTo").First().Value == "RM_Bucket_FreshWater", "a bucket of snow melts into a bucket of water");
+                foreach (string r in new[] { "RM_MeltSnowBucket", "RM_MeltBlueIceIntoBucket", "RM_MeltStonewaterIceIntoBucket" })
+                {
+                    XElement rd = Def(si, "RecipeDef", r);
+                    Assert(rd != null && rd.Element("products") == null, r + ": no vanilla product (a stuffed bucket would take an ice block as its stuff)");
+                }
+                XElement baseR = si.Descendants("RecipeDef").First(e => (string)e.Attribute("Name") == "RM_MeltIntoBucketBase");
+                Assert((string)baseR.Element("workerClass") == "RimMandrake.FlowWorks.Thirst.RecipeWorker_RM_FillBucket" && baseR.Descendants("filled").First().Value == "RM_Bucket_FreshWater", "the worker turns the bucket ingredient into the filled one");
+                Assert((string)Def(si, "RecipeDef", "RM_MeltBlueIceIntoBucket").Attribute("MayRequire") == "mandrake.rm.biomes", "blue ice lives in Baroque Biomes");
+                XElement wg = Def(si, "WorkGiverDef", "RM_DouseFireWithBucket");
+                Assert((string)wg.Element("workType") == "Firefighter" && int.Parse((string)wg.Element("priorityInType")) > 0, "bucket throwing is a firefighting giver ahead of vanilla's beating");
+                XDocument wi = XDocument.Load(Path.Combine(ModRoot, "Patches", "Thirst", "RM_WaterItems.xml"));
+                var items = wi.Root.Elements("Operation").Select(o => (string)o.Element("xpath")).ToList();
+                Assert(items.Any(x => x.Contains("RM_BlueIceMeltwaterCan")) && items.Count == 4, "the meltwater can (and three other water items) are folded in");
+                Assert(wi.Root.Elements("Operation").All(o => (string)o.Attribute("Class") == "PatchOperationConditional"), "each guarded by its def existing");
+                XDocument sb = XDocument.Load(Path.Combine(ModRoot, "Patches", "Thirst", "RM_SanguophageBlood.xml"));
+                Assert(sb.ToString().Contains("HemogenPack") && sb.ToString().Contains("IngestionOutcomeDoer_RM_BloodQuench"), "blood counts as water for sanguophages");
+                string ws = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstWaterSources.cs"));
+                RiverSwitchFlipChecks.Has(ws, @"GetFirstGeneOfType<Gene_Hemogen>\(\) == null", "only a pawn with a hemogen gene");
+                RiverSwitchFlipChecks.Has(ws, @"if \(parent\.AmbientTemperature > 0f\)", "snow melts on vanilla temperature only");
+                RiverSwitchFlipChecks.Has(ws, @"!forced && RM_LiquidBottleUtility\.TryFindFillCell\(pawn, t, out _, out _, out _, false\)", "snow only where no liquid water can fill the bucket");
+                string bf = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "RM_BucketFirefighting.cs"));
+                RiverSwitchFlipChecks.Has(bf, @"liquid\.thirstQuality\.HasValue && !liquid\.flammable", "only water-family, non-flammable buckets are thrown");
+                RiverSwitchFlipChecks.Has(bf, @"!pawn\.Map\.areaManager\.Home\[fire\.Position\]", "home area only, like vanilla");
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                XElement boil = reg.Root.Elements().First(e => (string)e.Element("defName") == "RM_Liquid_BoilingWater");
+                Assert(boil.Descendants("revertsTo").First().Value == "RM_Liquid_FreshWater", "Q12: boiled water is drinkable once cooled (a container reverts to fresh)");
+            });
             Case("Thirst_dehydration_ruled", () =>
             {
                 // T6 offline: need held at 0 for 1 day -> 0.30

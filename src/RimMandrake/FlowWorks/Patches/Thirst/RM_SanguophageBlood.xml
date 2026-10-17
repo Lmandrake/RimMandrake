@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU, owner 2026-10-17 (card write-in): "blood absolutely counts as hemogen fully" (Do
+  Sanguophages drink stored blood as their water? -> yes). A hemogen pack drunk by a pawn with a hemogen gene is also one
+  full drink of water (IngestionOutcomeDoer_RM_BloodQuench; Mod Setting sanguophageBloodQuenches). Vanilla's own hemogen
+  doer is untouched.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="HemogenPack"]/ingestible/outcomeDoers</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="HemogenPack"]/ingestible/outcomeDoers</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_BloodQuench" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

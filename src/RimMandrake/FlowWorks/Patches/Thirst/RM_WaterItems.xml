@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU, the source adapter for water ITEMS other mods already ship (04-merged.md §1, §8.3:
+  "The meltwater can is folded into the registry as a potable water item"). A thirsty pawn drinks one where it lies
+  (JobDriver_RM_DrinkWaterItem) as fresh water, distilled grade where the item says so. Litres follow each item's own
+  mass or description. Conditional on each def existing (never a top-level MayRequire, which is ignored).
+-->
+<Patch>
+  <!-- BlueDesert: sealed meltwater, distilled purity (Mass 2: 2 L) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_BlueIceMeltwaterCan"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_BlueIceMeltwaterCan"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_WaterItemExtension">
+          <liquid>RM_Liquid_FreshWater</liquid>
+          <litres>2</litres>
+            <quality>Distilled</quality>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- TerminalBiomes: the steam-catch's distilled water (Mass 0.3) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_DistilledWater"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_DistilledWater"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_WaterItemExtension">
+          <liquid>RM_Liquid_FreshWater</liquid>
+          <litres>0.3</litres>
+            <quality>Distilled</quality>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- TerminalBiomes: melted stonewater ice -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_MeltedWater"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_MeltedWater"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_WaterItemExtension">
+          <liquid>RM_Liquid_FreshWater</liquid>
+          <litres>0.4</litres>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- Stillsand: one litre flask from the solar still -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_StilledWater"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_StilledWater"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_WaterItemExtension">
+          <liquid>RM_Liquid_FreshWater</liquid>
+          <litres>1</litres>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
