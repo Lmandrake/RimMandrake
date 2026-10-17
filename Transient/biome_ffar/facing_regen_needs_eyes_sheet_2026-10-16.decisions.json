@@ -65,7 +65,20 @@
       "at": "2026-10-17T14:26:31.401Z",
       "decidedAt": "2026-10-17T14:25:47.443Z",
       "decision": "D",
-      "note": "C & D are valid random variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-17T14:26:31.401Z",
+          "followed_by": [
+            "enact_12beb235_blarth_v1_east",
+            "enact_12beb235_blarth_v1_north",
+            "enact_12beb235_blarth_v1_south",
+            "mark-done"
+          ],
+          "note": "C & D are valid random variants",
+          "when": "2026-10-17T08:47:24-0700"
+        }
+      ],
       "picks": {},
       "prefill": "A",
       "purge": [
@@ -202,7 +215,17 @@
       "at": "2026-10-17T14:31:46.835Z",
       "decidedAt": "2026-10-17T14:30:36.584Z",
       "decision": "C",
-      "note": "A and C are valid variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-17T14:31:46.835Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "A and C are valid variants",
+          "when": "2026-10-17T08:47:24-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "55981de0b3b9fe0a835c5ca19dd6a081ec85e6df28a8581090efa7c3c47c4038",
@@ -250,7 +273,26 @@
     "RSW_Gorg": {
       "at": "2026-10-17T14:35:23.763Z",
       "decision": "A",
-      "note": "But Gorg's should only be 0.5 cell",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-17T14:35:23.763Z",
+          "followed_by": [
+            "enact_23b4eed5_gorg_v1_east",
+            "enact_23b4eed5_gorg_v1_north",
+            "enact_23b4eed5_gorg_v1_south",
+            "enact_b50ae77b_gorg_v1_east",
+            "enact_b50ae77b_gorg_v1_north",
+            "enact_b50ae77b_gorg_v1_south",
+            "enact_b54eac24_gorg_v1_east",
+            "enact_b54eac24_gorg_v1_north",
+            "enact_b54eac24_gorg_v1_south",
+            "mark-done"
+          ],
+          "note": "But Gorg's should only be 0.5 cell",
+          "when": "2026-10-17T08:47:24-0700"
+        }
+      ],
       "picks": {
         "swanimals/Gorg/GorgV_G": "M",
         "swanimals/Gorg/GorgV_K": "N",
@@ -573,7 +615,20 @@
       "at": "2026-10-17T14:48:48.654Z",
       "decidedAt": "2026-10-17T14:48:22.874Z",
       "decision": "C",
-      "note": "This should only be half a cell",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-17T14:48:48.654Z",
+          "followed_by": [
+            "enact_ecbdcbc1_kreetle_v1_south",
+            "enact_ecbdcbc1_kreetle_v1_east",
+            "enact_ecbdcbc1_kreetle_v1_north",
+            "mark-done"
+          ],
+          "note": "This should only be half a cell",
+          "when": "2026-10-17T08:47:24-0700"
+        }
+      ],
       "picks": {},
       "prefill": "A",
       "reject": {},
@@ -643,7 +698,20 @@
       "at": "2026-10-17T15:11:44.718Z",
       "decidedAt": "2026-10-17T15:11:23.328Z",
       "decision": "redo",
-      "note": "Generate description from Canon",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-17T15:11:44.718Z",
+          "followed_by": [
+            "enact_3b379105_mastiffphalone_v1_east",
+            "enact_3b379105_mastiffphalone_v1_north",
+            "enact_3b379105_mastiffphalone_v1_south",
+            "mark-done"
+          ],
+          "note": "Generate description from Canon",
+          "when": "2026-10-17T08:47:24-0700"
+        }
+      ],
       "prefill": "A",
       "rev": "ae95e8c81cd2d383",
       "schema": 2,

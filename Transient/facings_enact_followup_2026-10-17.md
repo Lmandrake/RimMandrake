@@ -26,3 +26,11 @@ Sheet: Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.j
 - DONE Taozin: proposal at design/RimStarWars/taozin_split_proposal_2026-10-17.md (adult RSW_Taozin predator in the Crags + new RSW_TaozinGrub, terracotta/white-in-brine). Not built.
 - DONE TeeMuss: enact had NOT queued it; queued enact_followup_teemuss_v1_{north,south} (derived from the kept live east).
 - DONE Lothcat: enact's single set (enact_4ecc64c3, done, awaiting pick) has no sex; female had east only, so queued enact_followup_lothcat_f_v1_{east,north,south} for swanimals/Lothcat/Lothcat_f.
+
+## 5. Conflicts (enact re-run 2026-10-17, holds: KraytDragon (cut), RSW_Wampa (cub job withdrawn on purpose))
+- DONE re-applied enact: 5 followed notes cleared, 3 purges, SWBestiary deployed.
+- DONE Gorg: ENACT BUG — a ticked variant is installed at GorgV_<letter>, and letter G collided with the existing GorgV_G slot (his pick M), so each run overwrote M with variant G. Restored M at GorgV_G; variant G installed as GorgV_G2 (+ alternateGraphics, chance 0.923). Also variants were missing facings whose bytes were live elsewhere: filled C east, D north, E east/south, B east (in-game east, as C's); GorgV_I has an east only -> queued enact_followup_gorgv_i_v1_{north,south}.
+- DONE Nexu pick D -> NexuW_north, Tukata pick B -> Tukata north/south, over the older keeps (his newest pick).
+- DONE purged 9 superseded older keeps he ✕'d (Blarth 2, BloodletterPetrel 2, Shyrack 3, TeeMuss 1, Vornskyr 1); HssissA east/north retired + purged (out of the pool).
+- LEFT for the owner (✕ on the only picture shipping, nothing to replace it yet): Bantha BanthaW S/E/N (StarWarsPatches; not a slot on the sheet); TeeMuss north/south (new N/S queued); Whisperbird south (his pick H has no south); Yobshrimp east (Things/.../SeaBeasts/Yobshrimp, redraw queued).
+- LEFT: enact TODO still lists the Hssiss/Varactyl pool removals (done in defs / Varactyl_m is the only male picture, redraw queued); no --mark-done kind for pools.
