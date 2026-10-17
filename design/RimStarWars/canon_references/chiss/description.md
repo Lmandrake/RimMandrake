@@ -62,6 +62,19 @@ silver"**; **hair black**; **eyes red**; distinctions **"Glowing red eyes"**;
 - **Highly reserved in their emotions**, rarely displaying feeling by smiling or warm
   gestures, and rarely vocal about anger or frustration.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2023/10/09/species-of-the-week-chiss/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing beyond canon text; image is Thrawn in Ahsoka live action.*
+
+> Designation: Sentient
+> Homeworld: Csilla
+> Notable members: Mitth’raw’nuruodo
+> Fandom: Star Wars
+> Appearances: Rebels, Ahsoka
+> The Chiss are one of the most mysterious races in the galaxy, with only a handful having been sighted in the civilised galaxy. Distinctive with their blue skin and red eyes, the Chiss live in the unknown regions of the galaxy and act indirectly as a firebreak, keeping the many threats of those parts at bay. 
+> The Chiss have a hierarchical and militaristic society with strict rules of conduct, including a prohibition on preemptive strikes no matter the circumstances. One Chiss left his people to join the Empire, becoming a Grand Admiral in their forces. 
+> Couldn’t finish Ahsoka and leave out Thrawn, could I?!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Deleted: the *Rebels* CGI Thrawn infobox model (`wookieepedia_canon_infobox_thrawn.jpg`) and the comic close-up (`wookieepedia_blue_skin_red_eyes.jpg`). Added: the live-action *Ahsoka* Thrawn (Lars Mikkelsen) — a posed promotional photograph (`wookieepedia_thrawn_live_action_poster.png`) and a screen still from "Part Eight" (`wookieepedia_thrawn_ahsoka_part8.png`). The two remaining Legends images are realistic painted art.
@@ -97,6 +110,7 @@ all**: the def's head comes from `Outland_SvelteHead`, a gene that is **not defi
 repo** (it resolves to the external Outer Rim – Galactic Diversity mod), so nothing here
 authors the angular face canon calls out. Skin and eye colour come from the generic
 `Skin_Blue` / `Eyes_Red` genes.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_thrawn.jpg`:** Live-action Grand Admiral Thrawn (Ahsoka): matte **blue skin, glowing red eyes**, jet-black hair, white Imperial tunic. Agrees with canon text ('blue skin and red eyes'); note skin here is a medium sky-blue, not deep indigo.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action *Ahsoka* Thrawn poster (reference of record) and Part Eight still, plus the two Legends paintings for the pale end of the blue range, as read by the visual brief.*
@@ -142,6 +156,7 @@ none known
   straight jet-black hair and dark purple lips.
 - `donor_current_sprite.png` — **the xenotype UI icon, not a sprite.** Documents that no
   Chiss pawn art exists in this repo.
+- `bloggathehutt_thrawn.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2023/10/image_editor_output_image1319187016-1696850833436.jpg
 
 ## Def-versus-canon contradictions (report only — not fixed here)
 

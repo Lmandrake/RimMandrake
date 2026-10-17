@@ -25,6 +25,17 @@ Batuu. Behind the scenes: the eopie design began as a retouched production
 painting of the kaadu (the creature that was ultimately reassigned to the
 Gungans of Naboo instead).
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/03/14/species-of-the-week-eopie/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing beyond canon text; image is the official illustration.*
+
+> Designation: Non-sentient
+> Homeworld: Tatooine
+> Fandom: Star Wars
+> Appearances: The Pahtom Menace, Obi-Wan Kenobi
+> Eopies are a mammalian beast of burden native to Tatooine where they are commonly used as mounts and pack animals, despite their stubborn nature and tendency to be flatulent if overloaded
+> One of the delights of the Obi-Wan trailer was seeing Obi-Wan riding his Eopie around Tatooine
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The cartoon Star Wars Kids "EOPIES!" thumbnail (`wookieepedia_herd.jpg`) was deleted. Every remaining image is the realistic prequel-era CGI/puppet design: `wookieepedia_infobox.png` (Official Star Wars Fact File render) and `wookieepedia_screencap.jpg` (front and side model sheet).
 
@@ -36,6 +47,7 @@ What the realistic images show:
 - **Tack:** leather saddlebags, wicker panniers and a rope bridle in every image — harness, not body.
 
 **The current donor sprite (`donor_current_sprite.png`) gets the colour roughly right but the shape is wrong**: a rounded legless blob with a stubby trunk, none of the tall thin-legged camel silhouette.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_eopie.png`:** Pale grey-beige hairless eopie on sand: long drooping trunk-like snout, dark eye, camel-like tall thin legs, barrel body and knobbed joints, splayed clawed feet; no tack. Agrees with the existing brief on colour, trunk, tall legs and feet.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
@@ -61,6 +73,7 @@ none known
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, `Eopie_east` base variant), pale pinkish-grey blob with stubby trunk, no visible legs or pack gear
 - `wookieepedia_infobox.png` — REALISTIC render (infobox; *The Official Star Wars Fact File* Part 67), full profile, pale grey-pink hide, trunk-snout, panniers; file `Eopie-FFp67.png` — https://static.wikia.nocookie.net/starwars/images/1/11/Eopie-FFp67.png/revision/latest?cb=20221017052712
 - `wookieepedia_screencap.jpg` — REALISTIC model sheet, front and side, cream-white hide, saddlebags and bridle (same image as file `Eopie.jpg`, *Episode I Insider's Guide*) — https://static.wikia.nocookie.net/starwars/images/f/f7/Eopie.jpg/revision/latest?cb=20081009000836
+- `bloggathehutt_eopie.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2022/03/eopie.png
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`

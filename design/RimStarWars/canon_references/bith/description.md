@@ -90,6 +90,18 @@ trade for basic necessities.
   prospective mates; children are created from two parents' combined material, fertilized,
   and **incubated for a year.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/03/02/species-of-the-week-bith/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the aside that Bith Jedi appear in High Republic concept art; the species description (hairless, no eyelids or noses, sensory glands) restates canon.*
+
+> Designation: Sentient
+> Homeworld: Bith
+> Notable members: Fig’rin Dan
+> Fandom: Star Wars
+> Appearances: A New Hope, The High Republic
+> The Bith are  humanoid species hailing from a planet of the same name, also known as Clak’dor, in the Outer Rim. They are hairless and lack eyelids and noses, using sensory glands under their skin folds to smell. Due to their sensitive and acute hearing many Bith are known as talented musicians, scientists and engineers. 
+> I was encouraged to see a Bith Jedi in the concept art for The High Republic along with a few other classic and new species taking up the blade – seeing this reminds me of when Legends was at it’s best and I’m really hopeful for this project.
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The stylised flat-colour "Bith brute" illustration (`wookieepedia_bith_brute.jpg`, File:BithBrute-ALT.png) was deleted. Added: the official StarWars.com Databank live-action still of the Mos Eisley cantina band (`starwars_databank_cantina_band.jpg`). The remaining paintings are realistic painted reference art and the Doikk Na'ts image is a costume photograph.
@@ -165,6 +177,7 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
   teardrop** — it broadens sideways where the references swell up and to the rear.
 - ⚠️ **The eyes are flat black discs** with no specular highlight, so they lose the wet
   glassy read that the canon text specifically calls out ("black, **glassy** eyes").
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_jedi_concept.jpg`:** A tiny (95x164) comic/concept crop of a Bith Jedi: a bald domed head in tan-orange with a mask-like face, dark eyes, brown Jedi robes, green and purple sabers. Too small to be a real reference; weak evidence only.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as the visual brief reads them (Databank cantina still = live-action reference of record).*
@@ -276,6 +289,7 @@ as wrong. Encoding weak immunity ships that in-universe prejudice as fact.
   runtime-tinted greyscale mask, so colour absence is expected. Right on the creased bulbous
   cranium, eye placement and midface folds; **wrong on the red fanged mouth** (baked-in
   colour, no canon basis) and on the sideways-wide rather than backward-swelling skull.
+- `bloggathehutt_jedi_concept.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2020/03/bith-jedi.jpg
 
 ## ruling
 

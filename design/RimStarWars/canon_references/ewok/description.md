@@ -66,6 +66,18 @@ mission. By two years after the battle **many Ewoks had become caf farmers**, an
 least one, **Peekpa**, worked for the New Republic as a **slicer** — so they are not
 locked at a stone-age tech level in canon.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/10/28/species-of-the-week-ewok/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds only the Gorax fight and Battlefront II mention; nothing on appearance.*
+
+> Designation: Sentient
+> Homeworld: Endor (Forest Moon)
+> Notable members: Wicket, Chief Chirpa
+> Fandom: Star Wars
+> Appearances: Return of the Jedi, Battlefront II
+> Ewoks are a primitive race of beings compared to most of the civilised galaxy. This did not prevent them ftom playing a key role in liberating the galaxy from the Empire. The small humanoid mammals were used to fending off threats far greater than themselves such as the Gorax and put their ingenuity to good use in destroying the armed might of the Imperial Army
+> I’ve really enjoyed playing Ewok Hunt on Battlefront II – playing both as Stormtroopers and Ewoks in the dark is great, I’m terrible at both but its a lot of fun!!
+
 ## Visual brief
 
 **The body plan is the easy part and all four references agree on it.** Look at
@@ -140,6 +152,7 @@ otherwise assembled from generic genes (`Furskin`, `RSW_Eyes_Big`,
 `Outland_Nose_Leathery`, `RSW_BodySizeGene_smaller`), so the two things that most identify
 an Ewok's face — **the pale short-furred muzzle** and the **pale eye-rings** — are
 unrepresented.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_ewok.jpg`:** Three Ewoks in a fern forest (Return of the Jedi still): grey-white, black-and-grey, and golden-ginger fur, hoods of leather or green cloth, round ears, a wooden staff. Agrees with canon - fur colours vary widely per individual, ear shape rounded.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_infobox_three_ewoks.jpg` and `wookieepedia_woklings_juveniles.jpg` as described in the visual brief, and the canon body text.*
@@ -266,6 +279,7 @@ villages), `Outland_Nose_Leathery` (small dark button nose), and `Outland_Unusua
   wide. Greyscale render-node mask, complete in three facings, correct in shape and
   placement — and, with its two siblings, the complete inventory of Ewok art on disk.
   **No muzzle patch, no eye-ring, no fur body, no juvenile variant.**
+- `bloggathehutt_ewok.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2019/10/ewokta842006271.jpg
 
 ## ruling
 

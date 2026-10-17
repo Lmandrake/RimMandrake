@@ -24,6 +24,17 @@ Behaviour: very fast (easily outpaced the Republic's AT-RTs, which top out at 75
 and vicious when provoked; one bucked a clone rider. Users: Ryloth's Twi'lek Resistance,
 Kuiil, Din Djarin. First canon appearance: "Liberty on Ryloth" (2009).
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/08/26/species-of-the-week-blurrg/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing on appearance; NOTE the blog's 'Designation: Sentient' is almost certainly a blog error (Wookieepedia: non-sentient mount animals).*
+
+> Designation: Sentient
+> Homeworld: Unknown
+> Fandom: Star Wars
+> Appearances: The Clone Wars, The Mandalorian
+> Blurrgs are large bipedal reptiles used as mounts and beasts of burden by beings across the galaxy, including combat in the Clone Wars during the liberation of Ryloth. Blurrgfire was a popular drink in many cantinas.
+> I loved the trailer for The Mandalorian and seeing this brief scene was so cool. I hadn’t made the connection with Clone Wars initially but when I did I was even more excited. Seeing something transition from animation to live action is always cool!!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the Clone Wars-era Legends render (`wookieepedia_legends_1.webp`, `Blurrg TCW.png`) and the Smuggler's Gambit game frame (`wookieepedia_canon_2.webp`). Kept/added realistic references, all *The Mandalorian* live-action/realistic CGI: `wookieepedia_canon_1.webp` (Star Wars Book studio render), `wookieepedia_canon_3.webp` (Chapter 1 film still, side view in a paddock), `wookieepedia_canon_4.webp` (Chapter 1, two blurrgs ridden away from camera, rear view). The painted Wildlife field-guide plate `wookieepedia_legends_2.webp` stays as a Legends size/young reference only.
 
@@ -41,6 +52,7 @@ functional forelimbs". Canon says two short two-fingered clawed arms, and the po
 BodyDef keeps both arms with claw attack tools. **The Must-show below wins over the
 render**: a regen that shows no arms at all is wrong on canon. The queued jobs' `drawsize`
 is 1.0; the def's adult drawSize is 2.4.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_mandalorian_trailer.jpg`:** A Mandalorian trailer frame: a Kuiil-like small alien rider (goggles, blaster raised) on a grey-green bipedal reptile with a huge wide tooth-lined mouth; a second blurrg head at left. Agrees with the species description; low resolution (600x338).
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Mandalorian live-action/CGI images as the visual brief reads them, and the canon text for the arms.*
@@ -67,6 +79,7 @@ none known
 
 No donor sprite available (donor art is AssetBundle-only). Native drop-in folder
 `D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Textures\Things\Pawn\Animal\RSW_Blurrg\`.
+- `bloggathehutt_mandalorian_trailer.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2019/08/medium_oh-blurrg-15666307261473803206.jpg
 
 ## ruling
 (empty — owner has not reviewed this entry; canon stands unopposed.)
