@@ -1,0 +1,559 @@
+====================================================================================================
+S1. A source-fed 1-deep canal fills end to end
+    |~~~~~~~~..........
+    |~~~~~~~~11111111..
+    |~~~~~~~~..........
+S1 staged: lake 1 (limitless=True, 12 cells); canal of 8 depth-1 cells (14, 35)..(21, 35), dug dry
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  pulse  0  canal [0 0 0 0 0 0 0 0]  lake limitless=True stock=48.0
+  pulse  1  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  2  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  3  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+         screenshot: None
+  pulse  4  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  5  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  6  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  7  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  8  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse  9  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse 10  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+         screenshot: None
+  pulse 11  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse 12  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse 13  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+  pulse 14  canal [1 1 1 1 1 1 1 1]  lake limitless=True stock=48.0
+         screenshot: None
+  S1.a   MATCHES    doc: All 8 canal cells hold 1 level.
+                    game: all 8 hold 1 level first at pulse 1
+  S1.b   MATCHES    doc: At every pulse the wet canal cells form one unbroken run starting at cell 1 (no isolated puddle, no gap).
+                    game: pulses where the wet part was NOT one run from the lake: none
+  S1.c   MATCHES    doc: Once a canal cell is wet it never goes dry again during the scene.
+                    game: a wet cell went dry at pulses: never
+  S1.d   MATCHES    doc: The lake never visibly shrinks (LIMITLESS).
+                    game: lake limitless at every pulse: True (stock 48.0 -> 48.0)
+  log: Transient/fw_scenes/mock/S1_20261017T110144.txt
+====================================================================================================
+S2. A shallow trench beside a source-fed pond fills
+    |~~~~~~~~..........
+    |~~~~~~~~44........
+    |~~~~~~~~44111111..
+    |~~~~~~~~..........
+S2 staged: lake 1 (limitless=True); a dug 2x2 depth-4 pond touching it; a 6-cell depth-1 trench off its far side; all dry
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  pulse  0  pond [0 0 0 0]  trench [0 0 0 0 0 0]   pond squares (depth/fill:terrain, south row | north row): 4/0:Soil 4/0:Soil | 4/0:Soil 4/0:Soil
+  pulse  1  pond [1 1 1 1]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/1:Soil 4/1:Soil | 4/1:Soil 4/1:Soil
+  pulse  2  pond [2 2 2 2]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/2:Soil 4/2:Soil | 4/2:Soil 4/2:Soil
+  pulse  3  pond [3 3 3 3]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/3:Soil 4/3:Soil | 4/3:Soil 4/3:Soil
+  pulse  4  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse  5  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse  6  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse  7  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse  8  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse  9  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 10  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+         screenshot: None
+  pulse 11  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 12  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 13  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 14  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 15  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 16  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 17  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 18  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 19  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 20  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 21  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 22  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 23  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 24  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 25  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 26  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 27  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 28  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 29  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 30  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+         screenshot: None
+  pulse 31  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 32  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 33  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 34  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 35  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 36  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 37  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 38  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 39  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 40  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 41  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 42  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 43  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 44  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 45  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 46  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 47  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 48  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 49  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 50  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 51  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 52  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 53  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 54  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 55  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 56  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 57  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 58  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 59  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+  pulse 60  pond [4 4 4 4]  trench [1 1 1 1 1 1]   pond squares (depth/fill:terrain, south row | north row): 4/4:Soil 4/4:Soil | 4/4:Soil 4/4:Soil
+         screenshot: None
+  S2.lvl MATCHES    doc: Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0]). (plan P1 bar, not a scenes-file row)
+                    game: pulses with a gap over 1: none
+  S2.a   MATCHES    doc: All 4 pond cells hold 4 levels.
+                    game: all 4 pond cells at 4 first at pulse 4
+  S2.b   MATCHES    doc: All 6 trench cells hold 1 level.
+                    game: all 6 trench cells at 1 first at pulse 1
+  S2.c   MATCHES    doc: Wet trench cells always form one unbroken run starting at the cell touching the pond.
+                    game: pulses where the wet trench was NOT one run from the pond: none
+  S2.d   MATCHES    doc: Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run.
+                    game: settled at pulse 4; changes after that: none
+  log: Transient/fw_scenes/mock/S2_20261017T110144.txt
+====================================================================================================
+S3. A pump fills a canal that touches no water
+    ...................
+    .PPPP..............
+    .PPP<====U====>11111.
+    .PPPP..............
+    ...................
+S3 staged: enclosed pond of 12 deep squares (body 1 limitless=True stock=48.0 capacity=48.0); pump (49, 32) on dry ground switched OFF (True); hose A -> pond end Intake; hose B -> canal cell 1 end Outflow; 6-cell depth-1 canal dry
+  STAGING NOTE: reel (49, 30) free end reads Intake, wanted Outflow
+  STAGING NOTE: intake role: no 'Free end:' button (have [])
+  STAGING NOTE: outflow role: no 'Free end:' button (have [])
+         screenshot: None
+S3.Q1 staged: RM_FlowSource (mapmaker Source tap) and RM_LiquidTap each beside cell 1 of a dry 4-cell canal, no hose, no tank
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  step A: pump OFF for 20 pulses
+  pulse  0  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 740000, "pump.pourMode": false}
+  pulse  1  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 750000, "pump.pourMode": false}
+  pulse  2  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 760000, "pump.pourMode": false}
+  pulse  3  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 770000, "pump.pourMode": false}
+  pulse  4  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 780000, "pump.pourMode": false}
+  pulse  5  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 790000, "pump.pourMode": false}
+  pulse  6  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 800000, "pump.pourMode": false}
+  pulse  7  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 810000, "pump.pourMode": false}
+  pulse  8  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 820000, "pump.pourMode": false}
+  pulse  9  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 830000, "pump.pourMode": false}
+  pulse 10  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 840000, "pump.pourMode": false}
+  pulse 11  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 850000, "pump.pourMode": false}
+  pulse 12  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 860000, "pump.pourMode": false}
+  pulse 13  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 870000, "pump.pourMode": false}
+  pulse 14  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 880000, "pump.pourMode": false}
+  pulse 15  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 890000, "pump.pourMode": false}
+  pulse 16  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 900000, "pump.pourMode": false}
+  pulse 17  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 910000, "pump.pourMode": false}
+  pulse 18  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 920000, "pump.pourMode": false}
+  pulse 19  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 930000, "pump.pourMode": false}
+  pulse 20  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 940000, "pump.pourMode": false}
+         screenshot: None
+  S3.a   DIFFERS    doc: Unpowered: the canal stays dry and the pond keeps all 48 levels.
+                    game: canal wet at pulses [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; pond below its start (48.0) at pulses never
+  step B: pump ON (True; powered=True)
+  pulse  0  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 940000, "pump.pourMode": false}
+  pulse  1  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 950000, "pump.pourMode": false}
+  pulse  2  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 960000, "pump.pourMode": false}
+  pulse  3  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 970000, "pump.pourMode": false}
+  pulse  4  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 980000, "pump.pourMode": false}
+  pulse  5  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 990000, "pump.pourMode": false}
+  pulse  6  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1000000, "pump.pourMode": false}
+         screenshot: None
+  pulse  7  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1010000, "pump.pourMode": false}
+  pulse  8  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1020000, "pump.pourMode": false}
+  pulse  9  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1030000, "pump.pourMode": false}
+  pulse 10  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1040000, "pump.pourMode": false}
+  pulse 11  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1050000, "pump.pourMode": false}
+  pulse 12  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1060000, "pump.pourMode": false}
+  pulse 13  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1070000, "pump.pourMode": false}
+  pulse 14  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1080000, "pump.pourMode": false}
+  pulse 15  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1090000, "pump.pourMode": false}
+  pulse 16  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 10000, "pump.moved": 1100000, "pump.pourMode": false}
+         screenshot: None
+  S3.b   MATCHES    doc: All 6 canal cells hold 1 level.
+                    game: all 6 canal cells at 1 first at pulse 0 of step B
+  S3.c   DIFFERS    doc: Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse.
+                    game: pulses where canal+hoses gain != pond loss: ['p0 lost 0.00 gained 6.00', 'p1 lost 0.00 gained 6.00', 'p2 lost 0.00 gained 6.00', 'p3 lost 0.00 gained 6.00']
+  S3 mass audit: pond lost 0.0 levels; canal 6; hoses 0.0000; counter deltas over step B: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 0.0, "pond.cellCount": 0.0, "pond.recededCount": 0, "pond.stock": 0.0, "pump.lastMovedUnits": 0.0, "pump.moved": 160000.0, "pump.pourMode": 0}
+  S3.d   MATCHES    doc: The undug cells between pond and canal stay dry (G1).
+                    game: undug ground between pond and canal ever wet: never
+  S3.e   UNMEASURED doc: Variant: two equal dug 3x3 depth-4 reservoirs A (full, 36 levels) and B (empty), pump + one tank between them. Pump A to B, then B back to A. At the end A holds 36 levels, B 0, tank 0, hoses 0.
+                    game: not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)
+  pulse  0  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  1  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  2  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  3  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  4  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  5  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  6  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  7  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  8  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse  9  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+  pulse 10  beside Source tap [1 1 1 1]   beside liquid tap [1 1 1 1]
+         screenshot: None
+  S3.Q1  OPEN RULING  A drill (ruling 3, 'part of Many Waters') or the new mapmaker Source tap (2026-10-16) stands beside a dug canal. Does it pour straight into the touching dug cell, or only into a tank/hose network that then needs an Outflow end?
+         (a) straight into the touching dug cell
+         (b) only into a network; the canal is fed through an Outflow end
+         (c) both: it fills the touching cell if there is one, else the network
+         game today: RM_FlowSource: canal holds 4 level(s) after 10 pulses with no hose (pours straight into the touching dug cell - behaves as (a)/(c)); RM_LiquidTap: canal holds 4 level(s) after 10 pulses with no hose (pours straight into the touching dug cell - behaves as (a)/(c))
+  log: Transient/fw_scenes/mock/S3_20261017T110144.txt
+====================================================================================================
+S4. A sluice gate shut, then open, then shut again
+    |~~~~~~~~..........
+    |~~~~~~~~111G1111..
+    |~~~~~~~~..........
+S4 staged: lake 1 limitless=True; canal 3 up + RM_Sluice on cell 4 + 4 down, all depth 1, dry; built=1 DOOR RM_Sluice open=False seals=True | mock
+S4 variant staged: lake 1 limitless=True; canal 3 up + RM_SecurityGrateDoor on cell 4 + 4 down, all depth 1, dry; built=1 DOOR RM_Sluice open=False seals=True | mock
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  step A: sluice SHUT, 20 pulses (the grate variant runs alongside, never opened)
+  A pulse  0  sluice canal [0 0 0 | 0 | 0 0 0 0]  grate canal [0 0 0 | 0 | 0 0 0 0]  DOOR RM_Sluice open=False seals=True
+  A pulse  1  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  2  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  3  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  4  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  5  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  6  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+         screenshot: None
+  A pulse  7  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  8  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  A pulse  9  sluice canal [1 1 1 | 1 | 1 1 1 1]  grate canal [1 1 1 | 1 | 1 1 1 1]  DOOR RM_Sluice open=False seals=True
+  CRASHED (traceback kept at Transient/fw_scenes/mock/S4_traceback_20261017T110144.txt):
+    Traceback (most recent call last):
+      File "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py", line 1119, in do_scene
+        RUN[sid](w)
+        ~~~~~~~~^^^
+      File "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py", line 731, in run_S4
+        ha = pulse_loop(w, "S4A", allc, 20, tick, both, shots_at=(6, 12, 20))
+      File "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py", line 323, in pulse_loop
+        w.ticks(iv)
+        ~~~~~~~^^^^
+      File "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py", line 138, in ticks
+        self.B.ticks(n)
+        ~~~~~~~~~~~~^^^
+      File "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/northstar/water_scenes_mock.py", line 101, in ticks
+        raise MockFailure("injected by --mock-fail %s on the 12th clock step of the scene" % self.fail_scene)
+    water_scenes_mock.MockFailure: injected by --mock-fail S4 on the 12th clock step of the scene
+  log: Transient/fw_scenes/mock/S4_20261017T110144.txt
+====================================================================================================
+S5. Nothing created or destroyed: a closed pond pays for its canal, by gravity and by pump
+    ...............
+    .PPP...........          A: 3x3 pond, 2 m (36,000 L); 10-cell 0.5 m canal
+    .PPP1111111111.
+    .PPP...........
+    ...............
+    .P1111111111...          B: 1-square pond, 2 m (4,000 L); 10-cell 0.5 m canal
+    ...............
+    .P4............          F: 1-square pond, 2 m; one 2 m canal square
+    ...............
+    .<====U====>111111.      G: '<' lies on a 1-square pond, 2 m; pump; 6-cell 0.5 m canal
+    ...............
+S5 staged: A = 3x3 pond (stock 48.0, limitless=True) + 10-cell 0.5 m canal; B = 1-square pond (stock 48.0, limitless=True) + 10-cell 0.5 m canal; F = 1-square pond (stock 48.0) + one 2 m canal square; G = 1-square pond (stock 48.0) + pump (OFF until part G: True) + 6-cell 0.5 m canal; D = isolated 3-cell run full (E, the basin, is dug when its turn comes)
+  STAGING NOTE (part G): reel (76, 90) free end reads Intake, wanted Outflow
+  STAGING NOTE (part G): intake role: no 'Free end:' button (have [])
+  STAGING NOTE (part G): outflow role: no 'Free end:' button (have [])
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)
+  pulse  0  A canal [0 0 0 0 0 0 0 0 0 0] pond 48.0   B canal [0 0 0 0 0 0 0 0 0 0] pond 48.0   F canal 0 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  1  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 1 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  2  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 2 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  3  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 3 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  4  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse  5  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  6  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse  7  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse  8  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse  9  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 10  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+         screenshot: None
+  pulse 11  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 12  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 13  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 14  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 15  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 16  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 17  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 18  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 19  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 20  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+         screenshot: None
+  pulse 21  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 22  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 23  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 24  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 25  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 26  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 27  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 28  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 29  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 30  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 31  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 32  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 33  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 34  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 35  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 36  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 37  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 38  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 39  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 40  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 41  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 42  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 43  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 44  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 45  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 46  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 47  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 48  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 49  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 50  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 51  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 52  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 53  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+  pulse 54  A canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   B canal [1 1 1 1 1 1 1 1 1 1] pond 48.0   F canal 4 pond 48.0
+         screenshot: None
+  S5.a   DIFFERS    doc: Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond.
+                    game: A: most canal cells wet at once 10 of 10; pulses where pond+canal != start 48.0: [1, 2, 3, 4, 5, 6, 7, 8]; not one run at: none
+  S5.b   DIFFERS    doc: The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m.
+                    game: pond A stock 48.0 -> 48.0, lowest 48.0 (doc: lower than at start, never below 27)
+  S5.c   DIFFERS    doc: At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L.
+                    game: B canal cells ever wet [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; pond B lowest 48.0 (start 48.0); total at pulse 10 = 58.0
+  S5.d   MATCHES    doc: The wet front does not move for 40 more pulses.
+                    game: B canal changed after pulse 14 at pulses: never
+  S5.h   DIFFERS    doc: The pond square and the 2 m canal square settle to one surface: each holds 1 m of water (2,000 L); the total is 4,000 L; nothing changes for 10 more pulses.
+                    game: pulse 10: pond F 48.0, 2 m canal 4 (doc: 2 and 2, total 4); changed after pulse 10 at: never
+  part C: canal B cell 1 filled in
+  pulse  0  A canal [? ? ? ? ? ? ? ? ? ?] pond 48.0   B canal [0 1 1 1 1 1 1 1 1 1] pond 48.0   F canal ? pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  1  A canal [? ? ? ? ? ? ? ? ? ?] pond 48.0   B canal [0 1 1 1 1 1 1 1 1 1] pond 48.0   F canal ? pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+         screenshot: None
+  pulse  2  A canal [? ? ? ? ? ? ? ? ? ?] pond 48.0   B canal [0 1 1 1 1 1 1 1 1 1] pond 48.0   F canal ? pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  3  A canal [? ? ? ? ? ? ? ? ? ?] pond 48.0   B canal [0 1 1 1 1 1 1 1 1 1] pond 48.0   F canal ? pond 48.0
+            pond A squares (depth/fill:terrain; body cells=12 receded=0): 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  4  A canal [? ? ? ? ? ? ? ? ? ?] pond 48.0   B canal [0 1 1 1 1 1 1 1 1 1] pond 48.0   F canal ? pond 48.0
+  S5.e   DIFFERS    doc: Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears.
+                    game: B canal+pond total 58.0 -> 57.0; overflow destroyed 0 -> 0
+  part D: middle cell of the isolated 3-cell run filled in (look top-left for the message)
+         screenshot: None
+  S5.f   DIFFERS    doc: Filling in the middle cell destroys exactly 1,000 L (0.5 m in one square), and the player sees a message that names the amount.
+                    game: run held 3 -> 2 notches; game's destroyed-overflow total rose by 0.0 (the message text is in the screenshot)
+  part E: 6x6 basin 1 m deep dug now, 8 notches (8,000 L) heaped in the 4 centre cells, 20 pulses
+  pulse  0  basin rows 000000 000000 002200 002200 000000 000000  total 8
+  pulse  1  basin rows 111111 111111 112211 112211 111111 111111  total 40
+  pulse  2  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  3  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  4  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  5  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  6  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  7  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  8  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse  9  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 10  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 11  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 12  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 13  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 14  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 15  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 16  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 17  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 18  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 19  basin rows 222222 222222 222222 222222 222222 222222  total 72
+  pulse 20  basin rows 222222 222222 222222 222222 222222 222222  total 72
+         screenshot: None
+  S5.g   DIFFERS    doc: Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L.
+                    game: pulse 20: 36 cell(s) at 1 m while 0 dry; total 72 notches (doc: none at 1 m while any dry; total 8)
+  part G: pump ON (True; powered=True), pond G stock 48.0, 30 pulses
+  pulse  0  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  1  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  2  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  3  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  4  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  5  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  6  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  7  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  8  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse  9  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 10  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+         screenshot: None
+  pulse 11  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 12  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 13  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 14  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 15  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 16  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 17  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 18  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 19  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 20  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 21  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 22  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 23  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 24  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 25  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 26  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 27  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 28  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 29  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+  pulse 30  canal [1 1 1 1 1 1]  pond stock=48.0  hoses hold 0.00 notches  ground between wet: none
+         screenshot: None
+  S5.i   DIFFERS    doc: Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet.
+                    game: end: canal cells wet [1, 2, 3, 4, 5, 6], pond 48.0, hoses 0.00; pulses where pond+hoses+canal != 48.0: [0, 1, 2, 3, 4, 5]; 5th/6th cell wet at: [0, 1, 2, 3, 4, 5]; undug ground wet: never
+  log: Transient/fw_scenes/mock/S5_20261017T110145.txt
+====================================================================================================
+S6. Save and reload mid-flow, and the flow carries on
+    ...............
+    .PPP...........
+    .PPP1111111111.
+    .PPP...........
+    ...............
+S6 staged (run 1, never saved): S5 part A (3x3 pond + 10-cell canal) and S4's gate scene shut with the downstream half full
+         screenshot: None
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.0 s pause
+  run 1: uninterrupted to pulse 30
+  pulse  0  canal [0 0 0 0 0 0 0 0 0 0]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  1  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  2  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  3  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  4  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse  5  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  6  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  7  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  8  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  9  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 10  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 11  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 12  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 13  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 14  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 15  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 16  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 17  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 18  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 19  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 20  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 21  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 22  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 23  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 24  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 25  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 26  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 27  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 28  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 29  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 30  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+         screenshot: None
+  run 2: the same start again on a fresh twin plot just north; save at pulse 4, reload, continue to 30
+  pulse  4  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD   <- saving
+  pulse  4  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD   <- after reload (save True, load True)
+  S6.a   MATCHES    doc: Straight after the reload, every cell's depth and fill, the pond's stock, and the gate's open/shut state equal what they were at the save.
+                    game: after reload: cells, pond stock and gate EQUAL the save
+  S6.b   MATCHES    doc: Total liquid in Run 2 is the same before the save and after the reload.
+                    game: total liquid before save 66.0, after reload 66.0
+  pulse  5  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  6  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  7  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  8  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse  9  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 10  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 11  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 12  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 13  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 14  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 15  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 16  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 17  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 18  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 19  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 20  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+  pulse 21  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 22  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 23  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 24  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 25  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 26  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 27  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 28  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 29  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+  pulse 30  canal [1 1 1 1 1 1 1 1 1 1]  pond 48.0  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD | 0/0:WD 0/0:WD 0/0:WD
+         screenshot: None
+  S6.c   MATCHES    doc: Run 2 ends in the same settled state as Run 1, cell for cell.
+                    game: pulse 30: cells equal; pond run 1 48.0, run 2 48.0
+  S6.Q1  OPEN RULING  After a reload, must the flow be identical pulse by pulse to a run that was never saved, or only end in the same place?
+         (a) identical at every pulse (strict; the strongest test)
+         (b) same totals and same final settled state; small differences on the way are fine
+         game today: pulse-by-pulse after the reload, run 2 differed from run 1 at pulses: none
+  log: Transient/fw_scenes/mock/S6_20261017T110145.txt
+shipped settings restored: {'rainFillsExcavationsEnabled': 'True', 'refillEnabled': 'True'}

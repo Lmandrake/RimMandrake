@@ -17,7 +17,13 @@ he should see beside what the game measures, and saves a screenshot under Transi
   python.exe src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py all [--from S2] # every scene; between scenes waits
                                                      for Transient/fw_scenes/live/CONTINUE to appear (then deletes it)
   python.exe src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py restore         # shipped settings back
-  options: --pace 1.5 (wall seconds between pulses) --no-shots
+  options: --pace 1.5 (wall seconds between pulses) --no-shots --fresh-map (go/all: a new quicktest map per scene)
+           --no-wait (all: no CONTINUE file between scenes)
+  python3 src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py all --mock --no-wait --pace 0 --no-shots [--mock-fail S4]
+                                                     # OFFLINE: the script's own paths only (water_scenes_mock.py)
+A crash in a scene is printed in full, kept at Transient/fw_scenes/live/<scene>_traceback_<stamp>.txt, recorded as a
+CRASHED row, and the walk goes on. Colonists are fed every 5,000 ticks and a GovernorStop is printed and resumed once:
+the 2026-10-17 S4/S5 tracebacks were the vitals latch stopping the clock on starving quicktest colonists.
 Stage each scene ONCE per map: re-staging on the same plot keeps the old pond body's receded stock (measured: S6 run 2
 started at pond 22, not 32). For a clean sitting: `prep --fresh-map`, then S1..S6 in order (S6 saves and reloads the map;
 its saves RM_fw_scene_S6_* stay in the Saves folder).
@@ -78,12 +84,19 @@ def run(x0, z, n, d=1):
 # ---------------------------------------------------------------- bridge
 class Walk(object):
     def __init__(self, args):
-        import validation_core as V
-        self.V = V
-        self.B = V.Bridge()
+        if getattr(args, "mock", False):
+            import water_scenes_mock as M
+            self.V = M.MockV()
+            self.B = M.MockBridge(fail_scene=args.mock_fail)
+        else:
+            import validation_core as V
+            self.V = V
+            self.B = V.Bridge()
         self.args = args
         self.log_lines = []
         self.rows = []
+        self.since_feed = 0
+        self.terrain = {}
         os.makedirs(OUT, exist_ok=True)
 
     def call(self, tool, **kw):
@@ -102,8 +115,35 @@ class Walk(object):
     def hp(self, cmd):
         return self.B.probe_of(HPROBE, cmd)
 
+    def feed(self):
+        """Top up every colonist's Food and Rest. WHY (2026-10-17): the S4 step-C and S5 tracebacks of the first live walk
+        were clockgate.GovernorStop 'starving: food category Starving' (governor_stops.jsonl 16:28Z): the quicktest
+        colonists starve over a long sitting, the vitals latch stops safe_advance, and the uncaught stop killed the scene.
+        Upkeep, never a verdict: the scenes measure water, not pawns."""
+        fed = []
+        for c in self.hp("colonists").get("pawns") or []:
+            for need in ("Food", "Rest"):
+                self.call("jawa/pawn_need", pawn=c["id"], action="need", need=need, level=1.0)
+            fed.append(c["id"])
+        self.since_feed = 0
+        return fed
+
     def ticks(self, n):
-        self.B.ticks(n)
+        """Game time through the governed clock. Colonists are fed every 5,000 ticks; a GovernorStop is printed in full,
+        the colonists fed, and the REST of the step resumed once; a second stop in the same step raises."""
+        if self.since_feed >= 5000:
+            self.feed()
+        self.since_feed += n
+        try:
+            self.B.ticks(n)
+        except Exception as ex:  # noqa: BLE001 - clockgate.GovernorStop; anything else re-raises below
+            if not getattr(ex, "is_surprise_abort", False):
+                raise
+            done = int((getattr(ex, "result", {}) or {}).get("executed") or 0)
+            self.say("         GOVERNOR STOP (fed colonists, resuming the last %d tick(s) once): %s" % (n - done, ex))
+            self.feed()
+            if n - done > 0:
+                self.B.ticks(n - done)
 
     def tick_now(self):
         return (self.call("jawa/flowworks_engine_state") or {}).get("ticksGame")
@@ -124,9 +164,14 @@ class Walk(object):
         # ProofFluidRow caps w*h at 400: split tall boxes into row bands
         step = max(1, 400 // w)
         for zb in range(z0, z0 + h, step):
-            ok, txt = self.proof(PROMO, "ProofFluidRow", "%d,%d,%d,%d" % (x0, zb, w, min(step, z0 + h - zb)))
+            arg = "%d,%d,%d,%d" % (x0, zb, w, min(step, z0 + h - zb))
+            ok, txt = self.proof(PROMO, "ProofFluidRow", arg)
             if not ok:
-                return None, None
+                ok, txt = self.proof(PROMO, "ProofFluidRow", arg)       # one retry: a dropped call is not a reading
+            if not ok:
+                # never a silent None (the old code returned None and the caller crashed on m.get): print and go on
+                self.say("         READ FAILED ProofFluidRow %s: %s (cells in it read as '?')" % (arg, txt[:200]))
+                continue
             head = txt.split(" ", 3)
             for tok in head[1:3]:
                 if tok.startswith("pulse="):
@@ -135,9 +180,21 @@ class Walk(object):
                 if ":" in t:
                     xz, rest = t.split(":", 1)
                     x, z = map(int, xz.split(","))
-                    d, f = rest.split("/")[:2]
-                    out[(x, z)] = (int(d), int(f))
+                    parts = rest.split("/")
+                    out[(x, z)] = (int(parts[0]), int(parts[1]))
+                    if len(parts) > 3:
+                        self.terrain[(x, z)] = parts[3]
         return out, pulse
+
+    def grid(self, sq, m=None):
+        """Per-square 'depth/fill:terrain' of a pond, one row per z (south row first, west to east), read now unless a
+        reading `m` is passed. For the 0/4/0 question: a level pond reads the same fill in every square."""
+        if m is None:
+            m, _ = self.cells(sq)
+        zs = sorted({c[1] for c in sq})
+        rows = [sorted([c for c in sq if c[1] == z]) for z in zs]
+        return " | ".join(" ".join("%s/%s:%s" % (m.get(c, ("?", "?")) + (_tshort(self.terrain.get(c)),)) for c in r)
+                          for r in rows)
 
     def body(self, c, classify=False):
         r = self.call("jawa/flowworks_body_report", x=c[0], z=c[1], classify=classify) or {}
@@ -203,7 +260,17 @@ class Walk(object):
 
 
 def fills_str(m, cells):
+    m = m or {}
     return " ".join(("%d" % m[c][1]) if c in m else "?" for c in cells)
+
+
+def _tshort(t):
+    """Terrain defName shortened for a grid: WaterDeep -> WD, WaterShallow -> WS, Soil -> So, RM_x -> its first 6."""
+    if not t:
+        return "?"
+    if t.startswith("Water"):
+        return "W" + "".join(ch for ch in t[5:] if ch.isupper())[:2]
+    return t[:6]
 
 
 def one_run(m, cells):
@@ -250,10 +317,12 @@ def pulse_loop(w, name, cells_all, n, tick_fn, rect, shots_at=(), stop_when=None
     dict kept in the history. Returns the history [(pulse, m, extra)]."""
     iv = w.interval()
     m, p0 = w.cells(cells_all)
+    m = m or {}
     hist = [(0, m, tick_fn(0, m, w))]
     for k in range(1, n + 1):
         w.ticks(iv)
         m, pc = w.cells(cells_all)
+        m = m or {}
         hist.append((k, m, tick_fn(k, m, w)))
         if k in shots_at:
             w.say("         screenshot: %s" % w.shot("%s_p%02d" % (name, k), rect))
@@ -334,9 +403,22 @@ def run_S2(w):
     pond, trench = g["pond"], g["trench"]
 
     def tick(k, m, w_):
-        w_.say("  pulse %2d  pond [%s]  trench [%s]" % (k, fills_str(m, pond), fills_str(m, trench)))
+        w_.say("  pulse %2d  pond [%s]  trench [%s]   pond squares (depth/fill:terrain, south row | north row): %s" % (
+            k, fills_str(m, pond), fills_str(m, trench), w_.grid(pond, m)))
         return None
     h = pulse_loop(w, "S2", pond + trench, 60, tick, g["rect"], shots_at=(10, 30, 60))
+    # plan P1's L2 bar (WATER_SCENES_PROVE_AFTER_THE_CREEP_FIX): every pulse, each pond square within one level of the
+    # pond squares it touches (no [4 0 4 0])
+    gaps = []
+    for k, m, _ in h:
+        worst = max(abs(m.get(a, (0, 0))[1] - m.get(b, (0, 0))[1]) for a in pond for b in pond
+                    if abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1)
+        if worst > 1:
+            gaps.append("p%d gap %d [%s]" % (k, worst, fills_str(m, pond)))
+    claim = "Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0])."
+    w.say("  %-6s %-10s doc: %s" % ("S2.lvl", verdict(not gaps), claim + " (plan P1 bar, not a scenes-file row)"))
+    w.say("  %-6s %-10s game: pulses with a gap over 1: %s" % ("", "", gaps[:8] or "none"))
+    w.rows.append(dict(id="S2.lvl", status=verdict(not gaps), doc=claim, game=str(gaps[:8] or "none")))
     pf = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 4 for c in pond))
     tf = first_pulse(h, lambda m: all(m.get(c, (0, 0))[1] >= 1 for c in trench))
     expect_line(w, "S2", "S2.a", "all 4 pond cells at 4 first at pulse %s" % pf, pf is not None and pf <= 30)
@@ -452,6 +534,27 @@ def _hose_held(w, g=None):
     return tot / LEVEL_UNITS
 
 
+def _s3_ledger(w, g):
+    """Every counter that could hold water between pond and canal, read now: the pump's own moved/lastMoved (units), the
+    liquid-net and spill counters (units), the engine's overflow/sink totals and the pond body's raw fields."""
+    out = {}
+    pp = w.hp("pump:%d,%d" % g["pump"])
+    for k in ("moved", "lastMovedUnits", "pourMode"):
+        out["pump." + k] = pp.get(k)
+    nt = w.hp("net:%d,%d" % g["pump"])
+    for k in ("settledUnits", "dumpedUnits", "spilledUnits", "hoseDrainedUnits", "moves", "putBacks"):
+        out["net." + k] = nt.get(k)
+    es = w.call("jawa/flowworks_engine_state") or {}
+    for k, v in es.items():
+        if isinstance(v, (int, float)) and not isinstance(v, bool) and any(
+                s in k.lower() for s in ("overflow", "sink", "destroy", "evap", "burn", "spill", "lost", "seep")):
+            out["engine." + k] = v
+    b = w.body(g["pond"][0])
+    for k in ("stock", "capacity", "cellCount", "recededCount"):
+        out["pond." + k] = b.get(k)
+    return out
+
+
 def run_S3(w):
     g = s3_geom()
     canal, pond = g["canal"], g["pond"]
@@ -463,9 +566,11 @@ def run_S3(w):
         held = _hose_held(w_)
         cf = sum(m.get(c, (0, 0))[1] for c in canal)
         gapwet = [c for c in g["gap"] if m.get(c, (0, 0))[1] > 0]
+        d = _s3_ledger(w_, g)
         w_.say("  pulse %2d  canal [%s]  pond stock=%s  hoses hold %.2f levels  ground between wet: %s" % (
             k, fills_str(m, canal), b.get("stock"), held, gapwet or "none"))
-        return dict(stock=b.get("stock"), held=held, canal=cf, gapwet=gapwet)
+        w_.say("            ledger: %s" % json.dumps(d, sort_keys=True))
+        return dict(stock=b.get("stock"), held=held, canal=cf, gapwet=gapwet, ledger=d)
     w.say("  step A: pump OFF for 20 pulses")
     ha = pulse_loop(w, "S3A", canal + g["gap"], 20, tick, g["rect"], shots_at=(20,))
     wetA = [k for k, _, x in ha if x["canal"] > 0]
@@ -488,6 +593,16 @@ def run_S3(w):
         if abs(lost - gained) > 0.01:
             bad.append("p%d lost %.2f gained %.2f" % (k, lost, gained))
     expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss: %s" % (bad[:4] or "none"), not bad if sB is not None else None)
+    # S3 mass audit (2026-10-17 question: pond lost 6.98, canal gained 6.00): every counter that could hold the gap,
+    # first pulse of step B against the last, in levels (1 level = 10,000 units)
+    l0, l1 = hb[0][2]["ledger"], hb[-1][2]["ledger"]
+    delta = {k: (round((_f(l1.get(k)) or 0) - (_f(l0.get(k)) or 0), 4)) for k in sorted(set(l0) | set(l1))
+             if _f(l1.get(k)) is not None or _f(l0.get(k)) is not None}
+    lost = None if None in (sB, hb[-1][2]["stock"]) else float(sB) - float(hb[-1][2]["stock"])
+    w.say("  S3 mass audit: pond lost %s levels; canal %s; hoses %.4f; counter deltas over step B: %s" % (
+        lost, hb[-1][2]["canal"], hb[-1][2]["held"], json.dumps(delta, sort_keys=True)))
+    w.rows.append(dict(id="S3.audit", status="MEASURED", game=dict(pondLost=lost, canal=hb[-1][2]["canal"],
+                                                                   hoses=hb[-1][2]["held"], deltas=delta)))
     gw = sorted({c for _, _, x in ha + hb for c in x["gapwet"]})
     expect_line(w, "S3", "S3.d", "undug ground between pond and canal ever wet: %s" % (gw or "never"), not gw)
     expect_line(w, "S3", "S3.e", "not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)", None)
@@ -726,6 +841,9 @@ def run_S5(w):
         w_.say("  pulse %2d  A canal [%s] pond %s   B canal [%s] pond %s   F canal %s pond %s" % (
             k, fills_str(m, g["canalA"]), a.get("stock"), fills_str(m, g["canalB"]), b.get("stock"),
             fills_str(m, [f["canal"]]), fp.get("stock")))
+        if k % 5 == 0 or k <= 3:
+            w_.say("            pond A squares (depth/fill:terrain; body cells=%s receded=%s): %s" % (
+                a.get("cellCount"), a.get("recededCount"), w_.grid(g["pondA"])))
         return dict(a=a.get("stock"), b=b.get("stock"), f=fp.get("stock"), aw=a.get("cellCount"), ar=a.get("recededCount"))
     w.say("  parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)")
     h = pulse_loop(w, "S5AB", allc, 54, tick, g["rect"], shots_at=(10, 20, 54))
@@ -860,12 +978,19 @@ def _s6_stage(w, run2=False):
     return g
 
 
-def _s6_snap(w, g):
+def _s6_snap(w, g, with_grid=False):
     cells = g["canal"] + g["gate"]["canal"]
     m, _ = w.cells(cells)
     _, gs = w.proof(GATES, "ProofLiquid", "current|%d,%d" % g["gate"]["gate"])
-    return dict(m=[list(m.get(c, (None, None))) for c in cells] if m else None,
-                pond=w.body(g["pond"][4]).get("stock"), gate=gs.split("|")[0].strip())
+    s = dict(m=[list(m.get(c, (None, None))) for c in cells] if m else None,
+             pond=w.body(g["pond"][4]).get("stock"), gate=gs.split("|")[0].strip())
+    if with_grid:
+        s["grid"] = w.grid(g["pond"])     # kept apart from the compared fields: a view, not part of the S6.a equality
+    return s
+
+
+def _s6_eq(a, b):
+    return {k: v for k, v in a.items() if k != "grid"} == {k: v for k, v in b.items() if k != "grid"}
 
 
 def stage_S6(w):
@@ -876,8 +1001,9 @@ def stage_S6(w):
 
 
 def _s6_line(k, s):
-    return "  pulse %2d  canal [%s]  pond %s  gate %s" % (k, " ".join(str(v[1]) for v in s["m"][:10]) if s["m"] else "?",
-                                                       s["pond"], s["gate"])
+    return "  pulse %2d  canal [%s]  pond %s  gate %s%s" % (
+        k, " ".join(str(v[1]) for v in s["m"][:10]) if s["m"] else "?", s["pond"], s["gate"],
+        ("\n            pond squares: %s" % s["grid"]) if s.get("grid") else "")
 
 
 def run_S6(w):
@@ -888,7 +1014,7 @@ def run_S6(w):
     for k in range(31):
         if k:
             w.ticks(iv)
-        s = _s6_snap(w, g)
+        s = _s6_snap(w, g, with_grid=k in (0, 1, 2, 4, 10, 20, 30))
         r1.append(s)
         w.say(_s6_line(k, s))
         time.sleep(w.args.pace / 3)
@@ -899,15 +1025,15 @@ def run_S6(w):
     for k in range(5):
         if k:
             w.ticks(iv)
-    pre = _s6_snap(w, g)
+    pre = _s6_snap(w, g, with_grid=True)
     w.say(_s6_line(4, pre) + "   <- saving")
     name = "RM_fw_scene_S6_%s" % time.strftime("%Y%m%d%H%M%S")
     sv = w.call("rimworld/save_game", saveName=name) or {}
     ld = w.call("rimworld/load_game_ready", saveName=name, timeoutMs=240000) or {}
     ok, waited = w.V._wait_playing(w.B, leave_s=0)
-    post = _s6_snap(w, g)
+    post = _s6_snap(w, g, with_grid=True)
     w.say(_s6_line(4, post) + "   <- after reload (save %s, load %s)" % (sv.get("success"), ld.get("success")))
-    same = pre == post
+    same = _s6_eq(pre, post)
     expect_line(w, "S6", "S6.a", "after reload: cells, pond stock and gate %s the save" % ("EQUAL" if same else "DIFFER FROM"),
                 same if pre["m"] and post["m"] else None, "" if same else "pre %s / post %s" % (json.dumps(pre)[:200], json.dumps(post)[:200]))
     tot = lambda s: (sum(v[1] or 0 for v in s["m"]) + float(s["pond"] or 0)) if s["m"] else None
@@ -916,7 +1042,7 @@ def run_S6(w):
     r2 = [pre]
     for k in range(5, 31):
         w.ticks(iv)
-        s = _s6_snap(w, g)
+        s = _s6_snap(w, g, with_grid=k in (10, 20, 30))
         r2.append(s)
         w.say(_s6_line(k, s))
         time.sleep(w.args.pace / 3)
@@ -945,6 +1071,7 @@ def prep(w):
     w.call("rimworld/set_god_mode", enabled=True)
     for c in w.hp("colonists").get("pawns") or []:
         w.hp("pawn:%d=draft" % c["id"])
+    w.say("colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): %s" % w.feed())
     mi = w.call("jawa/map_info") or {}
     got = {}
     for f, v in SCENE_OVERRIDES.items():
@@ -969,24 +1096,44 @@ ORDER = ["S1", "S2", "S3", "S4", "S5", "S6"]
 
 
 def do_scene(w, sid, stage=True, go=True):
+    """One scene. Never loses an error (WATER_SCENES_WALK_MEND_TRIPS_AFTER_S4): an exception anywhere in staging or the
+    run is printed IN FULL, written to Transient/fw_scenes/live/<sid>_traceback_<stamp>.txt, recorded as a CRASHED row,
+    and the log and rows are still written; the caller goes on to the next scene. Returns True when it ran clean."""
+    import traceback
     s = scene_doc(sid)
     w.say("=" * 100)
     w.say("%s. %s" % (sid, s["title"]))
     for line in s["grid"]:
         w.say("    " + line)
-    if stage:
-        STAGE[sid](w)
-        if sid == "S3":
-            stage_S3q(w)
-    if go:
-        w.say("  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = %d ticks, stepped with a %.1f s pause" % (
-            w.interval(), w.args.pace))
-        RUN[sid](w)
-        if sid == "S3":
-            run_S3q(w)
+    ok = True
+    if hasattr(w.B, "scene"):            # the offline mock (--mock-fail) needs to know which scene it is in
+        w.B.scene, w.B.ticks_in_scene = sid, 0
+    try:
+        if stage:
+            STAGE[sid](w)
+            if sid == "S3":
+                stage_S3q(w)
+        if go:
+            w.say("  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = %d ticks, stepped with a %.1f s pause" % (
+                w.interval(), w.args.pace))
+            RUN[sid](w)
+            if sid == "S3":
+                run_S3q(w)
+    except Exception:  # noqa: BLE001 - the whole point: print it, keep it, carry on
+        ok = False
+        tb = traceback.format_exc()
+        p = os.path.join(OUT, "%s_traceback_%s.txt" % (sid, time.strftime("%Y%m%dT%H%M%S")))
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(tb)
+        w.say("  CRASHED (traceback kept at %s):" % os.path.relpath(p, REPO))
+        for line in tb.rstrip().splitlines():
+            w.say("    " + line)
+        w.rows.append(dict(id=sid + ".crash", status="CRASHED", game=tb.rstrip().splitlines()[-1], traceback=os.path.relpath(p, REPO)))
+    if go or not ok:
         w.say("  log: %s" % w.write_log(sid))
         with open(os.path.join(OUT, "%s_rows.json" % sid), "w", encoding="utf-8") as f:
             json.dump(w.rows, f, indent=1)
+    return ok
 
 
 def main(argv=None):
@@ -996,9 +1143,19 @@ def main(argv=None):
     ap.add_argument("--from", dest="start", default="S1")
     ap.add_argument("--pace", type=float, default=1.5)
     ap.add_argument("--no-shots", action="store_true")
-    ap.add_argument("--fresh-map", action="store_true")
+    ap.add_argument("--fresh-map", action="store_true", help="with go/all: a new quicktest map before EACH scene")
+    ap.add_argument("--no-wait", action="store_true", help="all: do not wait for the CONTINUE file between scenes")
+    ap.add_argument("--mock", action="store_true", help="offline: a fake bridge (water_scenes_mock.py); proves the "
+                    "script's own paths run to the end, never anything about the game")
+    ap.add_argument("--mock-fail", default=None, help="with --mock: raise inside this scene's run to prove a crash is "
+                    "printed in full and the walk continues")
     a = ap.parse_args(argv)
+    if a.mock:                      # mock output never lands beside live evidence
+        global OUT
+        OUT = os.path.join(REPO, "Transient", "fw_scenes", "mock")
+        a.no_shots = True
     w = Walk(a)
+    rc = 0
     if a.verb == "prep":
         prep(w)
     elif a.verb == "restore":
@@ -1007,17 +1164,23 @@ def main(argv=None):
         sid = (a.scene or "").upper()
         if sid not in STAGE:
             ap.error("scene must be one of %s" % ORDER)
-        do_scene(w, sid, stage=a.verb in ("stage", "go"), go=a.verb in ("run", "go"))
+        if a.verb == "go" and a.fresh_map:
+            prep(w)
+        rc = 0 if do_scene(w, sid, stage=a.verb in ("stage", "go"), go=a.verb in ("run", "go")) else 1
     else:
         for sid in ORDER[ORDER.index(a.start.upper()):]:
-            do_scene(w, sid)
-            w.say("%s done. Waiting for %s (create it to continue)..." % (sid, os.path.relpath(FLAG, REPO)))
-            while not os.path.exists(FLAG):
-                time.sleep(2)
-            os.remove(FLAG)
+            if a.fresh_map:
+                prep(w)
+            if not do_scene(w, sid):
+                rc = 1
+            if not a.no_wait:
+                w.say("%s done. Waiting for %s (create it to continue)..." % (sid, os.path.relpath(FLAG, REPO)))
+                while not os.path.exists(FLAG):
+                    time.sleep(2)
+                os.remove(FLAG)
             w.log_lines, w.rows = [], []
         restore(w)
-    return 0
+    return rc
 
 
 if __name__ == "__main__":
