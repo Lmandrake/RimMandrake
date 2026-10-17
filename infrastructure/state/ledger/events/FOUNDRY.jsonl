@@ -6083,3 +6083,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:20:59Z","expires":"2026-10-17T20:05:59Z","tsn":1792264859909249327}
 {"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:27:30Z","expires":"2026-10-17T20:12:30Z","tsn":1792265250393197613}
 {"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:36:36Z","expires":"2026-10-17T20:21:36Z","tsn":1792265796803705376}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD","action":"renew","token":"FOUNDRY.pid35933.c6d070d3","ts":"2026-10-17T19:56:44Z","expires":"2026-10-17T20:41:44Z","tsn":1792267004499899897}
