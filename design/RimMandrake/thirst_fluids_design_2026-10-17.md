@@ -304,3 +304,107 @@ ruling violation in built code), add B's stations as the first logistics feature
 thirds on the arithmetic above), then C's machine ports when the first fluid-burning machine of ours needs one.
 What would change it: if the owner reads "no bottles" strictly (Q-V1 = sealed bottles only), B's cup rack is out
 and B degrades to "taps with a debuff", which is still fewer jobs but punishes good colonies; then A + C.
+
+---
+
+## 8. Edge cases
+
+1. **Prisoners:** drink from a tap/bucket in their cell (tier B, debuff applies) or are given water by a Warden
+   (built). Never slime or salt unless the cell holds only that (then §3.3 applies; Q-S2).
+2. **Guests and traders:** drink the colony's potable taps and terrain; never a bottle from storage (vanilla
+   guests do not eat your meals unless given). They never enter `RM_BrineMadness` on our map (they leave first;
+   PROPOSED).
+3. **Caravans:** bottles only (built); a caravan with no bottles but a barrel drinks the barrel (tier B, debuff).
+   Slime/salt never on the world map (no source).
+4. **Animals:** terrain only (OQ-5). Animals are "wild and uncivilized": no tap debuff, and they drink slime/salt
+   terrain without the human consequences? Q-A1 (proposed: animals drink potable terrain only, and slime only when
+   nothing else, with the per-kind effect but no mood).
+5. **Downed pawns:** given water by a Doctor (built); a downed hostile gets none (built, `e8ecd28f06`). Never
+   given slime or salt by a carer.
+6. **Frozen fluids:** a bottle/bucket/barrel/tank below 0 °C holds ice: not drinkable until thawed (one kind of
+   heat: vanilla ambient temperature; the freeze point per row, brine lower than fresh, PROPOSED). Frozen potable
+   water does not count as available (§3.3). Melting = warm the room. Q-F5 whether pawns may eat ice/snow.
+7. **Hostile visitors and raiders:** do not drink at all during a raid (vanilla raiders do not eat); siegers on a
+   long siege drink their own packed bottles (PROPOSED).
+8. **Children and babies (Biotech):** babies are fed water like milk by a carer (a bottle, never a tap); children
+   are pawns.
+9. **Slaves (Ideology):** as colonists; the tap debuff applies (Q-T3 whether slaves count as "uncivilized" – no,
+   PROPOSED).
+10. **Mechanoids, droids, entities:** no thirst (built exemption).
+11. **Sanguophages, deathrest, cryptosleep:** frozen need (built). Blood as a drink for sanguophages: Q-F4.
+12. **Boiling water:** never drunk while hot (it burns, `hot` row flag); cools in a container to fresh (Q-F2).
+13. **Salt water sought by Dubs' AI:** in Dbh mode, salt/brine bottles carry `SeekForThirst false`
+    (2026-10-17 card context), so Dubs never picks them; our break still fires off **our** reading of Dubs' need
+    (`DBHThirst` level), Q-D1.
+
+## 9. Dubs Bad Hygiene and Mod Settings
+
+**Dbh mode.** Dubs owns the need and its drinking AI. Our rules survive as data on what Dubs sees:
+`SeekForThirst true` only on `Potable` bottles; slime has no bottles; the tap debuff, slime last resort and salt
+break are **ours** and run only where our code chooses the drink (Own mode) — except the salt break, which can read
+`DBHThirst` (Q-D1). Mood/hediff consequences of drinking slime/salt apply in both modes because they are about the
+liquid.
+
+**Settings (new, FlowWorks "Thirst" section; defaults = shipped behaviour):**
+
+| setting | default | off |
+|---|---|---|
+| `tapDrinkDebuff` | on, −3 | no tap thought |
+| `slimeLastResort` | on | slime is never drunk (pawns dehydrate instead) |
+| `slimePerKindEffects` | on | slime gives only mood + purge |
+| `slimePurgeHediff` | on | no laxative |
+| `brineMadnessBreak` | on | salt water is never drunk |
+| `saltPoisoningSeverity` | 1.0 (0-3) | tuning |
+| `potableBottleTargetPerColonist` | 3 | 0 = fill every empty (today's behaviour) |
+| `nonPotableAutoGather` | **off** (ruled) | on = the old behaviour, labelled "against the design" |
+
+All off: thirst works exactly as the 2026-10-16 build, minus Fouled/Toxic desperate drinking.
+
+## 10. Claims table (what the recommendation rests on)
+
+| # | claim | status | ★ |
+|---|---|---|---|
+| 1 | `WorkGiver_FillBottle` fills any empty container at any fillable liquid, no potability check, no target | MEASURED (read `WorkGiver_FillBottle.cs:28-50`; did not read `TryFindFillCell` body) | ★ |
+| 2 | no slime bottle/bucket/barrel defs exist | MEASURED (defName grep over `FlowWorks/Defs`) | ★ |
+| 3 | bottle drink = 3 jobs (drink, fill, wash) with the dirty stage on | estimated (from the built chain's job list) | ★ |
+| 4 | 10 hot colonists ≈ 180 water jobs/day under A, ≈ 60-70 under B | estimated (arithmetic on 1.5 L, 3 L/day, ×3 heat) | ★ |
+| 5 | Ascetic exists; StrongStomach, RobustDigestion are Biotech genes; Neanderthal, Dirtmole, Waster are Biotech xenotypes | MEASURED (installed game defs) | |
+| 6 | only Cannibal nullifies `AteRawFood` in Core | MEASURED (Traits_Singular.xml parse) | |
+| 7 | `RM_RawSlime` cures poison and starts `RM_Slimification` | MEASURED (def description; comp class not read) | |
+| 8 | the green slime row is (or is not) the Gelatinous body | **unmeasured** — owner's call | ★ |
+| 9 | Dubs never drinks a bottle with `SeekForThirst false` | assumed (Dubs' C# not read) | |
+| 10 | a hand-watering bucket covers a 3×3 patch | unmeasured | |
+| 11 | vanilla has no thirst/hunger-driven mental break | assumed | |
+
+## 11. Open questions for the owner (never decided here)
+
+- **Q-V1** Does drinking at a tap that has cups next to it count as "drinking from a bottle" (no debuff)?
+- **Q-V2** Is a pond or river a "tap" for the debuff, or free like today?
+- **Q-T1** Which traits are hardy enough to skip the tap debuff: Ascetic only, or also Tough, Undergrounder, Cannibal?
+- **Q-T2** Do hardy xenotypes (Neanderthal, Dirtmole, Waster) skip it by name, or only through their genes?
+- **Q-T3** Who is "uncivilized": wild men only, or also tribal people, and our Jawas?
+- **Q-S1** Do hardy traits soften the slime mood hit, or is it massive for everyone?
+- **Q-S2** "No potable water available": none the pawn can reach now, or none anywhere on the map?
+- **Q-S3** What does each slime do when drunk (red burns, green = the living Slime?, white nourishes, yellow disgusts)?
+- **Q-S4** Should slime ever be bottled, or only drunk from pools and tanks?
+- **Q-B1** Does the salt-water break need low mood too, or can thirst alone trigger it?
+- **Q-F1** Is brine treated exactly like salt water (break only)?
+- **Q-F2** Is boiling water drinkable once it cools?
+- **Q-F3** Is toxic water never drinkable, or a last resort like slime?
+- **Q-F4** Can sanguophages drink stored blood?
+- **Q-F5** Can pawns eat ice or snow for water?
+- **Q-A1** Do animals avoid slime and salt water, or drink them with consequences?
+- **Q-G1** Is pouring stored fuel into the machine that burns it allowed automatically (not "gathering")?
+- **Q-C1** Does watering a crop with brine hurt it?
+- **Q-M2** Do buckets fight fires?
+- **Q-D1** With Dubs' thirst running, should the salt-water break still happen?
+- **Q-R1** Which traffic plan: A (bottles, capped), B (drinking stations), C (pipes-first tiers), or the A→B→C sequence?
+
+## 12. 3x3 run status
+
+| pass | status | note |
+|---|---|---|
+| 1 deep design | complete | this file, written by the BENCH design subagent (model from `ANTHROPIC_DEFAULT_OPUS_MODEL`) |
+| 2 naive review | launched in background | writes `design/RimMandrake/thirst_fluids_3x3_2026-10-17/02a-blind-solutions.md`, `02-review.md` |
+| 3 GPT review | **not run** | owed: `chatgpt-consult` blind then critique |
+| merge | **not run** | owed; until then this design is **INCOMPLETE** as a 3x3 |
