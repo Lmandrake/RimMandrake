@@ -7,7 +7,7 @@ using Verse;
 namespace RimMandrake.FlowWorks.Thirst
 {
 	/// <summary>Design §5 caravans: every 2500 ticks, a player caravan member below 0.3 drinks the best bottle in the
-	/// caravan's inventory (toxic only when parched). Off the map a pawn's need still falls (vanilla keeps caravan members'
+	/// caravan's inventory the use-class gate allows (slime and toxic only when desperate, salt never). Off the map a pawn's need still falls (vanilla keeps caravan members'
 	/// needs live), so without this a caravan would die of thirst. A caravan on a river tile drinks from the river: its
 	/// animals always (animals never drink bottles, OQ-5), its people when no bottle is left. The forming-screen
 	/// days-of-water readout (design build step 6) is NOT built: owed, may be cut to a tooltip.</summary>
@@ -61,18 +61,21 @@ namespace RimMandrake.FlowWorks.Thirst
 		{
 			float level = RM_ThirstUtility.Level(p);
 			Thing best = null;
-			RM_WaterQuality bestQ = RM_WaterQuality.Toxic;
+			RM_DrinkUse bestU = RM_DrinkUse.Never;
+			RM_WaterQuality bestQ = RM_WaterQuality.Slime;
 			foreach (Thing t in CaravanInventoryUtility.AllInventoryItems(caravan))
 			{
 				LiquidDef l = RM_ThirstUtility.LiquidOf(t);
-				if (!RM_ThirstUtility.QualityOf(l).HasValue)
+				if (!RM_ThirstUtility.MayDrink(p, l, level))
 				{
 					continue;
 				}
+				RM_DrinkUse u = RM_ThirstUtility.UseOf(l);
 				RM_WaterQuality q = RM_ThirstUtility.Effective(l);
-				if (RM_ThirstMath.Acceptable(q, level) && (best == null || (int)q < (int)bestQ))
+				if (best == null || RM_ThirstMath.Better(u, q, 0f, bestU, bestQ, 0f))
 				{
 					best = t;
+					bestU = u;
 					bestQ = q;
 				}
 			}

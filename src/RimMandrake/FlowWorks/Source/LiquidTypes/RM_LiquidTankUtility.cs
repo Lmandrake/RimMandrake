@@ -30,7 +30,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <paramref name="refusal"/> when that is the only reason nothing was found), and asks for
         /// the container's material-scaled units rather than the size's base units.</summary>
         public static bool TryFindTankToDrain(Pawn pawn, Thing container, RM_ContainerSize size,
-            out Building_LiquidTank tank, out LiquidDef liquid, out string refusal, float maxDist = 60f)
+            out Building_LiquidTank tank, out LiquidDef liquid, out string refusal, bool ordered, float maxDist = 60f)
         {
             string why = null;
             // Bug fixed here: this used to capture `candidate.storedLiquid` into a
@@ -48,6 +48,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 if (candidate.Empty || !candidate.GivesToBottles)
                 {
                     return false;
+                }
+                if (!ordered && !candidate.storedLiquid.AutoGathered)
+                {
+                    return false;   // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: a brine tank is drained into containers only by order
                 }
                 if (candidate.storedLiquid.bottled?.FilledDefFor(size) == null)
                 {

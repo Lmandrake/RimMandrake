@@ -119,6 +119,50 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// A row with it set is drinkable: its bottle gets an ingestible block.</summary>
         public LiquidThirstQuality? thirstQuality;
 
+        /// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md §1, §8):
+        /// what a pawn may DO with this liquid, apart from how clean it is. Potable: drunk normally and auto-gathered.
+        /// LastResort (slimes, toxic water): drunk only by a pawn desperate with thirst, never auto-gathered. BreakOnly (salt
+        /// water, brine): drunk only inside the salt-water mental break. Never: not a drink. Only Potable is ever gathered
+        /// without an order. Null = derived from <see cref="thirstQuality"/> (<see cref="UseClass"/>); the generator writes
+        /// it on every row.</summary>
+        public LiquidUseClass? useClass;
+
+        /// <summary>What drinking it does beyond hydration and the quality effects (a slime's per-kind effect: Contagion,
+        /// Gelatinous Slime absorption, The Rot's spores, nausea). Run once per drink by every drink route. Entries for
+        /// another mod's hediffs carry MayRequire, so a missing mod drops only its line.</summary>
+        public List<IngestionOutcomeDoer> drinkOutcomes;
+
+        /// <summary>A memory every humanlike gains on drinking it (the slimes' massive mood hit).</summary>
+        public ThoughtDef drinkThought;
+
+        public LiquidUseClass UseClass
+        {
+            get
+            {
+                if (useClass.HasValue)
+                {
+                    return useClass.Value;
+                }
+                switch (thirstQuality)
+                {
+                    case LiquidThirstQuality.Distilled:
+                    case LiquidThirstQuality.Potable:
+                        return LiquidUseClass.Potable;
+                    case LiquidThirstQuality.Fouled:
+                        return LiquidUseClass.BreakOnly;
+                    case LiquidThirstQuality.Toxic:
+                    case LiquidThirstQuality.Slime:
+                        return LiquidUseClass.LastResort;
+                    default:
+                        return LiquidUseClass.Never;
+                }
+            }
+        }
+
+        /// <summary>Potable: the only class a pawn gathers on its own (fill, fill from a tank, snow). Everything else moves
+        /// by an order (a forced job, or a machine's bill).</summary>
+        public bool AutoGathered => UseClass == LiquidUseClass.Potable;
+
         /// <summary>VE PipeSystem net name. String, not a hard type
         /// reference, for the same reason as <see cref="canalFluid"/>: this
         /// mod does not require VE Framework, so the patch that actually
@@ -180,6 +224,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     yield return error;
                 }
+            }
+
+            if (useClass.HasValue && useClass.Value != LiquidUseClass.Never && !thirstQuality.HasValue)
+            {
+                yield return "LiquidDef " + defName + ": useClass " + useClass.Value + " needs a thirstQuality (how much a drink "
+                    + "hydrates); a liquid nobody drinks is useClass Never.";
             }
 
             if (trade != null && trade.marketValuePerUnit < 0f)
@@ -378,5 +428,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         Potable,
         Fouled,
         Toxic,
+        /// <summary>Slime: thick, hydrates x0.6; its harm is the row's drinkOutcomes and drinkThought, not a quality effect.</summary>
+        Slime,
+    }
+
+    /// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU: what a pawn may do with a liquid (see LiquidDef.useClass).</summary>
+    public enum LiquidUseClass
+    {
+        Potable,
+        LastResort,
+        BreakOnly,
+        Never,
     }
 }

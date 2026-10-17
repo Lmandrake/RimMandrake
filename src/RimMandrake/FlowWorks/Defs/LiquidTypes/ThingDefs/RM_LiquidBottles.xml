@@ -179,6 +179,20 @@
         <liquid>RM_Liquid_IcyWater</liquid>
       </li>
     </modExtensions>
+    <statBases>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />
+      </outcomeDoers>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="RM_BucketItemBase">

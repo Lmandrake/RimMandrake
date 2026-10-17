@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             Building_LiquidTank tank;
             LiquidDef liquid;
             string refusal;
-            if (RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal))
+            if (RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal, forced))
             {
                 return true;
             }
@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             Building_LiquidTank tank;
             LiquidDef liquid;
             string refusal;
-            if (!RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal))
+            if (!RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal, forced))
             {
                 return null;
             }

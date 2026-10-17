@@ -977,6 +977,8 @@ LIQUID_DEF_ROWS = {
         "distillable": True,
         # LIQUID_HEAT_PUSH_1: chills the room it stands in (RM_LiquidHeat), the cold twin of boiling's "hot".
         "cold": True,
+        # THIRST_RULES_BUILD_SALT_OFF_THE_MENU: cold water is clean water (04-merged.md §1, every pass: Potable).
+        "thirstQuality": "Potable",
         # Bottled icy water warms to fresh: 5000 ticks = two in-game hours, PROVISIONAL.
         "bottled": {"bottle": "RM_Bottle_IcyWater", 
                     "bucket": "RM_Bucket_IcyWater", "barrel": "RM_Barrel_IcyWater",
@@ -1220,6 +1222,37 @@ LIQUID_DEF_ROWS = {
         "bottled": {"bottle": "RM_Bottle_ChalkWater",
                     "bucket": "RM_Bucket_ChalkWater", "barrel": "RM_Barrel_ChalkWater"},
     },
+}
+
+# THIRST_RULES_BUILD_SALT_OFF_THE_MENU (design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md §1, owner rulings
+# §8, 2026-10-17): every row's use class -- what a pawn may DO with it, apart from how clean it is (thirstQuality).
+# Potable: drunk normally and the only class gathered without an order. LastResort: drunk only by a pawn desperate with
+# thirst (Q5, vanilla's rotten-food rule; slimes, and toxic water by Q8). BreakOnly: drunk only inside the salt-water
+# mental break (Q8: salt water and brine). Never: not a drink; moved only by an order. Boiling water is Never in the pond
+# and becomes fresh water once a container of it cools (Q12, "boiled water is drinkable once cooled": revertsTo).
+# Every LIQUID_DEF_ROWS key must appear here (main() refuses otherwise), so a new liquid is classified by data.
+USE_CLASS = {
+    "freshwater": "Potable",
+    "icy": "Potable",
+    "rustwater": "Potable",
+    "verdigriswater": "Potable",
+    "amberwater": "Potable",
+    "violetwater": "Potable",
+    "chalkwater": "Potable",
+    "saltwater": "BreakOnly",
+    "brine": "BreakOnly",
+    "toxic": "LastResort",
+    "slime_red": "LastResort",
+    "slime_green": "LastResort",
+    "slime_white": "LastResort",
+    "slime_yellow": "LastResort",
+    "boiling": "Never",
+    "acid": "Never",
+    "reactionliquor": "Never",
+    "tar": "Never",
+    "propane": "Never",
+    "chemfuel": "Never",
+    "lava": "Never",
 }
 
 # Rows whose whole terrain form is a base-game terrain and which have no canal fluid: RM_LiquidSurface and
@@ -1518,6 +1551,7 @@ def build_liquiddef_xml(row):
 
     if row.get("thirstQuality"):
         lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
+    lines.append(f"    <useClass>{USE_CLASS[row['_key']]}</useClass>")
 
     lines += _surface_xml(row.get("_key"))
 
@@ -1736,11 +1770,12 @@ DBH_MOD_NAMES = ("Dubs Bad Hygiene Lite", "Dubs Bad Hygiene")
 def dbh_drinkable_bottles():
     """[(bottle defName, seek)] for every LIQUID_DEF_ROWS row with a thirstQuality and a generated RM_Bottle_."""
     out = []
-    for row in LIQUID_DEF_ROWS.values():
+    for key, row in LIQUID_DEF_ROWS.items():
         q = row.get("thirstQuality")
         b = (row.get("bottled") or {}).get("bottle")
         if q and b and b.startswith("RM_Bottle_"):
-            out.append((b, q in ("Potable", "Distilled")))
+            # Q11 (owner 2026-10-17): Dubs' AI seeks only Potable-class water; salt, slime and toxic bottles never
+            out.append((b, q in ("Potable", "Distilled") and USE_CLASS[key] == "Potable"))
     return out
 
 
@@ -1805,6 +1840,9 @@ def main():
     liquiddef_dir.mkdir(parents=True, exist_ok=True)
     thingdef_dir.mkdir(parents=True, exist_ok=True)
 
+    missing = sorted(set(LIQUID_DEF_ROWS) ^ set(USE_CLASS))
+    if missing:
+        sys.exit(f"USE_CLASS and LIQUID_DEF_ROWS disagree on {missing}: classify every row (04-merged.md §1)")
     with open(DUMP_PATH, encoding="utf-8") as f:
         dump = json.load(f)
     defs_by_name = {d["defName"]: d for d in dump["defs"]}

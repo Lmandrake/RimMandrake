@@ -106,14 +106,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: the fill search for one real container, skipping
         /// every liquid its material refuses (a leather bottle walks past boiling water to the fresh
         /// pool behind it). When nothing it may hold is in reach but something it refuses is,
-        /// <paramref name="refusal"/> says why, for JobFailReason.</summary>
+        /// <paramref name="refusal"/> says why, for JobFailReason.
+        /// THIRST_RULES_BUILD_SALT_OFF_THE_MENU (owner 2026-10-17): "no non-potable liquid is gathered without an
+        /// order". Unless <paramref name="ordered"/> (a forced job, or a machine's bill), only a Potable-class liquid
+        /// (LiquidDef.AutoGathered) is a fill source: the salt shore a pawn stands on is walked past for the pond.</summary>
         public static bool TryFindFillCell(Pawn pawn, Thing container, out IntVec3 cell, out LiquidDef liquid,
-            out string refusal, float maxDist = 60f)
+            out string refusal, bool ordered, float maxDist = 60f)
         {
             RM_ContainerSize size = container?.def.GetModExtension<RM_BottledLiquidExtension>()?.size
                 ?? RM_ContainerSize.Bottle;
             return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true,
-                requireFreshWaterOnly: false, size: size, container: container, refusal: out refusal);
+                requireFreshWaterOnly: false, size: size, container: container, refusal: out refusal,
+                potableOnly: !ordered);
         }
 
         /// <summary>The liquid-agnostic EMPTY ThingDef for a given container
@@ -203,15 +207,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             LiquidDef unused;
             string unusedRefusal;
             return TryFindLiquidCell(pawn, out cell, out unused, maxDist, requireBottled: false,
-                requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null, refusal: out unusedRefusal);
+                requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null, refusal: out unusedRefusal,
+                potableOnly: true);
         }
 
         /// <summary>C2-F8: a work scan asks this once PER CANDIDATE CONTAINER (HasJobOnThing), and the answer depends only on the
         /// pawn, the tick, the search options and the container's def and stuff (its material rule). A colony with 100 empty
         /// bottles on a dry map walked the ~11,000-cell radius 100 times per scan; now once per distinct key per tick.</summary>
-        private static readonly System.Collections.Generic.Dictionary<(int pawn, int map, IntVec3 at, float dist, bool bottled, bool fresh, RM_ContainerSize size, ThingDef def, ThingDef stuff),
+        private static readonly System.Collections.Generic.Dictionary<(int pawn, int map, IntVec3 at, float dist, bool bottled, bool fresh, bool potable, RM_ContainerSize size, ThingDef def, ThingDef stuff),
             (bool ok, IntVec3 cell, LiquidDef liquid, string refusal)> searchCache =
-            new System.Collections.Generic.Dictionary<(int, int, IntVec3, float, bool, bool, RM_ContainerSize, ThingDef, ThingDef), (bool, IntVec3, LiquidDef, string)>();
+            new System.Collections.Generic.Dictionary<(int, int, IntVec3, float, bool, bool, bool, RM_ContainerSize, ThingDef, ThingDef), (bool, IntVec3, LiquidDef, string)>();
         private static int searchCacheTick = -1;
 
         /// <summary>State read: radial searches actually walked this session (cache misses).</summary>
@@ -219,7 +224,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         private static bool TryFindLiquidCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
             float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size,
-            Thing container, out string refusal)
+            Thing container, out string refusal, bool potableOnly)
         {
             Map map = pawn?.Map;
             if (map == null)
@@ -235,13 +240,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 searchCache.Clear();
                 searchCacheTick = now;
             }
-            var key = (pawn.thingIDNumber, map.uniqueID, pawn.Position, maxDist, requireBottled, requireFreshWaterOnly, size,
-                container?.def, container?.Stuff);
+            var key = (pawn.thingIDNumber, map.uniqueID, pawn.Position, maxDist, requireBottled, requireFreshWaterOnly, potableOnly,
+                size, container?.def, container?.Stuff);
             if (!searchCache.TryGetValue(key, out var hit))
             {
                 LiquidSearches++;
                 bool ok = TryFindLiquidCellUncached(pawn, out IntVec3 c, out LiquidDef l, maxDist, requireBottled,
-                    requireFreshWaterOnly, size, container, out string why);
+                    requireFreshWaterOnly, size, container, out string why, potableOnly);
                 hit = (ok, c, l, why);
                 searchCache[key] = hit;
             }
@@ -253,7 +258,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         private static bool TryFindLiquidCellUncached(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
             float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size,
-            Thing container, out string refusal)
+            Thing container, out string refusal, bool potableOnly)
         {
             cell = IntVec3.Invalid;
             liquid = null;
@@ -286,6 +291,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 if (requireFreshWaterOnly && candidate != RimMandrakeFlowWorks_DefOf.RM_Liquid_FreshWater)
                 {
                     continue;
+                }
+                if (potableOnly && !candidate.AutoGathered)
+                {
+                    continue;   // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: non-potable liquid moves only by an order
                 }
                 if (ex?.Stock != null && !ex.Stock.CanSupply(map, c, ex))
                 {

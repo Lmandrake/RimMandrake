@@ -630,7 +630,10 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("T3h_heat_cap", "Thirst_heat_cap_ruled"), ("T4o_bottle_and_quality", "Thirst_bottle_and_quality"),
                   ("T6o_dehydration", "Thirst_dehydration_ruled"), ("T8_coloured_bottles_without_dbh", "Thirst_bottles_generated"),
                   ("Td_defs_shipped", "Thirst_defs_shipped"), ("Tb_dbh_bridge_patch", "Thirst_dbh_bridge_patch"),
-                  ("Th_harmony_target", "Thirst_harmony_target_and_call_sites")]
+                  ("Th_harmony_target", "Thirst_harmony_target_and_call_sites"),
+                  # THIRST_RULES_BUILD_SALT_OFF_THE_MENU (04-merged.md §8): the use-class gate and the auto-fill fix
+                  ("Tu_use_class_gate", "Thirst_use_class_gate_ruled"),
+                  ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -647,6 +650,16 @@ THIRST_LIVE = [
      "water: each reaches RM_DrinkFromTerrain, level rises, no bottle touched"),
     ("T10_terrain_drink", "drinkFromTerrain", "colonist at 0.2, no bottles, pond 10 cells away: RM_DrinkFromTerrain job, "
      "+0.5 after ~300 ticks; with drinkFromTerrain off: no job"),
+    # THIRST_RULES_BUILD_SALT_OFF_THE_MENU. Informative false theory if T11 fails: "the fill giver ignored the rule" when
+    # the empty container was FORCED by a float-menu order (forced fills take any liquid, by ruling).
+    ("T11_autofill_skips_salt", None, "empty RM_BottleEmpty x3 beside salt water, fresh pond 20 cells away, colonist on "
+     "hauling: every RM_FillBottleJob targets a fresh-water cell; no RM_Bottle_SaltWater is made"),
+    ("T12_no_routine_salt", None, "colonist at 0.2 standing on a salt shore, no potable water anywhere: no drink job "
+     "for 2000 ticks (need falls); a fresh bottle dropped 30 cells away is then fetched"),
+    ("T13_desperate_toxic_last", "lastResortDrinking", "colonist at 0.05 beside toxic water only: no job; set 0: "
+     "RM_DrinkFromTerrain on toxic water and ToxicBuildup rises; with a fresh bottle on the map: the bottle wins"),
+    ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
+     "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
 
 
@@ -734,7 +747,7 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
-                                 "drinkFromTerrain"] if t not in suite.toggles]
+                                 "drinkFromTerrain", "lastResortDrinking"] if t not in suite.toggles]
 suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
                   if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS
