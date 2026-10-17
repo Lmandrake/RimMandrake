@@ -1,0 +1,1 @@
+rimflow note with --per-ruling (even with --seat BENCH) writes the event to ledger/events/OWNER.jsonl as seat OWNER: a provenance flag switches the acting seat. A seat's own progress note takes --why, never --per-ruling (2026-10-17, TREE_BURST_BUILD_LITRES_BUY_YEARS).
