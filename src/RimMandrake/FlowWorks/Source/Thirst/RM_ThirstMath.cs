@@ -215,6 +215,13 @@ namespace RimMandrake.FlowWorks.Thirst
 			return available > reserveUnits ? available - reserveUnits : 0;
 		}
 
+		/// <summary>§8.2 step 8: bottles still to fill unasked = target per colonist x colonists - what the colony holds.</summary>
+		public static int BottleDeficit(int perColonist, int colonists, int have)
+		{
+			int want = perColonist * (colonists < 1 ? 1 : colonists);
+			return want > have ? want - have : 0;
+		}
+
 		/// <summary>The break ends when the bar reads this full (2-4 salt drinks from parched).</summary>
 		public const float SaltBreakQuenched = 0.9f;
 

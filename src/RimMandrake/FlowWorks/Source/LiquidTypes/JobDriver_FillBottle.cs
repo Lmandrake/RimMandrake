@@ -74,15 +74,37 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     // it for nothing.
                     return;
                 }
-                // C2-F2: the bottle's units come out of the pond body behind the cell (a limited pond runs dry)
-                if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, RM_ContainerMaterials.UnitsIn(carried, liquid, size)))
+                // THIRST_RULES_BUILD_SALT_OFF_THE_MENU §8.2 step 8: a carried batch is filled one container at a time, each
+                // paid for separately (C2-F2: its units come out of the pond body behind the cell; a limited pond runs dry
+                // part-way and the unfilled rest stays empty in hand)
+                int made = 0;
+                for (int i = 0; i < carried.stackCount; i++)
+                {
+                    if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, RM_ContainerMaterials.UnitsIn(carried, liquid, size)))
+                    {
+                        break;
+                    }
+                    Thing filled = RM_LiquidBottleUtility.MakeContainer(filledDef, carried);
+                    filled.stackCount = 1;
+                    RM_LiquidBottleUtility.PlacePaidFor(filled, pawn.Position, Map);   // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: input already spent
+                    made++;
+                }
+                if (made <= 0)
                 {
                     return;
                 }
-                Thing filled = RM_LiquidBottleUtility.MakeContainer(filledDef, carried);
-                carried.Destroy();
-                filled.stackCount = 1;
-                RM_LiquidBottleUtility.PlacePaidFor(filled, pawn.Position, Map);   // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: input already spent
+                if (size == RM_ContainerSize.Bottle && liquid.AutoGathered)
+                {
+                    Thirst.RM_BottleStock.Notify_Filled(Map, made);
+                }
+                if (made >= carried.stackCount)
+                {
+                    carried.Destroy();
+                }
+                else
+                {
+                    carried.SplitOff(made).Destroy();
+                }
             };
             finish.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return finish;

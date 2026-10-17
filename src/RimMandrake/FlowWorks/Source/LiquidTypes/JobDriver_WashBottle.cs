@@ -57,15 +57,32 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
-                // C2-F3 (liquids_framework_design: the wash job consumes water): one fill of fresh water at this size
-                if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, liquid.UnitsFor(size)))
+                // C2-F3 (liquids_framework_design: the wash job consumes water): one fill of fresh water per container at
+                // this size; a carried batch (THIRST_RULES_BUILD_SALT_OFF_THE_MENU §8.2 step 8) is washed one at a time
+                int made = 0;
+                for (int i = 0; i < carried.stackCount; i++)
+                {
+                    if (!RM_LiquidBottleUtility.TryDebitTerrain(Map, job.targetB.Cell, liquid.UnitsFor(size)))
+                    {
+                        break;
+                    }
+                    Thing empty = RM_LiquidBottleUtility.MakeContainer(emptyDef, carried);
+                    empty.stackCount = 1;
+                    RM_LiquidBottleUtility.PlacePaidFor(empty, pawn.Position, Map);   // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: input already spent
+                    made++;
+                }
+                if (made <= 0)
                 {
                     return;
                 }
-                Thing empty = RM_LiquidBottleUtility.MakeContainer(emptyDef, carried);
-                carried.Destroy();
-                empty.stackCount = 1;
-                RM_LiquidBottleUtility.PlacePaidFor(empty, pawn.Position, Map);   // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: input already spent
+                if (made >= carried.stackCount)
+                {
+                    carried.Destroy();
+                }
+                else
+                {
+                    carried.SplitOff(made).Destroy();
+                }
             };
             finish.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return finish;

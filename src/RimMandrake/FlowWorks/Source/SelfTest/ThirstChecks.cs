@@ -293,6 +293,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 XElement boil = reg.Root.Elements().First(e => (string)e.Element("defName") == "RM_Liquid_BoilingWater");
                 Assert(boil.Descendants("revertsTo").First().Value == "RM_Liquid_FreshWater", "Q12: boiled water is drinkable once cooled (a container reverts to fresh)");
             });
+            Case("Thirst_bottle_stock_batches_ruled", () =>
+            {
+                // §8.2 step 8: a stock target for bottles (inventories count) and batched fill/wash
+                Assert(RM_ThirstMath.BottleDeficit(3, 4, 5) == 7 && RM_ThirstMath.BottleDeficit(3, 4, 12) == 0 && RM_ThirstMath.BottleDeficit(3, 4, 20) == 0, "3 per colonist");
+                Assert(RM_ThirstMath.BottleDeficit(3, 0, 0) == 3, "can-fail: no colonists still keeps one colonist's worth");
+                string g = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottle.cs"));
+                RiverSwitchFlipChecks.Has(g, @"!forced && ext\.size == RM_ContainerSize\.Bottle && Thirst\.RM_BottleStock\.Deficit\(pawn\.Map\) <= 0", "unasked bottle fills stop at the target");
+                string f = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "JobDriver_FillBottle.cs"));
+                RiverSwitchFlipChecks.Has(f, @"for \(int i = 0; i < carried\.stackCount; i\+\+\)", "a carried batch is filled container by container");
+                RiverSwitchFlipChecks.Has(f, @"carried\.SplitOff\(made\)\.Destroy\(\);", "a pond that runs dry part-way leaves the rest empty in hand");
+                string w = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_WashBottle.cs"));
+                RiverSwitchFlipChecks.Has(w, @"System\.Math\.Min\(t\.stackCount, Thirst\.RM_BottleStock\.BatchSize\)", "dirty bottles washed in batches");
+                string c = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstContainers.cs"));
+                RiverSwitchFlipChecks.Has(c, @"foreach \(Pawn p in map\.mapPawns\.FreeColonistsSpawned\)", "packed bottles count toward the stock");
+            });
             Case("Thirst_dehydration_ruled", () =>
             {
                 // T6 offline: need held at 0 for 1 day -> 0.30

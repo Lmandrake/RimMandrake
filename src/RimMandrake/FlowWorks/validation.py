@@ -638,7 +638,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Tb_salt_break", "Thirst_salt_break_ruled"),
                   ("Tk_awkward_access", "Thirst_awkward_access_ruled"),
                   ("Tr_reserve_orders_sprinklers", "Thirst_reserve_orders_sprinklers_ruled"),
-                  ("Tq_q12_defaults", "Thirst_q12_defaults_ruled")]
+                  ("Tq_q12_defaults", "Thirst_q12_defaults_ruled"),
+                  ("Tt_bottle_stock_batches", "Thirst_bottle_stock_batches_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -695,6 +696,8 @@ THIRST_LIVE = [
      "distilled thought"),
     ("T28_sanguophage_blood", "sanguophageBloodQuenches", "sanguophage at thirst 0.2 ingests a HemogenPack: thirst +0.5 and "
      "hemogen up; a baseliner given the same pack: no thirst change"),
+    ("T29_bottle_stock_and_batches", None, "2 colonists, target 3, 20 empty bottles beside a pond: one hauler fills them in "
+     "trips of up to 10 and stops at 6 filled (packed ones counted); 15 dirty bottles washed in two trips"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
