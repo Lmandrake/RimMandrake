@@ -78,6 +78,18 @@ namespace RimMandrake.FlowWorks.Machinery
 			return Math.Min(accrued, Math.Max(inputUnits, perTick));
 		}
 
+		/// <summary>The budget kept after the pick: the picked candidate's capped budget, or when nothing runs the LARGEST
+		/// candidate cap (FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST: taking candidate 0's cap let a blocked small recipe
+		/// hold a bigger one below its batch for ever). Unchanged when there are no candidates.</summary>
+		public static float AccruedAfterPick(float accrued, IList<float> capped, int pick)
+		{
+			if (capped == null || capped.Count == 0) return accrued;
+			if (pick >= 0) return capped[pick];
+			float best = capped[0];
+			for (int i = 1; i < capped.Count; i++) if (capped[i] > best) best = capped[i];
+			return best;
+		}
+
 		/// <summary>A solar still works in daylight only: full at sky glow 0.5 and above, nothing below.</summary>
 		public static float SunFactor(float skyGlow, bool roofed)
 		{

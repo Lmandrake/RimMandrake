@@ -28,6 +28,40 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(job, @"windCellsPerSecond => HoseMath\.FiniteClamp\(RM_HoseSettings\.windCellsPerSecond, 0\.5f, 10f, 3f\)", "winding speed read through FiniteClamp");
                 RiverSwitchFlipChecks.Has(job, @"HoseMath\.FiniteClamp\(RM_HoseSettings\.handlingTime, 0\.25f, 3f, 1f\)", "handling time read through FiniteClamp");
             });
+
+            // FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST: recipes of 10 and 100 units at 1 unit a rare tick, the first blocked
+            // (output full). The converter's own cycle (CapAccrued -> Batches -> NextRunnable -> AccruedAfterPick) must let the
+            // 100-unit recipe run; keeping candidate 0's cap held the budget at 10 for ever.
+            Case("Gpt1016_converter_blocked_small_recipe_does_not_starve_big_one", () =>
+            {
+                int[] iu = { 10, 100 };
+                int Cycle(bool oldRule)
+                {
+                float accrued = 0f, perTick = 1f;
+                int ran = 0, last = -1;
+                for (int t = 0; t < 400; t++)
+                {
+                    accrued += perTick;
+                    var capped = new List<float>();
+                    var batches = new List<int>();
+                    for (int i = 0; i < 2; i++)
+                    {
+                        float c = RM_ConversionMath.CapAccrued(accrued, iu[i], perTick);
+                        capped.Add(c);
+                        batches.Add(RM_ConversionMath.Batches(c, iu[i], 1, 1000, i == 0 ? 0 : 1000));
+                    }
+                    int pick = RM_ConversionMath.NextRunnable(batches, last);
+                    accrued = oldRule ? capped[pick >= 0 ? pick : 0] : RM_ConversionMath.AccruedAfterPick(accrued, capped, pick);
+                    if (pick >= 0) { accrued -= batches[pick] * iu[pick]; ran += batches[pick]; last = pick; }
+                }
+                return ran;
+                }
+                int ranNew = Cycle(false), ranOld = Cycle(true);
+                Assert(ranNew >= 3 && ranOld == 0, "the 100-unit recipe ran " + ranNew + " batches in 400 rare ticks (want >= 3); old rule probe " + ranOld + " (want 0, else the scene cannot fail)");
+                Assert(RM_ConversionMath.AccruedAfterPick(5f, new List<float> { 2f, 4f }, 0) == 2f && RM_ConversionMath.AccruedAfterPick(5f, new List<float>(), -1) == 5f, "a pick keeps its own cap; no candidates keeps the budget");
+                string conv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "CompLiquidConverter.cs"));
+                RiverSwitchFlipChecks.Has(conv, @"accrued = RM_ConversionMath\.AccruedAfterPick\(accrued, cand\.Select\(c => c\.capped\)\.ToList\(\), pick\);", "converter keeps the budget through AccruedAfterPick");
+            });
         }
     }
 }
