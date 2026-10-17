@@ -1,0 +1,1525 @@
+{
+  "mod": "ExplosiveGrowth",
+  "mode": "live",
+  "started_utc": "2026-10-17T19:57:53Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\design\\validation_walks\\RimMandrake\\ExplosiveGrowth.md)",
+  "bars": [
+    {
+      "id": "probe_tree_life.trees_live_by_litres_and_burst_at_their_end",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "probe_tree_burst_off.tree_burst_off_trees_die_of_age",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "boot_defs.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "boot_defs.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "boot_defs.skipped#2",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "registry_report.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "soak_footprint.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "dry_native_x100_wet_over_dry.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "dry_native_rate_follows_setting.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "vanilla_needs_water_nearby.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "vanilla_normal_setting.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "master_switch_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "soak_exempt_plants.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "churn_cycle.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "ground_tell_on.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "ground_tell_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "churn_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "charge_hours.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "suppression_on.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "suppression_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_burst.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_burst.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_tinder.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_tinder.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_slime.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_slime.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_rupture.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_rupture.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_flush.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "top_flush.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "burst_hurts_pawns.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "burst_hurts_pawns.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "scope_native_only.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_minGrowDaysToSoak.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_irrigationSoakEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_sprinklersEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_gradientSurgeSoakEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_maxOvergrowthScale.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_reprintIntervalTicks.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_hueShiftEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_tellSoundsEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_ruptureMutationChance.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_harvestJackpotEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_lastSwingGambleEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_treeRatio.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_treeLitresPerDayOfLife.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_treeDrinkLitresPerDay.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_treeBurstDefaultLogs.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_stuntedMultiplier.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_wetNativeMultiplier.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_dryDryMultiplier.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_vanillaDryMultiplier.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_nearbyRadius.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_nativesSameRuleInOtherBiomes.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_wetFruitFactor.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_cropSelfFruitEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_waterUseEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_cropDrawLevels.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_dormancyEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_tidalLockNoRest.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_sealedGrowersVanilla.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_waveStaggerEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_naturalWaterEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_spillWaterEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_rainWaterEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_rainLingerHours.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_rainPuddlesEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_snowmeltEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_ashFreshEnabled.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "flip_ashFlushDays.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_jackpot_on.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_jackpot_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_gamble_on.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_gamble_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_rupture_on.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_rupture_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_tell_ladder.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_tell_scale_off.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "probe_rules.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "settings_restored.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "defs_resolve.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    },
+    {
+      "id": "defs_resolve.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "541 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=2 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 2 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "20 active, sha256 8107435ab3602f94 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "probe_tree_life",
+    "probe_tree_burst_off"
+  ],
+  "chains_skipped": [
+    "boot_defs",
+    "registry_report",
+    "soak_footprint",
+    "dry_native_x100_wet_over_dry",
+    "dry_native_rate_follows_setting",
+    "vanilla_needs_water_nearby",
+    "vanilla_normal_setting",
+    "master_switch_off",
+    "soak_exempt_plants",
+    "churn_cycle",
+    "ground_tell_on",
+    "ground_tell_off",
+    "churn_off",
+    "charge_hours",
+    "suppression_on",
+    "suppression_off",
+    "top_burst",
+    "top_tinder",
+    "top_slime",
+    "top_rupture",
+    "top_flush",
+    "burst_hurts_pawns",
+    "scope_native_only",
+    "flip_minGrowDaysToSoak",
+    "flip_irrigationSoakEnabled",
+    "flip_sprinklersEnabled",
+    "flip_gradientSurgeSoakEnabled",
+    "flip_maxOvergrowthScale",
+    "flip_reprintIntervalTicks",
+    "flip_hueShiftEnabled",
+    "flip_tellSoundsEnabled",
+    "flip_ruptureMutationChance",
+    "flip_harvestJackpotEnabled",
+    "flip_lastSwingGambleEnabled",
+    "flip_treeRatio",
+    "flip_treeLitresPerDayOfLife",
+    "flip_treeDrinkLitresPerDay",
+    "flip_treeBurstDefaultLogs",
+    "flip_stuntedMultiplier",
+    "flip_wetNativeMultiplier",
+    "flip_dryDryMultiplier",
+    "flip_vanillaDryMultiplier",
+    "flip_nearbyRadius",
+    "flip_nativesSameRuleInOtherBiomes",
+    "flip_wetFruitFactor",
+    "flip_cropSelfFruitEnabled",
+    "flip_waterUseEnabled",
+    "flip_cropDrawLevels",
+    "flip_dormancyEnabled",
+    "flip_tidalLockNoRest",
+    "flip_sealedGrowersVanilla",
+    "flip_waveStaggerEnabled",
+    "flip_naturalWaterEnabled",
+    "flip_spillWaterEnabled",
+    "flip_rainWaterEnabled",
+    "flip_rainLingerHours",
+    "flip_rainPuddlesEnabled",
+    "flip_snowmeltEnabled",
+    "flip_ashFreshEnabled",
+    "flip_ashFlushDays",
+    "probe_jackpot_on",
+    "probe_jackpot_off",
+    "probe_gamble_on",
+    "probe_gamble_off",
+    "probe_rupture_on",
+    "probe_rupture_off",
+    "probe_tell_ladder",
+    "probe_tell_scale_off",
+    "probe_rules",
+    "settings_restored",
+    "defs_resolve"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "probe_tree_life",
+      "name": "trees_live_by_litres_and_burst_at_their_end",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_tree_burst_off",
+      "name": "tree_burst_off_trees_die_of_age",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "boot_defs",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "boot_defs",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "boot_defs",
+      "name": "skipped#2",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "registry_report",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "soak_footprint",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dry_native_x100_wet_over_dry",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dry_native_rate_follows_setting",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vanilla_needs_water_nearby",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "vanilla_normal_setting",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "master_switch_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "soak_exempt_plants",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "churn_cycle",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_tell_on",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ground_tell_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "churn_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "charge_hours",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suppression_on",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suppression_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_burst",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_burst",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_tinder",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_tinder",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_slime",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_slime",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_rupture",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_rupture",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_flush",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "top_flush",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burst_hurts_pawns",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "burst_hurts_pawns",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scope_native_only",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_minGrowDaysToSoak",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_irrigationSoakEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_sprinklersEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_gradientSurgeSoakEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_maxOvergrowthScale",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_reprintIntervalTicks",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_hueShiftEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_tellSoundsEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_ruptureMutationChance",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_harvestJackpotEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_lastSwingGambleEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_treeRatio",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_treeLitresPerDayOfLife",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_treeDrinkLitresPerDay",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_treeBurstDefaultLogs",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_stuntedMultiplier",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_wetNativeMultiplier",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_dryDryMultiplier",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_vanillaDryMultiplier",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_nearbyRadius",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_nativesSameRuleInOtherBiomes",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_wetFruitFactor",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_cropSelfFruitEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_waterUseEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_cropDrawLevels",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_dormancyEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_tidalLockNoRest",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_sealedGrowersVanilla",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_waveStaggerEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_naturalWaterEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_spillWaterEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_rainWaterEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_rainLingerHours",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_rainPuddlesEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_snowmeltEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_ashFreshEnabled",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flip_ashFlushDays",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_jackpot_on",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_jackpot_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_gamble_on",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_gamble_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_rupture_on",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_rupture_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_tell_ladder",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_tell_scale_off",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "probe_rules",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_restored",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains probe_tree_life,probe_tree_burst_off)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 2,
+    "FAIL": 0,
+    "UNMEASURED": 80
+  },
+  "all_green": false,
+  "timing": {
+    "n": 140,
+    "total_ms": 7363.106,
+    "mean_ms": 52.5936,
+    "p50_ms": 49.9799,
+    "p95_ms": 102.0138,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 7,
+        "mean_ms": 65.296,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 16.4967,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 8,
+        "mean_ms": 76.5742,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 9,
+        "mean_ms": 58.396,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 56.2633,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 51.0796,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 58,
+        "mean_ms": 51.4535,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 5,
+        "mean_ms": 49.9618,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 2,
+        "mean_ms": 50.1102,
+        "errors": 0
+      },
+      "jawa/cell_temperature": {
+        "n": 1,
+        "mean_ms": 53.1529,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 2,
+        "mean_ms": 106.4213,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 2,
+        "mean_ms": 72.1368,
+        "errors": 0
+      },
+      "jawa/set_roof_batch": {
+        "n": 2,
+        "mean_ms": 38.4766,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 3,
+        "mean_ms": 49.2758,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 2,
+        "mean_ms": 17.9851,
+        "errors": 0
+      },
+      "jawa/time_clock": {
+        "n": 5,
+        "mean_ms": 47.7942,
+        "errors": 0
+      },
+      "jawa/time_date_at": {
+        "n": 2,
+        "mean_ms": 51.1348,
+        "errors": 0
+      },
+      "jawa/time_set_ticks": {
+        "n": 2,
+        "mean_ms": 50.6051,
+        "errors": 0
+      },
+      "rimworld/go_to_main_menu": {
+        "n": 1,
+        "mean_ms": 30.4146,
+        "errors": 0
+      },
+      "rimworld/load_game": {
+        "n": 1,
+        "mean_ms": 16.9977,
+        "errors": 0
+      },
+      "jawa/debug_settings": {
+        "n": 1,
+        "mean_ms": 50.4824,
+        "errors": 0
+      },
+      "jawa/difficulty_tune": {
+        "n": 1,
+        "mean_ms": 49.4336,
+        "errors": 0
+      },
+      "jawa/window_list_close": {
+        "n": 3,
+        "mean_ms": 49.935,
+        "errors": 0
+      },
+      "rimworld/get_ui_layout": {
+        "n": 1,
+        "mean_ms": 35.0028,
+        "errors": 0
+      },
+      "rimworld/click_ui_target": {
+        "n": 1,
+        "mean_ms": 64.912,
+        "errors": 0
+      },
+      "jawa/quiet_site": {
+        "n": 2,
+        "mean_ms": 50.0271,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 5,
+        "mean_ms": 49.9858,
+        "errors": 0
+      },
+      "jawa/map_fire": {
+        "n": 1,
+        "mean_ms": 49.91,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 6,
+        "mean_ms": 49.9411,
+        "errors": 0
+      },
+      "jawa/incident_queue_clear": {
+        "n": 1,
+        "mean_ms": 50.1558,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "58dd8d9f74b058b1aad7b8a87054dc949b9d5995aafe3a7fab767017ce87f25b"
+}
