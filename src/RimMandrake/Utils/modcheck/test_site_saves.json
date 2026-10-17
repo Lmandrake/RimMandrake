@@ -10,6 +10,162 @@
   "save": "RM_TestSite_calm_v1",
   "tile": 116136
  },
+ "cauldron": {
+  "biome": "RM_Cauldron",
+  "builtUtc": "2026-10-17T02:18:55Z",
+  "bytes": 13252294,
+  "census": {
+   "natives": {
+    "RM_Eskith": 0,
+    "RM_Suush": 1,
+    "RM_Vexxiss": 0,
+    "RM_Zisska": 0
+   },
+   "probe": {
+    "vents": 6
+   }
+  },
+  "censusAfterLoad": {
+   "natives": {
+    "RM_Eskith": 0,
+    "RM_Suush": 1,
+    "RM_Vexxiss": 0,
+    "RM_Zisska": 0
+   },
+   "probe": {
+    "vents": 6
+   }
+  },
+  "head": null,
+  "loadVerified": true,
+  "mapId": 1,
+  "outdoorAtSave": 4.904888,
+  "profile": "danger",
+  "save": "RM_TestSite_cauldron_v1",
+  "tile": 3
+ },
+ "contagion": {
+  "biome": "RM_Contagion",
+  "builtUtc": "2026-10-17T02:21:24Z",
+  "bytes": 11753129,
+  "census": {
+   "natives": {
+    "RM_Blisterfloat": 0,
+    "RM_Bloodlurk": 0,
+    "RM_BloodyMess": 1,
+    "RM_ContagionIkee": 6,
+    "RM_Crispling": 2,
+    "RM_Danglemaw": 0,
+    "RM_Doublemaw": 0,
+    "RM_Eyestinger": 2,
+    "RM_Fleshsop": 1,
+    "RM_Gawpsack": 2,
+    "RM_Gnashling": 0,
+    "RM_Gorekite": 0,
+    "RM_InfectedAerofleet": 5,
+    "RM_Meltgut": 0,
+    "RM_OcularJelly": 2,
+    "RM_Ogleknot": 4,
+    "RM_Peeper": 2,
+    "RM_Scaldhide": 0,
+    "RM_Scorchpod": 0,
+    "RM_Skinflap": 11,
+    "RM_Sloshbelly": 2,
+    "RM_Sparkleech": 0,
+    "RM_SparkleechGrub": 0
+   },
+   "probe": {
+    "BurnActive": "False",
+    "NextBurnTick": "-1",
+    "TellsBegun": "False"
+   }
+  },
+  "censusAfterLoad": {
+   "natives": {
+    "RM_Blisterfloat": 0,
+    "RM_Bloodlurk": 0,
+    "RM_BloodyMess": 1,
+    "RM_ContagionIkee": 6,
+    "RM_Crispling": 2,
+    "RM_Danglemaw": 0,
+    "RM_Doublemaw": 0,
+    "RM_Eyestinger": 2,
+    "RM_Fleshsop": 1,
+    "RM_Gawpsack": 2,
+    "RM_Gnashling": 0,
+    "RM_Gorekite": 0,
+    "RM_InfectedAerofleet": 5,
+    "RM_Meltgut": 0,
+    "RM_OcularJelly": 2,
+    "RM_Ogleknot": 4,
+    "RM_Peeper": 2,
+    "RM_Scaldhide": 0,
+    "RM_Scorchpod": 0,
+    "RM_Skinflap": 11,
+    "RM_Sloshbelly": 2,
+    "RM_Sparkleech": 0,
+    "RM_SparkleechGrub": 0
+   },
+   "probe": {
+    "BurnActive": "False",
+    "NextBurnTick": "-1",
+    "TellsBegun": "False"
+   }
+  },
+  "head": null,
+  "loadVerified": true,
+  "mapId": 1,
+  "outdoorAtSave": 17.0978565,
+  "profile": "danger",
+  "save": "RM_TestSite_contagion_v1",
+  "tile": 3
+ },
+ "leaningscrub": {
+  "biome": "RM_LeaningScrub",
+  "builtUtc": "2026-10-17T02:22:55Z",
+  "bytes": 10419120,
+  "census": {
+   "natives": {
+    "RM_Crustweevil": 0,
+    "RM_Dustflutter": 0,
+    "RM_Fuzzrunner": 0,
+    "RM_Rollbug": 0,
+    "RM_Shirrel": 3,
+    "RM_Thornhold": 0,
+    "RM_Tikkit": 0,
+    "RM_Vissler": 4
+   },
+   "probe": {
+    "applies": true,
+    "downwind": "(0.76, -0.64)",
+    "heading": 319.8999
+   }
+  },
+  "censusAfterLoad": {
+   "natives": {
+    "RM_Crustweevil": 0,
+    "RM_Dustflutter": 0,
+    "RM_Fuzzrunner": 0,
+    "RM_Rollbug": 0,
+    "RM_Shirrel": 3,
+    "RM_Thornhold": 0,
+    "RM_Tikkit": 0,
+    "RM_Vissler": 4
+   },
+   "probe": {
+    "applies": true,
+    "heading": 319.8999,
+    "savedHeading": 319.8999
+   }
+  },
+  "head": null,
+  "loadVerified": true,
+  "mapId": 1,
+  "outdoorAtSave": 12.3863859,
+  "profile": "danger",
+  "save": "RM_TestSite_leaningscrub_v1",
+  "tile": 3
+ },
  "pyrelands": {
   "biome": "RM_Pyrelands",
   "builtUtc": "2026-10-15T16:08:23Z",
