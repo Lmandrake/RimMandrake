@@ -66,6 +66,12 @@ def main():
     check("[PatchFeature] names a real bool switch", m is not None and m.group(1) in fields and
           re.search(r"public static bool %s\b" % (m.group(1) if m else "-"), settings) is not None)
     check("patch scoped to WorldDrawLayer_Rivers (roads untouched)", "__instance is WorldDrawLayer_Rivers" in patch)
+    # FLOWWORKS_RIVERCOLOR_FIX_DICT_SELF_ENUM: Find_ path-compresses parent[], and Mono's Dictionary bumps its
+    # version on an overwrite, so `foreach (... in parent.Keys)` calling Find_ throws on any real river net.
+    check("sanity: union-find Find_ path-compresses parent[]", "parent[x] = parent[parent[x]];" in patch)
+    check("union-find roots enumerate a snapshot, never live parent.Keys",
+          re.search(r"foreach\s*\(\s*int\s+\w+\s+in\s+parent\.Keys\s*\)", patch) is None
+          and "new List<int>(parent.Keys)" in patch)
     check("no standalone Harmony bootstrap or old namespace survives",
           "new Harmony(" not in patch + settings and "RimMandrake.Utinni.RiverColors" not in patch + settings + csproj)
     check("settings default on (shipped behaviour)", re.search(r"public static bool riverColorsEnabled = true;", settings))
