@@ -868,3 +868,6 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"deploy FlowWorks level-solve body fix 31f335066b","ts":"2026-10-16T23:24:53Z","tsn":1792193093855914763}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch after level fix 2","ts":"2026-10-16T23:25:25Z","tsn":1792193125431567307}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"relaunch after level fix 2","ts":"2026-10-16T23:27:02Z","tsn":1792193222312497178}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"FlowWorks ratchet sign-off deploy","ts":"2026-10-17T00:13:42Z","tsn":1792196022293856943}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"FlowWorks ratchet sign-off","ts":"2026-10-17T00:17:56Z","tsn":1792196276974088823}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"FlowWorks ratchet sign-off","ts":"2026-10-17T00:19:31Z","tsn":1792196371894206051}
