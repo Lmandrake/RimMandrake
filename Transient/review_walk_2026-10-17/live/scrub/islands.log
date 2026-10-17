@@ -1,0 +1,97 @@
+[lscrub-note] islands laid: "PASS islands=46 planned=46 planted=8726 target=9005 open=60031 rooms=97 reach=60016->50032 vine=1211->9937 vineNearStart=21"
+[lscrub] 12:19:32 islands_laid_share PASS 
+[lscrub-note] creep (on): "FAIL: a grown stand put no runner mode=on laid=300 besideTestStand=0"
+[lscrub] 12:19:32 creep_runner_unarmed FAIL ExpectationFailed: creep (on): FAIL: a grown stand put no runner mode=on laid=300 besideTestStand=0
+[lscrub] 12:19:32 creep_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:19:32 creep_cap_stops UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:19:32 growth_exempt_from_explosive_growth UNMEASURED upstream failed -- this chain's state is meaningless
+component islands/creep_runner_unarmed: {"toggle": "venomvineCreepEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: creep (on): FAIL: a grown stand put no runner mode=on laid=300 besideTestStand=0", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofCreep(System.String)", "result": "FAIL: a grown stand put no runner mode=on laid=300 besideTestStand=0", "thingArgs": [], "ticksGame": 2, "operation": {"OperationId": "op_d3c355f315e74ff88dea44963eac8b75", "Status": "Completed", "Success": true, "DurationMs": 74}, "state": {"programState": "Play
+component islands/creep_toggle_off: {"toggle": "venomvineCreepEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component islands/creep_cap_stops: {"toggle": "venomvineCreepEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component islands/growth_exempt_from_explosive_growth: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component defs/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component defs/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component defs/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component defs/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component patches/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "modEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component patches/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component patches/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "visslerArmFoodEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component patches/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "venomvinePassabilityEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeRaidWeightingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanScentEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component settings/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "leanFireEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component fauna/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component fauna/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component flora/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stall/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallFreezeEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stall/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallFreezeEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stall/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "modEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeDeafenEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeTurbineSurgeEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component gale/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "galeTurbineSurgeEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component lash/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component lash/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "twitcherLashEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component lash/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "twitcherLashEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component smother/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component smother/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component smother/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component smother/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "smotherCraftEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component dripping/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "drippingRegrowEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component crown/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component crown/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "crownMobEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component crown/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "crownMobEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component bloom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component bloom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component bloom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "runwayBloomEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stamp/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireStampEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stamp/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "fireStampEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component ripple/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "rippleEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component ripple/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "rippleEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stallhunt/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallHuntEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component stallhunt/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stallHuntEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component pyre/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component pyre/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "callingPyreEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component pyre/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "callingPyreEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component injections/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component injections/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "scrubInjectionsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "rearingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "rearingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "walkingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "walkingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "hoardEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "hoardEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "quenchEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "quenchEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "swornSparesMarkedEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": "swornSparesMarkedEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#10: {"verdict": "UNMEASURED", "shows": [], "toggle": "sheddingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component forms/skipped#11: {"verdict": "UNMEASURED", "shows": [], "toggle": "sheddingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "stranglerEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "stranglerEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "weeperEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "weeperEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sleeperEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "sleeperEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "lureEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component four_forms/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "lureEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineGuardiansEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineScratchingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineScratchingEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineVisitorsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineVisitorsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineFeltComfortEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#10: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineFeltComfortEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#11: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component sweetline/skipped#12: {"verdict": "UNMEASURED", "shows": [], "toggle": "sweetlineStationsEnabled", "detail": "UNMEASURED: chain not run (--chains islands)"}
+component log/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains islands)"}
+LeaningScrub: NOT GREEN  PASS=1 FAIL=1 UNMEASURED=88  calls=95 mean=56.342ms  -> Transient/review_walk_2026-10-17/live/scrub/islands.json

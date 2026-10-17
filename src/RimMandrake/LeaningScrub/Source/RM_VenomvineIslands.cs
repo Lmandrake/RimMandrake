@@ -419,10 +419,10 @@ namespace RimMandrake.LeaningScrub
         }
 
         /// <summary>The gated pass the tick runs: nothing when creep is off or (unless forced) on another biome.</summary>
-        public int TickSweep(int sweepTicks, RM_VenomvineIslandsExtension forced)
+        public int TickSweep(int sweepTicks, RM_VenomvineIslandsExtension forced, Plant only = null)
         {
             if ((forced == null && !Applies) || !RM_WindCalendar.On(RM_LeaningScrubSettings.venomvineCreepEnabled)) return 0;
-            return Sweep(sweepTicks, forced);
+            return Sweep(sweepTicks, forced, only);
         }
 
         private void Recount(bool open, RM_VenomvineIslandsExtension forced = null)
@@ -437,8 +437,11 @@ namespace RimMandrake.LeaningScrub
             vineCells = RM_VenomvineIslandsUtil.CountVine(map, vine);
         }
 
-        /// <summary>One creep pass. sweepTicks sets the runner chance (a proof can pass a large value). Returns runners laid.</summary>
-        public int Sweep(int sweepTicks, RM_VenomvineIslandsExtension forced = null)
+        /// <summary>One creep pass. sweepTicks sets the runner chance (a proof can pass a large value). Returns runners laid.
+        /// only (proof use): offer just this stand. A proof's chance-1 sweep over a map that already holds hundreds of
+        /// mature stands spends maxRunnersPerSweep on the first ones in list order and never reaches a freshly placed test
+        /// stand (live walk 2026-10-17: laid=300, besideTestStand=0).</summary>
+        public int Sweep(int sweepTicks, RM_VenomvineIslandsExtension forced = null, Plant only = null)
         {
             RM_VenomvineIslandsExtension ext = forced ?? RM_VenomvineIslandsUtil.For(map);
             if (ext?.thicketDef == null) return 0;
@@ -454,7 +457,8 @@ namespace RimMandrake.LeaningScrub
             List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
             for (int i = 0; i < plants.Count; i++)
             {
-                if (plants[i] is Plant p && p.Spawned && p.LifeStage == PlantLifeStage.Mature && p.GetComp<RM_CompVenomvineCreep>() != null)
+                if (plants[i] is Plant p && (only == null || p == only) && p.Spawned && p.LifeStage == PlantLifeStage.Mature
+                    && p.GetComp<RM_CompVenomvineCreep>() != null)
                 {
                     RM_CompSmotherable sm = p.GetComp<RM_CompSmotherable>();
                     if (sm == null || !sm.Smothered) tmp.Add(p);
@@ -552,7 +556,7 @@ namespace RimMandrake.LeaningScrub
                     RM_LeaningScrubSettings.venomvineCreepCap = open > 0 ? now / (float)open : 0f;
                 }
                 // a sweep 1000 x the runner interval: chance 1 per stand; one runner per stand per pass
-                int laid = creep.TickSweep(RM_MapComponent_VenomvineCreep.SweepTicks * 4000, ext);
+                int laid = creep.TickSweep(RM_MapComponent_VenomvineCreep.SweepTicks * 4000, ext, mother);
                 for (int k = 0; k < 8; k++)
                 {
                     Plant p = (site + GenAdj.AdjacentCells[k]).GetPlant(map);
