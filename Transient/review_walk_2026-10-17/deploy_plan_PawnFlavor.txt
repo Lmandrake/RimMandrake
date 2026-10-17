@@ -1,0 +1,11 @@
+repo : /home/mandrake/rm/bench/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 25 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+PawnFlavor       mandrake.rut.pawnflavor    not enabled in ModsConfig
+    in sync (14 files)
+
+Everything in sync.
+exit 0
