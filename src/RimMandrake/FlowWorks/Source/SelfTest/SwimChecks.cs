@@ -288,6 +288,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string defof = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorks_DefOf.cs");
                 Assert(defof.Contains("public static HediffDef RM_SwimExhaustion;"), "and is bound");
             });
+
+            // Review 2026-10-17: the fingerprint was a string built on EVERY IsSwimTerrain call (Reachability.CanReach, the path
+            // grid: an allocation per call), and it left out swimPathCost, so moving the swim-cost slider never re-read any map's
+            // path grid (the cost is baked into PathGrid by CalculatedCostAt) until a reload. Reapply also shared the tables'
+            // fingerprint, so any IsSwimTerrain call between the change and Reapply hid the change from it.
+            Case("Swim_reapply_fingerprint_no_alloc_and_cost", () =>
+            {
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                Assert(sw.Contains("private static int Fingerprint()") && !sw.Contains("private static string Fingerprint()"), "the fingerprint is an int");
+                Assert(Regex.IsMatch(sw, @"private static int Fingerprint\(\)\s*\{[^}]*RM_SwimSettings\.swimPathCost"), "the swim cost is in it");
+                Assert(sw.Contains("if (swimTerrain == null || fp == appliedFingerprint)") && sw.Contains("appliedFingerprint = fp;"),
+                    "Reapply compares against what the maps were computed under, not the tables");
+                Assert(sw.Contains("&& fp == tableFingerprint)"), "the tables keep their own fingerprint");
+            });
         }
     }
 }
