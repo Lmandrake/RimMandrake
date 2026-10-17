@@ -115,18 +115,9 @@ canonical.
 
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
-Deleted: the *Clone Wars*-style CG render of Ziton Moj (`wookieepedia_infobox_ziton_moj.jpg`), the animated Black Sun nobles frame (`wookieepedia_black_sun_nobles.jpg`) and the inked *Han Solo* comic panel of U'il (`wookieepedia_uil.jpg`). Added: a live-action Falleen from *Obi-Wan Kenobi* "Part II" (`wookieepedia_kenobi_part2_live_action.png`), the realistic *New Essential Guide to Alien Species* painting (`wookieepedia_negas_legends.jpg`) and Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_uaa_legends.jpg`). The Xizor colour-shift image is a painted 1996 Topps *Shadows of the Empire* card and stays.
+Deleted: the *Clone Wars*-style CG render of Ziton Moj (`wookieepedia_infobox_ziton_moj.jpg`), the animated Black Sun nobles frame (`wookieepedia_black_sun_nobles.jpg`) and the inked *Han Solo* comic panel of U'il (`wookieepedia_uil.jpg`). Added: a live-action Falleen from *Obi-Wan Kenobi* "Part II" (`wookieepedia_kenobi_part2_live_action.png`), the realistic *New Essential Guide to Alien Species* painting (`wookieepedia_negas_legends.jpg`) and Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_uaa_legends.jpg`). The painted 1996 Topps *Shadows of the Empire* Xizor colour-shift card (`wookieepedia_xizor_colorshift_red.jpg`) was deleted by the owner on 2026-10-17; no image of the shifted state remains.
 
-🔴 **The colour shift is not a hue drift — it goes all the way to a saturated RED, and
-the images prove it.** `wookieepedia_xizor_colorshift_red.jpg` is captioned by the wiki
-as "**Xizor altering his skin pigmentation from green to red**," and in it he is **not
-greenish-red or flushed — he is fully, uniformly orange-red across the entire head and
-face**, the same value and saturation a green Falleen's skin has in its resting state.
-This is the single most important image in the directory. A text-only prompt reads
-"could become red to orange" and produces a green alien with a blush; the reference
-shows **a complete repaint of the same anatomy**. The ridged skull, brow and cheek
-structure are unchanged — **only the hue moves.** That is the correct model: one
-geometry, two (or a continuum of) skin colours.
+🔴 **The colour shift has no surviving image — it is sourced as TEXT only (Legends).** The Legends article and infobox list **orange** and **red** among Falleen skin colours and describe a voluntary or emotional pigment change from green to red. No image in this directory shows the shifted state, so nothing here is visual evidence of how far or how uniformly the hue moves; the anatomy is the resting-state anatomy in the images below, and only the skin hue is described as changing.
 
 **`wookieepedia_kenobi_part2_live_action.png` — the live-action reference of record for the resting state** (*Obi-Wan Kenobi* "Part II", a Falleen thug in a dark Daiyu corridor, at right of frame):
 - **Bright, slightly yellowish green skin over an ordinary human face** — smooth, with a subtle sheen, a faint raised ridge texture over the crown. Very low light, so hue is approximate.
@@ -164,15 +155,15 @@ is the wrong idiom (texture, not plates).
 - **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_mercenary.png`:** A dim live-action Falleen mercenary (Obi-Wan Kenobi) in profile: **green scaly skin**, bald domed head with a fine dark top-knot/ponytail rising at the back, small ear, dark armoured vest. Agrees with the existing live-action Falleen reference; very dark, low-res (330x456).
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action, NEGAS, UAA and Xizor colour-shift images, and the Legends text (the colour shift is Legends-only; canon never mentions it).*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action, NEGAS and UAA images, and the Legends text (the colour shift is Legends-only; canon never mentions it).*
 - [ ] BODY PLAN: ordinary humanoid build, lean and upright, never bulky; a sleek, symmetrical, narrow, angular human face (straight nose, thin lips, high cheekbones)
 - [ ] COLOUR LAYOUT (resting): green skin all over, hue varying individual to individual from bright yellow-green to muted grey-green; skull ridges and dorsal plates darker (olive or reddish-brown) than the skin
-- [ ] COLOUR LAYOUT (shifted): a complete repaint to fully saturated orange-red across the whole head and face, same anatomy in a different hue, not a blush or flush on green skin
+- [ ] COLOUR LAYOUT (shifted, Legends text only, no reference image): the same anatomy with the skin hue changed to red or orange, per the Legends skin-colour list
 - [ ] Skull ridges: raised, structural scaled plates over the crown and brow forming a crest silhouette, not a bumpy skin texture
 - [ ] A column of overlapping segmented dorsal plates running from the back of the skull down the spine
 - [ ] Long hair (usually very dark, sometimes white) gathered and pulled back into a ponytail or braids (live-action: from a bald crown)
 - [ ] Realistic rendering: smooth real skin with a slight sheen and hard scaled crest plates under natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a plain human with a green tint (the crest plates and dorsal column must read), not a monster or lizard-faced reptile, and the red state is never a greenish face with red cheeks
+- [ ] NEGATIVE: not a plain human with a green tint (the crest plates and dorsal column must read), not a monster or lizard-faced reptile, and the red state is not a green face with red cheeks (Legends text: the skin colour changes to red/orange)
 
 ## Engine limits
 Each skin state (mottled green, or solid red) is a single flat hue and is individually
@@ -192,8 +183,8 @@ shader limit.
 **every one of them is green.** There is **no red or orange skin gene** and **no
 mechanism of any kind for pigment change**, voluntary or mood-driven. The Legends
 infobox lists **orange** and **red** as Falleen skin colours outright, the article
-describes the shift as a **covert political weapon**, and the wiki's own caption on the
-Xizor image is about nothing else. Whatever the eventual implementation (a hediff, a
+describes the shift as a **covert political weapon**, and the wiki described the
+Xizor pigment change in a caption (that image has since been deleted). Whatever the eventual implementation (a hediff, a
 mood-linked graphic, a second skin gene, or simply admitting red into the palette),
 **the current def cannot represent the trait at all.** This is the finding to act on.
 
@@ -262,9 +253,6 @@ open warfare.
   File:FalleenNEGAS.jpg → `wookieepedia_negas_legends.jpg`
 - https://static.wikia.nocookie.net/starwars/images/5/5e/Falleen_UAA.jpg/revision/latest?cb=20061107212659 —
   File:Falleen UAA.jpg → `wookieepedia_uaa_legends.jpg`
-- https://static.wikia.nocookie.net/starwars/images/e/e1/XizorHoldsHisBreathUntilMomGetsHimAToy-SOTETC.jpg —
-  File:XizorHoldsHisBreathUntilMomGetsHimAToy-SOTETC.jpg, captioned by the wiki "Xizor
-  altering his skin pigmentation from green to red" → `wookieepedia_xizor_colorshift_red.jpg`
 - https://static.wikia.nocookie.net/starwars/images/f/fc/Falleen_Outlaw.jpg —
   File:Falleen_Outlaw.jpg, the **Legends infobox image** → `wookieepedia_legends_outlaw.jpg`
 - https://www.starwars.com/databank/falleen — **cited by the canon article as `{{Databank|falleen}}`
@@ -279,12 +267,6 @@ open warfare.
 
 ## Candidate images
 
-- `wookieepedia_xizor_colorshift_red.jpg` — 🔑 **the reference this entry exists for.**
-  A painted 1996 Topps *Shadows of the Empire* card the wiki captions as Xizor **altering his skin pigmentation from green
-  to red**, showing the shifted state as a **fully saturated orange-red across the whole
-  head**, with the ridged-skull anatomy unchanged. Settles that the shift is a complete
-  repaint, not a flush. Painted, so treat brush and lighting as the artist's — but the
-  *magnitude* of the colour change is the point and is unambiguous.
 - `wookieepedia_kenobi_part2_live_action.png` — **live-action reference of record for the resting state.** *Obi-Wan Kenobi* "Part II" screen still; the Falleen is at right, green skin, bald crown, dark braids, dim light; file `KenobiOutplayed-KenobiPartII.png` — https://static.wikia.nocookie.net/starwars/images/c/ca/KenobiOutplayed-KenobiPartII.png/revision/latest?cb=20220529162132
 - `wookieepedia_negas_legends.jpg` — realistic painting, *The New Essential Guide to Alien Species* (Legends): grey-green Falleen from behind, the segmented dorsal crest from skull down the spine, long dark ponytail; file `FalleenNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f9/FalleenNEGAS.jpg/revision/latest?cb=20061205185216
 - `wookieepedia_uaa_legends.jpg` — realistic painting by Raven Mimura, *Ultimate Alien Anthology* (Legends): full body, deep green skin, red-brown crown ridges, long white hair; file `Falleen UAA.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5e/Falleen_UAA.jpg/revision/latest?cb=20061107212659
@@ -300,4 +282,7 @@ open warfare.
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove colorshift_red"
+
+Deleted `falleen/wookieepedia_xizor_colorshift_red.jpg`; colour shift now text-only (Legends) in brief and Must show.

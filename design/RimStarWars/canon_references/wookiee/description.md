@@ -64,40 +64,17 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 >  to cover and just realised I’d never done Wookiee before!!
 
 ## Visual brief
-**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_youngling_animated.jpg` (*Clone Wars* Gungi). Added live-action: `wookieepedia_lumpy_juvenile_holiday.jpg` (Lumpy, a Wookiee child, *The Star Wars Holiday Special*) to replace the juvenile reference, and `wookieepedia_wookiee_roar_rots.jpg` (*Revenge of the Sith*, a Kashyyyk war host with a Wookiee roaring in front) for population hue range. All remaining images are realistic.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_youngling_animated.jpg` (*Clone Wars* Gungi). On 2026-10-17 the owner also deleted the anatomy plate, the Lumpy juvenile still and the *Revenge of the Sith* roar still, so the brief now rests on the full-body infobox image (`wookieepedia_infobox_fullbody.jpg`), the Wookieepedia text and the fan-blog Acolyte image. All remaining images are realistic. Body-plan details that only the deleted anatomy plate showed (leg type, skull shape, claw mechanism drawing, scale silhouettes) are no longer part of the brief; the text still gives extendable claws and a 2.23-2.54 m height.
 
-🔑 **`wookieepedia_anatomy_diagram.jpg` is the most useful single image in this
-whole library so far, because it shows the body UNDER the fur — which is precisely
-what a text-only prompt cannot invent.** It is a sepia anatomical study plate
-(skeleton, musculature, detail studies) and it settles several things the prose
-never states:
-
-- **The skeleton is human-plan but heavier throughout** — broad deep ribcage, heavy
-  pelvis, long arms relative to the torso. **The legs are plantigrade** (a long
-  flat sole with five toes), NOT digitigrade. This is worth knowing because
-  "furry humanoid" invites a digitigrade guess.
-- **The skull carries a projecting muzzle/jaw with large canines** — the face is
-  prognathous, not flat. Under the beard there is a real snout.
-- **The claw is drawn as a mechanism**: a sequence of detail studies at lower-left
-  shows a claw sliding out of a sheath within the finger. This confirms
-  "extendable" literally — the claws retract into the digit, they are not
-  permanently protruding talons.
-- **The hand is long-fingered with five digits.**
-- **A comparison silhouette pair at bottom centre shows a human beside a Wookiee**,
-  the Wookiee substantially taller and much broader through the shoulders — a
-  direct scale reference, consistent with the 2.23–2.54 m infobox range.
-
-From the full-body reference, the live-action juvenile and the *Revenge of the Sith* host:
+From the full-body reference and the Acolyte blog image:
 - **The coat is long, shaggy and directional** — it falls, and it falls *downward
   and outward*, longest at the shoulders, upper arms, chest and thighs, shorter on
   the face and the backs of the hands. It is not uniform plush. The water-shedding
   property in the text is visible as this directional fall.
 - **Colour is a mid warm brown with darker roots and lighter tips**, with a paler
-  muzzle/face mask and a paler chest. The *Revenge of the Sith* host runs from dark umber
-  through reddish-chestnut to grey-brown and pale tawny, so within-species hue
-  variation is wide. The juvenile Lumpy is a glossy mid-brown with golden-blond
-  tips, a fluffier, shorter coat and a small face; the **face is lighter than the
-  body** on adult and child alike.
+  muzzle/face mask and a paler chest. The text gives coat shades of brown, black, gray and white, and
+  the Acolyte blog image is darker and more reddish, so within-species hue variation is wide.
+  The **face is lighter than the body** in the full-body reference.
 - **The face is the exception to the coat**: eyes, nose and mouth sit in a
   short-haired mask, so the face reads as a face rather than a fur ball. Eyes are
   small, dark and set close; the nose is a broad flat dark pad.
@@ -117,18 +94,18 @@ big, brown, fur-skinned pawn with a dedicated Wookiee head lands. 🔴 **But
 `Hair_BaldOnly` is also wired** — which for a species whose entire appearance is a
 shaggy coat plus (for adult males) a long beard is a direct contradiction with the
 canon, and means the beard cannot appear. **Nothing on disk supplies the
-directional shaggy coat over the body**, the retractable claws, or the lighter
+directional shaggy coat over the body**, the extendable claws, or the lighter
 face mask.
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Wookiee from The Acolyte in a forest: long shaggy red-brown fur hung in tufts, hunched stance, head bowed; looks darker/more reddish than Chewbacca. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the anatomy plate, the full-body infobox image and the live-action references, and the owner's 2026-10-08 realism ruling.*
-- [ ] BODY PLAN: a very tall (2.2-2.5 m), heavy humanoid, much broader through the shoulders than a human, long arms relative to the torso; plantigrade legs on a long flat sole with five toes (not digitigrade); a prognathous muzzle/jaw with large canines under the beard
-- [ ] COLOUR LAYOUT: coat mid warm brown (or grey-brown) with darker roots and lighter tips over the whole body; the face a LIGHTER, short-haired mask (eyes small, dark and close-set, nose a broad flat dark pad) distinct from the darker body coat; paler chest
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the full-body infobox image, the Sourced text and the Acolyte blog image, and the owner's 2026-10-08 realism ruling; re-grounded 2026-10-17 after the anatomy plate, Lumpy and roar stills were deleted.*
+- [ ] BODY PLAN: a very tall (2.2-2.5 m), heavy humanoid, much broader through the shoulders than a human, long-limbed, standing upright on two legs
+- [ ] COLOUR LAYOUT: coat mid warm brown (reddish or grey-brown also valid) with darker roots and lighter tips over the whole body; the face a LIGHTER, short-haired mask (eyes small, dark and close-set, nose a broad flat dark pad) distinct from the darker body coat; paler chest
 - [ ] Long, shaggy, directional coat that falls downward and outward, longest at the shoulders, upper arms, chest and thighs, shorter on the face and backs of the hands — not a uniform plush
-- [ ] Claws are retractable, sheathed in the fingers: no permanently protruding talons on the hands
+- [ ] Claws are extendable (text): no permanently protruding talons on the hands
 - [ ] Realistic rendering: natural long shaggy hair texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a bear, ape or werewolf (no digitigrade legs, no talons, no flat ape face), not a uniform plush fur-ball with no face mask, not a human in a fur suit with a flat face
+- [ ] NEGATIVE: not a bear, ape or werewolf (no talons, no flat ape face), not a uniform plush fur-ball with no face mask, not a human in a fur suit with a flat face
 
 ## Engine limits
 none known — the donor sprite is one of the better ones in the library (a dedicated Wookiee head with the right big, brown, fur-skinned build); the entry attributes the missing beard, directional coat, claws and face mask to gene choices (`Hair_BaldOnly` forcing every Wookiee beardless) and absent art, not to a pipeline constraint.
@@ -138,28 +115,19 @@ none known — the donor sprite is one of the better ones in the library (a dedi
   Cloudflare-walled — wikitext pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Wookiee&format=json&prop=wikitext`,
   101,371 chars, 2026-09-15)
-- https://static.wikia.nocookie.net/starwars/images/b/b6/WookieeAnatomyDiagram-TSotW.png (File:WookieeAnatomyDiagram-TSotW.png → wookieepedia_anatomy_diagram.jpg)
 - https://static.wikia.nocookie.net/starwars/images/1/1e/Chewbacca-Fathead.png (File:Chewbacca-Fathead.png, the infobox image → wookieepedia_infobox_fullbody.jpg)
-- https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg (File:Lumpy.jpg → wookieepedia_lumpy_juvenile_holiday.jpg)
-- https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png (File:WookieeRoar.png → wookieepedia_wookiee_roar_rots.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/wookiee (official Databank).
 - https://bloggathehutt.wordpress.com/2024/06/17/species-of-the-week-wookiee/ (fan blog)
 
 ## Candidate images
-- `wookieepedia_anatomy_diagram.jpg` — **the highest-value image here.** An
-  in-universe anatomical study plate (skeleton, musculature, hand/claw mechanism,
-  human-vs-Wookiee scale silhouettes). The only reference in this library that shows
-  a species' skeleton, and therefore the only one that settles body plan
-  independently of costume: plantigrade legs, prognathous muzzled skull with large
-  canines, sheathed retractable claws, human-plan-but-heavier skeleton, and a
-  direct height comparison against a human.
 - `wookieepedia_infobox_fullbody.jpg` — the infobox image (Chewbacca): a full-body
   adult male on a transparent background at very high resolution. Settles the
   directional shaggy fall of the coat, the mid-warm-brown-with-lighter-face
   palette, the short-haired face mask, and the single-shoulder bandolier.
-- `wookieepedia_lumpy_juvenile_holiday.jpg` — live-action, *The Star Wars Holiday Special*, file `Lumpy.jpg` (424×504): Lumpy, a Wookiee child — juvenile proportions, fluffier glossy brown coat with blond tips, lighter face — https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg/revision/latest?cb=20081120010113
-- `wookieepedia_wookiee_roar_rots.jpg` — live-action/realistic CGI, *Revenge of the Sith*, file `WookieeRoar.png` (1440×810): a roaring Wookiee before the Kashyyyk war host — the population's coat-colour range — https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png/revision/20141206190806
 - `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2024/06/17/species-of-the-week-wookiee/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove anatomy_diagram and lumpy and roar_rots"
+
+Deleted `wookiee/wookieepedia_anatomy_diagram.jpg`, `wookiee/wookieepedia_lumpy_juvenile_holiday.jpg` and `wookiee/wookieepedia_wookiee_roar_rots.jpg`; brief and Must show re-grounded on the remaining images and text.

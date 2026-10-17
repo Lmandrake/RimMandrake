@@ -96,6 +96,8 @@ stringy mane from the sides of the head — and the four-eyed Ualaq are FURLESS 
   produce sharp mandibles, and that is the wrong shape.
 - **No visible nose**; nostril-like slits sit between and below the eyes.
 
+- **OPEN variation, eye count (owner observation 2026-10-17):** some individuals show four eyes (two smaller ones beneath the major pair) and some do not; both are accepted and the question stays open.
+
 **`wookieepedia_crime_family_bobf.jpg` — the reference of record for this campaign.** The
 live-action Tatooine crime-family Aqualish from *The Book of Boba Fett* "Chapter 3," the
 most recent, highest-fidelity, and most campaign-relevant depiction (Tatooine, criminal,
@@ -178,7 +180,7 @@ which Aqualish it is depicting.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action stills (Book of Boba Fett crime family = reference of record, Ponda Baba, the senators) and the Legends Quara/Aquala line art for hands only.*
-- [ ] BODY PLAN: humanoid build; a completely bald, smooth, domed crown (never any hair on top); two very large, round, glossy, domed black eyes set wide and low on the bald forehead with a bright highlight (four-eyed Ualaq: a large upper pair plus a smaller lower pair); no visible nose, only nostril-like slits between and below the eyes
+- [ ] BODY PLAN: humanoid build; a completely bald, smooth, domed crown (never any hair on top); two very large, round, glossy, domed black eyes set wide and low on the bald forehead with a bright highlight (open variation per owner 2026-10-17: some individuals have four eyes, a large upper pair plus a smaller lower pair beneath, and some do not; either count is acceptable); no visible nose, only nostril-like slits between and below the eyes
 - [ ] Two thick tusks curving DOWN over the mouth, joined at the top into a two-lobed, blunt, pale muzzle block (cream, pale pink or ochre-tan), strongly lighter than the face (not sharp fangs or mandibles)
 - [ ] COLOUR LAYOUT: skin one tone over head and hands, finely wrinkled (campaign target: dusty mottled grey-tan, as the Tatooine crime family; canon range also dark slate-grey, red-mauve, green-tan); the pale tusks are the lightest element of the face; any fur grows from the sides/back of the head or the cheeks, never the crown
 - [ ] Cheek/jaw fur is not species-universal: the four-eyed Ualaq subspecies is entirely hairless, while others show a dark cheek beard (Ponda Baba) or a long pale side-and-back mane with bare cheeks (Book of Boba Fett)
@@ -296,4 +298,7 @@ colour most worth getting right.
 
 ## ruling
 
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "Strangely, I see some of them have four eyes (two smaller ones beneath the major ones above) and some do not."
+
+Observation, no files deleted; recorded as an open eye-count variation in the Visual brief and Must show (neither count forbidden).

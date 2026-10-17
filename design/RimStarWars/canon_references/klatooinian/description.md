@@ -52,7 +52,7 @@ Klatooinians are humanoid with canine looking facial features. Their desert home
 The three images agree tightly, which is unusual and useful: this is a species
 where the prose and the pictures do not fight.
 
-- **Colour: a desaturated grey-green to olive**, with darker mottling in the
+- **Colour (owner ruling 2026-10-17: "Accept slate blue-grey and olive/mud green as all valid."):** slate blue-grey and olive/mud green are both valid skin colours. The Wookieepedia images sit toward a **desaturated grey-green to olive**, with darker mottling in the
   creases and a slightly warmer, browner cast on the high points of the face. The
   infobox's "green to brown" is honest, but the images sit firmly toward the
   **grey-green** end rather than brown, and the saturation is low — a mud-green,
@@ -99,12 +99,12 @@ two features the infobox names as the species' distinctions.** Note also that
 `klatoonian/` folder and would give the short upturned muzzle, but the Klatooinian
 xenotype's own gene list does not include them.
 
-- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_klatooinian_mandalorian.png` (654x804, The Mandalorian): a thick-necked brute in a dark hood with scale-armour collar, dark SLATE BLUE-GREY skin, heavy furrowed brow, flat broad nose with flared nostrils, wide mouth with an underbite and two yellow-white tusk teeth, bone-claw pendant and coins on the collar. 🔴 Skin is a cool slate blue-grey, not the olive/mud-green in the Must-show colour layout. Face structure (brow, underbite, tusks) agrees.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_klatooinian_mandalorian.png` (654x804, The Mandalorian): a thick-necked brute in a dark hood with scale-armour collar, dark SLATE BLUE-GREY skin, heavy furrowed brow, flat broad nose with flared nostrils, wide mouth with an underbite and two yellow-white tusk teeth, bone-claw pendant and coins on the collar. Skin is a cool slate blue-grey, a valid colour per the owner's 2026-10-17 ruling alongside olive/mud green. Face structure (brow, underbite, tusks) agrees.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox text and the three images (infobox Barada, live-action raider, Don Klatoo), which agree.*
 - [ ] BODY PLAN: fully humanoid, thickset labourer build within human proportions (heavy, not a giant); bald cranium; a jowly, heavily wrinkled pug/dog-like face with a short, broad, slightly upturned muzzle; usually in ordinary spacer/labourer workwear (tunic, bandolier, trousers, boots)
-- [ ] COLOUR LAYOUT: skin desaturated grey-green to olive (a mud-green, not bright green) over head and hands, with darker mottling in the creases and a slightly warmer, browner cast on the high points of the face; eyes small and dark
+- [ ] COLOUR LAYOUT: skin either desaturated olive/mud green or slate blue-grey (both valid per owner 2026-10-17; not bright green) over head and hands, with darker mottling in the creases and a slightly warmer, browner cast on the high points of the face; eyes small and dark
 - [ ] Heavy bony brow shelf runs straight across above the eyes and projects forward far enough to shadow them completely; small, dark, deep-set eyes lost under it
 - [ ] Underbite: the lower jaw juts forward past the upper, with two small tusk-like teeth visible at the mouth corners, pointing up, always visible
 - [ ] Deep jowl folds run along the jaw line from below the ear to the chin
@@ -143,4 +143,7 @@ none known
 - NOT CANON (fan blog) - `bloggathehutt_klatooinian_mandalorian.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a Klatooinian in The Mandalorian; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/03/01/species-of-the-week-klatooinian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "Accept slate blue-grey and olive/mud green as all valid."
+
+Observation, no files deleted; colour ruling folded into the Visual brief and Must show, applying to the species (the blog image itself stays labelled NOT CANON).

@@ -24,40 +24,26 @@ https://starwars.fandom.com/wiki/Bright-Eyes), so tan/green/olive is not the who
 **Legends** (https://starwars.fandom.com/wiki/Dragonsnake/Legends): length 2-6 m, brown/green/grey skin,
 red/black/scarlet/dark-brown eyes, semi-sentient, omnivorous.
 
-### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/06/22/species-of-the-week-dragonsnake/
-
-*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the behaviour (ambush by coiling in vines, spits out droids, venom, pit under the Hutt throne room); consistent with canon.*
-
-> Designation: Non-Sentient
-> Homeworld: Nal Hutta, Dagobah
-> Fandom: Star Wars
-> Appearances: The Empire Strikes Back, The Clone Wars, The Mandalorian and Grogu
-> Dragonsnakes are fearsome predators found in swampy locales, including the Hutt capital planet Nal Hutta and the remote Dagobah. Dragonsnakes are stealth predators, curling themselves among vines and roots in their environment before rising up and striking their prey. Dragonsnakes will strike anything that comes in reach but will spit out anything they find indigestible, such as droids. Their gangs have venom that will take down any prey that escapes their coils. Dragonsnakes proved a natural deterrent for any unwelcome visitors to Nal Hutta and a trapdoor in the Hutt throne room led to a pit where a captive dragonsnake fed on prisoners and intruders that fell into its lair. 
-> Continuing my run-through of known species in The Mandalorian and Grogu, the massive beast that Din narrowly escaped from first appeared in The Empire Strikes Back, though we barely saw more than bubbles in the water in that film. I always love getting to see creatures in their full glory.
-
 ## Visual brief
+**Owner ruling 2026-10-17 (canon blog-image review sheet, verbatim):** "Split into two official versions. The two pale versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake. Comission both in our Star Wars fauna mod. Remove the huntforziro and cisualencyclopedia versions as crude and cartoonish. Regenerate the "must have" descriptions from these two new creature specs."
+The dragonsnake is now TWO official creatures. This entry is the canon **Dragonsnake**, defined by the
+*Jedi: Fallen Order* concept sheet; the pale limbless serpent of *The Mandalorian and Grogu* is the separate
+**Dragonsnake_albino** (`../dragonsnake_albino/description.md`). The animated *Clone Wars* frame and the
+*Galactic Atlas* illustration were deleted as "crude and cartoonish".
+
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-⚠️ **RULING-CONFLICT, kept deliberately:** the owner's 2026-09-14 ruling below takes "#2 for coloration and glowing-seeming spots" — #2 in that sheet's order (donor, huntforziro, visualencyclopedia, mandalorianandgrogu) is the animated Clone Wars `wookieepedia_huntforziro.jpg` — and "seriousness of #3", the flat Galactic Atlas illustration `wookieepedia_visualencyclopedia.jpg`. Both stay because he named them; no cartoon image was removed. Take only colour/spots and attitude from them, never their shading.
-
-Realistic sources added/kept:
-- `wookieepedia_concept_jfo.jpg` — *Jedi: Fallen Order* (Respawn) painted photoreal concept sheet, four variants with a stormtrooper for scale. This is the best realistic match for the owner's ruled look: a long, low, crocodile-like QUADRUPED with short splayed clawed limbs, a narrow toothy gharial-crocodile snout with fangs projecting outside the jaw, a dorsal row of short spines, a very long tapering eel-like tail (some variants with a fin or spined fan at the tip), dark olive-to-slate scaly hide with moss/algae patches, a pale ridged ventral belly, and — in the third variant — scattered bioluminescent yellow-green spots plus a glowing throat sac. Length several times a human.
-- `wookieepedia_mandalorianandgrogu.jpg` — *The Mandalorian and Grogu* (live-action film, realistic CGI): a gigantic pale bone-white LIMBLESS serpent with an eyeless skull-like head and long venom-dripping fangs. Realistic, but disagrees loudly with everything else on colour and limbs.
-
-**Where they disagree:** the realistic concept art and the ruled images agree on dark olive with glowing green spots and a toothy crocodilian head; the film creature is pale and limbless. The owner's ruling picks the olive/glowing-spot look; render it with the concept sheet's realistic wet scaly hide, not the animated flat colour.
-
+- `wookieepedia_concept_jfo.jpg` — *Jedi: Fallen Order* (Respawn) painted photoreal concept sheet, four variants with a stormtrooper for scale — THE canon Dragonsnake. A long, low, crocodile-like QUADRUPED with short splayed clawed limbs, a narrow toothy gharial-crocodile snout with fangs projecting outside the jaw, a dorsal row of short spines, a very long tapering eel-like tail (some variants with a fin or spined fan at the tip), dark olive-to-slate scaly hide with moss/algae patches, a pale ridged ventral belly, and — in the third variant — scattered bioluminescent yellow-green spots plus a glowing throat sac. Length several times a human. The four variants differ in tail tip and spotting; all four are canon.
 - `donor_current_sprite.png` (our own sprite): tan/khaki quadruped with small clawed limbs, dark spots, gator-like head — body plan agrees with the concept sheet, colour does not.
-- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_dragonsnake.png`:** The Mandalorian and Grogu film creature, rendered photoreal: a **pale cream/bone-white LIMBLESS serpent** with a long horse-like narrow head, many needle fangs, and glossy ringed coils rising from green swamp water. 🔴 LOUDLY DISAGREES with the owner-ruled olive-with-glowing-spots crocodilian look in this entry (pale, limbless, no spots) - it is the same creature as the existing `wookieepedia_mandalorianandgrogu.jpg` family. Do not adopt for colour; useful for head shape and coil texture only, per the owner's 2026-09-14 ruling.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Jedi: Fallen Order concept sheet as described in the visual brief and the `## ruling` below (owner ruling 2026-09-14: "#2 for coloration and glowing-seeming spots. But much less cartoonish, more like seriousness of #3.").*
-- [ ] BODY PLAN: a long, low crocodilian quadruped body with short splayed clawed limbs and a very long tapering eel-like tail, the tail making up a large share of the total length; head held low and forward
+*Regenerated 2026-10-17 from the owner's split ruling: the Jedi: Fallen Order four variants are the spec.*
+- [ ] BODY PLAN: a long, low crocodilian quadruped with short splayed clawed limbs and a very long tapering eel-like tail, the tail a large share of the total length; head held low and forward
 - [ ] Narrow toothy crocodile/gharial snout with fangs projecting outside the jaw
-- [ ] COLOUR LAYOUT: dark olive-to-slate scaly hide over the back, flanks and tail, with scattered glowing yellow-green bioluminescent spots; a pale ridged belly underneath, the lightest area of the body
+- [ ] COLOUR LAYOUT: dark olive-to-slate scaly hide over the back, flanks and tail; a pale ridged belly underneath, the lightest area of the body (glowing yellow-green spots are allowed — one of the four canon variants has them)
 - [ ] Dorsal row of short spines along the back
-- [ ] Shown as an aquatic ambush predator, partially submerged in murky swamp water
-- [ ] Realistic rendering: wet scaly reptile hide and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not the pale bone-white limbless serpent of *The Mandalorian and Grogu*; not a tan/khaki gator (the donor's colour); not flat animated Clone Wars colour (take only its colour and spots, never its shading)
+- [ ] Realistic rendering: wet scaly reptile hide and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08)
+- [ ] NEGATIVE: not pale or limbless (that is Dragonsnake_albino); not a tan/khaki gator (the donor's colour)
 
 ## Engine limits
 none known
@@ -65,20 +51,20 @@ none known
 ## Source URLs
 - https://starwars.fandom.com/wiki/Dragonsnake (Wookieepedia, wikitext pulled
   2026-09-13 via `action=parse&prop=wikitext`)
-- https://static.wikia.nocookie.net/starwars/images/6/67/Dragonsnake-HFZ.jpg (Hunt for Ziro screencap)
-- https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg (infobox illustration, from *Star Wars: Galactic Atlas*, per the file's source field)
-- https://static.wikia.nocookie.net/starwars/images/5/52/DinDjarinDragonsnakeFaceoff-TMaG.png (The Mandalorian and Grogu)
+- https://static.wikia.nocookie.net/starwars/images/d/df/DragonsnakeConcept-JFO.jpg/revision/latest?cb=20230603191742 (*Jedi: Fallen Order* concept sheet)
 - `src/RimStarWars/SWBestiary/Textures/swanimals/Dragonsnake/Dragonsnake_Swimming_south.png` (our own donor/current sprite)
 
 ## Candidate images
 - `donor_current_sprite.png` — our own current in-game sprite (south-swimming pose), tan/khaki quadruped, small clawed limbs, dark spots, gator-like head.
-- `wookieepedia_huntforziro.jpg` — ANIMATED (The Clone Wars "Hunt for Ziro"); kept because the owner's ruling takes its colour and glowing spots; file `Dragonsnake-HFZ.jpg` — https://static.wikia.nocookie.net/starwars/images/6/67/Dragonsnake-HFZ.jpg
-- `wookieepedia_visualencyclopedia.jpg` — flat ILLUSTRATION (*Star Wars: Galactic Atlas*); kept because the owner's ruling cites its "seriousness"; file `Dragonsnake-SWGA.jpg` — https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg
-- `wookieepedia_concept_jfo.jpg` — REALISTIC painted concept art, *Jedi: Fallen Order*, four quadruped variants with glowing spots; file `DragonsnakeConcept-JFO.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/DragonsnakeConcept-JFO.jpg/revision/latest?cb=20230603191742
-- `wookieepedia_mandalorianandgrogu.jpg` — LIVE-ACTION film (realistic CGI), *The Mandalorian and Grogu*: pale limbless serpent; file `DinDjarinDragonsnakeFaceoff-TMaG.png` — https://static.wikia.nocookie.net/starwars/images/5/52/DinDjarinDragonsnakeFaceoff-TMaG.png
-- `bloggathehutt_dragonsnake.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2026/06/dragonsnake.png
+- `wookieepedia_concept_jfo.jpg` — REALISTIC painted concept art, *Jedi: Fallen Order*, four quadruped variants — THE canon Dragonsnake (owner 2026-10-17); file `DragonsnakeConcept-JFO.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/DragonsnakeConcept-JFO.jpg/revision/latest?cb=20230603191742
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_huntforziro.jpg`
 
 > "#2 for coloration and glowing-seeming spots. But much less cartoonish, more like seriousness of #3."
+(The 2026-09-14 pick named `wookieepedia_huntforziro.jpg`; that image was deleted by the 2026-10-17 ruling below.)
+
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "Split into two official versions. The two pale versions let's call Dragonsnake_albino. The Jedi Fallen Order four variants lets accept as the canon Dragonsnake. Comission both in our Star Wars fauna mod. Remove the huntforziro and cisualencyclopedia versions as crude and cartoonish. Regenerate the "must have" descriptions from these two new creature specs."
+
+Done: pale images moved to `dragonsnake_albino/`; `wookieepedia_huntforziro.jpg` and `wookieepedia_visualencyclopedia.jpg` deleted; both entries' Must show regenerated; commission filed as rimflow item `DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER`.

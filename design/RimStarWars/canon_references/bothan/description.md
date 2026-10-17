@@ -28,8 +28,8 @@ Bothan.**
 - 🔴 **The reference book *Star Wars: How Not to Get Eaten by Ewoks and Other Galactic
   Survival Skills* actively DISOWNS the Legends design**: it "pictures" Bothans by showing
   **silhouettes of Legends Bothans with red X's marked over them, implying those silhouettes
-  are NOT what Bothans look like.** That book page is `wookieepedia_canon_bothans_xed_out.jpg`
-  in this directory.
+  are NOT what Bothans look like.** (Text fact only; the owner ruled 2026-10-17 that the
+  page image is not kept in this library.)
 - Individuals *resembling* the Legends depiction have appeared in *Star Wars Resistance*,
   *Legends of the Alliance* (Mak Eshka'rey), *War of the Bounty Hunters*, *Sabine My Rebel
   Sketchbook* and the *Black Spire Outpost Cookbook* — but Wookieepedia states plainly that
@@ -107,16 +107,7 @@ canon gives at all is the **growled speech**.
 The inked comic panel `wookieepedia_bothan_legends_um.jpg` (*Ultimate Missions*) was deleted. No live-action or photoreal Bothan exists in canon or Legends (searched: Bothan and Bothan/Legends page images, "Images of Bothans" — only stylised Galaxies/SWTOR/Battlefront 2005 game models — and the StarWars.com Databank, which has no Bothan image). Added two realistic paintings: Borsk Fey'lya from the *Agents of Deception* cover and a *Star Wars Galaxies* concept painting. All remaining species art is realistic painted Legends illustration.
 
 ⚠️ **Everything in this section describes Legends art, because that is all that exists. None
-of it is canon-supported, and the first image is canon actively rejecting it.**
-
-**`wookieepedia_canon_bothans_xed_out.jpg` — the negative reference, and the most
-canon-authoritative image in this directory.** From *Star Wars: How Not to Get Eaten by
-Ewoks*: a 3×2 grid of six pale grey circles, each containing a **dark grey Bothan silhouette
-bust** — visibly showing tall pointed ears, a muzzle, and a shaggy mane in varying
-arrangements — and **each struck through with a thick red X.** The book's own point is that
-**these are not what Bothans look like.** Kept, and labelled loudly, exactly as this library
-handles the Rakata's disowned images. Low resolution (316×253 px) and silhouette-only, so it
-carries no colour or detail evidence — its value is entirely the ruling it represents.
+of it is canon-supported, and a canon reference book rejects the Legends design in print.**
 
 **`wookieepedia_negas_legends.jpg` — the Legends reference of record** (*The New Essential
 Guide to Alien Species* infobox painting, full body, transparent background). This is the
@@ -170,7 +161,6 @@ framing the cheeks and jaw**, and a **small dark triangular nose**. Three proble
   tall outward fennec-scale ears of the reference.
 - ⚠️ **Eyes are plain human slots** rather than the small forward-set dark mammal eyes, and
   the fur ruff is a flat outline rather than the layered directional coat of the paintings.
-- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_bothan.png`:** Legacy comic panel (Hosk Trey'lis): a **humanoid, human-proportioned face** with swept-back shaggy brown mane and beard of fur, a pointed ear, pale eyes; bare chest with a turtle-shell-like geometric plate. Same Legends-only caveat as the existing brief: this is not canon, and it is NOT the xed-out canon silhouette style. Agrees with the 'furry humanoid with mane' read.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Canon fixes no Bothan appearance at all (empty infobox; *How Not to Get Eaten by Ewoks* X's out the Legends silhouettes), so the body lines below are LEGENDS, grounded in the three realistic Legends paintings (NEGAS, Borsk Fey'lya cover, SWG concept) that the owner's 2026-10-08 visual-brief ruling put in place of the comic art.*
@@ -253,9 +243,6 @@ have them.
   `https://starwars.fandom.com/api.php?action=parse&page=Bothan/Legends&format=json&prop=wikitext`
   (status 200, 46,997 chars, 2026-09-15). Note this page carries a `{{Citation}}` banner —
   the wiki itself flags it as under-sourced in places.
-- https://static.wikia.nocookie.net/starwars/images/9/93/Canon-Bothans.jpg
-  (File:Canon-Bothans.jpg, the X'd-out silhouettes page →
-  `wookieepedia_canon_bothans_xed_out.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/8/81/Bothan-NEGAS.png
   (File:Bothan-NEGAS.png, the Legends infobox image → `wookieepedia_negas_legends.jpg`)
 - Image URLs were resolved through the Fandom imageinfo API
@@ -270,11 +257,6 @@ have them.
 
 ## Candidate images
 
-- `wookieepedia_canon_bothans_xed_out.jpg` — 🔴 **a NEGATIVE reference, and the most
-  canon-authoritative image here.** The *How Not to Get Eaten by Ewoks* page: six Legends
-  Bothan silhouettes, each struck through with a red X, published to say **these are not
-  Bothans.** Kept and labelled, per this library's practice with disowned art. Silhouette
-  only, 316×253 px — no colour or detail evidence.
 - `wookieepedia_negas_legends.jpg` — **the Legends reference of record**, and the design this
   repo has effectively adopted. *The New Essential Guide to Alien Species* infobox painting,
   full body on transparent background. Settles the **long canine/equine muzzle with a dark
@@ -287,7 +269,11 @@ have them.
   `RSW_BothanHead`. A runtime-tinted greyscale mask, so colour absence is expected. Right on
   the jaw fur ruff and dark nose; **wrong in having no forward muzzle and no ears** — and
   note the repo already holds unused Bothan snout art under `RSW_Nose_Snout`.
-- NOT CANON (fan blog) - `bloggathehutt_bothan.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2024/09/borthan.png
 
 ## ruling
 **Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the **Legends look** is the target (Legends body plan, as the Must show states).
+
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove canon_bothans_xed_out and bloggathehutt versions."
+
+Deleted `bothan/wookieepedia_canon_bothans_xed_out.jpg` and `bothan/bloggathehutt_bothan.png` with their brief, candidate and source-URL lines; the sourced text fact that the book page X's out Legends silhouettes stays, uncited to the file; the NOT CANON blog text section is kept.

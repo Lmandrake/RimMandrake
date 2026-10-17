@@ -111,7 +111,7 @@ RimWorld head sprite **cannot carry the forward-curving neck**, which is where b
 live and where most of the species' silhouette is. Whatever is done here, that compromise
 should be documented rather than hidden.
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_ithorian_batuu_animatronic.jpg` (3027x3015 original; viewed downscaled): an Ithorian animatronic (shop keeper at Black Spire Outpost), pink-mauve mottled skin, a thick long neck sweeping up to a curved elongated head with closed black eyes at the sides, a pale white bib/dewlap under the chin, white robe with a blue sash and beaded necklaces. 🔴 The head here reads as a smooth curved hook (swept forward) more than the rigid T-shaped hammer crossbar the Must-show asks for; skin is a pinker mauve than other references. Use only as a physical-prop texture/colour reference.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_ithorian_batuu_animatronic.jpg` (3027x3015 original; viewed downscaled): an Ithorian animatronic (shop keeper at Black Spire Outpost), pink-mauve mottled skin, a thick long neck sweeping up to a curved elongated head with closed black eyes at the sides, a pale white bib/dewlap under the chin, white robe with a blue sash and beaded necklaces. 🔴 The head here is a smooth curved hook swept forward and the skin a pink-mauve; owner ruling 2026-10-17: these images are all valid.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action references (Mok Shaiz ×3, the costume profile `wookieepedia_ithorian_swtve.jpg`) and the canon text.*
@@ -119,7 +119,7 @@ should be documented rather than hidden.
 - [ ] Head: a T-shaped hammer crossbar, wider than deep, with large glossy dark eyes at the extreme outer ends on protruding lateral pods; the front of the neck carries a broad smooth downward-hanging fleshy lobe and NO mouth on the face
 - [ ] Twin mouths on the SIDES of the neck — a large oval opening ringed with plate-like teeth partway down the neck
 - [ ] Hands thick, short, blunt and few-digited; feet broad and splayed with three thick toes — not elongated fingers
-- [ ] COLOUR LAYOUT: earth-tone skin all over (olive-tan/yellow-ochre to mid-brown) — never blue; leathery, deeply wrinkled/creased hide, heaviest across the crossbar and along the neck
+- [ ] COLOUR LAYOUT: earth-tone skin all over (olive-tan/yellow-ochre to mid-brown; the pink-mauve animatronic hide also valid) — never blue; leathery, deeply wrinkled/creased hide, heaviest across the crossbar and along the neck
 - [ ] Realistic rendering: fine pebbled, wrinkled leathery hide and natural lighting as on the live-action costume, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
 - [ ] NEGATIVE: not a human with a hammer-shaped head (no upright human neck, no mouth on the face, no long slender fingers); not a hammerhead shark-man; not blue or grey
 
@@ -198,4 +198,7 @@ should be documented rather than hidden.
 - `bloggathehutt_ithorian_batuu_animatronic.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, an Ithorian figure in Black Spire Outpost (Galaxy's Edge); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2026/04/14/species-of-the-week-ithorian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "These are all valid"
+
+Observation, no files deleted; all images accepted, doubting text about the fan-blog animatronic image removed from the Visual brief.

@@ -47,8 +47,8 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 
 The hatched *Alien Archive* line illustration (`canon_2`, grey-black) was deleted 2026-10-08. Canon is now
 LIVE-ACTION *The Book of Boba Fett*: `canon_1` (the practical puppet sitting up, collector's-edition still) and
-`canon_3` (chapter 5, a womp rat sunning itself full-length on a rock in a Tatooine canyon). `legends_1` and
-`legends_2` are realistic Legends paintings.
+`canon_3` (chapter 5, a womp rat sunning itself full-length on a rock in a Tatooine canyon). Both Legends
+paintings were deleted 2026-10-17 by the owner.
 
 From the live-action images:
 - **Silhouette**: a large, lean, hunched rat-like quadruped, long-bodied and low when lying flat, with a long thin
@@ -61,8 +61,7 @@ From the live-action images:
 - **Disagreement (loud)**: the deleted canon illustration and the old Must show asked for a grey-black hide with a
   stiff black mohawk of spikes, big yellow eyes and long upward fangs. The live-action womp rat shows NONE of those:
   dusty brown-grey patchy fur over wrinkled skin, small dull eyes, no visible tusks. The canon prose ("lumpish gray
-  skin with tufts of spiky black hair along the back") is only loosely met. Follow the live-action puppet. The Legends
-  paintings (golden fur, big ears, tusks; olive-tan) are secondary and are not the look.
+  skin with tufts of spiky black hair along the back") is only loosely met. Follow the live-action puppet.
 - **Size cues**: prose says about two metres; the canyon still reads dog-sized or larger.
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a womp rat in The Book of Boba Fett: brown-furred rodent with a long thin tail and one curled horn, lying on its side, large clawed hands. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
@@ -73,7 +72,7 @@ From the live-action images:
 - [ ] Head: long rat-like snout with a small dark nose, tall pointed ears with tufted tips, small dull reddish eyes, a pale wispy chin tuft
 - [ ] Long-fingered dark clawed hand-like paws
 - [ ] Realistic rendering: natural mangy fur and wrinkled skin under harsh desert daylight, no outlines, no ink hatching or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not an ordinary small rat or a sleek-furred rodent (mangy, wrinkled, dog-sized+), not the deleted illustration's grey-black hide with a stiff black spike mohawk, big yellow eyes and long upward fangs, not the Legends golden-furred tusked version
+- [ ] NEGATIVE: not an ordinary small rat or a sleek-furred rodent (mangy, wrinkled, dog-sized+), not the deleted illustration's grey-black hide with a stiff black spike mohawk, big yellow eyes and long upward fangs
 
 ## Engine limits
 not yet assessed
@@ -85,10 +84,11 @@ not yet assessed
 
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Womp rat`; live-action *Book of Boba Fett* puppet (collector's edition still). File: `Womprat-BOBFCE.png` — https://static.wikia.nocookie.net/starwars/images/e/e2/Womprat-BOBFCE.png/revision/latest?cb=20250523005810
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: infobox image. File: `Womp Rat.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/Womp_Rat.jpg/revision/latest?cb=20170712064800
 - `wookieepedia_canon_3.webp` — CANON; *The Book of Boba Fett* chapter 5, live-action womp rat sunning on a rock. File: `WompRatSunning-BoBFCh5.png` — https://static.wikia.nocookie.net/starwars/images/0/0c/WompRatSunning-BoBFCh5.png/revision/latest?cb=20220130213913
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: Jundland Waste womp rats. File: `Womp rat AA.jpg` — https://static.wikia.nocookie.net/starwars/images/9/95/Womp_rat_AA.jpg/revision/latest?cb=20071123163553
 - `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2022/01/31/species-of-the-week-womp-rat/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove both legends references here"
+
+Deleted `womprat/wookieepedia_legends_1.webp` and `womprat/wookieepedia_legends_2.webp`; their candidate lines and brief/Must show mentions removed.

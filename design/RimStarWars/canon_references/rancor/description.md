@@ -40,7 +40,7 @@ Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17,
 
 ## Visual brief
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Return of the Jedi rancor, Encyclopedia render),
-`wookieepedia_canon_2.webp` (Muchi, an adolescent female, Bad Batch), `wookieepedia_legends_1.webp` (Legends sketch
+`wookieepedia_legends_1.webp` (Legends sketch
 of a rancor with young on its back), and `donor_current_sprite.png` (donor sprite `RancorA`, our stand-in).
 
 - **Overall shape:** a huge (about 5 m tall: canon text) hunched biped/knuckle-walker with enormously long, thick
@@ -48,7 +48,7 @@ of a rancor with young on its back), and `donor_current_sprite.png` (donor sprit
 - **Head:** broad, low head sunk into the shoulders with a huge wide mouth of jagged teeth, small eyes, slit nostrils;
   the jaw is the widest part of the head.
 - **Hide:** thick, armoured, wrinkled and warty skin (canon text: armoured hides that withstand blaster fire).
-- **Colour:** grey-brown to mottled blue-grey (RotJ render); tan-brown (Muchi); the Legends text says usually born
+- **Colour:** grey-brown to mottled blue-grey (RotJ render); the Legends text says usually born
   brown, with colour varying in mutants and subspecies.
 - **Donor sprite:** a tan-brown knuckle-walking rancor with long arms and a wide toothy mouth: agrees.
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** the Return of the Jedi rancor in Jabba's pit: hunched, thickly muscled grey-brown warty body, huge head with a wide fanged mouth, short bony spurs on the back, long clawed hands. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
@@ -70,9 +70,11 @@ none known. (Its height and long-armed gait push the 2D body-graphic; drawSize i
 
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Rancor`; wiki caption: infobox image. File: `Rancor-SWE.png` — https://static.wikia.nocookie.net/starwars/images/8/8c/Rancor-SWE.png/revision/latest?cb=20160913053623
-- `wookieepedia_canon_2.webp` — CANON page `Rancor`; wiki caption: Muchi, an adolescent female rancor. File: `Muchi-Rampage.png` — https://static.wikia.nocookie.net/starwars/images/b/bf/Muchi-Rampage.png/revision/latest?cb=20220107060818
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Rancor/Legends`; wiki caption: A rancor with young. File: `Rancor with young.jpg` — https://static.wikia.nocookie.net/starwars/images/4/47/Rancor_with_young.jpg/revision/latest?cb=20060924100038
 - `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2020/07/20/species-of-the-week-rancor/; post card image (not Lucasfilm).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-10-17, canon blog-image review sheet):
+> "remove canon_2.webp"
+
+Deleted `rancor/wookieepedia_canon_2.webp` (Muchi, Bad Batch); tan-brown Muchi colour note removed.
