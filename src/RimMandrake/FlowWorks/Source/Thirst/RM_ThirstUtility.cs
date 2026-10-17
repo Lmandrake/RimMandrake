@@ -87,7 +87,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return null;
 			}
-			LiquidDef row = RM_LiquidBottleUtility.LiquidAt(terrain);
+			LiquidDef row = RM_LiquidBottleUtility.LiquidAt(terrain) ?? terrain.GetModExtension<RM_DrinkableTerrainExtension>()?.liquid;
 			if (row != null)
 			{
 				return row.thirstQuality.HasValue ? row : null;
@@ -152,6 +152,38 @@ namespace RimMandrake.FlowWorks.Thirst
 				return;
 			}
 			QualityEffects(pawn, q, source);
+			RowEffects(pawn, liquid, source);
+		}
+
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU (Q6): the row's own drink effects, once per drink by every route: the
+		/// memory (humanlikes) and each drinkOutcome (a slime's Contagion / absorption / spores / nausea, and its purge).
+		/// Off with the quality-effects setting, like every other side effect of water.</summary>
+		public static void RowEffects(Pawn pawn, LiquidDef liquid, Thing source)
+		{
+			if (!RM_ThirstSettings.waterQualityEffects || liquid == null)
+			{
+				return;
+			}
+			if (liquid.drinkThought != null && pawn.RaceProps.Humanlike)
+			{
+				pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(liquid.drinkThought);
+			}
+			if (liquid.drinkOutcomes == null)
+			{
+				return;
+			}
+			for (int i = 0; i < liquid.drinkOutcomes.Count; i++)
+			{
+				try
+				{
+					liquid.drinkOutcomes[i].DoIngestionOutcome(pawn, source, System.Math.Max(1, liquid.drinkOutcomeCount));
+				}
+				catch (System.Exception e)
+				{
+					Log.WarningOnce("[RimMandrake.FlowWorks] drink outcome " + liquid.drinkOutcomes[i].GetType().Name + " of "
+						+ liquid.defName + " failed: " + e.Message, liquid.shortHash ^ 0x5A17);
+				}
+			}
 		}
 
 		public static void QualityEffects(Pawn pawn, RM_WaterQuality q, Thing source)

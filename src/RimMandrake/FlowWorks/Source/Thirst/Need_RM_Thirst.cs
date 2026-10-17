@@ -38,7 +38,8 @@ namespace RimMandrake.FlowWorks.Thirst
 					heat = RM_ThirstMath.HeatFactor(pawn.AmbientTemperature, pawn.GetStatValue(StatDefOf.ComfyTemperatureMax),
 						true);
 				}
-				return RM_ThirstMath.FallPerDay(RM_ThirstSettings.RateMultiplier, heat, IsHardLabour(pawn), !pawn.Awake());
+				return RM_ThirstMath.FallPerDay(RM_ThirstSettings.RateMultiplier, heat, IsHardLabour(pawn), !pawn.Awake())
+					* HediffFactor(pawn);
 			}
 		}
 
@@ -66,6 +67,27 @@ namespace RimMandrake.FlowWorks.Thirst
 			return s;
 		}
 
+		/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU: the product of every RM_ThirstFallExtension factor on the pawn's
+		/// hediffs (slime purge x1.5, salt poisoning x3).</summary>
+		public static float HediffFactor(Pawn p)
+		{
+			List<Hediff> hs = p.health?.hediffSet?.hediffs;
+			if (hs == null)
+			{
+				return 1f;
+			}
+			float f = 1f;
+			for (int i = 0; i < hs.Count; i++)
+			{
+				RM_ThirstFallExtension ext = hs[i].def.GetModExtension<RM_ThirstFallExtension>();
+				if (ext != null && hs[i].Severity >= ext.minSeverity)
+				{
+					f *= ext.factor;
+				}
+			}
+			return f;
+		}
+
 		private static bool IsHardLabour(Pawn p)
 		{
 			JobDef cur = p.CurJobDef;
@@ -85,6 +107,14 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 			return hardLabour.Contains(cur);
 		}
+	}
+
+	/// <summary>On a HediffDef: while the hediff is at or above <see cref="minSeverity"/>, thirst falls <see cref="factor"/>
+	/// times as fast (Own mode). Data, so any mod's hediff can say it costs water.</summary>
+	public class RM_ThirstFallExtension : DefModExtension
+	{
+		public float factor = 1f;
+		public float minSeverity;
 	}
 
 	/// <summary>The need-level mood thoughts (design §2, the shape of vanilla Hungry): Thirsty -4, Parched -10, Dehydrated

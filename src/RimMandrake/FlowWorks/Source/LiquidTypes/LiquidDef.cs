@@ -132,6 +132,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// another mod's hediffs carry MayRequire, so a missing mod drops only its line.</summary>
         public List<IngestionOutcomeDoer> drinkOutcomes;
 
+        /// <summary>The ingestedCount each drinkOutcome is run with (the slime dose's "full exposure" is several doses).</summary>
+        public int drinkOutcomeCount = 1;
+
         /// <summary>A memory every humanlike gains on drinking it (the slimes' massive mood hit).</summary>
         public ThoughtDef drinkThought;
 
@@ -237,6 +240,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 yield return "LiquidDef " + defName + ": trade.marketValuePerUnit must be >= 0.";
             }
         }
+    }
+
+    /// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU, the source adapter for a terrain no registry row adopts (its pumping,
+    /// filling and flooding stay its own mod's business): put this on the TerrainDef by patch and a pawn standing at its
+    /// edge drinks <see cref="liquid"/>, under that row's use class and effects. The Gelatinous Slime biome's living slime
+    /// (RM_Slime_Liquid) is the first user (owner Q5 sub-question, 2026-10-17).</summary>
+    public class RM_DrinkableTerrainExtension : DefModExtension
+    {
+        public LiquidDef liquid;
     }
 
     /// <summary>Shallow/deep/chest-deep TerrainDef refs for one liquid's
