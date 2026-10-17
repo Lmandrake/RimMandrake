@@ -22,5 +22,6 @@ tells, burn_forced/burn_natural, uv, coalescence, genome, spawner, Sunbeam, limb
 ## Live round must
 1. On `biomes_sprint`, bridge held: `python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py build contagion`,
    then `load contagion`. First live use: map_comp_read on ContagionSky and the shared recipe are UNPROVEN live.
-2. Before the driver can run on it: split the arms. `src/RimMandrake/Contagion/northstar_site.py` preflight REFUSES an
-   RM_Contagion map ("the retile has no control"); the on-Contagion arm needs its own preflight (harness work).
+2. Then the driver runs the whole suite on it: `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` (2026-10-16) removed the
+   preflight refusal; the suite takes a sick start off the Contagion itself for its two stock-map components and
+   restores RM_Contagion at the end (`src/RimMandrake/Contagion/validation.py`, TWO STARTS).

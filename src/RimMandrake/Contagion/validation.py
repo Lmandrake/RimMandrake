@@ -13,9 +13,20 @@ RM_ContagionSkyExtension. `Map.Biome` is a live passthrough to the tile (decompi
 and jawa/map_info says so), so the chain `site.retile_to_contagion` re-tiles the quicktest map's OWN
 tile to RM_Contagion with jawa/world_tile_set + world_commit instead of generating a Contagion map.
 Chains that need it begin with `_need_contagion`, which records UNMEASURED (never PASS/FAIL) when the
-retile did not land. `site.restore_tile` puts the original biome back. The off-biome chains
-(repulsor_clear, spawner) run BEFORE the retile, on the stock quicktest biome, on purpose: the
+retile did not land. `site.restore_tile` puts the START biome back. The off-biome chains
+(repulsor_clear, spawner) run BEFORE the retile, on a stock biome, on purpose: the
 Repulsor's off-Contagion half is a different code path, and the Unfinished spawner jumps the clock.
+
+TWO STARTS, ONE SUITE (item CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK). The suite runs whole on either
+  - a stock map (a quicktest, or the `calm` saved site): as above; or
+  - the saved Contagion site (test_site_saves.py load contagion, RM_TestSite_contagion_v1), already sick.
+Only two components need a stock map: repulsor_clear.site_ready_baseline (the Repulsor's other code path)
+and site.retile_to_contagion (its control: the map must NOT read Contagion before the retile). Both call
+_off_contagion first, which on a sick start re-tiles the map's own tile to OFF_BIOME. That is faithful:
+every Contagion code path decides on the live Map.Biome alone (RM_ContagionSky.ExtFor), and RM_SkyKernel.Tick
+resets the sky state to Fresh at its first poll off the biome, so the map is then the same as a stock map
+that was never retiled. Every other chain is the on-Contagion arm (`_need_contagion`) or biome-blind.
+`site_restore` returns the tile to the first biome the run saw (RM_Contagion on the saved site).
 
 TIME. Two chains use jawa/time_set_ticks, which only overwrites the tick counter (nothing is
 simulated): the spawner (nextSpawnTick is days away) and the natural Burn schedule. Both rely on the
@@ -550,6 +561,38 @@ def _map_biome(t):
     return r.get("mapBiome"), r
 
 
+# Any vanilla Core biome with no RM_ContagionSkyExtension; Core is always loaded, so it always resolves. Only the
+# biome-extension test reads it (the tile's temperature, terrain and mapgen are untouched by a retile).
+OFF_BIOME = "AridShrubland"
+SKY_POLL = 250                                  # RM_SkyKernel.Interval: the sky resets at its first poll off-biome
+
+
+def _off_contagion(t):
+    """The stock-map precondition of the off-Contagion arm (module doc, TWO STARTS). Records the first biome the run
+    saw as start_biome (and the tile); on a map already RM_Contagion re-tiles it to OFF_BIOME and waits one sky poll.
+    -> the map's biome now. Callers treat a biome still RM_Contagion as UNMEASURED (the arm has no stock map)."""
+    b, info = _map_biome(t)
+    if not _live(t):
+        return None
+    _STATE.setdefault("start_biome", b)
+    _STATE.setdefault("tile", info.get("tile"))
+    if b != BIOME:
+        return b
+    tile = info.get("tile")
+    if tile is None or info.get("tileValid") is False:
+        _unmeasured(t, "SITE: the map is %s and map_info reports no usable tile to take it off: %r" % (BIOME, info))
+    _ok(t.bridge_call("jawa/world_tile_set", tiles=str(tile), biome=OFF_BIOME, readBack=1),
+        "world_tile_set(off-Contagion)")
+    _ok(t.bridge_call("jawa/world_commit", redraw=False, recalcPaths=False), "world_commit")
+    b2, _ = _map_biome(t)
+    if b2 == BIOME:
+        _unmeasured(t, "SITE: re-tiling the saved Contagion site to %s did not take (map still reads %s)"
+                       % (OFF_BIOME, BIOME))
+    _wait(t, SKY_POLL + 50)
+    _note(t, "sick start taken off the Contagion", {"tile": tile, "from": b, "to": b2})
+    return b2
+
+
 def _need_contagion(t):
     """First component of every Contagion-map chain: the retile must have landed."""
     with _comp(t, "site_is_contagion", poison=True):
@@ -851,9 +894,7 @@ def repulsor_clear(t):
         with _comp(t, "site_ready_baseline", poison=True):
             _pad(t, "repulsor")
             if _live(t):
-                b, _ = _map_biome(t)
-                if b == BIOME:
-                    _unmeasured(t, "the map is already %s: the off-Contagion arm needs a stock biome" % BIOME)
+                b = _off_contagion(t)        # a sick start (the saved Contagion site) is taken off it first
                 _baseline(t)
                 _prep(t, "repulsor")
                 x, z = t.anchor
@@ -999,6 +1040,7 @@ def _things_pawns(t, kind, rect):
 def site(t):
     with _comp(t, "retile_to_contagion", poison=True):
         if _live(t):
+            _off_contagion(t)                # the control: a sick start reads OFF_BIOME before the retile
             b, info = _map_biome(t)
             tile = info.get("tile")
             if tile is None or info.get("tileValid") is False:
@@ -2044,7 +2086,8 @@ def log_chain(t):
 def site_restore(t):
     with _comp(t, "restore_tile"):
         if _live(t):
-            tile, orig = _STATE.get("tile"), _STATE.get("orig_biome")
+            # the START biome: RM_Contagion on the saved Contagion site, the stock biome on a stock map
+            tile, orig = _STATE.get("tile"), _STATE.get("start_biome") or _STATE.get("orig_biome")
             if tile is None or not orig:
                 _unmeasured(t, "no retile was recorded; nothing to restore")
             _ok(t.bridge_call("jawa/world_tile_set", tiles=str(tile), biome=orig, readBack=1),

@@ -2,7 +2,9 @@
 Offline:
   python3 src/RimMandrake/Utils/northstar_driver/cli.py run --mock --mod Contagion \\
       --plan src/RimMandrake/Contagion/northstar_plan.py --mock-skip-site
-Live (python.exe, bridge held, game up on the `baroque_wave0` tier, a quicktest map >= 150 cells):
+Live (python.exe, bridge held, game up on the `biomes_sprint` tier; either a quicktest map >= 150 cells or the
+saved Contagion site after `python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py load contagion` --
+validation.py TWO STARTS says why both are the same run):
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Contagion \\
       --plan src/RimMandrake/Contagion/northstar_plan.py
 
