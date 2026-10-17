@@ -10,7 +10,8 @@ namespace RimMandrake.FlowWorks.Thirst
 	/// <summary>Design §3: drinking a filled bottle by ANY route (the vanilla Ingest job, an administered drink, a caravan
 	/// tick, a bridge-ordered drink) raises RM_Thirst by litres / 3 at the bottle's water quality. Wired by the generator onto
 	/// every drinkable bottle, beside IngestionOutcomeDoer_BottleResidue (which still leaves the dirty or empty bottle).
-	/// In Dbh mode it hydrates nothing (DBH reads its WaterExt) but the quality effects still apply.</summary>
+	/// In Dbh mode a bridged bottle hydrates through Dubs' own WaterExt (RM_ThirstUtility.Drink then fills nothing), and the
+	/// quality and row effects still apply.</summary>
 	public class IngestionOutcomeDoer_RM_Hydrate : IngestionOutcomeDoer
 	{
 		protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
@@ -35,8 +36,10 @@ namespace RimMandrake.FlowWorks.Thirst
 	/// <summary>Humanlikes (inserted at Humanlike_PostDuty, the tag DBH's own ConditionalThirst uses): below 0.3, drink from
 	/// the best reachable source the use-class gate allows (RM_ThirstUtility.MayDrink: potable always, slime and toxic water
 	/// only when desperate, salt water and brine never outside the salt-water break), ranked by use class, then quality, then
-	/// distance. Sources: a drinkable bottle (inventory first, then the map) through the vanilla Ingest job; a tank of the
-	/// pawn's own faction; a terrain edge (setting drinkFromTerrain).</summary>
+	/// distance, with awkward sources (a bucket or barrel scoop; anything away from home) after free ones at the same use
+	/// class (RM_ThirstMath.BetterPick). Sources: a drinkable bottle (inventory first, then the map) through the vanilla
+	/// Ingest job; a tank of the pawn's own faction; a terrain edge (setting drinkFromTerrain); a filled bucket or barrel; a
+	/// water item. Under Dubs (Q11) only the desperate last resort, read off Dubs' bar.</summary>
 	public class JobGiver_RM_Drink : ThinkNode_JobGiver
 	{
 		protected override Job TryGiveJob(Pawn pawn)

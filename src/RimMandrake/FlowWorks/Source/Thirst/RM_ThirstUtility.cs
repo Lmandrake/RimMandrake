@@ -9,9 +9,11 @@ using Verse.AI;
 namespace RimMandrake.FlowWorks.Thirst
 {
 	/// <summary>Design §3: where a thirsty pawn drinks, and what a drink does. Every drink route (bottle ingest, terrain edge,
-	/// tank, administered, caravan) ends in <see cref="Drink"/>, so the quality effects are the same everywhere and in both
-	/// provider modes (they are about the liquid, not the need). Hydration is applied only to OUR need; in Dbh mode DBH reads
-	/// its own WaterExt off the bottle.</summary>
+	/// tank, bucket or barrel, water item, administered, caravan) ends in <see cref="Drink"/>, so the quality and row effects
+	/// are the same everywhere and in both provider modes (they are about the liquid, not the need). In Own mode a drink fills
+	/// our need; in Dbh mode Dubs reads its own WaterExt off a bridged bottle, and every drink Dubs cannot see fills Dubs' bar
+	/// (THIRST_RULES_BUILD_SALT_OFF_THE_MENU Q11). Which sources a pawn may drink at all is the use-class gate,
+	/// <see cref="MayDrink"/>.</summary>
 	public static class RM_ThirstUtility
 	{
 		public const float SearchRadius = 60f;
@@ -117,9 +119,11 @@ namespace RimMandrake.FlowWorks.Thirst
 			return RM_ThirstProvider.OursLive && NeedOf(p) is Need_RM_Thirst n && n.CurLevel < RM_ThirstMath.ThirstyBelow;
 		}
 
-		/// <summary>The liquid a pawn drinks at a terrain: the registry row (RM_LiquidBottleUtility.LiquidAt), or, for a
-		/// river or a fresh-water terrain no row adopts (vanilla rivers, a modded lake), plain fresh water. Ocean and every
-		/// row without a thirstQuality (boiling, icy, acid, tar, fuel, slime, lava) is not a drink.</summary>
+		/// <summary>The liquid a pawn drinks at a terrain: the registry row (RM_LiquidBottleUtility.LiquidAt), a terrain
+		/// pointed at a row by RM_DrinkableTerrainExtension (the Gelatinous biome's living slime), or, for a river or a
+		/// fresh-water terrain no row adopts (vanilla rivers, a modded lake), plain fresh water. A row without a thirstQuality
+		/// (boiling, acid, tar, fuel, lava, reaction liquor) is not a drink at all; whether a pawn may drink one that has a
+		/// thirstQuality is MayDrink's call.</summary>
 		public static LiquidDef DrinkLiquidAt(TerrainDef terrain)
 		{
 			if (terrain == null)
@@ -138,8 +142,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			return null;
 		}
 
-		/// <summary>Every drinkable container: a BOTTLE-sized ThingDef with an ingestible block holding a liquid that has a
-		/// thirstQuality (buckets and barrels are not drunk, design §3).</summary>
+		/// <summary>Every drinkable bottle: a BOTTLE-sized ThingDef with an ingestible block holding a liquid that has a
+		/// thirstQuality, drunk whole through vanilla Ingest. Buckets and barrels are drawn from 1.5 L at a time instead
+		/// (RM_ThirstContainerUtility, RM_DrinkFromContainer).</summary>
 		public static List<ThingDef> DrinkableBottles
 		{
 			get

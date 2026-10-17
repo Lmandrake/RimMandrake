@@ -26,6 +26,12 @@
       <color>(235,242,250)</color>
     </graphicData>
     <stackLimit>10</stackLimit>
+    <!-- the bucket's own material, carried through snow and melt (RM_LiquidBottleUtility.MakeContainer) -->
+    <stuffCategories>
+      <li>Woody</li>
+      <li>Metallic</li>
+      <li>Leathery</li>
+    </stuffCategories>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <MarketValue>3</MarketValue>
