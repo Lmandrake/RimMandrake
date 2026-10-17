@@ -260,6 +260,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			return best;
 		}
 
+		internal const int NoTerrainMarkTicks = 600;
 		private static readonly Dictionary<int, int> noTerrainUntil = new Dictionary<int, int>();
 
 		/// <summary>Nearest reachable drinkable terrain edge, best quality first. GenRadial walks in increasing distance, so
@@ -278,9 +279,11 @@ namespace RimMandrake.FlowWorks.Thirst
 				return false;
 			}
 			int now = Find.TickManager.TicksGame;
-			if (noTerrainUntil.TryGetValue(pawn.thingIDNumber, out int until) && now < until)
+			if (noTerrainUntil.TryGetValue(pawn.thingIDNumber, out int until))
 			{
-				return false;
+				// marks are now+600; one further ahead is a stale entry from another game (thing IDs repeat across saves)
+				if (now < until && until - now <= NoTerrainMarkTicks) return false;
+				noTerrainUntil.Remove(pawn.thingIDNumber);
 			}
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 			bool found = false;
@@ -324,7 +327,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 			if (!found)
 			{
-				noTerrainUntil[pawn.thingIDNumber] = now + 600;
+				noTerrainUntil[pawn.thingIDNumber] = now + NoTerrainMarkTicks;
 			}
 			return found;
 		}

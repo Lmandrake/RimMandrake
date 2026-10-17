@@ -273,8 +273,8 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return patient.IsPrisonerOfColony;
 			}
-			return !patient.IsPrisoner && (patient.Downed || patient.InBed())
-				&& (patient.Faction == pawn.Faction || patient.HostFaction == pawn.Faction || patient.guest != null);
+			return !patient.IsPrisoner && (patient.Downed || patient.InBed()) && !patient.HostileTo(pawn)
+				&& (patient.Faction == pawn.Faction || patient.HostFaction == pawn.Faction);
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
