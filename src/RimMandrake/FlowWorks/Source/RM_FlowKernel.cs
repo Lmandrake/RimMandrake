@@ -918,6 +918,13 @@ namespace RimMandrake.FlowWorks
 		/// drop of one, so a wet-first mouth held a fed D=1 run at 1,0,0,0 for ever.</summary>
 		private bool IsLiveMouth(int c)
 		{
+			// FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS: a pump or drill inlet is a mouth too. It is hop 0 of the flow order like a
+			// source's cell (ComputeFlowOrder), and its driver pours only when the inlet has room, so a wet-first inlet held a
+			// D=1 canal fed by a driver alone at 1,0,0,0 for ever.
+			if (externalInput != null && IsExcavated(c) && !IsSealed(c) && externalInput(c))
+			{
+				return true;
+			}
 			for (int d = 0; d < 4; d++)
 			{
 				int nb = Cardinal(c, d);

@@ -1743,6 +1743,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS_driver_fed_d1_canal_fills", () =>
+            {
+                string r = FlowKernelFuzz.DriverFedD1CanalFills();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
             {
                 string r = FlowKernelFuzz.OversizedNetworkExchanges();

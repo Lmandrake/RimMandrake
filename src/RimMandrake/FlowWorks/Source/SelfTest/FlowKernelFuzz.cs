@@ -384,6 +384,53 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: fixed far end {fixedFar} (want > 0), old-rule probe {oldFar} (want 0 - else the scene cannot fail)";
 		}
 
+		/// <summary>FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS (GPT 1core #5): a dry D=1 canal fed ONLY by a driver at its inlet, at the
+		/// shipped flags (surface levelling + level-set). The neighbour pass never moves a drop of 1 under level-set, so the
+		/// solve must pass the inlet's unit on; if the inlet keeps it for being wet the run sits at 1,0,0,... for ever.
+		/// <paramref name="backedUpMarks"/> true = the pump (re-marks a brimming outlet), false = the drill (returns early
+		/// when its outlet is full, marks nothing). Returns the far end's fill after 200 driver cycles.</summary>
+		public static int DriverFedD1FarFill(bool backedUpMarks)
+		{
+			const int len = 8;
+			var w = new ArrayWorld(len, 1);
+			var digs = new List<int>();
+			for (int x = 0; x < len; x++) { w.k.depth[x] = 1; digs.Add(x); }
+			w.k.viscosityEnabled = true;
+			w.k.creepWaterEnabled = true;
+			w.k.levelBySurfaceEnabled = true;
+			w.k.levelSetEnabled = true;
+			int inlet = 0;
+			var inputs = new RM_DriverInputs();
+			int now = 0;
+			for (int p = 0; p < 200; p++)
+			{
+				now += RM_PumpMath.CycleTicks;
+				if (w.k.fill[inlet] < w.k.depth[inlet])
+				{
+					int old = w.k.fill[inlet];
+					w.k.fill[inlet] = (byte)(old + 1);
+					if (w.cellFluid[inlet] == null) w.cellFluid[inlet] = ArrayWorld.Water;
+					inputs.NoteWrite(inlet, old, old + 1, now);
+				}
+				else if (backedUpMarks)
+				{
+					inputs.NoteBackedUp(inlet, now);
+				}
+				inputs.Prune(now, i => w.k.depth[i] == 0);
+				w.k.externalInput = inputs.Count > 0 ? (Func<int, bool>)inputs.Contains : null;
+				w.Pulse(digs); Pulses++;
+			}
+			return w.k.fill[len - 1];
+		}
+
+		public static string DriverFedD1CanalFills()
+		{
+			int pump = DriverFedD1FarFill(true), drill = DriverFedD1FarFill(false);
+			return pump == 1 && drill == 1
+				? "OK: a D=1 canal fed only at its inlet fills to the far end (pump and drill)"
+				: $"BROKEN: far end pump-fed {pump}, drill-fed {drill} (want 1, 1; 0 = the inlet keeps its unit, 1,0,0,0 stall)";
+		}
+
 		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies, and a channel touching both
 		/// never mixes them: once a channel cell is wet its fluid never changes, and the cell over the water really fills
 		/// with water (so the scene reaches the kernel). Returns "OK ..." or "BROKEN ...".</summary>

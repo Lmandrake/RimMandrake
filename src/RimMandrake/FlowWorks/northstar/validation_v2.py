@@ -582,7 +582,9 @@ class PulseOracle(object):
 
     def _ls_mouth(self, c):
         """RM_FlowKernel.IsLiveMouth: a dug square beside a supplying source never keeps its unit for being wet, so a fed
-        D=1 run passes the unit on and the source refills the mouth (CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY)."""
+        D=1 run passes the unit on and the source refills the mouth (CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY). The kernel also counts
+        a pump/drill inlet (externalInput) as a mouth (FLOWWORKS_PUMP_FIX_D1_CANAL_STALLS); this oracle models no drivers, so
+        that clause never applies here and the differential scenes (externalInput null) are unchanged."""
         for dx, dz in CARDINAL:
             n = (c[0] + dx, c[1] + dz)
             if self.inb(n) and self.is_source(n) and self.can_supply(n):
