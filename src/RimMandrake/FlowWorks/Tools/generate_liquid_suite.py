@@ -1160,6 +1160,66 @@ LIQUID_DEF_ROWS = {
         "pH": 7,
         "terrainSuite": {"shallow": "LavaShallow", "deep": "LavaDeep"},
     },
+    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §4, OQ-4 ruled by card
+    # 2026-10-16: "rename the five coloured Dubs bottles; accept the lost stacks"). The ManyWaters coloured waters become
+    # ordinary registry rows: each adopts its RM_Water_<Colour> terrain (Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml)
+    # and is Potable, so RM_Bottle_<Colour>Water loads with Dubs Bad Hygiene absent. They replace the DBH-only
+    # RM_WaterBottle_<Colour> defs of the deleted Patches/RM_ColoredWaterBottles_Patch.xml (no aliases).
+    "rustwater": {
+        "defName": "RM_Liquid_RustWater",
+        "label": "rust-tinted water",
+        "description": "Water carrying enough dissolved iron oxide to run the colour of old blood. Still drinkable; just don't ask where it came from.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_Water_Rust"},
+        "thirstQuality": "Potable",
+        "bottled": {"bottle": "RM_Bottle_RustWater",
+                    "bucket": "RM_Bucket_RustWater", "barrel": "RM_Barrel_RustWater"},
+    },
+    "verdigriswater": {
+        "defName": "RM_Liquid_VerdigrisWater",
+        "label": "verdigris water",
+        "description": "Water tinted teal-green by dissolved copper salts, the colour a bronze hull turns after long enough underwater.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_Water_Verdigris"},
+        "thirstQuality": "Potable",
+        "bottled": {"bottle": "RM_Bottle_VerdigrisWater",
+                    "bucket": "RM_Bucket_VerdigrisWater", "barrel": "RM_Barrel_VerdigrisWater"},
+    },
+    "amberwater": {
+        "defName": "RM_Liquid_AmberWater",
+        "label": "amber water",
+        "description": "Water gone gold-brown with dissolved resin or spice residue.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_Water_Amber"},
+        "thirstQuality": "Potable",
+        "bottled": {"bottle": "RM_Bottle_AmberWater",
+                    "bucket": "RM_Bucket_AmberWater", "barrel": "RM_Barrel_AmberWater"},
+    },
+    "violetwater": {
+        "defName": "RM_Liquid_VioletWater",
+        "label": "violet water",
+        "description": "Water stained a deep violet. Nobody at the trading post could say by what.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_Water_Violet"},
+        "thirstQuality": "Potable",
+        "bottled": {"bottle": "RM_Bottle_VioletWater",
+                    "bucket": "RM_Bucket_VioletWater", "barrel": "RM_Barrel_VioletWater"},
+    },
+    "chalkwater": {
+        "defName": "RM_Liquid_ChalkWater",
+        "label": "chalky water",
+        "description": "Water clouded pale with dissolved minerals.",
+        "viscosityClass": "Water",
+        "pH": 7,
+        "terrainSuite": {"shallow": "RM_Water_Chalk"},
+        "thirstQuality": "Potable",
+        "bottled": {"bottle": "RM_Bottle_ChalkWater",
+                    "bucket": "RM_Bucket_ChalkWater", "barrel": "RM_Barrel_ChalkWater"},
+    },
 }
 
 # Rows whose whole terrain form is a base-game terrain and which have no canal fluid: RM_LiquidSurface and
@@ -1200,6 +1260,15 @@ _WATER = {"wake": 1.0, "overlay": False, "seeThrough": 0.35}
 _FLOW = {"shader": "Flow", "texture": "Other/Perlin", "splashes": False, "wake": 0.3, "overlay": False,
          "depthDarken": 0.12, "flowSpeed": 0.03, "flowAmplitude": 0.05, "flowFrequency": 1.0, "brightness": 0.0}
 _SLIME = dict(_FLOW, flowSpeed=0.05, flowAmplitude=0.08, depthDarken=0.10, bubbles=0.08, wake=0.4)
+# THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: the ManyWaters coloured waters' colours (their terrain tints / 255), shared by
+# their bottle window (LIQUID_CONTAINER_COLORS) and their surface look (SURFACE_LOOKS)
+LIQUID_CONTAINER_COLORS_MANYWATERS = {
+    "rustwater": "(0.66,0.36,0.23)",
+    "verdigriswater": "(0.27,0.66,0.55)",
+    "amberwater": "(0.78,0.59,0.24)",
+    "violetwater": "(0.47,0.31,0.66)",
+    "chalkwater": "(0.78,0.77,0.70)",
+}
 SURFACE_LOOKS = {
     # the water family: vanilla shallow water, nothing drawn over it
     "freshwater":     dict(_WATER),
@@ -1240,6 +1309,12 @@ SURFACE_LOOKS = {
     "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
     "slime_yellow":   dict(_SLIME, tint="(0.78,0.68,0.22)"),
+    # the ManyWaters coloured waters: plain water tinted the terrain's own colour (so the look is what the terrain already was)
+    "rustwater": dict(_WATER, tint=LIQUID_CONTAINER_COLORS_MANYWATERS["rustwater"]),
+    "verdigriswater": dict(_WATER, tint=LIQUID_CONTAINER_COLORS_MANYWATERS["verdigriswater"]),
+    "amberwater": dict(_WATER, tint=LIQUID_CONTAINER_COLORS_MANYWATERS["amberwater"]),
+    "violetwater": dict(_WATER, tint=LIQUID_CONTAINER_COLORS_MANYWATERS["violetwater"]),
+    "chalkwater": dict(_WATER, tint=LIQUID_CONTAINER_COLORS_MANYWATERS["chalkwater"]),
 }
 # Canal fluids whose own FluidDef.surfaceLook is used (it wins over any LiquidDef row's look), emitted as a FluidDef patch (Patches/LiquidTypes/RM_FluidSurfaceLooks.xml).
 FLUID_SURFACE_LOOKS = {
@@ -1327,6 +1402,8 @@ LIQUID_CONTAINER_COLORS = {
     "slime_green": "(0.30,0.55,0.18)",
     "slime_white": "(0.80,0.78,0.70)",
     "slime_yellow": "(0.78,0.68,0.22)",
+    # the ManyWaters coloured waters: their terrain tints (RM_ColoredWater.xml) / 255
+    **LIQUID_CONTAINER_COLORS_MANYWATERS,
 }
 
 
@@ -1510,10 +1587,9 @@ def build_liquiddef_registry(out_dir: Path):
 _CONTAINER_SIZE_META = {
     # size key -> (bottled-dict key, ParentName, defName prefix, noun, gets-ingestible-block)
     "bottle": ("bottle", "RM_BottleItemBase", "RM_Bottle_", "bottle", True),
-    "bucket": ("bucket", "RM_BucketItemBase", "RM_Bucket_", "bucket", True),
-    # Barrels never get an <ingestible> block -- bulk TRADE good, not a
-    # food item a pawn drinks from directly. See this module's own header
-    # and RM_LiquidBottles_Base.xml's.
+    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §3/§4): buckets and barrels are NOT drunk directly (items are
+    # consumed whole); the tank and fill jobs decant them to bottles. Only bottles get an <ingestible> block.
+    "bucket": ("bucket", "RM_BucketItemBase", "RM_Bucket_", "bucket", False),
     "barrel": ("barrel", "RM_BarrelItemBase", "RM_Barrel_", "barrel", False),
 }
 
@@ -1533,16 +1609,17 @@ def build_bottle_thingdef_xml(container_defname, liquid_defname, liquid_label, d
     lines.append("      </li>")
     lines.append("    </modExtensions>")
     # LIQUID_BOTTLE_LOOP_1: only a row the registry already marked drinkable
-    # (thirstQuality set -- fresh/salt/toxic/brine water) becomes ingestible
-    # at all, and only for the bottle/bucket size tiers. That is an existing,
+    # (thirstQuality set -- fresh/salt/toxic/brine/coloured water) becomes ingestible
+    # at all, and only for the bottle size tier (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY). That is an existing,
     # non-invented signal: boiling water would scald, icy water gives
     # frostbite, and acid/tar/propane are hazards or fuel, never a drink --
     # none of those five rows carry thirstQuality, so none of them get this
     # block. IngestionOutcomeDoer_BottleResidue (Source/LiquidTypes/) reads
     # RM_BottledLiquidExtension generically and leaves a dirty/empty
-    # same-sized container behind per the Mod Settings toggle; DBH
-    # registration (LIQUID_THIRST_CHAIN_1) layers its own hydration/thirst
-    # effect on the SAME ingestion without touching this block.
+    # same-sized container behind per the Mod Settings toggle;
+    # IngestionOutcomeDoer_RM_Hydrate is the drink itself. With Dubs Bad Hygiene
+    # loaded, build_dbh_bottle_patch adds DBH's WaterExt to the same bottles
+    # (design/RimMandrake/thirst_bottles_design_2026-10-16.md §1.3).
     # WATER_NUTRITION_JUDGE_DRINKING_DINNER, owner by card 2026-10-15 ("Water isn't food"): drinking any water --
     # toxic and salt included -- quenches only and never fills the food bar. Nutrition 0 needs NeverForNutrition
     # (vanilla IngestibleProperties.ConfigErrors), which also keeps a hungry pawn from seeking it as food.
@@ -1553,7 +1630,13 @@ def build_bottle_thingdef_xml(container_defname, liquid_defname, liquid_label, d
         lines.append("    <ingestible>")
         lines.append("      <foodType>Fluid</foodType>")
         lines.append("      <preferability>NeverForNutrition</preferability>")
+        # one bottle per drink: Thing.IngestedCalculateAmounts divides by the (zero) nutrition otherwise
+        lines.append("      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>")
+        lines.append("      <ingestCommandString>Drink {0}</ingestCommandString>")
+        lines.append("      <ingestReportString>Drinking {0}.</ingestReportString>")
         lines.append("      <outcomeDoers>")
+        # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: the drink (RM_Thirst + water-quality effects), then the residue
+        lines.append('        <li Class="RimMandrake.FlowWorks.Thirst.IngestionOutcomeDoer_RM_Hydrate" />')
         lines.append('        <li Class="RimMandrake.FlowWorks.LiquidTypes.IngestionOutcomeDoer_BottleResidue" />')
         lines.append("      </outcomeDoers>")
         lines.append("    </ingestible>")
@@ -1619,8 +1702,9 @@ def build_bottle_thingdefs(out_dir: Path):
   C#. The dirty-stage Mod Settings toggle ships
   (RimMandrakeFlowWorksSettings.bottleDirtyStageEnabled, default ON). Only
   a row with `thirstQuality` set gets an `<ingestible>` block, and only on
-  its bottle/bucket siblings — never barrel, the bulk TRADE good — see
-  build_bottle_thingdef_xml's own comment.
+  its bottle — never bucket or barrel, which are decanted, not drunk
+  (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) — see build_bottle_thingdef_xml's
+  own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
   Revert-on-bottle (boiling/icy -> fresh) is row data read by
@@ -1637,6 +1721,72 @@ def build_bottle_thingdefs(out_dir: Path):
     out_path = out_dir / "RM_LiquidBottles.xml"
     out_path.write_text(xml, encoding="utf-8")
     return out_path, generated_for
+
+
+# THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §1.3, OQ-1 ruled by card
+# 2026-10-16: "Dubs' thirst runs and ours steps aside; our bottles count for it"). DubsBadHygiene.WaterExt's fields read
+# from DBH Lite's own DBH_WaterBottle (workshop 2570319432, 1.6/Defs/ThingDefs_Items/Items_Resource_Stuff.xml:108):
+# water / UseForWashing / SeekForThirst. FindMod matches mod NAMES ("Dubs Bad Hygiene Lite", "Dubs Bad Hygiene", read from
+# both About.xml files). One PatchOperationAddModExtension per drinkable bottle, never a top-level MayRequire.
+# SeekForThirst is true only for Potable/Distilled water: Dubs' pawns have no quality rule, so salt, brine and toxic
+# bottles stay drinkable by order but are never what a thirsty Dubs pawn goes looking for.
+DBH_MOD_NAMES = ("Dubs Bad Hygiene Lite", "Dubs Bad Hygiene")
+
+
+def dbh_drinkable_bottles():
+    """[(bottle defName, seek)] for every LIQUID_DEF_ROWS row with a thirstQuality and a generated RM_Bottle_."""
+    out = []
+    for row in LIQUID_DEF_ROWS.values():
+        q = row.get("thirstQuality")
+        b = (row.get("bottled") or {}).get("bottle")
+        if q and b and b.startswith("RM_Bottle_"):
+            out.append((b, q in ("Potable", "Distilled")))
+    return out
+
+
+def build_dbh_bottle_patch(out_dir: Path):
+    ops = []
+    for defname, seek in dbh_drinkable_bottles():
+        ops.append(f"""          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="{defname}"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>{"true" if seek else "false"}</SeekForThirst>
+              </li>
+            </value>
+          </li>""")
+    mods = "\n".join(f"      <li>{m}</li>" for m in DBH_MOD_NAMES)
+    xml = f"""<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DBH_BottleWaterExt.xml         GENERATED by generate_liquid_suite.py
+  ============================================================================
+  THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §1.3). With Dubs Bad
+  Hygiene (Lite or full) loaded, every drinkable FlowWorks bottle gets DBH's drinkable marker, DubsBadHygiene.WaterExt,
+  so it counts for Dubs' thirst. SeekForThirst only on potable/distilled water. No Dubs contamination comp:
+  our thirstQuality already says how clean the water is (two systems would double-count). Gated twice: FindMod on the mod names, then the
+  dbhBottleBridge Mod Setting (RM_PatchOperation_ThirstBridge, read at load: needs a restart). Edit the generator's
+  LIQUID_DEF_ROWS / build_dbh_bottle_patch, never this file. Supersedes RM_DBH_FreshWaterDrinkables.xml (deleted).
+  ============================================================================
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+{mods}
+    </mods>
+    <match Class="RimMandrake.FlowWorks.Thirst.RM_PatchOperation_ThirstBridge">
+      <operations>
+{chr(10).join(ops)}
+      </operations>
+    </match>
+  </Operation>
+</Patch>
+"""
+    out_path = out_dir / "RM_DBH_BottleWaterExt.xml"
+    out_path.write_text(xml, encoding="utf-8")
+    return out_path
 
 
 def main():
@@ -1676,6 +1826,9 @@ def main():
     bottle_path, generated_for = build_bottle_thingdefs(thingdef_dir)
     print(f"WROTE {bottle_path}")
     print(f"  bottle ThingDefs generated for: {generated_for}")
+
+    dbh_path = build_dbh_bottle_patch(patch_dir)
+    print(f"WROTE {dbh_path}")
 
 
 if __name__ == "__main__":

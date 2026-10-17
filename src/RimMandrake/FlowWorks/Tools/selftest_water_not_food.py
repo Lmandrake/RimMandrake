@@ -55,7 +55,10 @@ for f in files:
     seen += 1
     bad = food_waters(f)
     check(not bad, "%s: no water container is food %s" % (f.relative_to(MOD), bad[:4]))
-check(seen >= 2, "the scan saw the generated bottles and the coloured-water bottles (%d files)" % seen)
+# THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: the coloured-water bottles are generated now (RM_Bottle_<Colour>Water), in the same file
+check(seen >= 1, "the scan saw the generated bottles (%d files)" % seen)
+gen_txt = (MOD / "Defs" / "LiquidTypes" / "ThingDefs" / "RM_LiquidBottles.xml").read_text(encoding="utf-8")
+check("<defName>RM_Bottle_RustWater</defName>" in gen_txt, "the scan covers the coloured-water bottles (RM_Bottle_RustWater generated)")
 
 # 2 generated file current
 shipped = MOD / "Defs" / "LiquidTypes" / "ThingDefs" / "RM_LiquidBottles.xml"
