@@ -39,7 +39,31 @@ HOW EACH ROW READS (PROVE / EXPECT / LIES), in the order run:
        Load, spawn A first, need 0.2 with no water (its search fails: marked for 600 ticks); reload, spawn B first (same
        thingIDNumber, ticks restarted), a red pool beside it, need 0: B drinks within 300 ticks. LIES: B not holding A's
        ID, or B's search tick outside [A's mark tick, +600) -> the collision was not reproduced -> UNMEASURED, never PASS.
-       Not yet run live; its red against the pre-fix DLL (6f092b3ce8^) is inferred from the mechanism, not observed.
+       Live 2026-10-17 round 2 on the fixed DLL: PASS (B = A's Human36705, B's search at tick 92 in [2, 602), drank in 30).
+       Its red against the pre-fix DLL (6f092b3ce8^) is inferred from the mechanism, not observed.
+
+BATCH 3 (thirst live round 2, 2026-10-17), on a second cleared site east of the first (X0+45..+95); every row dries the
+whole map of liquid first and quenches every bystander (a thirsty earlier-row pawn otherwise drinks the test's water):
+  T18  UNMEASURED SITE unless Dubs Bad Hygiene Lite + Thirst is loaded (provider Dbh); the walk list has no Dubs.
+  T14  native = RM_ThirstUtility.NativeHere (the MAP biome's roster, read live by static_call over candidate kinds), not a
+       salt-biome map: a native and a non-native wild animal at 0.2 beside salt water only, 2,500 ticks: the native rises
+       > 0.2 with no FoodPoisoning, the non-native does not rise. First run: Dromedary native, Muffalo not, on AridShrubland.
+  T16  RM_Slime_Liquid painted 2x2 (the drink rule is the terrain's extension, not the biome): at 0 -> RM_DrinkFromTerrain,
+       RM_Slimification, the slime thought; lastResortDrinking OFF -> no drink in 900 ticks.
+  T20  ordered RM_DrinkFromContainer on one bucket until it is gone: exactly 10 drinks (15 L / 1.5 L), then a dirty bucket;
+       a bucket with 3 drinks taken, poured by order (RM_EmptyIntoTankJob) into a Store tank: +105 units (10.5 L).
+  T23  a Fill tank (ProofTank) holding brine 100, a brine strip, 3 empty buckets, one undrafted hauler: brine gathered and
+       poured unasked (units rise); Store: no new brine bucket. LIES: a bucket CARRIED mid-pour when the others are
+       destroyed drops at stop_job and reads as a new fill (first run: FAIL 1 bucket, no fill job) -> judged from the drop.
+  T25  snow depth 1 on 8x8 (jawa/set_weather_buildup), an empty bucket, no liquid water: RM_GatherSnow -> RM_BucketSnow,
+       melts to RM_Bucket_FreshWater within 7,000 ticks above 0 C (first run: 5,000 at 31 C); with a pond near: no snow job.
+  T26  a refuelled Campfire, bill RM_MeltBlueIceIntoBucket (repeatMode 'repeatcount'; 'count' is refused), 5 RM_BlueIce + a
+       WoodLog RM_BucketEmpty, a Cooking worker: a WoodLog RM_Bucket_FreshWater, no Player.log error line meanwhile.
+  T29  target = filledBottlesPerColonist x FreeColonistsSpawned (all test colonists count), picked so the deficit is > 10;
+       the stock is RM_BottleStock.Have (ground + PACKED). LIES: the ground count falls as colonists pack bottles (first
+       run read 10, 18, 16, 14 ...), and bottles packed in an earlier run survive purge_drinks (second run: one step of
+       14) -> steps are measured from Have before the empties drop. PASS: Have ends exactly at target, every step <= 10,
+       and a deficit over 10 takes more than one step.
 
 DEBUG RECORD, T15 run 1 (live walk 2026-10-17, b5.json): the red pawn carried the WHITE slime's RM_SporeFlesh and no
 RM_ContagionTouched; a rerun from the same save (b6.json) was exact. Theories, in the order weighed:
@@ -263,7 +287,8 @@ def main(argv=None):
     SITE = "%d,%d,40,40" % (X0, Z0)
     saved = {}
     keys = ("thirstEnabled", "thirstRateMultiplier", "thirstHeatScaling", "animalsGetThirst", "drinkFromTerrain",
-            "waterQualityEffects", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty")
+            "waterQualityEffects", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "snowGathering",
+            "filledBottlesPerColonist")
     try:
         for k in keys:
             saved[k] = sget(k)
@@ -778,6 +803,480 @@ def main(argv=None):
                     {"force": {k: r.get(k) for k in ("started", "breakDef")}, "trace": trace[-4:], "hediffs": h, "memories": m,
                      "bad": bad, "notRun": "the break being OFFERED (mood gate, dev list) and not offered with a fresh bottle: the start is forced"})
             draft(ps)
+        # ================================================================ batch 3 (thirst live round 2, 2026-10-17)
+        # A second, freshly cleared site east of the first (X3..X3+50 x Z0..Z0+40), so these rows never meet the first
+        # batch's ponds, salt strips and slime pools. Every row starts by drying it and quenching every bystander, so a
+        # thirsty pawn from an earlier row never drinks the test's water or bottles.
+        X3 = X0 + 45
+        WETS = POTABLE_TERRAIN + ("WaterOceanShallow", "WaterOceanDeep", "RM_WaterBrineShallow", "RM_WaterBrineDeep",
+                                  "RM_WaterPoisonedShallow", "RM_Slime_Liquid", "RM_SlimeRedShallow", "RM_SlimeGreenShallow",
+                                  "RM_SlimeWhiteShallow", "RM_SlimeYellowShallow")
+        batch3 = [r_ for r_ in ("T14", "T16", "T18", "T20", "T23", "T25", "T26", "T29") if want(r_) and (only or True)]
+        site3_ok = False
+        if batch3:
+            site3_ok = V.prepare_site(B, (X3, Z0, 50, 40), rows, "site3_ready")
+
+        def dry_all():
+            """Every liquid cell on the map -> Soil (potable, salt, brine, toxic, slime): the row paints its own."""
+            tb3 = B.call("jawa/get_terrain_batch", rects="0,0,250,250") or {}
+            wet3 = [op for op in (tb3.get("ops") or "").split(";") if op and op.split(":")[0] in WETS]
+            if wet3:
+                B.call("jawa/set_terrain_batch", ops=";".join("Soil:" + op.split(":")[1] for op in wet3))
+            return len(wet3)
+
+        def quench_all(keep=()):
+            for c in colonists():
+                pid = re.sub(r"^Thing_", "", c["pawnId"])
+                if pid not in keep:
+                    need(pid, 1.0)
+
+        _hp = []
+
+        def tank_units(x, z):
+            """The hose probe's tank read (decilitres), as sprinkler_live reads it: validation_hose.H().hp."""
+            if not _hp:
+                _fw = os.path.dirname(HERE)
+                if _fw not in sys.path:
+                    sys.path.insert(0, _fw)
+                import validation_hose as VH
+                _hp.append(VH.H())
+            r = _hp[0].hp("tank:%d,%d" % (x, z)) or {}
+            return r.get("units") if r.get("success") else None
+
+        def things(defn, rect=None):
+            kw = {"defName": defn, "limit": 200}
+            if rect:
+                kw["rect"] = rect
+            return [t for t in (B.call("jawa/list_things", **kw) or {}).get("things") or [] if (t.get("def") or t.get("defName")) == defn]
+
+        def worker(x, z, work=("Hauling",)):
+            """An undrafted fresh colonist with the given work types at priority 1 (every other bystander drafted)."""
+            pid = spawn_colonist(x, z)
+            UNDER_TEST.add(pid)
+            for w in work:
+                B.call("jawa/set_work_priority", pawnId=pid, workType=w, priority=1)
+            need(pid, 1.0)
+            return pid
+
+        def draft_bystanders(keep):
+            for c in colonists():
+                pid = re.sub(r"^Thing_", "", c["pawnId"])
+                if pid not in keep:
+                    draft(pid)
+
+        # ---------------------------------------------------------------- T18 Dubs mode (needs a list with Dubs)
+        if want("T18"):
+            row("T18_dubs_last_resort", "UNMEASURED", "SITE",
+                {"why": "needs Dubs Bad Hygiene Lite + its Thirst add-on loaded; this list runs provider Own (T1's arm)"})
+
+        if batch3 and not site3_ok:
+            for r_ in batch3:
+                if r_ != "T18":
+                    row(r_ + "_site3", "UNMEASURED", "SITE", {"why": "site3 did not clear (see site3_ready)"})
+            batch3 = []
+
+        # ---------------------------------------------------------------- T14 native animal, terrible water
+        # Mechanism (RM_ThirstUtility.NativeHere): native = on the MAP's biome wild-animal roster (CommonalityOfAnimal > 0),
+        # so the bar's "salt/brine biome map" reduces to "an animal on this map's roster" beside salt water; the row reads
+        # NativeHere for each candidate rather than guessing the roster.
+        if "T14" in batch3:
+            dry_all()
+            quench_all()
+            AX, AZ = X3 + 2, Z0 + 2
+            paint("WaterOceanShallow", AX, AZ, 8, 3)
+            cands = ("Dromedary", "Gazelle", "Iguana", "Hare", "Rat", "Elephant", "Rhinoceros", "Ostrich", "Emu",
+                     "Muffalo", "Squirrel", "Deer", "Boar", "Alpaca", "Megasloth", "Tortoise", "Cobra", "Raccoon", "Fox_Fennec")
+            nat = non = None
+            tried = {}
+            for k in cands:
+                if nat and non:
+                    break
+                r = B.call("jawa/spawn_pawn", kindDef=k, x=AX + 3, z=AZ + 4, count=1, faction="none") or {}
+                ids = [p.get("id") or p.get("thingId") for p in (r.get("pawns") or r.get("spawned") or [])]
+                if not ids:
+                    tried[k] = "no spawn"
+                    continue
+                v = str((B.call("jawa/static_call", type="RimMandrake.FlowWorks.Thirst.RM_ThirstUtility", method="NativeHere",
+                                args=ids[0]) or {}).get("result"))
+                tried[k] = v
+                if v == "True" and not nat:
+                    nat = ids[0]
+                elif v == "False" and not non:
+                    non = ids[0]
+            if not (nat and non):
+                row("T14_native_animal_terrible_water", "UNMEASURED", "HARNESS", {"tried": tried, "why": "no native/non-native pair"})
+            else:
+                lv = {nat: [need(nat, 0.2)], non: [need(non, 0.2)]}
+                ticks(2500)
+                lv[nat].append(need(nat))
+                lv[non].append(need(non))
+                hn = hediffs(nat)
+                bad = []
+                if None in lv[nat] or None in lv[non]:
+                    row("T14_native_animal_terrible_water", "UNMEASURED", "HARNESS", {"levels": lv, "why": "no RM_Thirst read"})
+                else:
+                    if not lv[nat][1] > lv[nat][0] + 0.2:
+                        bad.append("the native animal did not drink the salt water (%s)" % lv[nat])
+                    if lv[non][1] > lv[non][0] + 0.05:
+                        bad.append("the non-native animal's thirst rose with only salt water on the map (%s)" % lv[non])
+                    if "FoodPoisoning" in hn:
+                        bad.append("native drinker got FoodPoisoning")
+                    row("T14_native_animal_terrible_water", "FAIL" if bad else "PASS", "MOD",
+                        {"native": nat, "nonNative": non, "tried": tried, "levels": lv, "nativeHediffs": hn, "bad": bad,
+                         "inferred": "the map holds no other liquid, so a rise is a salt drink (the animal job is not on the bridge)",
+                         "notRun": "a real salt/brine biome map (native read off the live roster instead)"})
+            dry_all()
+
+        # ---------------------------------------------------------------- T16 living slime (RM_Slime_Liquid)
+        if "T16" in batch3:
+            dry_all()
+            quench_all()
+            LX, LZ = X3 + 14, Z0 + 2
+            paint("RM_Slime_Liquid", LX, LZ, 2, 2)
+            p16 = spawn_colonist(LX, LZ + 3)
+            UNDER_TEST.add(p16)
+            need(p16, 0.0)
+            t_on, seen_on = poll_job(p16, ("RM_DrinkFromTerrain",), 900, step=30)
+            if t_on is not None:
+                wait_job_end(p16, "RM_DrinkFromTerrain", 900)
+            ticks(120)
+            h16, m16 = hediffs(p16), mems(p16)
+            draft(p16)
+            sset("lastResortDrinking", False)
+            p16b = spawn_colonist(LX + 3, LZ + 3)
+            UNDER_TEST.add(p16b)
+            need(p16b, 0.0)
+            t_off, seen_off = poll_job(p16b, ("RM_DrinkFromTerrain",), 900, step=60)
+            sset("lastResortDrinking", True)
+            draft(p16b)
+            bad = []
+            if t_on is None:
+                bad.append("at need 0 beside living slime only: no RM_DrinkFromTerrain (jobs %s)" % seen_on)
+            elif "RM_Slimification" not in h16:
+                bad.append("drank living slime but no RM_Slimification")
+            if t_on is not None and "RM_Thought_DrankSlime" not in m16:
+                bad.append("no RM_Thought_DrankSlime")
+            if t_off is not None:
+                bad.append("lastResortDrinking OFF and the pawn still drank slime")
+            row("T16_living_slime", "FAIL" if bad else "PASS", "MOD",
+                {"jobsOn": seen_on, "hediffs": h16, "memories": m16, "jobsOff": seen_off, "bad": bad,
+                 "notRun": "a Gelatinous Slime biome map: RM_Slime_Liquid painted on the calm site (the drink rule is the terrain's)"})
+            paint("Soil", LX, LZ, 2, 2)
+
+        # ---------------------------------------------------------------- T20 bucket drunk dry; part-drunk pour
+        if "T20" in batch3:
+            dry_all()
+            purge_drinks()
+            quench_all()
+            BX, BZ = X3 + 22, Z0 + 2
+            p20 = spawn_colonist(BX, BZ + 2)
+            UNDER_TEST.add(p20)
+            draft(p20)
+            bid = spawn("RM_Bucket_FreshWater", BX + 1, BZ)
+            drinks, trace = 0, []
+            for i in range(14):
+                cur = things("RM_Bucket_FreshWater")
+                if not cur:
+                    break
+                need(p20, 0.1)
+                r = B.call("jawa/ordered_job", pawnId=p20, jobDef="RM_DrinkFromContainer", targetAId=cur[0]["id"], waitTicks=30) or {}
+                wait_job_end(p20, "RM_DrinkFromContainer", 900)
+                ticks(30)
+                drinks += 1
+                trace.append([r.get("accepted"), r.get("afterJobDef"), round(need(p20) or 0, 3)])
+            dirty = count("RM_BucketDirty") + count("RM_BucketEmpty")
+            left = count("RM_Bucket_FreshWater")
+            # arm 2: drink 3 (4.5 L of 15), then a player's order pours what is left into a Store tank
+            TX, TZ = BX + 6, BZ + 4
+            B.call("jawa/destroy_batch", rects="%d,%d,4,4" % (TX - 1, TZ - 1), categories="Building,Item,Plant")
+            B.call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % (TX, TZ), faction="player", wipeExisting=False)
+            fill_r = str(B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                                args="%d,%d;Store;RM_Liquid_FreshWater;100" % (TX, TZ)).get("result"))
+            b2 = spawn("RM_Bucket_FreshWater", BX + 1, BZ)
+            for i in range(3):
+                need(p20, 0.1)
+                cur = things("RM_Bucket_FreshWater")
+                B.call("jawa/ordered_job", pawnId=p20, jobDef="RM_DrinkFromContainer", targetAId=cur[0]["id"], waitTicks=30)
+                wait_job_end(p20, "RM_DrinkFromContainer", 900)
+                ticks(30)
+            cur = things("RM_Bucket_FreshWater")
+            insp = None
+            if cur:
+                for t in (B.call("jawa/inspect_string", thingIds=cur[0]["id"]) or {}).get("things") or []:
+                    insp = " | ".join(t.get("inspect") or [])
+            u0 = tank_units(TX, TZ)
+            pr = {}
+            if cur:
+                pr = B.call("jawa/ordered_job", pawnId=p20, jobDef="RM_EmptyIntoTankJob", targetAId=cur[0]["id"],
+                            targetBId=(things("RM_LiquidTank", "%d,%d,2,2" % (TX, TZ)) or [{}])[0].get("id"), waitTicks=30) or {}
+                wait_job_end(p20, "RM_EmptyIntoTankJob", 1200)
+                ticks(60)
+            u1 = tank_units(TX, TZ)
+            bad = []
+            if drinks == 0 or not trace or not trace[0][0]:
+                row("T20_bucket_drunk_dry", "UNMEASURED", "HARNESS", {"trace": trace, "why": "the ordered bucket drink was refused"})
+            else:
+                if left != 0 or drinks != 10:
+                    bad.append("the 15 L bucket took %d drinks (want 10), %d still filled" % (drinks, left))
+                if dirty < 1:
+                    bad.append("no dirty/empty bucket after the last drink")
+                if None in (u0, u1):
+                    bad.append("tank units unreadable (%s -> %s); pour arm not judged" % (u0, u1))
+                elif u1 - u0 != 105:
+                    bad.append("pouring a bucket with 4.5 L drunk added %s units (want 105 = 10.5 L)" % (u1 - u0))
+                if insp is not None and "Partly drunk" not in insp:
+                    bad.append("part-drunk bucket inspect %r has no 'Partly drunk'" % insp)
+                row("T20_bucket_drunk_dry", "FAIL" if bad else "PASS", "MOD",
+                    {"drinks": drinks, "trace": trace[-3:], "dirtyOrEmpty": dirty, "tank": fill_r, "units": [u0, u1],
+                     "pour": {k: pr.get(k) for k in ("accepted", "afterJobDef", "message")}, "inspect": insp, "bad": bad})
+
+        # ---------------------------------------------------------------- T23 a Fill tank of brine is the order
+        if "T23" in batch3:
+            dry_all()
+            purge_drinks()
+            quench_all()
+            FX3, FZ3 = X3 + 34, Z0 + 2
+            B.call("jawa/destroy_batch", rects="%d,%d,14,14" % (FX3 - 1, FZ3 - 1), categories="Building,Item,Plant")
+            paint("RM_WaterBrineShallow", FX3, FZ3, 8, 2)
+            TX, TZ = FX3 + 2, FZ3 + 8
+            B.call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % (TX, TZ), faction="player", wipeExisting=False)
+            tank_r = str(B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                                args="%d,%d;Fill;RM_Liquid_Brine;100" % (TX, TZ)).get("result"))
+            for i in range(3):
+                spawn("RM_BucketEmpty", FX3 + 5 + i, FZ3 + 5)
+            p23 = worker(FX3 + 4, FZ3 + 4)
+            draft_bystanders({p23})
+            u0 = tank_units(TX, TZ)
+            seen, made = [], 0
+            for _ in range(40):
+                ticks(150)
+                quench_all()
+                j = job(p23)
+                if j and (not seen or seen[-1] != j):
+                    seen.append(j)
+                u = tank_units(TX, TZ)
+                if u is not None and u0 is not None and u > u0:
+                    break
+            made = count("RM_Bucket_Brine")
+            u1 = tank_units(TX, TZ)
+            # arm 2: Store mode -> the standing order is gone; no new brine fills
+            for t in things("RM_Bucket_Brine"):
+                B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t.get("x"), t.get("z")), categories="Item")
+            B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
+                   args="%d,%d;Store;RM_Liquid_Brine;100" % (TX, TZ))
+            for _ in range(3 - count("RM_BucketEmpty")):
+                spawn("RM_BucketEmpty", FX3 + 5, FZ3 + 6)
+            B.call("jawa/stop_job", pawnId=p23)
+            # HARNESS (first live run, 2026-10-17): a brine bucket CARRIED mid-pour is not on the ground when the others are
+            # destroyed; stop_job drops it, and the Store arm then counted it as a new fill (1 bucket, no fill job seen).
+            # The Store arm is judged against what is on the ground after the drop.
+            ticks(30)
+            base2 = count("RM_Bucket_Brine")
+            seen2 = []
+            for _ in range(20):
+                ticks(150)
+                j = job(p23)
+                if j and (not seen2 or seen2[-1] != j):
+                    seen2.append(j)
+            made2 = count("RM_Bucket_Brine") - base2
+            bad = []
+            if u0 is None or u1 is None:
+                row("T23_fill_tank_is_the_order", "UNMEASURED", "HARNESS", {"tank": tank_r, "units": [u0, u1]})
+            else:
+                if not (u1 > u0 or made > 0 or "RM_FillBottleJob" in seen):
+                    bad.append("Fill tank holding brine: no brine gathered unforced in 6,000 ticks (jobs %s)" % seen)
+                if made2 > 0 or "RM_FillBottleJob" in seen2:
+                    bad.append("Store tank: brine still gathered (%d buckets, jobs %s)" % (made2, seen2))
+                row("T23_fill_tank_is_the_order", "FAIL" if bad else "PASS", "MOD",
+                    {"tank": tank_r, "units": [u0, u1], "brineBuckets": made, "jobsFill": seen, "jobsStore": seen2,
+                     "brineBucketsAfterStore": made2, "droppedAtSwitch": base2, "bad": bad})
+            draft(p23)
+
+        # ---------------------------------------------------------------- T25 snow into water
+        if "T25" in batch3:
+            dry_all()
+            purge_drinks()
+            quench_all()
+            SX3, SZ3 = X3 + 2, Z0 + 14
+            B.call("jawa/destroy_batch", rects="%d,%d,14,10" % (SX3, SZ3), categories="Building,Item,Plant")
+            sb = B.call("jawa/set_weather_buildup", kind="snow", mode="set", rect="%d,%d,8,8" % (SX3, SZ3), depth=1.0) or {}
+            spawn("RM_BucketEmpty", SX3 + 10, SZ3 + 2)
+            p25 = worker(SX3 + 10, SZ3 + 4)
+            draft_bystanders({p25})
+            temp = (B.call("jawa/cell_temperature", cell="%d,%d" % (SX3, SZ3)) or {})
+            seen = []
+            for _ in range(30):
+                ticks(100)
+                quench_all()
+                j = job(p25)
+                if j and (not seen or seen[-1] != j):
+                    seen.append(j)
+                if count("RM_BucketSnow"):
+                    break
+            snowb = count("RM_BucketSnow")
+            sd = B.call("jawa/set_weather_buildup", kind="snow", mode="add", rect="%d,%d,8,8" % (SX3, SZ3), depth=0.0) or {}
+            fresh0 = count("RM_Bucket_FreshWater")
+            melted = None
+            if snowb:
+                for k in range(14):
+                    ticks(500)
+                    quench_all()
+                    if count("RM_Bucket_FreshWater") > fresh0 and not count("RM_BucketSnow"):
+                        melted = (k + 1) * 500
+                        break
+            # arm 2: a pond near -> the bucket fills from it, no snow job
+            draft(p25)
+            purge_drinks()
+            B.call("jawa/set_weather_buildup", kind="snow", mode="set", rect="%d,%d,8,8" % (SX3, SZ3), depth=1.0)
+            paint("WaterShallow", SX3 + 10, SZ3 + 8, 3, 2)
+            spawn("RM_BucketEmpty", SX3 + 10, SZ3 + 2)
+            draft(p25, False)
+            B.call("jawa/stop_job", pawnId=p25)
+            seen2 = []
+            for _ in range(20):
+                ticks(100)
+                quench_all()
+                j = job(p25)
+                if j and (not seen2 or seen2[-1] != j):
+                    seen2.append(j)
+                if count("RM_Bucket_FreshWater"):
+                    break
+            bad = []
+            if "RM_GatherSnow" not in seen and not snowb:
+                bad.append("no RM_GatherSnow and no RM_BucketSnow with snow beside the bucket (jobs %s)" % seen)
+            if snowb and melted is None:
+                bad.append("the bucket of snow did not melt into water within 7,000 ticks at %s C" % temp.get("temperature"))
+            if "RM_GatherSnow" in seen2:
+                bad.append("gathered snow with a pond near")
+            row("T25_snow_to_water", "FAIL" if bad else "PASS", "MOD",
+                {"snowSet": {k: sb.get(k) for k in ("success", "cellsChanged")}, "jobs": seen, "bucketsSnow": snowb,
+                 "snowAfter": sd.get("sample") or sd.get("depths"), "meltTicks": melted, "temp": temp.get("temperature"),
+                 "jobsPond": seen2, "bad": bad, "notRun": "snow depth drop 0.4 (read back is a sample only)"})
+            draft(p25)
+            paint("Soil", SX3 + 10, SZ3 + 8, 3, 2)
+            B.call("jawa/set_weather_buildup", kind="snow", mode="set", rect="%d,%d,8,8" % (SX3, SZ3), depth=0.0)
+
+        # ---------------------------------------------------------------- T26 blue ice -> bucket at a campfire
+        if "T26" in batch3:
+            dry_all()
+            purge_drinks()
+            quench_all()
+            CX, CZ = X3 + 18, Z0 + 16
+            B.call("jawa/destroy_batch", rects="%d,%d,8,8" % (CX - 2, CZ - 2), categories="Building,Item,Plant")
+            B.call("jawa/build_batch", ops="Campfire:%d,%d" % (CX, CZ), faction="player", wipeExisting=False)
+            fire = (things("Campfire", "%d,%d,1,1" % (CX, CZ)) or [{}])[0].get("id")
+            B.call("jawa/thing_refuel", thingId=fire)
+            ba = B.call("jawa/bill_add", giverId=fire, recipe="RM_MeltBlueIceIntoBucket", repeatMode="repeatcount", repeatCount=1) or {}
+            B.call("jawa/spawn_batch", ops="RM_BlueIce:%d,%d,5" % (CX + 2, CZ))
+            B.call("jawa/spawn_batch", ops="RM_BucketEmpty:%d,%d,1" % (CX + 2, CZ + 1), stuff="WoodLog")
+            logp = os.path.join(os.environ.get("USERPROFILE", r"C:\Users\Mandrake"), "AppData", "LocalLow", "Ludeon Studios",
+                                "RimWorld by Ludeon Studios", "Player.log")
+            try:
+                log0 = os.path.getsize(logp)
+            except OSError:
+                log0 = None
+            p26 = worker(CX + 1, CZ + 3, work=("Cooking",))
+            draft_bystanders({p26})
+            seen = []
+            for _ in range(30):
+                ticks(200)
+                quench_all()
+                j = job(p26)
+                if j and (not seen or seen[-1] != j):
+                    seen.append(j)
+                if count("RM_Bucket_FreshWater"):
+                    break
+            made = things("RM_Bucket_FreshWater")
+            errs = []
+            if log0 is not None:
+                with open(logp, "r", encoding="utf-8", errors="replace") as f:
+                    f.seek(log0)
+                    errs = [l for l in f.read().splitlines() if re.search(r"Exception|\bError\b", l)]
+            bad = []
+            if not ba.get("success", True) or fire is None:
+                row("T26_ice_block_bill", "UNMEASURED", "HARNESS", {"bill": str(ba)[:200], "fire": fire})
+            else:
+                if not made:
+                    bad.append("no RM_Bucket_FreshWater after the bill (jobs %s)" % seen)
+                elif "Wood" not in str(made[0].get("stuff") or made[0].get("label") or ""):
+                    bad.append("the bucket is not wooden: %s" % {k: made[0].get(k) for k in ("stuff", "label")})
+                if errs:
+                    bad.append("Player.log errors during the bill: %s" % errs[:2])
+                row("T26_ice_block_bill", "FAIL" if bad else "PASS", "MOD",
+                    {"jobs": seen, "made": [{k: t.get(k) for k in ("id", "stuff", "label")} for t in made[:2]],
+                     "blueIceLeft": count("RM_BlueIce"), "logErrors": errs[:3], "bad": bad})
+            draft(p26)
+
+        # ---------------------------------------------------------------- T29 bottle stock and batches
+        # Deficit = filledBottlesPerColonist x FreeColonistsSpawned - filled potable bottles held (RM_BottleStock); the
+        # bar's "2 colonists, target 3 -> 6" is one instance, so the row reads the live colonist count and spawns
+        # deficit + 10 empties, so the stop is visible.
+        if "T29" in batch3:
+            dry_all()
+            purge_drinks()
+            quench_all()
+            WX, WZ = X3 + 30, Z0 + 20
+            B.call("jawa/destroy_batch", rects="%d,%d,14,12" % (WX - 2, WZ - 2), categories="Building,Item,Plant")
+            paint("WaterShallow", WX, WZ, 4, 3)
+            p29 = worker(WX + 6, WZ + 5)
+            draft_bystanders({p29})
+            # HARNESS (first live run, 2026-10-17): counting bottles on the GROUND read 10, 18, then -2 every 150 ticks: the
+            # colonists pack filled bottles into their inventories (packed ones count toward the target, by ruling), so the
+            # ground count is not the stock. The row reads the mod's own stock, RM_BottleStock.Have (ground + packed).
+            def have():
+                v = (B.call("jawa/static_call", type="RimMandrake.FlowWorks.Thirst.RM_BottleStock", method="Have",
+                            args="current") or {}).get("result")
+                try:
+                    return int(v)
+                except (TypeError, ValueError):
+                    return None
+
+            ncol = len(colonists())
+            h_ = have() or 0
+            # the smallest target that leaves a deficit over one trip (10), so the batch split is visible
+            per = next((p_ for p_ in (1, 2, 3, 4, 5) if p_ * ncol - h_ > 10), 5)
+            sset("filledBottlesPerColonist", per)
+            target = per * ncol
+            empties = max(0, target - (have() or 0)) + 10
+            B.call("jawa/spawn_batch", ops="RM_BottleEmpty:%d,%d,%d" % (WX + 6, WZ + 1, empties))
+            # HARNESS (second live run): bottles packed in an EARLIER run stay in inventories after purge_drinks (ground
+            # only), so the first read jumped 14; the steps are measured from the stock before the empties are dropped.
+            have0 = have()
+            series, seen = [have0], []
+            last_change = 0
+            for k in range(60):
+                ticks(150)
+                quench_all()
+                j = job(p29)
+                if j and (not seen or seen[-1] != j):
+                    seen.append(j)
+                f = have()
+                if not series or f != series[-1]:
+                    series.append(f)
+                    last_change = k
+                if f >= target and k - last_change >= 10:
+                    break
+            ticks(1500)
+            final = have()
+            ground = count("RM_Bottle_FreshWater")
+            jumps = [b - a for a, b in zip(series, series[1:]) if None not in (a, b)]
+            deficit = target - (have0 or 0)
+            sset("filledBottlesPerColonist", 3)
+            bad = []
+            if final is None:
+                bad.append("RM_BottleStock.Have unreadable")
+            elif final != target:
+                bad.append("filled %d bottles, want exactly the target %d (%d x %d colonists)" % (final, target, per, ncol))
+            if jumps and max(jumps) > 10:
+                bad.append("one step filled %d bottles (a trip is at most 10)" % max(jumps))
+            if deficit > 10 and len([x for x in jumps if x > 0]) < 2:
+                bad.append("a deficit of %d (over 10) should take more than one fill trip (steps %s)" % (deficit, jumps))
+            row("T29_bottle_stock_and_batches", "FAIL" if bad else "PASS", "MOD",
+                {"colonists": ncol, "perColonist": per, "target": target, "stockBefore": have0, "empties": empties, "series": series,
+                 "final": final, "onGround": ground, "jobs": seen, "bad": bad,
+                 "notRun": "15 dirty bottles washed in two trips"})
+            draft(p29)
+
         # ---------------------------------------------------------------- T15R stale terrain mark across a reload
         if "T15R" in only:
             _mc = os.path.join(os.path.dirname(os.path.dirname(HERE)), "Utils", "modcheck")
