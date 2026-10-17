@@ -63,6 +63,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(conv, @"accrued = RM_ConversionMath\.AccruedAfterPick\(accrued, cand\.Select\(c => c\.capped\)\.ToList\(\), pick\);", "converter keeps the budget through AccruedAfterPick");
             });
 
+            // FLOWWORKS_BOTTLE_FIX_JOBS_VANISH_EMPTY: the three bottle jobs that spend their input place the result through
+            // PlacePaidFor (spawned in place when Near placement fails), never a bare TryPlaceThing whose failure loses it.
+            Case("Gpt1016_bottle_jobs_never_lose_the_paid_container", () =>
+            {
+                foreach (var (file, v) in new[] { ("JobDriver_FillBottle.cs", "filled"), ("JobDriver_WashBottle.cs", "empty"), ("JobDriver_EmptyBottleIntoTank.cs", "empty") })
+                {
+                    string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", file));
+                    Assert(!src.Contains("GenPlace.TryPlaceThing(" + v + ","), file + ": bare TryPlaceThing of the paid-for container");
+                    RiverSwitchFlipChecks.Has(src, @"RM_LiquidBottleUtility\.PlacePaidFor\(" + v + @", pawn\.Position, Map\);", file + " places through PlacePaidFor");
+                }
+            });
+
             // FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT: a supplied reaction that cannot run moves on to the next one (call-site pin;
             // the loop is Verse-bound). Exactly one `return` stays inside the reaction loop body: the failed committed move.
             Case("Gpt1016_reactor_stalled_reaction_does_not_end_the_shift", () =>
