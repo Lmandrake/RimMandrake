@@ -4,7 +4,7 @@
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so the mod
     DLL must target net472. Same shape as
     src/RimUtinni/FungalSoilTrade/Source/RimMandrake.Utinni.FungalSoilTrade.csproj
-    (itself copied from RiverColors' HarmonyDll property); copy that file's header
+    (its HarmonyDll property); copy that file's header
     if this one goes stale. No Harmony used here - the reference is kept only for
     shape-consistency with the sibling csproj and costs nothing if unused.
 
