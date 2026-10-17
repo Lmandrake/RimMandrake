@@ -1,0 +1,179 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-17T12:52:23",
+ "rows": [
+  {
+   "id": "T22_no_brine_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "brineOnly": "Dry: nothing in the tanks on this network",
+    "withFresh": "Spraying fresh water \u00b7 9 L/h \u00b7 18 cells",
+    "brineUnits": [
+     50000,
+     50000
+    ],
+    "freshUnits": 19910,
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.acid_hurts_fuel_puddles",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "acid": "Spraying acid water \u00b7 12.5 L/h \u00b7 25 cells",
+    "harm": [
+     0,
+     0.928,
+     0.64
+    ],
+    "fuel": "Spraying chemfuel \u00b7 12.5 L/h \u00b7 25 cells",
+    "filth": [
+     0,
+     4
+    ],
+    "bad": [
+     "effects OFF but harm still rose (0.928 -> 0.64)"
+    ],
+    "notRun": "the chemfuel arm with the setting off"
+   }
+  },
+  {
+   "id": "T21_drinking_reserve",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reserveL": 200.0,
+    "startUnits": 2200,
+    "trace": [
+     [
+      2075,
+      "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"
+     ],
+     [
+      2075,
+      "Dry: net has 7.5 L of fresh water, needs 12.5 L"
+     ],
+     [
+      2075,
+      "Dry: net has 7.5 L of fresh water, needs 12.5 L"
+     ]
+    ],
+    "drinkJobs": [
+     "RM_DrinkFromTank"
+    ],
+    "bad": [],
+    "notRun": "the salt tank on a still draining to 0"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/sprk/s3.json",
+  "only": "brine,effects,reserve",
+  "origin": "120,140"
+ },
+ "net3": {
+  "tank": [
+   120,
+   182
+  ],
+  "pump": [
+   123,
+   182
+  ],
+  "head": [
+   125,
+   182
+  ],
+  "covered": [
+   126,
+   183
+  ],
+  "far": [
+   130,
+   186
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead36711",
+  "pumpId": "RM_LiquidPump36710"
+ },
+ "net4": {
+  "tank": [
+   120,
+   196
+  ],
+  "pump": [
+   123,
+   196
+  ],
+  "head": [
+   125,
+   196
+  ],
+  "covered": [
+   126,
+   197
+  ],
+  "far": [
+   130,
+   200
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead36730",
+  "pumpId": "RM_LiquidPump36729"
+ },
+ "net5": {
+  "tank": [
+   120,
+   210
+  ],
+  "pump": [
+   123,
+   210
+  ],
+  "head": [
+   125,
+   210
+  ],
+  "covered": [
+   126,
+   211
+  ],
+  "far": [
+   130,
+   214
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead36789",
+  "pumpId": "RM_LiquidPump36788"
+ },
+ "ended": "2026-10-17T12:52:49"
+}

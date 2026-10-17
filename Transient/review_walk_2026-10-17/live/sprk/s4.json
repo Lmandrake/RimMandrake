@@ -1,0 +1,66 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-17T12:52:55",
+ "rows": [
+  {
+   "id": "sprinkler.acid_hurts_fuel_puddles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "acid": "Spraying acid water \u00b7 12.5 L/h \u00b7 25 cells",
+    "harm": [
+     0,
+     0.68,
+     0.28
+    ],
+    "fuel": "Spraying chemfuel \u00b7 12.5 L/h \u00b7 25 cells",
+    "filth": [
+     0,
+     3
+    ],
+    "bad": [],
+    "notRun": "the chemfuel arm with the setting off"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/sprk/s4.json",
+  "only": "effects",
+  "origin": "120,100"
+ },
+ "net4": {
+  "tank": [
+   120,
+   156
+  ],
+  "pump": [
+   123,
+   156
+  ],
+  "head": [
+   125,
+   156
+  ],
+  "covered": [
+   126,
+   157
+  ],
+  "far": [
+   130,
+   160
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead36899",
+  "pumpId": "RM_LiquidPump36898"
+ },
+ "ended": "2026-10-17T12:53:05"
+}

@@ -94,19 +94,23 @@ def sprinklers(B, a):
     ox, oz = [int(v) for v in a.origin.split(",")]
     # one mini network per look, rows 8 cells apart in z. Per row (x from ox): tank 2x2 at ox..ox+1; pipe ox+2; pump ox+3 (on the
     # run, powered through a conduit+battery above it); pipes ox+4..ox+5; head on the last pipe (ox+5).
-    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (ox - 2, oz - 2, 12, 8 * len(LOOKS) + 4), category="Building")
-    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (ox - 2, oz - 2, 12, 8 * len(LOOKS) + 4), category="Plant")
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (ox - 2, oz - 6, 12, 8 * len(LOOKS) + 8), categories="Building,Item,Filth")
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (ox - 2, oz - 6, 12, 8 * len(LOOKS) + 8), categories="Plant")
     for i, look in enumerate(LOOKS):
         z = oz + 8 * i
+        # LAYOUT G (measured live 2026-10-17, northstar/sprinkler_live.py): one unbroken pipe run ox+2..ox+5, the pump built
+        # OVER pipe ox+3, power SOUTH of the pump. The old layout (pump in the run with no pipe under it) split the run and
+        # every head read "Dry: nothing in the tanks on this network".
         build(B, "RM_LiquidTank", ox, z)
-        for x in (ox + 2, ox + 4, ox + 5):
+        for x in (ox + 2, ox + 3, ox + 4, ox + 5):
             build(B, "RM_UniversalPipe", x, z)
         build(B, "RM_LiquidPump", ox + 3, z)
-        build(B, "PowerConduit", ox + 3, z + 1)
-        build(B, "Battery", ox + 3, z + 2, 0)
+        build(B, "PowerConduit", ox + 3, z - 1)
+        build(B, "PowerConduit", ox + 3, z - 2)
+        build(B, "Battery", ox + 3, z - 4, 0)
         build(B, "RM_SprinklerHead", ox + 5, z)
         style(B, "RM_SprinklerHead", ox + 5, z, "RM_SprinklerHead_" + look)
-        B.call("jawa/gss_stage", ops="kind=gss_charge|x=%d|z=%d" % (ox + 3, z + 2))
+        B.call("jawa/gss_stage", ops="kind=gss_charge|x=%d|z=%d" % (ox + 3, z - 4))
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
                args="%d,%d;Store;RM_Liquid_FreshWater;%d" % (ox, z, 1000 * 10 * 10))   # 1,000 L = 10,000 units (UNITS_PER_LITRE 10)
         say("sprinkler row %s staged at z=%d" % (look, z))
