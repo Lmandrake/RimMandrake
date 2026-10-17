@@ -55,7 +55,9 @@ Load 2 (20 mods, via Steam): bridge token at 85 s; log 312 lines (`Transient/rev
 - Restarts: 4 loads (walk list; minus StarWarsPatches; EG/FindMod/FlowWorks batch; proof DLLs + companion).
 
 ## 5. Keeper saves (RM_walk_20261017_<scene>)
-(pending)
+Saves backed up first: `D:\Luke\dev\_rmscratch\saves_backup_walk_20261017` (337 files, 5.6 GB). Each save stat-checked: only the named file appeared.
+`RM_walk_20261017_sprinklers`, `_thinwater`, `_weirs`, `_venomvine`, `_creatures`. Guide: `Transient/review_walk_2026-10-17/WALK_GUIDE.md`.
+- HARNESS fixed in stage_extra.py: sprinkler layout (pump over the pipe), joined weir walls run INTO the river along the weir axis (the bank-side version qualified 1-2 cells, none joined).
 
 ## 6. Left over
 (pending)

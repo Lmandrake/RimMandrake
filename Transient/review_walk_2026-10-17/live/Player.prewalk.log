@@ -1,0 +1,545 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.892 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.682700 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000017EF5FC5030.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-0000017EF602C0E0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=148 elapsedMs=148
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=148
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=149 elapsedMs=149
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 28, missing 0
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit; invisible=True
+[RimMandrake.FlowWorks] Harmony: patched 67, missing 0
+[FlowWorks] thirst provider: Own (no DBHThirst NeedDef loaded)
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 27647.
+Total: 141.912000 ms (FindLiveObjects: 2.074500 ms CreateObjectMapping: 1.047400 ms MarkObjects: 138.446000 ms  DeleteObjects: 0.343800 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=17 elapsedMs=10663
+[JawaBench] ready: 413 tools, build 0.1.0
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 11/e6cb45d2, toolSet 3f60d9fe, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session 0e31f0577457446996d032c0061330b9 seq 2 utc 2026-10-17T17:57:58.213Z
+[JawaBench] TPS sampler installed (bridge-registration): session 0e31f0577457446996d032c0061330b9 pid 40584 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261017T175758Z_0e31f0577457446996d032c0061330b9_40584_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (412 tools gated, 0 unguarded, by bridge-registration, 1300 ms); compile gm, runtime profile test (profile file says test until 2026-10-17T20:30:00.0000000Z)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3507 elapsedMs=14171
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=14171
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=1 elapsedMs=14173
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=14173
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=14173
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=14173
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=14174
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=14177
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=14178
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=14178
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=14180
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=39 elapsedMs=14220
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3556 elapsedMs=14220
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=39 elapsedMs=14220
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 8ba88a187af247babe486e70eb029a44
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.612500 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 27841.
+Total: 126.110100 ms (FindLiveObjects: 1.453400 ms CreateObjectMapping: 1.163900 ms MarkObjects: 123.441400 ms  DeleteObjects: 0.050900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 6 utc 2026-10-17T18:02:34.248Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 33954.
+Total: 159.852400 ms (FindLiveObjects: 1.035400 ms CreateObjectMapping: 1.153200 ms MarkObjects: 157.599200 ms  DeleteObjects: 0.064300 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 1 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29056.
+Total: 163.303100 ms (FindLiveObjects: 0.912200 ms CreateObjectMapping: 1.003700 ms MarkObjects: 161.346700 ms  DeleteObjects: 0.040100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.403200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 28766.
+Total: 122.442800 ms (FindLiveObjects: 0.908400 ms CreateObjectMapping: 0.973600 ms MarkObjects: 120.496000 ms  DeleteObjects: 0.064700 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.325100 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 28789.
+Total: 142.795500 ms (FindLiveObjects: 0.889800 ms CreateObjectMapping: 0.958600 ms MarkObjects: 140.900200 ms  DeleteObjects: 0.046600 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 65 utc 2026-10-17T18:03:12.340Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 34606.
+Total: 146.770600 ms (FindLiveObjects: 1.153700 ms CreateObjectMapping: 1.170400 ms MarkObjects: 144.376500 ms  DeleteObjects: 0.069600 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 1 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29277.
+Total: 169.793400 ms (FindLiveObjects: 0.879800 ms CreateObjectMapping: 0.940500 ms MarkObjects: 167.934800 ms  DeleteObjects: 0.038100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.367100 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 28974.
+Total: 165.079000 ms (FindLiveObjects: 0.892900 ms CreateObjectMapping: 1.032600 ms MarkObjects: 163.075000 ms  DeleteObjects: 0.078300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.344800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 28997.
+Total: 145.320100 ms (FindLiveObjects: 0.933900 ms CreateObjectMapping: 0.905800 ms MarkObjects: 143.434600 ms  DeleteObjects: 0.045300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 277 utc 2026-10-17T18:04:30.155Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 34228.
+Total: 160.606000 ms (FindLiveObjects: 1.312300 ms CreateObjectMapping: 1.148800 ms MarkObjects: 158.100400 ms  DeleteObjects: 0.044100 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 12 cells, LIMITED (48 kL / 48 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 1 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29469.
+Total: 188.278800 ms (FindLiveObjects: 2.744000 ms CreateObjectMapping: 1.356800 ms MarkObjects: 184.139200 ms  DeleteObjects: 0.038600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.398400 ms
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 29156.
+Total: 180.257800 ms (FindLiveObjects: 1.000300 ms CreateObjectMapping: 0.996800 ms MarkObjects: 178.170000 ms  DeleteObjects: 0.090600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.383100 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29179.
+Total: 177.729300 ms (FindLiveObjects: 1.054100 ms CreateObjectMapping: 1.073100 ms MarkObjects: 175.557100 ms  DeleteObjects: 0.044700 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 480 utc 2026-10-17T18:06:46.435Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35425.
+Total: 193.350300 ms (FindLiveObjects: 1.301200 ms CreateObjectMapping: 1.793000 ms MarkObjects: 190.211500 ms  DeleteObjects: 0.044200 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 12 cells, LIMITED (48 kL / 48 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 1 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+[FlowWorks] a spill of RM_Liquid_FreshWater at (55, 0, 32) found no cell that takes filth; the liquid left the network anyway
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29654.
+Total: 220.140600 ms (FindLiveObjects: 1.026400 ms CreateObjectMapping: 1.131200 ms MarkObjects: 217.936800 ms  DeleteObjects: 0.045800 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.353900 ms
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 29341.
+Total: 193.461300 ms (FindLiveObjects: 1.093300 ms CreateObjectMapping: 1.251000 ms MarkObjects: 191.018400 ms  DeleteObjects: 0.098300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.329800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29364.
+Total: 169.908000 ms (FindLiveObjects: 1.060400 ms CreateObjectMapping: 1.293100 ms MarkObjects: 167.507600 ms  DeleteObjects: 0.046800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 671 utc 2026-10-17T18:08:31.646Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 34835.
+Total: 175.595300 ms (FindLiveObjects: 1.432900 ms CreateObjectMapping: 1.486200 ms MarkObjects: 172.629100 ms  DeleteObjects: 0.046900 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 2 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29819.
+Total: 204.834500 ms (FindLiveObjects: 1.047200 ms CreateObjectMapping: 1.110000 ms MarkObjects: 202.636400 ms  DeleteObjects: 0.040600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.408300 ms
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 29515.
+Total: 197.829200 ms (FindLiveObjects: 1.047000 ms CreateObjectMapping: 1.095000 ms MarkObjects: 195.595300 ms  DeleteObjects: 0.091600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.345900 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29538.
+Total: 172.384300 ms (FindLiveObjects: 1.866000 ms CreateObjectMapping: 0.966400 ms MarkObjects: 169.505000 ms  DeleteObjects: 0.046600 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 933 utc 2026-10-17T18:10:18.788Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35751.
+Total: 208.760700 ms (FindLiveObjects: 1.904300 ms CreateObjectMapping: 1.432700 ms MarkObjects: 205.378900 ms  DeleteObjects: 0.044600 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 9 cells, LIMITED (36 kL / 36 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 1 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #4: 1 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 4 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+[RimMandrake.FlowWorks] conservation exception: 1.0 fill level(s) overflowed with nowhere to go and were destroyed (spec §5 — the only sanctioned case). Map total now 1.0.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29979.
+Total: 201.256800 ms (FindLiveObjects: 1.409700 ms CreateObjectMapping: 1.294000 ms MarkObjects: 198.511900 ms  DeleteObjects: 0.040800 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.437400 ms
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 29664.
+Total: 200.857500 ms (FindLiveObjects: 1.362600 ms CreateObjectMapping: 1.026400 ms MarkObjects: 198.364700 ms  DeleteObjects: 0.103200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.337400 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29687.
+Total: 183.470600 ms (FindLiveObjects: 1.011800 ms CreateObjectMapping: 0.993300 ms MarkObjects: 181.416800 ms  DeleteObjects: 0.048300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 1284 utc 2026-10-17T18:12:28.540Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35003.
+Total: 189.807700 ms (FindLiveObjects: 1.167200 ms CreateObjectMapping: 1.161300 ms MarkObjects: 187.427300 ms  DeleteObjects: 0.051600 ms)
+
+[RimMandrake.FlowWorks] classified liquid body #1: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 9 cells, LIMITED (36 kL / 36 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 2 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+[RimMandrake.FlowWorks] classified liquid body #3: 154 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #4: 9 cells, LIMITED (36 kL / 36 kL). Classification is sticky — this never runs again for these cells.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30050.
+Total: 216.172700 ms (FindLiveObjects: 0.996200 ms CreateObjectMapping: 0.988800 ms MarkObjects: 214.128600 ms  DeleteObjects: 0.058400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.344500 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 29786.
+Total: 156.937800 ms (FindLiveObjects: 1.009400 ms CreateObjectMapping: 1.000900 ms MarkObjects: 154.857300 ms  DeleteObjects: 0.069600 ms)
+
+Loading game from file RM_fw_scene_S6_20261017111339 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 1440 utc 2026-10-17T18:13:44.375Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35162.
+Total: 184.078000 ms (FindLiveObjects: 1.250000 ms CreateObjectMapping: 1.220200 ms MarkObjects: 181.561900 ms  DeleteObjects: 0.045600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29814.
+Total: 200.076400 ms (FindLiveObjects: 1.211800 ms CreateObjectMapping: 1.026400 ms MarkObjects: 197.797200 ms  DeleteObjects: 0.040600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.365400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 29781.
+Total: 198.716300 ms (FindLiveObjects: 0.989400 ms CreateObjectMapping: 1.162000 ms MarkObjects: 196.494500 ms  DeleteObjects: 0.070200 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.298700 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29804.
+Total: 185.911500 ms (FindLiveObjects: 1.051900 ms CreateObjectMapping: 0.950300 ms MarkObjects: 183.858600 ms  DeleteObjects: 0.050400 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 1602 utc 2026-10-17T18:16:41.791Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35455.
+Total: 201.450700 ms (FindLiveObjects: 1.193000 ms CreateObjectMapping: 1.231300 ms MarkObjects: 198.979600 ms  DeleteObjects: 0.046400 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30241.
+Total: 196.677000 ms (FindLiveObjects: 1.003300 ms CreateObjectMapping: 0.985200 ms MarkObjects: 194.644500 ms  DeleteObjects: 0.043800 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.349400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 29952.
+Total: 200.449800 ms (FindLiveObjects: 1.034500 ms CreateObjectMapping: 1.057700 ms MarkObjects: 198.291400 ms  DeleteObjects: 0.066000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.452000 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29975.
+Total: 195.880100 ms (FindLiveObjects: 1.043400 ms CreateObjectMapping: 1.093200 ms MarkObjects: 193.685900 ms  DeleteObjects: 0.057400 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 1850 utc 2026-10-17T18:19:28.539Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35818.
+Total: 204.419600 ms (FindLiveObjects: 1.208400 ms CreateObjectMapping: 1.306400 ms MarkObjects: 201.857300 ms  DeleteObjects: 0.047300 ms)
+
+[JawaBench] JawaBenchTerrainTools.InspectString was given 1 argument(s) it does not declare and the bridge DROPPED them silently: thing. Accepted: ctx, cancellationToken, thingIds, defName, rect, limit
+[JawaBench] JawaBenchTerrainTools.InspectString was given 1 argument(s) it does not declare and the bridge DROPPED them silently: thing. Accepted: ctx, cancellationToken, thingIds, defName, rect, limit
+[JawaBench] JawaBenchTerrainTools.InspectString was given 1 argument(s) it does not declare and the bridge DROPPED them silently: thing. Accepted: ctx, cancellationToken, thingIds, defName, rect, limit
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30347.
+Total: 209.497900 ms (FindLiveObjects: 1.006600 ms CreateObjectMapping: 0.979800 ms MarkObjects: 207.470100 ms  DeleteObjects: 0.041100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.345200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 30055.
+Total: 209.991800 ms (FindLiveObjects: 1.215100 ms CreateObjectMapping: 1.033400 ms MarkObjects: 207.674100 ms  DeleteObjects: 0.069000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.299000 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 30078.
+Total: 183.445100 ms (FindLiveObjects: 1.022800 ms CreateObjectMapping: 0.949400 ms MarkObjects: 181.422800 ms  DeleteObjects: 0.049900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 2066 utc 2026-10-17T18:21:08.947Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 34879.
+Total: 218.755500 ms (FindLiveObjects: 1.144400 ms CreateObjectMapping: 1.196400 ms MarkObjects: 216.361900 ms  DeleteObjects: 0.052700 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30426.
+Total: 231.743300 ms (FindLiveObjects: 1.168000 ms CreateObjectMapping: 1.151300 ms MarkObjects: 229.383300 ms  DeleteObjects: 0.040100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.356200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 30139.
+Total: 223.521300 ms (FindLiveObjects: 1.055600 ms CreateObjectMapping: 1.106000 ms MarkObjects: 221.290800 ms  DeleteObjects: 0.068600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.321800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 30162.
+Total: 200.921000 ms (FindLiveObjects: 1.087800 ms CreateObjectMapping: 1.085500 ms MarkObjects: 198.693500 ms  DeleteObjects: 0.053900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 2426 utc 2026-10-17T18:22:45.783Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 36253.
+Total: 201.392200 ms (FindLiveObjects: 1.361300 ms CreateObjectMapping: 1.220900 ms MarkObjects: 198.762600 ms  DeleteObjects: 0.047000 ms)
+
+[JawaBench] JawaBenchTerrainTools.SpawnPawn was given 1 argument(s) it does not declare and the bridge DROPPED them silently: dryRun. Accepted: ctx, cancellationToken, kindDef, x, z, faction, count, xenotype
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 30682.
+Total: 225.963400 ms (FindLiveObjects: 1.025000 ms CreateObjectMapping: 1.073200 ms MarkObjects: 223.821200 ms  DeleteObjects: 0.043500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.341800 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 30380.
+Total: 224.225200 ms (FindLiveObjects: 1.046600 ms CreateObjectMapping: 1.024000 ms MarkObjects: 222.080200 ms  DeleteObjects: 0.074100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.319800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 30403.
+Total: 200.961600 ms (FindLiveObjects: 1.033000 ms CreateObjectMapping: 1.008600 ms MarkObjects: 198.862600 ms  DeleteObjects: 0.057000 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - ray1203.SimpleCameraSetting
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.flowworks
+[JawaBench] TPS marker game: session 0e31f0577457446996d032c0061330b9 seq 2750 utc 2026-10-17T18:24:05.372Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 36746.
+Total: 209.665200 ms (FindLiveObjects: 1.303600 ms CreateObjectMapping: 1.384300 ms MarkObjects: 206.922200 ms  DeleteObjects: 0.054800 ms)
+
+[JawaBench] JawaBenchTerrainTools.SpawnPawn was given 1 argument(s) it does not declare and the bridge DROPPED them silently: dryRun. Accepted: ctx, cancellationToken, kindDef, x, z, faction, count, xenotype
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.

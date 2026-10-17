@@ -1,0 +1,554 @@
+{
+  "mod": "SWBestiary",
+  "mode": "live",
+  "started_utc": "2026-10-17T19:18:29Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [
+    {
+      "id": "defs_resolve.control_probe_can_say_absent",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "defs_resolve.every_shipped_def_resolves",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "taozin_brine_tank_infuses_and_whitens.tank_switch_off_does_nothing",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "taozin_brine_tank_infuses_and_whitens.tank_fills_jars_and_whitens_grub",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dragonsnake_pair.canon_dragonsnake_spawns",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "dragonsnake_pair.albino_roster_follows_toggle",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS",
+      "evidenceFull": "PASS"
+    },
+    {
+      "id": "core_species_spawn.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "newly_absorbed_species_spawn_cleanly.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "ikee_mood_thought_toggle.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "ikee_mood_thought_toggle.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "livestock_settings_are_live_flippable.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "livestock_settings_are_live_flippable.skipped#1",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "scrap_hoarder_carries_to_its_nest.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_moornakGriefEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_moornakReleaseDelayMultiplier_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_albinoDragonsnakeEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_innateAbilitiesEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_scrapBirdBaseTheftEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_scrapHoardingEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_scrapThiefFlockEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_taozinBrineTankEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_taozinDaysPerJar_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_taozinNestEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_taozinPaleDays_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    },
+    {
+      "id": "settings_toxinDependenceEnabled_round_trips.skipped#0",
+      "status": "UNMEASURED",
+      "functional": true,
+      "evidence": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "541 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=15002 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 15002 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "20 active, sha256 8107435ab3602f94 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:SWBestiary",
+      "status": "PASS",
+      "evidence": "3285 files identical (textures by size)",
+      "required": true
+    }
+  ],
+  "chains_selected": [
+    "defs_resolve",
+    "taozin_brine_tank_infuses_and_whitens",
+    "dragonsnake_pair"
+  ],
+  "chains_skipped": [
+    "core_species_spawn",
+    "newly_absorbed_species_spawn_cleanly",
+    "ikee_mood_thought_toggle",
+    "livestock_settings_are_live_flippable",
+    "scrap_hoarder_carries_to_its_nest",
+    "settings_moornakGriefEnabled_round_trips",
+    "settings_moornakReleaseDelayMultiplier_round_trips",
+    "settings_albinoDragonsnakeEnabled_round_trips",
+    "settings_innateAbilitiesEnabled_round_trips",
+    "settings_scrapBirdBaseTheftEnabled_round_trips",
+    "settings_scrapHoardingEnabled_round_trips",
+    "settings_scrapThiefFlockEnabled_round_trips",
+    "settings_taozinBrineTankEnabled_round_trips",
+    "settings_taozinDaysPerJar_round_trips",
+    "settings_taozinNestEnabled_round_trips",
+    "settings_taozinPaleDays_round_trips",
+    "settings_toxinDependenceEnabled_round_trips"
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "components": [
+    {
+      "chain": "defs_resolve",
+      "name": "control_probe_can_say_absent",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "every_shipped_def_resolves",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "taozin_brine_tank_infuses_and_whitens",
+      "name": "tank_switch_off_does_nothing",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "taozin_brine_tank_infuses_and_whitens",
+      "name": "tank_fills_jars_and_whitens_grub",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dragonsnake_pair",
+      "name": "canon_dragonsnake_spawns",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dragonsnake_pair",
+      "name": "albino_roster_follows_toggle",
+      "verdict": "PASS",
+      "evidenceFull": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\albino_roster_follows_toggle_1792264728.png",
+          "win": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\albino_roster_follows_toggle_1792264728.png",
+          "wsl": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots/albino_roster_follows_toggle_1792264728.png"
+        }
+      ]
+    },
+    {
+      "chain": "core_species_spawn",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "newly_absorbed_species_spawn_cleanly",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ikee_mood_thought_toggle",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "ikee_mood_thought_toggle",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "livestock_settings_are_live_flippable",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "livestock_settings_are_live_flippable",
+      "name": "skipped#1",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "scrap_hoarder_carries_to_its_nest",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_moornakGriefEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_moornakReleaseDelayMultiplier_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_albinoDragonsnakeEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_innateAbilitiesEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_scrapBirdBaseTheftEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_scrapHoardingEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_scrapThiefFlockEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_taozinBrineTankEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_taozinDaysPerJar_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_taozinNestEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_taozinPaleDays_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_toxinDependenceEnabled_round_trips",
+      "name": "skipped#0",
+      "verdict": "UNMEASURED",
+      "evidenceFull": "UNMEASURED: chain not run (--chains defs_resolve,dragonsnake_pair,taozin_brine_tank_infuses_and_whitens)",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "summary": {
+    "PASS": 6,
+    "FAIL": 0,
+    "UNMEASURED": 19
+  },
+  "all_green": false,
+  "timing": {
+    "n": 117,
+    "total_ms": 6171.531,
+    "mean_ms": 52.7481,
+    "p50_ms": 49.9534,
+    "p95_ms": 56.9905,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 2,
+        "mean_ms": 60.4294,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 16.553,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 43.6805,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.614,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.0278,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 90,
+        "mean_ms": 49.9756,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 3,
+        "mean_ms": 46.0458,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 2,
+        "mean_ms": 53.5561,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 5,
+        "mean_ms": 48.9801,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 1,
+        "mean_ms": 132.6433,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 1,
+        "mean_ms": 57.8169,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 1,
+        "mean_ms": 51.202,
+        "errors": 0
+      },
+      "rimworld/jump_camera_to_cell": {
+        "n": 1,
+        "mean_ms": 34.0233,
+        "errors": 0
+      },
+      "rimworld/take_screenshot": {
+        "n": 1,
+        "mean_ms": 455.4177,
+        "errors": 0
+      },
+      "jawa/pawn_force_incapacitate": {
+        "n": 2,
+        "mean_ms": 55.7008,
+        "errors": 0
+      }
+    }
+  },
+  "partial": false,
+  "mod_hash": "fa4789d4c7acf53d73adba7d9c35fe44828a46837eea1e5f0946627a412c114b"
+}
