@@ -17,7 +17,16 @@
 - Built clean: RimMandrakeBeastMechanicsRSW.dll (0 errors, 0 CS warnings).
 
 ## 4. Review / selftests / validation row
-(pending)
+- Fuzz family `brine` added (BestiaryFuzz.cs): run_selftests --only selftest_swbestiary.py selftest_swbestiary_fuzz.py GREEN 2/2.
+- validation.py: STATIC PASS; new chain taozin_brine_tank_infuses_and_whitens (live, via RSW_BeastMechanicsProof.ProofBrineTank);
+  toggles list now names the 4 taozin settings + 2 scrap-bird fields it was missing.
+- Marked CLEAN: RSW_TaozinBrineTank.cs, RSW_BeastMechanicsDefOf.cs. Still DIRTY (touched, not fully reviewed):
+  RSW_BeastKernel.cs, RSW_BeastMechanicsProof.cs, RSW_BeastMechanicsSettings.cs, BestiaryFuzz.cs, Program.cs.
+- Committed db786f84ff, PUBLISHED 9847ab83bf.
 
 ## 5. Owed
-(pending)
+- Deploy SWBestiary + Cuisine (game up; FOUNDRY holds bridge) - also carries the earlier taozin-split deploy.
+- Live row SWBestiary taozin_brine_tank_infuses_and_whitens; the colonist carry job is unproven live.
+- White art taozin_split_grub_brined_v1 to install (texPath Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub_Brined).
+- Tank art: placeholder vanilla FermentingBarrel tinted; an art job is owed (cosmetic - owner permission).
+- Concurrent: another BENCH helper is adding albinoDragonsnakeEnabled to the same settings file/csproj (DRAGONSNAKE_PAIR_*).
