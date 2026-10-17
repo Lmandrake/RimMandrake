@@ -39,7 +39,7 @@
       <visualSizeRange>5~10</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
-      <immatureGraphicPath>Things/Plant/RM_CorriskTree</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_CorriskTree</immatureGraphicPath>
       <harvestWork>310</harvestWork>
       <harvestTag>Standard</harvestTag>
       <forceIsTree>true</forceIsTree>

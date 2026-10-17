@@ -26,7 +26,7 @@
     <ingestible />
     <plant>
       <fertilitySensitivity>0.4</fertilitySensitivity>
-      <immatureGraphicPath>Things/Plant/RM_Murrowbulb</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_Murrowbulb</immatureGraphicPath>
       <dieIfLeafless>true</dieIfLeafless>
       <maxMeshCount>16</maxMeshCount>
       <harvestTag>Standard</harvestTag>
