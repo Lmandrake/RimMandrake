@@ -30,6 +30,18 @@ Given its repugnant bestial qualities, it therefore may be somewhat surprising f
 
 The Jundland Wastes womp rat appeared shortly after Imperials arrived on Tatooine, and some have speculated it was a mutated form of the Beggar's Canyon womp rat, affected by chemicals from Imperial waste dumps. Some of its mutations include a larger size, slower reproduction rate, and lower numbers …[truncated by script; rest UNREAD here, not absent]
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/01/31/species-of-the-week-womp-rat/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Tatooine
+> Fandom: Star Wars
+> Appearances: The Book of Boba Fett
+> Womp Rats are poweful carnivorous rodents native to Tatooine. Growing to a little over two metres they are seen as pests by the settlers who hunt them for sport
+> . 
+> While they commonly reside in Beggar’s Canyon they will make their way into populated areas and have been known to attack even fully grown humanoids when hunting for food.
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
@@ -52,6 +64,7 @@ From the live-action images:
   skin with tufts of spiky black hair along the back") is only loosely met. Follow the live-action puppet. The Legends
   paintings (golden fur, big ears, tusks; olive-tan) are secondary and are not the look.
 - **Size cues**: prose says about two metres; the canyon still reads dog-sized or larger.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a womp rat in The Book of Boba Fett: brown-furred rodent with a long thin tail and one curled horn, lying on its side, large clawed hands. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the live-action *Book of Boba Fett* images (`canon_1`, `canon_3`) and the owner's 2026-10-08 realism ruling.*
@@ -68,12 +81,14 @@ not yet assessed
 ## Source URLs
 - https://starwars.fandom.com/wiki/Womp_rat (canon; wikitext pulled via the API 2026-10-04)
 - https://starwars.fandom.com/wiki/Womp_rat/Legends (Legends; wikitext pulled via the API 2026-10-04)
+- https://bloggathehutt.wordpress.com/2022/01/31/species-of-the-week-womp-rat/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Womp rat`; live-action *Book of Boba Fett* puppet (collector's edition still). File: `Womprat-BOBFCE.png` — https://static.wikia.nocookie.net/starwars/images/e/e2/Womprat-BOBFCE.png/revision/latest?cb=20250523005810
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: infobox image. File: `Womp Rat.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/Womp_Rat.jpg/revision/latest?cb=20170712064800
 - `wookieepedia_canon_3.webp` — CANON; *The Book of Boba Fett* chapter 5, live-action womp rat sunning on a rock. File: `WompRatSunning-BoBFCh5.png` — https://static.wikia.nocookie.net/starwars/images/0/0c/WompRatSunning-BoBFCh5.png/revision/latest?cb=20220130213913
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: Jundland Waste womp rats. File: `Womp rat AA.jpg` — https://static.wikia.nocookie.net/starwars/images/9/95/Womp_rat_AA.jpg/revision/latest?cb=20071123163553
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2022/01/31/species-of-the-week-womp-rat/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

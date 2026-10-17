@@ -23,6 +23,19 @@ Their limbs were part flippers, part claws; scientists theorized that they had o
 
 When it spots its prey (such as opee sea killers and colo claw fish), the sando gets close to it quickly, then opens its large mouth, letting out a roar before biting down. If the prey is small, the sando will swallow it whole. If the prey is large, the sando would either bite it in half or physically tear it in half to stop it from escaping. To most natives of Naboo, sando aqua monsters were more of a myth than a …[truncated by script; rest UNREAD here, not absent]
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/06/17/species-of-the-week-sando-aqua-monster/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). No image on the post. Adds nothing beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Non-sentient
+> Homeworld: Naboo
+> Notable members: Jacked Fish
+> Fandom: Star Wars
+> Appearances: The Phantom Menace
+> The Sando Aqua Monster
+> was an enormous creature that dwelt in the hollow planet core of Naboo. It was a capable swimmer but was also able to stand on it’s hind legs like a bipedal land creature. It hunted other monstrous creatures of Naboo’s deep such as the Colo Claw Fish. They rarely ventured onto land with the exception of one incident when a female pursued poachers who had captured one of her young. 
+> I had to make this my species of the week after seeing John Hoey’s ‘Jacked Fish’ post on Twitter. Because you have to admit, he’s pretty jacked!!
+
 ## Visual brief
 Four images (canon render and film frame, two Legends sketches). The three that show the whole animal agree on the body plan.
 - **Silhouette:** a vast, heavy-muscled, **half-reptile, half-whale** body (the entry's own image-derived analogy; the wiki infobox classes the species as Mammal): a **bulky torso with big shoulders and a long thick neck, a long, tapering, muscular tail ending in a broad horizontal fluke** (flattened tail fin, fine ribbed rays; clear in `canon_1`, `legends_1` and `legends_2`). In the film frame (`canon_2`) it sits upright on its haunches on a rock like a bear or a theropod and holds prey in its hand.
@@ -46,6 +59,7 @@ not yet assessed
 ## Source URLs
 - https://starwars.fandom.com/wiki/Sando_aqua_monster (canon; wikitext pulled via the API 2026-10-04)
 - https://starwars.fandom.com/wiki/Sando_aqua_monster/Legends (Legends; wikitext pulled via the API 2026-10-04)
+- https://bloggathehutt.wordpress.com/2019/06/17/species-of-the-week-sando-aqua-monster/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Sando aqua monster`; wiki caption: infobox image. File: `SandoAquaMonster.png` — https://static.wikia.nocookie.net/starwars/images/f/f4/SandoAquaMonster.png/revision/latest?cb=20160913234539

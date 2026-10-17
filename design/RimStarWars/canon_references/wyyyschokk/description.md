@@ -13,6 +13,17 @@ Wyyyschokk were a species of gigantic spider that lived on Kashyyyk (jungle and 
 
 Also called webweavers or Kashyyykian giant weavers; the most dangerous predator on Kashyyyk. Pack-hunting, tracked prey over a kilometre, immobilised victims with thick web strands and poison from upraised mandibles. Skin and hair grey, red, green or blue; eyes yellow, blue or red.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/06/10/species-of-the-week-wyyyschokk/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Non-sentient
+> Homeworld: Kashyyyk
+> Fandom: Star Wars
+> Appearances: Jedi: Fallen Order
+> Wyyyshokk are a large species of spider native to the wilds of Kashyyyk along with a number of other deadly species. They attack by shooting webbing at their victims then pounce on them to finish them off. They are a deadly threat even to enemies armed with blasters as they have thick hides.
+> I really enjoyed watching the gameplay demo for Jedi: Fallen Order and reading the information about the assault on Kashyyyk. Seeing these creatures return from Legends to tangle with a Stormtrooper patrol then prove a significant threat to your Jedi main character made me really excited to play the game
+
 ## Visual brief — RULED (owner correction, 2026-09-13)
 The owner's own lore images (comics/game art) show the real canon look:
 - **Blue-grey body**
@@ -25,6 +36,7 @@ The owner's own lore images (comics/game art) show the real canon look:
 Distinctive and vivid — not a generic brown hairy spider. The 2026-09-13
 canon-brief agent's brown-spider render is the negative example this library
 exists to prevent from recurring.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a wyyyschokk (Jedi: Fallen Order demo): spherical armoured abdomen with banded green-yellow plates, dark spider legs, glowing sensor spots, in jungle undergrowth. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the `## ruling` below (owner visual correction 2026-09-13, confirmed 2026-09-14 on `wookieepedia_jfo_infobox.jpg`) and that image's caption.*
@@ -43,6 +55,7 @@ none known — no donor mod sprite could be obtained at all (creature art ships 
   2026-09-13, underselling the visual; re-fetch for the full infobox image set)
 - Owner's own lore image references (comics/game art) — not yet captured as
   files in this folder; see `Watch out` on the item.
+- https://bloggathehutt.wordpress.com/2019/06/10/species-of-the-week-wyyyschokk/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_jfo_infobox.jpg` — Wookieepedia infobox render from *Star Wars
@@ -74,6 +87,7 @@ loose PNGs (confirmed via the mod's public GitHub mirror,
 only an `UpdateInfo` subfolder), and no Steam Workshop preview screenshot
 specifically labeled Wyyyschokk was found this pass. Revisit if the donor mod
 is ever installed locally.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2019/06/10/species-of-the-week-wyyyschokk/; post card image (not Lucasfilm).
 
 ## ruling
 **RULED** (owner, 2026-09-13, verbatim visual correction — see Visual brief

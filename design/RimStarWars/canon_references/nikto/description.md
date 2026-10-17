@@ -32,6 +32,23 @@ invent an ability here. Note that green-Nikto oviparity (egg-laying) and the
 inability to blush are the only two physiological facts stated, and both belong to
 the green subspecies specifically, not to the species as a whole.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2025/01/13/species-of-the-week-nikto/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld:  Kintan
+> Notable members: Vane
+> Fandom: Star Wars
+> Appearances: Return of the Jedi, The Mandalorian, Skeleton Crew
+> Nikto are a populous species, commonly seen throughout the Outer Rim. Due to the varied terrain and temperament ranges on their homeworld, the species has developed into several subspecies including the Kajain’sa’Nikto
+> , 
+> commonly known a Red Nikto
+> . 
+> The variations between each subspecies are enough that they could mistaken as separate species at first glance but each has tough skin and horns on their face
+> Being in Hutt space, many of the species have been indentured by the Hutts, leading to them commonly being seen in nefarious occupations such as enforcers, bounty hunters and pirates. Not all Nikto fit this stereotype, however, and have made their way into civilised society, such as the mechanic Neeku Vozo and Jedi Master Ima-Gun Di
+> I’m loving seeing Vane keep popping up in Skeleton Crew and I just realised I never posted his species so here we go
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The *Clone Wars* animated guard (`wookieepedia_guard_animated.jpg`) was removed and replaced with
@@ -72,6 +89,7 @@ reference (a Kintan Strider, i.e. a Nikto):
   hard-worn leathers with an armour-plated, horned head.**
 - The **live-action profile** shows the carapace in side view: the plates run back over the whole crown like a
   close-fitting segmented helmet, the face projects forward under it, and the skin is the same **warm putty-tan**.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Kajain'sa'Nikto (Red Nikto, Skeleton Crew) in live action: grey-green leathery skin with deep creases, bony horn ridges on the face, a lipless wide mouth, dressed in layered patched clothing; a second Nikto behind. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images the visual brief describes (owner ruling 2026-10-08 in the visual brief) and the infobox.*
@@ -120,6 +138,7 @@ definitive.
   https://starwars.fandom.com/wiki/Esral%27sa%27Nikto — worth a later pass, since
   the subspecies faces genuinely differ (especially the hornless, fan-finned
   mountain Nikto, for which this entry has NO image).
+- https://bloggathehutt.wordpress.com/2025/01/13/species-of-the-week-nikto/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_infobox_kintan_strider.jpg` — **the reference of record.** The
@@ -137,6 +156,7 @@ definitive.
 - ⚠️ **Missing: any image of the Esral'sa'Nikto (mountain) subspecies**, whose face
   is hornless with fan-like fins. Anyone continuing this entry should fetch one
   before treating the horned face as the whole species.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2025/01/13/species-of-the-week-nikto/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

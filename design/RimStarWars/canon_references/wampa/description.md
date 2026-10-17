@@ -17,6 +17,17 @@ plains/ice caves of Hoth. Wampas have predators of their own (for example fire-b
 A visually similar "cousin species," the Mogu,
 exists on the warmer world of Koboh but is a distinct species.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/12/19/species-of-the-week-wampa/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Non-Sentient
+> Homeworld: Hoth
+> Fandom: Star Wars
+> Appearances: The Empire Strikes Back
+> These large mammals are native to the snow planet Hoth, where they use their white fur to blend into their surroundings and hunt their prey.  When they catch a Tauntaun or other creature they drag them to their cave and freeze them to the roof until they are ready to feast. When the Rebellion set up base on Hoth both they and the invading Imperials had encounters with Wampas who found their way into the base. 
+> Had to pick a snowy one for Christmas!!!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
@@ -51,6 +62,7 @@ claws and small horns entirely. A regen should correct the stance to
 upright/bipedal-reaching and add visible claws and small head horns; this is
 a bigger disagreement than the Dewback or Bantha cases and is worth flagging
 prominently for the owner's ruling.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a wampa: shaggy creamy-white fur, hunched shoulders, black wide-set eyes, horns curving from the head, dark claws, blood around the mouth. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the live-action *Empire Strikes Back* stills, the owner's 2026-10-08 realism ruling and the `## ruling` below.*
@@ -70,6 +82,7 @@ none known — the donor sprite's disagreement (a quadrupedal, four-legged grazi
   2026-09-13)
 - https://static.wikia.nocookie.net/starwars/images/d/d0/SkywalkerWampa.jpg (infobox art — practical suit still from *The Empire Strikes Back*, bound/hoisted)
 - https://static.wikia.nocookie.net/starwars/images/7/70/Wampa_unused_btm.jpg (unused behind-the-scenes/promotional still — close-up snarl, claws and blood detail)
+- https://bloggathehutt.wordpress.com/2022/12/19/species-of-the-week-wampa/ (fan blog)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, east-facing base variant), quadrupedal white body with brown face blotching, no claws/horns visible
@@ -77,6 +90,7 @@ none known — the donor sprite's disagreement (a quadrupedal, four-legged grazi
 - `wookieepedia_unused_concept.jpg` — unused behind-the-scenes close-up, snarling face, bared fangs, blood-streaked claws and muzzle
 - `wookieepedia_esb_fullbody.png` — *The Empire Strikes Back* live-action, full standing wampa in the ice cave holding a tauntaun limb; file `Wampa-BOSWI11.png` — https://static.wikia.nocookie.net/starwars/images/a/ac/Wampa-BOSWI11.png/revision/latest?cb=20241228061749
 - `wookieepedia_esb_onearm.png` — *The Empire Strikes Back* live-action, the wounded wampa's head and shoulders; file `OneArm-ESB.png` — https://static.wikia.nocookie.net/starwars/images/0/02/OneArm-ESB.png/revision/latest?cb=20130320014431
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2022/12/19/species-of-the-week-wampa/; post card image (not Lucasfilm).
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox_esb.jpg`

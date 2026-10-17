@@ -48,6 +48,21 @@ was **a grove of Wookiees**.
   becoming a source of great pride for their people (Kelnacca, Arkoff, Burryaga
   Agaburry, Tyvokka, Gungi).
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/06/17/species-of-the-week-wookiee/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Kashyyyk
+> Notable members: Chewbacca, Krrsantan, Kelnacca
+> Fandom: Star Wars
+> Tall bipeds covered in thick fur, Wookiees hail from the deeply forested world of Kashyyyk. Their beastlike appearance and the barking sounds of their language Shyriwook, mean that thye are often underestimated as primitives by ignorant beings. The Wookiees are a technologically advanced race, known for their hyperspace navigation guild, though they prefer to craft with natural materials, and have let the forests of their home, which they regard as sacred, largely untouched. 
+> Wookiees are strong and durable able to sustain wounds that would incapacitate or kill other beings. They are known for their powerful rage, and for ripping enemies arms out of their sockets, but they are an honourable race and any Wookiee seen using their claws for combat is exiled from society. The Wookiees are prized for their strength and their galactic neighboursd the Trandoshans often hunted their larger neighbours for glory and sold them as slaves to the Empire. 
+> Wookiees are long-lived, with their life span reaching several centuries. This gives them a different perspective on time to other beings, meaning that Chewbacca was comfortable spending decades away from his family to fulfil his life-debt to Han Solo.
+> Was looking for species from 
+> The Acolyte
+>  to cover and just realised I’d never done Wookiee before!!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_youngling_animated.jpg` (*Clone Wars* Gungi). Added live-action: `wookieepedia_lumpy_juvenile_holiday.jpg` (Lumpy, a Wookiee child, *The Star Wars Holiday Special*) to replace the juvenile reference, and `wookieepedia_wookiee_roar_rots.jpg` (*Revenge of the Sith*, a Kashyyyk war host with a Wookiee roaring in front) for population hue range. All remaining images are realistic.
 
@@ -104,6 +119,7 @@ shaggy coat plus (for adult males) a long beard is a direct contradiction with t
 canon, and means the beard cannot appear. **Nothing on disk supplies the
 directional shaggy coat over the body**, the retractable claws, or the lighter
 face mask.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Wookiee from The Acolyte in a forest: long shaggy red-brown fur hung in tufts, hunched stance, head bowed; looks darker/more reddish than Chewbacca. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the anatomy plate, the full-body infobox image and the live-action references, and the owner's 2026-10-08 realism ruling.*
@@ -127,6 +143,7 @@ none known — the donor sprite is one of the better ones in the library (a dedi
 - https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg (File:Lumpy.jpg → wookieepedia_lumpy_juvenile_holiday.jpg)
 - https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png (File:WookieeRoar.png → wookieepedia_wookiee_roar_rots.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/wookiee (official Databank).
+- https://bloggathehutt.wordpress.com/2024/06/17/species-of-the-week-wookiee/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_anatomy_diagram.jpg` — **the highest-value image here.** An
@@ -142,6 +159,7 @@ none known — the donor sprite is one of the better ones in the library (a dedi
   palette, the short-haired face mask, and the single-shoulder bandolier.
 - `wookieepedia_lumpy_juvenile_holiday.jpg` — live-action, *The Star Wars Holiday Special*, file `Lumpy.jpg` (424×504): Lumpy, a Wookiee child — juvenile proportions, fluffier glossy brown coat with blond tips, lighter face — https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg/revision/latest?cb=20081120010113
 - `wookieepedia_wookiee_roar_rots.jpg` — live-action/realistic CGI, *Revenge of the Sith*, file `WookieeRoar.png` (1440×810): a roaring Wookiee before the Kashyyyk war host — the population's coat-colour range — https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png/revision/20141206190806
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2024/06/17/species-of-the-week-wookiee/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

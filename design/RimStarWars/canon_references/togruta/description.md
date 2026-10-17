@@ -106,6 +106,21 @@ decision list):
 | Skin | saturated single hue | blue / orange / purple / red / white / yellow (canon); +green in Legends |
 | Hair | **none** — the canon infobox haircolor field is empty and no Togruta has hair | — |
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2023/08/28/species-of-the-week-togruta/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation; Sentient
+> Homeworld: Shili
+> Notable members: Ahsoka Tano, Shaak Tii
+> Fandom: Star Wars
+> Appearances: Attack of the Clones, The Clone Wars, Ahsoka
+> Hailing from the Expansion region, the Togruta are a distinctive humanoid species with brightly coloured skin, montrals and three lekku at the back of their heads. 
+> While they are not the most common species or most widespread, several Togruta have achieved distinguished roles including a number of Jedi and a Supreme Chancellor of the Republic. 
+> Was looking for a random background alien from 
+> Ahsoka 
+> then realised I hadn’t done Ahsoka herself!
+
 ## Visual brief
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the stylised *Ahsoka* (novel) painting `wookieepedia_ahsoka_art.jpg` and the *Rebels* Hera/Ahsoka frame `wookieepedia_two_kinds_of_lekku.jpg`. Added two live-action stills of Ahsoka Tano (Rosario Dawson, *The Mandalorian* ch. 13): `wookieepedia_ahsoka_liveaction_mando.jpg` and `wookieepedia_ahsoka_headshot_mando.jpg`. `wookieepedia_kiros_male_and_female.jpg` (*Clone Wars* CGI) is **kept only as an animated, anatomy-only reference for the male form**, which no realistic image shows. The live-action Shaak Ti and Ahsoka are the target: real skin, matte prosthetic montrals/lekku with soft painted bands, natural light.
@@ -184,6 +199,7 @@ by an arch, with two short tapering points at the sides.** Judged against the re
   wrong in practice — see below.
 - ⚠️ Male and female share one montral texture, so the "male montrals are more branched"
   distinction is not expressed.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** Ahsoka Tano (live action, cut-out): orange-brown skin with white face markings, white montrals with dark blue-grey bands and three banded lekku. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Shaak Ti and Ahsoka images (the target), the Kiros CGI pair for the male form only, and the canon/Legends text.*
@@ -288,6 +304,7 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
     file. Candidates are `File:ShaakTi-SWBC60.png` (cited in the Togruta article) or an
     image from the Shaak Ti article. Treat as a genuine Shaak Ti reference of unknown
     provenance.
+- https://bloggathehutt.wordpress.com/2023/08/28/species-of-the-week-togruta/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_shaakti_montrals.jpg` — **the reference of record for the appendages.** A
@@ -310,6 +327,7 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   about canon and strong evidence about the gap**: a bare pale oval head, no montrals, no
   lekku, no markings, and byte-identical to variants 1–3. See the visual brief for what the
   companion montral texture does and does not do.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2023/08/28/species-of-the-week-togruta/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — the owner has not reviewed this race yet)

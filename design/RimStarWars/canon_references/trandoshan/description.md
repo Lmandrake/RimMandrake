@@ -33,6 +33,23 @@ explicit that the aggression is a substrate, not a destiny (there are Trandoshan
 Jedi, e.g. Sskeer). **However, the rare Magrak Syndrome would bring them back out
 over time.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2023/05/08/species-of-the-week-trandoshan/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Trandosha
+> Notable members: Bossk, Skeer, Frisk
+> Fandom: Star Wars
+> Appearances: The Empire Strikes Back, The High Republic, Squadrons
+> Trandoshans
+> are a humanoid reptilian species commonly seen in the Outer Rim territories. Coming from the jungle planet Trandosha, they have a culture centered around hunting, meaning that Trandoshans in the wider galaxy are often seen working as bounty hunters and assassins
+> . 
+> They have a longstanding feud with the Wookiees whom they have traditionally hunted. Not all Trandoshans follow this path, with some following more noble professions such as the Jedi Skeer and New Republic pilot Frisk. 
+> I bought a joystick for my Xbox so I’m having fun getting into 
+> Squadrons 
+> again!
+
 ## Visual brief
 🔴 **The infobox distinction "scaly skin" and the body text's "smooth, scaly skin"
 are directly contradicted by every image, and the images win.** The reference
@@ -87,6 +104,7 @@ eyes are ordinary small dots rather than deep-set slit-pupilled. A separate
 supplies a small central crown ridge plus two brow ridges, which does add the
 crown/brow read. **Nothing on disk supplies the plate-scale texture, the visible
 resting teeth, or the clawed three-digit hands and feet.**
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** a tiny 250x170 crop of a Trandoshan (High Republic game render): scaly tan-brown head with a flat snout and heavy brow ridges; low resolution, weak evidence. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Bossk reference render, the Dokk Strassi live-action still and the Topps illustration (images win over the prose's "smooth" and "long thin arms").*
@@ -110,6 +128,7 @@ none known — the donor sprite's greyscale mask is correct/expected (the game t
 - https://static.wikia.nocookie.net/starwars/images/1/1f/DokkStrassi-BoBFCE.png (File:DokkStrassi-BoBFCE.png → wookieepedia_dokk_strassi_liveaction.jpg)
 - https://static.wikia.nocookie.net/starwars/images/0/0a/Trandoshan-2024ToppsSWHyperspace.png (File:Trandoshan-2024ToppsSWHyperspace.png → wookieepedia_topps_illustration.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/trandoshans (official Databank).
+- https://bloggathehutt.wordpress.com/2023/05/08/species-of-the-week-trandoshan/ (fan blog)
 
 ## Candidate images
 - `wookieepedia_infobox_bossk.jpg` — **the reference of record.** The infobox image
@@ -125,6 +144,7 @@ none known — the donor sprite's greyscale mask is correct/expected (the game t
 - `wookieepedia_topps_illustration.jpg` — a stylized card illustration; independent
   agreement on the plate-scale texture, muzzle and claws. Treat line and palette as
   the artist's.
+- `bloggathehutt_post_image.jpg` — FAN BLOG https://bloggathehutt.wordpress.com/2023/05/08/species-of-the-week-trandoshan/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this race yet)

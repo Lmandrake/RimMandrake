@@ -57,6 +57,19 @@ short, stocky individual, and Legends' own prose calls them "a **diminutive**
 species" — so short is the right read, and the def's `RSW_BodySizeGene_small` is
 consistent with it.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/04/20/species-of-the-week-sullustan/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Sullust
+> Notable members: Nien Nunb
+> Fandom: Star Wars
+> Appearances: Return of the Jedi, The Force Awakens, Rise of the Resistance
+> Sullustans are an influential species in the galaxy, having established the major galactic corporation SoroSuub which is a leader in areas as wideranging as vehicle manufacture and agriculture. Sullustans are distinguished by their prominent cheek jowls and speak their own language. After their industry was nationalised by the Empire the Sullustans supported the Rebellion, with Sullust being a major staging point for the assault on the second Death Star and Sullustan co-pilot Nien Nunb was a key player in its destruction
+> Rise of the Resistance
+>  was an incredible ride and getting to go into space in a ship piloted by Nien Nunb was just the icing on the cake!!!
+
 ## Visual brief
 
 Four images: a practical costume/mask on a white background (the canon infobox), two
@@ -104,6 +117,7 @@ width, and the dewflaps stop at the chin rather than hanging past it, so the hea
 silhouette is a circle where canon is widest-at-the-jowls. There is exactly one head
 type and one facial variant — no male/female or age variation, and no visor, tattoo
 or goatee variants for the Legends details.
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** Nien Nunb (Rise of the Resistance) in a Rebel pilot helmet: dark brown wrinkled skin, drooping cheek jowls, large dark eyes behind goggles. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images (the canon infobox Nien Nunb above all) and the canon/Legends text.*
@@ -171,6 +185,7 @@ none known
 - NOT fetched this pass: https://www.starwars.com/databank/sullustan (cited by the
   canon article for the jowls/mouse-eyed line; the Databank page itself was not
   retrieved).
+- https://bloggathehutt.wordpress.com/2026/04/20/species-of-the-week-sullustan/ (fan blog)
 
 ## Candidate images
 
@@ -192,6 +207,7 @@ none known
   of the same character. Stylised, so weak on detail and worth little beyond
   confirming that the dewflaps and black eyes survive heavy abstraction — which is
   the relevant test for a 128 px RimWorld head.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2026/04/20/species-of-the-week-sullustan/; post card image (not Lucasfilm).
 
 ## ruling
 

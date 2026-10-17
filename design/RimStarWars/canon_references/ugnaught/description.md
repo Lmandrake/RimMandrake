@@ -66,6 +66,18 @@ should expect thrown tools. **Alza'ran** was a common Ugnaught name.
 an extreme **aptitude for smithing, machinery and droid work.** The tusks are a
 **duelling** feature, not a weapon system.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/05/04/species-of-the-week-ugnaught/
+
+Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
+
+> Designation: Sentient
+> Homeworld: Gentes
+> Notable members: Kuill
+> Fandom: Star Wars
+> Appearances: The Empire Strikes Back, The Mandalorian
+> The Ugnaughts are a diminutive species hailing from the Anoat sector world of Gentes but are a fairly common sight around the galaxy, due to them being enslaved during various periods of their history. They are a common sight on Bespin as it’s original owner bought the freedom of three whole clans of Ugnaughts in exchange for their help building and maintaining the station. Ugnaughts such as Kuill were known as skilled workers and technicians and their services were desirable in those fields. 
+> Well I’ve finally caught up on the Mandalorian. No more new species (well none with names or decent images anyway) but I couldn’t move on without acknowledging Kuill and the shock of his death. He has gone down as one of the most memorable characters in Star Wars and is “I have spoken” is right up there with the best Star Wars lines
+
 ## Visual brief
 
 ⚠️ **Two CANON sources say pink and the canon infobox IMAGE does not look pink. The
@@ -167,6 +179,7 @@ Well founded and worth keeping on record so a later pass does not "fix" them:
 `RSW_statgene_compliant` + `Turn_Gene_Certain` + `Turn_Gene_MotivationHigh` (the
 hardest-working species in the galaxy). **Not represented anywhere and the most
 interesting hook in the article: red improves their work productivity.**
+- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** Kuill (The Mandalorian): short, stocky, pig-nosed, pale pink-brown wrinkled face under a goggle cap, in brown flight overalls, arms crossed. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Kuiil infobox image, the Cloud City still (shape only, never skin) and the `## ruling` below.*
@@ -205,6 +218,7 @@ none known — the repo has no Ugnaught art of any kind (no head, body, hair or 
   the tribal hierarchy, so those reach here **second-hand through Wookieepedia's
   citation.** ⚠️ That matters more than usual here, because the "pink" the Databank is
   cited for is the value the live-action image contradicts.
+- https://bloggathehutt.wordpress.com/2020/05/04/species-of-the-week-ugnaught/ (fan blog)
 
 ## Candidate images
 
@@ -225,6 +239,7 @@ none known — the repo has no Ugnaught art of any kind (no head, body, hair or 
   shoulders, big snout and visible tusks, in working smock and apron. Legends design, so
   a **variant, not the target** — but it is the evidence that the pink/dun split is a
   real continuity difference rather than a lighting error.
+- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2020/05/04/species-of-the-week-ugnaught/; post card image (not Lucasfilm).
 
 ## ruling
 
