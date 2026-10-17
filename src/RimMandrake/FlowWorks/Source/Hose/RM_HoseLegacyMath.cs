@@ -125,6 +125,6 @@ namespace RimMandrake.FlowWorks.Hose
 
         public static bool TryBool(string s, out bool v) => bool.TryParse(s, out v);
         public static bool TryInt(string s, out int v) => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out v);
-        public static bool TryFloat(string s, out float v) => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out v);
+        public static bool TryFloat(string s, out float v) => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out v) && !float.IsNaN(v) && !float.IsInfinity(v);
     }
 }

@@ -1931,6 +1931,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             ReviewFixBatch01Checks.Run(Case);  // code-review fixes batch 01: natural tar, dig/fill designations, dig finds
             RulingsWetDoorWakeBottleChecks.Run(Case);  // rulings #18 wet-cell doors, #19 wakes; the bottle-loop fix
             GptFixesAChecks.Run(Case);         // GPT consult fixes, builder A: liquid net, tanks, hoses, bottles (GptFixesAChecks.cs)
+            GptEdge1016Checks.Run(Case);       // GPT edge-case consult fixes 2026-10-16 (GptEdge1016Checks.cs)
             MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)

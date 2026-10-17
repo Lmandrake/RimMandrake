@@ -21,11 +21,11 @@ namespace RimMandrake.FlowWorks.Hose.Jobs
     public static class HoseJobTuning
     {
         /// <summary>Design section 12: ONE handling-time setting scales grab / set-down / couple together.</summary>
-        static int Scaled(int baseTicks) => Mathf.Max(1, Mathf.RoundToInt(baseTicks * Mathf.Clamp(RM_HoseSettings.handlingTime, 0.25f, 3f)));
+        static int Scaled(int baseTicks) => Mathf.Max(1, Mathf.RoundToInt(baseTicks * HoseMath.FiniteClamp(RM_HoseSettings.handlingTime, 0.25f, 3f, 1f)));
         public static int grabTicks => Scaled(45);
         public static int setDownTicks => Scaled(30);
         public static int coupleTicks => Scaled(90);
-        public static float windCellsPerSecond => Mathf.Clamp(RM_HoseSettings.windCellsPerSecond, 0.5f, 10f);
+        public static float windCellsPerSecond => HoseMath.FiniteClamp(RM_HoseSettings.windCellsPerSecond, 0.5f, 10f, 3f);
         /// <summary>Design section 2: an interrupted order (end dropped, order kept) is picked up again by an idle colonist.</summary>
         public static bool autoResumeDroppedHose => RM_HoseSettings.autoResumeDroppedHose;
     }
