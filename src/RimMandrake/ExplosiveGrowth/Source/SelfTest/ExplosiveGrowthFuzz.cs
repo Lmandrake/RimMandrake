@@ -488,6 +488,17 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                     Check(got == want, $"AmbientBand(scope {sc}, exempt {ex}, term {term}, wet {wet}, tree {tree}) = {got}, want {want}");
                     Cases++; Steps++;
                 }
+                // EGROWTH_SOAK_FIX_DURATION_INT_WRAP: a huge API duration soaks/suppresses (clamped), never wraps to expired.
+                foreach (int now in new[] { 0, 1000, 5_000_000 })
+                    foreach (int ticks in new[] { 1, 2500, int.MaxValue - 10, int.MaxValue })
+                    {
+                        var lg = new RM_EgLedger<int>();
+                        Check(lg.TrySoak(1, now, ticks, true) && lg.IsSoaked(1, now) && lg.IsSoaked(1, now + Math.Min(ticks, 1_000_000) - 1),
+                            $"TrySoak(now {now}, ticks {ticks}) not soaked within its duration (int wrap)");
+                        lg.Suppress(new[] { 2 }, now, ticks);
+                        Check(lg.IsSuppressed(2, now), $"Suppress(now {now}, ticks {ticks}) not suppressed at once (int wrap)");
+                        Cases++; Steps++;
+                    }
             }
             catch (Exception e) { fails.Add("scope: " + e.Message); }
             return fails;

@@ -160,13 +160,20 @@ namespace RimMandrake.ExplosiveGrowth
             return soakUntil.Count != 0 && soakUntil.TryGetValue(c, out until) && now < until;
         }
 
+        /// <summary>EGROWTH_SOAK_FIX_DURATION_INT_WRAP: now + ticks clamped to int.MaxValue. The public API takes any int, and
+        /// a huge duration wrapped negative, so the soak/suppression was expired the moment it was written.</summary>
+        public static int Deadline(int now, int ticks)
+        {
+            return (int)Math.Min((long)now + Math.Max(1, ticks), int.MaxValue);
+        }
+
         /// <summary>allowed = setting on, in bounds, biome not a carve-out. Extends, never shortens, an existing soak;
         /// refused on suppressed ground.</summary>
         public bool TrySoak(K c, int now, int ticks, bool allowed)
         {
             if (!allowed) return false;
             if (IsSuppressed(c, now)) return false;
-            int until = now + Math.Max(1, ticks);
+            int until = Deadline(now, ticks);
             int prior;
             if (!soakUntil.TryGetValue(c, out prior) || prior < until) soakUntil[c] = until;
             return true;
@@ -174,7 +181,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         public void Suppress(IEnumerable<K> cells, int now, int ticks)
         {
-            int until = now + Math.Max(1, ticks);
+            int until = Deadline(now, ticks);
             foreach (K c in cells)
             {
                 int prior;
