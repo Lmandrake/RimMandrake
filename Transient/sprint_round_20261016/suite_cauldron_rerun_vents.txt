@@ -1,0 +1,87 @@
+[cauldron]-note bystanders settled (mended / drafted / residue): [[["Human79122", "Gunshot", "Arm"], ["Human79122", "Gunshot", "Arm"], ["Human79127", "Bite", "Eye"]], ["Human79122", "Human79124", "Human79127"], []]
+[cauldron]-note mapgen wildlife removed: {"removed": 14, "verified": true, "residue": []}
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 19:53:03 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 19:53:04 vent_weather_multiplier PASS 
+[cauldron]-note ON: vent state / eskith job in the falter: ["faltering", "Wait_MaintainPosture"]
+[cauldron]-note OFF: vent state / eskith job in the falter: ["faltering", "Wait_Wander"]
+[cauldron] 19:53:19 fauna_hush_in_falter PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 19:53:25 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.012, 0.008143173]
+[cauldron]-note OFF arm: near / far: [0.0117333336, 0.012]
+[cauldron] 19:53:31 vent_exposure_is_local PASS 
+GOVERNOR_STOP {"utc": "2026-10-17T02:53:32Z", "message": "safe_advance stopped after 60 of 60 tick(s): hurt: health 1 -> 0.6; newest hediff BloodLoss age 0", "state": "stopped", "executed": 60, "requested": 60, "stopBy": {"seq": 333, "kind": "hurt", "severity": "damage", "tick": 27656, "map": 1, "subjectId": 82209, "subject": "Lili", "critical": false, "declared": false, "detail": "health 1 -> 0.6; newest hediff BloodLoss age 0"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 333, "kind": "hurt", "severity": "damage", "tick": 27656, "map": 1, "subjectId": 82209, "subject": "Lili", "critical": false, "declared": false, "detail": "health 1 -> 0.6; newest hediff BloodLoss age 0"}], "argv": ["src/RimMandrake/Utils/northstar_driver/cli.py", "run", "--mod", "Cauldron", "--plan", "src/RimMandrake/Cauldron/northstar_plan.py", "--chains", "vents", "--no-record"]}
+[cauldron] 19:53:32 vexxiss_drinks_vent UNMEASURED surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 1 -> 0.6; newest hediff BloodLoss age 0
+[cauldron] 19:53:32 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 1 -> 0.6; newest hediff BloodLoss age 0
+component vents/vexxiss_drinks_vent: {"toggle": "vexxissDrinksVentsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 1 -> 0.6; newest hediff BloodLoss age 0", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "3 pawn(s), 3 outside the rect.", "pawns": [{"id": "Human82209", "name": "Lili", "kind": "Colonist", "kindDef": "Colonist", "def": "Human", "hasGenes": true, "xenotype": "Baseliner", "xenotypeLabel": "baseliner", "uniqueXenotype": false, "faction": "PlayerColony", "factionName": "Northstar Cauldro
+component vents/vent_silences_and_recovers: {"toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "a surprise ended this chain earlier: surprise: safe_advance stopped after 60 of 60 tick(s): hurt: health 1 -> 0.6; newest hediff BloodLoss age 0", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+component load/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxithAcidImmunityEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "floraExpansionEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "fexxilVenomEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component load/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component weather/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component weather/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissAttacksIgniter", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "condensateGardensEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventsEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventFalterMessage", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventGardensEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxithDoorEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#7: {"verdict": "UNMEASURED", "shows": [], "toggle": "dewfallBeadsEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#8: {"verdict": "UNMEASURED", "shows": [], "toggle": "dewfallSaturationEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#9: {"verdict": "UNMEASURED", "shows": [], "toggle": "assayFlecksEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#10: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissPrintsEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#11: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventGasDrifts", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#12: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventGasToxicSmoke", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#13: {"verdict": "UNMEASURED", "shows": [], "toggle": "ruinKitEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component settings/skipped#14: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component items/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component items/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component acid/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component acid/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxithAcidImmunityEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component acid/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxithAcidImmunityEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component fauna/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component fauna/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component suush/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component suush/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component flora/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component flora/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "assayGradeEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component flora/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "assayGradeEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component flora/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "metalYieldFactor", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component yield/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component yield/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "metalYieldEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component yield/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "metalYieldFactor", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component yield/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "metalYieldEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventBloomExposureEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventBloomExposureEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventBloomExposureEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component bloom/skipped#6: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventBloomExposureFactor", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissPoisonsWater", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissWaterLetter", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissWaterLetter", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissWaterLetter", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component water/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissPoisonsWater", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component fire/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissFireWardenEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component fire/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissFireWardenEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#1: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventGasEnabled", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#2: {"verdict": "UNMEASURED", "shows": [], "toggle": "ventGasIgnites", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#3: {"verdict": "UNMEASURED", "shows": [], "toggle": "gasTapBanksCondensate", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#4: {"verdict": "UNMEASURED", "shows": [], "toggle": "vexxissPriesTaps", "detail": "UNMEASURED: chain not run (--chains vents)"}
+component gas/skipped#5: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+component log/skipped#0: {"verdict": "UNMEASURED", "shows": [], "toggle": null, "detail": "UNMEASURED: chain not run (--chains vents)"}
+Cauldron: NOT GREEN  PASS=5 FAIL=0 UNMEASURED=68  calls=352 mean=97.696ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\Cauldron_20261017T025257Z.json

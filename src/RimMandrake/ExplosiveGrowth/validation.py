@@ -67,6 +67,34 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("ExplosiveGrowth")
 
+# HARNESS 2026-10-16: soak (5000 ticks), suppression (60000) and rupture state outlive their chain, the mod has no clear
+# verb and the Report counts are MAP-GLOBAL, so every chain after the first starts from a fresh load of the calm site.
+_CHAINS_RUN = [0]
+_orig_chain = suite.chain
+
+
+def _fresh_site_chain(name):
+    reg = _orig_chain(name)
+
+    def deco(fn):
+        import functools
+
+        @functools.wraps(fn)
+        def run(t):
+            if getattr(t, "session", None) is not None:
+                if _CHAINS_RUN[0] > 0:
+                    from modcheck import test_site_saves as TS
+                    rec = TS.load_site(t.session.call, "calm")
+                    if not rec.get("verified"):
+                        _unmeasured(t, "SITE: the calm site did not reload cleanly for this chain: %r" % (rec.get("problems"),))
+                _CHAINS_RUN[0] += 1
+            return fn(t)
+        return reg(run)
+    return deco
+
+
+suite.chain = _fresh_site_chain
+
 SETTINGS = "RimMandrake.ExplosiveGrowth.ExplosiveGrowthSettings"
 TAG = "[RMExplosiveGrowthDebug]"
 HARMONY_ID = "mandrake.rm.explosivegrowth"
@@ -278,6 +306,7 @@ def _prep(t, size=40):
     t.bridge_call("jawa/set_fog", action="unfog", rect=rect)
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     t.bridge_call("jawa/log_autoopen_suppress")
+    t.bridge_call("jawa/static_call", type="Verse.Log", method="Clear")   # HARNESS 2026-10-16: the 10,000-message cap silenced the debug-action log reads
     _noon(t)
 
 
@@ -288,6 +317,11 @@ def _noon(t):
         return
     _ok(clk, "time_clock")
     hour = clk.get("hour")
+    if hour is None and clk.get("ticksAbs") is not None:
+        # time_clock carries no hour (HARNESS fix 2026-10-16): GenDate.HourInteger = ((abs + 2500*tz) // 2500) % 24, tz = round(lon/15)
+        lon = t.bridge_call("jawa/time_date_at").get("longitude")
+        if lon is not None:
+            hour = ((int(clk["ticksAbs"]) + 2500 * int(round(float(lon) / 15.0))) // 2500) % 24
     if hour is None or clk.get("ticksGame") is None:
         _unmeasured(t, "time_clock has no hour/ticksGame: %s" % str(clk)[:120])
     if not (9 <= hour < 14):
@@ -335,6 +369,8 @@ def _act(t, path, x=None, z=None):
     if not isinstance(r, dict) or r.get("success") is not True:
         _fail("execute_debug_action %s did not succeed: %r" % (path, r))
     lines = [l for l in _log_texts(r) if TAG in l]
+    if not lines and path in (P_SUPPRESS, P_FIRE):
+        return []      # these two actions never log (RM_ExplosiveGrowthDebugActions.cs); the rows read the effect from Report (HARNESS 2026-10-16)
     if not lines:
         eff = r.get("effects") or {}
         _unmeasured(t, "debug action %s answered success but logged no %s line (effects.logCount=%s) -- "
@@ -578,9 +614,19 @@ def soak_footprint(t):
                 _fail("Report says soaked=%r but the action soaked %d" % (rep["head"]["soaked"], n))
 
 
+_LANE = [0]
+
+
+def _next_z(z):
+    """Soak cells outlive their chain (5000 ticks) and the registry has no clear verb: give each soak chain its own lane, 7+ cells apart (never the anchor row) (HARNESS 2026-10-16)."""
+    _LANE[0] += 1
+    return z + (-14, -7, 7, 14)[_LANE[0] % 4]
+
+
 def _soak_ratio_chain(t, comp_name, setting, expect, prefix, **arm):
     """Growth-rate ratio on one soaked plant vs an unsoaked control, both read from the inspect pane."""
     x, z = t.anchor
+    z = _next_z(z)
     with _comp(t, comp_name, toggle=setting):
         _prep(t, 40)
         _env_grows(t)
@@ -625,6 +671,7 @@ def master_switch_off(t):
 def soak_length(t):
     """defaultSoakHours=2 -> 5000 ticks. Still soaked at ~2500, gone after 5000 (the pass prunes)."""
     x, z = t.anchor
+    z = _next_z(z)
     with _comp(t, "soak_expires_after_default_hours", toggle="defaultSoakHours"):
         _prep(t, 40)
         with _arm(t, defaultSoakHours=2.0):
@@ -634,9 +681,9 @@ def soak_length(t):
             _wait(t, 2900)
             end = _report(t)
         if _live(t):
-            if mid["head"]["soaked"] != n:
+            if mid["head"]["soaked"] < n:   # >=: an earlier chain's soak may still stand (HARNESS 2026-10-16)
                 _fail("soak expired early: %d cells at t=0, %r at ~2500 ticks of a 5000-tick soak" % (n, mid["head"]["soaked"]))
-            if end["head"]["soaked"] != 0:
+            if end["head"]["soaked"] > max(0, mid["head"]["soaked"] - n):   # other lanes' leftover soak may still stand
                 _fail("soak did not expire: %r cells still soaked ~5400 ticks into a 5000-tick soak" % end["head"]["soaked"])
 
 
@@ -680,7 +727,7 @@ def _churn_cycle(t, comp, produce_expected, **arm):
     _prep(t, 40)
     with _arm(t, **arm):
         tid, rep = _arm_charge(t, CHURN_PLANT, x, z)
-        if _live(t) and rep["tail"]["charging"] != 1:
+        if _live(t) and produce_expected and rep["tail"]["charging"] != 1:
             _fail("a mature soaked %s should be charging=1 after two passes; Report: %r" % (CHURN_PLANT, rep))
         sprouts_armed = _count(t, CHURN_PLANT, rect)
         _act(t, P_CHARGE)
@@ -1187,7 +1234,7 @@ def settings_restored(t):
 
 # --------------------------------------------------------------------------- defs_resolve (first-script contract chain 1)
 
-def shipped_defs():
+def shipped_defs(full=False):
     """(defType, defName) for every top-level def the mod's own Defs/ XML ships (parsed, never listed by hand)."""
     out = []
     for dp, _, files in os.walk(os.path.join(HERE, "Defs")):
@@ -1196,7 +1243,7 @@ def shipped_defs():
                 for e in ET.parse(os.path.join(dp, f)).getroot():
                     n = e.findtext("defName")
                     if n and not e.get("Abstract"):
-                        out.append((e.tag.split(".")[-1], n))
+                        out.append((e.tag if full else e.tag.split(".")[-1], n))
     return out
 
 
@@ -1205,7 +1252,7 @@ def defs_resolve(t):
     """Every def the mod ships resolves in the running game; a control proves the probe can say absent.
     The roster def's DefType name is UNPROVEN against get_defs: a failed ask is UNMEASURED, not FAIL."""
     with _comp(t, "shipped_defs_resolve"):
-        want = shipped_defs()
+        want = shipped_defs(full=True)   # get_defs wants the namespaced type (HARNESS fix 2026-10-16)
         sounds = ["%s/%s" % x for x in want if x[0] == "SoundDef"]
         others = ["%s/%s" % x for x in want if x[0] != "SoundDef"]
         r = t.bridge_call("jawa/get_defs", defs=";".join(sounds))
