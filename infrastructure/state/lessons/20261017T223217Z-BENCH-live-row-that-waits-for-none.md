@@ -1,0 +1,1 @@
+A live row that waits for 'none of X left' measures the LAST X, not the first: thirst_live T25 read 'snow never melted in 7,000 ticks' while four staggered snow buckets each melted on time. Follow the subject by ID from the moment it is seen. (thirst_review 2026-10-17)
