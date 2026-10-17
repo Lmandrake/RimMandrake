@@ -459,4 +459,4 @@ Contagion/Staged/*  # split art not yet accepted (owner by card 2026-10-15: "Bot
 # Its texPaths RimStarWars/SWBestiary/DragonsnakeAlbino/* have no PNGs yet (pink squares). Its Greentide rows in
 # UtinniPatches/Patches/WildAnimals_Greentide.xml are guarded on the def existing, so holding this file holds them too.
 # Release (delete this line) once art.py has installed DragonsnakeAlbino_{east,south,north} and _Swimming_{east,south,north}.
-RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_DragonsnakeAlbino.xml   # no art installed yet (owner commissioned 2026-10-17)
+SWBestiary/Defs/ThingDefs_Races/RSW_DragonsnakeAlbino.xml   # no art installed yet (owner commissioned 2026-10-17)

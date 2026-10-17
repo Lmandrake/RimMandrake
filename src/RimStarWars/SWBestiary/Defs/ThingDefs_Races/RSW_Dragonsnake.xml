@@ -4,13 +4,8 @@
   Ported from mlie.starwarsanimalcollection's `Dragonsnake` ThingDef/
   PawnKindDef pair (Races_Animal_SW.xml, workshop folder 3497316713),
   renamed under the RSW_ tier prefix. Geometry/stats/comps copied verbatim.
-  Custom body: the donor's `Dragonsnake` BodyDef uses vanilla Core's
-  `SnakeBody`/`SnakeHead`/`SnakeMouth` parts unchanged, plus one donor-custom
-  tail part (`SW_Club`) and its attack-tool group (`SWTailAttackTool`) —
-  both ALREADY PORTED in Wave B (RSW_SW_Club, RSW_SWTailAttackTool, the same
-  club/tail-tool Boma already reuses) — ported here as RSW_Dragonsnake
-  (RSW_MlieWaveC_Bodies.xml) with those 2 references repointed, no new body
-  part needed.
+  Body: RSW_Dragonsnake (RSW_MlieWaveC_Bodies.xml), rebuilt 2026-10-17 (below);
+  its tail keeps the Wave B part RSW_SW_Club and group RSW_SWTailAttackTool.
 
   `leatherDef`/`specificMeatDef` repoint to the already-ported
   RSW_Leather_Saurian/RSW_Saurian_Meat (Wave B). Its `CompProperties_EggLayer`
@@ -30,15 +25,14 @@
   constrict). The pale limbless film serpent is the separate RSW_DragonsnakeAlbino
   (RSW_DragonsnakeAlbino.xml), a rare variant in the same swamps.
 
-  Wired into the live cast this same pass: BiomeCypreJungle (per
-  cast_assignment.csv's current row for this species), repointed from the
-  bare "Dragonsnake" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
+  Rosters: Greentide at 0.12 (RUT_Greentide inline; RM_Greentide via
+  UtinniPatches/Patches/WildAnimals_Greentide.xml) plus race.wildBiomes below.
 -->
 <Defs>
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dragonsnake</defName>
     <label>Dragonsnake</label>
-    <description>The dragonsnake (also spelled 'dragon snake') were a large, semi-aquatic predatory reptiles that dwelled in the muddy waters of various planets, including Dagobah and Nal Hutta. Dragonsnakes were large serpentlike beasts with sharp fangs and biolumescent spots along their backs. Although voracious, they were incapable of digesting metal (a lucky escape for some heroic droids!). The dragonsnake "Bright-Eyes" displayed a degree of extreme intelligence and cunning.</description>
+    <description>Dragonsnakes (also spelled 'dragon snakes') were large, semi-aquatic predatory reptiles that dwelled in the muddy waters of various planets, including Dagobah and Nal Hutta. Dragonsnakes were large serpentlike beasts with sharp fangs and bioluminescent spots along their backs. Although voracious, they were incapable of digesting metal (a lucky escape for some heroic droids!). The dragonsnake "Bright-Eyes" displayed a degree of extreme intelligence and cunning.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

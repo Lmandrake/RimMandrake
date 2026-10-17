@@ -130,6 +130,10 @@ namespace RimMandrake.StarWars.SWBestiary
             {
                 return "ERROR no open cell for the tank";
             }
+            // Jars already on the map before the proof are neither counted nor destroyed: only ones it made.
+            var before = new System.Collections.Generic.HashSet<Thing>(output == null ? Enumerable.Empty<Thing>() : map.listerThings.ThingsOfDef(output));
+            System.Func<System.Collections.Generic.List<Thing>> made = () => output == null ? new System.Collections.Generic.List<Thing>()
+                : map.listerThings.ThingsOfDef(output).Where(t => !before.Contains(t)).ToList();
             bool wasOn = RSW_BeastMechanicsSettings.taozinBrineTankEnabled;
             float wasJar = RSW_BeastMechanicsSettings.taozinDaysPerJar, wasPale = RSW_BeastMechanicsSettings.taozinPaleDays;
             Building_RSW_BrineTank tank = null;
@@ -148,13 +152,13 @@ namespace RimMandrake.StarWars.SWBestiary
 
                 RSW_BeastMechanicsSettings.taozinBrineTankEnabled = false;
                 for (int i = 0; i < ticks; i++) tank.TickRare();
-                int offJars = output == null ? -1 : map.listerThings.ThingsOfDef(output).Count(t => t.Position.InHorDistOf(cell, 4f));
+                int offJars = output == null ? -1 : made().Sum(t => t.stackCount);
                 float offFuel = fuel.Fuel;
                 bool offPale = grub.TryGetComp<RSW_CompTaozinBrining>()?.pale ?? false;
 
                 RSW_BeastMechanicsSettings.taozinBrineTankEnabled = true;
                 for (int i = 0; i < ticks; i++) tank.TickRare();
-                int jars = output == null ? -1 : map.listerThings.ThingsOfDef(output).Where(t => t.Position.InHorDistOf(cell, 4f)).Sum(t => t.stackCount);
+                int jars = output == null ? -1 : made().Sum(t => t.stackCount);
                 RSW_CompTaozinBrining comp = grub.TryGetComp<RSW_CompTaozinBrining>();
                 bool alt = grub.TryGetAlternate(out AlternateGraphic _, out int index);
                 return "accepted=" + accepted + " off_jars=" + offJars + " off_brine=" + offFuel.ToString("0.##") + " off_pale=" + offPale
@@ -166,10 +170,7 @@ namespace RimMandrake.StarWars.SWBestiary
                 RSW_BeastMechanicsSettings.taozinBrineTankEnabled = wasOn;
                 RSW_BeastMechanicsSettings.taozinDaysPerJar = wasJar;
                 RSW_BeastMechanicsSettings.taozinPaleDays = wasPale;
-                if (output != null)
-                {
-                    foreach (Thing jar in map.listerThings.ThingsOfDef(output).Where(x => x.Position.InHorDistOf(cell, 4f)).ToList()) jar.Destroy();
-                }
+                foreach (Thing jar in made()) if (!jar.Destroyed) jar.Destroy();
                 if (tank != null && !tank.Destroyed) tank.Destroy();
                 if (grub != null && !grub.Destroyed) grub.Destroy();
             }

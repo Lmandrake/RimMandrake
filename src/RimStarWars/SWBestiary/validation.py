@@ -20,8 +20,8 @@ Livestock (Karrask/Onnik/Moornak + live ThingComps),
 HelixTellurox, JawaIkee (a live ThingComp + ModSettings), BeastNorm/
 SeasWaterline patches -- plus SAND_SWIMMERS_MOD_1 and
 LIVESTOCK_STARTER_TRIO_1 afterward. It now ships `Patches/` (four
-subfolders), TWO live `Assemblies/*.dll` (`JawaIkee.dll`,
-`RimMandrakeLivestockRSW.dll`) with TWO `ModSettings` classes, and three
+subfolders), THREE live `Assemblies/*.dll` (`JawaIkee.dll`,
+`RimMandrakeLivestockRSW.dll`, `RimMandrakeBeastMechanicsRSW.dll`) with THREE `ModSettings` classes, and three
 real hard `modDependencies` beyond vanilla. This suite therefore covers (a)
 the walk's own original scope (still valid, re-verified against
 `ThingDefs_Karrask.xml`/`PawnKindDefs_*.xml` etc.) and (b) the two
@@ -103,16 +103,17 @@ _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);"
 
 
 def deploy_held(path):
-    """True if src/DEPLOY_HOLD.txt holds this file back from the game (a held def is not live, so it cannot resolve)."""
+    """True if src/DEPLOY_HOLD.txt holds this file back from the game (a held def is not live, so it cannot resolve).
+    Keys are '<ModFolder>/<path in the mod>', exactly as deploy_custom_mods.hold_for builds them (not src-relative)."""
     src = os.path.normpath(os.path.join(HERE, "..", ".."))
-    rel = os.path.relpath(path, src).replace(os.sep, "/")
+    rel = os.path.basename(HERE) + "/" + os.path.relpath(path, HERE).replace(os.sep, "/")
     try:
         lines = open(os.path.join(src, "DEPLOY_HOLD.txt"), encoding="utf-8").read().splitlines()
     except OSError:
         return False
     for ln in lines:
         glob = ln.split("#", 1)[0].strip()
-        if glob and fnmatch.fnmatchcase(rel, glob):
+        if glob and fnmatch.fnmatch(rel, glob):
             return True
     return False
 
@@ -489,7 +490,7 @@ def _make_roundtrip(cls, field, ty, default):
     return chain
 
 
-# The five toggles the audit found never touched (the three older ones keep their own chains above).
+# Every other settings field gets a write + independent read-back round trip (the three older ones keep their own chains above).
 for (_cls, _f), (_ty, _dv) in sorted(settings_fields().items()):
     if _f in ("ikeeThoughtEnabled", "kilnBellyEnabled", "kilnCooldownMultiplier"):
         continue
