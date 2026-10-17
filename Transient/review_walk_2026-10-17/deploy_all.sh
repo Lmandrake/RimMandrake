@@ -19,7 +19,7 @@ run --apply --mod Doctrine
 run --apply --mod Armoury
 run --apply --mod PawnFlavor
 # Mod list for the walk (backs up the live ModsConfig.xml first; see modset.md). Refused while the game is up.
-if ./game 2>&1 | grep -q 'RUNNING'; then echo "game is RUNNING: ModsConfig NOT written" | tee -a "$LOG"; rc=1
+if ./game 2>&1 | grep -qE '^running +: RUNNING'; then echo "game is RUNNING: ModsConfig NOT written" | tee -a "$LOG"; rc=1
 else python3 Transient/review_walk_2026-10-17/walk_modlist.py --apply 2>&1 | tail -4 | tee -a "$LOG" || rc=1; fi
 echo "deploy_all done rc=$rc (log: $LOG)"
 exit $rc
