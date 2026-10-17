@@ -1,0 +1,125 @@
+quicktest map up: True (8 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [524, 527, 530]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+====================================================================================================
+S3. A pump fills a canal that touches no water
+    ...................
+    .PPPP..............
+    .PPP<====U====>11111.
+    .PPPP..............
+    ...................
+S3 staged: enclosed pond of 12 deep squares (body 1 limitless=False stock=48.0 capacity=48.0); pump (49, 32) on dry ground switched OFF (True); hose A -> pond end Intake; hose B -> canal cell 1 end Outflow; 6-cell depth-1 canal dry
+         screenshot: Transient\fw_scenes\live\S3_p00.png
+S3.Q1 staged: RM_FlowSource (mapmaker Source tap) and RM_LiquidTap each beside cell 1 of a dry 4-cell canal, no hose, no tank
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.2 s pause
+  step A: pump OFF for 20 pulses
+  pulse  0  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  1  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  2  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  3  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  4  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  5  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  6  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  7  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  8  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  9  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 10  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 11  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 12  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 13  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 14  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 15  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 16  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 17  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 18  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 19  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse 20  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+         screenshot: Transient\fw_scenes\live\S3A_p20.png
+  S3.a   MATCHES    doc: Unpowered: the canal stays dry and the pond keeps all 48 levels.
+                    game: canal wet at pulses never; pond below its start (48.0) at pulses never
+  step B: pump ON (True; powered=False)
+  pulse  0  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  1  canal [0 0 0 0 0 0]  pond stock=48.0  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 48.0, "pump.lastMovedUnits": 0, "pump.moved": 0, "pump.pourMode": false}
+  pulse  2  canal [0 0 0 0 0 0]  pond stock=47.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 1, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 47.0, "pump.lastMovedUnits": 10000, "pump.moved": 1, "pump.pourMode": false}
+  pulse  3  canal [0 1 0 0 0 0]  pond stock=46.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 2, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 46.0, "pump.lastMovedUnits": 10000, "pump.moved": 2, "pump.pourMode": false}
+  pulse  4  canal [0 1 1 0 0 0]  pond stock=45.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 3, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 45.0, "pump.lastMovedUnits": 10000, "pump.moved": 3, "pump.pourMode": false}
+  pulse  5  canal [0 1 1 1 0 0]  pond stock=44.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 4, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 44.0, "pump.lastMovedUnits": 10000, "pump.moved": 4, "pump.pourMode": false}
+  pulse  6  canal [0 1 1 1 1 0]  pond stock=43.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 5, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 43.0, "pump.lastMovedUnits": 10000, "pump.moved": 5, "pump.pourMode": false}
+         screenshot: Transient\fw_scenes\live\S3B_p06.png
+  pulse  7  canal [0 1 1 1 1 1]  pond stock=42.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 6, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 42.0, "pump.lastMovedUnits": 10000, "pump.moved": 6, "pump.pourMode": false}
+  pulse  8  canal [1 1 1 1 1 1]  pond stock=41.0  hoses hold 1.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 0, "net.moves": 7, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 0, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse  9  canal [1 1 1 1 1 1]  pond stock=41.0  hoses hold 0.03 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 9748, "net.moves": 8, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 10  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 11  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 12  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 13  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 14  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 15  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+  pulse 16  canal [1 1 1 1 1 1]  pond stock=41.0252  hoses hold 0.00 levels  ground between wet: none
+            ledger: {"engine.overflowDestroyedTotal": 0.0, "engine.sinkTransferredTotal": 0.0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000, "net.moves": 9, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748, "pond.capacity": 48.0, "pond.cellCount": 12, "pond.recededCount": 0, "pond.stock": 41.0252, "pump.lastMovedUnits": 10000, "pump.moved": 7, "pump.pourMode": false}
+         screenshot: Transient\fw_scenes\live\S3B_p16.png
+  S3.b   MATCHES    doc: All 6 canal cells hold 1 level.
+                    game: all 6 canal cells at 1 first at pulse 8 of step B
+  S3.c   DIFFERS    doc: Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse.
+                    game: pulses where canal+hoses gain != pond loss: ['p9 lost 7.00 gained 6.03', 'p10 lost 6.97 gained 6.00', 'p11 lost 6.97 gained 6.00', 'p12 lost 6.97 gained 6.00']
+  S3 mass audit: pond lost 6.974800000000002 levels; canal 6; hoses 0.0000; counter deltas over step B: {"engine.overflowDestroyedTotal": 0, "engine.sinkTransferredTotal": 0, "net.dumpedUnits": 0, "net.hoseDrainedUnits": 10000.0, "net.moves": 9.0, "net.putBacks": 0, "net.settledUnits": 0, "net.spilledUnits": 9748.0, "pond.capacity": 0.0, "pond.cellCount": 0.0, "pond.recededCount": 0, "pond.stock": -6.9748, "pump.lastMovedUnits": 10000.0, "pump.moved": 7.0, "pump.pourMode": 0}
+  S3.d   MATCHES    doc: The undug cells between pond and canal stay dry (G1).
+                    game: undug ground between pond and canal ever wet: never
+  S3.e   UNMEASURED doc: Variant: two equal dug 3x3 depth-4 reservoirs A (full, 36 levels) and B (empty), pump + one tank between them. Pump A to B, then B back to A. At the end A holds 36 levels, B 0, tank 0, hoses 0.
+                    game: not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)
+  pulse  0  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  1  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  2  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  3  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  4  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  5  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  6  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  7  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  8  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse  9  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+  pulse 10  beside Source tap [1 1 1 1]   beside liquid tap [0 0 0 0]
+         screenshot: Transient\fw_scenes\live\S3q_p10.png
+  S3.Q1  OPEN RULING  A drill (ruling 3, 'part of Many Waters') or the new mapmaker Source tap (2026-10-16) stands beside a dug canal. Does it pour straight into the touching dug cell, or only into a tank/hose network that then needs an Outflow end?
+         (a) straight into the touching dug cell
+         (b) only into a network; the canal is fed through an Outflow end
+         (c) both: it fills the touching cell if there is one, else the network
+         game today: RM_FlowSource: canal holds 4 level(s) after 10 pulses with no hose (pours straight into the touching dug cell - behaves as (a)/(c)); RM_LiquidTap: canal holds 0 level(s) after 10 pulses with no hose (nothing reached the canal - behaves as (b) or is not running (power/survey))
+  log: Transient\fw_scenes\live\S3_20261017T110758.txt

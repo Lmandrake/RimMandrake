@@ -1,0 +1,37 @@
+[
+ {
+  "id": "S4.a",
+  "status": "MATCHES",
+  "doc": "The 3 upstream cells hold 1 level.",
+  "game": "3 upstream cells at 1 first at pulse 3"
+ },
+ {
+  "id": "S4.b",
+  "status": "MATCHES",
+  "doc": "The 4 downstream cells stay dry while the gate is shut.",
+  "game": "downstream wet while shut at pulses: never"
+ },
+ {
+  "id": "S4.e",
+  "status": "MATCHES",
+  "doc": "Grate gate, never opened: all 4 downstream cells hold 1 level.",
+  "game": "grate: 4 downstream cells at 1 first at pulse 8"
+ },
+ {
+  "id": "S4.c",
+  "status": "MATCHES",
+  "doc": "After opening, all 4 downstream cells hold 1 level.",
+  "game": "4 downstream cells at 1 first at pulse 4 after opening"
+ },
+ {
+  "id": "S4.d",
+  "status": "MATCHES",
+  "doc": "Shut again: the upstream cells stay full.",
+  "game": "an upstream cell below 1 at pulses: never"
+ },
+ {
+  "id": "S4.Q1",
+  "status": "OPEN RULING",
+  "game": "downstream held 4 level(s) when shut again and 4 after 40 pulses (stays put = (a))"
+ }
+]

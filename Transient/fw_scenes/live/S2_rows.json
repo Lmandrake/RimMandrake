@@ -1,0 +1,32 @@
+[
+ {
+  "id": "S2.lvl",
+  "status": "MATCHES",
+  "doc": "Every pulse, each pond square holds within one level of the pond squares it touches (no [4 0 4 0]).",
+  "game": "none"
+ },
+ {
+  "id": "S2.a",
+  "status": "MATCHES",
+  "doc": "All 4 pond cells hold 4 levels.",
+  "game": "all 4 pond cells at 4 first at pulse 14"
+ },
+ {
+  "id": "S2.b",
+  "status": "MATCHES",
+  "doc": "All 6 trench cells hold 1 level.",
+  "game": "all 6 trench cells at 1 first at pulse 13"
+ },
+ {
+  "id": "S2.c",
+  "status": "MATCHES",
+  "doc": "Wet trench cells always form one unbroken run starting at the cell touching the pond.",
+  "game": "pulses where the wet trench was NOT one run from the pond: none"
+ },
+ {
+  "id": "S2.d",
+  "status": "MATCHES",
+  "doc": "Once settled, nothing in the pond or trench changes for the rest of a 60-pulse run.",
+  "game": "settled at pulse 14; changes after that: none"
+ }
+]

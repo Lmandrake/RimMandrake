@@ -19,7 +19,17 @@ _pending_
 _pending_
 
 ### S3 mass difference
-_pending_
+MEASURED live 18:10Z (`Transient/fw_scenes/live/run_S3_stdout.txt`, ledger line per pulse). Step B: the pump moved
+7 levels (`pump.moved` 0 -> 7, 10,000 units each). Pulses 2-8: hoses hold 1.00 level and pond loss = canal + hoses
+exactly (no S3.c miss at p0-p8). Pulse 8 the canal is full (6 x 1). Pulse 9-10 the stopped hose drains its 1.00 level
+(`net.hoseDrainedUnits` +10,000): **9,748 units SPILLED as filth** (`net.spilledUnits` +9,748, RM_LiquidSpill: the
+canal outlet takes whole levels only and it is full) and 252 units went back into the pond (stock 41.0 -> 41.0252).
+So 6.9748 lost = 6 canal + 0.9748 spilled to filth. **Not an unaccounted leak and not a pump buffer: the hose-drain
+rule (rev 2 §3.7, L8) turns the last hose-full into a filth puddle.** It IS a break of the scene's conservation law
+(S3.c names only canal + hoses), a sink the scene doc does not list: a ruling item, not a code bug found here.
+Earlier S3 "pulse None" runs: the intake hose was never laid ("no room for the straight lead-out from the nozzle" on
+the pond's middle edge square; one square south lays at once). Fixed in the harness by trying the pond's other edge
+squares (`intake_alt`).
 
 ## 4. PIT_CLIMB live proof
 _pending_

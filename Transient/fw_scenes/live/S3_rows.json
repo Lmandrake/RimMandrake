@@ -1,0 +1,63 @@
+[
+ {
+  "id": "S3.a",
+  "status": "MATCHES",
+  "doc": "Unpowered: the canal stays dry and the pond keeps all 48 levels.",
+  "game": "canal wet at pulses never; pond below its start (48.0) at pulses never"
+ },
+ {
+  "id": "S3.b",
+  "status": "MATCHES",
+  "doc": "All 6 canal cells hold 1 level.",
+  "game": "all 6 canal cells at 1 first at pulse 8 of step B"
+ },
+ {
+  "id": "S3.c",
+  "status": "DIFFERS",
+  "doc": "Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse.",
+  "game": "pulses where canal+hoses gain != pond loss: ['p9 lost 7.00 gained 6.03', 'p10 lost 6.97 gained 6.00', 'p11 lost 6.97 gained 6.00', 'p12 lost 6.97 gained 6.00']"
+ },
+ {
+  "id": "S3.audit",
+  "status": "MEASURED",
+  "game": {
+   "pondLost": 6.974800000000002,
+   "canal": 6,
+   "hoses": 0.0,
+   "deltas": {
+    "engine.overflowDestroyedTotal": 0,
+    "engine.sinkTransferredTotal": 0,
+    "net.dumpedUnits": 0,
+    "net.hoseDrainedUnits": 10000.0,
+    "net.moves": 9.0,
+    "net.putBacks": 0,
+    "net.settledUnits": 0,
+    "net.spilledUnits": 9748.0,
+    "pond.capacity": 0.0,
+    "pond.cellCount": 0.0,
+    "pond.recededCount": 0,
+    "pond.stock": -6.9748,
+    "pump.lastMovedUnits": 10000.0,
+    "pump.moved": 7.0,
+    "pump.pourMode": 0
+   }
+  }
+ },
+ {
+  "id": "S3.d",
+  "status": "MATCHES",
+  "doc": "The undug cells between pond and canal stay dry (G1).",
+  "game": "undug ground between pond and canal ever wet: never"
+ },
+ {
+  "id": "S3.e",
+  "status": "UNMEASURED",
+  "doc": "Variant: two equal dug 3x3 depth-4 reservoirs A (full, 36 levels) and B (empty), pump + one tank between them. Pump A to B, then B back to A. At the end A holds 36 levels, B 0, tank 0, hoses 0.",
+  "game": "not staged in this walk (round trip A->tank->B->A needs tank jobs and two pump legs)"
+ },
+ {
+  "id": "S3.Q1",
+  "status": "OPEN RULING",
+  "game": "RM_FlowSource: canal holds 4 level(s) after 10 pulses with no hose (pours straight into the touching dug cell - behaves as (a)/(c)); RM_LiquidTap: canal holds 0 level(s) after 10 pulses with no hose (nothing reached the canal - behaves as (b) or is not running (power/survey))"
+ }
+]
