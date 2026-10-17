@@ -901,6 +901,9 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "excavationLoadRepairEnabled", "
                         # PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS (2026-10-14): its live rows are owed on the item, not yet a
                         # toggle chain
                         "pitRampsEnabled",
+                        # DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (2026-10-17): the dig cost curve; offline in SelfTest
+                        # DeepDig_cost_curve_numbers_measured, its live row is the P10 walk's dig (FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG)
+                        "digCostRisesWithDepth",
                         # DIG_ROCK_TUNE_STONE_FIGHTS_BACK (2026-10-16): digging rock takes longer and drops chunks; no live
                         # toggle chain yet (the rows are owed on the item)
                         "digRockGroundEnabled", "digRockChunksEnabled",
