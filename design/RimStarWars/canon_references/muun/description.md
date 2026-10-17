@@ -83,6 +83,22 @@ Appearance, verbatim from the article body:
    psychic gene, and unlike the Rakata case (psychic genes on a Force-blind species) this
    is an omission rather than an error. Recorded for the owner's judgement, not as a fix.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/05/03/species-of-the-week-muun/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Scipio
+
+Notable members: San Hill, Darth Plagueis
+
+Fandom: Star Wars
+
+Appearances: Attack of the Clones
+
+Muuns are tall humanoids from the planet Scipio, who are known for their intellect. They have large craniums with small noses that give their voices a nasal quality by human standards. They are best known for their controlling interest in the InterGalactic Banking Clan
+
 ## Visual brief
 
 **The Muun is defined by ONE silhouette: a very tall, near-emaciated figure whose skull
@@ -145,6 +161,8 @@ not swept back**; there is **no nose, no mouth, no ear, no mottling and no creas
 because it is a head sprite on a standard RimWorld body, **the long-legged narrow
 silhouette — half of what makes a Muun a Muun — is not represented at all.**
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_muun_live_action.png` (480x640): a tall Muun with a hairless long egg-shaped head, grey-pale mottled skin, a long thin face with a deep-set eye, flat nose and downturned lip, and a high green collar under a dark cloak. Matches the existing prose; no disagreement.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the San Hill close-up, the Arden Beckwith full figure and the mud-bath still as described in the visual brief, and the sourced text.*
 - [ ] BODY PLAN: a very tall, gaunt, narrow, vertical humanoid (just under 2 m): very long thin legs under a slim waist, thin arms with long thin fingers (last two fingers markedly shorter), a long thin tendon-lined neck the head sits on like a stalk; when unclothed, ribs and sternum visible, bony collarbones, no chest musculature, no prominent breasts
@@ -200,6 +218,7 @@ silhouette — half of what makes a Muun a Muun — is not represented at all.**
   Darth Plagueis in *The Acolyte*: the frame is almost entirely black, with only one
   orange-lit eye and a sliver of cheek legible. It confirms nothing about colour or
   proportion and should not be used as a colour reference.
+- `bloggathehutt_muun_live_action.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a Muun (Revenge of the Sith era); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/05/03/species-of-the-week-muun/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -76,6 +76,22 @@ anomaly, not the type specimen.**
 mucus**, usable underwater; **extendable/long muscular tongue**; **bill** adapted to
 burrow and root; hatched from eggs as **tadpoles**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/01/18/species-of-the-week-gungan/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Naboo
+
+Notable members: Jar Jar Binks
+
+Fandom: Star Wars
+
+Appearances: The Phantom Menace, The Clone Wars
+
+Gungans are an amphibious humanoid species native to Naboo, which they share with it’s human colonists. They were distinguished by their bills and large ears. They were viewed as primitive by the humans who colonised their planet but they had learned to harvest the natural plasma of their world to create bubbles for them to comfortably live in their underwater cities. They also used this energy to create shields and energy weapons and had a formidable army which they used to defend their homeworld and also to aid the Mon Calamari. 
+
 ## Visual brief
 
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
@@ -137,6 +153,8 @@ pixels) and `RSW_Gungan_FemaleNormal` / `RSW_Gungan_MaleNormal` both carry
 `DefModExt_HeadTypeStuff` with `<useSkinShader>false</useSkinShader>`** — so the game
 will **not** tint it from the skin gene. The head renders off-white/grey on a
 pale-brown body.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_gungan_jarjar_closeup.png` (1170x550, The Phantom Menace): Jar Jar head and shoulders, pale tan-pink skin with a lighter mottled pattern, long hammer-bill snout with a nostril slit, eyes on short ringed stalks with amber irises, long drooping rope-ridged ears down the back of the head, long thin neck, dark vest; army with energy-ball spears behind. Matches the film; no disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two infobox CGI renders (`otolla_warrior`, `ankura_boss_nass`), the live-action Tarpals still and the canon text. Two canon races (lanky Otolla, heavy Ankura) look genuinely different: lines note where they diverge rather than averaging them.*
@@ -249,6 +267,7 @@ pale-brown body.
   it has the bill and the eye stalks — but it is a **measured pure-greyscale mask that
   the def's head types explicitly opt OUT of skin tinting**, so it renders untinted, and
   it carries no haillu, no mottling and no Ankura variant.
+- `bloggathehutt_gungan_jarjar_closeup.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Jar Jar Binks close-up before the Gungan army; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/01/18/species-of-the-week-gungan/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

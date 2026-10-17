@@ -64,6 +64,22 @@ has leaked in. Note also that the Mon Calamari article separately cites *Star Wa
 is **not** by itself a sign of contamination — it is the specific *image file* that
 is tainted.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/12/06/species-of-the-week-mon-calamari/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Mon Cala
+
+Notable members: Gial Ackbar, Raddus
+
+Fandom: Star Wars
+
+Appearances: Return of the Jedi, Rogue One, The Mandalorian
+
+The Mon Calamari are an aquatic species native to the planet Mon Cala, which they share with the Quarren species, the two species also co-habit the ocean planet Trask. The Mon Calamari have sloping heads with large eyes and flippered hands that suggest their aquatic origins. They typically have orange skin, but they can range from dark tones to blues and even pale white for members of their arctic regions. The Mon Calamari are best known for their shipbuilding and their organic-looking cruisers formed the backbone of the Rebel Alliance, New Republic and Resistance fleets. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Added `wookieepedia_ackbar_closeup_rotj.jpg` (live-action *Return of the Jedi* close-up of Admiral Ackbar's mask). The
@@ -134,6 +150,8 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
 - ⚠️ The eyes are rendered as **tiny black dots** in the bulges rather than large
   goggle-like eyes with a big pupil and pale sclera — the opposite of the species'
   headline distinction.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mon_calamari_mandalorian.jpg` (1200x1000): a live-action Mon Calamari (a worker in a cable-knit sweater and dungarees): dark grey-brown smooth domed head with a ridged forehead, wide-set protruding yellow-orange eyes with heavy brows, a red-toned broad fish-lipped mouth, and a ridged neck/chin. Matches the live-action reading; no disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox image, the SWE underwater pair and the live-action Ackbar close-up as described in the visual brief, the sourced text, and the owner ruling in the brief.*
@@ -226,6 +244,7 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
 - `donor_current_sprite.png` — the repo's greyscale `RSW_MonCalamariHead` mask. Gets
   the tall dome and lateral eye bulges; **wrongly gives the dome a pointed crest, and
   has no mouth, no chin sac and no barbels**, with the eyes as tiny dots.
+- `bloggathehutt_mon_calamari_mandalorian.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, a Mon Calamari townsman in The Mandalorian; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/12/06/species-of-the-week-mon-calamari/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 

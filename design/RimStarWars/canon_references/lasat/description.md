@@ -58,6 +58,22 @@ themselves**, preferring proper names.
 below average; Legends says the whole range is 1.2–1.9 m. Canon governs appearance
 in this repo, so treat Lasat as **taller than a human, 2 m+**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/06/08/species-of-the-week-lasat/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Lasan
+
+Notable members: Garazeb Orelios
+
+Fandom: Star Wars
+
+Appearances: Rebels, The Mandalorian and Grogu
+
+The Lasat are a humanoid species known for their above-average height, strength and agility. They are distinguished by their purple-grey skin and pointed ears. The Lasat were one of the first species to rebel against Imperial control on their planet before an organised rebellion was formed. The Empire responded with extreme prejudice, bombarding the planet until the species was nearly extinct. One survivor, Garazeb Orelios, joined the fledgling Rebel Alliance and served for the duration of the war and continued on in New Republic service, flying a U-Wing for the Adelphi Rangers and working as point man for independent contractors Din Djarin and Grogu. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the two *Star Wars Rebels* animated images (`wookieepedia_lasat_zeb_fathead.jpg`, `wookieepedia_chava_and_gron_as_prisoners.png`)
@@ -90,6 +106,8 @@ From the live-action images:
 - **Individual variation:** the canon text says no two Lasat share a striping, and the deleted animated elders
   (pale mauve Gron, olive-grey Chava) showed hue varying widely; Jaro Tapal is a flat lavender, bald, short-bearded
   Lasat with more human proportions. Constants: ears, muzzle, brow, bulk. Variables: hue, marking, beard.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_lasat_live_action_mandalorian.png` (965x711): a purple-grey skinned Lasat with huge pointed ears (pink-red inside), a pronounced domed furrowed brow ridge, green-yellow eyes, a dark beard and cheek chops, in a padded vest. Matches the live-action reading in the Must show; no disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Zeb images described in the visual brief and the owner ruling in it.*
@@ -160,6 +178,7 @@ From the live-action images:
   against a human. File `Carson Teva and Zeb.png`.
 - `wookieepedia_lasat_jaro_tapal.jpg` — Jaro Tapal, *Star Wars Jedi* (photoreal game): flat lavender, near-stripeless,
   more human-proportioned variant; least characteristic. File `JaroTapalClear-JediSurvivor.png`.
+- `bloggathehutt_lasat_live_action_mandalorian.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a live-action Lasat (Mandalorian); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2026/06/08/species-of-the-week-lasat/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 

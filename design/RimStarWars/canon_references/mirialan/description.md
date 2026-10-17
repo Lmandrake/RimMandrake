@@ -35,6 +35,22 @@ strong connection with the natural world and typically believed in the Force; th
 Jedi Order included several Mirialans (Luminara Unduli, Cyslin Myr, Katri, Vernestra
 Rwoh, Barriss Offee, and the fallen Seventh Sister).
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/10/19/species-of-the-week-mirialan/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld:  Mirial
+
+Notable members: Luminara Unduli, Vernestra Rwoh
+
+Fandom: Star Wars
+
+Appearances: Attack of the Clones, The Clone Wars, Revenge of the Sith, A Test of Courage
+
+Mirialans are a species that physically resemble humans apart from their skin which is brightly coloured and can vary in shade from greens to pinks and purples. They are also distinguished by facial tatoos that are a custom for their culture. Mirialan culture was centred around the Force and therefore it is unsurprising that a number of their species served as Jedi. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the flat-shaded Ady Sun'Zee illustration (`wookieepedia_adysunzee_yttransparent.png`) and the stylised game render
@@ -66,6 +82,8 @@ chevron/diamond cluster between the eyes, and a **diamond-lattice block on the c
 correct for a humanlike head mask (tinted at runtime from the skin-colour gene). The only shortfall is that the mark is
 one fixed pattern shared by every Mirialan, where canon says the tattoos **symbolize personal achievements** and so
 differ per individual — a variation opportunity, not an error.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mirialan_concept_art.jpeg` (1262x631, painted concept art): a young woman with distinctly GREEN skin (yellow-olive green), violet-purple hair in a bun, violet-blue eyes, light cream-and-white Jedi robes, and NO facial markings. 🔴 Disagrees with the Must show: skin is saturated green with no ochre cast, and no diamond chin lattice is drawn. Painted art, so treat as non-authoritative for markings.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Luminara Unduli images and the painting as described in the visual brief, the sourced text, and the owner ruling in the brief.*
@@ -138,6 +156,7 @@ none known
   https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png
 - `donor_current_sprite.png` — the repo's own greyscale `RSW_MirialanHead` mask. Kept as a **positive** reference: it
   already carries canonically-placed forehead, inter-brow and chin-lattice diamond markings.
+- `bloggathehutt_mirialan_concept_art.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, a young Mirialan Jedi (concept art, Jedi Temple-era); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2020/10/19/species-of-the-week-mirialan/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 

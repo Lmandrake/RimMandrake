@@ -103,6 +103,22 @@ in every image. The skin-colour set (`Outland_Skin_DeepGreen`, `Skin_Green`,
 `Outland_Skin_PaleGreen`, `RSW_Skin_DarkGreen`, `Skin_LightGray`) genuinely covers the
 canonical green-to-grey range; **only beige is missing.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/05/02/species-of-the-week-neimoidian/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Neimodia
+
+Notable members: Nute Gunray, Rune Haako
+
+Fandom: Star Wars
+
+Appearances: The Phantom Menace, Attack of the Clones, The Clone Wars
+
+Neimoidians are a humanoid race known for their calculating minds and greedy nature. This nature stemmed from the fact that as larval infants they were forced to compete with their brood for food and survival, meaning only those who acted in their self-interest made it to maturity. They are humanoid with red eyes and commonly have green skin. They bear a passing resemblence to the Duros, with whom they share a common anscestry. They are commonly associated with the Trade Federation, which had immense influence in the Republic Senate and was run by Neimoidians. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the *Clone Wars* Royal Guard (`wookieepedia_royal_guard.jpg`). Added two live-action frames:
@@ -177,6 +193,8 @@ a live-action close-up):
   clothing; the **narrow, upright, ordinary-proportioned humanoid body and the long green hands** are anatomy — the
   "wide" silhouette of the robed figures is entirely garment.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_neimoidian_phantom_menace.png` (996x635): two Neimoidians with grey-green mottled skin, red glowing eyes in dark sockets, a flat blunt nose with a bony ridge, pinched mouths, and tall dark ornate headdresses over narrow faces; the right one in a red collar. Matches; no disagreement.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced text and the live-action images the visual brief describes (owner ruling 2026-10-08 in the visual brief).*
 - [ ] BODY PLAN: tall, lanky, narrow-shouldered humanoid with a long thin torso, stooped and shoulders rounded forward; head a tall, narrow, vertically-elongated hairless skull that tapers DOWNWARD from a domed brow through hollow cheeks to a small chin, no ears visible, thin neck — NOT a horned/mitred cone shape (that shape is a hat, worn over the head, and varies per individual)
@@ -236,6 +254,7 @@ or the chin ridges.
   red split-pupil eyes, ribbed collar, a bare bony hand on the pod rail.
 - `wookieepedia_uniformed_pair_lostfound.png` — live-action *The Acolyte* "Lost / Found": two Neimoidians standing in
   fitted uniforms — body proportions without robes, long green hands.
+- `bloggathehutt_neimoidian_phantom_menace.png` — FAN BLOG (not Lucasfilm) bloggathehutt, two Neimoidians (The Phantom Menace); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2022/05/02/species-of-the-week-neimoidian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

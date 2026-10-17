@@ -46,6 +46,24 @@ tradition and intermarriage**. Culture valued nature and handcraft: **Ithorian t
 hand-carved from stone marked graves and carried deep spiritual meaning, and **Ithorian
 Weather Chimes** were handcrafted and prayed to for fertile soil and good weather.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/04/14/species-of-the-week-ithorian/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient 
+
+Homeworld: Ithor
+
+Notable members: Momaw Nadon, Dok Ondar 
+
+Fandom: Star Wars
+
+Appearances: A New Hope, Galaxy’s Edge
+
+Ithorians are a species easily distinguished by their long necks and wide faces, giving them the nickname ‘hammerheads’. They have two mouths on either side of their neck, which produce guttural tones that make it impossible for them to speak Basic or Huttese, requiring them to use translators to communicate with most other species. 
+
+Ithorians are best known as gardeners who preserve the natural beauty of their homeworld from orbital stations. But a few, such as infamous antiquities dealer Dok Ondar, are more comfortable in the criminal underworld. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The Clone Wars image of Onca and Bulduga (`wookieepedia_oncabulduga_db.png`) was removed. All references are now live-action: Mok Shaiz in *The Book of Boba Fett* (seated three-quarter, front view, and a head close-up) and a physical costume in profile. The close-up shows the hide as **fine pebbled, deeply wrinkled tan-ochre skin** with large glossy dark eyes on the crossbar pods.
@@ -92,6 +110,8 @@ on the sides**; and the wrinkle/crease texture is absent. Most fundamentally, a
 RimWorld head sprite **cannot carry the forward-curving neck**, which is where both mouths
 live and where most of the species' silhouette is. Whatever is done here, that compromise
 should be documented rather than hidden.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_ithorian_batuu_animatronic.jpg` (3027x3015 original; viewed downscaled): an Ithorian animatronic (shop keeper at Black Spire Outpost), pink-mauve mottled skin, a thick long neck sweeping up to a curved elongated head with closed black eyes at the sides, a pale white bib/dewlap under the chin, white robe with a blue sash and beaded necklaces. 🔴 The head here reads as a smooth curved hook (swept forward) more than the rigid T-shaped hammer crossbar the Must-show asks for; skin is a pinker mauve than other references. Use only as a physical-prop texture/colour reference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action references (Mok Shaiz ×3, the costume profile `wookieepedia_ithorian_swtve.jpg`) and the canon text.*
@@ -175,6 +195,7 @@ should be documented rather than hidden.
 - `wookieepedia_mokshaiz_front_bobf.png` — live-action, *The Book of Boba Fett* Chapter 2: Mok Shaiz seated, front view — shows the crossbar width head-on. File `MayorMokShaiz-BoBFCh2.png`.
 - `donor_current_sprite.png` — the mod's current head mask, for comparison only. Right
   idea, wrong proportions; see the visual brief.
+- `bloggathehutt_ithorian_batuu_animatronic.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, an Ithorian figure in Black Spire Outpost (Galaxy's Edge); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2026/04/14/species-of-the-week-ithorian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

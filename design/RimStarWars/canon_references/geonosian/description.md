@@ -49,6 +49,22 @@ Geonosians do match that of their homeworld." The hive-mind language was mixed b
 Burtt from recordings of **penguin mating cries, fruit bats fighting over a banana, and
 flying foxes**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/06/24/species-of-the-week-geonosian/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Geonosis
+
+Notable Members: Archduke Poggle the Lesser
+
+Fandom: Star Wars
+
+Appearances: Attack of the Clones, The Clone Wars, Darth Vader
+
+Geonosians were an insectoid race native to Geonosis and arid, desert planet. They lived in a hive culture with Queens ultimately in control over various castes including mindless worker drones, winged soldiers and administrators who wielded significant power. They rose to prominence due to their large  factories which mass-produced battle droids for the Seperatists. After the conclusion of the war the Empire sterilized the whole planet to preserve their secrets and the race became extinct apart from one solitary queen.
+
 ## Visual brief
 🔴 **The two canon individuals in this folder look almost nothing alike, and that is the
 point: this is a caste species, not a species with one appearance.** Do not average them.
@@ -95,6 +111,8 @@ folds**; large white-sclera googly eyes read as a fish/amphibian head, not a
 semi-insectoid one. The sprite also has **no mandibles** (canon gives *two* sets, outer
 and inner), **no crown lobes**, **no wattle** and **no snout**. This is the
 highest-value correction in this entry.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_geonosian_winged_soldiers.jpg` (1280x544, Attack of the Clones frame): two winged soldiers, grey-brown cracked/knobbly skin, long thin neck, narrow head with small black-bead eyes and two long swept-back horns/antler-ridges, translucent amber insect wings behind, thin limbs, carrying large cannon-like sonic blasters with a green lens. Matches film prose; flags that the wings are amber-translucent and the horns are long and curved.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_sunfac_swctp.png` (warrior), `wookieepedia_poggle_geo.jpg` (elite) and the canon text; the Whitlatch concept art is design history only. This is a caste species with two distinct canon appearances: do not average them; a sprite should target one caste deliberately.*
@@ -180,6 +198,7 @@ none known
 - `donor_current_sprite.png` — ⚠️ **negative reference.** The mod's current head mask,
   whose large white-sclera round eyes and absent mandibles/crown/wattle contradict both
   canon individuals. See the visual brief.
+- `bloggathehutt_geonosian_winged_soldiers.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, winged Geonosian soldiers (film frame); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2019/06/24/species-of-the-week-geonosian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

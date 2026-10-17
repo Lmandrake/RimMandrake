@@ -36,6 +36,22 @@ black eyes, what else would I be? What you might not know is that these tentacle
 mine let me pick up pheromones from other beings, which I translate into an
 understanding of their emotional states. That's how I know you two… are terrified."*
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/05/16/species-of-the-week-nautolan/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Glee Anselm
+
+Notable members: Kit Fisto
+
+Fandom: Star Wars
+
+Appearances: Attack of the Clones, Revenge of the Sith
+
+The Nautolans are an amphibious species native to the aquatic planet Glee Anselm. While they are comfortable on land they live underwater on their homeworld, their green watertight skin, gills and large eyes make them comfortable in the ocean depths. Nautolan;’s are disctinct by their head tendrils, similar to the lekku of the Twi’lek, but greater in number. While peaceful by nature the Nautolans are skilled fighrre when needed as demonstrated by the Jedi blademaster Kit Fisto. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the *Clone Wars* youngling Zatt (`wookieepedia_zattfull_cgswg.png`) and the stylised *Myths & Fables* painting
@@ -129,6 +145,8 @@ What is wrong:
   tendril spot patterning, tendrils as a permanent severable body part, and tendril
   length as an age cue.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_nautolan_kit_fisto.png` (597x480, Geonosis arena): Kit Fisto with olive-green skin, large black almond eyes, a broad grin and thick head-tentacles draped over the shoulders, brown Jedi robes, lightsaber. Matches the existing reading; no disagreement.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Kit Fisto images as described in the visual brief, the sourced text, and the owner ruling in the brief.*
 - [ ] BODY PLAN: an ordinary humanoid body (normal shoulders, arms, long-fingered hands, booted feet); a smooth, slightly bulbous hairless skull from whose crown and back sprout many (on the order of a dozen) thick tapering tendrils that hang DOWN over the shoulders and chest like a heavy mane
@@ -173,6 +191,7 @@ none known — a pattern (the tendril spotting) can live in a greyscale runtime-
   attachment. Gets the crown-rooted tapering tendrils; **flares them outward like a
   headdress instead of hanging them down the chest, renders them at youngling length,
   and carries no spot pattern.**
+- `bloggathehutt_nautolan_kit_fisto.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Kit Fisto in Attack of the Clones; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2022/05/16/species-of-the-week-nautolan/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 

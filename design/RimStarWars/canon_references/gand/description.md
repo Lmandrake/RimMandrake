@@ -31,6 +31,22 @@ their homeworld.** Per the article's naming custom: *"If they spoke their last n
 often meant they were remotely ashamed."* The notable member is **Zuckuss**, a bounty
 hunter and one of the first traditional findsmen to leave Gand.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/02/26/species-of-the-week-gand/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Gand
+
+Notable members: Zuckuss
+
+Fandom: Star Wars
+
+Appearances: The Empire Strikes Back
+
+Gand are an insectoid species native to a planet of the same name. They are identifiable in the galaxy by their large compound eyes and most commonly by their rebreathers as they are from an ammonia-rich world and cannot breathe standard atmosphere. The species have a number of unique traits such as only referring to themselves by name, only using the honourific ‘I’ if they are greatly honoured and typically only using their surname as a mark of shame. Some Gand follow the path of the Findsmen and have tracking abilities bordering on precognition. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 No image was deleted outright: the *Bounty Hunters* 15 comic panel of maskless Zuckuss is the ONLY image of a Gand body with no mask at all, so it is KEPT as animated/negative reference for anatomy only (not a style target). Added two realistic sources: the live-action *Empire Strikes Back* still of Zuckuss beside 4-LOM (`wookieepedia_zuckuss_esb_live_action.jpg`) and the realistic *New Essential Guide to Alien Species* / *Allies and Adversaries* painting (`wookieepedia_gand_negas_legends.jpg`).
@@ -81,6 +97,8 @@ plating and the mandibles right. What it misses versus the images: the cranium i
 **too broad and flat** rather than elongated and swept back, and the eyes are flush
 rather than **domed and proud of the skull**. The respirator is a separate gene
 (`RSW_HeadAttachment_gandmask`), so its absence here is expected.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_gand_zuckuss_esb.jpg` (814x607, ESB frame): masked Zuckuss, a round grille-faced respirator on the front of a bug-eyed head with two large faceted side eyes and a small light on the lower face, two braided rope-like tubes hanging from the mask, shiny gold-brown armoured coat, heavy cloak. Same costume-only view the entry already warns about; hides all anatomy. No disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_gand_fdev.png` (reference of record), the NEGAS painting, the ESB still, the maskless comic panel (anatomy only) and the canon text.*
@@ -170,6 +188,7 @@ gene, per the entry.
   feature the entry above is about. Small in frame.
 - `donor_current_sprite.png` — the mod's current head mask, and the strongest donor art
   in this batch. See the visual brief for the two shape corrections.
+- `bloggathehutt_gand_zuckuss_esb.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, Zuckuss in The Empire Strikes Back; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2024/02/26/species-of-the-week-gand/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -42,6 +42,22 @@ eyewear when travelling to planets with a red or yellow star**; and they were **
 into the infrared spectrum.** ⚠️ That is the mechanism behind the goggles, and it is Legends —
 canon states only "sensitive eyesight."
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/11/28/species-of-the-week-kubaz/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient 
+
+Homeworld: Kubindi
+
+Notable members: Garindan
+
+Fandom: Star Wars 
+
+Appearances: A New Hope, The Mandalorian Andor
+
+Kubaz are an insectoid species found throughout the galaxy. They have long snouts which they use to forage for food. The conditions on their homeworld mean they need to cover their eyes and snouts on most worlds. Some Kubaz were known to be informants for the Empire though others fought their oppression. 
+
 ## Visual brief
 🔑 **The distinction the brief asks for: the SNOUT is face, the GOGGLES are equipment. There
 is nothing else covering a Kubaz.** Unlike the Kel Dor, a Kubaz can breathe fine; the eyewear
@@ -83,6 +99,8 @@ The infobox figure wears gloves, so it says nothing about hands.
 consistently **concealing**: hooded cloak (Legends), layered jacket with a bandolier plus tall
 boots (infobox), courier armour with helmet and satchels (courier). A Kubaz reads as *hiding*,
 which fits the spy/informant fiction.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_kubaz_garindan_a_new_hope.png` (797x519): Garindan in a dark hooded robe with black round goggles, a long grey-brown trunk-like snout with riveted metal plating and breathing holes, holding a small vial in a black glove. Mostly covered; the plated snout is the prop. No disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox painting (reference of record), the courier image and the Legends Alien Archive image, which agree, as described in the visual brief.*
@@ -158,6 +176,7 @@ none known
   right length, right downward taper, with the pore pattern present. **Negative reference for
   the face above the snout:** two bare eyes and two human eyebrow arcs, no goggles, no crest.
   That is the correction this entry exists to make.
+- `bloggathehutt_kubaz_garindan_a_new_hope.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Garindan, a Kubaz in A New Hope; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2022/11/28/species-of-the-week-kubaz/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -40,6 +40,22 @@ spent **the first 50 years of their life in the brood pouches of their parents**
 when they emerged, they were described as having the mind of an infant. The
 literary collective term for Hutts was **a bulge of Hutts**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/10/04/species-of-the-week-hutt/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Nal Hutta
+
+Notable members: Jabba, Ziiro, Myarga, Geezer
+
+Fandom: Star Wars
+
+Appearances: Return of the Jedi, The Clone Wars, Visions
+
+Hutts are one of the most influential species in the galaxy, having carved out a massive portion of space for themselves that neither the Republic nor the Empire attempted to invade, despite their territory being a haven of criminal activity. Large gastropods, they are slow moving yet they are physically dominating and resilient to damage giving them the advantage over humanoid species, many of whom they enslaved or indentured to their service. While seen as criminals by the galaxy not all Hutts are part of the organizations and some try to follow a nobler path. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The comic council panel (`wookieepedia_hutt_council_comic.jpg`) was removed. The adult references are now all realistic: `wookieepedia_adult_jabba.jpg` (photoreal full-body render), `wookieepedia_jabba_palace_rotj.png` (Return of the Jedi live-action puppet, full body with tail, beside Bib Fortuna), `wookieepedia_jabba_puppet_face.png` (puppet face close-up) and `wookieepedia_rotta_adult_mandalorian_and_grogu.png` (a second adult Hutt, Rotta, live-action CGI from *The Mandalorian and Grogu*). The Clone Wars Huttlet (`wookieepedia_huttlet.jpg`) is **kept only as animated reference for juvenile proportions** — no realistic juvenile Hutt exists; render one realistically anyway.
@@ -102,6 +118,8 @@ RimWorld body** — the only Hutt body art on disk is
 overlay with no south variant and no tail at all. **The legless, tail-propelled
 body plan — the species' single most defining feature — is not represented.**
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_hutt_visions_anime.png` (850x575, Star Wars: Visions anime frame): a squat olive-green Hutt with a wide smiling mouth, black hair over the head (!), tiny purple round eyes, a nose ring, a skull T-shirt and a neon guitar, in a stadium. 🔴 STYLISED ANIME: it contradicts the canon slug body (hairless, tail, no clothes) -- hair, shirt and upright seated pose are Visions-only. Not a reference for the realistic sprite.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action/photoreal adult references (Jabba render, ROTJ puppet, Rotta) and the canon prose, per the visual brief.*
 - [ ] BODY PLAN: a massive legless slug: the torso rears upright and the mass sits on a long, tapering, dorsoventrally flattened tail that lies along the ground behind the body; short thick arms set high on the chest ending in broad hands with three thick blunt digits
@@ -133,6 +151,7 @@ a rendering constraint.
 - `wookieepedia_jabba_puppet_face.png` — the Jabba puppet's face close-up (*The Moviemaking Magic of Star Wars: Creatures & Aliens*): furrowed reddish-brown wet hide, slit-pupilled orange eyes, brow shelf, nostril slits; file `Jabba MMSWCA.png` — https://static.wikia.nocookie.net/starwars/images/f/fe/Jabba_MMSWCA.png/revision/latest?cb=20231031040818
 - `wookieepedia_rotta_adult_mandalorian_and_grogu.png` — Rotta as an adult, live-action CGI, *The Mandalorian and Grogu*: a second individual, grey-olive and more uniform in hue; file `Rotta-MG-Profile.png` — https://static.wikia.nocookie.net/starwars/images/1/1b/Rotta-MG-Profile.png/revision/latest?cb=20260512153846
 - `wookieepedia_huttlet.jpg` — **animated (The Clone Wars), juvenile proportions only.** Infobox "Huttlet" image, file `Rotta-SWCT.png`: huge head and eyes, tiny arms, short blunt tail. Not a rendering-style target. https://static.wikia.nocookie.net/starwars/images/b/b8/Rotta-SWCT.png
+- `bloggathehutt_hutt_visions_anime.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a Hutt in Star Wars: Visions (anime, playing a guitar); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/10/04/species-of-the-week-hutt/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)
