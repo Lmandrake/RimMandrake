@@ -352,6 +352,7 @@ def main(argv=None):
     ap.add_argument("--mock", action="store_true", help="offline fake game; proves this script's own paths only")
     ap.add_argument("--mock-fail", default=None, help="with --mock: raise inside this group id to prove a crash is kept and the walk goes on")
     ap.add_argument("--fresh-map", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--reset-index", action="store_true", help="start index.html afresh (default: it accumulates every group run)")
     a = ap.parse_args(argv)
     only = [s.strip() for s in a.only.split(",") if s.strip()]
     out_dir = OUT_MOCK if a.mock else OUT_LIVE
@@ -368,7 +369,8 @@ def main(argv=None):
     groups = build_groups(w, only, out_dir)
     idx = C.write_index(os.path.join(out_dir, "index.html"), "FlowWorks canal objects: poses and styles",
                         "One picture per group, rotations read back from the game. Tick your answer under each group; "
-                        "'Copy my answers as JSON' puts them on the clipboard.", groups)
+                        "'Copy my answers as JSON' puts them on the clipboard. Every group you have run stays on the "
+                        "page; the newest run of a group replaces its older one.", groups, accumulate=not a.reset_index)
     with open(os.path.join(out_dir, "rows.json"), "w", encoding="utf-8") as f:
         json.dump(w.rows, f, indent=1)
     with open(os.path.join(out_dir, "log_%s.txt" % time.strftime("%Y%m%dT%H%M%S")), "w", encoding="utf-8") as f:

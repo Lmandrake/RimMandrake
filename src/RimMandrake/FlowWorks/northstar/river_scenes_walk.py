@@ -488,6 +488,7 @@ def main(argv=None):
     ap.add_argument("--mock", action="store_true", help="offline fake game; proves this script's own paths only")
     ap.add_argument("--mock-fail", default=None, help="with --mock: raise inside this scene id to prove a crash is kept and the walk goes on")
     ap.add_argument("--fresh-map", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--reset-index", action="store_true", help="start index.html afresh (default: it accumulates every scene run)")
     a = ap.parse_args(argv)
     if a.mock:
         a.pace = 0.0
@@ -523,7 +524,8 @@ def main(argv=None):
                 rc = 1
         idx = C.write_index(os.path.join(out_dir, "index.html"), "FlowWorks river scenes: what to evaluate",
                             "Each scene has caption panels (what you look at, what to check, pass/fail, what the game measured). "
-                            "Tick your answer under each scene; 'Copy my answers as JSON' puts them on the clipboard.", groups)
+                            "Tick your answer under each scene; 'Copy my answers as JSON' puts them on the clipboard. Every scene you have run stays on the "
+                            "page; the newest run of a scene replaces its older one.", groups, accumulate=not a.reset_index)
         with open(os.path.join(out_dir, "log_%s.txt" % time.strftime("%Y%m%dT%H%M%S")), "w", encoding="utf-8") as f:
             f.write("\n".join(w.log_lines) + "\n")
         w.say("index: %s" % idx)

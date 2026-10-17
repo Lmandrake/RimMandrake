@@ -7,6 +7,9 @@ row, the crash handler) run to the end with no game, in seconds:
     python3 src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py all --mock --no-wait --pace 0 --no-shots
     python3 src/RimMandrake/FlowWorks/northstar/water_scenes_walk.py all --mock --no-wait --pace 0 --no-shots --mock-fail S4
 
+ProofReadout answers the real string shape ("Hole 0.5 m . Water 0.24 m (474 L)", or "OK -" for undug ground) and
+ProofLevelSurface the real "OK n worst G m;x,z:squares:gap:min:max;" shape, so the walk's decilitre readers and level rows run.
+
 It proves NOTHING about the game: the "water" here is a toy (a dug cell gains one level per pulse up to its depth), so
 its MATCHES/DIFFERS words are meaningless. Only "every scene reached its end and printed its rows" and "a crash printed
 its traceback and the next scene ran" are read from it.
@@ -35,6 +38,7 @@ class MockBridge(object):
         self.depth = {}
         self.fill = {}
         self.terrain = {}
+        self.mock_gap = "0.0000"          # ProofLevelSurface worst gap the toy reports (a test sets "0.0500" to prove the row can go red)
         self.fail_scene = (fail_scene or "").upper() or None
         self.scene = None
         self.ticks_in_scene = 0
@@ -120,6 +124,23 @@ class MockBridge(object):
                                                          "RM_Fluid_Water" if self.fill.get(c) else "none",
                                                          self.terrain.get(c, "Soil")))
             return {"success": True, "result": "ROW pulse=%d viscosity=True %s" % (self.pulse, "".join(cells))}
+        if method == "ProofReadout":
+            # the real strings (RM_Volume.Readout): "Hole 0.5 m · Water 0.24 m (474 L)"; the toy's water is whole notches
+            x, z = map(int, arg.split(","))
+            c = (x, z)
+            d = self.depth.get(c, 0)
+            if d <= 0:
+                return {"success": True, "result": "OK -"}
+            lit = self.fill.get(c, 0) * 1000 + getattr(self, "part_l", {}).get(c, 0)
+            return {"success": True, "result": "OK Hole %s m \u00b7 Water %.2f m (%s L)" % (
+                ("%g" % (d * 0.5)), lit / 2000.0, format(lit, ","))}
+        if method == "ProofLevelSurface":
+            wetc = [c for c, f in self.fill.items() if f > 0]
+            if not wetc:
+                return {"success": True, "result": "OK 0 worst 0.0000 m;"}
+            c = wetc[0]
+            return {"success": True, "result": "OK 1 worst %s m;%d,%d:%d:%s:-0.5000:-0.5000;" % (
+                self.mock_gap, c[0], c[1], len(wetc), self.mock_gap)}
         if method == "ProofLiquid":
             return {"success": True, "result": "DOOR RM_Sluice open=False seals=True | mock"}
         return {"success": True, "result": "ok " + json.dumps(method)}
