@@ -406,5 +406,5 @@ All off: thirst works exactly as the 2026-10-16 build, minus Fouled/Toxic desper
 |---|---|---|
 | 1 deep design | complete | this file, written by the BENCH design subagent (model from `ANTHROPIC_DEFAULT_OPUS_MODEL`) |
 | 2 naive review | complete (`e6202ae083`) | `design/RimMandrake/thirst_fluids_3x3_2026-10-17/02a-blind-solutions.md`, `02-review.md`. Moved: claim 4 overstated ~2.4x (~75-90 jobs/day, not 180); claim 8 resolved (green slime is not the Gelatinous body). New: built code lets parched pawns drink salt routinely; a bottler machine proposed as option D |
-| 3 GPT review | **not run** | owed: `chatgpt-consult` blind then critique |
-| merge | **not run** | owed; until then this design is **INCOMPLETE** as a 3x3 |
+| 3 GPT review | complete | `design/RimMandrake/thirst_fluids_3x3_2026-10-17/03a-gpt-blind.md`, `03-gpt.md` |
+| merge | complete | `design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md` supersedes §7.6 and §11 of this file: its §7 holds the owner questions |
