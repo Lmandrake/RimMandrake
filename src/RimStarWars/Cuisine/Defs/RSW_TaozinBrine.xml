@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TaozinBrine — TAOZIN SPLIT, 2026-10-17. Canon: a taozin grub kept in brine "infused the liquid with certain
+  qualities. Some species considered the infused brine a delicacy that increased their mental fortitude."
+  Owner by card 2026-10-17: the effect is "Both mood and break resistance".
+    - mood: RSW_DrankTaozinBrine, a one-day memory (+8).
+    - break resistance: RSW_TaozinBrineFortitude, MentalBreakThreshold -0.08, fading over ~2 days.
+  SOURCE: none yet in play. Production (a grub kept in a brine tank, RM_Brine in, taozin brine out; the grub goes
+  white after long brining) needs C# and is the filed follow-up TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE.
+  Art: reuses vanilla's beer bottle tinted pale until an art job draws a brine jar. PROVISIONAL numbers.
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_TaozinBrine</defName>
+    <label>taozin brine</label>
+    <description>Brine a taozin grub has lain in, slowly infused with something the grub gives off. Connoisseurs across the galaxy pay dearly for it: a sip lifts the spirits and leaves the mind steadier for a day or two.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(225,215,190)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>35</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Nutrition>0.02</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <foodType>Fluid, Processed</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <chairSearchRadius>8</chairSearchRadius>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0.18,0,0)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <useEatingSpeedStat>false</useEatingSpeedStat>
+      <tasteThought>RSW_DrankTaozinBrine</tasteThought>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RSW_TaozinBrineFortitude</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RSW_DrankTaozinBrine</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>drank taozin brine</label>
+        <description>Taozin brine. Rare, strange, and it settled something in me.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <HediffDef>
+    <defName>RSW_TaozinBrineFortitude</defName>
+    <label>taozin brine fortitude</label>
+    <description>The infusion in taozin brine steadies the mind: mental breaks come harder while it lasts.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.85, 1.0)</defaultLabelColor>
+    <isBad>false</isBad>
+    <maxSeverity>1.0</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.5</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statOffsets>
+          <MentalBreakThreshold>-0.08</MentalBreakThreshold>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

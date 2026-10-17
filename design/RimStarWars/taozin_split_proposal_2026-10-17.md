@@ -1,4 +1,4 @@
-# Taozin split — proposal (2026-10-17, not built)
+# Taozin split — proposal (2026-10-17; BUILT 2026-10-17, see "Built" below)
 
 **Owner, facings needs-eyes sheet 2026-10-17 (verbatim):** "This needs to be redone into two creatures. The first is a
 huge, deadly predator (see canon image of a very small man beside a worm at least ten times his height). This should be a
@@ -52,8 +52,28 @@ sounds. Two redraw jobs from the enact are queued against that one def's art.
   grub) and rewrite each one's `## Must show` from the note above: adult = Legends painting and its scale; grub = the
   owner photo, with terracotta as the default and white for brine-kept.
 
-## Open questions for the owner
+## Owner rulings (by question card, 2026-10-17) — formerly the open questions
 
-1. Nest as treasure: a map feature the adult spawns in (like `RSW_PreciousCave_KraytDen`), or a quest site?
-2. Can a colony keep an adult, or is it wild-only?
-3. The brine effect in Cuisine: a mood buff, a mental-break resistance, or both?
+1. Nest → **"A map feature with a guarding adult"** (like `RSW_PreciousCave_KraytDen`: adult on guard, a few grubs
+   and silk; generates on Crags maps).
+2. Adult → **"Wild only"** (never tameable).
+3. Grub brine in Cuisine → **"Both mood and break resistance"**.
+
+## Built (2026-10-17)
+
+- Canon library: `canon_references/taozin/` (adult, Legends) and `canon_references/taozin_grub/` (grub; owner photo,
+  blog photo and both canon tank images moved there), each with its own `## Must show`; INDEX regenerated.
+- "The Crags Biome we have" is read as `RM_Abyss` — the former Forsaken Crags (`AB_RockyCrags`), built as its own mod
+  by FORSAKENCRAGS_RM_MOD_BUILD_1, now labelled "the Abyss". No BiomeDef named Crags exists. If the owner meant
+  another biome, only two patch files change.
+- `RSW_Taozin` (SWBestiary): adult only, body size 8, drawn 10 cells, Wildness 1 (vanilla `TameUtility.CanTame`
+  refuses Wildness ≥ 1), Sharp armour 0.80 / Heat 0.99, web-spit = the shipped Webwork mouth-loom
+  (`RM_Gun_LoomSpit`), territorial anchor (`RM_AnchorGuard`), no eggs, silk + nodule on butchering, no
+  wildBiomes of its own; wild row `RM_Abyss` 0.01 in `UtinniPatches/Patches/WildAnimals_Abyss.xml`.
+- `RSW_TaozinGrub` (SWBestiary): body size 0.1, tameable (Wildness 0.6), harmless, never wild.
+- Nest: `SWBestiary/Defs/MapGeneration/RSW_TaozinNest.xml` (shipped `RM_GenStep_PlacedSetPieces` + anchored adult +
+  2–4 grubs + 2–3 silk stacks), wired onto `RM_Abyss.extraGenSteps` by `SWBestiary/Patches/RSW_TaozinNest_Abyss.xml`.
+- Cuisine: `RSW_TaozinBrine` with `RSW_DrankTaozinBrine` (+8 mood, 1 day) and `RSW_TaozinBrineFortitude`
+  (MentalBreakThreshold −0.08, fades over ~2 days).
+- NOT built (C#): the grub-in-brine-tank production and the white long-brined look, plus the nest's Mod Settings
+  switch → filed as `TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE`.

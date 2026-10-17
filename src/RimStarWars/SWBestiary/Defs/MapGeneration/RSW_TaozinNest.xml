@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TaozinNest — TAOZIN SPLIT, 2026-10-17. Owner by card 2026-10-17: the nest is "A map feature with a guarding
+  adult" (modelled on RSW_PreciousCave_KraytDen: adult on guard, a few grubs and silk; generates on Crags maps).
+  Owner (facings sheet): grubs "can be found only in Taozin nests ... They too should be findable as treasure in
+  the Crags."
+
+  Built from shipped parts, no new C#:
+    - RM_GenStep_PlacedSetPieces (mandrake.rm.environmentalhazards): one site per map, every element spawned.
+    - RM_SetPieceElement_AnchoredPawn: the adult RSW_Taozin, anchored to the site (its
+      CompProperties_TerritorialAnchor + RM_AnchorGuard: fights inside the radius, wanders near the nest).
+    - RM_CaveElement_Pawns / RM_CaveElement_Things (mandrake.rm.stillsand, the krayt den's own vocabulary; outside a
+      precious cave they fall back to the cells within ~4 of the site): 2-4 grubs, 2-3 stacks of taozin silk.
+  Wired onto the Crags (RM_Abyss, the former Forsaken Crags / AB_RockyCrags, FORSAKENCRAGS_RM_MOD_BUILD_1) through
+  BiomeDef.extraGenSteps by ../../Patches/RSW_TaozinNest_Abyss.xml.
+  OWED: a Mod Settings on/off (needs an RM_MechanicGates.Register call in SWBestiary C#) — part of the follow-up
+  TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE. PROVISIONAL counts.
+-->
+<Defs>
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.stillsand">
+    <defName>RSW_GenStep_TaozinNest</defName>
+    <order>966</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minEdgeDist>20</minEdgeDist>
+      <minDistToPlayerStart>40</minDistToPlayerStart>
+      <spotMustBeStandable>true</spotMustBeStandable>
+      <warnOnFail>false</warnOnFail>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
+          <pawnKind>RSW_Taozin</pawnKind>
+        </li>
+        <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
+          <kind>RSW_TaozinGrub</kind>
+          <count>2~4</count>
+          <place>any</place>
+        </li>
+        <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+          <thing>RSW_WoolTaozin</thing>
+          <stacks>2~3</stacks>
+          <stackCount>15~30</stackCount>
+          <place>any</place>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+</Defs>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WildAnimals_Abyss.xml — UtinniPatches, new 2026-10-17 (TAOZIN SPLIT).
+  RM_Abyss is the Crags (the former Forsaken Crags / AB_RockyCrags; FORSAKENCRAGS_RM_MOD_BUILD_1). Owner, facings
+  sheet 2026-10-17: the taozin "should be a major predator placed in the Crags Biome we have." RSW_Taozin is canon
+  IP, so its row is patch-added here, never inlined in the RM_ BiomeDef. Rare on purpose: its nest
+  (SWBestiary RSW_GenStep_TaozinNest) already seats one adult per Crags map. Commonality PROVISIONAL.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/BiomeDef[defName="RM_Abyss"]/wildAnimals</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Abyss"]/wildAnimals</xpath>
+        <value>
+          <RSW_Taozin>0.01</RSW_Taozin>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>

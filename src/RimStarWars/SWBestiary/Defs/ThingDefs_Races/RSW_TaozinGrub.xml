@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_TaozinGrub — TAOZIN SPLIT, 2026-10-17. Owner, facings sheet (verbatim in
+  design/RimStarWars/taozin_split_proposal_2026-10-17.md): "The second creature is the Taozin Grub, a much
+  smaller creature as large as an arm that is a major component of Star Wars Cuisine mod and can be found only in
+  Taozin nests." Canon brief: design/RimStarWars/canon_references/taozin_grub/description.md.
+
+  - Never wild on the open map: no wildBiomes, no roster row. Its only entry is the nest set piece
+    (MapGeneration/RSW_TaozinNest.xml) on Crags (RM_Abyss) maps, beside a guarding adult RSW_Taozin.
+  - Tameable (Wildness 0.6), harmless, slow; it barely leaves the nest.
+  - Colour (owner ruling, canon_references/taozin_grub ## ruling): terracotta by default; WHITE after long brine.
+    Today only the terracotta look is wired (texPath below). The white look and the brine-tank production that
+    triggers it need C# and are the filed follow-up TAOZIN_BRINE_TANK_BUILD_GRUB_GOES_PALE (art for both looks is queued).
+  - Grub brine (RSW_TaozinBrine) lives in the Cuisine mod (mandrake.rsw.cuisine).
+  PROVISIONAL numbers: every stat below is INVENTED for a forearm-length grub, pending the owner's review.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_TaozinGrub</defName>
+    <label>taozin grub</label>
+    <description>The grub of the giant taozin: a terracotta, forearm-long creature with eight pairs of short dark legs bunched behind its blunt head, a pale banded collar and a long whip of a tail. Kept in brine it lies sedated and slowly infuses the liquid with a delicacy said to steady the mind, and a grub kept so long enough fades to white. Grubs are found only in taozin nests, under the guard of an adult.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>450</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+      <FilthRate>1</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <lifeExpectancy>40</lifeExpectancy>
+      <trainability>None</trainability>
+      <petness>0.2</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_TaozinGrub</defName>
+    <label>taozin grub</label>
+    <race>RSW_TaozinGrub</race>
+    <combatPower>15</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RSW_TaozinGrub/RSW_TaozinGrub</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RSW_TaozinGrub/Dessicated_RSW_TaozinGrub</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
