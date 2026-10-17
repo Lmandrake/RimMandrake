@@ -1749,6 +1749,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK_upstream_of_shut_sluice_fills", () =>
+            {
+                string r = FlowKernelFuzz.SealedSinkBelowSourceFillsUpstream();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL_seam_start_covers_network", () =>
             {
                 string r = FlowKernelFuzz.SeamSlotCoversNetwork();

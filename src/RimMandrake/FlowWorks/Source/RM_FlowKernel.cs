@@ -734,7 +734,6 @@ namespace RimMandrake.FlowWorks
 		private void SolveRegion(object fluid)
 		{
 			int n = width * height;
-			bool drains = sinkHops.Count > 0;
 			if (++lsStampValue == int.MaxValue)
 			{
 				Array.Clear(lsDomainStamp, 0, lsDomainStamp.Length);
@@ -780,6 +779,14 @@ namespace RimMandrake.FlowWorks
 					maxBand = dep;
 				}
 				lsNewFill[lsDomain[i]] = 0;
+			}
+			// FLOWWORKS_SLUICE_FIX_BELOW_SOURCE_LUCK: this region drains only if a sink is reachable from it. Component-wide, a
+			// region cut off by a shut sluice keyed every square Far and fell back to cell index, so the mouth kept its unit
+			// (upstream stayed dry) in one direction and not the other.
+			bool drains = false;
+			for (int i = 0; i < lsDomain.Count && !drains; i++)
+			{
+				drains = sinkHops.ContainsKey(lsDomain[i]);
 			}
 			// Merge tree: the connected pieces of each band, shallow band first (a deeper piece's parent is created first).
 			lsCompCount = 0;
