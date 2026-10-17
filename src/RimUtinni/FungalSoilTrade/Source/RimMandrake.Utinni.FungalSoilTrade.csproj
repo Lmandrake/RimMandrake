@@ -3,8 +3,8 @@
   <!--
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so the mod
     DLL must target net472. Same shape as
-    src/RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj (the
-    HarmonyDll property); copy that file's header if this one goes stale.
+    src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj (the HarmonyDll
+    property); copy that file's header if this one goes stale.
 
     Build (dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\FungalSoilTrade\Source\RimMandrake.Utinni.FungalSoilTrade.csproj -c Release

@@ -167,14 +167,13 @@ TIERS = {
     },
     "fw_gss_sitting": {
         "why": "FW/GSS owed-criteria sitting (Transient/flowworks_gss_owed_20261011.md section 3): the `flowworks` "
-               "tier plus FloodedCanyon, ExplosiveGrowth and RiverColors, so FloodedCanyon/validation.py and "
-               "RiverColors/validation.py run on the same load. FloodedCanyon has NO runtime packageId: it ships "
+               "tier plus FloodedCanyon and ExplosiveGrowth, so FloodedCanyon/validation.py runs on the same load "
+               "(River Colors, once its own mod here, is part of FlowWorks since 2026-10-16). FloodedCanyon has NO runtime packageId: it ships "
                "composed in mandrake.rm.biomes (Biomes.compose.json), so that is what loads, and biomes hard-depends "
                "on sarg.alphabiomes -- this tier therefore CANNOT carry the flowworks tier's Alpha Biomes forbid, "
                "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
                "guards stay (stale pits, ManyWaters, Invisible Conduit Continued for the GSS rows).",
-        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes",
-                 "mandrake.rut.rivercolors"],
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes"],
         # ExplosiveGrowth is composed in mandrake.rm.biomes (EXPLOSIVE_GROWTH_MERGE_COMES_HOME); its old standalone
         # packageId would load it twice.
         "forbid": ["mandrake.rm.pits", "glitchgoblin.invisibleconduitcont", "mandrake.rm.explosivegrowth"],
@@ -801,11 +800,11 @@ TIERS["watchers_live"] = {
 
 TIERS["acc_green_min"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
-           "Warcasket, GizkaStowaway, OasisMaker, RiverColors, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
+           "Warcasket, GizkaStowaway, OasisMaker, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
            "GelatinousSlime, GravshipLanding, Stillsand, Pyrinth (composed biomes mod carries several).",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
              "mandrake.rm.shipvermin", "mandrake.rm.hugethings", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
-             "mandrake.rm.oasismaker", "mandrake.rut.rivercolors", "mandrake.rut.scarlandsladder",
+             "mandrake.rm.oasismaker", "mandrake.rut.scarlandsladder",
              "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
     "dlc": True,
 }
