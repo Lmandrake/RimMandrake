@@ -29,6 +29,17 @@ riding banthas above the Jundland Wastes; Tuskens also feed banthas to krayt
 dragons in *The Mandalorian* "Chapter 9: The Marshal") through *The Mandalorian*/*The Book
 of Boba Fett*.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/01/24/species-of-the-week-bantha/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the in-universe uses (blue milk, meat, wool, 'wild bantha chase' idiom); nothing contradicts canon.*
+
+> Designation: Non-sentient
+> Homeworld: Tatooine
+> Fandom: Star Wars
+> Appearances: A New Hope, The Mandalorian, The Book of Boba Fett
+> Banthas are large furry mammals native to the sands of Tatooine. They are notable for their massive horns and wide mouths. These creatures freely roam the dune sea but are prized as mounts by both the native Tuskens and settlers alike. While their homeworld is relatively obscure Banthas are known across the galaxy for their blue milk, meat and their wool – leading to commpn expressions such as a ‘wild Bantha chase.’
+> I really loved seeing the closeness between Boba and his Bantha mount in last week’s episode so I felt it high time I blogged about this classic species!
+
 ## Visual brief
 Every candidate image agrees on the core silhouette: a heavyset, shaggy,
 long-haired quadruped with a pair of large, tightly-curled, ram-like spiraling
@@ -49,6 +60,7 @@ or chin-beard fringe, and the overall proportions are boxier/more compact
 than the real animal's heavy-set but clearly leonine-maned silhouette. A
 regen should exaggerate the horn spiral and add visible shaggy fur texture,
 especially the hanging beard under the chin.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_bantha.jpg`:** The original 1977 film herd on a dune sea: dark brown-black shaggy bodies, pale ivory ridged spiral ram horns curling forward past the face, long beard fringe. Agrees with the existing brief (dark brown/black, cream horns); it is the same film frame family as the existing herd image.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images and the `## ruling` below.*
@@ -76,6 +88,7 @@ none known
 - `wookieepedia_infobox.jpg` — Wookieepedia infobox render, head-on close-up of face, horns, and chin-beard fur texture
 - `wookieepedia_herd_screencap.jpg` — film screen capture, a full herd resting on Tatooine dunes, shows scale and herd coloration
 - `official_concept_art_olivera.jpg` — official Mandalorian-era promotional concept art, rider astride a bantha, full body with saddle rig
+- `bloggathehutt_bantha.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2022/01/bantha.jpg
 
 ## ruling
 **REDO** (owner, 2026-10-04, doubles sheet `Transient/art_doubles_compare_2026-10-04.decisions.json`, item ART_VERSION_WRANGLING_1) on `swanimals/Bantha/BanthaW`:

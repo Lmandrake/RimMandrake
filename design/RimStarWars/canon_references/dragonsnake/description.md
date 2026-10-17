@@ -24,6 +24,17 @@ https://starwars.fandom.com/wiki/Bright-Eyes), so tan/green/olive is not the who
 **Legends** (https://starwars.fandom.com/wiki/Dragonsnake/Legends): length 2-6 m, brown/green/grey skin,
 red/black/scarlet/dark-brown eyes, semi-sentient, omnivorous.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/06/22/species-of-the-week-dragonsnake/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the behaviour (ambush by coiling in vines, spits out droids, venom, pit under the Hutt throne room); consistent with canon.*
+
+> Designation: Non-Sentient
+> Homeworld: Nal Hutta, Dagobah
+> Fandom: Star Wars
+> Appearances: The Empire Strikes Back, The Clone Wars, The Mandalorian and Grogu
+> Dragonsnakes are fearsome predators found in swampy locales, including the Hutt capital planet Nal Hutta and the remote Dagobah. Dragonsnakes are stealth predators, curling themselves among vines and roots in their environment before rising up and striking their prey. Dragonsnakes will strike anything that comes in reach but will spit out anything they find indigestible, such as droids. Their gangs have venom that will take down any prey that escapes their coils. Dragonsnakes proved a natural deterrent for any unwelcome visitors to Nal Hutta and a trapdoor in the Hutt throne room led to a pit where a captive dragonsnake fed on prisoners and intruders that fell into its lair. 
+> Continuing my run-through of known species in The Mandalorian and Grogu, the massive beast that Din narrowly escaped from first appeared in The Empire Strikes Back, though we barely saw more than bubbles in the water in that film. I always love getting to see creatures in their full glory.
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
@@ -36,6 +47,7 @@ Realistic sources added/kept:
 **Where they disagree:** the realistic concept art and the ruled images agree on dark olive with glowing green spots and a toothy crocodilian head; the film creature is pale and limbless. The owner's ruling picks the olive/glowing-spot look; render it with the concept sheet's realistic wet scaly hide, not the animated flat colour.
 
 - `donor_current_sprite.png` (our own sprite): tan/khaki quadruped with small clawed limbs, dark spots, gator-like head — body plan agrees with the concept sheet, colour does not.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_dragonsnake.png`:** The Mandalorian and Grogu film creature, rendered photoreal: a **pale cream/bone-white LIMBLESS serpent** with a long horse-like narrow head, many needle fangs, and glossy ringed coils rising from green swamp water. 🔴 LOUDLY DISAGREES with the owner-ruled olive-with-glowing-spots crocodilian look in this entry (pale, limbless, no spots) - it is the same creature as the existing `wookieepedia_mandalorianandgrogu.jpg` family. Do not adopt for colour; useful for head shape and coil texture only, per the owner's 2026-09-14 ruling.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Jedi: Fallen Order concept sheet as described in the visual brief and the `## ruling` below (owner ruling 2026-09-14: "#2 for coloration and glowing-seeming spots. But much less cartoonish, more like seriousness of #3.").*
@@ -64,6 +76,7 @@ none known
 - `wookieepedia_visualencyclopedia.jpg` — flat ILLUSTRATION (*Star Wars: Galactic Atlas*); kept because the owner's ruling cites its "seriousness"; file `Dragonsnake-SWGA.jpg` — https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg
 - `wookieepedia_concept_jfo.jpg` — REALISTIC painted concept art, *Jedi: Fallen Order*, four quadruped variants with glowing spots; file `DragonsnakeConcept-JFO.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/DragonsnakeConcept-JFO.jpg/revision/latest?cb=20230603191742
 - `wookieepedia_mandalorianandgrogu.jpg` — LIVE-ACTION film (realistic CGI), *The Mandalorian and Grogu*: pale limbless serpent; file `DinDjarinDragonsnakeFaceoff-TMaG.png` — https://static.wikia.nocookie.net/starwars/images/5/52/DinDjarinDragonsnakeFaceoff-TMaG.png
+- `bloggathehutt_dragonsnake.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2026/06/dragonsnake.png
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_huntforziro.jpg`

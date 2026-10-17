@@ -101,6 +101,18 @@ Two quotes worth keeping:
 five-fingered hands**" — so finger count is genuinely unsettled, do not treat either as
 canonical.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/06/13/species-of-the-week-falleen/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the Obi-Wan Kenobi live-action Falleen; the blog does not mention that the species colour-shifts to red, only that colour changes with emotion.*
+
+> Designation: Sentient
+> Homeworld: Falleen
+> Notable members: Xixor
+> Fandom: Star Wars
+> Appearances: Obi-Wan Kenobi, Shadows of the Empire, The Clone Wars
+> The Falleen are a reptomamallian humanoid species, who are commonly linked with the Black Sun criminal syndicate. They have green skin but this can change colour when they are emotional and some Falleen can command this at will. They are capable of emitting strong pheromones which allow them to manipulate the desires of others. 
+> I was so excited to see a Falleen in live action in the Obi-Wan Kenobi series, seeing this species jump from a Legends novel to a Canon screen was just so cool!!
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Deleted: the *Clone Wars*-style CG render of Ziton Moj (`wookieepedia_infobox_ziton_moj.jpg`), the animated Black Sun nobles frame (`wookieepedia_black_sun_nobles.jpg`) and the inked *Han Solo* comic panel of U'il (`wookieepedia_uil.jpg`). Added: a live-action Falleen from *Obi-Wan Kenobi* "Part II" (`wookieepedia_kenobi_part2_live_action.png`), the realistic *New Essential Guide to Alien Species* painting (`wookieepedia_negas_legends.jpg`) and Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_uaa_legends.jpg`). The Xizor colour-shift image is a painted 1996 Topps *Shadows of the Empire* card and stays.
@@ -149,6 +161,7 @@ attachment it does no work on the head. **There is no Falleen-specific head, fac
 skull-ridge art on disk at all** — the facial ridges ride the generic
 `RSW_FacialRidges_bumpy` / `Outland_RidgedSkin` genes, which per the visual brief above
 is the wrong idiom (texture, not plates).
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_mercenary.png`:** A dim live-action Falleen mercenary (Obi-Wan Kenobi) in profile: **green scaly skin**, bald domed head with a fine dark top-knot/ponytail rising at the back, small ear, dark armoured vest. Agrees with the existing live-action Falleen reference; very dark, low-res (330x456).
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action, NEGAS, UAA and Xizor colour-shift images, and the Legends text (the colour shift is Legends-only; canon never mentions it).*
@@ -283,6 +296,7 @@ open warfare.
   plates down the back. **The strongest donor asset in this batch** — a correct rendering
   of the canon "dorsal spine" distinction, with per-body variants. Limitations: **no
   `_south` variant**, and no Falleen head or facial-ridge art exists on disk.
+- `bloggathehutt_mercenary.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2022/06/unidentified_falleen_mercenary.png
 
 ## ruling
 

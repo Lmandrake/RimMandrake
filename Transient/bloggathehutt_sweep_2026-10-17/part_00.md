@@ -1,0 +1,14 @@
+aqualish | covered | https://bloggathehutt.wordpress.com/2020/11/24/species-of-the-week-aqualish/ | 1 (bloggathehutt_portrait.jpg) | none (consistent)
+arkanian | covered | https://bloggathehutt.wordpress.com/2026/01/12/species-of-the-week-arkanian-offshoot/ | 1 (bloggathehutt_offshoot.png) | image shows blue skin vs entry 'never blue' (probably comic lighting)
+bantha | covered | https://bloggathehutt.wordpress.com/2022/01/24/species-of-the-week-bantha/ | 1 (bloggathehutt_bantha.jpg) | none (consistent)
+bith | covered | https://bloggathehutt.wordpress.com/2020/03/02/species-of-the-week-bith/ | 1 (bloggathehutt_jedi_concept.jpg) | none (tiny low-res image)
+blurrg | covered | https://bloggathehutt.wordpress.com/2019/08/26/species-of-the-week-blurrg/ | 1 (bloggathehutt_mandalorian_trailer.jpg) | blog says Sentient (likely blog error); appearance consistent
+bothan | covered | https://bloggathehutt.wordpress.com/2024/09/09/species-of-the-week-bothan/ | 1 (bloggathehutt_bothan.png) | none; Legends-only art (blog itself says no canon depiction)
+chiss | covered | https://bloggathehutt.wordpress.com/2023/10/09/species-of-the-week-chiss/ | 1 (bloggathehutt_thrawn.jpg) | none (consistent)
+dragonsnake | covered | https://bloggathehutt.wordpress.com/2026/06/22/species-of-the-week-dragonsnake/ | 1 (bloggathehutt_dragonsnake.png) | image pale limbless serpent vs owner-ruled olive spotted quadruped
+duros | covered | https://bloggathehutt.wordpress.com/2022/02/14/species-of-the-week-duros/ | 1 (bloggathehutt_duros.jpg) | none (consistent; individual is blue)
+eopie | covered | https://bloggathehutt.wordpress.com/2022/03/14/species-of-the-week-eopie/ | 1 (bloggathehutt_eopie.png) | none (consistent)
+ewok | covered | https://bloggathehutt.wordpress.com/2019/10/28/species-of-the-week-ewok/ | 1 (bloggathehutt_ewok.jpg) | none (consistent)
+falleen | covered | https://bloggathehutt.wordpress.com/2022/06/13/species-of-the-week-falleen/ | 1 (bloggathehutt_mercenary.png) | none (consistent)
+
+NOT COVERED (no dedicated post; title scan + full-text search found nothing or only passing mentions in roundup/episode posts; droids appear only in 'EVERY NEW DROID' roundups of new droids): abednedo, acklay, aiwha, akk, anooba, anzati, behemoth, beldon, blarth, blixus, bloddle, boarwolf, bogwing, bolotaur, boma, borcatu, bordok, brainworm, brezak, bursa, cancell, cannok, cathar, cerean, chadra_fan, chagrian, chak_root, chrysaliderancor, clodhopper, coloclawfish, convor, corellianhound, corinathoth, dactillion, dalgo, dathomirian, defel, devaronian, devourer, dewback, dianoga, drexl, droid_aq, droid_b1, droid_b1a, droid_b2, droid_bx_commando, droid_droideka, droid_dsd1, droid_dum_pit, droid_fx7, droid_g0t0, droid_ge3, droid_gnk, droid_hk_series, droid_kx12_probe, droid_kx_series, droid_lr57, droid_magnaguard, droid_mse, droid_pistoeka, droid_r8_009, droid_super_tactical, droid_t1_tactical, droid_t3, echani, energyspider, faascalefish, falumpaset, fambaa

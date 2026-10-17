@@ -33,6 +33,18 @@ physiological and technological perfection is achieved one must also achieve mor
 perfection. Offshoots were **bred in great variety as living experiments**, typically
 short-lived, never regarded as "true Arkanians."
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/01/12/species-of-the-week-arkanian-offshoot/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds only that offshoots are more human-looking with pointed ears and more often Force-sensitive, and that they were made a lower caste; agrees with the canon text.*
+
+> Designation: Sentient
+> Homeworld: Arkania
+> Notable members: Jarael, Dagan Gera
+> Fandom: Star Wars
+> Appearances: Knights of the Old Republic, Jedi Survivor
+> The Arkanians have a millenia-old tradition of genetic experimentation on other species. Naturally they began experimantation on their own species first, creating a species with slightly modified characteristics with more human-looking featured and more pointed ears. One side effect was that offshoots are more likely to be force-sensitive. While initially accepted, Arkanians began to isolate offshoots from their society, making them a lower caste with little priviledges on their home planet. Former Jedi Knight Dagan Gera was an Arkanian Offshoot
+> I’ve finished Knights of the Old Republic, such a good series with some great species and I thought Jarael, at the very least, deserved a mention!!
+
 ## Visual brief
 The single canon image (two Arkanians, from *Disciples of Harmony*) is unambiguous and
 it says the opposite of what most alien references say: **there is almost nothing
@@ -70,6 +82,7 @@ hair are right, and note the face here is **cream-tinted rather than greyscale**
 pale-white eye** and are the highest-value fix in this entry — verify whether those
 eyes are baked into the head texture or supplied by the `Outland_Eye_White` render
 node, because if they are baked they will override the correct gene.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_offshoot.png`:** Comic panel of an Arkanian Offshoot (Dagan Gera era, Jedi Survivor tie-in art): long white hair, **distinctly BLUE-grey skin**, pointed elf ears, black armoured robes, blue-white saber. 🔴 DISAGREES with the entry's 'never blue' skin note — though the blue is likely comic lighting/colouring (night scene with blue saber glow); trust the live-action photo evidence for skin tone and treat this as hair/ear/outfit reference only.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_arkanians_doh.png` as the visual brief reads it and the infobox text.*
@@ -125,6 +138,7 @@ none known
   treat the near-human anatomy and the white hair / blank eyes as authoritative.
 - `donor_current_sprite.png` — the mod's current head, for comparison only. Correct in
   shape and hair; see the visual brief on the eyes.
+- `bloggathehutt_offshoot.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2026/01/arkanian_offshoot.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)

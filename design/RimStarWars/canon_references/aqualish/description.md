@@ -60,6 +60,18 @@ An in-universe epigraph, from an explorer: *"The Aqualish people are not fond of
   "nasty, crude and aggressive"; careers as mercenaries, bounty hunters, pirates.
   Anthropologists trace the rage streak to the species' earliest evolution.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/11/24/species-of-the-week-aqualish/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing beyond the canon text except an image; its 'arachnids with fur and facial tusks' matches Wookieepedia's summary.*
+
+> Designation: Sentient
+> Homeworld: Ando
+> Notable members: Ponda Baba
+> Fandom: Star Wars
+> Appearances: A New Hope, Rogue One, The Mandalorian
+> Aqualish are a humanoid species of arachnids from the planet Ando. They had a number of subspecies, one of which had an additional paur of eyes, but all had large dark eyes, fur and facial tusks. Their planet Ando was an aquatic world covered in islands which were contested between different Aqualish tribes. Aqualish were spread across the galaxy and were politically divided with representation in both the Senate and the Seperatist Council. A number of Aqualish were involved in criminal enterprises which gave the species a negative reputation. 
+> I’m enjoying seeing more and more Cantina species in The Mandalorian, though I’m glad they’re balancing them with a handful of new species (as soon as I have the guidebook I’ll be posting about them don’t you worry!)
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The comic-style canon infobox illustration (`wookieepedia_infobox.jpg`, File:Aqualish.png) was deleted and replaced by live-action stills of the same Ponda Baba look (`wookieepedia_ponda_baba_rogueone.jpg`) and a second *Book of Boba Fett* individual (`wookieepedia_garfalaquox_bobf.png`). The Legends Quara/Aquala line art is kept ONLY as animated/negative reference for the Aquala flipper anatomy, which no realistic image shows.
@@ -162,6 +174,7 @@ arachnid. A `Duo_south.png` two-eyed variant also exists on disk, so both eye co
 buildable. ⚠️ **Note the sprite is the Ualaq (four-eyed, furless) pattern, while the def
 text describes the furred two-eyed pattern** — the mod is internally inconsistent about
 which Aqualish it is depicting.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_portrait.jpg`:** A dim live-action Aqualish (The Mandalorian, cantina) in a worn olive-brown jacket: bald brown wrinkled domed head with a large ear-like fin on the side, two huge round glossy black eyes, **yellow tusk-like lower mouth plates**, and a long grey-brown stringy beard/mane falling from the jaw to the chest. Consistent with the existing long-stringy-mane finding; no contradiction, but note the tusks read YELLOW here.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action stills (Book of Boba Fett crime family = reference of record, Ponda Baba, the senators) and the Legends Quara/Aquala line art for hands only.*
@@ -279,6 +292,7 @@ colour most worth getting right.
   `RSW_AqualishHead`. A greyscale runtime-tinted mask, so colour absence is expected.
   Good on the bald dome, four-eye arrangement and joined pale muzzle; missing all fur and
   all facial wrinkling.
+- `bloggathehutt_portrait.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2020/11/aqualish.jpg
 
 ## ruling
 

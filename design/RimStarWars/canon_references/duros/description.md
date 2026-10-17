@@ -52,6 +52,17 @@ in use in the Imperial era, and they remained known for **superior astro-navigat
 They preferred the honorific **"Traveler"** regardless of actual occupation, and using it was
 good etiquette. Durese was a **lingua franca among spacers**.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/02/14/species-of-the-week-duros/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing beyond canon text; image is Cad Bane in live action.*
+
+> Designation: Sentient
+> Homeworld: Duro
+> Notable members: Cad Bane, Shriv
+> Appearances: A New Hope, The Book of Boba Fett
+> A blue-skinned species from the planet Duro, these humanoids are distinct by their bright red eyes and noseless faces. An intelligent species, they were among the first to develop spaceflght and join the early Republic. They shared some common anscestry with the Neimoidians but were a distinct race and found comparisons offensive. 
+> I couldn’t watch the finale and not post this epic species. Seeing Cad Bane make a live action appearance was so cool, alongside Krrsantan and all the other amazing supporting characters
+
 ## Visual brief
 
 🔴 **The single biggest disagreement in this directory: the prose says "blue-green," the def
@@ -116,6 +127,7 @@ thin fingers.** The variable is hue, which runs **blue → grey-green → jade �
 - Note the *other* Duros art on disk, `SWX/Pawn/HeadType/duros/`, has **`Fivehead`
   Normal/Pointy/Wide variants** — a tall-forehead head, i.e. much closer to the canonical
   dome — but the head type the def actually points at is the plain `OR/…/Heads/Duros` one.
+- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_duros.jpg`:** Live-action Cad Bane (The Book of Boba Fett): **clearly BLUE-grey skin**, glowing orange-red eyes, wrinkled noseless face, tubes from the cheeks, wide-brimmed hat. Consistent with the entry's note that the unambiguously blue Duros is one famous individual while cantina Duros are grey-green; not a species-level colour.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as described in the visual brief (`wookieepedia_cantina_pair.jpg` as the reference of record) and the canon and Legends text.*
@@ -171,6 +183,7 @@ thin fingers.** The variable is hue, which runs **blue → grey-green → jade �
 - `wookieepedia_cad_bane.jpg` — the famous **blue** individual. Useful, but note it is *one
   character*: do not read it as the species colour.
 - `donor_current_sprite.png` — the shipped head. Evidence of the shape and colour gaps.
+- `bloggathehutt_duros.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2022/02/duros.jpg
 
 ## Def-versus-canon contradictions (report only — not fixed here)
 
