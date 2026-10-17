@@ -1,7 +1,7 @@
 # THIRST_RULES_BUILD_SALT_OFF_THE_MENU — build progress (BENCH AFK, 2026-10-17)
 
 ## Status
-slices 1-5 published; working §8.3 (bucket fires, snow/ice, sanguophage blood)
+ALL SLICES PUBLISHED (last 71153b893b). Item not closed: live rows owed (see below).
 
 ## Slice 1: rule breaks in today's code — DONE `037fbdf94d`
 - per-row `useClass` on LiquidDef (generator USE_CLASS table, refuses an unclassified row): Potable fresh/icy/5 coloured;
@@ -30,5 +30,23 @@ slices 1-5 published; working §8.3 (bucket fires, snow/ice, sanguophage blood)
 - `b96a8febf3` Q10 drinking reserve 200 L (sprinklers, converters, bath, reaction; VE adapter exempt); Q9 a Fill-mode tank
   holding a non-potable liquid = standing order to gather it; sprinklers never pick salt/brine (neverSprayed).
 
+- `d2c44a20cf` §8.3: bucket firefighting (RM_DouseFireWithBucket, ahead of vanilla beating); snow/ice to water
+  (RM_GatherSnow only where no liquid water fills the bucket; RM_BucketSnow melts >0 C in ~2 h or by stove bill; blue ice
+  5 blocks / stonewater 38 chips + empty bucket -> bucket of water, RecipeWorker keeps the bucket's stuff); water items
+  folded in (meltwater can + distilled = distilled grade, stilled + melted = fresh); HemogenPack quenches hemogen-gene
+  pawns as one full drink. Cooled boiled water: already built (boiling containers revert to fresh).
+- `731132ca58` §8.2 step 8: filledBottlesPerColonist stock target (3, inventories count), fill/wash batches of 10.
+- `71153b893b` review pass (docs), snow buckets stuffable; DLL rebuilt on the tree merged with FOUNDRY's P3.
+- Not built, by design: C's machine ports (only when a liquid-burning machine needs one); the bottler (dropped by §8.1).
+  Q9 is the Fill-mode tank (FlowWorks machines take from tanks, not bills).
+
+## Code review
+- CLEAN (full read): all 11 Thirst/*.cs, 10 LiquidTypes files, CompLiquidConverter, RM_LiquidBath, RM_LiquidReaction,
+  RM_Sprinkle, DefOf, ThirstChecks, GptFixesAChecks; the new Thirst defs/patches.
+- STILL DIRTY (owed full reviews, big files touched by small edits): Tools/generate_liquid_suite.py, validation.py,
+  review_map_coverage.py, Defs/LiquidTypes/ThingDefs/RM_LiquidBottles_Base.xml.
+
 ## Owed deploys / live rows
-pending
+- Deploy owed: FlowWorks (python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply) when the game is down.
+- Live rows owed (validation.py thirst chain, all UNMEASURED): T5 (salt ordered), T11-T29.
+- Pre-existing reds, not this item: selftest_hose_port P9 (RM_LiquidBath credit site), selftest_review_map (RM_WaterThin.png).
