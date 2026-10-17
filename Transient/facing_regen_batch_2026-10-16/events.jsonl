@@ -385,3 +385,34 @@
 {"key": "things/pawn/animal/rm_vrekka/rm_vrekka", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:59"}
 {"key": "things/pawn/animal/rm_vurra/rm_vurra", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:38:04"}
 {"key": "things/pawn/animal/rm_wuum/rm_wuum", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:38:05"}
+{"event": "publish", "n_paths": 29, "result": "close with: rimflow close <ID> --sha dad2983a3691", "at": "2026-10-16T18:38:14"}
+{"key": "things/pawn/animal/rsw_tunnelsnake/rsw_tunnelsnake", "event": "done", "seconds": 61, "at": "2026-10-16T18:39:15"}
+{"key": "things/pawn/animal/rsw_vozzik/rsw_vozzik", "event": "done", "seconds": 124, "at": "2026-10-16T18:41:19"}
+{"key": "things/pawn/animal/rut_fleetflier/rut_fleetflier", "event": "done", "seconds": 50, "at": "2026-10-16T18:42:09"}
+{"key": "things/pawn/animal/rut_greentideant/dessicated_rut_greentideant", "event": "done", "seconds": 115, "at": "2026-10-16T18:44:04"}
+{"key": "things/pawn/animal/rut_vwake/rut_vwake", "event": "done", "seconds": 130, "at": "2026-10-16T18:46:14"}
+{"key": "things/pawn/animal/seabeasts/abyssalcolo/abyssalcolo", "event": "done", "seconds": 159, "at": "2026-10-16T18:48:53"}
+{"key": "things/pawn/animal/seabeasts/coloclawfish/coloclawfish", "event": "done", "seconds": 197, "at": "2026-10-16T18:52:10"}
+{"key": "things/pawn/animal/seabeasts/eldersando/eldersando", "event": "done", "seconds": 177, "at": "2026-10-16T18:55:08"}
+{"key": "things/pawn/animal/seabeasts/faa/faa", "event": "done", "seconds": 251, "at": "2026-10-16T18:59:18"}
+{"key": "things/pawn/animal/seabeasts/grippingterror/grippingterror", "event": "done", "seconds": 167, "at": "2026-10-16T19:02:05"}
+{"key": "things/pawn/animal/seabeasts/lanternwhale/lanternwhale", "event": "done", "seconds": 171, "at": "2026-10-16T19:04:56"}
+{"key": "things/pawn/animal/seabeasts/opeeseakiller/opeeseakiller", "event": "done", "seconds": 202, "at": "2026-10-16T19:08:18"}
+{"key": "things/pawn/animal/seabeasts/reefback/reefback", "event": "done", "seconds": 166, "at": "2026-10-16T19:11:05"}
+{"key": "things/pawn/animal/seabeasts/siltlamprey/siltlamprey", "event": "done", "seconds": 144, "at": "2026-10-16T19:13:29"}
+{"key": "things/pawn/animal/seabeasts/thornbackcolo/thornbackcolo", "event": "done", "seconds": 160, "at": "2026-10-16T19:16:09"}
+{"key": "things/pawn/animal/seabeasts/yobshrimp/yobshrimp", "event": "done", "seconds": 153, "at": "2026-10-16T19:18:42"}
+{"key": "ysalamiri/ysalamiri", "event": "done", "seconds": 146, "at": "2026-10-16T19:21:08"}
+{"key": "things/pawn/animal/rsw_tunnelsnake/rsw_tunnelsnake", "event": "installed", "facings": ["north"], "at": "2026-10-16T19:21:10"}
+{"key": "things/pawn/animal/rsw_vozzik/rsw_vozzik", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:15"}
+{"key": "things/pawn/animal/rut_fleetflier/rut_fleetflier", "event": "installed", "facings": ["north"], "at": "2026-10-16T19:21:17"}
+{"key": "things/pawn/animal/rut_greentideant/dessicated_rut_greentideant", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:18"}
+{"key": "things/pawn/animal/rut_vwake/rut_vwake", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:20"}
+{"key": "things/pawn/animal/seabeasts/abyssalcolo/abyssalcolo", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:21"}
+{"key": "things/pawn/animal/seabeasts/eldersando/eldersando", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:23"}
+{"key": "things/pawn/animal/seabeasts/grippingterror/grippingterror", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:28"}
+{"key": "things/pawn/animal/seabeasts/lanternwhale/lanternwhale", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:32"}
+{"key": "things/pawn/animal/seabeasts/reefback/reefback", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:37"}
+{"key": "things/pawn/animal/seabeasts/siltlamprey/siltlamprey", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:41"}
+{"key": "things/pawn/animal/seabeasts/thornbackcolo/thornbackcolo", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:45"}
+{"key": "ysalamiri/ysalamiri", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T19:21:47"}
