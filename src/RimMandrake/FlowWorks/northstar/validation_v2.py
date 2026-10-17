@@ -77,6 +77,9 @@ import re
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)                       # src/RimMandrake/FlowWorks
 SRC = os.path.join(MOD, "Source")
@@ -198,8 +201,14 @@ class PulseOracle(object):
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
                  recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False,
-                 level_set=False, head_rule=False, beds=None):
+                 level_set=False, head_rule=False, beds=None, level_exact=False):
         self.w, self.h = w, h
+        # WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES (owner 2026-10-17, ruled exactly level by card): RM_FlowKernel
+        # levelExactEnabled. Every dug square holds W decilitres (self.W), every limited pond a whole number of dL
+        # (bodies[b]["dl"]), and each connected body is solved to ONE surface: northstar/level_water.py is the reference.
+        # F stays the whole-notch view (W // U) for the older readers.
+        self.level_exact = level_exact
+        self.W = {}
         # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner 2026-10-16: "It should slosh around until it levels, pond or canal or
         # otherwise."): RM_FlowKernel.sourceDrawdown / HeadAllows. A limited body whose source cells carry beds (cell -> levels)
         # has drawdown s (RM_PondDepthMath.Drawdown over its undug cells' bed histogram); a source gives a dug cell only while
@@ -321,11 +330,13 @@ class PulseOracle(object):
     def dig(self, c, levels=1):
         self.D[c] = min(4, self.D.get(c, 0) + levels)
         self.F.setdefault(c, 0)
+        self.W.setdefault(c, 0)
 
     def set_fill(self, c, f):
         if not self.exc(c):
             return False
         self.F[c] = max(0, min(f, self.D[c]))
+        self.W[c] = self.F[c] * level_water.U
         return True
 
     def _pick(self, r, dr):
@@ -424,6 +435,7 @@ class PulseOracle(object):
             self.F.pop(c, None)
         else:
             self.D[c], self.F[c] = d, max(0, min(f, d))
+            self.W[c] = self.F[c] * level_water.U
 
     def _rain(self):
         if not self.rain_on or not any(self.exc(c) for c in self.D) or self.rain_rate <= 0.01:
@@ -474,6 +486,9 @@ class PulseOracle(object):
                 self.receded.add(best[1])
 
     def pulse(self):
+        if self.level_exact:
+            level_water.exact_pulse(self)
+            return
         self.pulse_n += 1
         self._rain()
         if self.recession:
@@ -802,7 +817,7 @@ class PulseOracle(object):
         out = []
         for _ in range(pulses):
             self.pulse()
-            out.append([self.F[c] for c in cells])
+            out.append([self.W[c] if self.level_exact else self.F[c] for c in cells])
         return out
 
 
