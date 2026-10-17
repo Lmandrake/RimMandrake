@@ -162,3 +162,72 @@ generator eating chemfuel)?**
 **Q12. Smaller defaults — approve as a set or pick out any to change:** boiling water drinkable once cooled; no
 eating ice or snow; sanguophages do not drink stored blood; animals drink only fresh pond/river water and never
 slime or salt; brine kills a watered crop; buckets can fight fires.
+
+## 8. Rulings (owner, 2026-10-17, by card; write-ins verbatim in quotes)
+
+| Q | ruling | whose option |
+|---|---|---|
+| Q1 bottle | write-in: *"cups, piped taps, any civilized access. Only where it's awkward and difficult is penalized, like on travel or out in the field"* | owner's own; closest to (b)+(c) widened |
+| Q2 ponds/rivers | (a) yes, free | M's rec |
+| Q3 hardy | (b) Ascetic, Tough, Undergrounder | M's rec |
+| Q4 uncivilized | (b) wild people, animals, tribals | M's rec |
+| Q5 slime-when | write-in: *"It should follow the same rules for when people eat rotten food that makes them sick, whatever that is."* Sub: the Slime biome's living slime is drinkable by the same rules as other slime | owner's own |
+| Q6 slime effects | write-in: *"Much worse. Red is Contagion: full mutation exposure right away. Green is full exposure to the absorption rules from that biome. White infects you with the Rot spores. Yellow is just nausea and vomiting."* | owner's own |
+| Q7 slime bottling | (b) yes, by order only | against M's rec |
+| Q8 salt | break needs thirst **plus** low mood, like other breaks (b); brine = salt, break only; toxic water = a last resort like slime, with toxic buildup | (b) against M's rec; toxic against M's rec |
+| Q9 machine bill = order | (a) yes | M's rec |
+| Q10 drinking reserve | (a) yes | M's rec |
+| Q11 Dubs | **yes**: read Dubs' thirst; the salt break and slime rules still apply under Dubs | against M's rec |
+| Q12 smaller defaults | **HOLD** — *"I'll go through them"* at a later sitting; the six stay open | — |
+
+### 8.1 What the rulings change
+
+**Q1 kills the "bottles first" premise.** The penalty is about **awkward access**, not about vessels. Civilized
+access — a bottle, a cup, a piped tap, a tank or barrel tap at home — is free. The small penalty (`RM_Thought_
+DrankRough`, −3, PROPOSED) fires only when drinking is awkward: on a caravan or travelling, out in the field away
+from any civilized access (drinking from a carried bucket or barrel, scooping from a tank with no tap). Ponds and
+rivers are free (Q2). Exempt: Ascetic, Tough, Undergrounder; wild people, animals, tribal-faction pawns (Q3, Q4).
+Consequences: the bottler machine (option D) is **no longer needed for the penalty**; drinking stations (option B)
+become the natural home drinking mode with no reinterpretation; bottles return to their travel/field job. The
+job-count problem shrinks to the network: tap drinks are 1 job.
+
+**Q5 mirrors vanilla's rotten-food rule** (MEASURED in decompiled `RimWorld/FoodUtility.cs:385-421` and
+`JobGiver_GetFood.cs:74`, `CompRottable.cs:155`): non-fresh food is skipped unless the pawn is **desperate**, which
+vanilla defines as hunger category `Starving` (need at 0); a desperate pawn still ranks better food first; wild men
+and animals (`NonHumanlikeOrWildMan`) skip the restriction; eating it adds `AteRottenFood` and food poisoning
+(cause `Rotten`). Mirror: slime and toxic water are eligible only when thirst is at its bottom category (need 0,
+`Dehydrated`), always ranked below any potable source the normal search finds; the massive mood thought and the
+purge hediff stand in for `AteRottenFood` and food poisoning. Whether wild people/animals also skip the restriction
+for slime is one of Q12's held defaults ("animals never drink slime"), so it stays open. This **replaces** P1's
+"no potable available" definition (§3.3 of the design) and drops the recheck machinery to vanilla's.
+
+**Q6 ties slime to the three biome systems** (each effect reuses what that biome mod already has — search before
+building): red → Contagion mod's mutation exposure at full; green → the Gelatinous Slime absorption
+(`RM_Slimification` and the slime dose, `src/RimMandrake/GelatinousSlime`) at full; white → The Rot's spore
+infection (`src/RimMandrake/TheRot`); yellow → nausea and vomiting only (vanilla `Vomit` job). On top: the massive
+mood hit and the day-long laxative (ruled earlier). The design's mild per-kind table (§6 of the design) is void.
+
+**Q7** adds slime bottles/buckets/barrels to the generator, filled **only by order** (the use class already blocks
+auto-gather). **Q8** makes `RM_Break_DrinkBrine` an ordinary mood-pool mental break, eligible only when also
+parched; brine and salt water both `BreakOnly`; toxic water moves to `LastResort` with `ToxicBuildup` as its effect.
+**Q9** a bill on a still or machine authorises fetching its non-potable input. **Q10** per-net drinking reserve.
+**Q11 reverses the recommendation**: under Dubs our code reads `DBHThirst`'s level for the break and the last-resort
+gate, and our slime/salt/toxic consequences apply; Dubs' own drinking AI still chooses among potable drinks, and our
+non-potable bottles keep `SeekForThirst false` so Dubs never picks them on its own.
+
+### 8.2 The plan after the rulings (supersedes §6)
+
+1. **Fix the two rule breaks in built code first:** auto-fill gathers any liquid (`WorkGiver_FillBottle` /
+   `RM_LiquidBottleUtility.TryFindFillCell`, `requireFreshWaterOnly: false`); thirsty pawns drink salt water
+   routinely (`RM_ThirstMath.Acceptable`/`Better`).
+2. Use-class field on rows **and** terrain-only liquids/water items (source adapter); salt+brine BreakOnly, slimes and
+   toxic LastResort, rest Never.
+3. Awkward-access penalty with the Q3/Q4 exemptions; buckets, barrels and tank taps drinkable.
+4. Last-resort gate mirroring vanilla's desperate rotten-food rule; mood + purge; per-kind effects wired to
+   Contagion, Gelatinous Slime, The Rot; yellow nausea/vomiting; toxic → ToxicBuildup.
+5. Salt break in the mood pool, gated on parched; relief then `RM_SaltPoisoning`; no re-entry while poisoned.
+6. Slime containers, order-only. Bills as orders for machine inputs. Per-net drinking reserve.
+7. Dubs mode: read `DBHThirst` for steps 4-5.
+8. Batched fill/wash and a stock target remain (bottles still serve travel); drinking stations as the home mode;
+   C's machine ports when a liquid-burning machine needs one. The bottler is dropped.
+9. Q12's six defaults are **not built** until he rules them.
