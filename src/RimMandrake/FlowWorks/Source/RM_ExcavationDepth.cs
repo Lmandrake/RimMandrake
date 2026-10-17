@@ -60,15 +60,15 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>A hole's depth for a player, in metres (unified depth spec §2.1: "deep" is never a number): "0.5 m",
-		/// "1 m", "1.5 m", "pit 2 m", deeper "pit 3.5 m". "surface" for 0.</summary>
+		/// "1 m", "2 m", "3.5 m". "surface" for 0. PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: no "pit" word from 2 m: whether a
+		/// square is a pit is a height DIFFERENCE (a sheer pocket), which one depth cannot say.</summary>
 		public static string LabelOf(byte depth)
 		{
 			if (depth == Surface)
 			{
 				return "surface";
 			}
-			string m = RM_Volume.FormatMetres(depth);
-			return depth >= Superdeep ? "pit " + m : m;
+			return RM_Volume.FormatMetres(depth);
 		}
 
 		/// <summary>The dry terrain that expresses a given D (anything deeper than <see cref="Superdeep"/>, a deep dig or a lake bed, reads as SUPERDEEP's: the four terrains are BANDS; the depth lives in the grid). This is how an

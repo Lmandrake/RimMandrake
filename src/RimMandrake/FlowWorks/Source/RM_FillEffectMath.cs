@@ -11,9 +11,6 @@ namespace RimMandrake.FlowWorks
 	{
 		public const int IntervalTicks = 250;
 
-		/// <summary>PROVISIONAL: a brimming D=4 pit drowns a non-swimmer in about one in-game hour
-		/// (severity 1 = death; 24/day at full -> 0.1 per 250-tick check).</summary>
-		public const float DrowningPerDayAtBrim = 24f;
 
 		/// <summary>Fraction of the cell's depth that is liquid, 0..1. <paramref name="fill"/> is in notches and may be fractional
 		/// (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the cell's decilitres ÷ a notch, so a 4.5 cm sheet counts as 0.09).</summary>
@@ -24,19 +21,6 @@ namespace RimMandrake.FlowWorks
 				return 0f;
 			}
 			return fill >= depth ? 1f : (float)fill / depth;
-		}
-
-		/// <summary>Drowning severity added per check: only at SUPERDEEP (D=4) with F &gt; 0, never for a swimmer
-		/// or a flier (the swimming test is the pawn's swimming graphic, never an "aquatic" substring).</summary>
-		public static float DrowningPerCheck(float fill, int depth, bool superdeep, bool swimmer, bool flying,
-			float rateMultiplier)
-		{
-			if (!superdeep || swimmer || flying || fill <= 0)
-			{
-				return 0f;
-			}
-			return DrowningPerDayAtBrim * Math.Max(0f, rateMultiplier) * FillFraction(fill, depth)
-				* IntervalTicks / 60000f;
 		}
 
 		/// <summary>Toxic buildup added per check by a poison fluid: its per-day rate at brim, times the fill

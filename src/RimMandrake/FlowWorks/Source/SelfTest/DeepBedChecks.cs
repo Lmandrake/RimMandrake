@@ -274,7 +274,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "terrain bands: shallow < 4 <= deep < 8 <= abyss");
                 // §9.5: the pawn sink is capped at the deep notch (no sprite drawn cells south of its square)
                 Assert(Math.Abs(RM_PitDrawMath.SinkFor(12, 0.3f) - RM_PitDrawMath.SinkFor(4, 0.3f)) < 1e-6, "the sink stops at 4 levels");
-                Assert(RM_PitTrapMath.FallDropScale(12, 4) == 1f, "a long drop is the full fall, never more");
+                Assert(Math.Abs(RM_RelativeRulesMath.FallScaleNotches(12) - 3f) < 1e-6 && RM_RelativeRulesMath.FallScaleNotches(40) == 4f,
+                    "a 6 m drop is 3 times the 2 m fall; never more than 4 (P7 V3)");
                 Assert(RM_WallFaceMath.NorthFaceHeight(12) == RM_WallFaceMath.NorthMax && RM_WallFaceMath.SouthLining(12) > 0f, "wall faces clamp past 4");
                 // a 12-deep bed under a 2 m dig cap can never be dug from; under the 8 m default it is dug one deeper
                 // (PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT); a canal beside it runs into it by water height (head)

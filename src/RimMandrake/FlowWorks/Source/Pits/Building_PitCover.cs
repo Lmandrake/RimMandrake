@@ -273,16 +273,18 @@ namespace RimMandrake.FlowWorks.Pits
         }
     }
 
-    /// <summary>A cover belongs over a superdeep (D=4) cell; anywhere else it would hide nothing.</summary>
+    /// <summary>A cover belongs over a pit; anywhere else it would hide nothing. PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: a pit is
+    /// a dug square with a sheer drop of 2 m or more to a neighbour (the fall the cover hides), at any depth. It was "dug to
+    /// D 4", which also took the bottom of a gentle 0.5 m staircase 2 m down, where nobody falls.</summary>
     public class PlaceWorker_PitCoverOnSuperdeep : PlaceWorker
     {
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot,
             Map map, Thing thingToIgnore = null, Thing thing = null)
         {
             RM_MapComponent_Excavation engine = map?.GetComponent<RM_MapComponent_Excavation>();
-            if (engine == null || !engine.IsSuperdeepExcavation(loc))
+            if (engine == null || !engine.IsExcavated(loc) || RM_SpikeUtility.TallestWallOver(engine, loc) < RM_PitTrapMath.Superdeep)
             {
-                return "A pit cover must be laid over a superdeep cell.";
+                return "A pit cover must be laid over a pit: a dug square with a sheer drop of 2 m or more to a neighbour.";
             }
             return true;
         }

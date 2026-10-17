@@ -184,7 +184,7 @@ namespace RimMandrake.FlowWorks
         //  19. superdeepCaptureEnabled     — ruling 26, fall-in at D = 4
         //  20. superdeepCapturesOwnFaction — whether your own hole takes you too
         //  21. ladderRequiredToExitEnabled — the jailer mechanic
-        //  22. superdeepShootingRuleEnabled— ruling 23, 8-way adjacency only
+        //  22. superdeepShootingRuleEnabled— ruling 23, across a cliff edge only (P7, V5)
         //
         // 🔴 ONE DISCLOSED DEVIATION from "all-off = exactly as before". Before
         // this phase RM_Channel_Superdeep was <passability>Impassable</passability>,
@@ -202,6 +202,9 @@ namespace RimMandrake.FlowWorks
         // gizmo and every ladder counts as lowered.
         public static bool ladderRaiseLowerEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
+        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V5): the shooting rule holds across a cliff of this many metres or
+        // more (more than a person's height): a square between the two ends this much higher than the lower end blocks the shot.
+        public static float shootingCliffMetres = 2f;
         // Owner 2026-10-06 (Q5/Q9): a damaging or fire blast breaks any pit cover it reaches.
         public static bool blastsBreakPitCovers = true;
         // SUPERDEEP_PRISON_ROOM_1 (LAW 2 exception [D]): an enclosed superdeep area is its own room;
@@ -209,6 +212,9 @@ namespace RimMandrake.FlowWorks
         public static bool superdeepRoomsEnabled = true;
         public static bool captureDownEnabled = true;
         public static bool wardenFromLipEnabled = true;
+        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V6, veto-able): a pit room is a person-band pocket whose floor is at least this
+        // deep. 0 = any depth (V6: a sheer 1.5 m pocket is a prison room); 2 = the 2026-10-16 card "Superdeep only, as designed".
+        public static float pitRoomMinDepthMetres = 0f;
         // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
         // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
         public static float pitWidthBodySizeMultiplier = 1f;
@@ -232,6 +238,10 @@ namespace RimMandrake.FlowWorks
         public static float trapSensitivityMultiplier = 1f;
         public static bool fallDamageEnabled = true;
         public static float fallDamageMultiplier = 1f;
+        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V3): falls by metres fallen; today's damage up to 2 m, then this much
+        // more of the 2 m fall per metre, never more than the cap (= RM_RelativeRulesMath.DefaultFall*, literals for the registry).
+        public static float fallDamagePerMetrePast2 = 0.5f;
+        public static float fallDamageCap = 4f;
         // PIT_TEMPERATURE_SOFTENING_1 (redesigned 2026-10-11): exposure on/off, comfort narrowing (owner Q1: 8 C), temperature
         // coupling (kept until a live check), resistance loss rate (owner Q2: only while the elements hurt).
         public static bool pitExposureEnabled = true;
@@ -239,6 +249,10 @@ namespace RimMandrake.FlowWorks
         // PIT_FILL_EFFECTS_1 (PROVISIONAL rates): drowning at D=4 with any fill (non-swimmers), poison fluid toxin keyed to fill.
         public static bool pitDrowningEnabled = true;
         public static float pitDrowningRateMultiplier = 1f;
+        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V2): drowning when the water covers the head: over this fraction of the
+        // creature's height standing, over the lying fraction lying down (= RM_RelativeRulesMath.Default*Fraction).
+        public static float pitDrowningHeadFraction = 0.9f;
+        public static float pitDrowningLyingFraction = 0.2f;
         public static bool poisonFillEnabled = true;
         // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE (PROVISIONAL): walking in slippery liquid (slime) slips, stuns and, on the climb
         // out, slides back (RM_SlimeSlip / RM_SlimeMath; defaults = RM_SlimeMath.Default*, literals for the settings registry).
@@ -251,6 +265,9 @@ namespace RimMandrake.FlowWorks
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
         public static bool spikesEnabled = true;
         public static float spikeDamageMultiplier = 1f;
+        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes go on any square with a sheer drop of this many metres or
+        // more to a neighbour, at any depth.
+        public static float spikeMinDropMetres = 2f;
         // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
         public static bool pitDepthDrawOffsetEnabled = true;
         public static float pitSinkPerLevel = 0.3f;
@@ -521,7 +538,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
             Scribe_Values.Look(ref ladderRaiseLowerEnabled, "ladderRaiseLowerEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
+            Scribe_Values.Look(ref shootingCliffMetres, "shootingCliffMetres", 2f);
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
+            Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 0f);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
             Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
@@ -535,10 +554,14 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
             Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
+            Scribe_Values.Look(ref fallDamagePerMetrePast2, "fallDamagePerMetrePast2", 0.5f);
+            Scribe_Values.Look(ref fallDamageCap, "fallDamageCap", 4f);
             Scribe_Values.Look(ref pitExposureEnabled, "pitExposureEnabled", true);
             Scribe_Values.Look(ref pitExposureNarrowing, "pitExposureNarrowing", RM_PitExposureMath.DefaultNarrowing);
             Scribe_Values.Look(ref pitDrowningEnabled, "pitDrowningEnabled", true);
             Scribe_Values.Look(ref pitDrowningRateMultiplier, "pitDrowningRateMultiplier", 1f);
+            Scribe_Values.Look(ref pitDrowningHeadFraction, "pitDrowningHeadFraction", 0.9f);
+            Scribe_Values.Look(ref pitDrowningLyingFraction, "pitDrowningLyingFraction", 0.2f);
             Scribe_Values.Look(ref poisonFillEnabled, "poisonFillEnabled", true);
             Scribe_Values.Look(ref slimeSlipEnabled, "slimeSlipEnabled", true);
             Scribe_Values.Look(ref slimeSlipChanceMultiplier, "slimeSlipChanceMultiplier", 1f);
@@ -548,6 +571,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
+            Scribe_Values.Look(ref spikeMinDropMetres, "spikeMinDropMetres", 2f);
             Scribe_Values.Look(ref pitDepthDrawOffsetEnabled, "pitDepthDrawOffsetEnabled", true);
             Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.3f);
             Scribe_Values.Look(ref excavationWallFacesEnabled, "excavationWallFacesEnabled", true);
@@ -645,11 +669,11 @@ namespace RimMandrake.FlowWorks
                      "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
             .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
             .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
-            .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier")
+            .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction")
             .Declare("slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor")
             .Declare("pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier")
-            .Declare("fallDamageEnabled", "fallDamageMultiplier")
-            .Declare("spikesEnabled", "spikeDamageMultiplier")
+            .Declare("fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap")
+            .Declare("spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres")
             .Declare("pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled")
             .Declare("pitLipOcclusionEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled")
             .Declare("pitLipOccupantCutEnabled", "pitLipOccupantCutWidth")
@@ -657,7 +681,8 @@ namespace RimMandrake.FlowWorks
             .Declare("pitScorchEnabled", "pitScorchFadeDays")
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
-            .Declare("superdeepRoomsEnabled", "captureDownEnabled")
+            .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
+            .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
             .Declare("digRockGroundEnabled", "digRockWorkMultiplier")
             .Declare("digToDepthEnabled", "maxDigDepth", "digCostRisesWithDepth")
@@ -1159,7 +1184,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
             {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -1229,10 +1254,18 @@ namespace RimMandrake.FlowWorks
             pitLadderSlowness = list.Slider(pitLadderSlowness, 1f, 4f);
 
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
-                "A superdeep area with ordinary ground all round it counts as a room of its own, separate "
+                "A dug pocket a person cannot climb out of counts as a room of its own, separate "
               + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
-              + "trapped enemies; put a prisoner bed in it and it is a prison cell. Shallower cuts never "
-              + "make rooms. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
+              + "trapped enemies; put a prisoner bed in it and it is a prison cell. A gentle slope a person can walk "
+              + "out of never makes a room. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
+            using (Dependent(list, "pitRoomMinDepthMetres"))
+            {
+                list.Label(pitRoomMinDepthMetres < 0.25f ? "A pit room may be any depth" : "A pit room's floor is at least "
+                    + pitRoomMinDepthMetres.ToString("0.0") + " m down", tooltip:
+                    "0 (shipped): any sheer pocket a person cannot climb out of is a pit room, 1.5 m deep or 7 m deep. 2 m: only "
+                  + "pockets 2 m or deeper, as before the deeper digs. Capture-down and wardens working from the lip follow the same rule.");
+                pitRoomMinDepthMetres = Mathf.Round(list.Slider(pitRoomMinDepthMetres, 0f, 4f) * 2f) / 2f;
+            }
             using (Dependent(list, "captureDownEnabled"))
             {
                 list.CheckboxLabeled("Capture down from the lip", ref captureDownEnabled,
@@ -1247,12 +1280,23 @@ namespace RimMandrake.FlowWorks
               + "does the colonist climb down as usual. Off: they always climb down.");
 
             list.CheckboxLabeled("A flooded pit drowns whoever cannot swim", ref pitDrowningEnabled,
-                "Any liquid in a superdeep cell drowns a trapped non-swimmer, faster the fuller it is "
-              + "(about an hour when brimming). Swimming creatures tread water. Off: liquid in a pit is harmless.");
-            using (Dependent(list, "pitDrowningRateMultiplier"))
+                "Water over a creature's head drowns it (about an hour), at any depth of hole: a puddle in a deep pit drowns "
+              + "nobody, and a sheer 1.5 m pocket brimming with water drowns a person. A creature's height goes by its size "
+              + "(a rat about 0.5 m, a person 1.75 m, a thrumbo 3.5 m). Lying down, much less water covers the head. Nobody "
+              + "drowns standing beside a step it can climb into shallower water. Swimming creatures keep their heads up. "
+              + "Off: liquid in a pit is harmless.");
+            using (Dependent(list, "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction"))
             {
                 list.Label("Drowning speed: x" + pitDrowningRateMultiplier.ToString("F2"));
                 pitDrowningRateMultiplier = list.Slider(pitDrowningRateMultiplier, 0.1f, 5f);
+                list.Label("Head goes under, standing: water over " + pitDrowningHeadFraction.ToStringPercent() + " of the creature's height ("
+                    + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningHeadFraction).ToString("0.00") + " m for a person)", tooltip:
+                    "How deep water must be, as a share of a creature's height, before a standing creature is under. Shipped: 90%.");
+                pitDrowningHeadFraction = Mathf.Round(list.Slider(pitDrowningHeadFraction, 0.5f, 1.5f) * 20f) / 20f;
+                list.Label("Head goes under, lying down: water over " + pitDrowningLyingFraction.ToStringPercent() + " of its height ("
+                    + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningLyingFraction).ToString("0.00") + " m for a person)", tooltip:
+                    "The same for a creature lying down (downed, asleep or in bed). Shipped: 20%.");
+                pitDrowningLyingFraction = Mathf.Round(list.Slider(pitDrowningLyingFraction, 0.05f, 0.6f) * 20f) / 20f;
             }
             list.CheckboxLabeled("Poisonous liquid poisons whoever stands in it", ref poisonFillEnabled,
                 "A poison liquid builds up toxins in anyone standing in it, more the fuller the cell. "
@@ -1290,22 +1334,34 @@ namespace RimMandrake.FlowWorks
               + "inside one, at one depth, is ordinary walking, and dropping into a superdeep pit is instant. "
               + "Off: every step on dug ground costs its depth, as before.");
             list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
-                "Anyone who walks, is pushed or jumps into a superdeep cell takes blunt damage scaled "
-              + "by their mass. Off: the fall is harmless.");
-            using (Dependent(list, "fallDamageMultiplier"))
+                "Anyone pushed, thrown or jumping down a drop taller than they can climb takes blunt damage scaled by their "
+              + "mass and by the metres fallen: a 2 m fall is the full fall, less for shorter drops, more past 2 m (up to the "
+              + "cap below). Never instant death; armour helps. Off: the fall is harmless.");
+            using (Dependent(list, "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap"))
             {
                 list.Label("Fall damage multiplier: " + fallDamageMultiplier.ToString("F2"));
                 fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
+                list.Label("Each metre past 2 m adds " + fallDamagePerMetrePast2.ToStringPercent() + " of the 2 m fall (7 m: x"
+                    + RM_RelativeRulesMath.FallScale(7f, fallDamagePerMetrePast2, fallDamageCap).ToString("0.##") + ")", tooltip:
+                    "How much worse a fall gets for every metre past 2 m. Shipped: 50%. 0 = every fall from 2 m down hurts alike.");
+                fallDamagePerMetrePast2 = Mathf.Round(list.Slider(fallDamagePerMetrePast2, 0f, 1.5f) * 20f) / 20f;
+                list.Label("Worst fall: x" + fallDamageCap.ToString("0.#") + " the 2 m fall", tooltip:
+                    "No fall hurts more than this many 2 m falls, however deep. Shipped: 4 (reached at 8 m).");
+                fallDamageCap = Mathf.Round(list.Slider(fallDamageCap, 1f, 10f) * 2f) / 2f;
             }
 
             list.CheckboxLabeled("Spikes on a pit floor stab whoever drops in", ref spikesEnabled,
-                "Spikes built on the floor of a superdeep pit stab anyone who falls, is pushed or jumps "
-              + "into that cell: three Sharp hits through armour, bigger for bigger creatures. Never on "
-              + "walking up to the edge or moving along the pit floor. Off: spikes are harmless.");
-            using (Dependent(list, "spikeDamageMultiplier"))
+                "Spikes can be built on any dug square at the foot of a sheer drop (see below) and stab anyone who falls, "
+              + "is pushed or jumps into that square: three Sharp hits through armour, bigger for bigger creatures. Never on "
+              + "walking up to the edge or moving along the floor. Off: spikes are harmless.");
+            using (Dependent(list, "spikeDamageMultiplier", "spikeMinDropMetres"))
             {
                 list.Label("Spike damage multiplier: " + spikeDamageMultiplier.ToString("F2"));
                 spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
+                list.Label("Spikes need a sheer drop of " + spikeMinDropMetres.ToString("0.0") + " m to a neighbour", tooltip:
+                    "Spikes may stand only where some neighbouring square is at least this much higher, at any depth: the "
+                  + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Shipped: 2 m.");
+                spikeMinDropMetres = Mathf.Round(list.Slider(spikeMinDropMetres, 0.5f, 5f) * 2f) / 2f;
             }
 
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
@@ -1459,11 +1515,17 @@ namespace RimMandrake.FlowWorks
             }
 
             list.CheckboxLabeled("Superdeep limits who can shoot whom", ref superdeepShootingRuleEnabled,
-                "Someone standing in a superdeep hole can only trade fire with whoever is in one "
-              + "of the eight cells touching theirs, and that cuts both ways: a turret cannot "
-              + "shoot into the hole unless it is right at the lip, and whoever is down there can "
-              + "still shoot anyone who comes to the edge. It is a restriction only — nothing here "
-              + "changes accuracy, cover or sight. Off: depth never affects shooting at all.");
+                "No shot crosses a cliff edge: across a sheer rise of the height below or more, whoever is down "
+              + "can only shoot whoever stands right at the edge above, and whoever is up can only shoot down from the "
+              + "edge. Two people on the floor of one big pit, or on the ground on either side of a pit, fight normally. "
+              + "It is a restriction only — nothing here changes accuracy, cover or sight. Off: depth never affects shooting.");
+            using (Dependent(list, "shootingCliffMetres"))
+            {
+                list.Label("A cliff is a rise of " + shootingCliffMetres.ToString("0.0") + " m or more", tooltip:
+                    "How much higher the ground between two shooters must stand than the lower of them before it blocks the "
+                  + "shot. Shipped: 2 m, more than a person's height.");
+                shootingCliffMetres = Mathf.Round(list.Slider(shootingCliffMetres, 0.5f, 5f) * 2f) / 2f;
+            }
 
             // ══════════════════════════════════════════════════════════════
             // LIQUID_BOTTLE_LOOP_1 SECTION — kept whole and kept last.
@@ -1677,6 +1739,7 @@ namespace RimMandrake.FlowWorks
         // taken around Section() missed: review 2026-10-14), PatchApplier.ReforceOff, or a bridge settings write. Session-wide
         // on purpose: these mirror the session-wide settings themselves, not any game's state.
         private static bool appliedKnown;
+        private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
             appliedScorch, appliedLooks, appliedSee;
         private static float appliedClimbMul;
@@ -1700,7 +1763,7 @@ namespace RimMandrake.FlowWorks
                         m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Terrain);
                     }
                 }
-                if (appliedRooms != superdeepRoomsEnabled)
+                if (appliedRooms != superdeepRoomsEnabled || appliedRoomMin != pitRoomMinDepthMetres)
                 {
                     RM_PitRooms.RebuildAllMaps();
                 }
@@ -1721,6 +1784,7 @@ namespace RimMandrake.FlowWorks
             appliedRamps = pitRampsEnabled;
             appliedRampSpan = pitRampMaxSpan;
             appliedRooms = superdeepRoomsEnabled;
+            appliedRoomMin = pitRoomMinDepthMetres;
             appliedWalls = excavationWallFacesEnabled;
             appliedMat = excavationWallMaterialEnabled;
             appliedOutline = pitOutlineEnabled;

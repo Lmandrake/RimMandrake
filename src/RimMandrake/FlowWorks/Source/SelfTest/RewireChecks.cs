@@ -35,7 +35,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // the wet pit keeps a pit's route-planning cost (its look is now the water's)
                 string sc = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStepCost.cs"));
                 RiverSwitchFlipChecks.Has(sc, @"public static class RM_Patch_WetPitPlanningCost", "the wet-pit cost floor exists");
-                RiverSwitchFlipChecks.Has(sc, @"if \(temp != null && temp\.pathCost < pit\) \{ baseCostOverride = pit; \}", "a wet pit costs at least a pit");
+                RiverSwitchFlipChecks.Has(sc, @"if \(temp != null && temp\.pathCost < dry\) \{ baseCostOverride = dry; \}", "a wet pit costs at least its dry hole (P7)");
             });
 
             Case("Rewire_five_is_dead_and_nothing_multiplies_a_pond", () =>
@@ -105,11 +105,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pump, @"int take = RM_PumpMath\.ChannelTakeUnits\(units, ex\.WaterDlAt\(cell\)\);", "the channel take is in dL");
                 RiverSwitchFlipChecks.Has(pump, @"k => ex\.TryTakeDl\(cell, k, out _\) == k", "taken by TryTakeDl");
                 // drowning and toxin by the cell's decilitres (a fraction of a notch counts)
-                float thin = RM_FillEffectMath.DrowningPerCheck(900f / U, 4, true, false, false, 1f);
-                float full = RM_FillEffectMath.DrowningPerCheck(4, 4, true, false, false, 1f);
-                Assert(thin > 0f && Math.Abs(thin - full * (900f / U) / 4f) < 1e-6, "a 4.5 cm sheet in a pit drowns at 0.09/4 of the brim rate (P7 owns the relative rule)");
+                // P7 (V2): a 4.5 cm sheet in a pit is wet (it counts as water) but covers nobody's head; drowning reads metres
+                Assert(!RM_RelativeRulesMath.HeadUnder((float)RM_LevelSolve.Metres(900), RM_RelativeRulesMath.HeightMetres(2), false)
+                    && !RM_RelativeRulesMath.HeadUnder((float)RM_LevelSolve.Metres(900), RM_RelativeRulesMath.HeightMetres(2), true), "a sheet drowns nobody");
                 string fe = RiverSwitchFlipChecks.Src("RM_PitFillEffects.cs");
-                RiverSwitchFlipChecks.Has(fe, @"float fill = ex\.WaterDlAt\(c\) / \(float\)RM_LevelSolve\.U;", "drowning reads decilitres");
+                RiverSwitchFlipChecks.Has(fe, @"float fill = ex\.WaterDlAt\(c\) / \(float\)RM_LevelSolve\.U;", "wet reads decilitres");
+                RiverSwitchFlipChecks.Has(fe, @"RM_Drowning\.PerCheck\(map, ex, p, c, ex\.WaterMetresAt\(c\)\)", "drowning reads the water's metres");
                 // heat: fractional notches; natural squares read their real water
                 Assert(RM_LiquidHeatMath.CellEnergy(1, 0.09f, 1f) > 0f && Math.Abs(RM_LiquidHeatMath.CellEnergy(1, 0.5f, 1f) * 2f - RM_LiquidHeatMath.CellEnergy(1, 1, 1f)) < 1e-4,
                     "a sheet warms a little, in proportion");

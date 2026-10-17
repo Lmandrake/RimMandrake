@@ -1210,17 +1210,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_FireMath.AttachChance(false) < 1f, "a free pawn may step out unburned");
             });
 
-            // ── PIT_FILL_EFFECTS_1: drowning only at D=4 for non-swimmers; poison keyed to fill ──
-            Case("FillEffects_drowning_is_superdeep_nonswimmer_and_keyed_to_fill", () =>
+            // ── PIT_FILL_EFFECTS_1, rewired by PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V2): drowning when the head is under ──
+            Case("FillEffects_drowning_is_head_under_nonswimmer_any_depth", () =>
             {
-                float full = RM_FillEffectMath.DrowningPerCheck(4, 4, true, false, false, 1f);
-                Assert(full > 0f, "brimming D=4 drowns a non-swimmer");
-                Assert(1f / full <= 10.5f && 1f / full >= 9.5f, "about ten checks (one in-game hour) to death at brim");
-                AssertClose(RM_FillEffectMath.DrowningPerCheck(1, 4, true, false, false, 1f), full / 4f, "F=1 drowns at a quarter rate");
-                AssertClose(RM_FillEffectMath.DrowningPerCheck(4, 4, true, true, false, 1f), 0f, "a swimmer treads water");
-                AssertClose(RM_FillEffectMath.DrowningPerCheck(4, 4, true, false, true, 1f), 0f, "a flier is not in it");
-                AssertClose(RM_FillEffectMath.DrowningPerCheck(3, 3, false, false, false, 1f), 0f, "never shallower than D=4");
-                AssertClose(RM_FillEffectMath.DrowningPerCheck(0, 4, true, false, false, 1f), 0f, "a dry pit drowns no one");
+                float full = RM_RelativeRulesMath.DrowningPerCheck(true, false, false, false, false, 1f);
+                Assert(full > 0f, "head under, no exit: a non-swimmer drowns");
+                Assert(1f / full <= 10.5f && 1f / full >= 9.5f, "about ten checks (one in-game hour) to death");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(false, false, false, false, false, 1f), 0f, "head clear: nobody drowns");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, true, false, false, 1f), 0f, "a swimmer treads water");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, false, true, false, 1f), 0f, "a flier is not in it");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, false, false, false, true, 1f), 0f, "standing beside a climbable way out");
+                AssertClose(RM_RelativeRulesMath.DrowningPerCheck(true, true, false, false, true, 1f), full, "lying down reaches no exit");
             });
             Case("FillEffects_poison_scales_with_fill_and_resistance", () =>
             {
@@ -1939,6 +1939,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
+            RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
             RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)

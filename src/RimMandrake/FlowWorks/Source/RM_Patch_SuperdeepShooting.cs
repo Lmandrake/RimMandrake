@@ -17,9 +17,15 @@ namespace RimMandrake.FlowWorks
 	// LAW 2 survives: a restriction is one boolean gate on a check that already
 	// exists; a bonus would drag in an elevation model.
 	//
-	// SUPERDEEP ONLY, and "at the edge" means 8-WAY ADJACENCY TO THE PAWN'S OWN
-	// CELL — not adjacency to the excavated region, which would need a flood
-	// fill per shot. The check below is two grid reads and an abs-compare.
+	// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, 2026-10-17 by card; form V5,
+	// veto-able): the rule holds ACROSS A CLIFF EDGE, never for "anyone 2 m down".
+	// A shot is blocked when a square between the ends stands a cliff (2 m, more
+	// than a person's height; setting) above the LOWER end. So the one below shoots
+	// only those at the edge above, the one above shoots in only from the edge, and
+	// two pawns on one basin floor fight normally (the old 8-way-adjacency key let
+	// two pawns 3 squares apart on one wide pit floor never shoot each other).
+	// Cost: two grid reads on every flat pair; a line walk only when the lower end
+	// is at least a cliff deep (RM_RelativeRulesMath.ShotBlocked).
 	// ════════════════════════════════════════════════════════════════════
 
 	/// <summary>Harmony bootstrap for every [HarmonyPatch] class in this assembly, through the shared per-class applier
@@ -72,42 +78,42 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>
-		/// TRUE when this shooter cell / target cell pair may exchange fire.
-		///
-		/// 🔴 Deliberately <see cref="RM_MapComponent_Excavation.IsSuperdeepExcavation"/>
-		/// and NOT <c>DepthAt</c>. DepthAt is the read-through adapter: natural
-		/// liquid terrain reads through it as SUPERDEEP, so using it here would
-		/// forbid every shot across every lake, river and ocean on the map. The
-		/// ruling is about a dug hole, and only the depth grid knows about those.
-		/// </summary>
+		/// <summary>The shot-rule depth of a square: the climb depth (dug, or a dry pond bed when hollows are on), an intact
+		/// cover reading as ground. 🔴 Never <c>DepthAt</c>: that read-through adapter reads natural liquid terrain as SUPERDEEP,
+		/// so it would forbid every shot across every lake, river and ocean on the map. Natural water is no hole here.</summary>
+		public static int ShotDepthAt(Map map, RM_MapComponent_Excavation engine, int x, int z)
+		{
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!c.InBounds(map))
+			{
+				return 0;
+			}
+			int d = engine.ClimbDepthAt(c);
+			// PIT_COVER_FALL_REWIRE_1: a covered cell is ground until the cover gives way.
+			return d > 0 && Pits.RM_PitCoverUtility.IsCovered(map, c) ? 0 : d;
+		}
+
+		/// <summary>The cliff the rule holds across, in notches (setting "A cliff is a rise of N m"; 2 m shipped).</summary>
+		public static int CliffNotches => RM_RelativeRulesMath.Notches(RimMandrakeFlowWorksSettings.shootingCliffMetres, 1);
+
+		/// <summary>TRUE when this shooter cell / target cell pair may exchange fire (V5: never across a cliff edge).</summary>
 		public static bool PairAllowed(Map map, IntVec3 shooter, IntVec3 target)
 		{
 			RM_MapComponent_Excavation engine = EngineFor(map);
 			// The overwhelmingly common case on every map ever played: nothing
-			// has been dug to SUPERDEEP, so the whole rule costs one int compare.
-			if (engine == null || engine.SuperdeepCellCount == 0)
+			// has been dug, so the whole rule costs one int compare.
+			if (engine == null || engine.ClimbCellCount == 0)
 			{
 				return true;
 			}
-			// PIT_COVER_FALL_REWIRE_1: a covered superdeep cell is ground until the cover gives way.
-			bool shooterDeep = engine.IsSuperdeepExcavation(shooter) && !Pits.RM_PitCoverUtility.IsCovered(map, shooter);
-			bool targetDeep = engine.IsSuperdeepExcavation(target) && !Pits.RM_PitCoverUtility.IsCovered(map, target);
-			if (!shooterDeep && !targetDeep)
+			// No closure on the common path: unless one end is at least a cliff deep, nothing can stand a cliff above it.
+			int cliff = CliffNotches;
+			if (ShotDepthAt(map, engine, shooter.x, shooter.z) < cliff && ShotDepthAt(map, engine, target.x, target.z) < cliff)
 			{
 				return true;
 			}
-			int dx = shooter.x - target.x;
-			if (dx < 0)
-			{
-				dx = -dx;
-			}
-			int dz = shooter.z - target.z;
-			if (dz < 0)
-			{
-				dz = -dz;
-			}
-			return dx <= 1 && dz <= 1;
+			return !RM_RelativeRulesMath.ShotBlocked((x, z) => ShotDepthAt(map, engine, x, z), shooter.x, shooter.z,
+				target.x, target.z, cliff);
 		}
 
 		/// <summary>Shared guard: the rule applies to RANGED verbs only. A melee

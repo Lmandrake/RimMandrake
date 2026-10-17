@@ -503,15 +503,16 @@ namespace RimMandrake.FlowWorks
 		{
 			float intensity = RimMandrakeFlowWorksSettings.chemfuelIntensity;
 			GenTemperature.PushHeat(c, map, RM_FuelFireMath.InfernoHeatPerCheck(intensity));
-			bool heldInPit = ex.IsSuperdeepExcavation(c);
-			bool onCover = heldInPit && Pits.RM_PitCoverUtility.CoverAt(map, c) != null;
+			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: trapped in the burning pit = down a pit (RM_PitRooms.IsPitFloor: a person-band
+			// pocket at any depth), never "dug 2 m"; an intact cover is ground, so its occupant is never trapped
+			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
 			List<Thing> things = map.thingGrid.ThingsListAt(c);
 			for (int t = things.Count - 1; t >= 0; t--)
 			{
 				if (things[t] is Pawn p && !p.Dead && !p.Flying
-					&& Rand.Chance(heldInPit && !onCover ? 1f : RM_FuelFireMath.InfernoAttachInCell))
+					&& Rand.Chance(heldInPit ? 1f : RM_FuelFireMath.InfernoAttachInCell))
 				{
-					p.TryAttachFire(heldInPit && !onCover ? 1f : 0.6f, null);
+					p.TryAttachFire(heldInPit ? 1f : 0.6f, null);
 				}
 			}
 			for (int d = 0; d < 8; d++)
@@ -549,15 +550,16 @@ namespace RimMandrake.FlowWorks
 		{
 			// PROVISIONAL heat: about what a vanilla full-size fire pushes over the same time.
 			GenTemperature.PushHeat(c, map, 60f);
-			bool heldInPit = ex.IsSuperdeepExcavation(c);
-			// C4-F7: a pawn on an intact cover is above the pit, not trapped in it; a flyer is above the fire
-			bool onCover = heldInPit && Pits.RM_PitCoverUtility.CoverAt(map, c) != null;
+			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit at any depth (RM_PitRooms.IsPitFloor), never "dug 2 m". C4-F7: a pawn
+			// on an intact cover is above the pit, not trapped in it (IsPitFloor already reads a covered square as ground); a flyer
+			// is above the fire.
+			bool heldInPit = RM_PitRooms.IsPitFloor(map, ex, c);
 			List<Thing> things = map.thingGrid.ThingsListAt(c);
 			for (int t = things.Count - 1; t >= 0; t--)
 			{
-				if (things[t] is Pawn p && !p.Dead && Rand.Chance(RM_FireMath.AttachChance(heldInPit, onCover, p.Flying)))
+				if (things[t] is Pawn p && !p.Dead && Rand.Chance(RM_FireMath.AttachChance(heldInPit, false, p.Flying)))
 				{
-					p.TryAttachFire(heldInPit && !onCover ? 1f : 0.4f, null);
+					p.TryAttachFire(heldInPit ? 1f : 0.4f, null);
 				}
 			}
 		}
@@ -843,7 +845,7 @@ namespace RimMandrake.FlowWorks
 				{
 					break;
 				}
-				if (t is Pawn p && p.Spawned && !p.Dead && !p.Flying && !ex.IsSuperdeepExcavation(p.Position))
+				if (t is Pawn p && p.Spawned && !p.Dead && !p.Flying && !RM_PitRooms.IsPitFloor(map, ex, p.Position))
 				{
 					shoveScratch.Add(p);
 				}

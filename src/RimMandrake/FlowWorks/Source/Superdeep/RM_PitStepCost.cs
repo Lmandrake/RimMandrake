@@ -133,15 +133,22 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			if (eng == null || eng.SuperdeepCellCount == 0 || !eng.IsSuperdeepRaw(c))
+			if (eng == null || eng.ExcavatedCellCount == 0)
+			{
+				return;
+			}
+			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: a wet dug square is priced at least as its own DRY hole (by its depth band),
+			// not "a 2 m pit or nothing". Shipped looks make this a no-op under 2 m (wet 90/120/300 against dry 30/45/80).
+			int depth = eng.ExcavatedDepthRaw(c);
+			if (depth <= 0)
 			{
 				return;
 			}
 			TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
-			int pit = RimMandrakeFlowWorks_DefOf.RM_Channel_Superdeep?.pathCost ?? 0;
-			if (temp != null && temp.pathCost < pit)
+			int dry = RM_ExcavationDepth.DryTerrainFor((byte)System.Math.Min(255, depth))?.pathCost ?? 0;
+			if (temp != null && temp.pathCost < dry)
 			{
-				baseCostOverride = pit;
+				baseCostOverride = dry;
 			}
 		}
 	}

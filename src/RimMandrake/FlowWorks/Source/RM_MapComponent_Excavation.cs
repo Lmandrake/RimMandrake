@@ -293,6 +293,13 @@ namespace RimMandrake.FlowWorks
 			return c.InBounds(map) ? depthGrid[map.cellIndices.CellToIndex(c)] : 0;
 		}
 
+		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: <see cref="ExcavatedDepthAt"/>, null-safe on the grid for region
+		/// building (like IsSuperdeepRaw), which the pit-room test runs inside.</summary>
+		public int ExcavatedDepthRaw(IntVec3 c)
+		{
+			return depthGrid != null && c.InBounds(map) ? depthGrid[map.cellIndices.CellToIndex(c)] : 0;
+		}
+
 		// ── PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: the climb depth and its generation ──────────
 
 		private int climbGeneration;
@@ -1359,6 +1366,7 @@ namespace RimMandrake.FlowWorks
 				// SUPERDEEP_PRISON_ROOM_1: the cell just crossed the pit wall; its rooms re-form.
 				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
+			RM_PitRooms.NotifyDepthCrossed(map, c, before, d);
 			return d;
 		}
 
@@ -1463,6 +1471,7 @@ namespace RimMandrake.FlowWorks
 				superdeepCellCount--;
 				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
+			RM_PitRooms.NotifyDepthCrossed(map, c, d, newD);
 			if (newD == RM_ExcavationDepth.Surface)
 			{
 				excavatedCells.Remove(c);

@@ -310,7 +310,7 @@ def stage_flowworks(control=False):
                 '<NoWarn>CS8981;CS0168;CS0219;CS0162</NoWarn></PropertyGroup><ItemGroup>'
                 + "".join('<Compile Include="%s" />' % c for c in [
                     "..\\..\\RM_StockMath.cs", "..\\..\\RM_FlowKernel.cs", "..\\..\\RM_PumpMath.cs", "..\\..\\RM_FireMath.cs",
-                    "..\\..\\RM_PitTrapMath.cs", "..\\..\\Machinery\\RM_ConversionMath.cs", "..\\..\\RM_Volume.cs",
+                    "..\\..\\RM_PitTrapMath.cs", "..\\..\\RM_RelativeRulesMath.cs", "..\\..\\Machinery\\RM_ConversionMath.cs", "..\\..\\RM_Volume.cs",
                     "..\\FlowKernelFuzz.cs", "..\\SequenceFuzz.cs", "ShippedMatrixProbe.cs"])
                 + '</ItemGroup></Project>')
         path = os.path.join(vv, "VVControl.csproj")

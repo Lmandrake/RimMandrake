@@ -497,7 +497,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Lip service. arg "workerId;x,z;JobDefName": asks the PathFollower patch's own gate
-		/// (ShouldServeFromLipFor) and the lip finder: "LIP serve=b kind=k lip=x,z lipSuperdeep=b dist=d".</summary>
+		/// (ShouldServeFromLipFor) and the lip finder: "LIP serve=b kind=k lip=x,z lipInPit=b dist=d".</summary>
 		public static string ProofLip(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -526,8 +526,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: no excavation engine on the current map";
 			}
-			return "LIP serve=True kind=" + kind + " lip=" + lip.x + "," + lip.z + " lipSuperdeep="
-				+ ex.IsSuperdeepExcavation(lip) + " dist=" + lip.DistanceTo(target).ToString("0.##");
+			return "LIP serve=True kind=" + kind + " lip=" + lip.x + "," + lip.z + " lipInPit="
+				+ RM_PitRooms.IsPitFloor(map, ex, lip) + " dist=" + lip.DistanceTo(target).ToString("0.##");
 		}
 
 		/// <summary>Phase 8 pump. arg "x,z" reads; "x,z;pour" / "x,z;draw" flips the mode as the gizmo does.
