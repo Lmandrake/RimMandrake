@@ -42,7 +42,9 @@ Load 2 (20 mods, via Steam): bridge token at 85 s; log 312 lines (`Transient/rev
 | FlowWorks thirst | T7, T2, T3, T6, T4, T5, T10, T9, T11, T12, T13 | PASS | - | new driver `src/RimMandrake/FlowWorks/northstar/thirst_live.py`; first-run FAILs on T5/T10/T12/T13/T6 were all HARNESS (wrong id form, short windows, a long GotoWander never re-thinking, a bottle left on the map, a disturbed map) |
 | FlowWorks thirst | T1_provider_line | UNMEASURED | HARNESS | one of the bar's three lists: no Dubs -> Own (arm OK) |
 | FlowWorks thirst | T27, T28, T19, T24 | PASS | - | T19/T24/T13 partial arms named in each row's notRun |
-| FlowWorks thirst | T14, T15, T16, T17, T18, T20, T23, T25, T26, T29 | UNMEASURED | - | not driven yet (biome/Dubs lists, salt break, bucket-to-dirty, snow, bill, bottle stock) |
+| FlowWorks thirst | T17_salt_break | PASS | - | break START forced (jawa/pawn_force_mental_break); drank brine to 0.994, SaltRelief, SaltPoisoning 0.75 = 3 drinks. Not run: the break being offered / withheld |
+| FlowWorks thirst | T15_slime_effects | PASS (2nd run) | presumed HARNESS | run 1: the red pawn drank (DrankSlime, SlimePurge) but carried white's RM_SporeFlesh 0.002 and no RM_ContagionTouched; run 2 on a fresh load: all four colours exact. Unexplained one-off: worth a look |
+| FlowWorks thirst | T14, T16, T18, T20, T23, T25, T26, T29 | UNMEASURED | - | not driven (salt-biome natives, Gelatinous map, Dubs list, bucket-to-dirty, Fill-tank brine order, snow map, campfire bill, two-colonist bottle stock) |
 | FlowWorks sprinklers | draws_and_wets, no_pressure, flip_sprinklersEnabled, dries_when_starved, thick_clogs, walls_stop_spray, acid_hurts_fuel_puddles, T21_drinking_reserve, T22_no_brine_spray | PASS | - | new driver `src/RimMandrake/FlowWorks/northstar/sprinkler_live.py`; measured: the pump must stand OVER the pipe run (stage_extra.py's in-run pump split the net, fixed) |
 | FlowWorks sprinklers | liquid_key, vfe_boost_skipped, vfe_valve | UNMEASURED | SITE/HARNESS | key behind an out parameter; no VFE Farming on the list |
 
