@@ -193,4 +193,23 @@ def write_results(path, doc):
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, indent=2)
-    os.replace(tmp, path)
+    # os.replace over the WSL/drvfs share can raise PermissionError (WinError 5) when the target
+    # is momentarily held open (a reader, an indexer): retry a bounded few times, then fall back
+    # to a plain in-place write so a progress write never kills a long run.
+    last = None
+    for i in range(6):
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError as e:
+            last = e
+            time.sleep(0.2 * (i + 1))
+    try:
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(doc, f, indent=2)
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+    except OSError:
+        raise last
