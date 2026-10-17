@@ -1,0 +1,119 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T13:01:36",
+ "rows": [
+  {
+   "id": "T27_water_items",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "RM_DrinkWaterItem"
+    ],
+    "levels": [
+     0.2,
+     0.8646667
+    ],
+    "memories": [
+     "RM_Thought_DrankDistilled"
+    ],
+    "bad": []
+   }
+  },
+  {
+   "id": "T28_sanguophage_blood",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "xenotype": "Sanguophage",
+    "applied": true,
+    "sang": {
+     "levels": [
+      0.2,
+      0.193999991
+     ],
+     "accepted": true,
+     "after": "Ingest",
+     "msg": null,
+     "packLeft": 0
+    },
+    "base": {
+     "levels": [
+      0.2,
+      0.191999987
+     ],
+     "accepted": true,
+     "after": "Ingest",
+     "msg": null,
+     "packLeft": 0
+    },
+    "bad": [
+     "sanguophage thirst gain -0.006, want +0.5"
+    ],
+    "notRead": "hemogen up (the gene resource is not on jawa/pawn_need)"
+   }
+  },
+  {
+   "id": "T19_awkward_access",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "RM_DrinkFromContainer"
+    ],
+    "memAfterBucket": [
+     "RM_Thought_DrankRough"
+    ],
+    "bucketInspect": "Can't hold: Acid. | Partly drunk: 1.5 L taken out.",
+    "memAfterBottle": [],
+    "bad": [],
+    "notRun": "tank arm, Ascetic/tribal arms, pond arm"
+   }
+  },
+  {
+   "id": "T24_bucket_douses_fire",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "why": "no fire took on the plot",
+    "fires": 0
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/thirst/b2.json",
+  "only": "T27,T28,T19,T24",
+  "site": "150,130",
+  "log": ""
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 244,
+  "bottlesOnMap": [],
+  "draftedOwn": 3
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "ended": "2026-10-17T13:02:46"
+}
