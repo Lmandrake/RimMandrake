@@ -1,0 +1,107 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-10-17T12:49:42",
+ "rows": [
+  {
+   "id": "sprinkler.draws_and_wets",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     99875,
+     99750
+    ],
+    "drop": 125,
+    "cells": 25,
+    "inspect": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "pulseAfterTicks": 2500,
+    "sprayedUnits": [
+     750,
+     875
+    ],
+    "soakedCovered": true,
+    "soakedFar": false,
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.no_pressure",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pumpOff": "No pressure: no pump on this network",
+    "units": [
+     99750,
+     99750
+    ],
+    "pumpBackOn": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "bad": [],
+    "how": "the pump stops through liquidPumpEnabled (Building_LiquidPump.Running), not a despawn: a despawn by cell also destroys the pipe under it"
+   }
+  },
+  {
+   "id": "sprinkler_switch_flips.flip_sprinklersEnabled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "inspect": "Sprinklers are off in Mod Settings",
+    "units": [
+     99625,
+     99625
+    ]
+   }
+  },
+  {
+   "id": "sprinkler.dries_when_starved",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "last": [
+     "Dry: nothing in the tanks on this network",
+     false
+    ],
+    "ticks": 1750
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/sprk/s1.json",
+  "only": "draws,pressure,switch,dries",
+  "origin": "120,140"
+ },
+ "net0": {
+  "tank": [
+   120,
+   140
+  ],
+  "pump": [
+   123,
+   140
+  ],
+  "head": [
+   125,
+   140
+  ],
+  "covered": [
+   126,
+   141
+  ],
+  "far": [
+   130,
+   144
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead36711",
+  "pumpId": "RM_LiquidPump36710"
+ },
+ "ended": "2026-10-17T12:50:35"
+}
