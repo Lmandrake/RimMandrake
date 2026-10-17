@@ -1039,22 +1039,21 @@ def _path_cost(defs, name, depth=0):
     return _path_cost(defs, m.group(1), depth + 1) if m and depth < 8 else None
 
 
-def _fill_tier(f, d):                       # mirrors RM_ExcavationDepth.FillTier
-    r = float(f) / d
-    return 1 if r <= 0.34 else (2 if r <= 0.67 else 3)
+def _fill_tier(f, d):                       # mirrors RM_ExcavationDepth.FillTier: by metres of water, not by fullness
+    return 0 if f <= 0 else min(5, 1 + int(f))   # 2 ~0.5 m, 3 ~1 m, 4 ~1.5 m, 5 = 2 m+
 
 
 def fill_cost_findings(defs):
-    """DEPTH_FILL_COST_MATRIX_1 / ruling [E]: at every depth 1-3, every reachable fill (F = 1..D, tier by
-    FillTier, terrain by FluidDef.FillTerrainFor) costs strictly more to cross than the same depth dry.
+    """DEPTH_FILL_COST_MATRIX_1 / ruling [E]: at every depth 1-3, every reachable fill (F = 1..D, look by
+    FillTier = metres of water, terrain by FluidDef.FillTerrainForLook) costs strictly more to cross than the same depth dry.
     Named regression: RM_Fill_Water_Half 42 < RM_Channel_Mid 45 (D=2, F=1)."""
     dry = {1: "RM_Channel_Empty", 2: "RM_Channel_Mid", 3: "RM_Channel_Deep"}
     probs, n = [], 0
     for name, b in sorted(defs.items()):
         if not b[0].endswith("FluidDef"):
             continue
-        tiers = {1: _field(b[2], "floodTerrain"), 2: _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain"),
-                 3: _field(b[2], "fillTerrainBrim") or _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain")}
+        tiers = {2: _field(b[2], "floodTerrain"), 3: _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain"),
+                 4: _field(b[2], "fillTerrainBrim") or _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain")}
         for d, dn in dry.items():
             dc = _path_cost(defs, dn)
             for f in range(1, d + 1):

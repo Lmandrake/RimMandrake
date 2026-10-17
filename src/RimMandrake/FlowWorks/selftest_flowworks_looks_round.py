@@ -3,7 +3,8 @@
 shipped XML (never from the generator's intentions):
 
   3  no "channel" / "excavation" / "brimming" / "half-full" in any fill or dug terrain label or description; every
-     fill tier is named by depth like vanilla's shores (shallow / chest-deep / deep / very deep <liquid>).
+     fill look is named by depth like vanilla's shores AND in metres of water (knee-deep <liquid> (under 0.75 m) /
+     shallow (about 1 m) / chest-deep (about 1.5 m) / deep (2 m or more)): LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD.
   2  tar is opaque dark grey: Solid (plain terrain) shader over white, R=G=B tint, neutral gloss.
   4  blood, chemfuel, astrofuel, white slime, red slime are canal FluidDefs with all four fill terrains defined, a
      surface look, and a station on the review map.
@@ -22,7 +23,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 DEFS = HERE / "Defs"
 BAD = re.compile(r"channel|excavat|brimming|half-full", re.I)
-TIER = {"Trace": "shallow ", "Half": "chest-deep ", "Brim": "deep ", "Superdeep": "very deep "}
+# LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §2.1, §4.1): the four fill looks are keyed to METRES OF WATER,
+# named by depth word AND metres: knee-deep (under 0.75 m), shallow (about 1 m), chest-deep (about 1.5 m), deep (2 m or more)
+TIER = {"Trace": "knee-deep ", "Half": "shallow ", "Brim": "chest-deep ", "Superdeep": "deep "}
+METRES = {"Trace": "(under 0.75 m)", "Half": "(about 1 m)", "Brim": "(about 1.5 m)", "Superdeep": "(2 m or more)"}
 NEW = ("Blood", "Chemfuel", "Astrofuel", "SlimeWhite", "SlimeRed")
 
 
@@ -58,6 +62,7 @@ def main():
         if m:
             fills += 1
             assert label.startswith(TIER[m.group(2)]), "%s label %r is not named by depth" % (dn, label)
+            assert label.endswith(METRES[m.group(2)]), "%s label %r does not say its metres of water" % (dn, label)
     assert fills >= 40, "sanity probe: fill tiers found %d" % fills
 
     fluids = {}

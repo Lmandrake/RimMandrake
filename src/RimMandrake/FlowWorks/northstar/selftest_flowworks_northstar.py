@@ -550,7 +550,8 @@ def test_fill_costs():
     mut = dict(defs)
     mut["RM_Fill_Water_Half"] = (k, a, re.sub(r"<pathCost>\d+</pathCost>", "<pathCost>42</pathCost>", b), fn)
     found = V.fill_cost_findings(mut)
-    check("O1 fill costs: Half 42 regression reds at D2 F1", any("D2 F1" in x and "RM_Channel_Mid" in x for x in found), found)
+    # LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the Half look is 1 m of water now (F2), not "half full" (F1 of D2)
+    check("O1 fill costs: Half 42 regression reds at D2 F2", any("D2 F2" in x and "RM_Channel_Mid" in x for x in found), found)
     k, a, b, fn = defs["RM_Fill_SlimeRed_Trace"]
     mut = dict(defs)
     mut["RM_Fill_SlimeRed_Trace"] = (k, a, re.sub(r"\s*<pathCost>\d+</pathCost>", "", b), fn)

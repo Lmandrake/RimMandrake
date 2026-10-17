@@ -68,9 +68,10 @@ lc = R.SETUPS["look_canal"]
 depth_at = {(x, z): d for x, z, w, h, d in lc["dig"]}
 fill_at = {(x, z): f for x, z, w, h, f, _ in lc["fluid"]}
 tiers = [R.fill_tier(fill_at.get(k, 0), depth_at[k]) for k in sorted(depth_at)][:4]
-check(tiers == [0, 1, 2, 3], "look_canal plots are not empty/trace/half/brim: tiers %s" % tiers)
-check(R.fill_tier(1, 3) == 1 and R.fill_tier(1, 2) == 2 and R.fill_tier(2, 3) == 2 and R.fill_tier(3, 3) == 3,
-      "fill_tier no longer mirrors RM_ExcavationDepth.FillTier")
+check(tiers == [0, 2, 3, 4], "look_canal plots are not dry/0.5/1/1.5 m of water: tiers %s" % tiers)
+check(R.fill_tier(1, 3) == 2 and R.fill_tier(1, 2) == 2 and R.fill_tier(1, 4) == 2 and R.fill_tier(2, 3) == 3
+      and R.fill_tier(3, 3) == 4 and R.fill_tier(4, 4) == 5 and R.fill_tier(9, 9) == 5,
+      "fill_tier no longer mirrors RM_ExcavationDepth.FillTier (by metres of water, any hole)")
 check(R.Review.verify_visuals.__doc__, "verify_visuals lost its docstring (a statement above it)")
 # --build exit code: a short verify is non-zero; only a full read is 0
 check(R.build_exit(39, 39, 30, 30)[0] == 0 and R.build_exit(38, 39, 30, 30)[0] == 1

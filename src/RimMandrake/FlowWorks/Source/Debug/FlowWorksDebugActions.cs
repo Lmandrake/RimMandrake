@@ -64,7 +64,7 @@ namespace RimMandrake.FlowWorks
             Log.Message("[RMFlowWorksDebug] DEPTH_GRID pos=" + c
                 + " D=" + d + " (" + RM_ExcavationDepth.LabelOf(d) + ")"
                 + " F=" + f
-                + " tier=" + RM_ExcavationDepth.FillTier(f, d)
+                + " water=" + ex.WaterDlAt(c) + "dL band=" + RM_ExcavationDepth.FillTier(ex.WaterDlAt(c))
                 + " excavated=" + ex.IsExcavated(c)
                 + " source=" + ex.IsSourceCell(c)
                 + " canLiquidEnter=" + ex.CanLiquidEnter(c)

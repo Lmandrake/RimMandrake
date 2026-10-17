@@ -2521,16 +2521,13 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			byte d = depthGrid[i];
-			byte f = fillGrid[i];
-			// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: with exact-level water the look is chosen by the TRUE metres of water
-			// (unified depth spec §4.1: under 25 cm, 0.5, 1, 1.5, 2 m and deeper), the same in a canal, a pit or a pond.
-			// A pit (superdeep) keeps its own fill terrain at any water depth: that terrain carries the pit's passability (a
-			// passable look over an impassable pit would make it walkable), and pit passability is the PIT_* items' to re-key.
-			TerrainDef want = LevelExact && d < RM_ExcavationDepth.Superdeep
-				? fluid.FillTerrainForLook(RM_LevelSolve.LookBand(WaterDl(i)))
-				: fluid.FillTerrainFor(LevelExact ? (WetDug(i) ? System.Math.Max(1, RM_ExcavationDepth.FillTier(f, d)) : 0)
-					: RM_ExcavationDepth.FillTier(f, d), d);
+			// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): ONE rule for every dug square, canal or pit, exact-level
+			// water or not: the look is chosen by the TRUE metres of water standing in it (under 25 cm, 0.5, 1, 1.5, 2 m and
+			// deeper), never by how full the hole is. A part-filled pit shows its water's depth like any canal (4 cm in a 2 m pit
+			// is a thin sheet, not "very deep water"); what the pit's own fill terrain carried for pathing (cost 300: nobody
+			// routes through a pit by choice) is kept by RM_Patch_WetPitPlanningCost, and the trap, the hold and the climb read
+			// the depth grid, never the terrain (ruling 26: a pit captures as if dry).
+			TerrainDef want = fluid.FillTerrainForLook(RM_ExcavationDepth.FillTier(WaterDl(i)));
 			TerrainDef cur = map.terrainGrid.TempTerrainAt(c);
 			if (cur == want)
 			{

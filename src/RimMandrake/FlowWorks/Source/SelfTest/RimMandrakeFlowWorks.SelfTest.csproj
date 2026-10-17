@@ -106,6 +106,7 @@
     <Compile Include="SettleChecks.cs" />
     <Compile Include="PumpChecks.cs" />
     <Compile Include="VolumeChecks.cs" />
+    <Compile Include="RewireChecks.cs" />
     <Compile Include="PondReturnChecks.cs" />
     <Compile Include="DeepBedChecks.cs" />
     <Compile Include="PocketGridChecks.cs" />

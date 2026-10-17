@@ -139,30 +139,8 @@ namespace RimMandrake.FlowWorks
 		/// here.</summary>
 		public TerrainDef coolsToGlassEdge;
 
-		/// <summary>The terrain that expresses a fill tier on a cell of depth
-		/// <paramref name="depth"/>. Tier 0 is dry and returns null.</summary>
-		public TerrainDef FillTerrainFor(int tier, byte depth)
-		{
-			if (tier <= 0)
-			{
-				return null;
-			}
-			if (depth >= RM_ExcavationDepth.Superdeep)
-			{
-				return fillTerrainSuperdeep ?? fillTerrainBrim ?? floodTerrain;
-			}
-			if (tier == 1)
-			{
-				return floodTerrain;
-			}
-			if (tier == 2)
-			{
-				return fillTerrainHalf ?? floodTerrain;
-			}
-			return fillTerrainBrim ?? fillTerrainHalf ?? floodTerrain;
-		}
-
-		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the fill look by TRUE metres of water (RM_LevelSolve.LookBand: 0 dry,
+		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES / LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: the ONE fill look rule, by TRUE metres
+		/// of water (RM_ExcavationDepth.FillTier = RM_LevelSolve.LookBand: 0 dry,
 		/// 1 under 25 cm, 2 ≈ 0.5 m, 3 ≈ 1 m, 4 ≈ 1.5 m, 5 = 2 m and deeper), the same in every hole, whatever its depth
 		/// (unified depth spec §4.1: the water picture says how deep the WATER is; the walls say how deep the hole is). The
 		/// four looks each liquid already has carry 0.5 / 1 / 1.5 / 2 m+; band 1 shows <see cref="fillTerrainVeryShallow"/>, the
