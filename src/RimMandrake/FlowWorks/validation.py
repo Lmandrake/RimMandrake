@@ -620,6 +620,82 @@ def container_styles(t):
                                     "(LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS)")
 
 
+# The two standalone live drivers written on the 2026-10-17 review walk (northstar/thirst_live.py, northstar/sprinkler_live.py)
+# each run a SUBSET of rows (--only) and write {script, mode, mod, mod_hash, env.running, env.assembly_sha256, rows}
+# (northstar/driver_stamp.py) to northstar/<script>_result_<stamp>.json (their default out; a result written elsewhere is not
+# read). A result counts only if its mod_hash is the repo's now AND the game ran the repo's DLL (a run before the deploy of a
+# fix must not certify it). The THIRST_LIVE / SPRINKLER_LIVE rows below read
+# them: across every result made AT the current mod hash, the newest row per id wins (a later FAIL overrides an earlier PASS);
+# a row no such result carries is UNMEASURED naming the driver. T21 / T22 are thirst rows the sprinkler driver measures, so
+# both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
+DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json")
+DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
+
+
+def repo_dll_sha256():
+    """sha256 of the committed FlowWorks assembly (None if unreadable)."""
+    import hashlib
+    try:
+        with open(os.path.join(HERE, "Assemblies", "RimMandrakeFlowWorks.dll"), "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        return None
+
+
+def driver_rows_at(mod_hash, ns=None, dll_sha=None):
+    """{row id: (row, result file basename)} from every live driver result made at `mod_hash` whose game ran the repo's
+    DLL (env.assembly_sha256 == `dll_sha`; a result without it is not read), newest per id. Pure but for the reads."""
+    found = []
+    for g in DRIVER_RESULTS:
+        for p in glob.glob(os.path.join(ns or NS, g)):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    d = json.load(f)
+            except (OSError, ValueError):
+                continue
+            if d.get("mode") == "live" and mod_hash and d.get("mod_hash") == mod_hash and dll_sha \
+                    and str((d.get("env") or {}).get("assembly_sha256") or "").lower() == dll_sha.lower():
+                found.append((str(d.get("started") or ""), os.path.basename(p), d))
+    found.sort(key=lambda x: (x[0], x[1]))
+    got = {}
+    for _, name, d in found:
+        for r in d.get("rows") or []:
+            if r.get("id"):
+                got[r["id"]] = (r, name)
+    return got
+
+
+def _driver_live_report(t, spec, default_driver, item):
+    """One component per (id, toggle, bar) of `spec`, its verdict read from driver_rows_at (see above). Each row is an
+    independent result, so a FAIL or UNMEASURED row does not blank the rows after it."""
+    got = None
+    if t._guard():
+        from modcheck import status as _st  # noqa: E402
+        got = driver_rows_at(_st.mod_hash(HERE), dll_sha=repo_dll_sha256())
+    for rid, toggle, bar in spec:
+        found = got.get(rid) if got is not None else None
+        drv = DRIVER_OF.get(rid, default_driver)
+        with t.component(rid, toggle=toggle):
+            if t._guard():
+                if found is None:
+                    raise ExpectationFailed("UNMEASURED: live check owed (%s) -- no %s result at the current mod hash carries "
+                                            "this row: run `python.exe src/RimMandrake/FlowWorks/northstar/%s --only ...` on "
+                                            "the calm site; bar: %s" % (item, drv, drv, bar))
+                r, name = found
+                st = r.get("status")
+                if st == "FAIL":
+                    raise ExpectationFailed("[%s] %s: %s" % (r.get("class"), name, str(r.get("detail"))[:600]))
+                if st != "PASS":
+                    raise ExpectationFailed("UNMEASURED: %s %s [%s]: %s" % (name, st, r.get("class"), str(r.get("detail"))[:400]))
+        if got is not None:
+            c = t.components[-1]
+            if found is not None:
+                c.evidence.append({"call": "row %s (%s)" % (rid, found[1]), "result": found[0]})
+                if c.verdict == "PASS":
+                    c.detail = "%s: %s" % (found[1], str(found[0].get("detail"))[:380])
+            t.upstream_failed = False        # this row only; it touched nothing
+
+
 # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §9; OQ-1..OQ-5 ruled by the
 # owner by card 2026-10-16). The design's T-rows: the offline halves run here off the C# SelfTest (Source/SelfTest/
 # ThirstChecks.cs: the production RM_ThirstMath, the shipped XML, the DBH patch, the Harmony target and call sites); every
@@ -705,7 +781,8 @@ THIRST_LIVE = [
 
 @suite.chain("thirst")
 def thirst(t):
-    """Offline: FlowWorks thirst + bottles (ThirstChecks.cs cases), 0 ticks, no bridge. Live T-rows: UNMEASURED, owed."""
+    """Offline: FlowWorks thirst + bottles (ThirstChecks.cs cases), 0 ticks, no bridge. Live T-rows: read from the newest
+    thirst_live / sprinkler_live results at the current mod hash (driver_rows_at), else UNMEASURED naming the driver."""
     cases = {}
     with t.component("thirst_selftest_ran"):
         if t._guard():
@@ -716,10 +793,8 @@ def thirst(t):
                 got = cases.get(name)
                 if got != "ok":
                     raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
-    for rid, toggle, bar in THIRST_LIVE:
-        with t.component(rid, toggle=toggle):
-            if t._guard():
-                raise ExpectationFailed("UNMEASURED: live check owed (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) -- " + bar)
+    t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
+    _driver_live_report(t, THIRST_LIVE, "thirst_live.py", "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY")
 
 
 # SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design/RimMandrake/sprinklers_design_2026-10-16.md §6, §8; OQ-S1..S7 ruled by the owner
@@ -757,7 +832,8 @@ SPRINKLER_LIVE = [
 
 @suite.chain("sprinklers")
 def sprinklers(t):
-    """Offline: FlowWorks sprinklers (SprinklerChecks.cs cases), 0 ticks, no bridge. Live rows: UNMEASURED, owed."""
+    """Offline: FlowWorks sprinklers (SprinklerChecks.cs cases), 0 ticks, no bridge. Live rows: read from the newest
+    sprinkler_live results at the current mod hash (driver_rows_at), else UNMEASURED naming the driver."""
     cases = {}
     with t.component("sprinkler_selftest_ran"):
         if t._guard():
@@ -768,10 +844,8 @@ def sprinklers(t):
                 got = cases.get(name)
                 if got != "ok":
                     raise ExpectationFailed("%s: %s" % (name, got or "case missing from the SelfTest output"))
-    for rid, toggle, bar in SPRINKLER_LIVE:
-        with t.component(rid, toggle=toggle):
-            if t._guard():
-                raise ExpectationFailed("UNMEASURED: live check owed (SPRINKLER_HEADS_BUILD_PUMP_REQUIRED) -- " + bar)
+    t.upstream_failed = False   # the live rows only read result files: an offline FAIL above must not blank them
+    _driver_live_report(t, SPRINKLER_LIVE, "sprinkler_live.py", "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED")
 
 
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
