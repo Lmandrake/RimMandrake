@@ -10,7 +10,7 @@ python.exe src/RimMandrake/FlowWorks/northstar/river_site.py | tr -d '\r'
 python.exe src/RimMandrake/FlowWorks/review_map.py --rivers --build --save | tr -d '\r'
 ```
 
-Expected runtime: about 12 minutes: the main map about 6 (fresh quicktest map ~1.5 min; the last build, 52 stations + 39 visuals, took 112 s; this one has 87 stations and ~250 more staging calls) plus its save; river_site.py about 3 to 4 (founding a colony on a river tile and generating its map); map R about 1 (25 terrain reads, ~60 placing calls) plus its save. Budget 20 minutes before calling it stuck.
+Expected runtime: about 12 minutes: the main map about 6 (fresh quicktest map ~1.5 min; the last build, 52 stations + 39 visuals, took 112 s; this one has 88 stations and ~250 more staging calls) plus its save; river_site.py about 3 to 4 (founding a colony on a river tile and generating its map); map R about 1 (25 terrain reads, ~60 placing calls) plus its save. Budget 20 minutes before calling it stuck.
 
 Then `review_map.py --goto N` (or `--rivers --goto R3` on the river save) frames a station; `--labels` / `--rivers --labels` re-pin labels after a load.
 
@@ -24,7 +24,14 @@ Every river mechanic reads the river current, which is copied from the map's riv
 
 ## Counts
 
-Inventory: 316 defs, 226 Mod Settings fields, 32 gizmo labels, 153 textures = 727 items, grouped into 176 features. Stations: 87 on the main map + 8 on map R + the V block (39 plots). Uncovered items: **0**. Rule targets that name no station: **0**.
+Inventory: 328 defs, 232 Mod Settings fields, 32 gizmo labels, 177 textures = 769 items, grouped into 178 features. Stations: 88 on the main map + 8 on map R + the V block (39 plots). Uncovered items: **4**. Rule targets that name no station: **0**.
+
+## UNCOVERED (add a rule or a station)
+
+- set `thickness` (Source/Hose/RM_HoseSettings.cs)
+- set `pipeLinksIntoMachines` (Source/Machinery/RM_MachinerySettings.cs)
+- set `joinFittings` (Source/Machinery/RM_MachinerySettings.cs)
+- set `waterBodyTypeFlipFixEnabled` (Source/RimMandrakeFlowWorksMod.cs)
 
 ## Feature inventory -> station
 
@@ -35,7 +42,7 @@ Inventory: 316 defs, 226 Mod Settings fields, 32 gizmo labels, 153 textures = 72
 | 3 | Fill-in order | def | 14 | RM_FillInCanal, RM_FillInCanalJob, RM_FillInCanalWorkGiver | Defs/Canals/DesignationDefs/FlowWorks_Designations.xml, Defs/Canals/JobDefs/FlowWorks_JobDefs.xml, Defs/Canals/WorkGiver |
 | 4 | Dig canal designator | gizmo | 13 | "Dig canal" | Source/Designator_DigCanal.cs |
 | 5 | Fill in canal designator | gizmo | 14 | "Fill in canal" | Source/Designator_FillInCanal.cs |
-| 6 | Tank look art | tex | 54 | RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTankXTa ... (16 in all) | Textures |
+| 6 | Tank look art | tex | 55 | RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTank.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_LiquidTankTall.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTank.png, RM_UniversalCargoTankXTa ... (16 in all) | Textures |
 | 7 | Dig canal icon | tex | 13 | RM_DigCanal.png | Textures |
 | 8 | Fill in icon | tex | 14 | RM_FillInCanal.png | Textures |
 | 9 | Dig deeper | set | 13 | digToDepthEnabled | Source/RimMandrakeFlowWorksMod.cs |
@@ -48,10 +55,10 @@ Inventory: 316 defs, 226 Mod Settings fields, 32 gizmo labels, 153 textures = 72
 | 16 | Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat | def | - | RM_CurrentPainter, RM_FlowMeter, RM_LevelHolder, RM_LiquidThermostat, RM_MapEdgeSetter, RM_TimerSwitch | Defs/Canals/ThingDefs/FlowWorks_MapControls.xml |
 | 17 | Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat | gizmo | - | "Fast", "Flows " + CompassNames[direction & 7], "Hold at " + setpoint.ToStringPercent(), "Hold at " + targetC.ToStringTemperature(), "Invert", "Radius: " + get().ToString("0.#"), "Read now", "Schedule...", EdgeNames[edge] + ": " + RM_MapControlMath.EdgeModeLabel(modes[edge]) | Source/MapControls/Building_RM_MapControl.cs, Source/MapControls/RM_CurrentPainter.cs, Source/MapControls/RM_EdgeSetter. |
 | 18 | The flow engine and its pulse | set | 2 | depthEngineEnabled, flowPerPulse, pulseIntervalTicks | Source/RimMandrakeFlowWorksMod.cs |
-| 19 | Viscosity: tar crawls | set | 3 | levelBySurfaceEnabled, thickCreepEnabled, viscosityEnabled, waterFrontCreepEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 19 | Viscosity: tar crawls | set | 3 | levelBySurfaceEnabled, levelSetEnabled, thickCreepEnabled, viscosityEnabled, waterFrontCreepEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 20 | Ponds pay out; map-edge lakes never run dry | set | 5 | minLimitlessBodyCells, sourceBudgetEnabled, sourceBudgetMultiplier, stickyLimitlessEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 21 | A pond visibly recedes | set | 6 | recedeKeepsLastCell, recedeSparesOutflow, recessionEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 22 | A drained pond leaves a hollow bed | set | 7 | deepBedCellsPerLevel, deepBedMaxDepth, deepBedsEnabled, drainableLakeMaxCells, dugBedLeavesPondEnabled, pondBedHollowEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 22 | A drained pond leaves a hollow bed | set | 7 | deepBedCellsPerLevel, deepBedMaxDepth, deepBedsEnabled, drainableLakeMaxCells, dugBedLeavesPondEnabled, mouseoverDepthEnabled, pondBedHollowEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 23 | Lakebed ground | def | 7 | RM_Lakebed_Abyss, RM_Lakebed_Deep, RM_Lakebed_Shallow | Defs/Canals/TerrainDefs/FlowWorks_Terrain.xml |
 | 24 | Lakebed art | tex | 7 | RM_Lakebed_Deep.png, RM_Lakebed_Shallow.png | Textures |
 | 25 | Refill, and waiting for occupants | set | 8 | refillEnabled, refillRateMultiplier, refillWaitsForOccupants | Source/RimMandrakeFlowWorksMod.cs |
@@ -118,94 +125,96 @@ Inventory: 316 defs, 226 Mod Settings fields, 32 gizmo labels, 153 textures = 72
 | 86 | The bottle loop | set | 48 | bottleDirtyStageEnabled, bottleLoopEnabled, bottleRevertEnabled | Source/RimMandrakeFlowWorksMod.cs |
 | 87 | Bottles, buckets, barrels | def | 48 | RM_BarrelEmpty, RM_BottleDirty, RM_BottleEmpty, RM_Bottle_FreshWater, RM_Bottle_Tar, RM_BucketEmpty, RM_FillBottleJob, RM_FillBottleWorkGiver, RM_LiquidBottleItems, RM_WashBottleJob, RM_WashBottleWorkGiver | Defs/LiquidTypes/JobDefs/RM_LiquidBottleJobs.xml, Defs/LiquidTypes/ThingDefs/RM_LiquidBottles.xml, Defs/LiquidTypes/Thin |
 | 88 | Every liquid in every container | def | 49 | RM_BarrelDirty, RM_Barrel_AcidWater, RM_Barrel_BoilingWater, RM_Barrel_Brine, RM_Barrel_FreshWater, RM_Barrel_IcyWater, RM_Barrel_Propane, RM_Barrel_SaltWater, RM_Barrel_Tar, RM_Barrel_ToxicWater, RM_Bottle_AcidWater, RM_Bottle_BoilingWater, RM_Bottle_Brine, RM_Bottle_IcyWater, RM_Bottle_Propane, RM ... (27 in all) | Defs/LiquidTypes/ThingDefs/RM_LiquidBottles.xml, Defs/LiquidTypes/ThingDefs/RM_LiquidBottles_Base.xml |
-| 89 | Coloured water bottle art | tex | 80 | RM_WaterBottle.png | Textures |
-| 90 | Container art | tex | 48 | RM_Barrel.png, RM_Bottle.png, RM_Bucket.png | Textures |
-| 91 | Container recipes in each material | def | 50 | RM_Make_Barrel_Metal, RM_Make_Barrel_Plasteel, RM_Make_Barrel_Wood, RM_Make_Bottle_Glass, RM_Make_Bottle_Leather, RM_Make_Bottle_Metal, RM_Make_Bucket_Leather, RM_Make_Bucket_Metal, RM_Make_Bucket_Wood | Defs/LiquidTypes/RecipeDefs/RM_ContainerRecipes.xml |
-| 92 | Tank capacity | set | 53 | tankCapacityMultiplier, tankLoopEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 93 | Tall and extra-tall tanks | def | 53 | RM_LiquidTankTall, RM_UniversalCargoTankXTall | Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml, Defs/Machinery/RM_LiquidLogistics.xml |
-| 95 | Tank, cargo tank, pump | def | 51 | RM_LiquidPump, RM_LiquidTank, RM_UniversalCargoTank | Defs/LiquidTypes/ThingDefs/RM_LiquidPump.xml, Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml, Defs/Machinery/RM_LiquidLogi |
-| 96 | Tank and pump art | tex | 51 | RM_LiquidPump.png, RM_LiquidPump.png | Textures |
-| 97 | Pumps | set | 51 | liquidPumpEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 98 | A pump pours into canals | set | 52 | pumpFedSpreadEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 99 | Pump Draw / Pour button | gizmo | 52 | pourMode ? "RMFlow_PumpModePour".Translate() : "RMFlow_PumpModeDraw".Translate() | Source/LiquidTypes/Building_LiquidPump.cs |
-| 100 | Tank jobs | def | 56 | RM_EmptyIntoTankJob, RM_EmptyIntoTankWorkGiver, RM_FillFromTankJob, RM_FillFromTankWorkGiver | Defs/LiquidTypes/JobDefs/RM_LiquidBottleJobs.xml, Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml |
-| 101 | Tank mode button | gizmo | 56 | ("RMFlow_TankMode_" + mode).Translate() | Source/LiquidTypes/Building_LiquidTank.cs |
-| 102 | Hoses on; tank modes | set | 56 | enabled, tankModesEnabled, tankUnitsPerCycle | Source/Hose/RM_HoseSettings.cs |
-| 103 | Tank looks | def | 54 | RM_LiquidTankTall_Futuristic, RM_LiquidTankTall_Industrial, RM_LiquidTankTall_Modern, RM_LiquidTankTall_Scrapper, RM_LiquidTank_Futuristic, RM_LiquidTank_Industrial, RM_LiquidTank_Modern, RM_LiquidTank_Scrapper | Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml |
-| 104 | Cargo tank looks | def | 55 | RM_UniversalCargoTankXTall_Futuristic, RM_UniversalCargoTankXTall_Industrial, RM_UniversalCargoTankXTall_Modern, RM_UniversalCargoTankXTall_Scrapper, RM_UniversalCargoTank_Futuristic, RM_UniversalCargoTank_Industrial, RM_UniversalCargoTank_Modern, RM_UniversalCargoTank_Scrapper | Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml |
-| 105 | Hose reel looks | def | 58 | RM_HoseReel_Futuristic, RM_HoseReel_Industrial, RM_HoseReel_Modern, RM_HoseReel_Scrapper | Defs/Hose/RM_HoseReelStyles.xml |
-| 106 | Default hose reel look | set | 58 | defaultLook | Source/Hose/RM_HoseSettings.cs |
-| 107 | Hose reel look art | tex | 58 | Binding.png, Binding.png, Binding.png, Coupling_Bare.png, Coupling_Bare.png, Coupling_Bare.png, EndCap_Bare.png, EndCap_Bare.png, EndCap_Bare.png, Mouth.png, Mouth.png, Mouth.png, Nozzle_Bare.png, Nozzle_Bare.png, Nozzle_Bare.png, Reel_Deployed.png, Reel_Deployed.png, Reel_Deployed.png, Reel_PumpHoo ... (27 in all) | Textures |
-| 108 | Hose reel and its jobs | def | 57 | RM_CarryHoseEnd, RM_HoseOrders, RM_HoseReel, RM_RetractHose | Defs/Hose/RM_HoseJobs.xml, Defs/Hose/RM_HoseReel.xml |
-| 109 | Hose, reel and fitting art | tex | 57 | Binding.png, Coupling_Bare.png, Coupling_Brass.png, EndCap.png, EndCap_Bare.png, Mouth.png, Nozzle.png, Nozzle_Bare.png, Reel_Deployed.png, Reel_PumpHookup.png, Strand_Flat.png, Strand_Plump.png, Strand_Shadow.png | Textures |
-| 110 | Choose style button | gizmo | 59 | "Choose style" | Source/Hose/CompHoseReel.cs |
-| 111 | Hose reel buttons | gizmo | 57 | "Cancel hose order", "DEV: flow through hose", "DEV: lay hose instantly", "DEV: reel in instantly", "Deploy hose", "Free end: " + freeEndRole, "Hose reeled in", "Move hose end", "Retract hose", end == HoseEnd.Nozzle ? "Fitting: nozzle" : end == HoseEnd.EndCap ? "Fitting: end cap" : "Fitting: open" | Source/Hose/CompHoseReel.cs, Source/Hose/RM_MapComponent_Hoses.cs |
-| 112 | Hose behaviour and look | set | 57 | autoResumeDroppedHose, couplingSpacing, dumpUnitsPerCycle, fillWobble, freeEndRolesEnabled, handlingTime, maxLength, maxLengthDefaults, minBendRadius, minPlumpDwell, plumpAmount, releaseTicks, slack, tintByContents, transitionTicks, windCellsPerSecond | Source/Hose/RM_HoseSettings.cs |
-| 113 | A hose holds liquid and spills it | set | 61 | hoseHoldsLiquid, hoseUnitsPerCell, unitsPerFilth | Source/Hose/RM_HoseSettings.cs, Source/Machinery/RM_MachinerySettings.cs |
-| 114 | Spilled liquid and tracked tar | def | 61 | RM_Filth_LiquidSpill, RM_Filth_Tar | Defs/LiquidTypes/ThingDefs/RM_Filth_LiquidSpill.xml, Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml |
-| 115 | Tar filth art | tex | 61 | RM_FilthTar_a.png, RM_FilthTar_b.png, RM_FilthTar_c.png, RM_FilthTar_d.png | Textures |
-| 116 | Rigid pipe, its looks and its menu tab | def | 59 | RM_UniversalPipe, RM_UniversalPipe_Futuristic, RM_UniversalPipe_Industrial, RM_UniversalPipe_Modern, RM_UniversalPipe_Scrapper, VCHE_PipeNetworks | Defs/Machinery/RM_LiquidLogistics.xml, Defs/Machinery/RM_PipeNetworksTab.xml, Defs/Machinery/RM_UniversalPipeStyles.xml |
-| 117 | Pipe look art | tex | 59 | UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png | Textures |
-| 118 | Pipes and their default look | set | 59 | pipeDefaultLook, universalPipesEnabled | Source/Machinery/RM_MachinerySettings.cs |
-| 119 | Pipe-net adapters | def | 60 | RM_PipeAdapter_Chemfuel, RM_PipeAdapter_Propane | Patches/Machinery/RM_PipeNetAdapters.xml |
-| 120 | Adapter art | tex | 60 | RM_PipeAdapter_Chemfuel.png, RM_PipeAdapter_Propane.png | Textures |
-| 121 | Adapter mode button | gizmo | 60 | Mode == RM_AdapterMode.Shut ? "RMFlow_AdapterModeShut".Translate() : feedNet ? "RMFlow_AdapterModeFeed".Translate() : "RMFlow_AdapterModeDraw".Translate() | Source/Machinery/CompLiquidPipeAdapter.cs |
-| 122 | Adapters | set | 60 | pipeAdaptersEnabled | Source/Machinery/RM_MachinerySettings.cs |
-| 123 | Liquid theft | set | - | liquidTheftEnabled, liquidTheftGoodwillPerDay, liquidTheftSightRange | Source/Machinery/RM_MachinerySettings.cs |
-| 124 | Liquid theft caught | def | - | RM_LiquidTheftCaught | Defs/Machinery/RM_LiquidTheft.xml |
-| 125 | Drills, taps and stills | def | 72 | RM_DripFilter, RM_FueledStill, RM_LiquidDrill, RM_LiquidTap, RM_SunPanStill | Defs/Drilling/ThingDefs/RM_LiquidDrill.xml, Defs/Machinery/RM_LiquidStills.xml |
-| 126 | Drill and still art | tex | 72 | RM_DripFilter.png, RM_FueledStill.png, RM_LiquidDrill.png, RM_LiquidTap.png, RM_SunPanStill.png | Textures |
-| 127 | Drilling | set | 72 | drillUnitsPerCycle, drillYieldChanceMultiplier, liquidDrillingEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 128 | Four wrecked liquid plants | def | 74 | RM_DesalPlant_Wrecked, RM_DetoxWorks_Wrecked, RM_PumpingStation_Wrecked, RM_TarRefinery_Wrecked | Defs/Machinery/RM_IndustrialLiquidWorks.xml, Defs/Machinery/RM_PumpingStation.xml |
-| 129 | Wreck art | tex | 74 | RM_DesalPlant_Wrecked.png, RM_DetoxWorks_Wrecked.png, RM_PumpingStation_Wrecked.png, RM_TarRefinery_Wrecked.png | Textures |
-| 130 | Desal plant stages | def | 75 | RM_DesalPlant_Kludged, RM_DesalPlant_Repaired | Defs/Machinery/RM_IndustrialLiquidWorks.xml |
-| 131 | Desal stage art | tex | 75 | RM_DesalPlant_Kludged.png, RM_DesalPlant_Repaired.png | Textures |
-| 132 | The other plants, mended | def | 76 | RM_DetoxWorks_Kludged, RM_DetoxWorks_Repaired, RM_PumpingStation_Kludged, RM_PumpingStation_Repaired, RM_TarRefinery_Kludged, RM_TarRefinery_Repaired | Defs/Machinery/RM_IndustrialLiquidWorks.xml, Defs/Machinery/RM_PumpingStation.xml |
-| 133 | Mended plant art | tex | 76 | RM_DetoxWorks_Kludged.png, RM_DetoxWorks_Repaired.png, RM_PumpingStation_Kludged.png, RM_PumpingStation_Repaired.png, RM_TarRefinery_Kludged.png, RM_TarRefinery_Repaired.png | Textures |
-| 134 | Liquid works ruins and converters | set | 74 | converterRateMultiplier, industrialWorksBuildAnywhere, liquidWorksRuinStockEnabled, liquidWorksRuinsEnabled | Source/Machinery/RM_MachinerySettings.cs |
-| 135 | Ruins scattered on new maps | def | - | RM_DesalPlant_RuinScatter, RM_DetoxWorks_RuinScatter, RM_PumpingStation_RuinScatter, RM_TarRefinery_RuinScatter | Defs/Machinery/RM_LiquidWorksScatter.xml |
-| 136 | Reaction vat | def | 73 | RM_ReactionVat, RM_Reaction_TarAcid | Defs/Machinery/Kits/RM_LiquidKits.xml |
-| 137 | Vat art | tex | 73 | RM_ReactionVat.png | Textures |
-| 138 | Liquid kits | set | 73 | fluidResidueEnabled, hotLiquidBurnMultiplier, hotLiquidEnabled, liquidBathRecipesEnabled, liquidReactionsEnabled, reactionRateMultiplier | Source/Machinery/Kits/RM_KitSettings.cs |
-| 139 | Legacy machinery migration | set | - | legacy | Source/Machinery/RM_MachinerySettings.cs |
-| 140 | Hose settings import flag | set | - | hoseSettingsImported | Source/Hose/RM_HoseSettings.cs |
-| 141 | Liquid grounds | def | 77 | RM_AcidDeep, RM_PropaneDeep, RM_SlimeRedDeep, RM_TarDeep, RM_WaterBoilingDeep, RM_WaterBrineDeep | Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml, Defs/LiquidTypes/TerrainDefs/RM_Propane.xml, Defs/LiquidTypes/TerrainDefs |
-| 142 | Six more liquid grounds | def | 78 | RM_AmmoniaDeep, RM_CoolantDeep, RM_WaterBrackishDeep, RM_WaterFrigidDeep, RM_WaterMineralDeep, RM_WaterPoisonedDeep | Defs/LiquidTypes/TerrainDefs/RM_Ammonia.xml, Defs/LiquidTypes/TerrainDefs/RM_Coolant.xml, Defs/LiquidTypes/TerrainDefs/R |
-| 143 | Odd grounds | def | 79 | RM_Churnmud, RM_FuelSapDeep, RM_IchorDeep, RM_OozeDeep, RM_ReactionLiquorDeep, RM_TarGlass | Defs/LiquidTypes/TerrainDefs/RM_Churnmud.xml, Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml, Defs/LiquidTypes/TerrainDefs/ |
-| 144 | Boiling shallows | def | 82 | RM_WaterBoilingShallow | Defs/LiquidTypes/TerrainDefs/RM_WaterBoiling.xml |
-| 145 | Shallow slime edges | def | 46 | RM_SlimeGreenShallow, RM_SlimeWhiteShallow, RM_SlimeYellowShallow | Defs/LiquidTypes/TerrainDefs/RM_SlimeGreen.xml, Defs/LiquidTypes/TerrainDefs/RM_SlimeWhite.xml, Defs/LiquidTypes/Terrain |
-| 146 | Shallow rims | def | 77 | RM_AcidShallow, RM_PropaneShallow, RM_SlimeRedShallow, RM_TarShallow, RM_WaterBrineShallow | Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml, Defs/LiquidTypes/TerrainDefs/RM_Propane.xml, Defs/LiquidTypes/TerrainDefs |
-| 147 | Shallow rims | def | 78 | RM_AmmoniaShallow, RM_CoolantShallow, RM_WaterBrackishShallow, RM_WaterFrigidShallow, RM_WaterMineralShallow, RM_WaterPoisonedShallow | Defs/LiquidTypes/TerrainDefs/RM_Ammonia.xml, Defs/LiquidTypes/TerrainDefs/RM_Coolant.xml, Defs/LiquidTypes/TerrainDefs/R |
-| 148 | Shallow rims | def | 79 | RM_FuelSapShallow, RM_IchorShallow, RM_OozeShallow, RM_ReactionLiquorShallow | Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml, Defs/LiquidTypes/TerrainDefs/RM_Ichor.xml, Defs/LiquidTypes/TerrainDefs/RM_ |
-| 149 | Liquid registry and named world bodies (the Scald, the Grey Sea...) | def | - | RM_Body_GreySea, RM_Body_TheChill, RM_Body_TheScald, RM_Body_TwilightSea, RM_Liquid_AcidWater, RM_Liquid_BoilingWater, RM_Liquid_Brine, RM_Liquid_Chemfuel, RM_Liquid_FreshWater, RM_Liquid_IcyWater, RM_Liquid_Lava, RM_Liquid_Propane, RM_Liquid_ReactionLiquor, RM_Liquid_SaltWater, RM_Liquid_SlimeGreen ... (20 in all) | Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml, Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml |
-| 150 | Liquid registry rows added by a patch (astrofuel) | def | - | RM_Liquid_Astrofuel | Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml |
-| 151 | Typed liquid shores | def | - | RM_LiquidShores | Defs/LiquidTypes/GenStepDefs/RM_GenStep_LiquidShores.xml |
-| 152 | Typed shores | set | - | typedLiquidShoresEnabled | Source/RimMandrakeFlowWorksMod.cs |
-| 153 | Hot liquid warms the air | set | 82 | liquidHeatPushEnabled, liquidHeatStrength | Source/RimMandrakeFlowWorksMod.cs |
-| 154 | Coloured waters and slimes | def | 80 | RM_Slime_Amber, RM_Slime_Chalk, RM_Slime_Rust, RM_Slime_Verdigris, RM_Slime_Violet, RM_WaterBottle_Amber, RM_WaterBottle_Chalk, RM_WaterBottle_Rust, RM_WaterBottle_Verdigris, RM_WaterBottle_Violet, RM_Water_Amber, RM_Water_Chalk, RM_Water_Rust, RM_Water_Verdigris, RM_Water_Violet | Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml, Patches/RM_ColoredWaterBottles_Patch.xml |
-| 155 | Coloured river steam | def | - | RM_Fleck_Steam_Amber, RM_Fleck_Steam_Chalk, RM_Fleck_Steam_Rust, RM_Fleck_Steam_Verdigris, RM_Fleck_Steam_Violet | Defs/ManyWaters/FleckDefs/RM_ColoredSteam.xml |
-| 156 | River steam | set | - | puffRateMultiplier, riverSteamEnabled | Source/ManyWaters/RiverSteamSettings.cs |
-| 157 | Deep sand | def | 81 | RM_DeepSand | Defs/ManyWaters/TerrainDefs/RM_DeepSand.xml |
-| 158 | Swale | def | 83 | RM_Swale | Defs/Canals/ThingDefs/FlowWorks_ThingDefs.xml |
-| 159 | Swale art | tex | 83 | RM_Swale.png | Textures |
-| 160 | Swale | set | 83 | swaleEnabled, swaleRateMultiplier | Source/RimMandrakeFlowWorksMod.cs |
-| 161 | Ford stones | def | 86 | RM_FordStones, RM_Fordable | Defs/Rivers/RM_FordStones.xml |
-| 162 | Ford stone art | tex | 86 | RM_FordStones.png | Textures |
-| 163 | Ferry rope art (drawn only between paired posts) | tex | R7 | RM_FerryRope.png | Textures |
-| 164 | Sluice box and panning art | tex | 84 | RM_PanningSpot.png, RM_SluiceBox.png | Textures |
-| 165 | Bank works art | tex | 87 | RM_BankStake.png, RM_BankWeir.png, RM_FerryPost.png, RM_SiltTrap.png | Textures |
-| 166 | Bank works | def | 87 | RM_BankStake, RM_BankWeir, RM_FerryPost, RM_SiltTrap | Defs/Rivers/RM_BankWorks.xml |
-| 167 | Sluice box and panning | def | 84 | RM_PanForPlacer, RM_PanForPlacerJob, RM_PanningSpot, RM_SluiceBox | Defs/Rivers/RM_PlacerWorks.xml |
-| 168 | River placer minerals | def | R8 | RM_PlacerPool_Vanilla | Defs/Rivers/RM_PlacerWorks.xml |
-| 169 | Placer mining | set | R8 | panningEnabled, panningYieldMultiplier, placerFloodRefill, placerStockPercent, sluiceBoxEnabled, sluiceYieldMultiplier | Source/Quarry/RM_QuarrySettings.cs |
-| 170 | River drift by biome | def | R3 | RM_RiverDrift_Arid, RM_RiverDrift_Cold, RM_RiverDrift_Temperate, RM_RiverDrift_Tropical, RM_RiverDrift_Wetland | Defs/Rivers/RM_RiverDrift_Vanilla.xml |
-| 171 | The current carries and sweeps away | set | R1 | bruiseChancePerStep, carryAnimals, carryItems, carryStrangers, centreTicksPerCell, crossingHazardsEnabled, currentStrength, dropChancePerStep, itemDriftFactor, marginTicksPerCell, riverWorksEnabled, scaleWithRiverSize, surfaceCurrentEnabled, takenByLandTraceEnabled, washOffMapEdge, washedAwayMaxDays ... (17 in all) | Source/Rivers/RM_RiversSettings.cs |
-| 172 | Fords and route-finding round currents | set | R2 | fordsEnabled, pathfinderAvoidsCurrents | Source/Rivers/RM_RiversSettings.cs |
-| 173 | Weir pool and catch | set | R3 | bankWorksEnabled, wearRateMultiplier, weirCatchIntervalHours, weirCatchesDrift, weirCatchesFish, weirDriftChance, weirHeldCatchCap, weirPoolLength | Source/Rivers/RM_RiversSettings.cs |
-| 174 | Floods and breaches | set | R4 | breachEnabled, breachHpFraction, breachWashCells, breachWashesCatch, countSeasonalFloods, countTorrentialRainFloods, floodSurgeEnabled | Source/Rivers/RM_RiversSettings.cs |
-| 175 | Stake-line levee | set | R5 | stakeLineLevee, stakeSnapTicksPerCell | Source/Rivers/RM_RiversSettings.cs |
-| 176 | Silt trap | set | R6 | siltIntervalDays, siltRichening | Source/Rivers/RM_RiversSettings.cs |
-| 177 | Ferry rope | set | R7 | ferryEnabled, ferryMaxSpan, ferryRopeGuidesColonists | Source/Rivers/RM_RiversSettings.cs |
+| 89 | Containers in the four looks | def | 51 | RM_Barrel_Futuristic, RM_Barrel_Industrial, RM_Barrel_Modern, RM_Barrel_Scrapper, RM_Bottle_Futuristic, RM_Bottle_Industrial, RM_Bottle_Modern, RM_Bottle_Scrapper, RM_Bucket_Futuristic, RM_Bucket_Industrial, RM_Bucket_Modern, RM_Bucket_Scrapper | Defs/LiquidTypes/ThingDefs/RM_LiquidContainerStyles.xml |
+| 90 | Container art in the four looks | tex | 51 | RM_Barrel.png, RM_Barrel.png, RM_Barrel.png, RM_Barrel.png, RM_Barrel_m.png, RM_Barrel_m.png, RM_Barrel_m.png, RM_Barrel_m.png, RM_Bottle.png, RM_Bottle.png, RM_Bottle.png, RM_Bottle.png, RM_Bottle_m.png, RM_Bottle_m.png, RM_Bottle_m.png, RM_Bottle_m.png, RM_Bucket.png, RM_Bucket.png, RM_Bucket.png, ... (24 in all) | Textures |
+| 91 | Coloured water bottle art | tex | 81 | RM_WaterBottle.png | Textures |
+| 92 | Container art | tex | 48 | RM_Barrel.png, RM_Bottle.png, RM_Bucket.png | Textures |
+| 93 | Container recipes in each material | def | 50 | RM_Make_Barrel_Metal, RM_Make_Barrel_Plasteel, RM_Make_Barrel_Wood, RM_Make_Bottle_Glass, RM_Make_Bottle_Leather, RM_Make_Bottle_Metal, RM_Make_Bucket_Leather, RM_Make_Bucket_Metal, RM_Make_Bucket_Wood | Defs/LiquidTypes/RecipeDefs/RM_ContainerRecipes.xml |
+| 94 | Tank capacity | set | 54 | tankCapacityMultiplier, tankLoopEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 95 | Tall and extra-tall tanks | def | 54 | RM_LiquidTankTall, RM_UniversalCargoTankXTall | Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml, Defs/Machinery/RM_LiquidLogistics.xml |
+| 97 | Tank, cargo tank, pump | def | 52 | RM_LiquidPump, RM_LiquidTank, RM_UniversalCargoTank | Defs/LiquidTypes/ThingDefs/RM_LiquidPump.xml, Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml, Defs/Machinery/RM_LiquidLogi |
+| 98 | Tank and pump art | tex | 52 | RM_LiquidPump.png, RM_LiquidPump.png | Textures |
+| 99 | Pumps | set | 52 | liquidPumpEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 100 | A pump pours into canals | set | 53 | pumpFedSpreadEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 101 | Pump Draw / Pour button | gizmo | 53 | pourMode ? "RMFlow_PumpModePour".Translate() : "RMFlow_PumpModeDraw".Translate() | Source/LiquidTypes/Building_LiquidPump.cs |
+| 102 | Tank jobs | def | 57 | RM_EmptyIntoTankJob, RM_EmptyIntoTankWorkGiver, RM_FillFromTankJob, RM_FillFromTankWorkGiver | Defs/LiquidTypes/JobDefs/RM_LiquidBottleJobs.xml, Defs/LiquidTypes/WorkGiverDefs/RM_LiquidBottleWorkGivers.xml |
+| 103 | Tank mode button | gizmo | 57 | ("RMFlow_TankMode_" + mode).Translate() | Source/LiquidTypes/Building_LiquidTank.cs |
+| 104 | Hoses on; tank modes | set | 57 | enabled, tankLitresPerCycle, tankModesEnabled | Source/Hose/RM_HoseSettings.cs |
+| 105 | Tank looks | def | 55 | RM_LiquidTankTall_Futuristic, RM_LiquidTankTall_Industrial, RM_LiquidTankTall_Modern, RM_LiquidTankTall_Scrapper, RM_LiquidTank_Futuristic, RM_LiquidTank_Industrial, RM_LiquidTank_Modern, RM_LiquidTank_Scrapper | Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml |
+| 106 | Cargo tank looks | def | 56 | RM_UniversalCargoTankXTall_Futuristic, RM_UniversalCargoTankXTall_Industrial, RM_UniversalCargoTankXTall_Modern, RM_UniversalCargoTankXTall_Scrapper, RM_UniversalCargoTank_Futuristic, RM_UniversalCargoTank_Industrial, RM_UniversalCargoTank_Modern, RM_UniversalCargoTank_Scrapper | Defs/LiquidTypes/ThingDefs/RM_LiquidTankStyles.xml |
+| 107 | Hose reel looks | def | 59 | RM_HoseReel_Futuristic, RM_HoseReel_Industrial, RM_HoseReel_Modern, RM_HoseReel_Scrapper | Defs/Hose/RM_HoseReelStyles.xml |
+| 108 | Default hose reel look | set | 59 | defaultLook | Source/Hose/RM_HoseSettings.cs |
+| 109 | Hose reel look art | tex | 59 | Binding.png, Binding.png, Binding.png, Coupling_Bare.png, Coupling_Bare.png, Coupling_Bare.png, EndCap_Bare.png, EndCap_Bare.png, EndCap_Bare.png, Mouth.png, Mouth.png, Mouth.png, Nozzle_Bare.png, Nozzle_Bare.png, Nozzle_Bare.png, Reel_Deployed.png, Reel_Deployed.png, Reel_Deployed.png, Reel_PumpHoo ... (27 in all) | Textures |
+| 110 | Hose reel and its jobs | def | 58 | RM_CarryHoseEnd, RM_HoseOrders, RM_HoseReel, RM_RetractHose | Defs/Hose/RM_HoseJobs.xml, Defs/Hose/RM_HoseReel.xml |
+| 111 | Hose, reel and fitting art | tex | 58 | Binding.png, Coupling_Bare.png, Coupling_Brass.png, EndCap.png, EndCap_Bare.png, Mouth.png, Nozzle.png, Nozzle_Bare.png, Reel_Deployed.png, Reel_PumpHookup.png, Strand_Flat.png, Strand_Plump.png, Strand_Shadow.png | Textures |
+| 112 | Choose style button | gizmo | 60 | "Choose style" | Source/Hose/CompHoseReel.cs |
+| 113 | Hose reel buttons | gizmo | 58 | "Cancel hose order", "DEV: flow through hose", "DEV: lay hose instantly", "DEV: reel in instantly", "Deploy hose", "Free end: " + freeEndRole, "Hose reeled in", "Move hose end", "Retract hose", end == HoseEnd.Nozzle ? "Fitting: nozzle" : end == HoseEnd.EndCap ? "Fitting: end cap" : "Fitting: open" | Source/Hose/CompHoseReel.cs, Source/Hose/RM_MapComponent_Hoses.cs |
+| 114 | Hose behaviour and look | set | 58 | autoResumeDroppedHose, couplingSpacing, dumpLitresPerCycle, fillWobble, freeEndRolesEnabled, handlingTime, maxLength, maxLengthDefaults, minBendRadius, minPlumpDwell, plumpAmount, releaseTicks, slack, tintByContents, transitionTicks, windCellsPerSecond | Source/Hose/RM_HoseSettings.cs |
+| 115 | A hose holds liquid and spills it | set | 62 | hoseHoldsLiquid, hoseLitresPerCell, litresPerFilth | Source/Hose/RM_HoseSettings.cs, Source/Machinery/RM_MachinerySettings.cs |
+| 116 | Spilled liquid and tracked tar | def | 62 | RM_Filth_LiquidSpill, RM_Filth_Tar | Defs/LiquidTypes/ThingDefs/RM_Filth_LiquidSpill.xml, Defs/LiquidTypes/ThingDefs/RM_Filth_Tar.xml |
+| 117 | Tar filth art | tex | 62 | RM_FilthTar_a.png, RM_FilthTar_b.png, RM_FilthTar_c.png, RM_FilthTar_d.png | Textures |
+| 118 | Rigid pipe, its looks and its menu tab | def | 60 | RM_UniversalPipe, RM_UniversalPipe_Futuristic, RM_UniversalPipe_Industrial, RM_UniversalPipe_Modern, RM_UniversalPipe_Scrapper, VCHE_PipeNetworks | Defs/Machinery/RM_LiquidLogistics.xml, Defs/Machinery/RM_PipeNetworksTab.xml, Defs/Machinery/RM_UniversalPipeStyles.xml |
+| 119 | Pipe look art | tex | 60 | UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_Atlas.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png, UniversalPipe_MenuIcon.png | Textures |
+| 120 | Pipes and their default look | set | 60 | pipeDefaultLook, universalPipesEnabled | Source/Machinery/RM_MachinerySettings.cs |
+| 121 | Pipe-net adapters | def | 61 | RM_PipeAdapter_Chemfuel, RM_PipeAdapter_Propane | Patches/Machinery/RM_PipeNetAdapters.xml |
+| 122 | Adapter art | tex | 61 | RM_PipeAdapter_Chemfuel.png, RM_PipeAdapter_Propane.png | Textures |
+| 123 | Adapter mode button | gizmo | 61 | Mode == RM_AdapterMode.Shut ? "RMFlow_AdapterModeShut".Translate() : feedNet ? "RMFlow_AdapterModeFeed".Translate() : "RMFlow_AdapterModeDraw".Translate() | Source/Machinery/CompLiquidPipeAdapter.cs |
+| 124 | Adapters | set | 61 | pipeAdaptersEnabled | Source/Machinery/RM_MachinerySettings.cs |
+| 125 | Liquid theft | set | - | liquidTheftEnabled, liquidTheftGoodwillPerDay, liquidTheftSightRange | Source/Machinery/RM_MachinerySettings.cs |
+| 126 | Liquid theft caught | def | - | RM_LiquidTheftCaught | Defs/Machinery/RM_LiquidTheft.xml |
+| 127 | Drills, taps and stills | def | 73 | RM_DripFilter, RM_FueledStill, RM_LiquidDrill, RM_LiquidTap, RM_SunPanStill | Defs/Drilling/ThingDefs/RM_LiquidDrill.xml, Defs/Machinery/RM_LiquidStills.xml |
+| 128 | Drill and still art | tex | 73 | RM_DripFilter.png, RM_FueledStill.png, RM_LiquidDrill.png, RM_LiquidTap.png, RM_SunPanStill.png | Textures |
+| 129 | Drilling | set | 73 | drillUnitsPerCycle, drillYieldChanceMultiplier, liquidDrillingEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 130 | Four wrecked liquid plants | def | 75 | RM_DesalPlant_Wrecked, RM_DetoxWorks_Wrecked, RM_PumpingStation_Wrecked, RM_TarRefinery_Wrecked | Defs/Machinery/RM_IndustrialLiquidWorks.xml, Defs/Machinery/RM_PumpingStation.xml |
+| 131 | Wreck art | tex | 75 | RM_DesalPlant_Wrecked.png, RM_DetoxWorks_Wrecked.png, RM_PumpingStation_Wrecked.png, RM_TarRefinery_Wrecked.png | Textures |
+| 132 | Desal plant stages | def | 76 | RM_DesalPlant_Kludged, RM_DesalPlant_Repaired | Defs/Machinery/RM_IndustrialLiquidWorks.xml |
+| 133 | Desal stage art | tex | 76 | RM_DesalPlant_Kludged.png, RM_DesalPlant_Repaired.png | Textures |
+| 134 | The other plants, mended | def | 77 | RM_DetoxWorks_Kludged, RM_DetoxWorks_Repaired, RM_PumpingStation_Kludged, RM_PumpingStation_Repaired, RM_TarRefinery_Kludged, RM_TarRefinery_Repaired | Defs/Machinery/RM_IndustrialLiquidWorks.xml, Defs/Machinery/RM_PumpingStation.xml |
+| 135 | Mended plant art | tex | 77 | RM_DetoxWorks_Kludged.png, RM_DetoxWorks_Repaired.png, RM_PumpingStation_Kludged.png, RM_PumpingStation_Repaired.png, RM_TarRefinery_Kludged.png, RM_TarRefinery_Repaired.png | Textures |
+| 136 | Liquid works ruins and converters | set | 75 | converterRateMultiplier, industrialWorksBuildAnywhere, liquidWorksRuinStockEnabled, liquidWorksRuinsEnabled | Source/Machinery/RM_MachinerySettings.cs |
+| 137 | Ruins scattered on new maps | def | - | RM_DesalPlant_RuinScatter, RM_DetoxWorks_RuinScatter, RM_PumpingStation_RuinScatter, RM_TarRefinery_RuinScatter | Defs/Machinery/RM_LiquidWorksScatter.xml |
+| 138 | Reaction vat | def | 74 | RM_ReactionVat, RM_Reaction_TarAcid | Defs/Machinery/Kits/RM_LiquidKits.xml |
+| 139 | Vat art | tex | 74 | RM_ReactionVat.png | Textures |
+| 140 | Liquid kits | set | 74 | fluidResidueEnabled, hotLiquidBurnMultiplier, hotLiquidEnabled, liquidBathRecipesEnabled, liquidReactionsEnabled, reactionRateMultiplier | Source/Machinery/Kits/RM_KitSettings.cs |
+| 141 | Legacy machinery migration | set | - | legacy | Source/Machinery/RM_MachinerySettings.cs |
+| 142 | Hose settings import flag | set | - | hoseSettingsImported | Source/Hose/RM_HoseSettings.cs |
+| 143 | Liquid grounds | def | 78 | RM_AcidDeep, RM_PropaneDeep, RM_SlimeRedDeep, RM_TarDeep, RM_WaterBoilingDeep, RM_WaterBrineDeep | Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml, Defs/LiquidTypes/TerrainDefs/RM_Propane.xml, Defs/LiquidTypes/TerrainDefs |
+| 144 | Six more liquid grounds | def | 79 | RM_AmmoniaDeep, RM_CoolantDeep, RM_WaterBrackishDeep, RM_WaterFrigidDeep, RM_WaterMineralDeep, RM_WaterPoisonedDeep | Defs/LiquidTypes/TerrainDefs/RM_Ammonia.xml, Defs/LiquidTypes/TerrainDefs/RM_Coolant.xml, Defs/LiquidTypes/TerrainDefs/R |
+| 145 | Odd grounds | def | 80 | RM_Churnmud, RM_FuelSapDeep, RM_IchorDeep, RM_OozeDeep, RM_ReactionLiquorDeep, RM_TarGlass | Defs/LiquidTypes/TerrainDefs/RM_Churnmud.xml, Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml, Defs/LiquidTypes/TerrainDefs/ |
+| 146 | Boiling shallows | def | 83 | RM_WaterBoilingShallow | Defs/LiquidTypes/TerrainDefs/RM_WaterBoiling.xml |
+| 147 | Shallow slime edges | def | 46 | RM_SlimeGreenShallow, RM_SlimeWhiteShallow, RM_SlimeYellowShallow | Defs/LiquidTypes/TerrainDefs/RM_SlimeGreen.xml, Defs/LiquidTypes/TerrainDefs/RM_SlimeWhite.xml, Defs/LiquidTypes/Terrain |
+| 148 | Shallow rims | def | 78 | RM_AcidShallow, RM_PropaneShallow, RM_SlimeRedShallow, RM_TarShallow, RM_WaterBrineShallow | Defs/LiquidTypes/TerrainDefs/RM_AcidWater.xml, Defs/LiquidTypes/TerrainDefs/RM_Propane.xml, Defs/LiquidTypes/TerrainDefs |
+| 149 | Shallow rims | def | 79 | RM_AmmoniaShallow, RM_CoolantShallow, RM_WaterBrackishShallow, RM_WaterFrigidShallow, RM_WaterMineralShallow, RM_WaterPoisonedShallow | Defs/LiquidTypes/TerrainDefs/RM_Ammonia.xml, Defs/LiquidTypes/TerrainDefs/RM_Coolant.xml, Defs/LiquidTypes/TerrainDefs/R |
+| 150 | Shallow rims | def | 80 | RM_FuelSapShallow, RM_IchorShallow, RM_OozeShallow, RM_ReactionLiquorShallow | Defs/LiquidTypes/TerrainDefs/RM_FuelSap.xml, Defs/LiquidTypes/TerrainDefs/RM_Ichor.xml, Defs/LiquidTypes/TerrainDefs/RM_ |
+| 151 | Liquid registry and named world bodies (the Scald, the Grey Sea...) | def | - | RM_Body_GreySea, RM_Body_TheChill, RM_Body_TheScald, RM_Body_TwilightSea, RM_Liquid_AcidWater, RM_Liquid_BoilingWater, RM_Liquid_Brine, RM_Liquid_Chemfuel, RM_Liquid_FreshWater, RM_Liquid_IcyWater, RM_Liquid_Lava, RM_Liquid_Propane, RM_Liquid_ReactionLiquor, RM_Liquid_SaltWater, RM_Liquid_SlimeGreen ... (20 in all) | Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml, Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml |
+| 152 | Liquid registry rows added by a patch (astrofuel) | def | - | RM_Liquid_Astrofuel | Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml |
+| 153 | Typed liquid shores | def | - | RM_LiquidShores | Defs/LiquidTypes/GenStepDefs/RM_GenStep_LiquidShores.xml |
+| 154 | Typed shores | set | - | typedLiquidShoresEnabled | Source/RimMandrakeFlowWorksMod.cs |
+| 155 | Hot liquid warms the air | set | 83 | liquidHeatPushEnabled, liquidHeatStrength | Source/RimMandrakeFlowWorksMod.cs |
+| 156 | Coloured waters and slimes | def | 81 | RM_Slime_Amber, RM_Slime_Chalk, RM_Slime_Rust, RM_Slime_Verdigris, RM_Slime_Violet, RM_WaterBottle_Amber, RM_WaterBottle_Chalk, RM_WaterBottle_Rust, RM_WaterBottle_Verdigris, RM_WaterBottle_Violet, RM_Water_Amber, RM_Water_Chalk, RM_Water_Rust, RM_Water_Verdigris, RM_Water_Violet | Defs/ManyWaters/TerrainDefs/RM_ColoredWater.xml, Patches/RM_ColoredWaterBottles_Patch.xml |
+| 157 | Coloured river steam | def | - | RM_Fleck_Steam_Amber, RM_Fleck_Steam_Chalk, RM_Fleck_Steam_Rust, RM_Fleck_Steam_Verdigris, RM_Fleck_Steam_Violet | Defs/ManyWaters/FleckDefs/RM_ColoredSteam.xml |
+| 158 | River steam | set | - | puffRateMultiplier, riverSteamEnabled | Source/ManyWaters/RiverSteamSettings.cs |
+| 159 | Deep sand | def | 82 | RM_DeepSand | Defs/ManyWaters/TerrainDefs/RM_DeepSand.xml |
+| 160 | Swale | def | 84 | RM_Swale | Defs/Canals/ThingDefs/FlowWorks_ThingDefs.xml |
+| 161 | Swale art | tex | 84 | RM_Swale.png | Textures |
+| 162 | Swale | set | 84 | swaleEnabled, swaleRateMultiplier | Source/RimMandrakeFlowWorksMod.cs |
+| 163 | Ford stones | def | 87 | RM_FordStones, RM_Fordable | Defs/Rivers/RM_FordStones.xml |
+| 164 | Ford stone art | tex | 87 | RM_FordStones.png | Textures |
+| 165 | Ferry rope art (drawn only between paired posts) | tex | R7 | RM_FerryRope.png | Textures |
+| 166 | Sluice box and panning art | tex | 85 | RM_PanningSpot.png, RM_SluiceBox.png | Textures |
+| 167 | Bank works art | tex | 88 | RM_BankStake.png, RM_BankWeir.png, RM_FerryPost.png, RM_SiltTrap.png | Textures |
+| 168 | Bank works | def | 88 | RM_BankStake, RM_BankWeir, RM_FerryPost, RM_SiltTrap | Defs/Rivers/RM_BankWorks.xml |
+| 169 | Sluice box and panning | def | 85 | RM_PanForPlacer, RM_PanForPlacerJob, RM_PanningSpot, RM_SluiceBox | Defs/Rivers/RM_PlacerWorks.xml |
+| 170 | River placer minerals | def | R8 | RM_PlacerPool_Vanilla | Defs/Rivers/RM_PlacerWorks.xml |
+| 171 | Placer mining | set | R8 | panningEnabled, panningYieldMultiplier, placerFloodRefill, placerStockPercent, sluiceBoxEnabled, sluiceYieldMultiplier | Source/Quarry/RM_QuarrySettings.cs |
+| 172 | River drift by biome | def | R3 | RM_RiverDrift_Arid, RM_RiverDrift_Cold, RM_RiverDrift_Temperate, RM_RiverDrift_Tropical, RM_RiverDrift_Wetland | Defs/Rivers/RM_RiverDrift_Vanilla.xml |
+| 173 | The current carries and sweeps away | set | R1 | bruiseChancePerStep, carryAnimals, carryItems, carryStrangers, centreTicksPerCell, crossingHazardsEnabled, currentStrength, dropChancePerStep, itemDriftFactor, marginTicksPerCell, riverWorksEnabled, scaleWithRiverSize, surfaceCurrentEnabled, takenByLandTraceEnabled, washOffMapEdge, washedAwayMaxDays ... (17 in all) | Source/Rivers/RM_RiversSettings.cs |
+| 174 | Fords and route-finding round currents | set | R2 | fordsEnabled, pathfinderAvoidsCurrents | Source/Rivers/RM_RiversSettings.cs |
+| 175 | Weir pool and catch | set | R3 | bankWorksEnabled, wearRateMultiplier, weirCatchIntervalHours, weirCatchesDrift, weirCatchesFish, weirDriftChance, weirHeldCatchCap, weirPoolLength | Source/Rivers/RM_RiversSettings.cs |
+| 176 | Floods and breaches | set | R4 | breachEnabled, breachHpFraction, breachWashCells, breachWashesCatch, countSeasonalFloods, countTorrentialRainFloods, floodSurgeEnabled | Source/Rivers/RM_RiversSettings.cs |
+| 177 | Stake-line levee | set | R5 | stakeLineLevee, stakeSnapTicksPerCell | Source/Rivers/RM_RiversSettings.cs |
+| 178 | Silt trap | set | R6 | siltIntervalDays, siltRichening | Source/Rivers/RM_RiversSettings.cs |
+| 179 | Ferry rope | set | R7 | ferryEnabled, ferryMaxSpan, ferryRopeGuidesColonists | Source/Rivers/RM_RiversSettings.cs |
 
 ## Features with no station (and why)
 
@@ -231,4 +240,4 @@ Inventory: 316 defs, 226 Mod Settings fields, 32 gizmo labels, 153 textures = 72
 
 ## Stations whose feature is shown by setup alone
 
-These stations exist for a feature-sheet FEATURE or a staged mechanism the rules above do not name by an inventory item (a mechanism made of code paths, not defs): 4 flow_no_mix, 15 dig_slows, 30 pit_pocket, 31 pit_cover, 62 hose_reels_laid, 63 hose_states, 64 hose_grid, 65 hose_maze, 66 hose_maze_walled, 67 hose_relay, 68 hose_deploy_by_hand, 69 hose_dropped, 70 hose_into_pond, 71 hose_their_tank, 85 land_settings.
+These stations exist for a feature-sheet FEATURE or a staged mechanism the rules above do not name by an inventory item (a mechanism made of code paths, not defs): 4 flow_no_mix, 15 dig_slows, 30 pit_pocket, 31 pit_cover, 63 hose_reels_laid, 64 hose_states, 65 hose_grid, 66 hose_maze, 67 hose_maze_walled, 68 hose_relay, 69 hose_deploy_by_hand, 70 hose_dropped, 71 hose_into_pond, 72 hose_their_tank, 86 land_settings.
