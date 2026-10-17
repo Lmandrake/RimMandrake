@@ -685,6 +685,15 @@ namespace RimMandrake.Cauldron.SelfTest
             Check(cells.Neighbour(0, -1, 0) == -1 && cells.Neighbour(3, 1, 0) == -1 && cells.Neighbour(0, 1, 1) == 5 && cells.Neighbour(11, 0, 1) == -1, "Neighbour bounds and indexing (z * width + x)");
             cells.Add(5, 10); cells.Density[6] = 0; cells.Recount(); Check(cells.NonZero == 1, "Recount");
             cells.Clear(); Check(cells.NonZero == 0 && cells.Total() == 0, "Clear");
+            // CAULDRON_GAS_FIX_SEALED_CORNER_LEAK: a diagonal drift needs both cardinal side cells open (3x3, heading 1 = +x+z).
+            var corner = new RM_VentGasCells(3, 3); corner.Add(0, 100);
+            Check(!corner.Drift(0, 1, i => i != 1 && i != 3, null) && corner.Density[4] == 0 && corner.Density[0] == 100, "diagonal drift through a sealed corner");
+            Check(!corner.Drift(0, 1, i => i != 1, null) && corner.Density[4] == 0, "diagonal drift past one wall side");
+            Check(corner.Drift(0, 1, i => true, null) && corner.Density[4] == 25 && corner.Density[0] == 75, "open diagonal drift still moves a quarter");
+            // CAULDRON_GAS_FIX_INT_WRAP_LATENT: a huge Add clamps to 255, never wraps negative to 0.
+            var big = new RM_VentGasCells(2, 1); big.Add(0, 10);
+            int bo = big.Add(0, int.MaxValue);
+            Check(big.Density[0] == 255 && bo > 0 && big.NonZero == 1, $"Add(int.MaxValue) clamps (got {big.Density[0]}, overflow {bo})");
         }
 
         // ════════════════════════ units ════════════════════════

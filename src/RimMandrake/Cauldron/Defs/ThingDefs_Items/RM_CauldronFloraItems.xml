@@ -4,7 +4,7 @@
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_TsevrixPulp</defName>
     <label>tsevrix pulp</label>
-    <description>Starchy, filling pulp from a tsevrix bladder, sulfur-yellow and sweating condensate. The bladder holds dissolved vent volatiles, so eaten raw it poisons. Roast it at a stove or campfire and the volatiles drive off.</description>
+    <description>Starchy, filling pulp from a tsevrix bladder, sulfur-yellow and sweating condensate. The bladder holds dissolved vent volatiles, so eaten raw it poisons. Roast it at a stove and the volatiles drive off.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/RM_TsevrixPulp</texPath>
@@ -50,7 +50,7 @@
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <preferability>MealSimple</preferability>
-      <tasteThought>AteRawFood</tasteThought>
+      <tasteThought></tasteThought>   <!-- cooked: clears PlantFoodRawBase's AteRawFood, as Core RawBerries does -->
     </ingestible>
     <comps>
       <li Class="CompProperties_Rottable">
