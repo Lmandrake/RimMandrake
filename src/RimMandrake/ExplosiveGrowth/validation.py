@@ -528,6 +528,18 @@ def _arm_charge(t, plant_def, x, z, growth=1.0):
 
 # --------------------------------------------------------------------------- boot / static
 
+def _startup_lines_from_disk():
+    """(lines, errors) of this launch's `[RM ExplosiveGrowth]` Player.log lines; (None, why) if unreadable."""
+    try:
+        import game_paths                                          # noqa: E402 - Utils is on sys.path
+        with open(game_paths.PLAYER_LOG, "r", encoding="utf-8", errors="replace") as f:
+            rows = [l.rstrip("\n") for l in f if "[RM ExplosiveGrowth]" in l]
+    except Exception as ex:                                        # noqa: BLE001 - reported as UNMEASURED
+        return None, "%s: %s" % (type(ex).__name__, ex)
+    errs = [l for l in rows if re.search(r"error|exception|failed", l, re.I) and "failed to build" not in l.lower()]
+    return rows, errs
+
+
 @suite.chain("boot_defs")
 def boot_defs(t):
     """Def-level facts that need no map: the engine started clean and every patch is attached."""
@@ -537,10 +549,19 @@ def boot_defs(t):
         if _live(t):
             _ok(r, "drain_log")
             msgs = [m.get("text", "") for m in (r.get("messages") or [])]
-            if not msgs:
-                _unmeasured(t, "no [RM ExplosiveGrowth] startup line in the log buffer (scrolled away or "
-                               "the 10,000-message cap): cannot tell clean from absent")
             bad = [m for m in ((e or {}).get("messages") or [])]
+            if not msgs:
+                # HARNESS 2026-10-16: the startup line scrolled out of the in-game buffer. Player.log on disk is
+                # per launch (Unity rotates the last one to Player-prev.log) and holds every startup line.
+                disk, bad_disk = _startup_lines_from_disk()
+                if disk is None:
+                    _unmeasured(t, "no [RM ExplosiveGrowth] startup line in the log buffer and Player.log on disk is "
+                                   "not readable (%s): cannot tell clean from absent" % bad_disk)
+                if not disk:
+                    _unmeasured(t, "no [RM ExplosiveGrowth] startup line in the log buffer or in this launch's "
+                                   "Player.log: cannot tell clean from absent")
+                msgs, bad = disk, bad + bad_disk
+                _note(t, "startup lines read from Player.log on disk", {"lines": len(disk)})
             if bad:
                 _fail("[RM ExplosiveGrowth] logged an error: %s" % str(bad[0])[:300])
             text = "\n".join(msgs)
@@ -871,7 +892,7 @@ def suppression_off(t):
 
 # --------------------------------------------------------------------------- the other tops (donor plants)
 
-def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_off, why):
+def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_off, why, pre=None):
     """Fire the donor plant's top directly (no charge needed). `observe(t, x, z)` returns a dict;
     `expect_on`/`expect_off` map a key to a predicate (True = must hold)."""
     x, z = t.anchor
@@ -880,6 +901,9 @@ def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_
             _prep(t, 40)
             _donor(t, donor)
             _place(t, donor, x, z, 1.0)
+            # ARM ISOLATION (LIVE 2026-10-16): the report's counters are cumulative for the session, so the ON arm's
+            # leftovers read as the OFF arm's. `pre` takes the counters BEFORE this arm fires; observers report deltas.
+            t._eg_base = pre(t) if pre else None
             with _arm(t, **arm):
                 _act(t, P_FIRE, x, z)
                 obs = observe(t, x, z)
@@ -946,7 +970,9 @@ def top_rupture(t):
     def obs(t, x, z):
         o = _obs_common(t, x, z, ["Filth_Blood"])
         o["plant_at_cell"] = _count(t, "AB_AlienGrass", "%d,%d,1,1" % (x, z))
-        o["ruptures"] = _report(t)["head"].get("ruptures")
+        base = getattr(t, "_eg_base", None) or {}
+        now = _report(t)["head"].get("ruptures")
+        o["ruptures"] = (now - base.get("ruptures", 0)) if isinstance(now, int) and isinstance(base.get("ruptures", 0), int) else now
         _remove_pawns_in(t.bridge_call, "%d,%d,14,14" % (x - 7, z - 7))
         return o
     _top_chain(t, "rupture_opens_a_cloud_zone", "rupture_off_falls_back_to_churn", "AB_AlienGrass", "ruptureEnabled", obs,
@@ -955,7 +981,8 @@ def top_rupture(t):
                 "ruptures": ((lambda v: v == 1), "a Rupture registers one cloud zone")},
                {"ruptures": ((lambda v: v == 0), "ruptureEnabled=false falls back to Churn: no cloud zone"),
                 "Filth_Blood": ((lambda v: v == 0), "ruptureEnabled=false falls back to Churn: no blood")},
-               "RM_TopResolver.Rupture / AddRupture")
+               "RM_TopResolver.Rupture / AddRupture",
+               pre=lambda t: {"ruptures": _report(t)["head"].get("ruptures", 0)})
 
 
 @suite.chain("top_flush")
