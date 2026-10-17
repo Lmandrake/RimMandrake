@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY design §3. Insert tags read from Core 1.6 ThinkTreeDefs (Humanlike.xml:123
+  Humanlike_PostDuty, :383 Humanlike_PostMain; Animal.xml:99 Animal_PreMain, also reached by Insect.xml). Humanlike_PostDuty
+  is the tag DBH Lite's own ConditionalThirst uses (Lite 1.6/Defs/ThinkTreeDefs/SubTrees_Misc.xml). Each giver returns
+  nothing unless RM_Thirst is live and below 30%, so in Dbh mode these are inert.
+-->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThirstHumanlike</defName>
+    <insertTag>Humanlike_PostDuty</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>SatisfyingNeeds</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_Drink" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <ThinkTreeDef>
+    <defName>RM_ThirstAnimal</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>SatisfyingNeeds</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_AnimalDrink" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <ThinkTreeDef>
+    <defName>RM_ThirstPackBottles</defName>
+    <insertTag>Humanlike_PostMain</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalColonist">
+      <subNodes>
+        <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_PackBottles" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

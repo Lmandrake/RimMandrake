@@ -114,8 +114,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// it yet, so it does not count as a form.</summary>
         public List<string> cuisineTags;
 
-        /// <summary>Distilled/Potable/Fouled/Toxic -- the absorbed DBH
-        /// thirst-chain quality (LIQUID_THIRST_CHAIN_1).</summary>
+        /// <summary>Distilled/Potable/Fouled/Toxic: the water quality FlowWorks' thirst reads (hydrate factor,
+        /// poisoning, toxic buildup; Thirst/RM_ThirstUtility, design/RimMandrake/thirst_bottles_design_2026-10-16.md §3).
+        /// A row with it set is drinkable: its bottle gets an ingestible block.</summary>
         public LiquidThirstQuality? thirstQuality;
 
         /// <summary>VE PipeSystem net name. String, not a hard type

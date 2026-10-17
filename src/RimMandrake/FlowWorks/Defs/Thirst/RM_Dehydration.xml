@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY design §2. Severity is driven by Need_RM_Thirst (RM_ThirstMath): +0.30 / day while
+  thirst is empty, -0.6 / day while it is above 30%; lethal at 1.0 (about 3.3 days at zero, OQ-3 "death about 3 days after
+  empty"). The stage shape mirrors vanilla Malnutrition and DBH's dehydration. A pawn or animal that dies of thirst dies OF
+  THIS HEDIFF, so its death names the cause ("no animal or pawn ever vanishes without a readable sign").
+-->
+<Defs>
+  <HediffDef>
+    <defName>RM_Dehydration</defName>
+    <label>dehydration</label>
+    <description>Not enough water. It starts as a headache and dry mouth and ends in collapse and death. A drink and a little time reverse it.</description>
+    <lethalSeverity>1</lethalSeverity>
+    <scenarioCanAdd>true</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>trivial</label>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.05</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.2</minSeverity>
+        <label>minor</label>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.10</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.05</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>moderate</label>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.20</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.10</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>severe</label>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.30</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.20</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.8</minSeverity>
+        <label>extreme</label>
+        <lifeThreatening>true</lifeThreatening>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.45</offset></li>
+          <li><capacity>Moving</capacity><offset>-0.40</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

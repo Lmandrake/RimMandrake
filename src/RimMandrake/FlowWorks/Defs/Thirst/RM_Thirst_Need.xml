@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §2, OQ-1..OQ-5 ruled by
+  the owner by card 2026-10-16). FlowWorks' own thirst. Always loads; which pawns hold it is decided in C#
+  (RM_Patch_ShouldHaveNeed on Pawn_NeedsTracker.ShouldHaveNeed): nobody while Dubs Bad Hygiene's thirst runs
+  (DBHThirst + its Thirst add-on or full DBH), nobody with the setting off, never mechanoids, droids, anomaly entities or a
+  race/gene carrying RM_ThirstExemptExtension. All animals get it (OQ-5). Rates are C# (RM_ThirstMath), not fallPerDay.
+-->
+<Defs>
+  <NeedDef>
+    <defName>RM_Thirst</defName>
+    <needClass>RimMandrake.FlowWorks.Thirst.Need_RM_Thirst</needClass>
+    <label>thirst</label>
+    <description>Water. Empty in about a day and a quarter, faster in heat and at hard labour. At empty, dehydration sets in and kills in about three days. Drink from a bottle, a tank, or straight from a pond or river.</description>
+    <minIntelligence>Animal</minIntelligence>
+    <baseLevel>0.8</baseLevel>
+    <listPriority>405</listPriority>
+    <showForCaravanMembers>true</showForCaravanMembers>
+  </NeedDef>
+</Defs>

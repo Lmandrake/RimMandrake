@@ -164,6 +164,11 @@ SETTINGS = {
     "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": {
         "riverColorsEnabled": True,
     },
+    # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (2026-10-16, design §6): defaults = the ruled behaviour (animals ON, OQ-5)
+    "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": {
+        "thirstEnabled": True, "thirstRateMultiplier": 1.0, "thirstHeatScaling": True, "animalsGetThirst": True,
+        "drinkFromTerrain": True, "waterQualityEffects": True, "dbhBottleBridge": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -176,6 +181,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Machinery.Logistics.RM_SluiceGateSettings": os.path.join("Machinery", "Logistics", "RM_SluiceGateSettings.cs"),
     "RimMandrake.FlowWorks.MapControls.RM_MapControlSettings": os.path.join("MapControls", "RM_MapControlSettings.cs"),
     "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": os.path.join("RiverColors", "RM_RiverColorsSettings.cs"),
+    "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": os.path.join("Thirst", "RM_ThirstSettings.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
