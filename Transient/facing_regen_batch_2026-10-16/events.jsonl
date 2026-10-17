@@ -344,3 +344,44 @@
 {"key": "things/pawn/animal/rm_skarrid/rm_skarrid", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:01:03"}
 {"key": "things/pawn/animal/rm_skreth/rm_skreth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:01:05"}
 {"key": "things/pawn/animal/rm_sloghog/rm_sloghog", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:01:05"}
+{"event": "publish", "n_paths": 31, "result": "close with: rimflow close <ID> --sha 16e2cc14d3ba", "at": "2026-10-16T18:01:15"}
+{"key": "things/pawn/animal/rm_sparkleechgrub/rm_sparkleechgrub", "event": "done", "seconds": 183, "at": "2026-10-16T18:04:18"}
+{"key": "things/pawn/animal/rm_sulleth/rm_sulleth", "event": "done", "seconds": 153, "at": "2026-10-16T18:06:51"}
+{"key": "things/pawn/animal/rm_suulk/rm_suulk", "event": "done", "seconds": 114, "at": "2026-10-16T18:08:44"}
+{"key": "things/pawn/animal/rm_thornbug/rm_thornbug", "event": "done", "seconds": 102, "at": "2026-10-16T18:10:27"}
+{"key": "things/pawn/animal/rm_thrummelbroodmother/rm_thrummelbroodmother", "event": "done", "seconds": 100, "at": "2026-10-16T18:12:07"}
+{"key": "things/pawn/animal/rm_thrummelwarden/rm_thrummelwarden", "event": "done", "seconds": 61, "at": "2026-10-16T18:13:08"}
+{"key": "things/pawn/animal/rm_thurrock/rm_thurrock", "event": "done", "seconds": 112, "at": "2026-10-16T18:15:00"}
+{"key": "things/pawn/animal/rm_thuum/rm_thuum", "event": "done", "seconds": 191, "at": "2026-10-16T18:18:11"}
+{"key": "things/pawn/animal/rm_tunnelsnake/rm_tunnelsnake", "event": "done", "seconds": 43, "at": "2026-10-16T18:18:54"}
+{"key": "things/pawn/animal/rm_utikka/rm_utikka", "event": "done", "seconds": 56, "at": "2026-10-16T18:19:49"}
+{"key": "things/pawn/animal/rm_vaulisk/rm_vaulisk", "event": "done", "seconds": 100, "at": "2026-10-16T18:21:29"}
+{"key": "things/pawn/animal/rm_veessa/rm_veessa", "event": "done", "seconds": 101, "at": "2026-10-16T18:23:10"}
+{"key": "things/pawn/animal/rm_vekka/rm_vekka", "event": "done", "seconds": 44, "at": "2026-10-16T18:23:54"}
+{"key": "things/pawn/animal/rm_vennick/rm_vennick", "event": "done", "seconds": 139, "at": "2026-10-16T18:26:13"}
+{"key": "things/pawn/animal/rm_vexxiss/rm_vexxiss", "event": "done", "seconds": 67, "at": "2026-10-16T18:27:20"}
+{"key": "things/pawn/animal/rm_vosska/rm_vosska", "event": "done", "seconds": 202, "at": "2026-10-16T18:30:41"}
+{"key": "things/pawn/animal/rm_vozzik/rm_vozzik", "event": "done", "seconds": 58, "at": "2026-10-16T18:31:39"}
+{"key": "things/pawn/animal/rm_vrekka/rm_vrekka", "event": "done", "seconds": 107, "at": "2026-10-16T18:33:26"}
+{"key": "things/pawn/animal/rm_vurra/rm_vurra", "event": "done", "seconds": 161, "at": "2026-10-16T18:36:08"}
+{"key": "things/pawn/animal/rm_wuum/rm_wuum", "event": "done", "seconds": 58, "at": "2026-10-16T18:37:06"}
+{"key": "things/pawn/animal/rm_sparkleechgrub/rm_sparkleechgrub", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:11"}
+{"key": "things/pawn/animal/rm_sulleth/rm_sulleth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:15"}
+{"key": "things/pawn/animal/rm_suulk/rm_suulk", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:17"}
+{"key": "things/pawn/animal/rm_thornbug/rm_thornbug", "event": "installed", "facings": ["south"], "at": "2026-10-16T18:37:19"}
+{"key": "things/pawn/animal/rm_thrummelbroodmother/rm_thrummelbroodmother", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:23"}
+{"key": "things/pawn/animal/rm_thrummelwarden/rm_thrummelwarden", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:26"}
+{"key": "things/pawn/animal/rm_thurrock/rm_thurrock", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:28"}
+{"key": "things/pawn/animal/rm_thuum/rm_thuum", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:32"}
+{"key": "things/pawn/animal/rm_tunnelsnake/rm_tunnelsnake", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:33"}
+{"key": "things/pawn/animal/rm_utikka/rm_utikka", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:35"}
+{"key": "things/pawn/animal/rm_vaulisk/rm_vaulisk", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:36"}
+{"key": "things/pawn/animal/rm_veessa/rm_veessa", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:41"}
+{"key": "things/pawn/animal/rm_vekka/rm_vekka", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:43"}
+{"key": "things/pawn/animal/rm_vennick/rm_vennick", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:45"}
+{"key": "things/pawn/animal/rm_vexxiss/rm_vexxiss", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:47"}
+{"key": "things/pawn/animal/rm_vosska/rm_vosska", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:52"}
+{"key": "things/pawn/animal/rm_vozzik/rm_vozzik", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:37:54"}
+{"key": "things/pawn/animal/rm_vrekka/rm_vrekka", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:37:59"}
+{"key": "things/pawn/animal/rm_vurra/rm_vurra", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:38:04"}
+{"key": "things/pawn/animal/rm_wuum/rm_wuum", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:38:05"}
