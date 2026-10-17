@@ -35,7 +35,33 @@ drinkingReserveLitres, filledBottlesPerColonist, lastResortDrinking, roughDrinkP
 sanguophageBloodQuenches, snowGathering); also "clean mock run not green" in selftest_extensions. Claimable, not done.
 
 ## 3. Code review of walk-touched files
-pending
+Reachability: all below are live (deployed patches/DLL sources, suite/driver scripts). The Transient one-shot probes
+(`Transient/review_walk_2026-10-17/probes/*.py`, `swbestiary_plan.py`) were NOT reviewed: one-off walk probes, not re-run code.
+Full-file reviewed and marked CLEAN (fixes committed first: dc45a71648, 405501d194):
+- `WildAnimals_Greentide.xml`, `RotSpecies_WoundSharing.xml`: no findings (FindMod names checked against the installed
+  About.xml names; every AA_ / VFEI2_Swarmling target def exists in the real mods; the null-hediff GrantHediff is inspect-only).
+- `RM_VenomvineIslands.cs` (LeaningScrub, DLL rebuilt): ProofIslands read the start clearance but never judged it (now FAILs
+  when the step lays vine inside it); ProofCreep "on" could FAIL a correct mod on a map already at the cap (now lifts the cap).
+- `RM_ExplosiveGrowthProof.cs`: no significant findings.
+- `ExplosiveGrowth/validation.py`: scope_native_only claimed the RETIRED toggle `applyInOtherBiomes` (now
+  nativesSameRuleInOtherBiomes, per the walk doc).
+- `JawaBenchFlowWorksNorthstarTools.cs`: no findings (every reflected member still exists).
+- `northstar_driver/preflight.py`: no findings.
+- `stage_extra.py`: weirs' plant clear passed `category=` (the tool takes `categories=`); stale UNVERIFIED docstring corrected.
+- `sprinkler_live.py`: a failed colonist spawn read as a MOD FAIL (now raises); dead `until_pulse(budget)` arg removed.
+- `thirst_live.py`: ticks() overshot n after a governor stop (T3 reads a rate over exactly n ticks); T15R now UNMEASURED unless
+  B's search lies inside A's mark window.
+- FlowWorks `validation.py`: the C# SelfTest (~80 s) ran once per chain, ten times a suite; now memoised per process.
+- Mine: RM_ThirstUtility.cs, ThirstChecks.cs, driver_stamp.py (now credits only when the LOADED MVID matches the file:
+  jawa/running_mods' sha256 is the file on disk now), selftest_flowworks_driver_rows.py.
 
 ## 4. JawaBenchPawnKitTools.cs uncommitted diff
-pending
+One line of the `jawa/give_ability` [Tool] Description string (line 221): "are not removed by jawa/revoke -" became "are not
+removed by any revoke call -". Text only (the old wording named a jawa/revoke tool that does not exist; the same sentence
+already says "there is no revoke tool yet"). No behaviour change. Not committed, as instructed; the deployed companion carries it.
+
+## Owed
+- Deploy FlowWorks + LeaningScrub DLLs (game RUNNING now; FOUNDRY holds the bridge).
+- Live: `thirst_live.py --only T15R` (two calm reloads), then a T15 rerun; any thirst/sprinkler run now lands in
+  northstar/ and is read by validation.py at the current mod hash + loaded DLL.
+- Claimable: settings_registry.py lacks the 8 new RM_ThirstSettings fields (selftest_extensions / selftest_flowworks_northstar RED).
