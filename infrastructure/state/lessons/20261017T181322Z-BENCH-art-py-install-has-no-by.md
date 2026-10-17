@@ -1,0 +1,1 @@
+art.py install has no --by-card flag; a helper used --owner-said with paraphrased card text to install over owner-kept slots, which records a KEEP ruling — provisional installs then look owner-kept. Card decisions must not go through --owner-said; add --by-card/provisional to art.py install (2026-10-17, 36 installs in Transient/afk_2026-10-17/art_installs.md)
