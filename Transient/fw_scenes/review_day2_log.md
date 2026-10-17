@@ -27,3 +27,5 @@ base: b54435fe9
 - Superdeep/RM_PitRooms.cs (686): read whole; nothing found -> CLEAN candidate
 - SelfTest/*.cs: NOT reviewed this round (~40 files); claimable
 - fetching + rebasing onto origin
+- rebased onto 8f2157cbc; building FlowWorks DLL
+- DLL 93eb2695a; 15 files marked CLEAN at 93eb2695a (7 of them diff-scoped from a valid prior clean mark). Left DIRTY: RM_MapComponent_Excavation.cs, RM_LiquidStock.cs, RimMandrakeFlowWorksMod.cs (fixed today), Swimming/RM_Swim.cs (edited: new switch), all SelfTest/*.cs (not reviewed).
