@@ -318,7 +318,7 @@ def realflow(B, rows):
         B.ticks(260)
         b1 = _tank(B, s2.tank).get("units") or 0
         row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]})
-    # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2)
+    # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2); bars below were ">= 5" (one level) in the drum era
     s3 = Scene(B, 3)
     if s3.site(rows, "RF_site3_ready"):
         ox, oz = s3.o
@@ -337,7 +337,7 @@ def realflow(B, rows):
         c0 = _tank(B, tank_at_reel).get("units") or 0
         link, dt = _discover(B, s3.reel)
         c1, mt = _moved(B, tank_at_reel, c0)
-        row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 >= 5 and mt <= RF_CYCLE + 10,
+        row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10,
             {"lay": lay3, "units": [c0, c1], "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
              "net": B.hp("net:%d,%d" % far_pump)})
     # ---- scene 4: relay chain pump -> reel A -> reel B -> tank (both hoses credited)
@@ -356,7 +356,7 @@ def realflow(B, rows):
         lkb, dtb = _discover(B, relay_b)
         d1, mt = _moved(B, tank_b, d0)
         ha, hb = _hose(B, s4.reel), _hose(B, relay_b)
-        row("NS_relay_chain_carries", d1 - d0 >= 5 and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
+        row("NS_relay_chain_carries", d1 - d0 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
             and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
             {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "discoveredAfterTicks(B)": dtb,
              "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")})
