@@ -1749,6 +1749,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("      " + r);
                 Assert(r.StartsWith("OK"), r);
             });
+            Case("FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL_seam_start_covers_network", () =>
+            {
+                string r = FlowKernelFuzz.SeamSlotCoversNetwork();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("FLOW_ORDER_EXTERNAL_INPUT_1_part2_oversized_network_exchanges_across_seams", () =>
             {
                 string r = FlowKernelFuzz.OversizedNetworkExchanges();

@@ -431,6 +431,19 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: far end pump-fed {pump}, drill-fed {drill} (want 1, 1; 0 = the inlet keeps its unit, 1,0,0,0 stall)";
 		}
 
+		/// <summary>FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL: over n pulses the seam start visits all n cells, for every n
+		/// including multiples of 7919 (the old stride pinned n = 7919 to cell 0).</summary>
+		public static string SeamSlotCoversNetwork()
+		{
+			foreach (int n in new[] { 1, 2, 3, 7, 200, 6001, 7918, 7919, 7920, 15838, 23757, 39595 })
+			{
+				var seen = new HashSet<int>();
+				for (long p = 0; p < n; p++) seen.Add(RM_FlowKernel.SeamSlot(p + 12345L * n, n));
+				if (seen.Count != n) return $"BROKEN: n={n}: {n} pulses visit only {seen.Count} distinct seam starts";
+			}
+			return "OK: seam start visits every cell over n pulses (n incl. 7919, 15838, 23757, 39595)";
+		}
+
 		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies, and a channel touching both
 		/// never mixes them: once a channel cell is wet its fluid never changes, and the cell over the water really fills
 		/// with water (so the scene reaches the kernel). Returns "OK ..." or "BROKEN ...".</summary>

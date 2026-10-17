@@ -257,8 +257,7 @@ namespace RimMandrake.FlowWorks
 			component.AddRange(networkCells);
 			ComputeFlowOrder();
 			// A large odd stride spreads successive starts across the network instead of creeping one cell a pulse.
-			long slot = (pulseCount % n) * 7919L % n;
-			int start = networkExcavated[(int)slot];
+			int start = networkExcavated[SeamSlot(pulseCount, n)];
 			rotatedNetworks++;
 			RM_StockMath.CollectComponent(start, isSourcePred, isExcavatedPred, cardinalPred,
 				visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
@@ -893,6 +892,30 @@ namespace RimMandrake.FlowWorks
 			comp.cap = 0;
 			comp.key = 0;
 			return comp;
+		}
+
+		/// <summary>The seam start for pulse <paramref name="pulseCount"/> over <paramref name="n"/> network cells: a large stride
+		/// coprime to n, so n successive pulses visit every start once. FLOWWORKS_STRIDE_FIX_WALKS_INTO_WALL: the bare 7919
+		/// stride shares a factor with any n that is a multiple of 7919 (every start was cell 0 at n = 7919).</summary>
+		public static int SeamSlot(long pulseCount, int n)
+		{
+			long stride = 7919;
+			while (Gcd(stride, n) != 1)
+			{
+				stride += 2;
+			}
+			return (int)((pulseCount % n) * stride % n);
+		}
+
+		private static long Gcd(long a, long b)
+		{
+			while (b != 0)
+			{
+				long t = a % b;
+				a = b;
+				b = t;
+			}
+			return a;
 		}
 
 		/// <summary>Priority of a square for the part-filled band (lowest first; the cell index makes it unique), from this
