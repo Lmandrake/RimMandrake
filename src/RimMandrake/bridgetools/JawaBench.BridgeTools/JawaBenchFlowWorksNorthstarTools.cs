@@ -96,7 +96,9 @@ namespace JawaBench.BridgeTools
             {
                 id = (int)t.GetField("id", FwInst).GetValue(b),
                 limitless = (bool)t.GetField("limitless", FwInst).GetValue(b),
-                stock = (float)t.GetField("stock", FwInst).GetValue(b),
+                // stock became a property over stockDl (decilitres) in FlowWorks P3 (83d8e4e191); a field read NRE'd every
+                // body report (live walk 2026-10-17, pond_pump.py classify). Field first for older builds, then the property.
+                stock = Convert.ToSingle(t.GetField("stock", FwInst)?.GetValue(b) ?? t.GetProperty("stock", FwInst)?.GetValue(b) ?? -1f),
                 capacity = (float)t.GetField("capacity", FwInst).GetValue(b),
                 cellCount = cells?.Count ?? -1,
                 recededCount = receded?.Count ?? -1,
