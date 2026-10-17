@@ -186,6 +186,7 @@ namespace RimMandrake.LeaningScrub
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(StandInd);
+            this.FailOn(() => !RM_WindCalendar.On(RM_LeaningScrubSettings.smotherCraftEnabled)); // switched off mid-job
             this.FailOn(() => Stand.TryGetComp<RM_CompSmotherable>()?.Smothered != false);
 
             yield return Toils_Goto.GotoThing(BlanketInd, PathEndMode.ClosestTouch)

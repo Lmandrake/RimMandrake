@@ -133,6 +133,15 @@ namespace RimMandrake.LeaningScrub
         private bool Plant(IntVec3 c, Map map)
         {
             List<Thing> here = c.GetThingList(map);
+            // Refuse an occupied cell BEFORE clearing it: never destroy plants/items/filth and then abort.
+            for (int i = 0; i < here.Count; i++)
+            {
+                Thing t = here[i];
+                if (!(t is Plant) && t.def.category != ThingCategory.Item && t.def.category != ThingCategory.Filth)
+                {
+                    return false;
+                }
+            }
             for (int i = here.Count - 1; i >= 0; i--)
             {
                 Thing t = here[i];

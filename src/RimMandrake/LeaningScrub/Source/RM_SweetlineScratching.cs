@@ -85,6 +85,10 @@ namespace RimMandrake.LeaningScrub
             if (map != null && trees.TryGetValue(map, out List<Thing> list) && list.Remove(tree))
             {
                 treeCount--;
+                if (list.Count == 0)
+                {
+                    trees.Remove(map); // never hold a dead (e.g. discarded temporary) Map alive by an empty entry
+                }
             }
         }
 
