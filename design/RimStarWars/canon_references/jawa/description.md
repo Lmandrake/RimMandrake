@@ -40,6 +40,22 @@ therefore attested only as one character's remark, not as an anatomical
 statement — treat it as canon-flavored testimony, not as a licence to draw an
 exposed pelt.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Tatooine
+
+Notable members: Utooni
+
+Fandom: Star Wars
+
+Appearances: A New Hope, The Mandalorian, Hunters
+
+Jawas are a mysterious species native to Tatooine but seen on a handful of planets in the Outer Rim. They wear robes with deep hoods that hide all their features apart from their glowing eyes. Few, if any, have seen what lies under those hoods, making the species a mystery to the larger galaxy. They typically operate as scrappers and traders, capturing and dissassmebling droids and other technology to sell as scrap. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The stylised Alien Archive illustration (`wookieepedia_alien_archive_illustration.jpg`, hot rust-orange
@@ -110,6 +126,8 @@ the hood with a black void interior, the hem grammar, the crossed bandoliers —
 **does not exist as art yet.** For the player's own species that is the largest
 art gap in the roster.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_jawa_game_render.png` (479x450, game render): two Jawas with RED/crimson robes and a brass backpack, glowing yellow eyes in a black hood void, bandoliers and large blasters. 🔴 CONTRADICTS the Must-show colour: robes here are saturated crimson-red, not brown/dusty grey-brown; stylised game render, not a realistic reference. Hood-void and glowing eyes agree.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images (four-figure costume reference, off-world Mandalorian-era individual, *A New Hope* tall Jawas) and the canon text.*
 - [ ] BODY PLAN: a short humanoid (about 1 m) that reads SHORT and WIDE, not a scaled-down human: a floor-length robe in a bell shape, roughly as wide as it is tall from the waist down, with a frayed/fringed hem; a soft fabric hood pulled forward over the brow (peaked or slumped), not a rigid cone
@@ -149,6 +167,7 @@ not a rendering constraint.
   crossed-bandolier gear rig (three-lens device, blade, canteen).
 - `wookieepedia_tall_jawas.jpg` — taller-than-normal individuals, confirming the
   lore's abnormal-height Jawas keep the identical silhouette at larger scale.
+- `bloggathehutt_jawa_game_render.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Jawas in a Star Wars game render (Hunters-style); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

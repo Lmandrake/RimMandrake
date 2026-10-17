@@ -25,6 +25,20 @@ being quietly dropped. Nothing in the canon article claims Gamorrean regeneratio
 toxin resistance or any other special capability; the species' whole profile is
 strength and mass. Do not invent an ability here.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2022/03/07/species-of-the-week-gamorrean/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Gamorr
+
+Fandom: Star Wars
+
+Appearances: Return of the Jedi, The Mandalorian, The Book of Boba Fett
+
+Gamorreans are a green-skinned species with porcine features fro the planet Gamorr, where they live in clans and are known for their warlike nature. Gamorreans are naturally strong, able to shrug off blaster wounds and vibroblade strikes. This has given them a reputation as muscle as they are typically seen as enforcers or gladiators in the wider galaxy. The Gamorreans have lower intelligence than most galactic species, but this makes them even more valued by their employers as they cannot be bribed and show remarkable loyalty. 
+
 ## Visual brief
 🔴 **"Tall" is the word to distrust.** At 1.8 m a Gamorrean is only about
 human-average height, and the full-body reference render reads unmistakably as
@@ -77,6 +91,8 @@ species' defining feature after the tusks), **the pale tan ventral/facial zone,
 the warty skin finish, and the crest ridge.** A Gamorrean in game is currently a
 big green fat human with small tusks.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_gamorrean_bobf_guards.png` (1046x638, live-action Boba Fett guards in shackles): olive-green hide with a yellow-green belly/chest, pig-like upturned snout with two short ivory lower tusks, two short yellow horns on a dark green helmet-like skull cap, small low-set ears, thick rounded torso, dark red-brown leather collar/shoulder wrap. Supports existing live-action prose; no disagreement found.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_guard_fullbody.jpg` (reference of record), the infobox image, the *Scum and Villainy* painting and the canon text.*
 - [ ] BODY PLAN: squat and enormously wide at roughly human height: barrel-chested, big-bellied, bandy-legged, with a disproportionately large head sunk directly onto the shoulders (no visible neck) and heavy jowls continuous with the shoulders; never a lanky or towering build
@@ -113,6 +129,7 @@ none known
   plate of a Gamorrean prisoner from the FFG *Scum and Villainy* sourcebook (File:Gamorrean
   prisoner SaV.png), not Clone Wars animation. Best close look at the tusks, snout ring,
   small ears and warty skin.
+- `bloggathehutt_gamorrean_bobf_guards.png` — FAN BLOG (not Lucasfilm) bloggathehutt, two Gamorrean guards in The Book of Boba Fett; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2022/03/07/species-of-the-week-gamorrean/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -31,6 +31,20 @@ The krayt dragon had a set of sharp teeth used for capturing prey, but relied on
 
 Krayt dragons were heavily attracted to areas that were strong in the Force, especially the dark side.  …[truncated by script; rest UNREAD here, not absent]
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/08/30/species-of-the-week-krayt-dragon/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Non-sentient
+
+Homeworld: Tatooine
+
+Fandom: Star Wars
+
+Appearances: A New Hope, The Mandalorian
+
+Krayt Dragons are legendary beasts native to the sands of Tatooine. Preying on all other life forms on the planet, including the Saarlac, they have an impenetrable hide and are lethal on the attack, spewing deadly acid when not using their massive bite. When hunting they ‘swim’ through the sand, only exposing their heads when they strike. The challenge of killing them makes their meat and pearls highly prized. 
+
 ## Visual brief
 Four images (two canon, two Legends) that show three clearly different looks, so the entry must pick one. The text calls "krayt dragon" an umbrella term for several species (canyon krayt, greater krayt, the sixteen-limbed leviathan variant).
 - **`canon_1` (The Mandalorian CGI render; the canon infobox):** a sand-coloured tan-brown, long, **serpentine/lizard** body. The head is a big wedge with a wide mouth packed with rows of white conical teeth, a long tongue, and a **small hooked beak-like horn/barb on the side of the head**. Very long muscular neck, thick body, and a **long tail that curls up** and carries a ridge of spikes. Pale cream-grey underside. Short dorsal bone-spikes along the neck and back. **Many short, thick limbs, arranged in banks along the body (the leviathan variant: sixteen legs; visible here as clustered stubby legs at the front and middle of the body)**, each with 4 to 5 curved dark claws. Skin is dry, rough, wrinkled, desert-camouflage coloured, no bright colours. Rock-and-sand texture on the back.
@@ -39,6 +53,8 @@ Four images (two canon, two Legends) that show three clearly different looks, so
 - **`legends_2` (3D model, Legends):** a blue-grey, scaly four-legged reptile with **two long upswept horns**, a yellow-brown head and back spikes, long snout, a pale belly, and a rat-like thin tail. Four legs.
 - **The images disagree:** canon art (`canon_1`, `canon_2`) = tan sand-coloured, hornless apart from the side barb, many legs, huge toothy maw. Legends art = green or blue-grey, four legs, with long brow horns. Trust the canon pair for the shipping design; keep Legends horns and green colour out unless the owner rules otherwise.
 - **Size:** the two images give no scale object. Canon text for the leviathan form gives 184 m length and 28.68 m height (see Sourced text); the Legends figure of about 45 m is a different-continuity creature and must not be applied to the leviathan.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_kraytdragon_mandalorian.jpeg` (955x537, The Mandalorian ch. 9 frame): the dragon head surfaces from a dust cloud before kneeling Tusken Raiders: sand-brown, heavily wrinkled and ridged scaly hide, a blunt wide snout with long conical teeth, a ridged brow, small horn spikes behind the head. Agrees with the Mandalorian reading; no disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon pair (`canon_1` *Mandalorian* render, `canon_2` spit frame) and the canon leviathan text, which the visual brief names as the shipping design.*
@@ -61,6 +77,7 @@ not yet assessed
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Krayt dragon/Legends`; wiki caption: infobox image. File: `KraytDragon NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/3/3f/KraytDragon_NEGAS.jpg/revision/latest?cb=20090709062857
 - `wookieepedia_canon_2.webp` — CANON page `Krayt dragon`; wiki caption: A leviathan krayt dragon spitting acidic poison from its mouth.. File: `Krayt Dragon spit-MS2.png` — https://static.wikia.nocookie.net/starwars/images/1/1a/Krayt_Dragon_spit-MS2.png/revision/latest?cb=20220301035030
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Krayt dragon/Legends`; wiki caption: A krayt dragon. File: `GreaterKrayt.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b5/GreaterKrayt.jpg/revision/latest?cb=20060117070701
+- `bloggathehutt_kraytdragon_mandalorian.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, the Krayt dragon bursting from the sand (The Mandalorian); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/08/30/species-of-the-week-krayt-dragon/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

@@ -23,6 +23,20 @@ Some mynocks had yellow eyes, and had shiny spore sacs that could distend. They 
 
 Mynocks were distantly related to xuvvas. A few (sub)species of mynocks existed, including one that had a normal mouth, rather than a sucker-like one, and another that had blue skin and gave birth to live young. Subspecies of mynocks included the salt mynock and sulfur myno …[truncated by script; rest UNREAD here, not absent]
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/11/11/species-of-the-week-mynock/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Non-sentient
+
+Homeworld: Ord Mynock
+
+Fandom: Star Wars
+
+Appearances: The Empire Strikes Back
+
+Mynocks are a silicon-based life-form capable of living in the vacuum of space. They are generally considered a pest by most galactic citizens due to their tendency to feed on the power systems of starships. Many lived in asteroid fields and some lived inside exogorth slugs, feeding on the prey they captured. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the flat-coloured ink illustration from *Alien Archive* (`Mynock-AA.png`, rust-orange). Also removed (owner 2026-10-09, "that is NOT canon"): Terryl Whitlatch's *Fact File* 75 painting (`Mynock-FF75.png`, bat-like fanged face, red eyes) — do not re-add it. The LIVE-ACTION reference is `canon_2` (*The Empire Strikes Back*, a mynock upside down on the Falcon's cockpit window); `legends_1` and `legends_2` are realistic paintings. Both pages call it bat-like; the Legends prose adds "manta ray", which the images do not support.
@@ -31,6 +45,8 @@ Removed: the flat-coloured ink illustration from *Alien Archive* (`Mynock-AA.png
 - **Legs:** small, thin, spindly clawed hind legs, tucked up in flight or dangling (`legends_1`); a mynock clings to a ship by its mouth and feet.
 - **Colour, LOUDLY:** the live-action film creature is **dark olive-brown to black, wrinkled, leathery hide**, and the Legends prose says "black-skinned". The paintings are paler: straw-cream body with tan wings (`legends_1`), yellow-green with blue-grey membranes (`legends_2`). The deleted Alien Archive plate was rust-orange. Use the film's dark brown-black as the base; pale tan is a variant only.
 - **Size:** canon infobox gives length 1.6 to 2 m and mass 8 kg (Star Wars Bestiary Vol. 1 and Ultimate Star Wars, https://starwars.fandom.com/wiki/Mynock); the infobox does not say whether length is body or overall including wings/tail.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mynock_esb_frame.jpg` (344x146, tiny): a dark mynock clinging to a glass cockpit pane, its pale round sucker-mouth with bristles showing. Too small and dark to add detail; consistent with the existing ESB-frame brief.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the ESB film frame (`canon_2`) and the three paintings.*
@@ -52,6 +68,7 @@ not yet assessed
 - `wookieepedia_canon_2.webp` — LIVE-ACTION, *The Empire Strikes Back*, a mynock on the Millennium Falcon cockpit (upside down); file `Mynock.png` — https://static.wikia.nocookie.net/starwars/images/7/74/Mynock.png/revision/latest?cb=20130324025917
 - `wookieepedia_legends_1.webp` — LEGENDS, realistic painting (infobox image); file `Mynock NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/f/ff/Mynock_NEGAS.jpg/revision/latest?cb=20081105211310
 - `wookieepedia_legends_2.webp` — LEGENDS, realistic painting, mynocks attaching to the hull of an ARC-170 starfighter (Threats of the Galaxy); file `Mynock TofG.jpg` — https://static.wikia.nocookie.net/starwars/images/3/35/Mynock_TofG.jpg/revision/latest?cb=20080608085418
+- `bloggathehutt_mynock_esb_frame.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, a mynock on the Falcon hull (ESB frame); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2019/11/11/species-of-the-week-mynock/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

@@ -17,12 +17,28 @@ Massiffs were reptilian creatures found on Geonosis and Tatooine. The species' o
 
 **Biology and appearance** Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/11/03/species-of-the-week-massif/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Non-sentient
+
+Homeworld: Tatooine
+
+Fandom: Star Wars
+
+Appearances: Attack of the Clones, The Mandalorian
+
+Massifs are squat, reptilian quadrupeds favoured as guard animals by the Tusken Raiders of Tatooine. The creatures had armoured hides and good night vision which made them excellent sentries. As well as belonging to the Tusken Raiders the creatures were used on other arid worlds by pirates, smugglers and even the Clone Army. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Removed: the inked-and-coloured arena illustration of two green-grey fighting massiffs (`Massiff TotG.jpg`). Added two LIVE-ACTION stills: `canon_3` (The Mandalorian Chapter 9, Din Djarin with a massiff at close range) and `canon_4` (The Book of Boba Fett Chapter 2, Tusken children with tame massiffs, several animals side by side). With `canon_2` (Mandalorian canyon pack) and `legends_1` (Attack of the Clones), the target is the live-action puppet/CG creature; `canon_1` (Star Wars Outlaws photoreal render) is the secondary reference.
 - **Live-action look (the target, `canon_3`, `canon_4`, `canon_2`, `legends_1` agree):** a lean, low, **dog- or hyena-sized reptile** on digitigrade legs, head carried low, about knee-to-waist high to a human (Tusken children sit level with it). **Dull grey-brown to taupe, mottled armoured hide** of overlapping rough plates and knobbly scutes along the back and shoulders; paler, smoother throat and chest. A **crest of dark, thin, backward-raked spines** from the back of the skull down the neck and spine (tallest at the neck). **Short, broad, blunt head** with a wide mouth full of small pointed teeth and a pink tongue, a large round dark eye (yellow with a dark pupil in AotC), small nostrils at the snout tip. Long clawed toes.
 - **Where they disagree, LOUDLY:** the Outlaws render (`canon_1`) gives it a **long, narrow, gharial-like snout**, a taller build and an **orange-tan/rust body** with black patches. Every live-action image shows a **short blunt snout** and **grey-brown** colour. Do not use the gharial snout or the rust colour; take only the spine crest, plate pattern and teeth detail from `canon_1`.
 - **Text agrees with live-action:** "squat quadruped, canine and reptilian, about one metre high, humped back, brown and grey or grey-green plates, large black or yellow eyes".
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_massiff_mandalorian.png` (603x343, dim): a low spiny lizard-hound with a toad-like blunt head, a yellow eye, dark brown-grey skin, a ridge of tall pale spikes on the back and rows of knobbly armoured plates over the flanks, clawed feet. Agrees with the squat armoured-reptile read; no disagreement.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action stills (`canon_2`, `canon_3`, `canon_4`, `legends_1`) as described in the visual brief, the sourced text, and the owner ruling in the brief.*
@@ -47,6 +63,7 @@ not yet assessed
 - `wookieepedia_canon_3.webp` — LIVE-ACTION, The Mandalorian Chapter 9, Din Djarin with a massiff, close view of head, crest and hide; file `MandoMassiff-TMc9TM.png` — https://static.wikia.nocookie.net/starwars/images/f/f7/MandoMassiff-TMc9TM.png/revision/latest?cb=20201031185519
 - `wookieepedia_canon_4.webp` — LIVE-ACTION, The Book of Boba Fett Chapter 2, Tusken children with tame massiffs (full bodies, scale); file `TuskenKidsMassiffs-BoBFCh2.png` — https://static.wikia.nocookie.net/starwars/images/a/aa/TuskenKidsMassiffs-BoBFCh2.png/revision/latest?cb=20220130235335
 - `wookieepedia_legends_1.webp` — LIVE-ACTION, Attack of the Clones frame (Tusken camp, dark); file `Massiff-AOTC.png` — https://static.wikia.nocookie.net/starwars/images/c/c4/Massiff-AOTC.png/revision/latest?cb=20180205042951
+- `bloggathehutt_massiff_mandalorian.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a massiff in The Mandalorian; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2020/11/03/species-of-the-week-massif/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

@@ -35,6 +35,22 @@ resided at the **Sanctum of the Exalted** on **Odryn**, where they forged the pl
 seasons; outsiders present there was a violation of the **Rime Feeorin**, the species'
 ancient code. **Feeorin names are mostly simple, no more than 4 or 5 letters.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/04/29/species-of-the-week-feeorin/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Odryn
+
+Notable members: Rav, Burlugg
+
+Fandom: Star Wars
+
+Appearances: Legacy, The Living Force
+
+Feeorin are instantly recognisable by the ‘head-tails’ that hang down from their heads in a mass even thicker than those of a Nautolan, the Feeorin are also marked by short tendrils coming down from around their mouths. Scattered across the Outer Rim, they have often been seen in pirate gangs due to their imposing stature. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 No live-action Feeorin exists. Added three realistic Legends depictions: a painted head study from the *Knights of the Old Republic Campaign Guide* (`wookieepedia_feeorin_kotorcg_legends.jpg`), Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_feeorin_uaa_legends.png`), and the near-photoreal game CGI gladiator Tarko-se from *The Force Unleashed II* (`wookieepedia_feeorin_tfu2_tarkose.png`). The only canon image, the *Darth Maul* (2017) 1 comic panel, is KEPT ONLY as animated/negative reference for the canon tendril count — it is not a style target.
@@ -55,6 +71,8 @@ transparent canvas carrying **two small black curved eye marks and nothing else*
 head, no tendrils, no jaw, no skin. Whatever the mod renders for a Feeorin today, this
 file is not it, and the species' one defining feature (the tendril mass) has no art
 here at all. Do not treat this as evidence about anything except that art is owed.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_feeorin_rav_art.png` (606x919, painted comic-style art of Rav, Legacy): full-body turquoise-cyan male, bald ridged head with about eight thick head-tails banded gold-and-green hanging past the shoulders, scarred face, NO visible mouth tendrils, purple harem trousers, brown chest armour, cybernetic bird-claw leg, glowing energy sword. 🔴 CONTRADICTS the blog's own text (short tendrils around the mouth) -- none are drawn. 🔴 Matches the existing canon-comic turquoise reading and DISAGREES with the realistic Legends paintings (slate/lilac, two head-tails); it is cartoon-style art, so it is NOT a reference of record under the owner's 2026-10-08 realism ruling.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three realistic Legends images (KotOR CG bust, TFU2 Tarko-se, UAA painting), the canon comic kept as tendril-count reference, and the canon/Legends text.*
@@ -127,6 +145,7 @@ gap rather than a rendering constraint.
 - `wookieepedia_feeorin_uaa_legends.png` — realistic painting by Raven Mimura, *Ultimate Alien Anthology* (Legends), full body: mauve-purple skin, several head-tails, heavy build; file `Feeorin-UAA.png` — https://static.wikia.nocookie.net/starwars/images/9/98/Feeorin-UAA.png/revision/latest?cb=20250228013340
 - `wookieepedia_feeorin_2017darthmaul1.png` — **COMIC, kept as animated/negative reference only** for the canon tendril count: full-body Feeorin from *Darth Maul* (2017) 1, turquoise-cyan skin, a dozen-plus paler green tendrils; file `Feeorin-2017DarthMaul1.png`.
 - `donor_current_sprite.png` — **negative reference only.** An essentially blank 4 KB canvas with two eye marks; see the visual brief.
+- `bloggathehutt_feeorin_rav_art.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Rav (Legacy comic art), a Feeorin pirate with cybernetic leg; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2024/04/29/species-of-the-week-feeorin/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -16,6 +16,20 @@ Neebray were flying, limbless creatures which varied greatly in size and habitat
 
 **Characteristics** On the moon Rugosa, tiny baby neebray flew among the coral forests of the moon's long-dried-up ocean beds as a stop along their interstellar voyage. A moderately large variety had translucent wings, and could be found on a Rishi moon. The gigantic neebray manta lived in the vacuum of space, feeding on stellar gases. They used the Kaliida Nebula as nesting grounds. They also used Veil Nebula as feeding ground, feeding on its stellar gases.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2026/08/10/species-of-the-week-neebray/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Non-sentient
+
+Homeworld: Unknown
+
+Fandom: Star Wars
+
+Appearances: The Clone Wars
+
+Neebray are a species of large winged creatures seen across the galaxy in various sizes and colours, making their origin point hard to determine as they can travel across space. The creatures use stellar nebulae, such as the Kaliida Nebula, as feeding and breeding grounds, making space travel even more dangerous for ships entering the nebula. They do not possess limbs, only large fins for flight across space and in atmosphere, where they appear equally comfortable. 
+
 ## Visual brief
 **Animation-only canon — no realistic source found (searched: Wookieepedia `Neebray` and `Neebray/Legends` page images, `Category:Images of neebrays`; every depiction is The Clone Wars / Rebels animation or a stylised *Homeworlds* illustration).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
@@ -41,6 +55,8 @@ in a nebula); `legends_1` is from the LEGENDS page (giant neebray in the Kaliida
 - **Size cues**: baby = bird-sized (on a palm); adult = gigantic, dwarfs starships in space; largest recorded wingspan 1,674 m (Star Wars: Alien Archive, an extreme, not a typical adult). Babies also appear in space in Rebels "Double Agent Droid" (pink and purple form), so baby is not planet-only (https://starwars.fandom.com/wiki/Neebray). Appearances: "Ambush" (Rugosa babies, red and light-blue), "Rookies" (Rishi Moon), "Shadow of Malevolence" (giant adults, gray and beige).
 - **For RimWorld**: a Tatooine/ground creature is the BABY form (bird-sized, pink-red and translucent-winged).
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_neebray_adults_flying.jpg` (1586x672, Clone Wars): three adult neebray gliding in a red sky: huge flat maroon-red manta/bat wings with a ragged outline, a small blunt head with a red gaping toothed mouth, and a few thin trailing tendrils below. Agrees with the Must show adult form; wings are an opaque dull maroon here (the entry asks for translucent only on the baby).
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the baby render (`canon_1`) and the two adult images as described in the visual brief, the sourced text, and the owner ruling in the brief. The ground/Tatooine creature is the BABY form.*
 - [ ] BODY PLAN (baby): a bird-sized, limbless, chubby tadpole-like body with a big blunt head, tapering to a small tail; two big translucent butterfly/fish-like wings on the sides plus two small matching tail fins at the rear; no legs or arms at all
@@ -61,6 +77,7 @@ not yet assessed
 - `wookieepedia_canon_1.webp` — CANON, The Clone Wars (3D animation), baby; wiki caption: infobox image. File: `Rugosa neebray.png` — https://static.wikia.nocookie.net/starwars/images/5/51/Rugosa_neebray.png/revision/latest?cb=20170703055512
 - `wookieepedia_canon_2.webp` — CANON, *Homeworlds* illustration (stylised), adult; wiki caption: Adult neebray mantas could grow to become massive in size.. File: `NeebrayManta-Homeworlds.png` — https://static.wikia.nocookie.net/starwars/images/2/25/NeebrayManta-Homeworlds.png/revision/latest?cb=20260926142623
 - `wookieepedia_legends_1.webp` — LEGENDS page, The Clone Wars (3D animation) adults; wiki caption: Giant neebray mantas in the Kaliida Nebula. File: `Neebray manta.jpg` — https://static.wikia.nocookie.net/starwars/images/9/97/Neebray_manta.jpg/revision/latest?cb=20100422150210
+- `bloggathehutt_neebray_adults_flying.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, adult neebray in flight (Clone Wars); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2026/08/10/species-of-the-week-neebray/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

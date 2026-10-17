@@ -18,6 +18,20 @@ rest of the series and *The Book of Boba Fett* (Chapter 8 "Redemption" onward; t
 Also appeared as a zoo animal, in captivity at Lonisa City Zoo, in *The High
 Republic: Race to Crashpoint Tower* (231 BBY).
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/04/13/species-of-the-week-mudhorn/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Non-sentient
+
+Homeworld: Arvala-7
+
+Fandom: Star Wars
+
+Appearances: The Mandalorian
+
+The mudhorn is a powerful creature with a fearsome reputation. It’s name comes from the oversized horn which it uses to inflict serious damage on enemies. It has a thick, shaggy hide which is resistant to blaster fire. Despite being mammalian in appearance it reproduces by laying eggs, which are considered a delicacy by Jawas.
+
 ## Visual brief
 The three candidate images are all real production stills/renders from *The
 Mandalorian* and agree completely with each other: a mudhorn is a **heavily
@@ -45,6 +59,8 @@ pale/ivory, but the overall silhouette, horn placement, and general "shaggy
 dark rhino" read is already well aligned with canon — this is one of the
 better-matching donors found in this pass.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mudhorn_mandalorian.jpeg` (1280x718): a low stout shaggy quadruped caked in dried mud-brown fur, a single tall pale horn rising straight up from a deep head, small eyes at the sides, and an open pink mouth. Supports the existing shaggy muddy-brown, one-horn read; no disagreement.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Mandalorian production stills as described in the visual brief, and the sourced text.*
 - [ ] BODY PLAN: a heavily built, low-slung, rhinoceros-proportioned quadruped on four short, thick, stump-like legs, with a heavy low body and a wide head carrying one large frontal horn
@@ -70,6 +86,7 @@ none known
 - `wookieepedia_infobox.png` — official promotional render, full body three-quarter view, dark muddy-brown shaggy coat, pale ivory horn, low aggressive stance
 - `wookieepedia_woolyfur_closeup.png` — full side-profile still clearly showing the matted woolly fur texture across the whole body and the horn's pale color contrast
 - `wookieepedia_charging_dindjarin.jpg` — close-up film still from *The Mandalorian* Chapter 2 (the actual on-screen fight), horn, teeth, and lipless jaw all clearly visible
+- `bloggathehutt_mudhorn_mandalorian.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, the mudhorn charging (The Mandalorian); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2020/04/13/species-of-the-week-mudhorn/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

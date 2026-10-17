@@ -35,6 +35,22 @@ tied to one iris colour — **not a species-wide psychic trait.** Legends also n
 became particularly adept at designing advanced environmental and life-support systems,
 precisely because of its own physiological needs.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/03/18/species-of-the-week-kel-dor/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Dorin
+
+Notable members: Bo Keevil, Plo Koon
+
+Fandom: Star Wars
+
+Appearances: Resistance, Prequel Trilogy, Clone Wars
+
+The Kel Dor come from a planet with an atmosphere toxic to most  other species. This requires them to wear breathing equipment in what is considered a normal environment by most other species. Their species were most famous for their expert pilots; including Jedi Master Plo Koon and experminatal stunt fighter pilot and Ace Squadron member Bo Keevil.
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 Added realistic references: `wookieepedia_plo_koon_prosthetic_unmasked.jpg` (behind-the-scenes photo, *Star Wars
@@ -97,6 +113,8 @@ put the Kel Dor in **long, heavy, full-length robes with wide sleeves**, tall an
 silhouette. Nothing in either image contradicts "tall"; nothing in either image supports a
 *heavy* build — the read is tall and lean, which is what the 1.4–2 m Legends range plus
 "typically of the same weight as Humans" says.
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_keldor_resistance_animated.jpeg` (1560x878, Resistance animation): a Kel Dor in a bright yellow flight suit with a grey rebreather mask and blue-lensed goggles, bulbous yellow-orange hood/head and drooping back-swept skull dome, brown chest harness. Animated, cartoon-flat shading. Agrees on the mask-and-goggle read; head-dome colour is yellow here vs. the live-action sources' cooler skin.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox (equipment, hands), the Legends unmasked comic (lower face), the prosthetic photo and the two paintings (dome, furrows, lobes, hue), as described in the visual brief.*
@@ -195,6 +213,7 @@ none known
 - ⚠️ **There is no donor art for the Kel Dor face itself** — no `HeadType/keldor` exists on
   disk. So nothing here compares canon facial anatomy against current mod art, because the mod
   has none to compare.
+- `bloggathehutt_keldor_resistance_animated.jpeg` — FAN BLOG (not Lucasfilm) bloggathehutt, a Kel Dor pilot in Star Wars Resistance; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2019/03/18/species-of-the-week-kel-dor/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -58,6 +58,22 @@ by the **Kwa**, who taught them rudiments of the Force, and they famously **carv
 seal into a plateau weeks before the Republic's explorers arrived** — a precognition story that
 is the species' defining anecdote.
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/05/13/species-of-the-week-iktotchi/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Iktotch
+
+Notable members: Saesee Tiin
+
+Fandom: Star Wars
+
+Appearances: The Phantom Menace, Revenge of the Sith
+
+Iktotchi are humanoids with promonent downward-facing horns from the harsh world of Iktotch. As a culture the Iktotchi keep their emotions to themselves, giving the appeareance of a stoic and even unpleasant demeanour to other races. The Iktotchi have natural instincts that border on intuition, making them excellent pilots and fighters. The Jedi High Council member Saesee Tiin was one of a number Iktotchi Jedi. 
+
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 The Ferren Barr comic panel (`wookieepedia_ferren_barr.jpg`) was removed. What remains is realistic: two live-action costume photographs of Saesee Tiin (the reference of record) and the realistic Legends infobox painting.
@@ -112,6 +128,8 @@ male/female × 3 facings and `*m.png` masks):
   is **a single tintable colour**, so **the horns render the same hue as the skin.** Canon
   horns are consistently a paler, cooler cream against reddish-tan skin.
 
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_iktotchi_live_action.png` (339x450, live-action prosthetic head): red-orange skin with ruddy streaks, deeply creased old face, large swept-down grey-tan horns curving from the crown past the jaw, narrow yellow-green eyes, dark robe. Supports a red-brown skin with long down-curved horns; no disagreement.
+
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Saesee Tiin film photographs (reference of record) and the Legends infobox painting, per the visual brief.*
 - [ ] BODY PLAN: humanoid of ordinary human build and height; the breadth is in the head and hands — a broad, smooth, backswept helmet-like domed cranium wider than a human skull at the temples, and large thick blunt hands with fleshy tapering digits visibly bigger than a human hand
@@ -162,6 +180,7 @@ male/female × 3 facings and `*m.png` masks):
   skin range, with pointed teeth and clawed fingers.
 - `donor_current_sprite.png` — the shipped head mask. Unusually good (horns present and
   correctly oriented) and still evidence of the dome-shape and horn-colour gaps.
+- `bloggathehutt_iktotchi_live_action.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a live-action Iktotchi head (Saesee Tiin type); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2024/05/13/species-of-the-week-iktotchi/ (image URL on the blog's CDN, post upload)
 
 ## Def-versus-canon contradictions (report only — not fixed here)
 

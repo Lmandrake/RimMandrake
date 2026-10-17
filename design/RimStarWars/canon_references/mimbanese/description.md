@@ -47,6 +47,22 @@ Legends article was needed or found for this species** — the Mimbanese are a *
 creation, so unlike Kel Dor and Kubaz there is no Legends fallback supplying height, mass or
 lifespan. **Those three are simply unsourced in any continuity and must not be invented.**
 
+### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/05/25/species-of-the-week-mimbanese/
+
+*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
+
+Designation: Sentient
+
+Homeworld: Mimban
+
+Notable members: Iasento, Waydurk, Kierah Koovah
+
+Fandom: Star Wars
+
+Appearances: Solo, The Mandalorian, Squadrons
+
+The Mimbanese are a red-skinned tribal people from the murky swamp planet of Mimban. Their planet was subjugated by the Separatists during the Clone Wars and then in turn was occupied by the Empire. The Mimbanese led a resistance, their natural ability to move swiftly through the thick mud of their homeworld gave them an advantage against a technologically superior enemy. 
+
 ## Visual brief
 All three references are *Solo*-era practical-costume photography of the same design, which
 makes them unusually reliable — they show a real built suit, not an illustrator's read.
@@ -85,6 +101,8 @@ the sourced "improvised traps… covering themselves in mud for camouflage."
 **Build.** 🔴 **Ordinary humanoid proportions** — upright, human height, human mass, normal
 limb thickness and shoulder width in all three references. **Nothing reads gaunt, thin or
 emaciated.**
+
+- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_mimbanese_solo_ghillie.jpg` (480x240, Solo): brick-red face with two large round dark-rimmed pale eyes, a small round open mouth, crossing tan cloth straps wound over the head and eyes, an enormous cape of dried reeds/straw, and red armour plates on the shoulder. 🔴 Straps crossing the face and forehead read as a MASK/wrap, which the Must-show negative ('not a masked or goggled human') warns against; no brow horns are visible and the mouth is a small round O, not a flattened snout.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Solo-era costume photographs as described in the visual brief and the sourced text.*
@@ -187,6 +205,7 @@ none known
   renders with** by way of `RSW_Head_Devolved`. It is **Tusken Raider art**: a broad blank
   rounded head, two plain black dots for eyes, faint cheek shading, no nose, no mouth, no horns.
   It is not evidence about Mimbanese appearance in any sense — it is the defect.
+- `bloggathehutt_mimbanese_solo_ghillie.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, a Mimbanese in a straw ghillie cape (Solo); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/05/25/species-of-the-week-mimbanese/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)
