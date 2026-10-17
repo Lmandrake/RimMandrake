@@ -22,7 +22,9 @@
   subclass with its own settings screen (`PitsMod.cs`), and **20 `.cs` files** in `Source/Pits/`
   of which exactly one reads the canal depth grid.
 
-**So the unified answer is: a pit is any canal cell dug to SUPERDEEP (D=4). Nothing else.** No pit
+**Depth names (ruled 2026-10-17, `design/RimMandrake/flowworks_unified_depth_2026-10-17.md`).** D0 = surface, D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m, D4 = pit 2 m (code names Shallow, Mid, Deep, Superdeep stay). The pit is 2 m in text. The owner's "walls higher than their head by 20%" is a visual rule for the art and the pawn's sink offset, not a depth.
+
+**So the unified answer is: a pit is any canal cell dug to SUPERDEEP (D=4, 2 m). Nothing else.** No pit
 Thing, no holder Thing, no pit dig chain. What a player *adds* to that cell — spikes, a ladder, a
 cover, a sluice/grate door at its mouth, a prisoner bed in the enclosed room — is ordinary
 buildable stuff on a canal bottom. What *fills* it is a FluidDef. Everything below hangs off that.
@@ -275,7 +277,7 @@ All filed 2026-10-02 for FOUNDRY, `proposed`, `needs offline`, spec = this file.
 | 6 | `PIT_COVER_FALL_REWIRE_1` | Multi-cell cover; mass trigger drops pawns in | 2, 3 | — |
 | 7 | `SUPERDEEP_PRISON_ROOM_1` | Enclosed D=4 = room; bed = prison; capture/convert down from the lip | 1, 2 | Q1, Q4 |
 | 8 | `PIT_TEMPERATURE_SOFTENING_1` | Hard ambient coupling; `RM_PitExposure` → resistance; Exposed Prisoner thought | 7 | — |
-| 9 | `PIT_DEPTH_DRAW_OFFSET_1` | Pawn sinks/rises with D; D=4 walls 20% above head | 2 | — |
+| 9 | `PIT_DEPTH_DRAW_OFFSET_1` | Pawn sinks/rises with D; the pit (D=4, 2 m) is drawn with walls 20% above a head (a visual rule only) | 2 | — |
 | 10 | `EXCAVATION_WALL_ART_1` | Wall faces for 4 depths, spikes (D=4 only), ladder (search artpipe first) | none to start | Q2 |
 | 11 | `DEPTH_FILL_COST_MATRIX_1` | Flooded always slower than dry at the same depth | — | — |
 | 12 | `LIQUID_BODY_FLUID_IDENTITY_1` | Fluid per natural body and per excavated cell; fluids never mix | — | Q3 |

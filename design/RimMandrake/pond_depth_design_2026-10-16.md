@@ -11,13 +11,14 @@ Vanilla facts come from RimSage (1.6 source and defs). Paths below are relative 
 - **Today a natural pond square is either full to its bed or dry.** A pond is one stock number. Its wet squares each
   hold their whole bed. Recession dries the shallowest beds first (rim, shelves, middle last), one whole square at a
   time. So a drying pond shrinks from its edges and never gets shallower. (MEASURED, §1.)
-- **The change: one flat water surface per pond, lowered by whole levels.** The pond keeps its single stock number and
-  its bed record. From the stock we work out where the surface sits, *s* levels below the brim. Every square with a bed
-  deeper than *s* stays wet and shows *bed − s* levels of water. Squares at or above *s* are dry. The last part-level is
+- **The change: one flat water surface per pond, lowered by whole notches.** The pond keeps its single stock number and
+  its bed record. From the stock we work out where the surface sits, *s* notches (0.5 m each) below the brim. Every square with a bed
+  deeper than *s* stays wet and shows *bed − s* notches of water. Squares at or above *s* are dry. The last part-level is
   laid as one connected patch, like today's level solve does for dug cells. Nothing new is stored per square, so a
   40,000-square lake costs one histogram, not a per-square grid.
-- **What the player sees, by water depth *w* in a square:** full (the square's original terrain) → still chest-deep
-  (new def, vanilla art) → `WaterShallow` → *thin water* (**the only new art**) → `Mud` (just exposed, explained by the
+- **What the player sees, by water depth *w* in a square** (*w* counts notches; 1 notch = 0.5 m): full (the square's
+  original terrain) → 2 m and deeper `WaterDeep` → 1.5 m chest-deep (new def, vanilla art) → 1 m `WaterShallow` → 0.5 m
+  knee-deep *thin water* (**the only new art**) → `Mud` (just exposed, explained by the
   water beside it) → the existing cracked `RM_Lakebed_*` (dry).
 - **Joining the level solve:** a pond touching a dug region joins that region's solve as **one combined node** (its
   bed histogram is its band capacity). So a pond and the canal it feeds settle to one flat level in a single pulse,
@@ -38,7 +39,7 @@ Vanilla facts come from RimSage (1.6 source and defs). Paths below are relative 
 | A natural square is a **source** only while undug: `depth == 0 && IsNaturalLiquid`; it reads as `Superdeep` through `DepthAt`. | `Source/RM_FlowKernel.cs:176-179`, `Source/RM_MapComponent_Excavation.cs:814-862` |
 | "Natural liquid" = base terrain `IsWater`. Vanilla `IsWater` = has tag `Water` (`Verse/TerrainDef.cs:324`). So `WaterShallow`, `WaterDeep`, `Marsh` (via `WaterShallowBase`), the moving waters, and every terrain of ours parented to a vanilla water base are all "natural liquid". | `RM_MapComponent_Excavation.cs:814-818` |
 | A body forms **lazily**, on first contact with a canal (`BodyAt` → `FormBody`, an 8-way walk of same-fluid source squares). Limitless = drain edge, or edge contact + size (ruling 16: classified once, never re-argued). | `Source/RM_LiquidStock.cs:112-248`, `Source/RM_StockMath.cs:91` |
-| Bed per square: shallow water 2 levels, deep water (impassable, or path cost ≥ 40) 4 levels; a drainable lake's middle runs deeper, +1 level per 4 squares beyond 3 from shore, capped at 20, recorded once in the scribed `bedRecord`. | `Source/RM_Volume.cs:97-116`, `Source/RM_BedMath.cs:28-106`, `RM_MapComponent_Excavation.cs:124-129, 864+` |
+| Bed per square: shallow water 2 notches (1 m), deep water (impassable, or path cost ≥ 40) 4 notches (2 m); a drainable lake's middle runs deeper, +1 notch per 4 squares beyond 3 from shore, capped at 20 notches = 10 m in the code of 2026-10-16 (ruled 2026-10-17: 20 m default, setting up to 125 m, 50 m for very large lakes and oceans), recorded once in the scribed `bedRecord`. | `Source/RM_Volume.cs:97-116`, `Source/RM_BedMath.cs:28-106`, `RM_MapComponent_Excavation.cs:124-129, 864+` |
 | Capacity = Σ beds × `levelUnit`. A body is `stock`, `capacity`, `levelUnit`, `cells`, `receded` (a LIFO stack). | `Source/RM_LiquidBody.cs:26-130`, `RM_LiquidStock.cs:266-307` |
 | **Recession sheds whole squares:** while the wet squares' beds (Σ) exceed the levels the stock covers, dry one more, shallowest bed first. `DryNaturalCell` writes `RM_Lakebed_{Shallow,Deep,Abyss}` (or the fluid's `recededTerrain`, `Mud`, with hollows off). Restore re-wets last-in, first-out, only when the square's **whole bed** fits. | `RM_LiquidStock.cs:669-704, 720-790`, `RM_BedMath.cs:119-140`, `RM_MapComponent_Excavation.cs:1560-1590` |
 | Refill = seepage + rain × season, per pulse, for limited bodies only. A full, unreceded body is skipped. | `RM_LiquidStock.cs:509-573` |
@@ -120,13 +121,13 @@ The shown terrain is a function of *w* and the square's original terrain *T0* (a
 
 | *w* | shows | source | new? |
 |---|---|---|---|
-| *w* = bed (full) | *T0* itself (`WaterDeep`, `WaterShallow`, `Marsh`, our biome water) | the map | no |
-| ≥ 4 (below full) | `WaterDeep` (or *T0* when *T0* is deep) | vanilla | no |
-| 3 | **`RM_WaterChestDeepStill`**: a def on `WaterChestDeepBase`, vanilla `WaterChestDeepRamp` art, path 42, walkable, no `MovingFluid`, no `River` tag | vanilla art, new def | def only |
-| 2 | `WaterShallow` (marsh: `Marsh`) | vanilla | no |
-| 1 | **`RM_WaterThin`**: ankle-deep, the bed showing through. Water tag kept (fish, splashes and fire still behave as water), path 18 or so | **new art** | **yes, 1 texture** |
-| 0, just exposed | `Mud` (vanilla). It is wet ground and counts as riverbank (ruling W2) | vanilla | no |
-| 0, after the mud time | `RM_Lakebed_Shallow` / `_Deep` / `_Abyss` by bed (`RM_Volume.LakebedFor`, `:150-160`) | ours, exists | no |
+| *w* = bed (full), any depth | *T0* itself (`WaterDeep`, `WaterShallow`, `Marsh`, our biome water) | the map | no |
+| *w* ≥ 4 (2 m and deeper, below full) | `WaterDeep` (or *T0* when *T0* is deep) | vanilla | no |
+| *w* = 3 (1.5 m) | **`RM_WaterChestDeepStill`**: a def on `WaterChestDeepBase`, vanilla `WaterChestDeepRamp` art, path 42, walkable, no `MovingFluid`, no `River` tag | vanilla art, new def | def only |
+| *w* = 2 (1 m) | `WaterShallow` (marsh: `Marsh`) | vanilla | no |
+| *w* = 1 (0.5 m) | **`RM_WaterThin`**: knee-deep, the bed showing through. Water tag kept (fish, splashes and fire still behave as water), path 18 or so | **new art** | **yes, 1 texture** |
+| *w* = 0 (just exposed) | `Mud` (vanilla). It is wet ground and counts as riverbank (ruling W2) | vanilla | no |
+| *w* = 0 (after the mud time) | `RM_Lakebed_Shallow` / `_Deep` / `_Abyss` by bed (`RM_Volume.LakebedFor`, `:150-160`; thresholds restated in metres by the 2026-10-17 spec) | ours, exists | no |
 
 - **Non-water fluids** (tar, slime, brine, our coloured waters) reuse their existing fill tiers.
   `FluidDef.FillTerrainFor(tier, 4)` already holds three depth looks per fluid, painted from vanilla's three ramps
@@ -138,7 +139,7 @@ The shown terrain is a function of *w* and the square's original terrain *T0* (a
   stays wet for long without an obvious reason"*).
 - **Art owed:** one terrain texture, `RM_WaterThin`, judged against vanilla `WaterShallowRamp` at true scale on a review
   sheet. RULED D4 (by card): yes, make it, judged on a true-scale sheet beside vanilla shallow water (the art round is approved). Fallback if the art is rejected, *w* = 1 shows
-  `WaterShallow`. A bed-2 pond then looks unchanged for its first level, and only deep squares visibly shallow.
+  `WaterShallow`. A bed-2 pond then looks unchanged for its first notch (0.5 m), and only deep squares visibly shallow.
 
 ## 5. Evaporation, refill and growth
 
@@ -186,8 +187,8 @@ The shown terrain is a function of *w* and the square's original terrain *T0* (a
 - On load with the model at 0 and `pondDepthEnabled` on: for each LIMITED body that is not full, or that has any
   receded squares, build the histogram, compute *s*/*r*, and queue the stage terrain writes. Bodies that are full and
   unreceded, limitless bodies, and never-formed ponds change nothing. Then set the model to 1.
-- **Conservation:** the stock is unchanged, and only its picture moves. A half-drained pond that loaded as "rim
-  squares dry, middle full" re-lays as "every bed-4 square half full, rim mud". One log line per body: id, *s*, wet
+- **Conservation:** the stock is unchanged, and only its picture moves. A pond drained by half that loaded as "rim
+  squares dry, middle full" re-lays as "every 2 m-floor square holding 1 m of water, rim mud". One log line per body: id, *s*, wet
   squares before and after.
 - **Original terrain:** each stage write records *T0* first, as `DryNaturalCell` does
   (`RM_MapComponent_Excavation.cs:1581`). A square already receded keeps its record.

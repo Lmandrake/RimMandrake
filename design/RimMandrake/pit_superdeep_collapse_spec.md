@@ -2,6 +2,8 @@
 
 **Status:** DRAFT, complete, awaiting his rulings on §9. **Item:**
 `PIT_SUPERDEEP_COLLAPSE_1`. Written 2026-09-17 on the Mac laptop, offline.
+**Depth names (2026-10-17):** D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m, D4 = pit 2 m; fill pictures go by metres of water (0.5 / 1 / 1.5 / 2+ m), not by fraction. The pit stays 2 m; the "walls 20% over the head" ruling is a visual rule only (art and pawn sink offset). Authority: `design/RimMandrake/flowworks_unified_depth_2026-10-17.md`.
+
 **One sentence:** A pit is not a building; it is a SUPERDEEP excavated cell on the
 D/F (depth + fill) primitive that FlowWorks already implements — this spec carries
 the pit code and defs onto it.
@@ -40,8 +42,8 @@ CONFIRMED — the primitive, read at
   PathGrid."* `DepthOfDryTerrain` is the inverse, used once per map to rehydrate
   old saves.
 - `FillTier(fill, depth)` quantises F to ruling 5's three tiers against the cell's
-  own D, so a brimming shallow trench and a brimming deep one both read as
-  brimming. `0` means dry.
+  own D. It is re-keyed to metres of water (0.5 / 1 / 1.5 / 2+ m), so 1 m of water
+  looks the same in a 1 m canal and a 2 m pit. `0` means dry.
 - F is bounded: the header says `0 <= F <= D`. **A surface cell therefore cannot
   hold fill at all**, which matters for the fluids section: oil and poison only
   exist inside excavation.
@@ -560,8 +562,7 @@ slime"*. His answer 3: F>0 at D=4 drowns; F>0 at D=1-3 slows strictly more than 
   `TerrainAt`"*). All must be `<temporary>true</temporary>` — `ConfigErrors` rejects
   non-temporary, because `TerrainGrid.SetTempTerrain` hard-refuses anything else.
 - **Flow/economy tuning**: `volumePerTile`, `ticksPerTile` (the viscosity field — 60
-  for water, 360 for tar), `floodedTicks`, `canalCellsPerSourceCell` (his 5:1
-  budget), `groundOozePerSourceCellPerDay`, `rainRefillFactor`, `recededTerrain`.
+  for water, 360 for tar), `floodedTicks`, `canalCellsPerSourceCell` (dead: a pond's water is its floor depth in litres, see the unified spec), `groundOozePerSourceCellPerDay`, `rainRefillFactor`, `recededTerrain`.
 - **Resolution**: `FillTerrainFor(tier, depth)` — returns the superdeep terrain
   whenever `depth >= Superdeep`, otherwise walks tiers 1/2/3 with fallbacks.
 - `OwnsFillTerrain(terrain)` so an engine never strips another system's temp terrain.
@@ -649,10 +650,10 @@ water than the empty canal did."* CONFIRMED pathCosts:
 
 | | dry | water fill |
 |---|---|---|
-| D=1 Shallow | `RM_Channel_Empty` **30** | `RM_Fill_Water_Trace` — inherits `WaterShallow` (**UNCERTAIN**, no explicit `pathCost`) |
-| D=2 Mid | `RM_Channel_Mid` **45** | `RM_Fill_Water_Half` **42** |
-| D=3 Deep | `RM_Channel_Deep` **80** | `RM_Fill_Water_Brim` **300** |
-| D=4 Superdeep | `RM_Channel_Superdeep` **300** | `RM_Fill_Water_Superdeep` **300** |
+| D=1 Shallow (0.5 m) | `RM_Channel_Empty` **30** | `RM_Fill_Water_Trace` (0.5 m of water) — inherits `WaterShallow` (**UNCERTAIN**, no explicit `pathCost`) |
+| D=2 Mid (1 m) | `RM_Channel_Mid` **45** | `RM_Fill_Water_Half` (1 m of water) **42** |
+| D=3 Deep (1.5 m) | `RM_Channel_Deep` **80** | `RM_Fill_Water_Brim` (1.5 m of water) **300** |
+| D=4 Superdeep (pit 2 m) | `RM_Channel_Superdeep` **300** | `RM_Fill_Water_Superdeep` (2 m of water) **300** |
 
 🔴 **The D=2 row violates his ruling as shipped: 42 flooded is CHEAPER than 45 dry.**
 And D=1 cannot be judged without resolving `WaterShallow`'s inherited cost. The
@@ -866,7 +867,7 @@ To be filed in **FlowWorks'** walk (the mod that actually ships the content), no
       without selecting it.
 
 **Fill in an excavation**
-- [ ] `fill_tier_legible` — dry, trace, half and brimming are distinguishable
+- [ ] `fill_tier_legible` — dry and 0.5, 1, 1.5 and 2 m of water are distinguishable
       from each other by looking.
 - [ ] `fill_fluid_distinct` — different fluids in an excavation are
       distinguishable from each other.
@@ -923,7 +924,7 @@ opens, and each is a claim about the *experience* that only he can make.
   honest reading is that it recreates the original defect in a new form: he was
   appalled by *"a pawn stand[ing] there staring at the camera"*, and a spawned pawn
   on terrain does exactly that unless the walls carry the read.
-- 🆕 **`fill_tier_legible`** — *"dry, trace, half and brimming are distinguishable."*
+- 🆕 **`fill_tier_legible`** — *"dry, trace, half and brimming are distinguishable."* (Restated in metres 2026-10-17: dry and 0.5, 1, 1.5, 2 m of water.)
   **NOT APPROVED as a pit bar.** It may already exist as a FlowWorks canal bar —
   ⚠️ **not checked in this pass**; read FlowWorks' existing 13+3 bars before filing,
   to avoid a duplicate id.

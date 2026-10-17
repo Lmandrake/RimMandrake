@@ -108,7 +108,7 @@ against the current source, not the previous pass's prose.)*
 | Recoverable release | **BUILT** | `Flood_FlowWorks : Thing` (reimplemented over Core `Map.tempTerrain`/`TerrainGrid.SetTempTerrain`, DLC-free per `FLOWWORKS_BUILD_PROGRAM_1` Phase 3 — no longer a `RimWorld.Flood` subclass) lays fluid on temporary terrain and queues its removal; a release is destructive while it stands but recoverable |
 | Flow speed per liquid | **PARTIAL** | `FluidDef.ticksPerTile` is real and drives the rate; viscosity as a named concept with bands is still UNBUILT — no `viscosityClass` field exists on `FluidDef.cs` |
 | Spread confined to the channel | **BUILT** | `Flood_FlowWorks.CanFloodInto` always gates every candidate cell on `RM_MapComponent_Excavation.CanLiquidEnter` (the former `channelConfinementEnabled` setting is retired) |
-| Source stock / volume | **BUILT** | `RM_LiquidStock.cs`, 424 lines: the 5:1 budget (`FluidDef.canalCellsPerSourceCell`), debits at pulse boundaries only. §5 |
+| Source stock / volume | **BUILT** | `RM_LiquidStock.cs`, 424 lines: the pond's litres from its floor depths (no per-cell budget), debits at pulse boundaries only. §5 |
 | Limited vs limitless detection | **BUILT** | `RM_LiquidStock.FormBody` flood-fills a body's contiguous same-suite cells and sets `limitless` from map-edge contact (`touchesEdge`) plus a minimum size (`RimMandrakeFlowWorksSettings.MinLimitlessBodyCells`); gated by `stickyLimitlessEnabled` |
 | Strained-source graphic | **UNBUILT** | And no art to draw it with |
 | Partial fill / fill progression | **BUILT** | Four terrain tiers per liquid — `RM_Fill_<Liquid>_Trace/Half/Brim/Superdeep` — exist for both shipped `FluidDef`s (`RM_Fluid_Water`, `RM_Fluid_Tar`) in `Canals/TerrainDefs/FlowWorks_Terrain.xml` |
@@ -128,11 +128,12 @@ one flooded tile consumes (1 for `RM_Fluid_Water`). One **fill-unit** = enough o
 fill one canal cell. Canal fill, pump draw, burn loss and refill are all denominated in fill-units,
 so debits from different consumers compose without conversion.
 
-**Budget.** The rule is per source *cell*: each supplies up to five canal cells. Express it as a
-field on the liquid (name TBD, e.g. `canalCellsPerSourceCell`, default 5), so
-`bodyCapacity = sourceCellCount * canalCellsPerSourceCell * fluid.volumePerTile`. Because the
-budget is per cell, a body's *throughput* is bounded by how much of it a canal actually touches,
-independently of how big the body is.
+**Budget.** A pond's water is its volume: the sum over its squares of floor depth x 2,000 L (a square
+is 2 m^2; one 0.5 m notch is 1,000 L). Nothing multiplies it. There is no fixed number of canal squares
+per source square. By pump, a 2 m pond square (4,000 L) fills four 0.5 m canal squares. By gravity the
+leveling law limits it: a canal takes only water above its own floor, and surfaces level. A body's
+*throughput* is bounded by how much of it a canal actually touches. Authority:
+`flowworks_unified_depth_2026-10-17.md` (§5.2, §6).
 
 **Limited vs limitless.** On first contact, flood-fill the contiguous run of cells whose terrain
 belongs to this liquid's suite. Any cell of that run on the map-edge rect ⇒ **LIMITLESS**;
@@ -144,8 +145,8 @@ body is flagged limitless: the off-map continuation *is* the reservoir, so conse
 without a finite ledger. Encode it as a sentinel flag, not a huge literal — the ruling's semantics
 are "a stock large enough that it never matters", and a flag delivers exactly that without anyone
 having to pick a magic number, serialize it, or render `999999999 / 1000000000` in a tooltip. (b)
-Even against a truly infinite body the per-cell budget caps you at five canal cells per shoreline
-cell contacted. Draining the ocean isn't blocked by a rule; it's blocked by having to dig an ocean's
+Even against a truly infinite body a canal only takes water that stands above its own floor, and
+only through the shoreline cells it touches. Draining the ocean isn't blocked by a rule; it's blocked by having to dig an ocean's
 worth of shoreline contact. Say that in the inspect string.
 
 **Refill (ruling 2).** Accrue per body on the owning `MapComponent`, rare cadence, never per tick: a
@@ -212,7 +213,7 @@ permanent version of the same idea and needs the same care about not laundering 
 
 ### 5a. The liquid-unit contract
 
-One unit is a bottle's worth. A bucket is 5 units and a barrel is 25 (`unitsPerBottle` 1, `unitsPerBucket` 5, `unitsPerBarrel` 25 on every `LiquidDef`), and one channel level is one bucket (`RM_PumpMath.TankUnitsPerLevel` = 5), so a pump that moves N levels puts 5N units in a tank. A container's material scales what it holds through `RM_ContainerMaterialMath.ScaledUnits(base, capacityFactor)`, and a fill and the pour that empties it must call it with the same factor, so the tank's loss, the container's contents and the pour's credit are one number. The selftest case `Liquid_unit_contract_roundtrip_conserves` (`FlowWorks/Source/SelfTest/Program.cs`) reads the shipped registry and every shipped `capacityFactor`, carries liquid pump to tank to barrel, bucket and bottle and back, and fails if anything appears or vanishes or the ladder stops being 1/5/25. Anything that moves bulk liquid between maps (the tanker, BAZAAR_BROKER_TAB_1) must convert through these same numbers.
+One unit is a bottle's worth. A bucket is 5 units and a barrel is 25 (`unitsPerBottle` 1, `unitsPerBucket` 5, `unitsPerBarrel` 25 on every `LiquidDef`), and one channel notch (0.5 m in one square) was once one bucket (`RM_PumpMath.TankUnitsPerLevel` = 5). Since 2026-10-16 tanks hold litres: one notch is 1,000 L (`liquid_litres_2026-10-16.md`). A container's material scales what it holds through `RM_ContainerMaterialMath.ScaledUnits(base, capacityFactor)`, and a fill and the pour that empties it must call it with the same factor, so the tank's loss, the container's contents and the pour's credit are one number. The selftest case `Liquid_unit_contract_roundtrip_conserves` (`FlowWorks/Source/SelfTest/Program.cs`) reads the shipped registry and every shipped `capacityFactor`, carries liquid pump to tank to barrel, bucket and bottle and back, and fails if anything appears or vanishes or the ladder stops being 1/5/25. Anything that moves bulk liquid between maps (the tanker, BAZAAR_BROKER_TAB_1) must convert through these same numbers.
 
 ## 6. The channel-constraint problem
 
@@ -265,7 +266,7 @@ Zero bespoke textures exist. The states art is needed for — and §13 says whic
 
 1. **Dry dug channel** — reads as a trench, not a gravel path; directional/edge art so a run of cells
    looks like one excavation with walls.
-2. **Partially filled channel** — at least three steps (trace / half / brimming), tintable from the
+2. **Partially filled channel** — a water picture chosen by metres of water (0.5 / 1 / 1.5 / 2+ m), tintable from the
    registry's per-liquid `color`.
 3. **Full channel.**
 4. **Burning channel** — a burning liquid surface, distinct from vanilla's fire overlay on ordinary
@@ -481,10 +482,10 @@ polluted variants) off `WaterShallowBase` / `WaterChestDeepBase` / `WaterDeepBas
 **edge-aware "Ramp" texture** (`WaterShallowRamp`, `WaterChestDeepRamp`, `WaterDeepRamp`). All 17 of
 LiquidTypes' suites (`RM_Tar`, `RM_Ooze`, `RM_Propane`, `RM_AcidWater`, `RM_WaterBoiling`,
 `RM_WaterBrine` …) clone those bases and reuse those ramps verbatim.
-⇒ **`canal_partial_fill_distinct` costs almost nothing**: express fill as the tier the cell currently
-holds — trace/shallow → half/chest-deep → brimming/deep — and the edge-aware art, the depth reading and
+⇒ **`canal_partial_fill_distinct` costs almost nothing**: express fill as the water depth the cell currently
+holds — 0.5 m knee-deep → 1 m shallow → 1.5 m chest-deep → 2 m+ deep — and the edge-aware art, the depth reading and
 the movement cost all come for free from terrain that already exists. It also gives the stock model a
-natural quantisation, since a tier is a volume.
+natural quantisation, since a depth step is a volume (1,000 L a notch).
 
 **The repo's precedent for one substance in several states** is `GelatinousSlime`'s
 `SlimeTerrain.xml`: five terrains (`RM_Slime_Hardened` → `RM_Slime_Rich` → `RM_Slime_Grass` →
@@ -550,9 +551,9 @@ strong, and is still not a fresh `measure`. Re-verify both on the Desktop before
 
 ## 14. Rulings — owner, 2026-09-16, second sitting
 
-**5. Fill is THREE TIERS, reusing vanilla's depth terrains.** Trace/shallow → half/chest-deep →
-brimming/deep. The edge-aware ramp art, the wade-depth reading and the movement cost all come from
-terrain that already ships (§13), and a tier *is* a volume, so the stock model quantises for free.
+**5. Fill is chosen by metres of water, reusing vanilla's depth terrains.** 0.5 m knee-deep → 1 m shallow →
+1.5 m chest-deep → 2 m+ deep (`flowworks_unified_depth_2026-10-17.md` §4). The edge-aware ramp art, the wade-depth reading and the movement cost all come from
+terrain that already ships (§13), and a depth step *is* a volume, so the stock model quantises for free.
 Supersedes §13's framing of this as an open question, and answers open question 1.
 
 **6. A canal draining on its own RETURNS its volume to the source.** Symmetry with fill-in
@@ -570,10 +571,11 @@ slack, this is the line to revisit first — not the budget.
 > indefinitely filling, because the source is replenishing. A natural source connected off-screen can
 > effectively burn forever (a very very long time, as we ruled before... some large number)."*
 
-So burn is a **rate on the tier ladder of ruling 5**, not a timer:
+That quote is history (the owner's words of 2026-09-16). The rule now, per
+`flowworks_unified_depth_2026-10-17.md` §5.6: **one rate per burning square, 0.5 m a day** (D3: defaulted, veto-able), so:
 
-- one canal cell loses **one fill tier per day** while alight ⇒ a brimming cell burns ~3 days;
-- a source loses one level per **5 days**, the same 5:1 density relation as the supply budget;
+- a burning canal or pond square loses **0.5 m (one notch, 1,000 L) a day** while alight;
+- a pond lasts far longer than a canal because its volume is shared across the squares that are not burning;
 - therefore a **small moat fed by a larger source burns indefinitely**, because inflow outpaces burn —
   that is a designed outcome, not a leak, and it makes piping liquid to a burning moat a real tactic;
 - a **limitless source burns effectively forever.**
@@ -889,12 +891,12 @@ restatement, and it is the strongest single expression of the defense spine.
    consolidation that parks the pit fix would remove the one proof that the validation machinery works.
    Fix the pit, then merge it; the merge is a refactor and the pit is evidence.
 
-## 21. Ruling 19 + the scope discipline — four depths, and how to get terraces without a Z-system
+## 21. Ruling 19 + the scope discipline — four depths (in metres), and how to get terraces without a Z-system
 
-**Ruling 19 (owner, 2026-09-16).** Four depths: **shallow, mid, deep, SUPERDEEP** — all read as "how
+**Ruling 19 (owner, 2026-09-16).** Four depths: **shallow 0.5 m, mid 1 m, deep 1.5 m, SUPERDEEP (the pit) 2 m** (metres per `flowworks_unified_depth_2026-10-17.md`; the pit stays 2 m) — all read as "how
 far below the surface are they?". The player may terrace terrain and fill the terraces with liquids at
-varying depths. Terraces can act as pits for capture. **SUPERDEEP is the trapping level.** **Natural
-sources are treated as SUPERDEEP.** **Ladders** can be built to climb up and down walls.
+varying depths. Terraces can act as pits for capture. **SUPERDEEP is the trapping level.** **A natural
+square's depth is its own floor**: 1 m or 2 m at the shore, deeper out in a lake. **Ladders** can be built to climb up and down walls.
 
 He then asked to be challenged: *"How can we capture a lot of great ideas here and gameplay without
 inventing a whole z surface and physical fluid flow?"* This section is that answer.
@@ -1071,7 +1073,7 @@ Decide which is drawn, or roofing a trap produces a visual lie.
 **26. SUPERDEEP captures as if dry; shallower is wadeable.** Fill does not change whether a pawn falls
 in — SUPERDEEP always takes them, and *then* the liquid acts on them (ruling 22). No drowning model is
 needed, and the **trap-then-flood pipeline is the intended path to lethality**. Consequence he accepted:
-a brimming deep canal is a tax, never a barrier, so **stopping power comes entirely from SUPERDEEP
+a full 1.5 m canal is a tax, never a barrier, so **stopping power comes entirely from SUPERDEEP
 pits** — a water moat alone stops nobody.
 
 **27. Merge first, then fix the pit inside FlowWorks.** Consolidation precedes the pit's art pass, so

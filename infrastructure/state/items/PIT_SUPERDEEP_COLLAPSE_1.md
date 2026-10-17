@@ -482,8 +482,12 @@ Three separate requirements, all new:
      not left standing.
 3. 🔑 **The only number he has given here, and it is testable:** in a superdeep cell the
    walls stand **higher than the occupant's head by 20%**, so it is visually obvious they
-   could not climb out. Measurable from a screenshot, which makes it an unusually strong
-   `must show` line.
+   could not climb out. This is a **visual rule only** (owner, by card, 2026-10-17): the art
+   and the pawn's sink offset carry it. The pit itself stays **2 m** in every text. Measurable
+   from a screenshot, which makes it an unusually strong `must show` line.
+
+   Depth names, in metres (2026-10-17): D0 = surface, D1 = 0.5 m, D2 = 1 m, D3 = 1.5 m,
+   D4 = pit 2 m. Code names Shallow, Mid, Deep, Superdeep stay.
 
 🔑 Together these answer what the spec called the single largest new visual risk. The
 collapse removes the container that hid the occupant, so a spawned pawn on terrain would

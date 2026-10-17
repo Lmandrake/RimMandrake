@@ -19,11 +19,11 @@ water were returned."*
 
 **Today a pond and a canal are two different kinds of thing that only pretend to be the same.** A canal is integer
 levels in a dug cell (depth D 1–4, fill F 0–D, bytes). A pond is one decimal-number stock for the whole body. Its
-budget is 5 levels per cell, but the code reads every pond cell as "depth 4, full". When the stock falls, cells become
+capacity is a budget per cell that ignores the floor, and the code reads every pond cell as "depth 4, full". When the stock falls, cells become
 flat **Mud at ground level**. They do not become a hollow.
 
 **The owner's round trip works for dug reservoirs and fails for a natural pond, at the very last step.**
-- Dug A → tanks → bigger dug B → tanks → dug A: **exact**. Every leg moves whole levels: 1 level = 5 tank units, and
+- Dug A → tanks → bigger dug B → tanks → dug A: **exact**. Every leg moves whole levels: 1 notch = 1,000 L = 10,000 tank units (decilitres), and
   tanks hold whole units. A full A comes back identical.
 - A half-full A comes back with the **same amount of water in a different shape**. The engine moves water to a deeper
   cell or out of a brimming one. It never evens out partly filled cells of equal depth.
@@ -31,8 +31,9 @@ flat **Mud at ground level**. They do not become a hollow.
   water terrain, and on the dry Mud it makes a spill (filth). So the water either waits in the tanks or is lost as
   filth, and A refills only from seepage and rain. The existing C# selftest `Pump_pond_round_trip_conserves` passes only because it pours
   back through a hand-written `pond++` that the game does not have (MEASURED, below).
-- **"Equal volume" is not equal.** A natural cell is worth 5 levels (the 5:1 budget), but the deepest dug cell holds 4.
-  So a 25-cell pond drained into a 25-cell pit leaves 25 levels with nowhere to go.
+- **"Equal volume" is not equal.** A natural cell is worth its floor depth (shallow shore 2 notches, deep shore 4, more in
+  a lake middle), but the deepest dug cell holds 4 notches. So a lake with a floor deeper than 2 m cannot drain into the
+  same number of pit squares. (This section once counted 5 notches a cell from the 5:1 budget; that "five" is deleted.)
 - Fractional water lives in the pond stock (and in the rain carry-over between pulses). Seepage and rain add fractions
   to the stock. A fraction below
   one level stays visible as one wet cell that no pump can draw.
@@ -54,9 +55,9 @@ fishing (Odyssey's water bodies follow base terrain), the lake art, and the spee
 | canal fill F | `byte` 0..D | level | `fillGrid` (:48), clamped on read (`FillAt` :586-599) |
 | natural cell D/F | not stored; **read through** as 4/4 | level | `DepthAt`/`FillAt` (:567-599), `IsSourceCell` = base terrain `IsWater` at D=0 (:544-559) |
 | body stock, capacity | `float` | fill-unit (= `volumePerTile`, 1 for every shipped fluid) | `RM_LiquidBody.stock/capacity` (RM_LiquidBody.cs:37-40) |
-| body capacity | `cells × canalCellsPerSourceCell(5) × volumePerTile(1) × budgetMultiplier` | fill-unit | `RM_StockMath.BodyCapacity` (RM_StockMath.cs:63-70); set full at formation (RM_LiquidStock.cs:165-170) |
-| tank contents | `int storedUnits`, cap 300 × multiplier | tank unit | `Building_LiquidTank.cs:65-69` |
-| level ↔ tank units | 1 level = **5** units | — | `RM_PumpMath.TankUnitsPerLevel` (RM_PumpMath.cs:13); ladder bottle 1 / bucket 5 / barrel 25 (`flowworks_mod_definition.md` §5a) |
+| body capacity | Σ floor depth over its squares, in notches (1 notch = 0.5 m = 1,000 L); nothing multiplies it | notch | `RM_StockMath.BodyCapacity` (RM_StockMath.cs:63-70); set full at formation (RM_LiquidStock.cs:165-170) |
+| tank contents | `int storedUnits`, cap `RM_Volume.TankCapacity` × multiplier (2×2 = 16 kL) | tank unit (decilitre) | `Building_LiquidTank.cs` |
+| notch ↔ tank units | 1 notch = 1,000 L = 10,000 units | — | `RM_Volume.UnitsPerLevel`; containers bottle 1.5 L (15 units) / bucket 15 L (150) / barrel 208 L (2,080) (`liquid_litres_2026-10-16.md`) |
 | hose held volume | `int heldUnits` | tank unit | `RM_LiquidSpill.DrainHeld` (RM_LiquidSpill.cs) |
 | rain into canals | `float rainAccumulator`, released in whole levels | level | `ApplyRain` (RM_MapComponent_Excavation.cs:~1391-1415) |
 | refill of a body | `float`, per pulse, clamped to capacity | fill-unit | `RM_LiquidStock.Refill` (:329-353), `RM_StockMath.RefillPerDay/RefillForPulse` |
@@ -64,9 +65,9 @@ fishing (Odyssey's water bodies follow base terrain), the lake art, and the spee
 **Transfer legs, each in whole levels:**
 - Flow pulse: a source donor costs `TryDebitLevel` = `TryDebit(volumePerTile)`. A dug donor gives −1 and the recipient
   gets +1 (`RM_FlowKernel.ResolveComponent` :320-360). A per-component check (before vs after, :255-382) tests each pulse.
-- Pump draw from a body: `TryDebit(volumePerTile)` adds +5 tank units (Building_LiquidPump.cs:352-357). Pump draw from a
-  canal: `TryTakeLevel` adds +5 units (:337-345).
-- Pump pour: −5 units, then +1 level into the **dug** cell in reach with the most room (`TryPour`, :378-456;
+- Pump draw from a body: `TryDebit(volumePerTile)` adds one notch (+10,000 tank units; Building_LiquidPump.cs). Pump draw from a
+  canal: `TryTakeLevel` adds +10,000 units.
+- Pump pour: −10,000 units, then +1 notch into the **dug** cell in reach with the most room (`TryPour`, :378-456;
   `RM_PumpMath.PickPour`).
 - Outflow end: `RM_LiquidSpill.Outlet` takes a dug cell that has room. **Water terrain is Blocked.** Dry standable
   ground takes the water as a **spill (filth)**, which never turns back into liquid (RM_LiquidSpill.cs:26-58).
@@ -155,10 +156,10 @@ def, MEASURED). So walls and floors cannot be built on it, but **bridges can**, 
 No volume is created (the stock is unchanged), but the player sees a fill-in produce water and then flicker. The fix is
 small: when a receded cell is first dug, re-record its original terrain as the bed (receded) terrain.
 
-**G6. "Equal volume" mismatch: 5 levels per pond cell vs 4 per deepest canal cell. MEASURED.** Capacity uses
-`canalCellsPerSourceCell = 5`, while the read-through depth is 4. Any design that equates a pond cell with a canal cell
-gains or loses 20% somewhere. Trip 7 of the selftest quantifies it: a 25-cell pond holds 125 levels and a 25-cell
-superdeep pit holds 100. This is an owner decision (§6, Q2), not a bug to fix silently.
+**G6. "Equal volume" must be defined. RULED 2026-10-12.** A pond cell is worth its floor depth (shore shallow 2 notches,
+shore deep 4, more in a lake middle), and the deepest dug cell holds 4 notches. A 25-cell deep-shore pond holds 100
+notches and a 25-cell 2 m pit holds 100, so they match exactly. A lake floor deeper than 2 m holds more than a pit
+square can (§9).
 
 **G7. Water outside our books.** Several things change water without passing through our accounts. They create or lose
 nothing, but they make the books lie.
@@ -284,8 +285,8 @@ least visible part.
 
 ### Offline (runs now, no game): `src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py`
 
-The model's constants are read from production: `TankUnitsPerLevel`, `Superdeep`, and the water FluidDef's
-`volumePerTile` and `canalCellsPerSourceCell`. It detects from the source text whether a pour-into-body leg exists, and
+The model's constants are read from production: `RM_Volume.UnitsPerLevel`, `Superdeep`, and the water FluidDef's
+`volumePerTile`. It detects from the source text whether a pour-into-body leg exists, and
 trip 6 flips from "documents the gap" to "demands the full round trip" when one lands. Current output: **PASS 10/10**.
 
 | trip | what | result today |
@@ -296,7 +297,7 @@ trip 6 flips from "documents the gap" to "demands the full round trip" when one 
 | 4 | sloped bowl, 40 levels | volume exact; shape same (fills deepest first both times) |
 | 5 | B smaller than the load | pour stalls; the remainder waits in the tanks; nothing lost |
 | 6 | natural A (20 cells) → tanks → B → tanks → A | **gap**: 500 units stranded in the tanks (G1) |
-| 7 | 25-cell pond → 25-cell D4 pit | 25 levels have nowhere to go (G6) |
+| 7 | 25-cell pond → 25-cell D4 pit | exact: both hold 100 notches (G6) |
 | 8 | seepage remainder below one level | one wet cell that cannot be drawn (G8) |
 | 9 | float stock written as text | 7-digit text drifts about 4e-5 (G9) |
 | 10 | limitless draw | never runs out; tanks fill |
@@ -338,8 +339,8 @@ fire none. The test is conservation, not weather.
 
 1. **Should a drained pond leave a hollow you can fall into, or flat mud?** Hollow: the bed takes back water and works
    like a dug pit. Flat mud: today's behaviour; simpler, but the pond cannot be refilled by hand.
-2. **How much water is one pond square worth?** 5 levels (today): ponds stay generous, but a pond never fits exactly
-   into a dug pit of the same size. 4 levels: pond and pit match exactly, but every pond holds 20% less than today.
+2. **How much water is one pond square worth?** (Ruled 2026-10-12: its floor depth. Shore shallow 1 m = 2 notches, shore
+   deep 2 m = 4 notches, more in a lake middle. The 5-level option is deleted.)
 3. **How deep is the hollow a drained pond leaves?** Shallow water → 2, deep water → 4 (proposed). Or everything → 4,
    which is simpler but makes every dried pond a trap. Or shallow → 1, which can be walked out of.
 4. **A dried-up deep lake would be a giant trapping pit. OK?** Yes, it is a feature (raiders fall in). Or no: a dry
@@ -406,51 +407,34 @@ shrinks the pond (#10).
 Owner, verbatim (2026-10-12): *"1 tank square, 1 deep water square/pond, 1 deep canal square should all be the same
 volume. Right now that's 4 I believe."* It extends ruling 7 above (shallow pond square 2 levels, deep 4).
 
-### 8.1 What the code does today (MEASURED 2026-10-12, read from source)
-
-| thing | levels | tank units | where |
-|---|---|---|---|
-| 1 level | 1 | **5** | `RM_PumpMath.TankUnitsPerLevel = 5` (Source/RM_PumpMath.cs:13); `volumePerTile` = 1 for every shipped fluid (FlowWorks_Fluids.xml:26, FlowWorks_PitFluids.xml:19) |
-| deepest dug canal square | **4** | 20 | `RM_ExcavationDepth.Superdeep = 4`, `MaxDepth = Superdeep` (Source/RM_ExcavationDepth.cs:38-40) |
-| natural pond square (any depth) | **5** | 25 | `canalCellsPerSourceCell = 5` for every fluid (FlowWorks_Fluids.xml:35 etc., FlowWorks_PitFluids.xml:22 etc.; C# default FluidDef.cs:91, RM_LiquidStock.cs:32); capacity = cells × 5 × volumePerTile × budgetMultiplier (RM_StockMath.cs:55-70). Ruling 7's 2/4 split is **not built**. |
-| `RM_LiquidTank` (2×2) | 60 total, **15 per square** | 300, 75 per square | `BaseCapacityUnits = 300` (Source/LiquidTypes/Building_LiquidTank.cs:36, :67-69); size (2,2) (Defs/LiquidTypes/ThingDefs/RM_LiquidTank.xml:41) |
-| `RM_UniversalCargoTank` (2×2) | 120 total, **30 per square** | 600, 150 per square | `baseCapacityUnits 600` (Defs/Machinery/RM_LiquidLogistics.xml:115); size (2,2) (:87) |
-| barrel / bucket / bottle (base) | 5 / 1 / 0.2 | 25 / 5 / 1 | RM_LiquidBottles_Base.xml:200, :291 |
-| settings that scale it | — | — | `tankCapacityMultiplier` default 1 (RimMandrakeFlowWorksMod.cs:283, slider 0.2–5 :1142); pond `budgetMultiplier` |
-
-The owner's "4" is right for a canal and wrong for the other two: a pond square is 5 levels and a tank square is 15
-(30 for the cargo tank). The number 4 is also duplicated: `RM_PitTrapMath.Superdeep` (RM_PitTrapMath.cs:20),
-`RM_FlowKernel.Superdeep` (RM_FlowKernel.cs:89) and `RM_PitDrawMath.MaxDepth` (RM_PitDrawMath.cs:28). 5 is duplicated
-too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
-
-### 8.2 The design: one constant
+### 8.1 The design: one constant
 
 - **New `RM_Volume` (Verse-free, beside `RM_PumpMath`):**
   - `LevelsPerSquare = 4`, the **deep notch** (owner 2026-10-12: deep water is "at least 4 notches deep"). It is its
     own constant, NOT `RM_ExcavationDepth.MaxDepth`: deeper natural beds (§9) never change a tank's size.
-  - `UnitsPerLevel = 5`, moved here from `RM_PumpMath.TankUnitsPerLevel`, which becomes an alias and is then deleted.
-  - `UnitsPerSquare = LevelsPerSquare × UnitsPerLevel` (20).
-  - Every other copy of 4 and 5 above reads these constants. A pond square holds its own bed depth (§9.6), so a
+  - One notch in one square = 1,000 L. A square is 2 m^2 (`SquareAreaM2 = 2`) and a notch is 0.5 m
+    (`MetresPerNotch = 0.5`), so `LitresPerNotch = SquareAreaM2 × MetresPerNotch × 1000`
+    (`liquid_litres_2026-10-16.md`, `flowworks_unified_depth_2026-10-17.md` §3). The 5-unit "level" is deleted.
+  - `LitresPerSquare = LevelsPerSquare × LitresPerNotch` (4,000 L, the yardstick: 2 m = 4 notches).
+  - Every other copy of 4 reads these constants. A pond square holds its own bed depth (§9.6), so a
     deep pond square holds at least `LevelsPerSquare`, and more at the middle of a big lake.
 - **Deep canal square:** unchanged at `MaxDepth` levels.
 - **Pond square:** budget = the bed depth of the cell, from its recorded water terrain:
   - deep water: `LevelsPerSquare`;
   - shallow water: 2 (ruling 7; ruling 3 bed depth).
-  - Capacity = Σ cell bed depth × `volumePerTile` × `budgetMultiplier`.
+  - Capacity = Σ cell bed depth (notches) × 1,000 L. Nothing multiplies it (`budgetMultiplier` is deleted).
   - `canalCellsPerSourceCell` is deleted from FluidDef.cs and from every FluidDef XML in the same change. Deleting the
     field from C# alone would make every XML that sets it a config error.
 - **Tank square:** capacity = footprint area × `UnitsPerSquare` × (2 if tall) × `tankCapacityMultiplier`.
-  - Tanks come in many footprints, each with a tall variant (owner ruling 2026-10-12, §8.5): 1×1 = 20 (tall 40),
-    1×2 = 40 (80), 2×2 = 80 (160), 3×3 = 180 (360).
-  - `RM_LiquidTank` (2×2): 80 units, down from 300; its tall twin 160.
-  - `RM_UniversalCargoTank` (2×2): 80 units, down from 600, or 160 as a tall tank.
+  - Tanks come in many footprints, each with a tall variant (owner ruling 2026-10-12, §8.4): 1×1 = 4 kL (tall 8 kL),
+    1×2 = 8 kL (16), 2×2 = 16 kL (32), 3×3 = 36 kL (72).
+  - `RM_LiquidTank` (2×2): 16 kL; its tall twin 32 kL.
+  - `RM_UniversalCargoTank` (2×2): 16 kL, or 32 kL as a tall tank.
   - `RM_LiquidTankExtension.baseCapacityUnits` is replaced by `footprint` (from the def's size) and `bool tall`.
-- **Multipliers:** at their default of 1, the equality holds exactly. The tooltips for `tankCapacityMultiplier` and
-  `budgetMultiplier` say "≠ 1 breaks one square = one square".
-- **Containers** (bottle, bucket, barrel) stay in units. A base barrel (25) holds more than one deep square (20).
-  That is legal, because a barrel is not a square.
+- **Multipliers:** at their default of 1, the equality holds exactly. The tooltip for `tankCapacityMultiplier` says "≠ 1 breaks one square = one square".
+- **Containers** (bottle, bucket, barrel) stay in units. A barrel (208 L) holds a small part of a deep square (4,000 L).
 
-### 8.3 Save compatibility (one-time, versioned)
+### 8.2 Save compatibility (one-time, versioned)
 
 - `RM_MapComponent_Excavation` scribes `rmVolumeModel` (absent = 1, new = 2). The migration runs once in
   `PostLoadInit` when the stored value is below 2, then sets it to 2.
@@ -469,10 +453,10 @@ too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
 - **Canals:** no change.
 - **Rain carry-over and hoses:** no change. They already count in levels or units.
 
-### 8.4 Conservation tests
+### 8.3 Conservation tests
 
 - **Offline** (`northstar/selftest_conservation_roundtrip.py`, which reads constants from production):
-  - Trip 7 flips from "25 levels have nowhere to go" to **exact**: a 25-cell deep pond drains into a 25-cell D 4
+  - Trip 7 is **exact**: a 25-cell deep pond drains into a 25-cell D 4
     pit and the tanks end empty.
   - New trip 11, **square equals square:** N deep canal squares pumped into tanks of N squares fill them exactly.
     The same tanks pumped back fill the canal exactly, with no remainder.
@@ -483,12 +467,12 @@ too, in `TransferChecks.Level` (SelfTest/TransferChecks.cs:60).
 - **C# SelfTest** (`Volume_one_square_is_one_square`):
   - `PerCellBudget(deepBed) × UnitsPerLevel == UnitsPerSquare == tank capacity ÷ footprint area`, with multipliers
     at 1.
-  - A source sca### 8.5 Tank sizes — ruled (owner, 2026-10-12)
+  - A source sca### 8.4 Tank sizes — ruled (owner, 2026-10-12)
 
 *"What you're really dealing with is "deep water" is an "at least 4 notches deep" but could be much deeper. A "tall
 tank" should hold twice as much. And that's it. There are "big" water units. And yes tanks should come in many sizes.
-1x1, 1x2, 2x2, etc. Tall versions too."* So: one tank square = one deep notch (4 levels, 20 units); a tall tank
-square = 2 notches (40 units); footprints 1×1, 1×2, 2×2 and up, each with a tall version. Tall tanks need new art
+1x1, 1x2, 2x2, etc. Tall versions too."* So: one tank square = one deep notch (4 notches of water, 2 m, 4,000 L); a tall tank
+square = 2 deep notches (8,000 L); footprints 1×1, 1×2, 2×2 and up, each with a tall version. Tall tanks need new art
 (through the art ledger); a footprint family can share one texture scaled by `graphicData.drawSize`.
 
 ## 9. Deep beds: can an elevation grid cover a drained lake? (feasibility, 2026-10-12)
@@ -544,7 +528,7 @@ existing canal network.
 A body is one `stock` scalar plus `PerCellVolume`, and recession gives up cells "fewest wet neighbours first, then
 farthest from the centroid" (RM_LiquidStock.cs:373-420). **The scalar survives; the uniform volume does not.**
 
-- **Capacity** = Σ bed depth over the footprint (levels) × `UnitsPerLevel` × `volumePerTile` × `budgetMultiplier`.
+- **Capacity** = Σ bed depth over the footprint (notches) × 1,000 L. Nothing multiplies it.
 - **Which cells are wet** follows from one drawdown number: a flat surface `s` levels below the brim wets every cell
   whose bed depth is greater than `s`. Recession becomes "lower the surface", which empties the shallow rim first, as
   a real lake does, and replaces the centroid ordering. Integer remainder levels go to the deepest cells, ties by cell
@@ -561,7 +545,7 @@ farthest from the centroid" (RM_LiquidStock.cs:373-420). **The scalar survives; 
 
 At body formation (already lazy, RM_LiquidStock.BodyAt/FormBody), compute a distance-to-shore transform over the
 footprint (one BFS, O(cells)) and set bed depth = shallow water 2 (ruling 3); deep water 4 + floor((d − d0) / s),
-capped by a per-biome or per-setting `MaxBedDepth` (PROVISIONAL d0 = 3, s = 4, cap 20). It is a pure function of the
+capped by a per-biome or per-setting `MaxBedDepth` (d0 = 3, s = 4; cap ruled 2026-10-17: 20 m default, settable to 125 m, 50 m for very large lakes and oceans). It is a pure function of the
 map's own vanilla terrain, so reloads and machines agree, and it writes nothing outside this map: **not a worldgen
 feature** (CLAUDE.md rule). The bed is recorded once, so a refill returns the exact shape (ruling 7).
 
@@ -583,10 +567,10 @@ feature** (CLAUDE.md rule). The bed is recorded once, so a refill returns the ex
 
 | constant | value | meaning |
 |---|---|---|
-| `RM_Volume.LevelsPerSquare` | 4 | one deep notch: a tank square, a deep canal square, the shallowest deep-pond square |
-| `RM_Volume.UnitsPerLevel` | 5 | unchanged |
+| `RM_Volume.LevelsPerSquare` | 4 | the yardstick: 2 m = 4 notches = 4,000 L; a tank square, a 2 m canal square, a shore-deep pond square |
+| `RM_Volume.LitresPerLevel` | 1,000 | one notch in one square (`SquareAreaM2` 2 × 0.5 m × 1000) |
 | `RM_ExcavationDepth.MaxDepth` | 4 today | how deep a pawn can **dig** (owner question below) |
-| `MaxBedDepth` | 20 PROVISIONAL | deepest natural bed; also the kernel's and draw code's upper bound |
+| `MaxBedDepth` | 20 m default (40 notches), setting up to 125 m; very large lakes and oceans up to 50 m | deepest natural bed (RULED 2026-10-17, D2); also the kernel's and draw code's upper bound |
 | trap depth | relative (climb design §8) | no absolute 4 anywhere |
 
 ### 9.7 Cost and order
