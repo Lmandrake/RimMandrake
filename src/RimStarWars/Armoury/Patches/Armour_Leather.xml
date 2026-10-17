@@ -2435,34 +2435,6 @@
             </value>
           </nomatch>
         </match></li>
-        <!-- Leather_Rycrit : heat-adapted: ablative hide, resists energy (L11) -->
-        <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_Leather_Rycrit"]</xpath><match Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Leather_Rycrit"]/stuffProps/statFactors</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Leather_Rycrit"]/stuffProps/statFactors</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Leather_Rycrit"]/stuffProps</xpath>
-            <value>
-            <statFactors>
-              <ArmorRating_Sharp>1.15</ArmorRating_Sharp>
-              <ArmorRating_Blunt>1.05</ArmorRating_Blunt>
-              <ArmorRating_Heat>1.30</ArmorRating_Heat>
-              <Beauty>1.05</Beauty>
-              <Comfort>1.15</Comfort>
-            </statFactors>
-            </value>
-          </nomatch>
-        </match></li>
         <!-- Leather_Wraid : heat-adapted: ablative hide, resists energy (L11) -->
         <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RSW_Leather_Wraid"]</xpath><match Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="RSW_Leather_Wraid"]/stuffProps/statFactors</xpath>

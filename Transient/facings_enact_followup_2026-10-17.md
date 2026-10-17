@@ -12,3 +12,8 @@ Sheet: Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.j
 - DONE Hssiss: base A replaced by installed C; HssissA/B/C alternateGraphics removed (E/G/I out of pool). LEFT: re-add each HssissA/B/C entry when its queued redraw is kept.
 - DONE Wampa: cub lifeStage draws the adult picture; Wampa_j (4 PNGs, b1 standtall) retired via ledger; Wampa_j redraw job withdrawn to _artpipe/_withdrawn.
 - DONE MastiffPhalone: description rewritten from canon_references/mastiffphalone/description.md.
+
+## 2. Cuts
+- DONE RSW_KraytDragon cut: race file + its 2 eggs deleted; crossbreed lists (Greater, Kell) trimmed; RUT_KraytAttack sand-leviathan pawnKind -> RSW_GreaterKraytDragon; ExtremeDesert + Stillsand rosters drop it (Greater already there); MegafaunaYield, BeastNorm_Law3, AnimalBiomeDuplicates #258, TheReturn xpath, GiantSkeletons_Remains ops removed; 11 textures retired via ledger. KEPT: BodyDef RSW_KraytDragon (RSW_KellDragon uses it), leather/meat/sounds/skull (Greater, Kell, horn, den, skeletons use them).
+- DONE RSW_Rycrit cut: race file, BodyDef, leather, meat, ate-meat thought, 4 sounds deleted; AnimalTolerances, Armour_Leather, PawnFlavor ops removed; 10 textures retired via ledger. Sound clips (Sounds/SWanimals/Pawn_Rycrit_*) left on disk, unreferenced.
+- LEFT: historical records (design/*.json/.csv, art sheet snapshots, def_history) still name both — records, not live.

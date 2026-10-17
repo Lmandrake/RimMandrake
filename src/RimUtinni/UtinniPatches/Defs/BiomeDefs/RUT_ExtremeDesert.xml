@@ -160,7 +160,6 @@
            an in-game reason to multi-home an animal. Do not re-add either here. -->
       <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kreetle>  <!-- kreetle - grain-scale, keep -->
       <RSW_WarWyrm MayRequire="mandrake.rsw.swbestiary">0.2</RSW_WarWyrm>  <!-- war wyrm - giant, keep -->
-      <RSW_KraytDragon MayRequire="mandrake.rsw.swbestiary">0.15</RSW_KraytDragon>  <!-- krayt dragon - giant, keep -->
       <RSW_Ikee MayRequire="mandrake.rsw.swbestiary">0.15</RSW_Ikee>  <!-- ikee - grain-scale, adjust-keep -->
       <RSW_GraniteSlug MayRequire="mandrake.rsw.swbestiary">0.1</RSW_GraniteSlug>  <!-- granite slug - grain-scale, keep -->
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->

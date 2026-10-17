@@ -7,26 +7,6 @@
 <Patch>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]/tools/li[3]/power</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]/tools/li[3]/power</xpath>
-          <value>
-            <power>180.0</power>
-          </value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]/tools/li[3]/cooldownTime</xpath>
-          <value>
-            <cooldownTime>5.2</cooldownTime>
-          </value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Nerf"]/tools/li[2]/power</xpath>
     <match Class="PatchOperationSequence">
       <operations>

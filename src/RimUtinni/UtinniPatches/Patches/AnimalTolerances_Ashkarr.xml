@@ -15587,48 +15587,6 @@
     </match>
   </Operation>
 
-  <!-- rycrit (RSW_Rycrit) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -20..81.9 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-20</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-20</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>81.9</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]/statBases</xpath>
-            <value><ComfyTemperatureMax>81.9</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Rycrit"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-20</ComfyTemperatureMin>
-          <ComfyTemperatureMax>81.9</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
 
   <!-- ysalamir (SWPotF_RaceDef_ysalamir) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -19.2..60.3 -->
   <Operation Class="PatchOperationConditional">

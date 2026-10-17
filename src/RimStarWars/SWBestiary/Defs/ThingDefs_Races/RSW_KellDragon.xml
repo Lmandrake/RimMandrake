@@ -113,7 +113,6 @@
       </specialTrainables>
       <canCrossBreedWith>
         <li>RSW_GreaterKraytDragon</li>
-        <li>RSW_KraytDragon</li>
       </canCrossBreedWith>
       <wildBiomes>
         <TropicalRainforest>0.0</TropicalRainforest>

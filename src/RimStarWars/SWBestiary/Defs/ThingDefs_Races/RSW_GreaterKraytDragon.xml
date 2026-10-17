@@ -39,11 +39,8 @@
   `swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated` path (the same
   one the other 2 lifeStages already use), not carried over verbatim.
 
-  🔑 **`canCrossBreedWith` updated, Pass 14 (2026-09-18)**: `KraytDragon`
-  repointed to `RSW_KraytDragon` now that species is ported (same pass);
-  `KellDragon` stays bare, still unported, same "leave pointing at
-  still-bare donor names" precedent as RSW_FeralGrazer's canCrossBreedWith
-  (2026-09-17). Flagged here for whoever ports KellDragon next.
+  `canCrossBreedWith`: RSW_KellDragon only — the lesser RSW_KraytDragon was CUT by the owner 2026-10-17
+  ("I only want the Greater Krayt Dragon").
 
   Art: `GreaterKraytDragon_{east,north,south}` (the primary look, all 3 life
   stages) live at Textures/RimStarWars/SWBestiary/GreaterKraytDragon/ (folded
@@ -175,7 +172,6 @@
       </specialTrainables>
       <canCrossBreedWith>
         <li>RSW_KellDragon</li>
-        <li>RSW_KraytDragon</li>
       </canCrossBreedWith>
       <wildBiomes>
         <AridShrubland>0.0</AridShrubland>

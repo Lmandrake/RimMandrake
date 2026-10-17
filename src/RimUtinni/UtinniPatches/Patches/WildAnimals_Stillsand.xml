@@ -61,7 +61,7 @@
   (qorrax, owner art-review pending). RSW_Kreetle STAYS (Q6: "kreetle ONE
   home, the Stillsand" — this doc's own §7 recommendation to cut it was
   reversed by the card):
-    RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15,
+    RSW_Kreetle 0.2, RSW_WarWyrm 0.2, (RSW_KraytDragon cut 2026-10-17),
     RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
     RSW_GreaterKraytDragon 0.001, RSW_Ikee 0.15
 
@@ -97,7 +97,6 @@
         <value>
           <RSW_Kreetle>0.2</RSW_Kreetle>
           <RSW_WarWyrm>0.2</RSW_WarWyrm>
-          <RSW_KraytDragon>0.15</RSW_KraytDragon>
           <RSW_GraniteSlug>0.1</RSW_GraniteSlug>
           <RSW_Scurrier>0.1</RSW_Scurrier>
           <RSW_Gizka>0.01</RSW_Gizka>

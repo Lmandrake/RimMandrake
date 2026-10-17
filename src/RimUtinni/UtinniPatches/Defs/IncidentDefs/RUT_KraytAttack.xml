@@ -44,7 +44,7 @@
         <biomes>
           <li>RM_Stillsand</li>
         </biomes>
-        <pawnKind>RSW_KraytDragon</pawnKind>
+        <pawnKind>RSW_GreaterKraytDragon</pawnKind>  <!-- owner 2026-10-17: lesser krayt CUT, "I only want the Greater Krayt Dragon" -->
         <surfaceFighter>true</surfaceFighter>
         <warningTicks>2000</warningTicks>
         <maxStayTicks>30000</maxStayTicks>

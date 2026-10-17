@@ -2091,14 +2091,6 @@
     </match>
   </Operation>
 
-  <!-- 258. RSW_KraytDragon x ExtremeDesert   (race RSW_KraytDragon) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]/race/wildBiomes/ExtremeDesert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]/race/wildBiomes/ExtremeDesert</xpath>
-    </match>
-  </Operation>
-
   <!-- 259. RSW_Kreetle x ExtremeDesert   (race RSW_Kreetle) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Kreetle"]/race/wildBiomes/ExtremeDesert</xpath>
