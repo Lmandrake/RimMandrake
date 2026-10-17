@@ -1,0 +1,1 @@
+A static C# cache keyed by thingIDNumber survives a save load, and a reload of the same save restarts BOTH the thing-ID counter and the tick: the next session's first-spawned pawn inherits the old entry at a fresh-looking tick. Clear such caches when Current.Game changes; a 'too far ahead = stale' guard does not catch it (FlowWorks noTerrainUntil, T15 run 1, 2026-10-17).

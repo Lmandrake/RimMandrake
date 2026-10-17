@@ -18,7 +18,21 @@ calm site; same-ID pawn must drink within 300 ticks) is the red-before-fix check
 RUNNING now), then `thirst_live.py --only T15R` live.
 
 ## 2. validation.py reads thirst_live / sprinkler_live results
-pending
+Done. `validation.py` `driver_rows_at` + `_driver_live_report`: THIRST_LIVE / SPRINKLER_LIVE rows read every
+`northstar/{thirst,sprinkler}_live_result_*.json` that is mode live, at the current mod hash AND whose game ran the repo's
+FlowWorks DLL (env.assembly_sha256; a run before a deploy certifies nothing); newest row per id wins; T21/T22 come from the
+sprinkler driver; absent -> UNMEASURED naming the driver; one FAIL/UNMEASURED row no longer blanks the rest of the chain
+(before, the first UNMEASURED set upstream_failed and every later row read "upstream"). New `northstar/driver_stamp.py`
+stamps mode/mod/mod_hash/env.running/assembly sha into both drivers' results. Selftest
+`FlowWorks/selftest_flowworks_driver_rows.py` (19 checks) PASS.
+The walk's own results (Transient/review_walk_2026-10-17/live/) carry no mod_hash and predate today's DLL, so they are NOT
+credited: the rows read UNMEASURED-with-command until the next live run writes into northstar/ (default out).
+modcheck: `modcheck record` takes only the core v2 result (one entry per mod; any UNMEASURED row -> RED), so the drivers are
+not recordable on their own; they now reach modcheck through validation.py's chains, which `modcheck run FlowWorks` records.
+PRE-EXISTING RED found (not from this change): `northstar/selftest_extensions.py` and `selftest_flowworks_northstar.py` fail
+because `northstar/settings_registry.py` lacks the 8 RM_ThirstSettings fields added in c72cea8a08 (bucketFirefighting,
+drinkingReserveLitres, filledBottlesPerColonist, lastResortDrinking, roughDrinkPenalty, saltBreakEnabled,
+sanguophageBloodQuenches, snowGathering); also "clean mock run not green" in selftest_extensions. Claimable, not done.
 
 ## 3. Code review of walk-touched files
 pending
