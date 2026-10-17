@@ -159,7 +159,7 @@ namespace RimMandrake.ExplosiveGrowth
         {
             WeatherManager wm = map.weatherManager;
             bool raining = false;
-            if (ExplosiveGrowthSettings.rainWaterEnabled && wm?.curWeather != null)
+            if (ExplosiveGrowthSettings.rainWaterEnabled && wm?.curWeather != null && wm.lastWeather != null)
             {
                 raining = wm.RainRate > 0.05f || RM_ExplosiveGrowthRegistry.SoakWeathers.Contains(wm.curWeather)
                     || (ExplosiveGrowthSettings.snowmeltEnabled && wm.SnowRate > 0.05f && RM_ExplosiveGrowthRegistry.IsSnowmeltBiome(map.Biome));
@@ -194,15 +194,25 @@ namespace RimMandrake.ExplosiveGrowth
 
         // ── the channel (D5) ─────────────────────────────────────────────
 
-        /// <summary>The FlowWorks grids for one accepted-liquid set, fetched at most once per tick per set.</summary>
+        /// <summary>The FlowWorks grids for one accepted-liquid set: a pure read of the cache RefreshChannelGrids fills once per
+        /// pass (§7: GrowthRate allocates nothing). The Grids hold FlowWorks' own arrays, so their contents are live; only a
+        /// reallocated grid (a map resize) waits for the next pass. null = no channel water this set accepts.</summary>
         public RimMandrake.Shared.FlowWorksIrrigationRead.Grids ChannelGrids(HashSet<string> accepts)
         {
-            int now = Find.TickManager.TicksGame;
-            if (now != channelGridsTick) { channelGrids.Clear(); channelGridsTick = now; }
-            if (channelGrids.TryGetValue(accepts, out var g)) return g;
-            RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, accepts, out g);
-            channelGrids[accepts] = g;
-            return g;
+            return channelGrids.TryGetValue(accepts, out var g) ? g : null;
+        }
+
+        private void RefreshChannelGrids(int now)
+        {
+            channelGrids.Clear();
+            channelGridsTick = now;
+            if (!ExplosiveGrowthSettings.irrigationSoakEnabled || !RimMandrake.Shared.FlowWorksIrrigationRead.Available) return;
+            List<HashSet<string>> sets = RM_ExplosiveGrowthRegistry.LiquidSets;
+            for (int i = 0; i < sets.Count; i++)
+            {
+                RimMandrake.Shared.FlowWorksIrrigationRead.TryGrids(map, sets[i], out var g);
+                if (g != null) channelGrids[sets[i]] = g;
+            }
         }
 
         // ── ash (C5, OQ-11) ──────────────────────────────────────────────
@@ -389,6 +399,7 @@ namespace RimMandrake.ExplosiveGrowth
                 return;
             }
             UpdateRain(now);
+            RefreshChannelGrids(now);
             RM_SoakSources.Pulse(this, now);
 
             bool reprint = now >= nextReprintTick;
@@ -542,6 +553,7 @@ namespace RimMandrake.ExplosiveGrowth
                 if (ruptures == null) ruptures = new List<RM_RuptureZone>();
                 if (rainUsed == null) rainUsed = new Dictionary<IntVec3, int>();
                 rainingNow = wasRaining;
+                channelGridsTick = -1;
                 cachedMap = null;
                 cachedComp = null;
             }
