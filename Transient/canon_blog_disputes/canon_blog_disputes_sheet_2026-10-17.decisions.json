@@ -1,0 +1,312 @@
+{
+  "sheetId": "canon_blog_disputes_sheet_2026-10-17",
+  "posture": "whitelist",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "agent pre-fill, owner has not ruled"
+  },
+  "decisions": {
+    "dragonsnake": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "jawa": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "klatooinian": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "mirialan": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "ithorian": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "tauntaun": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "hutt": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "arkanian": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "feeorin": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "mimbanese": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "bothan": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "bith": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "trandoshan": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "kel_dor": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "rakata": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "nagai": {
+      "decision": "noncanon",
+      "prefill": "noncanon",
+      "note": ""
+    },
+    "aqualish": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "bantha": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "blurrg": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "chiss": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "duros": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "eopie": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ewok": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "falleen": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gamorrean": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gand": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "geonosian": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "gungan": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "iktotchi": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kelldragon": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kraytdragon": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "kubaz": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "lasat": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "massiff": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mon_calamari": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mudhorn": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "muun": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "mynock": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "nautolan": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "neebray": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "neimoidian": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "nikto": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "orray": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "pantoran": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "porg": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "quarren": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "rancor": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "selkath": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "sullustan": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "togruta": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "ugnaught": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "vulptex": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wampa": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "weequay": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "womprat": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wookiee": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "worrt": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "wyyyschokk": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "zeltron": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "zygerrian": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}
