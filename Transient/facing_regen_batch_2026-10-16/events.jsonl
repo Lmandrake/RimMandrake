@@ -301,3 +301,46 @@
 {"key": "things/pawn/animal/rm_meltgut/rm_meltgut", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:15"}
 {"key": "things/pawn/animal/rm_muddal/rm_muddal", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T17:18:20"}
 {"key": "things/pawn/animal/rm_mullgoth/rm_mullgoth", "event": "installed", "facings": ["north"], "at": "2026-10-16T17:18:22"}
+{"event": "publish", "n_paths": 30, "result": "close with: rimflow close <ID> --sha 99f12e07e2d5", "at": "2026-10-16T17:18:32"}
+{"key": "things/pawn/animal/rm_muurrok/rm_muurrok", "event": "done", "seconds": 112, "at": "2026-10-16T17:20:24"}
+{"key": "things/pawn/animal/rm_niim/rm_niim", "event": "done", "seconds": 154, "at": "2026-10-16T17:22:58"}
+{"key": "things/pawn/animal/rm_nissik/rm_nissik", "event": "done", "seconds": 55, "at": "2026-10-16T17:23:53"}
+{"key": "things/pawn/animal/rm_nuudal/rm_nuudal", "event": "done", "seconds": 56, "at": "2026-10-16T17:24:49"}
+{"key": "things/pawn/animal/rm_nuudal/rm_nuudalc", "event": "done", "seconds": 156, "at": "2026-10-16T17:27:25"}
+{"key": "things/pawn/animal/rm_ollareth/rm_ollareth", "event": "done", "seconds": 141, "at": "2026-10-16T17:29:47"}
+{"key": "things/pawn/animal/rm_oomal/rm_oomal", "event": "done", "seconds": 171, "at": "2026-10-16T17:32:38"}
+{"key": "things/pawn/animal/rm_oomb/rm_oomb", "event": "done", "seconds": 85, "at": "2026-10-16T17:34:02"}
+{"key": "things/pawn/animal/rm_otheska/rm_otheska", "event": "done", "seconds": 175, "at": "2026-10-16T17:36:58"}
+{"key": "things/pawn/animal/rm_pallu/rm_pallu", "event": "done", "seconds": 97, "at": "2026-10-16T17:38:34"}
+{"key": "things/pawn/animal/rm_qorrax/rm_qorrax_dessicated", "event": "lint_flag", "at": "2026-10-16T17:41:18"}
+{"key": "things/pawn/animal/rm_quarrok/rm_quarrok", "event": "done", "seconds": 121, "at": "2026-10-16T17:43:19"}
+{"key": "things/pawn/animal/rm_ruukka/rm_ruukka", "event": "done", "seconds": 93, "at": "2026-10-16T17:44:52"}
+{"key": "things/pawn/animal/rm_scaldhide/rm_scaldhide", "event": "done", "seconds": 56, "at": "2026-10-16T17:45:48"}
+{"key": "things/pawn/animal/rm_scaldwalker/rm_scaldwalker", "event": "done", "seconds": 140, "at": "2026-10-16T17:48:08"}
+{"key": "things/pawn/animal/rm_scumslider/rm_scumslider", "event": "done", "seconds": 56, "at": "2026-10-16T17:49:04"}
+{"key": "things/pawn/animal/rm_shirrel/rm_shirrel", "event": "done", "seconds": 52, "at": "2026-10-16T17:49:56"}
+{"key": "things/pawn/animal/rm_shokka/rm_shokka", "event": "lint_flag", "at": "2026-10-16T17:52:23"}
+{"key": "things/pawn/animal/rm_silloch/rm_silloch", "event": "done", "seconds": 125, "at": "2026-10-16T17:54:29"}
+{"key": "things/pawn/animal/rm_skarrid/rm_skarrid", "event": "done", "seconds": 114, "at": "2026-10-16T17:56:23"}
+{"key": "things/pawn/animal/rm_skreth/rm_skreth", "event": "done", "seconds": 167, "at": "2026-10-16T17:59:10"}
+{"key": "things/pawn/animal/rm_sloghog/rm_sloghog", "event": "done", "seconds": 60, "at": "2026-10-16T18:00:09"}
+{"key": "things/pawn/animal/rm_muurrok/rm_muurrok", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:11"}
+{"key": "things/pawn/animal/rm_niim/rm_niim", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:16"}
+{"key": "things/pawn/animal/rm_nissik/rm_nissik", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:18"}
+{"key": "things/pawn/animal/rm_nuudal/rm_nuudal", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:20"}
+{"key": "things/pawn/animal/rm_nuudal/rm_nuudalc", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:22"}
+{"key": "things/pawn/animal/rm_ollareth/rm_ollareth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:27"}
+{"key": "things/pawn/animal/rm_oomal/rm_oomal", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:31"}
+{"key": "things/pawn/animal/rm_oomb/rm_oomb", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:32"}
+{"key": "things/pawn/animal/rm_otheska/rm_otheska", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:36"}
+{"key": "things/pawn/animal/rm_pallu/rm_pallu", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:38"}
+{"key": "things/pawn/animal/rm_quarrok/rm_quarrok", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:43"}
+{"key": "things/pawn/animal/rm_ruukka/rm_ruukka", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:44"}
+{"key": "things/pawn/animal/rm_scaldhide/rm_scaldhide", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:46"}
+{"key": "things/pawn/animal/rm_scaldwalker/rm_scaldwalker", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:50"}
+{"key": "things/pawn/animal/rm_scumslider/rm_scumslider", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:51"}
+{"key": "things/pawn/animal/rm_shirrel/rm_shirrel", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:00:54"}
+{"key": "things/pawn/animal/rm_silloch/rm_silloch", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:00:58"}
+{"key": "things/pawn/animal/rm_skarrid/rm_skarrid", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:01:03"}
+{"key": "things/pawn/animal/rm_skreth/rm_skreth", "event": "installed", "facings": ["north", "south"], "at": "2026-10-16T18:01:05"}
+{"key": "things/pawn/animal/rm_sloghog/rm_sloghog", "event": "installed", "facings": ["north"], "at": "2026-10-16T18:01:05"}
