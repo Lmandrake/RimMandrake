@@ -906,6 +906,26 @@ def _conversions_xml(key):
     return out
 
 
+# THIRST_RULES_BUILD_SALT_OFF_THE_MENU (04-merged.md §8, owner Q5/Q6/Q7 2026-10-17). Slime is a last resort (useClass,
+# below), drunk only by a desperate pawn, "Much worse" than water: every slime gives RM_Thought_DrankSlime and a day of
+# RM_SlimePurge (Defs/Thirst/RM_Thirst_LastResort.xml), and each kind its own effect, reusing the biome mod that owns it
+# (MayRequire on the line, so a missing mod drops only that line). Q7: slime is bottled, but only by order (its use class
+# is never auto-gathered). Owner's words, Q6: "Red is Contagion: full mutation exposure right away. Green is full exposure
+# to the absorption rules from that biome. White infects you with the Rot spores. Yellow is just nausea and vomiting."
+_PURGE = """<li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimePurge</hediffDef></li>"""
+SLIME_RED_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.contagion"><hediffDef>RM_ContagionTouched</hediffDef><severity>1</severity></li>"""]
+# the Gelatinous Slime "eating the body" doer (cures poisons, raises RM_Slimification 0.06 a dose); five doses = "full
+# exposure" (PROVISIONAL: 0.30 at once)
+SLIME_GREEN_OUT = [_PURGE, """<li Class="RimMandrake.GelatinousSlime.IngestionOutcomeDoer_SlimeDose" MayRequire="mandrake.rm.gelatinousslime" />"""]
+SLIME_WHITE_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff" MayRequire="mandrake.rm.therot"><hediffDef>RM_SporeFlesh</hediffDef></li>"""]
+SLIME_YELLOW_OUT = [_PURGE, """<li Class="IngestionOutcomeDoer_GiveHediff"><hediffDef>RM_SlimeNausea</hediffDef></li>"""]
+
+
+def _slime_drink(outcomes, count=1):
+    return {"thirstQuality": "Slime", "drinkThought": "RM_Thought_DrankSlime", "drinkOutcomes": outcomes,
+            "drinkOutcomeCount": count}
+
+
 LIQUID_DEF_ROWS = {
     "freshwater": {
         "defName": "RM_Liquid_FreshWater",
@@ -1107,6 +1127,9 @@ LIQUID_DEF_ROWS = {
         "corrodesApparel": True,
         "terrainSuite": {"shallow": "RM_SlimeRedShallow", "deep": "RM_SlimeRedDeep"},
         "canalFluid": "RM_Fluid_SlimeRed",
+        **_slime_drink(SLIME_RED_OUT),
+        "bottled": {"bottle": "RM_Bottle_SlimeRed",
+                    "bucket": "RM_Bucket_SlimeRed", "barrel": "RM_Barrel_SlimeRed"},
     },
     "slime_green": {
         "defName": "RM_Liquid_SlimeGreen",
@@ -1118,6 +1141,9 @@ LIQUID_DEF_ROWS = {
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_SlimeGreenShallow", "deep": "RM_SlimeGreenDeep"},
         "canalFluid": "RM_Fluid_SlimeGreen",
+        **_slime_drink(SLIME_GREEN_OUT, 5),
+        "bottled": {"bottle": "RM_Bottle_SlimeGreen",
+                    "bucket": "RM_Bucket_SlimeGreen", "barrel": "RM_Barrel_SlimeGreen"},
     },
     "slime_white": {
         "defName": "RM_Liquid_SlimeWhite",
@@ -1129,6 +1155,9 @@ LIQUID_DEF_ROWS = {
         "igniteTemp": 150,
         "terrainSuite": {"shallow": "RM_SlimeWhiteShallow", "deep": "RM_SlimeWhiteDeep"},
         "canalFluid": "RM_Fluid_SlimeWhite",
+        **_slime_drink(SLIME_WHITE_OUT),
+        "bottled": {"bottle": "RM_Bottle_SlimeWhite",
+                    "bucket": "RM_Bucket_SlimeWhite", "barrel": "RM_Barrel_SlimeWhite"},
     },
     # THE DOCUMENTED EXAMPLE ROW (item spec). Human snot: mucosal, Heavy,
     # and otherwise harmless -- no damage spec, no corrosion, not flammable.
@@ -1143,8 +1172,24 @@ LIQUID_DEF_ROWS = {
         "pH": 6,
         "terrainSuite": {"shallow": "RM_SlimeYellowShallow", "deep": "RM_SlimeYellowDeep"},
         "canalFluid": "RM_Fluid_SlimeYellow",
+        **_slime_drink(SLIME_YELLOW_OUT),
+        "bottled": {"bottle": "RM_Bottle_SlimeYellow",
+                    "bucket": "RM_Bucket_SlimeYellow", "barrel": "RM_Barrel_SlimeYellow"},
     },
 
+    # THIRST_RULES_BUILD_SALT_OFF_THE_MENU (owner Q5 sub-question, 2026-10-17: "the Slime biome's living slime is
+    # drinkable by the same rules as other slime"). The Gelatinous Slime biome's RM_Slime_Liquid stays that mod's terrain
+    # (no terrainSuite: nothing here pumps, fills or floods it); Patches/Thirst/RM_LivingSlimeDrinkable.xml points the
+    # terrain at this row (RM_DrinkableTerrainExtension), so it is drunk as a last resort with green's absorption.
+    "livingslime": {
+        "defName": "RM_Liquid_LivingSlime",
+        "mayRequire": "mandrake.rm.gelatinousslime",
+        "label": "living slime",
+        "description": "The body of the Gelatinous Slime, running in its own channels. Drinking it is joining it, a little.",
+        "viscosityClass": "Heavy",
+        "pH": 7,
+        **_slime_drink(SLIME_GREEN_OUT, 5),
+    },
     # LAVA_LIQUID_BUILD_PROMISED_BY_CARD: lava promoted to a v1 row for the Forge (decision taken by question
     # card, 2026-09-24, "Promote lava now"; design/RimMandrake/flowworks_liquid_matrix.md row "Lava"). ADOPTS
     # Odyssey's own LavaShallow/LavaDeep (the Forge paints LavaDeep), so no terrain, look or canal is authored.
@@ -1246,6 +1291,7 @@ USE_CLASS = {
     "slime_green": "LastResort",
     "slime_white": "LastResort",
     "slime_yellow": "LastResort",
+    "livingslime": "LastResort",
     "boiling": "Never",
     "acid": "Never",
     "reactionliquor": "Never",
@@ -1552,6 +1598,14 @@ def build_liquiddef_xml(row):
     if row.get("thirstQuality"):
         lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
     lines.append(f"    <useClass>{USE_CLASS[row['_key']]}</useClass>")
+    if row.get("drinkThought"):
+        lines.append(f"    <drinkThought>{row['drinkThought']}</drinkThought>")
+    if row.get("drinkOutcomes"):
+        lines.append("    <drinkOutcomes>")
+        lines += [f"      {li}" for li in row["drinkOutcomes"]]
+        lines.append("    </drinkOutcomes>")
+        if row.get("drinkOutcomeCount", 1) != 1:
+            lines.append(f"    <drinkOutcomeCount>{row['drinkOutcomeCount']}</drinkOutcomeCount>")
 
     lines += _surface_xml(row.get("_key"))
 

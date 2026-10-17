@@ -633,7 +633,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Th_harmony_target", "Thirst_harmony_target_and_call_sites"),
                   # THIRST_RULES_BUILD_SALT_OFF_THE_MENU (04-merged.md §8): the use-class gate and the auto-fill fix
                   ("Tu_use_class_gate", "Thirst_use_class_gate_ruled"),
-                  ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source")]
+                  ("Ta_autofill_potable_only", "Thirst_autofill_potable_only_in_source"),
+                  ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -658,6 +659,11 @@ THIRST_LIVE = [
      "for 2000 ticks (need falls); a fresh bottle dropped 30 cells away is then fetched"),
     ("T13_desperate_toxic_last", "lastResortDrinking", "colonist at 0.05 beside toxic water only: no job; set 0: "
      "RM_DrinkFromTerrain on toxic water and ToxicBuildup rises; with a fresh bottle on the map: the bottle wins"),
+    ("T15_slime_effects", "waterQualityEffects", "four colonists at need 0, each beside one slime colour only: each drinks "
+     "(RM_DrinkFromTerrain), gains RM_Thought_DrankSlime and RM_SlimePurge; red adds RM_ContagionTouched 1.0, green "
+     "RM_Slimification >= 0.3, white RM_SporeFlesh, yellow RM_SlimeNausea; a fifth at 0.05 does not drink"),
+    ("T16_living_slime", "lastResortDrinking", "Gelatinous Slime map, colonist at 0 beside RM_Slime_Liquid only: drinks it, "
+     "RM_Slimification rises; with lastResortDrinking off: no job"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]

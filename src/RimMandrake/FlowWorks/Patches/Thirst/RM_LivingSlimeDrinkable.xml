@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU (owner Q5 sub-question, 2026-10-17: the Slime biome's living slime is drinkable by
+  the same rules as other slime). Points the Gelatinous Slime biome's RM_Slime_Liquid at FlowWorks' RM_Liquid_LivingSlime
+  row: a pawn desperate with thirst may drink it (last resort), with the slime mood hit, the purge and green's absorption.
+  Conditional on the terrain existing, never a top-level MayRequire (which is ignored).
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/TerrainDef[defName="RM_Slime_Liquid"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_LivingSlime</liquid>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

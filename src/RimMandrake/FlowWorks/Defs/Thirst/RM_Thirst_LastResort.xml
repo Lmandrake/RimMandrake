@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU (design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md §8, owner rulings
+  2026-10-17). Slime is drunk only by a pawn desperate with thirst (Q5: "the same rules for when people eat rotten food"),
+  and it is "Much worse" (Q6): every slime brings the massive mood hit and a day of purging (ruled earlier, §8.1 "On
+  top"), plus its own effect, which lives on the slime's LiquidDef row as drinkOutcomes (generate_liquid_suite.py):
+    red    -> Contagion: RM_ContagionTouched at full (Contagion mod)
+    green  -> Gelatinous Slime absorption: the slime dose, five at once (Gelatinous Slime mod)
+    white  -> The Rot's spores: RM_SporeFlesh (The Rot mod)
+    yellow -> nausea and vomiting only: RM_SlimeNausea below
+  The living slime of the Gelatinous Slime biome counts as slime by the same rules (Q5 sub-question), with green's effect.
+  Every number here is PROVISIONAL first-pass tuning (the design's §6 proposals); every one is a vanilla field.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RM_Thought_DrankSlime</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>2</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>drank slime</label>
+        <description>There was nothing else. I drank slime, and I can still feel it going down.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- The day-long laxative: vanilla's vomit job on a short mean time (a purge that interrupts work and leaves filth), a
+       little consciousness, and thirst falling half again as fast (fluid loss, RM_ThirstFallExtension). -->
+  <HediffDef>
+    <defName>RM_SlimePurge</defName>
+    <label>slime purge</label>
+    <description>The body is trying to get rid of the slime it was given, from every direction it can. It passes in about a day, and it costs water.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.70, 0.35)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <vomitMtbDays>0.1</vomitMtbDays>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.05</offset></li>
+        </capMods>
+      </li>
+    </stages>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Thirst.RM_ThirstFallExtension">
+        <factor>1.5</factor>
+      </li>
+    </modExtensions>
+  </HediffDef>
+
+  <!-- Yellow slime (human snot): "just nausea and vomiting" (Q6). -->
+  <HediffDef>
+    <defName>RM_SlimeNausea</defName>
+    <label>nausea</label>
+    <description>Drinking snot does exactly what you would expect. It passes in half a day.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.80, 0.72, 0.30)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>30000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <vomitMtbDays>0.04</vomitMtbDays>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>-0.10</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

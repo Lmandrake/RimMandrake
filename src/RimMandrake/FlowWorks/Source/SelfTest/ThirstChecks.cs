@@ -110,6 +110,57 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string u = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
                 Assert(!u.Contains("Acceptable("), "the old quality-only gate is gone from the drink searches");
             });
+            Case("Thirst_slime_last_resort_ruled", () =>
+            {
+                // Q5/Q6/Q7 (owner 2026-10-17): slime is a desperate drink, "Much worse", bottled only by order.
+                XDocument reg = XDocument.Load(Path.Combine(LiquidDefs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                XElement Row(string d) => reg.Root.Elements().First(e => (string)e.Element("defName") == d);
+                string RimRoot = Path.GetDirectoryName(ModRoot);
+                string Pkg(string mod) => (string)XDocument.Load(Path.Combine(RimRoot, mod, "About", "About.xml")).Root.Element("packageId");
+                bool DefOnDisk(string mod, string type, string def) => Directory.GetFiles(Path.Combine(RimRoot, mod, "Defs"), "*.xml", SearchOption.AllDirectories)
+                    .Any(f => XDocument.Load(f).Descendants(type).Any(e => (string)e.Element("defName") == def));
+                var want = new[] { ("RM_Liquid_SlimeRed", "RM_ContagionTouched", "Contagion"), ("RM_Liquid_SlimeWhite", "RM_SporeFlesh", "TheRot"),
+                                   ("RM_Liquid_SlimeYellow", "RM_SlimeNausea", null), ("RM_Liquid_SlimeGreen", null, "GelatinousSlime"), ("RM_Liquid_LivingSlime", null, "GelatinousSlime") };
+                foreach (var (d, hediff, mod) in want)
+                {
+                    XElement r = Row(d);
+                    Assert((string)r.Element("thirstQuality") == "Slime" && (string)r.Element("useClass") == "LastResort", d + ": slime, last resort");
+                    Assert((string)r.Element("drinkThought") == "RM_Thought_DrankSlime", d + ": the massive mood hit");
+                    var outs = r.Element("drinkOutcomes").Elements("li").ToList();
+                    Assert(outs.Any(o => (string)o.Element("hediffDef") == "RM_SlimePurge"), d + ": the day of purging");
+                    if (hediff != null)
+                    {
+                        XElement o = outs.First(x => (string)x.Element("hediffDef") == hediff);
+                        if (mod != null)
+                        {
+                            Assert((string)o.Attribute("MayRequire") == Pkg(mod), d + ": " + hediff + " guarded by " + mod + "'s packageId");
+                            Assert(DefOnDisk(mod, "HediffDef", hediff), "can-fail: " + hediff + " is a real HediffDef in " + mod);
+                        }
+                    }
+                    else
+                    {
+                        XElement o = outs.First(x => ((string)x.Attribute("Class")).EndsWith("IngestionOutcomeDoer_SlimeDose"));
+                        Assert((string)o.Attribute("MayRequire") == Pkg("GelatinousSlime"), d + ": slime dose guarded");
+                        Assert(File.ReadAllText(Path.Combine(RimRoot, "GelatinousSlime", "Source", "SlimeIngestion.cs")).Contains("public class IngestionOutcomeDoer_SlimeDose : IngestionOutcomeDoer"), "the slime-dose doer exists and is public");
+                        Assert((string)r.Element("drinkOutcomeCount") == "5", d + ": full exposure = five doses");
+                    }
+                }
+                Assert((string)Row("RM_Liquid_SlimeRed").Descendants("severity").First() == "1", "red: Contagion at full right away");
+                Assert(Row("RM_Liquid_LivingSlime").Attribute("MayRequire") != null, "the living-slime row only with Gelatinous Slime");
+                XDocument p = XDocument.Load(Path.Combine(ModRoot, "Patches", "Thirst", "RM_LivingSlimeDrinkable.xml"));
+                Assert((string)p.Root.Element("Operation").Attribute("Class") == "PatchOperationConditional" && p.Descendants("liquid").First().Value == "RM_Liquid_LivingSlime", "RM_Slime_Liquid points at the living-slime row, conditionally");
+                Assert(DefOnDisk("GelatinousSlime", "TerrainDef", "RM_Slime_Liquid"), "can-fail: the patched terrain exists");
+                XDocument lr = XDocument.Load(Path.Combine(ModRoot, "Defs", "Thirst", "RM_Thirst_LastResort.xml"));
+                XElement purge = Def(lr, "HediffDef", "RM_SlimePurge");
+                Assert(purge.Descendants("disappearsAfterTicks").First().Value == "60000" && purge.Descendants("factor").First().Value == "1.5", "purge: one day, thirst x1.5");
+                Assert((string)Def(lr, "ThoughtDef", "RM_Thought_DrankSlime").Descendants("baseMoodEffect").First() == "-20", "massive: -20");
+                Assert(Def(lr, "HediffDef", "RM_SlimeNausea").Descendants("vomitMtbDays").Any(), "yellow: nausea and vomiting");
+                XDocument gen = XDocument.Load(Path.Combine(LiquidDefs, "ThingDefs", "RM_LiquidBottles.xml"));
+                Assert(Def(gen, "ThingDef", "RM_Bottle_SlimeRed")?.Element("ingestible") != null && Def(gen, "ThingDef", "RM_Barrel_SlimeYellow") != null, "Q7: slime bottles/buckets/barrels exist");
+                string u = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs"));
+                RiverSwitchFlipChecks.Has(u, @"QualityEffects\(pawn, q, source\);\s*RowEffects\(pawn, liquid, source\);", "every drink route runs the row's effects");
+                RiverSwitchFlipChecks.Has(u, @"GetModExtension<RM_DrinkableTerrainExtension>\(\)\?\.liquid", "the terrain adapter is read by DrinkLiquidAt");
+            });
             Case("Thirst_dehydration_ruled", () =>
             {
                 // T6 offline: need held at 0 for 1 day -> 0.30

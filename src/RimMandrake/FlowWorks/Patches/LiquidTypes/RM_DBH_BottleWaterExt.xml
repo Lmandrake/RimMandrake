@@ -70,6 +70,46 @@
             </value>
           </li>
           <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_Bottle_SlimeRed"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>false</SeekForThirst>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_Bottle_SlimeGreen"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>false</SeekForThirst>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_Bottle_SlimeWhite"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>false</SeekForThirst>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_Bottle_SlimeYellow"]</xpath>
+            <value>
+              <li Class="DubsBadHygiene.WaterExt">
+                <water>1</water>
+                <UseForWashing>false</UseForWashing>
+                <SeekForThirst>false</SeekForThirst>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
             <xpath>Defs/ThingDef[defName="RM_Bottle_RustWater"]</xpath>
             <value>
               <li Class="DubsBadHygiene.WaterExt">
