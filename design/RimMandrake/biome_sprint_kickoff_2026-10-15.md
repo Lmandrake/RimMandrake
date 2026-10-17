@@ -60,8 +60,8 @@ The deploy is the first step of the live run (`Transient/biome_sprint_live_order
 that holds the game. Once deployed, the only O-TEX fail left is the Cauldron fleck art
 (`CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK`, FOUNDRY). One suite gap is also filed: Cauldron has no rows for the
 Filter-Works, the ruins, the Oomo shrine or the gas drift (`CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD`, FOUNDRY).
-Contagion's suite cannot run on an already-Contagion site until `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` (FOUNDRY)
-lands. LeaningScrub's Lean rows wait on `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY`. The three site recipes print
+Contagion's suite runs whole on the already-Contagion saved site since `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK`
+(FOUNDRY, 2026-10-16; live proof owed). LeaningScrub's Lean rows wait on `LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY`. The three site recipes print
 offline (`prep_site.py --plan`), their census natives are all real defs, and their selftests pass.
 
 This packet holds:
@@ -348,7 +348,7 @@ burn_natural, uv, coalescence and genome. The 2026-10-08 result was 52 PASS / 0 
 | row | what closes it | kind of fix |
 |---|---|---|
 | `defs.biome_roster_animals` | `get_defs` cannot read the non-public `wildAnimals` field. Promote the static XML roster check to the row, or add a bridge read | harness |
-| `repulsor_clear.site_ready_baseline` and the 3 rows downstream of it; `site.retile_to_contagion` | All five share one cause. The suite wants a stock-biome start, but a saved Contagion site is already Contagion. Run the off-Contagion arm on the calm site, and keep the retile control there | harness + site |
+| `repulsor_clear.site_ready_baseline` and the 3 rows downstream of it; `site.retile_to_contagion` | All five share one cause: the suite wanted a stock-biome start, and a saved Contagion site is already Contagion. Built 2026-10-16 (`CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK`): the suite re-tiles a sick start off the Contagion for these components and restores it after, so one run on the saved site covers them; live proof owed | harness |
 | `genome.extraction_surgery_yields_sample` | Put the patient in a bed and make the bill giver usable | fixture |
 | New rows | Bloom/Burn tells by a state read of `RM_MapComponent_ContagionSky`; a Sunbeam firing fixture; limb install, and limb removal spawning an Unfinished | new rows |
 | New rows (Q3-Q6, N4 ruled) | The condition starts three ways: slow build-up in a Bloom, a stronger dose in a Burn, and contact with the Unfinished or Coalescences; the Sunbeam arrest (stops current mutations, no later protection); the plain mulch item and its drops; Cloud Repulsor and Sunbeam in quest rewards and in a visiting Helix trader's stock; the sink and shake tells by a state read | new rows |

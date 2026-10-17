@@ -65,7 +65,7 @@ storyteller off.
 | 1 | Cauldron | `cauldron` | 73 | none. Filter-Works/ruins/Oomo have no rows yet; the falter tell is timed against about 1 in-game hour (ruled) |
 | 2 | LeaningScrub | `leaningscrub` | 85 | the Lean rows need FOUNDRY's walk-line components; until they exist the site only proves the heading lock |
 | 3 | ExplosiveGrowth | `calm` | 59 | 8-38 °C at the map centre (its preflight). `scope_native_only` will read UNMEASURED here: expected, see step 5 |
-| 4 | Contagion | `contagion` | 80 | **blocked** until `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` (FOUNDRY) lands: `northstar_site.py` refuses an RM_Contagion map. If it has not landed, skip and say so |
+| 4 | Contagion | `contagion` | 80 | none since `CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK` landed (2026-10-16): the suite takes the site off the Contagion for its stock-map arm and restores RM_Contagion at the end |
 
 After each suite: read the FIRST exception, classify every FAIL/UNMEASURED as MOD, SITE or HARNESS, and record only a
 full live run (`modcheck record`; `--only` partials are refused). File MOD findings for FOUNDRY at once; fix HARNESS

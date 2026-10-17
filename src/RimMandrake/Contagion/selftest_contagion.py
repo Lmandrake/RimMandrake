@@ -48,8 +48,9 @@ def inrect(x, z, r):
 
 
 class Fake(object):
-    def __init__(self, broken=()):
+    def __init__(self, broken=(), start_biome="TemperateForest"):
         self.broken = set(broken)
+        self.retiles = []
         self.ticks = 1000
         self.fast = False
         self.n = 0
@@ -58,7 +59,7 @@ class Fake(object):
             del self.settings["coalescenceEnabled"]
         if "default_wrong" in self.broken:
             self.settings["burnFrequency"] = "2.0"
-        self.weather, self.biome = "Clear", "TemperateForest"
+        self.weather, self.biome = "Clear", start_biome
         self.things, self.pawns, self.conds, self.roofs = {}, {}, [], []
         # SITE model of the round-4 quicktest tile (LIVE 2026-10-16, Mountainous): the whole map lies under an overhead
         # mountain roof. Clearing a pad (destroy_batch All) removes the roof holders, and on the next tick every cell of
@@ -417,6 +418,7 @@ class Fake(object):
                 "sizeX": 250, "sizeZ": 250}
 
     def t_world_tile_set(self, biome=None, **k):
+        self.retiles.append(biome)
         if "retile_noop" not in self.broken:
             self.biome = biome
         return {"success": True, "written": 1}
@@ -667,16 +669,18 @@ class Fake(object):
 
 # ------------------------------------------------------------------ the runner
 
-def run(broken=()):
+def run(broken=(), start_biome="TemperateForest", out=None):
     sys.stderr, keep = _NULL, sys.stderr
     try:
-        return _run(broken)
+        return _run(broken, start_biome, out)
     finally:
         sys.stderr = keep
 
 
-def _run(broken=()):
-    game = Fake(broken)
+def _run(broken=(), start_biome="TemperateForest", out=None):
+    game = Fake(broken, start_biome)
+    if out is not None:
+        out.append(game)
     V._STATE.clear()
     results = {}
     for name, fn in V.suite.chains:
@@ -811,6 +815,42 @@ def main():
             bad.append("break %-26s expected only %s FAIL, got %s" % (brk, target, reds))
         else:
             ok_breaks += 1
+    # TWO STARTS (CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK): the saved Contagion site starts already RM_Contagion.
+    # The whole suite must still go green there, take the map off the biome for the stock-map arm, and end on the
+    # START biome (the saved site goes back to RM_Contagion, never to the off biome).
+    games = []
+    sick = run(start_biome=V.BIOME, out=games)
+    sick_bad = dict((k, v) for k, v in sick.items() if v[0] != "PASS")
+    if sick_bad:
+        bad.append("sick start: %d of %d components not PASS: %s" % (len(sick_bad), len(sick), sick_bad))
+    if len(sick) != n_comp:
+        bad.append("sick start produced %d components, stock start %d" % (len(sick), n_comp))
+    g = games[-1]
+    if g.biome != V.BIOME or not g.retiles or g.retiles[0] != V.OFF_BIOME:
+        bad.append("sick start: retiles %s, ended on %s (want first %s, end %s)" % (g.retiles, g.biome, V.OFF_BIOME,
+                                                                                   V.BIOME))
+    if run()["site.retile_to_contagion"][0] != "PASS":
+        bad.append("stock start lost its retile")
+    # a sick start whose off-retile does not take: the stock-map arm is UNMEASURED (no control), never PASS or FAIL
+    noop = run(["retile_noop"], start_biome=V.BIOME)
+    for k in ("repulsor_clear.site_ready_baseline", "site.retile_to_contagion"):
+        if noop.get(k, ("ABSENT",))[0] != "UNMEASURED":
+            bad.append("sick start + retile_noop: %s reads %s, want UNMEASURED" % (k, noop.get(k)))
+    red = sorted(k for k, v in noop.items() if v[0] in ("FAIL", "CRASH"))
+    if red:
+        bad.append("sick start + retile_noop turned red: %s" % red)
+    # the live preflight no longer refuses a sick map (it did, until this item)
+    import northstar_site as NS                      # noqa: E402
+
+    class _S(object):
+        def call(self, verb, **k):
+            if verb == "jawa/map_info":
+                return {"success": True, "mapBiome": V.BIOME, "tileValid": True, "sizeX": 250, "sizeZ": 250}
+            return {"success": True, "value": None}
+    pf = [m for m in NS.preflight(_S()) if m.startswith(("map_biome", "map_size", "map_tile"))]
+    if pf:
+        bad.append("northstar_site.preflight refuses the saved Contagion site: %s" % pf)
+
     # the coalescence emit arm's declared disturbance: its own emissions only, never anything else
     em = V._unfinished_emission
     for trig, want in (({"kind": "hostile_arrival", "detail": "arrived: RM_TheUnfinished RM_TheUnfinished (animal)"}, True),

@@ -2,11 +2,13 @@
 `preflight(s) -> [str]`: every failed precondition, empty = clean. Dev tooling, never deployed.
 Built only from northstar_driver.site primitives (existing bridge tools).
 
-The quicktest map the baroque_wave0 tier starts on is enough: the suite re-tiles that map's own tile to
-RM_Contagion itself (chain `site`) and puts it back (chain `site_restore`). What must hold BEFORE the
-run: a map >= 150 cells on both axes (pads sit 45 cells from the centre), all five DLCs, the settings at
-their shipped defaults (a leftover value would make the first arm mean something else), and the map
-NOT already on RM_Contagion (the retile's control)."""
+Two starts are both valid (validation.py, TWO STARTS): a stock map (quicktest or the `calm` saved site), or the
+saved Contagion site (`test_site_saves.py load contagion`), already RM_Contagion. The suite takes a sick start
+off the Contagion itself for the two components that need a stock map, re-tiles to RM_Contagion (chain `site`)
+and puts the START biome back (chain `site_restore`). So an RM_Contagion map is NOT refused here (it was, until
+CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK). What must hold BEFORE the run: a map >= 150 cells on both axes (pads
+sit 45 cells from the centre), a real world tile (the retiles need one), all five DLCs, and the settings at their
+shipped defaults (a leftover value would make the first arm mean something else)."""
 import os
 import sys
 
@@ -41,8 +43,6 @@ def preflight(s):
     mm = s.call("jawa/map_info") or {}
     if min(mm.get("sizeX") or 0, mm.get("sizeZ") or 0) < 150:
         bad.append("map_size: both axes must be >= 150, got %sx%s" % (mm.get("sizeX"), mm.get("sizeZ")))
-    if mm.get("mapBiome") == "RM_Contagion":
-        bad.append("map_biome: the map is already RM_Contagion (the retile has no control)")
     if mm.get("tileValid") is False:
         bad.append("map_tile: a pocket map has no world tile to re-tile")
     try:
