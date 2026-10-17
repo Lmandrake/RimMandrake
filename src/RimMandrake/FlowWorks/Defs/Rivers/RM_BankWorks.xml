@@ -5,8 +5,9 @@
   defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea genstep and
   saves still name them; classes live in RimMandrake.FlowWorks.Rivers (owner card 3: no save migration
   needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
-  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). Art in Textures/Things/Building/FlowWorks/Rivers: weir and silt trap
-  from the 2026-10-06 commission; bank stake and ferry post still the earlier placeholders.
+  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). Art in Textures/Things/Building/FlowWorks/Rivers: silt trap
+  from the 2026-10-06 commission; bank stake and ferry post still the earlier placeholders. The weir's art is
+  RimMandrake/FlowWorks/Weir/<Look>/ (2026-10-16 commission, RM_BankWeirStyles.xml).
 -->
 <Defs>
 
