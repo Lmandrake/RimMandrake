@@ -30,9 +30,27 @@
   notches, so a 4.5 cm sheet cannot be pumped or burned; levelUnit != 1 converts with rounding.
 
 ## Stage (c) — selftests + vv_shipped_matrix.py at SHIPPED settings + oracle-vs-kernel differential
-- status: pending
+- status: DONE (on the tree merged with BENCH's thirst commits; DLL rebuilt there by winbuild.py)
+- SelfTest 492/492 (12 `Exact_*`). Differential kernel == PulseOracle 3000/3000 in depth, surface, levelset, shipped,
+  pond, exact, exactpond. `selftest_level_water.py` 0 failures.
+- `vv_shipped_matrix.py --skip-ep`: SHIPPED (levelExactEnabled=1) kernel_fuzz 0/10000, fills_from_limitless 0/10000,
+  surface_random 0/1000, seq_* 0, hose 0/2798, trail 0/1500; negative control 194/2000 shipped, 0/2000 authored -> VERDICT
+  PASS (run with --skip-suites; the full run's only suite red was AUTHORED `Thirst_slime_last_resort_ruled`, BENCH's).
+  Fix: the control now forces only the shipped fields the pre-fix kernel declares (it refused `levelExactEnabled`).
+  Pre-existing harness red, not new: OFF_edgeSinksEnabled kernel_fuzz 142/2000 (163-164/2000 in every run since 10-16).
+- Made exact-aware: FlowKernelFuzz totals/sink/bounds/snapshot, SurfaceRandomScenesSettleAndConserve (dL step check).
+
+## Stage (d) — northstar level_surface_bar.py per-body surface-gap bridge-readable method
+- status: DONE
+- `RM_NorthstarProofs.ProofLevelSurface("x,z,w,h"|"-")` via jawa/static_call -> "OK n worst G m;x,z:sq:gap:min:max;...".
+- `northstar/level_surface_bar.py` reads and parses it (UNMEASURED on an older DLL, a non-OK answer, or no water); its
+  selftest proves the read can go red. Never run live (no bridge, by brief).
 
 ## Stage (d) — northstar level_surface_bar.py per-body surface-gap bridge-readable method
 - status: pending
 
 ## NEXT pointers
+- `WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES` — built offline; NEXT: live driver deploys the committed DLL and runs
+  validation.py chain `water_level_surface` on S5/S6 (P10 walk), backing up Saves first (save migration logs per body).
+- `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` — whole-notch readers remain; NEXT: re-point pump intake, burn, drowning, heat and
+  mouseover to WaterDlAt so a sub-notch sheet can be pumped/burned/read.

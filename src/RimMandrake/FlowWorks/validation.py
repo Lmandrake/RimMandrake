@@ -391,11 +391,11 @@ def flow_door_facing(t):
 
 
 # still_water_one_surface_height (owner R9, 2026-10-17, OWNER.jsonl tsn 1792258162801304562): every square of a connected
-# still body at one surface height within 1 cm, read from game state. Measuring script: northstar/level_surface_bar.py, a
-# STUB that reports UNMEASURED until WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES lands the per-body surface-gap diagnostic.
+# still body at one surface height within 1 cm, read from game state. Measuring script: northstar/level_surface_bar.py, which
+# reads RM_NorthstarProofs.ProofLevelSurface (WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES); UNMEASURED on a DLL without it.
 @suite.chain("water_level_surface")
 def water_level_surface(t):
-    """Live state read: the worst surface gap inside any connected still body is under 1 cm. UNMEASURED until built."""
+    """Live state read: the worst surface gap inside any connected still body is under 1 cm (run on a settled site)."""
     with t.component("level_surface_within_1cm", shows=["still_water_one_surface_height"]):
         if t._guard():
             import level_surface_bar
