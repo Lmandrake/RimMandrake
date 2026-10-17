@@ -510,6 +510,152 @@ def main(argv=None):
             row("T13_desperate_toxic_last", "FAIL" if bad else "PASS", "MOD",
                 {"jobsAt005": seen1, "jobsAt0": seen2, "levelAfter": lvl, "hediffs": h, "jobsWithBottle": seen3, "bad": bad})
             draft(pt)
+        # ================================================================ batch 2 (written later the same walk)
+        def mems(pid):
+            return needs_of(pid)[1]
+
+        def wait_job_end(pid, jobname, budget=1500):
+            for _ in range(budget // 100):
+                ticks(100)
+                if job(pid) != jobname:
+                    return True
+            return False
+
+        # ---------------------------------------------------------------- T27 water item
+        if want("T27"):
+            purge_drinks()
+            pw = spawn_colonist(X0 + 2, Z0 + 12)
+            l0 = need(pw, 0.2)
+            spawn("RM_BlueIceMeltwaterCan", X0 + 8, Z0 + 12)
+            t_hit, seen = poll_job(pw, ("RM_DrinkWaterItem",), 900)
+            if t_hit is not None:
+                wait_job_end(pw, "RM_DrinkWaterItem")
+            l1 = need(pw)
+            m = mems(pw)
+            bad = []
+            if t_hit is None:
+                bad.append("no RM_DrinkWaterItem (jobs %s)" % seen)
+            elif l1 is None or abs((l1 - l0) - 0.67) > 0.06:
+                bad.append("gain %s, want +0.67" % (None if l1 is None else round(l1 - l0, 3)))
+            if t_hit is not None and "RM_Thought_DrankDistilled" not in m:
+                bad.append("no RM_Thought_DrankDistilled")
+            row("T27_water_items", "FAIL" if bad else "PASS", "MOD", {"jobs": seen, "levels": [l0, l1], "memories": m, "bad": bad})
+            draft(pw)
+
+        # ---------------------------------------------------------------- T28 sanguophage
+        if want("T28"):
+            purge_drinks()
+            r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=X0 + 2, z=Z0 + 16, count=1, faction="PlayerColony",
+                       xenotype="Sanguophage") or {}
+            ps = r.get("pawns") or [{}]
+            sg = ps[0].get("id")
+            bl = spawn_colonist(X0 + 6, Z0 + 16)
+            out28 = {"xenotype": ps[0].get("xenotype"), "applied": ps[0].get("xenotypeApplied")}
+            for pid, tag in ((sg, "sang"), (bl, "base")):
+                if not pid:
+                    continue
+                draft(pid)
+                l0 = need(pid, 0.2)
+                hid = spawn("HemogenPack", *(X0 + 3, Z0 + 16) if tag == "sang" else (X0 + 7, Z0 + 16))
+                r2 = B.call("jawa/ordered_job", pawnId=pid, jobDef="Ingest", targetAId=hid, count=1, waitTicks=30) or {}
+                wait_job_end(pid, "Ingest", 1500)   # HARNESS: a hemogen pack takes ~480 ticks to ingest (500 read it mid-job)
+                ticks(60)
+                out28[tag] = {"levels": [l0, need(pid)], "accepted": r2.get("accepted"), "after": r2.get("afterJobDef"),
+                              "msg": r2.get("message"), "packLeft": count("HemogenPack")}
+            bad = []
+            sgl = out28.get("sang", {}).get("levels") or [None, None]
+            bsl = out28.get("base", {}).get("levels") or [None, None]
+            if out28.get("xenotype") != "Sanguophage" or None in sgl:
+                row("T28_sanguophage_blood", "UNMEASURED", "HARNESS", out28)
+            else:
+                if abs((sgl[1] - sgl[0]) - 0.5) > 0.06:
+                    bad.append("sanguophage thirst gain %s, want +0.5" % round(sgl[1] - sgl[0], 3))
+                if None not in bsl and (bsl[1] - bsl[0]) > 0.02:
+                    bad.append("a baseliner's thirst rose %s on a hemogen pack" % round(bsl[1] - bsl[0], 3))
+                row("T28_sanguophage_blood", "FAIL" if bad else "PASS", "MOD", dict(out28, bad=bad,
+                    notRead="hemogen up (the gene resource is not on jawa/pawn_need)"))
+
+        # ---------------------------------------------------------------- T19 awkward access (bucket arm + bottle arm)
+        if want("T19"):
+            purge_drinks()
+            pk = spawn_colonist(X0 + 2, Z0 + 20)
+            m0 = mems(pk)
+            need(pk, 0.2)
+            spawn("RM_Bucket_FreshWater", X0 + 8, Z0 + 20)
+            t_hit, seen = poll_job(pk, ("RM_DrinkFromContainer", "Ingest"), 900)
+            if t_hit is not None:
+                wait_job_end(pk, seen[-1])
+            m1 = mems(pk)
+            bk = (B.call("jawa/list_things", defName="RM_Bucket_FreshWater", limit=5) or {}).get("things") or []
+            insp = None
+            if bk:
+                for t in (B.call("jawa/inspect_string", thingIds=bk[0]["id"]) or {}).get("things") or []:
+                    insp = " | ".join(t.get("inspect") or [])
+            pb2 = spawn_colonist(X0 + 12, Z0 + 20)
+            draft(pb2)
+            need(pb2, 0.2)
+            bid = spawn("RM_Bottle_FreshWater", X0 + 13, Z0 + 20)
+            B.call("jawa/ordered_job", pawnId=pb2, jobDef="Ingest", targetAId=bid, count=1, waitTicks=30)
+            ticks(500)
+            mb = mems(pb2)
+            bad = []
+            if "RM_DrinkFromContainer" not in seen:
+                bad.append("no RM_DrinkFromContainer from the only bucket (jobs %s)" % seen)
+            elif "RM_Thought_DrankRough" not in m1 or "RM_Thought_DrankRough" in m0:
+                bad.append("bucket drink left no RM_Thought_DrankRough")
+            if bk and "Partly drunk" not in (insp or ""):
+                bad.append("bucket inspect %r has no 'Partly drunk'" % insp)
+            if "RM_Thought_DrankRough" in mb:
+                bad.append("a bottle drink at home gave RM_Thought_DrankRough")
+            row("T19_awkward_access", "FAIL" if bad else "PASS", "MOD",
+                {"jobs": seen, "memAfterBucket": m1, "bucketInspect": insp, "memAfterBottle": mb, "bad": bad,
+                 "notRun": "tank arm, Ascetic/tribal arms, pond arm"})
+            draft(pk)
+
+        # ---------------------------------------------------------------- T24 bucket douses fire
+        if want("T24"):
+            purge_drinks()
+            FX, FZ = X0 + 25, Z0 + 5
+            B.call("jawa/destroy_batch", rects="%d,%d,14,10" % (FX - 6, FZ - 3), categories="Plant,Item,Filth")
+            B.call("jawa/map_zones", action="paintArea", area="Home", rect="%d,%d,14,10" % (FX - 6, FZ - 3), value=True)
+            pf = spawn_colonist(FX - 5, FZ + 1)
+            spawn("RM_Bucket_FreshWater", FX - 3, FZ + 1)
+            empty0 = count("RM_BucketEmpty") + count("RM_BucketDirty")
+            # fuel: ChanceToStartFireIn refuses bare soil (live: 9 of 9 cells refused), so the 3x3 gets grown grass first
+            B.call("jawa/set_plants", ops="Plant_Grass:%d,%d,3,3" % (FX, FZ), growth=1.0)
+            B.call("jawa/map_fire", action="start", rect="%d,%d,3,3" % (FX, FZ), fireSize=0.8)
+            fires0 = count("Fire", "%d,%d,3,3" % (FX, FZ))
+            B.call("jawa/stop_job", pawnId=pf)
+            seen = []
+            for _ in range(20):
+                ticks(30)
+                j = job(pf)
+                if j and (not seen or seen[-1] != j):
+                    seen.append(j)
+                if j == "RM_DouseFireWithBucket":
+                    break
+            if "RM_DouseFireWithBucket" in seen:
+                wait_job_end(pf, "RM_DouseFireWithBucket", 900)
+            fires1 = count("Fire", "%d,%d,5,5" % (FX - 1, FZ - 1))
+            empty1 = count("RM_BucketEmpty") + count("RM_BucketDirty")
+            B.call("jawa/map_fire", action="extinguish", rect="%d,%d,14,10" % (FX - 6, FZ - 3))
+            bad = []
+            if fires0 < 1:
+                row("T24_bucket_douses_fire", "UNMEASURED", "SITE", {"why": "no fire took on the plot", "fires": fires0})
+            else:
+                if "RM_DouseFireWithBucket" not in seen:
+                    bad.append("no RM_DouseFireWithBucket (jobs %s)" % seen)
+                # the douse puts out the fires within 1.5 cells of the cell it targets (not read on the bridge): from a 3x3
+                # that is 4 (corner target) to 9 (centre), so one job taking out >= 4 is the area douse; fires left over
+                # from an edge/corner target are not a fault (first live run: 9 -> 3)
+                if fires0 - fires1 < 4 and "RM_DouseFireWithBucket" in seen:
+                    bad.append("one douse put out only %d fires (an area douse takes >= 4 of a 3x3)" % (fires0 - fires1))
+                if empty1 <= empty0 and "RM_DouseFireWithBucket" in seen:
+                    bad.append("no empty bucket left")
+                row("T24_bucket_douses_fire", "FAIL" if bad else "PASS", "MOD",
+                    {"jobs": seen, "fires": [fires0, fires1], "emptyBuckets": [empty0, empty1], "bad": bad,
+                     "notRun": "the no-bucket BeatFire arm"})
+            draft(pf)
     finally:
         for k, v in saved.items():
             try:

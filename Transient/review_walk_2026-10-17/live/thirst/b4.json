@@ -1,0 +1,62 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T13:05:27",
+ "rows": [
+  {
+   "id": "T24_bucket_douses_fire",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "RM_DouseFireWithBucket"
+    ],
+    "fires": [
+     9,
+     3
+    ],
+    "emptyBuckets": [
+     1,
+     2
+    ],
+    "bad": [],
+    "notRun": "the no-bucket BeatFire arm"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/review_walk_2026-10-17/live/thirst/b4.json",
+  "only": "T24",
+  "site": "110,150",
+  "log": ""
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "running": 20,
+ "site": {
+  "rect": "110,150,40,40",
+  "paintedWaterRuns": 0,
+  "bottlesOnMap": [],
+  "draftedOwn": 14
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True"
+ },
+ "ended": "2026-10-17T13:05:33"
+}
