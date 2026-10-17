@@ -279,7 +279,8 @@ namespace RimMandrake.FlowWorks.Thirst
 		public const float GatherDepth = 0.4f;
 		public const float Radius = 40f;
 
-		/// <summary>Snow deep enough, or an ice floor (vanilla Ice: frozen water, never used up), in the open.</summary>
+		/// <summary>Snow deep enough, or an ice floor (vanilla Ice: frozen water, never used up), on a standable cell (no roof test:
+		/// snow never lies under a roof, and a roofed ice floor is gatherable too).</summary>
 		public static bool Gatherable(Map map, IntVec3 c)
 		{
 			if (!c.InBounds(map) || !c.Standable(map))
@@ -296,11 +297,20 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		private static readonly Dictionary<int, (int tick, IntVec3 cell)> cache = new Dictionary<int, (int, IntVec3)>();
 		private const int NothingMarkTicks = 600;
+		/// <summary>The game the cache belongs to. A save load restarts both the thing-ID counter and the tick, so a mark keyed
+		/// by thingIDNumber would land on a different pawn of the new game (the T15 stale terrain mark, round 2 2026-10-17,
+		/// RM_ThirstUtility.marksGame): cleared whenever Current.Game changes.</summary>
+		private static readonly System.WeakReference<Game> cacheGame = new System.WeakReference<Game>(null);
 
 		/// <summary>The nearest reachable gatherable cell: one radial walk per pawn per tick, and a pawn that found nothing
 		/// is not searched again for 600 ticks (a snowless map must not pay a walk per empty bucket per scan).</summary>
 		public static IntVec3 FindCell(Pawn pawn)
 		{
+			if (!cacheGame.TryGetTarget(out Game g) || g != Current.Game)
+			{
+				cache.Clear();
+				cacheGame.SetTarget(Current.Game);
+			}
 			int now = Find.TickManager.TicksGame;
 			if (cache.TryGetValue(pawn.thingIDNumber, out var hit) && (hit.tick == now
 				|| (!hit.cell.IsValid && now > hit.tick && now - hit.tick < NothingMarkTicks)))
