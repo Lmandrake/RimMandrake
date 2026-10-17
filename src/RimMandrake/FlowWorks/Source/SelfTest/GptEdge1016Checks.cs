@@ -62,6 +62,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string conv = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "CompLiquidConverter.cs"));
                 RiverSwitchFlipChecks.Has(conv, @"accrued = RM_ConversionMath\.AccruedAfterPick\(accrued, cand\.Select\(c => c\.capped\)\.ToList\(\), pick\);", "converter keeps the budget through AccruedAfterPick");
             });
+
+            // FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT: a supplied reaction that cannot run moves on to the next one (call-site pin;
+            // the loop is Verse-bound). Exactly one `return` stays inside the reaction loop body: the failed committed move.
+            Case("Gpt1016_reactor_stalled_reaction_does_not_end_the_shift", () =>
+            {
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "Kits", "RM_LiquidReaction.cs"));
+                RiverSwitchFlipChecks.Has(src, @"if \(n <= 0\)\s*\{\s*stalled = stalled \?\? \(string\)""RMFlow_ReactorWorking""[^;]*;\s*continue;\s*\}", "n <= 0 continues");
+                RiverSwitchFlipChecks.Has(src, @"if \(pa == null \|\| pb == null \|\| \(toTank && pp == null\)\)\s*\{\s*stalled = stalled \?\?[^;]*;\s*continue;\s*\}", "no draw/fill plan continues");
+                RiverSwitchFlipChecks.Has(src, @"if \(stalled != null\)\s*\{\s*status = stalled;\s*return;\s*\}", "the first stall's status stands when nothing ran");
+            });
         }
     }
 }
