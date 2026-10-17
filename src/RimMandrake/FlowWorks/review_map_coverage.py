@@ -125,7 +125,7 @@ FEATURES = [
     ("tex", r"RM_Spikes\.png$", "Spike art", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
      "pit_flood"),
-    ("def", r"^HediffDef/RM_PitDrowning$", "Drowning", "pit_flood"),
+    ("def", r"^HediffDef/(RM_PitDrowning|RM_SwimExhaustion)$", "Drowning; swim exhaustion (P12)", "pit_flood"),
     ("set", r"^slime(SlipEnabled|SlipChanceMultiplier|SlipStunSeconds|ClimbOutSlipFactor)$",
      "Slime slips: nearly uncrossable, slow to climb out of", "flow_slime"),
     # ---- pits: holding
