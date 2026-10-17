@@ -1,0 +1,1 @@
+T15R_reload_mark                   PASS       MOD      {"pawnA": "Human36705", "pawnB": "Human36705", "tickA": 2, "tickB": 92, "jobsB": ["RM_DrinkFromTerrain"], "drinkAfter": 30, "loads": [true, true], "hediffsB": {"WoodenHand": 0.5, "MissingBodyPart": 0.5, "RM_Dehydration": 0.00075}}

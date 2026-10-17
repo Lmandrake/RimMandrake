@@ -1,0 +1,1 @@
+Steam -applaunch 294100 issued seconds after Stop-Process on RimWorld can be silently ignored (no process after 4 min, 2026-10-17); poll for RimWorldWin64 within ~60 s and re-issue the -applaunch once.
