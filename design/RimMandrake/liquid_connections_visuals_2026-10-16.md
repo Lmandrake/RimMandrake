@@ -12,7 +12,7 @@ Owner 2026-10-16, from two screenshots of a pump, hose, pipe and tank in game:
 > pipe needs connectors that show where it's connecting. Same thing if you build a pipe alongside a tank but not under it:
 > the pipe looks like it doesn't even connect, but it should."
 
-Status: **mockups on the review sheet, awaiting his ruling.** The pipe style bug is fixed and shipped in source.
+Status: **mockups on the review sheet; the pump footprint is ruled (below), the hose thickness and join art are still awaiting his ruling.** The pipe style bug is fixed and shipped in source.
 
 ## Measured (source, 2026-10-16)
 
@@ -75,6 +75,12 @@ Mockups: `Transient/liquid_connections_2026-10-16/` (`gen.py` renders, `conform.
     saddle or flange on a pipe port. With no art installed every piece draws the hose `Coupling_Bare` as a stand-in.
   - `hose_thickness` (setting, **1.0**, slider 0.5 to 1): scales every hose width. The proposal is 0.65; the shipped value stays
     1 until he rules.
+
+## Ruled 2026-10-16 (river and hose art review, `Transient/river_hose_art_review_2026-10-16/REVIEW.md`)
+
+- **RULED:** the pump stays **2 x 1** and beefier (proposal row 1 stands; the 1 x 1 alternative from the Codex review is rejected).
+- **RULED (by card):** pump capacity stays any network size at a fixed rate per pump; add pumps for speed.
+- Not ruled here: hose thickness (0.65 x or Codex's thinner numbers), reel size and payout guide, join art. Still owed.
 
 ## Owed after his ruling
 

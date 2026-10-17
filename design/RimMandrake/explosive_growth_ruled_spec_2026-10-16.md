@@ -56,7 +56,7 @@ is dissolved, not patched: the only transitions are source-appears and source-go
 | any | fire burns the cell | + ASH-FRESH for `ashFlushDays` | independent of water; the two OR together |
 | any | suppression (grazing M10, dry-air blower M2) | as today: refuses new player water and dries the cell for its window | MEASURED API `Source/ExplosiveGrowthAPI.cs:40-43`; callers `EnvironmentalHazards/Source/RM_Patch_GrazingSuppressionHook.cs:91`, `RM_CompDryFieldEmitter.cs:163` |
 
-\* rain: see open question OQ-9 (does ground stay wet after rain stops). Roof built over a WET-by-rain cell ends that
+\* rain: RULED OQ-9, ground stays wet for a few hours after rain stops, shown by puddle filth (hours PROPOSED 3). Roof built over a WET-by-rain cell ends that
 source; building a roof never ends a hose, poured or channel source.
 
 ### 2.3 Light gating (12:28 ruling)
@@ -75,7 +75,7 @@ worlds it will cycle."*
   On a tidally locked Ash'karr a permanently lit cell would still rest 45% of every day, so "always" is not true
   unless resting is overridden there. Whether Ash'karr's local clock is already pinned: UNMEASURED (the pinned sun is
   a shadow extension, MEASURED `CreatureBehaviors/Source/RM_PinnedSunExtension.cs:31-43`; nothing in `src/` patches
-  `GenLocalDate` or `GenCelestial`, MEASURED by grep). Card OQ-7.
+  `GenLocalDate` or `GenCelestial`, MEASURED by grep). RULED OQ-7 (by card): no rest. Always lit means always growing, so `Resting` is overridden to false on lit cells of the tidally locked world (about 1.8x vanilla's growth).
 - Dark-side cells never get the show: no arming without light, already true via the composite.
 
 ### 2.4 Liquid adaptation (T2: *Only for adapted plants*)
@@ -95,11 +95,11 @@ worlds it will cycle."*
 | archetype | WET (lit) | DRY (lit) | SEALED | notes |
 |---|---|---|---|---|
 | dry native | **×10** | **×0.1** (C6) | ×1 | trees ×0.625 of these (§5) |
-| wet native, home biome | **×4, always** (C1), wet or dry | ×4 | ×1 | away from home: OQ-12 |
+| wet native, home biome | **×4, always** (C1), wet or dry | ×4 | ×1 | away from home: unchanged, keeps ×4 (RULED OQ-12) |
 | fire-adapted (Pyrelands natives) | ×10 on WET or ASH-FRESH | ×0.1 | ×1 | a dry native with an ash source |
 | stunted (terminator biomes) | today's ×0.4, unchanged | ×0.4 | ×1 | the rulings did not touch it; MEASURED setting `ExplosiveGrowthMod.cs:39` |
 | exempt (anima, Gauranlen, ambrosia, growDays < 1, cave plants) | ×1 | ×1 | ×1 | MEASURED `RM_ExplosiveGrowthRegistry.cs:29-32,199-208` |
-| vanilla crop / vanilla plant | ×1 if water nearby, else **×0** (DEFAULT) or ×1 (setting "normal") | | ×1 | §6 setting A |
+| vanilla crop / vanilla plant | ×1 if water nearby, else **×0** growth, ageing ×0.1 (DEFAULT) or ×1 (setting "normal") | | ×1 | §6 setting A |
 
 Vanilla Odyssey drought (`GrowthRateFactor_Drought`, MEASURED in the composite, `Plant.cs:301`) still multiplies:
 drought on dry ground gives ×0.03. PROPOSED: leave it (it is an event); G's "patch the drought factor directly"
@@ -116,12 +116,18 @@ stays open as a perf-free follow-up.
 | **hose spill** | W4/HW1 *"Hose + carried + sprinklers"* | a cell holding spill filth of an accepted liquid | yes: the filth is destroyed | `RM_LiquidSpill.Spill` makes filth only, no soak (MEASURED `FlowWorks/Source/Machinery/RM_LiquidSpill.cs:176-204`) | build: read the filth, no FlowWorks edit needed |
 | **carried water** | same | a cell a pawn pours on; PROPOSED representation: the same spill filth, so GM1's "obvious reason" is visible | yes | not built | build: job + work giver (§8 D8) |
 | **dug channel holding accepted liquid** | GM1 names "channel" as a visible reason | the channel cell and its 8 neighbours (today's rule) | yes: draws `cropDrawLitres` from the cell | MEASURED `Source/RM_SoakSources.cs:98-112`, rule in `_Shared/FlowWorksIrrigation/FlowWorksIrrigationRead.cs:104` | keep; switch from timed soak to presence |
-| **rain** | WP1, round-2 C3 (*"A rare flood or rainstorm is transformative and crisis-driving"*) | unroofed cells, while a water rain runs (OQ-9 for after) | yes (OQ-8 for wild plants) | random scatter of ≥20 cells per pulse (MEASURED `Source/RM_SoakSources.cs:134-150`); `soakWeathers` empty by default | build: rain is map-wide on unroofed ground; Utinni adds no rain anywhere it is not today |
-| **ash flush** | C5 | ASH-FRESH for fire-adapted plants | no | Pyrelands already saves a per-cell last-fire tick (MEASURED header `Pyrelands/Source/PyrelandsAshField.cs`) | build: read it (OQ-11 duration) |
+| **rain** | WP1, round-2 C3 (*"A rare flood or rainstorm is transformative and crisis-driving"*) | unroofed cells, while a water rain runs, plus a few hours after (puddle filth; RULED OQ-9) | yes, for every fruiting plant (RULED OQ-8) | random scatter of ≥20 cells per pulse (MEASURED `Source/RM_SoakSources.cs:134-150`); `soakWeathers` empty by default | build: rain is map-wide on unroofed ground; Utinni adds no rain anywhere it is not today |
+| **ash flush** | C5 | ASH-FRESH for fire-adapted plants | no | Pyrelands already saves a per-cell last-fire tick (MEASURED header `Pyrelands/Source/PyrelandsAshField.cs`) | build: read it (RULED OQ-11: 3 days, restarted when a seedling appears) |
 | **basins / pots** | H1 *Watered, normal vanilla speed* | SEALED | n/a | nothing reads the grower (B §0.2) | build |
 | **sprinklers** | SP1 | deferred | — | — | **deferred to `SPRINKLERS_DESIGN_PIPES_THEN_PANACHE`** (ours: heads on FlowWorks pipes, rudimentary; VFE: bold automation; adapted together) |
-| **miasma surge** (salt line) | not addressed | as today | — | MEASURED `Source/RM_SoakSources.cs:114-132` | keep unchanged; flagged OQ-13 |
+| **miasma surge** (salt line) | not addressed | as today | — | MEASURED `Source/RM_SoakSources.cs:114-132` | keep unchanged (RULED OQ-13: stays a water source) |
 | **Soak Zone / timer switch** | not a player source (B §0) | dev map-maker only | — | MEASURED `FloodedCanyon/Source/MapControls/Building_RM_SoakZone.cs:83` | keep as a dev tool |
+
+**Precipitation (RULED OQ-3, owner's words: *"Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation"*):**
+RM_TheSump, RM_Wasteland, RM_FloodedCanyon, RUT_Sump and RUT_Wasteland have no rain and no snow (weathers zeroed in commit
+`607aecf946`, not yet deployed), so they have no rain source; in Flooded Canyon the flood is the only natural water. Where it snows
+(RUT_FuelSnows, RUT_Umbra) *"Blowing snow melts like water and rain yes. It doesn't snow fuel."*: the snow counts as the same source as
+rain (clean water, same unroofed-cell rule), and Fuel Snows' snow is water, not fuel.
 
 Twilight Sea is a sea floor and rains in error (`TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER`); rain there is a defect,
 not a source.
@@ -138,11 +144,12 @@ Default archetype for every plant def our tiers ship that is not native to a wet
 - **Churn, endlessly while wet and lit** (round 4 card): ×10 to maturity, then the cycle outcome, then again.
 - **Cycle outcome** at maturity (C2, C3), rolled once per maturity:
   - with probability `ruptureChance` (default **1/3**; per-plant override, `1` for some, `0` for groundcover and
-    others): **rupture** = die impressively, using the plant's violent top (Burst, Tinder, Slime or the contaminated
-    Rupture, whichever the plant declares; Burst when it declares none). See OQ-5 on the name;
+    others): **burst** = die impressively with the Burst top. RULED OQ-5 (by card): the 1-in-3 is **Burst only**; the
+    contaminated rupture (and any other special top) keeps its own odds, outside `ruptureChance`;
   - otherwise: **fruit** (its harvest product × `produceFactor`; wood never, §5) and **many sprouts**
-    (PROPOSED 4–7 in radius 2.9, respecting built ground). Whether the parent lives (growth reset) or dies is
-    OQ-6; PROPOSED: lives, reset to growth 0.5 so the cycle repeats on the cell.
+    (PROPOSED 4–7 in radius 2.9, respecting built ground). **RULED OQ-6 (by card): the parent dies and its seedlings
+    replace it** (today's churn; the earlier PROPOSED "lives, reset to growth 0.5" is withdrawn). The cycle repeats
+    through the seedlings, never through a surviving parent: no reset code, no per-cycle health cost.
 - **Pyrelands grass:** `ruptureChance 0`, `sproutCount` high (PROPOSED 6–9) and the dry-native ×10 on ASH-FRESH:
   *"does not rupture but does grow violently quickly and spread itself super-fast."*
 - The tell ladder (ground, swell, hue, tremble, creak, silence) stays as the visible run-up to each outcome
@@ -173,13 +180,12 @@ Plants native to Greentide, Miasma, Fever Wood (the ruled jungles) and Webwork, 
 *"A full harvest but the water gets used up. That's the cost."*
 
 - A **crop** = a plant sown in a growing zone (vanilla `Plant.IsCrop`/sown by a pawn). Which crops self-fruit:
-  OQ-15 (PROPOSED: our native plants sown as crops; vanilla crops never self-fruit, they only obey setting A).
+  RULED OQ-15 (by card): only our native plants sown as crops self-fruit; vanilla crops never do, they only obey setting A.
 - At maturity on WET ground the crop drops its **full** `YieldNow()` harvest, and that IS its harvest: the plant is
   treated as harvested (dies, or for a repeat-harvest def resets to `harvestAfterGrowth` exactly as vanilla
   harvesting does). No second pawn harvest of the same growth (closes G critical finding 2's double spend).
 - The water on the cell is consumed (§2.2). Natural river/mud and a running flood are not consumed.
-- The jackpot and last-swing gamble (MEASURED `Source/RM_ExplosiveGrowthPatches.cs:183-232`) interact with this:
-  OQ-14.
+- The jackpot and last-swing gamble (MEASURED `Source/RM_ExplosiveGrowthPatches.cs:183-232`) interact with this: RULED OQ-14, both stay on wild plants and are OFF for crops (a crop's harvest is exactly its full `YieldNow()`).
 
 ---
 
@@ -204,7 +210,7 @@ Plants native to Greentide, Miasma, Fever Wood (the ruled jungles) and Webwork, 
   kill the plant first (G High finding 3).
 - Fractional remainder kept per plant (or `GenMath.RoundRandom`); age clamped ≥ 0.
 - Darkness, blight, temperature and drought never slow ageing: only our moisture factor does.
-- `r = 0` (vanilla crop, default setting, no water nearby) means the crop neither grows nor ages: OQ-16.
+- `r = 0` (vanilla crop, default setting, no water nearby) means the crop neither grows nor ages. RULED OQ-16 (by card): it ages slowly instead, at x0.1 like its growth, so a never-watered crop still dies in the end.
 
 ---
 
@@ -216,8 +222,8 @@ they simply grow normally in other biomes, or they do the same x10 when watered 
 
 | setting | options | default | replaces |
 |---|---|---|---|
-| **A. Vanilla crops in our biomes** | `normal` (vanilla speed) · `need water nearby` (×0 unless an accepted source within `nearbyRadius`, then ×1) | **need water nearby** (ruled) | the everyday ×4 band, which today also speeds vanilla crops (MEASURED setting comment `ExplosiveGrowthMod.cs:37`) |
-| **B. Our plants outside our biomes** | `vanilla` (×1, no cycle) · `same rule` (§2.5 rates and cycles) | UNRULED; PROPOSED `vanilla`, labelled unsupported (CLAUDE.md 2026-10-15: *"We can't guarantee they will work in other biomes beyond our framework"*) | `applyInOtherBiomes` (MEASURED `ExplosiveGrowthMod.cs:62`), which today extends BOTH tiers to ALL plants, vanilla included; B touches our plants only (OQ-10) |
+| **A. Vanilla crops in our biomes** | `normal` (vanilla speed) · `need water nearby` (×0 unless an accepted source within `nearbyRadius` = 2 cells (RULED OQ-17), then ×1; ageing without water is ×0.1, RULED OQ-16) | **need water nearby** (ruled) | the everyday ×4 band, which today also speeds vanilla crops (MEASURED setting comment `ExplosiveGrowthMod.cs:37`) |
+| **B. Our plants outside our biomes** | `vanilla` (×1, no cycle) · `same rule` (§2.5 rates and cycles) | RULED OQ-10 (by card): `vanilla`, labelled unsupported (CLAUDE.md 2026-10-15: *"We can't guarantee they will work in other biomes beyond our framework"*) | `applyInOtherBiomes` (MEASURED `ExplosiveGrowthMod.cs:62`), which today extends BOTH tiers to ALL plants, vanilla included; B touches our plants only (OQ-10) |
 
 - Scope otherwise unchanged: our biomes (MEASURED `BiomeInScope`, `Source/RM_ExplosiveGrowthRegistry.cs:62-64`);
   the Utinni roster's `scopeAllBiomes` puts every biome in scope (MEASURED
@@ -264,14 +270,14 @@ Sizes: **S** under half a day, **M** half a day to two days, **L** more (INFERRE
 | D4 | new: natural-water terrain table | per-TerrainDef bool (river, shallow/deep fresh water, mud); cell itself only | S |
 | D5 | `RM_SoakSources.PulseIrrigation` (MEASURED :98-112) | channel = presence, per (cell, plant) liquid acceptance; crop draw-down hook into FlowWorks' fill | M (cross-mod) |
 | D6 | new: spill-filth reader | WET while accepted spill filth lies on the cell; consume = destroy filth | S |
-| D7 | `RM_SoakSources.PulseWeather` (MEASURED :134-150) | random scatter → unroofed cells WET while a listed water rain runs; roof-change ends it | S |
+| D7 | `RM_SoakSources.PulseWeather` (MEASURED :134-150) | random scatter → unroofed cells WET while a listed water rain runs and a few hours after (puddle filth, RULED OQ-9); roof-change ends the rain source | S |
 | D8 | new: carried-water job (WorkGiver + JobDriver, FlowWorks container read) | pawns pour water on a zone; leaves spill filth | M (cross-mod) |
 | D9 | `RM_PlantProfile` / `RM_ExplosiveGrowthRosterEntry` / extension (MEASURED `RM_ExplosiveGrowthRegistry.cs:8-19`, `RM_GrowthTop.cs:63-87`) | add `archetype`, `ruptureChance`, `sproutCount`, `adaptedLiquids`, `fireAdapted`, `woody`; registry seeds archetype from wet biomes' `wildPlants` | M |
-| D10 | `RM_TopResolver.Churn` (MEASURED :105-115) + `Fire` (:77-93) | dry cycle: roll `ruptureChance` → violent top, else fruit + many sprouts + growth reset; wet cycle: prolific fruit, wither, few sprouts | M |
+| D10 | `RM_TopResolver.Churn` (MEASURED :105-115) + `Fire` (:77-93) | dry cycle: roll `ruptureChance` → Burst only (other tops keep their own odds, RULED OQ-5), else fruit + many sprouts; the parent DIES either way, seedlings replace it (RULED OQ-6; no growth reset); wet cycle: prolific fruit, wither, few sprouts | M |
 | D11 | `Sink.OnArmed` (MEASURED `RM_MapComponent_ExplosiveGrowth.cs:277-287`) | drop the arming sprout (sprouts belong to the outcome) | S |
 | D12 | new: crop self-fruit | full `YieldNow` drop = the harvest; plant harvested; consume cell water | M |
 | D13 | new: `Plant.TickLong` prefix | dormancy by moisture factor, before vanilla's age step and `Dying` check | S |
-| D14 | new: tidal-lock resting | if OQ-7 says so, `Resting` false on lit cells of a tidally locked world | S |
+| D14 | new: tidal-lock resting | RULED OQ-7: `Resting` false on lit cells of a tidally locked world | S |
 | D15 | Pyrelands fire hook → ExplosiveGrowth | ASH-FRESH from the ash field's saved last-fire tick | S |
 | D16 | new: SEALED growers | `Building_PlantGrower` → ×1, no cycle | S |
 | D17 | `RM_ExplosiveGrowthRegistry` `p.tree` (MEASURED :207) | woody = IsTree OR WoodLog yield | S |
@@ -311,19 +317,19 @@ never silently resolved (CLAUDE.md: evictions are stopped; this is review work).
 | # | G finding (severity) | status |
 |---|---|---|
 | 1 | Moisture state machine incomplete (Critical) | **Resolved**: W3 makes state = presence; no fresh-event window exists to be wrong |
-| 2 | Fruit and harvest spend the crop twice (Critical) | **Resolved for crops** by EC3 + §4.4 (self-fruit is the harvest, water consumed). Open: jackpot interaction (OQ-14); wild plants' fruit has no water cost (OQ-8) |
+| 2 | Fruit and harvest spend the crop twice (Critical) | **Resolved for crops** by EC3 + §4.4 (self-fruit is the harvest, water consumed). Jackpot/last swing off for crops (RULED OQ-14); every fruiting plant, wild included, uses its water (RULED OQ-8) |
 | 3 | Dormancy postfix unsafe (High) | **Resolved**: WP2 + §5.2 prefix before mortality, moisture factor only |
 | 4 | Ageing evidence overstated (High) | **Moot**: dormancy adopted regardless |
 | 5 | Pulse arithmetic wrong (High) | **Moot**: no settle state, no re-arm |
 | 6 | Hydroponics ×4 an economy decision (High) | **Resolved**: H1 ×1 |
-| 7 | No water budget (High) | **Partly**: crops consume their cell's water; channels draw litres (§2.2). Open: dry-native churn on player water is free forever (OQ-8) |
+| 7 | No water budget (High) | **Partly**: crops consume their cell's water; channels draw litres (§2.2). Dry-native churn on player water is no longer free: every fruiting plant uses its water (RULED OQ-8) |
 | 8 | Rain waves a gameplay hazard (High) | **Partly**: Utinni adds no rain (WP1); rain stays on biomes that have it, whose natives are wet (no rupture). Residual: rupture at 1 in 3 is higher than C's 15%, so a flood is more dangerous; pawn-harm ceiling stays (MEASURED `burstHurtsPawns`, `ExplosiveGrowthMod.cs:86`) |
 | 9 | WP3 replaces plant identity with biome (High) | **Mitigated**: biome seeds, sheet row decides (§4.3) |
 | 10 | Per-plant vs cell event identity (High) | **Moot**: cycles are per plant per maturity; no event identity |
-| 11 | Rain history and roofs (High) | **Simplified**: WET while raining on unroofed ground; after-rain persistence OQ-9 |
+| 11 | Rain history and roofs (High) | **Simplified**: WET while raining on unroofed ground; after-rain persistence a few hours, RULED OQ-9 |
 | 12 | Perf costs remain (High) | **Open**: §7 brakes + §11 test |
 | 13 | Permanent-water cache holes (High) | **Mostly moot**: the cell itself only, terrain-def lookup, no radius cache |
-| 14 | Fire flush expires on empty ground (High) | **Open**: OQ-11 |
+| 14 | Fire flush expires on empty ground (High) | **Resolved**: RULED OQ-11, 3 days, restarted when a seedling appears |
 | 15 | Wood classification (High) | **Resolved** (EC1, §5.1); yields go to `PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE` |
 | 16–22 | Medium/low (vanilla claims, crop XML attribution, flood survival `destroyedByFlooding`, labour figures, density classes, chemistry precedence, small engineering) | chemistry resolved by T2; flood survival: a flood-killed plant has nothing to accelerate, accepted; density classes stay open (C7); the rest are build-time care |
 
@@ -350,44 +356,33 @@ Bar (ruled S0-6): **≥ 90% of mechanic-off TPS**. Everything else PROPOSED.
 
 ---
 
-## 12. Open questions (card-ready, one line each)
+## 12. Rulings on the open questions (owner, question cards, 2026-10-16 PDT)
 
-- **OQ-1 (BC1) Should each biome also carry a water label?** (1) Yes, seven labels that seed archetypes and rain;
-  one more label per biome, ~60 with twins · (2) No, plant rows only; WP3 seeds from wet biomes' rosters already ·
-  (3) Yes, but descriptive only (validates content, decides nothing).
-- **OQ-2 (BC2) Where do biome class numbers live?** (1) In each biome file, checked by a test against one table;
-  nothing rewrites at runtime · (2) Written at game start from the table; fights Map Designer · (3) Leave as
-  authored, no table.
-- **OQ-3 (GM2) Does snow count as water?** (1) Melting snow waters like rain (Wasteland, Sump only) · (2) No, only
-  liquid water; snowy wastes stay dry · (3) Only in Utinni's two snowy biomes, never elsewhere.
-- **OQ-4 (C7) Shared density classes for biomes?** (1) Yes, five classes, new biomes only at first · (2) Yes, and
-  move existing biomes on review rows · (3) No, tune each biome by hand.
-- **OQ-5 "Rupture" names two things: which is the 1-in-3?** (1) Any violent death (burst, tinder, slime, or the
-  contaminated rupture, per plant) · (2) Only the contaminated rupture; others never die violently · (3) Burst only;
-  contaminated rupture keeps its own odds.
-- **OQ-6 After fruit and sprouts, does a dry native live?** (1) Lives, shrinks back, cycles on the same cell ·
-  (2) Dies, sprouts replace it (today's churn) · (3) Lives, but each cycle costs it health until it dies.
-- **OQ-7 On the tidally locked world, do lit plants rest at "night"?** (1) No: always lit means always growing
-  (about 1.8× more growth than vanilla's clock) · (2) Yes, keep vanilla's clock rest · (3) No rest, but only on
-  Ash'karr's sunlit tiles.
-- **OQ-8 Does a wild plant's cycle use up water too, or only crops?** (1) Only crops (ruled case); wild churn on
-  player water is free · (2) Every fruiting plant consumes it; player water is always spent · (3) Player water also
-  evaporates after a few hours whatever grows.
-- **OQ-9 After rain stops, how long is open ground wet?** (1) Not at all; wet only while it rains · (2) A few hours,
-  shown by puddle filth · (3) Until a plant fruits there.
-- **OQ-10 Our plants outside our biomes: default?** (1) Vanilla, labelled unsupported (matches 2026-10-15) ·
-  (2) Same rule, labelled unsupported · (3) Same rule only in Utinni.
-- **OQ-11 How long does a burn count as fresh, and what if nothing is growing?** (1) 3 days from the fire ·
-  (2) Until the first plant there matures once · (3) 3 days, restarted when a sprout appears.
-- **OQ-12 A wet native away from home, or a dry native in a wet biome?** (1) Each keeps its archetype rate everywhere
-  in scope · (2) Plants take the archetype of the biome they stand in · (3) Wet natives off home act as dry natives.
-- **OQ-13 Does the miasma salt-line surge stay a water source?** (1) Yes, as today (fresh side waters) · (2) No, it
-  is not water · (3) Only for plants adapted to miasma.
-- **OQ-14 Keep the harvest jackpot and last-swing gamble?** (1) Keep both on wild plants, off for crops ·
-  (2) Keep both everywhere · (3) Cut both; water is the only lever.
-- **OQ-15 Which crops self-fruit?** (1) Only our natives sown as crops · (2) Every crop on wet ground, vanilla
-  included · (3) None; crops are harvested by pawns only.
-- **OQ-16 A vanilla crop with no water nearby: does it age?** (1) No, frozen until watered · (2) Yes, normally, so
-  it dies if never watered · (3) Ages slowly (×0.1).
-- **OQ-17 What is "water nearby" for vanilla crops?** (1) Within 2 cells of a source · (2) Within 6 cells · (3) The
-  cell itself only, like our plants.
+- **OQ-1 RULED (by card):** no biome water label; archetype and rain are read from each biome's plant list.
+- **OQ-2 RULED (by card):** class numbers live in each biome file, checked by a test against one table.
+- **OQ-3 RULED (owner's words):** *"Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation"*; *"Blowing snow melts like water and rain yes. It doesn't snow fuel."* (§3).
+- **OQ-4 RULED (by card):** yes, five density classes, new biomes first.
+- **OQ-5 RULED (by card):** Burst only is the 1-in-3; the contaminated rupture keeps its own odds (§4.1).
+- **OQ-6 RULED (by card):** the dry native dies and its seedlings replace it (§4.1). Against the earlier PROPOSED "lives, reset to 0.5".
+- **OQ-7 RULED (by card):** no rest; always lit means always growing (§2.3).
+- **OQ-8 RULED (by card):** every fruiting plant uses its water, wild included (§3).
+- **OQ-9 RULED (by card):** a few hours after rain, shown by puddles (§2.2, §3).
+- **OQ-10 RULED (by card):** outside our biomes, vanilla growth, labelled unsupported (§6 B).
+- **OQ-11 RULED (by card):** ash-fresh lasts 3 days, restarted when a seedling appears.
+- **OQ-12 RULED (by card):** off its home a plant keeps its own type's rules everywhere.
+- **OQ-13 RULED (by card):** the miasma salt-line stays a water source, as today.
+- **OQ-14 RULED (by card):** jackpot and last swing stay on wild plants, off for crops.
+- **OQ-15 RULED (by card):** only our native plants sown as crops self-fruit.
+- **OQ-16 RULED (by card):** a vanilla crop with no water nearby ages slowly, x0.1 "like its growth". (Growth stays x0 per setting A; the card text can be read as x0.1 growth too: owner to confirm if that was meant.)
+- **OQ-17 RULED (by card):** "water nearby" is within 2 cells of a source.
+
+## 13. Build consequences
+
+1. Dry-native cycle code (D10): no parent survival path. Delete any "reset growth to 0.5" branch; the parent dies at fruit/burst and sprouts carry the cycle. Sprout count and spawn respect built ground; a cell with no free sprout space ends the line there.
+2. `ruptureChance` rolls Burst only; the contaminated Rupture, Tinder, Slime keep their own odds and the review sheet's "violent top" column is not covered by it.
+3. Wild plants consume their cell's water on fruit (OQ-8), so player water on a wild-plant cell is no longer free; the source-consumption path (D5/D6/D12) applies to all fruiting plants, not only crops.
+4. Rain source: puddle filth persists a few hours after rain; snow in RUT_FuelSnows and RUT_Umbra is a rain-equivalent source. The five no-precipitation biomes carry no rain source at all; the zeroed weathers (`607aecf946`) still need deploying.
+5. Resting override on the tidally locked world (D14) is now required, not conditional.
+6. Ash-fresh timer restarts on each new seedling; nearbyRadius default 2; vanilla crop no-water ageing x0.1.
+7. Settings B default `vanilla` labelled unsupported; no biome water-label field; class numbers live in biome files with a consistency test.
+8. Crop self-fruit and jackpot/last-swing: gamble off for crops.

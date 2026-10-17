@@ -7,7 +7,7 @@ Item: `VENOMVINE_BUILD_SCRUB_GROWS_TEETH`. Design only: nothing here is built, i
 
 ## 0. The short version
 
-**Venomvine is already built, and it is in the game. You just cannot see it.** Fifteen venomvine plants exist
+**Venomvine is already built, and it is in the game. You just cannot see it.** (Rulings of 2026-10-16 are in section 10; the sections below are written to them.) Fifteen venomvine plants exist
 in code, with their mechanics, their Mod Settings and a deployed copy (Baroque Biomes is active in your mod list).
 Four things hide it:
 
@@ -24,7 +24,7 @@ Four things hide it:
    so no map ever gets one.
 
 **The headline of this design:** make venomvine the Scrub's skeleton. Every map gets **near-black islands of
-it**, standing **taller than a person**, that **creep slowly downwind** on their own clock, with the rarer forms
+it (about 15% of open ground)**, standing **taller than a person**, that **creep slowly downwind** on their own clock, with the rarer forms
 living as **rooms inside the islands**. Its growth is its own number, kept out of Explosive Growth whichever way
 that goes.
 
@@ -72,7 +72,7 @@ curtain wall, the treasure vault and the fuel bank of the biome, all in one plan
 
 | | today | proposed |
 |---|---|---|
-| **How much** | scattered single stands, 8% of plant weight | **islands**: a map step lays 4 to 8 near-black islands per map, each a body of thicket 40 to 200 cells, about **8% of the map's open ground** in all (PROVISIONAL). The wild list still scatters lone stands between them. |
+| **How much** | scattered single stands, 8% of plant weight | **islands**: a map step lays 8 to 14 near-black islands per map (count PROVISIONAL, scaled up to reach the share), each a body of thicket 40 to 200 cells, about **15% of the map's open ground** in all (RULED Q1, Heavy). The wild list still scatters lone stands between them. |
 | **How tall** | drawn about 1 cell | drawn **1.8 to 2.4 cells** (tree height), on a tall canvas, rooted at the cell's base, leaning sunward. It towers over a person at play zoom. |
 | **Cover** | none set | **half cover** for anyone inside or behind it (like sandbags), and pawns deep inside an island are hidden from the colony's view the way small creatures are hidden in the fuzz. Full shot-blocking is out: in RimWorld that also blocks walking, which breaks the size gate. |
 | **Growth** | vanilla regrowth only (plus Walking's gale runners) | **its own slow creep** (section 3) |
@@ -98,7 +98,7 @@ combination), venomvine grows at exactly its own speed.
   therefore stretch sunward over a long game, like everything else in the Scrub.
 - Runners only go onto natural crust. Never onto floors, under roofs, onto a cell with a building, or into a
   vaporator's dried wake once that wake exists.
-- **A map cap** stops it: venomvine never passes a set share of the map (default **12%**). At the cap, creep
+- **A map cap** stops it: venomvine never passes a set share of the map (default **22%**, above the 15% laid share). At the cap, creep
   stops until something is cut, burned or smothered.
 - A runner is **safe for its first days**: no venom until it reaches half growth. Cutting the front is a cheap
   chore; smothering the body stops the whole island.
@@ -179,10 +179,10 @@ venom on/off, size gate on/off, passability, and one switch (plus tuning) for ea
 Rearing, Walking, Hoard, Quench, Sworn, Shedding, Strangler, Weeper, Sleeper, Lure and the smother-craft.
 
 **New** (defaults = shipped behaviour):
-- **Venomvine islands**: on/off; islands per map (default 4 to 8); share of open ground (default 8%).
+- **Venomvine islands**: on/off; islands per map (default 8 to 14); share of open ground (default **15%**, RULED Q1).
   Labelled "affects new maps only".
 - **Venomvine creep**: on/off; days between runners (default 10); downwind share (default 75%); map cap
-  (default 12%).
+  (default **22%**: it must sit above the 15% laid share or creep would be dead on arrival; PROPOSED, owner may change).
 - **Cover and concealment inside stands**: on/off.
 - **Scent masking inside stands**: on/off.
 - All off: venomvine is a scattered, still, poisonous plant as it is today.
@@ -213,36 +213,17 @@ check them first, and regenerate only what fails these laws (the current renders
 | Sleeper | looks exactly like bleached dead cane | none while asleep | awake: black, thorned, upright, a deep red at the cane joints |
 | Lure | thicket with clusters of round pale-gold fruit low on the outer canes | pale gold | picked (fruit gone) |
 
-## 10. Questions for you (question-card draft)
+## 10. Rulings (owner, question cards, 2026-10-16)
 
-Local time at drafting: **2026-10-16 09:18 PDT**.
+- **Q1 RULED (by card): Heavy, islands at about 15% of open ground.** Against the recommendation of 8%. The Scrub becomes a maze: travel, building and pathing get much harder, and the 12% map cap is raised to 22% so creep still has room.
+- **Q2 RULED (by card): tree-tall, 1.8 to 2.4 cells.** The tall-canvas re-render is approved.
+- **Q3 RULED (by card): its own slow creep downwind, capped, outside Explosive Growth** (section 3).
+- **Q4 RULED (by card): all fifteen forms stay, as rooms inside islands; install the existing renders; Strangler, Weeper and Lure go on the wild list** (section 5).
 
-**Q1. How much venomvine should a Scrub map have?**
-- **A. Islands, about 8% of open ground** (recommended). 4 to 8 black islands per map, the fuzz between them
-  stays open. Reads as "near-black islands on silver-green". Costs a new map step.
-- **B. Just raise the wild-list weights.** No new code; stands stay scattered and clumpy, never true islands.
-- **C. Heavy: islands at about 15%.** The Scrub becomes a maze; travel and building get much harder.
-- *Or type your own.*
+## 11. Build consequences
 
-**Q2. How tall?**
-- **A. Tree-tall, 1.8 to 2.4 cells** (recommended). Unmistakably towers over a person at play zoom. Needs
-  the renders redone on a tall canvas.
-- **B. Just over a person, 1.4 to 1.7 cells.** Reads as man-height; less art work; less dramatic.
-- **C. Decide in the BENCH sitting, game up.** We stage both sizes on one map and you pick by looking.
-- *Or type your own.*
-
-**Q3. How should it grow?**
-- **A. Its own slow creep, downwind, capped, outside Explosive Growth** (recommended). Islands grow over a
-  long game; nothing you decide about Explosive Growth changes venomvine.
-- **B. No creep.** Islands stay where the map put them; only the Walking form moves. Simplest, least alive.
-- **C. Follow Explosive Growth.** Venomvine grows however that system ends up working. Ties the Scrub to
-  that decision.
-- *Or type your own.*
-
-**Q4. The fifteen forms: what now?**
-- **A. All stay; forms become rooms inside islands; install the existing renders now and put Strangler,
-  Weeper and Lure on the list** (recommended). Every form is visible and placed for a reason; the sitting then
-  judges them in game.
-- **B. All stay, scattered alone as today.** No placement work; rare forms remain hard to find.
-- **C. Cut to a core set.** Fewer forms, each more common; you name which survive in the sitting.
-- *Or type your own.*
+1. Island map step targets 15% of open ground (not 8%): re-size the island count and body size; check that travel and the base-building area stay possible (keep the start area and colony site clear of islands, PROPOSED) and that pathing and pawn-count stay inside perf bounds.
+2. Map cap default 22% (above 15%); every creep-related test and setting default uses the new numbers. Any text still saying 8% share or a 12% cap is wrong.
+3. Add every venomvine defName to Explosive Growth's two exemption lists (Q3).
+4. Wild list: add Strangler, Weeper, Lure (weights set so rooms, not scatter, place them); install the existing `_artpipe\done` renders on the ten forms that share the placeholder, then commission the tall-canvas re-render of all forms (Q2, art approved).
+5. Cover and concealment: at 15% the hidden-from-view rule affects far more of the map; keep its Mod Setting and label it.

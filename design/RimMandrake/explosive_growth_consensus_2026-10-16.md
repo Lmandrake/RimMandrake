@@ -241,7 +241,7 @@ which terrains those are. Suppression (grazing, the dry-air blower) removes the 
 **MEASURED: rain hardly matters in our dry biomes.** Parsing `baseWeatherCommonalities` of every RM_ BiomeDef: Stillsand,
 Long Shade, Wasteland, Cauldron, Leaning Scrub, Weeping Stones, Rust Cathedral, Blue Desert, The Sump and Nightside Ice
 give every water rain weight 0. Water rain falls in Miasma (Rain 10, RainyThunderstorm 5, FoggyRain 4), Webwork,
-Contagion, Gelatinous Slime, Greentide, Twilight Sea and Flooded Canyon (Rain 0.5). Several rains are **not water**:
+Contagion, Gelatinous Slime, Greentide and Twilight Sea (Flooded Canyon no longer rains: owner 2026-10-16, no precipitation). Several rains are **not water**:
 `RM_SheenFall/Storm/Mist` (The Rot, the Sheen), `RM_Weather_SlimeRain`, `RM_FE_BlackRain` (Pyrelands),
 `RM_BoilingRain` (The Forge), `RM_ContagionBloom`, `ToxRain` (Warscar). Each has `rainRate` > 0 (MEASURED from their
 WeatherDefs), so **a rule keyed on `rainRate` would water plants with sheen, slime and tox. The rule must be an

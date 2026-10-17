@@ -48,7 +48,7 @@ design only: nothing here was built, deployed or run live.
 2. **Wet only while it runs** (W3 + GM1). While the head keeps getting water, its cells are fresh continuously; the
    spray mote is the "obvious reason". Water stops, the cells are dry within one pulse. No lingering, no overlay.
 3. **Pulse:** every 2,500 ticks (1 game hour); grace 250 ticks. PROPOSED.
-4. **Water cost:** `litresPerCellHour` × covered cells. PROPOSED **0.5 L per cell-hour** (12 L per cell-day), so a
+4. **Water cost:** `litresPerCellHour` × covered cells. **RULED (OQ-S1) 0.5 L per cell-hour** (12 L per cell-day), so a
    native head (29 cells) spends ~350 L a day: a deep pond square lasts ~11 days. This is deliberately dear (C3): a
    sprinkler is an expensive way to share water, not free irrigation.
 5. **Shape:** cells within a radius (`GenRadial`), in line of sight of the head (walls stop spray; LOS cached per net
@@ -64,22 +64,22 @@ design only: nothing here was built, deployed or run live.
    - Clean water (`RM_Fluid_Water`'s liquid) wets every archetype; any other liquid wets **only plants adapted to it**
      (T2; acceptance on the (cell liquid, plant) pair, spec §2.4).
    - `damageOnContact` liquids (acid, scalding `hot`) apply that contact effect to pawns standing in the spray, once per
-     pulse; `flammable` liquids lay their `spillFilth` at the normal spill rate (fire risk you can see). PROPOSED; OQ-S5.
-9. **Power:** none for the native head (it runs on the net's store); VFE's head keeps its own 250 W for its automation.
+     pulse; `flammable` liquids lay their `spillFilth` at the normal spill rate (fire risk you can see). RULED (OQ-S5).
+9. **Power and pressure (RULED OQ-S2):** no electrical power for the native head, **but a pump must be on its network**: the pump is the pressure. A head on a net with no working pump reads "No pressure: no pump on this network" and draws nothing (cells dry at expiry, as §1.1). VFE's head keeps its own 250 W for its automation and, because it is a pipe consumer under this section, needs the same pump (inferred from the shared path; owner to confirm).
 10. **Scope:** the WET effect is read only where the water rule is in scope (our biomes; spec §6). Elsewhere a native head
-    still draws and wets; growth reads it only under setting B "same rule". VFE outside our biomes: §3.4.
+    still draws and wets; growth reads it only under setting B "same rule". VFE's waterless boost is removed everywhere while the adapter is on (§3, OQ-S3).
 
 ## 2. Native FlowWorks head: `RM_SprinklerHead` (rudimentary)
 
 - **What:** a 1×1 nozzle set **on a universal pipe cell** (PlaceWorker: a pipe must be under it; it stands over the
-  pipe like the tanks do). It joins that pipe's component as a machine (never conducts).
-- **Radius 2.9** (29 cells incl. its own). PROPOSED. No power. Cost 5 steel; WorkToBuild 200; research: none beyond
+  pipe like the tanks do). It joins that pipe's component as a machine (never conducts). It needs a working pump on that component (OQ-S2).
+- **Radius 2.9** (29 cells incl. its own). PROPOSED. No electrical power (pump on the net required). Cost 5 steel; WorkToBuild 200; research: none beyond
   FlowWorks' pipes. PROPOSED.
 - **UI, minimal:** `CompFlickable` on/off; inspect line "Spraying water · 14.5 L/h · 29 cells" / "Dry: net has 3 L of
   water, needs 14.5 L" / "Clogged: tar too thick". **No liquid picker:** it sprays the liquid its net holds most of
   (ties by liquid defName); a mixed net is the player's problem, as with every other FlowWorks consumer.
 - **Art:** a nozzle in the four pipe looks (Scrapper/Industrial/Modern/Futuristic, `PipeLook`) so it matches the pipe it
-  sits on, plus a small spray mote. **Proposal only**: no art is commissioned until the owner says so (OQ-S6).
+  sits on, plus a small spray mote. RULED (OQ-S6): the art commission is approved, all four looks plus the spray mote.
 - **Class:** `RimMandrake.FlowWorks.Machinery.CompRM_SprinklerHead` calling the shared pulse (§4).
 
 ## 3. VFE `VFE_Sprinkler` adaptation: bold automation and enhancement
@@ -105,10 +105,15 @@ coverage: a serious commitment of water). Its 250 W powers the brains; unpowered
    dose a fertility liquid that the plant economy item defines. Highest cost (two-liquid draw, per-cell liquid tag), and
    it depends on per-biome adaptation columns not yet filled. Last.
 
-**VFE's own +0.04 a day (§0).** Inside our biomes the water rule replaces it (a Harmony prefix on
-`VFEF.VFEF_SprinklersManager.BoostPlantAt` skips cells in water-rule scope); outside our biomes VFE runs exactly as
-shipped. Keeping it inside too would stack a waterless boost on the ruled rates (the 2026-08-04 rejection reason).
-OQ-S3.
+**VFE's own +0.04 a day (§0). RULED 2026-10-16 (by card, OQ-S3): removed everywhere while our adapter is on.** A Harmony
+prefix on `VFEF.VFEF_SprinklersManager.BoostPlantAt` skips the boost on every map and biome, not only in water-rule
+scope; the sprinkler then does only what our pipe-fed pulse does. With `vfeSprinklerAdapterEnabled` off VFE runs exactly as shipped.
+Reason: a waterless boost would stack on the ruled rates (the 2026-08-04 rejection reason).
+
+⚠️ **FLAG FOR THE OWNER (not resolved here):** this changes VFE behaviour outside our biomes, which sits against the
+2026-10-15 ruling that biome mechanics are promised inside OUR biomes only (*"We can't guarantee they will work in
+other biomes beyond our framework"*). The card answer was explicit, so the design follows it; the owner should say
+whether the 10-15 rule yields here or the removal should be scoped to our biomes after all.
 
 **3.4 Mechanics of the adapter (no dependency on VFE):**
 - XML: `FlowWorks/Patches/Compat/RM_VFEFarming_Sprinkler.xml`, a `PatchOperationFindMod`
@@ -145,8 +150,7 @@ _Shared/FlowWorksSprinklerRead.cs  (reflection-soft, like FlowWorksIrrigationRea
 | FlowWorks | `sprinklerLitresPerCellHour` (slider 0.1–5) | 0.5 |
 | FlowWorks | `sprinklerNativeRadius` (1.9 / 2.9 / 3.9) | 2.9 |
 | FlowWorks | `sprinklerNonWaterEffects` (contact damage, flammable filth in spray) | on |
-| FlowWorks | `vfeSprinklerAdapterEnabled` (off = VFE exactly as shipped everywhere) | on |
-| FlowWorks | `vfeKeepFlatBoostInOurBiomes` | off |
+| FlowWorks | `vfeSprinklerAdapterEnabled` (off = VFE exactly as shipped everywhere; on = VFE's waterless boost removed everywhere) | on |
 | FlowWorks | `vfeThirstValve` · `vfeBloomConductor` · `vfeFertigation` (each feature on/off) | on · on · on (as each ships) |
 | ExplosiveGrowth | source toggle `sprinklers` (spec §6 "one toggle per source") | on |
 
@@ -183,32 +187,21 @@ All off: no native head, VFE vanilla, growth ignores sprinkled cells: the game i
   ×10; a vanilla crop in coverage reads "water nearby" (setting A); a self-fruited crop's cell reads dry until the next
   pulse.
 
-## 7. Open questions for the owner (question-card candidates)
+## 7. Rulings (owner, question cards, 2026-10-16)
 
-**OQ-S1 How thirsty is a sprinkler?** (1) 0.5 L per cell-hour: native head ~350 L/day, a deep pond square in ~11
-days *(recommended: dear, matches "a huge amount of water loss")* · (2) 0.1 L: ~70 L/day, sprinklers become routine
-· (3) 2 L: ~1.4 kL/day, only a river-fed base can run one · (4) write your own.
+- **RULED 2026-10-16 (by card), OQ-S1:** 0.5 L per cell per hour, about 350 L/day for a native head (§1.4).
+- **RULED 2026-10-16 (by card), OQ-S2:** no electrical power, but a pump must be on the head's network (§1.9, §2).
+- **RULED 2026-10-16 (by card), OQ-S3:** remove VFE's waterless boost everywhere when our adapter is on (§3). Against the recommendation; flagged for the owner against the 10-15 inside-our-biomes rule.
+- **RULED 2026-10-16 (by card), OQ-S4:** the first VFE upgrade is the moisture valve (Thirst valve, bold #1).
+- **RULED 2026-10-16 (by card), OQ-S5:** acid or boiling liquids hurt pawns in the spray; fuels leave flammable filth (§1.8).
+- **RULED 2026-10-16 (by card), OQ-S6:** a nozzle in each of the four pipe looks plus spray; art commission approved (§2).
+- **RULED 2026-10-16 (by card), OQ-S7:** walls stop the spray; line of sight from the head (§1.5).
 
-**OQ-S2 Does the native head need power?** (1) No, it runs off the net's store *(recommended: "pretty rudimentary")*
-· (2) Yes, a little (30 W), so it is an industrial-age device · (3) No power, but only with a pump on its net
-(pressure). Trade: (3) is more realistic and costs every player a pump.
+## 8. Build consequences
 
-**OQ-S3 VFE's own waterless growth boost (+0.04/day) inside our biomes?** (1) Replaced by the water rule there;
-VFE unchanged elsewhere *(recommended)* · (2) Keep it as well, on top · (3) Remove it everywhere when our adapter is
-on. Trade: (2) brings back growth without water; (3) changes VFE outside our framework.
-
-**OQ-S4 Which VFE bold idea goes first?** (1) Thirst valve: only waters where it matters, budget and reserve floor
-*(recommended)* · (2) Bloom conductor: hold ripe plants, release the field as one harvest wave · (3) Dual-line
-fertigation: each plant gets the liquid it is adapted to · (4) write your own.
-
-**OQ-S5 What does spraying a non-water liquid do besides watering adapted plants?** (1) Contact damage on pawns in
-the spray (acid, boiling) and flammable filth from fuels *(recommended: visible danger)* · (2) Nothing else, it just
-waters or doesn't · (3) Refuse every non-water liquid (no slime sprinkling at all). Trade: (3) closes T2's adapted
-plants to sprinklers.
-
-**OQ-S6 Art for the native head?** (1) A nozzle drawn in each of the four pipe looks, plus a spray mote
-*(recommended)* · (2) One look only for now · (3) Reuse a pipe-cap graphic, no new art. Cosmetic: needs your yes before
-anything is commissioned.
-
-**OQ-S7 Do walls stop the spray?** (1) Yes, line of sight from the head *(recommended)* · (2) No, a plain radius like
-VFE today. Trade: (2) is simpler and lets a head behind a wall water a field.
+1. The head draws only when a working pump is on its network; add the "No pressure" state, a probe field, and a validation line (head on a pump-less net reads No pressure and draws nothing; adding a pump flips it).
+2. Native head cost stays 5 steel, no power comp; the pump requirement makes the pump a prerequisite in the tutorial/research text.
+3. `BoostPlantAt` prefix is unconditional while the adapter is on; the setting `vfeKeepFlatBoostInOurBiomes` is deleted. Anything reading "VFE unchanged outside our biomes" is wrong.
+4. Art commission for the nozzle in four pipe looks plus spray mote may be filed now.
+5. Step 6 (Thirst valve) is the first VFE feature to build.
+6. Non-water spray effects and LOS are ON (not optional-by-default); keep the `sprinklerNonWaterEffects` setting only as a toggle.

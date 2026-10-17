@@ -76,7 +76,7 @@ Second-tier corrections, each in its section:
 - The VFE sprinkler makes water from power alone (§2).
 - Vanilla `Drought` would multiply with our dry rate, giving ×0.075 (§1).
 - The live biome numbers are not the XML numbers, because Map Designer rewrites them (§8).
-- Snow is precipitation in Wasteland and the Sump (§5).
+- Wasteland, the Sump and Flooded Canyon have no precipitation at all (owner 2026-10-16, OQ-3); snow falls only in RUT_FuelSnows and RUT_Umbra, and it melts like rain (§5).
 
 ---
 
@@ -261,7 +261,7 @@ floods, Odyssey floods, the Miasma surge and the Bloom event. Natural permanent 
 |---|---|---|
 | Stillsand, Long Shade, Leaning Scrub, Weeping Stones, Cauldron, Blue Desert, The Forge, Abyss, Warscar, The Scald, The Chill, Grey Sea | **none** (0 weight on every water-rain weather; no flood system) | **never**, unless the player waters them |
 | Flooded Canyon | canyon flood (fresh; deep dive §1.3). Rain weight **0** in the live dump (consensus §4.2 says Rain 0.5; the live dump disagrees) | yes, in the flood footprint, on the flood clock |
-| Wasteland, The Sump | **snow** only: `SnowGentle`/`SnowHard` weights 1.5/1 and 2/2 (about 6% of weight); both have `rainRate` 1 | only if snowmelt or warm snowfall counts (§5) |
+| Wasteland, The Sump | **no precipitation** (weathers zeroed, commit `607aecf946`, owner 2026-10-16) | no |
 | Webwork, Twilight Sea, Contagion | water rain: 19%, 17%, 12.5% of weight | **yes, map-wide, recurring** (§5) |
 | Greentide, Miasma, Fever Wood | rain 18%, 58%, 0% | natives are wet-adapted, ×10 always; only foreign dry plants fire |
 | Pyrelands | `RM_FE_BlackRain` (3 of 88) is not water | card C5 (fire as the trigger) |
@@ -325,8 +325,8 @@ claims "rain hardly matters in our dry biomes".
    `rainRate` 1 (MEASURED, dump). Vanilla's `GameCondition_Drought.HandleEndDueToRain` ends a drought on **any**
    weather with `rainRate > 0`, snow and tox rain included (`GameCondition_Drought.cs:14-20`). The consensus
    allow-list omits snow, and its snowmelt route is "not built". PROPOSED: snow weather counts as water rain on cells
-   above 0 °C. Snowmelt (a falling `snowGrid` depth above 0 °C) is a fresh event. Wasteland and the Sump are the only
-   biomes this touches.
+   above 0 °C. Snowmelt (a falling `snowGrid` depth above 0 °C) is a fresh event. Only RUT_FuelSnows and RUT_Umbra
+   snow (RULED 2026-10-16: it melts like water and rain; Fuel Snows' snow is water, not fuel); Wasteland, the Sump and Flooded Canyon have no precipitation.
 3. **The allow-list must name more weathers.** These have `rainRate` > 0 in today's list and are not in consensus
    §4.2: `RG_Drizzle` (0.5), `AB_ReddishRain`, `AB_ForsakenRainyNight` (+ `_Alternate`), `AB_AcidRainWeather`,
    `BloodRain`, `VEE_PsychicRain`, `VEE_FertileRains`, `ToxRain` (MEASURED, dump: 31 weathers with `rainRate` > 0).
@@ -494,7 +494,7 @@ sluices and grates near it … on a repeating period"*, MEASURED def text) alrea
    |---|---|---|
    | **arid** | no natural water; ×10 only from player water, floods, events | Stillsand, Long Shade, Leaning Scrub, Weeping Stones, Cauldron, Blue Desert, The Forge, Abyss, Warscar, The Scald, The Chill, Grey Sea |
    | **flood** | arid, plus a scheduled flood | Flooded Canyon |
-   | **snow** | arid, plus warm snow and melt | Wasteland, The Sump |
+   | **snow** | arid, plus warm snow and melt | RUT_FuelSnows, RUT_Umbra |
    | **rainy** | regular water rain; natives wet-adapted (if WP3 = 1) | Webwork, Twilight Sea, Contagion (by A4) |
    | **wet** | the three jungles (ruled 09-21) | Greentide, Miasma, Fever Wood |
    | **other liquid** | precipitation that is not water | The Rot (sheen), Gelatinous Slime (slime, by T2), Pyrelands (fire, by C5) |
@@ -627,8 +627,8 @@ kill the plants it watered. Vanilla never re-wets ground, and `driesTo` is one-w
 
 **GM2. Does snow count as water?**
 1. *(Recommended)* **Yes: snow falling above freezing, and melting snow, water the ground like rain.** It touches only
-   the Wasteland and the Sump. *Trade: one more source; snowmelt needs a slice read of the snow grid.*
-2. No; only liquid rain. *Trade: the two snowy wastes never water themselves.*
+   RUT_FuelSnows and RUT_Umbra (the Wasteland, the Sump and Flooded Canyon have no precipitation, owner 2026-10-16). RULED yes. *Trade: one more source; snowmelt needs a slice read of the snow grid.*
+2. No; only liquid rain. *Trade: the snowy biomes never water themselves.*
 3. *(write your own)*
 
 ---
