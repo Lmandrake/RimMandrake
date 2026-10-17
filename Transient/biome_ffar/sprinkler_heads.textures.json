@@ -1,0 +1,110 @@
+{
+ "rows": [
+  {
+   "key": "RM_SprinklerHead_Scrapper",
+   "label": "sprinkler head, scrapper look",
+   "part": "sprinkler head",
+   "look": "Scrapper",
+   "section": "heads",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Scrapper drawSize (1,1)"
+   }
+  },
+  {
+   "key": "RM_SprinklerHead_Industrial",
+   "label": "sprinkler head, industrial look",
+   "part": "sprinkler head",
+   "look": "Industrial",
+   "section": "heads",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Industrial drawSize (1,1)"
+   }
+  },
+  {
+   "key": "RM_SprinklerHead_Modern",
+   "label": "sprinkler head, modern look",
+   "part": "sprinkler head",
+   "look": "Modern",
+   "section": "heads",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Modern drawSize (1,1)"
+   }
+  },
+  {
+   "key": "RM_SprinklerHead_Futuristic",
+   "label": "sprinkler head, futuristic look",
+   "part": "sprinkler head",
+   "look": "Futuristic",
+   "section": "heads",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead"
+   ],
+   "size": {
+    "drawSize": [
+     1,
+     1
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Futuristic drawSize (1,1)"
+   }
+  },
+  {
+   "key": "RM_Mote_SprinklerSpray",
+   "label": "sprinkler spray mote (tinted by the liquid)",
+   "part": "spray",
+   "look": "all",
+   "section": "spray",
+   "resources": [
+    "RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray"
+   ],
+   "size": {
+    "drawSize": [
+     0.7,
+     0.7
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RM_Sprinkle.ThrowSpray: Scale 0.5-0.9 of drawSize (1,1); shown at the 0.7 middle"
+   }
+  }
+ ],
+ "lead_html": "<p>Sprinkler head nozzles in the four pipe looks (owner approved the commission, OQ-S6 by card 2026-10-16) and the spray mote. In game a head stands on a universal pipe of the same look (the pipe draws beneath it).</p>"
+}

@@ -1,0 +1,348 @@
+{
+ "schema": 1,
+ "generated": "2026-10-16T23:55:26-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_sprinkler_heads"
+ ],
+ "biomes": {
+  "SUBJECTS_sprinkler_heads": {
+   "label": "Sprinkler heads, four looks and spray",
+   "slug": "sprinkler_heads",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Sprinkler heads, four looks and spray \u2014 game art",
+   "lead_html": "<p>Sprinkler head nozzles in the four pipe looks (owner approved the commission, OQ-S6 by card 2026-10-16) and the spray mote. In game a head stands on a universal pipe of the same look (the pipe draws beneath it).</p>",
+   "rows": [
+    {
+     "key": "RM_SprinklerHead_Scrapper",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler head, scrapper look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_SprinklerHead_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Scrapper drawSize (1,1)"
+     },
+     "runtimeDesc": {
+      "def": "RM_SprinklerHead_Scrapper",
+      "label": "sprinkler head, scrapper look",
+      "description": "sprinkler head \u00b7 look Scrapper \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sprinkler_heads.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_SprinklerHead_Scrapper"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead"
+     }
+    },
+    {
+     "key": "RM_SprinklerHead_Industrial",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler head, industrial look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_SprinklerHead_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Modern",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Industrial drawSize (1,1)"
+     },
+     "runtimeDesc": {
+      "def": "RM_SprinklerHead_Industrial",
+      "label": "sprinkler head, industrial look",
+      "description": "sprinkler head \u00b7 look Industrial \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sprinkler_heads.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_SprinklerHead_Industrial"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead"
+     }
+    },
+    {
+     "key": "RM_SprinklerHead_Modern",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler head, modern look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_SprinklerHead_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Futuristic",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Modern drawSize (1,1)"
+     },
+     "runtimeDesc": {
+      "def": "RM_SprinklerHead_Modern",
+      "label": "sprinkler head, modern look",
+      "description": "sprinkler head \u00b7 look Modern \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sprinkler_heads.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_SprinklerHead_Modern"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+     }
+    },
+    {
+     "key": "RM_SprinklerHead_Futuristic",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler head, futuristic look",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [
+      {
+       "defName": "RM_SprinklerHead_Scrapper",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Industrial",
+       "relation": "same_part_other_look"
+      },
+      {
+       "defName": "RM_SprinklerHead_Modern",
+       "relation": "same_part_other_look"
+      }
+     ],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       1,
+       1
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "Defs/Sprinklers/RM_Sprinklers.xml ThingStyleDef RM_SprinklerHead_Futuristic drawSize (1,1)"
+     },
+     "runtimeDesc": {
+      "def": "RM_SprinklerHead_Futuristic",
+      "label": "sprinkler head, futuristic look",
+      "description": "sprinkler head \u00b7 look Futuristic \u00b7 texture RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead \u00b7 drawn at 1\u00d71 cells",
+      "source": "texture manifest sprinkler_heads.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_SprinklerHead_Futuristic"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead"
+     }
+    },
+    {
+     "key": "RM_Mote_SprinklerSpray",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sprinkler spray mote (tinted by the liquid)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "runtimeSize": {
+      "drawSize": [
+       0.7,
+       0.7
+      ],
+      "footprint": [
+       1,
+       1
+      ],
+      "source": "RM_Sprinkle.ThrowSpray: Scale 0.5-0.9 of drawSize (1,1); shown at the 0.7 middle"
+     },
+     "runtimeDesc": {
+      "def": "RM_Mote_SprinklerSpray",
+      "label": "sprinkler spray mote (tinted by the liquid)",
+      "description": "spray \u00b7 look all \u00b7 texture RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray \u00b7 drawn at 0.7\u00d70.7 cells",
+      "source": "texture manifest sprinkler_heads.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "RM_Mote_SprinklerSpray"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/bench/Transient/biome_ffar/sprinkler_heads.textures.json"
+  }
+ }
+}

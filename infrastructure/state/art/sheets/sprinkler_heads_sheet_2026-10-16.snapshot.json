@@ -1,0 +1,111 @@
+{
+ "biome": "SUBJECTS_sprinkler_heads",
+ "built": "2026-10-16T23:55:49-0700",
+ "census": "Transient/biome_ffar/sprinkler_heads.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 547 active",
+ "rows": {
+  "RM_Mote_SprinklerSpray": {
+   "columns": {
+    "A": {
+     "single": "324f6ae36c024b963c9eb874ed7fae5d2d5c74207430f2aa9852456b3a89ae43"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/RM_SprinklerSpray",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "mote_sprinklerspray"
+  },
+  "RM_SprinklerHead_Futuristic": {
+   "columns": {
+    "A": {
+     "single": "2968a0c0d29be4b626242ff4727343eab534336b665470e372193f388ffa9f21"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Futuristic/RM_SprinklerHead",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead_futuristic"
+  },
+  "RM_SprinklerHead_Industrial": {
+   "columns": {
+    "A": {
+     "single": "3e5f8f0a09140891742d27a99c7a326995c39d05062e84bbe49494bc49a39ff2"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Industrial/RM_SprinklerHead",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead_industrial"
+  },
+  "RM_SprinklerHead_Modern": {
+   "columns": {
+    "A": {
+     "single": "91395aa38880ec8b8b6a97a2d5a5757d25335886fc5946730349c311268dbf68"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead_modern"
+  },
+  "RM_SprinklerHead_Scrapper": {
+   "columns": {
+    "A": {
+     "single": "c218a8e926f9a9b876712b10cf78a45b7cb056af3bf535bc03a40d4a8b8ed74e"
+    }
+   },
+   "graphic_of": {
+    "A": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks"
+   },
+   "pools": [],
+   "res": "RimMandrake/FlowWorks/Sprinkler/Scrapper/RM_SprinklerHead",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "sprinklerhead_scrapper"
+  }
+ },
+ "sheetId": "sprinkler_heads_sheet_2026-10-16",
+ "snapshotId": "4480b246fdbb95e5"
+}
