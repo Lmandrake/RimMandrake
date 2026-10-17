@@ -85,6 +85,7 @@
     <Compile Include="..\RM_LevelPour.cs" />
     <Compile Include="..\MapControls\RM_MapControlMath.cs" />
     <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
+    <Compile Include="TakenIdentityChecks.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
     <Compile Include="..\LiquidTypes\RM_ContainerStyleMath.cs" />
     <!-- hose port (step 2): the cord geometry (_Shared/SlackGeometry, internal types), the Verse-free hose files, and the hose
