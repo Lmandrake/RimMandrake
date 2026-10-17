@@ -423,6 +423,12 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		internal const int NoTerrainMarkTicks = 600;
 		private static readonly Dictionary<int, int> noTerrainUntil = new Dictionary<int, int>();
+		/// <summary>The game the marks belong to. Thing IDs and the tick both restart on a load, so a mark from the game
+		/// before (reloading the same save, or another save at a nearby tick) lands on whichever new pawn now holds that ID
+		/// and passes the "not more than 600 ahead" test: that pawn then refuses every terrain drink for up to 600 ticks and
+		/// wanders off (live walk 2026-10-17, T15 run 1: the first-spawned pawn, reloaded from the same save as the session
+		/// before it, sat at zero ~1,650 ticks and finally drank a different pool). Weak, so an old Game is never kept alive.</summary>
+		private static readonly System.WeakReference<Game> marksGame = new System.WeakReference<Game>(null);
 
 		/// <summary>Nearest reachable drinkable terrain edge, best use class then quality first. GenRadial walks in increasing
 		/// distance, so the first reachable cell of a class and quality is the nearest of it; the walk stops at the first
@@ -446,6 +452,11 @@ namespace RimMandrake.FlowWorks.Thirst
 			if (map == null)
 			{
 				return false;
+			}
+			if (!marksGame.TryGetTarget(out Game g) || g != Current.Game)
+			{
+				noTerrainUntil.Clear();
+				marksGame.SetTarget(Current.Game);
 			}
 			int now = Find.TickManager.TicksGame;
 			if (!only.HasValue && noTerrainUntil.TryGetValue(pawn.thingIDNumber, out int until))

@@ -31,6 +31,30 @@ HOW EACH ROW READS (PROVE / EXPECT / LIES), in the order run:
        for 2,000 ticks; then a fresh bottle 30 cells off: within 1,500 ticks the bottle is gone or the job is Ingest.
   T13  a toxic strip (RM_WaterPoisonedShallow) only: at 0.05 no drink job in 1,000 ticks; at 0.0 RM_DrinkFromTerrain on it
        and ToxicBuildup appears.
+  T15  four 2x2 slime pools (red/green/white/yellow), a colonist at 0.0 beside each, one at 0.05: each drinks ITS pool
+       (RM_Thought_DrankSlime, RM_SlimePurge, its colour's hediff and NO other colour's), the 0.05 pawn drinks nothing.
+       LIES: the 60-tick job sample can miss a short drink, so a missed RM_DrinkFromTerrain is not a failure by itself;
+       the hediffs are the drink. A pawn carrying ANOTHER pool's hediff walked to that pool: see T15R.
+  T15R (opt-in: --only T15R; it RELOADS the --reload-site save twice, so it runs last and alone) the stale terrain mark.
+       Load, spawn A first, need 0.2 with no water (its search fails: marked for 600 ticks); reload, spawn B first (same
+       thingIDNumber, ticks restarted), a red pool beside it, need 0: B drinks within 300 ticks. LIES: B not holding A's
+       ID -> the collision was not reproduced -> UNMEASURED, never PASS.
+
+DEBUG RECORD, T15 run 1 (live walk 2026-10-17, b5.json): the red pawn carried the WHITE slime's RM_SporeFlesh and no
+RM_ContagionTouched; a rerun from the same save (b6.json) was exact. Theories, in the order weighed:
+  - FALSE: a wrong or cached terrain -> liquid lookup (LiquidAt / RM_DrinkableTerrainExtension). b5 and b6 ran on the same
+    load, and green/white/yellow mapped right in b5; a lookup is the same answer for the whole load.
+  - FALSE: a shared static in RowEffects, or a stale hediff from an earlier row. RowEffects reads only the liquid it is
+    handed, and the red pawn was freshly spawned (its SporeFlesh 0.0022 < white's 0.0096 says it drank LATER, not earlier).
+  - FALSE: pawn reuse between rows in this driver. Every row spawns its own colonists.
+  - TRUE (mechanism, inferred from the numbers, not replayed): RM_ThirstUtility.noTerrainUntil, a STATIC dictionary keyed by
+    thingIDNumber, survived the 'load calm' between the session before and b5. Both restart the ID counter and the tick, so
+    the first pawn spawned (red) inherited a fresh-looking "no water here" mark from the previous session's first-spawned
+    pawn; the 2026-10-17 B2 guard only dropped marks MORE than 600 ticks ahead. Red refused every terrain drink, took a long
+    GotoWander (only job ever sampled; RM_Dehydration 0.00825 = ~1,650 ticks at zero vs 0.0015 for the others) and drank
+    the nearest pool when it finally re-thought: white's. b6's red was clean because b5 had expired and dropped that entry.
+    Fix: the marks are cleared when Current.Game changes (selftest Thirst_review_fixes_B2_B3_in_source). T15R is the
+    red-before-the-fix check.
 """
 import argparse
 import json
@@ -57,6 +81,7 @@ def main(argv=None):
     ap.add_argument("--only", default="")
     ap.add_argument("--site", default="150,130", help="south-west corner of a 40x40 site")
     ap.add_argument("--log", default="", help="this load's Player.log copy (T1, T7)")
+    ap.add_argument("--reload-site", default="calm", help="test_site_saves site T15R reloads (twice)")
     a = ap.parse_args(argv)
     only = [x.strip().upper() for x in a.only.split(",") if x.strip()]
     import validation_core as V
@@ -684,12 +709,18 @@ def main(argv=None):
                         jobs[pid].append(j)
             ticks(600)
             out15, bad = {}, []
+            colour_hd = set(c[1] for c in cols)
             for terr, hd, pid in subj:
                 h, m = hediffs(pid), mems(pid)
-                out15[terr] = {"jobs": jobs[pid], "hediffs": h, "memories": m}
-                if "RM_DrinkFromTerrain" not in jobs[pid]:
+                out15[terr] = {"pawn": pid, "jobs": jobs[pid], "hediffs": h, "memories": m}
+                if "RM_DrinkFromTerrain" not in jobs[pid] and "RM_Thought_DrankSlime" not in m:
                     bad.append("%s: no terrain drink" % terr)
                     continue
+                other = sorted(x for x in colour_hd - {hd} if x in h)
+                if other:
+                    # run 1 (2026-10-17): the pawn walked to ANOTHER pool after a long wander; a stale noTerrainUntil mark
+                    # (see DEBUG RECORD above, and T15R) is the known way to get here
+                    bad.append("%s: carries another pool's %s (drank elsewhere; jobs %s)" % (terr, other, jobs[pid]))
                 if "RM_Thought_DrankSlime" not in m:
                     bad.append("%s: no RM_Thought_DrankSlime" % terr)
                 if "RM_SlimePurge" not in h:
@@ -739,6 +770,46 @@ def main(argv=None):
                     {"force": {k: r.get(k) for k in ("started", "breakDef")}, "trace": trace[-4:], "hediffs": h, "memories": m,
                      "bad": bad, "notRun": "the break being OFFERED (mood gate, dev list) and not offered with a fresh bottle: the start is forced"})
             draft(ps)
+        # ---------------------------------------------------------------- T15R stale terrain mark across a reload
+        if "T15R" in only:
+            _mc = os.path.join(os.path.dirname(os.path.dirname(HERE)), "Utils", "modcheck")
+            if _mc not in sys.path:
+                sys.path.insert(0, _mc)
+            import test_site_saves as TSS
+
+            def reload_site():
+                rec = TSS.load_site(B.call, a.reload_site)
+                tb2 = B.call("jawa/get_terrain_batch", rects="0,0,%d,%d" % (250, 250)) or {}
+                wet2 = [op for op in (tb2.get("ops") or "").split(";") if op and op.split(":")[0] in POTABLE_TERRAIN]
+                if wet2:
+                    B.call("jawa/set_terrain_batch", ops=";".join("Soil:" + op.split(":")[1] for op in wet2))
+                for c in colonists():
+                    draft(re.sub(r"^Thing_", "", c["pawnId"]))
+                return rec
+
+            RX, RZ = X0 + 20, Z0 + 20
+            r1 = reload_site()
+            pa_ = spawn_colonist(RX, RZ)
+            UNDER_TEST.add(pa_)
+            need(pa_, 0.2)                       # thirsty, not desperate, no water on the map: the search fails -> marked
+            B.call("jawa/stop_job", pawnId=pa_)
+            ticks(60)
+            ta = tg()
+            r2 = reload_site()
+            pb_ = spawn_colonist(RX, RZ)
+            UNDER_TEST.add(pb_)
+            ticks(90)                            # past A's mark tick, so 'until - now' is inside the 600-tick window
+            paint("RM_SlimeRedShallow", RX - 1, RZ + 2, 2, 2)
+            need(pb_, 0.0)
+            t_drink, seen_r = poll_job(pb_, ("RM_DrinkFromTerrain",), 300, step=30)
+            det = {"pawnA": pa_, "pawnB": pb_, "tickA": ta, "jobsB": seen_r, "drinkAfter": t_drink,
+                   "loads": [r1.get("verified"), r2.get("verified")], "hediffsB": hediffs(pb_)}
+            if not (r1.get("verified") and r2.get("verified")):
+                row("T15R_reload_mark", "UNMEASURED", "HARNESS", dict(det, why="a site load did not verify"))
+            elif pa_ != pb_:
+                row("T15R_reload_mark", "UNMEASURED", "HARNESS", dict(det, why="B did not get A's thing ID: collision not reproduced"))
+            else:
+                row("T15R_reload_mark", "PASS" if t_drink is not None else "FAIL", "MOD", det)
     finally:
         for k, v in saved.items():
             try:
