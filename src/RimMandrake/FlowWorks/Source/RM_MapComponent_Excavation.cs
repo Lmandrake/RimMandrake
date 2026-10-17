@@ -2332,6 +2332,8 @@ namespace RimMandrake.FlowWorks
 			{
 				RM_PitFillEffects.Tick(map, this);
 			}
+			// DEEP_WATER_BUILD_SWIM_OR_SINK: swim exhaustion everywhere, drowning on natural water (own 250-tick timer).
+			Swimming.RM_Swim.Tick(map, this);
 			int now = Find.TickManager.TicksGame;
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{

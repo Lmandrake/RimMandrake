@@ -472,14 +472,18 @@ namespace RimMandrake.FlowWorks
 		{
 			Pawn pawn = ___pawn;
 			IntVec3 start = __instance.nextCell.IsValid ? __instance.nextCell : pawn?.Position ?? IntVec3.Invalid;
-			if (!RM_PitPathing.TryPlan(pawn, start, ___destination, ___peMode,
-				out RM_PitTrapMath.PitRoute route, out PathRequest.IPathGridCustomizer customizer))
+			bool pit = RM_PitPathing.TryPlan(pawn, start, ___destination, ___peMode,
+				out RM_PitTrapMath.PitRoute route, out PathRequest.IPathGridCustomizer customizer);
+			// DEEP_WATER_BUILD_SWIM_OR_SINK: a non-swimmer's (or land animal's) deep-water offset rides the same request.
+			PathRequest.IPathGridCustomizer swim = pawn != null && pawn.Spawned ? Swimming.RM_SwimPathing.CustomizerFor(pawn) : null;
+			if (!pit && swim == null)
 			{
 				return true;
 			}
+			customizer = Swimming.RM_SwimPathing.Combine(pawn.Map, pit ? customizer : null, swim);
 			LocalTargetInfo target = ___destination;
 			PathEndMode mode = ___peMode;
-			if (route.leg != RM_PitTrapMath.PitLeg.AvoidPits && route.leg != RM_PitTrapMath.PitLeg.StayInPit
+			if (pit && route.leg != RM_PitTrapMath.PitLeg.AvoidPits && route.leg != RM_PitTrapMath.PitLeg.StayInPit
 				&& route.leg != RM_PitTrapMath.PitLeg.ClosedLadders)
 			{
 				target = new IntVec3(route.x, 0, route.z);

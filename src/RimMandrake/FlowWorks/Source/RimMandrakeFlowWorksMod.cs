@@ -645,6 +645,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.ExposeData();
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
+            Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -698,7 +699,7 @@ namespace RimMandrake.FlowWorks
             .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
             .Name("chemfuelInfernoEnabled", "Chemfuel burns like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
-            .Name("pitDrowningEnabled", "A flooded pit drowns whoever cannot swim")
+            .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
             .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in")
@@ -1279,12 +1280,13 @@ namespace RimMandrake.FlowWorks
               + "within speaking distance, tending from a cell touching them. Only if no edge cell will do "
               + "does the colonist climb down as usual. Off: they always climb down.");
 
-            list.CheckboxLabeled("A flooded pit drowns whoever cannot swim", ref pitDrowningEnabled,
-                "Water over a creature's head drowns it (about an hour), at any depth of hole: a puddle in a deep pit drowns "
-              + "nobody, and a sheer 1.5 m pocket brimming with water drowns a person. A creature's height goes by its size "
-              + "(a rat about 0.5 m, a person 1.75 m, a thrumbo 3.5 m). Lying down, much less water covers the head. Nobody "
-              + "drowns standing beside a step it can climb into shallower water. Swimming creatures keep their heads up. "
-              + "Off: liquid in a pit is harmless.");
+            list.CheckboxLabeled("Water over the head drowns whoever cannot swim", ref pitDrowningEnabled,
+                "Water over a creature's head drowns it (about an hour), in a pit or a lake alike: a puddle in a deep pit drowns "
+              + "nobody, and a sheer 1.5 m pocket brimming with water drowns a person who cannot swim. A creature's height goes "
+              + "by its size (a rat about 0.5 m, a person 1.75 m, a thrumbo 3.5 m). Lying down, much less water covers the head. "
+              + "Nobody drowns standing beside a step it can climb into shallower water. Swimmers keep their heads up until "
+              + "exhausted (see Swimming in deep water); nobody swims in oil, slime, tar, propane, boiling water or brine. "
+              + "Off: liquid over the head is harmless.");
             using (Dependent(list, "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction"))
             {
                 list.Label("Drowning speed: x" + pitDrowningRateMultiplier.ToString("F2"));
@@ -1725,6 +1727,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
+            Swimming.RM_SwimSettings.DoSettingsSection(list);
 
             lastListHeight = list.CurHeight;
             list.End();
@@ -1830,6 +1833,8 @@ namespace RimMandrake.FlowWorks
             Rivers.RM_RiverPathCost.Reapply();
             // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst on/off or animals on/off adds or removes RM_Thirst on live pawns
             Thirst.RM_ThirstProvider.Reapply();
+            // DEEP_WATER_BUILD_SWIM_OR_SINK: swimming on/off (or the open-water switch) opens or closes the deep band on live maps
+            Swimming.RM_SwimWater.Reapply();
         }
     }
 }
