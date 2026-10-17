@@ -637,7 +637,8 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Ts_slime_last_resort", "Thirst_slime_last_resort_ruled"),
                   ("Tb_salt_break", "Thirst_salt_break_ruled"),
                   ("Tk_awkward_access", "Thirst_awkward_access_ruled"),
-                  ("Tr_reserve_orders_sprinklers", "Thirst_reserve_orders_sprinklers_ruled")]
+                  ("Tr_reserve_orders_sprinklers", "Thirst_reserve_orders_sprinklers_ruled"),
+                  ("Tq_q12_defaults", "Thirst_q12_defaults_ruled")]
 THIRST_LIVE = [
     ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
@@ -684,6 +685,16 @@ THIRST_LIVE = [
     ("T22_no_brine_spray", None, "a sprinkler net holding only brine: head reads 'No liquid'; brine + a little fresh: sprays fresh"),
     ("T23_fill_tank_is_the_order", None, "a Fill-mode tank holding brine with room, empty buckets, brine shore: pawns fill "
      "buckets with brine unforced and pour them in; set the tank to Store: the brine fills stop"),
+    ("T24_bucket_douses_fire", "bucketFirefighting", "home-area fire 3x3, a filled RM_Bucket_FreshWater 8 cells from a "
+     "firefighter: RM_DouseFireWithBucket, fires within 1.5 cells out at once, an empty bucket left; no bucket: vanilla BeatFire"),
+    ("T25_snow_to_water", "snowGathering", "snowy map, no liquid water in 40 cells, an empty bucket: RM_GatherSnow, snow depth "
+     "drops 0.4, RM_BucketSnow made; at 5 C it becomes RM_Bucket_FreshWater after ~5000 ticks; with a pond near: no snow job"),
+    ("T26_ice_block_bill", None, "campfire bill RM_MeltBlueIceIntoBucket with 5 RM_BlueIce + a wooden empty bucket: a wooden "
+     "RM_Bucket_FreshWater appears, no error in Player.log"),
+    ("T27_water_items", None, "thirsty colonist, only RM_BlueIceMeltwaterCan on the map: RM_DrinkWaterItem, +0.67 need, the "
+     "distilled thought"),
+    ("T28_sanguophage_blood", "sanguophageBloodQuenches", "sanguophage at thirst 0.2 ingests a HemogenPack: thirst +0.5 and "
+     "hemogen up; a baseliner given the same pack: no thirst change"),
     ("T14_native_animal_terrible_water", "animalsGetThirst", "on a salt/brine biome map, a roster-native animal at 0.2 "
      "drinks the brine (no FoodPoisoning); a non-native animal beside the same brine does not"),
 ]
@@ -773,7 +784,8 @@ suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
 HOSE_TOGGLES_OWED = ["autoResumeDroppedHose", "enabled", "fillWobble", "tintByContents"]
 suite.toggles += [t for t in HOSE_TOGGLES_OWED if t not in suite.toggles]
 suite.toggles += [t for t in ["thirstEnabled", "thirstHeatScaling", "waterQualityEffects", "animalsGetThirst",
-                                 "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty"] if t not in suite.toggles]
+                                 "drinkFromTerrain", "lastResortDrinking", "saltBreakEnabled", "roughDrinkPenalty", "bucketFirefighting",
+                                 "snowGathering", "sanguophageBloodQuenches"] if t not in suite.toggles]
 suite.toggles += [t for t in ["sprinklersEnabled", "sprinklerNonWaterEffects", "vfeSprinklerAdapterEnabled", "vfeThirstValve"]
                   if t not in suite.toggles]
 # extension toggles whose every component is an `_owed` placeholder (northstar/extensions.py; it waited and recorded PASS

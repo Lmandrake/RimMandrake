@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THIRST_RULES_BUILD_SALT_OFF_THE_MENU, owner Q12 2026-10-17 (design/RimMandrake/thirst_fluids_3x3_2026-10-17/04-merged.md
+  §8.3), his write-ins verbatim:
+    "Ice/snow should be gatherable and turn into water (ice/snow buckets, ice blocks, etc. There is already an ice block
+     you can mine on the night side for example)"
+    "... buckets fight fires ..."
+  Snow and vanilla ice floors are potable water, so they are gathered unasked, but only where no liquid fresh water can
+  fill the bucket (WorkGiver_RM_GatherSnow). A bucket of snow melts by itself after two hours above 0 C (CompRM_Melt,
+  vanilla temperature only), or at once over a fire. Ice blocks (blue ice, stonewater ice; both in Baroque Biomes, so
+  those bills carry its MayRequire) melt into a bucket by bill. Bills keep the bucket's own material
+  (RecipeWorker_RM_FillBucket). Every number is PROVISIONAL first-pass tuning.
+  Art: the bucket of snow reuses the bucket sprite, tinted (no new art).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BucketSnow</defName>
+    <label>bucket of snow</label>
+    <description>A bucket packed with snow or ice chips. Left somewhere above freezing it melts into a bucket of water in a couple of hours; over a fire it melts at once.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/FlowWorks/Industrial/RM_Bucket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(235,242,250)</color>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>3</MarketValue>
+      <Mass>14</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Thirst.CompProperties_RM_Melt">
+        <meltsTo>RM_Bucket_FreshWater</meltsTo>
+        <ticksAboveZero>5000</ticksAboveZero>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <RecipeDef Name="RM_MeltIntoBucketBase" Abstract="True">
+    <workerClass>RimMandrake.FlowWorks.Thirst.RecipeWorker_RM_FillBucket</workerClass>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <recipeUsers>
+      <li>Campfire</li>
+      <li>FueledStove</li>
+      <li>ElectricStove</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Thirst.RM_FillBucketRecipeExtension">
+        <filled>RM_Bucket_FreshWater</filled>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_MeltIntoBucketBase">
+    <defName>RM_MeltSnowBucket</defName>
+    <label>melt bucket of snow</label>
+    <description>Melt a bucket of snow over the fire into a bucket of water.</description>
+    <jobString>Melting snow.</jobString>
+    <workAmount>300</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BucketSnow</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_BucketSnow</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <!-- 5 blocks of 3 kg = 15 L, one bucket (the can recipe's own 5 blocks) -->
+  <RecipeDef ParentName="RM_MeltIntoBucketBase" MayRequire="mandrake.rm.biomes">
+    <defName>RM_MeltBlueIceIntoBucket</defName>
+    <label>melt blue ice into a bucket</label>
+    <description>Melt five blocks of blue ice into an empty bucket: a bucket of clean water.</description>
+    <jobString>Melting blue ice.</jobString>
+    <workAmount>600</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BlueIce</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BucketEmpty</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_BlueIce</li>
+        <li>RM_BucketEmpty</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <!-- 38 chips of 0.4 kg = 15.2 L, one bucket -->
+  <RecipeDef ParentName="RM_MeltIntoBucketBase" MayRequire="mandrake.rm.biomes">
+    <defName>RM_MeltStonewaterIceIntoBucket</defName>
+    <label>melt stonewater ice into a bucket</label>
+    <description>Melt a pile of stonewater ice chips into an empty bucket: a bucket of water.</description>
+    <jobString>Melting stonewater ice.</jobString>
+    <workAmount>600</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_StonewaterIce</li>
+          </thingDefs>
+        </filter>
+        <count>38</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BucketEmpty</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_StonewaterIce</li>
+        <li>RM_BucketEmpty</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <JobDef>
+    <defName>RM_GatherSnow</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_GatherSnow</driverClass>
+    <reportString>gathering snow.</reportString>
+  </JobDef>
+  <JobDef>
+    <defName>RM_DrinkWaterItem</defName>
+    <driverClass>RimMandrake.FlowWorks.Thirst.JobDriver_RM_DrinkWaterItem</driverClass>
+    <reportString>drinking TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+  <JobDef>
+    <defName>RM_DouseFireWithBucket</defName>
+    <driverClass>RimMandrake.FlowWorks.LiquidTypes.JobDriver_RM_DouseFireWithBucket</driverClass>
+    <reportString>throwing water on a fire.</reportString>
+    <playerInterruptible>false</playerInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_GatherSnow</defName>
+    <label>gather snow</label>
+    <giverClass>RimMandrake.FlowWorks.Thirst.WorkGiver_RM_GatherSnow</giverClass>
+    <workType>Hauling</workType>
+    <verb>fill with snow</verb>
+    <gerund>filling with snow</gerund>
+    <priorityInType>46</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+  <!-- ahead of vanilla FightFires (priorityInType 0): with a bucket near, throw it; with none, beat the fire -->
+  <WorkGiverDef>
+    <defName>RM_DouseFireWithBucket</defName>
+    <label>throw buckets on fires</label>
+    <giverClass>RimMandrake.FlowWorks.LiquidTypes.WorkGiver_RM_DouseFireWithBucket</giverClass>
+    <workType>Firefighter</workType>
+    <emergency>true</emergency>
+    <verb>douse</verb>
+    <gerund>dousing</gerund>
+    <priorityInType>10</priorityInType>
+    <canBeDoneWhileDrafted>true</canBeDoneWhileDrafted>
+    <directOrderable>false</directOrderable>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

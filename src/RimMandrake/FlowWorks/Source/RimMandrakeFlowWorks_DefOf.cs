@@ -79,6 +79,7 @@ namespace RimMandrake.FlowWorks
 
 		// ── LIQUID_BOTTLE_LOOP_1: fill/use/dirty/wash ──────────────────────
 		public static JobDef RM_FillBottleJob;
+		public static JobDef RM_DouseFireWithBucket;
 
 		public static JobDef RM_WashBottleJob;
 

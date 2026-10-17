@@ -5,16 +5,19 @@
   the position does not change any other state). Drink salt; between drinks, wander like a binge.
 -->
 <Patch>
-  <Operation Class="PatchOperationAdd">
+  <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThinkTreeDef[defName="MentalStateNonCritical"]/thinkRoot/subNodes</xpath>
-    <value>
-      <li Class="ThinkNode_ConditionalMentalState">
-        <state>RM_DrinkBrine</state>
-        <subNodes>
-          <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_DrinkBrine" />
-          <li Class="JobGiver_WanderColony" />
-        </subNodes>
-      </li>
-    </value>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThinkTreeDef[defName="MentalStateNonCritical"]/thinkRoot/subNodes</xpath>
+      <value>
+        <li Class="ThinkNode_ConditionalMentalState">
+          <state>RM_DrinkBrine</state>
+          <subNodes>
+            <li Class="RimMandrake.FlowWorks.Thirst.JobGiver_RM_DrinkBrine" />
+            <li Class="JobGiver_WanderColony" />
+          </subNodes>
+        </li>
+      </value>
+    </match>
   </Operation>
 </Patch>
