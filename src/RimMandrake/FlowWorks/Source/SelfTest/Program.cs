@@ -125,12 +125,13 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static int Main(string[] args)
         {
-            // Differential mode: selftest_flowworks_kernel_oracle.py pipes scenes on stdin and compares the
+            // Differential mode: selftest_flowworks_kernel_oracle.py passes a scene file (stdin if none) and compares the
             // kernel's fill vectors with the Python PulseOracle (northstar/validation_v2.py).
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
-                // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND).
+                // A third argument "surface" runs the kernel with levelBySurfaceEnabled (WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND);
+                // "levelset" adds levelSetEnabled (WATER_LEVELSET_SOLVE).
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
                     return OracleScenes.Run(reader, Console.Out, args.Length > 2 && (args[2] == "surface" || args[2] == "levelset"),
@@ -1352,7 +1353,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
                         while (tank >= units) { tank -= units; held += units; count[baseUnits] = (count.TryGetValue(baseUnits, out int c0) ? c0 : 0) + 1; }
                     }
-                    // pour back: each filled container returns exactly what it took (same ScaledUnits call both ways)
+                    // pour back: each filled container returns exactly what it took (same ScaledUnits call both ways).
+                    // NB this loop only fails if ScaledUnits is nondeterministic: the asserted sizes above carry this case.
                     foreach (int baseUnits in new[] { l.bottle, l.bucket, l.barrel })
                     {
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);

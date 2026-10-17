@@ -155,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		}
 
 		/// <summary>(4) Conservation to the unit and the edge drain (the coordinator's station-1 save read: the lower canal
-		/// held 16 levels as 1,0,1,0 where it should drain off the edge). (a) A LIMITED pond (40 units) pours down a 30-long
+		/// held 16 levels as 1,0,1,0 where it should drain off the edge). (a) A LIMITED pond (40 units) pours down a 31-long
 		/// D2 canal whose west end is the sink band: once the pond is spent the canal ends EMPTY and the sink took exactly
 		/// 40. (b) 500 seeded random 10x10 scenes (random depths, fills, optional pond and sink band): fill + pond + drained
 		/// constant to the unit, the ledger balanced every pulse, and at rest by pulse 250.</summary>
@@ -220,7 +220,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		/// <summary>(6) L7 live 2026-10-16: water the OLD kernel left striped (1,0,1,0), loaded from a save as settled.
 		/// (a) Station 2's east branch, its pond spent: F 1,1,0,1,0,1,1,1,1,1,1,1 along a D2 canal gathers into ONE patch at
 		/// depth 1 (no stripe), 10 units kept, at rest. (b) Station 1's lower canal: 61 squares of D2 from the west edge
-		/// (sink band x &lt; 10) to a LIMITED 3x6 pond, loaded as 1,0,1,0 on x31..60 (16 units): once the pond is spent the
+		/// (sink band x &lt; 10) to a LIMITED 3x6 pond, loaded as 0,1,0,1 on x31..60 (15 units, 14 stripes): once the pond is spent the
 		/// canal ends EMPTY, every unit to the sink, with fill + pond + drained constant; after pulse 16 no stripe stands on the same
 		/// square two pulses running (a one-square gap while the pond still pays in is flow in transit, and moves).</summary>
 		public static string StripedSaveGathers()

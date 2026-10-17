@@ -8,8 +8,8 @@
     this folder).
 
     This project targets plain net8.0 with zero RimWorld/Unity references, on
-    purpose. Unlike the sibling Pits selftest it hand-extracts NOTHING:
-    RM_StockMath.cs below is the production file, compiled in directly, so a
+    purpose. It hand-extracts NOTHING: every ..\ source below (RM_StockMath.cs
+    first) is the production file, compiled in directly, so a
     change to any §5 constant or clause fails this test immediately instead of
     drifting away from a copy. That is only possible because RM_StockMath.cs
     is kept free of Verse and UnityEngine types — if a `using Verse;` ever
