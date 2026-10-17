@@ -25,7 +25,10 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_PitDrawMath
 	{
-		public const int MaxDepth = 4;
+		/// <summary>The sink stops growing at 2 m (the "walls 20% over the head" picture rule, a visual rule only).
+		/// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: NOT the dig cap; a pawn on a 7 m floor sinks as one on a 2 m floor until P9's
+		/// deeper pictures (his look first).</summary>
+		public const int SinkCapLevels = 4;
 
 		/// <summary>PROVISIONAL: cells of southward draw offset per level of depth.</summary>
 		public const float DefaultSinkPerLevel = 0.3f;
@@ -40,7 +43,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
-			return Math.Min(depth, MaxDepth) * sinkPerLevel;
+			return Math.Min(depth, SinkCapLevels) * sinkPerLevel;
 		}
 
 		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1 — the most a pawn on a cell whose centre is at

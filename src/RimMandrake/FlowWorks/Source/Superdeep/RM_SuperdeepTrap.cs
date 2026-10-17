@@ -165,7 +165,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int k = RM_PocketGrid.ClimbLimitOf(p);
-			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.BandCount) == 0)
 			{
 				return false;
 			}
@@ -247,7 +247,7 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			int k = p == null ? RM_PocketGrid.PersonBand : RM_PocketGrid.ClimbLimitOf(p);
-			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.BandCount) == 0)
 			{
 				return false;
 			}
@@ -375,10 +375,11 @@ namespace RimMandrake.FlowWorks
 				float scale = 1f;
 				if (RM_PocketGrid.Relative)
 				{
-					// Design §8.5 step 8 (PROVISIONAL): damage scales by drop ÷ MaxDepth; unknown drop = from the surface.
+					// Design §8.5 step 8 (PROVISIONAL): damage scales by drop ÷ 2 m, capped (never by the dig cap: an 8 m cap would
+					// soften every fall; P7 owns metres fallen); unknown drop = from the surface.
 					RM_MapComponent_Excavation eng = EngineOf(p.Map);
 					int d = drop >= 0 ? drop : (eng?.ClimbDepthAt(cell) ?? RM_PitTrapMath.Superdeep);
-					scale = RM_PitTrapMath.FallDropScale(d, RM_ExcavationDepth.MaxDepth);
+					scale = RM_PitTrapMath.FallDropScale(d, RM_PitTrapMath.Superdeep);
 				}
 				dmg = scale * RM_PitTrapMath.FallDamage(p.GetStatValue(StatDefOf.Mass), RimMandrakeFlowWorksSettings.fallDamageMultiplier);
 				p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
@@ -755,7 +756,7 @@ namespace RimMandrake.FlowWorks
 				return true;
 			}
 			int k = RM_PocketGrid.ClimbLimitOf(pawn);
-			if (everyone && RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0)
+			if (everyone && RM_PocketGridMath.BandFor(k, RM_PocketGrid.BandCount) == 0)
 			{
 				return true; // climbs every step there is
 			}
@@ -882,7 +883,7 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 				int k = RM_PocketGrid.ClimbLimitOf(p);
-				if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.MaxDepth) == 0 || RM_SuperdeepTrap.EngineOf(p.Map)?.ClimbCellCount is null or 0)
+				if (RM_PocketGridMath.BandFor(k, RM_PocketGrid.BandCount) == 0 || RM_SuperdeepTrap.EngineOf(p.Map)?.ClimbCellCount is null or 0)
 				{
 					return;
 				}

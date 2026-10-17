@@ -11,8 +11,9 @@ namespace RimMandrake.FlowWorks
 	/// relative_depth_climb_design_2026-10-12.md §8.3). It replaces RM_SuperdeepTrap.TryGetTrapRegion's per-pawn BFS and its
 	/// 4000-cell cap while the relative rule is on (RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled).
 	///
-	/// For each climb band K = 1..MaxDepth-1 one component labelling over the whole map (RM_PocketGridMath.Label, selftested).
-	/// K ≥ MaxDepth climbs every step there is and has no grid. Depth is <see cref="RM_MapComponent_Excavation.ClimbDepthAt"/>
+	/// For each climb band K = 1..RM_PitTrapMath.MaxClimbLimit one component labelling over the whole map (RM_PocketGridMath.Label,
+	/// selftested). PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: sized by who climbs, not by the dig cap (with digs past 2 m no K is
+	/// "climbs every step there is"); ClimbLimit never exceeds MaxClimbLimit. Depth is <see cref="RM_MapComponent_Excavation.ClimbDepthAt"/>
 	/// with an intact cover read as 0 (a cover is ground until it gives way).
 	///
 	/// INVALIDATION (GPT #12, #14): RM_MapComponent_Excavation.ClimbGeneration moves on every depth write (Deepen, FillIn), on
@@ -54,7 +55,8 @@ namespace RimMandrake.FlowWorks
 
 		public static bool Relative => RimMandrakeFlowWorksSettings.pitRelativeClimbEnabled;
 
-		public static int MaxDepth => RM_ExcavationDepth.MaxDepth;
+		/// <summary>Band array length (index K = 1..MaxClimbLimit; 0 unused). PIT_DEPTH_WIDEN: was the dig cap (4).</summary>
+		public static int BandCount => RM_PitTrapMath.ClimbBands;
 
 		/// <summary>The grid for this map, built on first use. Never rebuilt here (see the class note).</summary>
 		public static RM_PocketGrid For(Map map)
@@ -126,7 +128,7 @@ namespace RimMandrake.FlowWorks
 			int n = w * h;
 			byte[] depth = EffectiveDepth(map, eng);
 			RM_PocketGridMath.Labels[] old = bands;
-			var fresh = new RM_PocketGridMath.Labels[MaxDepth];
+			var fresh = new RM_PocketGridMath.Labels[BandCount];
 			bool anyDug = false;
 			for (int i = 0; i < n && !anyDug; i++)
 			{
@@ -136,7 +138,7 @@ namespace RimMandrake.FlowWorks
 			Dictionary<int, int> ramps = anyDug ? RM_PitRamp.Pairs(map, depth) : null;
 			System.Func<int, int, bool> rampJoins = ramps == null || ramps.Count == 0 ? null
 				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
-			for (int k = 1; k < MaxDepth; k++)
+			for (int k = 1; k < BandCount; k++)
 			{
 				// No dug cell: every band is one surface component per map; skip the floods.
 				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
@@ -230,7 +232,7 @@ namespace RimMandrake.FlowWorks
 
 		private RM_PocketGridMath.Labels BandOf(int k)
 		{
-			int b = RM_PocketGridMath.BandFor(k, MaxDepth);
+			int b = RM_PocketGridMath.BandFor(k, BandCount);
 			return b == 0 || bands == null || b >= bands.Length ? null : bands[b];
 		}
 
@@ -240,7 +242,7 @@ namespace RimMandrake.FlowWorks
 			return l != null && c.InBounds(map) && l.IsPocketCell(map.cellIndices.CellToIndex(c));
 		}
 
-		/// <summary>Component id of a cell for band K; -1 out of bounds; for K ≥ MaxDepth every cell is component 0.</summary>
+		/// <summary>Component id of a cell for band K; -1 out of bounds; for K past the bands every cell is component 0.</summary>
 		public int ComponentOf(int k, IntVec3 c)
 		{
 			if (!c.InBounds(map))
@@ -301,7 +303,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH: the component holds a map-border cell (RM_PocketGridMath.TouchesEdge),
-		/// cached per (band, component) until the next rebuild. K ≥ MaxDepth: one component, the whole map.</summary>
+		/// cached per (band, component) until the next rebuild. K past the bands: one component, the whole map.</summary>
 		public bool TouchesEdge(int k, int component)
 		{
 			RM_PocketGridMath.Labels l = BandOf(k);
@@ -429,7 +431,7 @@ namespace RimMandrake.FlowWorks
 			float[] e = RM_PitTrapMath.ClimbBandEdges;
 			return "under body size " + e[0].ToString("0.##") + " (rats, cats, dogs, children) a 1-level step; up to "
 				+ e[1].ToString("0.##") + " (people, deer, wolves) 2 levels, the second slowly, so 3 traps them; up to "
-				+ e[2].ToString("0.##") + " (muffalo, bears) 3 levels; bigger (thrumbos, elephants) any step a pit has. "
+				+ e[2].ToString("0.##") + " (muffalo, bears) 3 levels; bigger (thrumbos, elephants) 4 levels (2 m). "
 				+ "Climbers and leapers manage one level more, and flyers are never trapped.";
 		}
 	}

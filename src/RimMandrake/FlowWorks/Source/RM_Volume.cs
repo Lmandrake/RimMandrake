@@ -9,7 +9,7 @@ namespace RimMandrake.FlowWorks
 	/// deep ... A tall tank should hold twice as much."</i>
 	///
 	/// The yardstick: one square 2 m deep = <see cref="LevelsPerSquare"/> notches = 4,000 L = <see cref="UnitsPerSquare"/> dL.
-	/// This is its own constant, NOT <see cref="RM_ExcavationDepth.MaxDepth"/>: a deeper natural bed (§9) or a deeper
+	/// This is its own constant, NOT the dig cap (<see cref="RM_DigDepthMath"/>): a deeper natural bed (§9) or a deeper
 	/// dig never changes what a tank square holds.
 	///
 	/// ⛔ Verse-free: compiled into Source/SelfTest/ as the production file.

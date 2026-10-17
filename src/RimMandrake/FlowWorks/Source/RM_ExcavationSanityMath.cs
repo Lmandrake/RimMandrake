@@ -3,7 +3,7 @@ using System;
 namespace RimMandrake.FlowWorks
 {
 	/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1 (FL-3). Verse-free so the selftest compiles the production file.
-	/// The D/F primitive (RM_ExcavationDepth): 0 &lt;= F &lt;= D &lt;= MaxDepth, and a fluid key is 0 (none) or
+	/// The D/F primitive (RM_ExcavationDepth): 0 &lt;= F &lt;= D &lt;= the 20 m ceiling (RM_DigDepthMath.MaxDigCeiling, never the cap setting), and a fluid key is 0 (none) or
 	/// 1..paletteCount. Anything else in a loaded grid is repaired in place and counted.</summary>
 	public static class RM_ExcavationSanityMath
 	{

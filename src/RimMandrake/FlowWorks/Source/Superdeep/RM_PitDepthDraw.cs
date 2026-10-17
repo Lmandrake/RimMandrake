@@ -97,7 +97,7 @@ namespace RimMandrake.FlowWorks
 				return sink;
 			}
 			float lipZ = float.NaN;
-			for (int k = 1; k <= RM_PitDrawMath.MaxDepth * 2; k++)
+			for (int k = 1; k <= RM_PitDrawMath.SinkCapLevels * 2; k++)
 			{
 				IntVec3 cand = new IntVec3(c.x, 0, c.z - k);
 				if (!cand.InBounds(map))

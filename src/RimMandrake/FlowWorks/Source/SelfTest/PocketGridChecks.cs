@@ -192,7 +192,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Pocket_band_and_held_gates", () =>
             {
-                Assert(RM_PocketGridMath.BandFor(4, 4) == 0 && RM_PocketGridMath.BandFor(6, 4) == 0, "K >= MaxDepth: never trapped");
+                Assert(RM_PocketGridMath.BandFor(4, 4) == 0 && RM_PocketGridMath.BandFor(6, 4) == 0, "K at or past the band count: no grid");
+                // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the shipped band count is sized by who climbs (6), so every real K has a grid
+                Assert(RM_PocketGridMath.BandFor(4, RM_PitTrapMath.ClimbBands) == 4 && RM_PocketGridMath.BandFor(6, RM_PitTrapMath.ClimbBands) == 6,
+                    "a huge K 4 and a climbing leaper K 6 each have a grid");
                 Assert(RM_PocketGridMath.BandFor(2, 4) == 2 && RM_PocketGridMath.BandFor(0, 4) == 1, "bands 1..3");
                 Assert(RM_PitTrapMath.HeldRelative(true, true, true, false, false, true), "all gates: held");
                 Assert(!RM_PitTrapMath.HeldRelative(true, false, true, false, false, true), "no pocket: free");

@@ -104,8 +104,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "capped by the setting, and by the byte the record keeps");
                 Assert(RM_BedMath.DeepBedLevels(1000, 4, 2) == RM_Volume.LevelsPerSquare, "a cap below the notch still leaves deep water 4");
                 // gradual: every N/S/E/W step on the map (lake and land) is at most the deep notch, and inside the deep water at
-                // most one level -- so the pocket grid's "K >= MaxDepth climbs every step" shortcut stays true, and the person
-                // band sees no pocket at all (owner ruling 4).
+                // most one level -- so no climb band (K = 2..RM_PitTrapMath.MaxClimbLimit) sees a pocket at all (owner ruling 4).
                 byte[] map = Bowl(w, h, fp, beds);
                 int worstInside = 0, worstAny = 0;
                 for (int z = 0; z < h; z++)
@@ -277,9 +276,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(RM_PitDrawMath.SinkFor(12, 0.3f) - RM_PitDrawMath.SinkFor(4, 0.3f)) < 1e-6, "the sink stops at 4 levels");
                 Assert(RM_PitTrapMath.FallDropScale(12, 4) == 1f, "a long drop is the full fall, never more");
                 Assert(RM_WallFaceMath.NorthFaceHeight(12) == RM_WallFaceMath.NorthMax && RM_WallFaceMath.SouthLining(12) > 0f, "wall faces clamp past 4");
-                // a 12-deep square can never be dug from (the kernel never sees a depth past MaxDepth), and a canal beside it
-                // runs into it by water height (head), the only flow seam a bed has
+                // a 12-deep bed under a 2 m dig cap can never be dug from; under the 8 m default it is dug one deeper
+                // (PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT); a canal beside it runs into it by water height (head)
                 Assert(RM_Volume.FirstCutDepth(12, true, 4) == -1, "digging from a bed deeper than a dig goes is refused");
+                Assert(RM_Volume.FirstCutDepth(12, true, RM_DigDepthMath.DefaultMaxDigDepth) == 13 && RM_Volume.FirstCutDepth(16, true, 16) == -1,
+                    "an 8 m cap digs a 6 m bed one deeper, and refuses an 8 m bed");
                 Assert(RM_Volume.RunsIntoBed(4, 1, 12) && RM_Volume.RunsIntoBed(1, 1, 5) && !RM_Volume.RunsIntoBed(4, 4, 0), "a canal's water above a deep bed's floor runs in");
                 string dep = RiverSwitchFlipChecks.Src("RM_ExcavationDepth.cs");
                 RiverSwitchFlipChecks.Has(dep, @"default: return depth > Superdeep \? RimMandrakeFlowWorks_DefOf\.RM_Channel_Superdeep : null;", "a climb in a deep bowl is priced, not free");
@@ -386,6 +387,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
         }
 
-        private static int RM_ExcavationDepth_MaxDepth() => 4;   // RM_ExcavationDepth is Verse-bound; its MaxDepth (Superdeep) is 4
+        private static int RM_ExcavationDepth_MaxDepth() => RM_PitTrapMath.ClimbBands;   // PIT_DEPTH_WIDEN: the band count, not the dig cap
     }
 }

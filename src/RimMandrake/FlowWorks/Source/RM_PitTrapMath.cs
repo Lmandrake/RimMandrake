@@ -429,6 +429,15 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The most levels this creature climbs in one N/S/E/W step (design §8.2). extraLevels: climbers and leapers
 		/// (+1 each, RM_ClimbAbility). Never below 1.</summary>
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the largest climb limit any creature can have: the top size band (4)
+		/// plus a climber's and a leaper's extra notch. The pocket grid and the cliff masks keep one band per K = 1..this, sized
+		/// by WHO CLIMBS, never by how deep digging goes (with an 8 m dig a huge K 4 is held by a 3 m sheer wall, so the old "K
+		/// at the dig cap climbs everything" shortcut is false).</summary>
+		public const int MaxClimbLimit = 6;
+
+		/// <summary>Band array length for the pocket grid and the cliff masks: index K = 1..<see cref="MaxClimbLimit"/>.</summary>
+		public const int ClimbBands = MaxClimbLimit + 1;
+
 		public static int ClimbLimit(float bodySize, int extraLevels = 0, float heightMultiplier = 1f)
 		{
 			float m = heightMultiplier > 0f ? heightMultiplier : 1f;
@@ -441,7 +450,7 @@ namespace RimMandrake.FlowWorks
 					k = i + 2;
 				}
 			}
-			return Math.Max(1, k + extraLevels);
+			return Math.Min(MaxClimbLimit, Math.Max(1, k + extraLevels));
 		}
 
 		/// <summary>A walked N/S/E/W step between depths (design §8.1): allowed when |fromD − toD| ≤ K (up or down: nobody
@@ -498,8 +507,10 @@ namespace RimMandrake.FlowWorks
 			return toD - fromD > Math.Max(1, k);
 		}
 
-		/// <summary>Design §8.5 step 8 (PROVISIONAL): fall damage scales by drop ÷ MaxDepth, so a drop from the surface into a
-		/// D 4 cell costs exactly today's flat fall.</summary>
+		/// <summary>Design §8.5 step 8 (PROVISIONAL): fall damage scales by drop ÷ <paramref name="maxDepth"/> (2 m), capped at
+		/// 1, so a drop from the surface into a D 4 cell costs exactly today's flat fall. PIT_DEPTH_WIDEN: the caller passes the
+		/// fixed 2 m, NOT the dig cap (dividing by an 8 m cap would soften every fall); falls deeper than 2 m deal the 2 m fall
+		/// until P7 (PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE, V3) scales them by metres fallen.</summary>
 		public static float FallDropScale(int drop, int maxDepth = Superdeep)
 		{
 			if (drop <= 0 || maxDepth <= 0)

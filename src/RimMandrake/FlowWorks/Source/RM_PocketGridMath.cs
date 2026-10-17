@@ -220,8 +220,9 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1. K ≥ maxDepth climbs every step there is, so it
-		/// has no pockets and needs no grid (returns 0).</summary>
+		/// <summary>The band whose grid answers for climb limit K: 1..maxDepth-1 (callers pass the band array length,
+		/// RM_PitTrapMath.ClimbBands). K ≥ maxDepth has no grid (returns 0): true only when no step on the map exceeds K, which
+		/// is why the band count is sized by the largest climb limit (PIT_DEPTH_WIDEN) and ClimbLimit is capped at it.</summary>
 		public static int BandFor(int k, int maxDepth)
 		{
 			if (k >= maxDepth)

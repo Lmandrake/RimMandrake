@@ -27,11 +27,14 @@ namespace RimMandrake.FlowWorks
 				{
 					return RM_ExcavationDepth.WorkPerLevel;
 				}
-				byte current = RM_ExcavationDepth.DepthOfDryTerrain(map.terrainGrid.BaseTerrainAt(c));
+				// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: priced by the GRID's depth (the terrain read every cut past 2 m as the
+				// 2 m cut, and so priced a 7.5 m cut at 12,800 instead of 48,000).
+				RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
+				byte current = eng != null ? (byte)eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(map.terrainGrid.BaseTerrainAt(c));
 				if (current == RM_ExcavationDepth.Surface)
 				{
 					// POND_BED (owner by card 2026-10-14): a dry bed's first cut is the level below the bed.
-					int first = map.GetComponent<RM_MapComponent_Excavation>()?.FirstCutDepthAt(c) ?? 1;
+					int first = eng?.FirstCutDepthAt(c) ?? 1;
 					if (first > 1)
 					{
 						current = (byte)(first - 1);
@@ -49,6 +52,43 @@ namespace RimMandrake.FlowWorks
 
 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_DigCanal;
 
+		/// <summary>Set when this job's cut landed (DoEffect): only then may the finish action re-designate a dig-to square.</summary>
+		private bool cutLanded;
+
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": vanilla's AffectFloor deletes the designation after each
+		/// cut (RimWorld/JobDriver_AffectFloor.cs). One designation, one notch, as before; a square with a dig-to target gets its
+		/// designation back after a landed cut while it is still above its target and the cap, so the next pawn (or this one)
+		/// cuts the next notch. A cancelled job or a cancelled designation re-adds nothing.</summary>
+		protected override System.Collections.Generic.IEnumerable<Verse.AI.Toil> MakeNewToils()
+		{
+			AddFinishAction(delegate (Verse.AI.JobCondition cond)
+			{
+				if (!cutLanded || Map == null || !job.targetA.IsValid)
+				{
+					return;
+				}
+				IntVec3 c = job.targetA.Cell;
+				RM_MapComponent_Excavation ex = Map.GetComponent<RM_MapComponent_Excavation>();
+				if (ex == null || ex.DigTargetAt(c) <= 0)
+				{
+					return;
+				}
+				if (ex.DigToOwesWork(c) && RimMandrakeFlowWorksSettings.digToDepthEnabled)
+				{
+					if (Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal) == null
+						&& Map.designationManager.DesignationAt(c, RimMandrakeFlowWorks_DefOf.RM_FillInCanal) == null)
+					{
+						Map.designationManager.AddDesignation(new Designation(c, RimMandrakeFlowWorks_DefOf.RM_DigCanal));
+					}
+				}
+				else
+				{
+					ex.SetDigTarget(c, 0);   // reached (or the cap now stops it): the order is done
+				}
+			});
+			return base.MakeNewToils();
+		}
+
 		protected override StatDef SpeedStat => StatDefOf.MiningSpeed;
 
 		protected override void DoEffect(IntVec3 c)
@@ -61,6 +101,7 @@ namespace RimMandrake.FlowWorks
 			{
 				int before = excavation.ExcavatedDepthAt(c);
 				int after = excavation.Deepen(c);
+				cutLanded = after > before;
 				// FLOWWORKS_QUARRY_DIGGING_1: a cut that went deeper may turn up something the land holds.
 				if (after > before)
 				{
