@@ -8,7 +8,7 @@ namespace RimMandrake.FlowWorks
 	/// square/pond, 1 deep canal square should all be the same volume."</i> and <i>"deep water is an at least 4 notches
 	/// deep ... A tall tank should hold twice as much."</i>
 	///
-	/// One square = one DEEP NOTCH = <see cref="LevelsPerSquare"/> levels = <see cref="UnitsPerSquare"/> tank units.
+	/// The yardstick: one square 2 m deep = <see cref="LevelsPerSquare"/> notches = 4,000 L = <see cref="UnitsPerSquare"/> dL.
 	/// This is its own constant, NOT <see cref="RM_ExcavationDepth.MaxDepth"/>: a deeper natural bed (§9) or a deeper
 	/// dig never changes what a tank square holds.
 	///
@@ -16,23 +16,46 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_Volume
 	{
-		/// <summary>One deep notch: a tank square, a deep canal square, the shallowest deep-pond square.</summary>
+		/// <summary>The yardstick in notches (2 m): a tank square, a 2 m canal square, a shore-deep pond square.</summary>
 		public const int LevelsPerSquare = 4;
 
-		/// <summary>LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (owner 2026-10-16, "Count in Litres"; design
-		/// liquid_litres_2026-10-16.md): one level is one cubic metre. A vanilla human draws 1.20 cells tall and is ~1.75 m, so a
-		/// cell is ~1.46 m; deep water (4 levels) is ~2 m, so a level is ~0.5 m deep and 1.46² × 0.5 ≈ 1.07 m³. 1,000 L is
-		/// within 7 % of that and makes every readout legible: a level = 1 kL, a deep square = 4 kL.</summary>
-		public const int LitresPerLevel = 1000;
+		// ── LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD: ONE conversion (unified depth spec §3, Scheme A, owner by card 2026-10-17) ──
+		//
+		// Glossary (code names kept, player words ruled; spec §2.1):
+		//   notch   = 0.5 m of depth in one square = 1,000 L. Code says "level" for it (LevelsPerSquare, fillGrid, bedRecord,
+		//             UnitsPerLevel): every "level" count in code is a NOTCH. Player text never says "level N"; it says metres.
+		//   square  = one map cell = 2 m² of floor (1.41 m a side), by definition.
+		//   yardstick = 2 m = 4 notches = 4,000 L in one square (a tank square, a shore-deep pond square). Not the deepest dig.
+		//   level   = in PLAYER text, only the water surface ("the water levels out", Level Holder).
+		//   litres  = the truth of every amount; stored as whole decilitres (UnitsPerLitre).
+		// Every other number (tank size, pump pour, mouseover, settings text, the Python oracle) reads these.
 
-		/// <summary>The depth of one level in metres (mouseover readout).</summary>
-		public const float MetresPerLevel = 0.5f;
+		/// <summary>The floor area of one square in m² (by definition, unified depth spec §2.2: 1.41 m a side).</summary>
+		public const int SquareAreaM2 = 2;
+
+		/// <summary>One notch of depth in centimetres (0.5 m: the dig step and the picture band step).</summary>
+		public const int CentimetresPerNotch = 50;
+
+		/// <summary>Litres in 1 m² × 1 cm.</summary>
+		public const int LitresPerM2Cm = 10;
+
+		/// <summary>One notch in one square: 2 m² × 50 cm = 1,000 L.</summary>
+		public const int LitresPerNotch = SquareAreaM2 * CentimetresPerNotch * LitresPerM2Cm;
+
+		/// <summary>The code's older name for <see cref="LitresPerNotch"/> (a "level" in code is a notch).</summary>
+		public const int LitresPerLevel = LitresPerNotch;
+
+		/// <summary>The depth of one notch in metres.</summary>
+		public const float MetresPerNotch = CentimetresPerNotch / 100f;
+
+		/// <summary>The code's older name for <see cref="MetresPerNotch"/>.</summary>
+		public const float MetresPerLevel = MetresPerNotch;
 
 		/// <summary>The integer tank unit is a DECILITRE: a 1.5 L bottle is exactly 15 units, and every integer ledger
 		/// (tanks, hoses, pumps, nets) stays exact. Players only ever see litres (<see cref="FormatUnits"/>).</summary>
 		public const int UnitsPerLitre = 10;
 
-		/// <summary>The unit bridge between the channel ledger (levels) and the tank ledger (units): 10,000 dL = 1,000 L.</summary>
+		/// <summary>Decilitres in one notch of one square (10,000 dL = 1,000 L): the unit bridge between notches and decilitres.</summary>
 		public const int UnitsPerLevel = LitresPerLevel * UnitsPerLitre;
 
 		/// <summary>Tank units in one square (40,000 dL = 4 kL).</summary>
@@ -143,19 +166,25 @@ namespace RimMandrake.FlowWorks
 			return from + 1;
 		}
 
-		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: from this bed depth a dried square shows the darker abyss bed (the deep
-		/// lakebed art, tinted; no new art). Twice the deep notch, so a lake's middle reads deeper than its shelves.</summary>
-		public const int AbyssBedLevels = 2 * LevelsPerSquare;
+		/// <summary>POND_ELEVATION_BUILD_LAKES_RUN_DEEP: from 4 m a dried square shows the darker abyss bed (the deep lakebed
+		/// art, tinted; no new art), so a lake's middle reads deeper than its shelves.</summary>
+		public const int AbyssBedMetres = 4;
 
-		/// <summary>The lakebed terrain a dried square shows at its bed depth (owner look (b), 2026-10-13): the deep bed at
-		/// a deep notch or more, the shallow bed below it; past <see cref="AbyssBedLevels"/> the abyss bed.</summary>
+		/// <summary><see cref="AbyssBedMetres"/> in notches (8).</summary>
+		public const int AbyssBedLevels = AbyssBedMetres * 100 / CentimetresPerNotch;
+
+		/// <summary>The deep dry lakebed starts at 2 m (the yardstick); below it the shallow bed.</summary>
+		public const int DeepBedMetres = 2;
+
+		/// <summary>The lakebed terrain a dried square shows at its bed depth in notches (owner look (b), 2026-10-13): the deep
+		/// bed from <see cref="DeepBedMetres"/>, the shallow bed above it; from <see cref="AbyssBedMetres"/> the abyss bed.</summary>
 		public static string LakebedFor(int bedDepth)
 		{
 			if (bedDepth >= AbyssBedLevels)
 			{
 				return "RM_Lakebed_Abyss";
 			}
-			return bedDepth >= LevelsPerSquare ? "RM_Lakebed_Deep" : "RM_Lakebed_Shallow";
+			return bedDepth * CentimetresPerNotch >= DeepBedMetres * 100 ? "RM_Lakebed_Deep" : "RM_Lakebed_Shallow";
 		}
 
 		/// <summary>§7 #8 / Option B: does a dug square of depth <paramref name="dugDepth"/> holding <paramref name="fill"/>

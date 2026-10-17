@@ -70,7 +70,8 @@ def _volume_const(name, default):
 
 
 U = _volume_const("UnitsPerLevel", 10000)        # dL per notch per square (1,000 L)
-METRES_PER_NOTCH = 0.5
+METRES_PER_NOTCH = _volume_const("CentimetresPerNotch", 50) / 100.0   # RM_Volume.MetresPerNotch
+SQUARE_AREA_M2 = _volume_const("SquareAreaM2", 2)                    # RM_Volume.SquareAreaM2
 M_PER_UNIT = METRES_PER_NOTCH / U                # metres of surface per dL in one square
 
 

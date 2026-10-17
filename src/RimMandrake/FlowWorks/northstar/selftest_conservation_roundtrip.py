@@ -54,7 +54,8 @@ def _const(text, name):
 VOLUME = _read("Source/RM_Volume.cs")
 DEPTH = _read("Source/RM_ExcavationDepth.cs")
 # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: UnitsPerLevel = LitresPerLevel x UnitsPerLitre (a unit is a decilitre)
-LITRES_PER_LEVEL = int(_const(VOLUME, "LitresPerLevel"))
+from level_water import _volume_const  # noqa: E402  (resolves a constant defined as a product of others)
+LITRES_PER_LEVEL = int(_volume_const("LitresPerLevel", None))
 UNITS_PER_LITRE = int(_const(VOLUME, "UnitsPerLitre"))
 UNITS_PER_LEVEL = LITRES_PER_LEVEL * UNITS_PER_LITRE
 LEGACY_UNITS_PER_LEVEL = int(_const(VOLUME, "LegacyUnitsPerLevel"))
