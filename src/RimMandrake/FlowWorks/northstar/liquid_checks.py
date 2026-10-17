@@ -242,11 +242,61 @@ def levelset_verdict(rows, rows_before=None):
     return ("PASS" if not stripes and not steps else "FAIL"), "MOD", det
 
 
+def parse_pond(txt):
+    """ProofPondDepth's reply ("POND id=.. s=1 r=0 wet=100 census=deep:0,chest:64,...") -> dict, or None."""
+    if not txt or not str(txt).startswith("POND "):
+        return None
+    d = {}
+    for tok in str(txt).split()[1:]:
+        if "=" not in tok:
+            continue
+        k, v = tok.split("=", 1)
+        if k == "census":
+            d[k] = {a: int(b) for a, b in (x.split(":") for x in v.split(",") if ":" in x)}
+        elif v in ("True", "False"):
+            d[k] = v == "True"
+        else:
+            try:
+                d[k] = float(v) if "." in v else int(v)
+            except ValueError:
+                d[k] = v
+    return d
+
+
+def pond_depth_verdict(reads):
+    """L8 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD; owner by card 2026-10-16 "Yes, ponds shallow out"; design §10). reads = the
+    pond's ProofPondDepth replies (parse_pond) in time order while a pump draws it. PASS = the surface fell (s rose by one or
+    more), every square that was wet at the brim is still wet while s == 1 (it shallowed, it did not shrink), and at s >= 1
+    the census shows part-depth stages (chest/shallow/thin) instead of only full original water. A shrinking wet count at
+    s == 1, or s >= 1 with no part-depth square, is a MOD FAIL. The surface never moving is SITE (the pump drew nothing);
+    the model not applying (moving water, another liquid, limitless) is SITE. Returns (status, class, detail)."""
+    reads = [r for r in (reads or []) if r]
+    if len(reads) < 2:
+        return "UNMEASURED", "HARNESS", {"why": "fewer than two pond reads", "reads": len(reads)}
+    first, last = reads[0], reads[-1]
+    det = {"s": [r.get("s") for r in reads], "wet": [r.get("wet") for r in reads], "census": last.get("census"),
+           "stock": [first.get("stock"), last.get("stock")]}
+    if not all(r.get("applies") for r in reads):
+        return "UNMEASURED", "SITE", dict(det, why="the depth model does not apply to this body (limitless, moving or not water)")
+    if not (last.get("s", 0) > first.get("s", 0)):
+        return "UNMEASURED", "SITE", dict(det, why="the surface never fell: the pump drew nothing")
+    brim = [r for r in reads if r.get("s") == 0]
+    one = [r for r in reads if r.get("s") == 1 and r.get("r", 0) == 0]
+    if brim and one and min(r["wet"] for r in one) < max(r["wet"] for r in brim):
+        return "FAIL", "MOD", dict(det, why="the wet count shrank one level down: the pond shrank instead of shallowing")
+    c = last.get("census") or {}
+    if last.get("s", 0) >= 1 and c.get("chest", 0) + c.get("shallow", 0) + c.get("thin", 0) + c.get("deep", 0) == 0:
+        return "FAIL", "MOD", dict(det, why="the surface fell but no square shows a part-depth stage")
+    return "PASS", "MOD", det
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
-    ap.add_argument("--only", default="", help="comma list: L2,L4,L5,L6,L7 (L7 reads review-map stations 1-2; never with --fresh-map)")
+    ap.add_argument("--only", default="", help="comma list: L2,L4,L5,L6,L7,L8 (L7 reads review-map stations 1-2; never with --fresh-map; L8 needs --l8-pond)")
     ap.add_argument("--l7-pulses", type=int, default=16, help="L7: flow pulses to run before reading (the save holds old-kernel state)")
+    ap.add_argument("--l8-pond", default="", help="L8: x,z of a square of a LIMITED still-water pond a pump is drawing")
+    ap.add_argument("--l8-pulses", type=int, default=40, help="L8: flow pulses to read across (one read a pulse)")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--theft-day", action="store_true", help="L6: also run one in-game day for the goodwill charge")
     ap.add_argument("--origin-l2", default="60,150")
@@ -713,8 +763,32 @@ def main(argv=None):
             row("L7_%s_levels_flat" % sid, st_, cls, dict(det, station=s_["n"], rect=[x0, oz, ox + sw - x0, sh],
                                                           pulses=a.l7_pulses, ticksGame=ex.get("ticksGame")))
 
+    def blk_L8():
+        """OWED (never run live yet, 2026-10-16): POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD. A station pond drawn by a pump, read
+        once a pulse through RM_PromotionProofs.ProofPondDepth (s, wet count, terrain census); pond_depth_verdict scores it.
+        Needs a deployed DLL with ProofPondDepth and --l8-pond on a pond a running pump draws."""
+        if not a.l8_pond:
+            row("L8_pond_shallows_before_mud", "UNMEASURED", "HARNESS", {"why": "no --l8-pond x,z given"})
+            return
+        on = sget(S_FW, "pondDepthEnabled")
+        if str(on).strip().lower() != "true":
+            row("L8_pond_shallows_before_mud", "UNMEASURED" if on is None else "FAIL", "HARNESS" if on is None else "MOD",
+                {"pondDepthEnabled": on, "why": "field missing: the deployed DLL predates POND_DEPTH" if on is None else "switched off"})
+            return
+        pulse = int(float(B.call("jawa/mod_settings_field", typeName=S_FW, action="get", field="pulseIntervalTicks").get("value") or 250))
+        reads = []
+        for _ in range(max(2, a.l8_pulses)):
+            ok, txt = proof("RimMandrake.FlowWorks.RM_PromotionProofs", "ProofPondDepth", a.l8_pond)
+            reads.append(parse_pond(txt) if ok else None)
+            if not ok and not reads[:-1]:
+                row("L8_pond_shallows_before_mud", "UNMEASURED", "HARNESS", {"reply": txt[:300]})
+                return
+            B.ticks(pulse)
+        st_, cls, det = pond_depth_verdict(reads)
+        row("L8_pond_shallows_before_mud", st_, cls, dict(det, pond=a.l8_pond, pulses=a.l8_pulses))
+
     try:
-        for nm, fn in (("L2", blk_L2), ("L4", blk_L4), ("L5", blk_L5), ("L6", blk_L6), ("L7", blk_L7)):
+        for nm, fn in (("L2", blk_L2), ("L4", blk_L4), ("L5", blk_L5), ("L6", blk_L6), ("L7", blk_L7), ("L8", blk_L8)):
             if only and nm not in only:
                 continue
             print("== %s" % nm, flush=True)

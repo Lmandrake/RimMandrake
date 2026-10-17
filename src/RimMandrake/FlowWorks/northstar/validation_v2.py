@@ -198,8 +198,14 @@ class PulseOracle(object):
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
                  recession=False, claim_sources=None, creep_water=False, creep_thick=False, level_surface=False,
-                 level_set=False):
+                 level_set=False, head_rule=False, beds=None):
         self.w, self.h = w, h
+        # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner 2026-10-16: "It should slosh around until it levels, pond or canal or
+        # otherwise."): RM_FlowKernel.sourceDrawdown / HeadAllows. A limited body whose source cells carry beds (cell -> levels)
+        # has drawdown s (RM_PondDepthMath.Drawdown over its undug cells' bed histogram); a source gives a dug cell only while
+        # D - F >= s + 1 (s = 0 is today's rule). Default off, so every older scene is the pre-pond engine.
+        self.head_rule = head_rule
+        self.beds = dict(beds or {})
         # RM_FlowKernel creepWaterEnabled (CANAL_FRONT_FIX_WRONG_END_WETS_FIRST, shipped ON as
         # waterFrontCreepEnabled) / creepEnabled (THICK_LIQUID_CREEP_1, thickCreepEnabled): a NON-source donor that
         # RECEIVED a level this pulse cannot pass it on until the next pulse (water uses the water flag, a viscous
@@ -266,6 +272,37 @@ class PulseOracle(object):
     def is_source(self, c):
         return c in self.src and c not in self.receded and not self.exc(c)
 
+    def drawdown(self, c):
+        """RM_PondDepthMath.Drawdown for the body behind source c (0 = limitless, no beds, or the rule off)."""
+        if not self.head_rule:
+            return 0
+        bid = self.src[c]
+        b = self.bodies[bid]
+        if b["limitless"]:
+            return 0
+        beds = [self.beds[x] for x, i in self.src.items() if i == bid and not self.exc(x) and x in self.beds]
+        if not beds:
+            return 0
+        mx = max(beds)
+        h = [0] * (mx + 1)
+        for v in beds:
+            h[max(v, 0)] += 1
+        for l in range(mx - 1, -1, -1):
+            h[l] += h[l + 1]
+        levels = int(math.floor(b["stock"] + 1e-4)) if b["stock"] > 0 else 0
+        s, above = mx, 0
+        if mx <= 0 or levels <= 0:
+            return s
+        while s > 0 and above + h[s] <= levels:
+            above += h[s]
+            s -= 1
+        return s
+
+    def head_allows(self, src, r):
+        """RM_FlowKernel.HeadAllows: s = 0 always gives; else D(r) - F(r) >= s + 1."""
+        s = self.drawdown(src)
+        return s <= 0 or self.D.get(r, 0) - self.F.get(r, 0) >= s + 1
+
     def can_supply(self, c):
         if not self.budget:
             return True
@@ -296,7 +333,7 @@ class PulseOracle(object):
                 continue
             src = self.is_source(n)
             if src:
-                if not self.can_supply(n):
+                if not self.can_supply(n) or not self.head_allows(n, r):
                     continue
                 dn = fn = 4
             else:
@@ -526,7 +563,7 @@ class PulseOracle(object):
                 d = None
                 for dx, dz in CARDINAL:
                     n = (r[0] + dx, r[1] + dz)
-                    if not self.inb(n) or not self.is_source(n) or not self.can_supply(n):
+                    if not self.inb(n) or not self.is_source(n) or not self.can_supply(n) or not self.head_allows(n, r):
                         continue
                     if self.F.get(r, 0) > 0 and self.fluid.get(r, "RM_Fluid_Water") != "RM_Fluid_Water":
                         continue                                 # no-mix: a source pays water only
@@ -625,7 +662,7 @@ class PulseOracle(object):
         that clause never applies here and the differential scenes (externalInput null) are unchanged."""
         for dx, dz in CARDINAL:
             n = (c[0] + dx, c[1] + dz)
-            if self.inb(n) and self.is_source(n) and self.can_supply(n):
+            if self.inb(n) and self.is_source(n) and self.can_supply(n) and self.head_allows(n, c):
                 return True
         return False
 

@@ -298,7 +298,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(st.IndexOf("RecordDeepBeds(map, fillFound, owner)") < st.IndexOf("body.capacity = CapacityOf(body, owner);"), "recorded before the capacity is summed");
                 RiverSwitchFlipChecks.Has(st, @"if \(ownedId < 0 && truncated && !touchesEdge && lakeCap > MaxBodyCells\)", "the ocean cap re-walks an inland lake");
                 RiverSwitchFlipChecks.Has(st, @"if \(lakeOwned < 0 && !lakeEdge && !lakeTruncated\)", "only a complete inland body is kept as a lake");
-                RiverSwitchFlipChecks.Has(st, @"if \(body\.receded\.Count == 0 && body\.stock >= body\.capacity\) \{ continue; \}", "a full untouched lake costs no scan per pulse");
+                RiverSwitchFlipChecks.Has(st, @"if \(body\.receded\.Count == 0 && body\.stock >= body\.capacity && \(!depth \|\| !body\.depthStaged\)\) \{ continue; \}", "a full untouched lake costs no scan per pulse (POND_DEPTH: once laid back to its own water)");
                 RiverSwitchFlipChecks.Has(st, @"beds \? \(Func<int, int>\)\(i => owner\.BedLevelsAt\(map\.cellIndices\.IndexToCell\(i\)\)\) : \(i => 1\)", "off: one weight a square (the old model)");
                 string body = RiverSwitchFlipChecks.Src("RM_LiquidBody.cs");
                 RiverSwitchFlipChecks.Has(body, @"Scribe_Values\.Look\(ref levelUnit, ""levelUnit"", 0f\);", "the level unit is saved");

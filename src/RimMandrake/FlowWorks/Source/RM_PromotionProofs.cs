@@ -198,6 +198,51 @@ namespace RimMandrake.FlowWorks
 		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 / viscosity. arg = "x,z,w,h". One token per cell, row-major:
 		/// "ROW x,z:D/F/fluid/terrain;..." (terrain is TerrainAt, the temp fill layer included), plus the map's
 		/// pulse count so a reader can tell where a viscous fluid's cadence stands.</summary>
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD live row L8 (northstar/liquid_checks.py): the pond indexed at "x,z" —
+		/// its drawdown s, part-level r, picture wet count, stock, and a terrain census over its footprint (deep, chest, shallow,
+		/// thin, own = still its original water, mud, lakebed, other). Read-only; never forms a body.</summary>
+		public static string ProofPondDepth(string arg)
+		{
+			RM_MapComponent_Excavation ex = Engine(out Map map);
+			string[] p = (arg ?? "").Split(',');
+			if (ex == null || p.Length != 2 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z))
+			{
+				return "REFUSED: arg must be x,z on a current map with FlowWorks";
+			}
+			IntVec3 at = new IntVec3(x, 0, z);
+			RM_LiquidBody body = at.InBounds(map) ? ex.Stock.IndexedBodyAt(map, at) : null;
+			if (body == null)
+			{
+				return "REFUSED: no formed pond at " + x + "," + z;
+			}
+			int deep = 0, chest = 0, shallow = 0, thin = 0, own = 0, mud = 0, lakebed = 0, other = 0;
+			TerrainDef mudDef = (body.fluid ?? ex.ActiveFluid)?.recededTerrain;
+			foreach (IntVec3 c in body.cells)
+			{
+				if (!c.InBounds(map) || ex.IsExcavated(c))
+				{
+					continue;
+				}
+				TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
+				TerrainDef first = ex.OriginalTerrainAt(c);
+				if (t == RimMandrakeFlowWorks_DefOf.RM_WaterThin) thin++;
+				else if (t == RimMandrakeFlowWorks_DefOf.RM_WaterChestDeepStill) chest++;
+				else if (t != null && t.IsWater && (first == null || first == t)) own++;
+				else if (t == TerrainDefOf.WaterDeep) deep++;
+				else if (t == TerrainDefOf.WaterShallow) shallow++;
+				else if (t == mudDef) mud++;
+				else if (t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Shallow || t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Deep
+					|| t == RimMandrakeFlowWorks_DefOf.RM_Lakebed_Abyss) lakebed++;
+				else other++;
+			}
+			bool applies = ex.Stock.DepthModelApplies(map, body, ex);
+			ex.Stock.DepthReport(map, body, ex, out int s, out int r, out int wet);
+			return "POND id=" + body.id + " pulse=" + ex.PulseCount + " model=" + ex.PondDepthModel + " applies=" + applies
+				+ " limitless=" + body.limitless + " stock=" + body.stock.ToString("F2") + " capacity=" + body.capacity.ToString("F2")
+				+ " s=" + s + " r=" + r + " wet=" + wet + " census=deep:" + deep + ",chest:" + chest + ",shallow:" + shallow
+				+ ",thin:" + thin + ",own:" + own + ",mud:" + mud + ",lakebed:" + lakebed + ",other:" + other;
+		}
+
 		public static string ProofFluidRow(string arg)
 		{
 			RM_MapComponent_Excavation ex = Engine(out Map map);

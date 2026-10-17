@@ -136,8 +136,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
                     string mode = args.Length > 2 ? args[2] : "";
-                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || mode == "shipped",
-                        mode == "levelset" || mode == "shipped", mode == "shipped");
+                    // "pond" = shipped plus the pond head rule (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2).
+                    bool shipped = mode == "shipped" || mode == "pond";
+                    return OracleScenes.Run(reader, Console.Out, mode == "surface" || mode == "levelset" || shipped,
+                        mode == "levelset" || shipped, shipped, mode == "pond");
                 }
             }
 
@@ -1944,6 +1946,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
+            PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

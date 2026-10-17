@@ -132,6 +132,14 @@ namespace RimMandrake.FlowWorks
         // off its shallow rim first and refills to its exact shape; an inland lake up to drainableLakeMaxCells squares is
         // drainable (4000 = the old ocean cap). Each applies to lakes the map finds from now on; a tracked pond keeps its bed.
         public static bool deepBedsEnabled = true;
+        // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (design/RimMandrake/pond_depth_design_2026-10-16.md §9; owner by card 2026-10-16,
+        // "Yes, ponds shallow out"; D2 his words "It should slosh around until it levels, pond or canal or otherwise."): a still
+        // water pond keeps one flat surface and shallows all over (deep → chest-deep → shallow → thin → mud → lakebed); a pond
+        // feeds a ditch only while its surface stands above the ditch's water, and a canal above a pond's surface runs back in.
+        public static bool pondDepthEnabled = true;
+        public static float pondMudDays = 2f;
+        public static float pondStageWritesPerPulse = 400f;
+        public static bool pondHeadRuleEnabled = true;
         public static float deepBedMaxDepth = 20f;
         public static float deepBedCellsPerLevel = 4f;
         public static float drainableLakeMaxCells = 40000f;
@@ -407,6 +415,10 @@ namespace RimMandrake.FlowWorks
 
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
 
+        /// <summary>POND_DEPTH: ticks an exposed pond square stays mud before it cracks to lakebed.</summary>
+        public static int PondMudTicks => Mathf.RoundToInt(Mathf.Clamp(pondMudDays, 0f, 30f) * 60000f);
+        /// <summary>POND_DEPTH: terrain restages per pulse (the §8 cost guard), at least one.</summary>
+        public static int PondStageWritesPerPulse => Mathf.Clamp(Mathf.RoundToInt(pondStageWritesPerPulse), 1, 5000);
         public static int DeepBedMaxDepth => Mathf.Clamp(Mathf.RoundToInt(deepBedMaxDepth), RM_Volume.LevelsPerSquare, 40);
         public static int DeepBedCellsPerLevel => Mathf.Clamp(Mathf.RoundToInt(deepBedCellsPerLevel), 1, 12);
         public static int DrainableLakeMaxCells => Mathf.Clamp(Mathf.RoundToInt(drainableLakeMaxCells / 1000f) * 1000, RM_BedMath.OceanWalkCells, 62500);
@@ -459,6 +471,10 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pondBedHollowEnabled, "pondBedHollowEnabled", true);
             Scribe_Values.Look(ref mouseoverDepthEnabled, "mouseoverDepthEnabled", true);
             Scribe_Values.Look(ref deepBedsEnabled, "deepBedsEnabled", true);
+            Scribe_Values.Look(ref pondDepthEnabled, "pondDepthEnabled", true);
+            Scribe_Values.Look(ref pondMudDays, "pondMudDays", 2f);
+            Scribe_Values.Look(ref pondStageWritesPerPulse, "pondStageWritesPerPulse", 400f);
+            Scribe_Values.Look(ref pondHeadRuleEnabled, "pondHeadRuleEnabled", true);
             Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 20f);
             Scribe_Values.Look(ref deepBedCellsPerLevel, "deepBedCellsPerLevel", 4f);
             Scribe_Values.Look(ref drainableLakeMaxCells, "drainableLakeMaxCells", 40000f);
@@ -597,6 +613,7 @@ namespace RimMandrake.FlowWorks
             .Declare("depthEngineEnabled", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled")
             .Declare("refillEnabled", "refillRateMultiplier")
             .Declare("deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel")
+            .Declare("pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse")
             .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
             .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
@@ -625,7 +642,8 @@ namespace RimMandrake.FlowWorks
             .Declare("swaleEnabled", "swaleRateMultiplier")
             .Independent("pulseIntervalTicks", "sourceBudgetMultiplier", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled")
             .Name("depthEngineEnabled", "Depth engine")
-            .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
+            .Name("pondDepthEnabled", "Ponds shallow out before they turn to mud")
+                        .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
             .Name("viscosityEnabled", "Thick liquids flow slower than water")
             .Name("liquidHeatPushEnabled", "Boiling and icy liquid warm or chill the room they are in")
             .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
@@ -849,7 +867,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "deepBedCellsPerLevel", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -947,6 +965,26 @@ namespace RimMandrake.FlowWorks
                 list.Label("Lake bed slope: one level deeper every " + DeepBedCellsPerLevel + " squares from the shore");
                 deepBedCellsPerLevel = list.Slider(deepBedCellsPerLevel, 1f, 12f);
             }
+            list.CheckboxLabeled("Ponds shallow out before they turn to mud", ref pondDepthEnabled,
+                "A drawn-down pond keeps one flat surface and gets shallower all over: deep water, then chest-deep, then "
+              + "shallow, then a thin sheet with the bed showing, then mud by the water's edge, and only after the mud time "
+              + "cracked lakebed. Refilling raises the surface everywhere at once. Off: each pond square is full or dry, and "
+              + "a pond shrinks from its edges, as before. Takes effect next pulse (ponds already touched are re-laid once).");
+            using (Dependent(list, "pondMudDays", "pondStageWritesPerPulse"))
+            {
+                list.Label("Mud time: " + pondMudDays.ToString("F1") + " day(s) before an exposed pond square cracks");
+                pondMudDays = list.Slider(pondMudDays, 0f, 10f);
+                list.Label("Pond restages per pulse: " + PondStageWritesPerPulse);
+                pondStageWritesPerPulse = list.Slider(pondStageWritesPerPulse, 50f, 2000f);
+                list.Label("A cost guard: how many pond squares may change their look in one pulse. A big lake crossing a level "
+                         + "catches up over a few pulses; the water itself never lags.");
+            }
+            list.CheckboxLabeled("Connected water levels to one surface", ref pondHeadRuleEnabled,
+                "Water sloshes until it levels, pond or canal: a pond feeds a ditch only while its surface stands above the "
+              + "ditch's water, so a shallow ditch stops drawing once the pond has dropped below its floor (dig deeper to keep "
+              + "drawing), and a canal standing above a pond's surface runs back into it. Off: a pond feeds any ditch until "
+              + "it is empty, as before.");
+
             list.Label("Largest drainable lake: " + DrainableLakeMaxCells + " squares");
             drainableLakeMaxCells = list.Slider(drainableLakeMaxCells, RM_BedMath.OceanWalkCells, 62500f);
             list.Label("A lake that does not touch the map edge and is no bigger than this has a real stock and can be "

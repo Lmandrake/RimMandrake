@@ -134,6 +134,26 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>L0 ledger: whole levels the return leg credited to limitless bodies (they leave our books).</summary>
 		private float limitlessReturnedTotal;
+
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD §7: the pond picture this map's bodies are laid in (0 = full-or-empty
+		/// squares, the old model; 1 = one flat surface, shallowing all over). A save without the key loads as 0 and is re-laid
+		/// once (touched ponds only) on the first pulse with "pondDepthEnabled" on; turning the setting off re-lays back.</summary>
+		private int pondDepthModel;
+
+		/// <summary>POND_DEPTH §4: cell index → tick a pond square was exposed as mud. It cracks to lakebed after the mud time
+		/// ("pondMudDays"); water returning first skips the lakebed step. SCRIBED, so a reload does not crack fresh mud.</summary>
+		private Dictionary<int, int> pondMudSince = new Dictionary<int, int>();
+		private List<int> pondMudKeys;
+		private List<int> pondMudValues;
+
+		/// <summary>POND_DEPTH: terrain restages left this pulse (the §8 cost guard), reset by RM_LiquidStock.Pulse.</summary>
+		internal int pondStageWritesLeft;
+
+		public int PondDepthModel
+		{
+			get => pondDepthModel;
+			set => pondDepthModel = value;
+		}
 		/// <summary>FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: levels the dev-placed flow sources poured in and the flow sinks
 		/// took out (MapControls/). Both act BEFORE the kernel measures a pulse's "before", like rain, so the per-component
 		/// ledger never sees them; these totals are where they are disclosed (the L0 ledger report).</summary>
@@ -423,7 +443,8 @@ namespace RimMandrake.FlowWorks
 						SetBed(map.cellIndices.CellToIndex(c), BedLevelsAt(c));
 						// POND_BED step 2: a bed dried before hollows existed (or with them off) still shows the old mud; lay the
 						// lakebed over it now. Only bare mud is repainted (a floor or anything the player laid stays).
-						if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled && mud != null && map.terrainGrid.TopTerrainAt(c) == mud)
+						if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled && mud != null && map.terrainGrid.TopTerrainAt(c) == mud
+							&& !pondMudSince.ContainsKey(map.cellIndices.CellToIndex(c)))   // POND_DEPTH: fresh mud keeps its time
 						{
 							map.terrainGrid.SetTerrain(c, LakebedTerrainFor(c));
 						}
@@ -693,6 +714,8 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref limitlessReturnedTotal, "RM_limitlessReturnedTotal", 0f);
 			Scribe_Values.Look(ref mapControlPouredTotal, "RM_mapControlPouredTotal", 0f);
 			Scribe_Values.Look(ref mapControlDrainedTotal, "RM_mapControlDrainedTotal", 0f);
+			Scribe_Values.Look(ref pondDepthModel, "RM_pondDepthModel", 0);
+			Scribe_Collections.Look(ref pondMudSince, "RM_pondMudSince", LookMode.Value, LookMode.Value, ref pondMudKeys, ref pondMudValues);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -719,6 +742,10 @@ namespace RimMandrake.FlowWorks
 				if (detachedBedCells == null)
 				{
 					detachedBedCells = new Dictionary<int, int>();
+				}
+				if (pondMudSince == null)
+				{
+					pondMudSince = new Dictionary<int, int>();
 				}
 			}
 		}
@@ -871,6 +898,13 @@ namespace RimMandrake.FlowWorks
 			if (recorded != 0)
 			{
 				return recorded;   // POND_ELEVATION_BUILD_LAKES_RUN_DEEP: a lake's deep middle, recorded when it formed
+			}
+			// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: a drawn-down square shows a STAGE terrain (shallow water over a deep bed);
+			// its bed is the water it was recorded with before the first stage write, never the stage it shows now.
+			TerrainDef first = OriginalTerrainAt(c);
+			if (first != null && first.IsWater)
+			{
+				return RM_Volume.BedLevels(first.passability == Traversability.Impassable, first.pathCost);
 			}
 			TerrainDef t = map.terrainGrid.BaseTerrainAt(c);
 			if (t == null || !t.IsWater)
@@ -1589,6 +1623,110 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
+		// ── POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: stage writes (RM_LiquidStock.StagePond decides, these write) ──
+
+		/// <summary>The terrain a pond square shows at <paramref name="stage"/>, or null when this map cannot show it (then
+		/// the caller leaves the square as it is: a missing look beats a wrong one).</summary>
+		public TerrainDef PondStageTerrain(IntVec3 c, RM_PondDepthMath.Stage stage, FluidDef fluid)
+		{
+			TerrainDef first = OriginalTerrainAt(c);
+			TerrainDef now = map.terrainGrid.BaseTerrainAt(c);
+			TerrainDef original = first != null && first.IsWater ? first : (now != null && now.IsWater ? now : null);
+			switch (stage)
+			{
+				case RM_PondDepthMath.Stage.Original:
+					return original;
+				case RM_PondDepthMath.Stage.Deep:
+					return original != null && original.passability == Traversability.Impassable ? original : TerrainDefOf.WaterDeep;
+				case RM_PondDepthMath.Stage.ChestDeep:
+					return RimMandrakeFlowWorks_DefOf.RM_WaterChestDeepStill;
+				case RM_PondDepthMath.Stage.Shallow:
+					return TerrainDefOf.WaterShallow;
+				case RM_PondDepthMath.Stage.Thin:
+					return RimMandrakeFlowWorks_DefOf.RM_WaterThin;
+				case RM_PondDepthMath.Stage.Mud:
+					return fluid?.recededTerrain;
+				default:
+					return RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? LakebedTerrainFor(c) : fluid?.recededTerrain;
+			}
+		}
+
+		/// <summary>Lay a WET stage on a pond square: records the original first (idempotent, as DryNaturalCell), writes, and
+		/// clears the dry-bed record and the mud time. The original itself goes through RestoreOriginalTerrain, which drops
+		/// the record. True when the square now shows <paramref name="t"/>.</summary>
+		public bool StageNaturalCell(IntVec3 c, TerrainDef t)
+		{
+			if (t == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			pondMudSince.Remove(i);
+			if (OriginalTerrainAt(c) == t)
+			{
+				return RestoreOriginalTerrain(c) == RM_RestoreResult.Restored;
+			}
+			RecordOriginalTerrain(c);
+			if (map.terrainGrid.BaseTerrainAt(c) != t)
+			{
+				map.terrainGrid.SetTerrain(c, t);
+			}
+			SetBed(i, 0);
+			return map.terrainGrid.BaseTerrainAt(c) == t;
+		}
+
+		/// <summary>Expose a pond square as mud (the fluid's recededTerrain) and start its mud time. False when the fluid
+		/// authors no receded terrain (nothing written, nothing recorded: DryNaturalCell's stance).</summary>
+		public bool MudNaturalCell(IntVec3 c, FluidDef fluid, int now)
+		{
+			TerrainDef mud = fluid?.recededTerrain;
+			if (mud == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			RecordOriginalTerrain(c);
+			map.terrainGrid.SetTerrain(c, mud);
+			int i = map.cellIndices.CellToIndex(c);
+			SetBed(i, BedLevelsAt(c));
+			pondMudSince[i] = now;
+			return true;
+		}
+
+		/// <summary>Is this pond square's mud past its time (or untimed: an old-model dry square)?</summary>
+		public bool PondMudExpired(IntVec3 c, int now, int mudTicks)
+		{
+			return !pondMudSince.TryGetValue(map.cellIndices.CellToIndex(c), out int since) || now - since >= mudTicks;
+		}
+
+		public bool PondMudTimed(IntVec3 c)
+		{
+			return pondMudSince.ContainsKey(map.cellIndices.CellToIndex(c));
+		}
+
+		/// <summary>Crack expired mud to its lakebed (hollows on) and end its time.</summary>
+		public void CrackPondMud(IntVec3 c, FluidDef fluid)
+		{
+			int i = map.cellIndices.CellToIndex(c);
+			pondMudSince.Remove(i);
+			TerrainDef bed = PondStageTerrain(c, RM_PondDepthMath.Stage.Lakebed, fluid);
+			if (bed != null && map.terrainGrid.BaseTerrainAt(c) != bed)
+			{
+				map.terrainGrid.SetTerrain(c, bed);
+			}
+		}
+
+		/// <summary>Drop every mud time (the toggle off: the old model has no mud stage).</summary>
+		public void ClearPondMud()
+		{
+			pondMudSince.Clear();
+		}
+
+		/// <summary>The water terrain a square showed before FlowWorks first staged it, or null. (Public read for the stock.)</summary>
+		public bool IsWaterNow(IntVec3 c)
+		{
+			return IsNaturalLiquid(c);
+		}
+
 		// ── map-edge sinks (ruling 9) ─────────────────────────────────────
 
 		/// <summary>An excavated cell close enough to the map edge that liquid
@@ -1842,7 +1980,26 @@ namespace RimMandrake.FlowWorks
 			{
 				pulseSeeds.Add(map.cellIndices.CellToIndex(seed));
 			}
+			// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner 2026-10-16: "It should slosh around until it levels, pond or canal
+			// or otherwise."): a pond gives only while its surface stands above the ditch's water, and a canal above a pond's
+			// surface runs back into it (after the flow, mouth-paced).
+			bool headRule = RimMandrakeFlowWorksSettings.pondHeadRuleEnabled && RimMandrakeFlowWorksSettings.pondDepthEnabled
+				&& stock != null;
+			flowKernel.sourceDrawdown = headRule ? (System.Func<int, int>)(idx => stock.DrawdownAt(map, map.cellIndices.IndexToCell(idx), this)) : null;
+			flowKernel.returnLevel = headRule ? (System.Func<int, int, bool>)ReturnLevelToPond : null;
 			flowKernel.Pulse(pulseSeeds, pulseCount);
+			if (headRule)
+			{
+				pondReturned.Clear();
+				if (flowKernel.ReturnToPonds(pulseSeeds) > 0)
+				{
+					for (int i = 0; i < pondReturned.Count; i++)
+					{
+						IntVec3 c = map.cellIndices.IndexToCell(pondReturned[i]);
+						ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
+					}
+				}
+			}
 			if (flowKernel.edgeSinksEnabled)
 			{
 				sinkTransferredTotal += flowKernel.sinkDrained;
@@ -1915,6 +2072,22 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 		}
+
+		/// <summary>D2's return half: one level of dug square <paramref name="dugIdx"/>'s water goes home to the pond behind
+		/// source <paramref name="srcIdx"/> through the return leg (all or nothing; the stock rises by exactly that level).</summary>
+		private bool ReturnLevelToPond(int srcIdx, int dugIdx)
+		{
+			IntVec3 dug = map.cellIndices.IndexToCell(dugIdx);
+			FluidDef fluid = FluidAt(dug) ?? ActiveFluid;
+			if (!TryReturnLevels(map.cellIndices.IndexToCell(srcIdx), fluid, 1))
+			{
+				return false;
+			}
+			pondReturned.Add(dugIdx);   // re-laid after the kernel lowers it (fill terrain)
+			return true;
+		}
+
+		private readonly List<int> pondReturned = new List<int>();
 
 		/// <summary>The fluid a donor cell would give: its body's for a source, the cell's own record otherwise.</summary>
 		private FluidDef DonorFluid(IntVec3 n, bool source)

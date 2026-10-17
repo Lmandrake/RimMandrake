@@ -110,6 +110,15 @@ namespace RimMandrake.FlowWorks
 		/// sitting beside it with every key equal. Geometry from fixed input cells, so the order stays static and
 		/// acyclic (FLOWWORKS_CHANNEL_OSCILLATION_1). Null = no inputs (the offline worlds' default).</summary>
 		public Func<int, bool> externalInput;
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner's words, 2026-10-16: "It should slosh around until it levels,
+		/// pond or canal or otherwise."): a natural source's pond drawdown s (its surface is −s). A source gives a level only
+		/// while its surface stands above the recipient's water (<see cref="RM_PondDepthMath.SourceMayGive"/>), so a ditch
+		/// whose floor is above the pond's surface stops drawing. Null, or 0 for a cell, is today's brim-full source exactly
+		/// (the offline worlds' default; the adapter sets it while "pondHeadRuleEnabled" is on).</summary>
+		public Func<int, int> sourceDrawdown;
+		/// <summary>D2's return half: credit one level of the dug square's water to the pond behind source <c>(src, dug)</c>.
+		/// True = the pond took it (the kernel then lowers the dug square). Null = no return (offline default).</summary>
+		public Func<int, int, bool> returnLevel;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 
@@ -176,6 +185,69 @@ namespace RimMandrake.FlowWorks
 		public bool IsSource(int idx)
 		{
 			return idx >= 0 && depth[idx] == 0 && world.IsNaturalLiquid(idx);
+		}
+
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2 (owner: "It should slosh around until it levels, pond or canal or
+		/// otherwise."), the return half, run by the adapter after <see cref="Pulse"/>: a dug square whose water stands two or
+		/// more above a cardinal pond's surface (<see cref="RM_PondDepthMath.DugMayReturn"/>) runs levels back into that pond,
+		/// at most <see cref="flowPerPulse"/> a square a pulse (the mouth's pace, D1), each one only once the pond has taken
+		/// it (<see cref="returnLevel"/>: the stock rises by exactly what the square loses, so nothing is made or lost). Same
+		/// fluid only. Squares in cell-index order. Returns the levels returned.</summary>
+		public int ReturnToPonds(IEnumerable<int> seeds)
+		{
+			if (sourceDrawdown == null || returnLevel == null)
+			{
+				return 0;
+			}
+			seedScratch.Clear();
+			seedScratch.AddRange(seeds);
+			seedScratch.Sort();
+			int total = 0;
+			for (int i = 0; i < seedScratch.Count; i++)
+			{
+				int c = seedScratch[i];
+				if (!IsExcavated(c) || IsSealed(c) || fill[c] == 0)
+				{
+					continue;
+				}
+				int moved = 0;
+				for (int d = 0; d < 4 && moved < flowPerPulse; d++)
+				{
+					int n = Cardinal(c, d);
+					if (n < 0 || IsSealed(n) || !IsSource(n))
+					{
+						continue;
+					}
+					if (!ReferenceEquals(world.CellFluid(c), world.DonorFluid(n, true)) && world.CellFluid(c) != null)
+					{
+						continue;
+					}
+					while (moved < flowPerPulse && fill[c] > 0)
+					{
+						int s = sourceDrawdown(n);
+						if (s <= 0 || !RM_PondDepthMath.DugMayReturn(s, depth[c], fill[c]) || !returnLevel(n, c))
+						{
+							break;
+						}
+						fill[c] -= 1;
+						moved++;
+						total++;
+					}
+				}
+			}
+			return total;
+		}
+
+		/// <summary>D2: may source <paramref name="src"/> give to dug square <paramref name="r"/> by the head rule?</summary>
+		private bool HeadAllows(int src, int r)
+		{
+			if (sourceDrawdown == null)
+			{
+				return true;
+			}
+			int s = sourceDrawdown(src);
+			// s = 0 is a brim-full source: today's rule exactly (a mouth beside it stays a live mouth even when brim-full).
+			return s <= 0 || RM_PondDepthMath.SourceMayGive(s, depth[r], fill[r]);
 		}
 
 		private void CardinalInBounds(int c, List<int> into)
@@ -475,7 +547,7 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4 && donor < 0; d++)
 					{
 						int n = Cardinal(r, d);
-						if (n < 0 || IsSealed(n) || !IsSource(n) || !world.CanSupply(n))
+						if (n < 0 || IsSealed(n) || !IsSource(n) || !world.CanSupply(n) || !HeadAllows(n, r))
 						{
 							continue;
 						}
@@ -1031,7 +1103,7 @@ namespace RimMandrake.FlowWorks
 			for (int d = 0; d < 4; d++)
 			{
 				int nb = Cardinal(c, d);
-				if (nb >= 0 && IsSource(nb) && world.CanSupply(nb))
+				if (nb >= 0 && IsSource(nb) && world.CanSupply(nb) && HeadAllows(nb, c))
 				{
 					return true;
 				}
@@ -1297,7 +1369,7 @@ namespace RimMandrake.FlowWorks
 				bool source = IsSource(n);
 				if (source)
 				{
-					if (!world.CanSupply(n))
+					if (!world.CanSupply(n) || !HeadAllows(n, r))
 					{
 						continue;
 					}

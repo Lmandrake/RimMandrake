@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (design/RimMandrake/pond_depth_design_2026-10-16.md §4; owner by card 2026-10-16,
+  "Yes, ponds shallow out"). The two stage terrains a drawn-down still pond shows between its own water and mud:
+    w = 3  RM_WaterChestDeepStill  vanilla chest-deep art, still (no MovingFluid, no River tag)
+    w = 1  RM_WaterThin            ankle-deep, the bed showing (D4: the one new texture)
+  Both are WaterShallowBase children, so they carry the Water tag: IsWater, fish, splashes and fire behave as water, the
+  square stays a natural source (RM_MapComponent_Excavation.IsNaturalLiquid) and its body keeps the default water fluid
+  (RM_FluidIdentity: no LiquidDef claims them).
+
+  🔴 RM_WaterThin's texture is a PLACEHOLDER (vanilla WaterShallowRamp through the water shader) until the owner judges the
+  new art on its true-scale review sheet (D4). Installing the approved art changes texturePath here (and drops the shader
+  lines if the art is a plain picture); nothing else.
+-->
+<Defs>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_WaterChestDeepStill</defName>
+    <label>chest-deep water</label>
+    <description>Still water about chest-deep: a pond drawn down from its full depth. Slow and miserable to wade, but it can be crossed.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>396</renderPrecedence>
+    <pathCost>42</pathCost>
+    <driesTo>Mud</driesTo>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallowBase">
+    <defName>RM_WaterThin</defName>
+    <label>thin water</label>
+    <description>An ankle-deep sheet of still water over a pond's bed, the silt showing through. What is left of a pond just before its floor turns to mud.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterShallowRampPolluted</pollutedTexturePath>
+    <waterDepthShader>Map/WaterDepth</waterDepthShader>
+    <renderPrecedence>392</renderPrecedence>
+    <pathCost>18</pathCost>
+    <driesTo>Mud</driesTo>
+    <tags>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

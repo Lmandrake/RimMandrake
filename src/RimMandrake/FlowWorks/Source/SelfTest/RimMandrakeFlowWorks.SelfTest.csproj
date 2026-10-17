@@ -44,6 +44,8 @@
     <Compile Include="..\RM_StockMath.cs" />
     <Compile Include="..\RM_Volume.cs" />
     <Compile Include="..\RM_BedMath.cs" />
+    <Compile Include="..\RM_PondDepthMath.cs" />
+    <Compile Include="PondDepthChecks.cs" />
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\Sprinklers\RM_SprinklerKernel.cs" />
     <Compile Include="SprinklerChecks.cs" />
