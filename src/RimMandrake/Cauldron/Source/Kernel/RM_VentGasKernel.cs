@@ -185,7 +185,7 @@ namespace RimMandrake.Cauldron
         public int Add(int i, int amount)
         {
             if (amount <= 0 || i < 0 || i >= Density.Length) return 0;
-            int v = RM_VentGasKernel.Adjusted(Density[i] + amount, out int overflow);
+            int v = RM_VentGasKernel.Adjusted((int)Math.Min((long)Density[i] + amount, int.MaxValue), out int overflow);   // no int wrap
             Set(i, v);
             return overflow;
         }
@@ -228,6 +228,13 @@ namespace RimMandrake.Cauldron
             int h = ((heading % 8) + 8) % 8;
             int j = Neighbour(i, RM_VentGasKernel.HeadingDx[h], RM_VentGasKernel.HeadingDz[h]);
             if (j < 0 || !canMoveTo(j)) return false;
+            int hdx = RM_VentGasKernel.HeadingDx[h], hdz = RM_VentGasKernel.HeadingDz[h];
+            if (hdx != 0 && hdz != 0)
+            {
+                // A diagonal squeezes past no wall corner: both cardinal side cells must be open (vanilla-like).
+                int sx = Neighbour(i, hdx, 0), sz = Neighbour(i, 0, hdz);
+                if (sx < 0 || sz < 0 || !canMoveTo(sx) || !canMoveTo(sz)) return false;
+            }
             int room = RM_VentGasKernel.MaxDensity - Density[j];
             if (amt > room) amt = room;
             if (amt <= 0) return false;

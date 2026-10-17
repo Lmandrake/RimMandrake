@@ -275,6 +275,7 @@ namespace RimMandrake.Cauldron
             base.ExposeData();
             Scribe_Values.Look(ref generated, "rmVentsGenerated", false);
             Scribe_Values.Look(ref falterNotified, "rmVentFalterNotified", false);
+            Scribe_Values.Look(ref hushedThisFalter, "rmVentHushed", 0);
         }
 
         public override void MapGenerated()
@@ -412,6 +413,7 @@ namespace RimMandrake.Cauldron
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
+            this.FailOn(() => !RM_CauldronSettings.vexxissDrinksVentsEnabled);   // the walk too, not only the drink toil
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             Toil drink = new Toil();
             drink.defaultCompleteMode = ToilCompleteMode.Delay;

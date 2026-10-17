@@ -155,6 +155,7 @@ namespace RimMandrake.Cauldron
 
         private bool TryPlant(IntVec3 c, ThingDef plant, RM_CondensateHabitatExtension ext, float chance)
         {
+            if (!c.InBounds(map)) return false;   // mapgen walks RadialCellsAround a vent near the edge (ventRadius 9 > 8-cell margin)
             if (c.GetPlant(map) != null) return false;
             if (map.zoneManager.ZoneAt(c) != null) return false;
             if (!plant.CanEverPlantAt(c, map)) return false;   // PlantAllowed in Kernel/RM_YieldKernel.cs: no plant, no zone, plantable
