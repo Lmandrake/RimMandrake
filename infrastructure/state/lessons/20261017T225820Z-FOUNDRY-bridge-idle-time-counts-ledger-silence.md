@@ -1,0 +1,1 @@
+Bridge idle time counts ledger silence only: a seat's live scripts (sprinkler_live, thirst_live, load_walk) call the bridge with no seat field and never refresh the hold, so 'driver lock: FREE + hold idle 2h' is NOT proof the bridge is free; check D:\Luke\dev\_rmscratch\bridge_calls.jsonl for calls in the last ~10 minutes before taking it.
