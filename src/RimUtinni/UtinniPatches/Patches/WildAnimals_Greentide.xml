@@ -19,7 +19,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.swbestiary</li>
+      <li>RimMandrake: SW — Bestiary</li>  <!-- FindMod matches the mod NAME, never the packageId (mandrake.rsw.swbestiary); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -59,7 +59,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphaanimals</li>
+      <li>Alpha Animals</li>  <!-- FindMod matches the mod NAME, never the packageId (sarg.alphaanimals); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -78,7 +78,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>oskarpotocki.vfe.insectoid2</li>
+      <li>Vanilla Factions Expanded - Insectoids 2</li>  <!-- FindMod matches the mod NAME, never the packageId (oskarpotocki.vfe.insectoid2); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -97,7 +97,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.swbestiary</li>
+      <li>RimMandrake: SW — Bestiary</li>  <!-- FindMod matches the mod NAME, never the packageId (mandrake.rsw.swbestiary); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -116,7 +116,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.swbestiary</li>
+      <li>RimMandrake: SW — Bestiary</li>  <!-- FindMod matches the mod NAME, never the packageId (mandrake.rsw.swbestiary); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

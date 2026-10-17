@@ -6,7 +6,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphaanimals</li>
+      <li>Alpha Animals</li>  <!-- FindMod matches the mod NAME, never the packageId (sarg.alphaanimals); fixed 2026-10-17 live walk -->
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
