@@ -164,13 +164,13 @@
         <texPath>swanimals/Varactyl/VaractylV_F</texPath>
       </li>
     </alternateGraphics>
-    <lifeStages>
+    <lifeStages>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "Should be 6 cells long when facing east." (adult drawSize 4 -> 6, younger stages in proportion) -->
       <li>
         <label>varactyl chick</label>
         <labelPlural>varactyl chicks</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_m</texPath>
-          <drawSize>1</drawSize>
+          <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -178,7 +178,7 @@
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_f</texPath>
-          <drawSize>1</drawSize>
+          <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -186,13 +186,13 @@
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
-          <drawSize>1</drawSize>
+          <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_m</texPath>
-          <drawSize>2.5</drawSize>
+          <drawSize>3.75</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,0.0)</offset>
@@ -200,7 +200,7 @@
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_f</texPath>
-          <drawSize>2.5</drawSize>
+          <drawSize>3.75</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,0.0)</offset>
@@ -208,13 +208,13 @@
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
-          <drawSize>2.5</drawSize>
+          <drawSize>3.75</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_m</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>6</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,0.0)</offset>
@@ -222,7 +222,7 @@
         </bodyGraphicData>
         <femaleGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_f</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>6</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,0.0)</offset>
@@ -230,7 +230,7 @@
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>6</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

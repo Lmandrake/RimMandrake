@@ -161,33 +161,33 @@
     <race>RSW_Kreetle</race>
     <combatPower>20</combatPower>
     <ecoSystemWeight>1.5</ecoSystemWeight>
-    <lifeStages>
+    <lifeStages>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "This should only be half a cell" (supersedes 2026-10-08 0.3; adult drawSize 0.5, younger stages in proportion) -->
       <li>
         <label>kreetle maggot</label>
         <labelPlural>kreetle maggots</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_j</texPath>
-          <drawSize>0.15</drawSize>
+          <drawSize>0.25</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_j_Dessicated</texPath>
-          <drawSize>0.15</drawSize>
+          <drawSize>0.25</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RimStarWars/SWBestiary/Kreetle/Kreetle</texPath>
-          <drawSize>0.22</drawSize>
+          <drawSize>0.367</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
-          <drawSize>0.22</drawSize>
+          <drawSize>0.367</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RimStarWars/SWBestiary/Kreetle/Kreetle</texPath>
-          <drawSize>0.3</drawSize>
+          <drawSize>0.5</drawSize>
           <shadowData>
             <volume>(0.2, 0.3, 0.2)</volume>
             <offset>(0,0,0)</offset>
@@ -195,7 +195,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
-          <drawSize>0.3</drawSize>
+          <drawSize>0.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

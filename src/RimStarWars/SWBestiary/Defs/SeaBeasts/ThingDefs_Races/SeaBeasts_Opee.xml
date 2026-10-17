@@ -122,41 +122,41 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
-    <lifeStages>
+    <lifeStages>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "It should be 10 cells wide. SEE CANON." (adult drawSize 2.25 -> 10, younger stages in proportion) -->
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.24</drawSize>
+          <drawSize>5.511</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.24</drawSize>
+          <drawSize>5.511</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.80</drawSize>
+          <drawSize>8</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.80</drawSize>
+          <drawSize>8</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.25</drawSize>
+          <drawSize>10</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.25</drawSize>
+          <drawSize>10</drawSize>
         </swimmingGraphicData>
       </li>
     </lifeStages>

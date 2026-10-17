@@ -117,6 +117,12 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <alternateGraphicChance>0.5</alternateGraphicChance>  <!-- owner 2026-10-17 facing_regen_needs_eyes sheet: "A and C are valid variants" (C is the base texPath) -->
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFishV_A</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
