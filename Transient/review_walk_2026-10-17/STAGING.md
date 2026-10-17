@@ -16,7 +16,7 @@ named save verbs. Repo root: `/home/mandrake/rm/bench` (paths below are repo-rel
 3. (b) needs a def+texture change BEFORE the deploy: see (b).
 
 ## (a) Sprinkler heads, four looks, spraying, on a pump network
-- Tool: **none stages it.** `review_map_coverage.py` says "no station yet"; `validation.py` SPRINKLER_LIVE rows are written, never run.
+- Tool: `Transient/review_walk_2026-10-17/stage_extra.py sprinklers` (written 2026-10-17, never run live); before it nothing staged it. `review_map_coverage.py` says "no station yet"; `validation.py` SPRINKLER_LIVE rows are written, never run.
 - Recipe (validation.py comment): tank (1 kL water) + 3 `RM_UniversalPipe` + `RM_SprinklerHead` on the last pipe + powered
   `RM_LiquidPump` (+ Battery) on the run; fill the tank; unpause ~2,600 ticks (pulse is hourly, spray lasts pulse+250); head reads "Spraying water".
 - Reusable ops in `src/RimMandrake/FlowWorks/review_map.py` SETUPS: `build`, `tank [(x,z,Mode,LiquidDef,litres)]` (RM_NorthstarProofs.ProofTank),
@@ -67,3 +67,7 @@ RSW_Vornskyr, RSW_Wampa, RSW_Varactyl, RSW_OpeeSeaKiller, RSW_Yobshrimp. ColoCla
 - **No flag puts a human beside them.** Add by bridge: `jawa/spawn_pawn {kindDef:"Colonist", x, z, count:1, faction:"PlayerColony"}` at the line's start (a living colonist also keeps the map from being culled). Pause (set_time_speed 0) before shooting.
 - Sea trio: second call with `--terrain` water or hand-place; flyers (none in this list are flight-tested live: owner ruling, never live-test flight without him).
 - True-scale sheets for the same set already exist (`rimworld-review-sheets`); the walk is the in-game complement.
+
+## Update (same day)
+- Mod list: `modset.md` + `walk_modlist.py` (last step of `deploy_all.sh`). Thin water: art installed provisionally and the def edited (commit in the log); deploy FlowWorks with `deploy_all.sh`.
+- `stage_extra.py sprinklers|weirs|human` replaces the "no tool" lines for (a), (c) joined runs and (e) human; its docstring lists every bridge call and where it already runs. Never run live.
