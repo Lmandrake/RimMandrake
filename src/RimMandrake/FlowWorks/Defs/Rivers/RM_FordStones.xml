@@ -17,7 +17,7 @@
     <label>ford stones</label>
     <description>Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.</description>
     <layerable>true</layerable>
-    <texturePath>Terrain/Surfaces/Flagstone</texturePath>
+    <texturePath>Terrain/Surfaces/RM_FordStones</texturePath>
     <color>(128,124,112)</color>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>390</renderPrecedence>
