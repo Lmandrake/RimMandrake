@@ -915,3 +915,11 @@
 {"seat":"OWNER","event":"note","id":"VENOMVINE_BUILD_SCRUB_GROWS_TEETH","text":"ruled: Q4 forms → all stay, as rooms inside islands; install existing renders; Strangler, Weeper, Lure go wild","byCard":"Q4 forms → all stay, as rooms inside islands; install existing renders; Strangler, Weeper, Lure go wild","ts":"2026-10-17T05:19:00Z","tsn":1792214340734750172}
 {"seat":"OWNER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"ruled: OQ-1 water label → No; read it from each biome's plant list","byCard":"OQ-1 water label → No; read it from each biome's plant list","ts":"2026-10-17T05:21:47Z","tsn":1792214507515128839}
 {"seat":"OWNER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"ruled: OQ-2 class numbers → in each biome file, checked by a test","byCard":"OQ-2 class numbers → in each biome file, checked by a test","ts":"2026-10-17T05:21:48Z","tsn":1792214508510970418}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"FlowWorks ratchet sign-off finished; closing so owner's ModsConfig can be restored","ts":"2026-10-17T01:38:33Z","tsn":1792201113334969630}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"FlowWorks canal fix live proof","ts":"2026-10-17T01:55:22Z","tsn":1792202122533182206}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"FlowWorks canal fix live proof done","ts":"2026-10-17T02:06:16Z","tsn":1792202776809973531}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"biome sprint round on biomes_sprint","ts":"2026-10-17T02:16:57Z","tsn":1792203417055021392}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"biome sprint round finished, game closed","ts":"2026-10-17T03:16:45Z","tsn":1792207005745854476}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"biome sprint round 2 on biomes_sprint","ts":"2026-10-17T03:30:47Z","tsn":1792207847693741623}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"round 2 finished, game closed","ts":"2026-10-17T04:04:51Z","tsn":1792209891656735274}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"FlowWorks water fix live check, bridge held, owner approved by card 2026-10-16","ts":"2026-10-17T05:18:37Z","tsn":1792214317089204538}
