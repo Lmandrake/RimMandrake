@@ -14,8 +14,6 @@ namespace RimMandrake.StarWars.SWBestiary
     // coastalWildAnimals list and its own race.wildBiomes rows are cleared, and the three lazy commonality caches are
     // reset. It then never spawns wild; one already on a map, in a save or in a trader's stock is left alone, and the
     // canon RSW_Dragonsnake is untouched. Precedent: Scarlands' RM_WarscarStartup (same private fields, same timing).
-    // NOT YET COMPILED (2026-10-17): the settings field and the csproj line are owed — see
-    // Transient/afk_2026-10-17/dragonsnake_build.md "Owed" item 1.
     // The def may be absent (its file is held from deploy until its art is installed): then this does nothing.
     [StaticConstructorOnStartup]
     public static class RSW_DragonsnakeAlbinoToggle
