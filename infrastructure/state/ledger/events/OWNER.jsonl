@@ -923,3 +923,6 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"biome sprint round 2 on biomes_sprint","ts":"2026-10-17T03:30:47Z","tsn":1792207847693741623}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"round 2 finished, game closed","ts":"2026-10-17T04:04:51Z","tsn":1792209891656735274}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"FlowWorks water fix live check, bridge held, owner approved by card 2026-10-16","ts":"2026-10-17T05:18:37Z","tsn":1792214317089204538}
+{"seat":"OWNER","event":"note","id":"SPRINKLERS_DESIGN_PIPES_THEN_PANACHE","text":"ruled (supersedes S3): VFE waterless boost removed only inside our biomes; VFE unchanged elsewhere","byCard":"VFE boost conflict → Removed only inside our biomes","ts":"2026-10-17T05:37:58Z","tsn":1792215478621145982}
+{"seat":"OWNER","event":"note","id":"SPRINKLERS_DESIGN_PIPES_THEN_PANACHE","text":"ruled: adapted VFE sprinkler also needs a pump on its network","byCard":"VFE pump → Yes, same as ours","ts":"2026-10-17T05:37:59Z","tsn":1792215479646204708}
+{"seat":"OWNER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"ruled (clarifies OQ-16): dry vanilla crop grows AND ages at x0.1","byCard":"Dry crop → Grows and ages at x0.1","ts":"2026-10-17T05:38:00Z","tsn":1792215480648155849}
