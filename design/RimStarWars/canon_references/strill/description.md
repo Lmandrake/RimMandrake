@@ -21,35 +21,32 @@ Canon note: the canon page rests on *The Mandalorian Visual Guide* (the Armorer'
 
 **Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Strill and Strill/Legends, catimages "Images of strills", title search "strill"; the only live-action trace is the Armorer's strill-fur mantle in The Mandalorian, which shows no living animal).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
-Viewed 2026-10-04. Both images are LEGENDS (the canon page has no image, only "thick brown fur in
-winter"). Image 1 is a comic painting of a strill stalking in front of a Mandalorian; image 2 is
-a pencil sketch of Lord Mirdalan sitting. They show two different looks.
+Viewed 2026-10-04. The image is LEGENDS (the canon page has no image, only "thick brown fur in
+winter"): a comic painting of a strill stalking in front of a Mandalorian. (A black-and-white pencil
+sketch of Lord Mirdalan was REMOVED, owner 2026-10-17: "REMOVE Black and white canon image.")
 - **LOUD DISAGREEMENT with Legends prose**: the prose says "six-legged" with "thick gold or gray-tan
-  fur", "gold eyes", and skin folds forming gliding membranes between the legs. NEITHER image shows
-  six legs, gold fur, or wing membranes. Image 1 shows a four-limbed, bare-skinned, brown
-  creature; image 2 shows a pit-bull-like dog. The canon fur claim (thick brown winter fur) is
+  fur", "gold eyes", and skin folds forming gliding membranes between the legs. The image does not show
+  six legs, gold fur, or wing membranes: it shows a four-limbed, bare-skinned, brown
+  creature. The canon fur claim (thick brown winter fur) is
   also not shown. Appearance therefore rests on weak, mutually inconsistent art.
 - **Image 1 (comic)**: a low-slung, hunched, muscular quadruped like a bulldog-hyena with a thick
   short neck and a huge head; hairless/leathery tan-brown skin with loose pleats and folds
   all down the sides and back; two small hornlike ear fins; four large curved ivory fangs
   jutting from a wide dark red mouth; round glossy black eyes; thick clawed forepaws; a very long
   thin whip tail coiled up and over its back.
-- **Image 2 (sketch)**: a squat dog, like a mastiff or pit bull, sitting upright with a drooping
-  floppy ear, a wide fanged jaw with the tongue hanging out, loose skin folds draped over the
-  haunches and a thin tail rising; reads as a dog in pyjamas. Single pencil sketch, no colour.
-- **Colour**: brown to tan/rosy-brown skin (image 1); no colour in image 2.
+- **Colour**: brown to tan/rosy-brown skin (image 1).
 - **Size cues**: prose says about a metre long; image 1 shows it about waist-high-ish to a standing
   Mandalorian, rather bigger.
 - **Reading**: the one consistent thing is loose folds of leathery skin, fangs, a long thin whip tail.
   Fur, six legs and glide-wing membranes are text-only.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both Legends images (the comic painting above all) and the visual brief's reading; six legs, fur and glide membranes are text-only.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends comic painting and the visual brief's reading; six legs, fur and glide membranes are text-only.*
 - [ ] BODY PLAN: a low-slung, hunched, muscular bulldog/hyena-like predator on four thick limbs, with a thick short neck and a huge head carried low; a very long thin whip-like tail
 - [ ] COLOUR LAYOUT: brown to tan/rosy-brown leathery skin over the whole body (canon prose: thick brown winter fur; Legends prose: gold or grey-tan); fangs ivory, the lightest element
 - [ ] Loose leathery skin folds and pleats draped along the flanks, back and haunches
 - [ ] Wide fanged mouth: large curved ivory fangs jutting from a wide dark mouth
-- [ ] Six legs, fur and glide membranes are text-only and not shown in either image -- not required until a better image exists
+- [ ] Owner 2026-10-17 (facings sheet, verbatim): "Note the whip-like tail. Enormously toothy maw. Four ears. Six legs.  Gliding flyers." -- SIX legs, FOUR ears, an enormously toothy maw and gliding membranes between the legs are now REQUIRED (this supersedes the earlier "text-only, not required" reading)
 - [ ] Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
 - [ ] NEGATIVE: not a plain dog in a smooth coat (no tight skin, no short stubby tail), not a cartoon/comic-shaded creature
 
@@ -62,7 +59,6 @@ not yet assessed
 
 ## Candidate images
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Strill/Legends`; wiki caption: infobox image. File: `Strill-tur.jpg` — https://static.wikia.nocookie.net/starwars/images/d/d7/Strill-tur.jpg/revision/latest?cb=20101220053025
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Strill/Legends`; wiki caption: Lord Mirdalan, a strill owned by Walon Vau. File: `LordMirdalan-SWG5.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a5/LordMirdalan-SWG5.jpg/revision/latest?cb=20120423022757
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

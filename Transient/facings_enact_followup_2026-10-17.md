@@ -20,3 +20,9 @@ Sheet: Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.j
 
 ## 3. Yobshrimp
 - DONE RSW_YobshrimpLand merged into RSW_Yobshrimp (SeaBeasts_Swarm.xml survives: it is the Miasma roster entry, the nursery juvenile parent and the redraw target). Moved over: canon description (rewritten to the purple canon look), Crustapod leather/meat, the 4 RSW_Pawn_Yobshrimp_* sounds. Removed: land race file, BodyDef RSW_YobshrimpLand, its 2 eggs, its tolerance pin; 13 swanimals/Yobshrimp textures retired. Label "pale yobshrimp" -> "yobshrimp" (juvenile "young yobshrimp"); the land def's vanilla-biome wildBiomes were NOT carried over.
+
+## 4. Strill, Taozin, TeeMuss, Lothcat
+- DONE Strill: B&W pencil sketch (wookieepedia_legends_2.webp, Lord Mirdalan) deleted with its lines in description.md; Must show now requires his six legs / four ears / toothy maw / gliding (queued Strill jobs reference the in-game sprite, not the sketch).
+- DONE Taozin: proposal at design/RimStarWars/taozin_split_proposal_2026-10-17.md (adult RSW_Taozin predator in the Crags + new RSW_TaozinGrub, terracotta/white-in-brine). Not built.
+- DONE TeeMuss: enact had NOT queued it; queued enact_followup_teemuss_v1_{north,south} (derived from the kept live east).
+- DONE Lothcat: enact's single set (enact_4ecc64c3, done, awaiting pick) has no sex; female had east only, so queued enact_followup_lothcat_f_v1_{east,north,south} for swanimals/Lothcat/Lothcat_f.
