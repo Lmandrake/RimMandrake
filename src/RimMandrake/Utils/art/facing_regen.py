@@ -15,6 +15,7 @@ facing_scale_lint.judge() exactly as `lint` would judge them in place.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -59,8 +60,22 @@ def find_row(rows_path: Path, suffix: str) -> dict:
     return hits[0]
 
 
+# Basenames shared by several texPaths (colour variants / sibling mods). The two rows that already own the plain
+# slug (installed, state + workdirs keyed on it) keep it UNCHANGED; every other row of that basename gets a short
+# hash of its full texPath so job ids, WORK dirs and candidates/<slug> never collide.
+SHARED_BASENAMES = {"jewelbug", "smogapillar"}
+PLAIN_SLUG_OWNERS = {
+    "rm_lanterndeeps/fauna/bmt_caverns/things/animal/gembug/red/jewelbug",
+    "rm_therot/fauna/bmt_pollutedlands/things/animal/smogmoth/smogapillar",
+}
+
+
 def slug(row) -> str:
-    return row["texPath"].split("/")[-1]
+    base = row["texPath"].split("/")[-1]
+    low = row["texPath"].lower()
+    if base.lower() in SHARED_BASENAMES and low not in PLAIN_SLUG_OWNERS:
+        return f"{base}_{hashlib.sha1(low.encode()).hexdigest()[:8]}"
+    return base
 
 
 def gen(row, facing, out: Path, extra: str, pose: str, timeout: int) -> int:
