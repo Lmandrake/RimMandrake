@@ -163,7 +163,7 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- Bucket family: 5-unit sibling, same chain. -->
+  <!-- Bucket family: 15 L (ten-bottle) sibling, same chain. -->
 
   <ThingDef Name="RM_BucketItemBase" ParentName="ResourceBase" Abstract="True">
     <!-- LIQUID_CONTAINERS_REDRAW_NO_MANA_POTIONS: DrawColorTwo = the material, on the mask's green trim -->
@@ -234,7 +234,7 @@
   <ThingDef ParentName="RM_BucketItemBase">
     <defName>RM_BucketEmpty</defName>
     <label>empty bucket</label>
-    <description>A bucket of wood, metal or stitched leather, empty and ready to fill. Five bottles' worth in one haul.</description>
+    <description>A bucket of wood, metal or stitched leather, empty and ready to fill. Ten bottles' worth (15 L) in one haul.</description>
     <stackLimit>25</stackLimit>
     <statBases>
       <MarketValue>2</MarketValue>
@@ -259,7 +259,7 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- Barrel family: ~25-unit bulk/trade sibling, "very scavenger" (owner-
+  <!-- Barrel family: 208 L bulk/trade sibling, "very scavenger" (owner-
        ruled 2026-09-13). No ingestible block on ANY barrel, generated or
        hand-authored — see this file's own module comment for why.
        Tradeable for free via ResourceBase inheritance. -->
@@ -332,7 +332,7 @@
   <ThingDef ParentName="RM_BarrelItemBase">
     <defName>RM_BarrelEmpty</defName>
     <label>empty barrel</label>
-    <description>A barrel of wood, metal or plasteel, empty and ready to fill. Twenty-five bottles' worth, bulk enough to actually trade.</description>
+    <description>A barrel of wood, metal or plasteel, empty and ready to fill. About 140 bottles' worth (208 L), bulk enough to actually trade.</description>
     <stackLimit>10</stackLimit>
     <statBases>
       <MarketValue>6</MarketValue>

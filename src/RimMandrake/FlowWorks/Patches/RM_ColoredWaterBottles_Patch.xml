@@ -22,14 +22,14 @@
   water bottle (CutoutComplex), `graphicData.color` tinting only the mask's red liquid window, per this item's colour
   set (Defs/TerrainDefs/RM_ColoredWater.xml); the whole-bottle tint read as a fantasy potion.
 
-  DBH_WATER_MEND_ACID_ON_TAP (C9-F6, 2026-10-15): gated `MayRequireAnyOf` Lite OR full
-  `Dubwise.DubsBadHygiene` (workshop 836308268): full DBH's 1.6 defines `ResourceBasedMom`
+  DBH_WATER_MEND_ACID_ON_TAP (C9-F6, 2026-10-15): gated on `ResourceBasedMom` existing, which Lite OR full
+  `Dubwise.DubsBadHygiene` (workshop 836308268) provides: full DBH's 1.6 defines `ResourceBasedMom`
   (Items_Resource_Stuff.xml:4), the same texture folder and the WaterExt / Graphic_StackCountTech /
   CompContamination classes (strings read from its BadHygiene.dll).
 
-  `MayRequireAnyOf` on each ThingDef (not a PatchOperationFindMod file) — the
-  whole node is skipped, never loaded, never a dangling ParentName error, when
-  neither DBH is present. Never ungated, per the owner's own instruction.
+  Gate (current): the defs are added by the PatchOperationConditional below only when a ThingDef named
+  `ResourceBasedMom` exists (Lite or full Dubs), so a missing Dubs never loads them and never logs a dangling
+  ParentName. They carry no MayRequireAnyOf any more. Never ungated, per the owner's own instruction.
 
   🔴 FIXED 2026-09-10 (DIRTY_CODE_REVIEW_STANDING_LOOP_1, live NRE lead from
   Player_log_manywaters_thingclass_NRE_2026-09-09.log — five "Config error in
