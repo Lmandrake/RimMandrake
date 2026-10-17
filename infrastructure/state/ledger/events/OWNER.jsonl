@@ -1051,3 +1051,16 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"FOUNDRY: deploy P3+P4 FlowWorks DLL in the shutdown window","ts":"2026-10-17T20:19:03Z","tsn":1792268343117060434}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"FOUNDRY: relaunch on 11-mod flowworks list with P3+P4 DLL f4065b26","ts":"2026-10-17T20:19:35Z","tsn":1792268375313733413}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"FOUNDRY: menu up, bridge answers","ts":"2026-10-17T20:20:24Z","tsn":1792268424285532036}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH walk: launch on 21-mod walk list after deploy","ts":"2026-10-17T18:31:17Z","tsn":1792261877177367149}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH walk: relaunch without StarWarsPatches (tier noise)","ts":"2026-10-17T18:35:02Z","tsn":1792262102472125810}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH walk: restart to deploy EG proof DLL, FindMod fix, FlowWorks thirst HEAD","ts":"2026-10-17T19:11:08Z","tsn":1792264268261703036}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH walk: closed for deploy","ts":"2026-10-17T19:11:12Z","tsn":1792264272030015200}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH walk: relaunch after batch deploy","ts":"2026-10-17T19:13:27Z","tsn":1792264407705823910}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"BENCH walk: restart for EG/LeaningScrub proof DLLs + companion body_report fix","ts":"2026-10-17T19:53:39Z","tsn":1792266819201229728}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH walk: closed for DLL deploys","ts":"2026-10-17T19:53:42Z","tsn":1792266822885670277}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH walk: relaunch after DLL deploys","ts":"2026-10-17T19:55:28Z","tsn":1792266928134208069}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH walk: load 4 up","ts":"2026-10-17T19:57:39Z","tsn":1792267059682044300}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"deploy FlowWorks + LeaningScrub DLLs for thirst live round 2","ts":"2026-10-17T20:53:26Z","tsn":1792270406633544511}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for DLL deploy","ts":"2026-10-17T20:53:32Z","tsn":1792270412918844288}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch on 20-mod walk list with new FlowWorks + LeaningScrub DLLs","ts":"2026-10-17T20:56:33Z","tsn":1792270593785367025}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"load done, bridge token","ts":"2026-10-17T20:58:34Z","tsn":1792270714153310070}
