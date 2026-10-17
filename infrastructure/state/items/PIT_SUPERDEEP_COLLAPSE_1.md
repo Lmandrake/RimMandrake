@@ -286,7 +286,11 @@ it:
   with a lip shadow"*.
 - **Rulings 34-36** (2026-09-17) all DELETE art — the three-state source, the
   limited-vs-limitless glyph, the damp irrigation ring. ⛔ Do not restore any of
-  them while rewriting the pit bars.
+  them while rewriting the pit bars. (Ruling 35 was narrowed 2026-10-17: a limitless
+  body gets a text mark in the readout, still no glyph.)
+- **Risk, 2026-10-17 (owner R12: pawns may swim in water 2 m or deeper):** a flooded
+  pit is swimmable to its lip; only the sheer-wall climb rule holds a prisoner. Verdict
+  owed on `DEEP_WATER_BUILD_SWIM_OR_SINK`.
 
 ## his rulings on the spec's open questions  (2026-09-17, same sitting)
 

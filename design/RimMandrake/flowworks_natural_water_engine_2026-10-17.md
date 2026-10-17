@@ -1,6 +1,6 @@
-# Natural water and our water: one kind or two? Engine and vanilla feasibility (PROPOSAL, 2026-10-17)
+# Natural water and our water: one kind or two? Engine and vanilla feasibility (RULED 2026-10-17)
 
-Helper A of a double review (lens: **engine and vanilla interaction feasibility**). **PROPOSAL, not ruled.** Nothing in
+Helper A of a double review (lens: **engine and vanilla interaction feasibility**). **Written as a proposal; RULED 2026-10-17 (section below).** Nothing in
 code, defs, the bridge or the game was touched to write this, and no existing doc was changed. FlowWorks claims are
 file:line from a read-only census of `src/RimMandrake/FlowWorks/Source` at `06c09c0f7`. Vanilla claims were read from the
 1.6 source and defs through RimSage (Core + Odyssey). Every behaviour claim below is **READ FROM CODE**, not seen live,
@@ -15,6 +15,26 @@ with our own pits right away, and enable swimming, fishing, and other water inte
 bit odd that there will be 'two kinds of surface water' one that is flattened depth and one that is articulated depth.
 Please look into this deeply. I certainly wouldn't want to turn off aquatic farming, swimming, fishing, or other water
 interactions."*
+
+
+## RULED 2026-10-17 (owner; ledger notes on `WATER_NATURAL_DECIDE_ONE_SURFACE`)
+
+The analysis below is kept as written; where it recommends or asks something these rulings settle, the rulings win.
+Build packages and estimates: `design/RimMandrake/flowworks_one_rebuild_plan_2026-10-17.md` (P11-P14).
+
+| # | ruling | authority |
+|---|---|---|
+| R10 | **One kind of water (engine doc Option B2).** Every pond, lake, canal and pit is one kind; wet squares write the main (base) terrain layer from one ladder of vanilla water terrains chosen by water depth; natural lakes get their floors recorded when the map is made and nothing on a natural lake changes on screen; rivers and oceans stay vanilla, limitless and never run dry (not converted). | card |
+| R11 | **Lake depth varies by lake and by biome:** *"Vary it. Some lakes will be shallow and silted up. Others will be deep and chasm-like. Depends on the biome. The more mountainous, the deeper in general. The more plains-like, the smoother/shallower. They should also have some variation down there, not just a radial crater."* Replaces the 0.5 m-per-4-squares slope and the 20 m default / 50 m large-lake numbers as fixed rules. The settable ceiling (to 125 m) stays; 50 m is an upper bound reachable only by mountainous/deep biomes. | owner said |
+| R12 | **Pawns may swim in water 2 m or deeper** (vanilla: impassable). Needs swim rules, speed, drowning/exhaustion, apparel/weight, animals. Non-water fluids keep the no-swim refusal. Deep water stops being a barrier for trenches and prisoner pits: flagged as a risk on the pit items. | card |
+| R13 | **Limitless bodies are marked:** *"Any natural body of water that is supposed to be 'clearly limitless' should be so marked, so players aren't shocked."* Narrows ruling 35 (card 2026-09-17, *"Stock replaced it — cut the idea."*): limited bodies still show no indicator. | owner said |
+
+**Defaulted, veto-able (not asked; the docs' recommendations):** fish in dug water by the game's size rule (engine Q2a,
+follows R10); the same fish return when a dried pond refills (engine Q5a); reeds survive short pump cycles (engine Q6a);
+fish live in lakes as well as seas, caught not seen (play Q7a); a 0.5 m beach ring so a drained lake stays reachable
+for small animals (play Q4a); a river below a dam keeps flowing from the edge (play Q6b, R10 keeps rivers vanilla).
+The steeper-lake question (play Q2) is superseded by R11; play Q1 and engine Q4 by R10 (floors at map creation);
+engine Q1 by R10; engine Q3 and play Q2 by R12; play Q1b by R13.
 
 ---
 
