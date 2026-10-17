@@ -122,7 +122,12 @@ namespace RimMandrake.FlowWorks.Swimming
 		private static bool[] swimTerrain;
 		private static bool[] swimmableLiquid;
 		private static Dictionary<TerrainDef, LiquidDef> liquidByTerrain;
-		private static string fingerprint = "";
+		// Ints, not strings: EnsureTables runs on every IsSwimTerrain call (Reachability.CanReach, the path grid), so the
+		// fingerprint must not allocate. tableFingerprint = what the tables were built for; appliedFingerprint = what the maps'
+		// path grids were last computed under (Reapply's own, so a table rebuild between a settings change and Reapply cannot
+		// hide the change from it). The swim cost is in it: CalculatedCostAt bakes it into every map's path grid.
+		private static int tableFingerprint = -1;
+		private static int appliedFingerprint = -1;
 
 		/// <summary>Liquids a creature may swim in (the liquid matrix): fresh, salt and icy water. Everything else (oil, slime,
 		/// tar, propane, boiling, poisoned, acid, brine, lava) refuses.</summary>
@@ -139,19 +144,24 @@ namespace RimMandrake.FlowWorks.Swimming
 
 		public static bool On => RM_SwimSettings.deepSwimEnabled;
 
-		private static string Fingerprint()
+		private static int Fingerprint()
 		{
-			return RM_SwimSettings.deepSwimEnabled + "|" + RM_SwimSettings.swimOpenWaterEnabled;
+			return (RM_SwimSettings.deepSwimEnabled ? 1 : 0) | (RM_SwimSettings.swimOpenWaterEnabled ? 2 : 0)
+				| (Mathf.Clamp(RM_SwimSettings.swimPathCost, 0, 0xFFFF) << 2);
 		}
 
 		private static void EnsureTables()
 		{
-			string fp = Fingerprint();
-			if (swimTerrain != null && swimTerrain.Length == DefDatabase<TerrainDef>.DefCount && fp == fingerprint)
+			int fp = Fingerprint();
+			if (swimTerrain != null && swimTerrain.Length == DefDatabase<TerrainDef>.DefCount && fp == tableFingerprint)
 			{
 				return;
 			}
-			fingerprint = fp;
+			tableFingerprint = fp;
+			if (appliedFingerprint < 0)
+			{
+				appliedFingerprint = fp;
+			}
 			if (liquidByTerrain == null)
 			{
 				liquidByTerrain = new Dictionary<TerrainDef, LiquidDef>();
@@ -292,11 +302,13 @@ namespace RimMandrake.FlowWorks.Swimming
 		/// opens or closes without a restart (regions follow the path grid's walkability notifications).</summary>
 		public static void Reapply()
 		{
-			if (swimTerrain == null || Fingerprint() == fingerprint)
+			int fp = Fingerprint();
+			if (swimTerrain == null || fp == appliedFingerprint)
 			{
 				RM_SwimPathing.BumpAll();
 				return;
 			}
+			appliedFingerprint = fp;
 			EnsureTables();
 			if (Current.ProgramState != ProgramState.Playing || Find.Maps == null)
 			{
