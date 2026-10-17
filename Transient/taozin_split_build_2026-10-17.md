@@ -9,3 +9,7 @@
   grub dessicated; east/south/north, west mirrors east; priority 5). The two old enact jobs (enact_6f520ce8/enact_50f92153
   taozin_v1) had ALREADY RENDERED to done/ before this pass — cannot withdraw; they used the rejected donor sprite as
   canon_reference and the one-creature brief: superseded, do not install.
+- step 4: no C# written, nothing to review.
+- OWED deploy (game up, FOUNDRY holds it): SWBestiary, Cuisine, UtinniPatches — after the queued art is collected/installed
+  (new texPaths Things/Pawn/Animal/RSW_Taozin*/ are empty until then).
+- Loose end: RSW_EggTaozin(Un)Fertilized (DonorPack_W3e) are no longer laid by anything; the fertilized one still hatches RSW_Taozin.
