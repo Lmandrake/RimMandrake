@@ -30,3 +30,10 @@
   - L7_flow_drains_levels_flat (station 1) **PASS MOD**: dug 59, wet 29, stripes 0, steps 0, wetSurfaces [-1,0], 16 pulses
   - L7_flow_spreads_levels_flat (station 2) **PASS MOD**: dug 22, wet 13, stripes 0, steps 0, wetSurfaces [-1,0], 16 pulses
 - Screenshots (paused): station1_after3.bmp/.png, station2_after3.bmp/.png (1600px). Game left paused framed on station 2.
+
+## Rebuilt walk map
+- Layout moved inward (ba5df19d35), so rebuilt: `review_map.py --build --fresh-map` (233 s, log `Transient/bench_live_20261016b/rebuild_c.txt`): visuals 39/39, gallery 87/87 verified (1 placeholder/absent-def station not read); no station failed; 6 notes in `Transient/fw_review_map_verify.json`. 462 labels pinned.
+- Hostiles 0, 54 colonists drafted, 11 moved 3 cells out of Superdeep cells (none in one now, none downed).
+- Saves backed up to `/home/mandrake/.seat-tmp/BENCH/saves_backup_20261016c/` (5.4 GB).
+- Save: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\RM_FW_walk_20261016b.rws` (new; the 20261016 and _EARLIER saves untouched).
+- Game left paused (tick 14777) on station 1. Bridge released.
