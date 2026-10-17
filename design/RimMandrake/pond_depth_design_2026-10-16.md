@@ -101,11 +101,14 @@ reservoir whose surface is always flat, so it fits as **one aggregate node**:
    difference in one pulse, which a big pond and a small basin would make instant. **Keep the mouth limit:** the solve
    computes the target, then the stock moves at most `flowPerPulse × (mouth squares)` per pulse toward it. The dug side
    is re-laid with what actually moved. The level is still flat on each side, and the front still visibly advances.
-6. **Head rule (a real behaviour change):** a pond feeds a dug cell only while its surface is above that cell's water,
-   and never once the pond has dropped below the channel's floor. Today a natural source is a `Superdeep` donor that
-   supplies until its stock is empty (`RM_FlowKernel.cs:1050, 1153-1156`). Under this design a one-deep ditch stops
-   drawing once the pond has fallen two levels, and the player digs deeper to keep drawing. This needs the owner
-   (card D2).
+6. **Head rule (RULED, a real behaviour change): water sloshes until it levels, and nothing climbs above the surface.**
+   Owner's words (D2, 2026-10-16): *"It should slosh around until it levels, pond or canal or otherwise."* The rule: **one
+   surface level across all connected water, whatever the body is**. A pond feeds a dug cell only while its surface is above
+   that cell's water, and never once the pond has dropped below the channel's floor: water never rises into a ditch floor above
+   the surface. Today a natural source is a `Superdeep` donor that supplies until its stock is empty
+   (`RM_FlowKernel.cs:1050, 1153-1156`). Under this rule a one-deep ditch stops drawing once the pond has fallen two levels,
+   and the player digs deeper to keep drawing. Test: after settling, every connected wet square (pond, canal, basin) sits at
+   the same surface height, and no wet square has a bed floor above it holding water.
 7. **Limitless bodies** join as a fixed head at the brim (s = 0, infinite H). That is today's behaviour, in solve
    form.
 
@@ -133,13 +136,13 @@ The shown terrain is a function of *w* and the square's original terrain *T0* (a
   returning in that time skips the lakebed step. The mud is always explained by the pond beside it (ruling GM1, *"Nothing
   stays wet for long without an obvious reason"*).
 - **Art owed:** one terrain texture, `RM_WaterThin`, judged against vanilla `WaterShallowRamp` at true scale on a review
-  sheet. It is a cosmetic addition, so it needs the owner's permission (card D4). Without it, *w* = 1 shows
+  sheet. RULED D4 (by card): yes, make it, judged on a true-scale sheet beside vanilla shallow water (the art round is approved). Fallback if the art is rejected, *w* = 1 shows
   `WaterShallow`. A bed-2 pond then looks unchanged for its first level, and only deep squares visibly shallow.
 
 ## 5. Evaporation, refill and growth
 
 - **Evaporation:** none exists today (§1). This item adds none by default. Ponds on this world are seep-fed and the
-  owner ruled water is *used up* by people and plants, not by the sky. A slow evaporation setting is offered as card D3.
+  owner ruled water is *used up* by people and plants, not by the sky. RULED D3 (by card): no evaporation; only people and plants use water up. No evaporation setting is built.
 - **Refill:** unchanged in source (seepage + rain × season). The surface rises, so every wet square deepens at once,
   and lakebed squares re-wet when *s* rises past their bed. **Ruling 5** (*"water waits for people and buildings; items
   wash ashore"*) still holds per square: an occupied square stays dry. Its band share goes to the next square in patch
@@ -216,8 +219,7 @@ All of these go under the existing ponds group, with defaults equal to the shipp
 | `pondDepthEnabled` | on | next pulse (re-lays touched ponds) | Ponds shallow all over. Off: today's full-or-empty squares. |
 | `pondMudDays` | 2.0 | next pulse | How long an exposed pond square stays mud before it cracks to lakebed. |
 | `pondStageWritesPerPulse` | 400 | now | Terrain restages per pulse (cost guard). |
-| `pondHeadRuleEnabled` | per card D2 | next pulse | A ditch draws from a pond only while the pond's surface is above its floor. |
-| `pondEvaporationPerDay` | per card D3 (0 if declined) | next pulse | Levels a day a still pond loses in light. |
+| `pondHeadRuleEnabled` | **on** (RULED D2) | next pulse | One surface level across connected water: a ditch draws from a pond only while the pond's surface is above its floor. Off: today's draw-to-empty. |
 
 All-off degrades to today exactly. The biome promise (owner 2026-10-15) still applies: ponds in our biomes are the
 validated case.
@@ -250,36 +252,19 @@ screenshots are needed.
 2. Stage terrains: the `RM_WaterChestDeepStill` def, the write queue, mud time, the growth soak, and S6, S8. About
    1 day.
 3. Joining the solve (aggregate node, mouth limit, head rule), S3, S4, S7, and the oracle mirror. About 1.5 days.
-4. `RM_WaterThin` art (after card D4), then the live row L8.
+4. `RM_WaterThin` art (D4 approved), then the live row L8.
 
-## 12. Owner decisions (card-ready)
+## 12. Rulings (owner, 2026-10-16)
 
-**D1. How should a pond and the canal it feeds settle together?**
-- **(A) One flat level, moved at the mouth's pace (recommended).** The pond and canal end level, and water still visibly
-  flows through the mouth. *Trade:* the most new code in the kernel (about 1.5 days).
-- (B) The pond is a fixed water height the canal fills toward, one level a pulse. *Trade:* cheaper and close to today,
-  but a small pond feeding a big basin overshoots and takes many pulses to even out.
-- (C) Every pond square becomes a real canal cell in the solve. *Trade:* exact square by square, but slow on big lakes,
-  and lakes lose vanilla fishing and lake art.
+- **D1 RULED (by card):** one flat level, flowing through the mouth at the mouth's pace (§3).
+- **D2 RULED (owner's words):** *"It should slosh around until it levels, pond or canal or otherwise."* One surface level across connected water, whatever the body; nothing climbs above the surface (§3.6).
+- **D3 RULED (by card):** no evaporation; only people and plants use water up (§5).
+- **D4 RULED (by card):** yes, make `RM_WaterThin`, judged on a true-scale sheet beside vanilla shallow water; art round approved (§4).
 
-**D2. When a pond drops below a ditch's floor, does the ditch keep drawing?**
-- **(A) No: dig deeper to keep drawing (recommended).** Real water does not climb, and a drying pond becomes a problem
-  to solve. *Trade:* existing shallow intakes stop when a pond runs low, which may surprise players.
-- (B) Yes, as today: any ditch touching a pond drains it to empty. *Trade:* nothing changes for players, but a ditch
-  floor above the water still pulls water.
-- (C) Yes, but at half speed once the pond is below the floor. *Trade:* a soft middle ground with no physical meaning.
+## 13. Build consequences
 
-**D3. Should still ponds lose water to the sun?**
-- **(A) No, water is only used up by people and plants (recommended).** This matches *"water is used up"* and
-  seep-fed desert pools. *Trade:* an untouched pond never visibly shallows, so the stages show only when it is drawn.
-- (B) Slowly, in light, an off-by-default Mod Setting. *Trade:* ponds breathe with the seasons, but every pond on the
-  map becomes a pulse cost and a growth event.
-- (C) Only in our hot biomes (by heat kind). *Trade:* the most flavour, but a third heat-linked rule to keep in step with
-  `SOLAR_HEAT_EXPOSURE_1`.
-
-**D4. Can I make one new texture: "thin water", ankle-deep with the bed showing?**
-- **(A) Yes, judged on a true-scale review sheet beside vanilla shallow water (recommended).** Every pond visibly shallows
-  from its first level. *Trade:* one art round.
-- (B) No, use vanilla shallow water for the last level too. *Trade:* no art, but a shallow-only pond looks unchanged
-  until it turns to mud.
-- (C) Use vanilla mud for the last level. *Trade:* no art, but a square holding water shows as dry ground.
+1. Aggregate pond node joins the level solve with the mouth-rate limit (D1); the head rule is built, default on, and is the general law: any connected water (pond, canal, basin, and "otherwise") levels to one surface, not only pond-to-ditch.
+2. Add selftest S4 as the leveling law (all connected water equal surface); extend S3 to assert equal surface across a pond, a canal and a third body.
+3. No evaporation code and no evaporation setting.
+4. Commission `RM_WaterThin` now: one texture, review sheet beside vanilla `WaterShallow` at true scale.
+5. Mud-before-lakebed (`pondMudDays`) and the other stages are unchanged.

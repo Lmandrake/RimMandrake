@@ -89,9 +89,10 @@ a readable sign: the hediff names the cause.
 
 **Who gets it:** humanlike pawns with Metabolism or BloodPumping, by default. Exempt: mechanoids, droids
 (`src/RimStarWars/Droidworks` has its own needs), anomaly entities, and any race or gene carrying
-`RM_ThirstExemptExtension` (data, so a race mod opts out by patch). Animals are **off** by default, setting
-`animalsGetThirst` (DBH's `PetsGetThirst` default is UNMEASURED). With it on, wild animals drink from terrain
-only and never touch bottles.
+`RM_ThirstExemptExtension` (data, so a race mod opts out by patch). **RULED 2026-10-16 (by card, OQ-5): all animals get thirsty** (wild and tame, Own mode) and
+they drink from terrain only, never from bottles or tanks. Animals are therefore on the `RM_Thirst` need list
+(the Metabolism or BloodPumping rule covers them); the exemptions above still apply. In Dbh mode DBH's own
+`PetsGetThirst` setting governs animals (default UNMEASURED); we do not add a second animal thirst.
 
 ## 3. Drinking
 
@@ -101,6 +102,11 @@ only and never touch bottles.
 | fresh-water terrain edge | `JobDriver_RM_DrinkFromTerrain` (stand adjacent, 300 ticks, +0.5); debits litres like a bottle fill (`TryDebitTerrain`) | the terrain's LiquidDef row |
 | `RM_LiquidTank` holding a drinkable liquid | `JobDriver_RM_DrinkFromTank`, 1.5 L per drink | the tank's row |
 | bucket / barrel | **not drunk directly** (items are consumed whole). The existing tank/fill jobs decant them to bottles | n/a |
+
+Animals use only the terrain row (wild and tame, no bottles or tanks): the animal think tree gets a
+terrain-drink giver (`JobGiver_RM_AnimalDrink`) at the same priority tier as eating. A wild animal with no
+reachable drinkable terrain in range must show a readable sign (the `RM_Dehydration` hediff names the cause);
+no animal vanishes unexplained. `drinkFromTerrain` off blocks pawns only, never animals.
 
 `JobGiver_RM_Drink`, in a ThinkTreeDef inserted at `Humanlike_PostDuty` (DBH uses the same tag, MEASURED), picks
 the best reachable source by quality, then distance: Distilled > Potable > Fouled > Toxic. Toxic is only taken
@@ -149,7 +155,7 @@ is off). Style and Stuff carry through `MakeContainer`.
 | `thirstProvider` (read-only label) | shows `Own` / `Dbh` + reason | informational; there is no switch, so two needs can never be forced |
 | `thirstRateMultiplier` | 1.0 (0.25–3) | tuning |
 | `thirstHeatScaling` | on | off: flat rate |
-| `animalsGetThirst` | off | on: animals drink from terrain only |
+| `animalsGetThirst` | **on** (ruled OQ-5) | off: no animal gets `RM_Thirst`; when on, animals drink from terrain only |
 | `drinkFromTerrain` | on | off: bottles and tanks only (the hard scavenger mode) |
 | `waterQualityEffects` | on | off: every drinkable is treated as Potable |
 | `dbhBottleBridge` | on | off: no `WaterExt` patch, so DBH pawns ignore our bottles (escape hatch for a DBH update). Label: needs restart |
@@ -161,12 +167,12 @@ All off leaves FlowWorks whole: bottles are plain items that fill, wash and trad
 
 | path (under `src/RimMandrake/FlowWorks/`) | action |
 |---|---|
-| `Patches/RM_ColoredWaterBottles_Patch.xml` | **DELETE**. Its 5 `RM_WaterBottle_*` defs come back as the generated `RM_Bottle_<Colour>Water`. Saves that hold the old defs lose those stacks (log line `Could not load reference`); accepted for a dev save, see OQ-4 |
+| `Patches/RM_ColoredWaterBottles_Patch.xml` | **DELETE**. Its 5 `RM_WaterBottle_*` defs come back as the generated `RM_Bottle_<Colour>Water`. Saves that hold the old defs lose those stacks (log line `Could not load reference`); accepted (OQ-4 ruled) |
 | `Patches/LiquidTypes/RM_DBH_WaterTerrainTag.xml` | keep (lets DBH's drink-from-ground see the coloured waters) |
 | `Patches/LiquidTypes/RM_DBH_BottleWaterExt.xml` | NEW, generated, FindMod-gated |
 | `Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml` | +5 coloured-water rows |
 | `Defs/Thirst/{RM_Thirst_Need,RM_Dehydration,RM_Thirst_Thoughts,RM_Thirst_Jobs,RM_Thirst_ThinkTree}.xml` | NEW |
-| `Source/Thirst/{Need_RM_Thirst,RM_ThirstProvider,RM_Patch_ShouldHaveNeed,IngestionOutcomeDoer_RM_Hydrate,JobGiver_RM_Drink,JobDriver_RM_DrinkFromTerrain,JobDriver_RM_DrinkFromTank,WorkGiver_RM_AdministerWater,RM_ThirstCaravan,RM_ThirstExemptExtension}.cs` | NEW |
+| `Source/Thirst/{JobGiver_RM_AnimalDrink,Need_RM_Thirst,RM_ThirstProvider,RM_Patch_ShouldHaveNeed,IngestionOutcomeDoer_RM_Hydrate,JobGiver_RM_Drink,JobDriver_RM_DrinkFromTerrain,JobDriver_RM_DrinkFromTank,WorkGiver_RM_AdministerWater,RM_ThirstCaravan,RM_ThirstExemptExtension}.cs` | NEW |
 | `Tools/generate_liquid_suite.py` | emits the ingestible only on bottles, the hydrate doer, and the WaterExt patch |
 | `About/About.xml` | add `Dubwise.DubsBadHygiene.Thirst` and `Dubwise.DubsBadHygiene` to `loadAfter` (Lite is already there) |
 | comments in `RM_BottledLiquidExtension.cs`, `IngestionOutcomeDoer_BottleResidue.cs`, `RM_LiquidBottles_Base.xml` that say "DBH registration is LIQUID_THIRST_CHAIN_1" | repoint at this doc in the same change |
@@ -203,35 +209,25 @@ sourced from this doc, so the script is not a guess.
 | T5 | quality | drink `RM_Bottle_SaltWater` ×10 on test pawns | hydrate ×0.7; FoodPoisoning in 1–4 of 10 |
 | T6 | dehydration is readable and lethal | need held at 0, advance 1 day | `RM_Dehydration` ≈ 0.30 ± 0.03 |
 | T7 | DBH absent: no errors | Player.log first exception since load | none naming `DubsBadHygiene`, `RM_Thirst`, `RM_Bottle_` |
+| T9 | animals are thirsty and drink | read `RM_Thirst` on a wild and a tame animal; advance until < 0.3 beside fresh water | both have the need (Own); each reaches a terrain-drink job, level rises, no bottle touched |
 | T8 | coloured bottles exist without DBH | def read `RM_Bottle_RustWater` | present, ingestible, Potable |
 
 Informative false theory to record if met: "the pawn has no thirst" when T1 says Dbh may mean DBH's own thirst
 setting is off, not our bug.
 
-## 10. Open questions for the owner (question-card candidates)
+## 10. Rulings (owner, question cards, 2026-10-16)
 
-**OQ-1. When Dubs thirst is on, whose thirst runs?**
-(a) Dubs' thirst runs and ours steps aside; our bottles count for it. One switch on our side, nothing breaks
-when Dubs updates. *(recommended)*
-(b) Ours runs and Dubs' is disabled. Same feel everywhere, but we must patch inside Dubs and it can break on
-any Dubs update.
-(c) The player picks in Mod Settings. Most flexible, but one wrong pick can give two thirst bars.
+- **RULED 2026-10-16 (by card), OQ-1:** Dubs' thirst runs and ours steps aside; our bottles count for it (§1).
+- **RULED 2026-10-16 (by card), OQ-2:** yes, pawns drink from a pond or river, slower than a bottle, at that water's quality (§3).
+- **RULED 2026-10-16 (by card), OQ-3:** empty in about 1.25 days, up to 3x faster in heat, death about 3 days after empty (§2).
+- **RULED 2026-10-16 (by card), OQ-4:** rename the five coloured Dubs bottles; accept the lost stacks (§7).
+- **RULED 2026-10-16 (by card), OQ-5:** yes, all animals get thirsty and drink from terrain (§2, §3, §6). This reverses the earlier recommendation of animals off.
 
-**OQ-2. Can pawns drink straight from a pond or river?**
-(a) Yes, slower than a bottle, using that water's quality. *(recommended)*
-(b) No, bottles and tanks only. Real scavenger pressure, but harsh early game.
-(c) Yes, but only with the setting on, default off.
+## 11. Build consequences
 
-**OQ-3. How fast does thirst bite on this desert world?**
-(a) Empty in about 1¼ days, faster in heat (×3 at most). Death about 3 days after empty. *(recommended)*
-(b) The same as hunger (about 2 days to empty), no heat effect. Gentler.
-(c) Harsh: empty in 1 day, heat up to ×4.
-
-**OQ-4. The five coloured Dubs-only bottles get new names. Old saves lose those stacks. Fine?**
-(a) Yes, a dev-save cost only. *(recommended)*
-(b) Keep the old names for the five so saves keep them. That leaves five odd defs forever.
-
-**OQ-5. Do animals get thirsty?**
-(a) No (default off, switch available). *(recommended)*
-(b) Yes, and they drink from terrain only.
-(c) Only tamed animals.
+1. `animalsGetThirst` ships **on**; animals are on the `RM_Thirst` need list in Own mode.
+2. New `JobGiver_RM_AnimalDrink` in the animal think tree (terrain only, never bottles); plan a wild-animal sustenance check: animals far from any drinkable terrain need a readable dehydration sign, and the biome density work must not strand a roster away from water.
+3. New check T9 in the thirst chain (animals).
+4. Delete `RM_ColoredWaterBottles_Patch.xml` with no def-name aliases (OQ-4); regenerate the five as `RM_Bottle_<Colour>Water`.
+5. Bottle restore, fall rate and heat cap stay exactly as §2 (OQ-3 confirmed the numbers).
+6. The ThirstProvider and `drinkFromTerrain` behaviour is unchanged from §1 and §3.

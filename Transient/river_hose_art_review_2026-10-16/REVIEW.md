@@ -1,6 +1,6 @@
 # River works and hose joins: art review (2026-10-16, ledger RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS)
 
-Art is unchanged and nothing was commissioned. Critics: Codex `gpt-6.1-sol`, effort high, images passed with `codex exec -i`
+Art is unchanged. Owner rulings of 2026-10-16 (marked RULED below): weir commissioned in the four styles, per-direction, joined into one wall; ford stones repointed at our art; pump stays 2x1 and beefier; pump capacity unchanged. Everything else below is still unruled guidance. Critics: Codex `gpt-6.1-sol`, effort high, images passed with `codex exec -i`
 (`ask.py`; prompts in `prompts/`, raw answers in `answers/`). Two independent passes per subject (A = engineer+artist brief,
 B = fresh-eyes readability brief). Codex output is guidance, not authority. Its pixel sizes are untested at game zoom.
 Overview: `overview.png`.
@@ -14,16 +14,16 @@ Overview: `overview.png`.
 
 ## What to fix first (each line is a candidate owner decision)
 
-1. **Weir: redraw as a low blunt sill with a crest, plus a spill/foam toe and an upstream-pool tint** (building sprite plus a water overlay). Today it reads as a fish trap. Both passes agree this is the biggest river failure.
-2. **Weir: author per-direction art, not a 90-degree rotation of the baked 3/4 view** (rotatable=true today), and decide how a 1x2 weir spans a river (chain of connected sections, or accept an open tip with a bypass wake).
+1. **RULED 2026-10-16 (owner, "(1) but in the four art styles"): Weir = a low timber wall plus a spill face plus a calm pool, drawn in all four art styles** (Scrapper/Industrial/Modern/Futuristic); art commission approved. (Codex detail: low blunt sill with a crest, spill/foam toe, upstream-pool tint.) Today it reads as a fish trap.
+2. **RULED 2026-10-16: per-direction weir art (not a rotated baked 3/4 view), and RULED (by card) weirs join into one continuous wall** (chain of connected sections spanning the river; no open tip).
 3. **Hose joins: give tank, pump and reel visible facing ports and a bridge piece** (nozzle root on the object, flange or union, exposed 8-12 px of spool). Both passes rank this first for hoses. Pipe into a tank must show a nozzle, not vanish behind the foot.
 4. **Hose/coupling gauge: shrink hose and coupling to one family of sizes.** Passes disagree on numbers (A: hose 10-12 px, coupling 16-20; B: hose 6, pipe 8, union 12). Both say the 70 px coupling is wider than the pump cell. The existing 0.65x proposal is directionally right but may not go far enough.
-5. **Pump: a bigger/heftier pump.** Passes DISAGREE on footprint: A endorses the 2x1 skid, B says keep 1x1 (about 54 x 44 px body) and drop the striped collars. Owner decision: 2x1 versus 1x1.
+5. **RULED 2026-10-16: the pump stays 2x1 and beefier** (the skid, A's pass; B's 1x1 is not taken). **RULED (by card): pump capacity stays as is: any network size, one fixed rate per pump, add pumps for speed.**
 6. **Reel: shrink it (about 120 px wide against today's about 170), keep the drum visible, and add a tangential payout guide (about 16x10 px fairlead)**; the hose leaves from the drum's lower tangent, not a dangling coupling. Plus a visible supply swivel on the pump-facing side.
 7. **Pump flow arrow (about 10x6 px, pump top)** so adjacency shows direction. B only; cheap.
 8. **Stake line: draw a connected ridge or wall between stakes** so it reads as a levee, not lamps. Lamp itself is fine; both passes say leave it.
 9. **Ferry: let the existing rope strip run visibly from post to post** (the post alone reads as a winch/bollard). B ranks this second in value per effort.
-10. **Silt trap: show water contact and a sediment wedge against the upstream face.** Ford: see section A6.
+10. **Silt trap: show water contact and a sediment wedge against the upstream face.** Ford: RULED (by card) the ford stones point at our `RM_FordStones.png` (section A6).
 
 ## A. River works (offline composites)
 
@@ -61,7 +61,7 @@ Source facts: weir texture 512, drawSize 2.2, size 1x2, rotatable; stake 0.6 dra
 - Codex only saw these on the raw sheet. Sluice reads as a trough but can read as a ladder: add a continuous wet ribbon and a discharge fan. Panning spot: pebble halo competes with the pan; simplify, two or three gold glints. Low priority.
 
 ### A6. Ford stones (my own read, not sent to Codex; Codex covered ford only generically)
-- `RM_FordStones` TerrainDef sets `texturePath` to vanilla `Terrain/Surfaces/Flagstone` tinted (128,124,112). The custom `Terrain/Surfaces/RM_FordStones.png` (1024) is NOT what the def loads, so any art work on it changes nothing; confirm before spending art effort.
+- RULED 2026-10-16 (by card): repoint `RM_FordStones`'s `texturePath` at our `Terrain/Surfaces/RM_FordStones.png`; judge that art against the Codex guidance below. Finding as it stood: `RM_FordStones` TerrainDef sets `texturePath` to vanilla `Terrain/Surfaces/Flagstone` tinted (128,124,112). The custom `Terrain/Surfaces/RM_FordStones.png` (1024) is NOT what the def loads, so any art work on it changes nothing; confirm before spending art effort.
 - Flagstone tiles read as a paved strip (`ford_composite.png`), i.e. a bridge or road, not stepping stones in water. Codex's generic guidance: bank-to-bank alignment, broad stone tops, water visible between stones, approaches meeting both banks, no continuous crest.
 
 ## B. Hose, pump, tank, reel
@@ -91,3 +91,10 @@ Images: LIVE `live_pump_reel_hose_crop.png`, `live_pipe_tank_crop.png`, `live_re
 
 ## Reproduce
 `make_composites.py`, `make_hose.py`, `make_overview.py`, `ask.py <name> prompts/<name>.md <images...>` (runs `codex.exe exec -i`, needs the Windows scratch drive). Answers: `answers/{weir_A,weir_B,hose_A,hose_B}.answer.md`.
+
+## Build consequences (2026-10-16 rulings)
+
+1. Weir: new sprite set in four styles, one per heading, drawn as a continuous-wall piece (graphic linking so adjacent weirs join); add spill face and calm-pool overlay; breach variant remains optional.
+2. Weir span: placement logic must chain sections bank to bank (no open tip, no bypass wake).
+3. Ford: change `RM_FordStones` TerrainDef `texturePath` to `Terrain/Surfaces/RM_FordStones.png`; then judge that art (the stepping-stone guidance in A6), not the vanilla Flagstone.
+4. Pump: keep the 2x1 footprint, redraw heftier in four looks; capacity logic unchanged (fixed rate per pump, any network size).
