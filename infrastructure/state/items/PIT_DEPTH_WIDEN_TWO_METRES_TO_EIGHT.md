@@ -30,3 +30,9 @@ ESTIMATE 3 to 5 agent-days. Starts after the level-surface solver (`WATER_LEVEL_
 - L1: the filled 4/7/7/4 square is one body with one surface (the P3 diagnostic under 1 cm).
 - L2 (P10 walk): a colonist digs one square to 8 m by "dig to N m" in game; the readout shows the hole depth.
 - Ships only after `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` passes and together with `PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE`.
+
+## criteria
+- A1 L0: offline built cb8194587 — SelfTest DeepDig_* (4/7/7/4 square 16 orders/152 cuts, 152,000 L, one surface; cap 2/8/20; never shallows; no terrain depth reads; bands K1..6). Report `Transient/fw_scenes/p5_build_log.md`.
+- A2 L2: P10 walk — a colonist digs one square to 8 m by "Dig to depth" in game; the readout shows the hole depth; the 4/7/7/4 square staged in the P10 savegame.
+- A3 L2: a save with digs past 2 m reloads identically (depth grid, dig-to orders, pocket bands).
+- A4 L4: deeper wall faces, pawn sink by drop and floor tint past 2 m: P9 art review (his look first), not built here.
