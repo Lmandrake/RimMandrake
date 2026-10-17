@@ -1,0 +1,438 @@
+{
+ "schema": 1,
+ "generated": "2026-10-17T16:28:52-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_water_art_candidates"
+ ],
+ "biomes": {
+  "SUBJECTS_water_art_candidates": {
+   "label": "Water art candidates",
+   "slug": "water_art_candidates",
+   "subjects": true,
+   "ground_terrain": "Mud",
+   "title": "Water art candidates \u2014 game art",
+   "lead_html": "<p><b>Water art candidates, nothing installed.</b> Owner ruling 2026-10-17: new water art is approved in principle, he looks first. Every picture below is an offline mock made from the live screenshots (Transient/fw_scenes/live) or the procedural RM_WaterThin generator; no mod Textures or Defs were touched. Under-25 cm candidates are procedural (no donor pixels). RM_WaterThin is the 0.5 m look, not the under-25 cm one.</p>",
+   "rows": [
+    {
+     "key": "FW_CANAL_LAKE_COLOUR",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Canal water vs lake water: one colour (CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES) (MOCK over screenshots; the IN GAME column is the screenshot today)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": {
+      "res": "Terrain/FlowWorks/RM_WaterThin",
+      "label": "the live screenshot today (mock base)",
+      "source": "Transient/fw_scenes/live",
+      "faces": {
+       "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/canal_0_now.png"
+      }
+     },
+     "reference_textures": [
+      {
+       "path": "Transient/fw_scenes/water_art/img/canal_A_tint.png",
+       "size": {
+        "drawSize": [
+         12.07,
+         6.45
+        ],
+        "footprint": [
+         12.07,
+         6.45
+        ],
+        "source": "crop of the live screenshot, 73 px per cell"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/canal_B_lake_texture.png",
+       "size": {
+        "drawSize": [
+         12.07,
+         6.45
+        ],
+        "footprint": [
+         12.07,
+         6.45
+        ],
+        "source": "crop of the live screenshot, 73 px per cell"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/canal_C_lake_texture_fadeRough.png",
+       "size": {
+        "drawSize": [
+         12.07,
+         6.45
+        ],
+        "footprint": [
+         12.07,
+         6.45
+        ],
+        "source": "crop of the live screenshot, 73 px per cell"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       12.07,
+       6.45
+      ],
+      "footprint": [
+       12.07,
+       6.45
+      ],
+      "source": "screenshot crop, 73 px per cell (S2_p60.png); mock, not a texture"
+     },
+     "runtimeDesc": {
+      "def": "FW_CANAL_LAKE_COLOUR",
+      "label": "Canal water vs lake water: one colour (CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES) (MOCK over screenshots; the IN GAME column is the screenshot today)",
+      "description": "Canal vs lake \u00b7 look colour \u00b7 texture Terrain/FlowWorks/RM_WaterThin \u00b7 drawn at 12.07\u00d76.45 cells",
+      "source": "texture manifest water_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Terrain/FlowWorks/RM_WaterThin",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "FW_CANAL_LAKE_COLOUR"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Terrain/FlowWorks/RM_WaterThin"
+     }
+    },
+    {
+     "key": "FW_VERY_SHALLOW",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Very shallow water, under 25 cm (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": null,
+     "reference_textures": [
+      {
+       "path": "Transient/fw_scenes/water_art/img/now_WaterThin_0p5m_tex1024.png",
+       "size": {
+        "drawSize": [
+         8,
+         8
+        ],
+        "footprint": [
+         8,
+         8
+        ],
+        "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/VS1_wet_bed_tex1024.png",
+       "size": {
+        "drawSize": [
+         8,
+         8
+        ],
+        "footprint": [
+         8,
+         8
+        ],
+        "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/VS2_faint_veil_tex1024.png",
+       "size": {
+        "drawSize": [
+         8,
+         8
+        ],
+        "footprint": [
+         8,
+         8
+        ],
+        "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/VS3_half_veil_tex1024.png",
+       "size": {
+        "drawSize": [
+         8,
+         8
+        ],
+        "footprint": [
+         8,
+         8
+        ],
+        "source": "one 1024 tile shown as 8x8 cells (unmeasured repeat)"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       3,
+       3
+      ],
+      "footprint": [
+       3,
+       3
+      ],
+      "source": "3x3 cells of the 1024 tile at 8 cells per tile (repeat UNMEASURED)"
+     },
+     "runtimeDesc": {
+      "def": "FW_VERY_SHALLOW",
+      "label": "Very shallow water, under 25 cm (VERY_SHALLOW_WATER_RESKIN_HE_SEES_FIRST)",
+      "description": "Very shallow \u00b7 look under25cm \u00b7 texture Terrain/FlowWorks/RM_WaterThin \u00b7 drawn at 3\u00d73 cells",
+      "source": "texture manifest water_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Terrain/FlowWorks/RM_WaterThin",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "FW_VERY_SHALLOW"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Terrain/FlowWorks/RM_WaterThin"
+     }
+    },
+    {
+     "key": "FW_WALL_BAND",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Wall band on wet canals: the gap between water and lip (MOCK over screenshots; the IN GAME column is the screenshot today)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": {
+      "res": "Terrain/FlowWorks/RM_WaterThin",
+      "label": "the live screenshot today (mock base)",
+      "source": "Transient/fw_scenes/live",
+      "faces": {
+       "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/wall_0_now.png"
+      }
+     },
+     "reference_textures": [
+      {
+       "path": "Transient/fw_scenes/water_art/img/wall_1_shadow_band.png",
+       "size": {
+        "drawSize": [
+         18.3,
+         11.0
+        ],
+        "footprint": [
+         18.3,
+         11.0
+        ],
+        "source": "crop of the live screenshot, 83 px per cell"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/wall_2_lit_face_lines.png",
+       "size": {
+        "drawSize": [
+         18.3,
+         11.0
+        ],
+        "footprint": [
+         18.3,
+         11.0
+        ],
+        "source": "crop of the live screenshot, 83 px per cell"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/wall_3_thin_ring.png",
+       "size": {
+        "drawSize": [
+         18.3,
+         11.0
+        ],
+        "footprint": [
+         18.3,
+         11.0
+        ],
+        "source": "crop of the live screenshot, 83 px per cell"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       18.3,
+       11.0
+      ],
+      "footprint": [
+       18.3,
+       11.0
+      ],
+      "source": "screenshot crop, 83 px per cell (art_strip_labeled.png); mock"
+     },
+     "runtimeDesc": {
+      "def": "FW_WALL_BAND",
+      "label": "Wall band on wet canals: the gap between water and lip (MOCK over screenshots; the IN GAME column is the screenshot today)",
+      "description": "Wall band \u00b7 look band \u00b7 texture Terrain/FlowWorks/RM_WaterThin \u00b7 drawn at 18.3\u00d711 cells",
+      "source": "texture manifest water_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Terrain/FlowWorks/RM_WaterThin",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "FW_WALL_BAND"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Terrain/FlowWorks/RM_WaterThin"
+     }
+    },
+    {
+     "key": "FW_DEEP_LAKE_TINTS",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Darker lake tints at 5 m and 10 m (MOCK over screenshots; the IN GAME column is the screenshot today)",
+     "defNames": [],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "render_match": null,
+     "standin": {
+      "res": "Terrain/FlowWorks/RM_WaterThin",
+      "label": "the live screenshot today (mock base)",
+      "source": "Transient/fw_scenes/live",
+      "faces": {
+       "single": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/img/deep_T1_darker.png"
+      }
+     },
+     "reference_textures": [
+      {
+       "path": "Transient/fw_scenes/water_art/img/deep_T2_navy.png",
+       "size": {
+        "drawSize": [
+         21.0,
+         3.4
+        ],
+        "footprint": [
+         21.0,
+         3.4
+        ],
+        "source": "lake crops 73 px per cell"
+       }
+      },
+      {
+       "path": "Transient/fw_scenes/water_art/img/deep_T3_blue_shift.png",
+       "size": {
+        "drawSize": [
+         21.0,
+         3.4
+        ],
+        "footprint": [
+         21.0,
+         3.4
+        ],
+        "source": "lake crops 73 px per cell"
+       }
+      }
+     ],
+     "runtimeSize": {
+      "drawSize": [
+       21.0,
+       3.4
+      ],
+      "footprint": [
+       21.0,
+       3.4
+      ],
+      "source": "three lake crops side by side, 73 px per cell; mock"
+     },
+     "runtimeDesc": {
+      "def": "FW_DEEP_LAKE_TINTS",
+      "label": "Darker lake tints at 5 m and 10 m (MOCK over screenshots; the IN GAME column is the screenshot today)",
+      "description": "Deep tints \u00b7 look tint \u00b7 texture Terrain/FlowWorks/RM_WaterThin \u00b7 drawn at 21\u00d73.4 cells",
+      "source": "texture manifest water_art.textures.json"
+     },
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Terrain/FlowWorks/RM_WaterThin",
+        "role": "body",
+        "joined_by": "texture manifest",
+        "subjects": [
+         "FW_DEEP_LAKE_TINTS"
+        ],
+        "former": []
+       }
+      ],
+      "searched": "texture manifest (drawn by C#, no def): Terrain/FlowWorks/RM_WaterThin"
+     }
+    }
+   ],
+   "textures_manifest": "/home/mandrake/rm/scratch/FOUNDRY/art/Transient/fw_scenes/water_art/water_art.textures.json"
+  }
+ }
+}

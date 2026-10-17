@@ -1,0 +1,109 @@
+{
+ "biome": "SUBJECTS_water_art_candidates",
+ "built": "2026-10-17T16:29:20-0700",
+ "census": "Transient/biome_ffar/water_art_candidates.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 22 mods \u2014 a test list): 548 active",
+ "rows": {
+  "FW_CANAL_LAKE_COLOUR": {
+   "columns": {
+    "A": {
+     "single": "30527a6263172a2458c019c5c4ea8e6faae8f987604b2a7e0f6bde2a4419436b"
+    },
+    "B": {
+     "single": "baa000a83f0bdbb68a397e51b95cb15e84324ae4aa0cb5deb9ff391f16c936a7"
+    }
+   },
+   "graphic_of": {
+    "A": "Terrain/FlowWorks/RM_WaterThin",
+    "B": "Terrain/FlowWorks/RM_WaterThin"
+   },
+   "labels": {
+    "A": "render rm_waterthin",
+    "B": "IN GAME \u2014 the live screenshot today (mock base)"
+   },
+   "pools": [],
+   "res": "Terrain/FlowWorks/RM_WaterThin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fw_canal_lake_colour"
+  },
+  "FW_DEEP_LAKE_TINTS": {
+   "columns": {
+    "A": {
+     "single": "30527a6263172a2458c019c5c4ea8e6faae8f987604b2a7e0f6bde2a4419436b"
+    },
+    "B": {
+     "single": "429ab5d9e0deabdb3e8e47e58721914f11907c2e171c202aeb8ab62fcaa43797"
+    }
+   },
+   "graphic_of": {
+    "A": "Terrain/FlowWorks/RM_WaterThin",
+    "B": "Terrain/FlowWorks/RM_WaterThin"
+   },
+   "labels": {
+    "A": "render rm_waterthin",
+    "B": "IN GAME \u2014 the live screenshot today (mock base)"
+   },
+   "pools": [],
+   "res": "Terrain/FlowWorks/RM_WaterThin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fw_deep_lake_tints"
+  },
+  "FW_VERY_SHALLOW": {
+   "columns": {
+    "A": {
+     "single": "30527a6263172a2458c019c5c4ea8e6faae8f987604b2a7e0f6bde2a4419436b"
+    }
+   },
+   "graphic_of": {
+    "A": "Terrain/FlowWorks/RM_WaterThin"
+   },
+   "labels": {
+    "A": "render rm_waterthin"
+   },
+   "pools": [],
+   "res": "Terrain/FlowWorks/RM_WaterThin",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fw_very_shallow"
+  },
+  "FW_WALL_BAND": {
+   "columns": {
+    "A": {
+     "single": "30527a6263172a2458c019c5c4ea8e6faae8f987604b2a7e0f6bde2a4419436b"
+    },
+    "B": {
+     "single": "1fb80ec58b0e902186b7f989dfe240461658c6912d82d40522a2b43496ab87aa"
+    }
+   },
+   "graphic_of": {
+    "A": "Terrain/FlowWorks/RM_WaterThin",
+    "B": "Terrain/FlowWorks/RM_WaterThin"
+   },
+   "labels": {
+    "A": "render rm_waterthin",
+    "B": "IN GAME \u2014 the live screenshot today (mock base)"
+   },
+   "pools": [],
+   "res": "Terrain/FlowWorks/RM_WaterThin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fw_wall_band"
+  }
+ },
+ "sheetId": "water_art_candidates_sheet_2026-10-17",
+ "snapshotId": "07453b6e45fc7230"
+}
