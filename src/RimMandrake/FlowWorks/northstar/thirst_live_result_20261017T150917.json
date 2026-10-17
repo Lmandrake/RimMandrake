@@ -1,0 +1,169 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T15:09:17",
+ "rows": [
+  {
+   "id": "T25_snow_to_water",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "snowSet": {
+     "success": true,
+     "cellsChanged": 64
+    },
+    "jobs": [
+     "RM_GatherSnow",
+     "GotoWander"
+    ],
+    "bucketsSnow": 1,
+    "snowAfter": null,
+    "meltTicks": 5000,
+    "meltTrace": [
+     {
+      "t": 3000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 18.4478931,
+      "comp": "{\"success\": true, \"thing\": \"RM_BucketSnow37328\", \"resolvedBy\": \"ThingID\", \"compType\": \"RimMandrake.FlowWorks.Thirst.CompRM_Melt\", \"values\": {\"warmTicks\": \"3000\"}, \"missing\": [], \"ticksGame\": 112690}",
+      "inspect": [
+       "Melting: 60%"
+      ]
+     },
+     {
+      "t": 3500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 18.37123,
+      "comp": "{\"success\": true, \"thing\": \"RM_BucketSnow37328\", \"resolvedBy\": \"ThingID\", \"compType\": \"RimMandrake.FlowWorks.Thirst.CompRM_Melt\", \"values\": {\"warmTicks\": \"3500\"}, \"missing\": [], \"ticksGame\": 113190}",
+      "inspect": [
+       "Melting: 70%"
+      ]
+     },
+     {
+      "t": 4000,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 18.3117924,
+      "comp": "{\"success\": true, \"thing\": \"RM_BucketSnow37328\", \"resolvedBy\": \"ThingID\", \"compType\": \"RimMandrake.FlowWorks.Thirst.CompRM_Melt\", \"values\": {\"warmTicks\": \"4000\"}, \"missing\": [], \"ticksGame\": 113690}",
+      "inspect": [
+       "Melting: 80%"
+      ]
+     },
+     {
+      "t": 4500,
+      "snow": [
+       [
+        205,
+        147
+       ]
+      ],
+      "fresh": 0,
+      "cellC": 18.269762,
+      "comp": "{\"success\": true, \"thing\": \"RM_BucketSnow37328\", \"resolvedBy\": \"ThingID\", \"compType\": \"RimMandrake.FlowWorks.Thirst.CompRM_Melt\", \"values\": {\"warmTicks\": \"4500\"}, \"missing\": [], \"ticksGame\": 114190}",
+      "inspect": [
+       "Melting: 90%"
+      ]
+     },
+     {
+      "t": 5000,
+      "snow": [],
+      "fresh": 1
+     }
+    ],
+    "temp": 19.4922543,
+    "jobsPond": [
+     "RM_FillBottleJob",
+     "MeditatePray"
+    ],
+    "bad": [],
+    "notRun": "snow depth drop 0.4 (read back is a sample only)"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "T25",
+  "site": "150,130",
+  "log": "",
+  "reload_site": "calm"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "db263f99fdeaae0eab295bed0d302a265ef576023690c66d38c5731b5d31b30e",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "sarg.alphabiomes",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vfe.insectoid2",
+   "mandrake.rsw.cuisine",
+   "mandrake.rm.weathersuite",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rut.patches",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.biomes",
+   "mandrake.rsw.swbestiary",
+   "ray1203.simplecamerasetting"
+  ],
+  "assembly_sha256": "5e3d606dcbf9d4ec2ee6ff343a72fc889d0112575bf0f1f459653a884ba7c55c"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 20,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 3,
+  "bottlesOnMap": [
+   "RM_Bottle_FreshWater"
+  ],
+  "draftedOwn": 31
+ },
+ "settings_after": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "ended": "2026-10-17T15:11:15"
+}

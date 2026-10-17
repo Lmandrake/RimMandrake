@@ -107,6 +107,7 @@ def main(argv=None):
     ap.add_argument("--site", default="150,130", help="south-west corner of a 40x40 site")
     ap.add_argument("--log", default="", help="this load's Player.log copy (T1, T7)")
     ap.add_argument("--reload-site", default="calm", help="test_site_saves site T15R reloads (twice)")
+    ap.add_argument("--t25-empties", type=int, default=1, help="empty buckets T25 lays (the full run once met 3 leftovers)")
     a = ap.parse_args(argv)
     only = [x.strip().upper() for x in a.only.split(",") if x.strip()]
     import validation_core as V
@@ -1125,7 +1126,14 @@ def main(argv=None):
             SX3, SZ3 = X3 + 2, Z0 + 14
             B.call("jawa/destroy_batch", rects="%d,%d,14,10" % (SX3, SZ3), categories="Building,Item,Plant")
             sb = B.call("jawa/set_weather_buildup", kind="snow", mode="set", rect="%d,%d,8,8" % (SX3, SZ3), depth=1.0) or {}
-            spawn("RM_BucketEmpty", SX3 + 10, SZ3 + 2)
+            # Full run, round 2: three leftover empty buckets (T20/T23) were all gathered, and none of the three snow buckets
+            # was seen melting in 7,000 ticks at 26 C, while the one-bucket run melts at 5,000. The row now clears every
+            # leftover bucket first and lays --t25-empties of its own (default the bar's one; 3 replays the full run).
+            for d_ in ("RM_BucketEmpty", "RM_BucketDirty", "RM_BucketSnow"):
+                for t_ in things(d_):
+                    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t_.get("x"), t_.get("z")), categories="Item")
+            for i_ in range(max(1, a.t25_empties)):
+                spawn("RM_BucketEmpty", SX3 + 10 + i_, SZ3 + 2)
             p25 = worker(SX3 + 10, SZ3 + 4)
             draft_bystanders({p25})
             temp = (B.call("jawa/cell_temperature", cell="%d,%d" % (SX3, SZ3)) or {})
@@ -1154,8 +1162,10 @@ def main(argv=None):
                     smp = {"t": (k + 1) * 500, "snow": [(t.get("x"), t.get("z")) for t in sb_], "fresh": count("RM_Bucket_FreshWater")}
                     if sb_:
                         smp["cellC"] = (B.call("jawa/cell_temperature", cell="%s,%s" % (sb_[0].get("x"), sb_[0].get("z"))) or {}).get("temperature")
-                        cr = B.call("jawa/comp_read", thing=sb_[0].get("id"), comp="RM_Melt") or {}
-                        smp["comp"] = str(cr.get("fields") or cr.get("members") or cr.get("message"))[:160]
+                        cr = B.call("jawa/comp_read", thing=sb_[0].get("id"), comp="CompRM_Melt", members="warmTicks") or {}
+                        smp["comp"] = json.dumps({k: v for k, v in cr.items() if k not in ("operation", "state")}, default=str)[:200]
+                        for t_ in (B.call("jawa/inspect_string", thingIds=",".join(x.get("id") for x in sb_)) or {}).get("things") or []:
+                            smp.setdefault("inspect", []).append(" | ".join(t_.get("inspect") or [])[:80])
                     melt_trace.append(smp)
                     if smp["fresh"] > fresh0 and not sb_:
                         melted = (k + 1) * 500

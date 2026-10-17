@@ -1,0 +1,1 @@
+A live test 'worker' colonist from jawa/spawn_pawn can be incapable of the work type: jawa/set_work_priority answers success=false for a disabled type, and a script that ignores it reads an idle pawn as a MOD FAIL (thirst T25, 2026-10-17). Check the result and respawn.

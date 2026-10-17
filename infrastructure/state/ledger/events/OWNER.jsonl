@@ -1064,3 +1064,13 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for DLL deploy","ts":"2026-10-17T20:53:32Z","tsn":1792270412918844288}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch on 20-mod walk list with new FlowWorks + LeaningScrub DLLs","ts":"2026-10-17T20:56:33Z","tsn":1792270593785367025}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"load done, bridge token","ts":"2026-10-17T20:58:34Z","tsn":1792270714153310070}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"redeploy FlowWorks P7 DLL (38aa4ddb61) so the credited reruns run the repo DLL","ts":"2026-10-17T21:26:44Z","tsn":1792272404896913409}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for FlowWorks P7 deploy","ts":"2026-10-17T21:26:51Z","tsn":1792272411209546228}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch on walk list with FlowWorks P7 DLL","ts":"2026-10-17T21:27:49Z","tsn":1792272469448993570}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"menu up, bridge token","ts":"2026-10-17T21:29:30Z","tsn":1792272570636213207}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"deploy FlowWorks snow-mark fix (3b33f2bbfe) before credited reruns","ts":"2026-10-17T21:52:30Z","tsn":1792273950279432724}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for FlowWorks deploy","ts":"2026-10-17T21:52:36Z","tsn":1792273956618612440}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch walk list with 3b33f2bbfe DLL","ts":"2026-10-17T21:52:51Z","tsn":1792273971379287593}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"menu up","ts":"2026-10-17T21:54:24Z","tsn":1792274064436622116}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"modcheck run FlowWorks (swaps to minimal + restarts)","ts":"2026-10-17T22:15:22Z","tsn":1792275322792487798}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"walk creatures save loaded, paused","ts":"2026-10-17T22:26:48Z","tsn":1792276008660913050}
