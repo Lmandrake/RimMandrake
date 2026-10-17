@@ -150,8 +150,9 @@ Default archetype for every plant def our tiers ship that is not native to a wet
     (PROPOSED 4–7 in radius 2.9, respecting built ground). **RULED OQ-6 (by card): the parent dies and its seedlings
     replace it** (today's churn; the earlier PROPOSED "lives, reset to growth 0.5" is withdrawn). The cycle repeats
     through the seedlings, never through a surviving parent: no reset code, no per-cycle health cost.
-- **Pyrelands grass:** `ruptureChance 0`, `sproutCount` high (PROPOSED 6–9) and the dry-native ×10 on ASH-FRESH:
-  *"does not rupture but does grow violently quickly and spread itself super-fast."*
+- **Pyrelands grass:** bursts like other grass (owner, 2026-10-17, option (2) "Let Pyrelands grass burst too",
+  `TREE_BURST_DESIGN_SWEETLINE_TAKES_ITS_TIME`): default `ruptureChance`, `sproutCount` high (PROPOSED 6–9) and the
+  dry-native ×10 on ASH-FRESH. Build delta: `design/RimMandrake/tree_burst_design_2026-10-17.md` §5.
 - The tell ladder (ground, swell, hue, tremble, creak, silence) stays as the visible run-up to each outcome
   (MEASURED `Source/Kernel/RM_ExplosiveGrowthKernel.cs:11,53-61`).
 
