@@ -13,6 +13,10 @@ namespace RimMandrake.ExplosiveGrowth
         public static SoundDef RM_EG_Pop;
         public static SoundDef RM_EG_Rupture;
 
+        // Defs/ThingDefs_Filth/RM_WaterFilth.xml: standing water that is a water source (D6, D7).
+        public static ThingDef RM_Filth_WaterSpill;
+        public static ThingDef RM_Filth_RainPuddle;
+
         static RM_ExplosiveGrowthDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_ExplosiveGrowthDefOf));

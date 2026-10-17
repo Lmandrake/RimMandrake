@@ -24,21 +24,24 @@
 
     <plants>
       <!-- TINDER — fire-loop genetics (roster §TINDER). Ring: quickgrass. -->
-      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
-      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
+      <!-- PYRELANDS GRASS (C3, owner 2026-10-16: "Pyrelands grass does not rupture but does grow violently quickly and
+           spread itself super-fast"): no Tinder, never a Burst, many sprouts, fresh ash waters it (C5). Ruling over the
+           2026-09-21 roster's Tinder row. -->
+      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><ruptureChance>0</ruptureChance><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
+      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><ruptureChance>0</ruptureChance><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
       <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant></li>
 
       <!-- SLIME — slime-fed genetics (roster §SLIME). Ring terrain: the
            Gelatinous Slime mod's own rich slime ground. -->
-      <li><plant>RM_Plant_SlimeGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>RM_Plant_Bellows</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>RM_Plant_Thumbstalk</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>RM_Plant_Readerbloom</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>AB_TallSlimyGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>AB_SlimyFern</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>AB_Slimecasia</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>AB_SlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
-      <li><plant>AB_LargeSlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain></li>
+      <li><plant>RM_Plant_SlimeGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>RM_Plant_Bellows</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>RM_Plant_Thumbstalk</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>RM_Plant_Readerbloom</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>AB_TallSlimyGrass</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>AB_SlimyFern</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>AB_Slimecasia</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>AB_SlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
+      <li><plant>AB_LargeSlimyTree</plant><top>Slime</top><slimeTerrain>RM_Slime_Rich</slimeTerrain><adaptedLiquids><li>RM_Fluid_SlimeRed</li><li>RM_Fluid_SlimeGreen</li><li>RM_Fluid_SlimeWhite</li><li>RM_Fluid_SlimeYellow</li></adaptedLiquids></li>
 
       <!-- RUPTURE — contaminated (roster §RUPTURE, ruling 5). The Contagion's
            flora; RM_RustPuff is the RM-tier name of the roster's RUT_RustPuff. -->
@@ -190,30 +193,49 @@
       <li>RM_UnfinishedUselessJaw</li>
     </ruptureMutationHediffs>
 
-    <!-- Fresh FlowWorks fluid that irrigates. Saline/oil fluids never soak. -->
-    <irrigationFluids>
+    <!-- T2 (owner card 2026-10-16, "Only for adapted plants"): CLEAN water waters every plant; any other liquid (the four
+         slimes, red water, jungle fluids, sheen, boiling water) waters only a plant whose row lists it in adaptedLiquids
+         (the slime-fed rows above). Declared per biome at its review sheet. -->
+    <cleanWaterFluids>
       <li>RM_Fluid_Water</li>
-      <!-- slime_flood ("Slime floodwater — soaks on its way through", design
-           doc §1): a dug channel carrying one of FlowWorks' slime fluids is the
-           nearest built stand-in for it. 🄸 INVENTED mapping; the Slime biome's
-           own flood event does not exist yet. -->
-      <li>RM_Fluid_SlimeRed</li>
-      <li>RM_Fluid_SlimeGreen</li>
-      <li>RM_Fluid_SlimeWhite</li>
-      <li>RM_Fluid_SlimeYellow</li>
-    </irrigationFluids>
+    </cleanWaterFluids>
 
     <soakWeathers />
 
-    <!-- EVERYDAY BANDS (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, the former Jawa
-         Plant Growth). The wet jungles run x10 (trees x6.25) INSTEAD of x4
-         (ruling 6, 2026-09-21; the Rot excluded by his word). No RM-tier biome is
-         a stalled (terminator) biome; the campaign roster names its own. -->
-    <wetAmbientBiomes>
+    <!-- W2 (owner 2026-10-16, "(1) and the plants continuously grow and writhe there"): natural fresh water and mud keep
+         THEIR OWN cell wet, permanently, never used up. Vanilla/Odyssey defNames (RimSage Terrain_Water.xml,
+         Terrain_Natural.xml, Odyssey Terrain_Temporary.xml). Ocean water is salt: not listed. -->
+    <naturalWaterTerrains>
+      <li>WaterShallow</li>
+      <li>WaterDeep</li>
+      <li>WaterMovingShallow</li>
+      <li>WaterMovingChestDeep</li>
+      <li>Marsh</li>
+      <li>MarshFlood</li>
+      <li>Mud</li>
+    </naturalWaterTerrains>
+
+    <!-- D6 / OQ-9: standing water that is a source (Defs/ThingDefs_Filth/RM_WaterFilth.xml). -->
+    <filthLiquids>
+      <li><filth>RM_Filth_WaterSpill</filth><liquid>RM_Fluid_Water</liquid></li>
+      <li><filth>RM_Filth_RainPuddle</filth><liquid>RM_Fluid_Water</liquid></li>
+    </filthLiquids>
+
+    <!-- ARCHETYPE SEEDS (spec §4.3; OQ-1: no biome water label, the plant lists decide). A plant in one of these biomes'
+         wildPlants is a WET native (C1 x4 always; fruit prolifically, wither, a few sprouts); WP3 "Answer is (1)" adds
+         Webwork and Contagion to the ruled jungles. Every plant still reaches a review-sheet row; the seed is never the
+         final word. -->
+    <wetNativeBiomes>
       <li>RM_Greentide</li>
       <li>RM_Miasma</li>
       <li>RM_FeverWood</li>
-    </wetAmbientBiomes>
+      <li>RM_Webwork</li>
+      <li>RM_Contagion</li>
+    </wetNativeBiomes>
+    <!-- C5 "A burnt cell counts as fresh": the Pyrelands natives are fire-adapted. -->
+    <fireAdaptedBiomes>
+      <li>RM_Pyrelands</li>
+    </fireAdaptedBiomes>
     <!-- BLUE_DESERT_LIFE_AUTHORING_1 (brief §6a): their growDays (6/9/12)
          already assume vanilla rate ("without the polar water molecule,
          transport and chemistry are simply less efficient"); x4 would erase it. -->

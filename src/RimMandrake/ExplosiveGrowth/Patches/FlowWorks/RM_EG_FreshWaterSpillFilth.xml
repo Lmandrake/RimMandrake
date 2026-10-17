@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  D6 (explosive_growth_ruled_spec_2026-10-16.md §3 "hose spill ... a cell holding spill filth of an accepted liquid"): FlowWorks'
+  generic spill (RM_Filth_LiquidSpill) does not say which liquid it is, so a fresh-water spill could not be told from a chemfuel
+  one. Fresh water spills as this engine's RM_Filth_WaterSpill instead (RM_LiquidSpill.Spill reads LiquidDef.spillFilth).
+  Conditional on the def AND on no spillFilth already set, so FlowWorks absent, or FlowWorks naming its own, both leave it alone.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RimMandrake.FlowWorks.LiquidTypes.LiquidDef[defName="RM_Liquid_FreshWater"]/spillFilth</xpath>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/RimMandrake.FlowWorks.LiquidTypes.LiquidDef[defName="RM_Liquid_FreshWater"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/RimMandrake.FlowWorks.LiquidTypes.LiquidDef[defName="RM_Liquid_FreshWater"]</xpath>
+        <value>
+          <spillFilth>RM_Filth_WaterSpill</spillFilth>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+</Patch>

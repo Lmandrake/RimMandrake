@@ -32,6 +32,7 @@ namespace RimMandrake.ExplosiveGrowth
             {
                 Plant p = (Plant)GenSpawn.Spawn(plantDef, c, map);
                 p.Growth = growth;
+                comp?.NoteSeedling(c);   // OQ-11: a seedling on fresh ash restarts its window
             }
             return cells.Count;
         }
@@ -74,24 +75,45 @@ namespace RimMandrake.ExplosiveGrowth
         private const float RuptureRadius = 3.9f;
         private const int RuptureCloudTicks = GenDate.TicksPerHour;
 
+        /// <summary>The top of a charge (spec §4; OQ-5, OQ-6, OQ-8, OQ-14, OQ-15). The kernel picks the outcome: a native
+        /// crop self-fruits; Slime / Tinder / Rupture / Flush keep their own top; otherwise the Burst roll (1 in 3 for dry
+        /// natives by default, 0 for wet natives, 1 for a Burst row), else fruit + many sprouts (dry, the parent dies) or
+        /// prolific fruit + wither + a few sprouts (wet). Every outcome then uses the water on the cell (OQ-8).</summary>
         public static void Fire(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
         {
-            if (plant == null || !plant.Spawned || prof == null) return;
+            if (plant == null || !plant.Spawned || prof == null || comp == null) return;
             RM_GrowthTop top = Effective(prof.top);
             Map map = plant.Map;
             IntVec3 c = plant.Position;
-            switch (top)
+            bool nativeCrop = prof.Native && plant.IsCrop;
+            RM_Outcome o = RM_ExplosiveGrowthKernel.ResolveOutcome(prof.archetype, (byte)top, prof.ruptureChance,
+                ExplosiveGrowthSettings.defaultRuptureChance, Rand.Value, nativeCrop, ExplosiveGrowthSettings.cropSelfFruitEnabled,
+                ExplosiveGrowthSettings.burstEnabled);
+            LastOutcome = o;
+            switch (o)
             {
-                case RM_GrowthTop.Burst: Burst(plant, prof, comp, tinder: false); break;
-                case RM_GrowthTop.Tinder: Burst(plant, prof, comp, tinder: true); break;
-                case RM_GrowthTop.Slime: Slime(plant, prof, comp); break;
-                case RM_GrowthTop.Rupture: Rupture(plant, prof, comp); break;
-                case RM_GrowthTop.Flush: Flush(plant, prof, comp); break;
-                case RM_GrowthTop.Churn: Churn(plant, prof, comp); break;
+                case RM_Outcome.SelfFruit: SelfFruit(plant); break;
+                case RM_Outcome.Burst: Burst(plant, prof, comp, tinder: false); break;
+                case RM_Outcome.Fruit: DryFruit(plant, prof, comp); break;
+                case RM_Outcome.Wither: Wither(plant, prof, comp); break;
+                case RM_Outcome.OwnTop:
+                    switch (top)
+                    {
+                        case RM_GrowthTop.Tinder: Burst(plant, prof, comp, tinder: true); break;
+                        case RM_GrowthTop.Slime: Slime(plant, prof, comp); break;
+                        case RM_GrowthTop.Rupture: Rupture(plant, prof, comp); break;
+                        case RM_GrowthTop.Flush: Flush(plant, prof, comp); break;
+                    }
+                    break;
                 default: break;
             }
+            if (o != RM_Outcome.None && ExplosiveGrowthSettings.waterUseEnabled)
+                RM_WetSources.Consume(comp, c, prof.liquids, Find.TickManager.TicksGame);
             comp.Dirty(c);
         }
+
+        /// <summary>The last outcome Fire chose (proof read-out only).</summary>
+        public static RM_Outcome LastOutcome;
 
         public static RM_GrowthTop Effective(RM_GrowthTop top)
         {
@@ -100,9 +122,19 @@ namespace RimMandrake.ExplosiveGrowth
                 ExplosiveGrowthSettings.ruptureEnabled, ExplosiveGrowthSettings.flushEnabled, ExplosiveGrowthSettings.churnEnabled);
         }
 
-        // ── CHURN: split, die, fruit, sow — endless, and never over your floor.
+        private const float SproutRadius = 2.9f;
+        private static readonly IntRange DrySprouts = new IntRange(4, 7);   // §4.1 "many" (PROPOSED)
+        private static readonly IntRange WetSprouts = new IntRange(1, 2);   // §4.2 "a few" (PROPOSED)
 
-        private static void Churn(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
+        private static int Sprouts(RM_PlantProfile prof, IntRange fallback)
+        {
+            IntRange r = prof.sproutCount.max > 0 ? prof.sproutCount : fallback;
+            return r.RandomInRange;
+        }
+
+        // ── DRY CYCLE: fruit, many sprouts, the parent dies (OQ-6: the seedlings carry the cycle). Never over your floor.
+
+        private static void DryFruit(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
         {
             Map map = plant.Map;
             IntVec3 c = plant.Position;
@@ -111,7 +143,41 @@ namespace RimMandrake.ExplosiveGrowth
             RM_ExplosiveGrowthDefOf.RM_EG_Split?.PlayOneShot(new TargetInfo(c, map));
             FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_LooseGround);
             SplitAndDie(plant);
-            RM_SproutRing.Sow(map, c, def, ChurnRadius, Rand.RangeInclusive(2, 4), respectBuiltGround: true, comp, growth: 0.05f);
+            RM_SproutRing.Sow(map, c, def, SproutRadius, Sprouts(prof, DrySprouts), respectBuiltGround: true, comp, growth: 0.05f);
+        }
+
+        // ── WET CYCLE: fruit prolifically, wither quietly (no blast), a few sprouts.
+
+        private static void Wither(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
+        {
+            Map map = plant.Map;
+            IntVec3 c = plant.Position;
+            ThingDef def = plant.def;
+            DropProduce(plant, prof.produceFactor * ExplosiveGrowthSettings.wetFruitFactor, scatter: false);
+            if (plant.Spawned) plant.Kill(new DamageInfo(DamageDefOf.Rotting, 99999f));
+            if (plant.Spawned && !plant.Destroyed) plant.Destroy(DestroyMode.KillFinalize);
+            RM_SproutRing.Sow(map, c, def, SproutRadius, Sprouts(prof, WetSprouts), respectBuiltGround: true, comp, growth: 0.05f);
+        }
+
+        // ── CROP SELF-FRUIT (EC3 "A full harvest but the water gets used up"): the full YieldNow IS the harvest; the plant is
+        // treated as harvested exactly as vanilla PlantCollected does (dies, or a repeat-harvest def resets to
+        // harvestAfterGrowth; RimSage RimWorld/Plant.cs:621-664), so no second pawn harvest of the same growth.
+
+        private static void SelfFruit(Plant plant)
+        {
+            ThingDef produce = plant.def.plant.harvestedThingDef;
+            int n = produce != null ? plant.YieldNow() : 0;   // the jackpot postfix skips crops (OQ-14)
+            if (n > 0) SpawnNear(produce, n, plant.Position, plant.Map);
+            if (plant.def.plant.HarvestDestroys)
+            {
+                plant.TrySpawnStump(PlantDestructionMode.Smash);
+                if (!plant.Destroyed) plant.Destroy(DestroyMode.KillFinalizeLeavingsOnly);
+            }
+            else
+            {
+                plant.Growth = plant.def.plant.harvestAfterGrowth;
+                plant.Map.mapDrawer.MapMeshDirty(plant.Position, MapMeshFlagDefOf.Things);
+            }
         }
 
         // ── BURST / TINDER: the rare violent top. Injury+knockdown ceiling.

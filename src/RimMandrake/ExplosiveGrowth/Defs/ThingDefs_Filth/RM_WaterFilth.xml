@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Standing water that IS a water source (explosive_growth_ruled_spec_2026-10-16.md §3, D6, D7). GM1: "Nothing stays wet for
+  long without an obvious reason" - wet ground is always explained by visible water, and the water is used up.
+    RM_Filth_WaterSpill  a hose spill of fresh water (FlowWorks RM_Liquid_FreshWater spills it, Patches/FlowWorks/) or a
+                         poured can; a fruiting plant on the cell drinks it (the filth is destroyed).
+    RM_Filth_RainPuddle  OQ-9 "a few hours after rain, shown by puddles": scattered when a rain stops; the after-rain wet
+                         itself is the map's rain clock (rainLingerHours), the puddles are its visible reason.
+  Shape from FlowWorks' RM_Filth_LiquidSpill (BaseFilth, Things/Filth/Spatter, placementMask Unnatural so it lies on soil:
+  SPILL_FILTH_FIX_SOIL_SAYS_NO). Every number PROPOSED.
+-->
+<Defs>
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_WaterSpill</defName>
+    <label>spilled water</label>
+    <description>Fresh water standing on the ground. Plants here drink it, and a thirsty native will use it up when it fruits.</description>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Filth/Spatter</texPath>
+      <color>(80, 110, 150, 140)</color>
+    </graphicData>
+    <filth>
+      <disappearsInDays>0.5~1</disappearsInDays>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>30</cleaningWorkToReduceThickness>
+      <canFilthAttach>false</canFilthAttach>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+      <placementMask>
+        <li>Unnatural</li>
+      </placementMask>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_RainPuddle</defName>
+    <label>rain puddle</label>
+    <description>A puddle left by the rain. The ground stays wet for a few hours after the rain stops.</description>
+    <statBases>
+      <Beauty>0</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Filth/Spatter</texPath>
+      <color>(90, 120, 160, 110)</color>
+    </graphicData>
+    <filth>
+      <disappearsInDays>0.1~0.15</disappearsInDays>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>20</cleaningWorkToReduceThickness>
+      <canFilthAttach>false</canFilthAttach>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+      <placementMask>
+        <li>Unnatural</li>
+      </placementMask>
+    </filth>
+  </ThingDef>
+</Defs>

@@ -9,7 +9,8 @@ data checks the generic lint cannot see because the roster is one Def holding st
   eg-roster-rows     Slime rows name a slimeTerrain, Tinder rows a ringPlant; a RM_/RUT_/RSW_ ringPlant / slimeTerrain /
                      bloomPlant / pawn kind / hediff / fluid must exist in some Defs folder; a plant listed twice in one
                      roster, or listed with a top while also exempt, is a dead row (WARN)
-  eg-roster-names    noSoakBiomes / soakWeathers / irrigationFluids entries with our prefix that no Defs folder defines (WARN:
+  eg-roster-deffields every child of a roster def is a field of RM_ExplosiveGrowthRosterDef (read from RM_GrowthTop.cs)
+  eg-roster-names    noSoakBiomes / soakWeathers / cleanWaterFluids / the archetype-seed biome lists' entries with our prefix that no Defs folder defines (WARN:
                      the list-every-plausible-name policy makes some of these deliberate; the count is printed)
   eg-top-numbering   RM_GrowthTop's numeric values equal the byte literals in the kernel's EffectiveTop, CountByTop is sized
                      to the enum, and the kernel is Verse-free and listed in the csproj
@@ -31,7 +32,19 @@ import lint_mod_defs  # noqa: E402
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 SRC = os.path.join(REPO, "src")
 PREFIX = ("RM_", "RUT_", "RSW_")
-ENTRY_FIELDS = {"plant", "top", "produceFactor", "ringPlant", "slimeTerrain"}
+GROWTH_TOP_CS = os.path.join(SRC, "RimMandrake", "ExplosiveGrowth", "Source", "RM_GrowthTop.cs")
+
+
+def class_fields(cls):
+    """Public instance fields of a class in RM_GrowthTop.cs (the roster's own schema, read, never listed by hand)."""
+    src = open(GROWTH_TOP_CS, encoding="utf-8").read()
+    m = re.search(r"public class %s\b[^{]*\{(.*?)\n    \}" % cls, src, re.S)
+    return set(re.findall(r"public (?!static)[\w<>.,\s]+? (\w+)(?:\s*=[^;]*)?;", m.group(1))) if m else set()
+
+
+ENTRY_FIELDS = class_fields("RM_ExplosiveGrowthRosterEntry") or {"plant", "top", "produceFactor", "ringPlant", "slimeTerrain"}
+ROSTER_FIELDS = class_fields("RM_ExplosiveGrowthRosterDef") | {"defName", "label", "description"}
+ARCHETYPES = {"Auto", "DryNative", "WetNative", "FireAdapted", "Exempt"}
 
 
 def all_defnames():
@@ -65,6 +78,10 @@ def main(argv):
     enum = {n: int(v) for n, v in re.findall(r"^\s*(\w+)\s*=\s*(\d+)\s*,", gt.split("enum RM_GrowthTop")[1].split("}")[0], flags=re.M)}
     top_names = set(enum)
     rosters = glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True) + glob.glob(os.path.join(camp, "**", "*.xml"), recursive=True)
+    # rosters other mods ship (the engine unions every one it loads, e.g. LeaningScrub's venomvine exemptions)
+    for p in glob.glob(os.path.join(SRC, "*", "*", "Defs", "ExplosiveGrowth", "*.xml")):
+        if p not in rosters and "RM_ExplosiveGrowthRosterDef" in open(p, encoding="utf-8", errors="replace").read():
+            rosters.append(p)
     nrows = nroster = nplausible = 0
     exempt_all, rows_by_roster = set(), {}
     for p in sorted(rosters):
@@ -79,6 +96,13 @@ def main(argv):
                 nroster += 1
                 dn = d.findtext("defName")
                 seen = {}
+                # eg-roster-deffields: a roster child the C# class lacks is a config error that can discard the def (the
+                # retired irrigationFluids / wetAmbientBiomes of 2026-10-16, or a venomvine-style roster in another mod)
+                if len(ROSTER_FIELDS) < 8:
+                    E("eg-roster-deffields", "sanity probe: read only %d RM_ExplosiveGrowthRosterDef fields from RM_GrowthTop.cs (regex broke)" % len(ROSTER_FIELDS))
+                for c in d:
+                    if c.tag not in ROSTER_FIELDS:
+                        E("eg-roster-deffields", f"{rel} {dn}: <{c.tag}> is not a field of RM_ExplosiveGrowthRosterDef")
                 for li in d.findall("plants/li"):
                     nrows += 1
                     kids = {c.tag for c in li}
@@ -90,6 +114,19 @@ def main(argv):
                         continue
                     if plant.startswith(PREFIX) and plant not in known:
                         W("eg-roster-rows", f"{rel} {dn}: roster plant {plant} is defined by no Defs folder (the row is skipped silently at load)")
+                    arch = (li.findtext("archetype") or "Auto").strip()
+                    if arch not in ARCHETYPES:
+                        E("eg-roster-fields", f"{rel} {dn}: {plant} archetype '{arch}' is not an RM_ArchetypeChoice")
+                    try:
+                        rc = float(li.findtext("ruptureChance") or -1)
+                        if not (rc == -1 or 0 <= rc <= 1):
+                            E("eg-roster-fields", f"{rel} {dn}: {plant} ruptureChance {rc} is not -1 or in [0,1]")
+                    except ValueError:
+                        E("eg-roster-fields", f"{rel} {dn}: {plant} ruptureChance is not a number")
+                    for x in li.findall("adaptedLiquids/li"):
+                        v = (x.text or "").strip()
+                        if v.startswith(PREFIX) and v not in known:
+                            E("eg-roster-rows", f"{rel} {dn}: {plant} adapted liquid {v} is defined by no Defs folder")
                     top = (li.findtext("top") or "Churn").strip()
                     if top not in top_names:
                         E("eg-roster-fields", f"{rel} {dn}: {plant} top '{top}' is not an RM_GrowthTop ({','.join(sorted(top_names))})")
@@ -115,7 +152,8 @@ def main(argv):
                 for pl in sorted(ex & set(seen)):
                     if seen[pl] != "None":
                         W("eg-roster-rows", f"{rel} {dn}: {pl} is both exempt and given top {seen[pl]} (exempt wins; the row is dead)")
-                for lst in ("noSoakBiomes", "soakWeathers", "irrigationFluids", "rupturePawnKinds", "ruptureMutationHediffs"):
+                for lst in ("noSoakBiomes", "soakWeathers", "cleanWaterFluids", "rupturePawnKinds", "ruptureMutationHediffs",
+                            "terminatorBiomes", "wetNativeBiomes", "fireAdaptedBiomes", "snowmeltBiomes"):
                     for x in d.findall(lst + "/li"):
                         v = (x.text or "").strip()
                         if v.startswith(PREFIX) and v not in known:

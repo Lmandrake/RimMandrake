@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <BiomeDef>
+    <defName>RM_FixtureGoodBiome</defName>
+    <!-- RM_DENSITY_CLASS: sparse -->
+    <plantDensity>0.15</plantDensity>
+    <wildPlantRegrowDays>25</wildPlantRegrowDays>
+  </BiomeDef>
+</Defs>

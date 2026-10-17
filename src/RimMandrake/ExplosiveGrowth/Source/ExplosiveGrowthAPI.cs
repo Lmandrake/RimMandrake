@@ -13,6 +13,9 @@ namespace RimMandrake.ExplosiveGrowth
     /// </summary>
     public static class ExplosiveGrowthAPI
     {
+        /// <summary>The sprinkler / pond seam (SP1, deferred): register a water source once at startup.</summary>
+        public static void RegisterWaterSource(IRM_WetSource source) => RM_WetSources.Register(source);
+
         /// <summary>Soak one cell. ticks &lt;= 0 means the Mod Settings default.</summary>
         public static bool Soak(Map map, IntVec3 cell, int ticks)
         {
@@ -42,13 +45,16 @@ namespace RimMandrake.ExplosiveGrowth
             RM_MapComponent_ExplosiveGrowth.For(map)?.Suppress(cell, radius, ticks);
         }
 
+        /// <summary>The cell is wet for clean water from ANY source (natural, flood, spill, channel, rain, or a registered
+        /// one such as a future sprinkler: RM_WetSources).</summary>
         public static bool IsSoaked(Map map, IntVec3 cell)
         {
             RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(map);
             return comp != null && comp.IsSoaked(cell);
         }
 
-        public static int DefaultSoakTicks =>
-            Mathf.Max(250, Mathf.RoundToInt(ExplosiveGrowthSettings.defaultSoakHours * 2500f));
+        /// <summary>A pushed soak that names no length lasts a day (the retired defaultSoakHours' shipped value). A running
+        /// flood re-pushes every pulse, so in practice the soak lasts while the water is there (spec §3).</summary>
+        public const int DefaultSoakTicks = 60000;
     }
 }

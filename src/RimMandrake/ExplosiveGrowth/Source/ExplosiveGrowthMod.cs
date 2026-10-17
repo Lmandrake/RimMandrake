@@ -17,112 +17,121 @@ namespace RimMandrake.ExplosiveGrowth
     // ════════════════════════════════════════════════════════════════════
     public class ExplosiveGrowthSettings : ModSettings
     {
-        // Master switch. Off: no soak forms, nothing charges, every patch no-ops. Every runtime read goes through On,
-        // which ANDs it with the Baroque Biomes roster toggle "ExplosiveGrowth" (two switches, both must be on).
+        // Master switch. Off: every patch no-ops, nothing charges: vanilla growth everywhere (all-off degrades to vanilla).
+        // Every runtime read goes through On, which ANDs it with the Baroque Biomes roster toggle "ExplosiveGrowth".
         public static bool enabled = true;
 
         /// <summary>The roster key of this engine in src/RimMandrake/Biomes.compose.json.</summary>
         public const string RosterKey = "ExplosiveGrowth";
 
-        /// <summary>What every mechanic reads: this page's switch AND the Baroque Biomes page's toggle for this engine.
-        /// Never Scribed; each switch keeps its own saved state.</summary>
         public static bool On => enabled && RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
 
-        // ── the ambient bands (PLANT_GROWTH_MERGE_NEVER_MEANT_APART, the former Jawa Plant Growth) ──
-        // Owner, 2026-10-16: "those mods are fusing! They were never meant to be apart. Especially because in dry
-        // places the plants won't be growing almost at all unless water is present, then they grow explosively."
-        // The shipped numbers carry over unchanged (PLANT_GROWTH_SPEC R-G2, ruling 6); joint tuning is owed.
-        // Off: in-scope plants grow at vanilla ambient speed; the soak (its own switch above) is unaffected.
-        public static bool bandsEnabled = true;
-        public static float defaultMultiplier = 4f;        // wild plants AND crops: on this world water limits farming, not time
-        public static float treeMultiplier = 2.5f;         // wood stays a decision
-        public static float terminatorMultiplier = 0.4f;   // where growth has stalled; below 1.0 on purpose
-        public static float wetAmbientMultiplier = 10f;    // ruling 6: x10 INSTEAD of x4 in the three wet biomes
-        public static float wetAmbientTreeMultiplier = 6.25f; // INVENTED: keeps the 2.5:4 tree ratio
-        public static float minGrowDaysToBoost = 1f;       // R-G5: a plant already this fast is left alone
+        // ── the ruled rates (design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md §2.5; defaults = the rulings) ──
+        // ONE factor per plant, multiplying vanilla's composite growth rate (light included: a dark cell stays dark).
+        public static float dryWetMultiplier = 10f;       // C6 / W3: a dry native on wet, lit ground
+        public static float dryDryMultiplier = 0.1f;      // C6 "Tenth speed": a dry native on dry ground
+        public static float wetNativeMultiplier = 4f;     // C1 "x4, always": a wet native, wet or dry
+        public static float treeRatio = 0.625f;           // EC1: anything yielding wood runs this share of its rate (2.5/4)
+        public static float stuntedMultiplier = 0.4f;     // stalled (terminator) biomes, unchanged by the rulings
+        public static bool vanillaCropsNeedWater = true;  // setting A (C4): default "need water nearby"
+        public static float vanillaDryMultiplier = 0.1f;  // OQ-16: a vanilla plant with no water nearby grows AND ages x0.1
+        public static int nearbyRadius = 2;               // OQ-17: "water nearby" = within 2 cells of a source
+        public static bool nativesSameRuleInOtherBiomes = false; // setting B (OQ-10): default vanilla, labelled UNSUPPORTED
 
-        /// <summary>What the band postfix reads: its switch AND the Baroque Biomes page's toggle for this engine.</summary>
-        public static bool BandsOn => bandsEnabled && RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
-
-        // ── the soak ─────────────────────────────────────────────────────
-        // Design doc §0 🄸: the soak multiplier stacks multiplicatively on the
-        // ambient band (x4 → ~x40 vanilla-relative, "a 3-day plant finishes in
-        // under two in-game hours").
-        public static float soakMultiplier = 10f;
-        // Default soak length for a source that does not say (§1: "hours to a
-        // day"). 🄸 INVENTED: a day.
-        public static float defaultSoakHours = 24f;
-        // R-G5's under-a-day clause.
+        // ── the cycle (§4) ───────────────────────────────────────────────
+        public static float defaultRuptureChance = 0.3333f; // C3 "1 in 3": the Burst odds of a dry native's cycle
+        public static float wetFruitFactor = 2f;          // C2 "fruit prolifically" (PROPOSED 2.0)
+        public static bool cropSelfFruitEnabled = true;   // EC3 / OQ-15: our natives sown as crops drop a full harvest
+        public static bool waterUseEnabled = true;        // EC3 / OQ-8: every fruiting plant uses the water on its cell
+        public static int cropDrawLevels = 1;             // D5: channel levels a fruiting plant draws (needs FlowWorks' exit)
+        public static bool dormancyEnabled = true;        // WP2: a plant below x1 ages at its slowed rate
+        public static bool tidalLockNoRest = true;        // OQ-7: on a tidally locked world a lit plant never rests
+        public static bool sealedGrowersVanilla = true;   // H1: basins, pots, hydroponics grow at vanilla speed, no cycle
+        public static bool waveStaggerEnabled = false;    // §7 fallback (3): stagger arming over a day (PF1: only if perf fails)
+        // R-G5's under-a-day clause and the fungal carve-out: these plants are Exempt (vanilla speed, no cycle).
         public static float minGrowDaysToSoak = 1f;
-        // 🄸 INVENTED generalisation of the fungal carve-out to the RM tier.
         public static bool cavePlantsNeverSoak = true;
-        // Owner, 2026-10-16: "there should just be an option in Baroque Biomes to allow the accelerated plant growth and
-        // explosive growth to apply to other biomes, but we won't test or support that." Off = the ruled default: both
-        // tiers run only on maps whose biome Baroque Biomes ships. No suite row covers the on state, by that ruling.
-        public static bool applyInOtherBiomes = false;
 
-        public static bool irrigationSoakEnabled = true;
-        public static bool gradientSurgeSoakEnabled = true;
-        public static bool weatherSoakEnabled = true;
+        // ── the water sources (§3; one switch each) ──────────────────────
+        public static bool naturalWaterEnabled = true;    // W2: river / fresh water / marsh / mud cells
+        public static bool spillWaterEnabled = true;      // W4: hose spills and poured water (standing-water filth)
+        public static bool irrigationSoakEnabled = true;  // a dug FlowWorks channel and its 8 neighbours
+        public static bool rainWaterEnabled = true;       // unroofed ground while it rains, and a few hours after (OQ-9)
+        public static float rainLingerHours = 3f;         // OQ-9 "a few hours" (PROPOSED 3)
+        public static bool rainPuddlesEnabled = true;     // OQ-9 "shown by puddles"
+        public static bool snowmeltEnabled = true;        // OQ-3: snow in the snowmelt biomes waters like rain
+        public static bool gradientSurgeSoakEnabled = true; // OQ-13: the salt line stays a water source
+        public static bool ashFreshEnabled = true;        // C5: a burnt cell counts as fresh for fire-adapted plants
+        public static float ashFlushDays = 3f;            // OQ-11: 3 days, restarted when a seedling appears
 
         // ── the charge ──────────────────────────────────────────────────
-        // 🄸 INVENTED: six in-game hours from full growth to the top; the tell
-        // ladder's tremble lands ~1.8 h before it, the creak ~0.9 h.
-        public static float chargeHours = 6f;
-        // 🄸 INVENTED: overgrown up to 2x natural scale (design doc §2 "~2×").
-        public static float maxOvergrowthScale = 2f;
-        // Staged re-print cadence (design doc §5 option 1). The perf gate
-        // tunes this; 250 = vanilla's rare-tick cadence.
-        public static int reprintIntervalTicks = 250;
+        public static float chargeHours = 6f;             // INVENTED: full growth to the top
+        public static float maxOvergrowthScale = 2f;      // INVENTED (design doc §2 "~2x")
+        public static int reprintIntervalTicks = 250;     // the tremble wobble cadence; swell steps re-mesh only on change
         public static bool hueShiftEnabled = true;
         public static bool tellSoundsEnabled = true;
         public static bool groundTellEnabled = true;
 
         // ── the tops ────────────────────────────────────────────────────
-        // A disabled variant falls back to the Churn (the default top); a
-        // disabled Churn makes the plant simply relax back to normal size.
         public static bool churnEnabled = true;
         public static bool burstEnabled = true;
         public static bool burstHurtsPawns = true;
         public static bool tinderEnabled = true;
         public static bool slimeEnabled = true;
         public static bool ruptureEnabled = true;
-        // 🄸 INVENTED: per rare-tick chance a pawn in a rupture cloud without
-        // full vacuum protection gains one mutation.
-        public static float ruptureMutationChance = 0.08f;
+        public static float ruptureMutationChance = 0.08f; // INVENTED
         public static bool flushEnabled = true;
 
         // ── the player verbs ────────────────────────────────────────────
-        // HARVEST: a charged plant harvested before the top yields swollen
-        // produce (§4). SURVIVE: cutting defuses it, and "the last swing is a
-        // gamble" — ruling 7 says trigger/weaponize stay unreliable, so this
-        // gamble is never tuned toward safety by default.
-        public static bool harvestJackpotEnabled = true;
-        public static bool lastSwingGambleEnabled = true;
-        // M10 / M2 (Greentide kit): grazing and the dry-air blower suppress
-        // encroachment.
+        public static bool harvestJackpotEnabled = true;  // OQ-14: wild plants only
+        public static bool lastSwingGambleEnabled = true; // OQ-14: wild plants only
         public static bool suppressionEnabled = true;
+
+        /// <summary>The rate sliders as the kernel takes them.</summary>
+        public static RM_RateSettings Rates => new RM_RateSettings
+        {
+            dryWet = dryWetMultiplier, dryDry = dryDryMultiplier, wetNative = wetNativeMultiplier, treeRatio = treeRatio,
+            stunted = stuntedMultiplier, vanillaDry = vanillaDryMultiplier, vanillaNeedsWater = vanillaCropsNeedWater,
+        };
 
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
+            // D18 save migration: the retired keys (bandsEnabled, defaultMultiplier, treeMultiplier, terminatorMultiplier,
+            // wetAmbient*, minGrowDaysToBoost, soakMultiplier, defaultSoakHours, applyInOtherBiomes, weatherSoakEnabled) are
+            // simply no longer read; a settings file holding them loads without error and every new key takes its default.
             Scribe_Values.Look(ref enabled, "enabled", true);
-            Scribe_Values.Look(ref bandsEnabled, "bandsEnabled", true);
-            Scribe_Values.Look(ref defaultMultiplier, "defaultMultiplier", 4f);
-            Scribe_Values.Look(ref treeMultiplier, "treeMultiplier", 2.5f);
-            Scribe_Values.Look(ref terminatorMultiplier, "terminatorMultiplier", 0.4f);
-            Scribe_Values.Look(ref wetAmbientMultiplier, "wetAmbientMultiplier", 10f);
-            Scribe_Values.Look(ref wetAmbientTreeMultiplier, "wetAmbientTreeMultiplier", 6.25f);
-            Scribe_Values.Look(ref minGrowDaysToBoost, "minGrowDaysToBoost", 1f);
-            Scribe_Values.Look(ref soakMultiplier, "soakMultiplier", 10f);
-            Scribe_Values.Look(ref defaultSoakHours, "defaultSoakHours", 24f);
+            Scribe_Values.Look(ref dryWetMultiplier, "dryWetMultiplier", 10f);
+            Scribe_Values.Look(ref dryDryMultiplier, "dryDryMultiplier", 0.1f);
+            Scribe_Values.Look(ref wetNativeMultiplier, "wetNativeMultiplier", 4f);
+            Scribe_Values.Look(ref treeRatio, "treeRatio", 0.625f);
+            Scribe_Values.Look(ref stuntedMultiplier, "stuntedMultiplier", 0.4f);
+            Scribe_Values.Look(ref vanillaCropsNeedWater, "vanillaCropsNeedWater", true);
+            Scribe_Values.Look(ref vanillaDryMultiplier, "vanillaDryMultiplier", 0.1f);
+            Scribe_Values.Look(ref nearbyRadius, "nearbyRadius", 2);
+            Scribe_Values.Look(ref nativesSameRuleInOtherBiomes, "nativesSameRuleInOtherBiomes", false);
+            Scribe_Values.Look(ref defaultRuptureChance, "defaultRuptureChance", 0.3333f);
+            Scribe_Values.Look(ref wetFruitFactor, "wetFruitFactor", 2f);
+            Scribe_Values.Look(ref cropSelfFruitEnabled, "cropSelfFruitEnabled", true);
+            Scribe_Values.Look(ref waterUseEnabled, "waterUseEnabled", true);
+            Scribe_Values.Look(ref cropDrawLevels, "cropDrawLevels", 1);
+            Scribe_Values.Look(ref dormancyEnabled, "dormancyEnabled", true);
+            Scribe_Values.Look(ref tidalLockNoRest, "tidalLockNoRest", true);
+            Scribe_Values.Look(ref sealedGrowersVanilla, "sealedGrowersVanilla", true);
+            Scribe_Values.Look(ref waveStaggerEnabled, "waveStaggerEnabled", false);
             Scribe_Values.Look(ref minGrowDaysToSoak, "minGrowDaysToSoak", 1f);
             Scribe_Values.Look(ref cavePlantsNeverSoak, "cavePlantsNeverSoak", true);
-            Scribe_Values.Look(ref applyInOtherBiomes, "applyInOtherBiomes", false);
+            Scribe_Values.Look(ref naturalWaterEnabled, "naturalWaterEnabled", true);
+            Scribe_Values.Look(ref spillWaterEnabled, "spillWaterEnabled", true);
             Scribe_Values.Look(ref irrigationSoakEnabled, "irrigationSoakEnabled", true);
+            Scribe_Values.Look(ref rainWaterEnabled, "rainWaterEnabled", true);
+            Scribe_Values.Look(ref rainLingerHours, "rainLingerHours", 3f);
+            Scribe_Values.Look(ref rainPuddlesEnabled, "rainPuddlesEnabled", true);
+            Scribe_Values.Look(ref snowmeltEnabled, "snowmeltEnabled", true);
             Scribe_Values.Look(ref gradientSurgeSoakEnabled, "gradientSurgeSoakEnabled", true);
-            Scribe_Values.Look(ref weatherSoakEnabled, "weatherSoakEnabled", true);
+            Scribe_Values.Look(ref ashFreshEnabled, "ashFreshEnabled", true);
+            Scribe_Values.Look(ref ashFlushDays, "ashFlushDays", 3f);
             Scribe_Values.Look(ref chargeHours, "chargeHours", 6f);
             Scribe_Values.Look(ref maxOvergrowthScale, "maxOvergrowthScale", 2f);
             Scribe_Values.Look(ref reprintIntervalTicks, "reprintIntervalTicks", 250);
@@ -144,7 +153,13 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         private static Vector2 scroll;
-        private static float settingsViewHeight = 1600f;
+        private static float settingsViewHeight = 2000f;
+
+        private static void Pct(Listing_Standard list, string label, ref float v, float min, float max, string fmt = "0.00")
+        {
+            list.Label(label + ": x" + v.ToString(fmt));
+            v = list.Slider(v, min, max);
+        }
 
         public void DoWindowContents(Rect inRect)
         {
@@ -154,83 +169,106 @@ namespace RimMandrake.ExplosiveGrowth
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            bool shellOff = !RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey);
 
             if (Group(list, "Mod switch", RimMandrake.Shared.SettingScope.Now, new[] { "enabled" }))
             {
-                list.CheckboxLabeled("Explosive plant growth enabled", ref enabled,
-                    "Off: water never soaks a plant, nothing swells, nothing reaches a top. Plants grow at whatever ambient rate the rest of your mod list gives them.\n\n"
+                list.CheckboxLabeled("Plant growth rules enabled", ref enabled,
+                    "Off: every plant grows at vanilla speed, nothing swells or reaches a top.\n\n"
                     + "The Baroque Biomes settings page has its own toggle for this engine (under Engines); both must be on.");
-                if (!RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey))
-                    list.Label("  The Baroque Biomes page has this engine switched OFF, so nothing here runs until it is back on.");
+                if (shellOff) list.Label("  The Baroque Biomes page has this engine switched OFF, so nothing here runs until it is back on.");
                 list.GapLine();
             }
 
-            if (Group(list, "Everyday growth (no water needed)", RimMandrake.Shared.SettingScope.Now, new[] { "bandsEnabled", "defaultMultiplier", "treeMultiplier", "terminatorMultiplier", "wetAmbientMultiplier", "wetAmbientTreeMultiplier", "minGrowDaysToBoost" }))
+            if (Group(list, "Growth rates", RimMandrake.Shared.SettingScope.Now, new[] { "dryWetMultiplier", "dryDryMultiplier", "wetNativeMultiplier", "treeRatio", "stuntedMultiplier" }))
             {
-                list.CheckboxLabeled("Everyday fast growth enabled", ref bandsEnabled,
-                    "The always-on growth rate of plants in Baroque Biomes' own biomes (see \"Where and which plants\" below), before any soak. "
-                    + "Exactly one band applies per plant: stalled biomes, else the wet jungles, else the normal band. "
-                    + "Off: those plants grow at vanilla speed until water soaks them. On by default.");
-                if (!RimMandrake.Biomes.RM_BiomesSettings.Enabled(RosterKey))
-                    list.Label("  The Baroque Biomes page has this engine switched OFF, so this does nothing until it is back on.");
-                list.Label("Wild plants & crops: x" + defaultMultiplier.ToString("0.0"));
-                defaultMultiplier = list.Slider(defaultMultiplier, 1f, 8f);
-                list.Label("Trees: x" + treeMultiplier.ToString("0.0") + " (kept lower than crops: wood stays a decision)");
-                treeMultiplier = list.Slider(treeMultiplier, 1f, 8f);
-                list.Label("Stalled biomes (terminator / poison forest): x" + terminatorMultiplier.ToString("0.00")
-                           + " (the multiplier itself: 1.0 = vanilla speed there)");
-                terminatorMultiplier = list.Slider(terminatorMultiplier, 0.1f, 2f);
-                list.Label("Wet jungles (Greentide, Miasma, Fever Wood): x" + wetAmbientMultiplier.ToString("0.0")
-                           + " (replaces the wild-plants band there, never stacks on it)");
-                wetAmbientMultiplier = list.Slider(wetAmbientMultiplier, 1f, 20f);
-                list.Label("Wet-jungle trees: x" + wetAmbientTreeMultiplier.ToString("0.00"));
-                wetAmbientTreeMultiplier = list.Slider(wetAmbientTreeMultiplier, 1f, 20f);
-                list.Label("Leave alone plants already faster than " + minGrowDaysToBoost.ToString("0.0") + " grow-days (applied when you close this window)");
-                minGrowDaysToBoost = list.Slider(minGrowDaysToBoost, 0.1f, 5f);
-                if (RM_ExplosiveGrowthRegistry.Ready)
-                    list.Label("  Scaling now: " + RM_ExplosiveGrowthRegistry.BandedCount + " plant kinds; "
-                               + RM_ExplosiveGrowthRegistry.BandExemptCount + " in scope but left alone; "
-                               + RM_ExplosiveGrowthRegistry.TerminatorBiomeCount + " stalled and "
-                               + RM_ExplosiveGrowthRegistry.WetAmbientBiomeCount + " wet biome(s) loaded.");
+                list.Label("One rate per plant, by its kind and whether its ground is wet. It multiplies the plant's normal growth, "
+                           + "and only while it has light: a dark plant does not grow at all.");
+                Pct(list, "Dry-land natives on wet ground", ref dryWetMultiplier, 1f, 20f, "0.0");
+                Pct(list, "Dry-land natives on dry ground", ref dryDryMultiplier, 0.01f, 1f);
+                Pct(list, "Jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion), wet or dry", ref wetNativeMultiplier, 1f, 10f, "0.0");
+                Pct(list, "Anything that yields wood grows at this share of its kind's rate", ref treeRatio, 0.1f, 1f, "0.000");
+                Pct(list, "Stalled biomes (terminator / poison forest)", ref stuntedMultiplier, 0.1f, 2f);
                 list.GapLine();
             }
 
-            if (Group(list, "The soak", RimMandrake.Shared.SettingScope.Now, new[] { "soakMultiplier", "irrigationSoakEnabled", "gradientSurgeSoakEnabled", "weatherSoakEnabled" }))
+            if (Group(list, "Vanilla crops and plants in our biomes", RimMandrake.Shared.SettingScope.Now, new[] { "vanillaCropsNeedWater", "vanillaDryMultiplier", "nearbyRadius" }))
             {
-                list.Label("Soaked growth: x" + soakMultiplier.ToString("0.0") + " on top of the plant's normal rate");
-                soakMultiplier = list.Slider(soakMultiplier, 1f, 30f);
-                list.CheckboxLabeled("Irrigation soaks: water-filled dug channels soak the ground beside them", ref irrigationSoakEnabled,
-                    "Needs RimMandrake: FlowWorks. Only DUG channels count — rivers and lakes never soak.");
-                list.CheckboxLabeled("Salt-line surges soak the fresh side", ref gradientSurgeSoakEnabled,
-                    "Needs the gradient-axis surge (RimMandrake: Environmental Hazards). The surge line decides which half blooms.");
-                list.CheckboxLabeled("Soaking rains soak open ground", ref weatherSoakEnabled,
-                    "Only weathers a roster names as soaking. None are named by default.");
+                list.CheckboxLabeled("Vanilla crops need water nearby (default)", ref vanillaCropsNeedWater,
+                    "On: in our biomes a vanilla crop or plant grows at vanilla speed only with water within reach; without it, "
+                    + "it grows and ages at the rate below. Off: vanilla crops grow normally. Our own plants outgrow them either way.");
+                Pct(list, "  Without water nearby, they grow and age at", ref vanillaDryMultiplier, 0.01f, 1f);
+                list.Label("  \"Nearby\" is within " + nearbyRadius + " cells of a water source");
+                nearbyRadius = Mathf.RoundToInt(list.Slider(nearbyRadius, 0f, 6f));
                 list.GapLine();
             }
 
-            if (Group(list, "Soak length", RimMandrake.Shared.SettingScope.NextPulse, new[] { "defaultSoakHours" }))
+            if (Group(list, "Our plants outside our biomes", RimMandrake.Shared.SettingScope.Now, new[] { "nativesSameRuleInOtherBiomes" }))
             {
-                list.Label("Default soak length: " + defaultSoakHours.ToString("0") + " h (sources that set their own length ignore this)");
-                defaultSoakHours = list.Slider(defaultSoakHours, 2f, 96f);
-                list.GapLine();
-            }
-
-            if (Group(list, "Where and which plants (everyday growth and the soak)", RimMandrake.Shared.SettingScope.Now, new[] { "applyInOtherBiomes", "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
-            {
-                list.CheckboxLabeled("UNSUPPORTED: also apply in other mods' and the base game's biomes", ref applyInOtherBiomes,
-                    "Off (default): everyday growth and the soak run only on maps whose biome Baroque Biomes ships, for every plant "
-                    + "growing there (minus the exemptions).\n\n"
-                    + "On: they run in every biome. Untested and unsupported: it should work, but nobody validates it. Applies at once.");
+                list.CheckboxLabeled("UNSUPPORTED: our plants follow the same rule in other biomes", ref nativesSameRuleInOtherBiomes,
+                    "Off (default): outside Baroque Biomes' own biomes our plants grow at vanilla speed and never cycle.\n\n"
+                    + "On: they grow x10 watered / x0.1 dry (and cycle) everywhere. Untested and unsupported: it should work, "
+                    + "but nobody validates it. Vanilla plants are never affected outside our biomes.");
                 if (RM_ExplosiveGrowthRegistry.ScopeForcedBy != null)
                     list.Label("  A campaign layer on your mod list (" + RM_ExplosiveGrowthRegistry.ScopeForcedBy
                                + ") puts every biome in scope, so this option changes nothing while it is loaded.");
-                if (RM_ExplosiveGrowthRegistry.Ready)
-                    list.Label("  Baroque Biomes biomes loaded: " + RM_ExplosiveGrowthRegistry.HomeBiomes.Count
-                               + "; plant kinds that can soak there: " + RM_ExplosiveGrowthRegistry.CountSoaking + ".");
-                list.Label("Plants faster than " + minGrowDaysToSoak.ToString("0.0") + " grow-days never soak (applied when you close this window)");
+                list.GapLine();
+            }
+
+            if (Group(list, "The cycle at maturity", RimMandrake.Shared.SettingScope.Now, new[] { "defaultRuptureChance", "wetFruitFactor", "cropSelfFruitEnabled", "waterUseEnabled", "cropDrawLevels", "waveStaggerEnabled" }))
+            {
+                list.Label("A grown dry-land native on wet, lit ground fruits and throws many sprouts (or bursts) and dies; its "
+                           + "seedlings carry on. A jungle native fruits heavily, then withers, leaving a few sprouts.");
+                list.Label("Dry natives burst instead of fruiting: " + defaultRuptureChance.ToStringPercent() + " (plants can override)");
+                defaultRuptureChance = list.Slider(defaultRuptureChance, 0f, 1f);
+                Pct(list, "Jungle natives' fruit, times a normal harvest", ref wetFruitFactor, 1f, 5f, "0.0");
+                list.CheckboxLabeled("Our plants sown as crops fruit on their own: a full harvest, and their water is used up", ref cropSelfFruitEnabled);
+                list.CheckboxLabeled("Every fruiting plant uses the water on its cell", ref waterUseEnabled,
+                    "Spilled water and puddles vanish, the after-rain wet ends there. Rivers, mud and a running flood are never used up.");
+                list.Label("  Channel levels a fruiting plant drinks: " + cropDrawLevels + " (waits on FlowWorks; no effect yet)");
+                cropDrawLevels = Mathf.RoundToInt(list.Slider(cropDrawLevels, 0f, 4f));
+                list.CheckboxLabeled("Stagger a flood's wave over a day (performance fallback)", ref waveStaggerEnabled,
+                    "Off (default): every grown plant on newly wet ground arms at once. On: each cell arms in its own hour of the day.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Ageing, light and growers", RimMandrake.Shared.SettingScope.Now, new[] { "dormancyEnabled", "tidalLockNoRest", "sealedGrowersVanilla", "minGrowDaysToSoak", "cavePlantsNeverSoak" }))
+            {
+                list.CheckboxLabeled("A plant growing slower than normal also ages slower", ref dormancyEnabled,
+                    "A dry native at x0.1 lives ten times as long. Only the water rule slows ageing; darkness and cold never do.");
+                list.CheckboxLabeled("On a tidally locked world, lit plants never rest", ref tidalLockNoRest,
+                    "Always lit means always growing. Only on a world a loaded campaign marks as tidally locked.");
+                list.CheckboxLabeled("Basins, pots and hydroponics grow at vanilla speed", ref sealedGrowersVanilla,
+                    "They are their own water source: no bonus, no cycle.");
+                list.Label("Plants faster than " + minGrowDaysToSoak.ToString("0.0") + " grow-days keep vanilla speed (applied when you close this window)");
                 minGrowDaysToSoak = list.Slider(minGrowDaysToSoak, 0.1f, 5f);
-                list.CheckboxLabeled("Cave plants and fungi never soak", ref cavePlantsNeverSoak,
-                    "Fungus does not drink water the way this mechanic means. Plants a roster lists explicitly are unaffected. Applied when you close this window.");
+                list.CheckboxLabeled("Cave plants and fungi keep vanilla speed", ref cavePlantsNeverSoak,
+                    "Plants a roster lists explicitly are unaffected. Applied when you close this window.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Water sources", RimMandrake.Shared.SettingScope.Now, new[] { "naturalWaterEnabled", "spillWaterEnabled", "irrigationSoakEnabled", "rainWaterEnabled", "snowmeltEnabled", "gradientSurgeSoakEnabled", "ashFreshEnabled", "ashFlushDays" }))
+            {
+                list.Label("Ground is wet while water is on it, and only then. Clean water waters every plant; other liquids only plants adapted to them.");
+                list.CheckboxLabeled("Rivers, fresh water, marsh and mud (the cell itself)", ref naturalWaterEnabled);
+                list.CheckboxLabeled("Spilled and poured water", ref spillWaterEnabled, "A hose spill of water lies as standing water until a plant drinks it or it soaks away.");
+                list.CheckboxLabeled("Dug channels holding water (FlowWorks): the channel and the ground beside it", ref irrigationSoakEnabled);
+                list.CheckboxLabeled("Rain on open ground", ref rainWaterEnabled);
+                list.CheckboxLabeled("Falling snow melts like rain where the biome says so", ref snowmeltEnabled);
+                list.CheckboxLabeled("Salt-line surges water the fresh side", ref gradientSurgeSoakEnabled,
+                    "Needs the gradient-axis surge (RimMandrake: Environmental Hazards).");
+                list.CheckboxLabeled("Fresh ash counts as fresh water for fire-adapted plants", ref ashFreshEnabled, "Needs the Pyrelands' ash field.");
+                list.Label("  Fresh for " + ashFlushDays.ToString("0.0") + " days after a burn, restarted when a seedling appears");
+                ashFlushDays = list.Slider(ashFlushDays, 0.5f, 10f);
+                list.GapLine();
+            }
+
+            // Read when a rain STOPS (RM_MapComponent_ExplosiveGrowth.UpdateRain): a change applies from the next rain's end.
+            if (Group(list, "After the rain", RimMandrake.Shared.SettingScope.NextPulse, new[] { "rainLingerHours", "rainPuddlesEnabled" }))
+            {
+                list.Label("The ground stays wet " + rainLingerHours.ToString("0.0") + " h after the rain stops");
+                rainLingerHours = list.Slider(rainLingerHours, 0f, 12f);
+                list.CheckboxLabeled("Rain leaves puddles (the visible reason the ground is still wet)", ref rainPuddlesEnabled);
                 list.GapLine();
             }
 
@@ -240,21 +278,19 @@ namespace RimMandrake.ExplosiveGrowth
                 chargeHours = list.Slider(chargeHours, 1f, 24f);
                 list.Label("Overgrown up to " + maxOvergrowthScale.ToString("0.00") + "x natural size");
                 maxOvergrowthScale = list.Slider(maxOvergrowthScale, 1f, 3f);
-                list.Label("Re-draw a swelling plant every " + reprintIntervalTicks + " ticks (lower = smoother, costlier)");
+                list.Label("Trembling plants wobble every " + reprintIntervalTicks + " ticks (lower = smoother, costlier)");
                 reprintIntervalTicks = Mathf.RoundToInt(list.Slider(reprintIntervalTicks, 60f, 2000f));
                 list.CheckboxLabeled("Swelling plants shift to a wrong hue", ref hueShiftEnabled);
                 list.CheckboxLabeled("Strain sounds (the creak before the top)", ref tellSoundsEnabled);
-                list.CheckboxLabeled("The ground darkens and sprouts when a plant starts to charge", ref groundTellEnabled);
+                list.CheckboxLabeled("The ground darkens when a plant starts to charge", ref groundTellEnabled);
                 list.GapLine();
             }
 
-            if (Group(list, "The tops (a disabled top falls back to the Churn)", RimMandrake.Shared.SettingScope.Now, new[] { "churnEnabled", "burstEnabled", "burstHurtsPawns", "tinderEnabled", "slimeEnabled", "ruptureEnabled", "ruptureMutationChance", "flushEnabled" }))
+            if (Group(list, "The tops (a disabled top falls back to fruiting)", RimMandrake.Shared.SettingScope.Now, new[] { "churnEnabled", "burstEnabled", "burstHurtsPawns", "tinderEnabled", "slimeEnabled", "ruptureEnabled", "ruptureMutationChance", "flushEnabled" }))
             {
-                list.CheckboxLabeled("Churn: split, fruit, sow sprouts (the default)", ref churnEnabled,
-                    "Off: a fully charged plant just relaxes back to normal size.");
-                list.CheckboxLabeled("Burst: dry-adapted plants pop and sow into your zones", ref burstEnabled);
-                list.CheckboxLabeled("  Bursts can bruise and knock down nearby pawns", ref burstHurtsPawns,
-                    "Injury and knockdown only — a burst never downs or kills on its own.");
+                list.CheckboxLabeled("The cycle (fruit and sprouts) itself", ref churnEnabled, "Off: a grown plant never charges and just keeps growing at its rate.");
+                list.CheckboxLabeled("Burst: a dry native can pop and sow into your zones", ref burstEnabled, "Off: it fruits instead.");
+                list.CheckboxLabeled("  Bursts can bruise and knock down nearby pawns", ref burstHurtsPawns, "Injury and knockdown only; a burst never downs or kills on its own.");
                 list.CheckboxLabeled("Tinder: fire-adapted bursts leave fuel", ref tinderEnabled);
                 list.CheckboxLabeled("Slime: slime-fed plants turn the ground to slime", ref slimeEnabled);
                 list.CheckboxLabeled("Rupture: contaminated plants vent gas and spawn things", ref ruptureEnabled);
@@ -266,11 +302,18 @@ namespace RimMandrake.ExplosiveGrowth
 
             if (Group(list, "Player verbs", RimMandrake.Shared.SettingScope.Now, new[] { "harvestJackpotEnabled", "lastSwingGambleEnabled", "suppressionEnabled" }))
             {
-                list.CheckboxLabeled("Harvesting a swollen plant pays extra", ref harvestJackpotEnabled);
-                list.CheckboxLabeled("The last swing is a gamble (a late cut or harvest can set it off)", ref lastSwingGambleEnabled);
+                list.CheckboxLabeled("Harvesting a swollen wild plant pays extra", ref harvestJackpotEnabled, "Never on crops: a crop's harvest is exactly its full yield.");
+                list.CheckboxLabeled("The last swing at a swollen wild plant is a gamble", ref lastSwingGambleEnabled, "Never on crops.");
                 list.CheckboxLabeled("Grazing and dry air suppress encroachment", ref suppressionEnabled,
-                    "Where animals graze (and where a dry-air blower runs), soak is refused and charging plants relax for a few days.");
+                    "Where animals graze (and where a dry-air blower runs), water does not count and charging plants relax for a few days.");
                 list.GapLine();
+            }
+
+            if (RM_ExplosiveGrowthRegistry.Ready)
+            {
+                int[] a = RM_ExplosiveGrowthRegistry.CountByArchetype;
+                list.Label("Plant kinds now: dry natives " + a[0] + ", jungle natives " + a[1] + ", fire-adapted " + a[2]
+                           + ", vanilla speed (exempt) " + a[3] + ", vanilla " + a[4] + ". Biomes: " + RM_ExplosiveGrowthRegistry.HomeBiomes.Count + " of ours.");
             }
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
@@ -348,7 +391,7 @@ namespace RimMandrake.ExplosiveGrowth
             RimMandrake.Biomes.RM_BiomesSettings.mechanicsGated.Add(ExplosiveGrowthSettings.RosterKey);
         }
 
-        public override string SettingsCategory() => "Plant Growth (everyday and explosive)";
+        public override string SettingsCategory() => "Plant Growth (water, rates and the cycle)";
 
         public override void DoSettingsWindowContents(Rect inRect) => settings.DoWindowContents(inRect);
 

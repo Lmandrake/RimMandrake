@@ -1,0 +1,10 @@
+{
+  "_doc": "OQ-2 / OQ-4 (owner, by card, 2026-10-16): five density classes, new biomes first; the class numbers live in each biome file (its plantDensity and wildPlantRegrowDays), and selftest_biome_density_classes.py checks every biome that declares a class against THIS one table. A biome declares its class with the comment <!-- RM_DENSITY_CLASS: <name> --> inside its BiomeDef. Existing biomes are NOT moved (OQ-4 'new biomes first'; moving one is a review row, consensus A10). Numbers PROPOSED (explosive_growth_consensus_2026-10-16.md section 6.4). choked is the AUTHORED pair: Map Designer folds any density above 1 into regrow days (bench design pass section 8), so its live pair reads about 1 / 0.56.",
+  "classes": {
+    "barren": {"plantDensity": 0.01, "wildPlantRegrowDays": 35},
+    "sparse": {"plantDensity": 0.15, "wildPlantRegrowDays": 25},
+    "normal": {"plantDensity": 0.4, "wildPlantRegrowDays": 20},
+    "dense":  {"plantDensity": 0.9, "wildPlantRegrowDays": 15},
+    "choked": {"plantDensity": 16, "wildPlantRegrowDays": 9}
+  }
+}

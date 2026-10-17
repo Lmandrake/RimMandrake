@@ -89,12 +89,22 @@
     <terminatorBiomes>
       <li>PoisonForest</li>
     </terminatorBiomes>
-    <!-- Ruling 6 (2026-09-21): the campaign twins of the three wet jungles. -->
-    <wetAmbientBiomes>
+    <!-- Archetype seeds, campaign half (spec §4.3): the RUT_ twins of the wet biomes (C1, WP3). -->
+    <wetNativeBiomes>
       <li>RUT_Greentide</li>
       <li>RUT_Miasma</li>
       <li>RUT_FeverWood</li>
-    </wetAmbientBiomes>
+      <li>RUT_Webwork</li>
+      <li>RUT_Contagion</li>
+    </wetNativeBiomes>
+    <!-- OQ-3 (owner 2026-10-16): "Blowing snow melts like water and rain yes. It doesn't snow fuel." Snow in these two
+         waters like rain (clean water, the same unroofed-cell rule). The five no-precipitation biomes need nothing here. -->
+    <snowmeltBiomes>
+      <li>RUT_FuelSnows</li>
+      <li>RUT_Umbra</li>
+    </snowmeltBiomes>
+    <!-- OQ-7 (by card): Ash'karr is tidally locked: "always lit means always growing", so a lit plant never rests. -->
+    <tidallyLockedWorld>true</tidallyLockedWorld>
   </RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef>
 
 </Defs>

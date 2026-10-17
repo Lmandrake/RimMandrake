@@ -18,16 +18,23 @@ namespace RimMandrake.ExplosiveGrowth
         public float charge;
         public RM_TellStage stage;
         public float clockFactor = 1f;
+        /// <summary>The printed swell step (unsaved; 0 after a load re-meshes once).</summary>
+        public byte sizeStep;
     }
 
     /// <summary>The plant on a cell, as the ledger needs it.</summary>
     public interface IEgSink<K>
     {
-        /// <summary>false when no live plant stands on the cell.</summary>
-        bool TryGetPlant(K c, out int plantId, out float growth, out bool soaks);
-        /// <summary>vanilla Plant.GrowthRate (asked lazily: it is not free).</summary>
+        /// <summary>false when no live plant stands on the cell. cycles: the plant runs the cycle here (archetype, scope,
+        /// not sealed, its top not switched off).</summary>
+        bool TryGetPlant(K c, out int plantId, out float growth, out bool cycles);
+        /// <summary>The cycle's water is on the cell for THIS plant (any live source it accepts; RM_Kernel.CycleWet).
+        /// Presence, read now: there is no settle state and no re-arm timer (ruling W3).</summary>
+        bool CycleWet(K c);
+        /// <summary>vanilla Plant.GrowthRate (asked lazily: it is not free). 0 = dark, cold, dormant: never arms, holds.</summary>
         float GrowthRate(K c);
         float NewClockFactor(K c);
+        int Hash(K c);
         void OnDirty(K c);
         void OnArmed(K c);
         void OnCreak(K c);
@@ -84,7 +91,9 @@ namespace RimMandrake.ExplosiveGrowth
         public static float VisualScale(float charge, float maxOvergrowthScale, bool wobbleParity)
         {
             if (charge <= SwellAt) return 1f;
-            float s = 1f + (maxOvergrowthScale - 1f) * InverseLerp(SwellAt, 1f, charge);
+            // Quantised to SizeStep's eight steps (the re-mesh brake, spec §7): the size a print shows only changes when
+            // the step does, so re-meshing on a step change is exact.
+            float s = 1f + (maxOvergrowthScale - 1f) * (SizeStep(charge) / 8f);
             if (charge >= TrembleAt && charge < SilenceAt) s *= wobbleParity ? 1.035f : 0.965f;
             return s;
         }
@@ -97,9 +106,7 @@ namespace RimMandrake.ExplosiveGrowth
             return (float)Math.Ceiling(h * 4f) / 4f;
         }
 
-        public static float SoakFactor(float soakMultiplier) { return Math.Max(1f, soakMultiplier); }
-
-        // The effective top after the per-top settings: a disabled variant falls back to Churn; a disabled Churn is None.
+        // EffectiveTop: a disabled variant falls back to Churn; a disabled Churn is None (the plant never charges).
         // Tops: 0 Churn 1 Burst 2 Slime 3 Tinder 4 Rupture 5 Flush 6 None.
         public static byte EffectiveTop(byte top, bool burst, bool tinder, bool slime, bool rupture, bool flush, bool churn)
         {
@@ -126,25 +133,127 @@ namespace RimMandrake.ExplosiveGrowth
         public static int NextCursor(int cursor) { return (cursor + 1) % SliceCount; }
         public static bool InSurgeBand(float salinity) { return !(salinity < SurgeFreshMin || salinity > SurgeFreshMax); }
 
-        // PLANT_GROWTH_MERGE_NEVER_MEANT_APART (owner, 2026-10-16: "those mods are fusing! They were never meant to be
-        // apart"): the ambient bands of the former Jawa Plant Growth. Exactly one band applies to a plant and they
-        // REPLACE each other, never stack: terminator, else wet, else the default/tree band. 1 = untouched (exempt, out
-        // of the shared scope). The soak multiplies on top of whatever this returns.
-        public static float AmbientBand(bool inScope, bool exempt, bool terminatorBiome, bool wetBiome, bool tree,
-                                        float defaultMult, float treeMult, float terminatorMult, float wetMult, float wetTreeMult)
+        // ══════════════ THE RULED RATES (design/RimMandrake/explosive_growth_ruled_spec_2026-10-16.md §2.5) ══════════════
+        // ONE factor r per plant, multiplying vanilla's composite GrowthRate (which already holds light: a dark cell stays
+        // 0, r never lifts a zero). r REPLACES every band of the old engine, never stacks.
+
+        /// <summary>The §2.5 moisture factor r. inScope: the plant's map is in the engine's scope for this plant (our
+        /// biome, or setting B for a native). stalled: the map's biome is a stunted (terminator) biome. sealed: the plant
+        /// stands in a basin/pot/hydroponics (H1: vanilla speed). wet: an accepted water source is on the cell.
+        /// waterNearby: an accepted clean source within nearbyRadius (vanilla plants, setting A).</summary>
+        public static float MoistureFactor(RM_Archetype a, bool inScope, bool stalled, bool sealedGrower, bool wet, bool ashFresh,
+                                           bool woody, bool waterNearby, RM_RateSettings s)
         {
-            if (!inScope || exempt) return 1f;
-            if (terminatorBiome) return terminatorMult;
-            if (wetBiome) return tree ? wetTreeMult : wetMult;
-            return tree ? treeMult : defaultMult;
+            if (!inScope || sealedGrower || a == RM_Archetype.Exempt) return 1f;
+            if (a == RM_Archetype.Vanilla) return !s.vanillaNeedsWater || waterNearby ? 1f : s.vanillaDry;
+            if (stalled) return s.stunted;
+            float tree = woody ? s.treeRatio : 1f;
+            switch (a)
+            {
+                case RM_Archetype.WetNative: return s.wetNative * tree;
+                case RM_Archetype.FireAdapted: return (wet || ashFresh ? s.dryWet : s.dryDry) * tree;
+                default: return (wet ? s.dryWet : s.dryDry) * tree;
+            }
+        }
+
+        /// <summary>Does this archetype run the cycle (charge, tells, outcome) at maturity? Only natives, in scope, unsealed,
+        /// outside a stalled biome.</summary>
+        public static bool Cycles(RM_Archetype a, bool inScope, bool stalled, bool sealedGrower)
+        {
+            if (!inScope || stalled || sealedGrower) return false;
+            return a == RM_Archetype.DryNative || a == RM_Archetype.WetNative || a == RM_Archetype.FireAdapted;
+        }
+
+        /// <summary>Is the cycle's water there? Dry natives need a source (fire-adapted also take fresh ash); wet natives
+        /// cycle at home whatever the ground (C1 "x4, always"; spec §7 "every wet native cycles forever").</summary>
+        public static bool CycleWet(RM_Archetype a, bool wet, bool ashFresh)
+        {
+            if (a == RM_Archetype.WetNative) return true;
+            if (a == RM_Archetype.FireAdapted) return wet || ashFresh;
+            return wet;
+        }
+
+        /// <summary>The outcome at the top of a charge (§4.1, §4.2, §4.4; OQ-5, OQ-6, OQ-14, OQ-15). top is the EFFECTIVE top
+        /// (after the per-top switches). ruptureChance &lt; 0 = the default for the archetype (dry: defaultChance; wet: 0).
+        /// roll in [0,1). A Burst switched off never bursts: the plant fruits instead.</summary>
+        public static RM_Outcome ResolveOutcome(RM_Archetype a, byte top, float ruptureChance, float defaultChance, float roll,
+                                                bool nativeCrop, bool cropSelfFruit, bool burstEnabled)
+        {
+            if (top == 6) return RM_Outcome.None;
+            if (nativeCrop && cropSelfFruit) return RM_Outcome.SelfFruit;
+            if (top == 2 || top == 3 || top == 4 || top == 5) return RM_Outcome.OwnTop;   // Slime, Tinder, Rupture, Flush: own odds
+            float chance = ruptureChance >= 0f ? ruptureChance : a == RM_Archetype.WetNative ? 0f : defaultChance;
+            if (burstEnabled && roll < chance) return RM_Outcome.Burst;
+            return a == RM_Archetype.WetNative ? RM_Outcome.Wither : RM_Outcome.Fruit;
+        }
+
+        /// <summary>Dormancy (WP2, §5.2): ticks to take off the coming 2000-tick age step so the plant ages at r. Applied in a
+        /// PREFIX, before vanilla adds 2000 and checks Dying. rand01 rounds the fraction. 0 when r &gt;= 1.</summary>
+        public static int AgeRemoval(float r, float rand01)
+        {
+            if (!(r < 1f)) return 0;
+            if (r < 0f) r = 0f;
+            float t = (1f - r) * 2000f;
+            int whole = (int)Math.Floor(t);
+            return whole + (t - whole > rand01 ? 1 : 0);
+        }
+
+        /// <summary>§7 fallback (3), OFF by default: a cell may arm only in its own hour of the day, the hour a deterministic
+        /// hash of the cell picks, so a wave rolls across the map over a day and a reload replays it.</summary>
+        public static bool StaggerOpen(int cellHash, int now)
+        {
+            unchecked
+            {
+                uint h = (uint)cellHash * 2654435761u;
+                int delay = (int)(h % 60000u);
+                return ((now + delay) % 60000) < TicksPerHour;
+            }
+        }
+
+        /// <summary>Rain (OQ-9): an unroofed cell is wet while a water rain runs, and until lingerUntil after it stops,
+        /// unless a fruiting plant used that water after the rain stopped (consumedAt &gt;= stoppedAt).</summary>
+        public static bool RainWet(bool rainingNow, int now, int stoppedAt, int lingerUntil, int consumedAt)
+        {
+            if (rainingNow) return true;
+            if (now >= lingerUntil) return false;
+            return consumedAt < stoppedAt;
+        }
+
+        /// <summary>The re-mesh brake (§7): the printed swell moves in eight steps, so a charging plant is re-meshed only when
+        /// its step or tell stage changes (plus the tremble wobble on a reprint).</summary>
+        public static byte SizeStep(float charge)
+        {
+            if (charge <= SwellAt) return 0;
+            int k = 1 + (int)(InverseLerp(SwellAt, 1f, charge) * 7.999f);
+            return (byte)(k > 8 ? 8 : k);
         }
     }
 
-    /// <summary>One map's soak grid, suppression grid and charge records, and the pass over them.</summary>
+    /// <summary>The ruled archetypes (§4). Vanilla = a plant our tiers do not ship (setting A governs it).</summary>
+    public enum RM_Archetype : byte { DryNative = 0, WetNative = 1, FireAdapted = 2, Exempt = 3, Vanilla = 4 }
+
+    /// <summary>What a fully charged plant does (§4).</summary>
+    public enum RM_Outcome : byte { None = 0, Fruit = 1, Burst = 2, Wither = 3, SelfFruit = 4, OwnTop = 5 }
+
+    /// <summary>The rate sliders, defaults = the ruled numbers.</summary>
+    public struct RM_RateSettings
+    {
+        public float dryWet, dryDry, wetNative, treeRatio, stunted, vanillaDry;
+        public bool vanillaNeedsWater;
+        public static RM_RateSettings Ruled => new RM_RateSettings
+        {
+            dryWet = 10f, dryDry = 0.1f, wetNative = 4f, treeRatio = 0.625f, stunted = 0.4f, vanillaDry = 0.1f, vanillaNeedsWater = true,
+        };
+    }
+
+    /// <summary>One map's TIMED sources (flood / surge / API pushes, which carry their own length), the suppression grid,
+    /// the ash-fresh restarts and the charge records, and the pass over them. Every other water source is read on demand
+    /// through the sink (presence model, spec §2): this ledger never decides wetness by itself.</summary>
     public sealed class RM_EgLedger<K>
     {
         public Dictionary<K, int> soakUntil = new Dictionary<K, int>();
         public Dictionary<K, int> suppressedUntil = new Dictionary<K, int>();
+        public Dictionary<K, int> ashUntil = new Dictionary<K, int>();
         public Dictionary<K, RM_ChargeRecord> charges = new Dictionary<K, RM_ChargeRecord>();
         private readonly List<K> tmp = new List<K>();
 
@@ -154,21 +263,21 @@ namespace RimMandrake.ExplosiveGrowth
             return suppressedUntil.Count != 0 && suppressedUntil.TryGetValue(c, out until) && now < until;
         }
 
+        /// <summary>A live timed source (flood, surge, API push) on the cell.</summary>
         public bool IsSoaked(K c, int now)
         {
             int until;
-            return soakUntil.Count != 0 && soakUntil.TryGetValue(c, out until) && now < until;
+            return soakUntil.Count != 0 && soakUntil.TryGetValue(c, out until) && now < until && !IsSuppressed(c, now);
         }
 
-        /// <summary>EGROWTH_SOAK_FIX_DURATION_INT_WRAP: now + ticks clamped to int.MaxValue. The public API takes any int, and
-        /// a huge duration wrapped negative, so the soak/suppression was expired the moment it was written.</summary>
+        /// <summary>EGROWTH_SOAK_FIX_DURATION_INT_WRAP: now + ticks clamped to int.MaxValue.</summary>
         public static int Deadline(int now, int ticks)
         {
             return (int)Math.Min((long)now + Math.Max(1, ticks), int.MaxValue);
         }
 
-        /// <summary>allowed = setting on, in bounds, biome not a carve-out. Extends, never shortens, an existing soak;
-        /// refused on suppressed ground.</summary>
+        /// <summary>A timed source (a running flood re-pushes each pulse). Extends, never shortens; refused on suppressed
+        /// ground or when not allowed.</summary>
         public bool TrySoak(K c, int now, int ticks, bool allowed)
         {
             if (!allowed) return false;
@@ -190,13 +299,17 @@ namespace RimMandrake.ExplosiveGrowth
             }
         }
 
-        public float GrowthFactor(K c, int now, bool plantSoaks, float soakMultiplier)
+        /// <summary>OQ-11: ash-fresh restarts when a seedling appears on fresh ash.</summary>
+        public void RestartAsh(K c, int now, int windowTicks)
         {
-            if (soakUntil.Count == 0) return 1f;
+            int until = Deadline(now, windowTicks), prior;
+            if (!ashUntil.TryGetValue(c, out prior) || prior < until) ashUntil[c] = until;
+        }
+
+        public bool AshRestarted(K c, int now)
+        {
             int until;
-            if (!soakUntil.TryGetValue(c, out until) || now >= until) return 1f;
-            if (!plantSoaks) return 1f;
-            return RM_ExplosiveGrowthKernel.SoakFactor(soakMultiplier);
+            return ashUntil.Count != 0 && ashUntil.TryGetValue(c, out until) && now < until;
         }
 
         public bool TryGetCharge(K c, int plantId, out RM_ChargeRecord rec)
@@ -233,6 +346,7 @@ namespace RimMandrake.ExplosiveGrowth
         {
             PruneDict(soakUntil, now);
             PruneDict(suppressedUntil, now);
+            PruneDict(ashUntil, now);
         }
 
         private void PruneDict(Dictionary<K, int> d, int now)
@@ -243,28 +357,26 @@ namespace RimMandrake.ExplosiveGrowth
             for (int i = 0; i < tmp.Count; i++) d.Remove(tmp[i]);
         }
 
-        /// <summary>Step 1 (arm what is soaked and mature) and step 2 (the charge) of the map pass.</summary>
-        public void Pass<S>(S sink, int now, int dt, bool reprint, float chargeTicks, bool tellSounds) where S : IEgSink<K>
+        /// <summary>Step 1: arm every candidate that cycles, is mature, has its water, is lit and growing (and, with the
+        /// stagger on, is in its hour). The full-map wave (PF1 option 2): candidates are a slice of every plant on the map.
+        /// Step 2: the charge. Re-mesh only on a tell-stage or size-step change, plus the tremble wobble on a reprint.</summary>
+        public void Pass<S>(S sink, IList<K> candidates, int now, int dt, bool reprint, float chargeTicks, bool tellSounds,
+                            bool stagger) where S : IEgSink<K>
         {
-            if (soakUntil.Count > 0)
+            if (candidates != null)
             {
-                tmp.Clear();
-                tmp.AddRange(soakUntil.Keys);
-                for (int i = 0; i < tmp.Count; i++)
+                for (int i = 0; i < candidates.Count; i++)
                 {
-                    K c = tmp[i];
-                    int id; float growth; bool soaks;
-                    if (!sink.TryGetPlant(c, out id, out growth, out soaks) || !soaks) continue;
-                    if (growth < RM_ExplosiveGrowthKernel.MatureGrowth)
-                    {
-                        if (reprint) sink.OnDirty(c);
-                        continue;
-                    }
-                    if (!charges.ContainsKey(c) && sink.GrowthRate(c) > 0f)
-                    {
-                        charges[c] = new RM_ChargeRecord { plantId = id, charge = RM_ExplosiveGrowthKernel.ArmedCharge, stage = RM_TellStage.Ground, clockFactor = sink.NewClockFactor(c) };
-                        sink.OnArmed(c);
-                    }
+                    K c = candidates[i];
+                    if (charges.ContainsKey(c)) continue;
+                    int id; float growth; bool cycles;
+                    if (!sink.TryGetPlant(c, out id, out growth, out cycles) || !cycles) continue;
+                    if (growth < RM_ExplosiveGrowthKernel.MatureGrowth) continue;
+                    if (IsSuppressed(c, now) || !sink.CycleWet(c)) continue;
+                    if (stagger && !RM_ExplosiveGrowthKernel.StaggerOpen(sink.Hash(c), now)) continue;
+                    if (!(sink.GrowthRate(c) > 0f)) continue;
+                    charges[c] = new RM_ChargeRecord { plantId = id, charge = RM_ExplosiveGrowthKernel.ArmedCharge, stage = RM_TellStage.Ground, clockFactor = sink.NewClockFactor(c) };
+                    sink.OnArmed(c);
                 }
             }
 
@@ -276,21 +388,20 @@ namespace RimMandrake.ExplosiveGrowth
                 {
                     K c = tmp[i];
                     RM_ChargeRecord rec = charges[c];
-                    int id; float growth; bool soaks;
-                    if (!sink.TryGetPlant(c, out id, out growth, out soaks) || id != rec.plantId)
+                    int id; float growth; bool cycles;
+                    if (!sink.TryGetPlant(c, out id, out growth, out cycles) || id != rec.plantId)
                     {
                         charges.Remove(c);
                         continue;
                     }
-                    if (!soaks)
+                    if (!cycles)
                     {
                         charges.Remove(c);
                         sink.OnDirty(c);
                         continue;
                     }
 
-                    int until;
-                    bool wet = soakUntil.TryGetValue(c, out until) && now < until && !IsSuppressed(c, now);
+                    bool wet = !IsSuppressed(c, now) && sink.CycleWet(c);
                     rec.charge = RM_ExplosiveGrowthKernel.StepCharge(rec.charge, wet, sink.GrowthRate(c) > 0f, dt, chargeTicks, rec.clockFactor);
 
                     if (rec.charge <= 0f)
@@ -300,14 +411,18 @@ namespace RimMandrake.ExplosiveGrowth
                         continue;
                     }
 
+                    bool dirty = false;
                     RM_TellStage want = RM_ExplosiveGrowthKernel.StageFor(rec.charge);
                     if (want > rec.stage)
                     {
                         if (want >= RM_TellStage.Creak && rec.stage < RM_TellStage.Creak && tellSounds) sink.OnCreak(c);
                         rec.stage = want;
-                        sink.OnDirty(c);
+                        dirty = true;
                     }
-                    if (rec.stage == RM_TellStage.Tremble || rec.stage == RM_TellStage.Creak) sink.OnTellPuff(c);
+                    byte step = RM_ExplosiveGrowthKernel.SizeStep(rec.charge);
+                    if (step != rec.sizeStep) { rec.sizeStep = step; dirty = true; }
+                    bool trembling = rec.stage == RM_TellStage.Tremble || rec.stage == RM_TellStage.Creak;
+                    if (trembling) sink.OnTellPuff(c);
 
                     if (rec.charge >= 1f)
                     {
@@ -316,7 +431,7 @@ namespace RimMandrake.ExplosiveGrowth
                         continue;
                     }
 
-                    if (reprint) sink.OnDirty(c);
+                    if (dirty || (reprint && trembling)) sink.OnDirty(c);
                 }
             }
         }

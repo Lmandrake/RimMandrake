@@ -101,17 +101,22 @@ HARMONY_ID = "mandrake.rm.explosivegrowth"
 
 # field -> shipped default (ExplosiveGrowthMod.cs). The suite restores exactly these.
 DEFAULTS = [
-    ("enabled", True), ("soakMultiplier", 10.0), ("defaultSoakHours", 24.0),
-    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True), ("applyInOtherBiomes", False),
-    ("irrigationSoakEnabled", True), ("gradientSurgeSoakEnabled", True), ("weatherSoakEnabled", True),
+    ("enabled", True),
+    ("dryWetMultiplier", 10.0), ("dryDryMultiplier", 0.1), ("wetNativeMultiplier", 4.0), ("treeRatio", 0.625),
+    ("stuntedMultiplier", 0.4), ("vanillaCropsNeedWater", True), ("vanillaDryMultiplier", 0.1), ("nearbyRadius", 2),
+    ("nativesSameRuleInOtherBiomes", False), ("defaultRuptureChance", 0.3333), ("wetFruitFactor", 2.0),
+    ("cropSelfFruitEnabled", True), ("waterUseEnabled", True), ("cropDrawLevels", 1), ("dormancyEnabled", True),
+    ("tidalLockNoRest", True), ("sealedGrowersVanilla", True), ("waveStaggerEnabled", False),
+    ("minGrowDaysToSoak", 1.0), ("cavePlantsNeverSoak", True),
+    ("naturalWaterEnabled", True), ("spillWaterEnabled", True), ("irrigationSoakEnabled", True),
+    ("rainWaterEnabled", True), ("rainLingerHours", 3.0), ("rainPuddlesEnabled", True), ("snowmeltEnabled", True),
+    ("gradientSurgeSoakEnabled", True), ("ashFreshEnabled", True), ("ashFlushDays", 3.0),
     ("chargeHours", 6.0), ("maxOvergrowthScale", 2.0), ("reprintIntervalTicks", 250),
     ("hueShiftEnabled", True), ("tellSoundsEnabled", True), ("groundTellEnabled", True),
     ("churnEnabled", True), ("burstEnabled", True), ("burstHurtsPawns", True), ("tinderEnabled", True),
     ("slimeEnabled", True), ("ruptureEnabled", True), ("ruptureMutationChance", 0.08),
     ("flushEnabled", True), ("harvestJackpotEnabled", True), ("lastSwingGambleEnabled", True),
     ("suppressionEnabled", True),
-    ("bandsEnabled", True), ("defaultMultiplier", 4.0), ("treeMultiplier", 2.5), ("terminatorMultiplier", 0.4),
-    ("wetAmbientMultiplier", 10.0), ("wetAmbientTreeMultiplier", 6.25), ("minGrowDaysToBoost", 1.0),
 ]
 DEFAULT_OF = dict(DEFAULTS)
 suite.toggles = [f for f, _ in DEFAULTS]
@@ -122,15 +127,17 @@ P_CHARGE = "Actions\\Charge all charging plants to 0.9"
 P_REPORT = "Actions\\Report state (current map)"
 P_FIRE = "Actions\\T: Fire top of plant here"
 
-CHURN_PLANT = "Plant_Rice"        # vanilla, growDays 3, harvestedThingDef RawRice x6, Churn by default
-CHURN_PRODUCE = "RawRice"
-SOAKER = "Plant_Bush"             # vanilla, growDays 3: the soak-ratio subject
+# EXPLOSIVE_GROWTH_RULED_REWRITE (2026-10-16): a VANILLA plant never cycles now (it obeys setting A only), so the cycle
+# chains stage a DRY NATIVE the live registry picks (RM_ExplosiveGrowthProof.ProofRules `dry=` / `dryProduce=`, a plant of
+# ours with a harvest that can be planted near the map centre), never a hard-coded name. _native() reads it once.
+SOAKER = "Plant_Bush"             # vanilla, growDays 3: setting A's subject (x0.1 dry, x1 with water nearby)
 SOAK_DISK_MIN, SOAK_DISK_MAX = 25, 37    # RadialCellsAround(c, 2.9, true) is 29 cells; wide band on purpose
 EXEMPT_PLANTS = ["Plant_TreeAnima", "Plant_Ambrosia", "Plant_MagmaCactus"]   # builtin exempt x2 + roster NONE row
 CAVE_PLANT = "Agarilux"           # Core CavePlantBase fungus: cavePlantsNeverSoak
 SOUND_DEFS = ["RM_EG_Creak", "RM_EG_Split", "RM_EG_Pop", "RM_EG_Rupture"]
 PATCHED = [  # (method, kinds of patch that must carry our owner id)
-    ("get_GrowthRate", ("postfixes",)), ("Print", ("prefixes", "finalizers")),
+    ("get_GrowthRate", ("postfixes",)), ("TickLong", ("prefixes",)), ("get_Resting", ("postfixes",)),
+    ("Print", ("prefixes", "finalizers")),
     ("get_Graphic", ("postfixes",)), ("YieldNow", ("postfixes",)), ("PlantCollected", ("prefixes",)),
 ]
 
@@ -294,9 +301,40 @@ def _suite_scope(t):
 
 # ---- site
 
+_N = {"plant": "UNRESOLVED_DRY_NATIVE", "produce": "UNRESOLVED_PRODUCE"}
+
+
+def _rules(t, fresh=False):
+    """RM_ExplosiveGrowthProof.ProofRules -> (parsed key=value dict, raw). Cached per session (it stages and removes
+    its own plants near the map centre)."""
+    s = t.session
+    if s is not None and not fresh and getattr(s, "_eg_rules", None):
+        return s._eg_rules
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof", method="ProofRules",
+                      args="current")
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    v = dict(re.findall(r"(\w+)=([\w.\-/]+)", text))
+    if s is not None and text and not text.startswith("ERROR"):
+        s._eg_rules = (v, text)
+    return v, text
+
+
+def _native(t):
+    """The dry native the cycle chains stage (a plant OF OURS: a vanilla plant never cycles). UNMEASURED when the tier
+    carries none that can be planted here."""
+    if t.session is None:
+        return
+    v, raw = _rules(t)
+    if _live(t):
+        if v.get("dry", "NONE") == "NONE" or v.get("dryProduce", "NONE") == "NONE":
+            _unmeasured(t, "SITE: no dry native with a harvest can be planted near the map centre: %s" % raw[:300])
+        _N["plant"], _N["produce"] = v["dry"], v["dryProduce"]
+
+
 def _prep(t, size=40):
     """Everything true before the first assertion: cleared, open fertile soil, clear weather, noon."""
     _suite_scope(t)
+    _native(t)
     t.clear_area(size=size)
     x, z = t.anchor
     h = size // 2
@@ -644,15 +682,17 @@ def _next_z(z):
     return z + (-14, -7, 7, 14)[_LANE[0] % 4]
 
 
-def _soak_ratio_chain(t, comp_name, setting, expect, prefix, **arm):
-    """Growth-rate ratio on one soaked plant vs an unsoaked control, both read from the inspect pane."""
+def _soak_ratio_chain(t, comp_name, setting, expect, prefix, subject=None, **arm):
+    """Growth-rate ratio on one soaked plant vs an unsoaked control, both read from the inspect pane. subject None = the
+    vanilla SOAKER; "native" = the registry's dry native."""
     x, z = t.anchor
     z = _next_z(z)
     with _comp(t, comp_name, toggle=setting):
         _prep(t, 40)
         _env_grows(t)
-        a = _place(t, SOAKER, x - 8, z, 0.5)
-        b = _place(t, SOAKER, x + 8, z, 0.5)
+        subj = _N["plant"] if subject == "native" else SOAKER
+        a = _place(t, subj, x - 8, z, 0.5)
+        b = _place(t, subj, x + 8, z, 0.5)
         ra0, rb0 = _rate(t, a), _rate(t, b)
         if _live(t) and rb0 <= 0:
             _unmeasured(t, "SITE: the control bush's GrowthRate is 0 (night/cold/no fertility): %s" % rb0)
@@ -672,40 +712,38 @@ def _soak_ratio_chain(t, comp_name, setting, expect, prefix, **arm):
                 _fail("soaked growth rate x%.2f, expected x%s (rate %s -> %s)" % (ratio, expect, ra0, ra1))
 
 
-@suite.chain("soak_x10_default")
-def soak_x10_default(t):
-    _soak_ratio_chain(t, "soak_multiplies_growth_x10", "soakMultiplier", 10.0, "soak_x10")
+# EXPLOSIVE_GROWTH_RULED_REWRITE (spec 2026-10-16 §2.5). A soak is one water source among several now (presence model):
+# the debug soak is a TIMED source, as Flooded Canyon's flood is. The ratios below are the ruled ones.
+
+@suite.chain("dry_native_x100_wet_over_dry")
+def dry_native_x100_wet_over_dry(t):
+    """C6 x0.1 dry, W3 x10 wet: one dry native soaked vs its unsoaked twin; the soaked one's rate goes x100 (0.1 -> 10)."""
+    _soak_ratio_chain(t, "dry_native_wet_is_100x_dry", "dryWetMultiplier", 100.0, "dry_native_ratio", subject="native")
 
 
-@suite.chain("soak_multiplier_tuned")
-def soak_multiplier_tuned(t):
-    _soak_ratio_chain(t, "soak_multiplier_follows_setting", "soakMultiplier", 3.0, "soak_x3", soakMultiplier=3.0)
+@suite.chain("dry_native_rate_follows_setting")
+def dry_native_rate_follows_setting(t):
+    _soak_ratio_chain(t, "dry_native_wet_multiplier_follows_setting", "dryWetMultiplier", 30.0, "dry_native_x3",
+                      subject="native", dryWetMultiplier=3.0)
+
+
+@suite.chain("vanilla_needs_water_nearby")
+def vanilla_needs_water_nearby(t):
+    """Setting A default (C4, OQ-16/17): a vanilla bush grows x0.1 dry and x1 with water within 2 cells: ratio x10."""
+    _soak_ratio_chain(t, "vanilla_plant_x01_dry_x1_watered", "vanillaCropsNeedWater", 10.0, "vanilla_ratio")
+
+
+@suite.chain("vanilla_normal_setting")
+def vanilla_normal_setting(t):
+    """Setting A `normal`: water changes nothing for a vanilla plant."""
+    _soak_ratio_chain(t, "vanilla_normal_ignores_water", "vanillaCropsNeedWater", None, "vanilla_normal",
+                      vanillaCropsNeedWater=False)
 
 
 @suite.chain("master_switch_off")
 def master_switch_off(t):
     """enabled=false: the soak is refused (TrySoak) and the GrowthRate postfix is a no-op."""
     _soak_ratio_chain(t, "master_off_refuses_soak", "enabled", None, "master_off", enabled=False)
-
-
-@suite.chain("soak_length")
-def soak_length(t):
-    """defaultSoakHours=2 -> 5000 ticks. Still soaked at ~2500, gone after 5000 (the pass prunes)."""
-    x, z = t.anchor
-    z = _next_z(z)
-    with _comp(t, "soak_expires_after_default_hours", toggle="defaultSoakHours"):
-        _prep(t, 40)
-        with _arm(t, defaultSoakHours=2.0):
-            n = _soak(t, x, z)
-            _wait(t, 2500)
-            mid = _report(t)
-            _wait(t, 2900)
-            end = _report(t)
-        if _live(t):
-            if mid["head"]["soaked"] < n:   # >=: an earlier chain's soak may still stand (HARNESS 2026-10-16)
-                _fail("soak expired early: %d cells at t=0, %r at ~2500 ticks of a 5000-tick soak" % (n, mid["head"]["soaked"]))
-            if end["head"]["soaked"] > max(0, mid["head"]["soaked"] - n):   # other lanes' leftover soak may still stand
-                _fail("soak did not expire: %r cells still soaked ~5400 ticks into a 5000-tick soak" % end["head"]["soaked"])
 
 
 @suite.chain("soak_exempt_plants")
@@ -716,7 +754,7 @@ def soak_exempt_plants(t):
     with _comp(t, "exempt_and_cave_plants_never_soak", toggle="cavePlantsNeverSoak"):
         _prep(t, 40)
         _env_grows(t)
-        _place(t, SOAKER, x, z, 0.5)
+        _place(t, _N["plant"], x, z, 0.5)   # a native: counts as immature (a vanilla plant never cycles: topNone/exempt)
         placed = 0
         for i, d in enumerate(EXEMPT_PLANTS + [CAVE_PLANT]):
             try:
@@ -732,7 +770,7 @@ def soak_exempt_plants(t):
         if _live(t):
             tl = rep["tail"]
             if tl["immature"] != 1:
-                _fail("the control bush should read immature=1 (a soaked growing plant); got %r -- the Report "
+                _fail("the control native should read immature=1 (a soaked growing plant); got %r -- the Report "
                       "cannot see soaked plants, so the exempt count below means nothing" % tl)
             if tl["topNone/exempt"] != placed:
                 _fail("topNone/exempt=%r but %d never-soak plants are in the soaked disk" % (tl["topNone/exempt"], placed))
@@ -747,16 +785,16 @@ def _churn_cycle(t, comp, produce_expected, **arm):
     cell = "%d,%d,1,1" % (x, z)
     _prep(t, 40)
     with _arm(t, **arm):
-        tid, rep = _arm_charge(t, CHURN_PLANT, x, z)
+        tid, rep = _arm_charge(t, _N["plant"], x, z)
         if _live(t) and produce_expected and rep["tail"]["charging"] != 1:
-            _fail("a mature soaked %s should be charging=1 after two passes; Report: %r" % (CHURN_PLANT, rep))
-        sprouts_armed = _count(t, CHURN_PLANT, rect)
+            _fail("a mature soaked %s should be charging=1 after two passes; Report: %r" % (_N["plant"], rep))
+        sprouts_armed = _count(t, _N["plant"], rect)
         _act(t, P_CHARGE)
         _wait(t, 2500)
         rep2 = _report(t)
-        gone = _count(t, CHURN_PLANT, cell) == 0
-        produce = _count(t, CHURN_PRODUCE, rect)
-        sprouts = _count(t, CHURN_PLANT, rect)
+        gone = _count(t, _N["plant"], cell) == 0
+        produce = _count(t, _N["produce"], rect)
+        sprouts = _count(t, _N["plant"], rect)
     _note(t, comp, {"sprouts_when_armed": sprouts_armed, "original_gone": gone, "produce_things": produce,
                     "plants_after_top": sprouts, "report_after": rep2})
     return {"gone": gone, "produce": produce, "sprouts": sprouts, "sprouts_armed": sprouts_armed,
@@ -765,33 +803,39 @@ def _churn_cycle(t, comp, produce_expected, **arm):
 
 @suite.chain("churn_cycle")
 def churn_cycle(t):
-    """The whole default cycle at shipped settings: arm -> charge -> top. Churn: the plant splits,
-    dies, drops its produce and sows a ring of sprouts."""
+    """The dry cycle (OQ-6): arm -> charge -> fruit + many sprouts, the parent dies. defaultRuptureChance 0 pins the
+    outcome to Fruit (the 1-in-3 Burst share is probe_rules' row)."""
     with _comp(t, "mature_soaked_plant_charges_then_churns", toggle="churnEnabled"):
-        o = _churn_cycle(t, "churn_cycle", True)
+        o = _churn_cycle(t, "churn_cycle", True, defaultRuptureChance=0.0)
         if _live(t):
             if o["report"]["head"]["charging"] != 0:
                 _fail("charge did not complete in 2500 ticks from 0.9 (0.1 of a 15000-tick clock is ~1500): %r" % o["report"])
             if not o["gone"]:
                 _fail("the soaked, fully charged plant was not destroyed by its top (Churn)")
             if o["produce"] < 1:
-                _fail("Churn dropped no %s (harvestedThingDef x6 x produceFactor 1)" % CHURN_PRODUCE)
+                _fail("Churn dropped no %s (harvestedThingDef x6 x produceFactor 1)" % _N["produce"])
             if o["sprouts"] < 2:
-                _fail("Churn sowed %d plants near the stump; the ring is 2-4 sprouts" % o["sprouts"])
+                _fail("the dry cycle sowed %d plants near the stump; it sows 4-7 (respecting built ground)" % o["sprouts"])
 
 
 @suite.chain("ground_tell_on")
 def ground_tell_on(t):
-    """The ground tell fires when a charge ARMS: one sprout appears beside the plant (Churn)."""
+    """The ground tell fires when a charge ARMS: the ground darkens (water filth). D11: NO sprout at arming any more
+    (sprouts belong to the outcome)."""
     x, z = t.anchor
     rect = "%d,%d,10,10" % (x - 5, z - 5)
-    with _comp(t, "ground_tell_sprouts_beside_arming_plant", toggle="groundTellEnabled"):
+    with _comp(t, "ground_tell_darkens_without_sprouting", toggle="groundTellEnabled"):
         _prep(t, 40)
-        _arm_charge(t, CHURN_PLANT, x, z)
-        n = _count(t, CHURN_PLANT, rect)
-        if _live(t) and n < 2:
-            _fail("no sprout appeared beside the charging plant (plants in rect: %d); the ground tell "
-                  "sows one at arming" % n)
+        _, rep = _arm_charge(t, _N["plant"], x, z)
+        n = _count(t, _N["plant"], rect)
+        wet = _count(t, "Filth_Water", "%d,%d,1,1" % (x, z))
+        if _live(t):
+            if rep["tail"]["charging"] != 1:
+                _fail("the soaked mature native should be charging=1: %r" % rep)
+            if n != 1:
+                _fail("%d plants stand near the arming plant; D11 dropped the arming sprout (want only itself)" % n)
+            if wet < 1:
+                _fail("the ground tell left no Filth_Water on the arming plant's cell")
 
 
 @suite.chain("ground_tell_off")
@@ -801,8 +845,8 @@ def ground_tell_off(t):
     with _comp(t, "ground_tell_off_sows_nothing", toggle="groundTellEnabled"):
         _prep(t, 40)
         with _arm(t, groundTellEnabled=False):
-            _, rep = _arm_charge(t, CHURN_PLANT, x, z)
-            n = _count(t, CHURN_PLANT, rect)
+            _, rep = _arm_charge(t, _N["plant"], x, z)
+            n = _count(t, _N["plant"], rect)
         if _live(t):
             if rep["tail"]["charging"] != 1:
                 _fail("with the tell off the plant must STILL charge (charging=1): %r" % rep)
@@ -819,7 +863,7 @@ def churn_off(t):
             if o["gone"]:
                 _fail("churnEnabled=false but the charged plant was destroyed")
             if o["produce"] != 0:
-                _fail("churnEnabled=false but %d %s dropped" % (o["produce"], CHURN_PRODUCE))
+                _fail("churnEnabled=false but %d %s dropped" % (o["produce"], _N["produce"]))
             if o["report"]["head"]["charging"] != 0:
                 _fail("the charge record should be dropped once the top resolves to nothing: %r" % o["report"])
 
@@ -833,9 +877,9 @@ def charge_hours(t):
     with _comp(t, "charge_hours_sets_the_clock", toggle="chargeHours"):
         _prep(t, 40)
         with _arm(t, chargeHours=1.0):
-            _arm_charge(t, CHURN_PLANT, x, z)
+            _arm_charge(t, _N["plant"], x, z)
             _wait(t, 3600)
-            gone = _count(t, CHURN_PLANT, cell) == 0
+            gone = _count(t, _N["plant"], cell) == 0
         if _live(t) and not gone:
             _fail("chargeHours=1 but the plant is still standing ~4300 ticks after arming (clock ~2500)")
 
@@ -850,7 +894,7 @@ def suppression_on(t):
     rect = "%d,%d,10,10" % (x - 5, z - 5)
     with _comp(t, "suppression_dries_and_defuses", toggle="suppressionEnabled"):
         _prep(t, 40)
-        _, rep0 = _arm_charge(t, CHURN_PLANT, x, z)
+        _, rep0 = _arm_charge(t, _N["plant"], x, z)
         if _live(t) and rep0["tail"]["charging"] != 1:
             _fail("precondition: the plant should be charging=1: %r" % rep0)
         _act(t, P_SUPPRESS, x, z)
@@ -858,8 +902,8 @@ def suppression_on(t):
         n_again = _soak(t, x, z)
         _wait(t, 1800)
         rep2 = _report(t)
-        alive = _count(t, CHURN_PLANT, "%d,%d,1,1" % (x, z)) == 1
-        produce = _count(t, CHURN_PRODUCE, rect)
+        alive = _count(t, _N["plant"], "%d,%d,1,1" % (x, z)) == 1
+        produce = _count(t, _N["produce"], rect)
         _note(t, "suppression", {"after_suppress": rep1, "resoak_cells": n_again, "after_relax": rep2})
         if _live(t):
             if rep1["head"]["suppressed"] < 13:
@@ -1061,29 +1105,6 @@ def scope_native_only(t):
 
 # --------------------------------------------------------------------------- the everyday bands
 
-@suite.chain("bands_x4_default")
-def bands_x4_default(t):
-    """PLANT_GROWTH_MERGE_NEVER_MEANT_APART: the everyday band (former Jawa Plant Growth) multiplies a non-tree
-    plant's growth x4 outside the wet and stalled biomes. Same plant, read with bandsEnabled on, then off."""
-    x, z = t.anchor
-    with _comp(t, "everyday_band_multiplies_growth_x4", toggle="bandsEnabled"):
-        _prep(t, 40)
-        _env_grows(t)
-        a = _place(t, SOAKER, x, z, 0.5)
-        r_on = _rate(t, a)
-        with _arm(t, bandsEnabled=False):
-            r_off = _rate(t, a)
-        v, raw = _rebuild(t)
-        _note(t, "bands_x4", {"rate_on": r_on, "rate_off": r_off, "scope": raw})
-        if _live(t):
-            if r_off <= 0:
-                _unmeasured(t, "SITE: the bush's GrowthRate is 0 with the bands off (night/cold/no fertility): %s" % r_off)
-            ratio = r_on / r_off
-            if abs(ratio - 4.0) > 0.8:
-                _fail("everyday band x%.2f, expected x4 (rate %s on, %s off; a wet or stalled test biome changes "
-                      "the band: %s)" % (ratio, r_on, r_off, v.get("mapBiome")))
-
-
 # --------------------------------------------------------------------------- settings round trip
 
 # Settings with no reachable live effect in this suite; each gets a write + read-back so a mistyped
@@ -1092,7 +1113,6 @@ FLIPS = [
     ("minGrowDaysToSoak", 1.0, 2.0),        # registry rebuild only on WriteSettings/startup: not live
     ("irrigationSoakEnabled", True, False),  # needs FlowWorks
     ("gradientSurgeSoakEnabled", True, False),  # needs EnvironmentalHazards' gradient axis
-    ("weatherSoakEnabled", True, False),     # no soak weather is named at the RM tier
     ("maxOvergrowthScale", 2.0, 1.5),        # visual (Plant.Print scale)
     ("reprintIntervalTicks", 250, 500),      # visual cadence / perf
     ("hueShiftEnabled", True, False),        # visual (Plant.Graphic tint)
@@ -1100,12 +1120,29 @@ FLIPS = [
     ("ruptureMutationChance", 0.08, 0.2),    # statistical, needs Contagion hediffs + a pawn in the cloud
     ("harvestJackpotEnabled", True, False),  # needs a harvesting pawn (YieldNow)
     ("lastSwingGambleEnabled", True, False),  # needs a cutting pawn, random (PlantCollected)
-    ("treeMultiplier", 2.5, 3.0),            # everyday band: trees (the x4 row proves the band path)
-    ("terminatorMultiplier", 0.4, 0.5),      # needs a stalled biome (PoisonForest), not on the solo tier
-    ("wetAmbientMultiplier", 10.0, 8.0),     # needs a wet biome map (Greentide/Miasma/Fever Wood)
-    ("wetAmbientTreeMultiplier", 6.25, 5.0),
-    ("defaultMultiplier", 4.0, 3.0),
-    ("minGrowDaysToBoost", 1.0, 2.0),        # registry rebuild only on WriteSettings/startup
+    ("treeRatio", 0.625, 0.5),               # probe_rules reads the tree arm at the default
+    ("stuntedMultiplier", 0.4, 0.5),         # needs a stalled biome (PoisonForest), not on the solo tier
+    ("wetNativeMultiplier", 4.0, 3.0),       # probe_rules reads it at the default
+    ("dryDryMultiplier", 0.1, 0.2),
+    ("vanillaDryMultiplier", 0.1, 0.2),
+    ("nearbyRadius", 2, 3),
+    ("nativesSameRuleInOtherBiomes", False, True),  # UNSUPPORTED by ruling (OQ-10): round trip only, no behaviour row
+    ("wetFruitFactor", 2.0, 3.0),            # needs a wet native's cycle (a wet-biome map)
+    ("cropSelfFruitEnabled", True, False),   # OWED live row: a growing zone of a native crop
+    ("waterUseEnabled", True, False),        # probe_rules reads consumption at the default
+    ("cropDrawLevels", 1, 2),                # no effect until FlowWorks discloses a plant-use exit
+    ("dormancyEnabled", True, False),        # probe_rules reads the age step at the default
+    ("tidalLockNoRest", True, False),        # needs the Utinni roster (tidallyLockedWorld)
+    ("sealedGrowersVanilla", True, False),   # OWED live row: a hydroponics basin
+    ("waveStaggerEnabled", False, True),     # perf fallback (spec §11)
+    ("naturalWaterEnabled", True, False),
+    ("spillWaterEnabled", True, False),
+    ("rainWaterEnabled", True, False),
+    ("rainLingerHours", 3.0, 4.0),
+    ("rainPuddlesEnabled", True, False),
+    ("snowmeltEnabled", True, False),        # needs RUT_FuelSnows / RUT_Umbra
+    ("ashFreshEnabled", True, False),        # needs the Pyrelands ash field
+    ("ashFlushDays", 3.0, 4.0),
 ]
 
 
@@ -1232,6 +1269,51 @@ def probe_tell_scale_off(t):
             _fail("maxOvergrowthScale=1 but the silent plant is still drawn swollen: %s" % raw)
 
 
+# --------------------------------------------------------------------------- the ruled rules, read live (2026-10-16)
+
+def _near(got, want, tol):
+    try:
+        return abs(float(got) - want) <= tol
+    except (TypeError, ValueError):
+        return False
+
+
+@suite.chain("probe_rules")
+def probe_rules(t):
+    """RM_ExplosiveGrowthProof.ProofRules on a cleared, clear-weather site: the §2.5 table on real plants (r read from
+    the engine, independent of light/time), water used up by a fruiting plant (OQ-8), setting A's 2-cell reach
+    (OQ-17), the age step at x0.1 (WP2/OQ-16) and the dry-native Burst share (C3 1 in 3). OWED: first live run."""
+    with _comp(t, "ruled_rate_table_on_live_plants"):
+        _prep(t, 40)
+        v, raw = _rules(t, fresh=True)
+        _note(t, "rules", raw)
+        if _live(t):
+            if not raw or raw.startswith("ERROR"):
+                _unmeasured(t, "ProofRules gave no read: %r" % raw[:200])
+            if v.get("rain") == "1":
+                _unmeasured(t, "SITE: it is raining on the map (every unroofed cell is wet): %s" % raw[:200])
+            bad = []
+            if v.get("dry", "NONE") == "NONE":
+                _unmeasured(t, "SITE: no plantable dry native: %s" % raw[:300])
+            if not _near(v.get("dryDry"), 0.1, 1e-3): bad.append("dry native on dry ground r=%s, want 0.1" % v.get("dryDry"))
+            if v.get("drySpill") == "True" and not _near(v.get("dryWet"), 10.0, 1e-3): bad.append("dry native on a water spill r=%s, want 10" % v.get("dryWet"))
+            if v.get("drySpill") == "True" and not _near(v.get("dryAfterUse"), 0.1, 1e-3): bad.append("after the plant drank the spill r=%s, want 0.1 (OQ-8)" % v.get("dryAfterUse"))
+            if v.get("tree", "NONE") != "NONE" and v.get("treeSpill") == "True" and not _near(v.get("treeWet"), 6.25, 1e-3):
+                bad.append("woody dry native wet r=%s, want 6.25 (EC1)" % v.get("treeWet"))
+            if v.get("wetn", "NONE") != "NONE":
+                if not (_near(v.get("wetnDry"), 4.0, 1e-3) and _near(v.get("wetnWet"), 4.0, 1e-3)):
+                    bad.append("wet native r dry=%s wet=%s, want 4 both (C1)" % (v.get("wetnDry"), v.get("wetnWet")))
+            if v.get("van", "NONE") != "NONE":
+                if v.get("vanArch") != "Vanilla": bad.append("Plant_Rice archetype %s, want Vanilla" % v.get("vanArch"))
+                if not _near(v.get("vanDry"), 0.1, 1e-3): bad.append("vanilla dry r=%s, want 0.1 (OQ-16)" % v.get("vanDry"))
+                if v.get("vanSpills", "")[:1] == "1" and not _near(v.get("vanNear2"), 1.0, 1e-3): bad.append("vanilla with water 2 cells away r=%s, want 1 (OQ-17)" % v.get("vanNear2"))
+                if v.get("vanSpills", "")[1:2] == "1" and not _near(v.get("vanFar3"), 0.1, 1e-3): bad.append("vanilla with water 3 cells away r=%s, want 0.1" % v.get("vanFar3"))
+                if not _near(v.get("vanAgeStep"), 200, 1): bad.append("vanilla dry age step %s ticks, want 200 of 2000 (WP2)" % v.get("vanAgeStep"))
+            if not _near(v.get("burstShare"), 0.3333, 0.04): bad.append("dry-native Burst share %s, want 1 in 3 (C3)" % v.get("burstShare"))
+            if bad:
+                _fail("; ".join(bad) + " | " + raw[:400])
+
+
 @suite.chain("settings_restored")
 def settings_restored(t):
     """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run). The suite's
@@ -1310,7 +1392,7 @@ def static_checks():
     """Offline, no game. Returns failure strings; empty = pass."""
     bad = []
     src = open(os.path.join(HERE, "Source", "ExplosiveGrowthMod.cs"), encoding="utf-8").read()
-    fields = re.findall(r"public static (?:bool|float|int) (\w+)\s*=", src.split("class ExplosiveGrowthSettings")[1].split("ExposeData")[0]) \
+    fields = re.findall(r"public static (?:bool|float|int) (\w+)\s*=(?!>)", src.split("class ExplosiveGrowthSettings")[1].split("ExposeData")[0]) \
         if "class ExplosiveGrowthSettings" in src else []
     if len(fields) < 1:
         bad.append("sanity probe: found no settings fields in ExplosiveGrowthMod.cs (regex broke)")
