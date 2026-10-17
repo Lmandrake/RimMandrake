@@ -215,7 +215,9 @@ namespace RimMandrake.ExplosiveGrowth
                 // top whatever churnEnabled says (live walk 2026-10-17: AB_Slimecasia, a Slime row, was picked and the churn
                 // chains read its slime top as "churn off still destroys the plant")
                 if (!tree && p.top != RM_GrowthTop.Churn) continue;
-                if (d.plant.cavePlant || d.plant.interferesWithRoof) continue;
+                // interferesWithRoof only filters NON-trees: Core's TreeBase sets it on every tree, so applying it to trees
+                // left no Ollim (TreeBase) for the unlimited-life arm (live walk 2026-10-17: "immortal=NONE" on every list)
+                if (d.plant.cavePlant || (!tree && d.plant.interferesWithRoof)) continue;
                 if (CellFinder.TryFindRandomCellNear(map.Center, map, 25, c => d.CanEverPlantAt(c, map), out _)) return d;
             }
             return null;
