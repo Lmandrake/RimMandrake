@@ -34,3 +34,9 @@ Sheet: Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.j
 - DONE purged 9 superseded older keeps he ✕'d (Blarth 2, BloodletterPetrel 2, Shyrack 3, TeeMuss 1, Vornskyr 1); HssissA east/north retired + purged (out of the pool).
 - LEFT for the owner (✕ on the only picture shipping, nothing to replace it yet): Bantha BanthaW S/E/N (StarWarsPatches; not a slot on the sheet); TeeMuss north/south (new N/S queued); Whisperbird south (his pick H has no south); Yobshrimp east (Things/.../SeaBeasts/Yobshrimp, redraw queued).
 - LEFT: enact TODO still lists the Hssiss/Varactyl pool removals (done in defs / Varactyl_m is the only male picture, redraw queued); no --mark-done kind for pools.
+
+## 6. Owner card 2026-10-17: "Crossed-out pictures that are the only art in their slot → Delete now and queue the missing redraws"
+- DONE retired + purged: Bantha BanthaW south/east/north (StarWarsPatches), TeeMuss north/south, Whisperbird south, Yobshrimp east (sea).
+- DONE queued enact_followup_banthaw_v1_{east,north,south} and enact_followup_whisperbird_v1_south. TeeMuss (enact_followup_teemuss_v1_{north,south}) and Yobshrimp (enact_ec92b98b) are already RENDERED, waiting for his pick.
+- Kreetle stays 0.5 cells (owner by card: "0.5 cells, today's note").
+- DEPLOY owed: SWBestiary + StarWarsPatches (texture deletions); game was up, not deployed.
