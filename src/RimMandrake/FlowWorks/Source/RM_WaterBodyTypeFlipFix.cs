@@ -54,6 +54,8 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Detach(__instance, cell, body);
+			// FISH_ROLL_MEND_PONDS_BORN_BARREN (trap c): the cell leaving may have cut its old body in two.
+			RM_Patch_WaterBodyMend.SplitAfterDetach(__instance, cell, body);
 		}
 
 		internal static void Detach(WaterBodyTracker tracker, IntVec3 cell, WaterBody body)

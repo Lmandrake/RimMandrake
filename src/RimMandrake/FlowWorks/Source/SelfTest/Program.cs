@@ -141,6 +141,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
                 {
                     string mode = args.Length > 2 ? args[2] : "";
+                    // "bodies" = FISH_ROLL_MEND_PONDS_BORN_BARREN: the vanilla tracker port plus the production split mend; prints
+                    // body sizes after every toggle, against the oracle's own connected components.
+                    if (mode == "bodies")
+                    {
+                        return WaterBodyMendChecks.OracleRun(reader, Console.Out);
+                    }
                     // "pond" = shipped plus the pond head rule (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, D2).
                     bool shipped = mode == "shipped" || mode == "pond";
                     // "exact" = WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: levelExactEnabled on the shipped flags (decilitres, one
@@ -1946,6 +1952,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
             SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
+            WaterBodyMendChecks.Run(Case);     // FISH_ROLL_MEND_PONDS_BORN_BARREN: fish roll, refill memory, splits, plant grace (WaterBodyMendChecks.cs)
             RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)
             VolumeChecks.Run(Case);            // POND_VOLUME_UNIFY_DEEP_NOTCH_YARDSTICK: one square = one square (VolumeChecks.cs)
             PondReturnChecks.Run(Case);        // POND_RETURN_LEG_BUILD_WATER_GOES_HOME: dug beds, checked/guarded refill (PondReturnChecks.cs)

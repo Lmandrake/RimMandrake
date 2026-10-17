@@ -107,6 +107,54 @@ def oracle(sc, surface=False, level_set=False, creep=False, head_rule=False, exa
     return " | ".join(p for p in parts) + " | " + tail if parts else tail
 
 
+def bodies_scene(seed):
+    """FISH_ROLL_MEND_PONDS_BORN_BARREN (trap c): a grid of water squares at map start, then squares drying and refilling at
+    random (ponds splitting, merging, vanishing and coming back). Returns (w, h, initial wet cells, [(cell, wet), ...])."""
+    r = random.Random(2_000_003 + seed)
+    w, h = r.randint(2, 14), r.randint(2, 14)
+    p = 0.35 + r.random() * 0.6
+    wet = [c for c in range(w * h) if r.random() < p]
+    ops = [(r.randrange(w * h), 1 if r.random() < 0.45 else 0) for _ in range(r.randint(1, 3 * w * h))]
+    return w, h, wet, ops
+
+
+def encode_bodies(sc):
+    w, h, wet, ops = sc
+    return " ".join(map(str, [w, h] + wet)) + " | " + " ".join("%d %d" % o for o in ops)
+
+
+def oracle_bodies(sc):
+    """The water bodies a correct tracker holds after every toggle: the 4-connected pieces of the wet squares (union-find),
+    their sizes sorted. Independent of the C# port: no flood fill, no tracker state carried between steps."""
+    w, h, wet, ops = sc
+    state = [False] * (w * h)
+    for c in wet:
+        state[c] = True
+    out = []
+    for c, on in ops:
+        state[c] = bool(on)
+        parent = list(range(w * h))
+
+        def find(a):
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+        for i in range(w * h):
+            if not state[i]:
+                continue
+            if i % w < w - 1 and state[i + 1]:
+                parent[find(i)] = find(i + 1)
+            if i + w < w * h and state[i + w]:
+                parent[find(i)] = find(i + w)
+        sizes = {}
+        for i in range(w * h):
+            if state[i]:
+                sizes[find(i)] = sizes.get(find(i), 0) + 1
+        out.append(",".join(str(v) for v in sorted(sizes.values())))
+    return ";".join(out)
+
+
 def encode(sc):
     w, h, pulses, band, bodies, src, digs = sc[:7]
     out = [w, h, pulses, band, len(bodies)]
@@ -141,6 +189,7 @@ def main():
     plain = [scene(s) for s in range(n)]
     ponds = [pond_scene(s) for s in range(n)]
     opsc = [ops_scene(s) for s in range(n)]
+    bodysc = [bodies_scene(s) for s in range(n)]
     # An ext4 clone cannot hand dotnet.exe its own path (\home\... is invalid): stage it on D: (selftest_winstage), and keep
     # the scene files and the dll inside the stage, where a /mnt/d path converts.
     from selftest_winstage import windows_project_path, stage_name_for
@@ -170,16 +219,19 @@ def main():
         # on the pond scenes (beds 2..6, ponds below their brims).
         # "exactops" (PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes): exact, plus pours and fill-ins between pulses
         # (LevelOps over the production RM_LevelPour against level_water.pour / fill_in), each event's dL in the line.
-        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops")
+        # "bodies" (FISH_ROLL_MEND_PONDS_BORN_BARREN, trap c): the vanilla water-body tracker port with the production split mend
+        # (SelfTest/WaterBodyMendChecks.cs over RM_WaterBodyMath.cs) against union-find pieces, body sizes after every toggle.
+        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies")
         for mode in modes:
-            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else plain
+            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else bodysc if mode == "bodies" else plain
+            enc = encode_bodies if mode == "bodies" else encode
             os.makedirs(os.path.join(stage_dir, "bin"), exist_ok=True)
             scene_file = os.path.join(stage_dir, "bin", "oracle_scenes_%s.txt" % mode)   # in the stage, never the clone
             with open(scene_file, "w") as f:
-                f.write("\n".join(encode(sc) for sc in scenes) + "\n")
+                f.write("\n".join(enc(sc) for sc in scenes) + "\n")
             t0 = time.time()
             exact = mode in ("exact", "exactpond", "exactops")
-            want = [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
+            want = [oracle_bodies(sc) for sc in scenes] if mode == "bodies" else [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
                            mode == "pond", exact) for sc in scenes]
             t1 = time.time()
             cs_mode = "exact" if exact else mode
@@ -193,10 +245,10 @@ def main():
             if len(got) != n:
                 sys.exit("kernel answered %d scenes of %d (%s)" % (len(got), n, mode))
             bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
-            pulses = sum(sc[2] for sc in scenes)
+            pulses = sum(len(sc[3]) for sc in scenes) if mode == "bodies" else sum(sc[2] for sc in scenes)
             print("[%s] %d scenes, %d pulses: oracle %.2f s, kernel %.2f s" % (mode, n, pulses, t1 - t0, t2 - t1))
             for i in bad[:5]:
-                print("DISAGREE [%s] seed %d: %s\n  oracle %s\n  kernel %s" % (mode, i, encode(scenes[i]), want[i][:300], got[i][:300]))
+                print("DISAGREE [%s] seed %d: %s\n  oracle %s\n  kernel %s" % (mode, i, enc(scenes[i]), want[i][:300], got[i][:300]))
             if bad:
                 failed.append("%s: %d/%d scenes disagree" % (mode, len(bad), n))
             else:
