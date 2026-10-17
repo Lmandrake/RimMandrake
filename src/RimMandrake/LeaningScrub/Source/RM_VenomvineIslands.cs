@@ -504,23 +504,34 @@ namespace RimMandrake.LeaningScrub
             IntVec3 start = map.mapPawns.FreeColonistsSpawnedCount > 0 ? map.mapPawns.FreeColonistsSpawned[0].Position : map.Center;
             HashSet<ThingDef> vine = RM_VenomvineIslandsUtil.Counted(ext);
             int before = RM_VenomvineIslandsUtil.CountVine(map, vine);
+            float clear = RM_LeaningScrubSettings.venomvineStartClearance;
+            int clearBefore = NearStart(map, vine, start, clear);
             RM_GenStep_VenomvineIslands.LayResult r = RM_GenStep_VenomvineIslands.Lay(map, ext, start);
             int after = RM_VenomvineIslandsUtil.CountVine(map, vine);
-            float clear = RM_LeaningScrubSettings.venomvineStartClearance;
-            int inClear = 0;
-            List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
-            for (int i = 0; i < plants.Count; i++)
-            {
-                if (vine.Contains(plants[i].def) && plants[i].Position.DistanceToSquared(start) < clear * clear * 0.81f) inClear++;
-            }
+            int inClear = NearStart(map, vine, start, clear);
             string data = "islands=" + r.islands + " planned=" + r.planned + " planted=" + r.planted + " target=" + r.target
                 + " open=" + r.open + " rooms=" + r.rooms + " reach=" + r.reachBefore + "->" + r.reachAfter
-                + " vine=" + before + "->" + after + " vineNearStart=" + inClear;
+                + " vine=" + before + "->" + after + " vineNearStart=" + clearBefore + "->" + inClear;
             if (r.target <= 0) return "UNMEASURED: no open ground measured " + data;
+            // the start clearance was read back but never judged until the 2026-10-17 review: vine the step laid inside it
+            // (the map's own older vine there is not this step's)
+            if (inClear > clearBefore) return "FAIL: the step laid venomvine inside the start clearance " + data;
             if (r.planted < r.target * 0.5f) return "FAIL: laid under half the target share " + data;
             if (r.reachAfter < (r.reachBefore - r.planted) * 0.9f) return "FAIL: the islands cut the start off from open ground " + data;
             if (r.islands > 0 && r.rooms < 1 && RM_LeaningScrubSettings.venomvineIslandRoomsEnabled) return "FAIL: no room in any island " + data;
             return "PASS " + data;
+        }
+
+        /// <summary>Venomvine within 90% of the clearance radius of the start (the margin keeps cell rounding out).</summary>
+        private static int NearStart(Map map, HashSet<ThingDef> vine, IntVec3 start, float clear)
+        {
+            int n = 0;
+            List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
+            for (int i = 0; i < plants.Count; i++)
+            {
+                if (vine.Contains(plants[i].def) && plants[i].Position.DistanceToSquared(start) < clear * clear * 0.81f) n++;
+            }
+            return n;
         }
 
         /// <summary>mode on|off|cap. Plants one grown thicket on open natural ground, drives the gated creep pass with a
@@ -550,6 +561,12 @@ namespace RimMandrake.LeaningScrub
             {
                 if (mother == null || mother.LifeStage != PlantLifeStage.Mature) return "UNMEASURED: the test stand is not mature";
                 RM_LeaningScrubSettings.venomvineCreepEnabled = mode != "off";
+                if (mode == "on")
+                {
+                    // review 2026-10-17: a scrub map already at the cap leaves no room, and "no runner" then read as a mod
+                    // FAIL; the cap arm is its own mode
+                    RM_LeaningScrubSettings.venomvineCreepCap = 1f;
+                }
                 if (mode == "cap")
                 {
                     int open = RM_VenomvineIslandsUtil.CountOpen(map), now = RM_VenomvineIslandsUtil.CountVine(map, vine);
