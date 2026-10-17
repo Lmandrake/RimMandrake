@@ -231,3 +231,23 @@ non-potable bottles keep `SeekForThirst false` so Dubs never picks them on its o
 8. Batched fill/wash and a stock target remain (bottles still serve travel); drinking stations as the home mode;
    C's machine ports when a liquid-burning machine needs one. The bottler is dropped.
 9. Q12's six defaults are **not built** until he rules them.
+
+### 8.3 Q12 rulings (owner, 2026-10-17, by card; write-ins verbatim)
+
+- **Approved:** boiled water is drinkable once cooled; buckets can fight fires.
+- **Ice and snow**, write-in: *"Ice/snow should be gatherable and turn into water (ice/snow buckets, ice blocks, etc.
+  There is already an ice block you can mine on the night side for example)"*. What exists (MEASURED, grep `src/`):
+  `RM_BlueIceMineable` (mineable rock, `src/RimMandrake/BlueDesert/Defs/ThingDefs_Buildings/RM_BlueIceMineable.xml`)
+  → item `RM_BlueIce` → bill `RM_MeltBlueIce` → `RM_BlueIceMeltwaterCan` (sealed clean meltwater); and
+  `RM_StonewaterIce` (`src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Items/RM_TheChillFloraProducts.xml`). Design:
+  ice is a **frozen form of a liquid row** (`frozenForm` on `LiquidDef`): `RM_BlueIce` becomes fresh water's ice block;
+  snow and ice terrain are gathered into buckets as "snow/ice bucket" items (potable class, so auto-gathered), which
+  melt to the filled water bucket above 0 °C (vanilla temperature only) or at a melt bill; ice blocks melt into a tank or
+  buckets by bill (reusing `RM_MeltBlueIce`'s pattern). Salt ice melts to salt water. The meltwater can is folded into the
+  registry as a potable water item.
+- **Part 2**, write-in: *"Sprinklers shouldn't offer spraying brine, buckets fight fires, all animals can drink water
+  and animals from biomes with terrible water can drink that terrible water"*. So: sprinklers never take brine or salt
+  water (replaces "brine kills a watered crop"); all animals drink any potable water (terrain, still never bottles);
+  animals native to a biome whose water is terrible (salt, brine, toxic, slime) drink that water without the human
+  consequences (native = the species is on that biome's wild-animal roster).
+- **Sanguophages and stored blood:** not ruled; stays **open**.
