@@ -41,6 +41,7 @@ statement — treat it as canon-flavored testimony, not as a licence to draw an
 exposed pelt.
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 *Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
 
@@ -126,7 +127,7 @@ the hood with a black void interior, the hem grammar, the crossed bandoliers —
 **does not exist as art yet.** For the player's own species that is the largest
 art gap in the roster.
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_jawa_game_render.png` (479x450, game render): two Jawas with RED/crimson robes and a brass backpack, glowing yellow eyes in a black hood void, bandoliers and large blasters. 🔴 CONTRADICTS the Must-show colour: robes here are saturated crimson-red, not brown/dusty grey-brown; stylised game render, not a realistic reference. Hood-void and glowing eyes agree.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_jawa_game_render.png` (479x450, game render): two Jawas with RED/crimson robes and a brass backpack, glowing yellow eyes in a black hood void, bandoliers and large blasters. 🔴 CONTRADICTS the Must-show colour: robes here are saturated crimson-red, not brown/dusty grey-brown; stylised game render, not a realistic reference. Hood-void and glowing eyes agree.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images (four-figure costume reference, off-world Mandalorian-era individual, *A New Hope* tall Jawas) and the canon text.*
@@ -167,7 +168,7 @@ not a rendering constraint.
   crossed-bandolier gear rig (three-lens device, blade, canteen).
 - `wookieepedia_tall_jawas.jpg` — taller-than-normal individuals, confirming the
   lore's abnormal-height Jawas keep the identical silhouette at larger scale.
-- `bloggathehutt_jawa_game_render.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Jawas in a Star Wars game render (Hunters-style); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/ (image URL on the blog's CDN, post upload)
+- NOT CANON (fan blog) - `bloggathehutt_jawa_game_render.png` — FAN BLOG (not Lucasfilm) bloggathehutt, Jawas in a Star Wars game render (Hunters-style); downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/09/27/species-of-the-week-jawa/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)

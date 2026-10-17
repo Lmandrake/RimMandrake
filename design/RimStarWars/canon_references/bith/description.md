@@ -91,6 +91,7 @@ trade for basic necessities.
   and **incubated for a year.**
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2020/03/02/species-of-the-week-bith/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 *Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds the aside that Bith Jedi appear in High Republic concept art; the species description (hairless, no eyelids or noses, sensory glands) restates canon.*
 
@@ -177,7 +178,7 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
   teardrop** — it broadens sideways where the references swell up and to the rear.
 - ⚠️ **The eyes are flat black discs** with no specular highlight, so they lose the wet
   glassy read that the canon text specifically calls out ("black, **glassy** eyes").
-- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_jedi_concept.jpg`:** A tiny (95x164) comic/concept crop of a Bith Jedi: a bald domed head in tan-orange with a mask-like face, dark eyes, brown Jedi robes, green and purple sabers. Too small to be a real reference; weak evidence only.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_jedi_concept.jpg`:** A tiny (95x164) comic/concept crop of a Bith Jedi: a bald domed head in tan-orange with a mask-like face, dark eyes, brown Jedi robes, green and purple sabers. Too small to be a real reference; weak evidence only.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as the visual brief reads them (Databank cantina still = live-action reference of record).*
@@ -289,7 +290,7 @@ as wrong. Encoding weak immunity ships that in-universe prejudice as fact.
   runtime-tinted greyscale mask, so colour absence is expected. Right on the creased bulbous
   cranium, eye placement and midface folds; **wrong on the red fanged mouth** (baked-in
   colour, no canon basis) and on the sideways-wide rather than backward-swelling skull.
-- `bloggathehutt_jedi_concept.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2020/03/bith-jedi.jpg
+- NOT CANON (fan blog) - `bloggathehutt_jedi_concept.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2020/03/bith-jedi.jpg
 
 ## ruling
 

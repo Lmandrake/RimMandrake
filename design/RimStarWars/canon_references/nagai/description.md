@@ -53,22 +53,6 @@ a Nagai wanted to convey."*
 ⚠️ **Canon and Legends disagree on eye colour**: canon **red**, Legends **gray**.
 See the visual brief — the images side with red.
 
-### Bloggathehutt — https://bloggathehutt.wordpress.com/2019/11/18/species-of-the-week-nagai/
-
-*Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
-
-Designation: Sentient
-
-Homeworld: Nagi
-
-Notable members: Darth Nihl
-
-Fandom: Star Wars [Legends]
-
-Appearances: Marvel Star Wars, Legacy
-
-The Nagai were an isolated race of tall, white-skinned humanoids living in a dwarf galaxy in the unknown regions. While thin and apparently frail they possessed fast reflexes and speed as well as their own advanced technology and weapons and were a warlike culture with a strict code of honour. They largely stayed hidden from galactic society until shortly after the battle of Endor when they launched an apparent invasion of the galaxy. They were met by the Alliance, who soon realised they were invading out of desperation after centuries of oppression by the Tofs another race from outside the main galaxy. The Nagai joined forces with the Alliance and the Mandalorians and reclaimed their homeworld. They returned to isolation and continued to have a warlike culture, with one of their chief warlords being recruited by the Sith and becoming Darth Nihl.
-
 ## Visual brief
 **Animation-only canon — no realistic source found (searched: Nagai and Nagai/Legends page images, "Images of Nagai" — comics, RPG line art and painted book covers only; no live-action, no photoreal game).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
@@ -160,7 +144,6 @@ and equally **nothing carrying the ears or the face markings.**
   "well known for their individualistic expression."
 - ⚠️ `Beard_NoBeardOnly` — no canon basis found either way.
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_nagai_comic_panel.jpg` (200x203, comic art): a gaunt, long-faced figure with pale white skin, jet-black swept-back hair, red-rimmed dark eyes, and a spiky black armour/cloak with red accents. Too small for detail; agrees with the pale-skin, black-hair read. Armour is a costume, not anatomy.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Gallana Venk canon infobox image, the Legends infobox image and the painted cover as described in the visual brief, the sourced text, and the owner ruling in the brief.*
@@ -209,7 +192,6 @@ none known
 - `wookieepedia_nagai_turcov.jpg` — a painted Legends cover. Best-lit reference for
   skin (cool grey-white), hair, cheekbone structure and lean musculature — and 🔑
   **its eyes read red-amber, siding with canon against the def's `Eyes_Gray`.**
-- `bloggathehutt_nagai_comic_panel.jpg` — FAN BLOG (not Lucasfilm) bloggathehutt, a Nagai in a comic panel; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2019/11/18/species-of-the-week-nagai/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 

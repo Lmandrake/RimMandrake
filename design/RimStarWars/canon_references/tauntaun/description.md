@@ -20,6 +20,7 @@ Swift, docile, up to 90 kph; migratory; prey of the wampa; domesticated as Rebel
 Legends-only additions (https://starwars.fandom.com/wiki/Tauntaun/Legends, the canon page has none of these): **two pairs of nostrils (four in all; the larger pair seals when lying down in snow)**; a **well-muscled tail extending a meter from the body** for balance; clawed feet and hands; **tridactyl feet with splayed toes** like snowshoes; swiveling ears; fur ranging gray to white over a blubber layer; they sought shelter at night, and without shelter hibernated (some breeds froze if woken after sundown); horn-butting matches over dominance common among **both males and females**; herds of twenty to thirty. Canon adds that a tauntaun head hung in Jabba's palace (*Return of the Jedi*) and a brown-furred head in a Gerrenthum cantina (*Inquisitors* 1) -- https://starwars.fandom.com/wiki/Tauntaun.
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/11/22/species-of-the-week-tauntaun/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 Fan blog (not Lucasfilm; a short 'Species of the week' card, fetched 2026-10-17, verbatim-ish, chatter trimmed). It adds nothing beyond Wookieepedia beyond the blog author's notes; no contradiction with the canon text found.
 
@@ -58,7 +59,7 @@ front) agree on the animal; `donor_current_sprite.png` (128x128) does NOT.
 - Prose vs images: prose says brown or white fur; the renders show off-white (Encyclopedia) and
   slate grey (box art). Both are canon-attested; white-to-pale-grey is the safe default for the
   Nightside Ice.
-- **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Legends-style concept painting: upright grey-white tauntaun with a long neck, horned head, small forelimbs, strong hind legs and a thick tail on snow. Compare with film look (shaggy fur, two curling horns). Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
+- NOT CANON (fan blog) - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.png`):** a Legends-style concept painting: upright grey-white tauntaun with a long neck, horned head, small forelimbs, strong hind legs and a thick tail on snow. Compare with film look (shaggy fur, two curling horns). Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Encyclopedia render and the Legion box art (the donor sprite is a negative reference for shape).*
@@ -84,7 +85,7 @@ none known. (Rider and saddle in the box art are not part of the animal. Smell a
 - `wookieepedia_tauntaun_riders_boxart.png` : painted 3/4 view with rider, slate-grey coat, chin tuft, curled tail.
 - `wookieepedia_wampa_eats_tauntaun_tesb.png` : film still, tauntaun skeleton only (weak).
 - `donor_current_sprite.png` : MLIE donor, 128x128. Contradicts canon shape (see Visual brief).
-- `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2021/11/22/species-of-the-week-tauntaun/; post card image (not Lucasfilm).
+- NOT CANON (fan blog) - `bloggathehutt_post_image.png` — FAN BLOG https://bloggathehutt.wordpress.com/2021/11/22/species-of-the-week-tauntaun/; post card image (not Lucasfilm).
 
 ## ruling
 (empty — owner has not reviewed this entry)

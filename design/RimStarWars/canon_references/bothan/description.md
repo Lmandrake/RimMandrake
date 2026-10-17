@@ -89,6 +89,7 @@ canon gives at all is the **growled speech**.
   in the full-Bothan description mentions a tail at all.
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2024/09/09/species-of-the-week-bothan/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 *Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia; a one-paragraph fact card by a fan, quoted lightly trimmed. Adds nothing beyond Legends text (it is the Legacy-comic Hosk Trey'lis fact card); the blog itself notes there is still no canon depiction of Bothans.*
 
@@ -169,7 +170,7 @@ framing the cheeks and jaw**, and a **small dark triangular nose**. Three proble
   tall outward fennec-scale ears of the reference.
 - ⚠️ **Eyes are plain human slots** rather than the small forward-set dark mammal eyes, and
   the fur ruff is a flat outline rather than the layered directional coat of the paintings.
-- **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_bothan.png`:** Legacy comic panel (Hosk Trey'lis): a **humanoid, human-proportioned face** with swept-back shaggy brown mane and beard of fur, a pointed ear, pale eyes; bare chest with a turtle-shell-like geometric plate. Same Legends-only caveat as the existing brief: this is not canon, and it is NOT the xed-out canon silhouette style. Agrees with the 'furry humanoid with mane' read.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog) — `bloggathehutt_bothan.png`:** Legacy comic panel (Hosk Trey'lis): a **humanoid, human-proportioned face** with swept-back shaggy brown mane and beard of fur, a pointed ear, pale eyes; bare chest with a turtle-shell-like geometric plate. Same Legends-only caveat as the existing brief: this is not canon, and it is NOT the xed-out canon silhouette style. Agrees with the 'furry humanoid with mane' read.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Canon fixes no Bothan appearance at all (empty infobox; *How Not to Get Eaten by Ewoks* X's out the Legends silhouettes), so the body lines below are LEGENDS, grounded in the three realistic Legends paintings (NEGAS, Borsk Fey'lya cover, SWG concept) that the owner's 2026-10-08 visual-brief ruling put in place of the comic art.*
@@ -286,7 +287,7 @@ have them.
   `RSW_BothanHead`. A runtime-tinted greyscale mask, so colour absence is expected. Right on
   the jaw fur ruff and dark nose; **wrong in having no forward muzzle and no ears** — and
   note the repo already holds unused Bothan snout art under `RSW_Nose_Snout`.
-- `bloggathehutt_bothan.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2024/09/borthan.png
+- NOT CANON (fan blog) - `bloggathehutt_bothan.png` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2024/09/borthan.png
 
 ## ruling
 **Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the **Legends look** is the target (Legends body plan, as the Must show states).

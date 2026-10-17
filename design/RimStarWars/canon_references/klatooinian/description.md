@@ -34,6 +34,7 @@ of the article as fetched and is therefore NOT recorded here as canon; see the
 Source URLs note.)
 
 ### Bloggathehutt — https://bloggathehutt.wordpress.com/2021/03/01/species-of-the-week-klatooinian/
+**NOT CANON (owner ruling: keep as noncanon, canon_blog_disputes sheet): fan-blog material; never a Must show source.**
 
 *Fan blog ("Species of the week"), NOT Lucasfilm and not Wookieepedia. Text below is the post's own descriptive entry, trimmed of the author's chatter. It is a short summary that adds no appearance detail beyond Wookieepedia; its value is the image.*
 
@@ -98,7 +99,7 @@ two features the infobox names as the species' distinctions.** Note also that
 `klatoonian/` folder and would give the short upturned muzzle, but the Klatooinian
 xenotype's own gene list does not include them.
 
-- **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_klatooinian_mandalorian.png` (654x804, The Mandalorian): a thick-necked brute in a dark hood with scale-armour collar, dark SLATE BLUE-GREY skin, heavy furrowed brow, flat broad nose with flared nostrils, wide mouth with an underbite and two yellow-white tusk teeth, bone-claw pendant and coins on the collar. 🔴 Skin is a cool slate blue-grey, not the olive/mud-green in the Must-show colour layout. Face structure (brow, underbite, tusks) agrees.
+- NOT CANON (fan blog) - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_klatooinian_mandalorian.png` (654x804, The Mandalorian): a thick-necked brute in a dark hood with scale-armour collar, dark SLATE BLUE-GREY skin, heavy furrowed brow, flat broad nose with flared nostrils, wide mouth with an underbite and two yellow-white tusk teeth, bone-claw pendant and coins on the collar. 🔴 Skin is a cool slate blue-grey, not the olive/mud-green in the Must-show colour layout. Face structure (brow, underbite, tusks) agrees.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox text and the three images (infobox Barada, live-action raider, Don Klatoo), which agree.*
@@ -139,7 +140,7 @@ none known
 - `wookieepedia_don_klatoo.jpg` — a third individual; useful because it makes the
   brow/underbite/jowl combination three-for-three across different sources and
   media.
-- `bloggathehutt_klatooinian_mandalorian.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a Klatooinian in The Mandalorian; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/03/01/species-of-the-week-klatooinian/ (image URL on the blog's CDN, post upload)
+- NOT CANON (fan blog) - `bloggathehutt_klatooinian_mandalorian.png` — FAN BLOG (not Lucasfilm) bloggathehutt, a Klatooinian in The Mandalorian; downloaded 2026-10-17 from https://bloggathehutt.wordpress.com/2021/03/01/species-of-the-week-klatooinian/ (image URL on the blog's CDN, post upload)
 
 ## ruling
 (empty — owner has not reviewed this race yet)
