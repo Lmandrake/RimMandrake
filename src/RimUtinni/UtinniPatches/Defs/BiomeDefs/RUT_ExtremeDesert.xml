@@ -92,7 +92,7 @@
     <plantDensity>0.008</plantDensity>
     <forageability>0.0</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/ExtremeDesert</texture>
+    <texture>World/Biomes/RUT_Stillsand</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

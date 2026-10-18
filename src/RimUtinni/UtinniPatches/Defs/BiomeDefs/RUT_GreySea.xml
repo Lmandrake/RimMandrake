@@ -52,7 +52,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RUT_GreySea</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
 

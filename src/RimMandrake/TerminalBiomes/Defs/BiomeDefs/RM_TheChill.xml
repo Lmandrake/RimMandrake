@@ -37,7 +37,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/Jawa_SickWater</texture>
+    <texture>World/Biomes/RM_Chill</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>RM_TheChillDeep</waterDeepTerrain>

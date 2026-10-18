@@ -68,7 +68,7 @@
     <plantDensity>0.7</plantDensity>
     <forageability>0.6</forageability>
     <movementDifficulty>5</movementDifficulty>
-    <texture>World/Biomes/GreaterTropicalSwamp</texture>
+    <texture>World/Biomes/RUT_FeverWood</texture>
     <diseaseMtbDays>20</diseaseMtbDays>
     <diseases>
       <li>

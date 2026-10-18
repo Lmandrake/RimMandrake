@@ -73,7 +73,7 @@
     <forageability>0.25</forageability>
     <movementDifficulty>1</movementDifficulty>
     <wildAnimalScariaChance>0.5</wildAnimalScariaChance>
-    <texture>World/Biomes/Scarlands</texture>
+    <texture>World/Biomes/RM_Warscar</texture>
     <extraGenSteps>
       <li>AncientRuins_Scarlands</li>
       <li>CratersLarge</li>

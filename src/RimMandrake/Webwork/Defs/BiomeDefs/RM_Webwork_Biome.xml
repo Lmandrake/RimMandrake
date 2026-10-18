@@ -63,7 +63,7 @@
         <letterText>The silence is not peace; it means something owns this jungle. The web is a nervous system: touch it anywhere and you are felt everywhere near it. The things that hunt here cannot stand direct sun, so clearings are the only safe ground, and fire is the only thing that drives them back. There is no surface water: the river is inside the plants. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
       </li>
     </modExtensions>
-    <texture>World/Biomes/TropicalRainforest</texture>
+    <texture>World/Biomes/RM_Webwork</texture>
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

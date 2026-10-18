@@ -67,7 +67,7 @@
     <plantDensity>0.6</plantDensity>
     <forageability>0.5</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>Biomes/AB_MycoticJungle</texture>
+    <texture>World/Biomes/RUT_TheRot</texture>
     <diseaseMtbDays>35</diseaseMtbDays>
     <diseases>
       <li MayRequire="sarg.alphabiomes">

@@ -63,7 +63,7 @@
     <plantDensity>0.0</plantDensity>
     <forageability>0.0</forageability>
     <movementDifficulty>1.5</movementDifficulty>
-    <texture>Biomes/AB_MechanoidBiome</texture>
+    <texture>World/Biomes/RUT_RustCathedral</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

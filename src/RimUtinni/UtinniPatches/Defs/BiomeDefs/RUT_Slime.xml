@@ -59,7 +59,7 @@
     <plantDensity>0.2</plantDensity>
     <forageability>0.75</forageability>
     <movementDifficulty>4</movementDifficulty>
-    <texture>Biomes/AB_GelatinousSuperorganism</texture>
+    <texture>World/Biomes/RUT_Slime</texture>
     <diseaseMtbDays>999</diseaseMtbDays>
     <diseases />
     <terrainsByFertility>

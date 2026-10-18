@@ -106,7 +106,7 @@
     <plantDensity>0.75</plantDensity>
     <forageability>0.0</forageability>
     <movementDifficulty>1.5</movementDifficulty>
-    <texture>Biomes/AB_PropaneLakes</texture>
+    <texture>World/Biomes/RUT_Umbra</texture>
     <diseaseMtbDays>110</diseaseMtbDays>
     <diseases>
       <li>

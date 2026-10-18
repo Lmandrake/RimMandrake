@@ -74,7 +74,7 @@
     <plantDensity>0.35</plantDensity>
     <forageability>0.0</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>Biomes/AB_OcularForest</texture>
+    <texture>World/Biomes/RM_Contagion</texture>
     <diseaseMtbDays>30</diseaseMtbDays>
     <diseases>
       <li>

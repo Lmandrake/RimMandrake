@@ -32,7 +32,7 @@
     <label>the Slime</label>
     <description>A country-sized living body lying open to the sky. It was made to be a weapon and it won: it ate everything it was sent against, read every genome it ate, and filed them all, and then there was nothing left to be sent against and nobody left to report to. It is still filing. Walking across it is being read — slowly at first, as a sheen you can wipe off, and then not slowly. Nothing on it is hostile. It does not need to be.\n\nThere is no rock here and no soil worth the name; there is slime, which will feed you, cure you of any poison you have ever swallowed, and then take its fee in the only currency it understands.</description>
     <workerClass>RimMandrake.GelatinousSlime.BiomeWorker_GelatinousSlime</workerClass>
-    <texture>World/Biomes/RM_GelatinousSlime</texture>
+    <texture>World/Biomes/RM_Slime</texture>
 
     <modExtensions>
       <li Class="RimMandrake.GelatinousSlime.SlimeBiomeRanges">

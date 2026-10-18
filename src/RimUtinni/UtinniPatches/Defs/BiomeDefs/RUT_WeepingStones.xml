@@ -67,7 +67,7 @@
     <plantDensity>0.4</plantDensity>
     <forageability>0.5</forageability>
     <movementDifficulty>1.5</movementDifficulty>
-    <texture>World/Biomes/ZBiome_Oasis</texture>
+    <texture>World/Biomes/RUT_WeepingStones</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

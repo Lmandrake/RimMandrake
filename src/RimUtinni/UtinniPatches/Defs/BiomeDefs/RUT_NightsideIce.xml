@@ -106,7 +106,7 @@
     <movementDifficulty>1.5</movementDifficulty>
     <lakeBeachTerrain>Ice</lakeBeachTerrain>
     <mudTerrain>Ice</mudTerrain>
-    <texture>World/Biomes/IceSheet</texture>
+    <texture>World/Biomes/RUT_SleepingIce</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

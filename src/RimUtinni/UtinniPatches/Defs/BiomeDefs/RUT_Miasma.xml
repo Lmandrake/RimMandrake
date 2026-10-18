@@ -56,7 +56,7 @@
     <plantDensity>0.7</plantDensity>
     <forageability>1.0</forageability>
     <movementDifficulty>4</movementDifficulty>
-    <texture>Biomes/AB_MiasmicMangrove</texture>
+    <texture>World/Biomes/RUT_Miasma</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
     <biomeMapConditions>
       <li MayRequire="mandrake.rm.biomes">RUT_MiasmaWeatherLock</li>

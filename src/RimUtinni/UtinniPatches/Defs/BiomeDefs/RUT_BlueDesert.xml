@@ -113,7 +113,7 @@
     <movementDifficulty>1.5</movementDifficulty>
     <lakeBeachTerrain>Ice</lakeBeachTerrain>
     <mudTerrain>Ice</mudTerrain>
-    <texture>World/Biomes/IceSheet</texture> <!-- placeholder, per RUT_NightsideIce's own note; the sheet's real "extremely blue from far away" art is separate, unowed work -->
+    <texture>World/Biomes/RUT_BlueDesert</texture> <!-- placeholder, per RUT_NightsideIce's own note; the sheet's real "extremely blue from far away" art is separate, unowed work -->
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

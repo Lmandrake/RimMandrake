@@ -77,7 +77,7 @@
     <plantDensity>0.12</plantDensity>
     <forageability>1.0</forageability>
     <movementDifficulty>2</movementDifficulty>
-    <texture>Biomes/Wasteland</texture>
+    <texture>World/Biomes/RUT_Wasteland</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>
