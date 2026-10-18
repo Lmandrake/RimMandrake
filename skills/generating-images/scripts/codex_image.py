@@ -67,7 +67,9 @@ DEFAULT_REASONING_EFFORT = "low"
 # ChatGPT-auth install that has been a model the account cannot use (MEASURED 2026-10-02:
 # `gpt-6.1-sol` fails, `-m gpt-5.5` works). Every call therefore passes -m explicitly;
 # CODEX_MODEL overrides, and `--model inherit` restores the config.toml choice.
-DEFAULT_MODEL = os.environ.get("CODEX_MODEL", "gpt-5.5")
+# MEASURED 2026-10-16/18: gpt-5.5 is now refused (400 "not supported"); gpt-5.6-sol (the daemon's
+# CODEX_MODEL pin) and gpt-6.1-sol both generate. Default follows the daemon's proven pin.
+DEFAULT_MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")
 
 # codex.exe FAILS with an ext4 cwd and HANGS reading \\wsl.localhost paths (MEASURED,
 # git_workflow_plan_2026-10-01.md §2.3). When a caller's output/input paths are not on a Windows
