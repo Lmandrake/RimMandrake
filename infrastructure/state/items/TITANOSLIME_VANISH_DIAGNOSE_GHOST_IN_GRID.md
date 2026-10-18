@@ -27,16 +27,53 @@ Repro matrix, 9 neighbour cells respawned with a Muffalo after the end action (2
 
 So it is titanoslime-specific and vanish-specific. No exception is logged at the destroy itself.
 
-## suspects, unproven
+## mechanism (code read 2026-10-17, BENCH offline; live confirmation OWED — gate g8)
 
-The stage is locked AFTER spawn (`RM_CompEngulfer.PostSpawnSetup` -> `ApplyStage` -> `LockCurrentLifeStageIndex`), so
-BodySize — and with it Large Pawns' footprint size and Huge Things' titan tier — changes while the pawn is spawned. If
-something registers the pawn in cells by its size at spawn and deregisters by its size at despawn, the cells differ.
-Why kill is clean and vanish is not is the first thing to explain.
+Decompiled with ilspycmd: Large Pawns 0.24.16 (`LargePawns.dll`) and the 1.6 `Assembly-CSharp.dll`.
+
+1. `Thing.SpawnSetup` calls `map.thingGrid.Register(this)` and `RegionListersUpdater.RegisterInRegions` BEFORE
+   `ThingWithComps.SpawnSetup` runs the comps' `PostSpawnSetup`. So the titanoslime is registered at the
+   **PawnGenerator's random-age life stage** (lifeExpectancy 1000, minAges 0/100/200/300/400: any of the five).
+2. Large Pawns' `ThingGrid_Register_SquarePatch` adds the pawn to EVERY cell of `OccupiedSquare(pawn)`, sized by
+   `GetSize` from the live BodySize; `ThingGrid_Deregister_SquarePatch` removes it from the square sized by
+   `GetSizeForDeregister` — also the live BodySize. **Nothing remembers the square it registered.** Same shape for
+   region listers. Squares are nested (`GenAdj.OccupiedRect` sizes 2⊂3⊂4), so growth is safe and **shrinking is not**.
+3. `RM_CompEngulfer.PostSpawnSetup` -> `ApplyStage` -> `LockCurrentLifeStageIndex` then changes BodySize while the
+   pawn is registered. Footprints: stage 1 BodySize 6 -> 2x2, stages 2-3 (10/16) -> 3x3, stages 4-5 (24/40) -> 4x4.
+   A lock to a smaller square than the rolled one leaves the outer ring in `thingGrid` (and region listers) forever;
+   every later move deregisters only the current square too.
+4. Vanish vs kill: both leave the ring. `PawnCollisionTweenerUtility.GetPawnsStandingAtOrAboutToStandAt` skips any
+   pawn whose `GetPosture() != Standing` — a dead ghost is skipped. A vanished ghost is not dead, is "Standing", and
+   `Pawn.DeSpawn` -> `PawnComponentsUtility.RemoveComponentsOnDespawned` set its `pather = null` -> NRE on
+   `pawn.pather.MovingNow`, every frame via the draw path. (A dead ghost is still a leak; it just does not throw there.)
+
+The repro table fits exactly: stage 1 (2x2, the smallest square) is ghosted by almost any roll (0-1/9); stages 2/3 (3x3)
+only by a stage-4/5 roll (4/9); stage 4 (4x4, the ceiling) can never shrink (9/9); other large animals never change
+size while spawned (9/9).
+
+## false theories (kept, they were reasonable)
+
+- **"Huge Things holds the ghost."** Its titan tier / wake / footprint code touches no cell grid for pawns
+  (`CompHugeFootprint` is the plant claims grid; the wake only reads `Position`). Not it.
+- **"A cached occupied rect in our mod."** `RM_CompEngulfer` keeps no rect and patches nothing; the ghost lives in
+  Large Pawns' unrecorded registration.
+- **"Vanish deregisters differently from kill."** Both go through `Pawn.DeSpawn` -> `Thing.DeSpawn` ->
+  `thingGrid.Deregister`; the difference is only what a ghost of each kind does to its readers.
+- The NEXT this item first carried (restart without `neku.largepawns`) would have pointed at Large Pawns, but the
+  fix belongs to the mod that changes size under a registered pawn: ours.
+
+## fix (built 2026-10-17, NOT deployed, NOT verified live)
+
+`RM_CompEngulfer.LockStageReregistering` (`src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs`): every stage lock
+while spawned is wrapped in `DeregisterInRegions` + `thingGrid.Deregister` (at the OLD size) ... `thingGrid.Register` +
+`RegisterInRegions` (at the NEW size) — the `Thing.Position` setter's own move pattern. Without Large Pawns it is a
+one-cell deregister/register. `ApplyStage` now also locks when the index already matches but is unlocked (a
+same-stage roll used to stay unlocked and keep ageing). Proof surface: `RM_TitanoslimeProof.ProofGhostScan`
+(whole-map thingGrid scan for destroyed/unspawned/out-of-square pawns).
 
 ## NEXT
 
-Restart without `neku.largepawns` (then without `mandrake.rm.hugethings`) and rerun the matrix with
-`Transient/afk_2026-10-17/titano_probe.py`'s `case()` harness; whichever removal makes vanish 9/9 owns the bug.
-Player impact: vanilla rarely vanishes a live pawn, but any mod or dev action that does will poison the map.
-`src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py` kills slimes instead of vanishing them until this is fixed.
+Deploy `mandrake.rm.biomes` (GelatinousSlime DLL) and run
+`titanoslime_gates.py --only g8` (NEVER RUN): 6 cases (3x stage 1, stage 2, stage 3, shrink 4->1), each must read
+ghosts=0 before and after vanish and respawn 9/9 Muffalo. PASS -> switch the script's slime cleanup back to vanish and
+close this item.

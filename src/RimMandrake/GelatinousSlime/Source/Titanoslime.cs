@@ -235,16 +235,12 @@ namespace RimMandrake.GelatinousSlime
             absorbedMass = Mathf.Clamp(absorbedMass, 0f, Props.massCap);
             int current = self.ageTracker.CurLifeStageIndex;
             int target = StageFor(absorbedMass, current);
-            if (target != current)
+            // Lock even when the index already matches: an UNLOCKED index
+            // that happens to equal the target (PawnGenerator rolled the same
+            // stage) would otherwise keep ageing and change size on its own.
+            if (target != current || self.ageTracker.lockedLifeStageIndex != target)
             {
-                // RecalculateLifeStageIndex (called from inside this) already
-                // does SetAllGraphicsDirty, Notify_LifeStageStarted and
-                // AddAndRemoveDynamicComponents — MEASURED. Nothing else here.
-                self.ageTracker.LockCurrentLifeStageIndex(target);
-            }
-            else if (self.ageTracker.CurLifeStageIndex != target)
-            {
-                self.ageTracker.LockCurrentLifeStageIndex(target);
+                LockStageReregistering(self, target);
             }
 
             if (RM_TitanKernel.Announce(target, ref highestStageAnnounced, self.Spawned, announce))
@@ -266,6 +262,50 @@ namespace RimMandrake.GelatinousSlime
                     Messages.Message("The titanoslime has grown. It is now a " + label + ".",
                                      self, MessageTypeDefOf.ThreatSmall, false);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Locks the stage with the pawn taken OUT of the cell grid and region
+        /// listers around the size change, the way the Thing.Position setter
+        /// moves a pawn (MEASURED, Verse/Thing.cs: DeregisterInRegions,
+        /// thingGrid.Deregister ... thingGrid.Register, RegisterInRegions).
+        ///
+        /// 🔴 TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID. Large Pawns registers a
+        /// pawn in EVERY cell of its square, sized from BodySize at the moment
+        /// of registration, and deregisters by the size it has NOW (decompile
+        /// 0.24.16: ThingGrid_Register_SquarePatch uses GetSize,
+        /// ThingGrid_Deregister_SquarePatch uses GetSizeForDeregister, both
+        /// from the live BodySize; nothing remembers the registered square).
+        /// Thing.SpawnSetup registers BEFORE comps' PostSpawnSetup, i.e. at the
+        /// PawnGenerator's random-age stage; locking a smaller stage afterwards
+        /// shrank the square under a registered pawn and its outer ring stayed
+        /// in the grid for good — a destroyed pawn with a null pather that
+        /// PawnCollisionTweenerUtility then NREs on. Re-registering here keeps
+        /// registered and current size equal across every stage change.
+        /// Without Large Pawns this is a one-cell deregister/register: harmless.
+        /// </summary>
+        private static void LockStageReregistering(Pawn self, int target)
+        {
+            Map map = self.Spawned ? self.Map : null;
+            if (map == null)
+            {
+                self.ageTracker.LockCurrentLifeStageIndex(target);
+                return;
+            }
+            RegionListersUpdater.DeregisterInRegions(self, map);
+            map.thingGrid.Deregister(self);
+            try
+            {
+                // RecalculateLifeStageIndex (called from inside this) already
+                // does SetAllGraphicsDirty, Notify_LifeStageStarted and
+                // AddAndRemoveDynamicComponents — MEASURED. Nothing else here.
+                self.ageTracker.LockCurrentLifeStageIndex(target);
+            }
+            finally
+            {
+                map.thingGrid.Register(self);
+                RegionListersUpdater.RegisterInRegions(self, map);
             }
         }
 
@@ -861,9 +901,9 @@ namespace RimMandrake.GelatinousSlime
                 return; // stage 1 has nothing spare to lose
             }
 
-            float maxHp = self.health != null ? self.health.summaryHealth.SummaryHealthPercent : 1f;
+            float healthPct = self.health != null ? self.health.summaryHealth.SummaryHealthPercent : 1f;
             if (!RM_TitanKernel.ShedStep(ref damageSinceShed, totalDamageDealt, self.RaceProps != null ? self.RaceProps.baseHealthScale : 1f,
-                    Props.shedDamageFraction, innerContainer.Count, maxHp, self.ageTracker.CurLifeStageIndex, true))
+                    Props.shedDamageFraction, innerContainer.Count, healthPct, self.ageTracker.CurLifeStageIndex, true))
             {
                 return;
             }
@@ -927,7 +967,7 @@ namespace RimMandrake.GelatinousSlime
             for (int i = 0; i < contents.Count; i++)
             {
                 int idx = IndexOf(contents[i]);
-                if (idx < 0)
+                if (idx < 0 || idx >= heldTicks.Count || idx >= heldDigestTicks.Count)
                 {
                     continue;
                 }
@@ -971,7 +1011,7 @@ namespace RimMandrake.GelatinousSlime
                 int idx = IndexOf(contents[i]);
                 if (sb.Length > 0) sb.Append(',');
                 sb.Append(contents[i].ThingID);
-                if (idx >= 0)
+                if (idx >= 0 && idx < heldTicks.Count && idx < heldDigestTicks.Count)
                 {
                     sb.Append(':').Append(heldTicks[idx]).Append('/').Append(heldDigestTicks[idx]);
                 }
