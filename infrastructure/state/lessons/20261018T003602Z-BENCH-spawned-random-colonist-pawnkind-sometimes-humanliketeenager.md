@@ -1,0 +1,1 @@
+A spawned random 'Colonist' pawnkind is sometimes a HumanlikeTeenager (BodySize 0.8): any bar that assumes an adult victim (mass gained, capacity, prey fraction) must read the victim's BodySize. A 20-pawn probe that saw only adults nearly 'disproved' it — one probe of a minority outcome proves nothing (titanoslime g3, 4/11 runs, 2026-10-17).

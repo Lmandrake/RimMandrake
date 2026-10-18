@@ -1,0 +1,52 @@
+17:33:51 ROW pre running_list                                 PASS               len(env.running)=22 missing=[]
+17:33:59 starting a quicktest map
+17:34:17 Verse.Log.Clear: True
+17:34:17 ROW pre site                                         PASS               map 250x250 centre 125,125; settings at shipped defaults
+17:34:17 === g1
+17:34:17 ROW g1 def_resolves_live                            PASS               notFound=[]
+17:34:17 ROW g1 spawn_places_and_rolls_stage_1_to_3          PASS               5 spawned, stage idx [0, 0, 0, 0, 0]
+17:34:17 ROW g1 bodysize_6_at_stage_1                        PASS               stage1 RM_Titanoslime37047 bodySize=6; per-stage mismatches []
+17:34:18 ROW g1 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:34:18 === g2
+17:34:18 ROW g2 mass12_bodysize16_draw6_T2_3x3               PASS               {'bodySize': '16.02', 'drawSize': '6', 'tier': 'T2', 'footprint': '3', 'stage': '2', 'mass': '12'}
+17:34:19 saved; loading RM_titano_gate2
+17:34:26 ROW g2 survives_save_reload                         PASS               {'before': {'bodySize': '16.02', 'drawSize': '6', 'tier': 'T2', 'footprint': '3', 'stage': '2', 'mass': '12'}, 'after': {'bodySize': '16.02', 'drawSize': '6', 'tier': 'T2', 'footprint': '3', 'stage': '2', 'mass': '12'}}
+17:34:27 ROW g2 log_budget                                   PASS               +41 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:34:27 === g3
+17:34:35 checkpoint natural-arm log (1534, 0, 143)
+17:34:35 ROW g3 colonist_swallowed_within_60s_natural        PASS               4 replicates (stage-1 vs 4 drafted colonists): ['nothing', 'nothing', 'nothing', 'swallow@1440']
+17:34:35 ROW g3 inspect_shows_countdown                      PASS               Digesting Dim: 75 s left
+17:34:35 ROW g3 downed_slime_releases_stunned_acid_slimified PASS               before slim=none | after spawned=True stunned=True acid=2 slim=0.16
+17:34:35 checkpoint after down+vanish log (1534, 0, 143)
+17:34:36 checkpoint absorb-wait log (1534, 0, 143)
+17:34:43 checkpoint absorb-wait log (1534, 0, 143)
+17:34:49 checkpoint absorb-wait log (1534, 0, 143)
+17:34:56 checkpoint absorb-wait log (1534, 0, 143)
+17:35:00 ROW g3 timer_absorbs_no_corpse_gear_mass_food       PASS               victim corpse=none destroyed=True | slime mass=1 food=0.999 | victim after: bodySize=1 lifeStage=HumanlikeAdult | worn ['Apparel_BasicShirt', 'Apparel_Broadwrap', 'Apparel_Pants'], on ground near slime ['Apparel_BasicShirt', 'Apparel_Broadwrap', 'Apparel_Pants
+17:35:00 VANISH-MISS Human43837 {"success": false, "message": "No pawn matching 'Human43837'. 45 pawns are spawned, 5 are held on a map (caskets, growth vats, pods, carried), 23 are world pawns (caravans, transit, etc.). Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' prefix, the numeric thingIDNumber, or the p
+17:35:00 VANISH-MISS Human43843 {"success": false, "message": "No pawn matching 'Human43843'. 44 pawns are spawned, 5 are held on a map (caskets, growth vats, pods, carried), 23 are world pawns (caravans, transit, etc.). Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' prefix, the numeric thingIDNumber, or the p
+17:35:01 ROW g3 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:35:01 === g4
+17:35:22 ROW g4 muffalo_bursts_out_most_runs_60s             PASS               7/10 burst out within 3600 ticks (model: ~86 %)
+17:35:23 ROW g4 cut_stage2_to_half_sheds_3_holds_stage_default PASS               stage 1 -> 1, shed 14, health 0.496, mass 4
+17:35:23 ROW g4 cut_stage2_to_half_sheds_3_and_drops_to_1_reversible_on PASS               stage 1 -> 0, shed 6, health 0.499, mass 2
+17:35:24 ROW g4 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:35:24 === g5
+17:35:24 ROW g5 maxStage2_refuses_stage3_at_mass12           PASS               stage idx 1 mass 12
+17:35:24 ROW g5 grows_toggle                                 PASS               off: mass 0 | on: mass 4 stage 1
+17:35:24 ROW g5 reversible_toggle                            PASS               off: mass 12 stage 2 | on: mass 6 stage 1
+17:35:26 ROW g5 engulfs_toggle_gate_and_midhold_release      PASS               off:canEngulf=False on:canEngulf=True | after switch-off held=0 muffalo spawned=True
+17:35:26 ROW g5 sheds_toggle_off_sheds_nothing               PASS               8 x 12 Cut on a stage-2 with sheds off: 0 gelatids
+17:35:27 ROW g5 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:35:27 === g6
+17:35:28 ROW g6 stage4_kill_corpse_site_and_held_released    PASS               stage 3 bodySize 24 tier T3 | sites 1 | muffalo spawned=True dead=False | killedAt=107,119 map=0 | id=RM_Titanoslime45058 def=RM_Titanoslime spawned=False
+17:35:29 ROW g6 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:35:29 === g8
+17:35:29 ROW g8 vanish_no_ghost_stage1_0                     PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:30 ROW g8 vanish_no_ghost_stage1_1                     PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:31 ROW g8 vanish_no_ghost_stage1_2                     PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:31 ROW g8 vanish_no_ghost_stage2_3                     PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:32 ROW g8 vanish_no_ghost_stage3_4                     PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:33 ROW g8 vanish_no_ghost_shrink4to1_5                 PASS               ghosts alive=0 after_vanish=0 [] | muffalo respawn 9/9
+17:35:34 ROW g8 log_budget                                   PASS               +1 log lines, +0 exception lines, +0 naming GelatinousSlime/Titanoslime
+17:35:34 wrote \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\afk_2026-10-17\titanoslime_gates_result.json
