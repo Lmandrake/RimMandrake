@@ -36,7 +36,7 @@
       <sowResearchPrerequisites Inherit="False" />
       <dieIfLeafless>true</dieIfLeafless>
       <growDays>10</growDays>
-      <visualSizeRange>5~10</visualSizeRange>
+      <visualSizeRange>5.8~11.5</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <mustBeWildToSow>false</mustBeWildToSow>
       <immatureGraphicPath>Things/RM_CorriskTree</immatureGraphicPath>

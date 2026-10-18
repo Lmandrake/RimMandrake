@@ -48,7 +48,7 @@
       <harvestYield>22</harvestYield>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
-      <visualSizeRange>1.8~3.4</visualSizeRange>
+      <visualSizeRange>3.4~6.5</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>

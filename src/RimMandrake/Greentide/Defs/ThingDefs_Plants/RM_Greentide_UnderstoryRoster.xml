@@ -86,7 +86,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Brakkel/RM_Brakkel_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.4, 0.5, 0.35)</volume>
@@ -156,7 +156,7 @@
       <harvestWork>200</harvestWork>
       <harvestYield>8</harvestYield>
       <harvestedThingDef>RM_TumbelGourd</harvestedThingDef>
-      <visualSizeRange>3.0~5.0</visualSizeRange>
+      <visualSizeRange>3~5</visualSizeRange>
       <topWindExposure>0.18</topWindExposure>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
@@ -206,7 +206,7 @@
       <harvestWork>170</harvestWork>
       <harvestYield>9</harvestYield>
       <harvestedThingDef>RM_SarquinSap</harvestedThingDef>
-      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <visualSizeRange>2.8~4.5</visualSizeRange>
       <topWindExposure>0.14</topWindExposure>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
@@ -256,7 +256,7 @@
       <harvestWork>150</harvestWork>
       <harvestYield>6</harvestYield>
       <harvestedThingDef>RM_StenchSporeExtract</harvestedThingDef>
-      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <visualSizeRange>3~4.5</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
@@ -300,7 +300,7 @@
       <harvestWork>190</harvestWork>
       <harvestYield>11</harvestYield>
       <harvestedThingDef>RM_WollickTuber</harvestedThingDef>
-      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <visualSizeRange>2.8~4.5</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
@@ -323,7 +323,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Maddrick/RM_Maddrick_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.32, 0.32, 0.22)</volume>
@@ -344,7 +344,7 @@
       <fertilityMin>0.25</fertilityMin>
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>14</growDays>
-      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <visualSizeRange>2.7~4</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
@@ -367,7 +367,7 @@
     <pathCost>42</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Illurin/RM_Illurin_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>CutoutPlant</shaderType>
       <shadowData>
         <volume>(0.3, 0.35, 0.22)</volume>
@@ -388,7 +388,7 @@
       <fertilityMin>0.2</fertilityMin>
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>16</growDays>
-      <visualSizeRange>4.0~7.0</visualSizeRange>
+      <visualSizeRange>4.3~7.5</visualSizeRange>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>

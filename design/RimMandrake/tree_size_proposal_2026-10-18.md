@@ -65,8 +65,8 @@ defs): oak/maple/poplar/birch/palm/cecropia/drago/bamboo **2.0**, pine/gray pine
 
 Descriptions and sizes disagree in places: `RM_Thulvane` is written *"A colossal fused column of a tree ... rising past
 sight"* (its cast proposal: *"the 16-cell fused tower"*) and draws 3.5; `RM_Ollamane` *"rising far above everything"*
-draws 3.6. The other way: the five plants ruled trees today include `RM_GlowGlobe` (*"A low plant that grows a single
-round glowing globe the size of a melon"*) and `RM_Maddrick` (*"standing shoulder-high"*), both at 3.0.
+draws 3.6. (The sheet sitting, 2026-10-18, ruled `RM_GlowGlobe`, `RM_Maddrick`, `RM_KeeningCordax`, `RM_Phorrik` and
+seven others *"Not a tree, does not make wood"*: `tree_burst_design_2026-10-17.md` §2.)
 
 ## Engine facts that limit every tier (decompiled 1.6, RimSage `RimWorld/Plant.cs`)
 
@@ -99,8 +99,8 @@ The 44 rows are placed on the review sheet `Transient/biome_ffar/tree_tiers_shee
 `.decisions.json`, key `q.tier` per row). Its tier prefills (`qPrefill`) are agent guesses from each description, never
 his rulings.
 
-## Open questions
+## Enacted (2026-10-18)
 
-1. The low "trees" (GlowGlobe, Maddrick, Gorbeleth, KeeningCordax): grow them, or keep 3.0 and adjust the prose?
-2. `RM_VaultRoot`'s `drawSize` 2: fold the 10.4 it draws today into `visualSizeRange` (drawSize 1, visual 10.4, base no longer sunk), or shrink it to
-   the 5.2 the tree test already reads?
+The sheet's tiers were enacted: each row's `visualSizeRange` max placed inside his tier (drawSize 1 everywhere;
+`RM_VaultRoot`'s drawSize 2 removed, it is a Small Tree). GlowGlobe, Maddrick and KeeningCordax were ruled not trees;
+Gorbeleth is a Small Tree. Item: `TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS`.

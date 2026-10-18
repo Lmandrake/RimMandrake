@@ -74,7 +74,7 @@
     <description>A bare grey column for most of its height, then one single tier of enormous paddle leaves radiating flat from the very top like an opened umbrella — no crown mass below it at all. Deep green above, the undersides pale and permanently wet. The dominant canopy tree, and the biggest ordinary fall in the whole Greentide.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Veluthar/RM_Veluthar_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.5, 0.7, 0.4)</volume>
         <offset>(0,0,-0.45)</offset>
@@ -90,7 +90,7 @@
     <plant>
       <growDays>55</growDays>
       <harvestYield>35</harvestYield>
-      <visualSizeRange>7.5~10.0</visualSizeRange>
+      <visualSizeRange>8.6~11.5</visualSizeRange>
       <wildClusterRadius>9</wildClusterRadius>
       <wildClusterWeight>22</wildClusterWeight>
     </plant>
@@ -127,7 +127,7 @@
     </statBases>
     <plant>
       <growDays>45</growDays>
-      <visualSizeRange>6.0~8.0</visualSizeRange>
+      <visualSizeRange>7.9~10.5</visualSizeRange>
       <wildClusterRadius>7</wildClusterRadius>
       <wildClusterWeight>16</wildClusterWeight>
     </plant>
@@ -154,7 +154,7 @@
     </statBases>
     <plant>
       <growDays>48</growDays>
-      <visualSizeRange>6.5~9.0</visualSizeRange>
+      <visualSizeRange>7.9~11</visualSizeRange>
       <wildClusterRadius>8</wildClusterRadius>
       <wildClusterWeight>18</wildClusterWeight>
     </plant>
@@ -189,7 +189,7 @@
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>40</growDays>
       <harvestYield>20</harvestYield>
-      <visualSizeRange>5.0~7.0</visualSizeRange>
+      <visualSizeRange>5.4~7.5</visualSizeRange>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
     </plant>
@@ -219,7 +219,7 @@
     <plant>
       <growDays>140</growDays>
       <harvestYield>30</harvestYield>
-      <visualSizeRange>4.0~6.0</visualSizeRange>
+      <visualSizeRange>5~7.5</visualSizeRange>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>
     </plant>
@@ -246,7 +246,7 @@
     </statBases>
     <plant>
       <growDays>30</growDays>
-      <visualSizeRange>4.0~6.0</visualSizeRange>
+      <visualSizeRange>3.3~5</visualSizeRange>
       <wildClusterRadius>8</wildClusterRadius>
       <wildClusterWeight>26</wildClusterWeight>
     </plant>
@@ -258,7 +258,7 @@
     <description>Slender pale smooth trunk, deliberately thin crown of a few long drooping fronds rather than a mass, and fruit far too large for the branch holding it, hanging low enough to take from the ground. The lightest silhouette on the page, by design. Free calories with a tax: the fruit-fall draws everything that eats fruit, and then everything that eats those.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Nemmer/RM_Nemmer_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.3, 0.45, 0.25)</volume>
         <offset>(0,0,-0.36)</offset>
@@ -279,7 +279,7 @@
            to that item / a follow-on, not guessed. -->
       <growDays>26</growDays>
       <harvestYield>15</harvestYield>
-      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <visualSizeRange>3.5~5</visualSizeRange>
       <wildClusterRadius>7</wildClusterRadius>
       <wildClusterWeight>20</wildClusterWeight>
     </plant>
@@ -307,7 +307,7 @@
     <plant>
       <growDays>50</growDays>
       <harvestYield>22</harvestYield>
-      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <visualSizeRange>4.9~7</visualSizeRange>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>3</wildClusterWeight>
     </plant>
@@ -341,7 +341,7 @@
            crack-fall rate on the page. -->
       <growDays>22</growDays>
       <harvestYield>18</harvestYield>
-      <visualSizeRange>3.0~4.0</visualSizeRange>
+      <visualSizeRange>7.5~10</visualSizeRange>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>14</wildClusterWeight>
     </plant>
@@ -376,7 +376,7 @@
     <plant>
       <growDays>28</growDays>
       <harvestYield>16</harvestYield>
-      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <visualSizeRange>5.2~7.5</visualSizeRange>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
     </plant>
@@ -387,7 +387,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_Quathis</defName>
     <label>quathis</label>
-    <description>One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. Its leaves are single-piece roofing and thatch panels, the biome's cheapest building material, and the colour relief in a dark understory.</description>
+    <description>One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. It is the colour relief in a dark understory.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Quathis/RM_Quathis_a</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -405,8 +405,11 @@
     </statBases>
     <plant>
       <growDays>18</growDays>
-      <harvestYield>12</harvestYield>
-      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <!-- Owner, tree tiers sheet 2026-10-18: "Not a tree, does not make wood." -->
+      <harvestedThingDef IsNull="True" />
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <visualSizeRange>2.8~4.5</visualSizeRange>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>20</wildClusterWeight>
     </plant>
@@ -415,7 +418,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_Thalquith</defName>
     <label>thalquith</label>
-    <description>Aquamarine — the only non-green thing growing here. Smooth trunk with no bark texture at all, branches meeting overhead in a flat interlocking lattice rather than a crown; saplings are literal inverted cones. The lattice hums in moving air, constantly — the hum stopping is the tell. Fragile, and hard to keep alive near work.</description>
+    <description>Aquamarine, and the only thing on the Chill's deep floor that grows taller than a man. No cell of it would survive a drop of water: its body is a lattice of waxy hydrocarbon tubes, and its sap is a cold solution of ethane in propane, moved not by a heart or by evaporation but by freezing and thawing a fraction of a degree at a time. Its branches meet overhead in a flat interlocking lattice rather than a crown, sieving the lake's slow currents for dissolved acetylene, which it combines with the hydrogen seeping from the floor: chemistry that would be a fire anywhere warmer, and here is only a living. The lattice hums faintly as the liquid moves through it. It grows over centuries, and a warm hand laid on its trunk boils a pit into it that never heals.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Thalquith/RM_Thalquith_a</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -433,8 +436,22 @@
     </statBases>
     <plant>
       <growDays>20</growDays>
-      <harvestYield>10</harvestYield>
-      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <!-- Owner, tree tiers sheet 2026-10-18: "Please move this to the bottom of the Chill sea floor ... Not a tree, does
+           not make wood." Liquid-propane floor flora, the same shape as RM_TheChillFlora.xml (TerminalBiomes): deep floor
+           only, no fertility, the Chill's -20 C ceiling, no light needed. Kept in this file with its hum layers. -->
+      <harvestedThingDef IsNull="True" />
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <visualSizeRange>4.4~7</visualSizeRange>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>7</wildClusterWeight>
     </plant>
@@ -521,7 +538,7 @@
       <growDays>24</growDays>
       <harvestYield>8</harvestYield>
       <harvestedThingDef>RM_GorbelethToxin</harvestedThingDef>
-      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <visualSizeRange>2.7~4</visualSizeRange>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>5</wildClusterWeight>
     </plant>

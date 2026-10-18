@@ -84,7 +84,7 @@
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>40</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <visualSizeRange>2.6~3.5</visualSizeRange>
+      <visualSizeRange>7.1~9.5</visualSizeRange>
       <wildOrder>1</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>

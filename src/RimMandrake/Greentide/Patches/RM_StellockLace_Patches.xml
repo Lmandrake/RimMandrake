@@ -15,14 +15,14 @@
 <Patch>
 
   <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/ThingDef[(defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Thalquith" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole") and not(comps)]</xpath>
+    <xpath>/Defs/ThingDef[(defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole") and not(comps)]</xpath>
     <value>
       <comps />
     </value>
   </Operation>
 
   <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/ThingDef[defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Thalquith" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole"]/comps</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole"]/comps</xpath>
     <value>
       <li Class="RimMandrake.Greentide.CompProperties_StellockBranchDrop">
         <branchDef>RM_StellockBranch</branchDef>

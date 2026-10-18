@@ -3,16 +3,18 @@
   <!--
     CRACKEDLANDS_PLANT_LIST_OWNED_1: the Cracked Lands thorn family, moved from
     UtinniPatches (RUT_PollutedFlora.xml) into the free tier (invented names, Q11a).
-    Field-for-field the same plants. RM_CrackedThornwood is the Cracked Lands copy of
-    the Cauldron's RM_TwistingThornwood (duplicate-then-diverge, Q13): one plant
-    family, two biomes, each mod self-contained. Art moved with them.
+    RM_CrackedThornwood began as the Cracked Lands copy of the Cauldron's
+    RM_TwistingThornwood (duplicate-then-diverge, Q13) and has now diverged: the owner
+    ruled the two redundant on the tree tiers sheet, 2026-10-18 ("Disambiguate."), so it
+    is the CRACKED thornwood, a pale, quick, light-wooded Small Tree of the polluted
+    canyon floor, and the Cauldron keeps the twisting thornwood (corkscrew, metal-sweating).
   -->
 
-  <!-- ============== Twisting Thornwood (tree) — RM_FloodedCanyon (Cracked Lands) ============== -->
+  <!-- ============== Cracked Thornwood (tree) — RM_FloodedCanyon (Cracked Lands) ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_CrackedThornwood</defName>
-    <label>twisting thornwood</label>
-    <description>A large species of tree found in polluted arid environments. It is one of three closely related species of plant, alongside the thornweed and thorngrass.</description>
+    <label>cracked thornwood</label>
+    <description>A pale, lichen-scabbed thornwood of the Cracked Lands. Its trunk is several thin stems braided loosely around each other, and wherever the canyon's poisoned floodwater has soaked into them the bark has split lengthwise into long dry cracks that never close. Tufts of olive leaf cling to the tips of its thorny branches. It stays a small tree, two or three times a man's height, and its wood is light and quick to cut: the one easy timber of the canyon floor. It shares the cracks around it with its kin, the thornweed and the thorngrass.</description>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>210</MaxHitPoints>
@@ -38,7 +40,7 @@
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
-      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <visualSizeRange>1.7~4</visualSizeRange>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
@@ -49,7 +51,7 @@
     <defName>RM_TwistingThorngrass</defName>
 <altitudeLayer>FloorEmplacement</altitudeLayer>  <!-- ground cover: under every LowPlant plant (owner 2026-10-14) -->
     <label>twisting thorngrass</label>
-    <description>Similar to grass yet covered in small thorn-like structures. It is related in part to the twisting thornwood and thornweed.</description>
+    <description>Similar to grass yet covered in small thorn-like structures. It is related in part to the cracked thornwood and thornweed.</description>
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
       <Flammability>1.3</Flammability>
@@ -78,7 +80,7 @@
   <ThingDef ParentName="BushBase">
     <defName>RM_TwistingThornweed</defName>
     <label>twisting thornweed</label>
-    <description>A bush-sized plant related to the thornwood tree, hardy enough to survive on heavily polluted ground.</description>
+    <description>A bush-sized plant related to the cracked thornwood, hardy enough to survive on heavily polluted ground.</description>
     <graphicData>
       <texPath>Things/Plant/RM_TwistingThornweed</texPath>
       <graphicClass>Graphic_Random</graphicClass>

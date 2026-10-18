@@ -159,7 +159,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Eyebark/RM_Eyebark</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
         <offset>(0,0,-0.38)</offset>
@@ -195,7 +195,7 @@
       <harvestYield>6</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
-      <visualSizeRange>2.6~3.4</visualSizeRange>
+      <visualSizeRange>4.6~6</visualSizeRange>
       <maxMeshCount>1</maxMeshCount>
       <wildOrder>4</wildOrder>
       <topWindExposure>0.3</topWindExposure>
@@ -492,7 +492,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
         <offset>(0,0,-0.38)</offset>
@@ -524,7 +524,7 @@
       <harvestYield>18</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
-      <visualSizeRange>2.3~3.0</visualSizeRange>
+      <visualSizeRange>3.1~4</visualSizeRange>
       <maxMeshCount>1</maxMeshCount>
       <wildOrder>3</wildOrder>
       <topWindExposure>0.3</topWindExposure>

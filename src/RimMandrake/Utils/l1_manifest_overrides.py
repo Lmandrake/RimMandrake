@@ -50,9 +50,9 @@ OVERRIDES = {
              "Drift is five RM_RiverDriftDef rows whose DefType is a namespaced class, so confirm get_defs accepts that spelling."),
     ("CAULDRON_ENRICHMENT_VISUALS_1", "A1"): dict(
         defect="A1 asks for the flora-accent dew defs; src/ holds no def or XML modExtension for dewfall saturation (RM_DewfallGraphicExtension is C#-only, dormant pending dew art and the owner's accent-plant pick). Only 3 of the 4 named things have a def anchor. Build gap for the saturation half, not a typo.",
-        defs=["ThingDef/RM_Filth_DewBeads", "ThingDef/RM_TwistingThornwood", "ThingDef/RM_TreeMartyr",
+        defs=["ThingDef/RM_Filth_DewBeads", "ThingDef/RM_TwistingThornwood",
               "ThingDef/RM_Vexxiss"],
-        note="Only the bead is a standalone def. Assay flecks = RM_AssayFlecksExtension on RM_TwistingThornwood and RM_TreeMartyr "
+        note="Only the bead is a standalone def. Assay flecks = RM_AssayFlecksExtension on RM_TwistingThornwood "
              "(modExtension, overlay art owed so dormant). Vexxiss prints = code (RM_VexxissPrints.cs) hung off RM_CompVexxissBehaviour "
              "on RM_Vexxiss, no print def. Flora-accent dew variant: NO def and NO XML extension exists in src/ (RM_DewfallGraphicExtension "
              "is C# only, 'DORMANT, no XML ext added' per Transient/cauldron_visuals_20261006.md), so that quarter of the criterion "

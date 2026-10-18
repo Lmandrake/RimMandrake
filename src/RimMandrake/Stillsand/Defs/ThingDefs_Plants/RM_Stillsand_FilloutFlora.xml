@@ -91,9 +91,10 @@
       <dieIfLeafless>false</dieIfLeafless>
       <dieIfNoSunlight>false</dieIfNoSunlight>
       <dieFromToxicFallout>false</dieFromToxicFallout>
-      <!-- tree_burst_design_2026-10-17.md §8 follow-up card, owner write-in "Make it 3.0": drawn up to 3.0 so it is a tree,
-           immortal like RM_Ollim (water a growth spike, never a burst); it keeps its wood. -->
-      <visualSizeRange>1.6~3.0</visualSizeRange>
+      <!-- tree_burst_design_2026-10-17.md §8 follow-up card, owner write-in "Make it 3.0": a tree, immortal like RM_Ollim
+           (water a growth spike, never a burst); it keeps its wood. Size: Small Tree tier (3-5 at full growth), owner's
+           tree tiers sheet 2026-10-18. -->
+      <visualSizeRange>2.1~4</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <treeCategory>Full</treeCategory>
       <!-- One material for both forms: the same RM_OllimWood, a smaller yield. -->

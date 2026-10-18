@@ -12,7 +12,7 @@ seeded OFFLINE from the repo exactly as RM_ExplosiveGrowthRegistry.Rebuild seeds
   sprouts        the row's sproutCount, else dry 4~7 / wet 1~2
   woody          harvestTag Wood / a Tree parent / harvestedThingDef WoodLog (EC1), and not a tree
   tree           tree_burst_design_2026-10-17.md §2: a native drawn at visual max 3.0+ (the def's own visualSizeRange; an
-                 inherited one reads "UNMEASURED offline"), not a roster fungus, not treeRulesExempt (RM_Greatbole)
+                 inherited one reads "UNMEASURED offline"), not a roster fungus, not treeRulesExempt (RM_Greatbole), not notTrees
   conflict       a plant in both a wet and a dry biome's list: surfaced, never silently resolved (§9, evictions stopped)
 
 The sheet GENERATOR is not built here (UNMEASURED in the spec: owed with the biome review tooling); this is its data.
@@ -90,10 +90,11 @@ def load(files=None):
 
 def seed(rosters, biomes, plants):
     rows, exempt, wet_b, fire_b = {}, set(BUILTIN_EXEMPT), set(), set()
-    fungi, tree_exempt = set(), set()
+    fungi, tree_exempt, not_trees = set(), set(), set()
     for r in rosters:
         fungi |= {(x.text or "").strip() for x in r.findall("fungi/li")}
         tree_exempt |= {(x.text or "").strip() for x in r.findall("treeRulesExempt/li")}
+        not_trees |= {(x.text or "").strip() for x in r.findall("notTrees/li")}
         for li in r.findall("plants/li"):
             n = (li.findtext("plant") or "").strip()
             if n:
@@ -159,7 +160,7 @@ def seed(rosters, biomes, plants):
         native = a in ("DryNative", "WetNative", "FireAdapted")
         if native and name not in fungi and name not in tree_exempt and vmax is None and pd is not None:
             notes.append("visualSizeRange inherited: tree or not UNMEASURED offline")
-        tree = bool(native and name not in fungi and name not in tree_exempt and vmax is not None and vmax >= 2.999)
+        tree = bool(native and name not in fungi and name not in tree_exempt and name not in not_trees and vmax is not None and vmax >= 2.999)
         woody = not tree and bool(pd and ((pd["harvestTag"] or "") == "Wood" or "Tree" in pd["parent"] or pd["harvested"] == "WoodLog"))
         conflict = name in wet_p and name in dry_b_p and choice == "Auto"
         if conflict:

@@ -107,7 +107,7 @@
       <dieIfLeafless>false</dieIfLeafless>
       <dieIfNoSunlight>False</dieIfNoSunlight>
       <dieFromToxicFallout>False</dieFromToxicFallout>
-      <visualSizeRange>3.5~5.5</visualSizeRange>
+      <visualSizeRange>6.7~10.5</visualSizeRange>
       <topWindExposure>0.15</topWindExposure>
       <treeCategory>Super</treeCategory>
       <harvestedThingDef>RM_OllimWood</harvestedThingDef>

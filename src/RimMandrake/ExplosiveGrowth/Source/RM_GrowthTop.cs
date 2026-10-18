@@ -207,6 +207,10 @@ namespace RimMandrake.ExplosiveGrowth
         /// They keep the engine's handling they had before the tree rules.</summary>
         public List<string> treeRulesExempt = new List<string>();
 
+        /// <summary>Owner, tree tiers sheet 2026-10-18: "Not a tree, does not make wood." Plants ruled not trees whatever
+        /// their size: no tree rules (no drink, no burst, no logs); they keep their archetype's cycle like any non-tree.</summary>
+        public List<string> notTrees = new List<string>();
+
         /// <summary>Per-tree burst yields (Q12, Q16); a tree with no entry takes the defaults.</summary>
         public List<RM_TreeBurstEntry> treeBursts = new List<RM_TreeBurstEntry>();
     }

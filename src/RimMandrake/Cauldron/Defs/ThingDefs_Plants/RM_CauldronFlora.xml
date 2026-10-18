@@ -13,11 +13,8 @@
       (src/RimMandrake/FloodedCanyon/Defs/ThingDefs_Plants/RM_TwistingThorns.xml),
       which is ALSO wired into RM_FloodedCanyon and diverges there.
       This is this mod's own copy.
-    - RM_TreeMartyr ("sarrowan" — label/description renamed on the owner's
-      Cauldron sheet 2026-10-09; otherwise a field-for-field copy of RUT_TreeMartyr), which the twin
-      wires only into PoisonForest — the frozen original stays in place too
-      (same file), since RUT_PoisonForest.xml is frozen byte-for-byte and
-      must keep resolving its own original defName.
+    - RM_TreeMartyr ("sarrowan") was CUT from the game by the owner, tree tiers sheet
+      2026-10-18: "Cut and remove from game". Def, roster rows and art removed.
     - RM_DarkCrust: field-for-field copy of RUT_DarkCrust (label "vein
       moss", ruled by owner card 2026-09-24, POISONFOREST_SHIPPING_NAMES_1),
       wired only into PoisonForest. Art: the generated PNG already sitting at
@@ -28,7 +25,7 @@
       whoever wires the twin, not this item. This mod's copy gets that art
       for real, at its own texPath.
 
-    Art for TwistingThornwood/MartyrTree lives in this mod's own Textures/Things/Plant/{RM_TwistingThornwood,RM_TreeMartyr}/,
+    Art for TwistingThornwood lives in this mod's own Textures/Things/Plant/RM_TwistingThornwood/,
     same "art copied, renamed" precedent as RM_LeaningScrub's RM_SweetlineTree.
   -->
 
@@ -81,64 +78,6 @@
            Cauldron's own audio exists (CAULDRON_ENRICHMENT_AUDIO_1). -->
       <soundHarvesting>Recipe_Smith</soundHarvesting>
       <harvestYield>25</harvestYield>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
-      <harvestMinGrowth>0.2</harvestMinGrowth>
-      <topWindExposure>0.08</topWindExposure>
-      <visualSizeRange>1.3~3.0</visualSizeRange>
-      <wildClusterRadius>-1</wildClusterRadius>
-      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
-    </plant>
-  </ThingDef>
-
-  <!-- ============== Martyr tree — duplicated from RUT_TreeMartyr ============== -->
-  <ThingDef ParentName="TreeBase">
-    <defName>RM_TreeMartyr</defName>
-    <label>sarrowan</label>
-    <description>A spined rosette tree of the poisoned valleys. Its trunk is not wood but a rope of dead leaf-bases, twisted tight around each other year on year until they bear the weight of the living crown. Once a season it raises a single tall stalk of pale, bell-shaped flowers that smell faintly of vinegar. Cut, the twisted trunk gives a small amount of fibrous material that can be used like wood.</description>
-    <!-- METAL SECOND YIELD (owner-ruled, both trees; CAULDRON_TREE_METAL_YIELD_1):
-         steel beside the wood, scaled by growth. See RM_CompMetalYield. -->
-    <comps>
-      <li Class="RimMandrake.Cauldron.RM_CompProperties_MetalYield">
-        <metalDef>Steel</metalDef>
-        <countAtMinGrowth>1</countAtMinGrowth>
-        <countAtFullGrowth>6</countAtFullGrowth>
-      </li>
-    </comps>
-    <!-- CAULDRON_ENRICHMENT_VISUALS_1 V3: metal flecks by assay band (RM_AssayFlecks). Overlay art owed
-         (256x256, registered to the tree art); until it is on disk the flecks stay off. -->
-    <modExtensions>
-      <li Class="RimMandrake.Cauldron.RM_AssayFlecksExtension">
-        <lightTexPath>Things/Plant/RM_AssayFlecks/Flecks_Light</lightTexPath>
-        <heavyTexPath>Things/Plant/RM_AssayFlecks/Flecks_Heavy</heavyTexPath>
-      </li>
-    </modExtensions>
-    <minifiedDef IsNull="True" />
-    <statBases>
-      <MaxHitPoints>200</MaxHitPoints>
-      <Nutrition>2.0</Nutrition>
-      <Mass>100</Mass>
-    </statBases>
-    <graphicData>
-      <texPath>Things/Plant/RM_TreeMartyr</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <shadowData>
-        <volume>(0.24, 0.3, 0.15)</volume>
-        <offset>(0,0,-0.38)</offset>
-      </shadowData>
-    </graphicData>
-    <fillPercent>0.35</fillPercent>
-    <plant>
-      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
-      <fertilityMin>0.10</fertilityMin>
-      <fertilitySensitivity>0</fertilitySensitivity>
-      <growDays>10</growDays>
-      <!-- CAULDRON_RULED_CONTENT_1: steep on purpose (was 210). -->
-      <harvestWork>1000</harvestWork>
-      <!-- CAULDRON_GPT_ENRICHMENT_1 part 4: harvesting is slow AND noisy. TUNED:
-           vanilla's smithing sustainer stands in for metal-in-the-grain until the
-           Cauldron's own audio exists (CAULDRON_ENRICHMENT_AUDIO_1). -->
-      <soundHarvesting>Recipe_Smith</soundHarvesting>
-      <harvestYield>15</harvestYield>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
@@ -382,7 +321,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <fillPercent>0.3</fillPercent>
     <plant>

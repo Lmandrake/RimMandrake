@@ -14,7 +14,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_Ollamane</defName>
     <label>ollamane</label>
-    <description>Three or four vast fan-leaves on separate stalks, rising far above everything around them — each fan a deep saturated purple shot through with darker veins and rimmed in a hard electric-blue line that reads almost like light. The stalks are so dark they are nearly black, and glossy. This is the Miasma's signature silhouette, the thing you see first standing in the delta; its fans are cut for roofing and for stilt-architecture.</description>
+    <description>Three or four vast fan-leaves on separate stalks, rising far above everything around them — each fan a deep saturated purple shot through with darker veins and rimmed in a hard electric-blue line that reads almost like light. The stalks are so dark they are nearly black, and glossy. This is the Miasma's signature silhouette, the thing you see first standing in the delta.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Ollamane/RM_Ollamane_a</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -35,10 +35,12 @@
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>18</growDays>
       <harvestWork>220</harvestWork>
-      <harvestYield>18</harvestYield>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <!-- Owner, tree tiers sheet 2026-10-18: "Not a tree, does not make wood." -->
+      <harvestedThingDef IsNull="True" />
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.25</harvestMinGrowth>
-      <visualSizeRange>2.0~3.6</visualSizeRange>
+      <visualSizeRange>3.6~6.5</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
     </plant>

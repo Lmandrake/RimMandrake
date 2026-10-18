@@ -52,7 +52,7 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
       <minSpacingBetweenSamePlant>3.9</minSpacingBetweenSamePlant>
-      <visualSizeRange>2.6~3.6</visualSizeRange>  <!-- owner, Abyss sheet 2026-10-05: "Twice as big." (was 1.3~1.8) -->
+      <visualSizeRange>4.7~6.5</visualSizeRange>  <!-- owner, Abyss sheet 2026-10-05: "Twice as big." (was 1.3~1.8) -->
     </plant>
   </ThingDef>
 </Defs>
