@@ -1094,3 +1094,6 @@
 {"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"stuck in MapInitializing after river_site (20 maps generated); relaunch","ts":"2026-10-18T01:27:17Z","tsn":1792286837108862243}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch","ts":"2026-10-18T01:27:23Z","tsn":1792286843557689200}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"up","ts":"2026-10-18T01:27:57Z","tsn":1792286877547846705}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"wedged: MapDrawer NRE every frame after loading calm site","ts":"2026-10-18T03:09:00Z","tsn":1792292940816739900}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch","ts":"2026-10-18T03:09:07Z","tsn":1792292947169179422}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"up","ts":"2026-10-18T03:09:40Z","tsn":1792292980672299278}
