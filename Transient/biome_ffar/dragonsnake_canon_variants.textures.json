@@ -1,0 +1,121 @@
+{
+ "rows": [
+  {
+   "key": "RSW_Dragonsnake_A",
+   "label": "Dragonsnake variant A - moss-backed",
+   "part": "dragonsnake",
+   "look": "A",
+   "variant": "A",
+   "section": "RSW_Dragonsnake",
+   "resources": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
+   ],
+   "jobs": [
+    "dragonsnake_jfo_vara_v1"
+   ],
+   "render_match": "jfo_vara_",
+   "size": {
+    "drawSize": [
+     4.0,
+     4.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RSW_Dragonsnake adult lifestage drawSize 4.0 (src XML)"
+   },
+   "reference_textures": [
+    "design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+   ]
+  },
+  {
+   "key": "RSW_Dragonsnake_B",
+   "label": "Dragonsnake variant B - sail-crested (pink crest, tail fan)",
+   "part": "dragonsnake",
+   "look": "B",
+   "variant": "B",
+   "section": "RSW_Dragonsnake",
+   "resources": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B"
+   ],
+   "jobs": [
+    "dragonsnake_jfo_varb_v1"
+   ],
+   "render_match": "jfo_varb_",
+   "size": {
+    "drawSize": [
+     4.0,
+     4.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RSW_Dragonsnake adult lifestage drawSize 4.0 (src XML)"
+   },
+   "reference_textures": [
+    "design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+   ]
+  },
+  {
+   "key": "RSW_Dragonsnake_C",
+   "label": "Dragonsnake variant C - bioluminescent (glowing spots)",
+   "part": "dragonsnake",
+   "look": "C",
+   "variant": "C",
+   "section": "RSW_Dragonsnake",
+   "resources": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C"
+   ],
+   "jobs": [
+    "dragonsnake_jfo_varc_v1"
+   ],
+   "render_match": "jfo_varc_",
+   "size": {
+    "drawSize": [
+     4.0,
+     4.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RSW_Dragonsnake adult lifestage drawSize 4.0 (src XML)"
+   },
+   "reference_textures": [
+    "design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+   ]
+  },
+  {
+   "key": "RSW_Dragonsnake_D",
+   "label": "Dragonsnake variant D - rust-crested",
+   "part": "dragonsnake",
+   "look": "D",
+   "variant": "D",
+   "section": "RSW_Dragonsnake",
+   "resources": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D"
+   ],
+   "jobs": [
+    "dragonsnake_jfo_vard_v1"
+   ],
+   "render_match": "jfo_vard_",
+   "size": {
+    "drawSize": [
+     4.0,
+     4.0
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "RSW_Dragonsnake adult lifestage drawSize 4.0 (src XML)"
+   },
+   "reference_textures": [
+    "design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+   ]
+  }
+ ],
+ "lead_html": "<p><b>Pick per row: accept or redo.</b> Four canon Jedi: Fallen Order variants of RSW_Dragonsnake. No white variants (owner 2026-10-18); the white serpent is the separate Albino.</p><p><b>Must show</b> (brief): long low crocodilian QUADRUPED with short splayed clawed legs and a very long tapering eel-like tail; narrow toothy gharial snout with fangs outside the jaw; dark olive-to-slate scaly hide, pale ridged belly; dorsal row of short spines; realistic wet hide, no outlines, no cartoon shading. NOT pale or limbless; not tan/khaki.</p><p>Concept image: design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg (shown beside each row).</p>"
+}
