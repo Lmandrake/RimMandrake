@@ -12,16 +12,20 @@ site) + neku.largepawns (footprint) + all five DLC. The preflight row reads the 
 
 PROOF SURFACE. RimMandrake.GelatinousSlime.RM_TitanoslimeProof (Source/TitanoslimeProof.cs) through jawa/static_call:
 ProofRead / ProofSetMass (the DEV gizmo path) / ProofFeed (AddMass, the path every growth source takes) /
-ProofEngulf (RM_Verb_MeleeEngulf's own CanEngulf+Engulf outcome) / ProofKill / ProofFind. Titanic tier is
+ProofEngulf (RM_Verb_MeleeEngulf's own CanEngulf+Engulf outcome) / ProofKill / ProofFind / ProofGhostScan. Titanic tier is
 RimMandrake.TitanicCreatures.TitanicTierUtility.GetTier; the footprint is LargePawns.LargePawnUtility.GetSize.
 
 LIES this script guards against (spec section 8): BodySize is read from the pawn, never the sprite; Large Pawns'
 footprint is read after 60 ticks (its cache); burst-out uses TEN muffalo; a stage that "grew" on screen proves nothing.
 VANISH (MEASURED 2026-10-17): Destroy(DestroyMode.Vanish) on a titanoslime (jawa/pawn_force_incapacitate action=vanish)
-leaves it in the cell grid / draw list: any later spawn in the 3x3 around it NREs in
-PawnCollisionTweenerUtility.GetPawnsStandingAtOrAboutToStandAt and Update/OnGUI throw every frame (which also leaves
-"Cannot register drawable ... while drawing is in progress" spam). Thrumbo, elephant, muffalo and gelatid vanish
-cleanly; kill is clean. So this script KILLS slimes it is done with. Filed: TITANOSLIME_VANISH_POISONS_CELLS.
+left it in the cell grid: any later spawn in the 3x3 around it NREd in
+PawnCollisionTweenerUtility.GetPawnsStandingAtOrAboutToStandAt and Update/OnGUI threw every frame. MECHANISM (code read
+2026-10-17, item TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID): Large Pawns registers the pawn in every cell of a square
+sized from BodySize AT REGISTRATION and deregisters by the size it has NOW; Thing.SpawnSetup registers before
+RM_CompEngulfer.PostSpawnSetup locks the stage, so a lock to a SMALLER stage than the generator's random-age one left
+the outer ring behind. Kill leaves the same ring, but of a dead pawn, which the tweener skips (GetPosture != Standing);
+a vanished pawn is Standing with pather == null, hence the NRE. Fix: RM_CompEngulfer.LockStageReregistering. Gate g8
+proves it; until g8 has PASSED live, this script still KILLS slimes it is done with.
 RULED (owner, 2026-09-21): growth is PERMANENT by default, so gate 4's "drops to stage 1" is checked only with
 titanoslimeReversible ON; with the shipped default the stage must HOLD while gelatids are shed.
 """
@@ -578,7 +582,44 @@ def g7(g, S):
         "captured for judging (a look, not a state read): %s" % shots)
 
 
-GATES = [g1, g2, g3, g4, g5, g6, g7]
+@gate
+def g8(g, S):
+    """NEVER RUN (written offline 2026-10-17, BENCH). TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID: vanish leaves no ghost.
+    Each case spawns a titanoslime (the generator rolls a random-age stage that is registered BEFORE the lock), sets a
+    stage, optionally shrinks it while spawned, vanishes it, then reads the whole map's thingGrid for ghosts and respawns
+    a Muffalo on the 9 cells around where it stood (the 2026-10-17 repro: 0-4 of 9 before the fix)."""
+    g.setting("titanoslimeReversible", False)
+    base = kv(g.proof("ProofGhostScan"))
+    if base.get("ghosts") != "0":
+        raise Unmeasured("map already holds ghosts before g8: %s" % base)
+    cases = [("stage1", [0]), ("stage1", [0]), ("stage1", [0]), ("stage2", [4]), ("stage3", [12]),
+             ("shrink4to1", [28, 0])]
+    for i, (name, masses) in enumerate(cases):
+        x, z = site(S, 24 + i)
+        pid = g.spawn(KIND, x, z)[0]
+        for m in masses:
+            g.proof("ProofSetMass", pid, m)
+        g.ticks(60)
+        before = kv(g.proof("ProofGhostScan"))
+        g.ok("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+        g.ticks(5)
+        after = kv(g.proof("ProofGhostScan"))
+        ok_spawn, muff = 0, []
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                r = g.call("jawa/spawn_pawn", kindDef="Muffalo", x=x + dx, z=z + dz, faction="none", count=1)
+                if r.get("success") is True and (r.get("pawns") or []):
+                    ok_spawn += 1
+                    muff.append(str(r["pawns"][0].get("id")).replace("Thing_", ""))
+        for m in muff:
+            g.call("jawa/pawn_force_incapacitate", pawn=m, action="kill")
+        ok = before.get("ghosts") == "0" and after.get("ghosts") == "0" and ok_spawn == 9
+        row("g8", "vanish_no_ghost_%s_%d" % (name, i), "PASS" if ok else "FAIL", None if ok else "MOD",
+            "ghosts alive=%s after_vanish=%s %s | muffalo respawn %d/9" % (before.get("ghosts"), after.get("ghosts"),
+                                                                          after.get("sample"), ok_spawn))
+
+
+GATES = [g1, g2, g3, g4, g5, g6, g7, g8]
 PLAYER_LOG = os.path.join(os.environ.get("USERPROFILE", r"C:\Users\Mandrake"), "AppData", "LocalLow", "Ludeon Studios",
                           "RimWorld by Ludeon Studios", "Player.log")
 

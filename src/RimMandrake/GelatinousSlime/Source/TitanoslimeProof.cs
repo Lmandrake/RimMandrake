@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
@@ -117,6 +118,10 @@ namespace RimMandrake.GelatinousSlime
         /// <summary>Finds a pawn by thingIDNumber wherever it is (map, world, held, discarded): for "no corpse" reads.</summary>
         public static string ProofFind(int idNumber)
         {
+            if (Current.Game == null || Find.Maps == null)
+            {
+                return "ERROR no game";
+            }
             Pawn p = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.FirstOrDefault(x => x.thingIDNumber == idNumber);
             if (p == null)
             {
@@ -132,6 +137,54 @@ namespace RimMandrake.GelatinousSlime
                 }
             }
             return p == null ? "found=False id=" + idNumber : "found=True " + ProofRead(p);
+        }
+
+        /// <summary>
+        /// TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID: every map cell whose thingGrid list holds a pawn that is destroyed,
+        /// unspawned, on another map, or not covering that cell by Large Pawns' current square — a "ghost" the grid kept.
+        /// A whole-map scan (one proof call, never per tick). Reports ghosts=N plus up to five id@x,z samples.
+        /// </summary>
+        public static string ProofGhostScan()
+        {
+            if (Current.Game == null || Find.Maps == null)
+            {
+                return "ERROR no game";
+            }
+            int ghosts = 0, cells = 0;
+            StringBuilder sample = new StringBuilder();
+            foreach (Map m in Find.Maps)
+            {
+                foreach (IntVec3 c in m.AllCells)
+                {
+                    cells++;
+                    List<Thing> list = m.thingGrid.ThingsListAtFast(c);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        Pawn p = list[i] as Pawn;
+                        if (p == null)
+                        {
+                            continue;
+                        }
+                        bool ghost = p.Destroyed || !p.Spawned || p.Map != m;
+                        if (!ghost)
+                        {
+                            // A live pawn listed outside the square it covers now (Large Pawns patches
+                            // GenAdj.OccupiedRect(Thing) to that square) is the same leak, still alive.
+                            ghost = !p.OccupiedRect().Contains(c);
+                        }
+                        if (!ghost)
+                        {
+                            continue;
+                        }
+                        ghosts++;
+                        if (ghosts <= 5)
+                        {
+                            sample.Append(sample.Length > 0 ? "," : "").Append(p.ThingID).Append('@').Append(c.x).Append(',').Append(c.z);
+                        }
+                    }
+                }
+            }
+            return "ghosts=" + ghosts + " cells=" + cells + " sample=[" + sample + "]";
         }
     }
 }
