@@ -1,0 +1,102 @@
+[
+ {
+  "id": "dragonsnake_jfo_vara_v1",
+  "rimflow_item_id": "DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER",
+  "prompt": "RimWorld creature sprite of the canon dragonsnake, one of the four variants on the Jedi: Fallen Order concept sheet: a long, low crocodilian quadruped standing on four short, splayed, clawed legs, belly close to the ground; a very long tapering eel-like tail that makes up nearly half the total length; a narrow gharial-like snout with a row of fangs projecting outside the closed jaw; small yellow eyes. Realistic wet reptile hide under natural light, the whole animal in dark greens and slates. One animal, whole body, centred. THIS VARIANT: moss-backed (the TOP animal of the attached sheet): plain dark olive-to-slate scaly hide, a low row of short dark dorsal spines over the shoulders, thick clumps of green moss and algae crusted along the back of the neck and shoulders, the tail ending in a smooth flat leaf-shaped paddle, a dark grey-olive belly only slightly lighter than the back.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 5,
+  "canon": "dragonsnake",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+  ],
+  "target_def": "RSW_Dragonsnake",
+  "target_original": [
+   "Dragonsnake"
+  ],
+  "target_texpath": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Owner 2026-10-18: \"The other would be new art we commission from the Canon's many options of colorful versions, and I'd like variants to be made from that canon example. That would be called Dragon Snake directly, without Albino.\" Sheet note: \"NOT have any white variants ... several of those greenish variants in the Canon library constructed too please.\"",
+  "drawsize": 4.0
+ },
+ {
+  "id": "dragonsnake_jfo_varb_v1",
+  "rimflow_item_id": "DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER",
+  "prompt": "RimWorld creature sprite of the canon dragonsnake, one of the four variants on the Jedi: Fallen Order concept sheet: a long, low crocodilian quadruped standing on four short, splayed, clawed legs, belly close to the ground; a very long tapering eel-like tail that makes up nearly half the total length; a narrow gharial-like snout with a row of fangs projecting outside the closed jaw; small yellow eyes. Realistic wet reptile hide under natural light, the whole animal in dark greens and slates. One animal, whole body, centred. THIS VARIANT: sail-crested (the SECOND animal of the attached sheet): dark slate-green hide flecked with small silvery-grey wet speckles, a tall dorsal crest of long coral-pink spines over the shoulders and back, the tail tip ending in a wide fan of long pink-banded spines like a lionfish, a translucent pearly throat sac swelling under the jaw, a tan ridged belly.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 5,
+  "canon": "dragonsnake",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+  ],
+  "target_def": "RSW_Dragonsnake",
+  "target_original": [
+   "Dragonsnake"
+  ],
+  "target_texpath": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Owner 2026-10-18: \"The other would be new art we commission from the Canon's many options of colorful versions, and I'd like variants to be made from that canon example. That would be called Dragon Snake directly, without Albino.\" Sheet note: \"NOT have any white variants ... several of those greenish variants in the Canon library constructed too please.\"",
+  "drawsize": 4.0
+ },
+ {
+  "id": "dragonsnake_jfo_varc_v1",
+  "rimflow_item_id": "DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER",
+  "prompt": "RimWorld creature sprite of the canon dragonsnake, one of the four variants on the Jedi: Fallen Order concept sheet: a long, low crocodilian quadruped standing on four short, splayed, clawed legs, belly close to the ground; a very long tapering eel-like tail that makes up nearly half the total length; a narrow gharial-like snout with a row of fangs projecting outside the closed jaw; small yellow eyes. Realistic wet reptile hide under natural light, the whole animal in dark greens and slates. One animal, whole body, centred. THIS VARIANT: bioluminescent (the THIRD animal of the attached sheet): very dark green-black hide scattered with glowing bioluminescent yellow-green spots over the head, back, flanks and tail, a large glowing yellow-green throat sac swelling under the jaw, a pale olive-green ridged belly, a short dark dorsal spine row, the tail tapering to a smooth thin whip tip.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 5,
+  "canon": "dragonsnake",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+  ],
+  "target_def": "RSW_Dragonsnake",
+  "target_original": [
+   "Dragonsnake"
+  ],
+  "target_texpath": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Owner 2026-10-18: \"The other would be new art we commission from the Canon's many options of colorful versions, and I'd like variants to be made from that canon example. That would be called Dragon Snake directly, without Albino.\" Sheet note: \"NOT have any white variants ... several of those greenish variants in the Canon library constructed too please.\"",
+  "drawsize": 4.0
+ },
+ {
+  "id": "dragonsnake_jfo_vard_v1",
+  "rimflow_item_id": "DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER",
+  "prompt": "RimWorld creature sprite of the canon dragonsnake, one of the four variants on the Jedi: Fallen Order concept sheet: a long, low crocodilian quadruped standing on four short, splayed, clawed legs, belly close to the ground; a very long tapering eel-like tail that makes up nearly half the total length; a narrow gharial-like snout with a row of fangs projecting outside the closed jaw; small yellow eyes. Realistic wet reptile hide under natural light, the whole animal in dark greens and slates. One animal, whole body, centred. THIS VARIANT: rust-crested (the BOTTOM animal of the attached sheet): blue-grey slate hide streaked with lighter grey-green bands and patches of bright green moss along the spine, a jagged row of rust-red dorsal spines over the shoulders, the tail ending in a narrow fin ribbed with rust-red rays, a dark grey belly.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 5,
+  "canon": "dragonsnake",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dragonsnake/wookieepedia_concept_jfo.jpg"
+  ],
+  "target_def": "RSW_Dragonsnake",
+  "target_original": [
+   "Dragonsnake"
+  ],
+  "target_texpath": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Owner 2026-10-18: \"The other would be new art we commission from the Canon's many options of colorful versions, and I'd like variants to be made from that canon example. That would be called Dragon Snake directly, without Albino.\" Sheet note: \"NOT have any white variants ... several of those greenish variants in the Canon library constructed too please.\"",
+  "drawsize": 4.0
+ }
+]

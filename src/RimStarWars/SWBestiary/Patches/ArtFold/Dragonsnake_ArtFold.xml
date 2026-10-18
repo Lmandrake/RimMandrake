@@ -2,7 +2,7 @@
 <!--
   Dragonsnake_ArtFold.xml - ART_OVERRIDE_FOLD_ALL_1 (precedent SILOOTH_ART_FOLD_1)
 
-  Art: the Dragonsnake redraw that the standalone DragonsnakeArtOverride mod used to paint over mlie.starwarsanimalcollection's art at the same path. It now lives in this mod at Textures/RimStarWars/SWBestiary/Dragonsnake/ and the donor's texPath is pointed at it below; our own defs that drew the donor path were edited in place.
+  Art: the Dragonsnake redraw that the standalone DragonsnakeArtOverride mod used to paint over mlie.starwarsanimalcollection's art at the same path. 2026-10-18: that redraw was the white serpent, now the albino's (owner: no white dragonsnake variants), so the donor path now points at our canon variant A, Textures/RimStarWars/SWBestiary/DragonsnakeCanon/; the donor's texPath is pointed at it below; our own defs that drew the donor path were edited in place.
   The donor's own PawnKindDef texPath is matched by VALUE (any life stage, any graphic slot, and an
   abstract parent if the donor inherits), so every slot the old same-path override reached is
   redirected and nothing else. Conditional: a load without the donor matches nothing and logs nothing.
@@ -13,7 +13,7 @@
     <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Dragonsnake/Dragonsnake"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Dragonsnake/Dragonsnake"]</xpath>
-      <value><texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath></value>
+      <value><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath></value>
     </match>
   </Operation>
 </Patch>

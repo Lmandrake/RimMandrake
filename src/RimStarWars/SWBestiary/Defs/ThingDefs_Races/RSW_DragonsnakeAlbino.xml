@@ -29,9 +29,9 @@
   Mod Settings: "Albino dragonsnake" (RSW_BeastMechanicsSettings.albinoDragonsnakeEnabled, default on). Off, the
   startup pass RSW_DragonsnakeAlbinoToggle removes it from every biome roster; nothing else changes.
 
-  Art: texPaths below are RimStarWars/SWBestiary/DragonsnakeAlbino/*. Until art.py installs them this file is held by
-  src/DEPLOY_HOLD.txt (pink squares otherwise). Candidate already rendered: artpipe regen_gt_canon_dragonsnake_v1
-  (the pale serpent currently installed on RSW_Dragonsnake's own path).
+  Art: texPaths below are RimStarWars/SWBestiary/DragonsnakeAlbino/*: the white serpent render regen_gt_canon_dragonsnake_v1
+  (installed 571def266e) that the owner picked 2026-10-18 for this def ("One would be an Albino version (the beautiful white
+  art we already have done in the game), rename Albino Dragon Snake."), plus swimming render dragonsnake_albino_v1_swim.
 -->
 <Defs>
 
