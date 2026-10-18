@@ -203,6 +203,9 @@ namespace RimMandrake.FlowWorks
         // than a wall. That is the placeholder retiring, not a mechanic hiding.
         public static bool superdeepCaptureEnabled = true;
         public static bool superdeepCapturesOwnFaction = false;
+        // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18): the red alert for a colonist held in a pit who cannot
+        // reach food or a bed.
+        public static bool pitStuckAlertEnabled = true;
         public static bool ladderRequiredToExitEnabled = true;
         // LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a ladder is a prison door. Off = any ladder lets anyone out.
         public static bool ladderPrisonDoorEnabled = true;
@@ -548,6 +551,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
             Scribe_Values.Look(ref blastsBreakPitCovers, "blastsBreakPitCovers", true);
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
+            Scribe_Values.Look(ref pitStuckAlertEnabled, "pitStuckAlertEnabled", true);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
             Scribe_Values.Look(ref ladderRaiseLowerEnabled, "ladderRaiseLowerEnabled", true);
@@ -1217,7 +1221,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1236,6 +1240,10 @@ namespace RimMandrake.FlowWorks
                 "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
               + "otherwise nobody could ever get down there to build the ladder. On, the ground does "
               + "not care whose side you are on.");
+
+            list.CheckboxLabeled("Red alert: a colonist stuck in a pit", ref pitStuckAlertEnabled,
+                "On (the default), a red alert names any of your colonists held down a pit who cannot reach food or a bed. "
+              + "Off: no alert; they may starve quietly.");
 
             list.CheckboxLabeled("A ladder is needed to get out", ref ladderRequiredToExitEnabled,
                 "On, a pit holds whoever is in it until a ladder stands in their cell: pull the "

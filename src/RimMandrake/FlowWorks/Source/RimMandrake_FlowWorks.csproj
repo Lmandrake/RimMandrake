@@ -111,6 +111,7 @@
     <Compile Include="RM_DigDiscovery.cs" />
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
+    <Compile Include="Superdeep\RM_PitStuckAlert.cs" />
     <Compile Include="RM_FireMath.cs" />
     <Compile Include="RM_FuelFireMath.cs" />
     <Compile Include="RM_ExcavationSanityMath.cs" />

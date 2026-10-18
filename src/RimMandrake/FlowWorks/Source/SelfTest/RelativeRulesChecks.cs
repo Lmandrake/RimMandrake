@@ -76,6 +76,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.Contains("Scribe_Values.Look(ref pitRoomMinDepthMetres, \"pitRoomMinDepthMetres\", 3f);"), "saved with the 3 m default");
             });
+            Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
+            {
+                // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)
+                Assert(RM_PitRoomMath.StuckAlert(true, true, true, true, false, true, true), "held, no food: alert");
+                Assert(RM_PitRoomMath.StuckAlert(true, true, true, true, true, true, false), "held, no bed: alert");
+                Assert(!RM_PitRoomMath.StuckAlert(true, true, true, true, true, true, true), "held but fed and bedded in the pit: no alert");
+                Assert(!RM_PitRoomMath.StuckAlert(true, true, false, true, false, true, false), "not held: no alert");
+                Assert(!RM_PitRoomMath.StuckAlert(true, false, true, true, false, true, false), "not a free colonist: no alert");
+                Assert(!RM_PitRoomMath.StuckAlert(false, true, true, true, false, true, false), "setting off: no alert");
+                Assert(!RM_PitRoomMath.StuckAlert(true, true, true, false, false, false, false), "no needs (a mech): nothing to be cut off from");
+                string a = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStuckAlert.cs"));
+                Assert(a.Contains("class Alert_ColonistStuckInPit : Alert_Critical") && a.Contains("RM_SuperdeepTrap.IsHeld(p)")
+                    && a.Contains("RM_PitRoomMath.StuckAlert("), "the alert is the standard red one and asks the kernel");
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                Assert(set.Contains("public static bool pitStuckAlertEnabled = true;") && set.Contains("Scribe_Values.Look(ref pitStuckAlertEnabled, \"pitStuckAlertEnabled\", true);")
+                    && set.Contains("ref pitStuckAlertEnabled,"), "setting: on by default, saved, on the screen");
+            });
             Case("Relative_spikes_on_a_sheer_drop_at_any_depth", () =>
             {
                 var g = new Grid(20, 12);
