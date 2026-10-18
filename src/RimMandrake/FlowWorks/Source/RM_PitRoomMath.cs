@@ -126,6 +126,14 @@ namespace RimMandrake.FlowWorks
 			return floorMetres + 1e-4f >= RoomDepthMetresFor(personMetres, heightMetres);
 		}
 
+		/// <summary>PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18): the red "colonist stuck in a pit" alert names a
+		/// free colonist the pit holds who cannot reach food or a bed (only the needs it has count).</summary>
+		public static bool StuckAlert(bool settingOn, bool freeColonist, bool held, bool needsFood, bool foodReachable,
+			bool needsRest, bool bedReachable)
+		{
+			return settingOn && freeColonist && held && ((needsFood && !foodReachable) || (needsRest && !bedReachable));
+		}
+
 		/// <summary>Capture down is a short act, not a fight: the pit already did the work.
 		/// PROVISIONAL (no owner number): 3 seconds.</summary>
 		public const int CaptureDownTicks = 180;
