@@ -40,3 +40,5 @@ base: 7986cc51e (origin/main; no FlowWorks C# commits since round 2)
 - VV/ShippedMatrixProbe.cs (293): read whole; nothing (usage line omits 'trace', cosmetic).
 - now: Program.cs (2049)
 - Program.cs (2049): read whole; cases sound (the four Scenario_* displacement cases replay the walk in the test, as the header says; Liquid_unit_contract loop is a self-acknowledged tautology carried by its size asserts + mutation probe). Fixed stale comments (two '5:1 budget' claims: the rule is dead; a LevelSurfaceChecks comment pasted onto the LevelExactChecks line).
+- rebased onto 8c6cb8111 (no FlowWorks changes upstream); building FlowWorks DLL
+- DLL built on 646a91a38 (0 warnings); SelfTest on the merged tree 563/563, hose 342/342
