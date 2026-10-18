@@ -27,7 +27,7 @@ Repro matrix, 9 neighbour cells respawned with a Muffalo after the end action (2
 
 So it is titanoslime-specific and vanish-specific. No exception is logged at the destroy itself.
 
-## mechanism (code read 2026-10-17, BENCH offline; live confirmation OWED — gate g8)
+## mechanism (code read 2026-10-17, BENCH offline; confirmed live by gate g8 2026-10-17)
 
 Decompiled with ilspycmd: Large Pawns 0.24.16 (`LargePawns.dll`) and the 1.6 `Assembly-CSharp.dll`.
 
@@ -62,7 +62,7 @@ size while spawned (9/9).
 - The NEXT this item first carried (restart without `neku.largepawns`) would have pointed at Large Pawns, but the
   fix belongs to the mod that changes size under a registered pawn: ours.
 
-## fix (built 2026-10-17, NOT deployed, NOT verified live)
+## fix (built 2026-10-17; deployed and VERIFIED live 2026-10-17, gate g8)
 
 `RM_CompEngulfer.LockStageReregistering` (`src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs`): every stage lock
 while spawned is wrapped in `DeregisterInRegions` + `thingGrid.Deregister` (at the OLD size) ... `thingGrid.Register` +
@@ -71,9 +71,18 @@ one-cell deregister/register. `ApplyStage` now also locks when the index already
 same-stage roll used to stay unlocked and keep ageing). Proof surface: `RM_TitanoslimeProof.ProofGhostScan`
 (whole-map thingGrid scan for destroyed/unspawned/out-of-square pawns).
 
+## live result (2026-10-17, BENCH, 22-mod list incl. neku.largepawns + mandrake.rm.hugethings, quicktest map)
+
+`mandrake.rm.biomes` composed and deployed (GelatinousSlime DLL + .srchash), game relaunched via Steam.
+`titanoslime_gates.py --only g8`: 6/6 PASS (3x stage 1, stage 2, stage 3, shrink 4->1): ghosts=0 before and after
+vanish, Muffalo respawn 9/9 every case (0-4/9 before the fix), log budget +0 exceptions. Gates 1-6 + g8 with the
+script's cleanup switched back to VANISH: 33/33 rows PASS (`Transient/afk_2026-10-17/titanoslime_g8_final_run.log`).
+
+Harness defects found on the way (both HARNESS, fixed in the script): g3's absorb arm never removed its three slimes,
+which stayed manhunter and logged 100+ "Resolved path returned no nodes ... for RM_Titanoslime" into every later
+gate's log budget; g3's mass bar assumed an adult victim (1.0) but a random Colonist is sometimes a
+HumanlikeTeenager, BodySize 0.8 (4 of 11 runs). The mod gains the victim's BodySize, correctly.
+
 ## NEXT
 
-Deploy `mandrake.rm.biomes` (GelatinousSlime DLL) and run
-`titanoslime_gates.py --only g8` (NEVER RUN): 6 cases (3x stage 1, stage 2, stage 3, shrink 4->1), each must read
-ghosts=0 before and after vanish and respawn 9/9 Muffalo. PASS -> switch the script's slime cleanup back to vanish and
-close this item.
+None — closed. TITANOSLIME_SLIME_BIOME_1's gates 1-6 still PASS after the fix; its gate 7 (art) awaits the owner.

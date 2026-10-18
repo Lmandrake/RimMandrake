@@ -25,7 +25,9 @@ sized from BodySize AT REGISTRATION and deregisters by the size it has NOW; Thin
 RM_CompEngulfer.PostSpawnSetup locks the stage, so a lock to a SMALLER stage than the generator's random-age one left
 the outer ring behind. Kill leaves the same ring, but of a dead pawn, which the tweener skips (GetPosture != Standing);
 a vanished pawn is Standing with pather == null, hence the NRE. Fix: RM_CompEngulfer.LockStageReregistering. Gate g8
-proves it; until g8 has PASSED live, this script still KILLS slimes it is done with.
+proved it: g8 PASSED live 2026-10-17 (6/6 cases ghosts=0, Muffalo respawn 9/9 each, 22-mod list incl. Large Pawns +
+Huge Things), so this script VANISHES slimes it is done with again. Positive control for ProofGhostScan is the
+respawn count, which read 0-4/9 before the fix.
 RULED (owner, 2026-09-21): growth is PERMANENT by default, so gate 4's "drops to stage 1" is checked only with
 titanoslimeReversible ON; with the shipped default the stage must HOLD while gelatids are shed.
 """
@@ -79,6 +81,14 @@ class G(object):
         r = self.call(tool, **kw)
         if r.get("success") is not True:
             raise Unmeasured("%s refused: %s" % (tool, json.dumps(r)[:300]))
+        return r
+
+    def gone(self, pid):
+        """Vanish a pawn we are done with and CHECK it left (the vanish/kill reply was never read before)."""
+        r = self.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+        # a colonist still HELD inside another slime answers "No pawn matching" (2 per full run): harmless, expected.
+        if r.get("destroyedAfter") is not True:
+            say("VANISH-MISS %s %s" % (pid, json.dumps(r)[:300]))
         return r
 
     def ticks(self, n):
@@ -327,13 +337,13 @@ def g3(g, S):
     slime, cols, swallowed = first["slime"], first["cols"], first["state"]
     for r in reps:                               # quiet the map: the other fights end now
         if r is not first:
-            g.call("jawa/pawn_force_incapacitate", pawn=r["slime"], action="kill")   # NOT vanish: see VANISH note
+            g.gone(r["slime"])   # vanish is safe since g8 PASSED live
             for p in r["cols"]:
-                g.call("jawa/pawn_force_incapacitate", pawn=p, action="vanish")
+                g.gone(p)
     held_id = swallowed["heldClock"].strip("[]").split(":")[0]
     for c in cols:                               # stop the beating, so the countdown and the down are ours
         if re.sub(r"\D", "", c) != re.sub(r"\D", "", held_id):
-            g.call("jawa/pawn_force_incapacitate", pawn=c, action="vanish")
+            g.gone(c)
     ins = g.ok("jawa/inspect_string", thingIds=slime)
     text = json.dumps(ins.get("things") or ins)
     m = re.search(r"Digesting [^\"]*?(\d+) s left", text)
@@ -348,8 +358,8 @@ def g3(g, S):
     row("g3", "downed_slime_releases_stunned_acid_slimified", "PASS" if ok else "FAIL", None if ok else "MOD",
         "before slim=%s | after spawned=%s stunned=%s acid=%s slim=%s" % (pre.get("slimification"), rel.get("spawned"),
                                                                        rel.get("stunned"), rel.get("acidHediffs"), rel.get("slimification")))
-    g.call("jawa/pawn_force_incapacitate", pawn=slime, action="kill")
-    g.call("jawa/pawn_force_incapacitate", pawn=held_id, action="vanish")
+    g.gone(slime)
+    g.gone(held_id)
     say("checkpoint after down+vanish log %s" % (log_errors(),))
     # absorb arm: three pairs (a struggling human bursts out ~0.4 %/round), first one absorbed is read
     pairs = []
@@ -365,11 +375,13 @@ def g3(g, S):
         if "canEngulf=True" not in e:
             raise Unmeasured("forced engulf refused: %s" % e[:200])
         pairs.append((s, c, px, pz, before))
-    done = None
+    done, lastheld = None, {}
     for _ in range(50):                          # digest ~4500 ticks for a colonist
         g.ticks(120)
         for s, c, px, pz, before in pairs:
             r = g.read(s)
+            if int(r.get("held", 0)) > 0:
+                lastheld[s] = r.get("heldClock")
             if int(r.get("held", 1)) == 0 and done is None:
                 f = kv(g.proof("ProofFind", re.sub(r"\D", "", c)))
                 if f.get("dead") == "True" or f.get("found") == "False":
@@ -391,11 +403,24 @@ def g3(g, S):
     ground = {t.get("def") for t in g.things("%d,%d,21,21" % (sx - 10, sz - 10))}
     gear_found = [d for d in before if d in ground]
     smear = "RM_Filth_SlimeSmear" in ground
-    ok = (f.get("found") == "False" or f.get("corpse") in ("none", "destroyed")) and near(r["mass"], 1.0, 0.05) \
+    # The slime gains the VICTIM's BodySize (Absorb: AddMass(held.BodySize)). A random "Colonist" is sometimes a
+    # HumanlikeTeenager, BodySize 0.8: 2026-10-17 a fixed 1.0 bar FAILed 4 of 11 runs on mass=0.8 with the victim
+    # reading bodySize=0.8 lifeStage=HumanlikeTeenager (HARNESS, not MOD). A 20-colonist spawn probe that read all 1.0
+    # made this look false once; one probe of a minority outcome proves nothing.
+    vb = float(f.get("bodySize") or 1.0)
+    ok = (f.get("found") == "False" or f.get("corpse") in ("none", "destroyed")) and near(r["mass"], vb, 0.05) \
         and near(r.get("food", 0), 1.0, 0.02) and before and len(gear_found) == len(before)
     row("g3", "timer_absorbs_no_corpse_gear_mass_food", "PASS" if ok else "FAIL", None if ok else "MOD",
-        "victim corpse=%s destroyed=%s | slime mass=%s food=%s | worn %s, on ground near slime %s, smear %s" % (
-            f.get("corpse"), f.get("destroyed"), r["mass"], r.get("food"), before, gear_found, smear))
+        "victim corpse=%s destroyed=%s | slime mass=%s food=%s | victim after: bodySize=%s lifeStage=%s | worn %s, "
+        "on ground near slime %s, smear %s" % (f.get("corpse"), f.get("destroyed"), r["mass"], r.get("food"),
+                                               f.get("bodySize"), f.get("lifeStage"), before, gear_found, smear)
+        + " | victim %s, slime last held %s, arm masses %s" % (c, lastheld.get(s), [g.read(ps).get("mass") for ps, *_ in pairs]))
+    # LEAK (2026-10-17): the three absorb-arm slimes were never removed, stayed manhunter and logged 100+ "Resolved path
+    # returned no nodes ... for RM_Titanoslime" lines into every LATER gate's log budget. Clear the arm.
+    for ps, pc, *_ in pairs:
+        g.gone(ps)
+        if pc != c:
+            g.gone(pc)
 
 
 @gate
@@ -422,8 +447,8 @@ def g4(g, S):
     ok = len(out) >= 6
     row("g4", "muffalo_bursts_out_most_runs_60s", "PASS" if ok else "FAIL", None if ok else "MOD",
         "%d/10 burst out within %d ticks (model: ~86 %%)" % (len(out), t_used))
-    for s, m in pairs:                           # kill the slimes so later gates have a quiet map
-        g.call("jawa/pawn_force_incapacitate", pawn=s, action="kill")
+    for s, m in pairs:                           # vanish the slimes so later gates have a quiet map
+        g.gone(s)
 
     def cut_to_half(pid):
         shed = 0
@@ -576,7 +601,7 @@ def g7(g, S):
             sh = g.call("rimworld/take_screenshot", fileName=name, suppressMessage=True)
             shots.append(sh.get("path"))
         g.call("jawa/set_pawn_rotation", pawnId=pid, dir="unlock")
-        g.call("jawa/pawn_force_incapacitate", pawn=pid, action="kill")
+        g.gone(pid)
         say("stage idx %s bodySize %s" % (r["stage"], r["bodySize"]))
     row("g7", "art_screenshots_stage1_and_5_three_facings", "UNMEASURED", None,
         "captured for judging (a look, not a state read): %s" % shots)
@@ -584,7 +609,7 @@ def g7(g, S):
 
 @gate
 def g8(g, S):
-    """NEVER RUN (written offline 2026-10-17, BENCH). TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID: vanish leaves no ghost.
+    """PASSED live 2026-10-17 (BENCH, 6/6). TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID: vanish leaves no ghost.
     Each case spawns a titanoslime (the generator rolls a random-age stage that is registered BEFORE the lock), sets a
     stage, optionally shrinks it while spawned, vanishes it, then reads the whole map's thingGrid for ghosts and respawns
     a Muffalo on the 9 cells around where it stood (the 2026-10-17 repro: 0-4 of 9 before the fix)."""
