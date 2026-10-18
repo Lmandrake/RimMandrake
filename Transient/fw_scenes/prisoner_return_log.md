@@ -24,3 +24,4 @@ Item: RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS. Clone: /home/mandrake/rm/scratch
 - run_selftests --only (32): 30/32; reds not mine: settings_screens SWBestiary#BeastMechanics (known), selftest_human_review uncovered walk bar still_water_one_surface_height (no file of mine touches walk bars). Committing source.
 - push refused (DLL stamp guard): source+DLL ship together. fetch, rebuild on merged tree.
 - winbuild on 0bf02772a (origin/main = see log): 0 warn 0 err. Committing DLL.
+- PUBLISHED 487e9161d (source 0bf02772a + DLL). ready to deploy 487e9161d. Live proof owed: sweep_identity_proof.py rows SWEEP_returns_same_prisoner + SWEEP_prisoner_stays_600 (and returns_home row stay check).
