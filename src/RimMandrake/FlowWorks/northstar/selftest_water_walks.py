@@ -165,6 +165,28 @@ rc, out = quiet(W.main, ["all", "--mock", "--no-wait", "--pace", "0", "--no-shot
 check("mock crash in S4: traceback kept, S5 and S6 still ran, exit 1", rc == 1 and glob.glob(os.path.join(OUT, "S4_traceback_*.txt"))
       and "S5.i" in out and "S6.c" in out, (rc, out[-200:]))
 
+# ---- the shelf pin (v2 triage 2026-10-18): off during a scene, previous value back after, also when the scene dies
+import argparse as _ap  # noqa: E402
+_w = W.Walk(_ap.Namespace(mock=True, mock_fail=None, fresh_map=False, no_shots=True, pace=0.0))
+_w.B.call("jawa/mod_settings_field", typeName=W.S_FW, action="set", field="deepBedsEnabled", value="True")
+_seen = []
+_old_stage = W.STAGE["S1"]
+W.STAGE["S1"] = lambda w_: _seen.append(w_.call("jawa/mod_settings_field", typeName=W.S_FW, action="get", field="deepBedsEnabled")["value"])
+quiet(W.do_scene, _w, "S1", True, False)
+_after = _w.call("jawa/mod_settings_field", typeName=W.S_FW, action="get", field="deepBedsEnabled")["value"]
+check("scene pin: deepBedsEnabled is False while staging, True again after", _seen == ["False"] and _after == "True", (_seen, _after))
+def _die(w_):
+    raise KeyboardInterrupt()
+W.STAGE["S1"] = _die
+try:
+    quiet(W.do_scene, _w, "S1", True, False)
+except BaseException:  # noqa: BLE001
+    pass
+_after = _w.call("jawa/mod_settings_field", typeName=W.S_FW, action="get", field="deepBedsEnabled")["value"]
+W.STAGE["S1"] = _old_stage
+check("scene pin: restored after a crash that escapes the scene", _after == "True", _after)
+check("scene pin: restore verb's SHIPPED list carries deepBedsEnabled True", W.SHIPPED.get("deepBedsEnabled") is True)
+
 # ---- annotate_water_scenes: prints the readout string and the per-body gap
 import annotate_water_scenes as A  # noqa: E402
 live = os.path.join(tmp, "live")

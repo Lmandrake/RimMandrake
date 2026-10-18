@@ -66,7 +66,13 @@ LEVEL_UNITS = 10000            # RM_Volume.UnitsPerLevel: tank/hose units (decil
 SETTLE_PULSES = 8              # S2.d: unchanged pulses in a row that make a state "settled"
 # the scene file's global exceptions to shipped defaults ("rain off, refill/seepage off, fire off, weather clear")
 SCENE_OVERRIDES = {"rainFillsExcavationsEnabled": False, "refillEnabled": False}
-SHIPPED = {"rainFillsExcavationsEnabled": True, "refillEnabled": True}
+SHIPPED = {"rainFillsExcavationsEnabled": True, "refillEnabled": True, "deepBedsEnabled": True}
+# SITE (v2 triage 2026-10-18, same fix as validation_v2): since P11 a LIMITED pond painted mid-game records a lake floor (0.5 m
+# shore shelf on its outer ring) when first classified, so the ponds below no longer hold what level_solution (floors -2.0 /
+# -0.5 m, the terrain rule) says. Whether painted ponds should get a floor is the owner's question
+# P11_FLOOR_ON_PAINTED_PONDS and is NOT decided here: every scene RUN pins deepBedsEnabled off from staging to its end and
+# puts the previous value back (try/finally, crash included), so the scenes are independent of the answer.
+SCENE_PIN = {"deepBedsEnabled": False}
 
 # ---------------------------------------------------------------- layout (map coords; west edge x = 0)
 # Edge scenes: a WaterDeep lake 14 wide x 11 tall on the west edge (154 cells >= minLimitlessBodyCells 50, so LIMITLESS),
@@ -1411,6 +1417,14 @@ def prep(w):
     w.say("map %sx%s; settings at shipped defaults except the scene file's: %s (read back)" % (
         mi.get("sizeX") or mi.get("width"), mi.get("sizeZ") or mi.get("height"), got))
     w.say("pulse interval %d ticks (shipped default 250)" % w.interval())
+    e = w.call("jawa/flowworks_engine_state") or {}
+    nd = e.get("excavatedCellCount")
+    sd = e.get("superdeepCellCount")
+    # "pristine" = NOTHING DUG (P11 forms every natural body at map load, so bodyCount > 0 on a fresh map is normal)
+    pristine = None if nd is None or sd is None else (nd == 0 and sd == 0)
+    w.say("site pristine (nothing dug: excavated %s, superdeep %s): %s; bodies %s (printed, not required to be 0)%s" % (
+        nd, sd, pristine, e.get("bodyCount"),
+        "" if pristine is not False or not w.args.fresh_map else "  <-- a --fresh-map site that is not pristine"))
 
 
 def restore(w):
@@ -1426,7 +1440,39 @@ RUN = {"S1": run_S1, "S2": run_S2, "S3": run_S3, "S4": run_S4, "S5": run_S5, "S6
 ORDER = ["S1", "S2", "S3", "S4", "S5", "S6"]
 
 
+def pin_scene_settings(w):
+    """Set SCENE_PIN; return {field: value before} for unpin_scene_settings (the previous value, not the shipped one)."""
+    before = {}
+    for f, v in SCENE_PIN.items():
+        before[f] = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
+        got = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+        w.say("  site pin: %s %s -> %s (read back %s); P11_FLOOR_ON_PAINTED_PONDS stays the owner's" % (f, before[f], v, got))
+    return before
+
+
+def unpin_scene_settings(w, before):
+    """Put the pinned settings back to what they were; a failure is printed, never raised over the scene's own outcome."""
+    for f, v in before.items():
+        try:
+            if v is None:
+                v = SHIPPED[f]
+            w.call("jawa/mod_settings_field", typeName=S_FW, action="set", field=f, value=str(v))
+            got = w.call("jawa/mod_settings_field", typeName=S_FW, action="get", field=f).get("value")
+            w.say("  site pin released: %s back to %s (read back %s)" % (f, v, got))
+        except Exception as ex:  # noqa: BLE001
+            w.say("  SITE PIN NOT RELEASED: %s (%s); run `restore`" % (f, ex))
+
+
 def do_scene(w, sid, stage=True, go=True):
+    before = pin_scene_settings(w)
+    try:
+        return _do_scene(w, sid, stage, go)
+    finally:
+        unpin_scene_settings(w, before)
+
+
+def _do_scene(w, sid, stage=True, go=True):
     """One scene. Never loses an error (WATER_SCENES_WALK_MEND_TRIPS_AFTER_S4): an exception anywhere in staging or the
     run is printed IN FULL, written to Transient/fw_scenes/live/<sid>_traceback_<stamp>.txt, recorded as a CRASHED row,
     and the log and rows are still written; the caller goes on to the next scene. Returns True when it ran clean."""
