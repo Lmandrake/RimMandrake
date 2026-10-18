@@ -138,11 +138,16 @@ def rebase(top):
         body = out(top, "show", "-s", "--format=%B", c) + "\n"
         tip = subprocess.run(["git", "commit-tree", tree, "-p", tip, "-F", "-"], cwd=top, input=body, env=env,
                              capture_output=True, text=True, check=True).stdout.strip()
-    r = run(top, "reset", "-q", "--keep", tip, check=False)
-    if r.returncode:
+    # seat_sync.reset_keep: a plain --keep would DELETE every file upstream stopped tracking (Transient/,
+    # 2026-10-18); it keeps them on disk and otherwise behaves exactly like `git reset --keep`.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    try:
+        seat_sync.reset_keep(seat_sync.Git(top), head, tip)
+    except seat_sync.Refused as e:
         raise Refuse("origin/main changed a file you have uncommitted edits to, so the branch was not moved "
                      "(git reset --keep refused). Your commit is intact on HEAD. Publish or move aside that edit, "
-                     "then re-run ./publish.\n%s" % (r.stderr or r.stdout).strip())
+                     "then re-run ./publish.\n%s" % e)
 
 
 def land(top):

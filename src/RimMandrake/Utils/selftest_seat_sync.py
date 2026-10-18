@@ -121,6 +121,27 @@ def main() -> int:
         check(rc == 1 and "h.txt" in out and Path(seat, "h.txt").read_text() == "mine\n", "different untracked file is refused")
         os.remove(Path(seat, "h.txt")); run(seat)
 
+        # upstream STOPS TRACKING a dir (git rm --cached + .gitignore): the files stay on disk here,
+        # a local edit to one of them survives, and a real upstream delete still deletes
+        peer_push(peer, {"T/x.html": "x\n", "T/y.json": "y\n", "T/z.decisions.json": "z\n", "gone.txt": "g\n"}, "T")
+        run(seat)
+        write(seat, "T/y.json", "y-mine\n")
+        git(peer, "pull", "-q", "--ff-only", "origin", "main")
+        write(peer, "T/.gitignore", "*\n!*/\n!/.gitignore\n!*.decisions.json\n")
+        git(peer, "rm", "-q", "--cached", "--", "T/x.html", "T/y.json")
+        git(peer, "rm", "-q", "--", "gone.txt")
+        git(peer, "add", "--", "T/.gitignore")
+        git(peer, "commit", "-q", "-m", "untrack T")
+        git(peer, "push", "-q", "origin", "HEAD:main")
+        rc, out = run(seat)
+        check(rc == 0 and "stopped tracking kept on disk" in out, "stop-tracking commit syncs and says it kept files")
+        check(git(seat, "rev-parse", "HEAD") == git(seat, "rev-parse", "origin/main"), "HEAD equals origin/main after untrack")
+        check(Path(seat, "T/x.html").read_text() == "x\n", "an untracked-upstream file stays on disk")
+        check(Path(seat, "T/y.json").read_text() == "y-mine\n", "a local edit to an untracked-upstream file survives")
+        check(not Path(seat, "gone.txt").exists(), "a real upstream delete still deletes")
+        check("T/" not in git(seat, "status", "--porcelain"), "the kept files read as ignored, not dirty")
+        check(not list(Path(seat, ".git").glob("rm-untrack-keep-*")), "the aside dir is cleaned up")
+
         # wrong branch / dry run
         git(seat, "checkout", "-q", "-b", "side")
         rc, out = run(seat)

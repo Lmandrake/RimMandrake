@@ -18,7 +18,10 @@ Before it runs, every precondition is checked and the whole plan is refused if o
     content-equivalent (every path it touches has the same bytes at HEAD and origin/main);
   * every dirty tracked path that upstream also changes already holds upstream's bytes (it is then staged,
     so --keep accepts it); a dirty path with OTHER bytes is named and the sync refused;
-  * an untracked file at a path upstream adds is moved aside only when byte-identical to upstream's copy.
+  * an untracked file at a path upstream adds is moved aside only when byte-identical to upstream's copy;
+  * a file upstream STOPPED TRACKING (deleted from the tree and ignored by upstream's .gitignore files, e.g.
+    Transient/ since 2026-10-18) is KEPT on disk with its local bytes: it is renamed aside inside .git,
+    dropped from the index, and renamed back after the reset. A plain `reset --keep` would delete it.
 Local commits are kept on a backup branch `backup/<seat>-pre-sync-<stamp>-<sha>`; moved files go to
 ~/.seat-tmp/<SEAT>/sync_<stamp>/. Never stashes, never --hard, never touches an unrelated dirty file.
 Prints `SYNCED <old> -> <new>`, `IN SYNC <sha>`, or `REFUSED: <why>` (exit 1).
@@ -32,6 +35,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -74,6 +78,76 @@ class Git:
         return dict(zip(files, hs))
 
 
+def untracked_upstream(g: Git, head: str, up: str) -> list[str]:
+    """Paths upstream deleted from the tree that its own .gitignore files now ignore and that still
+    exist here: the files a stop-tracking commit (`git rm --cached` + ignore) means to leave on disk.
+    Judged against UPSTREAM's .gitignore blobs, written into a throwaway dir, because the worktree's
+    .gitignore is still the old one until the reset runs."""
+    gone = g.lines("diff", "--name-only", "-z", "--no-renames", "--diff-filter=D", head, up)
+    here = [p for p in gone if os.path.lexists(os.path.join(g.repo, p))]
+    if not here:
+        return []
+    igs = [p for p in g.lines("ls-tree", "-r", "-z", "--name-only", up)
+           if p == ".gitignore" or p.endswith("/.gitignore")]
+    if not igs:
+        return []
+    with tempfile.TemporaryDirectory() as td:
+        for ig in igs:
+            dst = Path(td) / ig
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            dst.write_bytes(subprocess.run(["git", "-C", g.repo, "cat-file", "blob", f"{up}:{ig}"],
+                                           capture_output=True, check=True).stdout)
+        subprocess.run(["git", "-C", td, "init", "-q"], capture_output=True, check=True)
+        r = subprocess.run(["git", "-C", td, "check-ignore", "--no-index", "-z", "--stdin"],
+                           input="\0".join(here) + "\0", capture_output=True, text=True)
+        return sorted(x for x in r.stdout.split("\0") if x)
+
+
+def reset_keep(g: Git, head: str, target: str, keep: list[str] | None = None) -> str:
+    """`git reset --keep <target>` that never deletes a file upstream merely STOPPED TRACKING.
+
+    Each such file (see untracked_upstream) is renamed aside inside .git (same filesystem, so instant even
+    for 25k files), dropped from the index so --keep sees index == target, the reset runs, and every file
+    is renamed back. Raises Refused (with index and files restored) if the reset itself refuses.
+    publish.py calls this too, so both ways a seat clone moves main keep the files."""
+    if keep is None:
+        keep = untracked_upstream(g, head, target)
+    if not keep:
+        g.run("reset", "-q", "--keep", target)
+        return ""
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+    aside = Path(g.run("rev-parse", "--absolute-git-dir").strip()) / f"rm-untrack-keep-{stamp}"
+    moved, notes = [], []
+    nul = "\0".join(keep) + "\0"
+    try:
+        for k in keep:
+            dst = aside / k
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            os.rename(os.path.join(g.repo, k), dst)
+            moved.append(k)
+        g.run("rm", "-q", "--cached", "--ignore-unmatch", "--pathspec-from-file=-", "--pathspec-file-nul", inp=nul)
+        try:
+            g.run("reset", "-q", "--keep", target)
+        except Refused:
+            g.run("reset", "-q", "--pathspec-from-file=-", "--pathspec-file-nul", inp=nul)
+            raise
+    finally:
+        stuck = []
+        for k in moved:
+            src, dst = aside / k, Path(g.repo) / k
+            if os.path.lexists(dst):
+                stuck.append(k)
+                continue
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            os.rename(src, dst)
+        if not stuck:
+            shutil.rmtree(aside, ignore_errors=True)
+        else:
+            notes.append(f"{len(stuck)} kept file(s) could not go back (path re-created); copies in {aside}")
+    notes.append(f"{len(keep)} file(s) upstream stopped tracking kept on disk")
+    return "; ".join(notes)
+
+
 def plan(g: Git) -> dict:
     gd = Path(g.run("rev-parse", "--absolute-git-dir").strip())
     for marker in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD"):
@@ -84,7 +158,7 @@ def plan(g: Git) -> dict:
         raise Refused(f"HEAD is on '{branch or 'detached'}', not main")
     head = g.run("rev-parse", "HEAD").strip()
     up = g.run("rev-parse", "refs/remotes/origin/main").strip()
-    p = {"head": head, "up": up, "local": [], "stage": [], "move": [], "already": head == up}
+    p = {"head": head, "up": up, "local": [], "stage": [], "move": [], "keep": [], "already": head == up}
     if head == up:
         return p
     # 1. local commits must already be upstream
@@ -102,8 +176,10 @@ def plan(g: Git) -> dict:
         diff = [t for t in touched if a.get(t) != b.get(t)]
         raise Refused(f"local commit {subj} is NOT on origin/main ({len(diff)} path(s) differ, e.g. {diff[0]}). "
                       f"Land it first (land.sh <sha> <paths>), then sync")
-    # 2. dirty tracked paths that the move would rewrite
-    changing = set(g.lines("diff", "--name-only", "-z", "--no-renames", head, up))
+    # 2. files upstream stopped tracking stay on disk (with any local edit), so they never block the move
+    p["keep"] = untracked_upstream(g, head, up)
+    # 3. dirty tracked paths that the move would rewrite
+    changing = set(g.lines("diff", "--name-only", "-z", "--no-renames", head, up)) - set(p["keep"])
     dirty = set(g.lines("diff", "--name-only", "-z", "--no-renames", "HEAD")) & changing
     if dirty:
         dl = sorted(dirty)
@@ -114,7 +190,7 @@ def plan(g: Git) -> dict:
                           + ", ".join(bad[:8]) + ("" if len(bad) <= 8 else " ...")
                           + ". Publish or move aside YOUR edit to those paths, then sync")
         p["stage"] = dl
-    # 3. untracked files where upstream adds a file
+    # 4. untracked files where upstream adds a file
     added = set(g.lines("diff", "--name-only", "-z", "--no-renames", "--diff-filter=A", head, up))
     untracked = set(g.lines("ls-files", "-z", "--others", "--", *sorted(added))) if added else set()
     if untracked:
@@ -144,7 +220,9 @@ def apply(g: Git, p: dict, seat: str) -> str:
         notes.append(f"{len(p['move'])} identical untracked file(s) moved to {dest}")
     for i in range(0, len(p["stage"]), 500):
         g.run("add", "-A", "--", *p["stage"][i:i + 500])
-    g.run("reset", "-q", "--keep", p["up"])
+    note = reset_keep(g, p["head"], p["up"], p["keep"])
+    if note:
+        notes.append(note)
     return "; ".join(notes)
 
 
@@ -174,6 +252,8 @@ def main(argv=None) -> int:
             print(f"  {len(p['stage'])} dirty path(s) already hold upstream's bytes (will be staged)")
         if p["move"]:
             print(f"  {len(p['move'])} untracked file(s) identical to upstream's (will be moved aside)")
+        if p["keep"]:
+            print(f"  {len(p['keep'])} file(s) upstream stopped tracking (will stay on disk, now ignored)")
         if a.dry_run:
             print(f"WOULD SYNC {p['head'][:9]} -> {p['up'][:9]}")
             return 0
