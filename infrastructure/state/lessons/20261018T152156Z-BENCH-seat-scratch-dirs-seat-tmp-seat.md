@@ -1,0 +1,1 @@
+Seat scratch dirs (~/.seat-tmp/<SEAT>/*_export, clean clones, ledger_sync repos at 7-14 GB each) are never cleaned; on 2026-10-18 they filled WSL's root disk to 1.5 MB free and git commits failed with 'Out of diskspace'. Prune dirs older than a day with df -h / when a write fails.
