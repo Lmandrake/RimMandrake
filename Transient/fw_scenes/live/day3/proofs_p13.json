@@ -1,0 +1,61 @@
+{
+ "script": "depth_rebuild_proofs.py",
+ "started": "2026-10-17T18:58:09",
+ "rows": [
+  {
+   "id": "P13_reeds_survive_drain_refill",
+   "status": "PASS",
+   "detail": {
+    "graceHours": "24",
+    "start": {
+     "cycle": 6,
+     "control": 6
+    },
+    "after600dry": {
+     "cycle": 6,
+     "control": 6
+    },
+    "dryReadout": "OK Hole 0.5 m \u00b7 Water 0.00 m (0 L)",
+    "afterRefill": {
+     "cycle": 6,
+     "control": 6
+    },
+    "afterGracePlus1h": {
+     "cycle": 6,
+     "control": 6
+    },
+    "ticksAfterRefill": 62570
+   }
+  },
+  {
+   "id": "P13_reeds_control_left_dry_die",
+   "status": "INFO",
+   "detail": {
+    "start": 6,
+    "afterGracePlus1h": 6
+   }
+  },
+  {
+   "id": "P13_fish_rows",
+   "status": "UNMEASURED",
+   "detail": {
+    "why": "no bridge read of vanilla WaterBody fish types / fishing zones (owed: a ProofWaterBody static surface)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\fw_scenes\\live\\day3\\proofs_p13.json",
+  "only": "p13",
+  "fresh_map": false
+ },
+ "settings_before": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ },
+ "settings_restored": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ }
+}

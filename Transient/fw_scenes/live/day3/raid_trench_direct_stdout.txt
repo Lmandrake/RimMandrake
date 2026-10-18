@@ -1,0 +1,16 @@
+quicktest map up: True (4 s)
+scene: centre (125, 125), island 9x9, trench 88 squares D 4 (2 m) width 2, colonists on the island: [79, 82, 85]
+RAID_island_sealed         PASS       {"read": "CLIFF k=2 bits=0xCB vanilla=0xFF derived=True derives=79 | POCKET k=2 comp=2 pocket=False size=81 depth=0 gen=354 built=354 rebuilds=90", "eastBit": false}
+assault faction: PirateYttakin (hostile factions on this map: ['TribeRoughNeanderthal', 'PirateYttakin', 'TribeSavageImpid', 'OutlanderRoughPig', 'PirateWaster', 'AncientsHostile', 'Mechanoid', 'Insect', 'HoraxCult', 'Entities', 'Salvagers'])
+direct assault: 6 pawns ['Human38303', 'Human38311', 'Human38318', 'Human38325', 'Human38334', 'Human38340']; lord {"success": true, "lordIndex": 1, "faction": "PirateYttakin", "requested": 6, "memberCount": 6, "members": ["Fayttark", "Wyn'kolesh", "Rawushytt", "Rywanark", "Faytterk", "Konoshyn"], "flags": {"canKidnap": true, "canTimeoutOrFlee": true, "sappers": false, "useAvoidGridSmart": false, "canSteal": tru
+  t+  250  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+ 2000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+ 4000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+ 6000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+ 8000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+10000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+12000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+  t+14000  raiders 6 (near 0, dead 0, downed 0)  closest 30  colonists down/dead 0
+RAID_outcome               MEASURED   {"outcome": ["STALL_FAR"], "firstColonistDownOnIsland": null, "raidersSeen": 6, "onIsland": [], "inTrench": [], "cameNear": [], "despawnedAlive": [], "aliveNearAtEnd": 0, "lateMovePerRaiderPerSample": 0.0, "ticksWatched": 15000, "lords": [{"job": "LordJob_FleshbeastAssault", "faction": "Entities", "pawns": 2}, {"job": "LordJob_AssaultColony", "faction": "PirateYttakin", "pawns": 6}]}
+MASKSWAP_no_wall_crossing  UNMEASURED {"raidersWithin15": 0, "sampledOnIslandOrTrench": [], "churnRebuilds": 60, "caveat": "sampled every 250 ticks; never seen, not proven impossible"}
+result: Transient\fw_scenes\live\day3\raid_trench_direct.json

@@ -1,0 +1,15 @@
+====================================================================================================
+R3. Swept off the map edge, then walks home
+  staged factions (game read): {'Human49718': 'PlayerColony', 'Human49721': 'PlayerColony', 'Human49724': 'PlayerColony', 'Human49727': 'PlayerColony', 'Human49730': 'PlayerColony'}
+  5 colonists staged on edge river cells [(102, 0), (116, 249), (99, 0), (112, 249), (103, 0)]; pending 0
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live3\Transient\fw_scenes\live\rivers\R3_p00.png
+  after 250 ticks: pending 3, still on map: 2 of 5
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live3\Transient\fw_scenes\live\rivers\R3_swept.png
+  R3.a    MATCHES    pending 0 -> 3 after 250 ticks (5 colonists staged)
+  R3.b    MATCHES    walk-home call: SWEPT pending=0
+  after return, Human49718: faction PlayerColony (staged as PlayerColony), position {'x': 243, 'z': 249}
+  after return, Human49724: faction PlayerColony (staged as PlayerColony), position {'x': 249, 'z': 140}
+  after return, Human49730: faction PlayerColony (staged as PlayerColony), position {'x': 244, 'z': 0}
+  R3.c    MATCHES    washed away ['Human49718', 'Human49724', 'Human49730']; back on the map after return: ['Human49718', 'Human49724', 'Human49730']
+         screenshot: \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\FOUNDRY\live3\Transient\fw_scenes\live\rivers\R3_home.png
+  R3.d    UNMEASURED the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)
