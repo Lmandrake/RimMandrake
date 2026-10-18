@@ -374,7 +374,8 @@ namespace RimMandrake.FlowWorks
 			{
 				// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V3): damage by METRES FALLEN, in both climb modes: today's fall
 				// up to 2 m (linear: drop ÷ 2 m), +50 % a metre past it, capped at 4× (settings). Never by the cell's depth, never by
-				// the dig cap. Unknown drop = from the surface. Blunt, through the normal pipeline: never instant death.
+				// the dig cap. Unknown drop = from the surface. Blunt, through the normal pipeline; FALL_DAMAGE_BUILD_DEEP_DROPS_KILL
+				// (owner V3 card 2026-10-18): a deep fall may also kill outright (RM_RelativeRulesMath.FallDeathChance).
 				RM_MapComponent_Excavation eng = EngineOf(p.Map);
 				int d = drop >= 0 ? drop : (eng?.ClimbDepthAt(cell) ?? RM_PitTrapMath.Superdeep);
 				float scale = FallScaleFor(d);
@@ -382,6 +383,7 @@ namespace RimMandrake.FlowWorks
 				if (dmg > 0f && scale > 0f)
 				{
 					p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
+					MaybeKillByFall(p, d);
 				}
 				else
 				{
@@ -390,6 +392,26 @@ namespace RimMandrake.FlowWorks
 			}
 			state.RecordDescent(p, cell, dmg);
 			PitDescent?.Invoke(p, cell);
+		}
+
+		/// <summary>State read: falls that killed outright this session (FALL_DAMAGE_BUILD_DEEP_DROPS_KILL).</summary>
+		public static int FallDeaths;
+
+		/// <summary>FALL_DAMAGE_BUILD_DEEP_DROPS_KILL: after the blunt damage, a fall of <paramref name="dropNotches"/> kills a
+		/// pawn still alive with the settings' chance (seeded by pawn and tick, so a reload replays the same fall alike).</summary>
+		private static void MaybeKillByFall(Pawn p, int dropNotches)
+		{
+			if (p == null || p.Dead || !RimMandrakeFlowWorksSettings.fallDeathEnabled)
+			{
+				return;
+			}
+			float chance = RM_RelativeRulesMath.FallDeathChance(dropNotches * RM_RelativeRulesMath.MetresPerNotch,
+				RimMandrakeFlowWorksSettings.fallDeathFromMetres, RimMandrakeFlowWorksSettings.fallDeathCertainMetres);
+			if (chance > 0f && Rand.ChanceSeeded(chance, Gen.HashCombineInt(p.thingIDNumber, Find.TickManager?.TicksGame ?? 0)))
+			{
+				FallDeaths++;
+				p.Kill(new DamageInfo(DamageDefOf.Blunt, 9999f));
+			}
 		}
 
 		/// <summary>V3: the fall's multiple of the 2 m fall for a drop of <paramref name="dropNotches"/>, under the settings.</summary>

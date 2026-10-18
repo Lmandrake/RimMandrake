@@ -79,7 +79,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>V3 (owner R7): the fall's damage as a multiple of today's 2 m fall, by METRES FALLEN (never by the cell's
 		/// depth, never by the dig cap). Up to 2 m: today's relative scale, linear (0.5 m = 0.25, 2 m = 1). Past 2 m: +
 		/// <paramref name="perMetrePast"/> a metre, capped at <paramref name="cap"/> (shipped 0.5 and 4: 3 m = 1.5, 7 m = 3.5,
-		/// 8 m = 4, 20 m = 4). Blunt damage through the normal pipeline; never instant death (the caller deals it).</summary>
+		/// 8 m = 4, 20 m = 4). Blunt damage through the normal pipeline (the caller deals it); a deep fall may also kill outright,
+		/// <see cref="FallDeathChance"/>.</summary>
 		public static float FallScale(float metresFallen, float perMetrePast = DefaultFallPerMetrePast, float cap = DefaultFallCap)
 		{
 			if (!(metresFallen > 0f))
@@ -93,6 +94,30 @@ namespace RimMandrake.FlowWorks
 			float c = cap < 1f || float.IsNaN(cap) ? 1f : cap;
 			float s = 1f + Math.Max(0f, perMetrePast) * (metresFallen - FallReferenceMetres);
 			return s > c ? c : s;
+		}
+
+		/// <summary>FALL_DAMAGE_BUILD_DEEP_DROPS_KILL defaults (owner V3 card 2026-10-18: "deep falls CAN kill"), PROVISIONAL: no fall
+		/// shorter than 6 m kills outright; the chance rises linearly to certain at 25 m (8 m 11 %, 12 m 32 %, 20 m 74 %).</summary>
+		public const float DefaultFallDeathFromMetres = 6f;
+
+		public const float DefaultFallDeathCertainMetres = 25f;
+
+		/// <summary>The chance (0..1) that a fall of <paramref name="metresFallen"/> kills outright, on top of its blunt damage:
+		/// 0 up to <paramref name="fromMetres"/>, rising linearly to 1 at <paramref name="certainMetres"/> (a certain depth at or
+		/// below the start is a step: 1 from the start on). NaN or a non-positive fall: 0.</summary>
+		public static float FallDeathChance(float metresFallen, float fromMetres = DefaultFallDeathFromMetres,
+			float certainMetres = DefaultFallDeathCertainMetres)
+		{
+			if (!(metresFallen > 0f) || float.IsNaN(fromMetres) || metresFallen <= fromMetres)
+			{
+				return 0f;
+			}
+			if (!(certainMetres > fromMetres))
+			{
+				return 1f;
+			}
+			float c = (metresFallen - fromMetres) / (certainMetres - fromMetres);
+			return c >= 1f ? 1f : c;
 		}
 
 		/// <summary>The same for a drop in notches.</summary>

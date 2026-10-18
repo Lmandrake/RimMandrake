@@ -113,7 +113,7 @@ FEATURES = [
     ("set", r"^(pitRampsEnabled|pitRampMaxSpan)$", "Ramps", "pit_ramp"),
     ("def", r"^ThingDef/RM_PitRamp$", "Pit ramp", "pit_ramp"),
     ("tex", r"Excavation/RM_PitRamp_", "Pit ramp art", "pit_ramp"),
-    ("set", r"^(superdeepCapturesOwnFaction|fallDamageEnabled|fallDamageMultiplier|fallDamagePerMetrePast2|fallDamageCap)$",
+    ("set", r"^(superdeepCapturesOwnFaction|fallDamageEnabled|fallDamageMultiplier|fallDamagePerMetrePast2|fallDamageCap|fallDeathEnabled|fallDeathFromMetres|fallDeathCertainMetres)$",
      "Own colonists are not captured; falling hurts", "pit_fall"),
     ("gizmo", r"JumpIntoPit", "Jump into pit button", "pit_ways_in"),
     ("gizmo", r"Colonist stuck in a pit", "Red alert: a colonist stuck in a pit (PIT_ALERT_BUILD_RED_MEANS_HELP)", "pit_ways_in"),

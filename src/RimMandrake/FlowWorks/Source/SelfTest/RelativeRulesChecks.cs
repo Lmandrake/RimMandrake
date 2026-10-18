@@ -93,6 +93,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(set.Contains("public static bool pitStuckAlertEnabled = true;") && set.Contains("Scribe_Values.Look(ref pitStuckAlertEnabled, \"pitStuckAlertEnabled\", true);")
                     && set.Contains("ref pitStuckAlertEnabled,"), "setting: on by default, saved, on the screen");
             });
+            Case("Fall_deep_drops_can_kill_by_metres", () =>
+            {
+                // FALL_DAMAGE_BUILD_DEEP_DROPS_KILL (owner V3 card 2026-10-18, PROVISIONAL 6 m / 25 m)
+                Func<float, float> ch = m => RM_RelativeRulesMath.FallDeathChance(m);
+                Assert(ch(2f) == 0f && ch(6f) == 0f && ch(0f) == 0f && ch(-3f) == 0f && ch(float.NaN) == 0f, "no death at or under 6 m");
+                Assert(ch(8f) > 0f && ch(8f) < ch(12f) && ch(12f) < ch(20f) && ch(20f) < 1f, "rises with the metres fallen");
+                Assert(ch(25f) == 1f && ch(125f) == 1f, "certain at 25 m and past");
+                Assert(Math.Abs(ch(15.5f) - 0.5f) < 1e-5f, "linear: halfway at 15.5 m");
+                Assert(RM_RelativeRulesMath.FallDeathChance(10f, 8f, 8f) == 1f && RM_RelativeRulesMath.FallDeathChance(8f, 8f, 8f) == 0f,
+                    "certain at or under the start: a step");
+                string trap = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_SuperdeepTrap.cs"));
+                Assert(trap.Contains("MaybeKillByFall(p, d);") && trap.Contains("RM_RelativeRulesMath.FallDeathChance(dropNotches * RM_RelativeRulesMath.MetresPerNotch,")
+                    && trap.Contains("Rand.ChanceSeeded(chance,"), "the descent rolls the seeded death chance after the blunt damage");
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                foreach (string f in new[] { "public static bool fallDeathEnabled = true;", "public static float fallDeathFromMetres = 6f;", "public static float fallDeathCertainMetres = 25f;" })
+                    Assert(set.Contains(f), "setting: " + f);
+                Assert(RM_RelativeRulesMath.DefaultFallDeathFromMetres == 6f && RM_RelativeRulesMath.DefaultFallDeathCertainMetres == 25f, "kernel defaults = settings");
+            });
             Case("Relative_spikes_on_a_sheer_drop_at_any_depth", () =>
             {
                 var g = new Grid(20, 12);
