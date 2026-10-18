@@ -202,12 +202,63 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(Math.Abs(Total(f) + drained * U - t0) < 1, "kept + drained = start");
 			});
 
-			Case("Exact_fuzz_conserves_to_the_decilitre_and_rests_level", () =>
+			Case("Exact_fuzz_conserves_to_the_decilitre_and_rests_level", () => ExactFuzz(600, 9100, 4, new[] { 2, 4, 4, 6 }));
+
+			// review day 3: every kernel fuzz dug 0.5..2 m only (r.Next(1, 5)), from before digs went to 20 m (P5) and lake floors
+			// to 50 m (P11): the same invariants with holes to 20 m and beds to 8 m
+			Case("Exact_fuzz_past_2m_conserves_and_rests_level", () => ExactFuzz(300, 9700, 40, new[] { 2, 4, 8, 16 }));
+
+			Case("Exact_migration_reads_float_stock_to_the_decilitre", () =>
 			{
-				int scenes = 600, rested = 0;
+				// RM_LiquidBody's load path: a save from before the exact model holds a float stock; stockDl = round(stock x U).
+				foreach (float f in new[] { 0f, 1f, 26f, 25.37f, 3999.5f, 123456.7f })
+				{
+					long dl = (long)Math.Round(f * (double)U);
+					Assert(Math.Abs(dl / (double)U - f) <= 0.5 / U + f * 6e-8, $"{f} levels -> {dl} dL keeps every litre");
+				}
+				// review day 3: the arithmetic above is the test's own copy; bind it to the production load path (RM_LiquidBody is
+				// Verse-bound, not compiled here), or the case passes whatever RM_LiquidBody does
+				string lb = RiverSwitchFlipChecks.Src("RM_LiquidBody.cs");
+				RiverSwitchFlipChecks.Has(lb, @"stockDl = dl != long\.MinValue \? dl : \(long\)System\.Math\.Round\(stockView \* \(double\)RM_LevelSolve\.U\);",
+					"the load path rounds a float stock to the decilitre exactly as above");
+				// a whole-notch canal grid loads as W = F x U, part 0: unchanged
+				var w = World(4, 1);
+				w.k.depth[1] = 3; w.k.fill[1] = 2; w.cellFluid[1] = ArrayWorld.Water;
+				w.k.part = new ushort[4];
+				Assert(w.k.WaterOf(1) == 2L * U, "an old 2-notch square is 20,000 dL");
+			});
+
+			Case("Exact_look_follows_true_metres", () =>
+			{
+				Assert(RM_LevelSolve.LookBand(0) == 0, "dry");
+				Assert(RM_LevelSolve.LookBand(4737) == 1, "0.237 m: the very-shallow look (hook)");
+				Assert(RM_LevelSolve.LookBand(U) == 2, "0.5 m");
+				Assert(RM_LevelSolve.LookBand(2 * U) == 3, "1 m");
+				Assert(RM_LevelSolve.LookBand(28889) == 4, "1.44 m reads as 1.5 m");
+				Assert(RM_LevelSolve.LookBand(4 * U) == 5 && RM_LevelSolve.LookBand(12 * U) == 5, "2 m and deeper");
+				Assert(RM_LevelSolve.LookBand(U / 2) == 2 && RM_LevelSolve.LookBand(U / 2 - 1) == 1, "the 25 cm line");
+			});
+
+			Case("Exact_surface_gap_sees_a_step", () =>
+			{
+				// can the instrument go red? two wet squares of one run at different surfaces read as a gap
+				var w = World(3, 1);
+				w.k.part = new ushort[3];
+				w.k.depth[0] = 2; w.k.depth[1] = 2; w.k.fill[0] = 2; w.k.fill[1] = 1;
+				w.cellFluid[0] = w.cellFluid[1] = ArrayWorld.Water;
+				double g = WorstGap(w, out int nb);
+				Assert(nb == 1 && Math.Abs(g - 0.5) < 1e-9, "a 0.5 m step in one body reads 0.5 m: " + g);
+			});
+		}
+
+		/// <summary>Random scenes at the shipped flags: ledger, bounds and conservation to the dL every pulse; a body at rest stands
+		/// at one surface. Holes 1..<paramref name="maxDepth"/> notches, pond beds from <paramref name="bedChoices"/>.</summary>
+		private static void ExactFuzz(int scenes, int baseSeed, int maxDepth, int[] bedChoices)
+		{
+				int rested = 0;
 				for (int seed = 0; seed < scenes; seed++)
 				{
-					var r = new Random(9100 + seed);
+					var r = new Random(baseSeed + seed);
 					int W = r.Next(3, 10), H = r.Next(3, 10);
 					var w = World(W, H);
 					int nb = r.Next(0, 3);
@@ -217,7 +268,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 						var cells = new List<int>();
 						for (int x = x0; x < Math.Min(W, x0 + bw); x++) for (int z = z0; z < Math.Min(H, z0 + bh); z++) if (!w.natural[z * W + x]) cells.Add(z * W + x);
 						if (cells.Count == 0) continue;
-						foreach (int c in cells) w.bed[c] = new[] { 2, 4, 4, 6 }[r.Next(4)];
+						foreach (int c in cells) w.bed[c] = bedChoices[r.Next(bedChoices.Length)];
 						int cap = cells.Sum(c => w.bed[c]);
 						w.AddBody(r.Next(4) == 0, r.Next(0, cap + 1), cells);
 					}
@@ -226,7 +277,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 					{
 						int c = r.Next(W * H);
 						if (w.natural[c]) continue;
-						w.k.depth[c] = (byte)Math.Max(w.k.depth[c], r.Next(1, 5));
+						w.k.depth[c] = (byte)Math.Max(w.k.depth[c], r.Next(1, maxDepth + 1));
 						if (!digs.Contains(c)) digs.Add(c);
 					}
 					foreach (int c in digs) if (r.Next(3) == 0) { w.k.fill[c] = (byte)r.Next(0, w.k.depth[c] + 1); if (w.k.fill[c] > 0) w.cellFluid[c] = ArrayWorld.Water; }
@@ -260,44 +311,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 					}
 				}
 				Assert(rested > scenes / 2, $"only {rested} of {scenes} scenes came to rest (the gap check needs still water)");
-			});
-
-			Case("Exact_migration_reads_float_stock_to_the_decilitre", () =>
-			{
-				// RM_LiquidBody's load path: a save from before the exact model holds a float stock; stockDl = round(stock x U).
-				foreach (float f in new[] { 0f, 1f, 26f, 25.37f, 3999.5f, 123456.7f })
-				{
-					long dl = (long)Math.Round(f * (double)U);
-					Assert(Math.Abs(dl / (double)U - f) <= 0.5 / U + f * 6e-8, $"{f} levels -> {dl} dL keeps every litre");
-				}
-				// a whole-notch canal grid loads as W = F x U, part 0: unchanged
-				var w = World(4, 1);
-				w.k.depth[1] = 3; w.k.fill[1] = 2; w.cellFluid[1] = ArrayWorld.Water;
-				w.k.part = new ushort[4];
-				Assert(w.k.WaterOf(1) == 2L * U, "an old 2-notch square is 20,000 dL");
-			});
-
-			Case("Exact_look_follows_true_metres", () =>
-			{
-				Assert(RM_LevelSolve.LookBand(0) == 0, "dry");
-				Assert(RM_LevelSolve.LookBand(4737) == 1, "0.237 m: the very-shallow look (hook)");
-				Assert(RM_LevelSolve.LookBand(U) == 2, "0.5 m");
-				Assert(RM_LevelSolve.LookBand(2 * U) == 3, "1 m");
-				Assert(RM_LevelSolve.LookBand(28889) == 4, "1.44 m reads as 1.5 m");
-				Assert(RM_LevelSolve.LookBand(4 * U) == 5 && RM_LevelSolve.LookBand(12 * U) == 5, "2 m and deeper");
-				Assert(RM_LevelSolve.LookBand(U / 2) == 2 && RM_LevelSolve.LookBand(U / 2 - 1) == 1, "the 25 cm line");
-			});
-
-			Case("Exact_surface_gap_sees_a_step", () =>
-			{
-				// can the instrument go red? two wet squares of one run at different surfaces read as a gap
-				var w = World(3, 1);
-				w.k.part = new ushort[3];
-				w.k.depth[0] = 2; w.k.depth[1] = 2; w.k.fill[0] = 2; w.k.fill[1] = 1;
-				w.cellFluid[0] = w.cellFluid[1] = ArrayWorld.Water;
-				double g = WorstGap(w, out int nb);
-				Assert(nb == 1 && Math.Abs(g - 0.5) < 1e-9, "a 0.5 m step in one body reads 0.5 m: " + g);
-			});
 		}
 	}
 }

@@ -385,7 +385,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             "credit site: sprinkler draw",
         };
 
-        private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryTakeDl(", ".TryDebit(", ".TryPourLevel(", ".TryReturnLevels(", "addResource.Invoke(", "drawResource.Invoke(" };
+        // review day 3: the decilitre movers (TryPourDl, TryDebitDl, CreditDl, TryReturnDl) joined the list; a site calling one
+        // outside a leg went unseen (".TryDebit(" does not match ".TryDebitDl(")
+        private static readonly string[] WorldMutations = { ".TryTakeLevel(", ".TryTakeDl(", ".TryDebit(", ".TryDebitDl(", ".TryPourLevel(", ".TryPourDl(",
+            ".TryReturnLevels(", ".TryReturnDl(", ".CreditDl(", "addResource.Invoke(", "drawResource.Invoke(" };
         private static readonly string[] TankMutations = { ".TryAddLiquid(", ".TryRemoveLiquid(" };
 
         private static void CallerCoverage()
