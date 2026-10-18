@@ -1,0 +1,565 @@
+{
+ "script": "thirst_live.py",
+ "started": "2026-10-17T22:29:33",
+ "rows": [
+  {
+   "id": "T7_no_dbh_clean_log",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "exceptionLines": 0,
+    "naming": [],
+    "firstException": null
+   }
+  },
+  {
+   "id": "T1_provider_line",
+   "status": "UNMEASURED",
+   "class": "HARNESS",
+   "detail": {
+    "measuredArm": "no Dubs on the list -> Own (no DBHThirst NeedDef loaded)",
+    "armOk": true,
+    "why": "the bar needs three mod lists (no DBH / Lite+Thirst / Lite alone); this run had one"
+   }
+  },
+  {
+   "id": "T2_one_thirst_need",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "perColonist": {
+     "Human478": [
+      1,
+      0
+     ],
+     "Human475": [
+      1,
+      0
+     ],
+     "Human483": [
+      1,
+      0
+     ]
+    },
+    "bad": {}
+   }
+  },
+  {
+   "id": "T3_need_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": 0.9,
+    "after": 0.700002551,
+    "drop": 0.2,
+    "expect": 0.2,
+    "heatScaling": false,
+    "ticks": 15000
+   }
+  },
+  {
+   "id": "T6_dehydration_readable",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "RM_Dehydration": 0.300001085,
+    "hediffs": {
+     "Scarification": 0.5,
+     "RM_Dehydration": 0.300001085
+    },
+    "heldAtZeroTicks": 60000
+   }
+  },
+  {
+   "id": "T4_bottle_satisfies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "levels": [
+     0.2,
+     0.692000031
+    ],
+    "gain": 0.492,
+    "dirtyBottles": [
+     0,
+     1
+    ]
+   }
+  },
+  {
+   "id": "T5_salt_water_quality",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "accepted": true,
+     "beforeJobDef": null,
+     "afterJobDef": "Ingest",
+     "message": null,
+     "note": null
+    },
+    "saltBottleLeft": 0,
+    "levels": [
+     0.2,
+     0.191999987
+    ],
+    "ratioToFresh": -0.016,
+    "hediffs": {
+     "CochlearImplant": 0.5,
+     "Scarification": 0.5
+    },
+    "memories": [],
+    "bad": [
+     "hydrate x-0.02, want x0.7",
+     "RM_SaltPoisoning None, want 0.25",
+     "no RM_Thought_SaltRelief memory"
+    ],
+    "note": "one pawn, one bottle (the bar says x4 on test pawns; the per-drink numbers are what it scores)"
+   }
+  },
+  {
+   "id": "T10_terrain_drink",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobAtTick": 60,
+    "jobsSeen": [
+     "RM_DrinkFromTerrain"
+    ],
+    "levels": [
+     0.2,
+     0.694
+    ],
+    "trace": [
+     [
+      "RM_DrinkFromTerrain",
+      0.198
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.196
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.196
+     ],
+     [
+      "GotoWander",
+      0.694
+     ]
+    ],
+    "offJobsSeen": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "bad": []
+   }
+  },
+  {
+   "id": "T9_animals_drink",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "animals": [
+     [
+      "PlayerColony",
+      "Muffalo21354"
+     ],
+     [
+      "none",
+      "Muffalo21355"
+     ]
+    ],
+    "levels": {
+     "Muffalo21354": [
+      0.25,
+      0.7160004
+     ],
+     "Muffalo21355": [
+      0.25,
+      0.7160003
+     ]
+    },
+    "rose": {
+     "Muffalo21354": true,
+     "Muffalo21355": true
+    },
+    "bottlesOnMap": 2,
+    "inferred": "no bottle on the map: a rise beside the pond is a terrain drink (the job is not on the bridge)"
+   }
+  },
+  {
+   "id": "T11_autofill_skips_salt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "fresh": [
+     2,
+     5
+    ],
+    "salt": [
+     0,
+     0
+    ],
+    "jobsSeen": [
+     "RM_FillBottleJob",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ]
+   }
+  },
+  {
+   "id": "T12_no_routine_salt",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobsSalt": [
+     "GotoWander",
+     "Wait_Wander",
+     "GotoWander",
+     "Wait_Wander"
+    ],
+    "jobsAfterBottle": [
+     "Ingest"
+    ],
+    "bottleGone": true,
+    "saltBottles": 0,
+    "level0": 0.2,
+    "bad": []
+   }
+  },
+  {
+   "id": "T13_desperate_toxic_last",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobsAt005": [
+     "GotoWander"
+    ],
+    "jobsAt0": [
+     "RM_DrinkFromTerrain"
+    ],
+    "levelAfter": 0.25,
+    "hediffs": {
+     "Scarification": 0.5,
+     "RM_Dehydration": 0.00375000015,
+     "ToxicBuildup": 0.119733334
+    },
+    "jobsWithBottle": [
+     "Ingest"
+    ],
+    "bad": []
+   }
+  },
+  {
+   "id": "T27_water_items",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "GotoWander",
+     "Wait_Wander"
+    ],
+    "levels": [
+     0.2,
+     0.187999979
+    ],
+    "memories": [],
+    "bad": [
+     "no RM_DrinkWaterItem (jobs ['GotoWander', 'Wait_Wander'])"
+    ]
+   }
+  },
+  {
+   "id": "T28_sanguophage_blood",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "xenotype": "Sanguophage",
+    "applied": true,
+    "sang": {
+     "levels": [
+      0.2,
+      0.69
+     ],
+     "accepted": true,
+     "after": "Ingest",
+     "msg": null,
+     "packLeft": 0
+    },
+    "base": {
+     "levels": [
+      0.2,
+      0.189999983
+     ],
+     "accepted": true,
+     "after": "Ingest",
+     "msg": null,
+     "packLeft": 0
+    },
+    "bad": [],
+    "notRead": "hemogen up (the gene resource is not on jawa/pawn_need)"
+   }
+  },
+  {
+   "id": "T19_awkward_access",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "RM_DrinkFromContainer"
+    ],
+    "memAfterBucket": [
+     "RM_Thought_DrankRough"
+    ],
+    "bucketInspect": "Can't hold: Acid. | Partly drunk: 1.5 L taken out.",
+    "memAfterBottle": [],
+    "bad": [],
+    "notRun": "tank arm, Ascetic/tribal arms, pond arm"
+   }
+  },
+  {
+   "id": "T24_bucket_douses_fire",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "jobs": [
+     "RM_DouseFireWithBucket"
+    ],
+    "fires": [
+     9,
+     3
+    ],
+    "emptyBuckets": [
+     0,
+     1
+    ],
+    "bad": [],
+    "notRun": "the no-bucket BeatFire arm"
+   }
+  },
+  {
+   "id": "T15_slime_effects",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "RM_SlimeRedShallow": {
+     "pawn": "Human21477",
+     "jobs": [
+      "RM_DrinkFromTerrain",
+      "GotoWander"
+     ],
+     "hediffs": {
+      "Scarification": 0.5,
+      "RM_Dehydration": 0.0015,
+      "RM_SlimePurge": 1.0
+     },
+     "memories": [
+      "RM_Thought_DrankSlime"
+     ]
+    },
+    "RM_SlimeGreenShallow": {
+     "pawn": "Human21480",
+     "jobs": [
+      "RM_DrinkFromTerrain",
+      "GotoWander"
+     ],
+     "hediffs": {
+      "RM_Dehydration": 0.0015,
+      "RM_SlimePurge": 1.0
+     },
+     "memories": [
+      "RM_Thought_DrankSlime"
+     ]
+    },
+    "RM_SlimeWhiteShallow": {
+     "pawn": "Human21483",
+     "jobs": [
+      "RM_DrinkFromTerrain",
+      "GotoWander"
+     ],
+     "hediffs": {
+      "Scarification": 0.5,
+      "RM_Dehydration": 0.0015,
+      "RM_SlimePurge": 1.0
+     },
+     "memories": [
+      "RM_Thought_DrankSlime",
+      "Chitchat"
+     ]
+    },
+    "RM_SlimeYellowShallow": {
+     "pawn": "Human21486",
+     "jobs": [
+      "RM_DrinkFromTerrain",
+      "GotoWander"
+     ],
+     "hediffs": {
+      "Scarification": 0.5,
+      "RM_Dehydration": 0.0015,
+      "RM_SlimePurge": 1.0,
+      "RM_SlimeNausea": 1.0
+     },
+     "memories": [
+      "RM_Thought_DrankSlime",
+      "Chitchat"
+     ]
+    },
+    "at0.05": [
+     "Wait_Wander",
+     "GotoWander"
+    ],
+    "bad": [
+     "RM_SlimeRedShallow: RM_ContagionTouched None",
+     "RM_SlimeGreenShallow: RM_Slimification None",
+     "RM_SlimeWhiteShallow: RM_SporeFlesh None"
+    ]
+   }
+  },
+  {
+   "id": "T17_salt_break",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "force": {
+     "started": true,
+     "breakDef": "RM_Break_DrinkBrine"
+    },
+    "trace": [
+     [
+      "RM_DrinkFromTerrain",
+      0.733999968,
+      "{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 81124}"
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.728,
+      "{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 81224}"
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      0.722,
+      "{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 81324}"
+     ],
+     [
+      "RM_DrinkFromTerrain",
+      1.0,
+      "{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 81424}"
+     ]
+    ],
+    "hediffs": {
+     "RM_SaltPoisoning": 0.7485
+    },
+    "memories": [
+     "RM_Thought_SaltRelief"
+    ],
+    "bad": [],
+    "notRun": "the break being OFFERED (mood gate, dev list) and not offered with a fresh bottle: the start is forced"
+   }
+  },
+  {
+   "id": "T18_dubs_last_resort",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "why": "needs Dubs Bad Hygiene Lite + its Thirst add-on loaded; this list runs provider Own (T1's arm)"
+   }
+  },
+  {
+   "id": "T14_native_animal_terrible_water",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "native": "Dromedary21505",
+    "nonNative": "Muffalo21514",
+    "tried": {
+     "Dromedary": "True",
+     "Gazelle": "True",
+     "Iguana": "True",
+     "Hare": "True",
+     "Rat": "True",
+     "Elephant": "True",
+     "Rhinoceros": "True",
+     "Ostrich": "True",
+     "Emu": "True",
+     "Muffalo": "False"
+    },
+    "levels": {
+     "Dromedary21505": [
+      0.2,
+      0.51600033
+     ],
+     "Muffalo21514": [
+      0.2,
+      0.165999934
+     ]
+    },
+    "nativeHediffs": {},
+    "bad": [],
+    "inferred": "the map holds no other liquid, so a rise is a salt drink (the animal job is not on the bridge)",
+    "notRun": "a real salt/brine biome map (native read off the live roster instead)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/bench_live_20261018/thirst.json",
+  "only": "",
+  "site": "150,130",
+  "log": "Transient/bench_live_20261018/Player.log",
+  "reload_site": "calm",
+  "t25_empties": 1
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "8cac0a52232df414ef4a7422a2b396f572c62c4e02e4100f2e4589409e40f7c2",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "ray1203.simplecamerasetting"
+  ],
+  "assembly_sha256": "7fb0aa5da213f5ab481829ea80a7a76c23469111ae490ff9f457702546f73a52"
+ },
+ "settings_before": {
+  "thirstEnabled": "True",
+  "thirstRateMultiplier": "1",
+  "thirstHeatScaling": "True",
+  "animalsGetThirst": "True",
+  "drinkFromTerrain": "True",
+  "waterQualityEffects": "True",
+  "lastResortDrinking": "True",
+  "saltBreakEnabled": "True",
+  "roughDrinkPenalty": "True",
+  "snowGathering": "True",
+  "filledBottlesPerColonist": "3"
+ },
+ "running": 11,
+ "site": {
+  "rect": "150,130,40,40",
+  "paintedWaterRuns": 0,
+  "bottlesOnMap": [],
+  "draftedOwn": 3
+ },
+ "governorStops": [
+  "safe_advance stopped after 1440 of 1500 tick(s): starving: food category Starving"
+ ]
+}
