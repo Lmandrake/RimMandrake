@@ -139,6 +139,8 @@ def main():
             row("site", "UNMEASURED", {"why": "not playing"})
             return 2
         B.call("jawa/kill_hostiles")
+        B.call("jawa/quiet_site", action="apply", clearThreats=True, proximityLetters=True)   # hives, dormant spawners, monolith
+        B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=False)   # restored in finally
         # ------------------------------------------------------------------ swim
         if "swim" in only:
             ox, oz = 120, 120
@@ -399,10 +401,61 @@ def main():
                 ls = sc(NSP, "ProofLevelSurface", "%d,%d,4,4" % sq)
                 row("P5_4774_square_152000_L", "PASS" if total_l == 152000 else "FAIL", {"litres": total_l, "readouts": reads})
                 row("P5_4774_square_one_surface", "PASS" if " worst 0.000" in ls or "gap 0.0000" in ls or ls.startswith("OK 1") else "INFO", {"levelSurface": ls})
+        # ------------------------------------------------------------------ p13 (reeds through a drain/refill cycle)
+        if "p13" in only:
+            ox, oz = 120, 180
+            rect = (ox, oz, 24, 12)
+            if not V.prepare_site(B, rect, rows, "P13_site_ready"):
+                row("P13_site", "UNMEASURED", {"why": "site not ready"})
+            else:
+                WM = "RimMandrake.FlowWorks.RM_WaterMendSettings"
+                grace = fget(WM, "waterPlantGraceHours")
+                runs = {"cycle": [(ox + 2 + i, oz + 3) for i in range(8)], "control": [(ox + 2 + i, oz + 7) for i in range(8)]}
+                for cells in runs.values():
+                    for c in cells:
+                        dig(c, 1, 1)
+                B.ticks(70)
+                for nm, cells in runs.items():
+                    B.call("jawa/spawn_batch", ops=";".join("Plant_Reeds:%d,%d" % c for c in cells[1:7]))
+                B.ticks(10)
+
+                def alive(cells):
+                    x0 = min(c[0] for c in cells); z0 = cells[0][1]
+                    r = B.call("jawa/list_things", defName="Plant_Reeds", rect="%d,%d,%d,1" % (x0, z0, len(cells))) or {}
+                    return len(r.get("things") or [])
+
+                n0 = {k: alive(v) for k, v in runs.items()}
+                for nm, cells in runs.items():
+                    for c in cells:
+                        dig(c, 0, 0)
+                B.ticks(600)
+                n1 = {k: alive(v) for k, v in runs.items()}
+                terr_dry = sc(NSP, "ProofReadout", "%d,%d" % runs["cycle"][3])
+                for c in runs["cycle"]:
+                    dig(c, 0, 1)
+                B.ticks(70)
+                n2 = {k: alive(v) for k, v in runs.items()}
+                g_ticks = int(float(grace or 0) * 2500) + 2500
+                left = g_ticks
+                while left > 0:
+                    for c in (B.call("jawa/list_pawns", limit=200) or {}).get("pawns") or []:
+                        if c.get("isPlayer") and not c.get("dead") and str(c.get("id", "")).startswith("Human"):
+                            for need in ("Food", "Rest"):
+                                B.call("jawa/pawn_need", pawn=c["id"], action="need", need=need, level=1.0)
+                    B.ticks(min(left, 2500))
+                    left -= 2500
+                n3 = {k: alive(v) for k, v in runs.items()}
+                row("P13_reeds_survive_drain_refill", "PASS" if n0["cycle"] == 6 and n3["cycle"] == 6 else "FAIL",
+                    {"graceHours": grace, "start": n0, "after600dry": n1, "dryReadout": terr_dry, "afterRefill": n2,
+                     "afterGracePlus1h": n3, "ticksAfterRefill": 70 + g_ticks})
+                row("P13_reeds_control_left_dry_die", "PASS" if n3["control"] < n0["control"] else "INFO",
+                    {"start": n0["control"], "afterGracePlus1h": n3["control"]})
+                row("P13_fish_rows", "UNMEASURED", {"why": "no bridge read of vanilla WaterBody fish types / fishing zones (owed: a ProofWaterBody static surface)"})
     finally:
         for (t, f), v in before.items():
             if v is not None:
                 fset(S_FW if t == "fw" else S_SW, f, v)
+        B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=True)
         try:
             sc(SWIMW, "Reapply")
         except Exception:  # noqa: BLE001

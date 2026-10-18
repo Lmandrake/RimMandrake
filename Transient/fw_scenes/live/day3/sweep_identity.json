@@ -1,0 +1,162 @@
+{
+ "script": "sweep_identity_proof.py",
+ "rows": [
+  {
+   "id": "SWEEP_staged",
+   "status": "INFO",
+   "detail": {
+    "cells": [
+     [
+      102,
+      0
+     ],
+     [
+      116,
+      249
+     ],
+     [
+      99,
+      0
+     ]
+    ],
+    "staged": {
+     "colonist": "Human49767",
+     "prisoner": "Human49770",
+     "tame_animal": "Muffalo49772"
+    },
+    "before": {
+     "colonist": {
+      "faction": "PlayerColony",
+      "pos": {
+       "x": 102,
+       "z": 0
+      }
+     },
+     "prisoner": {
+      "faction": "TribeRoughNeanderthal",
+      "pos": {
+       "x": 116,
+       "z": 249
+      }
+     },
+     "tame_animal": {
+      "faction": "PlayerColony",
+      "pos": {
+       "x": 99,
+       "z": 0
+      }
+     }
+    },
+    "prisonerStatus": "{'success': True, 'pawn': 'Grouse', 'hostFactionAfter': 'NorthstarBland', 'guestStatusBefore': 'Guest', 'guestStatusAfter': 'Prisoner', 'resistanceAfter': 13.0, 'willAfter': 0.08083406, 'ticksGame': 6",
+    "book": "SWEPT pending=0"
+   }
+  },
+  {
+   "id": "SWEEP_swept_off",
+   "status": "PASS",
+   "detail": {
+    "goneAtTick": {
+     "prisoner": 250,
+     "colonist": 500,
+     "tame_animal": 500
+    },
+    "book": "SWEPT pending=2",
+    "trace": [
+     {
+      "t": 250,
+      "kind": "colonist",
+      "pos": {
+       "x": 102,
+       "z": 0
+      },
+      "found": true
+     },
+     {
+      "t": 250,
+      "kind": "prisoner",
+      "pos": null,
+      "found": true
+     },
+     {
+      "t": 250,
+      "kind": "tame_animal",
+      "pos": {
+       "x": 99,
+       "z": 0
+      },
+      "found": true
+     },
+     {
+      "t": 500,
+      "kind": "colonist",
+      "pos": null,
+      "found": true
+     },
+     {
+      "t": 500,
+      "kind": "prisoner",
+      "pos": null,
+      "found": true
+     },
+     {
+      "t": 500,
+      "kind": "tame_animal",
+      "pos": null,
+      "found": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SWEEP_returns_same_colonist",
+   "status": "PASS",
+   "detail": {
+    "id": "Human49767",
+    "thingIdBack": "Human49767",
+    "factionBefore": "PlayerColony",
+    "factionAfter": "PlayerColony",
+    "posAfter": {
+     "x": 0,
+     "z": 245
+    },
+    "return": "SWEPT pending=0"
+   }
+  },
+  {
+   "id": "SWEEP_returns_same_prisoner",
+   "status": "FAIL",
+   "detail": {
+    "id": "Human49770",
+    "thingIdBack": "Human49770",
+    "factionBefore": "TribeRoughNeanderthal",
+    "factionAfter": "TribeRoughNeanderthal",
+    "posAfter": null,
+    "return": "SWEPT pending=0"
+   }
+  },
+  {
+   "id": "SWEEP_returns_same_tame_animal",
+   "status": "PASS",
+   "detail": {
+    "id": "Muffalo49772",
+    "thingIdBack": "Muffalo49772",
+    "factionBefore": "PlayerColony",
+    "factionAfter": "PlayerColony",
+    "posAfter": {
+     "x": 211,
+     "z": 249
+    },
+    "return": "SWEPT pending=0"
+   }
+  },
+  {
+   "id": "SWEEP_prisoner_still_prisoner",
+   "status": "PASS",
+   "detail": {
+    "guestStatusBeforeRewrite": "Prisoner",
+    "raw": "{'success': True, 'pawn': 'Grouse', 'hostFactionBefore': 'NorthstarBland', 'hostFactionAfter': 'NorthstarBland', 'guestStatusBefore': 'Prisoner', 'guestStatusAfter': 'Prisoner', 'resistanceAfter': 13."
+   }
+  }
+ ],
+ "started": "2026-10-17T18:55:42"
+}

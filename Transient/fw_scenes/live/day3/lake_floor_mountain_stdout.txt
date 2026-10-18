@@ -1,0 +1,4 @@
+map 5 tile 24575 biome TemperateForest (set current True)
+hilliness Mountainous; 2 still-water bodies off the edge (taking 2)
+lake 1: 14974 squares; deepest floor 10.0 m; floor depths (m: squares) 0.5: 481, 1: 11872, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 6.5: 423, 7: 872, 7.5: 553, 8: 523, 8.5: 201, 9: 9, 9.5: 29, 10: 6 | full 62,885,000 L -> drawn down to 35%: 22,008,874 L (SET #4 frac 0.350 stock 22009.75 of 62885.00) | after the draw-down: POND id=4 pulse=2 model=1 applies=True limitless=False stock=22009.75 capacity=62885.00 s=7 r=1692 wet=4311 census=deep:0,chest:0,shallow:0,thin:0,own:14174,mud:800,lakebed:0,other:0
+lake 2: 14 squares; deepest floor 1.0 m; floor depths (m: squares) 0.5: 11, 1: 3 | full 17,000 L -> drawn down to 35%: 5,954 L (SET #10 frac 0.350 stock 5.95 of 17.00) | after the draw-down: POND id=10 pulse=3 model=1 applies=True limitless=False stock=5.95 capacity=17.00 s=1 r=2 wet=5 census=deep:0,chest:0,shallow:0,thin:0,own:14,mud:0,lakebed:0,other:0

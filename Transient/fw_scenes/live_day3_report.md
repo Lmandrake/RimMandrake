@@ -126,14 +126,71 @@ square to 8 m is ~3.3 digger-days), filled: 12 ring squares `Hole 4 m · Water 4
 fill-in of a sheet PASS (S5.e "destroys nothing", S5.f exactly 1,000 L for the middle cell); hose leftover: now announced,
 but 975 L still leave the world when the canal is full (S3.c, a remaining MOD finding).
 
+**River sweep identity (RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS):** river map found by `river_site.py --allow-no-fast`
+(new opt-in: the quicktest world held no river with a fast lane; R3 needs edge current only), tile 830.
+- `river_scenes_walk.py go R3`: R3.a, R3.b, **R3.c MATCH (day 2 DIFFERED)**: 3 colonists swept, all 3 back with the same
+  ThingID and faction PlayerColony. R3.d UNMEASURED (letters not read). `Transient/fw_scenes/live/day3/rivers_R3_stdout.txt`.
+- New `sweep_identity_proof.py` (`sweep_identity.json`): colonist PASS (same ThingID, PlayerColony, back on the map);
+  tame muffalo (downed so the current can take it; standing it walks out) PASS, same ThingID, PlayerColony, back on the map.
+  **Prisoner FAIL = MOD:** gone from the map within 250 ticks of standing in edge water, never entered the swept book (book
+  counted 2 for 3 gone), and after `ProofSwept return` it is still off the map (same ThingID, faction, still Prisoner,
+  no position). A prisoner the river takes is lost.
+
+**P13 fish / reeds (FISH_ROLL_MEND_PONDS_BORN_BARREN):** `proofs_p13.json`.
+- Reeds through a drain/refill (drive tool, not a pump): 6 of 6 alive after 600 dry ticks, after refill, and 25 h later.
+  **Not evidence for the grace mechanism:** the CONTROL run (6 reeds left dry 25 h, past the 24 h grace) also kept 6 of 6,
+  so on a dug canal reeds never die when it dries at all. Recorded as a note, not a verify.
+- Fish rows (roll as a pond grows, dry-and-refill keeps fish/zone, split pond): **UNMEASURED**. The bridge cannot read
+  vanilla WaterBody fish types or fishing zones (owed: a ProofWaterBody static surface in RM_WaterBodyMendGame.cs).
+
 ## 5. Lake floor look (flat + mountainous)
-PENDING
+New `src/RimMandrake/FlowWorks/northstar/lake_floor_stage.py`: founds a map on a lake tile, local noon (clock jump), each
+lake photographed full and drawn down to 35% (ProofSetBodyFraction), captioned panels with the measured floor.
+**Look here: `D:\Luke\dev\RimMandrake\Transient\fw_scenes\lake_floors\live\index.html`** (26 panels under `annotated\`).
+Keeper save: `RM_fw_lake_floors_flat_hills_mountain_20261018.rws` (all three maps).
+- Flat (tile 2120, BorealForest, LakeWithIsland): 5 lakes (710/430/125/24/14 squares), every floor 0.5 m (shelf) or 1 m.
+- Hills (tile 6281, LargeHills, Lake): 6 lakes (889..94 squares), every floor 0.5 or 1 m.
+- Mountainous (tile 24575, TemperateForest, Chasm+Caves+Lake): a 14,974-square lake, floors 0.5..10 m (6.5-8.5 m: 2,000
+  squares; first generation of the same tile read 13.5 m deepest), 62.9 million L; plus one 14-square pond at 1 m.
+- **Finding (spec question):** every Player.log "lake floors" line on flat and hill maps today says "(1 m deepest)". Vanilla
+  lakes there are WaterShallow only, so P11 has no deep water to give a floor: the offline preview's "flat mean deepest
+  2.6 m / hills 4.3 m" does not happen live. Only vanilla deep water (the chasm lake) gets the deep floor. And drawn down
+  to 35% the deep lake still shows 14,174 of 14,974 squares as their original water (800 mud on the shelf): the floor
+  is barely visible from above at that level.
 
 ## 6. raid_trench re-stage
-PENDING
+`raid_trench_proof.py --fresh-map --direct` (6 PirateYttakin, LordJob_AssaultColony, storyteller off, 15,000 ticks):
+`Transient/fw_scenes/live/day3/raid_trench_direct.json`.
+- RAID_island_sealed PASS (person-band east lip 0xCB, derived).
+- **RAID_outcome STALL_FAR** (day 2: LEFT + SHOT_ACROSS, all colonists downed): the 6 raiders never moved (late move 0.0
+  per raider per sample), never came within 15 squares, no colonist downed. A FleshbeastAssault lord (Entities, 2) also
+  sat on the map. So under the new rules the raid did not even approach; whether the island is now unreachable to the
+  raid lord (no target, so it stalls) is not measured.
+- MASKSWAP_no_wall_crossing UNMEASURED again (0 raiders within 15 squares; 60 churn rebuilds, no error).
 
-## Bugs found
-PENDING
+## Bugs found (MOD unless marked)
+1. `SWIM_DUG_RESERVOIR_NOT_SWIMMABLE`: brim-full dug water (3 m) has `deepCell=False pathCost=300`, CanReach false; only
+   natural deep water opens for swimmers.
+2. `SWEEP_PRISONER_LOST_OFF_MAP`: a prisoner taken by an edge current is never booked and never returned.
+3. `HOSE_LEFTOVER_LOST_WHEN_CANAL_FULL`: pump keeps lifting into a full canal; the hose leftover (975 L in S3) leaves the
+   world, announced. S3.c.
+4. `P11_FLOOR_ON_PAINTED_PONDS` (spec question): water painted or created mid-game gets a P11 floor with the 0.5 m shelf,
+   so the scenes' and validation_v2's "2 m" ponds hold a third of their water. Explains S5.a/b/c/h/i and several v2 rows.
+5. `LAKE_FLOORS_SHALLOW_LAKES_STAY_ONE_METRE` (spec question): live flat/hill lakes are WaterShallow and keep 1 m floors.
+6. `VALIDATION_V2_REBASE_ON_P3_P13`: 24 FAIL / 5 UNMEASURED, not yet sorted into MOD vs stale expectation (section 2);
+   the flow-scheduler rows (E4_engine_off "OFF for 0 ticks", E1c cadence) and X2-X4 (pawn drawn 0 m down in a D=4 pit)
+   look most like real regressions.
+7. HARNESS/instrument: ProofDrown prints water=0.00 on natural water while drowning runs; P13 has no fish read surface;
+   the saved river site cannot load on the 11-mod list (RSW corpses, then MapDrawer NRE every frame).
+8. P13 reeds do not die on a dried dug canal even past grace (control), so the grace path was not exercised.
+
+## Not run / claimable
+- The river extension chain (`extension_proof.py --site river`): blocked by the saved river site (item 7); it could run on
+  the `--allow-no-fast` site with `--current-map`, but its fast-lane rows would read UNMEASURED.
+- P13 fish rows (needs the read surface); P5 "dig to 8 m by the designator" (3.3 digger-days; drive tool used instead);
+  S3.e round trip.
 
 ## Bridge
-HELD by FOUNDRY
+Released 02:17Z. Game left RUNNING on the 11-mod flowworks list (hills lake map current), storyteller re-enabled.
+BENCH's 22-mod walk list NOT restored (saved at `infrastructure/state/modlists/ModsConfig_BENCH_walk22_before_fw11_2026-10-18.xml`).
+companion_profile.json expiresUtc now 2026-10-18T14:00:00Z.

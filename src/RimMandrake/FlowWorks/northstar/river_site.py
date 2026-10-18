@@ -179,7 +179,7 @@ def river_reject(kv, edges, dry, tile=None, map_tile=None):
         return "the current map is tile %s, not %s (set_current_map read-back)" % (map_tile, tile)
     if dry:
         return None
-    if not (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
+    if not (int(kv.get("current", 0) or 0) > 0 and (int(kv.get("fast", 0) or 0) > 0 or ALLOW_NO_FAST)):
         return "no current with a fast lane (grid current=%s fast=%s)" % (kv.get("current"), kv.get("fast"))
     if edges is None:
         return "map-edge terrain unreadable (get_terrain_batch refused)"
@@ -206,6 +206,8 @@ def leftover_maps(loaded, site_map_id, generated_tiles):
     return [m for m in loaded or [] if m.get("mapId") != site_map_id and m.get("tile") in gen]
 
 
+ALLOW_NO_FAST = "--allow-no-fast" in sys.argv   # R3 (wash-off-map) needs edge current only; a quicktest world can hold no size-1.89
+# river (2026-10-18: 20 of 20 river tiles fast=0) -- opt in to accept current without a fast lane (R1/ProofShove "fast" then UNMEASURED)
 DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle chains. Their 40x30 Soil repaints cut a
 # river and a river cut their plots (MEASURED 2026-10-06: confinement read river cells (122,87..89) as D=4 F=4 "liquid on
 # un-dug ground"; the weir pooled over painted Soil). Rivers chains run on a river site, the rest on a dry one.

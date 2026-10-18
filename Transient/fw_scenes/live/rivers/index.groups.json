@@ -1,0 +1,46 @@
+[
+ {
+  "id": "R3",
+  "title": "R3. Swept off the map edge, then walks home",
+  "looking_at": "Colonists stand on moving river water at the map edge where the river leaves. The game keeps a book of who was washed away (pending); after the current carries one off, they are walked home.",
+  "check": [
+   "Within about 1500 ticks at least one colonist should vanish off the edge (the book's pending count rises).",
+   "Then they return: pending drops back to 0 and the washed-away colonist is on the map again."
+  ],
+  "passif": "pending rose, returned to 0, and a washed-away colonist is back on the map.",
+  "fails": "Nobody is carried off in 1500 ticks, or the book empties but nobody is back.",
+  "images": [
+   [
+    "R3_p00_panel.png",
+    "Start: colonists standing in the moving water at the map edge"
+   ],
+   [
+    "R3_swept_panel.png",
+    "After 250 ticks: whoever the current carried off the edge is gone"
+   ],
+   [
+    "R3_home_panel.png",
+    "After the walk home: the washed-away colonists are back"
+   ]
+  ],
+  "readings": [
+   [
+    "MATCHES",
+    "R3.a: pending 0 -> 3 after 250 ticks (5 colonists staged)"
+   ],
+   [
+    "MATCHES",
+    "R3.b: walk-home call: SWEPT pending=0"
+   ],
+   [
+    "MATCHES",
+    "R3.c: washed away ['Human49718', 'Human49724', 'Human49730']; back on the map after return: ['Human49718', 'Human49724', 'Human49730']"
+   ],
+   [
+    "UNMEASURED",
+    "R3.d: the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)"
+   ]
+  ],
+  "stamp": "2026-10-17 18:54"
+ }
+]
