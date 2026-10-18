@@ -10,7 +10,7 @@
   RSW_TaozinBrine (Cuisine). C#: Source/BeastMechanics/RSW_TaozinBrineTank.cs. Settings: Bestiary (beast mechanics) ->
   "Taozin brine tank" (on/off, days per jar, days to turn white).
   MayRequire: the tank needs both the Cuisine output and the Stillsand brine; without either it simply is not offered.
-  ART: none of its own yet - vanilla fermenting barrel, tinted brine-green, as a placeholder (owed: an art job).
+  ART: own generated art (2026-10-18, owner granted by card), same picture for all facings; PROVISIONAL, judge in game.
   PROVISIONAL numbers: cost, capacity, work.
 -->
 <Defs>
@@ -27,9 +27,8 @@
     <description>A sealed tub of brine for keeping a taozin grub. The grub lies sedated in the brine, neither eating nor ageing, and slowly infuses it: each jar of taozin brine costs one measure of brine, and the jars collect beside the tank. A grub kept in brine long enough fades from terracotta to white, for good.\n\nTo fill it, haul brine in; to stock it, right-click a tame taozin grub with a colonist selected.</description>
     <thingClass>RimMandrake.StarWars.SWBestiary.Building_RSW_BrineTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <texPath>Things/Building/Production/RSW_TaozinBrineTank</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <color>(170,200,185)</color>
       <damageData>
         <rect>(0.05,0.1,0.9,0.9)</rect>
       </damageData>
