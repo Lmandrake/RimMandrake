@@ -46,3 +46,4 @@ Source: `Transient/fw_scenes/live_day3_report.md` bugs 1-3. No bridge, no game.
 - oracle 3000: 9 modes PASS 3000/3000, 0 FAIL. Running vv_shipped_matrix --skip-ep.
 - vv_shipped_matrix --skip-ep: VERDICT PASS; SHIPPED kernel_fuzz 0/10000, fills 0/10000, surface 0/1000, seq_* 0, hose 0/2798, trail 0/1500; OFF_edgeSinks kernel_fuzz 142/2000 (known); control 194/2000. SHIPPED-hook suite 23 authored-tuple kernel cases (none of mine).
 - run_selftests --only (22 FlowWorks python + settings): 20/22; reds not mine: selftest_review_map (evidence precondition: flow_spreads now 'partly'), selftest_settings_screens SWBestiary#BeastMechanics (known, not FlowWorks). Committing source.
+- merged on origin 33461177a -> source 47b1a5045; winbuild there 0 warn 0 err; SelfTest 566/566 passed on the merged tree. Committing DLL + push.
