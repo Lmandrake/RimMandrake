@@ -1,2 +1,0 @@
-RimProperty: 9 groups, 21 settings, 0 dead, all Now (float-menu/job/tick/event reads). No false label. Removed toggle-hiding of sliders.
-Files: Source/PropertySettings.cs, Source/RM_Property.csproj, Source/SelfTest/RimMandrakeProperty.SelfTest.csproj (also compiles PropertySettings.cs, so got kit lines), Assemblies dll+srchash. Build 0 errors, selftest ok.

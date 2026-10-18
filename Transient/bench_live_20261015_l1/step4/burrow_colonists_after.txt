@@ -1,3 +1,0 @@
-{'id': 'Human95731', 'dead': False, 'downed': False, 'health': None, 'summaryHealth': None, 'x': 131, 'z': 131}
-{'id': 'Human95734', 'dead': False, 'downed': False, 'health': None, 'summaryHealth': None, 'x': 123, 'z': 135}
-{'id': 'Human95737', 'dead': False, 'downed': False, 'health': None, 'summaryHealth': None, 'x': 128, 'z': 137}

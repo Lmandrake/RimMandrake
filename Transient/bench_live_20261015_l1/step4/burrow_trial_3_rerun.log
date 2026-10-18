@@ -1,6 +1,0 @@
-== trial 3 09:34:14
-reloaded NS_Pyrelands_site_1_417df172fdb5_calm2: map 1 tile 5 RM_Pyrelands outdoor 57.5613556 -- now run gate B
-[diag] {"i": 0, "grazerId": "RM_Ashwallow100669", "fireTick": 685512, "kind": "near", "grazerX": 195, "jobs": [null, "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDash", "RM_ShadeDa
-[pyre] 09:35:10 burrowers_dive_diag PASS 
-Pyrelands: NOT GREEN  PASS=1 FAIL=0 UNMEASURED=48  calls=326 mean=60.860ms  -> D:\Luke\dev\_rmscratch\burrow_trials\burrow_run_3.json
-== done 09:35:11

@@ -1,3 +1,0 @@
-PB_pond_limited        PASS       SITE     {"body": {"id": 1, "limitless": false, "stock": 28.0, "capacity": 28.0, "cellCount": 12, "recededCount": 0, "activeCellCount": 12, "truncated": false}}
-PB_bed_shape           UNMEASURED SITE     {"wet": ["182,44", "183,44", "184,44", "185,44", "182,45", "183,45", "184,45", "185,45", "182,46", "183,46", "184,46", "185,46"], "dryDeep": [], "mismatch": [], "lastTrace": [{"i": 8, "stock": 28.0, "receded": 0, "pump": null}], "why": "pond did not drain to its last cell"}
-result: Transient/r5/pond/pond_bed_deep_1.json

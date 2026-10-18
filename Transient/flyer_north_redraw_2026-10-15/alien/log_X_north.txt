@@ -1,4 +1,0 @@
-note: seeded worker CODEX_HOME /mnt/d/Luke/dev/_rmscratch/ch_alXN from /mnt/c/Users/Mandrake/.codex (auth.json, config.toml, models_cache.json, version.json, installation_id, skills/)
-note: seeded /mnt/d/Luke/dev/_rmscratch/ch_alXN's sandbox setup from /mnt/c/Users/Mandrake/.codex_sandbox_seed - no UAC prompt expected
-OK  /home/mandrake/rm/bench/Transient/flyer_north_redraw_2026-10-15/alien/raw_X_north.png
-    1024x1024  rgba  506,516 bytes  (180s)

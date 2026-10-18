@@ -1,7 +1,0 @@
-0. deploy census -- expected set DERIVED from the deployed DLL (399 tools), not from a list in this file
-     jawa/revoke                MISSING
-  FAIL every tool in the deployed DLL registered   398 of 399 (534 tools on the bridge overall)
-     MISSING from the running game: jawa/revoke
-     Unexpected subset -- record it, this has not been seen.
---census: read only, exiting before any mutation.
-0 passed, 1 failed, 0 skipped

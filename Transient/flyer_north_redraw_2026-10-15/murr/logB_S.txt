@@ -1,2 +1,0 @@
-OK  /home/mandrake/rm/bench/Transient/flyer_north_redraw_2026-10-15/murr/rawB_south.png
-    1024x1024  rgba  855,096 bytes  (230s)

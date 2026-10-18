@@ -1,3 +1,0 @@
-installed mods discovered: 1383
-REFUSING --restore: no active-swap marker (ModsConfig.swap-active.json) -- no matching --tier --apply is on record. Pick the file yourself (copy a ModsConfig.before-tier-*.xml) or use --restore-full for FULL.LATEST.
-live md5 ee01dae9 active 550

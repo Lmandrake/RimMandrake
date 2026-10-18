@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SettingsBlock>
-	<ModSettings Class="RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings">
-		<disabledFluids />
-		<disabledLiquidMachines />
-		<hose_defaultLook>Modern</hose_defaultLook>
-		<hoseSettingsImported>True</hoseSettingsImported>
-	</ModSettings>
-</SettingsBlock>

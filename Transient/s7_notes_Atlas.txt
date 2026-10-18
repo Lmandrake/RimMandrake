@@ -1,1 +1,0 @@
-Atlas: 5 groups, 13 settings (12 + disabledCategories list), 0 dead; old screen had no scope labels; per-group reset clears disabledCategories; csproj kit lines added; checkbox ref moved to DrawCategory helper.

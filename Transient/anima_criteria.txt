@@ -1,1 +1,0 @@
-- A1 L1: on a fresh quicktest home map (any biome) the census of Plant_TreeAnima is 0, and Base_Player genSteps has no AnimaTrees; no storyteller comp fires AnimaTreeSpawn.

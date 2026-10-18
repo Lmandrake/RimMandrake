@@ -1,3 +1,0 @@
-launch_ready: profile minimal (23 active mods in ModsConfig): warn 180s, deadline 600s, no kill on deadline
-launch_ready: READY - pid 17676, port 5174, 23 active mods, 137s from launch
-launch_ready: receipt /mnt/d/Luke/dev/_rmscratch/launch_receipts/launch_20261014T214341.json

@@ -1,4 +1,0 @@
-LongShade retrofit (s7). 7 groups, 17 settings, all bool, already static. Dead: none. 
-Scopes: crawlerRoad/sunGraves/middenMapgen/cleanPatchTell = GenStep reads -> NewMapsOnly; stampede/smokeHaze/jawaReturn = IncidentWorker.CanFireNow and ashPulse/sandLock = read when haze ends -> NextPulse; rest tick/Harmony/job reads -> Now.
-False label fixed: modEnabled tooltip said it "mainly stops the dewfringe's rim gate"; it gates nearly every mechanic (tollok, awning, harrok, incidents, middens, mapgen, smoke calendar) - reworded. Old plain "Map generation (affects only maps generated after the change)" label replaced by a proper NewMapsOnly group.
-Files: RM_LongShadeMod.cs, RM_LongShade.csproj (+2 kit lines), Assemblies dll+srchash.

@@ -1,4 +1,0 @@
-map {'tile': 3247, 'mapId': 5, 'mapBiome': 'TemperateForest'}
-loadedMaps [{'mapId': 5, 'tile': 3247, 'biome': 'TemperateForest'}] success False
-grid GRID current=9117 fast=4105 edge=5012 size=2.50 flood=False
-hostiles []

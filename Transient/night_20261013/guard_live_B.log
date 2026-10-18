@@ -1,4 +1,0 @@
-B: REFUSED: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 9352 (validation_aerial.py) jawa/list_things 2026-10-13T06:11:58Z 58s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_CONCURRENT_BRIDGE=1.
-B: state Playing
-B: REFUSED: refusing rimworld/go_to_main_menu: another bridge client is active -- pid 27700 (ga.py) jawa/safe_advance 2026-10-13T06:12:51Z 37s ago. Take the bridge (rimflow bridge take) or set RM_ALLOW_CONCURRENT_BRIDGE=1.
-B: state Playing

@@ -1,5 +1,0 @@
-edb4b72b49
-bridge taken, deploy in sync, loading calm
-running thirst
-run1: T5,T27,T15 FAIL after starving governor stop; reloading calm, rerun
-run2 done; sprinkler next

@@ -1,1 +1,0 @@
-WasteRun: 3 groups, 12 settings, 0 dead; no false labels; masterEnabled read at gizmo (Now) and offer; offerEnabled NextPulse; nested toggles flattened (all always drawn); kit csproj lines added.

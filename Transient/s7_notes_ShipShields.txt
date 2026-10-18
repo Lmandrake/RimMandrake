@@ -1,1 +1,0 @@
-ShipShields: 4 groups, 13 settings, 0 dead; no false labels (had no group headers); all reads Now except landing advisory + lava burst (Scenario.PostGravshipLanded hook -> NextPulse). csproj lacked kit lines: added. Built ok, selftest ok.

@@ -1,8 +1,0 @@
-LuminousPigment retrofit (s7). 14 groups, 69 Scribe_Values + 3 array settings (coatRadius, coatIntensity, familyEnabled; extras in selftest tuple).
-Scope audit: shoreMatsEnabled/shoreMatChance read in GenStep_ShoreMats -> NewMapsOnly (own group). Everything else Now: live reads, or def rewrites
-re-applied by ApplySettings() on window close (press*, deepfireMarketValue, deepfireStackGlows, glowTank*, tankGrowDays/Yield/Power, steer/vermilionMinSkill,
-cuisineEnabled, moodScale, opinionAboveStation, clusterBlock). Gods/dish deltas read at the player's act -> Now.
-Dead settings: none found. False labels: none (old screen had no scope headers).
-Changes: LuminousPigmentMod.cs (kit screen; snapshot also covers enum + float[]/bool[] via CopyValue), removed static ctor/CaptureDefaults;
-LuminousSettingsReadouts.cs (old Sections/ResetSection/ResetButton removed, odds helpers kept); csproj +2 kit Compile lines; DLL+srchash rebuilt.
-Family checkboxes drawn through FamilyBox() so the selftest does not see a stray `ref enabled`.
