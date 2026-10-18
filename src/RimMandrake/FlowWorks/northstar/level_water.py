@@ -241,6 +241,14 @@ def _limitless(o, src):
     return o.bodies[o.src[src]]["limitless"] or not o.budget
 
 
+def pond_key(o, bid):
+    """The pond's tie-break key, as the kernel's (its body id). A harness that names its bodies ("W2", the live
+    validation_v2 site) carries the live id in bodies[name]["id"]; an int name is the id itself."""
+    if isinstance(bid, int):
+        return bid
+    return int(o.bodies[bid].get("id") or 0)
+
+
 def pond_dl(o, bid):
     b = o.bodies[bid]
     if "dl" not in b:
@@ -434,7 +442,8 @@ def _domain(o, seed, fl, compset, assigned, pond_before, credit, hops):
     drains = any(c in hops for c in cells)
     far = 1 << 20
     order = sorted(cells, key=lambda c: ((hops.get(c, far) if drains else 0), o.idx(c)))
-    _solve_domain(o, order, sorted(ponds), limitless_mouths, mouth_edges, fl, pond_before, credit)
+    _solve_domain(o, order, sorted(ponds, key=lambda b: (pond_key(o, b), str(b))), limitless_mouths, mouth_edges, fl,
+                  pond_before, credit)
 
 
 def _cell_edges(o, cells, index):
@@ -461,7 +470,7 @@ def _solve_domain(o, cells, ponds, limitless_mouths, mouth_edges, fl, pond_befor
         cap = pond_capacity(h)
         w = min(max(dl, 0), cap)
         excess[bid] = dl - w
-        nodes.append(Node("p", N + bid, w, H=h))
+        nodes.append(Node("p", N + pond_key(o, bid), w, H=h))
     old = [nd.water for nd in nodes]
     edges = _cell_edges(o, cells, index)
     pond_index = {bid: len(cells) + k for k, bid in enumerate(ponds)}
