@@ -474,6 +474,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
     # drop purged pictures; fold exact duplicates into the first column carrying them
     out, seen, donor_purged = [], {}, False
     for c in cols:
+        if any(h and h in c.get("label", "") for h in HIDE_SETS):
+            continue                     # --hide-sets: an agent-judged non-match, left off THIS sheet (nothing purged)
         was = bool(c["faces"])
         c["faces"] = {f: s for f, s in c["faces"].items() if not idx.is_purged(s)}
         if not c["faces"]:
@@ -2678,7 +2680,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 if live:
                     c["faces"] = live
                     kept_cols.append(c)
-            g["cols"] = kept_cols
+            g["cols"] = [c for c in kept_cols if not any(h and h in c.get("label", "") for h in HIDE_SETS)]
         purged_hidden[r["key"]] = n_hidden
         graphics = [g for g in graphics if g["cols"]] or graphics[:0]
         # primary = first body graphic with pictures, else first graphic; name renders are offered to it too
@@ -3327,6 +3329,9 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
     return path, key
 
 
+HIDE_SETS: list = []
+
+
 def standin_col(sd: dict) -> dict:
     """The IN GAME column for a texture-manifest stand-in: the game's own picture (Core art lives in resources.assets,
     which no ledger step imports), read from the manifest's files into the art store. Never purgeable (winner)."""
@@ -3409,6 +3414,8 @@ def main(argv=None):
     ap.add_argument("--recommend", nargs="*", default=[], metavar="FAMILY=WHY",
                     help="with --subjects/--jobs: prefill the column of this render family (job id minus facing) with "
                          "the agent's reason — a suggestion shown as the agent prefill, never his answer")
+    ap.add_argument("--hide-sets", nargs="*", default=[], metavar="LABEL_SUBSTR",
+                    help="leave sets whose label contains one of these off the sheet (e.g. regen_fw_thulvane); nothing is purged")
     ap.add_argument("--jobs", nargs="*", default=[], metavar="JOB", help="artpipe job ids; each joins its target_def's row; JOB=DEF binds a job with no target_def")
     ap.add_argument("--textures", metavar="MANIFEST",
                     help="a texture manifest (art C# draws with no def): one row per texture, sized by the code that draws it")
@@ -3438,6 +3445,7 @@ def main(argv=None):
         cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen,
                                      load_question(a.question) if a.question else None)
         a.biome, a.census = [key], str(cpath)
+    HIDE_SETS[:] = list(a.hide_sets)
     if a.biome:
         if a.refresh:
             import subprocess

@@ -1,7 +1,7 @@
 {
- "biome": "SUBJECTS_tree_art_new_renders",
- "built": "2026-10-18T10:04:25-0700",
- "census": "Transient/biome_ffar/tree_art_new_renders.subjects.json",
+ "biome": "SUBJECTS_tree_art_picks",
+ "built": "2026-10-18T10:18:09-0700",
+ "census": "Transient/biome_ffar/tree_art_picks.subjects.json",
  "census_git_head": null,
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 548 active",
  "rows": {
@@ -12,15 +12,20 @@
     },
     "B": {
      "single": "e9506aa827d5a4b4cfc84eb401579a0ce1a906b6cbdf705504de0add9a42d230"
+    },
+    "C": {
+     "single": "b36b1dcfc7f4ac626ca9b144e0cded5a8261d50fef4fea3b3e96ab2b437e0873"
     }
    },
    "graphic_of": {
     "A": "Things/RM_CorriskTree",
-    "B": "Things/RM_CorriskTree"
+    "B": "Things/RM_CorriskTree",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_CorriskTree (1 of 2) \u2014 FeverWood",
-    "B": "IN GAME \u2014 random variant RM_CorriskTree_b (2 of 2) \u2014 FeverWood"
+    "B": "IN GAME \u2014 random variant RM_CorriskTree_b (2 of 2) \u2014 FeverWood",
+    "C": "render RM_CorriskTree_more1_v1"
    },
    "pools": [
     "Things/RM_CorriskTree"
@@ -28,7 +33,8 @@
    "res": "Things/RM_CorriskTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [],
    "subject_key": "corrisktree"
@@ -46,29 +52,19 @@
     },
     "D": {
      "single": "0323a0262963364183ecb9c01df58dac5c38e9c8c20853fc8ef8bfea264f766d"
-    },
-    "E": {
-     "single": "77f29a19c81319c2c9f90c8c2a1bbc1575c16500e6a5272816d106c669bf1cd1"
-    },
-    "F": {
-     "single": "3e6183d5cc1564c64452d8c17d3c66247ee388da958534b66c8b8673908025b0"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
     "B": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
     "C": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
-    "D": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
-    "E": "_byname",
-    "F": "_byname"
+    "D": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a"
    },
    "labels": {
     "A": "IN GAME \u2014 Greentide",
     "B": "render RM_Ghemmel_new1_v1",
     "C": "render RM_Ghemmel_new2_v1",
-    "D": "render RM_Ghemmel_new3_v1",
-    "E": "render regen_gt_ghemmel_varb_v1",
-    "F": "render regen_gt_ghemmel_varc_v1"
+    "D": "render RM_Ghemmel_new3_v1"
    },
    "pools": [],
    "res": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
@@ -76,9 +72,7 @@
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F"
+    "D"
    ],
    "shownBase": [],
    "subject_key": "ghemmel"
@@ -93,32 +87,17 @@
     },
     "C": {
      "single": "6fa00d32ef9e8e93fd9f4442dabaddeff62bc66fee77090e4b2c2514fd5a9b3c"
-    },
-    "D": {
-     "single": "ec8a9e9925b10447acd7b67f51879879313e4800111f39685d2ec21a96e4c33c"
-    },
-    "E": {
-     "single": "82837448e531a57c39fe15510f46711a8aafbe147908e84d908564c7b82133ac"
-    },
-    "F": {
-     "single": "7010e705017aa3bcb50c2f1318282be8fc60a486fb581c7b8e92ff7e53f5033b"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
     "B": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
-    "C": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname"
+    "C": "Things/Plant/RM_Mourvel/RM_Mourvel_a"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Mourvel_a_a (1 of 1) \u2014 Greentide",
     "B": "render RM_Mourvel_redo1_v1",
-    "C": "render RM_Mourvel_redo2_v1",
-    "D": "render regen_gt_mourvel_varb_v1",
-    "E": "render regen_gt_mourvel_varc_v1",
-    "F": "render gapfin_RM_Mourvel_v1"
+    "C": "render RM_Mourvel_redo2_v1"
    },
    "pools": [
     "Things/Plant/RM_Mourvel/RM_Mourvel_a"
@@ -127,10 +106,7 @@
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "mourvel"
@@ -142,15 +118,20 @@
     },
     "B": {
      "single": "fd9e557e4d1cb6ac9503f117de2e1b5fdf36aa6c2106b9388f839a152bc593d3"
+    },
+    "C": {
+     "single": "b1a57bdf9b0c95fb72318bcf0287c7d70091c91b7470979790285fb2c6c9d2ac"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
-    "B": "Things/Plant/RM_Ollamane/RM_Ollamane_a"
+    "B": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
+    "C": "Things/Plant/RM_Ollamane/RM_Ollamane_a"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Ollamane_a_a (1 of 2) \u2014 Miasma",
-    "B": "IN GAME \u2014 random variant RM_Ollamane_a_b (2 of 2) \u2014 Miasma"
+    "B": "IN GAME \u2014 random variant RM_Ollamane_a_b (2 of 2) \u2014 Miasma",
+    "C": "render RM_Ollamane_more1_v1"
    },
    "pools": [
     "Things/Plant/RM_Ollamane/RM_Ollamane_a"
@@ -158,7 +139,8 @@
    "res": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [],
    "subject_key": "ollamane"
@@ -167,20 +149,32 @@
    "columns": {
     "A": {
      "single": "9450c823fc1f6aa006270eb5a9e23f90ac4c0e11a8b730fb6f396fb7de8d2e8b"
+    },
+    "B": {
+     "single": "53e27ffcec0f3228d49a2f129346a4e314ea4502e47237ee499aab2c06a560e2"
+    },
+    "C": {
+     "single": "f675d248ad0e972cb8be8c46eb9fa9c7ddee62a10c9baa0ac94330ac974f8f5a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Rockfinger"
+    "A": "Things/Plant/RM_Rockfinger",
+    "B": "Things/Plant/RM_Rockfinger",
+    "C": "Things/Plant/RM_Rockfinger"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Rockfinger_b (1 of 1) \u2014 WeepingStones"
+    "A": "IN GAME \u2014 random variant RM_Rockfinger_b (1 of 1) \u2014 WeepingStones",
+    "B": "render RM_Rockfinger_more1_v1",
+    "C": "render RM_Rockfinger_more2_v1"
    },
    "pools": [
     "Things/Plant/RM_Rockfinger"
    ],
    "res": "Things/Plant/RM_Rockfinger",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "shownBase": [],
    "subject_key": "rockfinger"
@@ -191,52 +185,28 @@
      "single": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82"
     },
     "B": {
-     "single": "6dca278f4fe2c0a736e9030bfd1bd41650fe8c14cf5955dcaa24cbccc3aaf4ce"
-    },
-    "C": {
      "single": "8f4b0019a6e685de01d83307a4a80a803b8aeb3278837c077959ea99ce92b921"
     },
-    "D": {
-     "single": "b53eca0d6b52cab1ddce0ebdba3dcc3f74ecac4c9c3580867caacdf6fa4b3d15"
-    },
-    "E": {
-     "single": "a1a8ff78487b66f2443968af5d955ad92bce3287108b916d3744b6a9db120629"
-    },
-    "F": {
-     "single": "1d4fff451aa466492c11717d1a9d0e5a916aa7ff7226903582d1e004e7763006"
-    },
-    "G": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+    "C": {
+     "single": "7a6965fa9e8c5d0f29a9720b8d412d5d688f04e644df013c461afdbfa82818c5"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
     "B": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
-    "C": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname"
+    "C": "Things/Plant/RM_Thulvane/RM_Thulvane_a"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render RM_Thulvane_redo1_v1",
-    "C": "render RM_Thulvane_redo2_v1",
-    "D": "render regen_fw_thulvane_v2a",
-    "E": "render regen_fw_thulvane_v2b",
-    "F": "render regen_fw_thulvane_v2c",
-    "G": "render feverwood_plant_thulvane"
+    "B": "render RM_Thulvane_redo2_v1",
+    "C": "render RM_Thulvane_redo3_v1"
    },
    "pools": [],
    "res": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G"
+    "C"
    ],
    "shownBase": [],
    "subject_key": "thulvane"
@@ -250,23 +220,28 @@
      "single": "f92fb794ea819000c63bc9bf4ef06f87dcb835bd351b2dc7448b1227a0f39626"
     },
     "C": {
-     "single": "4ad3b93de9af0a60d67763cc97d6370edb05c3214c31df75a3680b24b4d69241"
+     "single": "6375d36ebd548921f538e07f752f12c245733b01383039db11fbc62d3fbdd71a"
     },
     "D": {
-     "single": "5c0bcec8497f4587bf6fa36edfdbb18bd5addf985a7c98c39300f6e19cd21647"
+     "single": "8c4f00ab4c3e91729d20b0560d8225185870fcfd9ee9619501dd953742e08581"
+    },
+    "E": {
+     "single": "e0202a0d1936540702e504d99ec02ffc9270c711f1e9a3f72d72b9d4596cfdda"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
     "B": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
-    "C": "_byname",
-    "D": "_byname"
+    "C": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+    "D": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+    "E": "Things/Plant/RM_Tumbel/RM_Tumbel_a"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Tumbel_a_a (1 of 2) \u2014 Greentide",
     "B": "IN GAME \u2014 random variant RM_Tumbel_a_b (2 of 2) \u2014 Greentide",
-    "C": "render regen_gt_tumbel_varc_v1",
-    "D": "render regen_gt_tumbel_varb_v1"
+    "C": "render RM_Tumbel_more1_v1",
+    "D": "render RM_Tumbel_more2_v1",
+    "E": "render RM_Tumbel_more3_v1"
    },
    "pools": [
     "Things/Plant/RM_Tumbel/RM_Tumbel_a"
@@ -276,7 +251,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [],
    "subject_key": "tumbel"
@@ -285,18 +261,36 @@
    "columns": {
     "A": {
      "single": "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
+    },
+    "B": {
+     "single": "7e8ac56545d860ca9e811c920417a4263e5202916726beeb19ee4485e777f8fb"
+    },
+    "C": {
+     "single": "e290b8473f577a517845d284a742b3d84a46c76a3920139a8ceceb382ad02470"
+    },
+    "D": {
+     "single": "86f9a48f452f269eea5a444c6b7e9b54b0fc9c112798f272f8d7f62b4aaf4540"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/VaultRoot"
+    "A": "Things/Plant/VaultRoot",
+    "B": "Things/Plant/VaultRoot",
+    "C": "Things/Plant/VaultRoot",
+    "D": "Things/Plant/VaultRoot"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_VaultRoot_redo1_v1",
+    "C": "render RM_VaultRoot_redo2_v1",
+    "D": "render RM_VaultRoot_redo3_v1"
    },
    "pools": [],
    "res": "Things/Plant/VaultRoot",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [],
    "subject_key": "vaultroot"
@@ -310,7 +304,7 @@
      "single": "505e05f9113ddc4fa6505eceb68fc65d4d80ad5b41682c36caece8c1e6213b6a"
     },
     "C": {
-     "single": "5345c1f53544b333d450bd4d19c2a04e7c3300b12c48e04318c71f25b63b1c0c"
+     "single": "02ec2551f15c20997a4d7b374f95dd4c05a4bbea5c227dea87b576433e1fcf4a"
     }
    },
    "graphic_of": {
@@ -321,7 +315,7 @@
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Veluthar_a_b (1 of 2) \u2014 Greentide",
     "B": "IN GAME \u2014 random variant RM_Veluthar_a_c (2 of 2) \u2014 Greentide",
-    "C": "history Greentide 2026-09-26"
+    "C": "render RM_Veluthar_more1_v1"
    },
    "pools": [
     "Things/Plant/RM_Veluthar/RM_Veluthar_a"
@@ -341,16 +335,16 @@
      "single": "fb7006f08d28bf1566be2d4803909f0fe7fb35ed8ba25f169f251fb015b1a111"
     },
     "B": {
-     "single": "1affee02e0028401bfe1095df6a1b18011cd5af7261b60c09dad667243560e2a"
+     "single": "edd34e70c5b35dc904f8b6228a405e45b35c2b46df8c5d4152b738d3ddccc3f9"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a",
-    "B": "_byname"
+    "B": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Vurmeloth_a_a (1 of 1) \u2014 Greentide",
-    "B": "render gapfin_RM_Vurmeloth_v1"
+    "B": "render RM_Vurmeloth_redo1_v1"
    },
    "pools": [
     "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
@@ -373,17 +367,22 @@
     },
     "C": {
      "single": "13a9e64dd3c495fcdac3714321367f7883c26236aa41b2dc1fda5fc6136d30ad"
+    },
+    "D": {
+     "single": "aa551050d8cc20f79c4fb67dc179c8c9899b84b62cbbc5439df2c0bd20541e5f"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
     "B": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
-    "C": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+    "C": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
+    "D": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Zhorrel_a_a (1 of 3) \u2014 Greentide",
     "B": "IN GAME \u2014 random variant RM_Zhorrel_a_c (2 of 3) \u2014 Greentide",
-    "C": "IN GAME \u2014 random variant RM_Zhorrel_a_d (3 of 3) \u2014 Greentide"
+    "C": "IN GAME \u2014 random variant RM_Zhorrel_a_d (3 of 3) \u2014 Greentide",
+    "D": "render RM_Zhorrel_more1_v1"
    },
    "pools": [
     "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
@@ -392,12 +391,13 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [],
    "subject_key": "zhorrel"
   }
  },
- "sheetId": "tree_art_new_renders_sheet_2026-10-18",
- "snapshotId": "da149c34f0ca60ec"
+ "sheetId": "tree_art_picks_sheet_2026-10-18",
+ "snapshotId": "e0104b0506f15333"
 }

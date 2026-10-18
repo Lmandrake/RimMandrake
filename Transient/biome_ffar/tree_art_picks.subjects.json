@@ -1,17 +1,17 @@
 {
  "schema": 1,
- "generated": "2026-10-18T10:03:26-0700",
+ "generated": "2026-10-18T10:17:29-0700",
  "git_head": null,
  "biome_order": [
-  "SUBJECTS_tree_art_new_renders"
+  "SUBJECTS_tree_art_picks"
  ],
  "biomes": {
-  "SUBJECTS_tree_art_new_renders": {
-   "label": "Tree art: new renders from the tier sheet notes",
-   "slug": "tree_art_new_renders",
+  "SUBJECTS_tree_art_picks": {
+   "label": "Tree art: new renders for your picks",
+   "slug": "tree_art_picks",
    "subjects": true,
    "ground_terrain": "Soil",
-   "title": "Tree art: new renders from the tier sheet notes \u2014 game art",
+   "title": "Tree art: new renders for your picks \u2014 game art",
    "lead_html": "",
    "rows": [
     {
