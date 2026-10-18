@@ -184,8 +184,9 @@
     <!-- The four Jedi: Fallen Order canon variants (owner 2026-10-18: "I'd like variants to be made from that canon
          example"). Base graphic = variant A; B/C/D are PawnKindDef.alternateGraphics (Verse.AlternateGraphic: texPath,
          swimmingTexPath, weight 0.5 default), picked when Rand.Chance(alternateGraphicChance) (Verse/PawnGraphicUtils.cs).
-         0.75 = the four equally likely. Until artpipe jobs dragonsnake_jfo_var{a,b,c,d}_v1 land, all four slots hold
-         the stand-in render dragonsnake_jfo_v1 (ours, olive, non-white). Swimming uses each variant body texPath as stand-in until jobs dragonsnake_jfo_var{a,b,c,d}_v1_swim land (the white swim art is Albino-only). -->
+         0.75 = the four equally likely (one random pool of four). The four renders are the owner's picks on
+         dragonsnake_canon_variants_sheet_2026-10-18 (2026-10-18: "I approve all the variants as I have selected on the
+         sheet"). Swimming uses each variant body texPath as stand-in until jobs dragonsnake_jfo_var{a,b,c,d}_v1_swim land (the white swim art is Albino-only). -->
     <alternateGraphicChance>0.75</alternateGraphicChance>
     <alternateGraphics>
       <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</texPath><swimmingTexPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</swimmingTexPath></li>
