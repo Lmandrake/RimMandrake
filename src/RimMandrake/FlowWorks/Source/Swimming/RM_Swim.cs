@@ -333,7 +333,7 @@ namespace RimMandrake.FlowWorks.Swimming
 		}
 	}
 
-	/// <summary>One creature's swimming, cached for a quarter of a second of game time.</summary>
+	/// <summary>One creature's swimming, cached for 60 ticks (one second) of game time.</summary>
 	public struct RM_SwimProfile
 	{
 		public RM_SwimMath.SwimClass cls;

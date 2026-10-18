@@ -276,6 +276,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the settings' literals are the math's defaults");
                 Assert(RM_RelativeRulesMath.DrowningCheckTicks == RM_FillEffectMath.IntervalTicks, "the drowning rate is per the fill-effects pass");
             });
+
+            Case("Relative_head_fraction_live_with_drowning_off", () =>
+            {
+                // review day 3: swimming reads the standing head fraction (who is swimming, where footing is) with drowning off,
+                // so it is not greyed under the drowning switch; the lying fraction and the rate are drowning's alone.
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                string swim = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                Assert(swim.Contains("RimMandrakeFlowWorksSettings.pitDrowningHeadFraction"), "swimming reads the head fraction");
+                RiverSwitchFlipChecks.Has(set, @"\.Declare\(""pitDrowningEnabled"", ""pitDrowningRateMultiplier"", ""pitDrowningLyingFraction""\)", "drowning greys rate and lying fraction only");
+                RiverSwitchFlipChecks.Has(set, @"\.Independent\([^)]*""pitDrowningHeadFraction""\)", "the head fraction is declared independent");
+                Assert(!set.Contains("Dependent(list, \"pitDrowningRateMultiplier\", \"pitDrowningHeadFraction\""), "its slider is outside the greyed scope");
+            });
         }
     }
 }

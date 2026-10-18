@@ -2394,18 +2394,14 @@ namespace RimMandrake.FlowWorks
 				{
 					return false;
 				}
-				for (long k = 0; k < dl / RM_LevelSolve.U; k++)
+				// review day 3: room for EVERY level is checked before the one write (a per-level loop poured the first levels
+				// and then returned false, so a caller keeping its liquid on false created water)
+				long levels = dl / RM_LevelSolve.U;
+				if (!CanPourLevelWhole(c, fluid) || RoomNotches(map.cellIndices.CellToIndex(c)) < levels)
 				{
-					if (!CanPourLevelWhole(c, fluid))
-					{
-						return false;   // checked per level before each write: the first refusal moves nothing more
-					}
-					if (!TrySetDriverFill(c, FillAt(c) + 1, fluid))
-					{
-						return false;
-					}
+					return false;
 				}
-				return true;
+				return TrySetDriverFill(c, FillAt(c) + (int)levels, fluid);
 			}
 			var credits = new List<KeyValuePair<int, long>>();
 			if (PlanPour(c, fluid, dl, credits, out byte key) != dl)

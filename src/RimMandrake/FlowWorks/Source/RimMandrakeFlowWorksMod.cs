@@ -667,7 +667,8 @@ namespace RimMandrake.FlowWorks
         // checked at its read site (2026-10-14): a dependent is declared only where the code that reads it is unreachable with the
         // master off. Left Independent on purpose: pulseIntervalTicks (the depth engine's own off-burn timer still uses it),
         // digToDepthEnabled (digging works with the engine off), drillYieldChanceMultiplier (the survey runs whatever the drill
-        // switch says), wardenFromLipEnabled. The controls stay visible and greyed with their values kept; they replace the old
+        // switch says), wardenFromLipEnabled, pitDrowningHeadFraction (review day 3: swimming reads it, for who is swimming and
+        // where footing is, with drowning off). The controls stay visible and greyed with their values kept; they replace the old
         // "hide when off" blocks.
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("depthEngineEnabled", "flowPerPulse", "maxNetworkCells", "networkSeamsMoveEnabled")
@@ -682,7 +683,7 @@ namespace RimMandrake.FlowWorks
                      "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
             .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
             .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
-            .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction")
+            .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningLyingFraction")
             .Declare("slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor")
             .Declare("pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier")
             .Declare("fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap")
@@ -702,7 +703,8 @@ namespace RimMandrake.FlowWorks
             .Declare("digRockChunksEnabled", "digRockChunkMultiplier", "digSoilChunkPercent")
             .Declare("liquidDrillingEnabled", "drillUnitsPerCycle")
             .Declare("swaleEnabled", "swaleRateMultiplier")
-            .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled")
+            .Independent("pulseIntervalTicks", "digToDepthEnabled", "drillYieldChanceMultiplier", "wardenFromLipEnabled", "waterBodyTypeFlipFixEnabled",
+                         "pitDrowningHeadFraction")
             .Name("depthEngineEnabled", "Depth engine").Name("digToDepthEnabled", "Dig deeper")
             .Name("pondDepthEnabled", "Ponds shallow out before they turn to mud")
                         .Name("refillEnabled", "Bodies refill").Name("rainFillsExcavationsEnabled", "Rain fills open excavations")
@@ -847,7 +849,8 @@ namespace RimMandrake.FlowWorks
             list.CheckboxLabeled("Show liquid depth and litres under the mouse", ref mouseoverDepthEnabled,
                 "The cell readout in the bottom-left corner adds the liquid standing in the square: how deep it is in metres "
               + "(a level is half a metre) and how many litres it holds (a level is 1,000 litres, a deep square 4,000). Dug "
-              + "channels and pits show their fill; ponds and lakes show their bed, scaled by how full the pond is. Off: "
+              + "channels and pits show their depth and the water in them; ponds and lakes show their floor and the water standing "
+              + "over it; seas and rivers at the map edge say they never run dry. Off: "
               + "vanilla's line only.");
 
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
@@ -1306,14 +1309,20 @@ namespace RimMandrake.FlowWorks
               + "Nobody drowns standing beside a step it can climb into shallower water. Swimmers keep their heads up until "
               + "exhausted (see Swimming in deep water); nobody swims in oil, slime, tar, propane, boiling water or brine. "
               + "Off: liquid over the head is harmless.");
-            using (Dependent(list, "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction"))
+            using (Dependent(list, "pitDrowningRateMultiplier"))
             {
                 list.Label("Drowning speed: x" + pitDrowningRateMultiplier.ToString("F2"));
                 pitDrowningRateMultiplier = list.Slider(pitDrowningRateMultiplier, 0.1f, 5f);
-                list.Label("Head goes under, standing: water over " + pitDrowningHeadFraction.ToStringPercent() + " of the creature's height ("
-                    + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningHeadFraction).ToString("0.00") + " m for a person)", tooltip:
-                    "How deep water must be, as a share of a creature's height, before a standing creature is under. Shipped: 90%.");
-                pitDrowningHeadFraction = Mathf.Round(list.Slider(pitDrowningHeadFraction, 0.5f, 1.5f) * 20f) / 20f;
+            }
+            // review day 3: not greyed with drowning off: swimming reads it too (who is swimming and tiring, and where a tired
+            // swimmer finds footing).
+            list.Label("Head goes under, standing: water over " + pitDrowningHeadFraction.ToStringPercent() + " of the creature's height ("
+                + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningHeadFraction).ToString("0.00") + " m for a person)", tooltip:
+                "How deep water must be, as a share of a creature's height, before a standing creature is under: it drowns, or "
+              + "swims and tires, and a tired swimmer heads for a square shallower than this. Shipped: 90%.");
+            pitDrowningHeadFraction = Mathf.Round(list.Slider(pitDrowningHeadFraction, 0.5f, 1.5f) * 20f) / 20f;
+            using (Dependent(list, "pitDrowningLyingFraction"))
+            {
                 list.Label("Head goes under, lying down: water over " + pitDrowningLyingFraction.ToStringPercent() + " of its height ("
                     + (RM_RelativeRulesMath.HeightMetres(2) * pitDrowningLyingFraction).ToString("0.00") + " m for a person)", tooltip:
                     "The same for a creature lying down (downed, asleep or in bed). Shipped: 20%.");
@@ -1516,7 +1525,7 @@ namespace RimMandrake.FlowWorks
                 "On: water is kept to the litre, and every connected body of water - a canal, a pit, a pond, or all of them "
               + "joined - stands at one flat surface, so a little water spreads as a thin sheet (24 cm in every square of a "
               + "canal) instead of whole half-metre steps. Its look follows how deep the water really is. Off: water moves in "
-              + "half-metre steps (the two settings below).");
+              + "half-metre steps (\"Water levels out by its surface\" above and the setting below).");
             if (levelBySurfaceEnabled)
             {
                 list.CheckboxLabeled("  Water settles to one flat level", ref levelSetEnabled,
