@@ -96,6 +96,21 @@ def main():
             gs2 = w.call("jawa/pawn_set_guest_status", pawn=staged[kind], guestStatus=st_, hostFaction="PlayerColony") or {}
             row("SWEEP_%s_still_%s" % (kind, st_.lower()), "PASS" if gs2.get("guestStatusBefore") == st_ else "FAIL",
                 {"guestStatusBeforeRewrite": gs2.get("guestStatusBefore"), "raw": str(gs2)[:200]})
+    # SWEEP_PRISONER_RETURN (live day 4): the prisoner came back on an edge cell and vanilla's escape had it off the map
+    # within 10 ticks. Each returned prisoner/slave must stand OFF the edge and still be on the map 600 ticks later (inside
+    # the service's one-hour escape guard; a site with no prison cell gets the interior fallback cell).
+    held_back = [k for k in ("prisoner", "slave") if k in gone and pget(staged[k]).get("position")]
+    if held_back:
+        sx, sz = env["size"]
+        at = {k: pget(staged[k]).get("position") for k in held_back}
+        w.ticks(600)
+        for k in held_back:
+            p = pget(staged[k])
+            pos0 = at[k] or {}
+            on_edge = pos0.get("x") in (0, sx - 1) or pos0.get("z") in (0, sz - 1)
+            ok = bool(p.get("position")) and (k != "prisoner" or not on_edge)
+            row("SWEEP_%s_stays_600" % k, "PASS" if ok else "FAIL",
+                {"posAtReturn": pos0, "returnCellOnEdge": on_edge, "posAfter600": p.get("position"), "book": guest(None)})
     for i in staged.values():
         w.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
     return 0

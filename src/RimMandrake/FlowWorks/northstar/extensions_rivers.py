@@ -167,6 +167,7 @@ def moving_edges(terrain, size):
 
 SWEPT_WAIT_CHUNK = 250          # RM_MapComponent_RiverCurrent.ScanIntervalTicks: a pawn is enrolled within one scan
 SWEPT_EXPECTED_HEDIFF = "Bruise"  # DamageDefOf.Blunt on flesh -> HediffDefOf.Bruise (ApplyHazards' TakeDamage)
+PRISONER_STAY_TICKS = 600     # SWEEP_PRISONER_RETURN: a returned prisoner must still be on the map this long after
 SWEPT_WAIT_MAX = 1500          # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
 
 
@@ -326,6 +327,20 @@ def swept(t):
                         _note(t, "%s guest status after the return" % status.lower(), "UNMEASURED (tool gave none): %r" % (gs,))
                     elif was != status:
                         changed.setdefault(pid, []).append("came back %s, taken %s" % (was, status))
+                # SWEEP_PRISONER_RETURN (live day 4, DLL 6699957b8): the prisoner came back as itself on an EDGE cell, and
+                # vanilla's escape (JobGiver_PrisonerEscape: a district touching the edge) had it off the map again within 10
+                # ticks. Each prisoner/slave that came back must still be on the map PRISONER_STAY_TICKS later.
+                back_held = sorted(pid for pid in held_kind if pid in swept_ids and pid in back_ids)
+                if back_held:
+                    t.wait_ticks(PRISONER_STAY_TICKS)
+                    book = _proof(t, "ProofSwept", "read")     # a second sweep would show here, not as a loss
+                    still = _map_pawn_ids(t)
+                    for pid in back_held:
+                        if pid not in still:
+                            changed.setdefault(pid, []).append("%s back on the map, then gone again within %d ticks (book %s)"
+                                                               % (held_kind[pid], PRISONER_STAY_TICKS, book))
+                    _note(t, "prisoner/slave still on the map %d ticks after the return" % PRISONER_STAY_TICKS,
+                          {pid: pid in still for pid in back_held})
                 if changed:
                     raise ExpectationFailed("washed-away pawns came back changed (must be the same pawn, still the player's, "
                                             "a prisoner/slave back on the map as one): %r" % changed)

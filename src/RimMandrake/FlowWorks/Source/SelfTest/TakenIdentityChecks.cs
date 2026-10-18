@@ -194,6 +194,93 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the river policy holds the player's prisoners (host) and slaves (faction)");
             });
 
+            // SWEEP_PRISONER_RETURN (live day 4, sweep_identity_fix3.json, DLL 6699957b8): the prisoner came back as itself
+            // (letter fired) on the policy's EDGE cell and was off the map within 10 ticks, not held, not a world pawn. A
+            // 600-tick walk of vanilla's escape (VanillaPrisonerStartsEscape: secure prisoner whose district touches the edge
+            // goes; from an edge cell its exit spot is where it stands) against the return cell and the guard.
+            Case("SWEEP_PRISONER_RETURN_edge_cell_escapes_pre_fix_stays_post_fix", () =>
+            {
+                const int Stay = 600;
+                // A fake map's candidates: the policy's random edge cell (outdoors, district touches the edge), an outdoor
+                // interior cell, a room whose door is open to the outside, and the prisoner's own prison cell.
+                var edge = new RM_TakenByLandKernel.ReturnCandidate(RM_TakenByLandKernel.PrisonerSpot.Interior, true, true, true, false);
+                var yard = new RM_TakenByLandKernel.ReturnCandidate(RM_TakenByLandKernel.PrisonerSpot.Interior, true, false, true, false);
+                var openRoom = new RM_TakenByLandKernel.ReturnCandidate(RM_TakenByLandKernel.PrisonerSpot.EnclosedRoom, true, false, false, true);
+                var cellBed = new RM_TakenByLandKernel.ReturnCandidate(RM_TakenByLandKernel.PrisonerSpot.OwnedBed, true, false, false, false);
+                var wallCell = new RM_TakenByLandKernel.ReturnCandidate(RM_TakenByLandKernel.PrisonerSpot.PrisonCell, false, false, false, false);
+
+                // Ticks until it is off the map, -1 = still here after Stay. Escape is checked every tick (the think tree);
+                // walking to the exit spot takes distToEdge ticks (0 on an edge cell: ExitMap at once).
+                int OffMapAt(RM_TakenByLandKernel.ReturnCandidate at, bool guard, int distToEdge)
+                {
+                    var g = new RM_TakenReturnGuard();
+                    const int id = 63628, back = 17038;
+                    if (guard) g.Mark(id, back);
+                    int startedAt = -1;
+                    for (int t = back; t <= back + Stay; t++)
+                    {
+                        if (startedAt < 0 && !g.InGuard(id, t)
+                            && RM_TakenByLandKernel.VanillaPrisonerStartsEscape(true, true, false, at.districtTouchesEdge, at.openPathToEdge))
+                            startedAt = t;
+                        if (startedAt >= 0 && t - startedAt >= distToEdge) return t - back;
+                    }
+                    return -1;
+                }
+
+                int pre = OffMapAt(edge, guard: false, distToEdge: 0);
+                Assert(pre >= 0 && pre <= 10, "can-fail: pre-fix on the edge cell it is off the map within 10 ticks (live day 4): " + pre);
+                Assert(OffMapAt(edge, guard: true, distToEdge: 0) < 0, "the guard alone holds it on the map for " + Stay + " ticks");
+
+                var all = new List<RM_TakenByLandKernel.ReturnCandidate> { edge, yard, openRoom, wallCell, cellBed };
+                int k = RM_TakenByLandKernel.PickPrisonerReturn(all, out bool secure);
+                Assert(k == 4 && secure, "the pick is its own bed in its cell (secure), not the edge, the yard, the open room or a wall: " + k);
+                Assert(OffMapAt(all[k], guard: false, distToEdge: 30) < 0, "in its cell vanilla never starts an escape, guard or not");
+                Assert(OffMapAt(all[k], guard: true, distToEdge: 30) < 0, "post-fix (cell + guard): still on the map after " + Stay + " ticks");
+
+                // No cell on the map: the best off-edge cell (never the edge), not secure; the guard holds it the hour.
+                var noCell = new List<RM_TakenByLandKernel.ReturnCandidate> { edge, yard };
+                k = RM_TakenByLandKernel.PickPrisonerReturn(noCell, out secure);
+                Assert(k == 1 && !secure, "no secure cell: the off-edge yard cell, flagged not secure: " + k + "/" + secure);
+                Assert(OffMapAt(noCell[k], guard: true, distToEdge: 0) < 0, "no cell: the guard keeps it on the map for " + Stay + " ticks");
+                Assert(RM_TakenByLandKernel.PickPrisonerReturn(new List<RM_TakenByLandKernel.ReturnCandidate> { edge }, out secure) < 0 && !secure,
+                    "only the edge: no pick (the caller keeps its cell; the guard still holds)");
+                Assert(RM_TakenByLandKernel.PickPrisonerReturn(new List<RM_TakenByLandKernel.ReturnCandidate> { openRoom, yard }, out secure) == 0 && !secure,
+                    "an open-door room is not secure (vanilla's 25-region search reaches the edge), but beats the yard");
+
+                // The guard window and the lost-prisoner letter rule.
+                var gw = new RM_TakenReturnGuard();
+                gw.Mark(7, 1000);
+                Assert(gw.InGuard(7, 1000) && gw.InGuard(7, 1000 + RM_TakenByLandKernel.ReturnGuardTicks - 1)
+                       && !gw.InGuard(7, 1000 + RM_TakenByLandKernel.ReturnGuardTicks) && !gw.InGuard(8, 1000) && !gw.InGuard(7, 999),
+                    "guard: from the return tick for ReturnGuardTicks, that pawn only");
+                Assert(RM_TakenByLandKernel.ReturnGuardTicks >= Stay, "the guard outlasts the live proof's 600-tick stay");
+                Assert(gw.Recent(7, 1000 + RM_TakenByLandKernel.ReturnWatchTicks - 1) && !gw.Recent(7, 1000 + RM_TakenByLandKernel.ReturnWatchTicks),
+                    "watch window");
+                gw.Prune(1000 + RM_TakenByLandKernel.ReturnWatchTicks);
+                Assert(gw.Count == 0, "prune forgets old returns");
+                Assert(RM_TakenByLandKernel.ExitIsLostReturn(true, false, false, true), "a returned prisoner slipping off: letter");
+                Assert(!RM_TakenByLandKernel.ExitIsLostReturn(true, true, false, true), "released: no letter");
+                Assert(!RM_TakenByLandKernel.ExitIsLostReturn(true, false, true, true), "caravan/teleport: no letter");
+                Assert(!RM_TakenByLandKernel.ExitIsLostReturn(true, false, false, false), "an ordinary vanilla escape: vanilla's own message");
+                Assert(!RM_TakenByLandKernel.ExitIsLostReturn(false, false, false, true), "a colonist leaving: not this rule");
+                Assert(!RM_TakenByLandKernel.VanillaPrisonerStartsEscape(true, true, true, true, false), "mirror: a lord-secure prisoner stays");
+                Assert(!RM_TakenByLandKernel.VanillaPrisonerStartsEscape(true, false, false, true, false), "mirror: an insecure prisoner stays");
+
+                // The Verse side wires it: restore before the cell (IsPrisonerOfColony reads the restored state), the pick, the
+                // guard mark before the spawn, the two patches.
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("TakenByLand", "RM_TakenByLand.cs"));
+                int iRestore = src.IndexOf("RM_TakenByLand.Restore(r, p);", StringComparison.Ordinal);
+                int iPick = src.IndexOf("RM_TakenByLand.PickPrisonerReturnCell(p, map, out bool secure)", StringComparison.Ordinal);
+                int iMark = src.IndexOf("RM_TakenByLand.Returned.Mark(p.thingIDNumber", StringComparison.Ordinal);
+                int iSpawn = src.IndexOf("GenSpawn.Spawn(p, cell, map", StringComparison.Ordinal);
+                Assert(iRestore > 0 && iRestore < iPick && iPick < iMark && iMark < iSpawn, "Return(): restore, pick, mark, spawn in that order: "
+                    + iRestore + "," + iPick + "," + iMark + "," + iSpawn);
+                RiverSwitchFlipChecks.Has(src, @"\[HarmonyLib\.HarmonyPatch\(typeof\(JobGiver_PrisonerEscape\), ""TryGiveJob""\)\] public static class RM_Patch_ReturnedPrisonerNoEscape",
+                    "the escape guard patch exists");
+                RiverSwitchFlipChecks.Has(src, @"RM_TakenByLand\.Returned\.InGuard\(pawn\.thingIDNumber, Find\.TickManager\.TicksGame\)", "the guard reads the kernel window");
+                RiverSwitchFlipChecks.Has(src, @"public static class RM_Patch_ReturnedPrisonerLost", "the lost-prisoner letter patch exists");
+            });
+
             Case("RIVER_SWEEP_kernel_rules", () =>
             {
                 Assert(RM_TakenByLandKernel.VanillaReassignsOnPassToWorld(false, true, false, true, false, true), "free colonist: swapped");

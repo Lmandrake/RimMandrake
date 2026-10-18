@@ -951,9 +951,10 @@ def _new_probes(EXT, RIV, base):
     # turns_npc: RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS, the live 2026-10-17 shape (the same pawn back, as TradersGuild)
     # SWEEP_PRISONER_FIX_NEVER_RETURNS: held_gone = the staged prisoner leaves with the colonist; held_back = it is walked
     # home with the rest (False: the live day 3 shape, gone and never back); held_status = the guest status the tool reads back
+    # held_escapes: SWEEP_PRISONER_RETURN, the live day 4 shape (back on the map, then gone again before the stay ends)
     def swept(before=0, wash=True, edge_water=True, comes_back=True, turns_npc=False, held_gone=False, held_back=True,
-              held_status="Prisoner"):
-        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False, "villagers": []}
+              held_status="Prisoner", held_escapes=False):
+        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False, "villagers": [], "stayed": False}
 
         def h(tl, p):
             if tl == "jawa/static_call" and p.get("method") == "ProofSwept":
@@ -963,6 +964,10 @@ def _new_probes(EXT, RIV, base):
                         st["gone"] = set(i for i in st["gone"] if i in lost)
                     st["pending"] = 0
                     st["returned"] = True
+                elif st["returned"]:
+                    st["stayed"] = True             # the row's read after its stay wait
+                    if held_escapes and st["villagers"]:
+                        st["gone"].add(st["villagers"][0])
                 elif wash and st["spawned"] and st["ticks"] >= 1:
                     st["pending"] = before + 1
                     st["gone"].add(st["spawned"][0])
@@ -1002,7 +1007,8 @@ def _new_probes(EXT, RIV, base):
     for kw, want in (({}, "PASS"), ({"before": 2}, "PASS"), ({"wash": False}, "UNMEASURED"),
                      ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL"), ({"turns_npc": True}, "FAIL"),
                      ({"held_gone": True}, "PASS"), ({"held_gone": True, "held_back": False}, "FAIL"),
-                     ({"held_gone": True, "held_status": "Guest"}, "FAIL")):
+                     ({"held_gone": True, "held_status": "Guest"}, "FAIL"),
+                     ({"held_gone": True, "held_escapes": True}, "FAIL"), ({"held_escapes": True}, "PASS")):
         got, st = swept(**kw)
         if got != want:
             out.append("returns_home %s: %s, want %s" % (kw, got, want))
@@ -1010,6 +1016,9 @@ def _new_probes(EXT, RIV, base):
     if got != "UNMEASURED" or st["spawned"] or st["ticks"]:
         out.append("returns_home on a river that ends in the sea (one moving edge) must be UNMEASURED up front, staging "
                    "nobody and waiting no ticks: %s, staged %s" % (got, st["spawned"]))
+    got, st = swept(held_gone=True)
+    if not st["stayed"]:
+        out.append("returns_home must re-read the map after a %d-tick stay when a prisoner came back" % RIV.PRISONER_STAY_TICKS)
     got, st = swept()
     if not st["spawned"] or len(st["spawned"]) > 12:
         out.append("returns_home staged %d colonists (want 1..12)" % len(st["spawned"]))

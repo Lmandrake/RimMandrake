@@ -81,6 +81,69 @@ namespace RimMandrake.FlowWorks.TakenByLand
             bool released, bool onCarryingLane, bool caravanOrTeleport) =>
             washOffEdge && currentActive && prisonerOrSlaveOfPlayer && !released && onCarryingLane && !caravanOrTeleport;
 
+        // ── SWEEP_PRISONER_RETURN (live day 4, sweep_identity_fix3.json): the prisoner came back as itself, the letter fired,
+        // and within 10 ticks it was off the map again, not held, not a world pawn. The return cell was the policy's random
+        // EDGE cell (CellFinder.TryFindRandomEdgeCellWith); vanilla JobGiver_PrisonerEscape.ShouldStartEscaping is true for a
+        // secure prisoner of the player whose district touches the map edge (or reaches one through open doors within 25
+        // regions), and on an edge cell the exit spot is the cell itself, so Pawn.ExitMap ran at once (vanilla escape:
+        // PassToWorld Decide, nothing books it). A prisoner now comes back to a cell that holds it, escape is off for
+        // ReturnGuardTicks after the return, and an exit by a recently returned prisoner/slave writes a letter.
+
+        /// <summary>Vanilla escapes are off this long after a return (one in-game hour): the colony's chance to see it.</summary>
+        public const int ReturnGuardTicks = 2500;
+
+        /// <summary>A prisoner/slave leaving the map this long after its return gets the service's "escaped" letter.</summary>
+        public const int ReturnWatchTicks = 60000;
+
+        /// <summary>Mirror of vanilla 1.6 JobGiver_PrisonerEscape.ShouldStartEscaping (the lord check is lordSecure).</summary>
+        public static bool VanillaPrisonerStartsEscape(bool prisonerOfPlayer, bool prisonerIsSecure, bool lordSecure,
+            bool districtTouchesEdge, bool openPathToEdge) =>
+            prisonerOfPlayer && prisonerIsSecure && !lordSecure && (districtTouchesEdge || openPathToEdge);
+
+        /// <summary>A cell that holds a prisoner: standable, off the edge, in a district vanilla's escape cannot reach the edge from.</summary>
+        public static bool IsSecureReturnCell(bool standable, bool onEdge, bool districtTouchesEdge, bool openPathToEdge) =>
+            standable && !onEdge && !districtTouchesEdge && !openPathToEdge;
+
+        /// <summary>Where a returning prisoner may stand, in order of preference (tier 0 best).</summary>
+        public enum PrisonerSpot { OwnedBed = 0, PrisonerBed = 1, PrisonCell = 2, EnclosedRoom = 3, Interior = 4 }
+
+        public struct ReturnCandidate
+        {
+            public PrisonerSpot tier;
+            public bool standable, onEdge, districtTouchesEdge, openPathToEdge;
+
+            public ReturnCandidate(PrisonerSpot tier, bool standable, bool onEdge, bool districtTouchesEdge, bool openPathToEdge)
+            {
+                this.tier = tier;
+                this.standable = standable;
+                this.onEdge = onEdge;
+                this.districtTouchesEdge = districtTouchesEdge;
+                this.openPathToEdge = openPathToEdge;
+            }
+
+            public bool Secure => IsSecureReturnCell(standable, onEdge, districtTouchesEdge, openPathToEdge);
+        }
+
+        /// <summary>The index of the best cell for a returning prisoner: the best-tier SECURE cell; with none, the best-tier
+        /// standable cell off the edge (the escape guard gives the colony an hour); -1 = none (the caller keeps its cell).
+        /// <paramref name="secure"/> says which kind was found.</summary>
+        public static int PickPrisonerReturn(IList<ReturnCandidate> cands, out bool secure)
+        {
+            secure = false;
+            int best = -1;
+            for (int i = 0; i < cands.Count; i++)
+                if (cands[i].Secure && (best < 0 || cands[i].tier < cands[best].tier)) best = i;
+            if (best >= 0) { secure = true; return best; }
+            for (int i = 0; i < cands.Count; i++)
+                if (cands[i].standable && !cands[i].onEdge && (best < 0 || cands[i].tier < cands[best].tier)) best = i;
+            return best;
+        }
+
+        /// <summary>Is this ExitMap a returned prisoner/slave slipping away (the service writes the letter vanilla does not)?</summary>
+        public static bool ExitIsLostReturn(bool prisonerOrSlaveOfPlayer, bool released, bool caravanOrTeleport,
+            bool recentlyReturned) =>
+            prisonerOrSlaveOfPlayer && !released && !caravanOrTeleport && recentlyReturned;
+
         /// <summary>Faction/guest state captured at the take, compared at the return. Ids are Faction.loadID (-1 = none);
         /// guestStatus is (int)GuestStatus, -1 when the pawn is nobody's guest, prisoner or slave (a vanilla slave has NO
         /// host faction: its master is its own Faction, so the Verse side keeps Slave even with host -1).</summary>
@@ -131,6 +194,32 @@ namespace RimMandrake.FlowWorks.TakenByLand
         {
             ids.Clear();
             foreach (int id in held) Hold(id);
+        }
+    }
+
+    /// <summary>SWEEP_PRISONER_RETURN: the tick each pawn was given back (thingIDNumber -> tick). Session-only: the guard is an
+    /// hour, and a loaded save's prisoner is already standing where the return put it. Verse-free for the SelfTest.</summary>
+    public sealed class RM_TakenReturnGuard
+    {
+        private readonly Dictionary<int, int> returned = new Dictionary<int, int>();
+
+        public int Count => returned.Count;
+        public void Mark(int id, int tick) { if (id >= 0) returned[id] = tick; }
+        public void Clear() { returned.Clear(); }
+
+        /// <summary>Returned within <paramref name="window"/> ticks of <paramref name="now"/>.</summary>
+        public bool Within(int id, int now, int window) =>
+            returned.TryGetValue(id, out int t) && now >= t && now - t < window;
+
+        public bool InGuard(int id, int now) => Within(id, now, RM_TakenByLandKernel.ReturnGuardTicks);
+        public bool Recent(int id, int now) => Within(id, now, RM_TakenByLandKernel.ReturnWatchTicks);
+
+        /// <summary>Forget returns older than the watch window (called on each return so the map stays small).</summary>
+        public void Prune(int now)
+        {
+            var old = new List<int>();
+            foreach (var kv in returned) if (now - kv.Value >= RM_TakenByLandKernel.ReturnWatchTicks || now < kv.Value) old.Add(kv.Key);
+            foreach (int id in old) returned.Remove(id);
         }
     }
 }
