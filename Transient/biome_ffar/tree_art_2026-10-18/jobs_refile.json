@@ -1,0 +1,15 @@
+[
+ {
+  "id": "RM_Thulvane_redo3_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a colossal living tree: a very broad buttressed trunk that looks like several trunks grown together, wet dark bark in vertical plates with black grooves, rising to a full green leafy crown of dense foliage; clearly a tree with branches and leaves, not a stone column or rock pillar. Variant 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Thulvane",
+  "target_texpath": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "priority": 5,
+  "biome_register": "FeverWood: a hot, humid fever-swamp forest; deep wet greens, mud browns and sickly ochre with one strong warm accent.",
+  "slot": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "ask": "redo"
+ }
+]
