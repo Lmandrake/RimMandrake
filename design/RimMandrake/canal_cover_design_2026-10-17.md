@@ -270,3 +270,5 @@ of a metre). So a wounded defender in a wet foxhole drowns unless pulled out.
   checked against the live mod list; run `modcheck` for the list before building.
 - `PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH` is still unproven live: the AI cage guard (Q5 a) trusts the pocket grid
   that proof is meant to confirm.
+
+**Answered 2026-10-18 (by card), Q3-Q8:** Q3 strength **waist-deep a bit under sandbags, chest-deep a bit over**. Q4 standing in water costs **both** extras: shooting from chest-deep ~15% worse AND wet pawns feel cold sooner (ordinary temperature). Q5 raiders **use canals for cover but never jump into one they cannot climb out of**. Q6 swimming pawns **cannot fire**. Q7 **no blast protection** (base game). Q8 downed pawns in wet canals **drown, with a clear warning**. All Q1-Q8 answered.
