@@ -210,7 +210,7 @@
    "groups": [
     {
      "old": "swanimals/Dragonsnake/Dragonsnake",
-     "new": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake"
+     "new": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",

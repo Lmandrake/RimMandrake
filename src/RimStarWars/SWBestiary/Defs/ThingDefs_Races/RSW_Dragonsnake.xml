@@ -13,11 +13,7 @@
   (RSW_MlieWaveC_Resources.xml) — the donor's own egg ThingDefs reuse the
   already-present texPath swresource/EggSaurian (no new art extraction
   needed for the eggs themselves). Sounds repoint to the already-absorbed
-  sound wave (RSW_Pawn_Dragonsnake_*, 2026-09-02). texPaths are unchanged
-  text — extracted art (7 PNGs: base body + swimming variant + dessicated,
-  3 directions each except the single non-directional dessicated) sits at
-  Textures/swanimals/Dragonsnake/ (extract_bundle.py against the same
-  AssetBundle every prior wave used).
+  sound wave (RSW_Pawn_Dragonsnake_*, 2026-09-02).
 
   DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER (2026-10-17): the owner split the species in two. THIS def
   is the canon Dragonsnake, the Jedi: Fallen Order dark olive-slate crocodilian QUADRUPED; its BodyDef was
@@ -25,13 +21,18 @@
   constrict). The pale limbless film serpent is the separate RSW_DragonsnakeAlbino
   (RSW_DragonsnakeAlbino.xml), a rare variant in the same swamps.
 
+  2026-10-18 (owner: "One would be an Albino version (the beautiful white art we already have done in the game) ...
+  The other would be new art we commission from the Canon's many options of colorful versions"): the white art left this
+  def (it lives on RSW_DragonsnakeAlbino); body + swimming art are ours at RimStarWars/SWBestiary/DragonsnakeCanon/,
+  four variants via alternateGraphics below. Dessicated art is still the donor's swanimals file (no render yet).
+
   Rosters: Greentide at 0.12 (RUT_Greentide inline; RM_Greentide via
   UtinniPatches/Patches/WildAnimals_Greentide.xml) plus race.wildBiomes below.
 -->
 <Defs>
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dragonsnake</defName>
-    <label>Dragonsnake</label>
+    <label>dragonsnake</label>
     <description>Dragonsnakes (also spelled 'dragon snakes') were large, semi-aquatic predatory reptiles that dwelled in the muddy waters of various planets, including Dagobah and Nal Hutta. Dragonsnakes were large serpentlike beasts with sharp fangs and bioluminescent spots along their backs. Although voracious, they were incapable of digesting metal (a lucky escape for some heroic droids!). The dragonsnake "Bright-Eyes" displayed a degree of extreme intelligence and cunning.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
@@ -180,12 +181,24 @@
         <value>2.0</value>
       </li>
     </moveSpeedFactorByTerrainTag>
+    <!-- The four Jedi: Fallen Order canon variants (owner 2026-10-18: "I'd like variants to be made from that canon
+         example"). Base graphic = variant A; B/C/D are PawnKindDef.alternateGraphics (Verse.AlternateGraphic: texPath,
+         swimmingTexPath, weight 0.5 default), picked when Rand.Chance(alternateGraphicChance) (Verse/PawnGraphicUtils.cs).
+         0.75 = the four equally likely. Until artpipe jobs dragonsnake_jfo_var{a,b,c,d}_v1 land, all four slots hold
+         the stand-in render dragonsnake_jfo_v1 (ours, olive, non-white). -->
+    <alternateGraphicChance>0.75</alternateGraphicChance>
+    <alternateGraphics>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</texPath></li>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C</texPath></li>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D</texPath></li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <label>dragonsnake neonate</label>
         <labelPlural>dragonsnake neonates</labelPlural>
         <bodyGraphicData>
-          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -193,7 +206,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
         </swimmingGraphicData>
@@ -204,7 +217,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -212,7 +226,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.0</drawSize>
         </swimmingGraphicData>
@@ -223,7 +237,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
@@ -231,7 +246,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>4.0</drawSize>
         </swimmingGraphicData>

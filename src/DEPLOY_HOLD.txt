@@ -455,7 +455,3 @@ FlowWorks/review_map_stations_visuals.json   # visuals station data for the revi
 # Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md
 TheForge/Staged/*   # split art not yet accepted (owner by card 2026-10-15: "Both twitch")
 Contagion/Staged/*  # split art not yet accepted (owner by card 2026-10-15: "Both twitch")
-# --- Albino dragonsnake: held until its art is installed (DRAGONSNAKE_PAIR_BUILD_ONE_PALE_ONE_PROPER, 2026-10-17) ---
-# Its texPaths RimStarWars/SWBestiary/DragonsnakeAlbino/* have no PNGs yet (pink squares). Its Greentide rows in
-# UtinniPatches/Patches/WildAnimals_Greentide.xml are guarded on the def existing, so holding this file holds them too.
-# Release (delete this line) once art.py has installed DragonsnakeAlbino_{east,south,north} and _Swimming_{east,south,north}.
