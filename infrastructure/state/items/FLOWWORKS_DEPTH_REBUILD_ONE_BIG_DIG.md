@@ -9,6 +9,8 @@ Owner rulings 2026-10-17 (ledger notes on this item, `--by-card`): R5 dig 8 m de
 rebuild; R7 the four 2 m-keyed rules relative; R8 real elevation (T4) dead. R9 (owner said, `OWNER.jsonl` tsn
 1792258162801304562): the level-surface north-star bar, now written into
 `design/validation_walks/RimMandrake/FlowWorks.md` as `still_water_one_surface_height`.
+R8 amended 2026-10-18 (owner said): pawns may walk UNDER the new FlowWorks span structures (the walk-under
+"bridges", building type) — *"only for these new bridges uniquely, NOT actual tunnels."* Everything else in R8 stands.
 
 ## the shared acceptance language (every child uses it)
 - **Stock:** each connected still body holds an exact whole number of decilitres; nothing is created or lost.

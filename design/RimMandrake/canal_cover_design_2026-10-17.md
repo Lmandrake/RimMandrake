@@ -217,6 +217,10 @@ Estimate: 2 to 3 agent-days offline plus about 0.5 live. No art. No new Things o
 
 ## 11. Questions for the owner (plain language)
 
+**Answered 2026-10-18 (owner said):** Q1 — LAW 2 is REPLACED, not excepted: *"This updates/replaces the old ruling
+that digging does not change shooting. That is no longer true and needs replacing."* (LAW 2 rewritten in
+`flowworks_mod_definition.md`.) Q2 — (a) any dug hole with a wall, wet or dry. Q3-Q8 open.
+
 **Q1. This breaks a rule we wrote. Make an exception?** In September we wrote "digging changes movement and water,
 never shooting", and listed "cover from below" as cut for good, because it usually means building a whole height
 system. This design does not need one: it reads the 8 squares round a pawn, exactly like sandbags.
