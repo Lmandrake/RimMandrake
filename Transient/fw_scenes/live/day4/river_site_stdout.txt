@@ -1,0 +1,8 @@
+tiles 119904 flat temperate candidates 3457
+river tiles among them 218
+fish by biome: {'TemperateForest': True, 'TropicalRainforest': True} | rejected fishless river tiles: []
+tile 768 mapId 1 TemperateForest riverCount 2 grid: GRID current=1646 fast=0 edge=1646 size=1.00 flood=False
+tile 768 moving water on edges {'south': 7, 'north': 6}
+loaded maps: [{'mapId': 0, 'tile': 1524, 'biome': 'BorealForest'}, {'mapId': 1, 'tile': 768, 'biome': 'TemperateForest'}]
+quiet site (map): [('threat_structures_cleared', {'removed': [], 'threatsAfter': 0, 'kept': 0, 'errors': []}), ('hostiles_removed', {'acted': 0, 'residue': []}), ('proximity_letters_sent', {'letters': [], 'unsentAfter': 0})] problems [] error None
+tile 768 mapId 1 map_info tile 768 size 250 biome TemperateForest destroyed 61 colonists ['Human63612', 'Human63616', 'Human63620'] site problems [] reset problems []

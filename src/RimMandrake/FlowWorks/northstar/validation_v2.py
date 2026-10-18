@@ -2175,7 +2175,10 @@ def phase_L(L, args):
         w = B.call("jawa/weather_get")
         rate = ((w.get("weather") or {}).get("rainRate"))
         size_ok = mi.get("sizeX") == MAP_W and mi.get("sizeZ") == MAP_H
-        pristine = e.get("excavatedCellCount") == 0 and e.get("bodyCount") == 0 and e.get("superdeepCellCount") == 0
+        # P11 (LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP) forms every natural body AT MAP LOAD to record its floor, so a fresh
+        # quicktest map with any lake has bodyCount > 0 before anything is touched (MEASURED 2026-10-18: 21, 28 on four
+        # fresh maps; --fresh-map aborted every time). Pristine = nothing dug; the bodies are printed, not required to be 0.
+        pristine = e.get("excavatedCellCount") == 0 and e.get("superdeepCellCount") == 0
         dry = rate is not None and rate <= 0.01
         _fold(L, "L1_fresh_map", [
             ("loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") is not None and e1.get("ticksGame") == e2.get("ticksGame"), "SITE",

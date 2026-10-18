@@ -48,7 +48,11 @@ import testenv_guards as TG  # noqa: E402
 REGISTRY = os.path.join(_HERE, "test_site_saves.json")
 
 SITES = {
-    "calm": {"save": "RM_TestSite_calm_v1", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
+    # v2 (2026-10-18, FOUNDRY): v1 was saved on a 22-mod list; loaded on the 11-mod flowworks tier its missing creatures'
+    # corpses (Corpse_RSW_*, Corpse_RM_*) left Verse.MapDrawer.WholeMapChanged throwing every frame, so step_game_ticks
+    # advanced 0 ticks and no pawn moved (validation_v2's whole pawn block, day 3 + day 4). v2 is built on the 11-mod tier:
+    # a save made on the smaller list loads clean on every superset.
+    "calm": {"save": "RM_TestSite_calm_v2", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
              "suites": ["GimmeSomeSlack/northstar/proof_all.py --live", "FlowWorks/northstar/validation_v2.py --live"]},
     "river": {"save": "RM_TestSite_river_v1", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
               "minRiverEdges": 2, "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
@@ -483,8 +487,10 @@ def roll_ok(call, site):
         return "raining"
     if site == "calm":
         e = call("jawa/flowworks_engine_state") or {}
-        if _ok(e) and (e.get("bodyCount") or e.get("excavatedCellCount") or e.get("superdeepCellCount")):
-            return "FlowWorks engine not pristine (bodies %s)" % e.get("bodyCount")
+        # P11 forms every natural body at map load (lake floors), so bodyCount > 0 on any map with a lake: pristine =
+        # nothing dug (MEASURED 2026-10-18: 6 of 6 rolls refused on bodies 21..29 alone)
+        if _ok(e) and (e.get("excavatedCellCount") or e.get("superdeepCellCount")):
+            return "FlowWorks engine not pristine (excavated %s superdeep %s)" % (e.get("excavatedCellCount"), e.get("superdeepCellCount"))
     return None
 
 

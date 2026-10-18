@@ -3,14 +3,14 @@
   "id": "S3.a",
   "status": "MATCHES",
   "doc": "Unpowered: the canal stays dry and the pond keeps all 48 levels.",
-  "game": "canal wet at pulses never; pond below its start (170000 dL) at pulses never",
-  "level": "canal 0 dL in every square, pond 170000 dL unchanged within 10 dL"
+  "game": "canal wet at pulses never; pond below its start (180000 dL) at pulses never",
+  "level": "canal 0 dL in every square, pond 180000 dL unchanged within 10 dL"
  },
  {
   "id": "S3.b",
   "status": "MATCHES",
   "doc": "All 6 canal cells hold 1 level.",
-  "game": "all 6 canal cells at 1 first at pulse 8 of step B (6 x 10,000 dL = 6,000 L to the brim)",
+  "game": "all 6 canal cells at 1 first at pulse 7 of step B (6 x 10,000 dL = 6,000 L to the brim)",
   "level": "a pump lifts: the canal fills to the brim, every square 10,000 dL within 10 dL, and the squares match each other",
   "readout": [
    "55,32: Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
@@ -19,20 +19,20 @@
  },
  {
   "id": "S3.c",
-  "status": "DIFFERS",
+  "status": "MATCHES",
   "doc": "Levels gained by the canal plus levels held in the hoses = levels lost by the pond, at every pulse.",
-  "game": "pulses where canal+hoses gain != pond loss (tolerance 70 dL): ['p10 lost 69750 gained 60000 dL', 'p11 lost 69750 gained 60000 dL', 'p12 lost 69750 gained 60000 dL', 'p13 lost 69750 gained 60000 dL']",
+  "game": "pulses where canal+hoses gain != pond loss (tolerance 70 dL): none",
   "level": "canal dL + hose dL = pond loss in dL at every pulse (no litre leaves the ledger as a spill)"
  },
  {
   "id": "S3.audit",
   "status": "MEASURED",
   "game": {
-   "pondLostDl": 69750,
+   "pondLostDl": 60000,
    "canalDl": 60000,
    "hosesDl": 0.0,
    "deltas": {
-    "engine.overflowDestroyedTotal": 0.975,
+    "engine.overflowDestroyedTotal": 0,
     "engine.sinkTransferredTotal": 0,
     "net.dumpedUnits": 0,
     "net.hoseDrainedUnits": 10000.0,
@@ -43,7 +43,7 @@
     "pond.capacity": 0.0,
     "pond.cellCount": 0.0,
     "pond.recededCount": 0,
-    "pond.stock": -6.975,
+    "pond.stock": -6.0,
     "pump.lastMovedUnits": 10000.0,
     "pump.moved": 7.0,
     "pump.pourMode": 0

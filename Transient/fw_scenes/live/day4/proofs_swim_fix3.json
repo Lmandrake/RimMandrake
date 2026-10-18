@@ -1,0 +1,535 @@
+{
+ "script": "depth_rebuild_proofs.py",
+ "started": "2026-10-17T20:40:51",
+ "rows": [
+  {
+   "id": "SWIM_lake_staged",
+   "status": "INFO",
+   "detail": {
+    "readout_mid": "OK Hole 3 m \u00b7 Water 3.00 m (6,000 L)",
+    "readout_edge": "OK Hole 3 m \u00b7 Water 3.00 m (6,000 L)"
+   }
+  },
+  {
+   "id": "SWIM_dug_reservoir_3m_reached",
+   "status": "PASS",
+   "detail": {
+    "order": {
+     "end": {
+      "x": 130,
+      "z": 128
+     },
+     "ticksElapsed": 900,
+     "canReach": true,
+     "note": null
+    },
+    "swim": "SWIM Human24446 class=Swimmer natural=Swimmer load=0.02 enduranceH=1.75 costX=1.15 water=3.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.172 headUp=True"
+   }
+  },
+  {
+   "id": "SWIM_dug_reservoir_far_side_reached",
+   "status": "PASS",
+   "detail": {
+    "end": [
+     137,
+     128
+    ],
+    "want": [
+     137,
+     128
+    ],
+    "ticks": 1205,
+    "swimAfter": "SWIM Human24446 class=Swimmer natural=Swimmer load=0.02 enduranceH=1.75 costX=1.15 water=0.00 deepCell=False pathCost=2 liquidOk=False exhaustion=0.000 headUp=False"
+   }
+  },
+  {
+   "id": "SWIM_dug_reservoir_mechanoid_refused",
+   "status": "PASS",
+   "detail": {
+    "order": {
+     "end": {
+      "x": 124,
+      "z": 127
+     },
+     "ticksElapsed": 601,
+     "canReach": false
+    },
+    "midSwim": "REFUSED: no pawn at (130, 0, 128)"
+   }
+  },
+  {
+   "id": "SWIM_colonist_reaches_lake_middle",
+   "status": "PASS",
+   "detail": {
+    "order": {
+     "end": {
+      "x": 130,
+      "z": 134
+     },
+     "ticksElapsed": 901,
+     "canReach": true
+    },
+    "swim": "SWIM Human24446 class=Swimmer natural=Swimmer load=0.02 enduranceH=1.75 costX=1.15 water=2.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.172 headUp=True",
+    "readout": "OK Hole 2 m \u00b7 Water 2.00 m (4,000 L)"
+   }
+  },
+  {
+   "id": "SWIM_colonist_climbs_out_far_side",
+   "status": "PASS",
+   "detail": {
+    "end": [
+     137,
+     134
+    ],
+    "want": [
+     137,
+     134
+    ],
+    "ticks": 1203,
+    "swimAfter": "SWIM Human24446 class=Swimmer natural=Swimmer load=0.02 enduranceH=1.75 costX=1.15 water=0.00 deepCell=False pathCost=2 liquidOk=False exhaustion=0.000 headUp=False"
+   }
+  },
+  {
+   "id": "SWIM_armour_profile",
+   "status": "INFO",
+   "detail": {
+    "order": {
+     "end": {
+      "x": 130,
+      "z": 133
+     },
+     "ticksElapsed": 602,
+     "canReach": true
+    },
+    "swim": "SWIM Human24499 class=Swimmer natural=Swimmer load=0.02 enduranceH=1.15 costX=1.75 water=2.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.087 headUp=True"
+   }
+  },
+  {
+   "id": "SWIM_armour_warned_before_under",
+   "status": "PASS",
+   "detail": {
+    "warned": [
+     1750,
+     [
+      "Pacheco is tiring in deep water: about 17 minutes of swimming left before going under."
+     ]
+    ],
+    "underAt": null,
+    "trace": [
+     {
+      "t": 250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.175",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.262",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.349",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 1000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.437",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 1250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.532",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 1500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.627",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 1750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.723",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 2000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.848",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 2250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "0.974",
+      "headUp": "True",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 2500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 2750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 3000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 3250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 3500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 3750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 4000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 4250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 4500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 4750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 5000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 5250,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 5500,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 5750,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     },
+     {
+      "t": 6000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "SWIM_armour_drafted_goes_under",
+   "status": "UNMEASURED",
+   "detail": {
+    "underAt": null,
+    "last": [
+     {
+      "t": 6000,
+      "pos": [
+       130,
+       133
+      ],
+      "exh": "1.000",
+      "headUp": "False",
+      "under": "False",
+      "downed": null,
+      "dead": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "SWIM_land_animal_walks_around",
+   "status": "PASS",
+   "detail": {
+    "inLakeSamples": 0,
+    "samples": [
+     [
+      126,
+      132
+     ],
+     [
+      130,
+      132
+     ],
+     [
+      134,
+      132
+     ],
+     [
+      137,
+      134
+     ]
+    ],
+    "end": [
+     137,
+     134
+    ],
+    "orderAccepted": "{'success': False, 'message': '0/1 pawn(s) standing on (137,134) after 61 tick(s); 1 moved at all.', 'arrivedCount': 0, 'movedCount': 1, 'pawnCount': 1, 'destination': {'x': 137, 'z': 134}, 'pathEndMo",
+    "route": "Vanilla"
+   }
+  },
+  {
+   "id": "SWIM_mechanoid_refused",
+   "status": "PASS",
+   "detail": {
+    "swimInLake": "SWIM Mech_Militor24525 class=None natural=None load=0.06 enduranceH=0.00 costX=1.09 water=2.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.000 headUp=False",
+    "orderToMiddle": {
+     "end": {
+      "x": 124,
+      "z": 131
+     },
+     "ticksElapsed": 602,
+     "canReach": false
+    },
+    "route": "Vanilla"
+   }
+  },
+  {
+   "id": "SWIM_prisoner_flooded_pit_stays_in",
+   "status": "PASS",
+   "detail": {
+    "guest": "{'success': True, 'pawn': 'Wombat', 'hostFactionAfter': 'New Arrivals', 'guestStatusBefore': 'Guest', 'guestStatusAfter': 'Prisoner', 'resistanceAfter': 13.0, 'willAfter': 0.140093833, 'ticksGame': 12",
+    "readout": "OK Hole 4 m \u00b7 Water 2.00 m (4,000 L)",
+    "swimAt0": "SWIM Human24529 class=Swimmer natural=Swimmer load=0.07 enduranceH=1.82 costX=1.11 water=2.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.000 headUp=True",
+    "after1500": [
+     143,
+     126
+    ],
+    "swimAfter": "SWIM Human24529 class=Swimmer natural=Swimmer load=0.07 enduranceH=1.82 costX=1.11 water=2.00 deepCell=True pathCost=60 liquidOk=True exhaustion=0.330 headUp=True",
+    "climb": "CLIMB k=2 held=True trapped=True cell=143,126 | POCKET k=2 comp=1 pocket=True size=9 depth=4 gen=346 built=346 rebuilds=58",
+    "dead": null
+   }
+  },
+  {
+   "id": "SWIM_toggle_off_on_mid_game",
+   "status": "PASS",
+   "detail": {
+    "on": {
+     "deepCell": "True",
+     "pathCost": "60",
+     "class": "Swimmer"
+    },
+    "off": {
+     "deepCell": "False",
+     "pathCost": "10000",
+     "class": "Swimmer"
+    },
+    "onAgain": {
+     "deepCell": "True",
+     "pathCost": "60",
+     "class": "Swimmer"
+    },
+    "reapply": [
+     "null",
+     "null"
+    ]
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\fw_scenes\\live\\day4\\proofs_swim_fix3.json",
+  "only": "swim",
+  "fresh_map": true
+ },
+ "settings_before": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ },
+ "settings_restored": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ }
+}
