@@ -1,0 +1,1 @@
+Disk hit 100% on / (git write errors, commits refused): scratch clones under /home/mandrake/rm/scratch are 16-23 GB each; delete finished ones immediately and shallow-clone new ones. Check df -h / before spawning clone-heavy agents.
