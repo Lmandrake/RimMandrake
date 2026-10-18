@@ -1,0 +1,334 @@
+{
+  "biome": "SUBJECTS_tree_art_picks",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 11,
+  "decisions": {
+    "RM_CorriskTree": {
+      "assign": {
+        "C": "Things/RM_CorriskTree"
+      },
+      "at": "2026-10-18T22:12:04.761Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/RM_CorriskTree": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "4a046a8a4ae01e58",
+            "69a2c265084ec9fc"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "B",
+      "reject": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Ghemmel": {
+      "at": "2026-10-18T22:09:14.810Z",
+      "decidedAt": "2026-10-18T22:08:58.700Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-18T22:09:14.810Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "I approve of these, please make them all random variants to select from ",
+          "when": "2026-10-18T15:18:56-0700"
+        }
+      ],
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/RM_Ghemmel/RM_Ghemmel_a": {
+          "at": "2026-10-18T22:08:58.700Z",
+          "pick": "B",
+          "set_id": "8508f7a512cd43ed",
+          "slot_id": "RM_Ghemmel/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Mourvel": {
+      "at": "2026-10-18T22:09:36.177Z",
+      "decidedAt": "2026-10-18T22:09:26.133Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Mourvel/RM_Mourvel_a": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "1e9e7bce8a2b1ec4"
+          ],
+          "remove": [
+            "A"
+          ]
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "89b69acbf3c05c2142745d8b7501c35d37237cd1f4403c886acfa090c2550f05"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/RM_Mourvel/RM_Mourvel_a": {
+          "at": "2026-10-18T22:09:26.133Z",
+          "pick": "B",
+          "set_id": "f72cbf23ae59c550",
+          "slot_id": "RM_Mourvel/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Ollamane": {
+      "at": "2026-10-18T22:09:51.336Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Ollamane/RM_Ollamane_a": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "0c8de5e4a1a66106",
+            "de86ec0ef47c339c"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "B",
+      "reject": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Rockfinger": {
+      "at": "2026-10-18T22:09:57.201Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Rockfinger": {
+          "add": [
+            "B",
+            "C"
+          ],
+          "baseline": [
+            "395a670befeb430c"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "reject": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Thulvane": {
+      "at": "2026-10-18T22:10:18.045Z",
+      "decidedAt": "2026-10-18T22:10:11.725Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-18T22:10:18.045Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "B + C as random variants",
+          "when": "2026-10-18T15:18:56-0700"
+        }
+      ],
+      "prefill": "redo",
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/RM_Thulvane/RM_Thulvane_a": {
+          "at": "2026-10-18T22:10:11.725Z",
+          "pick": "B",
+          "set_id": "043ac14b1f6a49a5",
+          "slot_id": "RM_Thulvane/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Tumbel": {
+      "at": "2026-10-18T22:10:47.987Z",
+      "decidedAt": "2026-10-18T22:10:37.367Z",
+      "decision": "C",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Tumbel/RM_Tumbel_a": {
+          "add": [
+            "D",
+            "E"
+          ],
+          "baseline": [
+            "65998a1106ae49d5",
+            "8987899dc9125694"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "B",
+      "purge": [
+        "c63ed5d062dfd4c6eea6112c00767aeface7f59d3e16f0523e9e107e4d2f764c",
+        "f92fb794ea819000c63bc9bf4ef06f87dcb835bd351b2dc7448b1227a0f39626"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/RM_Tumbel/RM_Tumbel_a": {
+          "at": "2026-10-18T22:10:37.367Z",
+          "pick": "C",
+          "set_id": "6f2cf1c6dbb1133a",
+          "slot_id": "RM_Tumbel/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_VaultRoot": {
+      "at": "2026-10-18T22:11:11.573Z",
+      "decidedAt": "2026-10-18T22:11:01.399Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-18T22:11:11.573Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Use A through D all as valid random variants",
+          "when": "2026-10-18T15:18:56-0700"
+        }
+      ],
+      "prefill": "A",
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/VaultRoot": {
+          "at": "2026-10-18T22:11:01.399Z",
+          "pick": "B",
+          "set_id": "609579d34ed31542",
+          "slot_id": "RM_VaultRoot/graphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Veluthar": {
+      "at": "2026-10-18T22:11:18.506Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Veluthar/RM_Veluthar_a": {
+          "add": [
+            "C"
+          ],
+          "baseline": [
+            "1558d9c716ef12aa",
+            "8cd0b2fa4a2c06e3"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "reject": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Vurmeloth": {
+      "at": "2026-10-18T22:11:23.292Z",
+      "decision": "A",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "0a79652fd003bf51"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "reject": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_Zhorrel": {
+      "at": "2026-10-18T22:11:47.060Z",
+      "decidedAt": "2026-10-18T22:11:47.060Z",
+      "decision": "B",
+      "note": "",
+      "pool": {
+        "Things/Plant/RM_Zhorrel/RM_Zhorrel_a": {
+          "add": [
+            "D"
+          ],
+          "baseline": [
+            "3835240ec80e1bcb",
+            "61b6cf61dbbf8065",
+            "da584b854cfec4d6"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "B",
+      "purge": [
+        "bfc68cdb9f5a3d453a312261c19a84d93fb994d696ede5662b790b92378f375a"
+      ],
+      "purgeTouched": true,
+      "reject": {},
+      "retire": {},
+      "rev": "e0104b0506f15333",
+      "schema": 2,
+      "slots": {
+        "Things/Plant/RM_Zhorrel/RM_Zhorrel_a": {
+          "at": "2026-10-18T22:11:47.060Z",
+          "pick": "B",
+          "set_id": "da584b854cfec4d6",
+          "slot_id": "RM_Zhorrel/graphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-18T15:12:05-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "tree_art_picks_sheet_2026-10-18",
+  "snapshot": "infrastructure/state/art/sheets/tree_art_picks_sheet_2026-10-18.snapshot.json",
+  "snapshotId": "e0104b0506f15333",
+  "writeCount": 27
+}

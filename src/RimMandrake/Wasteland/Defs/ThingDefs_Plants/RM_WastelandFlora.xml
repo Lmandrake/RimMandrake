@@ -57,7 +57,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/VaultRoot</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.22, 0.28, 0.15)</volume>
         <offset>(0,0,-0.36)</offset>

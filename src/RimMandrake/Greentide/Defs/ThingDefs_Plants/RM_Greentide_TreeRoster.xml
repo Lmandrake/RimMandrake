@@ -231,7 +231,7 @@
     <description>The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood — the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Ghemmel/RM_Ghemmel_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.4, 0.5, 0.3)</volume>
         <offset>(0,0,-0.38)</offset>
