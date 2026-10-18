@@ -221,6 +221,70 @@ namespace RimMandrake.FlowWorks.TakenByLand
             return need;
         }
 
+        // ── SWEEP_PRISONER_RETURN ───────────────────────────────────────────────────────────────────────────────────
+        /// <summary>When each pawn was given back; RM_Patch_ReturnedPrisonerNoEscape and RM_Patch_ReturnedPrisonerLost read it.</summary>
+        public static readonly RM_TakenReturnGuard Returned = new RM_TakenReturnGuard();
+
+        /// <summary>The vanilla escape's open-door search from a district (JobGiver_PrisonerEscape: 25 regions, free-passage doors).</summary>
+        public static bool OpenPathToEdge(District d)
+        {
+            if (d == null || d.Regions.Count == 0) return false;
+            bool found = false;
+            RegionTraverser.BreadthFirstTraverse(d.Regions[0], (Region from, Region reg) => reg.door == null || reg.door.FreePassage,
+                reg => { if (reg.District.TouchesMapEdge) { found = true; return true; } return false; }, 25);
+            return found;
+        }
+
+        private static RM_TakenByLandKernel.ReturnCandidate Candidate(RM_TakenByLandKernel.PrisonerSpot tier, IntVec3 c, Map map)
+        {
+            bool standable = c.InBounds(map) && c.Standable(map);
+            District d = standable ? c.GetDistrict(map) : null;
+            bool touches = d == null || d.TouchesMapEdge;
+            return new RM_TakenByLandKernel.ReturnCandidate(tier, standable && d != null, c.OnEdge(map), touches,
+                !touches && OpenPathToEdge(d));
+        }
+
+        /// <summary>A cell that holds a returning prisoner: its own bed, a free prisoner bed, a prison cell, any enclosed room,
+        /// else an interior cell off the edge near the centre (secure = false). Invalid when the map has no standable cell.</summary>
+        public static IntVec3 PickPrisonerReturnCell(Pawn p, Map map, out bool secure)
+        {
+            var cells = new List<IntVec3>();
+            var cands = new List<RM_TakenByLandKernel.ReturnCandidate>();
+            void Add(RM_TakenByLandKernel.PrisonerSpot tier, IntVec3 c)
+            {
+                if (!c.IsValid || cells.Count >= 400) return;
+                cells.Add(c);
+                cands.Add(Candidate(tier, c, map));
+            }
+            Building_Bed own = p.ownership?.OwnedBed;
+            if (own != null && own.Spawned && own.Map == map && own.ForPrisoners) Add(RM_TakenByLandKernel.PrisonerSpot.OwnedBed, own.Position);
+            foreach (Building_Bed b in map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>())
+                if (b != own && b.ForPrisoners && !b.Medical && b.AnyUnoccupiedSleepingSlot) Add(RM_TakenByLandKernel.PrisonerSpot.PrisonerBed, b.Position);
+            IReadOnlyList<Room> rooms = map.regionGrid.AllRooms;
+            for (int pass = 0; pass < 2; pass++)
+            {
+                for (int i = 0; i < rooms.Count; i++)
+                {
+                    Room room = rooms[i];
+                    if (room == null || room.TouchesMapEdge || (pass == 0) != room.IsPrisonCell || (pass == 1 && !room.ProperRoom)) continue;
+                    int n = 0;
+                    foreach (IntVec3 c in room.Cells)
+                    {
+                        if (!c.Standable(map)) continue;
+                        Add(pass == 0 ? RM_TakenByLandKernel.PrisonerSpot.PrisonCell : RM_TakenByLandKernel.PrisonerSpot.EnclosedRoom, c);
+                        if (++n >= 2) break;
+                    }
+                }
+            }
+            if (CellFinder.TryFindRandomCellNear(map.Center, map, Mathf.Max(8, Mathf.Min(map.Size.x, map.Size.z) / 3),
+                    c => c.Standable(map) && !c.OnEdge(map) && !c.GetTerrain(map).IsWater, out IntVec3 inner))
+            {
+                Add(RM_TakenByLandKernel.PrisonerSpot.Interior, inner);
+            }
+            int k = RM_TakenByLandKernel.PickPrisonerReturn(cands, out secure);
+            return k >= 0 ? cells[k] : IntVec3.Invalid;
+        }
+
         /// <summary>Session counter for a dev/bridge read: ground traces left. Never saved.</summary>
         public static int TracesLeft;
 
@@ -246,7 +310,7 @@ namespace RimMandrake.FlowWorks.TakenByLand
         public const int ScanInterval = 250;
         private List<RM_TakenRecord> records = new List<RM_TakenRecord>();
 
-        public RM_WorldComponent_TakenByLand(World world) : base(world) { RM_TakenByLand.Held.Clear(); }
+        public RM_WorldComponent_TakenByLand(World world) : base(world) { RM_TakenByLand.Held.Clear(); RM_TakenByLand.Returned.Clear(); }
 
         public int PendingCount => records.Count;
         public int PendingOfKind(string kind) { int n = 0; foreach (RM_TakenRecord r in records) if (r.kind == kind) n++; return n; }
@@ -373,11 +437,27 @@ namespace RimMandrake.FlowWorks.TakenByLand
                 if (l2 != null) Find.LetterStack.ReceiveLetter(l2, t2, LetterDefOf.NeutralEvent);
                 return true;
             }
+            RM_TakenByLand.Restore(r, p);   // the same pawn, back as whose it was (colonist, prisoner, slave, guest, tamed)
             IntVec3 cell = policy.PickReturnCell(r, map);
             if (!cell.IsValid) cell = map.Center;
-            RM_TakenByLand.Restore(r, p);   // the same pawn, back as whose it was (colonist, prisoner, slave, guest, tamed)
+            // SWEEP_PRISONER_RETURN: a prisoner on the policy's edge cell escapes off it at once (vanilla); it comes back to a
+            // cell that holds it, and vanilla's escape is off for the guard hour.
+            bool unheldPrisoner = false;
+            if (p.IsPrisonerOfColony)
+            {
+                IntVec3 safe = RM_TakenByLand.PickPrisonerReturnCell(p, map, out bool secure);
+                if (safe.IsValid) cell = safe;
+                unheldPrisoner = !secure;
+            }
+            RM_TakenByLand.Returned.Prune(Find.TickManager.TicksGame);
+            RM_TakenByLand.Returned.Mark(p.thingIDNumber, Find.TickManager.TicksGame);
             GenSpawn.Spawn(p, cell, map, WipeMode.VanishOrMoveAside);
             policy.AfterReturn(r, p);
+            if (unheldPrisoner && !p.Dead)
+            {
+                Messages.Message(p.LabelShortCap + " is back but no prison cell can hold " + p.ProObj() + ": give " + p.ProObj()
+                    + " a cell within the hour or " + p.ProSubj() + " will try to escape.", p, MessageTypeDefOf.CautionInput);
+            }
             if (outcome == TakenOutcome.SpawnThenKill && !p.Dead) p.Kill(null);
             Thing target = p.Dead ? (Thing)p.Corpse ?? p : p;
             policy.ReturnedLetter(r, p, null, p.Dead, out string label, out string text, out LetterDef def);
@@ -463,6 +543,44 @@ namespace RimMandrake.FlowWorks.TakenByLand
             if (!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(Rivers.RM_RiversSettings.washOffMapEdge, Rivers.RM_RiversSettings.CurrentActive,
                     true, p.guest != null && p.guest.Released, lane, caravan)) return true;
             return !RM_TakenByLand.Take(p, "river");   // taken: vanilla's escape never runs
+        }
+    }
+
+    /// <summary>SWEEP_PRISONER_RETURN: vanilla's escape is off for the guard hour after a return (live day 4: back on an edge
+    /// cell, it walked off within 10 ticks). Rule: RM_TakenReturnGuard.InGuard (RM_TakenByLandKernel.ReturnGuardTicks).</summary>
+    [RimMandrake.Shared.PatchFeature("A prisoner the land gave back does not escape in its first hour home")]
+    [HarmonyLib.HarmonyPatch(typeof(JobGiver_PrisonerEscape), "TryGiveJob")]
+    public static class RM_Patch_ReturnedPrisonerNoEscape
+    {
+        public static bool Prefix(Pawn pawn, ref Verse.AI.Job __result)
+        {
+            if (pawn == null || !RM_TakenByLand.Returned.InGuard(pawn.thingIDNumber, Find.TickManager.TicksGame)) return true;
+            __result = null;
+            return false;
+        }
+    }
+
+    /// <summary>SWEEP_PRISONER_RETURN safety net: a returned prisoner or slave that leaves the map anyway (not swept, so not
+    /// held) gets a letter, so it is never lost without a sign. Rule: RM_TakenByLandKernel.ExitIsLostReturn.</summary>
+    [RimMandrake.Shared.PatchFeature("A returned prisoner who slips away off the map gets a letter")]
+    [HarmonyLib.HarmonyPatch(typeof(Pawn), nameof(Pawn.ExitMap))]
+    public static class RM_Patch_ReturnedPrisonerLost
+    {
+        public static void Prefix(Pawn __instance, out bool __state)
+        {
+            Pawn p = __instance;
+            __state = p != null && p.Spawned && !p.Dead && RM_TakenByLandKernel.ExitIsLostReturn(
+                p.IsPrisonerOfColony || p.IsSlaveOfColony, p.guest != null && p.guest.Released, p.teleporting || p.IsCaravanMember(),
+                RM_TakenByLand.Returned.Recent(p.thingIDNumber, Find.TickManager.TicksGame));
+        }
+
+        public static void Postfix(Pawn __instance, bool __state)
+        {
+            Pawn p = __instance;
+            if (!__state || p == null || p.Spawned || RM_TakenByLand.IsHeld(p)) return;   // swept again (held) or never left
+            Find.LetterStack.ReceiveLetter("Escaped: " + p.LabelShortCap,
+                p.LabelShortCap + " came home after being taken by the land, then slipped away off the map before anyone held "
+                + p.ProObj() + ". " + p.ProSubj().CapitalizeFirst() + " is gone.", LetterDefOf.NegativeEvent);
         }
     }
 
