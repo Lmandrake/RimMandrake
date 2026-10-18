@@ -374,7 +374,7 @@ namespace JawaBench.BridgeTools
         // existing bridge exposure. RM_MapComponent_Excavation's read surface
         // (DepthAt/FillAt/IsExcavated/IsSourceCell/IsSinkCell/SinkTransferredTotal/
         // OverflowDestroyedTotal) and its driver-API write surface (Deepen,
-        // TrySetDriverFill) are ALL public already — built for FloodedCanyon's
+        // TrySetDriverFill) are ALL public already — built for CrackedLands's
         // flood driver (CANYON_FLOOD_ERASES_CANALS_1) — so this reads and drives
         // them the same reflection way CanalCellReport does, no new engine code.
         // ════════════════════════════════════════════════════════════════
@@ -465,7 +465,7 @@ namespace JawaBench.BridgeTools
                 "Test/admin shortcut for RM_MapComponent_Excavation, bypassing colonist " +
                 "dig labor - built for LIQUID_SINK_DRAINAGE_1's live-proof gap (no cheap " +
                 "way to get a filled channel touching the map edge otherwise). Calls the " +
-                "SAME public Deepen()/TrySetDriverFill() the FloodedCanyon flood driver " +
+                "SAME public Deepen()/TrySetDriverFill() the CrackedLands flood driver " +
                 "uses (CANYON_FLOOD_ERASES_CANALS_1), so it obeys the engine's own clamps " +
                 "(LAW 1: depth only ever goes down; fill clamped 0<=F<=D) rather than " +
                 "poking the grid directly. deepenLevels=0 skips digging (drive fill on an " +

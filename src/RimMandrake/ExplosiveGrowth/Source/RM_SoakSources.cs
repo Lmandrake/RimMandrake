@@ -11,7 +11,7 @@ namespace RimMandrake.ExplosiveGrowth
     // THE PUSHED (TIMED) SOURCES THIS ENGINE READS FOR ITSELF. Every other water source (natural water, spills, channels,
     // rain, ash) is read ON DEMAND by RM_WetSources (the presence model, ruled spec §2-3); only the salt-line surge still
     // writes timed soaks here, as the miasma surge always did (OQ-13: it stays a water source, unchanged).
-    //   crack_flood   PUSHED by mandrake.rm.floodedcanyon through ExplosiveGrowthAPI.SoakCells while the flood runs.
+    //   crack_flood   PUSHED by mandrake.rm.crackedlands through ExplosiveGrowthAPI.SoakCells while the flood runs.
     //   miasma_axis   READ here from EnvironmentalHazards' gradient axis: while a surge shift runs, the fresh side soaks.
     // Reflection-soft: with Environmental Hazards absent the route is silent.
     // ════════════════════════════════════════════════════════════════════

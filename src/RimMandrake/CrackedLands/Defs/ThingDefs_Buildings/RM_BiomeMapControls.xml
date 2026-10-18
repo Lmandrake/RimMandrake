@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS (owner 2026-10-16, by card): Baroque Biomes' two map controls, plain markers a
+       map maker places in development mode (debug actions "Place flood trigger (aimed at a canal)" / "Place soak zone (5x5,
+       always)", or the bridge's RimMandrake.CrackedLands.MapControls.RM_BiomeMapControls). NOT buildable. Owner: "You should
+       make the graphics for these just be a small rock or other insignificant-looking object, not even a stake like an animal
+       pen, so players will overlook them". The LOOK is inherited from FlowWorks' RM_MapControlBase (FlowWorks is a hard
+       dependency of this member), so every map control keeps one look whatever FlowWorks sets it to. C#: Source/MapControls/. -->
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_FloodTrigger</defName>
+    <label>flood trigger</label>
+    <description>A map maker's marker. The canyon flood enters here and runs along the dug channel beside it, on the map's flood clock or from its button, on any biome. Placed in development mode only; it cannot be built. Its clock, spill, size and on/off are set from its buttons in development mode.</description>
+    <thingClass>RimMandrake.CrackedLands.MapControls.Building_RM_FloodTrigger</thingClass>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_MapControlBase">
+    <defName>RM_SoakZone</defName>
+    <label>soak zone</label>
+    <description>A map maker's marker. The square of ground around it stays soaked for a set number of hours each day, so plants there grow as they do after a flood. Works only where Plant Growth runs (Baroque Biomes' own biomes). Placed in development mode only; it cannot be built. Its size, hours and on/off are set from its buttons in development mode.</description>
+    <thingClass>RimMandrake.CrackedLands.MapControls.Building_RM_SoakZone</thingClass>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+
+</Defs>

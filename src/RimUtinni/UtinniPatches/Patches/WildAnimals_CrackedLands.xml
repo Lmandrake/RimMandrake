@@ -23,7 +23,7 @@
   `the_cracked_lands.md` (FROZEN) §0 and §6 ban 3 are explicit — "the vanilla
   roster (rat, iguana, dromedary, boomalope, boomrat, ostrich, donkey, fennec,
   warg, the insects) is EVICTED" and "No nameable terrestrial animals — the
-  vanilla zoo evicts." `RM_FloodedCanyon_Biome.xml`'s own wildAnimals
+  vanilla zoo evicts." `RM_CrackedLands_Biome.xml`'s own wildAnimals
   (Iguana/Dromedary/Fox_Fennec/Warg/Rat/Cougar) is exactly that evicted
   roster — correct for a non-campaign RimWorld world, banned for this one. So
   the whole dictionary is REPLACED for the campaign, not merged into. Same
@@ -58,7 +58,7 @@
   no patch touches it). baseWeatherCommonalities (Op 4) is a single unconditional
   PatchOperationReplace, none of it RSW_-gated.
 
-  🔑 terrainsByFertility (Op 5): RM_FloodedCanyon_Biome.xml ships a generic
+  🔑 terrainsByFertility (Op 5): RM_CrackedLands_Biome.xml ships a generic
   Sand/Soil split by fertility (soil forms naturally above 0.7 fertility) —
   correct for a generic canyon on any world. `the_cracked_lands.md` §7 rules
   soil is UNIQUELY the flood's product ("actual soil... in the shade... the
@@ -78,7 +78,7 @@
   DISEASES: the 3 RUT_-only disease entries beyond RM_'s own five
   (Disease_MuscleParasites/FibrousMechanites/SensoryMechanites — plain
   vanilla-Core incidents, Core/Defs/Storyteller/Incidents_Map_Disease.xml, no
-  lore attachment) are ported directly into RM_FloodedCanyon_Biome.xml's own
+  lore attachment) are ported directly into RM_CrackedLands_Biome.xml's own
   body instead of patched here — disease-appropriate for any world, not
   campaign flavor (see that file's own comment on the addition).
 
@@ -137,7 +137,7 @@
                rows. Five new natives added at the bible's ruled/flagged
                commonalities; RM_Irqit carries no row — it is mechanically
                cohort-spawned by the flood component, not an ambient roamer
-               (see RM_FloodedCanyon_Biome.xml's own base roster comment). -->
+               (see RM_CrackedLands_Biome.xml's own base roster comment). -->
           <RUT_SealedSleeper>0.2</RUT_SealedSleeper>
           <RUT_EmperorVulture>0.15</RUT_EmperorVulture>
           <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->

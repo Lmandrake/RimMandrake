@@ -12,7 +12,7 @@ Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml (FindMod-guarded on this mod's n
 mechanics and swaps the canon kinds into the four nest slots via RM_ShipVerminCanonSwapExtension.
 
 OBSERVATION CHANNEL for the nest: `rimworld/execute_debug_action` path `Actions\\<label>` at the wreck's x,z
-(the FloodedCanyon pattern); the action prints `[RM_CompVerminNest] ...` / `[RMShipVerminDebug] ...` lines that
+(the CrackedLands pattern); the action prints `[RM_CompVerminNest] ...` / `[RMShipVerminDebug] ...` lines that
 are read from THAT CALL'S OWN `effects.logs`, plus the state itself (a new wild pawn in the rect). An action that
 answered success with no tagged line is UNMEASURED, and a path the bridge does not know is UNMEASURED (the label was
 never proven live), never FAIL.

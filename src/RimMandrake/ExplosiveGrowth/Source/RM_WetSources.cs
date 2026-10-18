@@ -15,7 +15,7 @@ namespace RimMandrake.ExplosiveGrowth
     //
     // Built-in sources, in read order (cheapest first):
     //   natural   river / fresh water / marsh / mud terrain: its own cell only, permanent, never used up (W2)
-    //   timed     a flood or surge pushed through ExplosiveGrowthAPI (Flooded Canyon, the salt line): while it runs (OQ-13)
+    //   timed     a flood or surge pushed through ExplosiveGrowthAPI (Cracked Lands, the salt line): while it runs (OQ-13)
     //   spill     standing-water filth: a hose spill of water, a poured can, a rain puddle (D6; consumed = destroyed)
     //   channel   a FlowWorks dug cell holding an accepted liquid waters itself and its 8 neighbours (D5)
     //   rain      unroofed ground while a water rain (or snowmelt, OQ-3) falls, and a few hours after (OQ-9)
@@ -120,7 +120,7 @@ namespace RimMandrake.ExplosiveGrowth
         private sealed class TimedSource : IRM_WetSource
         {
             public string Key => "timed";
-            public bool Enabled => true;   // each pusher has its own switch (Flooded Canyon's coupling, the surge toggle)
+            public bool Enabled => true;   // each pusher has its own switch (Cracked Lands's coupling, the surge toggle)
             public bool WetFor(RM_MapComponent_ExplosiveGrowth comp, IntVec3 c, HashSet<string> accepts, int now)
                 => accepts.Contains(RM_ExplosiveGrowthRegistry.CleanWater) && comp.IsTimedSoaked(c, now);
             public bool Consume(RM_MapComponent_ExplosiveGrowth comp, IntVec3 c, HashSet<string> accepts, int now) => false;

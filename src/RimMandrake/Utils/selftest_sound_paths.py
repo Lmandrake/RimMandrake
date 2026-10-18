@@ -60,7 +60,7 @@ VANILLA_PACKED = {
     # from Core Ambient_Wind_Desolate, verified via RimSage 2026-10-01.
     "Ambience/Wind/Amb_Wind_Altitude1_Loop": "vanilla Ambient_Wind_Desolate",
     # CRACKEDLANDS_GPT_ENRICHMENT_1's five-beat placeholders
-    # (FloodedCanyon/Defs/SoundDefs/RM_CanyonBeats.xml); each verbatim from the
+    # (CrackedLands/Defs/SoundDefs/RM_CanyonBeats.xml); each verbatim from the
     # named vanilla SoundDef's own grain, verified via RimSage 2026-10-01.
     "Ambience/Wind/Amb_Wind_Stormy_Loop": "vanilla Ambient_Wind_Storm",
     # LONGSHADE_GPT_ENRICHMENT_1 §3 placeholder heat beds

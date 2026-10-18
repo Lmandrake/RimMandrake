@@ -43,7 +43,7 @@ bodies, rain, canal flooding, and fluid-to-fluid transformation.
    Alpha Biomes, Dubs Bad Hygiene, VE PipeSystem, VGE — which for the absorbed ManyWaters rows means a
    tinted-vanilla fallback per row, so a liquid never *vanishes*, only its look degrades. The remaining
    true siblings (`GelatinousSlime` registering rows, `WreckedMachines` owning conversion,
-   `FloodedCanyon` as a flood driver) each depend on FlowWorks one-way and must degrade to nothing
+   `CrackedLands` as a flood driver) each depend on FlowWorks one-way and must degrade to nothing
    without it.
 6. **Superb Mod Settings** — every feature a toggle, defaults = shipped behavior,
    all-off is a working game (per the 2026-09-12 standing rule).
@@ -258,7 +258,7 @@ he rules, treat the rows below for those three as live. Design detail:
 | **WreckedMachines** | + Distillation module (three tiers, a patch consuming FlowWorks' converter kit); the found industrial works themselves are FlowWorks' (owner 2026-10-05: liquid machinery is FlowWorks) |
 | **UtinniPatches (RUT)** | Ash'karr worldTag authoring pass; campaign settings defaults |
 | ~~**NEW `RimMandrake: Liquid Logistics`**~~ | **never ships as a mod** — hoses, portable pumps, universal cargo tank, universal pump, per-net adapters and trade-from-tank are FlowWorks' |
-| **FloodedCanyon** | 🔴 was missing from this map entirely. Becomes the **flood-driver client**: keeps its biome and phase clock, depends on FlowWorks for motion (ruling 8, 2026-09-16) |
+| **CrackedLands** | 🔴 was missing from this map entirely. Becomes the **flood-driver client**: keeps its biome and phase clock, depends on FlowWorks for motion (ruling 8, 2026-09-16) |
 
 **v1 third-party seams**: VE PipeSystem (pipe slot + tank adapters), DBH Lite + Thirst
 add-on (drinkables), VGE (astrofuel net adoption), Odyssey (Flood subclass, toxic-water

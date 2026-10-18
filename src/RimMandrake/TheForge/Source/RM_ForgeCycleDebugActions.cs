@@ -8,7 +8,7 @@ namespace RimMandrake.TheForge
     // is "full cycle observable in a quicktest via state reads"; a real
     // cycle runs ~5 in-game days, so these step it deterministically and
     // print the counters (phase, crust cells, gardens, melt losses). Same
-    // pattern as RM_FloodedCanyonDebugActions.
+    // pattern as RM_CrackedLandsDebugActions.
     public static class RM_ForgeCycleDebugActions
     {
         private const string CAT = "RMTheForge";

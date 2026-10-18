@@ -73,11 +73,11 @@ def _fake_installed(drop=()):
 def test_gss_sitting_tier():
     check("tier `fw_gss_sitting` exists", "fw_gss_sitting" in M.TIERS)
     t = M.TIERS["fw_gss_sitting"]
-    # FloodedCanyon ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
-    check("fw_gss_sitting = flowworks want + biomes (carries FloodedCanyon AND ExplosiveGrowth; River Colors is in FlowWorks)",
+    # CrackedLands ships COMPOSED in mandrake.rm.biomes; its standalone packageId never exists at runtime
+    check("fw_gss_sitting = flowworks want + biomes (carries CrackedLands AND ExplosiveGrowth; River Colors is in FlowWorks)",
           t["want"] == M.TIERS["flowworks"]["want"] + ["mandrake.rm.biomes"], t["want"])
     check("fw_gss_sitting never wants the composed members' own ids",
-          "mandrake.rm.floodedcanyon" not in t["want"] and "mandrake.rm.explosivegrowth" not in t["want"])
+          "mandrake.rm.crackedlands" not in t["want"] and "mandrake.rm.explosivegrowth" not in t["want"])
     check("fw_gss_sitting forbids the folded ExplosiveGrowth standalone id (it would load twice)",
           "mandrake.rm.explosivegrowth" in t["forbid"])
     check("fw_gss_sitting dlc True (all five expansions)", t["dlc"] is True)
@@ -90,7 +90,7 @@ def test_gss_sitting_tier():
     check("biomes orders after flowworks",
           ordered.index("mandrake.rm.biomes") > ordered.index("mandrake.rm.flowworks"), ordered)
     check("guard still refuses stale pits on this tier", M.tier_guard(t, ordered + ["mandrake.rm.pits"]) != [])
-    # planted: the composed biomes mod (FloodedCanyon's only carrier) not installed -> missing, and the CLI tier build refuses (exit 1, nothing written)
+    # planted: the composed biomes mod (CrackedLands's only carrier) not installed -> missing, and the CLI tier build refuses (exit 1, nothing written)
     inst = _fake_installed(drop=("mandrake.rm.biomes",))
     _, missing, _ = M.resolve_tier("fw_gss_sitting", inst)
     check("planted: missing biomes is reported", missing == ["mandrake.rm.biomes"], missing)

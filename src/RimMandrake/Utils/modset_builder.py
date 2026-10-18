@@ -167,8 +167,8 @@ TIERS = {
     },
     "fw_gss_sitting": {
         "why": "FW/GSS owed-criteria sitting (Transient/flowworks_gss_owed_20261011.md section 3): the `flowworks` "
-               "tier plus FloodedCanyon and ExplosiveGrowth, so FloodedCanyon/validation.py runs on the same load "
-               "(River Colors, once its own mod here, is part of FlowWorks since 2026-10-16). FloodedCanyon has NO runtime packageId: it ships "
+               "tier plus CrackedLands and ExplosiveGrowth, so CrackedLands/validation.py runs on the same load "
+               "(River Colors, once its own mod here, is part of FlowWorks since 2026-10-16). CrackedLands has NO runtime packageId: it ships "
                "composed in mandrake.rm.biomes (Biomes.compose.json), so that is what loads, and biomes hard-depends "
                "on sarg.alphabiomes -- this tier therefore CANNOT carry the flowworks tier's Alpha Biomes forbid, "
                "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
@@ -747,7 +747,7 @@ TIERS["acc_biomes"] = {
 
 TIERS["live_20261008"] = {
     "why": "FOUNDRY live checks 2026-10-08: HugeThings titanic cctor fix, Contagion/Wasteland suites and Ledges of Mercy "
-           "(FloodedCanyon) on the composed biomes mod.",
+           "(CrackedLands) on the composed biomes mod.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.hugethings"],
     "dlc": True,
 }

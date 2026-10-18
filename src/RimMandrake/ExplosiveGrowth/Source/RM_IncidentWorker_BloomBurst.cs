@@ -22,7 +22,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// The FLOOD_WITNESS_EVENT_1 contract (design doc §5): the map-scale
     /// invocation. The quest passes nothing but the map. The incident
     ///   1. soaks every floor cell the flood wetted — i.e. every cell this
-    ///      engine currently holds as soaked (FloodedCanyon pushes its flood
+    ///      engine currently holds as soaked (CrackedLands pushes its flood
     ///      footprint in); with nothing soaked it falls back to a flood-shaped
     ///      blob of open fertile ground, so the quest's stub degrades
     ///      gracefully on any map;

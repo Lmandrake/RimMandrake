@@ -74,7 +74,7 @@ PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "
                  "RM_WreckField_Wasteland": "biome", "RM_WreckField_GreyFloor": "floor",
                  "RM_WreckField_TwilightFloor": "floor", "RM_WreckField_ScaldFloor": "floor",
                  "RM_WreckField_BlueDesert": "biome", "RM_WreckField_Miasma": "biome",
-                 "RM_WreckField_FloodedCanyon": "biome", "RM_WreckField_FeverWood": "biome",
+                 "RM_WreckField_CrackedLands": "biome", "RM_WreckField_FeverWood": "biome",
                  "RM_WreckField_TheRot": "biome", "RM_WreckField_Abyss": "biome",
                  "RM_WreckField_Stillsand": "biome", "RM_WreckField_Contagion": "biome"}
 # Step 7, the placement law's Cleaned class (design §3d-i): travelled or inhabited land scatters nothing.

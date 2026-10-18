@@ -27,18 +27,18 @@
       - texture: the frozen twin's "Biomes/AB_PyroclasticConflagration" is an
         Alpha Biomes donor texture. Reused vanilla Core's own
         "World/Biomes/ExtremeDesert" instead — same placeholder choice
-        FloodedCanyon/Wasteland/Pyrelands already make for a hot/arid RM_
+        CrackedLands/Wasteland/Pyrelands already make for a hot/arid RM_
         biome with no closer vanilla equivalent (no lava/volcanic world
         texture ships in vanilla Core) — not invented art, a documented
         stand-in.
 
       - foragedFood: the frozen twin's "AB_RawBrownBarrelCactus" is an Alpha
         Biomes donor-only ThingDef. Reused vanilla "RawAgave" instead — the
-        same vanilla-safe substitute Abyss/FloodedCanyon/Pyrelands
+        same vanilla-safe substitute Abyss/CrackedLands/Pyrelands
         already use for a hot/arid RM_ biome's foraging.
 
     terrainsByFertility keeps the frozen twin's three AB_ terrain bands
-    inline, unguarded — RM_FloodedCanyon_Biome.xml already sets this exact
+    inline, unguarded — RM_CrackedLands_Biome.xml already sets this exact
     precedent (AB_FineForsakenSand inline, no MayRequire) for a donor terrain
     family in an RM_-tier def; terrainsByFertility's own <li> does not carry
     a MayRequire field in the engine anyway.

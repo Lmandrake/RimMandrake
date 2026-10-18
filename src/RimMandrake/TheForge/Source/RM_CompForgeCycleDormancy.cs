@@ -11,7 +11,7 @@ namespace RimMandrake.TheForge
     // ════════════════════════════════════════════════════════════════════
     // FORGE_CYCLE_MECHANICS_1 — creatures that keep the mountain's clock.
     //
-    // Same shape as RM_CompPanSleeper (FloodedCanyon, CRACKEDLANDS_MECHANICS_
+    // Same shape as RM_CompPanSleeper (CrackedLands, CRACKEDLANDS_MECHANICS_
     // BUILD_1 §4), keyed to the Forge's weather instead of water: it drives
     // stock CompCanBeDormant, which the def must also carry with
     // startsDormant + jobDormancy + freezeNeeds (jobDormancy is what HOLDS a

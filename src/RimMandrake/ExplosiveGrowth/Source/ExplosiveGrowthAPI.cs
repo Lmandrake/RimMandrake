@@ -6,7 +6,7 @@ namespace RimMandrake.ExplosiveGrowth
 {
     /// <summary>
     /// The public surface other mods call. Baroque Biomes' own members
-    /// (FloodedCanyon's flood, the Environmental Hazards kit's M2 blower and
+    /// (CrackedLands's flood, the Environmental Hazards kit's M2 blower and
     /// M10 grazing hook) call it DIRECTLY, since this engine is composed into
     /// the same mod (EXPLOSIVE_GROWTH_MERGE_COMES_HOME). A mod outside Baroque
     /// Biomes may still bind it by reflection, so keep these signatures stable.

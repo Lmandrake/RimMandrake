@@ -8,7 +8,7 @@ namespace RimMandrake.LeaningScrub
 {
     // ════════════════════════════════════════════════════════════════════
     // MOD SETTINGS — MOD_OPTIONS_RETROFIT_1 doctrine, biome_mod_architecture.md
-    // §6a's template. Precedent: RM_FloodedCanyonMod.cs / RM_GreentideMod.cs.
+    // §6a's template. Precedent: RM_CrackedLandsMod.cs / RM_GreentideMod.cs.
     //
     // Its own mechanics (LEANINGSCRUB_MECHANICS_BUILD_1) each carry a switch
     // below. Two further mechanics its biome def touches (the venomvine

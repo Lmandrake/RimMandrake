@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FLOOD_CANYON_BIOME_1. Generic sibling of a frozen campaign world's own
+     canyon biome sketch elsewhere in this repo (the source sheet's flood,
+     chime and soil mechanics), rebuilt with zero campaign-specific content
+     so it can generate on any player's own world. Vanilla-core roster only
+     — no third-party bestiary, no MayRequire on a fauna mod. Reuses the
+     vanilla ExtremeDesert world-map texture rather than commissioning new
+     art for v1 (same call WeatherSuite's instrument mast made). -->
+<Defs>
+
+  <BiomeDef>
+    <!-- defName kept as the live alias until the world remake (CRACKEDLANDS_FULL_RENAME_1, question card
+         2026-10-10): the canonical start save carries it. Everything else in this mod is CrackedLands. -->
+    <defName>RM_FloodedCanyon</defName>
+    <label>the Cracked Lands</label>
+    <description>Dry, cracked, shadowed canyon country under a hard sun — most of the time. Rarely and without warning, the water comes down: a wall tearing through the canyon floor that drowns whatever stands in it and leaves real soil behind once it drains. Warning chimes ring ahead of the flood for anyone who knows to listen.</description>
+    <workerClass>RimMandrake.CrackedLands.RM_BiomeWorker_CrackedLands</workerClass>
+    <texture>World/Biomes/RM_CrackedLands</texture>
+
+    <modExtensions>
+      <li Class="RimMandrake.CrackedLands.RM_CrackedLandsBiomeRanges">
+        <temperature>9~45</temperature>
+        <rainfall>0~800</rainfall>
+        <elevation>200~2000</elevation>
+        <baseScore>34</baseScore>
+        <degreeWeight>0.3</degreeWeight>
+        <rainfallDivisor>200</rainfallDivisor>
+        <spawnChance>0.03</spawnChance>
+      </li>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "lowSun" - the Cracked Lands: the_cracked_lands.md "the open flats lethal by exposure", "Shade is in the cuts; the sun owns the flats", sun ~21 degrees.
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
+        <heatKind>lowSun</heatKind>
+        <heatOffsetC>25</heatOffsetC>
+      </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Cracked Lands</letterLabel>
+        <letterText>Water comes rarely and it comes down the canyon as a wall: it drowns what stands in its path. Chimes ring ahead of it in stages; when you hear them, get out of the cut. When it drains it leaves real soil in the shade, the one dryland ground you can farm. The sun owns the flats. It sits low, so a roof does nothing here: only a lee shadow helps, a canyon wall, a rock face, or a sun shield to stand behind. A parasol barely helps.</letterText>
+      </li>
+    </modExtensions>
+
+    <animalDensity>0.5</animalDensity>
+    <plantDensity>0.12</plantDensity>
+    <wildPlantRegrowDays>30</wildPlantRegrowDays>
+    <movementDifficulty>1.3</movementDifficulty>
+    <forageability>0.2</forageability>
+    <foragedFood>RawAgave</foragedFood>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <!-- FLOODEDCANYON_RM_MOD_BUILD_1: ported from the campaign twin
+             (RUT_CrackedLands.xml) — plain vanilla-Core disease incidents
+             (Core/Defs/Storyteller/Incidents_Map_Disease.xml), not campaign
+             flavor, so they belong on the generic RM_ tier body rather than
+             behind a Utinni patch. The twin's own value (40) is used. -->
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>70</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>0.7</max>
+      </li>
+      <li>
+        <terrain>Soil</terrain>
+        <min>0.7</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- RM_PeakstormLight: CRACKEDLANDS_MECHANICS_BUILD_1 §5, the herald sky
+         (zero precipitation by construction). Commonality 3 is a calibration
+         pick, not a ruled number. The campaign REPLACES this whole table
+         (UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 4, ban 5) and
+         carries its own RM_PeakstormLight row there. -->
+    <baseWeatherCommonalities>
+      <Clear>20</Clear>
+      <RM_PeakstormLight>3</RM_PeakstormLight>
+      <Rain>0</Rain>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <DryThunderstorm>2</DryThunderstorm>
+      <RainyThunderstorm>0</RainyThunderstorm>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowGentle>0</SnowGentle>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+      <SnowHard>0</SnowHard>  <!-- owner 2026-10-16: "Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation" -->
+    </baseWeatherCommonalities>
+
+    <!-- CRACKEDLANDS_RULED_CONTENT_1 (2026-09-28 bedazzle sitting): the vanilla
+         terrestrial zoo (Iguana/Dromedary/Fox_Fennec/Warg/Rat/Cougar) and its
+         inline vanilla flora are evicted per the sitting's roster ruling and
+         replaced with this biome's own invented cast, so the free RM_ mod
+         reads as a real biome rather than reskinned vanilla (Q11a: "the free
+         mod looks the same as the campaign one"). True Star Wars canon
+         (gornt, can-cell, convor, woolamander) stays gated behind
+         mandrake.rsw.swbestiary in WildAnimals_CrackedLands.xml, not here —
+         only invented/non-canon content ships inline on this tier.
+         RM_Irqit (mudflat cohort breeder) deliberately carries NO row here:
+         it is mechanically cohort-spawned off the flood component's
+         soaked-cell list at recede (CRACKEDLANDS_MECHANICS_BUILD_1), not an
+         ambient roamer — a static wildAnimals commonality would make it
+         spawn year-round, contradicting "outside flood-weeks the biome shows
+         zero irqit and that is correct." -->
+    <!-- Franchise rows (RUT_SealedSleeper, RUT_EmperorVulture, RSW_SandLeaper, RSW_SandPillar,
+         RSW_Creature_Mantrap, RSW_MutagenicNorphea) live ONLY in the Utinni layer:
+         UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 2. Naming them here
+         raised unresolved cross-references + a ConfigErrors NRE on the free tier. -->
+    <wildAnimals>
+      <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->
+      <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (stone-hide uttaqar) - rare -->
+      <RM_Tarruq>0.12</RM_Tarruq>  <!-- the voice - year-round Patient resident -->
+    </wildAnimals>
+    <!-- Flora is thin outside the shade line by design (Veqma's own placement
+         law is shade-only) — NOT a completeness gap this pass owns. The
+         campaign's WildAnimals_CrackedLands.xml Op3 already carries a fuller
+         alien-flora set (AB_HardyGrass/GRimMoss/AB_GargantuanLithops, none
+         RUT_-tier-locked) for open ground; porting those three onto this base
+         tier too is a reasonable near-term follow-up for "looks the same as
+         the campaign" parity, but the 2026-09-28 bedazzle sitting only ruled
+         Veqma as new flora content — not done here to avoid inventing beyond
+         what was ruled. -->
+    <wildPlants>
+      <RM_TwistingThorngrass>0.5</RM_TwistingThorngrass>  <!-- twisting thorngrass -->
+      <RM_TwistingThornweed>0.4</RM_TwistingThornweed>  <!-- twisting thornweed -->
+      <RM_CrackedThornwood>0.2</RM_CrackedThornwood>  <!-- twisting thornwood - tree -->
+      <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - shade line only -->
+      <!-- CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 (gated by floraExpansionEnabled) -->
+      <RM_Nabbuq>0.25</RM_Nabbuq>
+      <RM_Ruqqal>0.3</RM_Ruqqal>
+      <RM_Sevvuq>0.2</RM_Sevvuq>
+      <RM_Zennaq>0.1</RM_Zennaq>
+      <RM_Luqqim>0.1</RM_Luqqim>
+      <RM_Harrovaq>0.06</RM_Harrovaq>
+    </wildPlants>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_CrackedLands</li>
+    </extraGenSteps>
+  </BiomeDef>
+
+</Defs>

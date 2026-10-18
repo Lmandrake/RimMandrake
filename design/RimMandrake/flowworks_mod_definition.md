@@ -12,7 +12,7 @@ rulings** are recorded below and are his; unnumbered prose is still agent draft.
 `RimMandrake.FlowWorks`, and `RimMandrakeFlowWorks.dll` was rebuilt in the same pass so no XML
 class field outlives the assembly it names. Phase 1 also **merged Pits, ManyWaters and LiquidTypes
 into this one mod** (sub-namespaces `RimMandrake.FlowWorks.{Pits,ManyWaters,LiquidTypes}`, one
-assembly) and executed ruling 24's deletions. GelatinousSlime, WreckedMachines and FloodedCanyon
+assembly) and executed ruling 24's deletions. GelatinousSlime, WreckedMachines and CrackedLands
 stay siblings.
 
 Position in the family: FlowWorks is the **liquid engine itself** — depth is its primitive (ruling 18),
@@ -116,7 +116,7 @@ against the current source, not the previous pass's prose.)*
 | Filled vs unfilled movement cost | **BUILT** | The dry ladder is differentiated (`pathCost` 30/45/80 on `RM_Channel_Empty/Mid/Deep`, 300 on `Superdeep`), and fill tiers vary too — water `Half` 42, `Brim`/`Superdeep` 300 (`Trace` inherits); tar `Trace` 100, `Half` 200, `Brim`/`Superdeep` 300. Not the flat `pathCost` 6 a stale reading once claimed |
 | Ignition, long burn, fire reaching the source | **BUILT OFFLINE 2026-10-05 (`RM_LiquidFire`, Phase 6), no live proof yet; the row below describes the superseded spike** | `LiquidIgnitionMapComponent` (`LIQUID_TYPES_SPIKES_1`) triggers only on an adjacent existing `Fire` Thing, then calls `FireUtility.TryStartFireIn` — vanilla's own entry point, which then rides vanilla's own `TrySpread`. Gated off by default (`liquidIgnitionEnabled = false`) and never ticked in a live game. The premise once flagged UNVERIFIED is now confirmed via RimSage against `RimWorld/FireUtility.cs:40-58,230-241` and `RimWorld/Fire.cs:242-280`: both read `TerrainDef.GetStatValueAbstract(StatDefOf.Flammability)` directly, with **no trigger of their own** — so a fluid terrain shipping `Flammability > 0` would auto-ignite on vanilla's own schedule with no thermal/electrical cause, violating the hard ban. That is exactly why fluid terrain must ship `Flammability ≈ 0` and the trigger lives in this component instead. "Burns for a very long time" and "lights its source" remain unbuilt |
 | Slime near-uncrossable, slow to escape | **BUILT OFFLINE 2026-10-16 (`SLIME_CROSSING_BUILD_SLIPPERY_SLOPE`), no live proof yet** | `RM_SlimeSlip` (FlowWorks, not GelatinousSlime): a pawn walking through a dug cell whose fluid has `FluidDef.slipperiness` > 0 (the four slimes ship 1) slips about once in three seconds at brim, each slip a stun with a "Slipped in the …" text; a slip on the climb out slides it back to the start of the step (×2 as often). Slime fill `pathCost` 200/300/450/450 so routes avoid it. Natural slime ground slips too (owner, 2026-10-16: *"Natural slime should also be slippery."*): `RM_SlipperyTerrain` on the 16 wet natural slime terrains (`Patches/Canals/RM_SlipperySlimeGround.xml`; hardened slime, slime grass and slime stone left out), no climb-out slide there; natural pools walk at 200 shallow / 450 deep. Mod Settings `slimeSlipEnabled` + three tuning numbers; math in `RM_SlimeMath` (SlimeChecks selftest); first script chain `slime_slip` in `northstar/extensions.py`; review map station 12 |
-| Irrigation — plants near a filled canal act watered | **UNBUILT here, but SOLVED next door** | No effect of any kind in FlowWorks — but `FloodedCanyon` already ships the whole mechanism and it is copyable nearly verbatim. §11 |
+| Irrigation — plants near a filled canal act watered | **UNBUILT here, but SOLVED next door** | No effect of any kind in FlowWorks — but `CrackedLands` already ships the whole mechanism and it is copyable nearly verbatim. §11 |
 | Liquid roster | **PARTIAL** | Two `FluidDef`s now: `RM_Fluid_Water`, `RM_Fluid_Tar`. `RM_FluidSpring_Test` no longer exists — ruling 24 removed the source-as-building concept it was testing |
 | Mod Settings | **BUILT** | `RimMandrakeFlowWorksMod.cs` carries 22 public settings fields (MEASURED), roughly one per mechanic per the 2026-09-12 rule — not the three (`canalFlowEnabled`, `flowRateMultiplier`, `floodVolumeMultiplier`) a stale reading once named, and the drip/re-flood fields it also named are gone with `CompFluidReservoir` |
 | Art | **UNBUILT** | Zero bespoke textures. Channel reuses `Terrain/Surfaces/Gravel`; every fill tier for BOTH water and tar reuses vanilla `Water*Ramp` textures (`TAR_VISCOUS_SURFACE_ART_1` tracks adopting Alpha Biomes' own tar art instead of authoring bespoke). The designator uses `UI/Designators/Mine`. §7 |
@@ -346,7 +346,7 @@ channels (2026-09-12 standing rule).
    empties the *source*, since fire reaching it is your design.
 5. **How does fire reach the source?** Cell by cell along the surface (a fuse the player can cut), or
    instantly once any connected cell lights (a punishment)?
-6. **Irrigation effect and radius.** ⚠️ Largely answered by §11 — `FloodedCanyon` already does this
+6. **Irrigation effect and radius.** ⚠️ Largely answered by §11 — `CrackedLands` already does this
    with a decaying per-cell growth multiplier plus a terrain swap to `SoilRich` on recede, both
    settings-gated. What is left for you is the *feel*: what multiplier, what radius from a filled
    cell, how many days the soak lasts after a canal empties, and whether a **partially** filled canal
@@ -407,10 +407,10 @@ an `innerContainer` (`DestroyMode.Vanish`, which is why its validator asserts
 `expect_pawn_despawned`). The closest sketch of in-place stuckness is
 `design/Jawa/proposals/tar_pits_deep_design.md`'s hediff-based model, which was never built.
 
-## 11. Irrigation and the MapComponent walk are already built — in FloodedCanyon
+## 11. Irrigation and the MapComponent walk are already built — in CrackedLands
 
 🔑 **The two things this document called hardest already exist in a sibling mod.** VERIFIED
-first-hand 2026-09-16 by reading the source, not inferred from a doc — `src/RimMandrake/FloodedCanyon/Source/`:
+first-hand 2026-09-16 by reading the source, not inferred from a doc — `src/RimMandrake/CrackedLands/Source/`:
 
 - **`RM_MapComponent_CanyonFlood`** (`RM_MapComponent_CanyonFlood.cs:36`) is a `MapComponent` that
   owns a phased flood cycle end to end — `Phase.Dry` → chime → wall → flood → `RecedeFlood()` — with
@@ -421,7 +421,7 @@ first-hand 2026-09-16 by reading the source, not inferred from a doc — `src/Ri
   ⇒ **This is §6 option B, already working.** Owning a pulsed, map-level, save-safe, per-cell flow
   engine is a solved problem in this repo. Port it; do not design it.
 - **`SoakFactorAt(IntVec3 cell, int nowTick)`** (`:66`) returns a decaying per-cell growth multiplier,
-  documented "never allocates", gated on `RM_FloodedCanyonSettings.growthCouplingEnabled`.
+  documented "never allocates", gated on `RM_CrackedLandsSettings.growthCouplingEnabled`.
 - **`RM_Patch_Plant_GrowthRate`** (`RM_Patch_Plant_GrowthRate.cs`) is a Harmony **postfix on the
   `Plant.GrowthRate` GETTER**, multiplying on top of the result so every vanilla `GrowthRateFactor_*`
   is still respected — its own comment says exactly that, and it follows a second in-repo precedent,
@@ -592,15 +592,15 @@ rendering a magic number. Treated as an implementation detail unless he wants th
 
 ## 15. Rulings — owner, 2026-09-16, third sitting: this mod is the engine
 
-**8. One engine, in FlowWorks; FloodedCanyon becomes a driver.** The occupancy engine — cells,
+**8. One engine, in FlowWorks; CrackedLands becomes a driver.** The occupancy engine — cells,
 fill tiers, hold, recede, soak, conservation bookkeeping — lives here and exposes a driver interface
 with a **per-driver recede policy**: `restore-original` for canals, `convert-to` for canyon floods
-("death, then soil"). FloodedCanyon keeps its biome, its phase clock and its own settings, and
+("death, then soil"). CrackedLands keeps its biome, its phase clock and its own settings, and
 depends on this mod for motion.
 
 This needs no reversal: framework pillar 2 already reads *"all map motion is event-shaped (flood,
 drip, spill, **seasonal**) via the FlowWorks engine"* — seasonal being the canyon case exactly — and
-FloodedCanyon is absent from the §5 client map entirely. It grew outside the plan and duplicated the
+CrackedLands is absent from the §5 client map entirely. It grew outside the plan and duplicated the
 engine the plan had already named. Add it to that client map as **flood driver client**.
 
 Immediate consequence already filed as `CANYON_FLOOD_ERASES_CANALS_1`: today a canyon flood's
@@ -712,7 +712,7 @@ So the final shape:
 | **Fluidity** | the registry (`LiquidDef`, generator, `RM_LiquidProperties`), the occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, the roster (absorbing Many Waters), and the hardware (containers, tubing, pumps, adapters) |
 | **GelatinousSlime** | stays a sibling that **registers into** Fluidity — its slime is a row; its genes and hediffs ("geneslime") remain its own, because a gene is not a liquid property |
 | **WreckedMachines** | distillation and every other conversion, on the principle above |
-| **FloodedCanyon** | flood-driver client (ruling 8) |
+| **CrackedLands** | flood-driver client (ruling 8) |
 
 ⚠️ Absorbing the registry makes Fluidity a **hard dependency** for anything liquid-adjacent, and
 `LiquidTypes` already ships 17 terrain suites whose defNames other mods patch. That migration is real
@@ -756,7 +756,7 @@ Your advice is welcome here."*
    period rather than an instant swap, which is the difference between terraforming that feels earned
    and terrain that pops.
 3. **Make the dried result FERTILE — `SoilRich`, not `Soil`.** Reclaimed lakebed is the best farmland
-   there is, and this is already the repo's own idiom: `FloodedCanyon.RecedeFlood()` converts flood
+   there is, and this is already the repo's own idiom: `CrackedLands.RecedeFlood()` converts flood
    cells to `SoilRich` under the comment *"death, then soil"*. Following it makes filling in shallow
    water a genuine **farming** strategy on a desert world, which serves irrigation — his second-ranked
    motivation — without a single new mechanic.
@@ -841,7 +841,7 @@ He overruled §19's composition model, with a better argument than the one it re
 level* independently, and liquid behaviour is **defined** by depth — liquid seeks the low cell, fills to
 a level, and how deep it is decides whether you wade, drown or cannot climb out. §19 argued ownership
 hygiene; that was the weaker frame, because splitting depth across two mods means **two mods both own
-"how deep is this cell"** — the exact two-owners-one-cell defect §15 objects to in FloodedCanyon. So
+"how deep is this cell"** — the exact two-owners-one-cell defect §15 objects to in CrackedLands. So
 Pits is absorbed into Fluidity, and `pathCost` 30 (ruling 17) stops being "matching Pits" and becomes
 one mod's single answer.
 

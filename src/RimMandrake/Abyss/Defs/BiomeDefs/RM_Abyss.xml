@@ -13,7 +13,7 @@
         mod's own RM_BiomeWorker_Abyss (§5 step 2 — a donor type in
         workerClass is a hard dependency the RimMandrake tier may not assume).
         The new worker's placement ranges are [INVENTED], same footing as the
-        sibling Gelatinous Slime/Flooded Canyon mods' own worker ranges.
+        sibling Gelatinous Slime/Cracked Lands mods' own worker ranges.
 
     Everything else — texture, terrain, weather, diseases — is the twin's content unchanged.
     wildAnimals/wildPlants: ABYSS_SHEET_DONOR_PORT_1 (owner's Abyss sheet 2026-10-05) replaced the 8 Alpha

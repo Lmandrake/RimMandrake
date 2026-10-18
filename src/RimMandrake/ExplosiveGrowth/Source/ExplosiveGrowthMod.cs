@@ -11,7 +11,7 @@ namespace RimMandrake.ExplosiveGrowth
     // behaviour, all-off degrades gracefully. House style: static fields read
     // from everywhere (the Harmony postfixes run far from any Mod instance),
     // written only through this window and ExposeData — same as
-    // FloodedCanyon's and PlantGrowth's settings.
+    // CrackedLands's and PlantGrowth's settings.
     //
     // Every number below that is not a ruling is 🄸 INVENTED and says so.
     // ════════════════════════════════════════════════════════════════════
