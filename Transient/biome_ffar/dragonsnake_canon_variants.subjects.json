@@ -1,0 +1,70 @@
+{
+ "schema": 1,
+ "generated": "2026-10-18T09:15:04-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_dragonsnake_canon_variants"
+ ],
+ "biomes": {
+  "SUBJECTS_dragonsnake_canon_variants": {
+   "label": "Dragonsnake canon variants (JFO)",
+   "slug": "dragonsnake_canon_variants",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Dragonsnake canon variants (JFO) \u2014 game art",
+   "lead_html": "",
+   "rows": [
+    {
+     "key": "RSW_Dragonsnake",
+     "kind": "fauna",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Dragonsnake",
+     "defNames": [
+      "RSW_Dragonsnake"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [
+      "dragonsnake_jfo_vara_v1_east",
+      "dragonsnake_jfo_vara_v1_north",
+      "dragonsnake_jfo_vara_v1_south",
+      "dragonsnake_jfo_varb_v1_east",
+      "dragonsnake_jfo_varb_v1_north",
+      "dragonsnake_jfo_varb_v1_south",
+      "dragonsnake_jfo_varc_v1_east",
+      "dragonsnake_jfo_varc_v1_north",
+      "dragonsnake_jfo_varc_v1_south",
+      "dragonsnake_jfo_vard_v1_east",
+      "dragonsnake_jfo_vard_v1_north",
+      "dragonsnake_jfo_vard_v1_south"
+     ],
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/dragonsnake",
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/Dragonsnake/Dragonsnake",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RSW_Dragonsnake"
+        ]
+       }
+      ],
+      "searched": "live def dump: RSW_Dragonsnake found"
+     }
+    }
+   ]
+  }
+ }
+}
