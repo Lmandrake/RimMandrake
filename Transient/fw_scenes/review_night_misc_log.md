@@ -1,0 +1,8 @@
+# review_night_misc log 2026-10-17 (scratch review_misc, base 54f5c85bf)
+dirty set: Designator_DigCanal, JobDriver_DigCanal, LiquidTypes/{Building_LiquidPump,IngestionOutcomeDoer_BottleResidue,JobDriver_EmptyBottleIntoTank,RM_BottledLiquidExtension}, Machinery/{PipeLook,PipeStyles,RM_ConversionMath,RM_LiquidSpill}; rest CLEAN
+- Designator_DigCanal.cs (228), JobDriver_DigCanal.cs (123): read whole; nothing (finish action runs after vanilla designation removal; cutLanded per-job). -> CLEAN candidates
+- Building_LiquidPump.cs (587): read whole incl. decilitre rewrite since mark (ChannelTakeUnits/TryTakeDl whole-notch rounding in non-exact mode checked; put-back legs exact). Nothing. -> CLEAN candidate
+- IngestionOutcomeDoer_BottleResidue.cs (84), JobDriver_EmptyBottleIntoTank.cs (84), RM_BottledLiquidExtension.cs (83): read whole; job.count=1 so stackCount=1 empty is right; units resolved before credit. Nothing. -> CLEAN candidates
+- PipeStyles.cs (60): fixed misplaced doc (tank summary sat on WeirDef; two summaries stacked). Doc only; stays DIRTY. RM_ConversionMath.cs (99), PipeLook.cs (261): read whole; nothing. -> CLEAN candidates
+- RM_LiquidSpill.cs (453): read whole incl. decilitre rewrite (PourRoomDl/TryPourDl non-exact whole-level behaviour consistent with OutletRoomDl/BodyRoomDl; FilthCount>=1 for units>0; ReturnToPond ceil is float-noise only: exact-mode TryCredit is whole dL). Nothing. -> CLEAN candidate
+- 9 files marked CLEAN at 54f5c85bf; PipeStyles.cs left DIRTY (doc fix). Skipped CLEAN: Designator_FillInCanal, JobDriver_FillInCanal, Flood_FlowWorks, Drilling/*, 27 LiquidTypes/Machinery files. Build 0 warnings; comment-only change, no selftest affected.
