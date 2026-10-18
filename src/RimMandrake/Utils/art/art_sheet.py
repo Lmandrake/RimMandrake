@@ -1249,6 +1249,8 @@ def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
         if l and l not in {d.get("letter") for d in cols}:
             c["letter"] = l
     free = (l for l in LETTERS if l not in used)
+    if sum(1 for c in cols if not c.get("letter")) > sum(1 for l in LETTERS if l not in used):
+        raise SystemExit(f"art_sheet: a row has more than {len(LETTERS)} picture sets — letters run out; hide or purge some (--hide-sets)")
     for c in cols:
         if not c.get("letter"):
             c["letter"] = next(free)
@@ -2250,7 +2252,7 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
         return out
     faces_order = THING_FACE if size.get("kind") == "thing" else SCALE_FACE
     prim = next((g for g in gitems if g["primary"]), None)
-    if prim is None:
+    if prim is None or not prim["cols"]:     # every set of the primary lane moved to UNASSIGNED / was hidden: nothing to scale
         out["why"] = "no picture to scale"
         return out
     qx = (size.get("drawSize") or [None])[0] if size.get("kind") == "animal" else size.get("quad")
@@ -2493,7 +2495,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     except Exception as e:                                  # noqa: BLE001
         fresh = {"error": f"{type(e).__name__}: {e}"}
     untouched = old is not None and not old.get("savedBy") and not old.get("writeCount") and \
-        (old.get("reviewStatus") or {}).get("state") == "prefill"
+        (old.get("reviewStatus") or {}).get("state") == "prefill" and \
+        not any(isinstance(v, dict) and (v.get("at") or v.get("decidedAt") or v.get("carriedRuledAt") or v.get("carriedFrom")
+                                         or (v.get("note") or "").strip() or v.get("purge"))
+                for v in (old.get("decisions") or {}).values())   # same test as gate req 8: a row he (or a carry) wrote is never regenerated over
     # letters are kept stable only once a human has written to the decisions file; until then every row
     # is lettered A, B, C … afresh, with no gaps left by columns that have since disappeared
     # Memory = the snapshot the owner RULED on (by the decisions file's snapshotId, from git history if a later
