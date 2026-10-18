@@ -224,3 +224,10 @@ not affected.)
 - A — The newest 2 per seat. *Recommended.*
 - B — The newest 5.
 - C — Keep all until you say delete.
+
+## Owner answers 2026-10-18 (BUILDUP_BUILD_CLONES_STOP_BREEDING)
+
+- Q1 Transient/: **stop tracking; commit only folders pinned to keep** (card).
+- Q2 reaper: **yes, delete a scratch clone after 24 h if fully pushed and clean**; anything else alarms (card).
+- Q3 conversations: *"the next handoff plays catchup and takes as long as it takes"* — the handoff commits `conversations/`.
+- Q4 saves: *"We need only save canonical saves plus those awaiting review… we don't need records of long-gone review saves or debugging saves past their usefulness."* A Saves-folder backup lives only until the operation it guards is verified. The two 2026-10-16 BENCH backups (10.8 GB) were deleted on this ruling.
