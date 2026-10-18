@@ -4,10 +4,10 @@ namespace RimMandrake.FlowWorks
 	/// SUPERDEEP_PRISON_ROOM_1 — the Verse-free half of "an enclosed superdeep area is a room".
 	/// Selftested (SelfTest/Program.cs). The Harmony seams live in Superdeep/RM_PitRooms.cs.
 	///
-	/// LAW 2 exception [D] (owner, 2026-09-17, by card): depth may bound a ROOM. This is the
-	/// whole of the exception: whether a cell is a dug SUPERDEEP cell (D = 4) splits regions,
-	/// districts and rooms. Nothing else about rooms, and no other system, reads depth because
-	/// of it — D 1-3 never bound anything, and this is not a precedent for any future reader.
+	/// LAW 2 exception [D] (owner, 2026-09-17, by card): depth may bound a ROOM. Since the relative rules a pit room is a
+	/// person-band pocket whose floor is at least the room depth (RM_PitRooms.IsPitCell). PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER
+	/// (owner card 2026-10-18): that depth is 3.0 m for a person, scaled by body height — <i>"deep enough that an athletic
+	/// human could not reasonably raise their arms over their head and jump a little to grab the edge, then scramble up"</i>.
 	/// </summary>
 	public static class RM_PitRoomMath
 	{
@@ -95,6 +95,35 @@ namespace RimMandrake.FlowWorks
 			if (!held) return CaptureDownVerdict.NotHeld;
 			if (!roomIsPrison) return CaptureDownVerdict.NoPrisonBed;
 			return CaptureDownVerdict.Allowed;
+		}
+
+		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room's floor is 3.0 m down for a person
+		/// (a 1.75 m human's reach overhead, about 2.2 m, plus a small jump). The Mod Setting pitRoomMinDepthMetres is this
+		/// person figure; 0 = any depth.</summary>
+		public const float DefaultRoomDepthMetres = 3.0f;
+
+		/// <summary>The person the room depth is stated for: RM_RelativeRulesMath.HeightByBand[2].</summary>
+		public const float ReferenceHeightMetres = 1.75f;
+
+		/// <summary>The room depth for a creature of this height: the person figure scaled by height / 1.75 m (a 0.5 m creature
+		/// needs about 0.86 m, a 3.5 m one 6 m). A non-positive person figure means any depth (0).</summary>
+		public static float RoomDepthMetresFor(float personMetres, float heightMetres)
+		{
+			if (!(personMetres > 0f))
+			{
+				return 0f;
+			}
+			if (!(heightMetres > 0f) || float.IsInfinity(heightMetres))
+			{
+				heightMetres = ReferenceHeightMetres;
+			}
+			return personMetres * heightMetres / ReferenceHeightMetres;
+		}
+
+		/// <summary>Is a floor this deep a pit room for this creature (it cannot reach up, jump and scramble out)?</summary>
+		public static bool DeepEnoughFor(float floorMetres, float personMetres, float heightMetres)
+		{
+			return floorMetres + 1e-4f >= RoomDepthMetresFor(personMetres, heightMetres);
 		}
 
 		/// <summary>Capture down is a short act, not a fight: the pit already did the work.

@@ -54,6 +54,28 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             const int Person = 2;
 
+            Case("PitRoom_depth_three_metres_scaled_by_body_height", () =>
+            {
+                // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): 3.0 m for a person, scaled by height
+                Assert(RM_PitRoomMath.DefaultRoomDepthMetres == 3.0f && RM_PitRoomMath.ReferenceHeightMetres == RM_RelativeRulesMath.HeightMetres(2),
+                    "the person figure is 3.0 m for the 1.75 m person band");
+                Assert(Math.Abs(RM_PitRoomMath.RoomDepthMetresFor(3f, 1.75f) - 3f) < 1e-4f, "a person: 3.0 m");
+                Assert(Math.Abs(RM_PitRoomMath.RoomDepthMetresFor(3f, 3.5f) - 6f) < 1e-4f, "twice the height, twice the depth");
+                Assert(RM_PitRoomMath.RoomDepthMetresFor(3f, 0.5f) < 1f, "a small creature needs under a metre");
+                Assert(RM_PitRoomMath.RoomDepthMetresFor(0f, 3.5f) == 0f && RM_PitRoomMath.DeepEnoughFor(0f, 0f, 3.5f), "0 = any depth");
+                Assert(RM_PitRoomMath.DeepEnoughFor(3f, 3f, 1.75f) && !RM_PitRoomMath.DeepEnoughFor(2.5f, 3f, 1.75f), "a person: 3 m holds, 2.5 m does not");
+                Assert(!RM_PitRoomMath.DeepEnoughFor(5f, 3f, 3.5f) && RM_PitRoomMath.DeepEnoughFor(6f, 3f, 3.5f), "a huge creature: 6 m, not 5");
+                Assert(RM_PitRoomMath.RoomDepthMetresFor(3f, float.NaN) == 3f, "a NaN height reads as a person");
+                int six = RM_RelativeRulesMath.Notches(RM_PitRoomMath.DefaultRoomDepthMetres, 0);
+                Assert(six == 6 && !RM_RelativeRulesMath.PitRoomCell(true, 5, six) && RM_RelativeRulesMath.PitRoomCell(true, 6, six),
+                    "the room cell test at the shipped 3.0 m: a 2.5 m pocket is no room, 3.0 m is");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                Assert(rooms.Contains("RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target)"), "capture-down asks the size-scaled depth");
+                Assert(rooms.Contains("RM_PitRoomMath.DeepEnoughFor(floorMetres, RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, RM_Drowning.HeightOf(p))"),
+                    "HoldsBySize reads the setting and the pawn's height");
+                string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                Assert(set.Contains("Scribe_Values.Look(ref pitRoomMinDepthMetres, \"pitRoomMinDepthMetres\", 3f);"), "saved with the 3 m default");
+            });
             Case("Relative_spikes_on_a_sheer_drop_at_any_depth", () =>
             {
                 var g = new Grid(20, 12);
@@ -203,14 +225,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("Relative_pit_rooms_person_pocket_any_depth", () =>
             {
-                // V6: a sheer 1.5 m pocket (D 3) is a person-band pocket and a pit room; a 1 m pocket is not a pocket for a person
+                // a sheer 1.5 m pocket (D 3) is a person-band pocket (a pit room only with the setting at 0); a 1 m pocket is not
                 var g = new Grid(12, 7);
                 g.Fill(2, 2, 4, 4, 3);
                 g.Fill(7, 2, 9, 4, 2);
                 var lab = RM_PocketGridMath.Label(g.d, g.w, g.h, Person);
                 Assert(lab.IsPocketCell(3, 3) && !lab.IsPocketCell(8, 3), "1.5 m sheer pocket holds a person; 1 m does not");
-                Assert(RM_RelativeRulesMath.PitRoomCell(lab.IsPocketCell(3, 3), 3, 0), "V6: the 1.5 m pocket is a pit room");
-                Assert(!RM_RelativeRulesMath.PitRoomCell(lab.IsPocketCell(3, 3), 3, 4), "with the 2 m setting (the 2026-10-16 card) it is not");
+                Assert(RM_RelativeRulesMath.PitRoomCell(lab.IsPocketCell(3, 3), 3, 0), "setting 0: the 1.5 m pocket is a pit room");
+                Assert(!RM_RelativeRulesMath.PitRoomCell(lab.IsPocketCell(3, 3), 3, 4), "with a 2 m setting it is not (3 m shipped)");
                 Assert(RM_RelativeRulesMath.PitRoomCell(true, 14, 4) && !RM_RelativeRulesMath.PitRoomCell(false, 14, 0)
                     && !RM_RelativeRulesMath.PitRoomCell(true, 0, 0), "a deep pocket always; a walkable bowl never; undug never");
                 Assert(RM_RelativeRulesMath.Notches(0f, 0) == 0 && RM_RelativeRulesMath.Notches(2f, 0) == 4 && RM_RelativeRulesMath.Notches(1.5f) == 3
@@ -266,7 +288,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int s1 = s0 < 0 ? -1 : set.IndexOf("private static void ApplyChangedSettings()", s0, StringComparison.Ordinal);
                 Assert(s0 >= 0 && s1 > s0, "found the settings window");
                 string screen = set.Substring(s0, s1 - s0);
-                foreach (string f in new[] { "public static float shootingCliffMetres = 2f;", "public static float pitRoomMinDepthMetres = 0f;",
+                foreach (string f in new[] { "public static float shootingCliffMetres = 2f;", "public static float pitRoomMinDepthMetres = 3f;",
                     "public static float fallDamagePerMetrePast2 = 0.5f;", "public static float fallDamageCap = 4f;",
                     "public static float pitDrowningHeadFraction = 0.9f;", "public static float pitDrowningLyingFraction = 0.2f;",
                     "public static float spikeMinDropMetres = 2f;" })
