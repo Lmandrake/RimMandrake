@@ -228,5 +228,32 @@ namespace RimMandrake.FlowWorks
 			}
 			return swimCost + offset;
 		}
+
+		/// <summary>Owner R12: "pawns may swim in water 2 m or deeper", dug or natural.</summary>
+		public const double SwimMinWaterMetres = 2.0;
+
+		/// <summary>SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER (live day 3: a brim-full dug 3 m reservoir read deepCell=False,
+		/// CanReach false): the depth the climb rule judges a DUG square at when it holds swimmable water 2 m or deeper. A
+		/// swimmer floats at the surface, so the step is measured to the water surface, not the floor: hole notches minus the
+		/// whole notches of water (a part-notch never lifts the surface, so the answer never reads shallower than the truth).
+		/// -1 = not a swim square (swimming off, a liquid that is never swum, a dry pit, water under 2 m): the hole's own pit
+		/// rules stand. A brim-full reservoir answers 0 (level with the ground); a 3.5 m sheer pit with 2 m of water answers 3
+		/// (1.5 m of wall above the surface: still a pit for a person, K = 2).</summary>
+		public static int DugSwimClimbDepth(bool swimOn, bool liquidSwimmable, int holeNotches, double waterMetres, int wholeWaterNotches)
+		{
+			if (!swimOn || !liquidSwimmable || holeNotches <= 0 || waterMetres < SwimMinWaterMetres - 1e-6)
+			{
+				return -1;
+			}
+			int s = holeNotches - Math.Max(0, wholeWaterNotches);
+			return s < 0 ? 0 : s;
+		}
+
+		/// <summary>The climb depth of a dug square: its hole, or the swim surface when it is a swim square
+		/// (<see cref="DugSwimClimbDepth"/> &gt;= 0), whichever is shallower.</summary>
+		public static int ClimbDepthWithSwim(int hollowDepth, int swimClimbDepth)
+		{
+			return swimClimbDepth >= 0 && swimClimbDepth < hollowDepth ? swimClimbDepth : hollowDepth;
+		}
 	}
 }

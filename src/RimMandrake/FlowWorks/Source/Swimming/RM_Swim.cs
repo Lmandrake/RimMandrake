@@ -233,9 +233,20 @@ namespace RimMandrake.FlowWorks.Swimming
 			return t.index < swimTerrain.Length && swimTerrain[t.index];
 		}
 
+		/// <summary>A square that is swum: natural deep water, or (SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER) a dug square holding
+		/// swimmable water 2 m or deeper (RM_MapComponent_Excavation.IsDugSwimCell).</summary>
 		public static bool IsDeepSwimCell(Map map, IntVec3 c)
 		{
-			return On && c.InBounds(map) && IsSwimTerrain(map.terrainGrid.TerrainAt(c));
+			if (!On || map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			if (IsSwimTerrain(map.terrainGrid.TerrainAt(c)))
+			{
+				return true;
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			return ex != null && ex.IsDugSwimCell(c);
 		}
 
 		/// <summary>May a creature swim in the liquid on this square (dug: the cell's fluid; natural: the terrain)?</summary>
@@ -326,6 +337,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 			foreach (Map m in Find.Maps)
 			{
+				RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim();   // the dug swim squares follow the master switch
 				m.pathing.RecalculateAllPerceivedPathCosts();
 				m.reachability.ClearCache();
 			}
@@ -774,9 +786,13 @@ namespace RimMandrake.FlowWorks.Swimming
 				g.avoid = null;
 				int n = map.cellIndices.NumGridCells;
 				var deep = new List<int>();
+				RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+				bool dugSwim = ex != null && ex.DugSwimCellCount > 0;
 				for (int i = 0; i < n; i++)
 				{
-					if (RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(map.cellIndices.IndexToCell(i))))
+					IntVec3 cell = map.cellIndices.IndexToCell(i);
+					// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug swim squares close to non-swimmers like natural deep water
+					if (RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(cell)) || (dugSwim && ex.IsDugSwimCell(cell)))
 					{
 						deep.Add(i);
 					}

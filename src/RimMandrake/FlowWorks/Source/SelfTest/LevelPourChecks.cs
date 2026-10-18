@@ -261,6 +261,45 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(!ex.Contains("partLost"), "a fill-in no longer destroys a sheet's part-notch");
 			});
 
+			// HOSE_LEFTOVER_FIX_FULL_CANAL_LOSS (live day 3, S3.c): pond lost 69,750 dL, canal gained 60,000, hoses 0: the 9,750 dL
+			// hose leftover drained onto a brim-full canal, nothing within 6.9 squares had room, no filth lies on water, so it
+			// was the announced loss. The last leg now offers every water home of its kind on the map, nearest first.
+			Case("HOSE_LEFTOVER_full_canal_goes_to_the_nearest_home_with_room", () =>
+			{
+				// the S3 shape: six brim-full canal squares 1..3 squares off, the intake pond 9 squares off with room
+				var dist = new List<long> { 1, 2, 4, 5, 8, 9, 81 };
+				var room = new long[] { 0, 0, 0, 0, 0, 0, 40000 };
+				var got = new long[room.Length];
+				long Take(int i, long want) { long t = Math.Min(room[i], want); room[i] -= t; got[i] += t; return t; }
+				// can-fail: the old search stopped at HomeRadius 6.9 (squared 47.6): none of the in-radius homes had room
+				long inRadius = 0;
+				for (int i = 0; i < dist.Count; i++) if (dist[i] <= 47) inRadius += room[i];
+				Assert(inRadius == 0, "can-fail: within 6.9 squares nothing takes it (the live 975 L loss)");
+				long placed = RM_LevelPour.PlaceNearestFirst(dist, Take, 9750);
+				Assert(placed == 9750 && got[6] == 9750, "all 9,750 dL go back to the pond: " + placed);
+				Assert(69750 - 60000 - placed == 0, "S3 conserves: pond loss = canal gain + placed (hoses 0)");
+				// nearest first, each up to its room, ties in the given order
+				var room2 = new long[] { 500, 300, 10000, 10000 };
+				var got2 = new long[4];
+				long Take2(int i, long want) { long t = Math.Min(room2[i], want); room2[i] -= t; got2[i] += t; return t; }
+				long p2 = RM_LevelPour.PlaceNearestFirst(new List<long> { 9, 4, 25, 9 }, Take2, 2000);
+				Assert(p2 == 2000 && got2[1] == 300 && got2[0] == 500 && got2[3] == 1200 && got2[2] == 0,
+					"order 4, 9 (first given), 9, 25: " + string.Join(",", got2));
+				// truly nowhere: nothing placed, the whole rest is the announced loss
+				Assert(RM_LevelPour.PlaceNearestFirst(new List<long> { 1, 4 }, (i, w) => 0, 9750) == 0, "nowhere: 0 placed");
+				Assert(RM_LevelPour.PlaceNearestFirst(new List<long>(), (i, w) => 0, 9750) == 0, "no homes at all: 0 placed");
+				// a home that over-reports never places more than asked
+				Assert(RM_LevelPour.PlaceNearestFirst(new List<long> { 1 }, (i, w) => w + 5, 100) == 100, "never more than the rest");
+				// production wiring
+				string sp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidSpill.cs"));
+				RiverSwitchFlipChecks.Has(sp, @"rest -= PlaceNearby\(map, cell, liquid, rest\); \} if \(rest > 0\) \{ // HOSE_LEFTOVER_FIX_FULL_CANAL_LOSS[^}]*rest -= PlaceAnywhere\(map, cell, liquid, rest\); \} if \(rest > 0\) \{ // truly nowhere",
+					"the map-wide leg runs after the near search and before the announced loss");
+				RiverSwitchFlipChecks.Has(sp, @"long placed = RM_LevelPour\.PlaceNearestFirst\(dist,", "with the production picker");
+				RiverSwitchFlipChecks.Has(sp, @"foreach \(IntVec3 c in ex\.ExcavatedCells\)", "every dug square is offered");
+				RiverSwitchFlipChecks.Has(sp, @"foreach \(RM_LiquidBody b in ex\.Stock\.Bodies\)", "and every pond body (the intake pond among them)");
+				RiverSwitchFlipChecks.Has(sp, @"\(b\.fluid \?\? ex\.ActiveFluid\) != f", "of the liquid's own kind only");
+			});
+
 			Case("LevelPour_whole_level_pour_is_all_or_nothing", () =>
 			{
 				// review day 3: TryPourDl with exact-level water off poured level by level and returned false after a partial

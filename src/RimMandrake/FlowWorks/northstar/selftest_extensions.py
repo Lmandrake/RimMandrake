@@ -949,20 +949,31 @@ def _new_probes(EXT, RIV, base):
     # put a pawn in the current, so it read UNMEASURED on every pass 4-8. It now stages throwaway colonists on edge
     # river cells and waits for the book to rise. A stateful fake: `wash` = whether the current carries anyone off.
     # turns_npc: RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS, the live 2026-10-17 shape (the same pawn back, as TradersGuild)
-    def swept(before=0, wash=True, edge_water=True, comes_back=True, turns_npc=False):
-        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False}
+    # SWEEP_PRISONER_FIX_NEVER_RETURNS: held_gone = the staged prisoner leaves with the colonist; held_back = it is walked
+    # home with the rest (False: the live day 3 shape, gone and never back); held_status = the guest status the tool reads back
+    def swept(before=0, wash=True, edge_water=True, comes_back=True, turns_npc=False, held_gone=False, held_back=True,
+              held_status="Prisoner"):
+        st = {"pending": before, "spawned": [], "gone": set(), "ticks": 0, "returned": False, "villagers": []}
 
         def h(tl, p):
             if tl == "jawa/static_call" and p.get("method") == "ProofSwept":
                 if p.get("args") == "return":
                     if comes_back:
-                        st["gone"].clear()
+                        lost = set(st["villagers"][:1]) if (held_gone and not held_back) else set()
+                        st["gone"] = set(i for i in st["gone"] if i in lost)
                     st["pending"] = 0
                     st["returned"] = True
                 elif wash and st["spawned"] and st["ticks"] >= 1:
                     st["pending"] = before + 1
                     st["gone"].add(st["spawned"][0])
+                    if held_gone and st["villagers"]:
+                        st["gone"].add(st["villagers"][0])
                 return {"success": True, "result": "SWEPT pending=%d" % st["pending"]}
+            if tl == "jawa/pawn_set_guest_status":
+                pid = p.get("pawn")
+                was = held_status if (st["returned"] and pid == (st["villagers"] or [None])[0]) else (
+                    p.get("guestStatus") if st["returned"] else "Guest")
+                return {"success": True, "guestStatusBefore": was}
             if tl == "jawa/map_info":
                 return {"success": True, "sizeX": 50, "sizeZ": 40}
             if tl == "jawa/get_terrain_batch":
@@ -975,6 +986,8 @@ def _new_probes(EXT, RIV, base):
             if tl == "jawa/spawn_pawn":
                 pid = "P%d" % len(st["spawned"])
                 st["spawned"].append(pid)
+                if p.get("kindDef") == "Villager":
+                    st["villagers"].append(pid)
                 st["ticks"] += 1          # stands in for wait_ticks (a no-op in _ext_run)
                 return {"success": True, "pawns": [{"id": pid}]}
             if tl == "jawa/list_pawns":
@@ -987,7 +1000,9 @@ def _new_probes(EXT, RIV, base):
             return {"success": True}
         return run(RIV, "swept", h).get("returns_home"), st
     for kw, want in (({}, "PASS"), ({"before": 2}, "PASS"), ({"wash": False}, "UNMEASURED"),
-                     ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL"), ({"turns_npc": True}, "FAIL")):
+                     ({"edge_water": False}, "UNMEASURED"), ({"comes_back": False}, "FAIL"), ({"turns_npc": True}, "FAIL"),
+                     ({"held_gone": True}, "PASS"), ({"held_gone": True, "held_back": False}, "FAIL"),
+                     ({"held_gone": True, "held_status": "Guest"}, "FAIL")):
         got, st = swept(**kw)
         if got != want:
             out.append("returns_home %s: %s, want %s" % (kw, got, want))

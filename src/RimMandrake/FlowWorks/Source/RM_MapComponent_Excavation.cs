@@ -320,7 +320,91 @@ namespace RimMandrake.FlowWorks
 		/// or a dry natural bed's depth (POND_BED step 2, RM_Volume.HollowDepth) when hollows are on.</summary>
 		public int ClimbDepthAt(IntVec3 c)
 		{
-			return HollowDepthAt(c);
+			int h = HollowDepthAt(c);
+			if (h == 0 || swimCells.Count == 0)
+			{
+				return h;
+			}
+			return swimClimb.TryGetValue(map.cellIndices.CellToIndex(c), out int s) ? RM_SwimMath.ClimbDepthWithSwim(h, s) : h;
+		}
+
+		// ── SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug water 2 m or deeper is swum (owner R12) ──────────
+		// A swimmer floats at the surface, so the climb rule (pocket grid, cliff masks, RelativeVeto, step cost: all through
+		// ClimbDepthAt / CopyClimbDepth) judges a dug swim square at its WATER SURFACE (RM_SwimMath.DugSwimClimbDepth): a brim-
+		// full reservoir is level ground to a swimmer, a half-full sheer pit still has its wall above the water. The path grid
+		// prices a swim square at the swim cost and the swim offset grids close it to non-swimmers (RM_SwimWater.IsDeepSwimCell
+		// reads IsDugSwimCell). A DRY pit, water under 2 m and a liquid that is never swum keep the pit rules. Derived, never
+		// scribed: refreshed every SwimRefreshTicks and after each pulse; a change moves the climb generation, re-cuts the swim
+		// grids and re-reads those squares' path costs.
+		public const int SwimRefreshTicks = 60;
+		private readonly Dictionary<int, int> swimClimb = new Dictionary<int, int>();
+		private readonly HashSet<int> swimCells = new HashSet<int>();
+
+		/// <summary>A dug square holding swimmable water 2 m or deeper (swimming on).</summary>
+		public bool IsDugSwimCell(IntVec3 c)
+		{
+			return swimCells.Count > 0 && c.InBounds(map) && swimCells.Contains(map.cellIndices.CellToIndex(c));
+		}
+
+		public int DugSwimCellCount => swimCells.Count;
+
+		/// <summary>Re-derive the dug swim squares; returns how many changed (each change re-cuts what reads them).</summary>
+		public int RefreshDugSwim()
+		{
+			bool on = Swimming.RM_SwimWater.On;
+			var fresh = new Dictionary<int, int>();
+			if (on)
+			{
+				foreach (IntVec3 c in excavatedCells)
+				{
+					int i = map.cellIndices.CellToIndex(c);
+					long dl = WaterDl(i);
+					if (dl <= 0)
+					{
+						continue;
+					}
+					int s = RM_SwimMath.DugSwimClimbDepth(true, Swimming.RM_SwimWater.LiquidSwimmableAt(map, this, c), depthGrid[i],
+						RM_LevelSolve.Metres(dl), (int)(dl / RM_LevelSolve.U));
+					if (s >= 0)
+					{
+						fresh[i] = s;
+					}
+				}
+			}
+			var changed = new List<int>();
+			foreach (KeyValuePair<int, int> kv in fresh)
+			{
+				if (!swimClimb.TryGetValue(kv.Key, out int old) || old != kv.Value)
+				{
+					changed.Add(kv.Key);
+				}
+			}
+			foreach (int i in swimCells)
+			{
+				if (!fresh.ContainsKey(i))
+				{
+					changed.Add(i);
+				}
+			}
+			if (changed.Count == 0)
+			{
+				return 0;
+			}
+			swimClimb.Clear();
+			swimCells.Clear();
+			foreach (KeyValuePair<int, int> kv in fresh)
+			{
+				swimClimb[kv.Key] = kv.Value;
+				swimCells.Add(kv.Key);
+			}
+			BumpClimbGeneration();
+			Swimming.RM_SwimPathing.Bump(map);
+			foreach (int i in changed)
+			{
+				map.pathing?.RecalculatePerceivedPathCostAt(map.cellIndices.IndexToCell(i));
+			}
+			map.reachability?.ClearCache();
+			return changed.Count;
 		}
 
 		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2: the depth a square reads as a hole — dug depth, else a dry
@@ -368,13 +452,20 @@ namespace RimMandrake.FlowWorks
 		{
 			int n = System.Math.Min(depthGrid.Length, into.Length);
 			System.Array.Copy(depthGrid, into, n);
-			if (!RimMandrakeFlowWorksSettings.pondBedHollowEnabled || bedCellCount == 0)
+			if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled && bedCellCount > 0)
 			{
-				return;
+				for (int i = 0; i < n; i++)
+				{
+					into[i] = (byte)RM_Volume.HollowDepth(depthGrid[i], bedGrid[i], true);
+				}
 			}
-			for (int i = 0; i < n; i++)
+			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: a dug swim square at its water surface (same rule as ClimbDepthAt)
+			foreach (KeyValuePair<int, int> kv in swimClimb)
 			{
-				into[i] = (byte)RM_Volume.HollowDepth(depthGrid[i], bedGrid[i], true);
+				if (kv.Key < n)
+				{
+					into[kv.Key] = (byte)RM_SwimMath.ClimbDepthWithSwim(into[kv.Key], kv.Value);
+				}
 			}
 		}
 
@@ -2519,6 +2610,12 @@ namespace RimMandrake.FlowWorks
 			if (excavatedCells.Count > 0)
 			{
 				RM_PitFillEffects.Tick(map, this);
+			}
+			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: which dug squares are swum (own timer: pumps, hoses and fill-ins write
+			// water between pulses, and the engine may be off)
+			if ((excavatedCells.Count > 0 || swimCells.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
+			{
+				RefreshDugSwim();
 			}
 			// DEEP_WATER_BUILD_SWIM_OR_SINK: swim exhaustion everywhere, drowning on natural water (own 250-tick timer).
 			Swimming.RM_Swim.Tick(map, this);

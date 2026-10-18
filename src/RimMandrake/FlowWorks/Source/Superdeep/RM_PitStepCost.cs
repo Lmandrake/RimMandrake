@@ -55,13 +55,14 @@ namespace RimMandrake.FlowWorks
 			}
 			// An intact pit cover is ground (PIT_COVER_FALL_REWIRE_1): stepping on or off a deck is surface walking, never a
 			// climb out of the hole beneath it. RM_Patch_PathGrid_PitCoverCost prices the covered cell itself.
-			int to = eng.HollowDepthAt(c);
+			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: the climb depth (a dug swim square at its water surface), not the bare hole
+			int to = eng.ClimbDepthAt(c);
 			Pits.Building_PitCover toCover = to > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, c) : null;
 			if (toCover != null)
 			{
 				to = 0;
 			}
-			int from = eng.HollowDepthAt(prevCell);
+			int from = eng.ClimbDepthAt(prevCell);
 			if (from > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prevCell))
 			{
 				from = 0;
@@ -142,6 +143,13 @@ namespace RimMandrake.FlowWorks
 			int depth = eng.ExcavatedDepthRaw(c);
 			if (depth <= 0)
 			{
+				return;
+			}
+			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug water 2 m or deeper is swum (owner R12), priced like natural deep
+			// water (the swim offset grids close it to non-swimmers), never as a pit nobody crosses
+			if (eng.IsDugSwimCell(c))
+			{
+				baseCostOverride = Swimming.RM_SwimSettings.swimPathCost;
 				return;
 			}
 			TerrainDef temp = map.terrainGrid.TempTerrainAt(c);

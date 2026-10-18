@@ -314,6 +314,64 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "Reapply compares against what the maps were computed under, not the tables");
                 Assert(sw.Contains("&& fp == tableFingerprint)"), "the tables keep their own fingerprint");
             });
+            // SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER (live day 3: a 9x5 dug reservoir, 6 notches, brim-full, "Hole 3 m · Water
+            // 3.00 m": order to the middle CanReach false, a pawn in it read deepCell=False pathCost=300; natural 2 m lakes swim).
+            // Root cause: the climb rule judged a dug square at its HOLE depth whatever water stood in it, so the reservoir was a
+            // sheer 6-notch drop for a person (K = 2): cliff masks closed its lip and RelativeVeto refused the reach; the swim
+            // cost and the swim set read natural deep terrain only. Fix: a dug square holding swimmable water >= 2 m is judged at
+            // its WATER SURFACE (RM_SwimMath.DugSwimClimbDepth), priced at the swim cost and closed to non-swimmers like a lake.
+            Case("SWIM_DUG_reservoir_swimmable_pits_keep_their_rules", () =>
+            {
+                const int K = 2;   // RM_PocketGrid.PersonBand
+                // the live reservoir: 6 notches, 3.00 m, 6 whole notches of water
+                int brim = RM_SwimMath.DugSwimClimbDepth(true, true, 6, 3.0, 6);
+                Assert(brim == 0, "brim-full 3 m reservoir floats a swimmer at ground level: " + brim);
+                Assert(!RM_PitTrapMath.StepAllowed(0, 6, K), "can-fail: pre-fix the lip is a 6-notch cliff for a person (the live CanReach false)");
+                Assert(RM_PitTrapMath.StepAllowed(0, RM_SwimMath.ClimbDepthWithSwim(6, brim), K), "post-fix the lip is a level step");
+                // a 9x5 reservoir in a 13x9 field: pre-fix every reservoir square is a pocket (no way in), post-fix all surface
+                int w = 13, h = 9;
+                var pre = new byte[w * h];
+                var post = new byte[w * h];
+                for (int x = 2; x < 11; x++) for (int z = 2; z < 7; z++)
+                {
+                    pre[z * w + x] = 6;
+                    post[z * w + x] = (byte)RM_SwimMath.ClimbDepthWithSwim(6, brim);
+                }
+                var lp = RM_PocketGridMath.Label(pre, w, h, K);
+                var lq = RM_PocketGridMath.Label(post, w, h, K);
+                Assert(lp.IsPocketCell(6, 4) && !lp.SameComponent(0, 4 * w + 6), "can-fail: pre-fix the reservoir middle is a pocket apart from the shore");
+                Assert(!lq.IsPocketCell(6, 4) && lq.SameComponent(0, 4 * w + 6), "post-fix the middle joins the shore (CanReach)");
+                var d9 = new int[9];
+                Assert(RM_CliffMaskMath.AllowedBits(d9, K) == 0xFF, "the cliff mask opens all eight ways over level water");
+                // pits keep their rules
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 6, 0.0, 0) == -1, "a dry pit is a pit");
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 6, 1.5, 3) == -1, "water under 2 m: the pit rules stand");
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 6, 1.999, 3) == -1, "1.999 m is under the threshold");
+                int sheer = RM_SwimMath.DugSwimClimbDepth(true, true, 7, 2.0, 4);
+                Assert(sheer == 3 && !RM_PitTrapMath.StepAllowed(0, sheer, K),
+                    "a 3.5 m sheer pit with 2 m of water still has 1.5 m of wall above the surface: the prisoner stays held (live PASS)");
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 4, 2.0, 4) == 0, "a brim-full 2 m pit is swum at ground level");
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, true, 6, 2.45, 4) == 2, "a part notch never lifts the surface");
+                Assert(RM_SwimMath.DugSwimClimbDepth(true, false, 6, 3.0, 6) == -1, "oil, slime, brine...: never swum");
+                Assert(RM_SwimMath.DugSwimClimbDepth(false, true, 6, 3.0, 6) == -1, "swimming off: the old pit rules");
+                Assert(RM_SwimMath.ClimbDepthWithSwim(6, -1) == 6 && RM_SwimMath.ClimbDepthWithSwim(2, 4) == 2, "never deeper than the hollow");
+                // production wiring
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"int s = RM_SwimMath\.DugSwimClimbDepth\(true, Swimming\.RM_SwimWater\.LiquidSwimmableAt\(map, this, c\), depthGrid\[i\], RM_LevelSolve\.Metres\(dl\), \(int\)\(dl / RM_LevelSolve\.U\)\);",
+                    "the refresh runs the production rule on every dug square");
+                RiverSwitchFlipChecks.Has(ex, @"into\[kv\.Key\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[kv\.Key\], kv\.Value\);", "the pocket grid and the cliff masks read the swim surface");
+                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
+                RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
+                RiverSwitchFlipChecks.Has(ex, @"% SwimRefreshTicks == 11\) \{ RefreshDugSwim\(\); \}", "refreshed on its own timer");
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                Assert(sw.Contains("return ex != null && ex.IsDugSwimCell(c);"), "IsDeepSwimCell counts dug swim squares (deepCell, items, drop pods, non-swimmer reach, swim speed)");
+                Assert(sw.Contains("|| (dugSwim && ex.IsDugSwimCell(cell))"), "the swim offset grids close dug swim squares to non-swimmers");
+                Assert(sw.Contains("RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim();"), "the master switch re-derives them");
+                string sc = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStepCost.cs"));
+                RiverSwitchFlipChecks.Has(sc, @"if \(eng\.IsDugSwimCell\(c\)\) \{ baseCostOverride = Swimming\.RM_SwimSettings\.swimPathCost; return; \}",
+                    "a dug swim square costs the swim cost, not the wet-pit 300");
+                Assert(sc.Contains("int to = eng.ClimbDepthAt(c);") && sc.Contains("int from = eng.ClimbDepthAt(prevCell);"), "the walked step reads the climb depth");
+            });
             // Review day 2 (2026-10-17): drowning in wadeable natural water (a downed person in 0.5 m shallows) is an open owner
             // question; it stays shipped ON, but one setting must turn it off ALONE (deep water and pits keep the rule).
             Case("Swim_shallow_drowning_switch_alone", () =>

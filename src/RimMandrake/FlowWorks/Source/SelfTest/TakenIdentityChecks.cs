@@ -137,6 +137,63 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(c.faction == PirateWaster && c.host == Player && c.guest == GuestPrisoner, "a prisoner is unaffected: " + c.State);
             });
 
+            // SWEEP_PRISONER_FIX_NEVER_RETURNS (live day 3, sweep_identity.json): the prisoner staged in moving water on the
+            // map edge was gone at tick 250 (the river took the colonist and the muffalo at 500), never booked (2 for 3), and
+            // after ProofSwept "return" still off the map, still a Prisoner. It escaped (vanilla JobGiver_PrisonerEscape: its
+            // district touches the edge, so it exits from the edge cell at once), so the river's Take never ran.
+            Case("SWEEP_PRISONER_escape_into_the_current_is_a_sweep", () =>
+            {
+                var cases = new[]
+                {
+                    ("prisoner", new FakePawn { id = 49770, faction = PirateWaster, host = Player, guest = GuestPrisoner }),
+                    ("slave", new FakePawn { id = 49771, faction = Player, host = None, guest = GuestSlave }),
+                };
+                foreach (var (label, p0) in cases)
+                {
+                    // The edge exit, with and without the prefix: swept -> the service's take (held, booked); else vanilla's
+                    // ExitMap (PassToWorld, Decide: no hold, no record; nothing ever brings it back).
+                    bool Exit(FakePawn fp, FakeWorld fw, List<int> bk, bool prefix)
+                    {
+                        bool swept = prefix && RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, true, true, false, true, false);
+                        if (swept) { fw.held.Hold(fp.id); bk.Add(fp.id); }
+                        fp.spawned = false;
+                        fw.PassToWorld(fp);
+                        return swept;
+                    }
+                    var w0 = new FakeWorld();
+                    var book0 = new List<int>();
+                    var pre = new FakePawn { id = p0.id, faction = p0.faction, host = p0.host, guest = p0.guest };
+                    Assert(!Exit(pre, w0, book0, prefix: false) && book0.Count == 0 && !w0.held.Contains(pre.id) && !pre.spawned,
+                        label + " can-fail: pre-fix the escape leaves it in the world, unbooked and unheld (the live 2 for 3, never back)");
+                    var book = new List<int>();
+                    var w1 = new FakeWorld();
+                    var probe = new FakePawn { id = p0.id, faction = p0.faction, host = p0.host, guest = p0.guest };
+                    Assert(Exit(probe, w1, book, prefix: true) && book.Contains(probe.id) && w1.held.Contains(probe.id),
+                        label + ": with the fix the exit into the current is booked and held");
+                    var w = new FakeWorld();
+                    RM_TakenByLandKernel.TakenState before = p0.State;
+                    var back = TakeAndReturn(p0, w, holdFirst: true, restore: true);
+                    Assert(back.spawned && back.id == p0.id, label + ": back on the map, same pawn");
+                    Assert(RM_TakenByLandKernel.NeedsRestore(before, back.State) == RM_TakenByLandKernel.RestoreNeed.None,
+                        label + ": still the player's " + label + ": " + back.State + " vs " + before);
+                }
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, true, true, false, false, false), "an escape over dry ground stays vanilla's");
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, true, true, true, true, false), "a released prisoner walks off free");
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, true, false, false, true, false), "a colonist or stranger exit is not this rule");
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, true, true, false, true, true), "a caravan or a teleport leaves as vanilla says");
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(false, true, true, false, true, false), "edge washing off: vanilla's escape");
+                Assert(!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(true, false, true, false, true, false), "no current running: vanilla's escape");
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("TakenByLand", "RM_TakenByLand.cs"));
+                RiverSwitchFlipChecks.Has(src, @"\[HarmonyLib\.HarmonyPatch\(typeof\(Pawn\), nameof\(Pawn\.ExitMap\)\)\] public static class RM_Patch_EscapeIntoCurrentIsSwept",
+                    "the ExitMap prefix exists");
+                RiverSwitchFlipChecks.Has(src, @"!\(p\.IsPrisonerOfColony \|\| p\.IsSlaveOfColony\)\) return true;", "prisoners and slaves of the player only");
+                RiverSwitchFlipChecks.Has(src, @"bool lane = cur != null && cur\.HasCurrent\(p\.Position\) && cur\.IsCarried\(p\);", "the lane test is the current's own");
+                RiverSwitchFlipChecks.Has(src, @"return !RM_TakenByLand\.Take\(p, ""river""\);", "taken through the service (held, booked, walked home); vanilla's exit skipped only when taken");
+                string pol = src;
+                Assert(pol.Contains("public virtual bool Holds(Pawn p) => (p.Faction != null && p.Faction.IsPlayer) || (p.HostFaction != null && p.HostFaction.IsPlayer);"),
+                    "the river policy holds the player's prisoners (host) and slaves (faction)");
+            });
+
             Case("RIVER_SWEEP_kernel_rules", () =>
             {
                 Assert(RM_TakenByLandKernel.VanillaReassignsOnPassToWorld(false, true, false, true, false, true), "free colonist: swapped");
