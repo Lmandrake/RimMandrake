@@ -48,11 +48,15 @@ class MockBridge(object):
         if tool == "jawa/static_call":
             return self._static(kw.get("method"), kw.get("args") or "")
         if tool == "jawa/flowworks_engine_state":
-            return {"success": True, "ticksGame": self.tick, "overflowDestroyedTotal": 0, "sinkTransferredTotal": 0}
+            return {"success": True, "ticksGame": self.tick, "overflowDestroyedTotal": 0, "sinkTransferredTotal": 0,
+                            "excavatedCellCount": 0, "superdeepCellCount": 0, "bodyCount": 21}
         if tool == "jawa/mod_settings_field":
             if kw.get("field") == "pulseIntervalTicks":
                 return {"success": True, "value": "250"}
-            return {"success": True, "value": kw.get("value", "True")}
+            st = self.__dict__.setdefault("settings", {})
+            if kw.get("action") == "set":
+                st[kw.get("field")] = kw.get("value")
+            return {"success": True, "value": st.get(kw.get("field"), kw.get("value", "True"))}
         if tool == "jawa/flowworks_body_report":
             return {"success": True, "body": {"id": 1, "limitless": True, "stock": 48.0, "capacity": 48.0,
                                               "cellCount": 12, "recededCount": 0}}
