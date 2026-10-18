@@ -1,2 +1,0 @@
-A1 L1: scorchfruit_fire_born PASS on site r3 in a session where earlier pieces burned (>=1 ScorchFruit in cohort 178,48,24,24)
-A2 L1: run scorchfruit_fire_born twice after two fixture reloads in one game session: both PASS

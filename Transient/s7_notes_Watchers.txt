@@ -1,6 +1,0 @@
-Watchers: 5 groups, 19 settings, 0 dead, all scopes Now (all read per tick/job). No false header existed (no header text before).
-Unified RM_WatcherStalkSettings into RM_WatchersSettings (one ModSettings class existed; stalk was a static helper). Fields renamed to match
-unchanged Scribe keys: watcherEnabled->watcherStalkEnabled, stalkAnimation->watcherStalkAnimation, smoothTracking->watcherStalkSmoothTracking.
-Deleted RM_WatcherStalkSettings.cs; csproj Compile line replaced by kit lines. Removed 'if (watchersEnabled)' hiding of sliders/toggles.
-Files: Source/RM_WatchersMod.cs, RM_Watchers.csproj, RM_CompWatcherStalk.cs, RM_JobDriver_WatcherStalk.cs, Languages/English/Keyed/RM_WatcherStalk.xml (comment), Assemblies dll+srchash.
-Build 0 errors; selftest all ok.

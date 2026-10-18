@@ -1,8 +1,0 @@
-tiles 119904 flat temperate candidates 2371
-river tiles among them 70
-tile 1251 TemperateForest riverCount 2 grid: GRID current=1881 fast=0 edge=1881 size=1.00 flood=False
-tile 3809 TemperateForest riverCount 2 grid: GRID current=1570 fast=0 edge=1570 size=1.00 flood=False
-tile 6762 TemperateForest riverCount 2 grid: GRID current=2149 fast=0 edge=2149 size=1.00 flood=False
-tile 8746 RM_TheRot riverCount 2 grid: GRID current=1628 fast=0 edge=1628 size=1.00 flood=False
-tile 9980 RM_TheRot riverCount 2 grid: GRID current=3910 fast=1127 edge=2783 size=1.89 flood=False
-map 5 size 250 biome RM_TheRot destroyed 13 colonists ['Human425363', 'Human425366', 'Human425369'] site problems [] reset problems []

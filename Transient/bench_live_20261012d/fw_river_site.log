@@ -1,7 +1,0 @@
-tiles 119904 flat temperate candidates 3909
-river tiles among them 352
-fish by biome: {'AB_MycoticJungle': False, 'AB_OcularForest': False, 'RM_GelatinousSlime': False, 'RM_TheRot': False, 'RM_TheSump': False, 'TemperateForest': True} | rejected fishless river tiles: [('AB_MycoticJungle', 14), ('AB_OcularForest', 10), ('RM_GelatinousSlime', 1), ('RM_TheRot', 26), ('RM_TheSump', 4)]
-tile 440 TemperateForest riverCount 2 grid: GRID current=1679 fast=0 edge=1679 size=1.00 flood=False
-tile 1238 TemperateForest riverCount 2 grid: GRID current=2213 fast=0 edge=2213 size=1.00 flood=False
-tile 1348 TemperateForest riverCount 2 grid: GRID current=3883 fast=1093 edge=2790 size=1.89 flood=False
-map 3 size 250 biome TemperateForest destroyed 28 colonists ['Human150440', 'Human150442', 'Human150445'] site problems [] reset problems []

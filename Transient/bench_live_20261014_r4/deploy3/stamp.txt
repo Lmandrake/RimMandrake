@@ -1,4 +1,0 @@
-MATCH src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll
-MATCH src/RimMandrake/Pyrelands/Assemblies/FireEcologyHook.dll
-MATCH src/RimMandrake/Scarlands/Assemblies/RimMandrake.Warscar.dll
-MATCH src/RimUtinni/PyrelandsMechanics/Assemblies/RimMandrake.Utinni.PyrelandsMechanics.dll

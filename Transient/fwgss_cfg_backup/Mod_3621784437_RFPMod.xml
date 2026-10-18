@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SettingsBlock>
-	<ModSettings Class="RuthlessPursuingMechanoids.RFPSettings">
-		<printDebug>False</printDebug>
-		<maxAlerts>15</maxAlerts>
-	</ModSettings>
-</SettingsBlock>

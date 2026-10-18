@@ -1,1 +1,0 @@
-A1 L1: ash_fertile_when_watered on site r3: note shows a non-anchor origin with the pond rejected; row PASS (far reads dry 0.4, beside 1.4)

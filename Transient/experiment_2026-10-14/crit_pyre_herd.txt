@@ -1,2 +1,0 @@
-A1 L1: herd_follows_two_day_old_burn on site r3: BurnCenterAgo(2 d) = burn A with burn B newest; ProbeHerd goAnchor = n, issued >= 0.8n
-A2 L1: after one 2500-tick step the herd centroid closes >= 30% toward A and more on A than B; row PASS

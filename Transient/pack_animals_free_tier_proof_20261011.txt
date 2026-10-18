@@ -1,5 +1,0 @@
-free tier: 11 official trader factions, 34 RM_ BiomeDefs in src (2 with a pack list naming an owned beast), 2 carriers file(s) ['RM_TraderCarriers_Stillsand.xml', 'RM_TraderCarriers_WeepingStones.xml']
-  RM_Stillsand       allows RM_Vaalok                                traders reaching it: 0 -> 11 of 11
-  RM_WeepingStones   allows RM_Tirbak,RM_Vellak                      traders reaching it: 0 -> 11 of 11
-FREE TIER OK
-all 33 passed

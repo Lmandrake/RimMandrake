@@ -1,1 +1,0 @@
-A1 L1: jawa/artboard_stage a board with faction=player pawns, reload the save, spawn a test colonist into the same clearRect, re-stage phase=ground: the call REFUSES ('clearRect holds player pawns') instead of destroying the colonist

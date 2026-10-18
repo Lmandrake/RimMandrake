@@ -1,2 +1,0 @@
-Bacta: 8 groups, 16 settings, 0 dead, all Now (tank tick/job/use reads). No false label (the existing "none affect worldgen" is true; reworded to say audited).
-Removed toggle-hiding of sliders. Files: Source/BactaMod.cs, RimMandrake.StarWars.Bacta.csproj, Assemblies dll+srchash. Build 0 errors, selftest ok.

@@ -263,9 +263,9 @@ world/view/*.svg
 # Transient/ — output made to be LOOKED AT and then thrown away: contact sheets,
 # review pages, renders, one-off censuses, draft analysis. Shelf life ~14 days;
 # `rimflow sweep --transient` lists stale files and never deletes.
-# Owner's ruling 2026-09-01: Transient/ IS tracked and pushed, so he can review
-# it on GitHub from another machine. (Supersedes the 2026-08-27 untracked rule.)
-# Per-file size cap still applies; nothing over ~50 MB.
+# UNTRACKED since 2026-10-18 (owner, by card: "Stop tracking; pin to keep"): the rules
+# live in Transient/.gitignore — everything ignored except *.decisions.json and the pins
+# managed by src/RimMandrake/Utils/transient_pin.py. Nothing over ~50 MB, pinned or not.
 
 # Machine cache, logs and samples do not come into the repo at all — they go to
 # /tmp. Nothing in this repo should be written for a program to read later.
@@ -333,7 +333,7 @@ infrastructure/state/art/render_subjects.json
 # Review-sheet servers' live output (2026-10-11, git root cause R1): a server appends its URL block to
 # <sheet>.serve.log on every start, and refresh_sheets.py rewrites sheets_state.json (its fingerprint cache)
 # on every run. Both are read by programs (RimPulse, refresh_sheets) in the clone that serves them, never
-# reviewed, and kept the seat clone permanently dirty. The sheet HTML and *.decisions.json stay TRACKED
-# (owner 2026-09-01: Transient is tracked so he can review from another machine).
+# reviewed, and kept the seat clone permanently dirty. (Since 2026-10-18 all of Transient/ is untracked
+# except *.decisions.json and pins — Transient/.gitignore; these lines stay as a backstop.)
 Transient/**/*.serve.log
 Transient/biome_ffar/sheets_state.json

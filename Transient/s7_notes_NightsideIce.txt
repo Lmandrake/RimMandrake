@@ -1,4 +1,0 @@
-NightsideIce retrofit (s7). 5 groups, 13 settings (all bool/float/int, already static). Dead: none.
-Scopes: all tick/job/Harmony reads -> Now, except breachFirstCountdownHours, read when the next first crack is created -> NextPulse (own group).
-False labels: none. Slider/controls that were hidden behind toggles (heatDialEnabled, shivvenHeatSeek, breachEnabled, heatDialAlert) now always shown.
-Files: RM_NightsideIceMod.cs, RM_NightsideIce.csproj (+2 kit lines), Assemblies dll+srchash.

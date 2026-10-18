@@ -1,3 +1,0 @@
-ok    DLL tool surface == source declarations, 398 tools (GM-gated included)
-
-1/1 passed

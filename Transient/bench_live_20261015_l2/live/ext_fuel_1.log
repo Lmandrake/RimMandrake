@@ -1,4 +1,0 @@
-site save calm: CLEAN load 5.5s ready 7.3s 
-extensions: {'PASS': 2, 'UNMEASURED': 3} in 52.6s -> D:\Luke\dev\_rmscratch\bench_live_20261015_l2\Transient\live\ext_fuel_1.json
-rc=1
-EXT_DONE

@@ -1,2 +1,0 @@
-extensions: {'PASS': 10, 'FAIL': 1, 'UNMEASURED': 3} in 98.1s -> Transient/bench_live_20261012/ext_dry.json
-ED_RC=1

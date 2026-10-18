@@ -1,1 +1,0 @@
-EmpirePursuit: 5 groups, 13 settings, 0 dead; old screen had no scope labels; nested toggle gating flattened; probes/cordon/bombardment read at NextRungDef (NextPulse); rememberRungs/decay read at arrival (NextPulse); csproj kit lines added; RUT_Ladder_Header label dropped (replaced by groups).
