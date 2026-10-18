@@ -90,5 +90,35 @@ namespace RimMandrake.FlowWorks
 			long brim = newDepth * (long)RM_LevelSolve.U;
 			return water < brim ? water : brim;
 		}
+
+		/// <summary>HOSE_LEFTOVER_FIX_FULL_CANAL_LOSS (live day 3, S3.c: 975 L of hose leftover left the world when the
+		/// destination canal was full and the intake pond lay past the 6.9-square search): the conserving last leg. Every
+		/// water home of the liquid's kind on the map (a dug square, a pond body) is offered the rest, nearest first (squared
+		/// distance, ties in the given order); take(i, want) places what that home takes now and returns it (a pour into one
+		/// canal square spreads over the canal it joins, so a later square of that canal may take none). Returns the total
+		/// placed; what is left is the only liquid that may leave the world, and only announced.</summary>
+		public static long PlaceNearestFirst(IList<long> distSq, Func<int, long, long> take, long dl)
+		{
+			var order = new List<int>(distSq.Count);
+			for (int i = 0; i < distSq.Count; i++)
+			{
+				order.Add(i);
+			}
+			order.Sort((a, b) => distSq[a] != distSq[b] ? distSq[a].CompareTo(distSq[b]) : a.CompareTo(b));
+			long placed = 0;
+			foreach (int i in order)
+			{
+				if (placed >= dl)
+				{
+					break;
+				}
+				long t = take(i, dl - placed);
+				if (t > 0)
+				{
+					placed += t < dl - placed ? t : dl - placed;
+				}
+			}
+			return placed;
+		}
 	}
 }

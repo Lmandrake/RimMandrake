@@ -271,6 +271,71 @@ namespace RimMandrake.FlowWorks.Machinery
 			return placed;
 		}
 
+		/// <summary>HOSE_LEFTOVER_FIX_FULL_CANAL_LOSS (live day 3, S3.c: the pump lifted a 7th level into a hose over a brim-full
+		/// canal; the hose drained onto it, the canal and everything within <see cref="HomeRadius"/> was full, and 975 L were the
+		/// announced loss though the pond it was drawn from had the room): every dug square and every pond body of the liquid's
+		/// kind on the map is offered the rest, nearest first (RM_LevelPour.PlaceNearestFirst), so liquid with a home anywhere
+		/// on the map lands; returning to the intake pond is the common case. Returns the units placed.</summary>
+		private static int PlaceAnywhere(Map map, IntVec3 cell, LiquidDef liquid, int units)
+		{
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			FluidDef f = liquid?.canalFluid;
+			if (ex == null || f == null || units <= 0 || !cell.InBounds(map))
+			{
+				return 0;
+			}
+			var homes = new List<IntVec3>();
+			var dist = new List<long>();
+			foreach (IntVec3 c in ex.ExcavatedCells)
+			{
+				homes.Add(c);
+				dist.Add((c - cell).LengthHorizontalSquared);
+			}
+			int dug = homes.Count;
+			if (ex.Stock != null)
+			{
+				foreach (RM_LiquidBody b in ex.Stock.Bodies)
+				{
+					if (b == null || b.cells.Count == 0 || (b.fluid ?? ex.ActiveFluid) != f)
+					{
+						continue;
+					}
+					IntVec3 best = b.cells[0];
+					long bd = long.MaxValue;
+					foreach (IntVec3 c in b.cells)
+					{
+						long d = (c - cell).LengthHorizontalSquared;
+						if (d < bd)
+						{
+							bd = d;
+							best = c;
+						}
+					}
+					homes.Add(best);
+					dist.Add(bd);
+				}
+			}
+			long placed = RM_LevelPour.PlaceNearestFirst(dist, (i, want) =>
+			{
+				IntVec3 c = homes[i];
+				if (i < dug)
+				{
+					long room = ex.PourRoomDl(c, f, want);
+					return room > 0 && ex.TryPourDl(c, f, room) ? room : 0;
+				}
+				long br = BodyRoomDl(ex, c, f, want);
+				return br > 0 && BodyTake(ex, c, f, br) ? br : 0;
+			}, units);
+			if (placed > 0)
+			{
+				HomedFarUnits += (int)placed;
+			}
+			return (int)placed;
+		}
+
+		/// <summary>State read: units that found no home within HomeRadius and landed farther off (PlaceAnywhere).</summary>
+		public static int HomedFarUnits;
+
 		/// <summary>Spill <paramref name="units"/> of <paramref name="liquid"/> at <paramref name="cell"/> as filth (rev 2 §3.7):
 		/// RM_LiquidNetKernel.FilthCount pieces of the liquid's spill filth, propagating to a neighbour where the cell refuses; the
 		/// generic spill where its own filth will not lie; one warning if nothing would. Always "accepts" (a sink).</summary>
@@ -320,6 +385,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			if (rest > 0)
 			{
 				rest -= PlaceNearby(map, cell, liquid, rest);
+			}
+			if (rest > 0)
+			{
+				// HOSE_LEFTOVER_FIX_FULL_CANAL_LOSS: nothing within HomeRadius took it (a brim-full canal, the intake pond farther
+				// off): any water of its kind on the map, nearest first, before anything leaves the world
+				rest -= PlaceAnywhere(map, cell, liquid, rest);
 			}
 			if (rest > 0)
 			{

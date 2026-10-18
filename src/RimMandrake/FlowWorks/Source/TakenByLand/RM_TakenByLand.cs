@@ -445,6 +445,27 @@ namespace RimMandrake.FlowWorks.TakenByLand
         }
     }
 
+    /// <summary>SWEEP_PRISONER_FIX_NEVER_RETURNS: a prisoner (or slave) of the player leaving the map from a cell the river's
+    /// current carries pawns on is swept, not free: vanilla's escape (JobGiver_PrisonerEscape exits at once from an edge
+    /// cell) would hand it to the world unbooked, and it never came back. The rule is RM_TakenByLandKernel.ExitIntoCurrentIsSwept.</summary>
+    // Label only: a failed patch must not switch washOffMapEdge off (the colonists' sweep does not need this patch).
+    [RimMandrake.Shared.PatchFeature("Washed off the map at the edge: an escape into the current is a sweep")]
+    [HarmonyLib.HarmonyPatch(typeof(Pawn), nameof(Pawn.ExitMap))]
+    public static class RM_Patch_EscapeIntoCurrentIsSwept
+    {
+        public static bool Prefix(Pawn __instance)
+        {
+            Pawn p = __instance;
+            if (p == null || !p.Spawned || p.Map == null || p.Dead || !(p.IsPrisonerOfColony || p.IsSlaveOfColony)) return true;
+            Rivers.RM_MapComponent_RiverCurrent cur = p.Map.GetComponent<Rivers.RM_MapComponent_RiverCurrent>();
+            bool lane = cur != null && cur.HasCurrent(p.Position) && cur.IsCarried(p);
+            bool caravan = p.teleporting || p.IsCaravanMember();
+            if (!RM_TakenByLandKernel.ExitIntoCurrentIsSwept(Rivers.RM_RiversSettings.washOffMapEdge, Rivers.RM_RiversSettings.CurrentActive,
+                    true, p.guest != null && p.guest.Released, lane, caravan)) return true;
+            return !RM_TakenByLand.Take(p, "river");   // taken: vanilla's escape never runs
+        }
+    }
+
     [StaticConstructorOnStartup]
     internal static class RM_TakenByLandStartup
     {

@@ -224,7 +224,7 @@ def swept(t):
             p0 = _pending(before)
             if not before.startswith("SWEPT pending=") or p0 is None:
                 raise ExpectationFailed("UNMEASURED: the swept book gave no pending count: %s" % before)
-            staged, swept_ids, snap0 = [], set(), {}
+            staged, swept_ids, snap0, held_kind = [], set(), {}, {}
             try:
                 if p0 == 0:
                     mi = t.bridge_call("jawa/map_info") or {}
@@ -247,7 +247,10 @@ def swept(t):
                                                 "(the river ends in the sea or a lake on this map); run river_site.py" % (me,))
                     t.expect("letter", {"label_contains": "Swept away"})
                     t.expect("letter", {"label_contains": "Back from the river"})
-                    for x, z in cells:
+                    # SWEEP_PRISONER_FIX_NEVER_RETURNS: the last two edge cells hold a PRISONER and a SLAVE of the player (live
+                    # day 3: a prisoner there escaped off the edge unbooked and never came back); the rest throwaway colonists
+                    held_cells = cells[-2:] if len(cells) >= 3 else []
+                    for x, z in cells[:len(cells) - len(held_cells)]:
                         r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x, z=z, faction="player", count=1) or {}
                         pid = ((r.get("pawns") or [{}])[0] or {}).get("id")
                         if pid:
@@ -255,8 +258,18 @@ def swept(t):
                             t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)   # stays put; the current still carries
                     if not staged:
                         raise ExpectationFailed("UNMEASURED: no throwaway colonist spawned on %d edge river cells" % len(cells))
+                    for (x, z), status in zip(held_cells, ("Prisoner", "Slave")):
+                        r = t.bridge_call("jawa/spawn_pawn", kindDef="Villager", x=x, z=z, faction="hostile", count=1) or {}
+                        pid = ((r.get("pawns") or [{}])[0] or {}).get("id")
+                        if pid:
+                            t.bridge_call("jawa/pawn_set_guest_status", pawn=pid, guestStatus=status, hostFaction="PlayerColony")
+                            held_kind[pid] = status
+                            staged.append(pid)
+                    if held_cells and not held_kind:
+                        _note(t, "prisoner/slave staging", "UNMEASURED: no villager spawned on %s" % held_cells)
                     snap0 = {pid: _pawn_get(t, pid) for pid in staged}
-                    not_player = {pid: s.get("faction") for pid, s in snap0.items() if not str(s.get("faction") or "").startswith("Player")}
+                    not_player = {pid: s.get("faction") for pid, s in snap0.items()
+                                  if pid not in held_kind and not str(s.get("faction") or "").startswith("Player")}
                     if not_player:
                         raise ExpectationFailed("UNMEASURED: staged colonists are not the player's before the river touched them: %r"
                                                 % not_player)
@@ -298,9 +311,24 @@ def swept(t):
                     d = returned_same_pawn(snap0.get(pid) or {}, _pawn_get(t, pid))
                     if d:
                         changed[pid] = d
+                # SWEEP_PRISONER_FIX_NEVER_RETURNS: a prisoner or slave that left the map must be back ON it, still held by us
+                back_ids = _map_pawn_ids(t) if swept_ids else set()
+                for pid, status in sorted(held_kind.items()):
+                    if pid not in swept_ids:
+                        _note(t, "%s not swept in the wait" % status.lower(), pid)
+                        continue
+                    if pid not in back_ids:
+                        changed.setdefault(pid, []).append("%s left the map and is not back on it after the return" % status)
+                        continue
+                    gs = t.bridge_call("jawa/pawn_set_guest_status", pawn=pid, guestStatus=status, hostFaction="PlayerColony") or {}
+                    was = gs.get("guestStatusBefore")
+                    if was is None:
+                        _note(t, "%s guest status after the return" % status.lower(), "UNMEASURED (tool gave none): %r" % (gs,))
+                    elif was != status:
+                        changed.setdefault(pid, []).append("came back %s, taken %s" % (was, status))
                 if changed:
-                    raise ExpectationFailed("washed-away colonists came back changed (must be the same pawn, still the player's): %r"
-                                            % changed)
+                    raise ExpectationFailed("washed-away pawns came back changed (must be the same pawn, still the player's, "
+                                            "a prisoner/slave back on the map as one): %r" % changed)
                 if swept_ids:
                     _note(t, "came back the same pawns, still the player's",
                           {pid: (snap0[pid].get("thingId"), snap0[pid].get("faction")) for pid in sorted(swept_ids)})

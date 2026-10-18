@@ -66,6 +66,21 @@ namespace RimMandrake.FlowWorks.TakenByLand
         /// <summary>The Harmony postfix's rule on WorldPawns.GetSituation: a Free pawn the service holds is not Free.</summary>
         public static bool ShieldFromFree(bool vanillaSaysFree, bool held) => vanillaSaysFree && held;
 
+        // ── SWEEP_PRISONER_FIX_NEVER_RETURNS (live day 3: a prisoner stood in moving water on the map edge and was gone at
+        // tick 250, never booked, never back) ─ the river never took it. Vanilla JobGiver_PrisonerEscape: a prisoner of the
+        // player whose district touches the map edge ESCAPES, and standing on the edge cell it exits at once (Pawn.ExitMap ->
+        // WorldPawns.PassToWorld, Decide; guest status left Prisoner). In fiction it stepped off the edge INTO the current
+        // the colonists beside it were swept off by, so the river takes it: an exit from a current lane is a sweep, held by
+        // the service and walked home still a prisoner (or slave) of the player. A released prisoner, a caravan member or a
+        // teleport leaves as vanilla says. Veto-able with the river's own switch: "Washed off the map at the edge" off (the
+        // current stops at the edge) restores vanilla's escape there too.
+
+        /// <summary>Is this ExitMap the river's? Prisoner or slave of the player, not released, leaving from a cell the
+        /// current carries pawns on (lane + current running + edge washing on), not by caravan or teleport.</summary>
+        public static bool ExitIntoCurrentIsSwept(bool washOffEdge, bool currentActive, bool prisonerOrSlaveOfPlayer,
+            bool released, bool onCarryingLane, bool caravanOrTeleport) =>
+            washOffEdge && currentActive && prisonerOrSlaveOfPlayer && !released && onCarryingLane && !caravanOrTeleport;
+
         /// <summary>Faction/guest state captured at the take, compared at the return. Ids are Faction.loadID (-1 = none);
         /// guestStatus is (int)GuestStatus, -1 when the pawn is nobody's guest, prisoner or slave (a vanilla slave has NO
         /// host faction: its master is its own Faction, so the Verse side keeps Slave even with host -1).</summary>

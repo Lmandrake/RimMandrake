@@ -207,7 +207,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // O2: every reader of a hole reads the dry bed; the writes lay the lakebed; the canal runs back into the pond.
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"public int ClimbDepthAt\(IntVec3 c\) \{ return HollowDepthAt\(c\); \}", "the climb seam reads the hollow (PIT_POCKET's one seam)");
+                // SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: the seam still starts from the hollow; a dug swim square only lifts it to its
+                // water surface (RM_SwimMath.ClimbDepthWithSwim, never deeper than the hollow)
+                RiverSwitchFlipChecks.Has(ex, @"public int ClimbDepthAt\(IntVec3 c\) \{ int h = HollowDepthAt\(c\);", "the climb seam reads the hollow (PIT_POCKET's one seam)");
+                RiverSwitchFlipChecks.Has(ex, @"RM_SwimMath\.ClimbDepthWithSwim\(h, s\) : h;", "and only a dug swim square reads its water surface");
                 RiverSwitchFlipChecks.Has(ex, @"return RM_Volume\.HollowDepth\(depthGrid\[i\], bedGrid\[i\], RimMandrakeFlowWorksSettings\.pondBedHollowEnabled\);", "HollowDepthAt is the production math behind the setting");
                 RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_Volume\.HollowDepth\(depthGrid\[i\], bedGrid\[i\], true\);", "the pocket grid's input carries the beds");
                 RiverSwitchFlipChecks.Has(ex, @"public int ClimbCellCount => excavatedCells\.Count \+ \(RimMandrakeFlowWorksSettings\.pondBedHollowEnabled \? bedCellCount : 0\);", "the early-out counts beds");
@@ -228,7 +231,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 foreach (string f in new[] { "RM_PitDepthDraw.cs", "RM_PitLipOcclusion.cs", "RM_ExcavationWalls.cs", "RM_PitStepCost.cs" })
                 {
                     string src = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", f));
-                    Assert(src.Contains(".HollowDepthAt(") && !src.Contains(".ExcavatedDepthAt("), f + ": reads the hollow depth, never the bare dug depth");
+                    // RM_PitStepCost reads ClimbDepthAt (the hollow, a dug swim square at its surface: SWIM_DUG_RESERVOIR_FIX)
+                    string reader = f == "RM_PitStepCost.cs" ? ".ClimbDepthAt(" : ".HollowDepthAt(";
+                    Assert(src.Contains(reader) && !src.Contains(".ExcavatedDepthAt("), f + ": reads the hollow depth, never the bare dug depth");
                 }
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref pondBedHollowEnabled, ""pondBedHollowEnabled"", true\);", "the hollow is a saved Mod Setting, default on");
