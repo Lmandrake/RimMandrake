@@ -40,6 +40,13 @@ seeing 85 px/cell on a leviathan is looking at the ceiling, not at sloppy work.
 ⚠️ This is an exception for the LARGE end only. Nothing here licenses shipping a 1.0-cell
 animal at 64 px — below the ceiling, 128 px/cell still binds.
 
+⭐ **ZOOM-ONLY ART SCALES TO ITS ZOOM — owner, 2026-10-18:** *"That resolution limit should
+always change if something can only be seen at certain zoom levels. Scale things
+rationally."* 128 px/cell is for art seen at close zoom. Art drawn ONLY when zoomed out
+(e.g. a tree canopy that fades in past a zoom threshold) is sized to the px/cell it is
+actually shown at — canopies ship at **32 px/cell** (ruled by card the same day). State the
+zoom band and achieved px/cell in the asset's `PLAN.md`.
+
 🔑 **`drawSize` is measured in CELLS and is completely independent of pixel resolution.**
 Raising a texture from 256 to 1024 changes nothing about the creature's footprint, its
 collision, or any def — it occupies exactly the same ground and simply stops being blocky.
