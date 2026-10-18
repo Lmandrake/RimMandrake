@@ -410,3 +410,5 @@ NOT actual tunnels."* §5.2's "walking under a deck" row is therefore no longer 
 - **(a) Yes (recommended).** A deck sheds rain; a grate lets it through. This is the only thing a solid deck can
   actually shelter, because heat, smoke and light rise through everything in this game.
 - (b) No; rain fills the hole regardless.
+
+**Answered 2026-10-18 (by card), Q3-Q9:** Q3 weight collapse **yes, load shown on the bridge**. Q4 grate passes **spilled liquid only**. Q5 *"Let's design towards including rivers and oceans and large lakes (non canal pit types) but if we have to we can backtrack. It seems doable but let's see how it goes."* (owner said). Q6 vanilla floor-bridge **refused over our dug canals**. Q7 sunken bridges reached **from a ledge, ramp or ladder**. Q8 trap covers keep a **separate look**. Q9 a solid deck does **NOT** keep rain out (against the recommendation). All Q1-Q9 answered; construction rulings in `suspension_bridge_construction_design_2026-10-18.md`.
