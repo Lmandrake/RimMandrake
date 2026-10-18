@@ -1,0 +1,1 @@
+Verse.Log stops writing after its message cap (~10,000); a live-gate log budget read after that is a dead log reading clean — reset the log and confirm it is live before trusting a clean budget (titanoslime gates, 2026-10-17)
