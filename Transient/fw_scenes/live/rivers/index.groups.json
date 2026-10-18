@@ -26,7 +26,7 @@
   "readings": [
    [
     "MATCHES",
-    "R3.a: pending 0 -> 3 after 250 ticks (5 colonists staged)"
+    "R3.a: pending 0 -> 3 after 250 ticks (6 colonists staged)"
    ],
    [
     "MATCHES",
@@ -34,13 +34,13 @@
    ],
    [
     "MATCHES",
-    "R3.c: washed away ['Human49718', 'Human49724', 'Human49730']; back on the map after return: ['Human49718', 'Human49724', 'Human49730']"
+    "R3.c: washed away ['Human58306', 'Human58312', 'Human58318']; back on the map after return: ['Human58306', 'Human58312', 'Human58318']"
    ],
    [
     "UNMEASURED",
     "R3.d: the 'Swept away' / 'Back from the river' letters are not read by this walk (the river suite's swept chain reads them)"
    ]
   ],
-  "stamp": "2026-10-17 18:54"
+  "stamp": "2026-10-17 21:27"
  }
 ]

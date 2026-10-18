@@ -1,0 +1,8 @@
+tiles 119904 flat temperate candidates 1581
+river tiles among them 117
+fish by biome: {'Scarlands': False, 'TemperateForest': True, 'TropicalRainforest': True} | rejected fishless river tiles: [('Scarlands', 2)]
+tile 491 mapId 1 TemperateForest riverCount 2 grid: GRID current=1615 fast=0 edge=1615 size=1.00 flood=False
+tile 491 moving water on edges {'south': 7, 'north': 6}
+loaded maps: [{'mapId': 0, 'tile': 112579, 'biome': 'AridShrubland'}, {'mapId': 1, 'tile': 491, 'biome': 'TemperateForest'}]
+quiet site (map): [('threat_structures_cleared', {'removed': [], 'threatsAfter': 0, 'kept': 0, 'errors': []}), ('hostiles_removed', {'acted': 0, 'residue': []}), ('proximity_letters_sent', {'letters': [], 'unsentAfter': 0})] problems [] error None
+tile 491 mapId 1 map_info tile 491 size 250 biome TemperateForest destroyed 53 colonists ['Human58267', 'Human58280', 'Human58283'] site problems [] reset problems []
