@@ -2925,3 +2925,5 @@
 {"seat":"BENCH","event":"note","id":"TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID","text":"sha correction: the verify/close cite 5f3da64927, the pre-rebase sha; the published commit is 8ea0bc9dcf","ts":"2026-10-18T00:36:36Z","tsn":1792283796922941101}
 {"seat":"BENCH","event":"note","id":"TITANOSLIME_SLIME_BIOME_1","text":"sha correction: the fix-verification commit is 8ea0bc9dcf (5f3da64927 was pre-rebase)","ts":"2026-10-18T00:36:38Z","tsn":1792283798017215381}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-18T00:36:58Z","tsn":1792283818178184722}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-18T05:24:52Z","tsn":1792301092464801073}
+{"seat":"BENCH","event":"close","id":"RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW","sha":"0e472b3fc2","reason":"merged 01600a60e5+0e472b3fc2, FlowWorks deployed, planet river colours PASS by eye in the 2026-10-17 live round; standalone RiverColors retired","ts":"2026-10-18T05:25:20Z","tsn":1792301120542768424}
