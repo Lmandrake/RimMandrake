@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import re
 import sys
@@ -1749,9 +1750,19 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
+    ${desc}${window.artQuestionHtml(it, d)}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled"${it.ruledOpen || d.at || d.decidedAt ? ' open' : ''}>${reHead}${inner}</details>` : inner;
+};
+/* --question: one per-row choice besides the pictures. His answer is rec.q[key]; the agent's guess (it.question.prefill,
+   also stored as qPrefill) shows DASHED and is never written as his answer. */
+window.artQuestionHtml = (it, d) => {
+  const Q = (typeof CFG !== 'undefined' && CFG.question) || null, iq = it.question;
+  if (!Q || !iq) return '';
+  const mine = (d.q || {})[Q.key] || '', id = esc(it.id);
+  const btns = Q.options.map(([v, t]) => `<button class="sl-b${mine === v ? ' on' : ''}${!mine && iq.prefill === v ? ' bs-qguess' : ''}" data-act="qset" data-id="${id}" data-v="${esc(v)}" title="${!mine && iq.prefill === v ? 'agent guess — click to make it your answer' : ''}">${esc(t)}</button>`).join(' ');
+  const state = mine ? `<span class="mark absent">your answer</span>` : iq.prefill ? `<span class="mark inferred" title="${esc(iq.why)}">⚠ agent guess: ${esc((Q.options.find(o => o[0] === iq.prefill) || [0, iq.prefill])[1])}${iq.why ? ' — ' + esc(iq.why) : ''}</span>` : `<span class="mark absent">undecided</span>`;
+  return `<div class="bs-question"><b>${esc(Q.label)}</b> ${btns} ${state}${iq.context ? `<div class="sub">${esc(iq.context)}</div>` : ''}</div>`;
 };
 /* requests that used to be typed into the note get their own fields (owner rulings by question card 2026-10-10: rename,
    description, make N more based on X, missing facings, size, move biome/tier, cut). The note stays for everything else.
@@ -1835,6 +1846,7 @@ window.artAct = (el, ev) => {
   else if (act === 'legacy') r = SLX.legacyRule(rec, L, v);
   else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
   else if (act === 'askcheck') r = SLX.setAsk(rec, k, el.checked);
+  else if (act === 'qset') { const qk = CFG.question.key, q = Object.assign({}, rec.q || {}); if (q[qk] === v) delete q[qk]; else q[qk] = v; rec.q = q; }
   else if (act === 'askset') { const cur = k.includes('.') ? ((rec.asks || {})[k.split('.')[0]] || {})[k.split('.')[1]] : (rec.asks || {})[k]; r = SLX.setAsk(rec, k, k === 'cut' ? !cur : (cur === v ? '' : v)); }
   else if (act === 'facing') { const fa = Object.assign({}, (rec.asks || {}).facings || {}); const s = new Set(fa.faces || []); el.checked ? s.add(v) : s.delete(v); fa.faces = [...s]; r = SLX.setAsk(rec, 'facings', fa.faces.length ? fa : ''); }
   else if (act === 'moreadd') {
@@ -1955,6 +1967,7 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
 .bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
 .bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
+.bs-question{margin:6px 0;padding:6px 8px;border:1px solid #5a4a2a;border-radius:6px}.bs-qguess{border-style:dashed!important;outline:1px dashed #e8b64c}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
 .bs-phcol{opacity:.45;filter:grayscale(1);cursor:not-allowed}.bs-phcol .bs-head{cursor:not-allowed}.bs-novar{font-size:.8em;color:#888}
 .bs-ph{background:#b3261e;color:#fff;font-style:normal;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;font-size:.8em}.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
@@ -3071,6 +3084,11 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     for it in ordered:
         it["rev"] = snap["snapshotId"]     # the inventory revision a schema-2 record is saved against
 
+    Q = b.get("question") or None
+    if Q:
+        for it in ordered:
+            qr = (Q.get("rows") or {}).get(it["id"]) or {}
+            it["question"] = {"prefill": qr.get("prefill") or "", "why": qr.get("why") or "", "context": qr.get("context") or ""}
     opts = pick_options(maxl)
     n_canon = sum(1 for it in ordered if it["canon"])
     n_link = sum(1 for it in ordered if it["related"])
@@ -3102,6 +3120,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
         "schema": 2, "biomes": [{"key": k, "label": v.get("label", k)} for k, v in census["biomes"].items()],
     }
+    if Q:
+        cfg["question"] = {"key": Q["key"], "label": Q["label"], "explain": Q.get("explain", ""),
+                           "options": [[str(v), t] for v, t in Q["options"]]}
+        cfg["briefHtml"] = (f"<p><b>{html.escape(Q['label'])}</b> — each row also asks this, beside the pictures. "
+                            "A dashed button is the AGENT'S GUESS from the description, never your answer; "
+                            "click a button to answer (click it again to clear). "
+                            + html.escape(Q.get("explain", "")) + "</p>") + cfg["briefHtml"]
+        cfg["invented"] = cfg["invented"] + [f"The {Q['label']} prefill on every row is the agent's guess from the def's "
+                                             "description (stored as qPrefill), not a ruling."]
     render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
     out_html.parent.mkdir(parents=True, exist_ok=True)
     # THE GATE (rimworld-review-sheets): build to <sheet>.gate.tmp, check every requirement, and only then move the
@@ -3110,8 +3137,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         "sheetId": sheet_id, "posture": "pick-one", "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"],
         "criterion": cfg["criterion"], "biome": biome,
         "reviewStatus": {"state": "prefill", "by": None, "at": None,
-                         "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet"},
-        "decisions": {k: ({"decision": l, "note": "", "prefill": l} | ({"picks": p} if p else {}))
+                         "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet"
+                                     + ("; every qPrefill is an agent guess, his answers land in q" if Q else "")},
+        "decisions": {k: ({"decision": l, "note": "", "prefill": l} | ({"picks": p} if p else {})
+                          | ({"qPrefill": {Q["key"]: ((Q.get("rows") or {}).get(k) or {}).get("prefill") or ""}} if Q else {}))
                       for k, (l, p) in prefills.items()},
     }, indent=1)
     will_write = not sheet_only and (old is None or untouched)
@@ -3248,7 +3277,22 @@ def subject_row(R, name: str, jobs=()) -> dict:
             "art": {"resources": res, "searched": f"live def dump: {name} " + ("found" if (td or res) else "NOT in the dump")}}
 
 
-def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "", reopen=()) -> tuple[Path, str]:
+def load_question(path) -> dict:
+    """--question FILE: one per-row choice the sheet asks besides the pictures (e.g. a size tier). FILE is
+    {"key", "label", "explain"?, "options": [[value, text], ...], "rows": {defName: {"prefill"?, "why"?, "context"?}}}.
+    A row's prefill is the AGENT's guess: the decisions file stores it as qPrefill, never as his answer (q)."""
+    q = json.loads(Path(path).read_text())
+    if not (isinstance(q.get("key"), str) and NAME_RE.match(q["key"]) and q.get("label") and q.get("options")):
+        raise SystemExit(f"--question {path}: needs key (lower_snake), label and options")
+    vals = {str(v) for v, _ in q["options"]}
+    for d, r in (q.get("rows") or {}).items():
+        if r.get("prefill") not in (None, "") and str(r["prefill"]) not in vals:
+            raise SystemExit(f"--question {path}: row {d} prefill {r['prefill']!r} is not an option {sorted(vals)}")
+    return q
+
+
+def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_html: str = "", reopen=(),
+                    question: dict | None = None) -> tuple[Path, str]:
     """Write Transient/biome_ffar/<name>.subjects.json: a one-entry census (key SUBJECTS_<name>) holding a row per def,
     plus a row per artpipe job's target_def carrying that job. `lead_html` (--lead) is the sheet's purpose paragraph:
     what he is judging and what skipping does; it is kept in the census, so refresh_sheets rebuilds keep it.
@@ -3277,6 +3321,8 @@ def subjects_census(name: str, defs, jobs=(), label: str | None = None, lead_htm
               "biomes": {key: {"label": label or name.replace("_", " ").capitalize(), "slug": name, "subjects": True,
                                "ground_terrain": SUBJECT_GROUND, "title": f"{label or name.replace('_', ' ').capitalize()} — game art",
                                "lead_html": lead_html or "", "rows": rows}}}
+    if question:
+        census["biomes"][key]["question"] = question
     path.write_text(json.dumps(census, indent=1))
     return path, key
 
@@ -3371,6 +3417,8 @@ def main(argv=None):
     ap.add_argument("--lead", default="", help="with --subjects/--jobs: purpose paragraph (HTML) shown above the rows — "
                     "what he is judging and what skipping does")
     ap.add_argument("--reopen", nargs="*", default=[], metavar="DEF", help="with --subjects: rows to show OPEN even though he ruled them on another sheet (he asked to see them again)")
+    ap.add_argument("--question", metavar="FILE", help="with --subjects: one per-row choice besides the pictures (JSON: key, "
+                    "label, options, rows{defName: prefill, why, context}); prefills are stored as the agent's guess (qPrefill)")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
@@ -3387,7 +3435,8 @@ def main(argv=None):
             RECOMMEND[fam.strip()] = why.strip() or "the agent's pick"
         if not a.name:
             ap.error("--subjects/--jobs need --name")
-        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen)
+        cpath, key = subjects_census(a.name, a.subjects, a.jobs, a.label, a.lead, a.reopen,
+                                     load_question(a.question) if a.question else None)
         a.biome, a.census = [key], str(cpath)
     if a.biome:
         if a.refresh:
