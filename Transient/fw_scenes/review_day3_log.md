@@ -37,3 +37,6 @@ base: 7986cc51e (origin/main; no FlowWorks C# commits since round 2)
 - now: FlowKernelFuzz.cs (1110), VV/ShippedMatrixProbe.cs (293), Program.cs (2049)
 - FlowKernelFuzz.cs (1110): read whole; harness sound (per-fluid conservation, sink accounting, fixed-point only when settling is expected, each regression has its control). GAP: every kernel fuzz (FlowKernelFuzz.Gen/FillsFromLimitless/SurfaceRandom, LevelSetChecks, LevelExactChecks) digs 1..4 notches only, from before P5 (digs to 20 m) and P11 (floors to 50 m). Added Exact_fuzz_past_2m_conserves_and_rests_level (300 scenes, holes to 40 notches, beds to 16) on the shipped exact kernel; running.
 - SelfTest after test fixes: 563/563 (both screen checks, the migration bind, the dL caller-coverage and the deep fuzz pass), hose 342/342. Committing; then VV probe + Program.cs.
+- VV/ShippedMatrixProbe.cs (293): read whole; nothing (usage line omits 'trace', cosmetic).
+- now: Program.cs (2049)
+- Program.cs (2049): read whole; cases sound (the four Scenario_* displacement cases replay the walk in the test, as the header says; Liquid_unit_contract loop is a self-acknowledged tautology carried by its size asserts + mutation probe). Fixed stale comments (two '5:1 budget' claims: the rule is dead; a LevelSurfaceChecks comment pasted onto the LevelExactChecks line).
