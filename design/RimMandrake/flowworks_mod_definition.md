@@ -917,12 +917,15 @@ cell carry a cost and a building.
 **Guard this law explicitly**, because every future request will erode it. "Can we have a raised
 berm?" is a Z-system in disguise. The answer is a wall, or nothing.
 
-### LAW 2 — Depth affects MOVEMENT and LIQUID. It never affects sight or shooting.
+### LAW 2 — Depth affects MOVEMENT, LIQUID and COVER. It never affects sight or height advantage.
 
-The moment depth grants a height advantage, cover bonus, or line-of-sight change, we own a full
-elevation model inside the combat system — and combat is the most interconnected code in the game.
+Owner, 2026-10-18 (replacing the old "never shooting" wording): *"This updates/replaces the old ruling that digging
+does not change shooting. That is no longer true and needs replacing."* A pawn in a dug hole (wet or dry) takes cover
+from its walls, read from the 8 squares round it exactly like sandbags — no height model
+(`design/RimMandrake/canal_cover_design_2026-10-17.md`). A height advantage or line-of-sight change would still mean
+a full elevation model inside the combat system, the most interconnected code in the game.
 
-**Cut and stay cut:** height advantage, shooting down into a pit for a bonus, cover from below,
+**Cut and stay cut:** height advantage, shooting down into a pit for a bonus,
 falling damage between levels, thrown objects across levels, multi-level buildings, roofs at
 different heights, and pressure/siphons. Every one is defensible in isolation and
 each one alone converts this into a different project.

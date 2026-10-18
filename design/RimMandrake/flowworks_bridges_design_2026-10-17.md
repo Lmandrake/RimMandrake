@@ -360,6 +360,11 @@ surface).
 
 ## 11. Open questions for the owner (plain language; options and trade-offs)
 
+**Answered 2026-10-18 (owner said):** Q1 — a building, and *not* called a "bridge": *"These are not 'Bridges' in the
+sense Rimworld normally uses. These should be called something else… Suspension bridges perhaps… You can walk 'under'
+them. Likely a building type."* (name still to pick). Q2 — (b) walk-under, *"but only for these new bridges uniquely,
+NOT actual tunnels."* §5.2's "walking under a deck" row is therefore no longer forbidden for these structures. Q3-Q9 open.
+
 **Q1. Is a bridge a building or a floor?**
 - **(a) A building (recommended).** It can burn and break, comes in the four styles, and floodwater flows under it. Other
   mods that look for "a bridge" will not see it.
