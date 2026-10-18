@@ -1,0 +1,171 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.194 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.699200 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000182F358C020.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000182F3868110.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=144 elapsedMs=144
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=144
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=144 elapsedMs=144
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 28, missing 0
+[RimMandrake.FlowWorks] Harmony: patched 81, missing 0
+[FlowWorks] thirst provider: Own (no DBHThirst NeedDef loaded)
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit; invisible=True
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 27646.
+Total: 132.021200 ms (FindLiveObjects: 0.869300 ms CreateObjectMapping: 0.917900 ms MarkObjects: 129.955600 ms  DeleteObjects: 0.278200 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=18 elapsedMs=13053
+[JawaBench] ready: 413 tools, build c37ed41ae59c
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 11/e6cb45d2, toolSet 3f60d9fe, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session 9ec507f1706a42799fbc86af37b54ea4 seq 2 utc 2026-10-18T15:11:37.396Z
+[JawaBench] TPS sampler installed (bridge-registration): session 9ec507f1706a42799fbc86af37b54ea4 pid 28616 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261018T151137Z_9ec507f1706a42799fbc86af37b54ea4_28616_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (412 tools gated, 0 unguarded, by bridge-registration, 1213 ms); compile gm, runtime profile campaign (test profile expired at 2026-10-18T14:00:00.0000000Z: campaign)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3405 elapsedMs=16459
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=16460
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=16461
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=16461
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=16461
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=16461
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=16462
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=16465
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=16465
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=16466
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=16468
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=37 elapsedMs=16506
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3452 elapsedMs=16506
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=37 elapsedMs=16506
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: dec68ec6afe8413b83b19da08a649dd3
+Unloading 3 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.730800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 27840.
+Total: 105.442000 ms (FindLiveObjects: 0.839400 ms CreateObjectMapping: 0.929200 ms MarkObjects: 103.626500 ms  DeleteObjects: 0.046800 ms)
+
+Loading game from file RM_TestSite_calm_v2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+Tried to get CurKindLifeStage from humanlike pawn Shiki
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 9ec507f1706a42799fbc86af37b54ea4 seq 5 utc 2026-10-18T15:11:53.218Z
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 33103.
+Total: 129.319200 ms (FindLiveObjects: 0.997600 ms CreateObjectMapping: 1.046200 ms MarkObjects: 127.232700 ms  DeleteObjects: 0.042400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 28907.
+Total: 142.137100 ms (FindLiveObjects: 0.857000 ms CreateObjectMapping: 0.922100 ms MarkObjects: 140.317400 ms  DeleteObjects: 0.040400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 1.113700 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 28617.
+Total: 142.679500 ms (FindLiveObjects: 0.860700 ms CreateObjectMapping: 0.932600 ms MarkObjects: 140.818400 ms  DeleteObjects: 0.067500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.299000 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 28640.
+Total: 115.457500 ms (FindLiveObjects: 0.849900 ms CreateObjectMapping: 0.925800 ms MarkObjects: 113.631900 ms  DeleteObjects: 0.049500 ms)
+
+Loading game from file RM_TestSite_calm_v2 with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+A hidden ritual precept was missing, adding: Funeral (no corpse)
+[RimMandrake.FlowWorks] excavation load repair: 0 depth, 0 fill, 0 fluid key(s) fixed; 1 unused palette entry dropped.
+[JawaBench] TPS marker game: session 9ec507f1706a42799fbc86af37b54ea4 seq 13 utc 2026-10-18T15:12:19.528Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 33882.
+Total: 134.040700 ms (FindLiveObjects: 1.033800 ms CreateObjectMapping: 1.098400 ms MarkObjects: 131.869800 ms  DeleteObjects: 0.038400 ms)
+

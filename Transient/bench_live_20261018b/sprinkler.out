@@ -1,0 +1,18 @@
+TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000
+sprinkler.draws_and_wets                     UNMEASURED HARNESS  {"units": [100000, 99875], "drop": 125, "cells": 25, "inspect": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells", "pulseAfterTicks": 2500, "sprayedUnits": [0, 125], "soakedCovered": null, "soakedFar": null}
+sprinkler.no_pressure                        PASS       MOD      {"pumpOff": "No pressure: no pump on this network", "units": [99875, 99875], "pumpBackOn": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells", "bad": [], "how": "the pump stops through liquidPumpEnabled (Building_LiquidPump.Running), not a despawn: a despawn by cell also destroys the pipe under it"}
+sprinkler_switch_flips.flip_sprinklersEnabled PASS       MOD      {"inspect": "Sprinklers are off in Mod Settings", "units": [99625, 99625]}
+TANK mode=Store effective=Store liquid=none units=0
+sprinkler.dries_when_starved                 UNMEASURED HARNESS  {"last": ["Dry: nothing in the tanks on this network", null], "ticks": 2750}
+TANK mode=Store effective=Store liquid=RM_Liquid_Tar units=50000
+sprinkler.thick_clogs                        PASS       MOD      {"inspect": "Clogged: tar too thick to spray", "units": [50000, 50000]}
+TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000
+sprinkler.walls_stop_spray                   UNMEASURED HARNESS  {"behindWall": null, "openSide": null, "inspect": "Spraying fresh water \u00b7 10.5 L/h \u00b7 21 cells"}
+TANK mode=Store effective=Store liquid=RM_Liquid_Brine units=50000
+TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=20000
+T22_no_brine_spray                           FAIL       MOD      {"brineOnly": "No pressure: no pump on this network", "withFresh": "Spraying fresh water \u00b7 9 L/h \u00b7 18 cells", "brineUnits": [50000, 50000], "freshUnits": 19820, "bad": ["brine-only net reads 'No pressure: no pump on this network'"]}
+TANK mode=Store effective=Store liquid=RM_Liquid_AcidWater units=50000
+TANK mode=Store effective=Store liquid=RM_Liquid_Chemfuel units=50000
+sprinkler.acid_hurts_fuel_puddles            PASS       MOD      {"acid": "Spraying acid water \u00b7 12.5 L/h \u00b7 25 cells", "harm": [5.0, 5.68, 5.28], "fuel": "Spraying chemfuel \u00b7 12.5 L/h \u00b7 25 cells", "filth": [0, 2], "bad": [], "notRun": "the chemfuel arm with the setting off"}
+TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=2200
+T21_drinking_reserve                         PASS       MOD      {"reserveL": 200.0, "startUnits": 2200, "trace": [[2075, "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"], [2060, "Dry: net has 6 L of fresh water, needs 12.5 L"], [2045, "Dry: net has 4.5 L of fresh water, needs 12.5 L"]], "drinkJobs": ["RM_DrinkFromTank"], "bad": [], "notRun": "the salt tank on a still draining to 0"}
