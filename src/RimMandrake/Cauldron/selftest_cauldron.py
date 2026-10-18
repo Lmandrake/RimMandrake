@@ -310,7 +310,7 @@ class Fake(object):
                     self.new("WoodLog", tr["x"], tr["z"], stackCount=25)
                     if "no_metal" not in b and self.on("metalYieldEnabled", "metal_ignores_toggle"):
                         f = 1.0 if "factor_ignored_yield" in b else self.factor("metalYieldFactor")
-                        self.new("Steel", tr["x"], tr["z"], stackCount=int(round(6 * f)))
+                        self.new("Steel", tr["x"], tr["z"], stackCount=int(round(V.THORN_FULL * f)))  # the twisting thornwood (RM_TreeMartyr cut 2026-10-18)
         # fires burn for a while
         self.fires = [f for f in self.fires if f[2] > self.ticks]
 
@@ -819,8 +819,9 @@ def source_checks():
     # 71 since CAULDRON_MECHANICS_BUILD_1 parts 3/4 (2026-10-16): + the gas tap, Filter-Works, corroded rig, vent reagent,
     # filter cartridge, RM_FilterWorksResearch and RM_CauldronRuinScatter (ResearchProjectDef/GenStepDef now parsed too).
     # 69/8: RM_Bezzul removed (BEZZUL_DELETE_NOT_NEEDED_ANYMORE); RM_FireSpit projectile restored for RM_Zisska (2026-10-16).
-    if len(V.SHIPPED) != 69 or len(V.FLORA) != 17 or len(V.KINDS) != 8:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 69 / 17 / 8); update "
+    # 68/16/8: RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18: "Cut and remove from game").
+    if len(V.SHIPPED) != 68 or len(V.FLORA) != 16 or len(V.KINDS) != 8:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 68 / 16 / 8); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

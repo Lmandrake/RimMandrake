@@ -47,7 +47,7 @@ workerClass is a hard dependency the RimMandrake tier may not assume), two
 new terrain defs (RM_CauldronSoil / RM_CauldronSoilRich, replacing the donor
 BiomesPlus terrain names the twin used with no def backing them anywhere in
 this repo), three renamed-and-duplicated flora ThingDefs (RM_TwistingThornwood,
-RM_TreeMartyr, RM_DarkCrust — the frozen twin's own RUT_-prefixed copies stay
+RM_DarkCrust (a third, RM_TreeMartyr, was cut 2026-10-18) — the frozen twin's own RUT_-prefixed copies stay
 in place unchanged, serving the live campaign world and RUT_CrackedLands,
 which still shares RM_TwistingThornwood's species; this mod's copies are its
 own, per the "duplicate, then diverge" rule for content wired into two biome

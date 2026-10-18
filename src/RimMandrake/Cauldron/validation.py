@@ -117,9 +117,8 @@ WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
 BLOOM, HEDIFF = "RM_VentBloom", "RM_VentMetalLoad"
 VEXXISS, SUUSH, ZISSKA, ESKITH = "RM_Vexxiss", "RM_Suush", "RM_Zisska", "RM_Eskith"
 NATIVES = (SUUSH, VEXXISS, ZISSKA, ESKITH)             # the biome's own, MayRequire-free wildAnimals rows
-THORN, MARTYR, NETTLE = "RM_TwistingThornwood", "RM_TreeMartyr", "RM_RavenNettle"
+THORN, NETTLE = "RM_TwistingThornwood", "RM_RavenNettle"   # RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18)
 LETTER_LABEL = "Vexxiss poisoning water"
-MARTYR_FULL = 6.0                                       # countAtFullGrowth in RM_CauldronFlora.xml
 THORN_MIN, THORN_FULL = 2.0, 12.0
 BLOOM_INTERVAL = 3451                                   # RM_MapComponent_VentBloomExposure.IntervalTicks
 HERBIVORES = ("Deer", "Muffalo", "Elk", "Alpaca", "Hare", "Chicken", "Squirrel", "Ibex", "Caribou",
@@ -1332,7 +1331,7 @@ def _harvest_one(t, col, tree, rect):
         try:    # evidence only: a failed read must not turn the caller's UNMEASURED into a FAIL
             rows = _rows(t)
             _note(t, "harvest gave no wood: tree still standing / harvester job / harvester at",
-                  [bool(_things(t, MARTYR, "%d,%d,1,1" % (x, z))), _jobs(t).get(col),
+                  [bool(_things(t, THORN, "%d,%d,1,1" % (x, z))), _jobs(t).get(col),
                    [(rows.get(col) or {}).get(k) for k in ("x", "z", "drafted", "downed")]])
         except Exception as ex:
             _note(t, "harvest evidence unread", str(ex)[:200])
@@ -1350,10 +1349,10 @@ def yield_chain(t):
         with _comp(t, "yield_site_ready", poison=True):
             if _live(t):
                 for i in range(3):
-                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (MARTYR, x - 4 + i * 4, z - 6), growth=1.0)
-                trees = sorted(_things(t, MARTYR, _rs(rect)), key=lambda w: w.get("x", 0))
+                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (THORN, x - 4 + i * 4, z - 6), growth=1.0)
+                trees = sorted(_things(t, THORN, _rs(rect)), key=lambda w: w.get("x", 0))
                 if len(trees) != 3:
-                    _unmeasured(t, "expected 3 martyr trees after set_plants, read %d" % len(trees))
+                    _unmeasured(t, "expected 3 twisting thornwoods after set_plants, read %d" % len(trees))
                 ids["trees"] = trees
                 ids["col"] = _spawn(t, "Colonist", x, z + 6, faction="player")
                 _full(t, ids["col"])
@@ -1363,13 +1362,13 @@ def yield_chain(t):
             if _live(t):
                 wood = _harvest_one(t, ids["col"], ids["trees"][0], rect)
                 steel = _stack_total(t, "Steel", _rs(rect))
-                _note(t, "martyr harvest 1 (factor 1.0): wood / steel", [wood, steel])
+                _note(t, "thornwood harvest 1 (factor 1.0): wood / steel", [wood, steel])
                 if wood < 1:
                     _unmeasured(t, "no wood from the first harvest in 5000 ticks (job not done): "
                                    "cannot judge the metal beside it")
-                if not (MARTYR_FULL - 1 <= steel <= MARTYR_FULL + 1):
-                    _fail("a full-grown martyr tree paid %d steel beside %d wood, expected ~%d"
-                          % (steel, wood, MARTYR_FULL))
+                if not (THORN_FULL - 1 <= steel <= THORN_FULL + 1):
+                    _fail("a full-grown twisting thornwood paid %d steel beside %d wood, expected ~%d"
+                          % (steel, wood, THORN_FULL))
                 ids["steel1"] = steel
         with _comp(t, "yield_factor_scales", toggle="metalYieldFactor"):
             if _live(t):
@@ -1378,12 +1377,12 @@ def yield_chain(t):
                 with _setting(t, "metalYieldFactor", 2.0):
                     wood = _harvest_one(t, ids["col"], ids["trees"][1], rect)
                 steel2 = _stack_total(t, "Steel", _rs(rect)) - ids["steel1"]
-                _note(t, "martyr harvest 2 (factor 2.0): wood / steel", [wood, steel2])
+                _note(t, "thornwood harvest 2 (factor 2.0): wood / steel", [wood, steel2])
                 if wood < 1:
                     _unmeasured(t, "no wood from the second harvest in 5000 ticks")
-                if not (2 * MARTYR_FULL - 2 <= steel2 <= 2 * MARTYR_FULL + 2):
-                    _fail("metalYieldFactor 2.0 paid %d steel from a full martyr tree, expected ~%d "
-                          "(factor 1.0 paid %d)" % (steel2, 2 * MARTYR_FULL, ids["steel1"]))
+                if not (2 * THORN_FULL - 2 <= steel2 <= 2 * THORN_FULL + 2):
+                    _fail("metalYieldFactor 2.0 paid %d steel from a full twisting thornwood, expected ~%d "
+                          "(factor 1.0 paid %d)" % (steel2, 2 * THORN_FULL, ids["steel1"]))
                 ids["steel_total"] = ids["steel1"] + steel2
         with _comp(t, "yield_toggle_off", toggle="metalYieldEnabled"):
             if _live(t):
@@ -1392,7 +1391,7 @@ def yield_chain(t):
                 with _setting(t, "metalYieldEnabled", False):
                     wood = _harvest_one(t, ids["col"], ids["trees"][2], rect)
                 steel3 = _stack_total(t, "Steel", _rs(rect)) - ids["steel_total"]
-                _note(t, "martyr harvest 3 (metalYieldEnabled OFF): wood / steel", [wood, steel3])
+                _note(t, "thornwood harvest 3 (metalYieldEnabled OFF): wood / steel", [wood, steel3])
                 if wood < 1:
                     _unmeasured(t, "no wood from the third harvest in 5000 ticks")
                 if steel3 != 0:

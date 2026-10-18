@@ -4,7 +4,8 @@
   into their Baroque Biomes RM_ twin, or moved there under an RM_ name. A save holding the old name (a plant
   on a map, a harvested item) loads it as the RM_ def through RM_DefAliasDef (RM_DefAliases.cs, this mod).
   Not aliased, because they were removed outright on his notes: RUT_TwinkleSpikeTestPlant ("cut this") and
-  the ten VCE_Plant_* succulents ("remove terran") - a saved one is dropped with a load warning.
+  the ten VCE_Plant_* succulents ("remove terran"), and RUT_TreeMartyr/RM_TreeMartyr (tree tiers sheet
+  2026-10-18: "Cut and remove from game") - a saved one is dropped with a load warning.
 -->
 <Defs>
   <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
@@ -14,7 +15,6 @@
       <li><from>RUT_RawGiantLeaf</from><to>RM_RawGiantLeaf</to><defType>ThingDef</defType></li>
       <li><from>RUT_FireLavender</from><to>RM_FireLavender</to><defType>ThingDef</defType></li>
       <li><from>RUT_HeatsinkFungus</from><to>RM_HeatsinkFungus</to><defType>ThingDef</defType></li>
-      <li><from>RUT_TreeMartyr</from><to>RM_TreeMartyr</to><defType>ThingDef</defType></li>
       <li><from>RUT_DarkCrust</from><to>RM_DarkCrust</to><defType>ThingDef</defType></li>
       <li><from>RUT_ScorchedStars</from><to>RM_ScorchedStars</to><defType>ThingDef</defType></li>
       <li><from>RUT_Glower</from><to>RM_Glower</to><defType>ThingDef</defType></li>

@@ -62,7 +62,6 @@
       <li><plant>RM_LightPipeNub</plant><top>None</top></li>
       <li><plant>RM_SweetlineTree</plant><top>None</top></li>
       <li><plant>RM_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
-      <li><plant>RM_TreeMartyr</plant><top>None</top></li>
       <li><plant>RM_HeatsinkFungus</plant><top>None</top></li>
       <li><plant>RUT_Placeholder_GreentideGiantTree</plant><top>None</top></li>
     </plants>

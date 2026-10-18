@@ -185,6 +185,7 @@ namespace RimMandrake.ExplosiveGrowth
             var filth = new Dictionary<ThingDef, string>();
             var fungi = new HashSet<string>();
             var treeExempt = new HashSet<string>();
+            var notTrees = new HashSet<string>();
             var treeBursts = new Dictionary<string, RM_TreeBurstEntry>();
             int missing = 0, resolved = 0;
 
@@ -228,6 +229,7 @@ namespace RimMandrake.ExplosiveGrowth
                 }
                 foreach (string s in roster.fungi) if (!string.IsNullOrEmpty(s)) fungi.Add(s);
                 foreach (string s in roster.treeRulesExempt) if (!string.IsNullOrEmpty(s)) treeExempt.Add(s);
+                foreach (string s in roster.notTrees) if (!string.IsNullOrEmpty(s)) notTrees.Add(s);
                 foreach (RM_TreeBurstEntry b in roster.treeBursts)
                     if (!string.IsNullOrEmpty(b?.plant)) treeBursts[b.plant] = b;
             }
@@ -332,7 +334,7 @@ namespace RimMandrake.ExplosiveGrowth
                 p.archetype = a;
                 p.fungus = fungi.Contains(def.defName);
                 bool native = a == RM_Archetype.DryNative || a == RM_Archetype.WetNative || a == RM_Archetype.FireAdapted;
-                p.isTree = native && !p.fungus && !treeExempt.Contains(def.defName)
+                p.isTree = native && !p.fungus && !treeExempt.Contains(def.defName) && !notTrees.Contains(def.defName)
                     && def.plant.visualSizeRange.max >= RM_ExplosiveGrowthKernel.TreeMinVisualSize;
                 p.woody = treeExempt.Contains(def.defName) && (def.plant.IsTree || def.plant.harvestedThingDef == ThingDefOf.WoodLog);
                 if (p.isTree && treeBursts.TryGetValue(def.defName, out RM_TreeBurstEntry tb))

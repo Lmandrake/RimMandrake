@@ -27,6 +27,7 @@
       <texPath>Things/Plant/RSW_Plant_HydenockTree_Wild</texPath>
     </graphicData>
     <plant>
+      <visualSizeRange>6~12</visualSizeRange>
       <immatureGraphicPath>Things/Plant/RSW_Plant_HydenockTree_Wild</immatureGraphicPath>
     </plant>
   </ThingDef>
@@ -42,6 +43,7 @@
       <texPath>Things/Plant/RSW_Plant_JoganTree_Wild</texPath>
     </graphicData>
     <plant>
+      <visualSizeRange>5~8</visualSizeRange>
       <immatureGraphicPath>Things/Plant/RSW_Plant_JoganTree_Wild</immatureGraphicPath>
       <harvestedThingDef>RSW_RawJoganFruit</harvestedThingDef>
     </plant>

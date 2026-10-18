@@ -115,6 +115,9 @@
       <RM_ChillStillbloom>0.35</RM_ChillStillbloom>
       <RM_Fuselight>0.3</RM_Fuselight>
       <RM_Eldspar>0.25</RM_Eldspar>
+      <!-- Owner, tree tiers sheet 2026-10-18: "Please move this to the bottom of the Chill sea floor" (deep floor,
+           RM_TheChillBed; def in Greentide's RM_Greentide_TreeRoster.xml). -->
+      <RM_Thalquith>0.3</RM_Thalquith>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>

@@ -244,7 +244,7 @@
       <harvestYield>16</harvestYield>
       <harvestTag>Wood</harvestTag>
       <harvestAfterGrowth>0.3</harvestAfterGrowth>
-      <visualSizeRange>2.25~4.8</visualSizeRange><!-- x1.5, owner 2026-10-10: "Make this 50% larger." -->
+      <visualSizeRange>2.1~4.5</visualSizeRange><!-- x1.5, owner 2026-10-10: "Make this 50% larger." -->
       <topWindExposure>0.4</topWindExposure>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>3</wildClusterWeight>

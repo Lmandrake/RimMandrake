@@ -39,7 +39,7 @@
       <topWindExposure>0.2</topWindExposure>
       <growDays>5</growDays>
       <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
-      <visualSizeRange>0.6~3.0</visualSizeRange>
+      <visualSizeRange>0.8~4</visualSizeRange>
       <purpose>Beauty</purpose>
     </plant>
     <comps>

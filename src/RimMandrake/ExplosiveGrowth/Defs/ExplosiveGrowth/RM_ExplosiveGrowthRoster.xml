@@ -128,7 +128,6 @@
       <li><plant>RM_SweetlineTree</plant><top>None</top></li>
       <li><plant>RM_ScorchedStars</plant><top>None</top></li>
       <li><plant>RM_WastelandScorchedStars</plant><top>None</top></li>
-      <li><plant>RM_TreeMartyr</plant><top>None</top></li>
       <li><plant>RM_NuitaeMarsh</plant><top>None</top></li>
       <li><plant>RM_WrinklecapMarsh</plant><top>None</top></li>
       <li><plant>RM_GreenArpeau</plant><top>None</top></li>
@@ -166,6 +165,20 @@
       <li><plant>AB_TarPuddle</plant><top>None</top></li>
       <!-- NONE — RM-tier and vanilla/DLC plants the roster excludes. -->
       <li><plant>Plant_MagmaCactus</plant><top>None</top></li>   <!-- hoarder, hard call 1 (INVENTED, unruled) -->
+
+      <!-- HYDROCARBON LIFE — owner, tree tiers sheet 2026-10-18 (RM_Thalquith's row): "NO HYDROCARBON LIFE FEATURES THE
+           BURSTING MECHANISMS." The Chill's liquid-propane floor flora (RM_TheChill wildPlants) and RM_Thalquith, moved
+           there the same sitting: no maturity top at all, so nothing here ever bursts. -->
+      <li><plant>RM_Thalquith</plant><top>None</top></li>
+      <li><plant>RM_Slackwax</plant><top>None</top></li>
+      <li><plant>RM_Skyharp</plant><top>None</top></li>
+      <li><plant>RM_Ghostpane</plant><top>None</top></li>
+      <li><plant>RM_Pitchpearl</plant><top>None</top></li>
+      <li><plant>RM_Tarspool</plant><top>None</top></li>
+      <li><plant>RM_Stonewater</plant><top>None</top></li>
+      <li><plant>RM_ChillStillbloom</plant><top>None</top></li>
+      <li><plant>RM_Fuselight</plant><top>None</top></li>
+      <li><plant>RM_Eldspar</plant><top>None</top></li>
     </plants>
 
     <!-- R-G5 (PLANT_GROWTH_SPEC.md) plus the blue-desert trio PlantGrowth
@@ -284,6 +297,21 @@
     <treeRulesExempt>
       <li>RM_Greatbole</li>
     </treeRulesExempt>
+    <!-- Owner, tree tiers sheet 2026-10-18 (each row's note): "Not a tree, does not make wood." Never trees whatever their
+         size (no drink, no burst, no logs); RM_Thalquith also: "NO HYDROCARBON LIFE FEATURES THE BURSTING MECHANISMS". -->
+    <notTrees>
+      <li>RM_Brakkel</li>
+      <li>RM_GlowGlobe</li>
+      <li>RM_Illurin</li>
+      <li>RM_KeeningCordax</li>
+      <li>RM_Maddrick</li>
+      <li>RM_Ollamane</li>
+      <li>RM_Phorrik</li>
+      <li>RM_Quathis</li>
+      <li>RM_Sarquin</li>
+      <li>RM_Thalquith</li>
+      <li>RM_Wollick</li>
+    </notTrees>
     <!-- Per-tree burst yields (Q12 logs for a non-wood tree, Q16 a log tree's own fruit). None set: every count is owed by
          PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE; until then a non-wood tree gives the Mod Setting's default logs. Shape:
          <li><plant>RM_X</plant><logs>12</logs><fruit>RM_XFruit</fruit><fruitCount>8</fruitCount></li> -->

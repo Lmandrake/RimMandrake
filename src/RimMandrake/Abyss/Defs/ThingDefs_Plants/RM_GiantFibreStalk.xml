@@ -11,7 +11,7 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_GiantFibreStalk</defName>
     <label>giant fibre stalk</label>
-    <description>A fibre stalk grown to an enormous age: a column of ridged segments as thick as a man and twice as tall, crowned with a heavy flowering head. Its fibres are too old and hard to work.</description>
+    <description>Half plant, half fungus, and neither one alone could have grown it. The green stalk climbs in ridged segments as thick as a man and several times his height, and a white fungal mycelium runs through every segment like a second skeleton, packing the plant's hollow joints with spongy threads. The plant feeds the fungus sugar from its crown; the fungus feeds the plant the minerals it digests out of the Abyss floor, and stiffens the stalk far past the height any fibre stalk could hold up by itself. Where the two meet, the joints sweat a pale bloom of spores, and the heavy flowering head on top is as much fruiting body as flower. Its fibres are too old, too hard and too thoroughly grown through to work.</description>
     <graphicData>
       <texPath>RM_Abyss/Things/Plant/RM_GiantFibreStalk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -31,7 +31,7 @@
       <harvestYield>10</harvestYield>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>11</wildClusterWeight>
-      <visualSizeRange>2.6~5.0</visualSizeRange>
+      <visualSizeRange>3.6~7</visualSizeRange>
     </plant>
     <ingestible/>
   </ThingDef>

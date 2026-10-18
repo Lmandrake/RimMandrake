@@ -6281,60 +6281,6 @@
     </match>
   </Operation>
 
-  <!-- martyr tree (RUT_TreeMartyr) - 546 tiles, home demands -22.1 … 37.5 °C
-       minGrowthTem -22.1->-22.1  minOptimalGr -13.8->-13.8  maxOptimalGr 35.9->35.9  maxGrowthTem 58->58 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/minGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/minGrowthTemperature</xpath>
-            <value><minGrowthTemperature>-22.1</minGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant</xpath>
-            <value><minGrowthTemperature>-22.1</minGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/minOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/minOptimalGrowthTemperature</xpath>
-            <value><minOptimalGrowthTemperature>-13.8</minOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant</xpath>
-            <value><minOptimalGrowthTemperature>-13.8</minOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/maxOptimalGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/maxOptimalGrowthTemperature</xpath>
-            <value><maxOptimalGrowthTemperature>35.9</maxOptimalGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant</xpath>
-            <value><maxOptimalGrowthTemperature>35.9</maxOptimalGrowthTemperature></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/maxGrowthTemperature</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant/maxGrowthTemperature</xpath>
-            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RM_TreeMartyr"]/plant</xpath>
-            <value><maxGrowthTemperature>58</maxGrowthTemperature></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- twisting thorngrass (RM_TwistingThorngrass) - 970 tiles, home demands -8.6 … 70.1 °C
        minGrowthTem -8.6->-8.6  minOptimalGr -0.5->-0.5  maxOptimalGr 48.4->48.4  maxGrowthTem 70.1->70.1 -->
   <Operation Class="PatchOperationConditional">
