@@ -220,9 +220,9 @@ namespace RimMandrake.FlowWorks
         public static bool superdeepRoomsEnabled = true;
         public static bool captureDownEnabled = true;
         public static bool wardenFromLipEnabled = true;
-        // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V6, veto-able): a pit room is a person-band pocket whose floor is at least this
-        // deep. 0 = any depth (V6: a sheer 1.5 m pocket is a prison room); 2 = the 2026-10-16 card "Superdeep only, as designed".
-        public static float pitRoomMinDepthMetres = 0f;
+        // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room is a person-band pocket whose floor is at least
+        // this deep for a person (3.0 m: reach overhead plus a small jump), scaled by body height per pawn. 0 = any depth.
+        public static float pitRoomMinDepthMetres = 3f;
         // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
         // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
         public static float pitWidthBodySizeMultiplier = 1f;
@@ -554,7 +554,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
             Scribe_Values.Look(ref shootingCliffMetres, "shootingCliffMetres", 2f);
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
-            Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 0f);
+            Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 3f);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
             Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
@@ -1293,10 +1293,13 @@ namespace RimMandrake.FlowWorks
             using (Dependent(list, "pitRoomMinDepthMetres"))
             {
                 list.Label(pitRoomMinDepthMetres < 0.25f ? "A pit room may be any depth" : "A pit room's floor is at least "
-                    + pitRoomMinDepthMetres.ToString("0.0") + " m down", tooltip:
-                    "0 (shipped): any sheer pocket a person cannot climb out of is a pit room, 1.5 m deep or 7 m deep. 2 m: only "
-                  + "pockets 2 m or deeper, as before the deeper digs. Capture-down and wardens working from the lip follow the same rule.");
-                pitRoomMinDepthMetres = Mathf.Round(list.Slider(pitRoomMinDepthMetres, 0f, 4f) * 2f) / 2f;
+                    + pitRoomMinDepthMetres.ToString("0.0") + " m down for a person ("
+                    + RM_PitRoomMath.RoomDepthMetresFor(pitRoomMinDepthMetres, RM_RelativeRulesMath.HeightMetres(3)).ToString("0.0")
+                    + " m for a large creature)", tooltip:
+                    "3 m (shipped): deep enough that an athletic person cannot reach up, jump, grab the edge and scramble out. "
+                  + "Scaled by body height: a creature twice a person's height needs a pit twice as deep before capture-down holds it. "
+                  + "0: any sheer pocket is a pit room. Capture-down and wardens working from the lip follow the same rule.");
+                pitRoomMinDepthMetres = Mathf.Round(list.Slider(pitRoomMinDepthMetres, 0f, 8f) * 2f) / 2f;
             }
             using (Dependent(list, "captureDownEnabled"))
             {

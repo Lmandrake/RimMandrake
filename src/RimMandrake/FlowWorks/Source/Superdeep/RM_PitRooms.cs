@@ -59,9 +59,9 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			// PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP (design §8.5 step 7): a pit room is a person-band POCKET — pawn-independent
-			// (GPT #11); a gentle bowl is no enclosure. PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (V6, veto-able): at any depth, the
-			// 2 m clause dropped, unless "pit room floor at least N m" says otherwise (2 m = the 2026-10-16 card
-			// PIT_PRISON_JUDGE_D3_ROOMS, "Superdeep only, as designed"). Capture-down and lip service read the SAME test
+			// (GPT #11); a gentle bowl is no enclosure. PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): the pocket's
+			// floor is at least the room depth for a person (default 3.0 m); taller creatures are checked per pawn
+			// (HoldsBySize). Capture-down and lip service read the SAME test
 			// (IsPitFloor), so rooms and the jobs done into them never disagree. The grid never rebuilds mid-flood.
 			if (RM_PocketGrid.Relative)
 			{
@@ -70,7 +70,7 @@ namespace RimMandrake.FlowWorks
 			return eng.IsSuperdeepRaw(c);
 		}
 
-		/// <summary>The setting "a pit room's floor is at least N m down", in notches (0 = any depth, V6).</summary>
+		/// <summary>The setting "a pit room's floor is at least N m down (for a person)", in notches (0 = any depth).</summary>
 		public static int MinRoomNotches => RM_RelativeRulesMath.Notches(RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, 0);
 
 		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: "down a pit" for everything that used to ask "is this cell dug 2 m":
@@ -164,8 +164,8 @@ namespace RimMandrake.FlowWorks
 			walkabilityChanged?.Invoke(map.regionDirtyer, new object[] { c, c.Walkable(map) });
 		}
 
-		/// <summary>PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: a cut or fill crossed the pit-room minimum depth (a setting other than
-		/// 0 or 2 m; the 2 m crossing is already notified, and pocket flips are notified by the pocket grid's rebuild).</summary>
+		/// <summary>A cut or fill crossed the pit-room depth (a setting other than 0 or 2 m; the 2 m crossing is already notified,
+		/// and pocket flips are notified by the pocket grid's rebuild).</summary>
 		public static void NotifyDepthCrossed(Map map, IntVec3 c, int before, int after)
 		{
 			int m = MinRoomNotches;
@@ -324,7 +324,24 @@ namespace RimMandrake.FlowWorks
 			bool prison = room != null && room.IsPrisonCell && IsPitRoom(room);
 			return RM_PitRoomMath.CaptureDown(RimMandrakeFlowWorksSettings.captureDownEnabled && RoomsOn,
 				humanlike, ownSide, target != null && target.IsPrisonerOfColony,
-				target != null && RM_SuperdeepTrap.IsHeld(target), prison);
+				target != null && RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target), prison);
+		}
+
+		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER: the pit room's person depth scaled by this pawn's height (RM_Drowning.HeightOf,
+		/// the climb size band), so a tall creature needs a deeper pit before the room holds it. Relative rules off: always true.</summary>
+		public static bool HoldsBySize(Pawn p)
+		{
+			if (p == null || !p.Spawned || !RM_PocketGrid.Relative)
+			{
+				return true;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
+			if (eng == null)
+			{
+				return false;
+			}
+			float floorMetres = eng.ExcavatedDepthAt(p.Position) * RM_RelativeRulesMath.MetresPerNotch;
+			return RM_PitRoomMath.DeepEnoughFor(floorMetres, RimMandrakeFlowWorksSettings.pitRoomMinDepthMetres, RM_Drowning.HeightOf(p));
 		}
 
 		public static string VerdictText(RM_PitRoomMath.CaptureDownVerdict v)

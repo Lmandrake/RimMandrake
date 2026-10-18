@@ -30,7 +30,7 @@ namespace RimMandrake.FlowWorks
 		public static bool IsExposed(Map map, RM_MapComponent_Excavation eng, Pawn p)
 		{
 			IntVec3 c = p.Position;
-			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit (a person-band pocket at any depth, V6), not "dug 2 m"
+			// PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: down a pit (a person-band pocket at least the pit-room depth), not "dug 2 m"
 			return RM_PitRooms.IsPitFloor(map, eng, c) && !map.roofGrid.Roofed(c);
 		}
 

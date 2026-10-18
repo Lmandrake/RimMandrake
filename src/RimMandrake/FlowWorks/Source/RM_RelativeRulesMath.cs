@@ -230,9 +230,9 @@ namespace RimMandrake.FlowWorks
 
 		// ── V6 pit rooms ────────────────────────────────────────────────────────────────────────────────────
 
-		/// <summary>V6 (default; veto-able): a pit room is a person-band pocket at ANY depth (a sheer 1.5 m pocket is a prison
-		/// room too). <paramref name="minDepthNotches"/> is the setting "a pit room's floor is at least N m down": 0 shipped (V6),
-		/// 4 = the 2026-10-16 card "Superdeep only, as designed" (PIT_PRISON_JUDGE_D3_ROOMS).</summary>
+		/// <summary>A pit room is a person-band pocket whose floor is at least <paramref name="minDepthNotches"/> down: the
+		/// setting pitRoomMinDepthMetres, 3.0 m (6) shipped for a person (PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER, owner card
+		/// 2026-10-18), 0 = any depth.</summary>
 		public static bool PitRoomCell(bool personPocket, int dugDepth, int minDepthNotches)
 		{
 			return personPocket && dugDepth > 0 && dugDepth >= minDepthNotches;
