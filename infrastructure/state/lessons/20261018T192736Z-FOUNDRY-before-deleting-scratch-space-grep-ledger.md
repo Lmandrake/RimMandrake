@@ -1,0 +1,1 @@
+Before deleting scratch space, grep the ledger for 'LOCALLY, not pushed' / scratchpad paths: an agent session scratchpad (.seat-tmp/<seat>/claude-*/…/scratchpad) can hold the only copy of unpushed commits; cleanup lost CRACKEDLANDS_FULL_RENAME_1's 3 commits 2026-10-18
