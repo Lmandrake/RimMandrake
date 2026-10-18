@@ -17,6 +17,10 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// takes any liquid as a spill: its filth (LiquidDef.spillFilth, else RM_Filth_LiquidSpill), one per litresPerFilth litres,
 	/// cleanable by colonists in the home area. A full or foreign channel, or a wall, is BLOCKED and moves nothing. Filth is a
 	/// world record of the spill, never converted back into liquid units.
+	/// Spilled WATER is real water (owner 2026-10-18 on HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES: <i>"it's not just filth, it's
+	/// spilled water as per wetting the ground, plant growth"</i>): fresh water's spillFilth is Explosive Growth's
+	/// RM_Filth_WaterSpill (its patch Patches/FlowWorks/RM_EG_FreshWaterSpillFilth.xml), a wet source plants on the cell
+	/// drink (RM_WetSources.SpillFilthSource), so a hose's leftover on dry ground waters the ground it lands on.
 	/// </summary>
 	public static class RM_LiquidSpill
 	{
@@ -237,8 +241,8 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// a filth that will not lie): the nearest canal or pond of the liquid within this radius.</summary>
 		public const float HomeRadius = 6.9f;
 
-		/// <summary>HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES, the conserving default (owner question on the item: "is a filth puddle
-		/// an allowed destination?"): liquid no filth can record goes into the nearest canal or pond of its kind within
+		/// <summary>HOSE_LEFTOVER_FIX_NO_VANISHING_LITRES, the conserving default (owner 2026-10-18: a puddle IS an allowed
+		/// destination, and for water it is spilled water that wets the ground and feeds plants): liquid no filth can record goes into the nearest canal or pond of its kind within
 		/// <see cref="HomeRadius"/>, nearest first. Returns the units placed.</summary>
 		private static int PlaceNearby(Map map, IntVec3 cell, LiquidDef liquid, int units)
 		{
