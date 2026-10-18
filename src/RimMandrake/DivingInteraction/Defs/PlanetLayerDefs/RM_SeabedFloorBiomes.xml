@@ -17,7 +17,7 @@
     <defName>RM_SeabedFloor_TheScald</defName>
     <label>the Scald floor</label>
     <description>The floor beneath the Scald: scalding vents and boiling mats under the water. Not yet surveyed in detail.</description>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RM_SeabedScald</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
@@ -33,7 +33,7 @@
     <defName>RM_SeabedFloor_GreySea</defName>
     <label>Grey Sea floor</label>
     <description>The floor beneath Grey Sea: a salt-white floor of pillars and brine pools. Not yet surveyed in detail.</description>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RM_SeabedGrey</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
@@ -49,7 +49,7 @@
     <defName>RM_SeabedFloor_TwilightSea</defName>
     <label>Twilight Sea floor</label>
     <description>The floor beneath Twilight Sea: a dim floor lit by what lives on it. Not yet surveyed in detail.</description>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RM_SeabedTwilight</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
@@ -65,7 +65,7 @@
     <defName>RM_SeabedFloor_TheChill</defName>
     <label>Chill floor</label>
     <description>The floor beneath Chill: the cold garden at the bottom of the crater lake. Not yet surveyed in detail.</description>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RM_SeabedChill</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>

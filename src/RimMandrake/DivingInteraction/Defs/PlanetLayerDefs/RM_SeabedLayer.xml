@@ -79,7 +79,7 @@
     <defName>RM_SeabedUnavailable</defName>
     <label>bedrock</label>
     <description>Solid rock, buried under the weight of a continent. There is no sea floor to reach here.</description>
-    <texture>World/Biomes/ExtremeDesert</texture>
+    <texture>World/Biomes/RM_SeabedBedrock</texture>
     <impassable>true</impassable>
     <canBuildBase>false</canBuildBase>
     <canExitMap>false</canExitMap>
@@ -103,7 +103,7 @@
     <defName>RM_SeabedFloor</defName>
     <label>sea floor</label>
     <description>The floor of a sea, far below the surface. Nothing has been surveyed here yet.</description>
-    <texture>World/Biomes/Ocean</texture>
+    <texture>World/Biomes/RM_SeabedFloor</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>

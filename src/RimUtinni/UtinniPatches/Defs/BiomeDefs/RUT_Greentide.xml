@@ -82,7 +82,7 @@
     <plantDensity>0.9</plantDensity>
     <forageability>1.0</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/Biome_CypreJungle</texture>
+    <texture>World/Biomes/RUT_Greentide</texture>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>
       <li>

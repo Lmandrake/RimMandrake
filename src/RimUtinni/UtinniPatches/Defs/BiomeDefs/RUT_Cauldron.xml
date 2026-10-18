@@ -67,7 +67,7 @@
     <plantDensity>0.5</plantDensity>
     <forageability>1.0</forageability>
     <movementDifficulty>2</movementDifficulty>
-    <texture>Biomes/PoisonForest</texture>
+    <texture>World/Biomes/RUT_Cauldron</texture>
     <diseaseMtbDays>30</diseaseMtbDays>
     <diseases>
       <li>

@@ -126,7 +126,7 @@
          override; `texture` is the only lever on world-map appearance. Jawa_SickWater is a
          dark slate-blue with brown mottling - a murky liquid that does not read as clean
          water, which is the point: this is propane, not water. -->
-    <texture>World/Biomes/Jawa_SickWater</texture>
+    <texture>World/Biomes/RUT_Chill</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>

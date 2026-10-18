@@ -136,7 +136,7 @@
     <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <lakeBeachTerrain>Sand</lakeBeachTerrain>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/Desert</texture>
+    <texture>World/Biomes/RUT_LongShade</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

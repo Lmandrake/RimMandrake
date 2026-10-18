@@ -81,7 +81,7 @@
     <plantDensity>0.35</plantDensity>
     <forageability>0.5</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/AridShrubland1</texture>
+    <texture>World/Biomes/RUT_LeaningScrub</texture>
     <diseaseMtbDays>65</diseaseMtbDays>
     <diseases>
       <li>

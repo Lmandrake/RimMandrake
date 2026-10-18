@@ -1,0 +1,2 @@
+deploy_custom_mods.py: Abyss is folded into RimMandrake.Biomes (src/RimMandrake/Biomes.compose.json) and is no longer deployed standalone.
+  deploy it with: python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes [--apply]

@@ -87,7 +87,7 @@
     <plantDensity>0.4</plantDensity>
     <forageability>0.5</forageability>
     <movementDifficulty>1.5</movementDifficulty>
-    <texture>Biomes/AB_PyroclasticConflagration</texture>
+    <texture>World/Biomes/RUT_Forge</texture>
     <diseaseMtbDays>65</diseaseMtbDays>
     <diseases>
       <li>

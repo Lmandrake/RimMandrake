@@ -56,7 +56,7 @@
     <plantDensity>0.15</plantDensity>
     <forageability>0.1</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/ZBiome_Badlands</texture>
+    <texture>World/Biomes/RUT_CrackedLands</texture>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>

@@ -1,0 +1,116 @@
+compose: biomes  (manifest src/RimMandrake/Biomes.compose.json)
+  compose  CreatureBehaviors    mandrake.rm.creaturebehaviors        38 file(s) -> Biomes/_Kits/CreatureBehaviors
+  compose  ExplosiveGrowth      mandrake.rm.explosivegrowth           8 file(s) -> Biomes/_Kits/ExplosiveGrowth
+  compose  EnvironmentalHazards mandrake.rm.environmentalhazards     44 file(s) -> Biomes/_Kits/EnvironmentalHazards
+  compose  Wreckage             mandrake.rm.wreckage                 11 file(s) -> Biomes/_Kits/Wreckage
+  compose  Abyss                mandrake.rm.abyss                   153 file(s) -> Biomes/Abyss
+  compose  BlueDesert           mandrake.rm.bluedesert               95 file(s) -> Biomes/BlueDesert
+  compose  Cauldron             mandrake.rm.cauldron                 84 file(s) -> Biomes/Cauldron
+  compose  Contagion            mandrake.rm.contagion               153 file(s) -> Biomes/Contagion
+  compose  FeverWood            mandrake.rm.feverwood               168 file(s) -> Biomes/FeverWood
+  compose  FloodedCanyon        mandrake.rm.floodedcanyon            58 file(s) -> Biomes/FloodedCanyon
+  compose  GelatinousSlime      mandrake.rm.gelatinousslime         100 file(s) -> Biomes/GelatinousSlime
+  compose  Greentide            mandrake.rm.greentide               134 file(s) -> Biomes/Greentide
+  compose  LanternDeeps         mandrake.rm.lanterndeeps            213 file(s) -> Biomes/LanternDeeps
+  compose  LeaningScrub         mandrake.rm.leaningscrub            182 file(s) -> Biomes/LeaningScrub
+  compose  LongShade            mandrake.rm.longshade               149 file(s) -> Biomes/LongShade
+  compose  Miasma               mandrake.rm.miasma                  142 file(s) -> Biomes/Miasma
+  compose  NightsideIce         mandrake.rm.nightsideice             23 file(s) -> Biomes/NightsideIce
+  compose  Pyrelands            mandrake.rm.pyrelands               157 file(s) -> Biomes/Pyrelands
+  compose  RustCathedral        mandrake.rm.rustcathedral            64 file(s) -> Biomes/RustCathedral
+  compose  Stillsand            mandrake.rm.stillsand               192 file(s) -> Biomes/Stillsand
+  compose  TerminalBiomes       mandrake.rm.terminalbiomes          468 file(s) -> Biomes/TerminalBiomes
+  compose  TheForge             mandrake.rm.theforge                 73 file(s) -> Biomes/TheForge
+  compose  TheRot               mandrake.rm.therot                  311 file(s) -> Biomes/TheRot
+  compose  TheSump              mandrake.rm.thesump                 120 file(s) -> Biomes/TheSump
+  compose  Warscar              mandrake.rm.warscar                 153 file(s) -> Biomes/Warscar
+  compose  Wasteland            mandrake.rm.wasteland               124 file(s) -> Biomes/Wasteland
+  compose  Webwork              mandrake.rm.webwork                  79 file(s) -> Biomes/Webwork
+  compose  WeepingStones        mandrake.rm.weepingstones            98 file(s) -> Biomes/WeepingStones
+  compose  DivingInteraction    mandrake.rm.divinginteraction        50 file(s) -> Biomes/DivingInteraction
+  compose  MovingDunes          mandrake.rm.movingdunes               6 file(s) -> Biomes/MovingDunes
+  compose  SeaShores            mandrake.rm.seashores                 4 file(s) -> Biomes/SeaShores
+  compose  (settings shell)     BiomesShell                           2 file(s) -> Assemblies/
+  compose  About.xml: 10 hard dependencies (brrainz.harmony, ludeon.rimworld, ludeon.rimworld.anomaly, ludeon.rimworld.biotech, ludeon.rimworld.ideology, ludeon.rimworld.odyssey, ludeon.rimworld.royalty, mandrake.rm.flowworks, mandrake.rm.luminouspigment, sarg.alphabiomes); 31 folded packageId(s) dropped from every list
+  compose  MayRequire: rewrote 5 folded-id guard(s) to mandrake.rm.biomes
+  compose  LoadFolders.xml: / + 31 root(s), manifest order
+
+repo : /home/mandrake/rm/bench/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 30 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+RimMandrake.Biomes mandrake.rm.biomes         not enabled in ModsConfig · 5 file(s) HELD
+    H  Biomes/Contagion/Staged/TentacleTwitch/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml   (repo-only; not deployed)
+           held: split art not yet accepted (owner by card 2026-10-15: "Both twitch") (hold DEPLOY_HOLD.txt:457 on Contagion/Staged/TentacleTwitch/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml)
+    H  Biomes/Contagion/Staged/TentacleTwitch/Patches/RM_OcularJelly_TwitchWiring.xml   (repo-only; not deployed)
+           held: split art not yet accepted (owner by card 2026-10-15: "Both twitch") (hold DEPLOY_HOLD.txt:457 on Contagion/Staged/TentacleTwitch/Patches/RM_OcularJelly_TwitchWiring.xml)
+    H  Biomes/TheForge/Staged/TentacleTwitch/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml   (repo-only; not deployed)
+           held: split art not yet accepted (owner by card 2026-10-15: "Both twitch") (hold DEPLOY_HOLD.txt:456 on TheForge/Staged/TentacleTwitch/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml)
+    H  Biomes/TheForge/Staged/TentacleTwitch/Patches/RM_ColossalAerofleet_TwitchWiring.xml   (repo-only; not deployed)
+           held: split art not yet accepted (owner by card 2026-10-15: "Both twitch") (hold DEPLOY_HOLD.txt:456 on TheForge/Staged/TentacleTwitch/Patches/RM_ColossalAerofleet_TwitchWiring.xml)
+    H  Biomes/Pyrelands/diag/burrow_trials.sh   (game copy left as-is)
+           held: dev harness script, not game content (hold DEPLOY_HOLD.txt:227 on Pyrelands/diag/burrow_trials.sh)
+    +  Biomes/Abyss/Textures/World/Biomes/RM_Abyss.png
+    +  Biomes/BlueDesert/Textures/World/Biomes/RM_BlueDesert.png
+    +  Biomes/Cauldron/Textures/World/Biomes/RM_Cauldron.png
+    +  Biomes/Contagion/Textures/World/Biomes/RM_Contagion.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedBedrock.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedChill.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedFloor.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedGrey.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedScald.png
+    +  Biomes/DivingInteraction/Textures/World/Biomes/RM_SeabedTwilight.png
+    +  Biomes/FloodedCanyon/Textures/World/Biomes/RM_CrackedLands.png
+    +  Biomes/GelatinousSlime/Textures/World/Biomes/RM_Slime.png
+    +  Biomes/Greentide/Textures/World/Biomes/RM_Greentide.png
+    +  Biomes/LanternDeeps/Textures/World/Biomes/RM_LanternDeeps.png
+    +  Biomes/LeaningScrub/Textures/World/Biomes/RM_LeaningScrub.png
+    +  Biomes/LongShade/Textures/World/Biomes/RM_LongShade.png
+    +  Biomes/Miasma/Textures/World/Biomes/RM_Miasma.png
+    +  Biomes/NightsideIce/Textures/World/Biomes/RM_SleepingIce.png
+    +  Biomes/RustCathedral/Textures/World/Biomes/RM_RustCathedral.png
+    +  Biomes/Stillsand/Textures/World/Biomes/RM_Stillsand.png
+    +  Biomes/TerminalBiomes/Textures/World/Biomes/RM_Chill.png
+    +  Biomes/TerminalBiomes/Textures/World/Biomes/RM_GreySea.png
+    +  Biomes/TerminalBiomes/Textures/World/Biomes/RM_Scald.png
+    +  Biomes/TerminalBiomes/Textures/World/Biomes/RM_TwilightSea.png
+    +  Biomes/TheForge/Textures/World/Biomes/RM_Forge.png
+    +  Biomes/TheSump/Textures/World/Biomes/RM_Sump.png
+    +  Biomes/Warscar/Textures/World/Biomes/RM_Warscar.png
+    +  Biomes/Wasteland/Textures/World/Biomes/RM_Wasteland.png
+    +  Biomes/Webwork/Textures/World/Biomes/RM_Webwork.png
+    +  Biomes/WeepingStones/Textures/World/Biomes/RM_WeepingStones.png
+    ~  Biomes/Abyss/Defs/BiomeDefs/RM_Abyss.xml
+    ~  Biomes/BlueDesert/Defs/BiomeDefs/RM_BlueDesert.xml
+    ~  Biomes/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml
+    ~  Biomes/Contagion/Defs/BiomeDefs/RM_Contagion.xml
+    ~  Biomes/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedFloorBiomes.xml
+    ~  Biomes/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedLayer.xml
+    ~  Biomes/FeverWood/Textures/World/Biomes/RM_FeverWood.png
+    ~  Biomes/FloodedCanyon/Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml
+    ~  Biomes/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml
+    ~  Biomes/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml
+    ~  Biomes/LanternDeeps/Defs/Biomes/RM_LanternDeeps.xml
+    ~  Biomes/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml
+    ~  Biomes/LongShade/Defs/BiomeDefs/RM_LongShade.xml
+    ~  Biomes/Miasma/Defs/BiomeDefs/RM_Miasma.xml
+    ~  Biomes/NightsideIce/Defs/BiomeDefs/RM_NightsideIce.xml
+    ~  Biomes/Pyrelands/Textures/World/Biomes/RM_Pyrelands.png
+    ~  Biomes/RustCathedral/Defs/BiomeDefs/RM_RustCathedral_Biome.xml
+    ~  Biomes/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml
+    ~  Biomes/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml
+    ~  Biomes/TerminalBiomes/Textures/World/Biomes/RM_ChillCrater.png
+    ~  Biomes/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml
+    ~  Biomes/TheRot/Textures/World/Biomes/RM_TheRot.png
+    ~  Biomes/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml
+    ~  Biomes/Warscar/Defs/BiomeDefs/RM_Warscar.xml
+    ~  Biomes/Wasteland/Defs/BiomeDefs/RM_Wasteland_Biome.xml
+    ~  Biomes/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml
+    ~  Biomes/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml
+
+Drift found. Re-run with --apply to deploy.

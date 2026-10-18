@@ -15,7 +15,7 @@
     <label>the Greentide</label>
     <description>A gallery jungle standing in permanent, ground-hugging steam. The rivers here run warmer than the air can comfortably hold, so a low fog never quite lifts, everything grows fast enough to watch, and the mud between the roots is deep enough to swallow a boot, a crate, or a careless step. There is no dry season and no truce — only the green, and what is patient enough to wait in the mud for you.</description>
     <workerClass>RimMandrake.Greentide.RM_BiomeWorker_Greentide</workerClass>
-    <texture>World/Biomes/TropicalRainforest</texture>
+    <texture>World/Biomes/RM_Greentide</texture>
 
     <modExtensions>
       <li Class="RimMandrake.Greentide.RM_GreentideBiomeRanges">

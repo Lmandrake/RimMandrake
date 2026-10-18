@@ -93,7 +93,7 @@
     <plantDensity>0.25</plantDensity>
     <forageability>0.8</forageability>
     <movementDifficulty>4</movementDifficulty>
-    <texture>Biomes/AB_TarPits</texture>
+    <texture>World/Biomes/RM_Sump</texture>
     <diseaseMtbDays>65</diseaseMtbDays>
     <diseases>
       <li>

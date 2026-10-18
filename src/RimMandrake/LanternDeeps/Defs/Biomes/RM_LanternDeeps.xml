@@ -60,7 +60,7 @@
     <disableSkyLighting>false</disableSkyLighting>
     <noAmbientWind>true</noAmbientWind>
     <constantOutdoorTemperature>17</constantOutdoorTemperature>
-    <texture>World/Biomes/IceSheet</texture>
+    <texture>World/Biomes/RM_LanternDeeps</texture>
 
     <diseaseMtbDays>60</diseaseMtbDays>
     <diseases>

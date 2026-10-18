@@ -99,7 +99,7 @@
     <plantDensity>0.9</plantDensity>
     <forageability>1.0</forageability>
     <movementDifficulty>2</movementDifficulty>
-    <texture>Biomes/AB_FeraliskInfestedJungle</texture>
+    <texture>World/Biomes/RUT_Webwork</texture>
     <diseaseMtbDays>35</diseaseMtbDays>
     <diseases>
       <li>

@@ -64,7 +64,7 @@
     <plantDensity>0.008</plantDensity>
     <forageability>0.0</forageability>
     <movementDifficulty>1</movementDifficulty>
-    <texture>World/Biomes/ExtremeDesert</texture>
+    <texture>World/Biomes/RM_Stillsand</texture>
     <!-- STILLSAND_SAND_SWIM_REMAINDER_1 §6: sand fishing. RM_DeepSand carries the Water tag and a
          Freshwater waterBodyType, so vanilla fishing zones form on it; this is the catch. The crawler is
          the common catch, the glass pearl the rare one (the stalker catch is Utinni-patched onto the RSW
