@@ -260,6 +260,16 @@ namespace RimMandrake.FlowWorks.SelfTest
 				RiverSwitchFlipChecks.Has(sp, @"RM_SuperdeepTrap\.EngineOf\(map\)\?\.ReportLiquidLost\(cell, rest, ""Spilled """, "the only loss is announced with its amount");
 				Assert(!ex.Contains("partLost"), "a fill-in no longer destroys a sheet's part-notch");
 			});
+
+			Case("LevelPour_whole_level_pour_is_all_or_nothing", () =>
+			{
+				// review day 3: TryPourDl with exact-level water off poured level by level and returned false after a partial
+				// pour; the room for every level is now checked before its one write.
+				string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+				RiverSwitchFlipChecks.Has(ex, @"if \(!CanPourLevelWhole\(c, fluid\) \|\| RoomNotches\(map\.cellIndices\.CellToIndex\(c\)\) < levels\) \{ return false; \} return TrySetDriverFill\(c, FillAt\(c\) \+ \(int\)levels, fluid\);",
+					"room for every level checked before the single write");
+				Assert(!ex.Contains("checked per level before each write"), "the per-level partial pour is gone");
+			});
 		}
 	}
 }
