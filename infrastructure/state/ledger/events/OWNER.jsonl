@@ -1078,3 +1078,8 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed for the credited-rerun deploy","ts":"2026-10-17T22:33:34Z","tsn":1792276414133001960}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"credited rerun launch via Steam, 20-mod walk list","ts":"2026-10-17T22:34:02Z","tsn":1792276442946854269}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"credited rerun done; walk save loaded","ts":"2026-10-17T22:56:40Z","tsn":1792277800714713374}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"TITANOSLIME gates: deploy new GelatinousSlime proof DLL + add hugethings/largepawns to the walk list","ts":"2026-10-17T23:04:15Z","tsn":1792278255314724329}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"deploy GelatinousSlime ghost fix for gate g8","ts":"2026-10-18T00:06:32Z","tsn":1792281992611118480}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"game closed for deploy","ts":"2026-10-18T00:06:44Z","tsn":1792282004943637874}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch after GelatinousSlime deploy","ts":"2026-10-18T00:09:50Z","tsn":1792282190382228391}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"walk save loaded, paused, for the owner","ts":"2026-10-18T00:36:57Z","tsn":1792283817116154754}
