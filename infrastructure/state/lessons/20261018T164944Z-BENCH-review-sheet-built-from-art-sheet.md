@@ -1,0 +1,1 @@
+A review sheet built from art_sheet subjects can show the wrong art: the 2026-10-18 dragonsnake variant sheet resolved art from a stale live def dump and showed the olive stand-in four times plus a white albino swim graphic, while the four real renders sat unshown in _artpipe/_artsrc. Before offering any sheet to the owner, render what it displays and LOOK at it.
