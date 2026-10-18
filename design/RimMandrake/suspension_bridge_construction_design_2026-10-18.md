@@ -248,3 +248,13 @@ art first.
   people visibly fit. Costs: a shallow ditch with a bridge blocks traffic in the ditch. *Why: a person is about 1.8 m.*
 - (b) Any depth. Buys: no rule to learn. Costs: pawns walk under a bridge sitting in a knee-deep ditch.
 - (c) At least 2.5 m. Buys: roomier look. Costs: more digging for every underpass.
+
+## Owner answers 2026-10-18 (by card)
+
+1. Build: **drag across like a wall**, 1-3 wide, solid ground at both ends.
+2. Length: **a limit per type plus towers** on the hole floor.
+3. Guardrails: **an on/off switch per bridge**; railings off = knock/slip/jump off.
+4. Rail cover: **no, safety only**.
+5. Cantilevers: **short jetty, 1-2 squares** (one person's weight) — not the recommendation; jetty support and collapse rules are owed.
+6. Collapse: **hit like a roof collapse**; the wreck blocks the trench until cleared.
+7. Clearance: **at least 2 m** to walk under.
