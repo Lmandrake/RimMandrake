@@ -136,7 +136,7 @@ def render(lake, path):
         "draw: %s" % ("the first at its seed" if not lake.get("skipped") else
                       "first %s draw after %d skipped" % (lake.get("want"), lake["skipped"])),
         "",
-        "shore shelf 0.5 m; way out 1 m (defaults)",
+        "no shore shelf; way out 1 m (defaults)",
     ]
     ax3.text(0, 1, "\n".join(text), va="top", ha="left", fontsize=8.5, color=ink, family="DejaVu Sans")
     fig.savefig(path, facecolor=bg, bbox_inches="tight")
@@ -186,8 +186,8 @@ shallower or deeper.</p>
 craters and mountains deeper). The deepest floor of a lake is drawn from the range, most lakes near the low end.</p>
 <table><tr><th>band</th><th>roughness</th><th>deepest floor, per lake</th><th>never deeper</th><th>silted up</th>
 <th>flat silt bottom</th><th>wall width (of the way to the middle)</th><th>shelves</th></tr>@@ROWS@@</table>
-<p>Two safety rules (defaults you can veto): the outer ring of every lake is a 0.5 m shore shelf, and every floor square has a
-walked way out with no step over 1 m, so a drained lake never traps a person. A hole with no way down to the deep
+<p>Safety rule (a default you can veto): every floor square has a
+walked way out with no step over 1 m, so a drained lake never traps a person (no shore shelf: owner 2026-10-18, drained means dry). A hole with no way down to the deep
 water is silted up to its rim, so a drained lake never splits into pools.</p>
 @@FIGS@@
 </body></html>""".replace("@@ROWS@@", rows).replace("@@FIGS@@", figs)

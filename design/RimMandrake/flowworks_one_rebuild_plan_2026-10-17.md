@@ -90,8 +90,8 @@ He did not rule these. Each stands until he says otherwise.
 
 **Natural water, defaulted (veto-able; not asked; the natural-water docs' recommendations):** fish in dug water by the
 game's size rule (follows R10); the same fish return when a dried pond refills; reeds survive short pump cycles; fish
-live in lakes as well as seas, caught not seen; a 0.5 m beach ring so a drained lake stays reachable for small
-animals; a river below a dam keeps flowing (rivers stay vanilla, R10). The steeper-lake question is superseded by R11.
+live in lakes as well as seas, caught not seen; no beach ring (owner card 2026-10-18: drained means
+dry); a river below a dam keeps flowing (rivers stay vanilla, R10). The steeper-lake question is superseded by R11.
 
 **Still unasked (cards owed; none blocks P3 to P6):** raiders facing a trench they cannot cross (play Q7: scaling
 ladders, a perfect wall, or they leave; now with swimmable moats, R12); a big creature in a slot narrower than itself

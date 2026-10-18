@@ -50,7 +50,7 @@ SETTINGS = {
         "pondBedHollowEnabled": True,   # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2
         "mouseoverDepthEnabled": True,   # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: depth + litres in the cell readout
         "deepBedsEnabled": True, "deepBedMaxDepth": 100.0,   # POND_ELEVATION_BUILD_LAKES_RUN_DEEP; 50 m ceiling (P11)
-        "lakeDepthScale": 1.0, "lakeFloorRoughness": 1.0, "lakeShoreShelfMetres": 0.5, "lakeWayOutMetres": 1.0,   # LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP
+        "lakeDepthScale": 1.0, "lakeFloorRoughness": 1.0, "lakeShoreShelfMetres": 0.0, "lakeWayOutMetres": 1.0,   # LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP
         "drainableLakeMaxCells": 40000.0,
         "pondDepthEnabled": True, "pondMudDays": 2.0, "pondStageWritesPerPulse": 400.0, "pondHeadRuleEnabled": True,   # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,

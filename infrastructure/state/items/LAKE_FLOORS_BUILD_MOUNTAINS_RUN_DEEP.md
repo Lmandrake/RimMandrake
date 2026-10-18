@@ -20,8 +20,8 @@ have some variation down there, not just a radial crater."*
    (replaced by R11). The settable ceiling stays (up to 125 m). **50 m is an upper bound reachable only by
    mountainous/deep biomes**, not a default for large lakes. Propose the per-roughness ranges (a table) and show them
    to him with the floor-variety look below; they are tuning, his to approve.
-4. Veto-able default (his look): the outermost shore ring is a 0.5 m beach so a drained lake always leaves a walkable
-   slope for small animals (play doc Q4a).
+4. No shore ring (owner card 2026-10-18, BEACH_RING_RETIRE_DRAINED_MEANS_DRY: drained means dry); the shelf is a Mod
+   Setting, default off.
 
 Replaces the lake-floor criterion carried into `LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD` from the absorbed
 `LAKE_FLOOR_TUNE_TEN_TO_FIFTY_METRES`. ESTIMATE 2 to 3.5 agent-days. Needs P3 (bodies) and P4 (bed code, settings in

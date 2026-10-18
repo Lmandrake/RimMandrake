@@ -30,8 +30,8 @@ Build packages and estimates: `design/RimMandrake/flowworks_one_rebuild_plan_202
 
 **Defaulted, veto-able (not asked; the docs' recommendations):** fish in dug water by the game's size rule (engine Q2a,
 follows R10); the same fish return when a dried pond refills (engine Q5a); reeds survive short pump cycles (engine Q6a);
-fish live in lakes as well as seas, caught not seen (play Q7a); a 0.5 m beach ring so a drained lake stays reachable
-for small animals (play Q4a); a river below a dam keeps flowing from the edge (play Q6b, R10 keeps rivers vanilla).
+fish live in lakes as well as seas, caught not seen (play Q7a); no beach ring (Q4a reversed by owner card 2026-10-18:
+drained means dry); a river below a dam keeps flowing from the edge (play Q6b, R10 keeps rivers vanilla).
 The steeper-lake question (play Q2) is superseded by R11; play Q1 and engine Q4 by R10 (floors at map creation);
 engine Q1 by R10; engine Q3 and play Q2 by R12; play Q1b by R13.
 
