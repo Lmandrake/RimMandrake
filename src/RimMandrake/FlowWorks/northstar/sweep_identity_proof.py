@@ -57,6 +57,10 @@ def main():
     r = w.call("jawa/spawn_pawn", kindDef="Villager", x=cells[1][0], z=cells[1][1], faction="hostile", count=1) or {}
     staged["prisoner"] = ((r.get("pawns") or [{}])[0]).get("id")
     gs = w.call("jawa/pawn_set_guest_status", pawn=staged["prisoner"], guestStatus="Prisoner", hostFaction="PlayerColony")
+    if len(cells) >= 4:   # fix3 (2026-10-18): a slave rides the same book as a prisoner
+        r = w.call("jawa/spawn_pawn", kindDef="Villager", x=cells[3][0], z=cells[3][1], faction="hostile", count=1) or {}
+        staged["slave"] = ((r.get("pawns") or [{}])[0]).get("id")
+        w.call("jawa/pawn_set_guest_status", pawn=staged["slave"], guestStatus="Slave", hostFaction="PlayerColony")
     r = w.call("jawa/spawn_pawn", kindDef="Muffalo", x=cells[2][0], z=cells[2][1], faction="player", count=1) or {}
     staged["tame_animal"] = ((r.get("pawns") or [{}])[0]).get("id")
     # a tame animal walks out of the current at once (2026-10-18 run: never swept); downed it lies where the river takes it
@@ -87,11 +91,11 @@ def main():
         row("SWEEP_returns_same_%s" % kind, st, {"id": i, "thingIdBack": p.get("thingId"), "factionBefore": before[kind]["faction"],
                                                 "factionAfter": p.get("faction"), "posAfter": p.get("position"),
                                                 "return": str(ret.get("result"))[:120]})
-    pr = staged["prisoner"]
-    if "prisoner" in gone:
-        gs2 = w.call("jawa/pawn_set_guest_status", pawn=pr, guestStatus="Prisoner", hostFaction="PlayerColony") or {}
-        row("SWEEP_prisoner_still_prisoner", "PASS" if gs2.get("guestStatusBefore") == "Prisoner" else "FAIL",
-            {"guestStatusBeforeRewrite": gs2.get("guestStatusBefore"), "raw": str(gs2)[:200]})
+    for kind, st_ in (("prisoner", "Prisoner"), ("slave", "Slave")):
+        if kind in gone:
+            gs2 = w.call("jawa/pawn_set_guest_status", pawn=staged[kind], guestStatus=st_, hostFaction="PlayerColony") or {}
+            row("SWEEP_%s_still_%s" % (kind, st_.lower()), "PASS" if gs2.get("guestStatusBefore") == st_ else "FAIL",
+                {"guestStatusBeforeRewrite": gs2.get("guestStatusBefore"), "raw": str(gs2)[:200]})
     for i in staged.values():
         w.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
     return 0

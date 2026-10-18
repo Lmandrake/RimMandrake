@@ -1,0 +1,466 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.107 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.661300 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001F7E90313D0.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001F7EE1EB120.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=148 elapsedMs=149
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=149
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=149 elapsedMs=149
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 28, missing 0
+[RimMandrake.FlowWorks] Harmony: patched 79, missing 0
+[FlowWorks] thirst provider: Own (no DBHThirst NeedDef loaded)
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit; invisible=True
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 27646.
+Total: 152.429600 ms (FindLiveObjects: 1.097300 ms CreateObjectMapping: 1.195600 ms MarkObjects: 149.855200 ms  DeleteObjects: 0.280900 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=20 elapsedMs=9031
+[JawaBench] ready: 413 tools, build c37ed41ae59c
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 11/e6cb45d2, toolSet 3f60d9fe, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session ae0e592f4f4847e08b57efeeab013158 seq 2 utc 2026-10-18T03:14:34.463Z
+[JawaBench] TPS sampler installed (bridge-registration): session ae0e592f4f4847e08b57efeeab013158 pid 39972 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261018T031434Z_ae0e592f4f4847e08b57efeeab013158_39972_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (412 tools gated, 0 unguarded, by bridge-registration, 1183 ms); compile gm, runtime profile test (profile file says test until 2026-10-18T14:00:00.0000000Z)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3257 elapsedMs=12289
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=12290
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=12291
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=12291
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=12291
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=12291
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=12292
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=12295
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=12295
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=12296
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=12298
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=18 elapsedMs=12317
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3285 elapsedMs=12317
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=18 elapsedMs=12317
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: ee9cea8085c54c65928dfe4c7302005d
+Unloading 3 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.613300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 27840.
+Total: 126.034300 ms (FindLiveObjects: 0.843200 ms CreateObjectMapping: 0.901600 ms MarkObjects: 124.241100 ms  DeleteObjects: 0.048100 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s)).
+[RimMandrake.FlowWorks] lake floor #1: 3 squares, plains (roughness 0.05), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #1: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #2: 22 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #2: 22 cells, LIMITED (29 kL / 29 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #3: 6 squares, plains (roughness 0.05), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #3: 6 cells, LIMITED (6 kL / 6 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #4: 18 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #4: 18 cells, LIMITED (19 kL / 19 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #5: 20 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #5: 20 cells, LIMITED (24 kL / 24 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #6: 2 squares, plains (roughness 0.05), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #6: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #7: 5 squares, plains (roughness 0.05), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #7: 5 cells, LIMITED (5 kL / 5 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #8: 2 squares, plains (roughness 0.05), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #8: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #9: 55 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #9: 55 cells, LIMITED (86 kL / 86 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #10: 30 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #10: 30 cells, LIMITED (42 kL / 42 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #11: 125 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #11: 125 cells, LIMITED (206 kL / 206 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #12: 5 squares, plains (roughness 0.05), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #12: 5 cells, LIMITED (5 kL / 5 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #13: 59 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #13: 59 cells, LIMITED (93 kL / 93 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #14: 27 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #14: 27 cells, LIMITED (38 kL / 38 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #15: 75 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #15: 75 cells, LIMITED (76 kL / 76 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #16: 1 squares, plains (roughness 0.05), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #16: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #17: 11 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #17: 11 cells, LIMITED (12 kL / 12 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #18: 12 squares, plains (roughness 0.05), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #18: 12 cells, LIMITED (12 kL / 12 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #19: 107 squares, plains (roughness 0.05), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #19: 107 cells, LIMITED (174 kL / 174 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #20: 70 squares, plains (roughness 0.05), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #20: 70 cells, LIMITED (110 kL / 110 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #21: 126 squares, plains (roughness 0.05), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #21: 126 cells, LIMITED (198 kL / 198 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floors: 21 natural body(ies) formed at map load, each limited lake's floor recorded (1 m deepest); no terrain changed.
+[JawaBench] TPS marker game: session ae0e592f4f4847e08b57efeeab013158 seq 6 utc 2026-10-18T03:15:05.628Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Tried to get CurKindLifeStage from humanlike pawn Taasaas
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 21 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 34076.
+Total: 135.383300 ms (FindLiveObjects: 1.051700 ms CreateObjectMapping: 1.132000 ms MarkObjects: 133.130400 ms  DeleteObjects: 0.068900 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29055.
+Total: 160.662300 ms (FindLiveObjects: 0.936200 ms CreateObjectMapping: 0.986800 ms MarkObjects: 158.548800 ms  DeleteObjects: 0.189900 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.294400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 28760.
+Total: 174.536500 ms (FindLiveObjects: 0.925100 ms CreateObjectMapping: 0.981700 ms MarkObjects: 172.552300 ms  DeleteObjects: 0.077000 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.275600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 28783.
+Total: 139.667100 ms (FindLiveObjects: 0.884000 ms CreateObjectMapping: 0.978600 ms MarkObjects: 137.755700 ms  DeleteObjects: 0.048300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s)).
+[RimMandrake.FlowWorks] lake floor #1: 11 squares, mountains (roughness 0.80), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #1: 11 cells, LIMITED (12 kL / 12 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 93 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #3: 4 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #3: 4 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #4: 19 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #4: 19 cells, LIMITED (25 kL / 25 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #5: 209 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #5: 209 cells, LIMITED (355 kL / 355 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #6: 3 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #6: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #7: 161 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #7: 161 cells, LIMITED (279 kL / 279 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floors: 7 natural body(ies) formed at map load, each limited lake's floor recorded (1 m deepest); no terrain changed.
+[JawaBench] TPS marker game: session ae0e592f4f4847e08b57efeeab013158 seq 12 utc 2026-10-18T03:15:24.985Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 7 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 34087.
+Total: 141.107700 ms (FindLiveObjects: 1.072600 ms CreateObjectMapping: 1.079300 ms MarkObjects: 138.863500 ms  DeleteObjects: 0.092000 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29264.
+Total: 150.434100 ms (FindLiveObjects: 0.897200 ms CreateObjectMapping: 1.055600 ms MarkObjects: 148.445600 ms  DeleteObjects: 0.035500 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.281400 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 28975.
+Total: 150.922500 ms (FindLiveObjects: 0.880600 ms CreateObjectMapping: 0.933600 ms MarkObjects: 149.042800 ms  DeleteObjects: 0.065300 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.295800 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 28998.
+Total: 136.264600 ms (FindLiveObjects: 0.866300 ms CreateObjectMapping: 0.930100 ms MarkObjects: 134.426200 ms  DeleteObjects: 0.041800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s)).
+[RimMandrake.FlowWorks] classified liquid body #1: 4000 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #2: 22 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #2: 22 cells, LIMITED (26 kL / 26 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #3: 31 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #3: 31 cells, LIMITED (41 kL / 41 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #4: 1 squares, hills (roughness 0.55), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #4: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #5: 3 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #5: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #6: 6 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #6: 6 cells, LIMITED (6 kL / 6 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #7: 8 squares, hills (roughness 0.55), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #7: 8 cells, LIMITED (9 kL / 9 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #8: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #8: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #9: 2 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #9: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #10: 36 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #10: 36 cells, LIMITED (39 kL / 39 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #11: 20 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #11: 20 cells, LIMITED (23 kL / 23 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #12: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #12: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #13: 27 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #13: 27 cells, LIMITED (28 kL / 28 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #14: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #14: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #15: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #15: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #16: 2 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #16: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #17: 3 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #17: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #18: 4 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #18: 4 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #19: 2 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #19: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #20: 6 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #20: 6 cells, LIMITED (6 kL / 6 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #21: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #21: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #22: 243 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #22: 243 cells, LIMITED (412 kL / 412 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #23: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #23: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #24: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #24: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #25: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #25: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #26: 52 squares, hills (roughness 0.55), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #26: 52 cells, LIMITED (80 kL / 80 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #27: 2 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #27: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #28: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #28: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #29: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #29: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #30: 4 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #30: 4 cells, LIMITED (4 kL / 4 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #31: 43 squares, hills (roughness 0.55), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #31: 43 cells, LIMITED (63 kL / 63 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #32: 1 squares, hills (roughness 0.55), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #32: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #33: 267 squares, hills (roughness 0.55), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #33: 267 cells, LIMITED (453 kL / 453 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #34: 11 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #34: 11 cells, LIMITED (11 kL / 11 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #35: 7 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #35: 7 cells, LIMITED (8 kL / 8 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #36: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #36: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #37: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #37: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #38: 74 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #38: 74 cells, LIMITED (115 kL / 115 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #39: 44 squares, hills (roughness 0.55), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #39: 44 cells, LIMITED (66 kL / 66 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #40: 1 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #40: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #41: 3 squares, hills (roughness 0.55), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #41: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floors: 41 natural body(ies) formed at map load, each limited lake's floor recorded (1 m deepest); no terrain changed.
+[JawaBench] TPS marker game: session ae0e592f4f4847e08b57efeeab013158 seq 17 utc 2026-10-18T03:15:43.625Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 41 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 35352.
+Total: 143.636100 ms (FindLiveObjects: 1.146100 ms CreateObjectMapping: 1.151200 ms MarkObjects: 141.290400 ms  DeleteObjects: 0.048000 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29409.
+Total: 160.812300 ms (FindLiveObjects: 0.986300 ms CreateObjectMapping: 0.960600 ms MarkObjects: 158.825500 ms  DeleteObjects: 0.039600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.300300 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 29117.
+Total: 155.852600 ms (FindLiveObjects: 0.992000 ms CreateObjectMapping: 0.933100 ms MarkObjects: 153.866200 ms  DeleteObjects: 0.061100 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.280700 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29140.
+Total: 140.620400 ms (FindLiveObjects: 0.962300 ms CreateObjectMapping: 0.936800 ms MarkObjects: 138.673100 ms  DeleteObjects: 0.047900 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s)).
+[RimMandrake.FlowWorks] lake floor #1: 7 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #1: 7 cells, LIMITED (7 kL / 7 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #2: 17 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #2: 17 cells, LIMITED (20 kL / 20 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #3: 46 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #3: 46 cells, LIMITED (68 kL / 68 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #4: 5 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #4: 5 cells, LIMITED (5 kL / 5 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #5: 1 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #5: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #6: 3 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #6: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #7: 75 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #7: 75 cells, LIMITED (120 kL / 120 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #8: 35 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #8: 35 cells, LIMITED (37 kL / 37 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #9: 1 squares, mountains (roughness 0.80), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #9: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #10: 26 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #10: 26 cells, LIMITED (28 kL / 28 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #11: 1 squares, mountains (roughness 0.80), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #11: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #12: 3 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #12: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #13: 2 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #13: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #14: 8 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #14: 8 cells, LIMITED (8 kL / 8 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #15: 13 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #15: 13 cells, LIMITED (14 kL / 14 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #16: 27 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #16: 27 cells, LIMITED (36 kL / 36 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #17: 3 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #17: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #18: 1 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #18: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #19: 3 squares, mountains (roughness 0.80), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #19: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #20: 7 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #20: 7 cells, LIMITED (7 kL / 7 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #21: 55 squares, mountains (roughness 0.80), silted, deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #21: 55 cells, LIMITED (82 kL / 82 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #22: 16 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #22: 16 cells, LIMITED (17 kL / 17 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #23: 3 squares, mountains (roughness 0.80), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #23: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #24: 6 squares, mountains (roughness 0.80), silted, deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #24: 6 cells, LIMITED (6 kL / 6 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #25: 1 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #25: 1 cells, LIMITED (1 kL / 1 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #26: 3 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #26: 3 cells, LIMITED (3 kL / 3 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #27: 31 squares, mountains (roughness 0.80), deepest 1 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #27: 31 cells, LIMITED (45 kL / 45 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floor #28: 2 squares, mountains (roughness 0.80), deepest 0.5 m, way out moved 0.
+[RimMandrake.FlowWorks] classified liquid body #28: 2 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] lake floors: 28 natural body(ies) formed at map load, each limited lake's floor recorded (1 m deepest); no terrain changed.
+[JawaBench] TPS marker game: session ae0e592f4f4847e08b57efeeab013158 seq 22 utc 2026-10-18T03:16:01.774Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 28 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 34655.
+Total: 145.954500 ms (FindLiveObjects: 1.298800 ms CreateObjectMapping: 1.135900 ms MarkObjects: 143.473700 ms  DeleteObjects: 0.045700 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 29557.
+Total: 154.425000 ms (FindLiveObjects: 1.012300 ms CreateObjectMapping: 1.011600 ms MarkObjects: 152.335300 ms  DeleteObjects: 0.065400 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.287200 ms
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 29261.
+Total: 153.797200 ms (FindLiveObjects: 0.979100 ms CreateObjectMapping: 0.958400 ms MarkObjects: 151.793900 ms  DeleteObjects: 0.065600 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.264600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 29284.
+Total: 139.376100 ms (FindLiveObjects: 0.972200 ms CreateObjectMapping: 0.941600 ms MarkObjects: 137.412700 ms  DeleteObjects: 0.049300 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - ray1203.SimpleCameraSetting
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RimMandrake.FlowWorks] level model 0 -> 1 (exact decilitres, one surface per body): canals 0 wet square(s), 0 L before and after (0 limited pond(s)).
+[JawaBench] TPS marker game: session ae0e592f4f4847e08b57efeeab013158 seq 33 utc 2026-10-18T03:16:45.908Z
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 34979.
+Total: 143.664600 ms (FindLiveObjects: 1.154800 ms CreateObjectMapping: 1.115500 ms MarkObjects: 141.327100 ms  DeleteObjects: 0.066800 ms)
+
+[proof log sentinel] revive 1792293413626
+[RimMandrake.FlowWorks] classified liquid body #1: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #2: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (2 kL / 2 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #4: 4 cells, LIMITED (8 kL / 8 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #5: 5 cells, LIMITED (10 kL / 10 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (80 kL / 80 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (128 kL / 128 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (128 kL / 128 kL). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless — the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky — this never runs again for these cells.
+[RimMandrake.FlowWorks] pond depth model 0 -> 1: 9 body(ies) re-laid as one flat surface on their next pulse; stocks unchanged.
+[RimMandrake.FlowWorks] conservation exception: 1.0 fill level(s) overflowed with nowhere to go and were destroyed (spec §5 — the only sanctioned case). Map total now 1.0.
+[proof log sentinel] E9 1792293614269

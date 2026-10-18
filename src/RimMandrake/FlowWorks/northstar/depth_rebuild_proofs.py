@@ -169,6 +169,11 @@ def main():
                 p2 = pos(o2)
                 row("SWIM_dug_reservoir_far_side_reached", "PASS" if p2 == far else "FAIL",
                     {"end": p2, "want": far, "ticks": o2.get("ticksElapsed"), "swimAfter": sc(SWIM, "ProofSwim", "%d,%d" % far)})
+                # 1a'. a mechanoid at the dug reservoir: class None, never routed in (fix3: dug water opens to swimmers only)
+                md, _ = spawn("Mech_Militor", (lake[0] - 2, lake[1] + 1), "player")
+                omd = order(md, mid, 600) if md else {}
+                row("SWIM_dug_reservoir_mechanoid_refused", "PASS" if md and not inside(pos(omd), lake) else "FAIL",
+                    {"order": {k: omd.get(k) for k in ("end", "ticksElapsed", "canReach")}, "midSwim": sc(SWIM, "ProofSwim", "%d,%d" % mid)})
                 # 1b. a NATURAL lake (painted WaterDeep, 9x4): the rest of the section swims here
                 nl = (ox + 6, oz + 13, 9, 4)
                 B.call("jawa/set_terrain_batch", ops="WaterDeep:%d,%d,%d,%d" % nl)
@@ -236,11 +241,11 @@ def main():
                 row("SWIM_mechanoid_refused", "PASS" if "class=None" in sm and not inside(pm, lake) else "FAIL",
                     {"swimInLake": sm, "orderToMiddle": {k: om.get(k) for k in ("end", "ticksElapsed", "canReach")} if om else mr,
                      "route": sc(PITPATH, "ProofRoute", "%s|%d,%d" % (me, mid[0], mid[1])) if me else None})
-                # 5. prisoner in a flooded sheer pit: 3.5 m hole, 2 m water -> surface 1.5 m below the lip
+                # 5. prisoner in a flooded sheer pit: 4 m hole, 2 m water -> surface 2 m below the lip (2026-10-18: with shipped rain fill a 3.5 m hole rose to 2.5 m of water in 1,500 ticks, a K 2 step, and the prisoner climbed out by the rule)
                 pit = (ox + 22, oz + 6, 3, 3)
                 for i in range(3):
                     for j in range(3):
-                        dig((pit[0] + i, pit[1] + j), 7, 4)
+                        dig((pit[0] + i, pit[1] + j), 8, 4)
                 B.ticks(70)
                 pc = (pit[0] + 1, pit[1] + 1)
                 pr, _ = spawn("Villager", pc, "hostile")
