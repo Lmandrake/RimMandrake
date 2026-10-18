@@ -2927,3 +2927,7 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-18T00:36:58Z","tsn":1792283818178184722}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-18T05:24:52Z","tsn":1792301092464801073}
 {"seat":"BENCH","event":"close","id":"RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW","sha":"0e472b3fc2","reason":"merged 01600a60e5+0e472b3fc2, FlowWorks deployed, planet river colours PASS by eye in the 2026-10-17 live round; standalone RiverColors retired","ts":"2026-10-18T05:25:20Z","tsn":1792301120542768424}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"credited thirst+sprinkler rerun at FlowWorks HEAD","ts":"2026-10-18T05:28:58Z","tsn":1792301338982850130}
+{"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"BENCH.pid60911.3b4c3343","expires":"2026-10-18T06:14:31Z","ts":"2026-10-18T05:29:31Z","tsn":1792301371692438438}
+{"seat":"BENCH","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"release","token":"BENCH.pid60911.3b4c3343","ts":"2026-10-18T05:29:38Z","tsn":1792301378553399439}
+{"seat":"BENCH","event":"close","id":"TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS","sha":"902f562a87","reason":"fixed: PyrelandsFactions.TribesOrNull loops every TribeCivil faction, skipping defeated/temporary (src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs:23-35)","ts":"2026-10-18T05:31:18Z","tsn":1792301478227276768}
