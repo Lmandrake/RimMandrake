@@ -185,12 +185,12 @@
          example"). Base graphic = variant A; B/C/D are PawnKindDef.alternateGraphics (Verse.AlternateGraphic: texPath,
          swimmingTexPath, weight 0.5 default), picked when Rand.Chance(alternateGraphicChance) (Verse/PawnGraphicUtils.cs).
          0.75 = the four equally likely. Until artpipe jobs dragonsnake_jfo_var{a,b,c,d}_v1 land, all four slots hold
-         the stand-in render dragonsnake_jfo_v1 (ours, olive, non-white). -->
+         the stand-in render dragonsnake_jfo_v1 (ours, olive, non-white). Swimming uses each variant body texPath as stand-in until jobs dragonsnake_jfo_var{a,b,c,d}_v1_swim land (the white swim art is Albino-only). -->
     <alternateGraphicChance>0.75</alternateGraphicChance>
     <alternateGraphics>
-      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</texPath></li>
-      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C</texPath></li>
-      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D</texPath></li>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</texPath><swimmingTexPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B</swimmingTexPath></li>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C</texPath><swimmingTexPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C</swimmingTexPath></li>
+      <li><texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D</texPath><swimmingTexPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D</swimmingTexPath></li>
     </alternateGraphics>
     <lifeStages>
       <li>
@@ -206,7 +206,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
         </swimmingGraphicData>
@@ -226,7 +226,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.0</drawSize>
         </swimmingGraphicData>
@@ -246,7 +246,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming</texPath>
+          <texPath>RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>4.0</drawSize>
         </swimmingGraphicData>

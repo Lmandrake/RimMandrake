@@ -1,0 +1,131 @@
+{
+ "biome": "SUBJECTS_dragonsnake_canon_variants",
+ "built": "2026-10-18T09:59:05-0700",
+ "census": "Transient/biome_ffar/dragonsnake_canon_variants.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 548 active",
+ "rows": {
+  "RSW_Dragonsnake_A": {
+   "columns": {
+    "A": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "B": {
+     "east": "8a8a53dbddfd4677701874e81d3bfd2a2e7e7ca4d8637dfced215add4a51d762",
+     "north": "5aa470919f41204c6178cbd8da8105d3baaf69ba1928c862edb36bed2de67032",
+     "south": "1daf96a996f02175fce615e9db722410db84739fd00801efe3b707d384044ced"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dragonsnake_jfo_vara_v1"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_a"
+  },
+  "RSW_Dragonsnake_B": {
+   "columns": {
+    "A": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "B": {
+     "east": "ed7f44d52dcd00a4c026814549cfd62869d8e7506b7ba3cf310c774550b78afb",
+     "north": "7f30177e69f0968176db915923c59e8d8c869cfc28df81502f432b9c9004679a",
+     "south": "0759554a9756138f442e7057fc5f31f163793e80ac20badceab7998d25c40856"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dragonsnake_jfo_varb_v1"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_b"
+  },
+  "RSW_Dragonsnake_C": {
+   "columns": {
+    "A": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "B": {
+     "east": "7010c422a04dae6c11ac9c4b90775a1fae8ba2a8a60ec1a170bebf79432e64f3",
+     "north": "54b9f848dd98a59e6539abacf7512cf88f210c7c4ca2d889edb4e85ac1216a4b",
+     "south": "8698de28770708cdc4daea7c05797f323eebe3a96ef708a990bc338720b108c8"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dragonsnake_jfo_varc_v1"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_c"
+  },
+  "RSW_Dragonsnake_D": {
+   "columns": {
+    "A": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "B": {
+     "east": "beca52c84306aad915901d752a4f919cd70abab44465e1561949b0a5f5c44331",
+     "north": "ef6158657763ba261c0608d1896e3083760057e97d6991b4371d395666b02dd5",
+     "south": "b2b37e76533194f38b1da666979b60a763f90f0cf83ea5a2760742b69f6fe961"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dragonsnake_jfo_vard_v1"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_d"
+  }
+ },
+ "sheetId": "dragonsnake_canon_variants_sheet_2026-10-18",
+ "snapshotId": "e77c3ce8fb404dfc"
+}
