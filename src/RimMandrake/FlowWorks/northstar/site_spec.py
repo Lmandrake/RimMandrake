@@ -45,7 +45,7 @@ SETTINGS = {
         "maxDigDepth": 16.0, "digCostRisesWithDepth": True,   # PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: 8 m cap; P6 curve
         "liquidCorrosionEnabled": True, "liquidIgnitionEnabled": True,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
-        "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,
+        "stickyLimitlessEnabled": True, "wetnessCutoffEnabled": True, "recessionEnabled": True, "refillEnabled": True,
         "pondReturnLegEnabled": True, "refillWaitsForOccupants": True, "dugBedLeavesPondEnabled": True,   # POND_RETURN_LEG
         "pondBedHollowEnabled": True,   # POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2
         "mouseoverDepthEnabled": True,   # LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: depth + litres in the cell readout
