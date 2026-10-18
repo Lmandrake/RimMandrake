@@ -332,6 +332,10 @@ def g3(g, S):
     row("g3", "colonist_swallowed_within_60s_natural", "PASS" if won else "FAIL", None if won else "MOD",
         "4 replicates (stage-1 vs 4 drafted colonists): %s" % summary)
     if not won:
+        for r in reps:                           # no leak into later gates' log budgets
+            g.gone(r["slime"])
+            for p in r["cols"]:
+                g.gone(p)
         return
     first = won[0]
     slime, cols, swallowed = first["slime"], first["cols"], first["state"]
@@ -543,9 +547,16 @@ def g5(g, S):
     g.proof("ProofSetMass", c, 4)
     g.setting("titanoslimeSheds", False)
     try:
+        # positive controls: shed==0 must not PASS blind (kind key unreadable, or the cuts never landed)
+        if not any((p.get("kind") or p.get("kindDef")) == KIND for p in g.pawns()):
+            raise Unmeasured("list_pawns exposes no kind/kindDef for %s: cannot count gelatids" % KIND)
+        h0 = float(g.read(c)["health"])
         base = len([p for p in g.pawns() if (p.get("kind") or p.get("kindDef")) == "RM_Gelatid"])
         for _ in range(8):
             g.call("jawa/damage", damageDef="Cut", amount=12, thingId=c, armorPenetration=1.0)
+        h1 = float(g.read(c).get("health", h0))
+        if not h1 < h0:
+            raise Unmeasured("cuts did not land (health %s -> %s): sheds-off zero proves nothing" % (h0, h1))
         shed = len([p for p in g.pawns() if (p.get("kind") or p.get("kindDef")) == "RM_Gelatid"]) - base
     finally:
         g.setting("titanoslimeSheds", True)
@@ -599,6 +610,8 @@ def g7(g, S):
             time.sleep(1.6)
             name = "titano_g7_stage%d_%s_%s" % (stage + 1, nm, time.strftime("%H%M%S"))
             sh = g.call("rimworld/take_screenshot", fileName=name, suppressMessage=True)
+            if sh.get("success") is not True or not sh.get("path"):
+                raise Unmeasured("take_screenshot %s failed: %s" % (name, json.dumps(sh)[:200]))
             shots.append(sh.get("path"))
         g.call("jawa/set_pawn_rotation", pawnId=pid, dir="unlock")
         g.gone(pid)
