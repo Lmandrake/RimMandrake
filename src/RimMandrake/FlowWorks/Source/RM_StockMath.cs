@@ -97,6 +97,41 @@ namespace RimMandrake.FlowWorks
 			return truncated || (touchesEdge && cellCount >= minLimitlessCells);
 		}
 
+		/// <summary>LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT (owner card 2026-10-18, "Per-biome wetness cutoff"): the cell count at
+		/// which an INLAND body is fed by a water table too big to drain, read from the tile's rainfall (mm a year). A wet tile
+		/// (>= 1500 mm) cuts at 600 cells, a temperate one (<= 700 mm) at 5000, and the cutoff slides between; below 700 mm it
+		/// climbs to 40,000 at 250 mm, and under 250 mm (desert) it is <see cref="int.MaxValue"/>: size never makes a dry lake
+		/// limitless. PROVISIONAL: the owner gave 600 / 5000 / never; the slide between them is ours.</summary>
+		public static int WetnessCutoffCells(float rainfallMm)
+		{
+			if (rainfallMm < 250f)
+			{
+				return int.MaxValue;
+			}
+			if (rainfallMm <= 700f)
+			{
+				return (int)System.Math.Round(40000f + (5000f - 40000f) * ((rainfallMm - 250f) / 450f));
+			}
+			if (rainfallMm >= 1500f)
+			{
+				return 600;
+			}
+			return (int)System.Math.Round(5000f + (600f - 5000f) * ((rainfallMm - 700f) / 800f));
+		}
+
+		/// <summary>The wetness-cutoff classification (replaces <see cref="IsLimitless"/> while the setting is on): moving water
+		/// (a river) and a body touching the map edge (the off-map reservoir) are ALWAYS limitless, however small; a body too
+		/// big to walk is limitless; any other body is limitless only at or above <paramref name="wetnessCutoffCells"/>. The
+		/// rest are LIMITED and refill from groundwater (<see cref="RefillPerDay"/>). Limitless also means no sloped floor.</summary>
+		public static bool IsLimitlessByWetness(bool stickyEnabled, bool truncated, bool touchesEdge, bool movingWater, int cellCount, int wetnessCutoffCells)
+		{
+			if (!stickyEnabled)
+			{
+				return false;
+			}
+			return movingWater || touchesEdge || truncated || cellCount >= wetnessCutoffCells;
+		}
+
 		// ── refill (ruling 2, §5 "Refill") ────────────────────────────────
 
 		public static float SeasonFactor(SeasonBand band)

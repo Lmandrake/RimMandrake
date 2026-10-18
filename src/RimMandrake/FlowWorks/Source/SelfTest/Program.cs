@@ -220,6 +220,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "size alone must not buy limitless — a huge INLAND lake is finite, which is the whole scarcity premise");
             });
 
+            Case("Wetness_cutoff_is_600_wet_5000_temperate_never_dry", () =>
+            {
+                Assert(RM_StockMath.WetnessCutoffCells(2000f) == 600, "a wet tile cuts at 600 cells");
+                Assert(RM_StockMath.WetnessCutoffCells(600f) > 5000 && RM_StockMath.WetnessCutoffCells(700f) == 5000, "temperate cuts at 5000");
+                Assert(RM_StockMath.WetnessCutoffCells(100f) == int.MaxValue, "a desert tile never reaches limitless by size");
+                Assert(RM_StockMath.WetnessCutoffCells(1100f) < 5000 && RM_StockMath.WetnessCutoffCells(1100f) > 600, "the slide is monotone between");
+            });
+
+            Case("Limitless_by_wetness_river_and_edge_always_inland_by_cutoff", () =>
+            {
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, false, true, 3, int.MaxValue), "a river is limitless however small or dry");
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, true, false, 3, int.MaxValue), "an off-map body is limitless however small");
+                Assert(RM_StockMath.IsLimitlessByWetness(true, false, false, false, 600, 600), "an inland lake at the cutoff is limitless");
+                Assert(!RM_StockMath.IsLimitlessByWetness(true, false, false, false, 599, 600), "one under the cutoff is limited");
+                Assert(!RM_StockMath.IsLimitlessByWetness(true, false, false, false, 20000, int.MaxValue), "size never makes a dry lake limitless");
+                Assert(!RM_StockMath.IsLimitlessByWetness(false, true, true, true, 99999, 1), "sticky off: nothing is limitless");
+            });
+
             Case("Limitless_is_forced_when_the_flood_fill_truncates", () =>
                 Assert(RM_StockMath.IsLimitless(true, true, false, 4000, DefaultMinLimitlessBodyCells),
                     "a body too big to flood-fill is an ocean; it must classify limitless rather than get a capacity "
