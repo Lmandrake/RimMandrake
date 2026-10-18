@@ -1,0 +1,339 @@
+{
+ "script": "depth_rebuild_proofs.py",
+ "started": "2026-10-17T18:50:03",
+ "rows": [
+  {
+   "id": "DROWN_shallow_ON",
+   "status": "INFO",
+   "detail": {
+    "readout": "OK Hole 1 m \u00b7 Water 1.00 m (2,000 L)",
+    "terrain": "WaterShallow painted",
+    "before": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000",
+    "trace": [
+     {
+      "t": 250,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.086666666,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 500,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.173333332,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 750,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.26,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1000,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.346666664,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1250,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.420000017,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1500,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.5066667,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1750,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.5933334,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2000,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.6800001,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2250,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.7533335,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2500,
+      "pos": [
+       163,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": 0.8400002,
+      "proof": "DROWN Human41457 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     }
+    ]
+   }
+  },
+  {
+   "id": "DROWN_shallow_OFF",
+   "status": "INFO",
+   "detail": {
+    "readout": "OK Hole 1 m \u00b7 Water 1.00 m (2,000 L)",
+    "terrain": "WaterShallow painted",
+    "before": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000",
+    "trace": [
+     {
+      "t": 250,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 500,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 750,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1000,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1250,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1500,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 1750,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2000,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2250,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     },
+     {
+      "t": 2500,
+      "pos": [
+       170,
+       154
+      ],
+      "dead": null,
+      "downed": null,
+      "drown": null,
+      "proof": "DROWN Human41479 H=1.75 lying=True water=0.00 under=False headUp=False exit=True perCheck=0.0000"
+     }
+    ]
+   }
+  },
+  {
+   "id": "P7_fall_7m_takes_3_5x",
+   "status": "PASS",
+   "detail": {
+    "ratio": 3.4693877551020407,
+    "falls": {
+     "2m": {
+      "flyer": "FLYER id=Human41506 from=120,153 to=123,153 depth=4 launched=True",
+      "descents": [
+       "Human41506@123,153 t=5200 fall=4.9"
+      ],
+      "fall": [
+       4.9
+      ],
+      "pos": [
+       122,
+       152
+      ],
+      "dead": null,
+      "depth": null,
+      "readout": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)"
+     },
+     "7m": {
+      "flyer": "FLYER id=Human41511 from=126,153 to=129,153 depth=14 launched=True",
+      "descents": [
+       "Human41511@129,153 t=5440 fall=17.0"
+      ],
+      "fall": [
+       17.0
+      ],
+      "pos": [
+       129,
+       153
+      ],
+      "dead": null,
+      "depth": null,
+      "readout": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)"
+     }
+    }
+   }
+  },
+  {
+   "id": "P7_prisoner_held_in_1_5m_pocket",
+   "status": "PASS",
+   "detail": {
+    "guest": "{'success': True, 'pawn': 'Ibis', 'hostFactionAfter': 'New Arrivals', 'guestStatusBefore': 'Guest', 'guestStatusAfter': 'Prisoner', 'resistanceAfter': 16.0, 'wi",
+    "climb0": "CLIMB k=2 held=True trapped=True cell=135,153 | POCKET k=2 comp=3 pocket=True size=9 depth=3 gen=191 built=191 rebuilds=29",
+    "room": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=891 lipId=826",
+    "after1200": [
+     135,
+     153
+    ],
+    "climb1": "CLIMB k=2 held=True trapped=True cell=135,153 | POCKET k=2 comp=3 pocket=True size=9 depth=3 gen=191 built=191 rebuilds=29",
+    "readout": "OK Hole 1.5 m \u00b7 Water 0.00 m (0 L)"
+   }
+  },
+  {
+   "id": "P7_shoot_across_2m_trench_allowed",
+   "status": "PASS",
+   "detail": {
+    "shooter": "Human41529",
+    "target": "Human41533",
+    "probe": "{\"success\": true, \"pawn\": \"Human41529\", \"faction\": \"New Arrivals\", \"position\": {\"x\": 139, \"z\": 154}, \"picked\": {\"id\": \"Human41533\", \"def\": \"Human\", \"x\": 143, \"z\": 154}, \"primary\": \"Gun_BoltActionRifle\", \"primaryVerbRanged\": true, \"ticksGame\": 7059, \"operation\": {\"OperationId\": \"op_b96e9c291ae3441c973e40796e405e9f\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 18}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 7059}}"
+   }
+  },
+  {
+   "id": "P7_shoot_between_7m_pits_refused",
+   "status": "PASS",
+   "detail": {
+    "shooter": "Human41540",
+    "target": "Human41544",
+    "probe": "{\"success\": true, \"pawn\": \"Human41540\", \"faction\": \"New Arrivals\", \"position\": {\"x\": 147, \"z\": 153}, \"primary\": \"Gun_BoltActionRifle\", \"primaryVerbRanged\": true, \"ticksGame\": 7059, \"operation\": {\"OperationId\": \"op_23ac5489e85d45e7bf203afea10afde1\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 9}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 7059}}",
+    "depthA": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)",
+    "depthB": "OK Hole 7 m \u00b7 Water 0.00 m (0 L)"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\fw_scenes\\live\\day3\\proofs_drown_p7_p5.json",
+  "only": "drown,p7,p5",
+  "fresh_map": true
+ },
+ "settings_before": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ },
+ "settings_restored": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ }
+}

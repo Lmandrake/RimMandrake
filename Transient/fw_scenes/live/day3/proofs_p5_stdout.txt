@@ -1,0 +1,3 @@
+P5_4774_square_152000_L                      PASS       {"litres": 152000, "readouts": {"194,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)", "194,125": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)", "194,126": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)", "194,127": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)", "195,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)", "195,125": "OK Hole 7 m (ledge 4 m) \u00b7 Water 7.00 m (14,000 L)", "195,126": "OK Hole 7 m (ledge 4 m) \u0
+P5_4774_square_one_surface                   PASS       {"levelSurface": "OK 1 worst 0.0000 m;194,124:16:0.0000:0.0000:0.0000;"}
+result -> Transient\fw_scenes\live\day3\proofs_p5.json

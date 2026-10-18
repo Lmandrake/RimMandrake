@@ -1,0 +1,109 @@
+quicktest map up: True (7 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [804, 807, 810]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+====================================================================================================
+S6. Save and reload mid-flow, and the flow carries on
+    ...............
+    .PPP...........
+    .PPP1111111111.
+    .PPP...........
+    ...............
+    readings: canal / pond squares are LITRES (to the litre, from ProofReadout) and ponds / hoses decilitres; 1 notch = 0.5 m in one square = 1,000 L = 10,000 dL; tolerance 10 dL per square read
+S6 staged (run 1, never saved): S5 part A (3x3 pond + 10-cell canal) and S4's gate scene shut with the downstream half full
+         screenshot: Transient\fw_scenes\live\S6_p00.png
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.1 s pause
+  run 1: uninterrupted to pulse 30
+  pulse  0  canal [0 0 0 0 0 0 0 0 0 0] dL  pond 110000 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  1  canal [9000 0 0 0 0 0 0 0 0 0] dL  pond 101000 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  2  canal [8180 8180 0 0 0 0 0 0 0 0] dL  pond 93636 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  3  canal [7500 7500 7500 0 0 0 0 0 0 0] dL  pond 87500 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  4  canal [6920 6920 6920 6920 0 0 0 0 0 0] dL  pond 82307 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  5  canal [6430 6430 6430 6430 6430 0 0 0 0 0] dL  pond 77857 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  6  canal [6000 6000 6000 6000 6000 6000 0 0 0 0] dL  pond 74000 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  7  canal [5630 5630 5630 5630 5630 5630 5630 0 0 0] dL  pond 70625 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  8  canal [5300 5290 5290 5290 5290 5290 5290 5290 0 0] dL  pond 67647 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  9  canal [5000 5000 5000 5000 5000 5000 5000 5000 5000 0] dL  pond 65000 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 10  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse 11  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 12  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 13  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 14  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 15  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 16  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 17  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 18  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 19  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 20  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:WS 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 21  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 22  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 23  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 24  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 25  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 26  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 27  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 28  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 29  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 30  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:WS 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: Transient\fw_scenes\live\S6_run1_p30.png
+  S6.lvl.run1 MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S6 run 1 pond + canal at pulse 30: 1 body, worst gap 0.0001 m; body at 114,32: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m)
+  run 2: the same start again on a fresh twin plot just north; save at pulse 4, reload, continue to 30
+  pulse  4  canal [6920 6920 6920 6920 0 0 0 0 0 0] dL  pond 82307 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD   <- saving
+  pulse  4  canal [6920 6920 6920 6920 0 0 0 0 0 0] dL  pond 82307 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD   <- after reload (save True, load True)
+  S6.a   MATCHES    doc: Straight after the reload, every cell's depth and fill, the pond's stock, and the gate's open/shut state equal what they were at the save.
+                    level: every square's decilitres, the pond's decilitres and the gate state are equal across the save (a long, not a rounded, stock)
+                    game: after reload: cells (dL), pond stock (dL) and gate EQUAL the save; widest square/pond difference 0 dL
+  S6.b   MATCHES    doc: Total liquid in Run 2 is the same before the save and after the reload.
+                    level: conserved to the decilitre across the reload
+                    game: total liquid before save 159987 dL, after reload 159987 dL
+  pulse  5  canal [6430 6430 6430 6430 6430 0 0 0 0 0] dL  pond 77857 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  6  canal [6000 6000 6000 6000 6000 6000 0 0 0 0] dL  pond 74000 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  7  canal [5630 5630 5630 5630 5630 5630 5630 0 0 0] dL  pond 70625 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  8  canal [5300 5290 5290 5290 5290 5290 5290 5290 0 0] dL  pond 67647 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse  9  canal [5000 5000 5000 5000 5000 5000 5000 5000 5000 0] dL  pond 65000 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 10  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse 11  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 12  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 13  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 14  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 15  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 16  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 17  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 18  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 19  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 20  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:WS 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 21  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 22  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 23  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 24  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 25  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 26  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 27  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 28  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 29  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+  pulse 30  canal [4740 4740 4740 4740 4740 4740 4740 4740 4740 4740] dL  pond 62631 dL  gate DOOR RM_Sluice open=False seals=True
+            pond squares: 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:WS 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: Transient\fw_scenes\live\S6_run2_p30.png
+  S6.c   MATCHES    doc: Run 2 ends in the same settled state as Run 1, cell for cell.
+                    level: run 2 ends cell for cell and decilitre for decilitre as run 1 (run 1: 114,32: Hole 0.5 m · Water 0.24 m (474 L); run 2: 114,52: Hole 0.5 m · Water 0.24 m (474 L))
+                    game: pulse 30: cells (dL) equal; pond run 1 62631 dL, run 2 62631 dL; widest difference 0 dL
+                    readout: 114,32: Hole 0.5 m · Water 0.24 m (474 L) || 123,32: Hole 0.5 m · Water 0.24 m (474 L) || 112,32: Hole 1.5 m · Water 1.24 m (2,474 L) || 114,52: Hole 0.5 m · Water 0.24 m (474 L) || 123,52: Hole 0.5 m · Water 0.24 m (474 L) || 112,52: Hole 1.5 m · Water 1.24 m (2,474 L)
+  S6.lvl.run2 MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S6 run 2 pond + canal at pulse 30: 1 body, worst gap 0.0001 m; body at 114,52: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m)
+  S6.Q1  OPEN RULING  After a reload, must the flow be identical pulse by pulse to a run that was never saved, or only end in the same place?
+         (a) identical at every pulse (strict; the strongest test)
+         (b) same totals and same final settled state; small differences on the way are fine
+         game today: pulse-by-pulse after the reload, run 2 differed from run 1 at pulses: none
+  log: Transient\fw_scenes\live\S6_20261017T183546.txt

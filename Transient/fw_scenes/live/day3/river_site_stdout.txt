@@ -1,0 +1,64 @@
+tiles 119904 flat temperate candidates 699
+river tiles among them 20
+fish by biome: {'TemperateForest': True} | rejected fishless river tiles: []
+tile 13740 mapId 1 TemperateForest riverCount 2 grid: GRID current=1696 fast=0 edge=1696 size=1.00 flood=False
+tile 13740 moving water on edges {'south': 8, 'east': 7}
+tile 13740 rejected: no current with a fast lane (grid current=1696 fast=0)
+tile 13741 mapId 2 TemperateForest riverCount 2 grid: GRID current=1848 fast=0 edge=1848 size=1.00 flood=False
+tile 13741 moving water on edges {'south': 6, 'north': 7}
+tile 13741 rejected: no current with a fast lane (grid current=1848 fast=0)
+tile 15637 mapId 3 TemperateForest riverCount 2 grid: GRID current=1259 fast=0 edge=1259 size=0.74 flood=False
+tile 15637 moving water on edges {'south': 4, 'north': 6}
+tile 15637 rejected: no current with a fast lane (grid current=1259 fast=0)
+tile 15638 mapId 4 TemperateForest riverCount 2 grid: GRID current=1738 fast=0 edge=1738 size=1.00 flood=False
+tile 15638 moving water on edges {'south': 6, 'north': 9}
+tile 15638 rejected: no current with a fast lane (grid current=1738 fast=0)
+tile 24727 mapId 5 TemperateForest riverCount 2 grid: GRID current=1616 fast=0 edge=1616 size=1.00 flood=False
+tile 24727 moving water on edges {'north': 6}
+tile 24727 rejected: no current with a fast lane (grid current=1616 fast=0)
+tile 36246 mapId 6 TemperateForest riverCount 2 grid: GRID current=1217 fast=0 edge=1217 size=0.74 flood=False
+tile 36246 moving water on edges {'south': 5, 'north': 4}
+tile 36246 rejected: no current with a fast lane (grid current=1217 fast=0)
+tile 42277 mapId 7 TemperateForest riverCount 2 grid: GRID current=1127 fast=0 edge=1127 size=1.00 flood=False
+tile 42277 moving water on edges {'south': 3, 'north': 4}
+tile 42277 rejected: no current with a fast lane (grid current=1127 fast=0)
+tile 42279 mapId 8 TemperateForest riverCount 2 grid: GRID current=1553 fast=0 edge=1553 size=1.00 flood=False
+tile 42279 moving water on edges {'south': 6, 'north': 7}
+tile 42279 rejected: no current with a fast lane (grid current=1553 fast=0)
+tile 62873 mapId 9 TemperateForest riverCount 2 grid: GRID current=1608 fast=0 edge=1608 size=1.00 flood=False
+tile 62873 moving water on edges {'north': 7}
+tile 62873 rejected: no current with a fast lane (grid current=1608 fast=0)
+tile 62889 mapId 10 TemperateForest riverCount 2 grid: GRID current=1290 fast=0 edge=1290 size=0.74 flood=False
+tile 62889 moving water on edges {'south': 4, 'north': 5}
+tile 62889 rejected: no current with a fast lane (grid current=1290 fast=0)
+tile 62894 mapId 11 TemperateForest riverCount 1 grid: GRID current=455 fast=0 edge=455 size=0.74 flood=False
+tile 62894 moving water on edges {'south': 5}
+tile 62894 rejected: no current with a fast lane (grid current=455 fast=0)
+tile 69127 mapId 12 TemperateForest riverCount 2 grid: GRID current=1773 fast=0 edge=1773 size=1.00 flood=False
+tile 69127 moving water on edges {'south': 8, 'east': 7}
+tile 69127 rejected: no current with a fast lane (grid current=1773 fast=0)
+tile 69128 mapId 13 TemperateForest riverCount 2 grid: GRID current=1784 fast=0 edge=1784 size=1.00 flood=False
+tile 69128 moving water on edges {'north': 9, 'west': 7}
+tile 69128 rejected: no current with a fast lane (grid current=1784 fast=0)
+tile 69134 mapId 14 TemperateForest riverCount 2 grid: GRID current=1877 fast=0 edge=1877 size=1.00 flood=False
+tile 69134 moving water on edges {'south': 7, 'north': 7}
+tile 69134 rejected: no current with a fast lane (grid current=1877 fast=0)
+tile 69139 mapId 15 TemperateForest riverCount 2 grid: GRID current=2023 fast=0 edge=2023 size=1.00 flood=False
+tile 69139 moving water on edges {'west': 8, 'east': 9}
+tile 69139 rejected: no current with a fast lane (grid current=2023 fast=0)
+tile 69141 mapId 16 TemperateForest riverCount 2 grid: GRID current=1119 fast=0 edge=1119 size=1.00 flood=False
+tile 69141 moving water on edges {'north': 4, 'west': 5}
+tile 69141 rejected: no current with a fast lane (grid current=1119 fast=0)
+tile 80565 mapId 17 TemperateForest riverCount 2 grid: GRID current=1265 fast=0 edge=1265 size=0.74 flood=False
+tile 80565 moving water on edges {'north': 5, 'west': 5}
+tile 80565 rejected: no current with a fast lane (grid current=1265 fast=0)
+tile 80566 mapId 18 TemperateForest riverCount 2 grid: GRID current=1380 fast=0 edge=1380 size=0.74 flood=False
+tile 80566 moving water on edges {'west': 4, 'east': 4}
+tile 80566 rejected: no current with a fast lane (grid current=1380 fast=0)
+tile 80567 mapId 19 TemperateForest riverCount 2 grid: GRID current=2009 fast=0 edge=2009 size=1.00 flood=False
+tile 80567 moving water on edges {'west': 8, 'east': 6}
+tile 80567 rejected: no current with a fast lane (grid current=2009 fast=0)
+tile 80568 mapId 20 TemperateForest riverCount 2 grid: GRID current=1790 fast=0 edge=1790 size=1.00 flood=False
+tile 80568 moving water on edges {'south': 7, 'north': 6}
+tile 80568 rejected: no current with a fast lane (grid current=1790 fast=0)
+no river tile with a current among 20 tried

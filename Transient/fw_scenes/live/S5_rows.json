@@ -3,54 +3,132 @@
   "id": "S5.a",
   "status": "DIFFERS",
   "doc": "Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond.",
-  "game": "A: most canal cells wet at once 0 of 10; pulses where pond+canal != start 36.0: [1, 2, 3, 4, 5, 6, 7, 8]; not one run at: none"
+  "game": "A: canal squares wet at once, most 10 of 10; pulses where pond+canal != 360000 dL (+-110): [0, 1, 2, 3, 4, 5, 6, 7]; a canal square above 10,000 dL at: none; not one run at: none",
+  "level": "the doc's 'at most 9 wet' is a whole-notch picture; level water wets all 10 at one depth (4737 dL = 0.237 m each)"
  },
  {
   "id": "S5.b",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m.",
-  "game": "pond A stock 36.0 -> 31.2631, lowest 31.2631 (doc: lower than at start, never below 27)"
+  "game": "pond A 110000 -> 62631 dL, lowest 62631; at pulse 20 62631 dL (doc: lower than at start, never below 270,000)",
+  "level": "pond 312632 dL (9 x 34737), each canal square 4737 dL; surface -0.263 m",
+  "readout": [
+   "74,32: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "83,32: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "71,31: Hole 0.5 m \u00b7 Water 0.24 m (474 L)"
+  ]
+ },
+ {
+  "id": "S5.lvl.A",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S5 A+B bodies at pulse 54: worst gap 0.0001 m in 3 bodies",
+  "gaps": [
+   "body at 74,32: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m)",
+   "body at 72,40: 10 sq, gap 0.0001 m (surface -0.4546..-0.4545 m)",
+   "body at 74,46: 3 sq, gap 0.0000 m (surface 0.0000..0.0000 m)"
+  ]
  },
  {
   "id": "S5.c",
   "status": "DIFFERS",
   "doc": "At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L.",
-  "game": "B canal cells ever wet none; pond B lowest 3.0909 (start 4.0); total at pulse 10 = 3.0909"
+  "game": "B canal cells ever wet [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; pond B lowest 909 dL (start 10000); total at pulse 10 = 10009 dL; at pulse 14 canal squares 910 910 910 910 910 910 910 910 910 910 dL, pond 909 dL",
+  "level": "the doc's 'only cell 1 wet' is a whole-notch picture; level water lays 909 dL (4.5 cm) on all 10 squares, pond 30909 dL",
+  "readout": [
+   "72,40: Hole 0.5 m \u00b7 Water 0.05 m (91 L)",
+   "81,40: Hole 0.5 m \u00b7 Water 0.05 m (91 L)",
+   "71,40: Hole 0.5 m \u00b7 Water 0.05 m (91 L)"
+  ]
  },
  {
   "id": "S5.d",
   "status": "MATCHES",
   "doc": "The wet front does not move for 40 more pulses.",
-  "game": "B canal changed after pulse 14 at pulses: never"
+  "game": "B canal changed (more than 10 dL a square) after pulse 14 at pulses: never"
  },
  {
   "id": "S5.h",
-  "status": "MATCHES",
+  "status": "DIFFERS",
   "doc": "The pond square and the 2 m canal square settle to one surface: each holds 1 m of water (2,000 L); the total is 4,000 L; nothing changes for 10 more pulses.",
-  "game": "pulse 10: pond F 2.0, 2 m canal 2 (doc: 2 and 2, total 4); changed after pulse 10 at: never"
+  "game": "pulse 10: pond F 0 dL, 2 m canal 10000 dL (doc: 1 m each = 20,000 dL, total 40,000); changed after pulse 10 at: never",
+  "level": "each of the two squares holds 20,000 dL (1.00 m), surface -1.000 m",
+  "readout": [
+   "72,77: Hole 2 m \u00b7 Water 0.50 m (1,000 L)",
+   "71,77: Hole 0.5 m \u00b7 Water 0.00 m (0 L)"
+  ]
+ },
+ {
+  "id": "S5.lvl.F",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S5 F pond + 2 m canal square: worst gap 0.0000 m in 1 bodies",
+  "gaps": [
+   "body at 72,77: 1 sq, gap 0.0000 m (surface -1.5000..-1.5000 m)"
+  ]
  },
  {
   "id": "S5.e",
-  "status": "DIFFERS",
+  "status": "MATCHES",
   "doc": "Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears.",
-  "game": "B canal+pond total 3.0909 -> 3.0909; overflow destroyed 0.0 -> 0.091"
+  "game": "B canal(2-10)+pond total 10009 -> 9999 dL; overflow destroyed 0.0 dL (the 4 pulses after the fill-in; level prediction: canal squares 1000 dL, pond 31000 dL)",
+  "level": "the 91 L sheet on cell 1 is displaced, not destroyed: total 40,000 dL, 0 dL overflowed",
+  "readout": [
+   "73,40: Hole 0.5 m \u00b7 Water 0.05 m (101 L)",
+   "71,40: Hole 0.5 m \u00b7 Water 0.05 m (91 L)"
+  ]
  },
  {
   "id": "S5.f",
   "status": "MATCHES",
   "doc": "Filling in the middle cell destroys exactly 1,000 L (0.5 m in one square), and the player sees a message that names the amount.",
-  "game": "run held 3 -> 2 notches; game's destroyed-overflow total rose by 1.0 (the message text is in the screenshot)"
+  "game": "run held 30000 -> 20000 dL; the game's destroyed-overflow total rose by 10000.0 dL (the message text is in the screenshot)",
+  "level": "exactly 10,000 dL (1,000 L) destroyed and named in the message; the two end squares keep 10,000 dL each",
+  "readout": [
+   "74,46: Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)",
+   "76,46: Hole 0.5 m \u00b7 Water 0.50 m (1,000 L)"
+  ]
  },
  {
   "id": "S5.g",
-  "status": "DIFFERS",
+  "status": "MATCHES",
   "doc": "Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L.",
-  "game": "pulse 20: 0 cell(s) at 1 m while 36 dry; total 0 notches (doc: none at 1 m while any dry; total 8)"
+  "game": "pulse 20: 0 cell(s) at 1 m while 0 dry; total 79920 dL; 0 square(s) off the level share by more than 10 dL",
+  "level": "all 36 squares wet at one depth: 2222 dL (0.111 m, 222 L) each, total 80,000 dL, none dry",
+  "readout": [
+   "71,61: Hole 1 m \u00b7 Water 0.11 m (222 L)",
+   "73,63: Hole 1 m \u00b7 Water 0.11 m (222 L)",
+   "76,66: Hole 1 m \u00b7 Water 0.11 m (222 L)"
+  ]
+ },
+ {
+  "id": "S5.lvl.E",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S5 E basin after 20 pulses: worst gap 0.0001 m in 1 bodies",
+  "gaps": [
+   "body at 71,61: 36 sq, gap 0.0001 m (surface -0.8889..-0.8889 m)"
+  ]
  },
  {
   "id": "S5.i",
   "status": "DIFFERS",
   "doc": "Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet.",
-  "game": "end: canal cells wet [], pond 2.025, hoses 0.00; pulses where pond+hoses+canal != 4.0: [3, 4, 5, 6, 7, 8]; 5th/6th cell wet at: never; undug ground wet: never"
+  "game": "end: canal squares [1620, 1620, 1620, 1620, 1620, 1620] dL (level: True), pond 256 dL, hoses 0 dL; pulses where pond+hoses+canal != 10000 (+-70): none; undug ground wet: never",
+  "level": "the doc's 'cells 1-4 at 0.5 m, never a 5th' is a whole-notch picture; level water spreads the pumped water over all 6 squares (4,000 L = 1624 dL each, 0.333 m), pond dry bar the hoses",
+  "readout": [
+   "81,92: Hole 0.5 m \u00b7 Water 0.08 m (162 L)",
+   "86,92: Hole 0.5 m \u00b7 Water 0.08 m (162 L)",
+   "71,92: Hole 0.5 m \u00b7 Water 0.01 m (26 L)"
+  ]
+ },
+ {
+  "id": "S5.lvl.G",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S5 G canal after the pump: worst gap 0.0000 m in 1 bodies",
+  "gaps": [
+   "body at 81,92: 6 sq, gap 0.0000 m (surface -0.4188..-0.4188 m)"
+  ]
  }
 ]
