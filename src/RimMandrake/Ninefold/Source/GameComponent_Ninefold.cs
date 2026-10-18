@@ -290,12 +290,13 @@ namespace RimMandrake.Ninefold
         private void StepRootedErosion()
         {
             // Called once per MoodWalkIntervalTicks (one in-game hour), so a
-            // flat per-call decrement IS the per-hour erosion rate. lastLaunchTick
-            // itself is used only by Notify_Launched below to reset the clock --
-            // this step doesn't need to re-derive elapsed hours from it.
+            // flat per-call decrement IS the per-hour erosion rate, except inside
+            // the post-launch grace window (Notify_Launched resets lastLaunchTick).
             int i = (int)God.TaBaa;
             float erosion = RootedErosionPerHour * RM_NinefoldSettings.eventMagnitudeMultiplier;
-            satiation[i] = RM_NinefoldKernel.ErodeSatiation(satiation[i], erosion);
+            // A launch pauses erosion for the grace window (d4c8e13fc; lost again by the kernel refactor).
+            if (Find.TickManager.TicksGame - lastLaunchTick >= RootedErosionGraceTicks)
+                satiation[i] = RM_NinefoldKernel.ErodeSatiation(satiation[i], erosion);
 
             if (!unveiled[i] &&
                 Find.TickManager.TicksGame - lastLaunchTick >= TaBaaFirstContactRootedTicks)
