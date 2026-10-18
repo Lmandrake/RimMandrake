@@ -261,6 +261,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string lab = RiverSwitchFlipChecks.Src("RM_ExcavationDepth.cs");
                 Assert(!lab.Contains("\"pit \" + m"), "no 'pit' label from 2 m");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
+                // review day 3: "on the screen" reads the drawn window only (the Scribe key string matched it before)
+                int s0 = set.IndexOf("public void DoWindowContents(", StringComparison.Ordinal);
+                int s1 = s0 < 0 ? -1 : set.IndexOf("private static void ApplyChangedSettings()", s0, StringComparison.Ordinal);
+                Assert(s0 >= 0 && s1 > s0, "found the settings window");
+                string screen = set.Substring(s0, s1 - s0);
                 foreach (string f in new[] { "public static float shootingCliffMetres = 2f;", "public static float pitRoomMinDepthMetres = 0f;",
                     "public static float fallDamagePerMetrePast2 = 0.5f;", "public static float fallDamageCap = 4f;",
                     "public static float pitDrowningHeadFraction = 0.9f;", "public static float pitDrowningLyingFraction = 0.2f;",
@@ -269,7 +274,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(set.Contains(f), "setting: " + f);
                     string name = f.Split(' ')[3];
                     Assert(set.Contains("Scribe_Values.Look(ref " + name + ", \"" + name + "\""), "scribed: " + name);
-                    Assert(set.Contains("\"" + name + "\""), "on the screen: " + name);
+                    Assert(System.Text.RegularExpressions.Regex.IsMatch(screen, name + @" = [^;]*list\.Slider\(" + name + ","), "on the screen: " + name);
                 }
                 Assert(RM_RelativeRulesMath.DefaultFallPerMetrePast == 0.5f && RM_RelativeRulesMath.DefaultFallCap == 4f
                     && RM_RelativeRulesMath.DefaultHeadFraction == 0.9f && RM_RelativeRulesMath.DefaultLyingFraction == 0.2f,

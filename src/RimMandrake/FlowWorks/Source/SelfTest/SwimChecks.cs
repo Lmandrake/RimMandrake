@@ -86,6 +86,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             return g;
         }
 
+        /// <summary>RM_SwimSettings.DoSettingsSection's body (the drawn screen), whitespace-collapsed source.</summary>
+        private static string Screen(string sw)
+        {
+            int a = sw.IndexOf("public static void DoSettingsSection(", StringComparison.Ordinal);
+            int b = a < 0 ? -1 : sw.IndexOf("public static class RM_SwimWater", a, StringComparison.Ordinal);
+            Assert(a >= 0 && b > a, "found RM_SwimSettings.DoSettingsSection");
+            return sw.Substring(a, b - a);
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             Case("Swim_who_swims_by_race_gene_and_load", () =>
@@ -275,11 +284,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.Contains("Swimming.RM_SwimSettings.ExposeData();") && set.Contains("Swimming.RM_SwimSettings.DoSettingsSection(list);")
                     && set.Contains("Swimming.RM_SwimWater.Reapply();"), "settings scribed, drawn, re-applied on save");
+                // review day 3: "on the screen" reads the settings section only (the Scribe line's "ref n," matched it before,
+                // so the check could not fail once "scribed" passed)
+                string screen = Screen(sw);
                 foreach (Match m in Regex.Matches(sw, @"public static (?:bool|int|float) (\w+) = "))
                 {
                     string n = m.Groups[1].Value;
                     Assert(sw.Contains("Scribe_Values.Look(ref " + n + ", \"" + n + "\""), "scribed: " + n);
-                    Assert(Regex.IsMatch(sw, @"ref " + n + @"[,)]") || Regex.IsMatch(sw, n + @" = Mathf\.Round"), "on the screen: " + n);
+                    Assert(Regex.IsMatch(screen, @"ref " + n + @"[,)]") || Regex.IsMatch(screen, n + @" = Mathf\.Round"), "on the screen: " + n);
                 }
                 Assert(sw.Contains("public static bool deepSwimEnabled = true;") && sw.Contains("public static bool swimOpenWaterEnabled = false;"),
                     "master on (R12); the open sea off");
@@ -309,7 +321,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
                 Assert(sw.Contains("public static bool shallowWaterDrowningEnabled = true;"), "shipped on (behaviour unchanged)");
                 Assert(sw.Contains("Scribe_Values.Look(ref shallowWaterDrowningEnabled, \"shallowWaterDrowningEnabled\", true);"), "scribed, same default");
-                Assert(sw.Contains("ref shallowWaterDrowningEnabled,"), "shown in Mod Settings");
+                Assert(Screen(sw).Contains("ref shallowWaterDrowningEnabled,"), "shown in Mod Settings");
                 Assert(Regex.IsMatch(sw, @"bool wadeableOff = !dug && !RM_SwimSettings\.shallowWaterDrowningEnabled && t != null && t\.IsWater\s*&& t\.passability != Traversability\.Impassable;"),
                     "can-fail: off = natural, vanilla-passable water only (never a dug cell, never deep water)");
                 Assert(Regex.IsMatch(sw, @"if \(!on \|\| p\.Flying \|\| wadeableOff \|\|"), "off: that square is footing (recover, no drowning check)");
