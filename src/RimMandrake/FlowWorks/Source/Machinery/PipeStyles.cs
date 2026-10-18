@@ -26,13 +26,13 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>The defs PipeLook registers with the shared style picker.</summary>
         public static readonly string[] StyledDefs = { PipeDef };
 
+        /// <summary>The river weir takes the same four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16).</summary>
+        public const string WeirDef = "RM_BankWeir";
+
         /// <summary>The four liquid tanks take the same four looks (owner 2026-10-14, TANK_TALL_BUILD_TWICE_THE_DRINK: "They should
         /// have the same four variant styles as Gimme Some Slack."). Registered by PipeLook only once their style defs
         /// (RM_LiquidTankStyles.xml, ThingStyleDef &lt;Tank&gt;_&lt;Look&gt;) are loaded, so the build button grows the menu the moment
         /// the art is installed and never logs a missing style before it.</summary>
-        /// <summary>The river weir takes the same four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16).</summary>
-        public const string WeirDef = "RM_BankWeir";
-
         public static readonly string[] TankDefs = { "RM_LiquidTank", "RM_LiquidTankTall", "RM_UniversalCargoTank", "RM_UniversalCargoTankXTall" };
 
         /// <summary>A tank look's owned art (texPath, no extension): RimMandrake/FlowWorks/Tank/&lt;Look&gt;/&lt;TankDef&gt;.</summary>
