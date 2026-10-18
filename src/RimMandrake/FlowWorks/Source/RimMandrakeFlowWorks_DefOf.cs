@@ -65,6 +65,9 @@ namespace RimMandrake.FlowWorks
 		// CANAL_BOTTOM_SPIKES_1
 		public static ThingDef RM_Spikes;
 
+		// FALL_GUARDRAILS_BUILD_REAL_OBJECT: read by RM_FallRails.IsRail
+		public static ThingDef RM_PitGuardrail;
+
 		// FLOWWORKS_DOOR_FAMILY_1. RM_Sluice, RM_SecurityGrateDoor, RM_LiquidTank, RM_LiquidDrill and RM_LiquidTap are
 		// read by no code: they stay as existence guards, so a renamed or missing def fails loudly at startup.
 		public static ThingDef RM_Sluice;

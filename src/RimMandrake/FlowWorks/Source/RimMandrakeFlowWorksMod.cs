@@ -285,6 +285,9 @@ namespace RimMandrake.FlowWorks
         // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE (owner R7, V4): spikes go on any square with a sheer drop of this many metres or
         // more to a neighbour, at any depth.
         public static float spikeMinDropMetres = 2f;
+        // FALL_GUARDRAILS_BUILD_REAL_OBJECT (owner 2026-10-18): a guardrail (RM_PitGuardrail) or any fence on a lip stops falls
+        // over its edges (RM_FallRails). Off: no cell is a rail, the old behaviour.
+        public static bool pitGuardrailEnabled = true;
         // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
         public static bool pitDepthDrawOffsetEnabled = true;
         public static float pitSinkPerLevel = 0.3f;
@@ -596,6 +599,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitTemperatureCoupling, "pitTemperatureCoupling", 3f);
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
+            Scribe_Values.Look(ref pitGuardrailEnabled, "pitGuardrailEnabled", true);
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
             Scribe_Values.Look(ref spikeMinDropMetres, "spikeMinDropMetres", 2f);
             Scribe_Values.Look(ref pitDepthDrawOffsetEnabled, "pitDepthDrawOffsetEnabled", true);
@@ -732,7 +736,7 @@ namespace RimMandrake.FlowWorks
             .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
             .Name("pitExposureEnabled", "An open pit leaves whoever is in it exposed to the elements")
-            .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("fallDeathEnabled", "A deep fall can kill").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in")
+            .Name("fallDamageEnabled", "Falling into a pit deals damage").Name("fallDeathEnabled", "A deep fall can kill").Name("spikesEnabled", "Spikes on a pit floor stab whoever drops in").Name("pitGuardrailEnabled", "Guardrails and fences stop falls off a lip")
             .Name("pitDepthDrawOffsetEnabled", "Pawns sink into dug channels and rise out of them")
             .Name("pitLipOcclusionEnabled", "The near edge of a cut hides whoever stands deep in it")
             .Name("pitLipOccupantCutEnabled", "Keep whoever is in the cut visible")
@@ -1230,7 +1234,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "pitStuckAlertEnabled", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitSlowClimbFactor", "pitRampsEnabled", "pitRampMaxSpan", "pitLadderSlowness", "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningHeadFraction", "pitDrowningLyingFraction", "poisonFillEnabled", "slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor", "pitExposureEnabled", "pitExposureNarrowing", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "fallDamagePerMetrePast2", "fallDamageCap", "fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres", "spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres", "pitGuardrailEnabled", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "waterFrontCreepEnabled", "levelBySurfaceEnabled", "levelSetEnabled", "levelExactEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled", "shootingCliffMetres", "disabledFluids" }))
             {
             list.Label("A pit is any dug pocket nothing can climb out of, nothing more: there is no pit building. "
                      + "What holds a creature is the height of the step it must climb against its own size, never the "
@@ -1433,6 +1437,12 @@ namespace RimMandrake.FlowWorks
                   + "floor of a 2 m pit, or a 7 m core under a 4 m ledge. Never on a gentle slope. Shipped: 2 m.");
                 spikeMinDropMetres = Mathf.Round(list.Slider(spikeMinDropMetres, 0.5f, 5f) * 2f) / 2f;
             }
+
+            list.CheckboxLabeled("Guardrails and fences stop falls off a lip", ref pitGuardrailEnabled,
+                "A guardrail (Structure tab, built on the lip of a sheer drop) or any fence standing on a lip stops falls over "
+              + "its edges: nobody walks off it, and a blast throwing someone over it stops them at the rail. People still walk "
+              + "along the lip and climb up past it; jumping in on purpose still works; a pit cover giving way is not stopped. "
+              + "Off: rails and fences stop nothing (the guardrail still stands).");
 
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug cell is drawn lower the deeper the cell, and rises smoothly as it "
