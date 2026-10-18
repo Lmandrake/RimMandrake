@@ -1083,3 +1083,14 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"game closed for deploy","ts":"2026-10-18T00:06:44Z","tsn":1792282004943637874}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"relaunch after GelatinousSlime deploy","ts":"2026-10-18T00:09:50Z","tsn":1792282190382228391}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"walk save loaded, paused, for the owner","ts":"2026-10-18T00:36:57Z","tsn":1792283817116154754}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"FOUNDRY P10 live round: deploy FlowWorks DLL 71aaadd97, swap to 11-mod list","ts":"2026-10-18T00:54:58Z","tsn":1792284898600133681}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","why":"closed for FlowWorks deploy","ts":"2026-10-18T00:55:05Z","tsn":1792284905397542003}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","why":"deploying FlowWorks 71aaadd97","ts":"2026-10-18T00:56:44Z","tsn":1792285004335362721}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch on 11-mod flowworks list","ts":"2026-10-18T00:56:58Z","tsn":1792285018195222651}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"11-mod list loaded, bridge answers","ts":"2026-10-18T00:58:17Z","tsn":1792285097224121582}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"wedged: river site save (RSW corpses) -> MapDrawer NRE every frame; relaunch","ts":"2026-10-18T01:06:25Z","tsn":1792285585203184446}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch after wedge","ts":"2026-10-18T01:06:31Z","tsn":1792285591624034114}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"relaunched","ts":"2026-10-18T01:07:08Z","tsn":1792285628806805506}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","why":"stuck in MapInitializing after river_site (20 maps generated); relaunch","ts":"2026-10-18T01:27:17Z","tsn":1792286837108862243}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","why":"relaunch","ts":"2026-10-18T01:27:23Z","tsn":1792286843557689200}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","why":"up","ts":"2026-10-18T01:27:57Z","tsn":1792286877547846705}

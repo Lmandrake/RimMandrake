@@ -1,0 +1,53 @@
+{
+ "script": "depth_rebuild_proofs.py",
+ "started": "2026-10-17T18:52:02",
+ "rows": [
+  {
+   "id": "P5_4774_square_152000_L",
+   "status": "PASS",
+   "detail": {
+    "litres": 152000,
+    "readouts": {
+     "194,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "194,125": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "194,126": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "194,127": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "195,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "195,125": "OK Hole 7 m (ledge 4 m) \u00b7 Water 7.00 m (14,000 L)",
+     "195,126": "OK Hole 7 m (ledge 4 m) \u00b7 Water 7.00 m (14,000 L)",
+     "195,127": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "196,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "196,125": "OK Hole 7 m (ledge 4 m) \u00b7 Water 7.00 m (14,000 L)",
+     "196,126": "OK Hole 7 m (ledge 4 m) \u00b7 Water 7.00 m (14,000 L)",
+     "196,127": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "197,124": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "197,125": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "197,126": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)",
+     "197,127": "OK Hole 4 m \u00b7 Water 4.00 m (8,000 L)"
+    }
+   }
+  },
+  {
+   "id": "P5_4774_square_one_surface",
+   "status": "PASS",
+   "detail": {
+    "levelSurface": "OK 1 worst 0.0000 m;194,124:16:0.0000:0.0000:0.0000;"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient\\fw_scenes\\live\\day3\\proofs_p5.json",
+  "only": "p5",
+  "fresh_map": true
+ },
+ "settings_before": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ },
+ "settings_restored": {
+  "fw.superdeepCapturesOwnFaction": "False",
+  "sw.deepSwimEnabled": "True",
+  "sw.shallowWaterDrowningEnabled": "True"
+ }
+}

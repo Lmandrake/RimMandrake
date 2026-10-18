@@ -1,0 +1,4 @@
+tiles 119904 flat temperate candidates 699
+river tiles among them 20
+fish by biome: {'TemperateForest': True} | rejected fishless river tiles: []
+no river tile with a current among 0 tried

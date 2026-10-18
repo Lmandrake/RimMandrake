@@ -1,21 +1,50 @@
 [
  {
+  "id": "S6.lvl.run1",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S6 run 1 pond + canal at pulse 30: worst gap 0.0001 m in 1 bodies",
+  "gaps": [
+   "body at 114,32: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m)"
+  ]
+ },
+ {
   "id": "S6.a",
   "status": "MATCHES",
   "doc": "Straight after the reload, every cell's depth and fill, the pond's stock, and the gate's open/shut state equal what they were at the save.",
-  "game": "after reload: cells, pond stock and gate EQUAL the save"
+  "game": "after reload: cells (dL), pond stock (dL) and gate EQUAL the save; widest square/pond difference 0 dL",
+  "level": "every square's decilitres, the pond's decilitres and the gate state are equal across the save (a long, not a rounded, stock)"
  },
  {
   "id": "S6.b",
   "status": "MATCHES",
   "doc": "Total liquid in Run 2 is the same before the save and after the reload.",
-  "game": "total liquid before save 36.2307, after reload 36.2307"
+  "game": "total liquid before save 159987 dL, after reload 159987 dL",
+  "level": "conserved to the decilitre across the reload"
  },
  {
   "id": "S6.c",
   "status": "MATCHES",
   "doc": "Run 2 ends in the same settled state as Run 1, cell for cell.",
-  "game": "pulse 30: cells equal; pond run 1 31.2631, run 2 31.2631"
+  "game": "pulse 30: cells (dL) equal; pond run 1 62631 dL, run 2 62631 dL; widest difference 0 dL",
+  "level": "run 2 ends cell for cell and decilitre for decilitre as run 1 (run 1: 114,32: Hole 0.5 m \u00b7 Water 0.24 m (474 L); run 2: 114,52: Hole 0.5 m \u00b7 Water 0.24 m (474 L))",
+  "readout": [
+   "114,32: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "123,32: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "112,32: Hole 1.5 m \u00b7 Water 1.24 m (2,474 L)",
+   "114,52: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "123,52: Hole 0.5 m \u00b7 Water 0.24 m (474 L)",
+   "112,52: Hole 1.5 m \u00b7 Water 1.24 m (2,474 L)"
+  ]
+ },
+ {
+  "id": "S6.lvl.run2",
+  "status": "MATCHES",
+  "doc": "Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).",
+  "game": "S6 run 2 pond + canal at pulse 30: worst gap 0.0001 m in 1 bodies",
+  "gaps": [
+   "body at 114,52: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m)"
+  ]
  },
  {
   "id": "S6.Q1",
