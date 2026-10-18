@@ -72,7 +72,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Thulvane/RM_Thulvane_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.3, 0.5, 0.3)</volume>
       </shadowData>

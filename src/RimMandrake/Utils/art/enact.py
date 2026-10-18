@@ -314,7 +314,7 @@ def folder_slots(idx: L.Index, g: str) -> list[tuple[str, str, str]]:
 
 
 def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, names: set,
-             variant: bool = False) -> dict | None:
+             variant: bool = False, taken: set | None = None) -> dict | None:
     """Where a picked/variant picture of ours goes when no slot of ours ships `g` at this facing:
       folder  — `g` is a Graphic_Random folder of ours: <g>/<base>_<letter>.png beside the pictures already there;
       rebind  — a def of ours (the row's) texPaths DONOR art at `g`: the picture goes to our own path
@@ -323,7 +323,17 @@ def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, name
     convention). None: nowhere to put it (TODO)."""
     fs = folder_slots(idx, g)
     if fs and facing == "single":
-        return {"mod": fs[0][0], "rel": f"{g}/{g.rsplit('/', 1)[-1]}_{letter.lower()}.png", "kind": "folder", "graphic": g}
+        # the sheet's column letter names the file only when that name is free: a folder whose pictures are _b/_c
+        # (Veluthar) or _a/_c/_d (Zhorrel) would otherwise have its live picture OVERWRITTEN by the new variant
+        # (bug 2026-10-18, tree_art_picks: 3 of 12 installs displaced a picture he kept). Next free letter instead.
+        base = g.rsplit('/', 1)[-1]
+        occupied = {r for _m, r, _s in fs} | set(taken or ())
+        rel = f"{g}/{base}_{letter.lower()}.png"
+        if rel in occupied:
+            rel = next((c for c in (f"{g}/{base}_{chr(97 + k)}.png" for k in range(26)) if c not in occupied), None)
+            if rel is None:
+                return None
+        return {"mod": fs[0][0], "rel": rel, "kind": "folder", "graphic": g}
     if variant and facing != "single":
         base_slots = slots_for(idx, rel_for(g, facing)) or slots_for(idx, rel_for(g, "east"))
         if base_slots:
@@ -946,7 +956,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         elif str(lab).startswith("donor original") and def_points_at(src, rel):
                             # he picked the DONOR picture itself and our def's texPath already names it: nothing to do
                             P["installed_already"].append((row, "def texPath (donor art)", rel))
-                        elif (own := own_slot(idx, src, g, facing, letter, row, names)):
+                        elif (own := own_slot(idx, src, g, facing, letter, row, names,
+                                                    taken={i["rel"] for i in P["install"]})):
                             # a render he picked for a graphic no slot of ours ships (a donor texPath, or a
                             # Graphic_Random folder): it goes to OUR path, never "already live" (bug 2026-10-10:
                             # 6 creatures stayed vanilla Warg/Tortoise/Cobra/Squirrel/Muffalo, 7 plants on old A)
@@ -1017,7 +1028,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     if idx.live_anywhere(sha):
                         P["installed_already"].append((row, idx.live_anywhere(sha)[0], f"variant {vl}"))
                         continue
-                    own = own_slot(idx, src, gv, facing, vl, row, names, variant=True)
+                    own = own_slot(idx, src, gv, facing, vl, row, names, variant=True,
+                                   taken={i["rel"] for i in P["install"]})
                     if not own:
                         P["todo"].append(f"{row}: ticked variant {vl} {facing} has no slot it can ship in")
                         continue
