@@ -187,7 +187,7 @@ namespace RimMandrake.FlowWorks
 				yield return "floodTerrain " + floodTerrain.defName + " is not temporary. TerrainGrid.SetTempTerrain " +
 					"refuses any terrain without <temporary>true</temporary>, so this fluid would flood nothing at all.";
 			}
-			foreach (TerrainDef tier in new[] { fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep })
+			foreach (TerrainDef tier in new[] { fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep })
 			{
 				if (tier != null && !tier.temporary)
 				{

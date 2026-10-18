@@ -328,7 +328,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 						Machinery.RM_LiquidNet.CreditTo(this, port, l, amt, RM_PumpMath.CycleTicks);   // credit site: pump to outflow
 						Machinery.RM_LiquidNet.CreditTo(this, s.port, l, amt, RM_PumpMath.CycleTicks);   // credit site: pump intake (to outflow)
 						usedOutflows.Add(oi);
-						circle |= RM_LiquidSpill.WholeLevels(kind) && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
+						circle |= !fillHoses && RM_LiquidSpill.WholeLevels(kind) && ex.Stock.BodyAt(Map, dest, ex) is RM_LiquidBody bd && bd == ex.Stock.BodyAt(Map, cell, ex);   // A19, by body
 						Stamp(amt);
 						Moved++;
 						return "RMFlow_PumpToOutflow".Translate(lastLiquidLabel);

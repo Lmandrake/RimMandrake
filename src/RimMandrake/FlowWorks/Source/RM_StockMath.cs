@@ -475,8 +475,9 @@ namespace RimMandrake.FlowWorks
 		/// rose away from its source (east/north) shuttled with period 2 forever and
 		/// never filled. Hops are geometry, so the result is direction-independent.
 		/// With no supplying source the source hops are 0 everywhere, and with no
-		/// sink the sink hops are; a constant drops out of the comparison.</summary>
-		/// <summary>WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: the same order with a third tier, hops to the component's
+		/// sink the sink hops are; a constant drops out of the comparison.
+		///
+		/// WATER_SURFACE_REWIRE_PUDDLES_LEFT_BEHIND: the same order with a third tier, hops to the component's
 		/// deepest bed (farther gives to nearer), between the sink tier and depth. Still a strict order on a static key,
 		/// so still acyclic.</summary>
 		public static bool MayFlowBetween(

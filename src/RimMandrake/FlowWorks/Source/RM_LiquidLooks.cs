@@ -26,7 +26,7 @@ namespace RimMandrake.FlowWorks
 	/// resources; only Odyssey's ShaderTypeDef names it) over a noise texture, tinted dark: a thick liquid that
 	/// visibly creeps and catches broad highlights. Tar, oil, slime.</item>
 	/// </list>
-	/// Depth reads: each fill tier (trace 0, half 1, brim/superdeep/deep 2) multiplies the tint by
+	/// Depth reads: each look tier (very-shallow, flood and half 0, brim 1, superdeep 2; a liquid's own suite: shallow 0, chest-deep 1, deep 2) multiplies the tint by
 	/// (1 - depthDarken)^tier, and water keeps vanilla's Shallow/ChestDeep/Deep ramps underneath.
 	/// Terrain flecks (<c>fleck</c>, e.g. AirPuff steam off boiling water) use vanilla's per-terrain emitter.
 	///
@@ -212,7 +212,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The colour a look paints a terrain at a tier: its tint (white = keep the def's own colour),
-		/// darkened per tier. Pure; pinned by the selftest.</summary>
+		/// darkened per tier. Pure.</summary>
 		public static Color TierColor(Color defColor, Color tint, float depthDarken, int tier)
 		{
 			Color c = IsWhite(tint) ? defColor : tint;
