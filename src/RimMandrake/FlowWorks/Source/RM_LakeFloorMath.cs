@@ -24,8 +24,8 @@ namespace RimMandrake.FlowWorks
 	/// direction, terraces, a silt-flat bottom.</item>
 	/// <item>Per square: a bowl by distance from shore whose wall width follows r (plains a saucer, mountains a sheer-sided
 	/// chasm), times multi-scale value noise, plus ridged trenches and a few holes, so the floor is never a radial crater.</item>
-	/// <item>The shore shelf: the outermost ring of the lake is a shallow beach (default 0.5 m), so a drawn-down lake always
-	/// leaves a first step a small creature can take (play doc Q4a, a veto-able default).</item>
+	/// <item>The shore shelf (Mod Setting, default OFF): the outermost ring of the lake may be a shallow beach. Owner card
+	/// 2026-10-18 (BEACH_RING_RETIRE_DRAINED_MEANS_DRY): no ring by default, "drained means dry".</item>
 	/// <item>The way out: every floor square keeps a walked route to dry land whose every N/S/E/W step is no bigger than
 	/// <see cref="Params.wayOutNotches"/> (default 1 m, what a person climbs), so a drained lake never holds a person
 	/// (owner ruling 4, 2026-10-12: <i>"no chance to fall in and get stuck"</i>). Chasm walls stay sheer everywhere except along
@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Mod Setting defaults (PROVISIONAL, veto list in Transient/fw_scenes/p11_build_log.md).</summary>
 		public const float DefaultDepthScale = 1f;
 		public const float DefaultRoughnessScale = 1f;
-		public const int DefaultShelfNotches = 1;      // 0.5 m beach ring (play Q4a)
+		public const int DefaultShelfNotches = 0;      // no beach ring: owner 2026-10-18, drained means dry
 		public const int DefaultWayOutNotches = 2;     // 1 m: the person band climbs it (RM_PitTrapMath.ClimbLimit K 2)
 		public const int DefaultCeilingNotches = 100;  // 50 m: only the mountain and chasm bands reach it
 

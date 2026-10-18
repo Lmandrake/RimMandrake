@@ -266,7 +266,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Lake_floor_drained_lake_keeps_the_water_in_reach", () =>
             {
                 // the play review's stranding: drawn down step by step, the water's edge stays reachable from land for a person
-                // (defaults: shelf 0.5 m, way out 1 m), and for small animals with the way out at 0.5 m. Without the shelf and the
+                // (defaults: no shelf since 2026-10-18, way out 1 m), and for small animals with the way out at 0.5 m. Without the shelf and the
                 // way out a chasm lake strands both (the control).
                 int w = 130, h = 130;
                 foreach (float r in new[] { 0.05f, 0.55f, 0.95f })
@@ -296,11 +296,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 for (int step = 1; step < 20 && !stranded; step++)
                     stranded = !EdgeReachable(w, h, cfp, f0, RM_LevelSolve.PondSurfaceHeight(h0, full0 * (20 - step) / 20), 1);
                 Assert(stranded, "control: a chasm lake with no shelf and no way out strands small animals once drawn down");
-                // the shelf: the outer ring is 0.5 m by default; off, the shore keeps 1 m (shallow) / 2 m (deep)
+                // the shelf: OFF by default (owner 2026-10-18, BEACH_RING_RETIRE_DRAINED_MEANS_DRY: drained means dry); switched on
+                // at 0.5 m the outer ring is 0.5 m; off, the shore keeps 1 m (shallow) / 2 m (deep)
+                Assert(RM_LakeFloorMath.DefaultShelfNotches == 0 && RM_LakeFloorMath.Params.Defaults(9, 0.95f).shelfNotches == 0, "no beach ring by default");
+                Floor(w, h, cfp, cdeep, RM_LakeFloorMath.Params.Defaults(9, 0.95f), out var tnone);
+                Assert(tnone.shelfSquares == 0, "defaults: the shelf moves no square");
                 var dist = ShoreDist(w, h, cfp);
-                int[] fdef = Floor(w, h, cfp, cdeep, RM_LakeFloorMath.Params.Defaults(9, 0.95f), out var tdef);
+                var pon = RM_LakeFloorMath.Params.Defaults(9, 0.95f); pon.shelfNotches = 1;
+                int[] fdef = Floor(w, h, cfp, cdeep, pon, out var tdef);
                 for (int k = 0; k < cfp.Count; k++)
-                    if (dist[k] == 1) Assert(fdef[k] == 1, "shelf: the outer ring is 0.5 m");
+                    if (dist[k] == 1) Assert(fdef[k] == 1, "shelf on: the outer ring is 0.5 m");
                 Assert(tdef.shelfSquares > 0, "the shelf moved the ring");
                 for (int k = 0; k < cfp.Count; k++)
                     if (dist[k] == 1) Assert(f0[k] == (cdeep.Contains(cfp[k]) ? 4 : 2) || f0[k] >= 4, "shelf off: the shore is the terrain's 1 m or the floor below 2 m");

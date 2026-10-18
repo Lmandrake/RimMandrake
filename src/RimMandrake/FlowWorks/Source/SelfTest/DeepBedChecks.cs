@@ -130,8 +130,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 int w = 30, h = 30;
                 var e = new List<int> { 0, 1, w, w + 1 };
-                int[] eb = Floor(w, h, e, new HashSet<int>(e), RM_LakeFloorMath.Params.Defaults(3, 0.5f));
-                Assert(eb.All(b => b == RM_LakeFloorMath.DefaultShelfNotches), "out of the map is shore: the shelf ring");
+                var pe = RM_LakeFloorMath.Params.Defaults(3, 0.5f); pe.shelfNotches = 1;   // the shelf is off by default (2026-10-18); switched on here
+                int[] eb = Floor(w, h, e, new HashSet<int>(e), pe);
+                Assert(eb.All(b => b == 1), "out of the map is shore: the shelf ring");
             });
 
             Case("DeepBed_drawdown_sheds_shallowest_first_and_refills_lifo_exact", () =>
@@ -282,7 +283,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(body, @"Scribe_Values\.Look\(ref levelUnit, ""levelUnit"", 0f\);", "the level unit is saved");
                 RiverSwitchFlipChecks.Has(body, @"if \(Scribe\.mode == LoadSaveMode\.Saving && cells != null && cells\.Count > PackFootprintOver\)", "a big footprint saves packed");
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
-                foreach (string f in new[] { @"deepBedsEnabled, ""deepBedsEnabled"", true", @"deepBedMaxDepth, ""deepBedMaxDepth"", 100f", @"lakeDepthScale, ""lakeDepthScale"", 1f", @"lakeFloorRoughness, ""lakeFloorRoughness"", 1f", @"lakeShoreShelfMetres, ""lakeShoreShelfMetres"", 0\.5f", @"lakeWayOutMetres, ""lakeWayOutMetres"", 1f", @"drainableLakeMaxCells, ""drainableLakeMaxCells"", 40000f" })
+                foreach (string f in new[] { @"deepBedsEnabled, ""deepBedsEnabled"", true", @"deepBedMaxDepth, ""deepBedMaxDepth"", 100f", @"lakeDepthScale, ""lakeDepthScale"", 1f", @"lakeFloorRoughness, ""lakeFloorRoughness"", 1f", @"lakeShoreShelfMetres, ""lakeShoreShelfMetres"", 0f", @"lakeWayOutMetres, ""lakeWayOutMetres"", 1f", @"drainableLakeMaxCells, ""drainableLakeMaxCells"", 40000f" })
                     RiverSwitchFlipChecks.Has(set, @"Scribe_Values\.Look\(ref " + f + @"\);", "saved Mod Setting " + f);
                 RiverSwitchFlipChecks.Has(set, @"""pondBedHollowEnabled"", ""deepBedsEnabled"", ""deepBedMaxDepth"", ""lakeDepthScale"", ""lakeFloorRoughness"", ""lakeShoreShelfMetres"", ""lakeWayOutMetres"", ""drainableLakeMaxCells""", "listed in its settings section");
                 RiverSwitchFlipChecks.Has(set, @"\.Declare\(""deepBedsEnabled"", ""deepBedMaxDepth"", ""lakeDepthScale"", ""lakeFloorRoughness"", ""lakeShoreShelfMetres"", ""lakeWayOutMetres""\)", "the sliders grey with their switch");

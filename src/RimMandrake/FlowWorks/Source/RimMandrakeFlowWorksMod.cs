@@ -153,11 +153,11 @@ namespace RimMandrake.FlowWorks
         // and chasm bands reach; each lake's floor is drawn by RM_LakeFloorMath (per lake, per the map's roughness).
         public static float deepBedMaxDepth = 100f;
         // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (veto-able defaults): depth scale (x the band's range and cap), floor roughness (x
-        // its grain, trenches and holes), the shore shelf (the outer ring's floor, metres; 0 = off, 1 m / 2 m as before) and the
+        // its grain, trenches and holes), the shore shelf (the outer ring's floor, metres; 0 = off, the default since owner 2026-10-18: drained means dry) and the
         // way out (the biggest step on a drained lake's guaranteed route to land, metres; 0 = off, chasms may strand).
         public static float lakeDepthScale = 1f;
         public static float lakeFloorRoughness = 1f;
-        public static float lakeShoreShelfMetres = 0.5f;
+        public static float lakeShoreShelfMetres = 0f;
         public static float lakeWayOutMetres = 1f;
         public static float drainableLakeMaxCells = 40000f;
         public static bool rainFillsExcavationsEnabled = true;
@@ -530,7 +530,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref deepBedMaxDepth, "deepBedMaxDepth", 100f);
             Scribe_Values.Look(ref lakeDepthScale, "lakeDepthScale", 1f);
             Scribe_Values.Look(ref lakeFloorRoughness, "lakeFloorRoughness", 1f);
-            Scribe_Values.Look(ref lakeShoreShelfMetres, "lakeShoreShelfMetres", 0.5f);
+            Scribe_Values.Look(ref lakeShoreShelfMetres, "lakeShoreShelfMetres", 0f);
             Scribe_Values.Look(ref lakeWayOutMetres, "lakeWayOutMetres", 1f);
             Scribe_Values.Look(ref drainableLakeMaxCells, "drainableLakeMaxCells", 40000f);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
@@ -1048,7 +1048,7 @@ namespace RimMandrake.FlowWorks
                 lakeDepthScale = list.Slider(lakeDepthScale, 0.25f, 3f);
                 list.Label("Lake floor roughness: x" + lakeFloorRoughness.ToString("F2") + " (shelves, trenches and holes; 0 = smooth bowls)");
                 lakeFloorRoughness = list.Slider(lakeFloorRoughness, 0f, 2f);
-                list.Label("Shore shelf: " + (LakeShoreShelfNotches == 0 ? "off (the shore is 1 m, or 2 m beside deep water)"
+                list.Label("Shore shelf: " + (LakeShoreShelfNotches == 0 ? "off, the default (a drained lake is dry to its edge; the shore is 1 m, or 2 m beside deep water)"
                     : RM_Volume.FormatMetres(LakeShoreShelfNotches) + " deep along every lake's edge, so a drained lake leaves a step small animals can take"));
                 lakeShoreShelfMetres = list.Slider(lakeShoreShelfMetres, 0f, 2f);
                 list.Label("Way out of a drained lake: " + (LakeWayOutNotches == 0 ? "off (a chasm-like lake can strand what falls in)"

@@ -205,7 +205,7 @@ the setter's echo.
 | `edgeSinksEnabled` (T) | channel from a limited pond to the map edge | `sinkTransferredTotal` rises; pond stock falls by the same amount (ledger) | sink total unchanged | 5,000 |
 | `fillInEnabled` (T) | filled D=1 cell, fill-in designation, colonist | cell D=0, original terrain restored | designation refused | 2,500 |
 | `fillInDisplacementEnabled` (T) | as above, with wet neighbours | Σ F conserved (liquid moved, not deleted) | liquid deleted: ledger shows the loss | 2,500 |
-| `sourceBudgetEnabled` (T) | limited 2×2 pond, 30-cell channel | channel stops at 5 × 4 × multiplier cells | channel keeps filling past that | 10,000 |
+| `sourceBudgetEnabled` (T) | limited 2×2 pond, 30-cell channel | channel stops when the pond's stock (what its floor holds) is spent | channel keeps filling past that | 10,000 |
 | `stickyLimitlessEnabled` (T) | edge body ≥80 cells, draw it down by recession | `limitless` stays true | reclassifies | 5,000 |
 | `recessionEnabled` (T) | limited pond drawn from | ≥1 far-edge pond cell dries, `underneath` restored | no pond cell dries | 10,000 |
 | `refillEnabled` (T) | limited pond partly drawn, no draw after | stock rises over 20 pulses | stock flat | 5,000 |

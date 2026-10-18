@@ -1018,8 +1018,7 @@ def body_stock0(b):
 
 def site_beds():
     """The bed of every painted body square, in notches: WaterShallow = RM_Volume.ShallowBedLevels. True only because
-    the site pins deepBedsEnabled OFF (phase_site): with it on, P11 records a lake floor (0.5 m shore shelf on the outer
-    ring) for a pond painted mid-game, and these squares no longer hold what the scenes were laid out for."""
+    the site pins deepBedsEnabled OFF (phase_site): with it on, P11 records a lake floor (no shore shelf by default since 2026-10-18) for a pond painted mid-game, and these squares no longer hold what the scenes were laid out for."""
     return {c: POND_LEVELS_PER_CELL for b in BODIES.values() for c in b["cells"]}
 
 
@@ -3796,8 +3795,10 @@ class MockBridge(object):
         sticky = self.S("stickyLimitlessEnabled") or "sticky_ignored" in self.faults
         lim = sticky and edge and len(seen) >= 50
         # beds: WaterShallow = ShallowBedLevels; with deepBedsEnabled ON a LIMITED pond records the P11 lake floor at
-        # classification, modelled here as its 0.5 m shore shelf on the outer ring (what day 3 measured live: caps 1/4/5/56/100)
-        shelf = not lim and (self.S("deepBedsEnabled") or "lake_floor_on_site" in self.faults)
+        # classification, modelled here as a 0.5 m outer ring (the shelf day 3 measured live: caps 1/4/5/56/100; the shelf
+        # default is off since 2026-10-18, so with deepBedsEnabled on and lakeShoreShelfMetres 0 this model is unmeasured)
+        shelf = not lim and ((self.S("deepBedsEnabled") and (self.settings[S_FW].get("lakeShoreShelfMetres") or 0) > 0)
+                             or "lake_floor_on_site" in self.faults)
         beds = {}
         for x in seen:
             ring = any((x[0] + dx, x[1] + dz) not in seen for dx in (-1, 0, 1) for dz in (-1, 0, 1))
