@@ -212,12 +212,23 @@ namespace RimMandrake.FlowWorks
 			// FLOW_CONTROLS_BUILD_EIGHT_QUIET_PEBBLES: touchesEdge / drainEdge were ruled by the map-edge setter above (a sealed
 			// edge is no off-map reservoir; a drain edge makes the body limitless).
 			// Ruling 16: edge contact AND a minimum size. Both, and only here.
-			body.limitless = drainEdge || RM_StockMath.IsLimitless(
-				RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,
-				truncated,
-				touchesEdge,
-				found.Count,
-				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
+			// LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT: river and off-map always limitless; any other body only above its
+			// tile's wetness cutoff (rainfall), the rest limited and groundwater-refilled. Off: the older edge + min-size rule.
+			bool wetnessRule = RimMandrakeFlowWorksSettings.wetnessCutoffEnabled;
+			body.limitless = drainEdge || (wetnessRule
+				? RM_StockMath.IsLimitlessByWetness(
+					RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,
+					truncated,
+					touchesEdge,
+					AnyMovingWater(map, found),
+					found.Count,
+					RM_StockMath.WetnessCutoffCells(map.TileInfo is RimWorld.Planet.SurfaceTile wetTile ? wetTile.rainfall : 1000f))
+				: RM_StockMath.IsLimitless(
+					RimMandrakeFlowWorksSettings.stickyLimitlessEnabled,
+					truncated,
+					touchesEdge,
+					found.Count,
+					RimMandrakeFlowWorksSettings.MinLimitlessBodyCells));
 			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
 			// LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (owner R11): a limited lake's floor, per lake and per the map's roughness, is
 			// recorded once now (before its capacity is summed), so reloads, recession and refill all read the same floor. Moving

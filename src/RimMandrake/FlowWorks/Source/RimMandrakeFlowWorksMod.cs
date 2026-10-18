@@ -116,6 +116,8 @@ namespace RimMandrake.FlowWorks
         public static bool fillInDisplacementEnabled = true;
         public static bool sourceBudgetEnabled = true;
         public static bool stickyLimitlessEnabled = true;
+        // LAKE_GROUNDWATER_REFILL_BUILD_WETNESS_CUT: an inland body is limitless only past its biome's wetness cutoff.
+        public static bool wetnessCutoffEnabled = true;
         public static bool recessionEnabled = true;
         // PROVISIONAL (auto-decided 2026-10-09, LIQUID_RECESSION_TOPOLOGY_1): a body with any stock keeps its last cell.
         public static bool recedeKeepsLastCell = true;
@@ -510,6 +512,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref fillInDisplacementEnabled, "fillInDisplacementEnabled", true);
             Scribe_Values.Look(ref sourceBudgetEnabled, "sourceBudgetEnabled", true);
             Scribe_Values.Look(ref stickyLimitlessEnabled, "stickyLimitlessEnabled", true);
+            Scribe_Values.Look(ref wetnessCutoffEnabled, "wetnessCutoffEnabled", true);
             Scribe_Values.Look(ref recessionEnabled, "recessionEnabled", true);
             Scribe_Values.Look(ref recedeKeepsLastCell, "recedeKeepsLastCell", true);
             Scribe_Values.Look(ref recedeSparesOutflow, "recedeSparesOutflow", true);
@@ -947,7 +950,7 @@ namespace RimMandrake.FlowWorks
             }
 
             list.GapLine();
-            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -978,6 +981,12 @@ namespace RimMandrake.FlowWorks
               + "off-map: it never runs down and never recedes. This is decided ONCE, the first "
               + "time you draw from it, and never revisited — so a lake cannot flicker between "
               + "limitless and limited. Off: every body is limited, including the ocean.");
+
+            list.CheckboxLabeled("Wet biomes have bottomless lakes", ref wetnessCutoffEnabled,
+                "Rivers and bodies running off the map never run dry. Any other lake is bottomless only when it is big "
+              + "enough for its biome's water table: about 600 squares in a wet biome, 5,000 in a temperate one, and "
+              + "never in a desert. Smaller lakes can be drained, and seep back from the ground. Off: the older rule "
+              + "below (touch the map edge and be big enough).");
 
             list.Gap();
             list.Label("Smallest limitless body: " + MinLimitlessBodyCells + " cells");
