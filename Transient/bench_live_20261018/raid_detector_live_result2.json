@@ -1,0 +1,209 @@
+{
+ "chains": [
+  {
+   "name": "real_raid_still_fires_detector",
+   "components": [
+    {
+     "name": "undeclared_real_raid",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_raid",
+       "result": {
+        "success": true,
+        "dryRun": false,
+        "resolved": {
+         "incident": "RaidEnemy",
+         "points": 150.0,
+         "faction": "PirateYttakin",
+         "raidStrategy": "(worker chooses)",
+         "raidArrivalMode": "(worker chooses)"
+        },
+        "executed": true,
+        "factionNotes": [
+         "faction was null; resolved to PirateYttakin"
+        ],
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "actual": {
+         "faction": "PirateYttakin",
+         "name": "Howosh",
+         "substituted": false
+        },
+        "arrived": [
+         {
+          "faction": "PirateYttakin",
+          "name": "Howosh",
+          "pawnsArrived": 2,
+          "hostileToPlayer": true
+         }
+        ],
+        "pawnsArrivedTotal": 2,
+        "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+        "ticksGame": 112914,
+        "operation": {
+         "OperationId": "op_8498714bc2424b8f8c1eb98902e06395",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 112914
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 93 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T224320\\RaidDetectorLive__real_raid_still_fires_detector__visitor_hostile_pawns__t112914__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T224320\\RaidDetectorLive__real_raid_still_fires_detector__visitor_hostile_pawns__t112914__001.png",
+      "notes": []
+     },
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T224320\\RaidDetectorLive__real_raid_still_fires_detector__raid_arrived__t112914__002.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T224320\\RaidDetectorLive__real_raid_still_fires_detector__raid_arrived__t112914__002.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 112914,
+      "detector": "hostile_pawns",
+      "severity": "SURPRISE",
+      "summary": "2 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat): Human21786 (Scavenger_Yttakin, PirateYttakin, hostile-faction); Human21790 (Scavenger_Yttakin, PirateYttakin, hostile-faction)"
+     },
+     {
+      "tick": 112914,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Raid: Howosh; numRaidsEnemy 1->2; hostiles seen"
+     },
+     {
+      "tick": 112914,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Raid: Howosh; numRaidsEnemy 1->2; open, awaiting arrivals"
+     }
+    ],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN with 2 visitor(s) recorded and removed, no evidence of disruption (origin unknown): Human21786 Scavenger_Yttakin, Human21790 Scavenger_Yttakin",
+     "visitors": [
+      {
+       "id": "Human21786",
+       "kind": "Scavenger_Yttakin",
+       "def": "Human",
+       "faction": "PirateYttakin",
+       "hostileFaction": true,
+       "state": "hostile-faction",
+       "x": 179,
+       "z": 249,
+       "tick": 112914,
+       "detectors": [
+        "hostile_pawns"
+       ],
+       "removed": true,
+       "origin": "unknown"
+      },
+      {
+       "id": "Human21790",
+       "kind": "Scavenger_Yttakin",
+       "def": "Human",
+       "faction": "PirateYttakin",
+       "hostileFaction": true,
+       "state": "hostile-faction",
+       "x": 172,
+       "z": 247,
+       "tick": 112914,
+       "detectors": [
+        "hostile_pawns"
+       ],
+       "removed": true,
+       "origin": "unknown"
+      }
+     ],
+     "letters": [
+      {
+       "detector": "raid_arrived",
+       "summary": "raid signal(s): Raid: Howosh; numRaidsEnemy 1->2; hostiles seen",
+       "tick": 112914
+      }
+     ],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\modcheck\\surprises\\20261017T224320\\RaidDetectorLive_real_raid_still_fires_detector_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "sweep_seen": [
+  [
+   "no_abort",
+   [
+    [
+     "hostile_pawns",
+     "SURPRISE",
+     "2 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat): Human21786 (Scavenger_Yttakin, PirateYttakin, hostile-faction); Human21790 (Scavenger_Yttakin, PirateYttakin, hostile-faction)"
+    ],
+    [
+     "raid_arrived",
+     "SURPRISE",
+     "raid signal(s): Raid: Howosh; numRaidsEnemy 1->2; hostiles seen"
+    ]
+   ]
+  ]
+ ]
+}
