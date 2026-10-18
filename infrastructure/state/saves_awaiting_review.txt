@@ -1,0 +1,4 @@
+# Saves awaiting the owner's review — one save name per line (with or without .rws); '#' starts a comment.
+# saves_prune.py never deletes a save listed here, nor the canonical start save, nor any CANONICAL_* save.
+# Owner, 2026-10-18: "We need only save canonical saves plus those awaiting review."
+# Add a line when you hand him a save to LOOK at; delete the line when he has ruled on it.

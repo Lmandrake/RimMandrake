@@ -63,7 +63,7 @@ python3 src/RimMandrake/Utils/art/refresh_sheets.py [--dry-run] [--force] [--onl
 ```
 
 Backfills renders, rebuilds sheets whose candidate fingerprint changed (HTML-only once he has saved decisions),
-re-verifies the rest, restarts dead servers, and ends with `UNPUBLISHED: … land.sh -m "…" <paths>` — run that, or
+re-verifies the rest, restarts dead servers, and ends with `UNPUBLISHED: … land.sh -m "…" <paths>` for pinned (tracked) sheets only — run that, or
 the rebuilt sheets sit dirty in the clone. A failing rebuild keeps the previous sheet and is retried every cycle.
 
 ## Remap, enact, audit, notes

@@ -170,10 +170,9 @@ publisher, no staleness.
 wave boundary — subagents all reported, everything committed and pushed, nothing
 mid-edit — and above all the moment you would say *"that's all I have for now"*,
 write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handoff.py`
-(the env var is required on any machine without a seat profile — the Mac laptop has none,
-and until 2026-09-16 `handoff.py` silently filed every laptop handoff as FOUNDRY's,
-carrying FOUNDRY's in-flight items; it now REFUSES rather than guessing), fill
-the four sections it leaves marked, pass `--check`, then say **HANDOFF READY** as
+(the env var is required on any machine without a seat profile; it REFUSES rather than guess), fill
+the four sections it leaves marked (it lands `conversations/` itself; `--check` refuses while a record is
+uncommitted — owner 2026-10-18), pass `--check`, then say **HANDOFF READY** as
 your last line and start nothing new. He reboots on his own clock while the cache is
 warm; the phrase is the signal, and only a seat may say it — the script refuses to.
 Say it **once**: until real work comes in, `handoff.py` reports ALREADY HANDED OFF

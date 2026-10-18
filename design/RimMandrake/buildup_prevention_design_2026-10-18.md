@@ -3,7 +3,7 @@
 Owner, 2026-10-18: *"we need to create some more rules/designs to prevent this enormous buildup
 from repeatedly happening if we can in a design pass."*
 
-Status: DESIGN ONLY. Nothing here is built. Estimates are ESTIMATED agent-hours, not measured.
+Status: owner answers 2026-10-18 (bottom) are BUILT — Transient untracked with pins (`transient_pin.py`), scratch reaper (`scratch_reap.py`, `rm-scratch-reap.timer`, dry run), handoff lands `conversations/` (`conversations_land.py`), saves report/prune (`saves_prune.py`); operating text in `GIT_WORKFLOW.md`. The other sources below are NOT built. Estimates are ESTIMATED agent-hours, not measured.
 A parallel helper is cleaning today's mess; this doc is about it not coming back.
 
 ## What was measured today (BENCH clone, mid-cleanup, 2026-10-18)

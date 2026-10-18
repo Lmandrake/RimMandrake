@@ -1,0 +1,16 @@
+# Hourly scratch reaper (BUILDUP_BUILD_CLONES_STOP_BREEDING; owner by card 2026-10-18: "Yes, after 24h, if fully pushed").
+# Installed DRY-RUN: it writes the report to ~/.local/state/rm-scratch-reap/{runs.jsonl,alarms.log} and deletes
+# nothing. To let it delete (only clones/sessions that pass every rule in scratch_reap.py's docstring), add
+# --apply to ExecStart, then daemon-reload. Runs from the FOUNDRY clone; no git writes anywhere.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-scratch-reap.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-scratch-reap.timer
+[Unit]
+Description=RimMandrake scratch reaper (dry run)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/foundry
+Nice=15
+IOSchedulingClass=idle
+TimeoutStartSec=1800
+ExecStart=/bin/sh -c 'python3 src/RimMandrake/Utils/scratch_reap.py | tail -3'

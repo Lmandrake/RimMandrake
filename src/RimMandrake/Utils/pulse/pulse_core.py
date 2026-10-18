@@ -345,6 +345,12 @@ def win_path(rel: str) -> str:
         return rel[5].upper() + ":\\" + rel[7:].replace("/", "\\")
     if rel.startswith("/"):
         return "\\\\wsl.localhost\\Ubuntu" + rel.replace("/", "\\")
+    # Transient/ is untracked since 2026-10-18 (only pins reach the D:\ mirror): an unpinned file lives only
+    # in the seat clone that wrote it, so link that clone's copy when the mirror has none.
+    if rel.startswith("Transient/") and not os.path.exists("/mnt/d/Luke/dev/RimMandrake/" + rel):
+        for c in CLONES:
+            if (c / rel).exists():
+                return "\\\\wsl.localhost\\Ubuntu" + str(c / rel).replace("/", "\\")
     return MIRROR_WIN + "\\" + rel.replace("/", "\\")
 
 

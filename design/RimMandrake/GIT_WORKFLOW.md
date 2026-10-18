@@ -61,6 +61,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 | lessons | one file each in `infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`); `lessons.py render` makes the untracked `LESSONS_INBOX.md` view |
 | code review status | append-only records `infrastructure/state/code_review/<SEAT>.jsonl` (`merge=union`), written only by `code_review_status.py`; review waves are one file each under `code_review/waves/` |
 | health heartbeat | `Transient/codebase_health*`, `codebase_health_last.json`, `dashboards/hub/data/*.json` are untracked; `rm-codebase-health.timer` regenerates them in the FOUNDRY clone |
+| `Transient/` | **untracked since 2026-10-18** (owner, by card). `Transient/.gitignore` ignores everything except itself, every `*.decisions.json`, and the pins `src/RimMandrake/Utils/transient_pin.py` manages (`add`/`rm`/`cited --add`/`untrack`). Files stay on disk: `./sync`, `./publish` and `land.sh` (via `seat_sync.reset_keep`) never delete a file upstream merely stopped tracking. Unpinned output is only in the clone that wrote it — not on `D:\`, GitHub or the other seat. |
+| `conversations/` | committed by the handoff: `handoff.py` lands every new/changed record via `conversations_land.py` (owner 2026-10-18, *"the next handoff plays catchup"*). A handoff through `~/dev/Lodestar/bin/handoff.py` runs `python3 src/RimMandrake/Utils/conversations_land.py --apply` right after `conversations.py`. |
+| Saves folder | keep only the canonical save(s) and saves awaiting review (`infrastructure/state/saves_awaiting_review.txt`); a backup lives until the operation it guards is verified. `python3 src/RimMandrake/Utils/saves_prune.py` reports (dry run); `--apply` deletes only uncited debug saves > 72 h and backups > 24 h — never a `CANONICAL_*` save. |
 
 ## Builds, DLLs, tools that need Windows
 
@@ -79,8 +82,14 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 ## Scratch clones
 
 - Scratch clones cost ~7-14 GB each (18 strays filled 276 GB, 2026-10-11). Prefer `land.sh`/`./publish`; if you must clone,
-  use `scratch_clone.py`, `--reference <seat clone>` or `--filter=blob:none`, and before deleting one check BOTH
-  `git log origin/main..HEAD` (unpushed) AND `git status --porcelain` (untracked files: item prose was lost this way).
+  use `scratch_clone.py`, `--reference <seat clone>` or `--filter=blob:none`.
+- **Reaper** (owner by card 2026-10-18: delete after 24 h if fully pushed): `python3 src/RimMandrake/Utils/scratch_reap.py`
+  (dry run; `--apply` deletes) judges every clone under `/home/mandrake/rm/scratch/**` and `~/.seat-tmp/**` and every
+  session dir `~/.seat-tmp/<SEAT>/claude-*/<project>/<uuid>/`. It deletes only what is > 24 h old, has no commit off every
+  remote (stale refs are re-checked against `mirror.git`), no changed or untracked file, no stash, no borrower, no
+  running process, and is named by no ledger event, item or handoff — anything else is REFUSED and written to
+  `~/.local/state/rm-scratch-reap/alarms.log`. `rm-scratch-reap.timer` runs it hourly, dry run until `--apply` is added.
+  Deleting by hand: the same checks first (a scratchpad held CRACKEDLANDS_FULL_RENAME_1's only commits, 2026-10-18).
 - Repo weight, measured 2026-10-11: bench `.git` holds 101,797 loose objects (4.4 GiB) + 155 packs (5.6 GiB), never gc'd.
   Running `git gc` there is the owner's call; run it when no window is mid-git.
 
@@ -104,6 +113,6 @@ rest are discipline.
 | land.sh duplicates | landing by plumbing leaves the clone "ahead N, behind M" with patch-equivalent copies; a stale clone shows phantom selftest reds (ledger_lint NOT_APPEND, a "lost" bridge tool) | `land.sh` now syncs itself; otherwise `./sync`. Re-check a red on a synced clone before fixing it |
 | autostash | `pull --rebase --autostash` re-applied peers' dirty files and stranded 53 in `stash@{0}` (2026-10-10) | never stash; `./publish` and `./sync` use `reset --keep` |
 | pre-push ledger lint judges the LOCAL HEAD | a correct plumbing push from a clone behind origin is refused NOT_APPEND | `./sync` first, then land |
-| served review-sheet output | `*.serve.log` and `sheets_state.json` are untracked since 2026-10-11; sheet HTML stays tracked, and `refresh_sheets.py` prints `UNPUBLISHED:` with the land command for each rebuilt sheet | publish rebuilt sheets, or leave them dirty — `./sync` only refuses if upstream changed the same sheet |
+| served review-sheet output | all of `Transient/` is untracked since 2026-10-18 except `*.decisions.json` and pins; `refresh_sheets.py` prints `UNPUBLISHED:` only for a rebuilt sheet that is pinned (tracked) | publish a pinned rebuilt sheet; an unpinned one needs nothing |
 | a fetch OOM-kills the window | fetching the 5.5 GiB pack inside a 10G-capped seat scope | `systemd-run --user --scope --quiet -p MemoryMax=20G git fetch origin main` |
 | a real merge commit | the blanket-stage hook refuses `git commit --no-edit` mid-merge (no pathspec possible) | `GIT_EDITOR=true git merge --continue` |

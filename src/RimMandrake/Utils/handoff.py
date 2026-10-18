@@ -749,6 +749,20 @@ def main():
     problems = gates(prev_ts, newest if a.check else None,
                      doing_is_fatal=a.check)
 
+    # Owner 2026-10-18 (BUILDUP_BUILD_CLONES_STOP_BREEDING Q3): "the next handoff plays catchup and takes as
+    # long as it takes" -- the handoff lands every new/changed conversations/*.md record, by explicit path.
+    sys.path.insert(0, HERE)
+    import conversations_land
+    convs = conversations_land.pending(ROOT)
+    if convs and not a.check:
+        rc, last = conversations_land.land(convs, ROOT)
+        print("conversations/: %s" % ("landed %d record(s) %s" % (len(convs), last) if rc == 0
+                                      else "REFUSED landing %d record(s) (land.sh exit %d)" % (len(convs), rc)))
+        convs = conversations_land.pending(ROOT)
+    if convs:
+        problems.append("%d conversations/ record(s) not committed -- run "
+                        "python3 src/RimMandrake/Utils/conversations_land.py --apply" % len(convs))
+
     if a.check:
         problems += todo_scan(newest) if newest else ["no handoff file written yet"]
         if problems:
