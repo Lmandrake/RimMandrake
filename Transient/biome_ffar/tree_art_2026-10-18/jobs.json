@@ -1,0 +1,283 @@
+[
+ {
+  "id": "RM_Ghemmel_new1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a gnarled wind-bent trunk with a dense rounded crown of medium dark bluish-lavender leaves. Where the bark is split it bleeds thick translucent AMBER-gold sap in slow drips, warm honey-orange, subtle and not gory. Keep the beautiful bluish lavender leaf colour of the attached reference. Variant 1 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Ghemmel",
+  "target_texpath": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Plant/RM_Ghemmel/RM_Ghemmel_a.png"
+  ]
+ },
+ {
+  "id": "RM_Ghemmel_new2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a gnarled wind-bent trunk with a dense rounded crown of medium dark bluish-lavender leaves. Where the bark is split it bleeds thick translucent AMBER-gold sap in slow drips, warm honey-orange, subtle and not gory. Keep the beautiful bluish lavender leaf colour of the attached reference. Variant 2 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Ghemmel",
+  "target_texpath": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Plant/RM_Ghemmel/RM_Ghemmel_a.png"
+  ]
+ },
+ {
+  "id": "RM_Ghemmel_new3_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a gnarled wind-bent trunk with a dense rounded crown of medium dark bluish-lavender leaves. Where the bark is split it bleeds thick translucent AMBER-gold sap in slow drips, warm honey-orange, subtle and not gory. Keep the beautiful bluish lavender leaf colour of the attached reference. Variant 3 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Ghemmel",
+  "target_texpath": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Plant/RM_Ghemmel/RM_Ghemmel_a.png"
+  ]
+ },
+ {
+  "id": "RM_Mourvel_redo1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a giant willow-like tree: a thick violet-black trunk and heavy arching limbs, from which long cord-like blue-green leaf strands drape down to the ground in separate hanging curtains, with visible gaps, trunk and shadowed space beneath so a person could step in under the dome. Reads as a weeping willow, a tree and not a solid green wall, lump or hill. Variant 1 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Mourvel",
+  "target_texpath": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
+  "ask": "redo"
+ },
+ {
+  "id": "RM_Mourvel_redo2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a giant willow-like tree: a thick violet-black trunk and heavy arching limbs, from which long cord-like blue-green leaf strands drape down to the ground in separate hanging curtains, with visible gaps, trunk and shadowed space beneath so a person could step in under the dome. Reads as a weeping willow, a tree and not a solid green wall, lump or hill. Variant 2 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Mourvel",
+  "target_texpath": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
+  "ask": "redo"
+ },
+ {
+  "id": "RM_Thulvane_redo1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a colossal living tree: a very broad buttressed trunk that looks like several trunks grown together, wet dark bark in vertical plates with black grooves, rising to a full green leafy crown of dense foliage; clearly a tree with branches and leaves, not a stone column or rock pillar. Variant 1 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Thulvane",
+  "target_texpath": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "priority": 5,
+  "biome_register": "FeverWood: a hot, humid fever-swamp forest; deep wet greens, mud browns and sickly ochre with one strong warm accent.",
+  "slot": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "ask": "redo"
+ },
+ {
+  "id": "RM_Thulvane_redo2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a colossal living tree: a very broad buttressed trunk that looks like several trunks grown together, wet dark bark in vertical plates with black grooves, rising to a full green leafy crown of dense foliage; clearly a tree with branches and leaves, not a stone column or rock pillar. Variant 2 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Thulvane",
+  "target_texpath": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "priority": 5,
+  "biome_register": "FeverWood: a hot, humid fever-swamp forest; deep wet greens, mud browns and sickly ochre with one strong warm accent.",
+  "slot": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+  "ask": "redo"
+ },
+ {
+  "id": "RM_Tumbel_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a natural woody vine-like plant, a thick runner that grows in irregular semi-arching curves, with several hollow gourd-like pods, cups and bladders of different sizes hanging along its length, dull leathery skin, a few leaves, twisted organic growth. It looks wild and grown, not built or constructed by people, not a perfect arch. Variant 1 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Tumbel",
+  "target_texpath": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Tumbel_more2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a natural woody vine-like plant, a thick runner that grows in irregular semi-arching curves, with several hollow gourd-like pods, cups and bladders of different sizes hanging along its length, dull leathery skin, a few leaves, twisted organic growth. It looks wild and grown, not built or constructed by people, not a perfect arch. Variant 2 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Tumbel",
+  "target_texpath": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Tumbel_more3_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a natural woody vine-like plant, a thick runner that grows in irregular semi-arching curves, with several hollow gourd-like pods, cups and bladders of different sizes hanging along its length, dull leathery skin, a few leaves, twisted organic growth. It looks wild and grown, not built or constructed by people, not a perfect arch. Variant 3 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Tumbel",
+  "target_texpath": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Rockfinger_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a gnarled wind-stripped hardwood rooted in a rock crack, pale bone-coloured bark, branches clawing sideways in finger-like forms, sparse small dark green leaf clusters. Variant 1 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Rockfinger",
+  "target_texpath": "Things/Plant/RM_Rockfinger",
+  "priority": 5,
+  "biome_register": "Weeping Stones: tall pale stone country at a low cold sun; wind-stripped, stone-grey and bone tones with sparse dark green.",
+  "slot": "Things/Plant/RM_Rockfinger",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Rockfinger_more2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a gnarled wind-stripped hardwood rooted in a rock crack, pale bone-coloured bark, branches clawing sideways in finger-like forms, sparse small dark green leaf clusters. Variant 2 of 2: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_Rockfinger",
+  "target_texpath": "Things/Plant/RM_Rockfinger",
+  "priority": 5,
+  "biome_register": "Weeping Stones: tall pale stone country at a low cold sun; wind-stripped, stone-grey and bone tones with sparse dark green.",
+  "slot": "Things/Plant/RM_Rockfinger",
+  "ask": "more"
+ },
+ {
+  "id": "RM_VaultRoot_redo1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a squat gnarled tree with a swollen trunk seamed with dull metallic veins of copper, verdigris-teal and steel blue, richer and more distinct colouring, with a modest crown of dark leaves. Variant 1 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_VaultRoot",
+  "target_texpath": "Things/Plant/VaultRoot",
+  "priority": 5,
+  "biome_register": "The Wasteland: grey-brown salt flats and ash, desolate; plants are scavenged-looking survivors with dull metallic sheen.",
+  "slot": "Things/Plant/VaultRoot",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Wasteland/Textures/Things/Plant/VaultRoot.png"
+  ]
+ },
+ {
+  "id": "RM_VaultRoot_redo2_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a squat gnarled tree with a swollen trunk seamed with dull metallic veins of copper, verdigris-teal and steel blue, richer and more distinct colouring, with a modest crown of dark leaves. Variant 2 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_VaultRoot",
+  "target_texpath": "Things/Plant/VaultRoot",
+  "priority": 5,
+  "biome_register": "The Wasteland: grey-brown salt flats and ash, desolate; plants are scavenged-looking survivors with dull metallic sheen.",
+  "slot": "Things/Plant/VaultRoot",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Wasteland/Textures/Things/Plant/VaultRoot.png"
+  ]
+ },
+ {
+  "id": "RM_VaultRoot_redo3_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a squat gnarled tree with a swollen trunk seamed with dull metallic veins of copper, verdigris-teal and steel blue, richer and more distinct colouring, with a modest crown of dark leaves. Variant 3 of 3: a clearly different silhouette and branching from the others.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "target_def": "RM_VaultRoot",
+  "target_texpath": "Things/Plant/VaultRoot",
+  "priority": 5,
+  "biome_register": "The Wasteland: grey-brown salt flats and ash, desolate; plants are scavenged-looking survivors with dull metallic sheen.",
+  "slot": "Things/Plant/VaultRoot",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Wasteland/Textures/Things/Plant/VaultRoot.png"
+  ]
+ },
+ {
+  "id": "RM_Veluthar_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a tall bare grey column trunk, then a single tier of enormous paddle leaves radiating flat from the very top like an opened umbrella, deep green above and pale beneath, no crown mass below.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Veluthar",
+  "target_texpath": "Things/Plant/RM_Veluthar/RM_Veluthar_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Veluthar/RM_Veluthar_a",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Vurmeloth_redo1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: an almost suspiciously tidy tree with a straight clean bole and a neat narrow crown of even mid-green leaves; photo-realistic bark texture and naturalistic leaf clusters, much more realistic than stylised.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Vurmeloth",
+  "target_texpath": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a",
+  "ask": "redo",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a/RM_Vurmeloth_a_a.png"
+  ]
+ },
+ {
+  "id": "RM_CorriskTree_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a tall tree whose trunk splits into twisting rope-braided limbs under a sparse crown of hanging blade-leaves, bark weeping rust-orange resin stains.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_CorriskTree",
+  "target_texpath": "Things/RM_CorriskTree/RM_CorriskTree",
+  "priority": 5,
+  "biome_register": "FeverWood: a hot, humid fever-swamp forest; deep wet greens, mud browns and sickly ochre with one strong warm accent.",
+  "slot": "Things/RM_CorriskTree/RM_CorriskTree",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Ollamane_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: three or four vast fan-leaves on separate nearly black glossy stalks, each fan deep saturated purple with darker veins and a hard electric-blue rim.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Ollamane",
+  "target_texpath": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
+  "priority": 5,
+  "biome_register": "The Miasma: a rainbow-bloom delta, saturated purples and electric blues against dark glossy stalks.",
+  "slot": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
+  "ask": "more"
+ },
+ {
+  "id": "RM_Zhorrel_more1_v1",
+  "rimflow_item_id": "TREE_TIERS_JUDGE_FORTY_FOUR_TRUNKS",
+  "prompt": "RimWorld tree sprite, painterly, one plant centred, full tree seen from a slightly raised three-quarter view, trunk base at bottom centre, filling about 80 percent of the square canvas: a low crossbeam of red-barked branches with a hanging curtain of slack finger-thick tentacle-like leaves, no crown.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "target_def": "RM_Zhorrel",
+  "target_texpath": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
+  "priority": 5,
+  "biome_register": "The Greentide: a drowned warm-green delta forest, wet violet-black bark, blue-green and deep green foliage, humid haze.",
+  "slot": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
+  "ask": "more"
+ }
+]
