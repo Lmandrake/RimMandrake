@@ -22,3 +22,5 @@ Item: RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS. Clone: /home/mandrake/rm/scratch
 - oracle 3000: 9 modes PASS 3000/3000. vv_shipped_matrix --skip-ep next.
 - vv_shipped_matrix --skip-ep: VERDICT PASS. run_selftests --only next.
 - run_selftests --only (32): 30/32; reds not mine: settings_screens SWBestiary#BeastMechanics (known), selftest_human_review uncovered walk bar still_water_one_surface_height (no file of mine touches walk bars). Committing source.
+- push refused (DLL stamp guard): source+DLL ship together. fetch, rebuild on merged tree.
+- winbuild on 0bf02772a (origin/main = see log): 0 warn 0 err. Committing DLL.
