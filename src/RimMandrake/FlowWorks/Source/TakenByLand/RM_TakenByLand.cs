@@ -496,7 +496,7 @@ namespace RimMandrake.FlowWorks.TakenByLand
         public override void TakenLetter(RM_TakenRecord r, Pawn p, Map map, float days, out string label, out string text, out LetterDef def)
         {
             label = "Swept away: " + p.LabelShortCap;
-            text = p.LabelShortCap + " was carried off the map by the river's current. " + p.Possessive().CapitalizeFirst()
+            text = p.LabelShortCap + " was carried off the map by the river's current. " + p.ProSubj().CapitalizeFirst()
                  + " will make " + p.Possessive() + " way back on foot in about " + days.ToString("F1") + " days, bruised but alive. Wait for them.";
             def = LetterDefOf.NegativeEvent;
         }

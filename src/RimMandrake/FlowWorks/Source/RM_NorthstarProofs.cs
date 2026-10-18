@@ -623,7 +623,7 @@ namespace RimMandrake.FlowWorks
 				}
 				cells++;
 				eng.TrySetDriverFill(c, 0);
-				for (int i = 0; i < 8 && eng.ExcavatedDepthAt(c) > 0; i++)
+				for (int i = 0; i < RM_ExcavationDepth.MaxDigCeiling && eng.ExcavatedDepthAt(c) > 0; i++)
 				{
 					eng.FillIn(c);
 					levels++;

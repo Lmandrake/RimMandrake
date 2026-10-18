@@ -11,12 +11,17 @@ namespace RimMandrake.FlowWorks
 	{
 		public override PathEndMode PathEndMode => PathEndMode.Touch;
 
+		// A COPY, never a lazy walk: HasJobOnCell deletes a stale designation, which removes it from the very list
+		// SpawnedDesignationsOfDef iterates, and JobGiver_Work calls HasJobOnCell inside its foreach over this result
+		// (an enumerator over the live list throws "collection modified" there). A List also takes its indexed fast path.
 		public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn)
 		{
+			List<IntVec3> cells = new List<IntVec3>();
 			foreach (Designation item in pawn.Map.designationManager.SpawnedDesignationsOfDef(RimMandrakeFlowWorks_DefOf.RM_DigCanal))
 			{
-				yield return item.target.Cell;
+				cells.Add(item.target.Cell);
 			}
+			return cells;
 		}
 
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)

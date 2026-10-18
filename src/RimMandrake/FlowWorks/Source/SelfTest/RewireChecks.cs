@@ -94,6 +94,31 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(set, @"Mathf\.Clamp\(Mathf\.RoundToInt\(deepBedMaxDepth\), RM_Volume\.LevelsPerSquare, RM_BedMath\.MaxBedCeiling\)", "and the cap reads it");
             });
 
+            Case("FluidDef_config_errors_check_every_fill_tier_including_very_shallow", () =>
+            {
+                string fd = RiverSwitchFlipChecks.Src("FluidDef.cs");
+                RiverSwitchFlipChecks.Has(fd, @"new\[\] \{ fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep \}",
+                    "ConfigErrors temporary-check covers the very-shallow tier too (SetTempTerrain refuses a non-temporary one)");
+            });
+
+            Case("Review_night_core_dig_scan_copies_and_pump_circle_ignores_hose_fill", () =>
+            {
+                string wg = RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs");
+                RiverSwitchFlipChecks.Has(wg, @"List<IntVec3> cells = new List<IntVec3>\(\);", "PotentialWorkCellsGlobal materialises (HasJobOnCell deletes designations mid-scan)");
+                Assert(!Regex.IsMatch(wg, @"yield return item\.target\.Cell"), "no lazy walk over the live designation list");
+                string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
+                RiverSwitchFlipChecks.Has(pump, @"circle \|= !fillHoses && RM_LiquidSpill\.WholeLevels", "A19 pump-circle warning only when the level reached the pond, not the hoses");
+            });
+
+            Case("Review_night_core_taken_letter_subject_and_proof_reset_bound", () =>
+            {
+                string tl = RiverSwitchFlipChecks.Src(Path.Combine("TakenByLand", "RM_TakenByLand.cs"));
+                Assert(!Regex.IsMatch(tl, @"Possessive\(\)\.CapitalizeFirst\(\)\s*\+\s*"" will make"), "the letter's subject is ProSubj ('He will make his way'), not the possessive ('His will')");
+                RiverSwitchFlipChecks.Has(tl, @"ProSubj\(\)\.CapitalizeFirst\(\)\s*\+\s*"" will make """, "swept-away letter opens with the subject pronoun");
+                string np = RiverSwitchFlipChecks.Src("RM_NorthstarProofs.cs");
+                RiverSwitchFlipChecks.Has(np, @"i < RM_ExcavationDepth\.MaxDigCeiling && eng\.ExcavatedDepthAt\(c\) > 0", "ProofResetRect fills in every level up to the dig ceiling, not a stale 8");
+            });
+
             Case("Rewire_thin_sheets_are_pumped_burned_drowned_and_warm", () =>
             {
                 int U = RM_Volume.UnitsPerLevel;
