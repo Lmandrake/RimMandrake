@@ -32,6 +32,7 @@
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>
+  <RMFlow_GuardrailNeedsDrop>A guardrail goes only on the lip of a sheer drop: some neighbouring square must be at least 1.5 m lower.</RMFlow_GuardrailNeedsDrop>
 
   <!-- SUPERDEEP_PRISON_ROOM_1: capture down from the lip. -->
   <RMFlow_CaptureDown>Capture {0} from the edge of the pit</RMFlow_CaptureDown>

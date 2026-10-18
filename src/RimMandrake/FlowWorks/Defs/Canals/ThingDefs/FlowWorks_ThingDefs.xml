@@ -240,4 +240,82 @@
     </placeWorkers>
   </ThingDef>
 
+  <!-- RM_PitGuardrail — FALL_GUARDRAILS_BUILD_REAL_OBJECT (owner 2026-10-18: "build guardrails as a real object with real
+       need (and support existing fences acting this way too)"). A low railing on the lip of a sheer drop: it stops falls
+       over its edges (RM_FallRails; any isFence building does the same), never walking along the lip or climbing out.
+       Not a fence (isFence would pen animals) and not an edifice (the dig and fill-in designators stay usable on a ledge).
+       Art: vanilla fence art, first pass (a bespoke look is the owner's call: art item GUARDRAIL_ART_RESKIN_BORROWED_FENCE).
+       Cost and HP PROVISIONAL. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PitGuardrail</defName>
+    <label>pit guardrail</label>
+    <description>A low railing of posts and a top bar, built on the lip of a sheer drop. Nobody walks off a railed edge, and a blast that would throw someone over it stops them at the rail. People still walk along the lip and climb up past it, and anyone may still jump in on purpose. It does not stop a pit cover giving way. Any fence standing on a lip works the same way.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Linked/Fence</texPath>
+      <graphicClass>Graphic_Appearances</graphicClass>
+      <linkType>Asymmetric</linkType>
+      <linkFlags>
+        <li>Fences</li>
+      </linkFlags>
+      <asymmetricLink>
+        <linkFlags>
+          <li>Wall</li>
+          <li>Rock</li>
+        </linkFlags>
+        <linkToDoors>true</linkToDoors>
+      </asymmetricLink>
+      <shadowData>
+        <volume>(0.3, 0.5, 0.3)</volume>
+        <offset>(0,0,-0.23)</offset>
+      </shadowData>
+      <damageData>
+        <rect>(0.35,0.1,0.3,0.7)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/Fence_MenuIcon</uiIconPath>
+    <uiIconPathsStuff>
+      <li>
+        <appearance>Metal</appearance>
+        <iconPath>Things/Building/Linked/FenceMetal_MenuIcon</iconPath>
+      </li>
+    </uiIconPathsStuff>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>20</pathCost>
+    <fillPercent>0.2</fillPercent>
+    <blockWind>false</blockWind>
+    <blockLight>false</blockLight>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Never</tickerType>
+    <drawStyleCategory>Defenses</drawStyleCategory>
+    <designationCategory>Structure</designationCategory>
+    <canOverlapZones>false</canOverlapZones>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>2</costStuffCount>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>90</WorkToBuild>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Linked/Fence_Blueprint</texPath>
+        <graphicClass>Graphic_Appearances</graphicClass>
+      </blueprintGraphicData>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.PlaceWorker_PitGuardrail</li>
+    </placeWorkers>
+  </ThingDef>
+
 </Defs>

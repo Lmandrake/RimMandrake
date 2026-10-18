@@ -123,6 +123,8 @@ FEATURES = [
     ("tex", r"Canals/RM_PitCover_", "Pit cover art", "pit_cover_drop"),
     ("set", r"^(spikesEnabled|spikeDamageMultiplier|spikeMinDropMetres)$", "Spikes", "pit_spikes"),
     ("def", r"^ThingDef/RM_Spikes$", "Pit spikes", "pit_spikes"),
+    ("set", r"^pitGuardrailEnabled$", "Guardrails and fences stop falls (FALL_GUARDRAILS_BUILD_REAL_OBJECT)", "pit_fall"),
+    ("def", r"^ThingDef/RM_PitGuardrail$", "Pit guardrail", "pit_fall"),
     ("tex", r"RM_Spikes\.png$", "Spike art", "pit_spikes"),
     ("set", r"^(pitDrowningEnabled|pitDrowningRateMultiplier|pitDrowningHeadFraction|pitDrowningLyingFraction|poisonFillEnabled)$", "Flooding a pit drowns or poisons",
      "pit_flood"),

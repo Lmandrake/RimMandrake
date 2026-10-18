@@ -1969,6 +1969,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
+            FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)
             SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
             WaterBodyMendChecks.Run(Case);     // FISH_ROLL_MEND_PONDS_BORN_BARREN: fish roll, refill memory, splits, plant grace (WaterBodyMendChecks.cs)
             RewireChecks.Run(Case);            // LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD + DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE (RewireChecks.cs)

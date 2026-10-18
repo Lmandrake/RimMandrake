@@ -555,6 +555,18 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 from = Traverse.Create(__instance).Field("startVec").GetValue<UnityEngine.Vector3>().ToIntVec3();
+			// FALL_GUARDRAILS_BUILD_REAL_OBJECT: a THROW (a stun flyer: blast knockback) over a railed lip stops at the rail. A jump
+			// (no stun: jump packs, abilities) is deliberate and lands where it was aimed.
+			if (RM_FallRails.On && __instance.def?.pawnFlyer != null && __instance.def.pawnFlyer.stunDurationTicksRange != IntRange.Zero)
+			{
+				IntVec3 stop = RM_FallRails.ThrowStop(p.Map, eng, p, from, p.Position);
+				if (stop.IsValid)
+				{
+					RM_FallRails.PutBack(p, stop);
+					eng.SuperdeepTrap.NoteHandledArrival(p, stop);
+					return;
+				}
+			}
 			if (RM_PocketGrid.Relative)
 			{
 				// Design §8.5 steps 8-9: a landing is a fall when it drops more than this pawn climbs.

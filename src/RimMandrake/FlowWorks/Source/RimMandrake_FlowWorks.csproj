@@ -118,6 +118,7 @@
     <Compile Include="RM_LiquidFire.cs" />
     <Compile Include="RM_FillEffectMath.cs" />
     <Compile Include="RM_RelativeRulesMath.cs" />
+    <Compile Include="RM_FallRailMath.cs" />
     <Compile Include="RM_SwimMath.cs" />
     <Compile Include="Swimming\RM_Swim.cs" />
     <Compile Include="RM_PitFillEffects.cs" />
@@ -169,6 +170,7 @@
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
+    <Compile Include="Superdeep\RM_FallRails.cs" />
     <Compile Include="Superdeep\RM_PitDepthDraw.cs" />
     <Compile Include="RM_PitDrawMath.cs" />
     <Compile Include="Superdeep\RM_FlowDoors.cs" />

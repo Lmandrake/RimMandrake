@@ -539,6 +539,9 @@ namespace RimMandrake.FlowWorks
 			walkedInto.Clear();
 		}
 
+		// FALL_GUARDRAILS_BUILD_REAL_OBJECT: arrivals Tick put back on the lip, applied after its pawn loop. Never scribed.
+		private readonly List<(Pawn p, IntVec3 lip)> railStops = new List<(Pawn, IntVec3)>();
+
 		public void NoteWalkedStep(Pawn p, IntVec3 cell)
 		{
 			if (p != null)
@@ -579,6 +582,13 @@ namespace RimMandrake.FlowWorks
 					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p),
 						p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p)))
 					{
+						// FALL_GUARDRAILS_BUILD_REAL_OBJECT: shoved one cell over a railed lip: back onto the lip, no fall.
+						if (RM_FallRails.StopsArrival(map, eng, p, prev, pos))
+						{
+							railStops.Add((p, prev));
+							nextCell[p] = prev;
+							continue;
+						}
 						descents.Add(p);
 						dropOf[p] = eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
 						if (!walked)
@@ -590,6 +600,15 @@ namespace RimMandrake.FlowWorks
 				nextCell[p] = pos;
 			}
 			walkedInto.Clear();
+			// After the loop: moving a pawn while AllPawnsSpawned is being walked is not safe.
+			for (int i = 0; i < railStops.Count; i++)
+			{
+				if (railStops[i].p.Spawned)
+				{
+					RM_FallRails.PutBack(railStops[i].p, railStops[i].lip);
+				}
+			}
+			railStops.Clear();
 			Dictionary<Pawn, IntVec3> swap = lastCell;
 			lastCell = nextCell;
 			nextCell = swap;
@@ -642,6 +661,12 @@ namespace RimMandrake.FlowWorks
 				&& RM_PitTrapMath.DescentFalls(false, RM_LadderRules.LadderLetsOut(map, pos, p), p.Faction == Faction.OfPlayer,
 					RM_SuperdeepTrap.Captures(p)))
 			{
+				if (RM_FallRails.StopsArrival(map, eng, p, prev, pos))
+				{
+					RM_FallRails.PutBack(p, prev);   // FALL_GUARDRAILS_BUILD_REAL_OBJECT (a jumper is never stopped)
+					NoteHandledArrival(p, prev);
+					return;
+				}
 				RM_SuperdeepTrap.OnForcedDescent(p, pos, this, eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev));
 			}
 		}
@@ -733,7 +758,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			if (RM_PocketGrid.Relative)
+			// FALL_GUARDRAILS_BUILD_REAL_OBJECT: a walked step off a railed lip down a sheer drop is refused (that edge only).
+			if (RM_FallRails.RefusesWalkedStep(pawn, eng, __instance.nextCell))
+			{
+				// falls through to the re-plan below
+			}
+			else if (RM_PocketGrid.Relative)
 			{
 				if (RelativeStepAllowed(pawn, eng, __instance.nextCell))
 				{

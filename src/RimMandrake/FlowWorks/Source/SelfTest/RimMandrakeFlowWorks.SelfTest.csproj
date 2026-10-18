@@ -70,6 +70,8 @@
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_RelativeRulesMath.cs" />
     <Compile Include="RelativeRulesChecks.cs" />
+    <Compile Include="..\RM_FallRailMath.cs" />
+    <Compile Include="FallRailChecks.cs" />
     <Compile Include="..\RM_SwimMath.cs" />
     <Compile Include="SwimChecks.cs" />
     <Compile Include="..\RM_WaterBodyMath.cs" />
