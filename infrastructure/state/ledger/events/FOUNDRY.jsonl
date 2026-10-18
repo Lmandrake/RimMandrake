@@ -6154,3 +6154,6 @@
 {"seat":"FOUNDRY","event":"note","id":"VALIDATION_V2_RECONCILE_AFTER_THE_BIG_DIG","text":"Live day 4: calm v1 46/9/6, the pawn block was the saved map (22-mod save on the 11-mod list: MapDrawer NRE every frame, 0-tick steps). Fresh map 61/0/0 and rebuilt RM_TestSite_calm_v2 61/0/0 on DLL 6699957b8 (Transient/fw_scenes/live_day4_report.md).","why":"live day 4","ts":"2026-10-18T03:46:04Z","tsn":1792295164570291281}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"validation_v2 rerun after triage","ts":"2026-10-18T03:04:54Z","tsn":1792292694107164762}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-18T03:45:21Z","tsn":1792295121280257166}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-18T04:22:04Z","tsn":1792297324406282583}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-18T04:22:47Z","tsn":1792297367614860617}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-18T04:23:09Z","tsn":1792297389550990267}

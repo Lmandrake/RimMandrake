@@ -3,7 +3,7 @@
   "id": "R3.a",
   "scene": "R3",
   "status": "MATCHES",
-  "game": "pending 0 -> 3 after 250 ticks (5 colonists staged)"
+  "game": "pending 0 -> 3 after 250 ticks (6 colonists staged)"
  },
  {
   "id": "R3.b",
@@ -15,7 +15,7 @@
   "id": "R3.c",
   "scene": "R3",
   "status": "MATCHES",
-  "game": "washed away ['Human49718', 'Human49724', 'Human49730']; back on the map after return: ['Human49718', 'Human49724', 'Human49730']"
+  "game": "washed away ['Human58306', 'Human58312', 'Human58318']; back on the map after return: ['Human58306', 'Human58312', 'Human58318']"
  },
  {
   "id": "R3.d",

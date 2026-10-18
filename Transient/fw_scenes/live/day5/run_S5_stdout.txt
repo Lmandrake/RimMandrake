@@ -1,0 +1,209 @@
+quicktest map up: True (14 s)
+colonists fed (Food, Rest topped up; upkeep against the starving GovernorStop): [1062, 1065, 1068]
+map 250x250; settings at shipped defaults except the scene file's: {'rainFillsExcavationsEnabled': 'False', 'refillEnabled': 'False'} (read back)
+pulse interval 250 ticks (shipped default 250)
+site pristine (nothing dug: excavated 0, superdeep 0): True; bodies 27 (printed, not required to be 0)
+  site pin: deepBedsEnabled True -> False (read back False); P11_FLOOR_ON_PAINTED_PONDS stays the owner's
+====================================================================================================
+S5. Nothing created or destroyed: a closed pond pays for its canal, by gravity and by pump
+    ...............
+    .PPP...........          A: 3x3 pond, 2 m (36,000 L); 10-cell 0.5 m canal
+    .PPP1111111111.
+    .PPP...........
+    ...............
+    .P1111111111...          B: 1-square pond, 2 m (4,000 L); 10-cell 0.5 m canal
+    ...............
+    .P4............          F: 1-square pond, 2 m; one 2 m canal square
+    ...............
+    .<====U====>111111.      G: '<' lies on a 1-square pond, 2 m; pump; 6-cell 0.5 m canal
+    ...............
+    readings: canal / pond squares are LITRES (to the litre, from ProofReadout) and ponds / hoses decilitres; 1 notch = 0.5 m in one square = 1,000 L = 10,000 dL; tolerance 10 dL per square read
+S5 staged: A = 3x3 pond (360000 dL, limitless=False) + 10-cell 0.5 m canal; B = 1-square pond (40000 dL, limitless=False) + 10-cell 0.5 m canal; F = 1-square pond (40000 dL) + one 2 m canal square; G = 1-square pond (40000 dL) + pump (OFF until part G: True) + 6-cell 0.5 m canal; D = isolated 3-cell run full (E, the basin, is dug when its turn comes)
+         screenshot: Transient\fw_scenes\live\S5_p00.png
+  doc horizons are deadlines ('by pulse N'), never speeds; one pulse = 250 ticks, stepped with a 0.1 s pause
+  step AB: parts A, B and F together, 54 pulses (B and F by 10, A by 20, then B's front must hold 40 more)
+  pulse  0  A canal [0 0 0 0 0 0 0 0 0 0] pond 360000 dL   B canal [0 0 0 0 0 0 0 0 0 0] pond 40000 dL   F canal [0] pond 40000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  1  A canal [900 0 0 0 0 0 0 0 0 0] pond 351000 dL   B canal [500 0 0 0 0 0 0 0 0 0] pond 35000 dL   F canal [1000] pond 30000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  2  A canal [818 818 0 0 0 0 0 0 0 0] pond 343636 dL   B canal [333 333 0 0 0 0 0 0 0 0] pond 33333 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  3  A canal [750 750 750 0 0 0 0 0 0 0] pond 337500 dL   B canal [250 250 250 0 0 0 0 0 0 0] pond 32500 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  4  A canal [692 692 692 692 0 0 0 0 0 0] pond 332307 dL   B canal [200 200 200 200 0 0 0 0 0 0] pond 32000 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse  5  A canal [643 643 643 643 643 0 0 0 0 0] pond 327857 dL   B canal [167 167 167 167 167 0 0 0 0 0] pond 31666 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+  pulse  6  A canal [600 600 600 600 600 600 0 0 0 0] pond 324000 dL   B canal [143 143 143 143 143 143 0 0 0 0] pond 31428 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse  7  A canal [563 563 563 563 563 563 563 0 0 0] pond 320625 dL   B canal [125 125 125 125 125 125 125 0 0 0] pond 31250 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse  8  A canal [530 529 529 529 529 529 529 529 0 0] pond 317647 dL   B canal [111 111 111 111 111 111 111 111 0 0] pond 31111 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse  9  A canal [500 500 500 500 500 500 500 500 500 0] pond 315000 dL   B canal [100 100 100 100 100 100 100 100 100 0] pond 31000 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 10  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD | 0/4:WD 0/4:WD 0/4:WD
+         screenshot: Transient\fw_scenes\live\S5AB_p10.png
+  pulse 11  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 12  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 13  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 14  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 15  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 16  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 17  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 18  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 19  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 20  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: Transient\fw_scenes\live\S5AB_p20.png
+  pulse 21  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 22  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 23  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 24  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 25  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 26  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 27  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 28  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 29  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 30  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 31  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 32  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 33  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 34  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 35  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 36  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 37  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 38  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 39  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 40  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 41  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 42  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 43  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 44  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 45  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 46  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 47  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 48  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 49  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 50  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse 51  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 52  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 53  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+  pulse 54  A canal [474 474 474 474 474 474 474 474 474 474] pond 312631 dL   B canal [91 91 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [2000] pond 20000 dL   (canals in litres)
+         screenshot: Transient\fw_scenes\live\S5AB_p54.png
+  S5.a   MATCHES    doc: Pond + canal always hold 36,000 L. At no pulse are all 10 canal cells wet (at most 9); no canal cell ever holds more than 0.5 m; the wet canal cells are one unbroken run from the pond.
+                    level: the doc's 'at most 9 wet' is a whole-notch picture; level water wets all 10 at one depth (4737 dL = 0.237 m each)
+                    game: A: canal squares wet at once, most 10 of 10; pulses where pond+canal != 360000 dL (+-110): none; a canal square above 10,000 dL at: none; not one run at: none
+  S5.b   MATCHES    doc: The pond holds less water than at the start (its surface is lower), and never less than 27,000 L: it gives at most its top 0.5 m.
+                    level: pond 312632 dL (9 x 34737), each canal square 4737 dL; surface -0.263 m
+                    game: pond A 360000 -> 312631 dL, lowest 312631; at pulse 20 312631 dL (doc: lower than at start, never below 270,000)
+                    readout: 74,32: Hole 0.5 m · Water 0.24 m (474 L) || 83,32: Hole 0.5 m · Water 0.24 m (474 L) || 71,31: Hole 2 m · Water 1.74 m (3,474 L)
+  S5.lvl.A MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S5 A+B bodies at pulse 54: 3 bodies, worst gap 0.0001 m; body at 74,32: 10 sq, gap 0.0001 m (surface -0.2632..-0.2632 m); body at 72,40: 10 sq, gap 0.0001 m (surface -0.4546..-0.4545 m); body at 74,46: 3 sq, gap 0.0000 m (surface 0.0000..0.0000 m)
+  S5.c   MATCHES    doc: At most one canal cell, cell 1, is ever wet, holding at most 0.5 m; the pond keeps at least 3,000 L; pond + canal = 4,000 L.
+                    level: the doc's 'only cell 1 wet' is a whole-notch picture; level water lays 909 dL (4.5 cm) on all 10 squares, pond 30909 dL
+                    game: B canal cells ever wet [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; pond B lowest 30909 dL (start 40000); total at pulse 10 = 40009 dL; at pulse 14 canal squares 910 910 910 910 910 910 910 910 910 910 dL, pond 30909 dL
+                    readout: 72,40: Hole 0.5 m · Water 0.05 m (91 L) || 81,40: Hole 0.5 m · Water 0.05 m (91 L) || 71,40: Hole 2 m · Water 1.55 m (3,091 L)
+  S5.d   MATCHES    doc: The wet front does not move for 40 more pulses.
+                    game: B canal changed (more than 10 dL a square) after pulse 14 at pulses: never
+  S5.h   MATCHES    doc: The pond square and the 2 m canal square settle to one surface: each holds 1 m of water (2,000 L); the total is 4,000 L; nothing changes for 10 more pulses.
+                    level: each of the two squares holds 20,000 dL (1.00 m), surface -1.000 m
+                    game: pulse 10: pond F 20000 dL, 2 m canal 20000 dL (doc: 1 m each = 20,000 dL, total 40,000); changed after pulse 10 at: never
+                    readout: 72,77: Hole 2 m · Water 1.00 m (2,000 L) || 71,77: Hole 2 m · Water 1.00 m (2,000 L)
+  S5.lvl.F MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S5 F pond + 2 m canal square: 1 body, worst gap 0.0000 m; body at 72,77: 1 sq, gap 0.0000 m (surface -1.0000..-1.0000 m)
+  step C: canal B cell 1 filled in
+  pulse  0  A canal [? ? ? ? ? ? ? ? ? ?] pond 312631 dL   B canal [0 182 91 91 91 91 91 91 91 91] pond 30909 dL   F canal [?] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  1  A canal [? ? ? ? ? ? ? ? ? ?] pond 312631 dL   B canal [0 101 101 101 101 101 101 101 101 101] pond 30909 dL   F canal [?] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+         screenshot: Transient\fw_scenes\live\S5C_p01.png
+  pulse  2  A canal [? ? ? ? ? ? ? ? ? ?] pond 312631 dL   B canal [0 101 101 101 101 101 101 101 101 101] pond 30909 dL   F canal [?] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  3  A canal [? ? ? ? ? ? ? ? ? ?] pond 312631 dL   B canal [0 101 101 101 101 101 101 101 101 101] pond 30909 dL   F canal [?] pond 20000 dL   (canals in litres)
+            pond A squares (depth/fill:terrain; body cells=9 receded=0): 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat | 0/4:RM_Wat 0/4:RM_Wat 0/4:RM_Wat
+  pulse  4  A canal [? ? ? ? ? ? ? ? ? ?] pond 312631 dL   B canal [0 101 101 101 101 101 101 101 101 101] pond 30909 dL   F canal [?] pond 20000 dL   (canals in litres)
+  S5.e   MATCHES    doc: Filling in cell 1 destroys nothing: canal + pond still hold 4,000 L, and no overflow message appears.
+                    level: the 91 L sheet on cell 1 is displaced, not destroyed: total 40,000 dL, 0 dL overflowed
+                    game: B canal(2-10)+pond total 40009 -> 39999 dL; overflow destroyed 0.0 dL (the 4 pulses after the fill-in; level prediction: canal squares 1000 dL, pond 31000 dL)
+                    readout: 73,40: Hole 0.5 m · Water 0.05 m (101 L) || 71,40: Hole 2 m · Water 1.55 m (3,091 L)
+  step D: middle cell of the isolated 3-cell run filled in (look top-left for the message)
+         screenshot: Transient\fw_scenes\live\S5_D_message.png
+  S5.f   MATCHES    doc: Filling in the middle cell destroys exactly 1,000 L (0.5 m in one square), and the player sees a message that names the amount.
+                    level: exactly 10,000 dL (1,000 L) destroyed and named in the message; the two end squares keep 10,000 dL each
+                    game: run held 30000 -> 20000 dL; the game's destroyed-overflow total rose by 10000.0 dL (the message text is in the screenshot)
+                    readout: 74,46: Hole 0.5 m · Water 0.50 m (1,000 L) || 76,46: Hole 0.5 m · Water 0.50 m (1,000 L)
+  step E: 6x6 basin 1 m deep dug now, 8 notches (80,000 dL = 8,000 L) heaped in the 4 centre cells, 20 pulses
+  pulse  0  basin rows (litres) 0 0 0 0 0 0 | 0 0 0 0 0 0 | 0 0 2000 2000 0 0 | 0 0 2000 2000 0 0 | 0 0 0 0 0 0 | 0 0 0 0 0 0  total 80000 dL
+  pulse  1  basin rows (litres) 0 0 0 0 0 0 | 0 0 667 667 0 0 | 0 667 667 667 667 0 | 0 667 667 667 667 0 | 0 0 667 667 0 0 | 0 0 0 0 0 0  total 80040 dL
+  pulse  2  basin rows (litres) 0 0 333 333 0 0 | 0 333 333 333 333 0 | 333 333 333 333 333 333 | 333 333 333 333 333 333 | 0 333 333 333 333 0 | 0 0 333 333 0 0  total 79920 dL
+  pulse  3  basin rows (litres) 0 250 250 250 250 0 | 250 250 250 250 250 250 | 250 250 250 250 250 250 | 250 250 250 250 250 250 | 250 250 250 250 250 250 | 0 250 250 250 250 0  total 80000 dL
+  pulse  4  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse  5  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse  6  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse  7  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse  8  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse  9  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 10  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 11  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 12  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 13  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 14  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 15  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 16  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 17  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 18  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 19  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+  pulse 20  basin rows (litres) 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222 | 222 222 222 222 222 222  total 79920 dL
+         screenshot: Transient\fw_scenes\live\S5E_p20.png
+  S5.g   MATCHES    doc: Settled: no cell holds 1 m while any cell of the basin is dry; the wet cells are one connected patch; the total is still 8,000 L.
+                    level: all 36 squares wet at one depth: 2222 dL (0.111 m, 222 L) each, total 80,000 dL, none dry
+                    game: pulse 20: 0 cell(s) at 1 m while 0 dry; total 79920 dL; 0 square(s) off the level share by more than 10 dL
+                    readout: 71,61: Hole 1 m · Water 0.11 m (222 L) || 73,63: Hole 1 m · Water 0.11 m (222 L) || 76,66: Hole 1 m · Water 0.11 m (222 L)
+  S5.lvl.E MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S5 E basin after 20 pulses: 1 body, worst gap 0.0001 m; body at 71,61: 36 sq, gap 0.0001 m (surface -0.8889..-0.8889 m)
+  step G: pump ON (True; powered=False), pond G 40000 dL, 30 pulses
+  pulse  0  canal [0 0 0 0 0 0] L  pond 40000 dL  hoses hold 0 dL  ground between wet: none
+  pulse  1  canal [0 0 0 0 0 0] L  pond 40000 dL  hoses hold 0 dL  ground between wet: none
+  pulse  2  canal [0 0 0 0 0 0] L  pond 30000 dL  hoses hold 10000 dL  ground between wet: none
+  pulse  3  canal [500 500 0 0 0 0] L  pond 20000 dL  hoses hold 10000 dL  ground between wet: none
+  pulse  4  canal [667 667 667 0 0 0] L  pond 10000 dL  hoses hold 10000 dL  ground between wet: none
+  pulse  5  canal [750 750 750 750 0 0] L  pond 0 dL  hoses hold 10000 dL  ground between wet: none
+  pulse  6  canal [600 600 600 600 600 0] L  pond 0 dL  hoses hold 10000 dL  ground between wet: none
+  pulse  7  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse  8  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse  9  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 10  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+         screenshot: Transient\fw_scenes\live\S5G_p10.png
+  pulse 11  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 12  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 13  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 14  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 15  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 16  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 17  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 18  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 19  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 20  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 21  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 22  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 23  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 24  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 25  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 26  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 27  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 28  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 29  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+  pulse 30  canal [663 663 663 663 663 662] L  pond 251 dL  hoses hold 0 dL  ground between wet: none
+         screenshot: Transient\fw_scenes\live\S5G_p30.png
+  S5.i   DIFFERS    doc: Pond + hoses + canal = 4,000 L at every pulse. The pump empties the pond (bar what the hoses hold); the canal ends with cells 1-4 wet at 0.5 m each (cells 1-3 if the hoses still hold water), never a 5th; no undug cell is ever wet.
+                    level: the doc's 'cells 1-4 at 0.5 m, never a 5th' is a whole-notch picture; level water spreads the pumped water over all 6 squares (4,000 L = 6625 dL each, 0.333 m), pond dry bar the hoses
+                    game: end: canal squares [6630, 6630, 6630, 6630, 6630, 6620] dL (level: True), pond 251 dL, hoses 0 dL; pulses where pond+hoses+canal != 40000 (+-70): none; undug ground wet: never
+                    readout: 81,92: Hole 0.5 m · Water 0.33 m (663 L) || 86,92: Hole 0.5 m · Water 0.33 m (662 L) || 71,92: Hole 2 m · Water 0.01 m (25 L)
+  S5.lvl.G MATCHES    doc: Every square of a connected body of still water stands at one surface height, to within 1 cm (owner R9, 2026-10-17).
+                    game: S5 G canal after the pump: 1 body, worst gap 0.0001 m; body at 81,92: 6 sq, gap 0.0001 m (surface -0.1688..-0.1688 m)
+  log: Transient\fw_scenes\live\S5_20261017T212914.txt
+  site pin released: deepBedsEnabled back to True (read back True)
