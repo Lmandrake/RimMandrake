@@ -277,6 +277,9 @@ def main(argv=None) -> int:
     for g in gate_reports:
         print(g)
     rebuilt = [f"Transient/biome_ffar/{b}.html" for b, s, _ in report if s.startswith(("rebuilt", "OVERRIDE"))]
+    # Transient/ is untracked since 2026-10-18: only a PINNED sheet (transient_pin.py) is still a tracked file
+    rebuilt = [r for r in rebuilt if subprocess.run(["git", "ls-files", "--error-unmatch", "--", r], cwd=str(L.REPO_ROOT),
+                                                    capture_output=True).returncode == 0]
     if rebuilt:   # tracked output: an unpublished rebuild leaves the seat clone dirty (git root cause R1, 2026-10-11)
         print(f"UNPUBLISHED: {len(rebuilt)} rebuilt sheet(s) are tracked files; publish them with\n"
               f"  src/RimMandrake/Utils/land.sh -m \"Rebuild {len(rebuilt)} biome sheets\" " + " ".join(rebuilt))

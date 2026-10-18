@@ -246,12 +246,15 @@ infrastructure/state/   ledger, items, facts/, V1.md   written only through rimf
   items/<ID>.md         LIVE item prose only — this glob is the live set
   items/closed/         prose of done/dropped/superseded items (moved on close)
   handoffs/             reboot handoffs — NOT queue items, never greppable queue state
-Transient/              output to LOOK AT, then bin    tracked+pushed, ~14 days
+Transient/              output to LOOK AT, then bin    UNTRACKED (pins only), ~14 days
 ```
 
 **Transient rule**: a human reads it once → `Transient/`; a program reads it →
 `/tmp`, never the repo; anyone-later → the repo, committed outside `Transient/`.
 Shelf life ~14 days: never the only copy of anything, and never cited by a committed doc.
+🔴 **Untracked since 2026-10-18** (owner, by card: *"Stop tracking; pin to keep"*): an unpinned file
+lives only in the clone that wrote it (not on `D:\`, GitHub or the other seat). `*.decisions.json` always
+stay tracked; pin anything else with `python3 src/RimMandrake/Utils/transient_pin.py add <path>`.
 
 **Art is judged against the canon library, and canon is the target** (owner, 2026-09-15):
 `design/RimStarWars/canon_references/` (`AGENT_BRIEF.md` is the operating doc; count the

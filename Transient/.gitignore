@@ -7,6 +7,7 @@
 !*/
 !/.gitignore
 !*.decisions.json
+.gatecheck_*/
 # --- PINS (managed by transient_pin.py; edit with it, one pin per line) ---
 !/DESERT_WRAPS_ART_COMMISSION_1_candidates_2026-09-09.png
 !/DESERT_WRAPS_matrix_wave2_2026-09-18.png

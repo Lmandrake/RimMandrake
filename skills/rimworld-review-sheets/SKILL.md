@@ -51,7 +51,7 @@ the resolver, re-asked by the gate, is the only thing that exempts a row from a 
 2. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet, or RimPulse cannot
    list it. Give him the URL and the full native path.
 3. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
-   prints an `UNPUBLISHED:` publish command for the rebuilt (tracked) HTML. Run it.
+   prints an `UNPUBLISHED:` publish command for a rebuilt sheet only if it is pinned (tracked). Run it.
 4. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
    every letter he picked still names the same pictures.
 5. **Enact** when he says a sheet is done — `art.py enact <decisions.json>` (dry run), then `--apply`;
@@ -73,4 +73,4 @@ its check: `references/traps.md`.
 - [ ] donor-only rows = 0, or each has a pending render job and the count is shown to him
 - [ ] served via `serve_gated.py` into `<sheet>.serve.log`; the URL answers 200
 - [ ] for a sheet he has touched: `remap_decisions.py` reports 0 orphaned, and `letter_mismatches` = 0
-- [ ] the full native path (`D:\Luke\dev\RimMandrake\Transient\biome_ffar\…`) beside the link
+- [ ] the full native path of the serving clone (`\\wsl.localhost\Ubuntu\home\mandrake\rm\<seat>\Transient\biome_ffar\…`; Transient is untracked since 2026-10-18, so `D:\` has only pinned sheets) beside the link
