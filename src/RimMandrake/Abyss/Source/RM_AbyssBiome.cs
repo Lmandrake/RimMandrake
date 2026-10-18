@@ -6,9 +6,9 @@ namespace RimMandrake.Abyss
 {
     // ════════════════════════════════════════════════════════════════════
     // BIOME PLACEMENT — the thing XML cannot do. Same reasoning as the
-    // sibling Gelatinous Slime / Flooded Canyon mods' own workers
+    // sibling Gelatinous Slime / Cracked Lands mods' own workers
     // (src/RimMandrake/GelatinousSlime/Source/SlimeBiome.cs,
-    // src/RimMandrake/FloodedCanyon/Source/RM_BiomeWorker_FloodedCanyon.cs):
+    // src/RimMandrake/CrackedLands/Source/RM_BiomeWorker_CrackedLands.cs):
     // BiomeDef has no temperature/rainfall/elevation field, RimWorld scores
     // every BiomeDef's workerClass per tile and keeps the highest, so a
     // biome with no worker never generates anywhere.

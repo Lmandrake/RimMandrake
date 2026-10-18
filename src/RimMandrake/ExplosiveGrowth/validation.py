@@ -728,7 +728,7 @@ def _soak_ratio_chain(t, comp_name, setting, expect, prefix, subject=None, **arm
 
 
 # EXPLOSIVE_GROWTH_RULED_REWRITE (spec 2026-10-16 §2.5). A soak is one water source among several now (presence model):
-# the debug soak is a TIMED source, as Flooded Canyon's flood is. The ratios below are the ruled ones.
+# the debug soak is a TIMED source, as Cracked Lands's flood is. The ratios below are the ruled ones.
 
 @suite.chain("dry_native_x100_wet_over_dry")
 def dry_native_x100_wet_over_dry(t):

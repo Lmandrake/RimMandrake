@@ -52,7 +52,7 @@
 
   <!-- Reference only; Harmony itself must come from brrainz.harmony at
        runtime, which is why Private is false below. Same path the sibling
-       FloodedCanyon csproj uses. -->
+       CrackedLands csproj uses. -->
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>

@@ -11,7 +11,7 @@
     1. workerClass — the twin's `VanillaBiomes.BiomeWorker_DesertOasis` (a
        donor type) becomes this mod's own `RM_BiomeWorker_WeepingStones`
        (Source/RM_BiomeWorker_WeepingStones.cs), same shape as the Greentide/
-       FloodedCanyon precedents. `generatesNaturally` stays false below —
+       CrackedLands precedents. `generatesNaturally` stays false below —
        this biome is placed by hand (Oasis landmark authoring per
        OASIS_LANDMARK_PLACEMENT_1), never natural worldgen, so the worker's
        GetScore is inert by construction; it exists only so the field

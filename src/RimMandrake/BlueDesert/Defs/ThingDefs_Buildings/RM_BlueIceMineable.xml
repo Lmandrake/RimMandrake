@@ -8,7 +8,7 @@
   twice this sitting: src/RimUtinni/UtinniPatches's RUT_GreatboleHeartwood
   (wall ParentName="RockBase", mineable=true, building.mineableThing + yield
   + dropChance, mineableScatterCommonality=0 — deliberate placement, not
-  vanilla's own ore-vein scatterer) and src/RimMandrake/FloodedCanyon's
+  vanilla's own ore-vein scatterer) and src/RimMandrake/CrackedLands's
   RM_FossilSeams (same shape, cited there as cribbed from this precedent).
 
   Placement is OWED, not this file's scope: BLUEDESERT_MECHANICS_BUILD_1 §2's

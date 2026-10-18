@@ -18,7 +18,7 @@ namespace RimMandrake.FlowWorks
 	/// wants something that can walk the liquid backwards toward its source. A
 	/// 200-cell canal alight must be one component doing a bounded walk, not
 	/// 200 Things each ticking. The in-repo precedent is
-	/// FloodedCanyon's RM_MapComponent_CanyonFlood, which already owns a
+	/// CrackedLands's RM_MapComponent_CanyonFlood, which already owns a
 	/// phased, save-safe, per-cell flow engine; this is a port of that shape,
 	/// not an invention.
 	///
@@ -3146,7 +3146,7 @@ namespace RimMandrake.FlowWorks
 		// DRIVER API — CANYON_FLOOD_ERASES_CANALS_1.
 		//
 		// ⚠️ ADDITIVE REGION. Everything above is the engine; this is the
-		// whole of the surface a flood-driver client (ruling 8: FloodedCanyon
+		// whole of the surface a flood-driver client (ruling 8: CrackedLands
 		// is a driver, this mod is the engine) may touch. Nothing above was
 		// changed to add it.
 		//

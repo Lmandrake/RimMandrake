@@ -193,7 +193,7 @@ MAZE = _perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + _pe
     [(x, 5) for x in range(9, 12)]
 HOSE_TRANSITION_TICKS = 30          # HoseSettings.transitionTicks default (GimmeSomeSlack/northstar_matrix/placer.py, same value)
 TANK = "RimMandrake.FlowWorks.RM_NorthstarProofs"
-BIOME_MC = "RimMandrake.FloodedCanyon.MapControls.RM_BiomeMapControls"   # Baroque Biomes' flood trigger / soak zone
+BIOME_MC = "RimMandrake.CrackedLands.MapControls.RM_BiomeMapControls"   # Baroque Biomes' flood trigger / soak zone
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 
 

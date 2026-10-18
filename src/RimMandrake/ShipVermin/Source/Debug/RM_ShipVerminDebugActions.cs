@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.ShipVermin
 {
 	// WRECKAGE_VERMIN_SPAWN_1 re-block debug hook. Same pattern as the sibling
-	// FloodedCanyon mod's own RM_FloodedCanyonDebugActions: force + report a
+	// CrackedLands mod's own RM_CrackedLandsDebugActions: force + report a
 	// mechanism that would otherwise take real days of ticks (or, per this
 	// item's history, fail silently on every branch) to observe.
 	//

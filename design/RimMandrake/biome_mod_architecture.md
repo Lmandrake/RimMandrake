@@ -90,7 +90,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 5 | `RUT_NightsideIce` | 1506 | the Nightside Ice | `nightside_ice.md` | `NightsideIce` | `mandrake.rm.nightsideice` | `RM_NightsideIce` | PROPOSED; thin (no plants by design) but it is a Lantern Deeps host surface |
 | 6 | `RUT_Abyss` | 1135 | the Abyss | `abyss.md` | `Abyss` | `mandrake.rm.abyss` | `RM_Abyss` | PROPOSED |
 | 7 | `RUT_BlueDesert` | 1029 | the Blue Desert | `the_blue_desert.md` | `BlueDesert` | `mandrake.rm.bluedesert` | `RM_BlueDesert` | PROPOSED; `BLUE_DESERT_LIFE_AUTHORING_1` builds INTO this mod, not into UtinniPatches |
-| 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `FloodedCanyon` (EXISTS) | `mandrake.rm.floodedcanyon` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
+| 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `CrackedLands` (EXISTS) | `mandrake.rm.crackedlands` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
 | 9 | `RUT_AridShrubland` | 628 | the Leaning Scrub (RULED 2026-09-21 — §7 Q2) | `arid_shrubland.md` | `LeaningScrub` | `mandrake.rm.leaningscrub` | `RM_LeaningScrub` | PROPOSED — "arid shrubland" is a vanilla biome label; the name is the sheet's own gesture, everything leaning sunward in a wind that never stops |
 | 10 | `RUT_Cauldron` | 546 | the Cauldron | `cauldron.md` | `Cauldron` | `mandrake.rm.cauldron` | `RM_Cauldron` | BUILT; RUT_ defName renamed from `RUT_PoisonForest` 2026-09-30 (`CAULDRON_FULL_RENAME_1`, question-card decision) — live tiles ride to the paint-once-at-the-end repaint |
 | 11 | `RUT_TheScald` | 312 | the Scald | `the_scald.md`, `kits/scald_kit_spec.md` | `TerminalBiomes` | `mandrake.rm.terminalbiomes` | `RM_TheScald` | 🔴 RULED 2026-09-21 §7 Q1 — moves OUT of its own mod into the four-biome `TerminalBiomes` mod, independently toggleable. A sea biome (impassable) with a kit. |
@@ -138,7 +138,7 @@ the donor is not in the current load and this spec asserts nothing about it.
 ### 2d. Shared RimMandrake libraries these mods depend on (unchanged by this spec)
 
 `mandrake.rm.environmentalhazards` (the comp/gas/hediff toolkit the kits share, 40+ C#
-files), `mandrake.rm.creaturebehaviors`, `mandrake.rm.flowworks` (FloodedCanyon's flood),
+files), `mandrake.rm.creaturebehaviors`, `mandrake.rm.flowworks` (CrackedLands's flood),
 `mandrake.rm.weathersuite`. A biome mod depends on these; nothing in them names a biome.
 The `RUT_`-referencing extension classes already used inside the biome defs
 (`RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension`,
@@ -207,7 +207,7 @@ the painted def, for the reason §5's hazard gives — deletion is Phase B step 
 
 Active-list state, MEASURED from `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
 (618 active, parsed): `mandrake.rm.greentide` and `mandrake.rm.pyrelands` are active;
-`mandrake.rm.floodedcanyon` and `mandrake.rm.gelatinousslime` are **not** in that snapshot.
+`mandrake.rm.crackedlands` and `mandrake.rm.gelatinousslime` are **not** in that snapshot.
 Whether their folders sit in the live Mods directory is UNMEASURED here.
 
 ### 4a. Greentide — `RM_Greentide` (123 lines) vs `RUT_Greentide` (287 lines)
@@ -319,7 +319,7 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   that row) and it does not matter: Phase B step 1 reads it live and paints the
   RimMandrake def either way.
 
-### 4d. Flooded Canyon — `RM_FloodedCanyon` (109 lines) vs `RUT_CrackedLands` (122 lines)
+### 4d. Cracked Lands — `RM_FloodedCanyon` (109 lines) vs `RUT_CrackedLands` (122 lines)
 
 BENCH's brief listed this mod as an orphan with no twin. It has one. `FLOOD_CANYON_BIOME_1`
 (closed) and the mod's own `About.xml` describe it as *"canyons that get periodically
@@ -327,7 +327,7 @@ flooded … the Cracked Lands chime mechanic, generalized"*, and `the_cracked_la
 sheet for *"canyon country … clay pans split into polygons … then, rarely and without
 warning, the water comes down"*. Same place, two defs.
 
-- **Survivor:** `mandrake.rm.floodedcanyon`, `RM_FloodedCanyon` (depends on
+- **Survivor:** `mandrake.rm.crackedlands`, `RM_FloodedCanyon` (depends on
   `mandrake.rm.flowworks` for the flood itself — correct, the flood is FlowWorks' liquid).
 - **Merged in:** `RUT_CrackedLands.xml`'s terrain, plants, weather; its 10 fauna entries
   split 5 vanilla + 2 `AA_` inline, 3 `RSW_` to `WildAnimals_CrackedLands.xml`.
@@ -402,7 +402,7 @@ count decides what is done first.
 
 **Order within Phase A:** the four existing mods first — `GREENTIDE_RM_MOD_BUILD_1`,
 `GELATINOUSSLIME_RM_MOD_BUILD_1`, `PYRELANDS_RM_MOD_BUILD_1`,
-`FLOODEDCANYON_RM_MOD_BUILD_1` (Q4 is answered, so Flooded Canyon is no longer held) —
+`FLOODEDCANYON_RM_MOD_BUILD_1` (Q4 is answered, so Cracked Lands is no longer held) —
 because their twins are the double-maintenance costing now; then the rest in whatever
 order the kit work is already moving.
 

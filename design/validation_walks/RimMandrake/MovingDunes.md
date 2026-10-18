@@ -36,5 +36,5 @@ validated-hash:
 No owner north-star bars are drafted for this mod yet.
 
 ## anti-guessing notes
-RULED OUT: "the debug-action path is `Moving Dunes\\...`" — sibling mods (FloodedCanyon) drive `Actions\\<label>` whatever their category string; the report chain records UNMEASURED, never FAIL, if the path does not answer.
+RULED OUT: "the debug-action path is `Moving Dunes\\...`" — sibling mods (CrackedLands) drive `Actions\\<label>` whatever their category string; the report chain records UNMEASURED, never FAIL, if the path does not answer.
 RULED OUT: "a wind that never changes is a defect on a still-wind map" — only RM_Stillsand locks it (windLockEnabled); the shift check runs on a normal dune field.

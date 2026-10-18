@@ -37,7 +37,7 @@ MODS = {
         "The ablation line": "NextPulse",
         "Ossivel and virr song": "Now",
     }, ()),
-    "FloodedCanyon": ("RM_FloodedCanyonMod.cs", "RM_FloodedCanyon.csproj", {
+    "CrackedLands": ("RM_CrackedLandsMod.cs", "RM_CrackedLands.csproj", {
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Flood cycle": "Now",
         "Warning: chimes and signs": "Now",

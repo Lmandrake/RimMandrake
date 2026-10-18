@@ -34,7 +34,7 @@ Ships inside RimMandrake: Baroque Biomes as one of its engines (it has its own t
 
 ONE RATE PER PLANT, by its kind and its cell, multiplying its normal growth and only while it has light: dry-land natives x10 on wet ground and x0.1 on dry ground; jungle natives (Greentide, Miasma, Fever Wood, Webwork, Contagion) x4, wet or dry; anything yielding wood at 0.625 of its kind's rate; vanilla crops and plants x0.1 unless water lies within 2 cells (an option makes them normal); basins, pots and hydroponics at vanilla speed. A plant growing slower than normal also ages slower.
 
-WET GROUND is ground with water on it, and only while it is there: rivers, fresh water, marsh and mud (their own cells), a flood (RimMandrake: Flooded Canyon), spilled or poured water, a dug FlowWorks channel and the ground beside it, rain on open ground (and a few hours after, shown by puddles), snow in the biomes that say so, a salt-line surge's fresh side; fresh ash for fire-adapted plants. Clean water waters every plant; other liquids only plants adapted to them. Every fruiting plant uses the water on its cell.
+WET GROUND is ground with water on it, and only while it is there: rivers, fresh water, marsh and mud (their own cells), a flood (RimMandrake: Cracked Lands), spilled or poured water, a dug FlowWorks channel and the ground beside it, rain on open ground (and a few hours after, shown by puddles), snow in the biomes that say so, a salt-line surge's fresh side; fresh ash for fire-adapted plants. Clean water waters every plant; other liquids only plants adapted to them. Every fruiting plant uses the water on its cell.
 
 WHERE. Only on maps whose biome Baroque Biomes ships; outside them our plants grow at vanilla speed (an UNSUPPORTED option applies the same rule elsewhere). A campaign layer's roster can put its whole world in scope (scopeAllBiomes).
 
@@ -52,7 +52,7 @@ THE TOP belongs to the PLANT, never the ground it stands on:
 
 PLAYER VERBS. Harvest a swollen plant for extra produce. Cut it to defuse it — though once it trembles, the last swing is a gamble. Keep ground dry. Grazing animals (and a dry-air blower, where another mod ships one) suppress encroachment for a few days.
 
-Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI; the Baroque Biomes members (Flooded Canyon, Environmental Hazards) call it directly, other mods may call it by reflection.
+Every mechanic has a Mod Settings toggle; defaults are the shipped behaviour. Plant tops are data: an RM_ExplosiveGrowthRosterDef (by name, silently skipping absent plants) or an RM_ExplosiveGrowthExtension on a plant you own. Soak/suppress are exposed as RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI; the Baroque Biomes members (Cracked Lands, Environmental Hazards) call it directly, other mods may call it by reflection.
 
 Ships the IncidentWorker behind a map-scale bloom (RM_IncidentWorker_BloomBurst); a campaign layer names the IncidentDef and the bloom plant.
 

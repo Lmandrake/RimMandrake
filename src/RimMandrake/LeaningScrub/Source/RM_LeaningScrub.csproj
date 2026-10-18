@@ -2,7 +2,7 @@
 
   <!--
     LEANINGSCRUB_RM_MOD_BUILD_1. Same recipe as
-    src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyon.csproj — copy that
+    src/RimMandrake/CrackedLands/Source/RM_CrackedLands.csproj — copy that
     header if this one goes stale.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):

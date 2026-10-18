@@ -2,10 +2,10 @@
 <!--
   GRAVSHIP_ACOUSTIC_SCANNER_1 — the acoustic-scanner payload for the Utinni twin
   RUT_CrackedLands. Same targets as the RimMandrake-tier Cracked Lands
-  (src/RimMandrake/FloodedCanyon/Patches/RM_AcousticPayload_FloodedCanyon.xml, whose
+  (src/RimMandrake/CrackedLands/Patches/RM_AcousticPayload_CrackedLands.xml, whose
   header explains each target); keep the two in step until CRACKEDLANDS_FULL_RENAME_1
   retires one of the defs. FindMod-guarded on mandrake.rm.acousticscanner; RM_ defNames
-  are strings resolved at pulse time, so an absent mandrake.rm.floodedcanyon just
+  are strings resolved at pulse time, so an absent mandrake.rm.crackedlands just
   hears nothing of those kinds.
 -->
 <Patch>

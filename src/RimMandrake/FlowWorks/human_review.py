@@ -177,7 +177,7 @@ CAPS = [
          effect="Whole-map fill matches an independent oracle every pulse across the scripted phases.",
          probes=["cs:class RM_StockMath"], rows=["G_every_cell_vs_oracle"], src="Build program verify"),
     dict(id="B13", g="B", label="Canyon floods drive FlowWorks instead of erasing canals", item="CANYON_FLOOD_ERASES_CANALS_1",
-         effect="FloodedCanyon is a flood-driver client; its floods use FlowWorks' recoverable temp-terrain release.",
+         effect="CrackedLands is a flood-driver client; its floods use FlowWorks' recoverable temp-terrain release.",
          probes=["cs:class Flood_FlowWorks", "cs:SetTempTerrain"], src="Ruling 8"),
     # ---- C reservoirs
     dict(id="C01", g="C", label="A source is just deep liquid terrain (no reservoir building)", item=BP,
@@ -565,7 +565,7 @@ CAPS = [
          effect="The swale ships its own RM_Swale texture; art drawn from screenshots of a real canal is the ask.",
          probes=["tex:(?i)swale"], src="Owner art sheet"),
     dict(id="L08", g="L", label="Irrigation: plants beside a filled canal act watered", item=BP,
-         effect="Owner experience: 'natural irrigation of crops'. Solved in FloodedCanyon, not wired here.",
+         effect="Owner experience: 'natural irrigation of crops'. Solved in CrackedLands, not wired here.",
          probes=["cs:class \\w*Irrigat"], src="Owner experience"),
     dict(id="L09", g="L", label="Rivers slice 1: river current + ford stones", item="SURFACE_RIVER_WEIRS_1",
          effect="Surface current on vanilla rivers, fordable stones, swept-away pawns (FlowWorks Rivers).",

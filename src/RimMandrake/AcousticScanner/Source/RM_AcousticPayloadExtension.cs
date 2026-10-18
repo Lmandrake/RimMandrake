@@ -18,7 +18,7 @@ namespace RimMandrake.AcousticScanner
     // Shipped payloads are PATCHES in each biome's own mod, guarded by
     // PatchOperationFindMod on mandrake.rm.acousticscanner (so this class is never
     // named in a def while its assembly is absent):
-    //   src/RimMandrake/FloodedCanyon/Patches/RM_AcousticPayload_FloodedCanyon.xml
+    //   src/RimMandrake/CrackedLands/Patches/RM_AcousticPayload_CrackedLands.xml
     //   src/RimMandrake/Stillsand/Patches/RM_AcousticPayload_Stillsand.xml
     //   src/RimUtinni/UtinniPatches/Patches/AcousticPayload_CrackedLands.xml
     public class RM_AcousticPayloadExtension : DefModExtension

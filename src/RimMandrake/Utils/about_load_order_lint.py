@@ -12,7 +12,7 @@ ours to fix). `loadAfter`/`forceLoadAfter` X  =>  X before me; `loadBefore`/
 Why: a cycle is silently broken by whatever sorts the list (modset_builder.py warns and
 picks the lowest rank; RimSort/the engine pick their own), so the edge one mod actually
 needs can lose. Found 2026-10-11: mandrake.rm.explosivegrowth loadAfter mandrake.rm.biomes
-while FloodedCanyon (folded into biomes) loadAfter explosivegrowth.
+while CrackedLands (folded into biomes) loadAfter explosivegrowth.
 
 Also WARNs (does not fail) when a mod outside a composite names a folded member id in
 loadAfter/loadBefore: that id never loads, so the edge silently does nothing.

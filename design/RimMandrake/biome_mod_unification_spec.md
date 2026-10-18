@@ -63,7 +63,7 @@ as evidence only.
 | BlueDesert | mandrake.rm.bluedesert | yes (live file, 2026-09-27) | Biome (Phase A row 7) |
 | Contagion | mandrake.rm.contagion | no | Biome (row 16) |
 | FeverWood | mandrake.rm.feverwood | yes | Biome (row 22) |
-| FloodedCanyon | mandrake.rm.floodedcanyon | no | Biome (flood-canyon standalone). NB its DLL compile-references FlowWorks — unified mod gains a HARD dep on `mandrake.rm.flowworks` |
+| CrackedLands | mandrake.rm.crackedlands | no | Biome (flood-canyon standalone). NB its DLL compile-references FlowWorks — unified mod gains a HARD dep on `mandrake.rm.flowworks` |
 | Abyss | mandrake.rm.abyss | no | Biome (row 6) |
 | GelatinousSlime | mandrake.rm.gelatinousslime | yes | Biome (Q14 donor-free) |
 | Greentide | mandrake.rm.greentide | yes | Biome |
@@ -233,7 +233,7 @@ One merged DLL is rejected. Evidence:
 - **Cross-assembly type references.** Compile-time refs measured in csproj files:
   FeverWood → CreatureBehaviors + EnvironmentalHazards; LeaningScrub,
   TerminalBiomes → EnvironmentalHazards; EnvironmentalHazards → CreatureBehaviors;
-  FloodedCanyon → FlowWorks; plus XML class refs from ~10 biome mods into CB/EH
+  CrackedLands → FlowWorks; plus XML class refs from ~10 biome mods into CB/EH
   worker/comp classes, and TerminalBiomes XML → DivingInteraction/SeaShores. The
   failure class Q17 exists to kill — `RUT_BurnerAscendant`'s deathAction naming a
   BlueDesert type behind an unguardable `MayRequire` — dies two ways at once:
@@ -358,7 +358,7 @@ exactly once and last:
 
 - **Wave 0 — compose + shell, off the live list.** Build the compose target, the
   generated About/LoadFolders, and the `RM_BiomesMod` settings shell. Compose ONLY
-  the 12 off-list biomes (Contagion, FloodedCanyon, Abyss, LeaningScrub,
+  the 12 off-list biomes (Contagion, CrackedLands, Abyss, LeaningScrub,
   Miasma, Cauldron, RustCathedral, Warscar, TheForge, TheSump, Webwork,
   WeepingStones). BlueDesert is ON the live list and waits for wave 2, as do the
   four Q3/Q4 folds (CreatureBehaviors, EnvironmentalHazards, LanternDeeps,
