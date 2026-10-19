@@ -141,6 +141,15 @@
       <Rain>2</Rain>
     </baseWeatherCommonalities>
     <modExtensions>
+      <!-- CONTAGION_HEAT_JUDGE_SUN_KIND_UNSAID (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead". Dayside p10/median/p90
+           25/32/45 C (max 57); the Burn is open white sun and the natives dive under overhangs, so roofs and cast shade
+           answer it (not ambient: no steam or vents; not lowSun: the dayside sun is not grazing). Under the Bloom the
+           sun is cut by RM_WeatherSenseExtension on RM_ContagionBloom. heatOffsetC INVENTED first value, modest because
+           the Burn is minutes long; the owner-watched sitting tunes it. No new heat hediff. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
+        <heatKind>overhead</heatKind>
+        <heatOffsetC>10</heatOffsetC>
+      </li>
       <li Class="RimMandrake.Contagion.RM_ContagionSkyExtension">
         <meanDaysBetweenBurns>3</meanDaysBetweenBurns>
         <burnDurationTicks>1500~4000</burnDurationTicks>
