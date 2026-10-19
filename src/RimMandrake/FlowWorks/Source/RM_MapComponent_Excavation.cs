@@ -2139,6 +2139,7 @@ namespace RimMandrake.FlowWorks
 				case RM_PondDepthMath.Stage.ChestDeep:
 				case RM_PondDepthMath.Stage.Shallow:
 				case RM_PondDepthMath.Stage.Thin:
+				case RM_PondDepthMath.Stage.VeryShallow:
 					return RM_WaterLadderDefs.Freshwater(RM_WaterLadder.RungOfPondStage(stage));
 				case RM_PondDepthMath.Stage.Mud:
 					return fluid?.recededTerrain;

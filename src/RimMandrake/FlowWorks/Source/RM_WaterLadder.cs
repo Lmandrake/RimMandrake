@@ -74,7 +74,7 @@ namespace RimMandrake.FlowWorks
 			switch (rung)
 			{
 				case Rung.Dry: return RM_PondDepthMath.Stage.Mud;
-				case Rung.VeryShallow:
+				case Rung.VeryShallow: return RM_PondDepthMath.Stage.VeryShallow;
 				case Rung.Thin: return RM_PondDepthMath.Stage.Thin;
 				case Rung.Shallow: return RM_PondDepthMath.Stage.Shallow;
 				case Rung.ChestDeep: return RM_PondDepthMath.Stage.ChestDeep;
@@ -87,6 +87,7 @@ namespace RimMandrake.FlowWorks
 		{
 			switch (stage)
 			{
+				case RM_PondDepthMath.Stage.VeryShallow: return Rung.VeryShallow;
 				case RM_PondDepthMath.Stage.Thin: return Rung.Thin;
 				case RM_PondDepthMath.Stage.Shallow: return Rung.Shallow;
 				case RM_PondDepthMath.Stage.ChestDeep: return Rung.ChestDeep;
