@@ -11,7 +11,7 @@
      delivery shape (turret-fired, no warmup, short periodic cooldown) is new.
      Damage/radius sized to the Geonosian Foundry Hive turret-doctrine anchor (bio
      FIAT 25, BLAST class, 1x1 -> volley 25 r3.9) already established for this
-     faction's other turrets (VFEI2_Thornspitter/Thornworm/Vilelobber, AA_BlackDefiler)
+     faction's other turrets (then VFEI2_Thornspitter/Thornworm/Vilelobber, AA_BlackDefiler; both donors retired 2026-10-18)
      in design/Jawa/worldbuilding/review/turret_normalization_v1.md — this def is
      hand-authored, not absorbed, so it is NOT added to Turrets_DamageDoctrine.xml
      (that file's PatchOperationFindMod ops only retarget OTHER mods' turrets; a

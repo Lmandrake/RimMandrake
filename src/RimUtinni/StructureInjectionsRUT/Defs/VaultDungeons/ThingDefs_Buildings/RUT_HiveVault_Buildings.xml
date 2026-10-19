@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  Hive-vault fixtures: RUT_ ports of the three VFE Insectoids 2 buildings the hive vault layout places
+  (RUT_Symbol_BlackJellyWall / InfestedShipPart / InfestedShipChunk in SymbolDefs_Vaults.xml), plain XML copies of
+  VFEI2_InsectJellyWall (parent VFEI2_InsectoidWallBase inlined), VFEI2_InfestedShipPart and VFEI2_InfestedShipChunk
+  (oskarpotocki.vfe.insectoid2 1.6/Defs/ThingDefs_Buildings/Buildings_Insectoid.xml), 2026-10-18 for donor retirement
+  (owner: "Just put in placeholder art for now or donor copies and retire these mods!!! Just get it done.").
+  Vault-only: no designationCategory, no research, not player-buildable.
+  Departures, all to make it plain XML with no VFE Insectoids reference:
+    - wall: VFEInsectoids.CompProperties_OnDestroyWall (jelly filth on destroy), the VFEI_CocoonDestroyed effecter,
+      the VFEI2_ConstructSlime effects, the InsectBuilding modExtension, the VFEI2_Insectoids designation category
+      and the menu icon (vault-only, never on a build menu) dropped.
+    - ship part / chunk: VFEInsectoids.CompProperties_InsectSpawner (insects emerging at random) dropped, so the
+      pieces are inert wreckage; the descriptions no longer promise insects. The chunk draws one variant
+      (InfestedShipChunkA, Graphic_Single) instead of the donor's Graphic_Random folder.
+  ART: StandIn/<donor texPath> marked stand-in copies (art ledger, provenance kind=donor standin=true).
+  -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_InsectJellyWall</defName>
+    <label>insect jelly wall</label>
+    <description>An impassable wall made from insect jelly, built up layer on layer by a hive's workers. Capable of holding up a roof.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>StandIn/Things/Building/Linked/WallInsectJelly_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+        <edgeTop>Damage/Edge</edgeTop>
+        <edgeBot>Damage/Edge</edgeBot>
+        <edgeLeft>Damage/Edge</edgeLeft>
+        <edgeRight>Damage/Edge</edgeRight>
+      </damageData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <MeditationFocusStrength>0.22</MeditationFocusStrength>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <drawStyleCategory>Walls</drawStyleCategory>
+    <tickerType>Never</tickerType>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <holdsRoof>true</holdsRoof>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <blockLight>true</blockLight>
+    <canOverlapZones>false</canOverlapZones>
+    <fertility>0</fertility>
+    <building>
+      <paintable>false</paintable>
+      <isInert>true</isInert>
+      <isAirtight>true</isAirtight>
+      <isPlaceOverableWall>true</isPlaceOverableWall>
+      <ai_chillDestination>false</ai_chillDestination>
+      <supportsWallAttachments>true</supportsWallAttachments>
+      <claimable>false</claimable>
+      <canLandGravshipOn>true</canLandGravshipOn>
+      <blueprintGraphicData>
+        <texPath>StandIn/Things/Building/Linked/WallInsectJelly_Blueprint_Atlas</texPath>
+      </blueprintGraphicData>
+    </building>
+    <costList>
+      <InsectJelly>4</InsectJelly>
+    </costList>
+    <killedLeavings>
+      <InsectJelly>2</InsectJelly>
+    </killedLeavings>
+    <comps>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Minimal</li>
+        </focusTypes>
+      </li>
+    </comps>
+    <damageMultipliers>
+      <li>
+        <damageDef>Bomb</damageDef>
+        <multiplier>2</multiplier>
+      </li>
+      <li>
+        <damageDef>Thump</damageDef>
+        <multiplier>2</multiplier>
+      </li>
+    </damageMultipliers>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_InfestedShipPart</defName>
+    <label>infested ship part</label>
+    <description>An ancient ship part, torn off of a craft of unknown origin. It might be thousands of years old.\n\nThis one is caked in biomass and insect jelly, the leavings of the hive that nested in its hull.</description>
+    <category>Building</category>
+    <graphicData>
+      <texPath>StandIn/Things/Building/CrashedInfestedShipPart</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,3)</drawSize>
+      <damageData>
+        <rect>(5.8,5.8,2.1,2.1)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(5.25,0.65,2.39)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.50</fillPercent>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <size>(6,3)</size>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-200</Beauty>
+      <WorkToBuild>12000</WorkToBuild>
+    </statBases>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <killedLeavings>
+      <ChunkSlagSteel>4</ChunkSlagSteel>
+      <Steel>60</Steel>
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+      <InsectJelly>40</InsectJelly>
+    </killedLeavings>
+    <costList>
+      <ChunkSlagSteel>4</ChunkSlagSteel>
+      <Steel>60</Steel>
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+      <InsectJelly>40</InsectJelly>
+    </costList>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <displayAttackToDestroyOnInspectPane>true</displayAttackToDestroyOnInspectPane>
+    </building>
+    <selectable>true</selectable>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <drawerType>MapMeshOnly</drawerType>
+    <repairEffect>ConstructMetal</repairEffect>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_InfestedShipChunk</defName>
+    <label>infested ship chunk</label>
+    <description>A chunk of a spacecraft caked in biomass and insect jelly. Can be deconstructed to yield useful steel and jelly.</description>
+    <category>Building</category>
+    <graphicData>
+      <texPath>StandIn/Things/Building/InfestedShipChunk/InfestedShipChunkA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <damageData>
+        <rect>(0.1,0.1,1.8,1.8)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(1.39,0.5,1.25)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.50</fillPercent>
+    <size>(2,2)</size>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-20</Beauty>
+      <WorkToBuild>12000</WorkToBuild>
+    </statBases>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <killedLeavings>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+      <InsectJelly>10</InsectJelly>
+    </killedLeavings>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+      <InsectJelly>10</InsectJelly>
+    </costList>
+    <building>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <deconstructible>true</deconstructible>
+    </building>
+    <selectable>true</selectable>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <drawerType>MapMeshOnly</drawerType>
+    <repairEffect>ConstructMetal</repairEffect>
+  </ThingDef>
+</Defs>

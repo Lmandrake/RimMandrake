@@ -31,7 +31,7 @@
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_BlackJellyWall</defName>
-    <thing>VFEI2_InsectJellyWall</thing>  <!-- was AA_BlackJellyWall (Alpha Animals, retired 2026-10-18; no port): the VFE Insectoids jelly wall it was built on -->
+    <thing>RUT_InsectJellyWall</thing>  <!-- was AA_BlackJellyWall (Alpha Animals), then VFEI2_InsectJellyWall; both donors retired 2026-10-18: our port in ThingDefs_Buildings/RUT_HiveVault_Buildings.xml -->
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_Fleshmass</defName>
@@ -39,11 +39,11 @@
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_InfestedShipPart</defName>
-    <thing>VFEI2_InfestedShipPart</thing>
+    <thing>RUT_InfestedShipPart</thing>  <!-- port of VFEI2_InfestedShipPart, 2026-10-18 -->
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_InfestedShipChunk</defName>
-    <thing>VFEI2_InfestedShipChunk</thing>
+    <thing>RUT_InfestedShipChunk</thing>  <!-- port of VFEI2_InfestedShipChunk, 2026-10-18 -->
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_GravRailArtillery</defName>

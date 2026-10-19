@@ -6311,53 +6311,8 @@
     </match>
   </Operation>
 
-  <!-- VFEI2_BasicHivetech -> The Foundry Hive (RUT_Tree_FoundryHive) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFEI2_BasicHivetech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFEI2_BasicHivetech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_BasicHivetech"]/tab</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_BasicHivetech"]</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
 
-  <!-- VFEI2_ExoticHivetech -> The Foundry Hive (RUT_Tree_FoundryHive) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFEI2_ExoticHivetech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFEI2_ExoticHivetech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_ExoticHivetech"]/tab</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_ExoticHivetech"]</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
 
-  <!-- VFEI2_StandardHivetech -> The Foundry Hive (RUT_Tree_FoundryHive) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFEI2_StandardHivetech"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFEI2_StandardHivetech"]/tab</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_StandardHivetech"]/tab</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFEI2_StandardHivetech"]</xpath>
-        <value><tab>RUT_Tree_FoundryHive</tab></value>
-      </nomatch>
-    </match>
-  </Operation>
 
   <!-- guy762_ResearchKotOR_sonic -> The Foundry Hive (RUT_Tree_FoundryHive) -->
   <Operation Class="PatchOperationConditional">
