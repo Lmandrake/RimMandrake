@@ -67,7 +67,7 @@ def list_things(w, defs, rect):
     w.last_list so a truncated read is never taken for absence."""
     r = w.call("jawa/list_things", defName=",".join(defs), rect="%d,%d,%d,%d" % tuple(rect), limit=500) or {}
     w.last_list = {k: r.get(k) for k in ("countMatched", "countReturned", "scanned")}
-    if r.get("success") is not True:        # a refused/empty reply is UNREADABLE (countMatched None), never "nothing there"
+    if r.get("success") is False or ("things" not in r and "countMatched" not in r):   # a refused/empty reply is UNREADABLE (countMatched None), never "nothing there"
         w.last_list = {"countMatched": None, "countReturned": None, "scanned": None, "refused": str(r)[:200]}
     out = []
     for t in r.get("things") or []:
