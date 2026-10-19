@@ -127,6 +127,9 @@ CASES = [
     ("biomes mod absent", "T15,T16,T27", ["no_biomes"], [("T15", "UNMEASURED"), ("T16", "UNMEASURED"), ("T27", "UNMEASURED")]),
     ("stale terrain mark across reload", "T15R", ["stale_mark"], [("T15R", "FAIL")]),
     ("clean reload", "T15R", [], [("T15R", "PASS")]),
+    ("draft refused: a free pawn could drink, so no vacuous PASS", "T3,T6", ["draft_refused"], [("T3", "UNMEASURED"), ("T6", "UNMEASURED")]),
+    ("Home area not painted", "T24", ["zones_refused"], [("T24", "UNMEASURED")]),
+    ("snow not laid", "T25", ["snow_refused"], [("T25", "UNMEASURED")]),
 ]
 for label, only, faults, wants in CASES:
     code, res, B, _ = run(only, faults)
@@ -142,6 +145,12 @@ for label, only, faults, wants in CASES:
     if label == "snow never melts":
         det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T25"))
         check("snow never melts: the row followed the bucket for the whole 7,000", det.get("meltTicks") is None and len(det.get("meltTrace") or []) == 14, det.get("meltTrace"))
+
+# ---- the mock never answers a call it does not model with a cheerful success (a clean full run leaves none unmodelled)
+code, res, B, _ = run("")
+check("clean mock: every tool the driver called is modelled (unmodelled = %s)" % sorted(B.unmodelled), not B.unmodelled, B.unmodelled)
+check("clean mock: no draft was refused", not res.get("draftRefused"), res.get("draftRefused"))
+check("clean mock: no settings_restored row (the restore read back)", st(res, "settings_restored")[0] is None)
 
 # ---- refuse_all raises after six replacements, the finally still restores the settings
 code, res, B, _ = run("T24", ["refuse_all"])

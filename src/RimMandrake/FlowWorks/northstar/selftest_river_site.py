@@ -106,6 +106,8 @@ class FakeWorld(object):
         self.cur = 1
         self.next_uid = 2
         self.calls = []
+        self.unmodelled = set()
+        self.refuse = set()                         # tool names this world answers success=False (can-fail cases)
 
     def _map(self, uid):
         return next((m for m in self.maps if m["mapId"] == uid), None)
@@ -113,6 +115,8 @@ class FakeWorld(object):
     def call(self, tool, **kw):
         self.calls.append((tool, kw))
         cur = self._map(self.cur)
+        if tool in self.refuse:
+            return {"success": False, "message": "MOCK refusal"}
         if tool == "jawa/list_pawns":
             return {"success": True, "pawns": []}
         if tool == "jawa/world_tile_export":
@@ -122,7 +126,7 @@ class FakeWorld(object):
                     f.write("%d,Flat,0,100,16,20,TemperateForest\n" % t)
             return {"success": True}
         if tool == "jawa/world_tile_get":
-            return {"tiles": [{"tile": int(t), "riverCount": 2, "biome": "TemperateForest"} for t in kw["tiles"].split(",")]}
+            return {"success": True, "tiles": [{"tile": int(t), "riverCount": 2, "biome": "TemperateForest"} for t in kw["tiles"].split(",")]}
         if tool == "jawa/get_defs":
             return {"defs": [{"fields": {"maxFishPopulation": 9, "fishTypes": {"freshwater_Common": {"f": 1}}}}]}
         if tool == "jawa/colony_found":
@@ -155,8 +159,12 @@ class FakeWorld(object):
             ring = [c for c in t if c[0] in (0, W - 1) or c[1] in (0, H - 1)]
             return {"success": True, "ops": ";".join("%s:%d,%d,1,1" % (t[c], c[0], c[1]) for c in ring)}
         if tool == "jawa/spawn_pawn":
-            return {"pawns": [{"id": "Human%d" % len(self.calls)}]}
-        return {"success": True}
+            return {"success": True, "pawns": [{"id": "Human%d" % len(self.calls)}]}
+        if tool in ("jawa/destroy_bulk", "jawa/set_draft", "jawa/pawn_force_incapacitate"):
+            return {"success": True, "matchedCount": 0}      # modelled as no-ops: the fake map holds only colonists
+        # MOCK, not the game: an unmodelled tool is a refusal, never a cheerful success
+        self.unmodelled.add(tool)
+        return {"success": False, "message": "MOCK: %s not modelled" % tool}
 
 
 class _Sess(object):
@@ -228,6 +236,12 @@ check("loaded_maps can-fail: no list, a non-dict details, or a success reply is 
       R.loaded_maps(lambda t, **kw: {"success": False, "details": "x"}) is None
       and R.loaded_maps(lambda t, **kw: {"success": True, "details": {"loadedMaps": []}}) is None
       and R.loaded_maps(lambda t, **kw: None) is None)
+check("main: every tool main() calls is modelled by the fake (no cheerful default)", not w.unmodelled, str(w.unmodelled))
+for tool_, why_ in (("jawa/destroy_bulk", "destroy_bulk"), ("jawa/list_pawns", "list_pawns")):
+    wr = FakeWorld({102: (FAST, ["north", "west", "east"], False)})
+    wr.refuse.add(tool_)
+    rcr, _ = run_main(wr)
+    check("main can-fail: a refused %s fails the site (exit 3), never a quiet exit 0" % why_, rcr == 3, "rc %s" % rcr)
 w2 = FakeWorld({101: (FAST, ["north"], True)})
 rc2, _ = run_main(w2)
 check("main can-fail: a world whose only fast river ends in the sea yields no site (exit 2), its map removed",
