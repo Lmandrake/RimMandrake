@@ -893,7 +893,10 @@ def g_pit_access(s):
     s.pit(P1, 3, 3, 4)          # 2 m
     s.pit(P2, 3, 3, 8)          # 4 m sheer
     s.pit(P3, 3, 3, 6)          # 3 m
-    s.pit(P4, 3, 3, 6)          # 3 m sheer, no ladder
+    # pass 2 (2026-10-19, HARNESS, presumed): at 3 m the A2 climbing-gear colonist (climbs sheer 4 m) can reach the downed
+    # one, so RM_MapComponent_PitRescueLadder.AnyRescuerReaches is true and NO ladder is queued -- by design. 5 m is past
+    # every rescuer's reach on this map, which is the A4 scene ("nobody can go").
+    s.pit(P4, 3, 3, 10)         # 5 m sheer, no ladder
     lad = FC.place(s.w, "RM_LadderPortable", (P1[0] + 1, P1[1] + 2), rot=0) if not s.mock else dict(survived=True)
     a = s.spawn(HUMAN, (P1[0] + 1, P1[1] + 1))
     g = s.spawn(HUMAN, (P2[0] + 1, P2[1] + 1))
@@ -1038,7 +1041,14 @@ def g_reservoir(s):
     job is FAIL/MOD (dug water that cannot be fished). No catch with the zone intact is UNMEASURED/SITE: the job's 2%
     negative-outcome roll gives no fish by design, and a needs interrupt ends the job; the detail says which to re-run."""
     x, z, _w, _h = s.zones["reservoir"]
-    s.pit((x + 2, z + 2), 10, 10, 4, 4)
+    # pass 2 (2026-10-19, SITE): a uniform 4-notch (2 m) pit is all WaterDeep, and vanilla
+    # Designator_ZoneAdd_Fishing.CanDesignateCell refuses Impassable terrain, so every cell was refused ("impassable
+    # terrain WaterDeep", read live) -- a lake is fished from its shallows too. Shape it like a pond: a 2-notch (1 m,
+    # WaterShallow) rim, a 4-notch 6x6 middle, both filled to the brim (one surface, one body).
+    for i in range(10):
+        for j in range(10):
+            mid = 2 <= i <= 7 and 2 <= j <= 7      # each cell dug ONCE: dig() reads back depth == n from 0
+            s.dig((x + 2 + i, z + 2 + j), 4 if mid else 2, 4 if mid else 2)
     yield Wait(500)
     # flowworks_body_report has NO fish field (body{id, limitless, stock, capacity, cellCount, ...}): the old row read
     # fish/fishTypes/fishCount off it, so every read body was a FAIL. The fish roll is the vanilla WaterBody's, read by
@@ -1056,7 +1066,10 @@ def g_reservoir(s):
 
     zr = s.call("jawa/map_zones", action="createZone", zoneType="fishing", rect="%d,%d,10,10" % (x + 2, z + 2))
     if not zr.get("success"):
-        whys = sorted(set(str(c.get("why")) for c in (zr.get("refusedCells") or [])))
+        # pass 2 (2026-10-19, HARNESS): the companion's Fail() nests the cells under "details" ({success, message,
+        # details: {cellsRequested, refusedCells}}); the top-level read saw none, so a "no fish" refusal scored HARNESS
+        det = zr.get("details") if isinstance(zr.get("details"), dict) else {}
+        whys = sorted(set(str(c.get("why")) for c in (zr.get("refusedCells") or det.get("refusedCells") or [])))
         mod = any("no fish" in w or "no water-body type" in w for w in whys)
         a7("FAIL" if mod else "UNMEASURED", "MOD" if mod else "HARNESS",
            why="fishing zone refused on the dug reservoir", refusals=whys[:6], error=str(zr.get("error") or zr.get("message"))[:200])
@@ -1112,16 +1125,22 @@ def g_grenade(s):
     drafted = [draft(s, p) for p in (pt, po)]
     cells = [(s.climb(p) or {}).get("cell") if p and not s.mock else None for p in (pt, po)]
     placed = s.mock or (tuple(cells[0] or ()) == t and tuple(cells[1] or ()) == o)
+    # pass 2 (2026-10-19, HARNESS): the sums were whole-body hediff severities, so a spawned pawn's own scars / chronic
+    # conditions counted as blast harm (trench 35.0 vs open 20.5 at one 20-damage Bomb each). Read each pawn before the
+    # blast and score only the severity the blast ADDED.
+    pre_t, pre_o = (hediffs(s.call("jawa/pawn_get", pawn=p)) if p else {} for p in (pt, po))
     r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20)
     r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20)
     yield Wait(5)
     ht, ho = (hediffs(s.call("jawa/pawn_get", pawn=p)) if p else {} for p in (pt, po))
+    ht = {k: v - pre_t.get(k, 0.0) for k, v in ht.items() if v - pre_t.get(k, 0.0) > 1e-6}
+    ho = {k: v - pre_o.get(k, 0.0) for k, v in ho.items() if v - pre_o.get(k, 0.0) > 1e-6}
     st, sum_t, sum_o = "UNMEASURED", sum(ht.values()), sum(ho.values())
     if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed:
         st = "PASS" if abs(sum_t - sum_o) <= max(2.0, 0.25 * sum_o) else "FAIL"
     s.row("B4_grenade_no_blast_cover", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(trench=round(sum_t, 2), open=round(sum_o, 2), drafted=drafted, cells=cells, want=[t, o],
-               note="injury severity sums; a blast is random per part"), "B4")
+          dict(trench=round(sum_t, 2), open=round(sum_o, 2), added=dict(trench=ht, open=ho), drafted=drafted, cells=cells,
+               want=[t, o], note="severity ADDED by the blast (pre-blast read subtracted); a blast is random per part"), "B4")
 
 
 def g_rail_lip(s):
