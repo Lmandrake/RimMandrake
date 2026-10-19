@@ -18,7 +18,7 @@
       <Nutrition>0.15</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Grass_Leafless</texPath>
+      <texPath>Things/Plant/RM_HardyGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>

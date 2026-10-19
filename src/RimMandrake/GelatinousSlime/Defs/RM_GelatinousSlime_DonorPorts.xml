@@ -178,7 +178,7 @@
     <label>large slimy tree</label>
     <description>This tree doesn't seem to be entirely solid. Upon further examination, it isn't an independent entity, its roots fusing seamlessly with the hardened gelatinous ground.</description>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_LargeSlimyTree</texPath>
+      <texPath>Things/Plants/AB_LargeSlimyTree</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <altitudeLayer>BuildingOnTop</altitudeLayer>

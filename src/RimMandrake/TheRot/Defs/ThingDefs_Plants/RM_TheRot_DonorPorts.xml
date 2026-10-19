@@ -300,7 +300,7 @@
       <Nutrition>0.5</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_RecurvedStropharia</texPath>
+      <texPath>Things/Plants/AB_RecurvedStropharia</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.1, 0.1, 0.26)</volume>
@@ -451,7 +451,7 @@
       <Nutrition>0.35</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_AgaricusDomeCap</texPath>
+      <texPath>Things/Plants/AB_AgaricusDomeCap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -548,7 +548,7 @@
     </statBases>
     <tickerType>Normal</tickerType>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_AgariluxPrime</texPath>
+      <texPath>Things/Plants/AB_AgariluxPrime</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.2, 0.2, 0.2)</volume>
