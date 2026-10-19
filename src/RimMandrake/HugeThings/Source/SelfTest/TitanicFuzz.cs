@@ -303,7 +303,9 @@ namespace RimMandrake.TitanicCreatures.SelfTest
         {
             var sw = Stopwatch.StartNew();
             bool ok = true;
-            int N(int n) { return oneSeed.HasValue ? 1 : (int)(n * scale); }
+            // HUGETHINGS_TEST_HONESTY_1 (C3.8): every family runs at least one case; a tiny --fuzz-scale used to give pool 0 cases
+            // and "0 failures" while the run printed ALL PASS (review wave 6, 2026-10-19).
+            int N(int n) { return oneSeed.HasValue ? 1 : Math.Max(1, (int)(n * scale)); }
             int S(int baseSeed) { return oneSeed ?? baseSeed; }
             var fam = new (string name, Func<List<string>> run)[]
             {
@@ -319,7 +321,7 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                 var fails = f.run();
                 Console.WriteLine($"fuzz {f.name}: {Cases - c0} cases, {Steps - s0} steps, {t.Elapsed.TotalSeconds:F2}s, {(fails.Count == 0 ? "0 failures" : fails.Count + " FAILURES")}");
                 foreach (var m in fails.Take(8)) Console.WriteLine("FAIL " + m);
-                if (fails.Count > 0) ok = false;
+                if (fails.Count > 0 || Cases == c0) ok = false;
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
