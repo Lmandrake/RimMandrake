@@ -31,6 +31,7 @@ namespace RimMandrake.FlowWorks
 		public static bool waterBodySplitEnabled = true;
 		/// <summary>Engine Q6a (defaulted, veto-able): water plants live through short changes of water depth.</summary>
 		public static bool waterPlantGraceEnabled = true;
+		public static bool freezeCountMendEnabled = true;
 		public static float waterPlantDeepToleranceMetres = RM_WaterBodyMath.DefaultPlantDeepToleranceMetres;
 		public static float waterPlantGraceHours = RM_WaterBodyMath.DefaultPlantGraceHours;
 
@@ -50,6 +51,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref fishingZoneReturnOnRefill, "fishingZoneReturnOnRefill", true);
 			Scribe_Values.Look(ref waterBodySplitEnabled, "waterBodySplitEnabled", true);
 			Scribe_Values.Look(ref waterPlantGraceEnabled, "waterPlantGraceEnabled", true);
+			Scribe_Values.Look(ref freezeCountMendEnabled, "freezeCountMendEnabled", true);
 			Scribe_Values.Look(ref waterPlantDeepToleranceMetres, "waterPlantDeepToleranceMetres", RM_WaterBodyMath.DefaultPlantDeepToleranceMetres);
 			Scribe_Values.Look(ref waterPlantGraceHours, "waterPlantGraceHours", RM_WaterBodyMath.DefaultPlantGraceHours);
 		}
@@ -58,6 +60,7 @@ namespace RimMandrake.FlowWorks
 		{
 			waterBodyMendsEnabled = fishRollOnGrowth = fishReturnOnRefill = fishingZoneReturnOnRefill = waterBodySplitEnabled = true;
 			waterPlantGraceEnabled = true;
+			freezeCountMendEnabled = true;
 			waterPlantDeepToleranceMetres = RM_WaterBodyMath.DefaultPlantDeepToleranceMetres;
 			waterPlantGraceHours = RM_WaterBodyMath.DefaultPlantGraceHours;
 		}
@@ -89,6 +92,10 @@ namespace RimMandrake.FlowWorks
 				+ "by size (the base game keeps them as one until the next load, which skews fishing and freezing). Off: the "
 				+ "base game.");
 			GUI.enabled = true;
+			list.CheckboxLabeled("Dug and refilled water freezes in the cold", ref freezeCountMendEnabled,
+				"The base game counts a pond's freezable squares only when a map is made or loaded, so water that appears "
+				+ "later (a dug canal, a pond a pump fills) counts none and can never freeze until the game is reloaded. On: "
+				+ "the count is kept up to date and such water freezes and thaws exactly like the game's own. Off: the base game.");
 			list.CheckboxLabeled("Reeds, lilies and lotus live through water that rises and falls", ref waterPlantGraceEnabled,
 				"In the base game a water plant dies the moment its square turns to deep water or dries out, so a pond a pump "
 				+ "keeps raising and lowering loses its reeds every cycle. On: on squares this mod moves water on (ponds and dug "
