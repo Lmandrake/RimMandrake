@@ -176,6 +176,7 @@ def rf_plot(i):
 class Scene(object):
     def __init__(self, B, i):
         self.B = B
+        self.bad = []       # build_batch replies that built less than asked: a row that FAILs over one is the staging, not the mod
         self.o = rf_plot(i)
         ox, oz = self.o
         self.channel = [(ox + 2 + k, oz + 6) for k in range(3)]
@@ -201,7 +202,12 @@ class Scene(object):
             self.B.call("jawa/flowworks_excavation_drive", x=x, z=z, deepenLevels=0, setFill=2)
 
     def build(self, *ops):
-        return self.B.call("jawa/build_batch", ops=";".join(o for o in ops if o), faction="player", wipeExisting=False)
+        asked = [o for o in ops if o]
+        r = self.B.call("jawa/build_batch", ops=";".join(asked), faction="player", wipeExisting=False) or {}
+        short = r.get("success") is False or (r.get("survived") is not None and r.get("survived") < len(asked))
+        if short:
+            self.bad.append({"ops": asked, "success": r.get("success"), "survived": r.get("survived"), "failed": r.get("failed")})
+        return r
 
     def charge(self):
         lt = self.B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % self.battery, limit=2) or {}
@@ -306,7 +312,9 @@ def _set_tank_job(B, cell, job, max_clicks=4):
 
 def realflow(B, rows):
     """The real-flow bars of hose port step 6 (FINAL §3.6). Each reads the FAR tank's units (G3.11), never the pump's neighbour."""
-    def row(rid, ok, detail, cls="MOD", unmeasured=None):
+    def row(rid, ok, detail, cls="MOD", unmeasured=None, bad=None):
+        if not ok and not unmeasured and bad:
+            unmeasured = "the scene's buildings were not all built (build_batch survived < asked): %s" % json.dumps(bad, default=str)[:300]
         V.row(rows, rid, "UNMEASURED" if unmeasured else ("PASS" if ok else "FAIL"), "SITE" if unmeasured else cls,
               dict(detail, why=unmeasured) if unmeasured else detail)
 
@@ -328,7 +336,7 @@ def realflow(B, rows):
     row("NS_hose_carries_real_units", lay.get("success") and link and dt <= RF_DISCOVER and gained > 0
         and gained + hose_took >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10 and h.get("credits", 0) > 0 and h.get("netLink"),
         {"lay": lay, "before": t0, "after": t1, "gained": gained, "hoseTook": hose_took, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt,
-         "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")})
+         "bound": [RF_DISCOVER, RF_CYCLE], "pumpPoweredAfterTicks": s.powered, "credits": h.get("credits"), "netLink": h.get("netLink")}, bad=s.bad)
     plump, waited = _poll(B, lambda: _hose(B, s.reel).get("state") == "Plump", 300)
     tint = _hose(B, s.reel).get("tintLiquid")
     row("NS_hose_tint_is_carried_liquid", tint == LIQUID_WATER, {"tintLiquid": tint, "want": LIQUID_WATER,
@@ -343,7 +351,7 @@ def realflow(B, rows):
     u_later = _tank(B, s.tank).get("units")
     row("NS_hose_plumps_only_from_powered_pump", plump and flat and w2 <= 905 + 10 and u_later == u_after,
         {"plumpedAfterTicks": waited, "flatAfterCut": w2, "bound": 905, "plumpedAtTick": plumped_at, "cutTick": cut_tick,
-         "tankStillAfterCut": [u_after, u_later]})
+         "tankStillAfterCut": [u_after, u_later]}, bad=s.bad)
     # ---- scene 1: a dropped hose carries nothing
     s1 = Scene(B, 1)
     if s1.site(rows, "RF_site1_ready"):
@@ -354,8 +362,14 @@ def realflow(B, rows):
         B.ticks(520)
         a1 = _tank(B, s1.tank).get("units")
         h1 = _hose(B, s1.reel)
-        row("NS_hose_dropped_carries_nothing", st.get("carry") == "Dropped" and a0 is not None and a0 == a1 and not h1.get("netLink"),
-            {"staged": st, "units": [a0, a1], "netLink": h1.get("netLink")})
+        # can-fail (code review 2026-10-19): "the tank did not change" is vacuous when nothing could have moved -- an unbuilt tank
+        # (units None) or an unpowered pump -- so the row first needs a live tank and a powered pump to mean anything
+        if a0 is None or s1.powered is None or s1.bad:
+            row("NS_hose_dropped_carries_nothing", False, {"staged": st, "units": [a0, a1], "pumpPoweredAfterTicks": s1.powered, "bad": s1.bad},
+                unmeasured="the dropped-hose scene could not move liquid anyway (tank unread %s, pump powered %s, unbuilt %s)" % (a0 is None, s1.powered is not None, bool(s1.bad)))
+        else:
+            row("NS_hose_dropped_carries_nothing", st.get("carry") == "Dropped" and a0 == a1 and not h1.get("netLink"),
+                {"staged": st, "units": [a0, a1], "netLink": h1.get("netLink"), "pumpPoweredAfterTicks": s1.powered})
     # ---- scene 2: the far tank removed mid-flow, then rebuilt (G6.4: discovery read at an exact tick, transfer by next cycle)
     s2 = Scene(B, 2)
     if s2.site(rows, "RF_site2_ready"):
@@ -368,11 +382,11 @@ def realflow(B, rows):
         s2.build("RM_LiquidTank:%d,%d" % s2.tank)
         B.ticks(61)                            # the reel's free-end cache re-reads within 60 ticks; the index rebuilds per tick
         found = _hose(B, s2.reel).get("netLink")
-        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found})
+        row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found}, bad=s2.bad)
         b0 = _tank(B, s2.tank).get("units") or 0
         B.ticks(260)
         b1 = _tank(B, s2.tank).get("units") or 0
-        row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]})
+        row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]}, bad=s2.bad)
     # ---- scene 3: the pump at the FAR end, the tank beside the reel (M2); bars below were ">= 5" (one level) in the drum era
     s3 = Scene(B, 3)
     if s3.site(rows, "RF_site3_ready"):
@@ -396,7 +410,7 @@ def realflow(B, rows):
         took3 = _held(B, [s3.reel]) - g0
         row("NS_hose_far_end_pump", link and dt <= RF_DISCOVER and c1 - c0 > 0 and c1 - c0 + took3 >= UNITS_PER_LEVEL and mt <= RF_CYCLE + 10,
             {"lay": lay3, "units": [c0, c1], "hoseTook": took3, "pumpPoweredAfterTicks": s3.powered, "discoveredAfterTicks": dt, "movedTicksAfterDiscovery": mt, "netLink": link,
-             "net": B.hp("net:%d,%d" % far_pump)})
+             "net": B.hp("net:%d,%d" % far_pump)}, bad=s3.bad)
     # ---- scene 4: relay chain pump -> reel A -> reel B -> tank (both hoses credited)
     s4 = Scene(B, 4)
     if s4.site(rows, "RF_site4_ready"):
@@ -418,7 +432,7 @@ def realflow(B, rows):
         row("NS_relay_chain_carries", d1 - d0 > 0 and d1 - d0 + took4 >= UNITS_PER_LEVEL and lkb and dtb <= RF_DISCOVER and mt <= RF_CYCLE + 10
             and ha.get("credits", 0) > 0 and hb.get("credits", 0) > 0,
             {"layA": la, "layB": lb, "relayTo": ha.get("relayTo"), "pumpPoweredAfterTicks": s4.powered, "units": [d0, d1], "hoseTook": took4, "discoveredAfterTicks(B)": dtb,
-             "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")})
+             "movedTicksAfterDiscovery": mt, "creditsA": ha.get("credits"), "creditsB": hb.get("credits")}, bad=s4.bad)
     # ---- scene 5: pump -> universal pipe run -> reel -> hose -> tank; and two pipe runs never merge through a tank
     s5 = Scene(B, 5)
     if s5.site(rows, "RF_site5_ready"):
@@ -436,7 +450,7 @@ def realflow(B, rows):
         e0 = _tank(B, tank5).get("units") or 0
         B.ticks(300)
         e1 = _tank(B, tank5).get("units") or 0
-        row("NS_pipe_and_hose_one_net", e1 - e0 >= UNITS_PER_LEVEL, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)})
+        row("NS_pipe_and_hose_one_net", e1 - e0 >= UNITS_PER_LEVEL, {"lay": lp, "units": [e0, e1], "net": B.hp("net:%d,%d" % s5.pump)}, bad=s5.bad)
         # a second pipe run touching a mid tank (and a tank V on it) must stay out of the pump's net
         # A 2x2 tank at (x,z) occupies x..x+1, z..z+1. Live run 6 (2026-10-19) put V at (ox+1, oz+13): its z+1 row is oz+14, one row
         # past the prepared plot (RF_PH=14 -> oz..oz+13), so V was never built (SITE). V now sits WEST of the pipe run, inside the
@@ -490,7 +504,7 @@ def realflow(B, rows):
             row("NS_tank_feeds_hose", f1 - f0 > 0 and PER_CYCLE_CAP <= f1 - f0 + took6 <= 3 * PER_CYCLE_CAP and s0 - s1u >= f1 - f0 + took6
                 and h6.get("credits", 0) > 0,
                 {"units": [f0, f1], "source": [s0, s1u], "hoseTook": took6, "perCycleCap": PER_CYCLE_CAP, "job": job, "fill": fill,
-                 "credits": h6.get("credits"), "netLink": h6.get("netLink")})
+                 "credits": h6.get("credits"), "netLink": h6.get("netLink")}, bad=s6.bad)
 
 
 # ============================================================================ the session
@@ -545,8 +559,9 @@ class Proof(object):
                 self.res.setdefault("site_calm_blocks", {})[name] = V.site_calm(self.B).get("ok")   # statics reset by any load
                 # a giant plant regrown near a site re-plans trunk blockers into it (V.clear_huge_plants), re-calmed per block
                 self.res.setdefault("huge_plants_cleared", {})[name] = V.clear_huge_plants(self.B)
-            except Exception:  # noqa: BLE001
-                pass
+            except Exception as ex:  # noqa: BLE001
+                # a block that ran on an un-calmed map must say so (code review 2026-10-19): recorded, not swallowed
+                self.res.setdefault("site_calm_errors", {})[name] = repr(ex)
         try:
             fn()
         except Exception as ex:  # noqa: BLE001
@@ -657,7 +672,8 @@ class Proof(object):
         reel1, tgt1 = VH.CREEL, VH.CTARGET
         reel2, tgt2 = self.CARRY_REEL2, self.CARRY_TARGET2
         st = {"reel1": list(reel1), "reel2": list(reel2)}
-        B.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % reel2, faction="player", wipeExisting=False)
+        br = B.call("jawa/build_batch", ops="RM_HoseReel:%d,%d" % reel2, faction="player", wipeExisting=False) or {}
+        reel2_built = br.get("success") is not False and (br.get("survived") is None or br.get("survived") >= 1)
         B.ticks(2)
         pawns = [p for p in B.hp("colonists").get("pawns") or [] if not p.get("downed")]
         st["colonists"] = len(pawns)
@@ -682,6 +698,9 @@ class Proof(object):
         h1 = self._hose_by(B.hp("census"), reel1)
         st["reel1_staged"] = {"carry": h1.get("carry"), "seen": seen, "pawn": p1}
         st["p1"] = p1
+        if not reel2_built:
+            st["reel2_staged"] = {"error": "reel 2 was not built (build_batch: %s)" % json.dumps(br, default=str)[:200]}
+            return st
         if len(pawns) < 2:
             st["reel2_staged"] = {"error": "only one free colonist: the CARRYING half cannot be staged"}
             return st
@@ -933,8 +952,8 @@ def main(argv=None):
             pass
         try:
             P.res["site_calm_restore"] = V.site_calm_restore(P.B)
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as ex:  # noqa: BLE001
+            P.res["site_calm_restore"] = "RAISED %r" % ex
         P.checkpoint(final=True)
     summary(P.res)
     return 1 if any(r["status"] in ("FAIL", "UNMEASURED") for r in P.res["rows"]) or P.res.get("aborted") else 0
