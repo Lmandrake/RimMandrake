@@ -128,6 +128,37 @@ mods whose art is not borrowed by our defs beyond what 3.1 copied. Their guarded
   installed: ~92 roster rows / ~1,600 jobs with no single safe destination, 47 destinations whose renders he purged,
   8 owner-kept donor variants inside Random folders.
 
+### 3.5 Regeneration queue for everything still wearing borrowed art (evening, HEAD 4c8371290)
+
+Re-measured with a fresh `biome_census.py` + `texture_regen_audit.py` (probes: korrum 1, bantha 3, anooba 10 jobs):
+roster rows DONOR 99, PLACEHOLDER 4, NO_LIVE 8, VANILLA_BORROWED 1; def view (biome/engine/kit) DONOR 135,
+PLACEHOLDER 23, EXTERNAL 227; twins DONOR 332 (only roster-cast ones targeted). Most adult bodies are already ours after
+the bulk accept; what still wears donor bytes is juveniles, desiccated corpses, swim poses, alternate coats, stand-in
+plant folders, vanilla-path terrain, items and icons. A `bulk_accept_renders.py plan` then had 1 installable render
+(PaleTree_B, a case-twin; refused by the new installer's guard).
+
+- Builder + feeder: `src/RimMandrake/Utils/art/donor_regen_jobs.py`. Job list:
+  `design/RimMandrake/donor_regen_jobs_2026-10-18.json`: **457 defs, 627 rows, 765 job files** (195 creature rows,
+  162 plant, 149 item, 65 terrain, 31 building, 25 icon; 164 rows carry a canon entry, so fill_queue attaches its
+  images, visual brief and `## Must show`). Every row is bound: `install_to` for a file of ours (StandIn/<p> installs at
+  <p>), target_def + target_texpath for a vanilla/donor path. Creatures: east master, south/north derived, canvas
+  drawSize x128 to a power of two (256..1024), true scale stated against a 1-cell vanilla human.
+- Order (priority, lower first): adult creatures of the arid start region (Utinni lands on RUT_ExtremeDesert, tile
+  17007; Stillsand, Leaning Scrub, Long Shade, Wasteland, Blue Desert, Cracked Lands, Pyrelands) 20, their juveniles
+  and swim poses 25, desiccated 28, other creatures 30-38, start-region plants 40, plants 45, terrain 55, buildings 65,
+  items 75, icons 85.
+- Fed in batches capped at **40 job files pending+active**. Batch 1 (15 rows, 38 files, `dregen_RM_Tarruq_Monkey_v1`
+  .. `dregen_RSW_Gorg_Gorgj_v1`) filed 2026-10-18 20:38 PDT; the daemon (pid 387480, -N 5) claimed 5 at once. A
+  transient user timer `rm-donor-regen-feeder.timer` re-runs `donor_regen_jobs.py submit --cap 40` every 10 minutes
+  (gone after a WSL restart: re-arm with the same command, or run `submit` by hand). Submit log:
+  `D:\Luke\dev\_artpipe\_refs\donor_regen_jobs_2026-10-18.submitted.log`.
+- Not queued (gaps, `REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS`): 16 roster rows that cast a donor def with no def of ours
+  (Visceral, LavaSnail, Plant_Fireweed, IronScruff_*, RG_Plant_*, Plant_Ambrosia...; a port comes first), 21 flight
+  flip-book frame sets (never commissioned blind, `flight.md`).
+- Installing what lands: `python3 src/RimMandrake/Utils/art/art_accept_finished.py [--prefix dregen_]` (dry run) then
+  `--apply`. Mechanical installs through the art ledger, `accepted_for_now` provenance; owner-KEPT, rejected and purged
+  destinations are reported, never overridden.
+
 ## 4. What is left, and for whom
 
 | item | what | needs |
@@ -138,4 +169,4 @@ mods whose art is not borrowed by our defs beyond what 3.1 copied. Their guarded
 | `ZRRIK_VAMPIRIC_STAB_REBUILD_OWN_BLOODLUST` | the heal, in our C# | offline |
 | `DONOR_TAIL_MODS_DECIDE_STAY_OR_GO` | the eight tail mods | owner card |
 | re-review | everything bulk-accepted today is provisional: *"We will re review at a later time."* | owner, later |
-| stand-ins | every `StandIn/` picture and every VANILLA row still owes a render of ours | artpipe |
+| stand-ins | every `StandIn/` picture and every VANILLA row still owes a render of ours: queued (3.5), `DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO`, installed by `REGEN_RENDERS_INSTALL_AS_THEY_LAND`, stand-ins retired by `STANDINS_RETIRE_AS_OUR_COATS_ARRIVE` | artpipe, then FOUNDRY offline |
