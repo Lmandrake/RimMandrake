@@ -1,5 +1,5 @@
-// Verse-free small rules of TerminalBiomes: the Sunk hediff rate and scar latch, the wax procession's sheet timer and the
-// veil-fall scheduler. SelfTest/TerminalBiomesFuzz.cs compiles this file alone, so it must stay free of Verse/RimWorld/UnityEngine.
+// Verse-free small rules of TerminalBiomes: the Sunk hediff rate and scar latch, the wax procession's sheet timer, the
+// veil-fall scheduler and the weather plant variant gates. SelfTest/TerminalBiomesFuzz.cs compiles this file alone, so it must stay free of Verse/RimWorld/UnityEngine.
 using System;
 
 namespace RimMandrake.TerminalBiomes
@@ -27,6 +27,13 @@ namespace RimMandrake.TerminalBiomes
             ticksLeft = period;
             return true;
         }
+
+        // Weather plant variant (RM_WeatherPlantGraphic.cs; the brine crown's retraction, picture only): the variant shows
+        // only with the setting on, only where vanilla would have shown the def's own graphic, and only in the trigger weather.
+        public static bool WeatherVariantShows(bool settingOn, bool vanillaIsDefault, bool inTriggerWeather) { return settingOn && vanillaIsDefault && inTriggerWeather; }
+
+        // The section mesh is reprinted once per crossing into or out of a trigger weather, never on the first look.
+        public static bool WeatherVariantRemesh(bool initialised, bool lastTrigger, bool nowTrigger) { return initialised && lastTrigger != nowTrigger; }
 
         // Veil-fall: the first call arms both timers (jittered); afterwards each fires when due and re-arms one interval on.
         public static void VeilStep(ref int nextShed, ref int nextDeck, int now, int interval, Func<int, int> randBelow, out bool shed, out bool deck)

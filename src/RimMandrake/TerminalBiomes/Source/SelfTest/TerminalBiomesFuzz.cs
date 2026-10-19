@@ -4,7 +4,7 @@
 //   channel  RM_ChannelKernel: flow / lane / band grids, cadence, the drift step, the surge grab, the occupant book
 //   crust    RM_CrustKernel: the hull-crust clock, doors, rime and crust, chip rewind
 //   lamp     RM_LampWatchKernel: the grey lamp watch's burn clock and per-lamp latches
-//   misc     RM_TerminalMiscKernel: Sunk rate and scar, the wax procession timer, the veil-fall scheduler
+//   misc     RM_TerminalMiscKernel: Sunk rate and scar, the wax procession timer, the veil-fall scheduler, the weather plant variant gates
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -631,6 +631,25 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                 Check(ticks > -rare * 10 || moving, "the timer ran away");
             }
             Check(fires >= 1, "no sheet in 2000 rare ticks");
+            // weather plant variant: truth table, and a random weather walk remeshes exactly once per crossing
+            for (int m = 0; m < 8; m++)
+            {
+                bool on = (m & 1) != 0, dflt = (m & 2) != 0, inW = (m & 4) != 0;
+                Check(RM_TerminalMiscKernel.WeatherVariantShows(on, dflt, inW) == (on && dflt && inW), "WeatherVariantShows truth table");
+            }
+            {
+                bool init = false, last = false; int remeshes = 0, crossings = 0;
+                for (int t = 0; t < 400; t++)
+                {
+                    Steps++;
+                    bool inW = r.Next(4) == 0;
+                    if (init && inW != last) crossings++;
+                    if (RM_TerminalMiscKernel.WeatherVariantRemesh(init, last, inW)) remeshes++;
+                    last = inW; init = true;
+                }
+                Check(remeshes == crossings, $"weather variant remeshed {remeshes} times for {crossings} crossings");
+                Check(!RM_TerminalMiscKernel.WeatherVariantRemesh(false, false, true), "weather variant remeshed on the first look");
+            }
             // veil: arm, fire, re-arm
             int ns = -1, nd = -1, now = 10000, iv = 2500; int sheds = 0, decks = 0;
             RM_TerminalMiscKernel.VeilStep(ref ns, ref nd, now, iv, n => r.Next(n), out bool s0, out bool d0);

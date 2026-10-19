@@ -236,6 +236,10 @@ namespace RimMandrake.TerminalBiomes
         public static bool GreyLampDrawnActive => GreyActive && greyLampDrawnEnabled;
         public static bool GreyLampWatcherActive => GreyActive && greyLampWatcherEnabled;
         public static bool GreyLampGiantActive => GreyActive && greyLampGiantEnabled;
+        // GREYSEA_FLOOR_PASS_1 (owner card 2026-10-18, "Picture only"): during salt snow the brine crown shows its
+        // pulled-in, spines-only form. Picture only; off: it always shows the open form.
+        public static bool greyCrownRetractionEnabled = true;
+        public static bool GreyCrownRetractionActive => GreyActive && greyCrownRetractionEnabled;
 
         public override void ExposeData()
         {
@@ -296,6 +300,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref hazardClockInspectEnabled, "hazardClockInspectEnabled", true);
             Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
             Scribe_Values.Look(ref greyLampGiantMinRadius, "greyLampGiantMinRadius", 12f);
+            Scribe_Values.Look(ref greyCrownRetractionEnabled, "greyCrownRetractionEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -636,7 +641,7 @@ namespace RimMandrake.TerminalBiomes
                 list.GapLine();
             }
 
-            if (Group(list, "The Grey Sea answers your light (GREYSEA_LAMP_RESPONSE_BUILD_1)", RimMandrake.Shared.SettingScope.Now, new[] { "greyLampDrawnEnabled", "seekGlowDrawnToDeepfire", "greyLampWatcherEnabled", "hazardClockInspectEnabled", "greyLampGiantEnabled", "greyLampGiantBurnHours", "greyLampGiantMinRadius" }))
+            if (Group(list, "The Grey Sea answers your light (GREYSEA_LAMP_RESPONSE_BUILD_1)", RimMandrake.Shared.SettingScope.Now, new[] { "greyLampDrawnEnabled", "seekGlowDrawnToDeepfire", "greyLampWatcherEnabled", "hazardClockInspectEnabled", "greyLampGiantEnabled", "greyLampGiantBurnHours", "greyLampGiantMinRadius", "greyCrownRetractionEnabled" }))
             {
                 list.CheckboxLabeled("Small things drawn to the light", ref greyLampDrawnEnabled,
                     "Litter-pickers, salt crabs and the pink immu come and linger in a lit area. "
@@ -667,6 +672,9 @@ namespace RimMandrake.TerminalBiomes
                         + greyLampGiantMinRadius.ToString("0.0"));
                     greyLampGiantMinRadius = list.Slider(greyLampGiantMinRadius, 9f, 24f);
                 }
+                list.CheckboxLabeled("Brine crowns pull in during salt snow", ref greyCrownRetractionEnabled,
+                    "While salt snow falls, brine crowns draw their membranes in and show only their spines. "
+                  + "Picture only: nothing about the crown changes but its look. Takes effect at the next weather change.");
                 list.GapLine();
             }
 
