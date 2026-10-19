@@ -2609,6 +2609,8 @@ namespace RimMandrake.FlowWorks
 			liquidFire.Tick(map, this);
 			// Own timer, not the pulse: heat is the liquid's presence, so it keeps running with the depth engine off.
 			liquidHeat.Tick(map, this);
+			// SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: natural slime slips too, so this runs even with nothing dug (own timer and switch)
+			RM_SlimeSlip.Tick(map, this);
 			if (excavatedCells.Count > 0)
 			{
 				RM_PitFillEffects.Tick(map, this);

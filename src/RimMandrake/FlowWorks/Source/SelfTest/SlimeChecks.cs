@@ -123,8 +123,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     int want = t.Groups[1].Value == "Trace" ? 200 : t.Groups[1].Value == "Half" ? 300 : 450;
                     Assert(int.Parse(t.Groups[2].Value) == want, t.Value.Substring(0, 40) + " pathCost " + t.Groups[2].Value);
                 }
-                string fx = File.ReadAllText(Path.Combine(root, "Source", "RM_PitFillEffects.cs"));
-                Assert(fx.Contains("RM_SlimeSlip.Tick(map, ex);"), "RM_SlimeSlip is never ticked");
+                string fx = File.ReadAllText(Path.Combine(root, "Source", "RM_MapComponent_Excavation.cs"));
+                Assert(fx.Contains("RM_SlimeSlip.Tick(map, this);"), "RM_SlimeSlip is never ticked");
                 string slip = File.ReadAllText(Path.Combine(root, "Source", "RM_SlimeSlip.cs"));
                 Assert(slip.Contains("MoteMaker.ThrowText") && slip.Contains("StunFor("), "a slip with no visible sign");
                 Assert(slip.Contains("slimeSlipEnabled"), "the slip ignores its Mod Setting");
