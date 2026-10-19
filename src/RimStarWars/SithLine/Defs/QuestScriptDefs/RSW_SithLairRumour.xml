@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §3 — "A lair is found by a rare rumour quest" (owner card 2026-10-09).
+     The shape of vanilla OpportunitySite_ItemStash: auto-accepted, a site on an RM_Abyss tile near a player map (the one
+     custom node, RSW_QuestNode_GetAbyssSiteTile, whose TestRun also enforces the Mod Setting and one open lair at a
+     time), a 25-40 day timeout. rootSelectionWeight and minRefireDays are overwritten from Mod Settings at startup
+     (RSW_SithLineStartup.ApplyLairTuning); the values here are the shipped defaults. The voice is the Abyss cryptid's
+     whisper (UtinniPatches Abyss_CryptidSithWhisper.xml). PROVISIONAL text. -->
+<Defs>
+  <QuestScriptDef>
+    <defName>RSW_SithLairRumour</defName>
+    <rootSelectionWeight>0.15</rootSelectionWeight>
+    <rootMinPoints>400</rootMinPoints>
+    <minRefireDays>120</minRefireDays>
+    <autoAccept>true</autoAccept>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The [sleeper] Below</li>
+        <li>questName->A Whisper from the Abyss</li>
+        <li>sleeper->Sleeper</li>
+        <li>sleeper->Dreamer</li>
+        <li>sleeper->One Who Waits</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Something in the Dark has been whispering. Your people wake with the same words in their mouths: the sleeper below, the black stone coffin, the door that faces south.\n\nThere is a sealed sanctum in the Abyss not far from [map_definite]. A Sith adept lies in it in dark trance, among the devices that feed their sleep, and a Sith keeps their treasures close.\n\nThe trance breaks if the sleeper is struck, if anyone sets foot in the sanctum, or in its own time after you arrive. Strike before it rises and it wakes sick and weakened. It will not surrender, and it will never join you.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_SubScript">
+          <def>Util_RandomizePointsChallengeRating</def>
+          <parms>
+            <pointsFactorTwoStar>1.5</pointsFactorTwoStar>
+            <pointsFactorThreeStar>2</pointsFactorThreeStar>
+          </parms>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="RimMandrake.StarWars.SithLine.RSW_QuestNode_GetAbyssSiteTile">
+          <storeAs>siteTile</storeAs>
+        </li>
+
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>RSW_SithLair</tag>
+            </li>
+          </sitePartsTags>
+        </li>
+
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+        </li>
+
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+
+        <li Class="QuestNode_WorldObjectTimeout">
+          <worldObject>$site</worldObject>
+          <isQuestTimeout>true</isQuestTimeout>
+          <delayTicks>$(randInt(25,40)*60000)</delayTicks>
+          <inSignalDisable>site.MapGenerated</inSignalDisable>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelQuestExpired">Quest expired: [resolvedQuestName]</label>
+                <text TKey="LetterTextQuestExpired">The whispers have stopped. Whatever slept below the Abyss has risen and gone. The quest [resolvedQuestName] has expired.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_NoWorldObject">
+          <worldObject>$site</worldObject>
+          <node Class="QuestNode_End" />
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>

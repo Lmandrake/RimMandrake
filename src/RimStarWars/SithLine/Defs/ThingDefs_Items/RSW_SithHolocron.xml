@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §3/§1.4: the lair's prize. Loot only: market value, no comps, no use.
+     ART: PLACEHOLDER — vanilla Anomaly's golden cube texture tinted blood-red; a Sith holocron (canon: a black-and-red
+     pyramid) is owed through the art ledger. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_SithHolocron</defName>
+    <label>Sith holocron</label>
+    <description>A small pyramid of black crystal that whispers when held. Sith keep their teachings in these; nobody sane listens long. Collectors and certain Imperial offices pay a great deal for one, and ask no questions about where it came from.</description>
+    <graphicData>
+      <texPath>Things/Item/Special/GoldenCube</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(0.55,0.08,0.08)</color>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MarketValue>1500</MarketValue>
+      <Mass>0.5</Mass>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+</Defs>

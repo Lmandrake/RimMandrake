@@ -400,6 +400,12 @@ MODS = {
         "The turn: chewing and guilt": "Now",
         "The creature itself (every gizka)": "Now",
     }, ()),
+    "SithLine": ("RSW_SithLineSettings.cs", "RSW_SithLine.csproj", {
+        "Sith reskin and closed routes": "NextGameStart",
+        "Never one of yours": "Now",
+        "Inquisitors in the Galactic Empire": "Now",
+        "The Abyss lair": "Now",
+    }, ()),
     "Sarlacc": ("RSW_SarlaccSettings.cs", "Sarlacc.csproj", {
         "Stage I to II: rooting in play": "Now",
         "Stage II: the anchored sarlacc's tithe": "Now",
