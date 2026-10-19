@@ -1,6 +1,6 @@
 // Verse-free kernel of the Weather Suite: the great-circle arc from the substellar point, the terminator and nightside band tests (which share
-// one dividing line and never overlap), the maximised-aurora colour channel arithmetic, and the instrument's top-N forecast percentages.
-// WeatherGeometryUtility, GameCondition_DarkAuroraMax and CompForecaster call these with the same expressions;
+// one dividing line and never overlap), and the maximised-aurora colour channel arithmetic.
+// WeatherGeometryUtility and GameCondition_DarkAuroraMax call these with the same expressions;
 // SelfTest/WeatherFuzz.cs compiles this file alone. Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks the
 // self-test build, which is the guard rail).
 using System;
@@ -51,19 +51,6 @@ namespace RimMandrake.StarWars.WeatherSuite
         public static float VanillaChannel(float channel, float vanillaSaturation)
         {
             return (1f + (channel - 1f) * vanillaSaturation) * VanillaBrightness;
-        }
-
-        /// <summary>Top-N share of the whole forecast, as percentages of the total of ALL weights, best first. Weights must be positive.</summary>
-        public static List<KeyValuePair<int, float>> TopShares(IList<float> weights, int n)
-        {
-            var idx = new List<int>();
-            float total = 0f;
-            for (int i = 0; i < weights.Count; i++) { if (weights[i] > 0f) { idx.Add(i); total += weights[i]; } }
-            idx.Sort((a, b) => { int c = weights[b].CompareTo(weights[a]); return c != 0 ? c : a.CompareTo(b); });
-            var res = new List<KeyValuePair<int, float>>();
-            for (int i = 0; i < Math.Min(n, idx.Count); i++)
-                res.Add(new KeyValuePair<int, float>(idx[i], total > 0f ? weights[idx[i]] / total * 100f : 0f));
-            return res;
         }
     }
 }

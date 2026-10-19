@@ -29,12 +29,6 @@ MUTATIONS = [
     ("tint: saturation inverted", "float v = (1f + (channel - 1f) * saturation) * brightness;", "float v = (1f + (channel - 1f) * (1f - saturation)) * brightness;"),
     ("tint: brightness ignored", "float v = (1f + (channel - 1f) * saturation) * brightness;", "float v = (1f + (channel - 1f) * saturation);"),
     ("tint: vanilla brightness 0.9", "VanillaBrightness = 0.73f", "VanillaBrightness = 0.9f"),
-    ("forecast: share over the shown only", "total > 0f ? weights[idx[i]] / total * 100f : 0f", "100f / Math.Max(1, Math.Min(n, idx.Count))"),
-    ("forecast: ascending", "int c = weights[b].CompareTo(weights[a]);", "int c = weights[a].CompareTo(weights[b]);"),
-    ("forecast: ties by reverse index", "return c != 0 ? c : a.CompareTo(b);", "return c != 0 ? c : b.CompareTo(a);"),
-    ("forecast: keeps zero weights", "if (weights[i] > 0f) { idx.Add(i); total += weights[i]; }", "{ idx.Add(i); total += weights[i]; }"),
-    ("forecast: total misses a weight", "total += weights[i]; } }", "} }"),
-    ("forecast: one too many rows", "Math.Min(n, idx.Count)", "Math.Min(n + 1, idx.Count)"),
 ]
 
 if __name__ == "__main__":

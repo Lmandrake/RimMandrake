@@ -7,7 +7,7 @@
   ws-defs       the aurora incident's gameCondition resolves and runs the maximised-aurora class; the incident targets the World (the
                 any-home-map nightside test is only sound for a world-level incident); the front is permanent-capable and off underground
   ws-kernel     the kernel is Verse-free and listed in the csproj; the slider floors in the settings window equal the kernel's vanilla constants
-                (so the vanilla floor is reachable but the sliders never promise less); no hand copy of the arc, the tint or the forecast sort survives
+                (so the vanilla floor is reachable but the sliders never promise less); no hand copy of the arc or the tint survives
 
     python3 src/RimMandrake/Utils/lint_weathersuite_defs.py [--quiet] [--mod-dir D] [--geometry-dir D]
 """
@@ -110,7 +110,7 @@ def main(argv):
     if "Kernel\\RM_WeatherKernel.cs" not in read(os.path.join(src, "WeatherSuiteHook.csproj")):
         E("ws-kernel", "WeatherSuiteHook.csproj does not compile Kernel\\RM_WeatherKernel.cs (EnableDefaultCompileItems is false: it compiles into nothing)")
     hook = "\n".join(l for l in read(os.path.join(src, "WeatherSuiteHook.cs")).splitlines() if not l.strip().startswith("//"))
-    for pat, what in ((r"Mathf\.Acos", "a hand copy of the arc"), (r"Color\.Lerp\(Color\.white", "a hand copy of the tint"), (r"weighted\.Sort", "a hand copy of the forecast sort")):
+    for pat, what in ((r"Mathf\.Acos", "a hand copy of the arc"), (r"Color\.Lerp\(Color\.white", "a hand copy of the tint")):
         if re.search(pat, hook):
             E("ws-kernel", f"{what} survives in WeatherSuiteHook.cs beside the kernel")
     set_txt = read(os.path.join(src, "WeatherSuiteSettings.cs"))

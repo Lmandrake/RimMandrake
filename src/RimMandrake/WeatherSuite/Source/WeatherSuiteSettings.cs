@@ -20,10 +20,6 @@ namespace RimMandrake.StarWars.WeatherSuite
     //   3. Maximized aurora brightness — GameCondition_DarkAuroraMax's
     //      override of vanilla's hardcoded-private aurora colour/brightness.
     //
-    // The forecaster instrument (CompForecaster) is a passive inspect-string
-    // reader with no tunable number and nothing to turn off that isn't
-    // already "don't build the building" — not duplicated here.
-    //
     // Precedent: src/RimMandrake/Greentide/Source/RM_GreentideMod.cs.
     // ════════════════════════════════════════════════════════════════════
     public class WeatherSuiteSettings : ModSettings

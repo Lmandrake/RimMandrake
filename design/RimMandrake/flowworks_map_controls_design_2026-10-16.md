@@ -29,7 +29,7 @@ keeps doing its job.** That gap is what Source and Sink fill, and what the list 
 | Review map "frozen staging" through proof surfaces | stations held still for review | frozen for looking, not running |
 | FloodedCanyon flood (`RM_MapComponent_CanyonFlood.cs`) + debug actions (arm, start now, recede, report) | the whole-map canyon flood cycle | map-wide and biome-gated (`map.Biome == RM_FloodedCanyon` or a settings switch); nothing aims it at a canal, which is why review-map station 11 failed |
 | ExplosiveGrowth soak (`RM_SoakSources.cs`, `ExplosiveGrowthAPI.Soak`) + debug "Soak 5x5 here" | soak from flood and irrigated dug cells | one-click; no standing soak zone |
-| WeatherSuite (`RM_WeatherKernel`, game conditions, `RM_WS_WeatherInstrument`) | map-wide weather/conditions, an instrument readout | weather is map-wide in vanilla; no local zone |
+| WeatherSuite (`RM_WeatherKernel`, game conditions) | map-wide weather/conditions | weather is map-wide in vanilla; no local zone |
 | RiverWorks folder | empty shell (only `__pycache__`); river work lives in FlowWorks `Rivers/` | nothing to reuse there |
 | **Inhabited** (`src/RimMandrake/Inhabited`, design `design/Jawa/bridge/INHABITED_DESIGN.md`) | PLACE / CAST / ROUTE / FATE: hand-made places on world tiles (`Templates/*.txt`, e.g. `deepwater_cistern_hall`, `deepwater_hydroponics_bay`; PlaceDef `RM_InhabitedPlace_WaterHold`) with a persistent cast living a daily route | its water places are static terrain: a "water hold" holds water only as paint; nothing keeps a cistern full, runs a fountain, or drains a bath on a schedule |
 

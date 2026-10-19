@@ -40,7 +40,7 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | dark-auroras | v1 | Beautiful, and use the Aurora graphic effect but maximized in brightness and color. It should be awesome! |
 | spore-blooms | v2→**v1** | Yes! Awesome. Also poisons wildlife providing a lot of free meat. Hiding indoors helps a lot. |
 | ~~mirage-events~~ | ⛔ **CUT** (was dream) | doesn't add much |
-| forecasting-ladder | v1 | Mm... just have one or maybe two tiers only. But I do like this. The first one might just give advanced warning. The second allows them to be seen on the main map to give you more choice in the matter. |
+| ~~forecasting-ladder~~ | ⛔ **CUT** by owner card 2026-10-19 (was v1); only Tier 0 folk signs remain (§8) | (verbatim in the frozen source above) |
 
 ## 1. Terminator storms — the permanent front you fly through, not around
 
@@ -180,8 +180,7 @@ fuel bonus (tailwind); during the reverse phase, the return trip does. **Sail-
 craft implications**, taken literally: a Jawa scavenger clan hauling bulk salvage
 over land across the near-desert could run wind-assisted ground rigs (a light,
 cheap, wind-dependent hauling method) that are only worth building once a player
-has learned the tide's rhythm — which is the entire point of forecasting (§8)
-existing as a tech ladder rather than a single gauge.
+has learned the tide's rhythm.
 
 **Opportunity + cost.** A player who tracks the tide can time a launch for the
 tailwind phase and save real fuel/time; a player who doesn't gets ordinary
@@ -293,7 +292,7 @@ triggered on extreme heat + clear sky:
   Oracle calls
 - **opportunity:** a player who learns to read mirage conditions (extreme heat +
   clear = high mirage chance) can discount reports made during one, which is a
-  real skill the forecasting ladder (§8) can eventually name explicitly
+  real skill
 
 **Cost.** Wasted movement, wasted caravan time, occasional real heat exposure
 from chasing a false lead — never damage from the mirage itself, since a mirage
@@ -310,32 +309,15 @@ event schema once that lands, rather than guessing its shape here.
 
 ---
 
-## 8. Forecasting as wealth — a tech ladder for a world that punishes ignorance
-
-**The frame.** On most RimWorld deserts, weather is an inconvenience. On this
-one — where a mistimed dayside crossing meets +70 °C and a mistimed nightside
-exposure meets −80 °C, where the pressure tide (§4) determines whether a gravship
-launch spends or saves fuel, and where the terminator front (§1) is a mandatory
-crossing rather than an avoidable one — **knowing the sky in advance is a
-resource as real as water**, which is exactly the frame `rimworld_weather_mod_
-concepts.md` §4 already argues in the abstract. Here it is made specific to this
-planet's own systems rather than a generic hurricane-tracking ladder.
+## 8. Folk signs — the only forecasting kept
 
 | tier | building | what it reads | this world's specific payoff |
 |---|---|---|---|
 | 0 — folk signs | none — observation only | animal behavior, sky color, static crackle | "the crackle means a static season is starting" — free, always available, imprecise |
-| 1 — instruments | thermometer, barometer, anemometer, a grounding-mast tap | local temperature, pressure trend, wind | crude static-season and terminator-proximity warning; the FIRST thing worth building on a terminator-band settlement |
-| 2 — weather station | powered building | short-term local forecast, tide-phase reading | **this is the tier that reads the pressure tide (§4) directly** — the first building that turns "wind you can set a calendar by" into an actual calendar the player can consult |
-| 3 — radar-analog (a grounding-mast array, tuned to the terminator's own electrical activity rather than rainfall) | regional storm/front detection | tracks the terminator front's (§1) local bulge/recession and gives real arrival windows for glass storms (§2) | the building that makes gravship launch timing (§1, §4) a planned decision instead of a gamble |
-| 4 — orbital/high-altitude meteorology | full-world weather layer (gravship-borne, since there is no satellite infrastructure to inherit) | pressure-tide phase across the whole planet, static-season buildup regionally, aurora prediction (§5) | the tier that turns weather from a local nuisance into the strategic layer the research doc's §1 always wanted — and on this planet, the payoff is bigger, because the whole economy (fuel timing, wind power, static protection) reads off it |
 
-**Design discipline:** forecasts stay imperfect at every tier below 4, per
-research §4's own rule — a Tier-1 reading might say "static building, glass storm
-possible in the next few days" where Tier-4 says "static discharge in
-11.5 ± 2 hours." **The imprecision is content, not a bug to fix with a bigger
-number** — it's what keeps Tier 0's free folk-sign reading relevant even after
-Tier 4 exists (a player caught away from the weather station still has the
-animals and the crackle).
+The rest of the ladder (Tier 1 instrument mast, Tier 2 weather station, Tier 3
+radar-analog, Tier 4 orbital layer, and the "seen on the main map" tier) was CUT
+PERMANENTLY by owner card 2026-10-19; its history is in git.
 
 ---
 
@@ -345,23 +327,18 @@ animals and the crackle).
 — this is nearly free once the arc-distance test exists, and it is the single
 system that makes the tidally-locked geometry a felt mechanic rather than a
 worldbuilding fact. Dark-side auroras (§5) — zero-cost, high-charm, almost no C#.
-Tier 0–1 forecasting (§8) — folk signs plus the instrument building, which every
-other v1/v2 system needs a reader for anyway.
+Tier 0 folk signs (§8).
 
 **v2.** Glass storms (§2). Static seasons (§3),
 without the Droidworks coherence-need tie initially — ship the human-facing
 shock/battery-drain layer first, add the droid disruption once the
 `ArtificialBeings` hook is spiked and confirmed clean. Spore blooms (§6), reusing
 the fire doc's wind-plume transport mechanism wholesale rather than writing a
-second one. Tier 2–3 forecasting (§8) — the weather station and the terminator-
-tuned radar-analog, which turn §1/§2/§3/§4 from things that happen TO the player
-into things the player plans around.
+second one.
 
 **Dream.** The great pressure tides (§4) as a full world-scale oscillator with
 wind-assisted ground rigs and gravship tailwind timing built on top of it. Mirage
 events (§7) wired into the mature perception fabric once `PROPERTY_FABRIC_BUILD_1`
 and the Inhabited rumor pipeline (see the sibling `llm_driven_mods_deep_design.md`
 §4) are both live, so a phantom-caravan sighting can genuinely propagate through
-the same knowledge-and-gossip machinery a real witnessed event uses. Tier 4
-orbital-analog forecasting (§8), gravship-borne, closing the loop on every system
-above with a single strategic weather layer.
+the same knowledge-and-gossip machinery a real witnessed event uses.

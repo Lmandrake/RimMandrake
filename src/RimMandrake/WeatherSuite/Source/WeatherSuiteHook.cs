@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -310,107 +309,6 @@ namespace RimMandrake.StarWars.WeatherSuite
                     return true;
             }
             return false;
-        }
-    }
-
-    public class CompProperties_Forecaster : CompProperties
-    {
-        public CompProperties_Forecaster()
-        {
-            compClass = typeof(CompForecaster);
-        }
-    }
-
-    // Tier 0-1 forecast instrument. CompInspectStringExtra() is called on
-    // hover/selection, not per-tick, and ComputeCommonality() never touches
-    // Rand — it replicates WeatherDecider.CurrentWeatherCommonality's public
-    // surface read-only, so it can never desync the real weather roll it is
-    // reporting on. It is deliberately imprecise where the private
-    // ticksWhenRainAllowedAgain gate would matter (that field is not
-    // reachable from outside WeatherDecider) — exactly the Tier-1 "crude,
-    // imprecise" register the design doc asks for, not a Tier-4 guarantee.
-    public class CompForecaster : ThingComp
-    {
-        public override string CompInspectStringExtra()
-        {
-            if (!parent.Spawned) return null;
-            Map map = parent.Map;
-            if (map?.weatherManager == null || map.Biome?.baseWeatherCommonalities == null) return null;
-
-            WeatherDef forced = ForcedWeatherOn(map);
-            if (forced != null)
-            {
-                return "Instrument reading: front-forced weather incoming — " + forced.label + ".";
-            }
-
-            var weathers = new List<WeatherDef>();
-            var weights = new List<float>();
-            foreach (WeatherDef w in DefDatabase<WeatherDef>.AllDefsListForReading)
-            {
-                float c = ComputeCommonality(w, map);
-                if (c > 0f) { weathers.Add(w); weights.Add(c); }
-            }
-            if (weathers.Count == 0) return "Instrument reading: no clear signal.";
-
-            StringBuilder sb = new StringBuilder("Instrument reading — likely next: ");
-            List<KeyValuePair<int, float>> top = RM_WeatherKernel.TopShares(weights, 2);
-            for (int i = 0; i < top.Count; i++)
-            {
-                if (i > 0) sb.Append(", then ");
-                sb.Append(weathers[top[i].Key].label).Append(" (~").Append(top[i].Value.ToString("F0")).Append("%)");
-            }
-            return sb.ToString();
-        }
-
-        private static WeatherDef ForcedWeatherOn(Map map)
-        {
-            WeatherDef result = null;
-            foreach (GameCondition cond in map.gameConditionManager.ActiveConditions)
-            {
-                WeatherDef fw = cond.ForcedWeather();
-                if (fw != null) result = fw;
-            }
-            return result;
-        }
-
-        // Deliberate near-copy of WeatherDecider.CurrentWeatherCommonality
-        // (RimSage, WeatherDecider.cs) using only its PUBLIC surface — see
-        // this class's own header for the one gate it cannot see.
-        private static float ComputeCommonality(WeatherDef weather, Map map)
-        {
-            if (map.weatherManager.curWeather != null && !weather.repeatable
-                && weather == map.weatherManager.curWeather)
-                return 0f;
-            if (!weather.temperatureRange.Includes(map.mapTemperature.OutdoorTemp))
-                return 0f;
-            if ((int)weather.favorability < 2 && GenDate.DaysPassedSinceSettle < 8)
-                return 0f;
-            if (weather.rainRate > 0.1f
-                && map.gameConditionManager.ActiveConditions.Any(x => x.def.preventRain))
-                return 0f;
-            if (ModsConfig.AnomalyActive && weather.minMonolithLevel > Find.Anomaly.HighestLevelReached
-                && (!weather.canOccurInAmbientHorror || !Find.Anomaly.AmbientHorrorMode))
-                return 0f;
-
-            BiomeDef biome = map.Biome;
-            float commonality = 0f;
-            for (int i = 0; i < biome.baseWeatherCommonalities.Count; i++)
-            {
-                WeatherCommonalityRecord rec = biome.baseWeatherCommonalities[i];
-                if (rec.weather != weather) continue;
-                float c = rec.commonality;
-                if (map.fireWatcher.LargeFireDangerPresent && weather.rainRate > 0.1f) c *= 15f;
-                if (rec.weather.commonalityRainfallFactor != null)
-                    c *= rec.weather.commonalityRainfallFactor.Evaluate(map.TileInfo.rainfall);
-                foreach (GameCondition cond in map.gameConditionManager.ActiveConditions)
-                    c *= cond.WeatherCommonalityFactor(weather, map);
-                commonality = c;
-                break;
-            }
-            PlanetTile tile = map.Tile;
-            for (int i = 0; i < map.TileInfo.Mutators.Count; i++)
-                map.TileInfo.Mutators[i].Worker?.MutateWeatherCommonalityFor(weather, tile, ref commonality);
-            return commonality;
         }
     }
 }
