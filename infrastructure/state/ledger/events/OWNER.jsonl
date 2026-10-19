@@ -1230,3 +1230,14 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed","ts":"2026-10-19T07:20:56Z","tsn":1792394456680158484}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launch flowworks_hugethings (+VEF core)","ts":"2026-10-19T07:21:10Z","tsn":1792394470188669910}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"tier up","ts":"2026-10-19T07:22:31Z","tsn":1792394551992528096}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"HugeThings block skipped (TheRot); back to flowworks tier for reruns","ts":"2026-10-19T07:59:59Z","tsn":1792396799612344294}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed","ts":"2026-10-19T08:00:05Z","tsn":1792396805966347588}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH relaunch flowworks tier for reruns","ts":"2026-10-19T08:00:19Z","tsn":1792396819888774368}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"flowworks tier up","ts":"2026-10-19T08:02:02Z","tsn":1792396922972366590}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"reruns done; swapping to fw_gss_sitting for thirst T15/T16/T27","ts":"2026-10-19T08:11:33Z","tsn":1792397493345593296}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed","ts":"2026-10-19T08:11:40Z","tsn":1792397500023115791}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launch fw_gss_sitting","ts":"2026-10-19T08:11:52Z","tsn":1792397512295191759}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"fw_gss_sitting up","ts":"2026-10-19T08:13:08Z","tsn":1792397588958109053}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"sitting done; restoring FULL for the world repair","ts":"2026-10-19T08:14:33Z","tsn":1792397673700178819}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"closed","ts":"2026-10-19T08:14:40Z","tsn":1792397680209868271}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH cold-load FULL for the world-map repair (coordinator; owner approved via WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES note)","ts":"2026-10-19T08:14:57Z","tsn":1792397697664650946}
