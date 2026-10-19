@@ -166,7 +166,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>StandIn/Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
           <color>(90,50,50)</color>
@@ -178,7 +178,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>StandIn/Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
           <color>(90,50,50)</color>
@@ -190,7 +190,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>StandIn/Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
           <color>(90,50,50)</color>
