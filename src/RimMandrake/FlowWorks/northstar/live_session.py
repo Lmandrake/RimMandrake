@@ -365,12 +365,18 @@ class Session(object):
         self.snap_before = {}
         self.pawns = {}
         self.ride_stop = False
+        self.site_bad = {}          # zone -> [why]: a site that did not read back clear, or a dig that missed its depth
 
     # ---- output
     def say(self, s):
         print(s, flush=True)
 
     def row(self, rid, item, cid, status, cls, detail, block, eyes=False):
+        zone = zone_of_row(rid)
+        if zone and self.site_bad.get(zone) and status in ("PASS", "FAIL"):
+            # a verdict read on a site that never read back clear (or was dug to the wrong depth) is no verdict
+            detail = dict(detail, statusIfSiteReady=status, siteNotReady=self.site_bad[zone][:6])
+            status, cls = "UNMEASURED", "SITE"
         r = dict(id=rid, item=item, criterion=cid, status=status, cls=cls, detail=detail, block=block, eyes=eyes)
         self.rows.append(r)
         self.say("  %-34s %-10s %-7s %s %s" % (rid, status, cls, "%s %s" % (item[:34], cid), json.dumps(detail, default=str)[:160]))
@@ -420,15 +426,30 @@ class Session(object):
             feed_colonists(self)
         r = self.call("jawa/safe_advance", action="start", ticks=int(n), frameBudgetMs=float(self.args.frame_budget_ms),
                       timeoutMs=max(60000, int(n) * 100))
-        if not r.get("success"):
-            self.w.ticks(n)
+        rem = advance_remainder(r, n)
+        if rem and r.get("state") == "running":     # still stepping after timeoutMs: stop it before stepping ourselves
+            self.call("jawa/safe_advance", action="cancel")
+            st = (self.call("jawa/safe_advance", action="status") or {}).get("advance") or {}
+            rem = advance_remainder(dict(st, success=False), n)
+        if rem > 0:
+            # a stopped (latch) or refused advance stepped `executed` of n: only the REST goes through Walk.ticks (the
+            # old fallback re-advanced all n on top of a partial run)
+            self.w.ticks(rem)
 
     def spawn(self, kind, c, faction="player"):
         r = self.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1)
         return ((r.get("pawns") or [{}])[0]).get("id")
 
     def dig(self, c, n, fill=-1):
-        return self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill)
+        """One excavation_drive; the reply is READ: a refused drive or a depth other than n (every staged cell starts at 0
+        after clear_zone's ProofResetRect) marks the zone holding c not ready, so its rows read UNMEASURED/SITE."""
+        r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill)
+        bad = dig_miss(r, n) if not self.mock else None
+        if bad:
+            z = zone_at(self.zones, c)
+            if z:
+                self.site_bad.setdefault(z, []).append("dig %d,%d: %s" % (c[0], c[1], bad))
+        return r
 
     def pit(self, sw, w, h, notches, fill=-1):
         for i in range(w):
@@ -472,6 +493,67 @@ def fnum(v):
         return float(v)
     except (TypeError, ValueError):
         return None
+
+
+# row id prefix -> the zone its verdict was read on (Session.row demotes a verdict on a zone that is not ready)
+ROW_ZONE = (("B2_tank", "tanks"), ("B2_readout", "readout"), ("B4_cover", "covers"), ("B4_access", "access"),
+            ("B4_dig", "digdepth"), ("B4_reservoir", "reservoir"), ("B4_grenade", "grenade"), ("B4_rail", "raillip"),
+            ("B4_dehydration", "ride"), ("B5_", "ice"), ("B6_", "flood"), ("B9_props", "props"))
+
+
+def zone_of_row(rid):
+    return next((z for p, z in ROW_ZONE if str(rid).startswith(p)), None)
+
+
+def zone_at(zones, c):
+    """The staged zone holding cell c (shared and event zones only: the serial sites are their scripts' own)."""
+    for n in SHARED + ("tanks",):
+        if n in zones:
+            x, z, w, h = zones[n]
+            if x <= c[0] < x + w and z <= c[1] < z + h:
+                return n
+    return None
+
+
+def dig_miss(r, n):
+    """None when an excavation_drive reply says the cell is at depth n; else why not (refused, or another depth: a cell
+    that was not reset, or the dig ceiling / max-dig setting clamped it). A reply with no depth field is not judged."""
+    if not isinstance(r, dict) or r.get("success") is not True:
+        return "drive refused: %s" % str((r or {}).get("error") or (r or {}).get("message") or r)[:100]
+    if n and "depth" in r and fnum(r.get("depth")) != float(n):
+        return "depth %s after the drive, wanted %d" % (r.get("depth"), n)
+    return None
+
+
+def advance_remainder(r, n):
+    """Ticks still owed after a jawa/safe_advance reply: 0 when it finished; n - executed when it stopped (vitals latch),
+    was refused (executed absent = 0) or is still running."""
+    if r.get("success") is True:
+        return 0
+    done = int(fnum(r.get("executed")) or 0)
+    return max(0, int(n) - done)
+
+
+def clear_zone(s, name):
+    """Reset a zone (ProofResetRect: old digs filled back in, rolled depths forgotten) and prepare it (validation_core
+    prepare_site: no things, Soil, no roof, unfogged, READ BACK). Anything left over is recorded in s.site_bad[name], so
+    every row read on that zone is UNMEASURED/SITE rather than a mod verdict (the old code ignored clear_site's answer,
+    and prepare_site's own SITE rows went to the Walk, never into session.json)."""
+    s.site_bad.pop(name, None)
+    if s.mock:
+        return True
+    rect = s.zones[name]
+    why = []
+    ok, txt = s.w.proof(NSP, "ProofResetRect", "%d;%d;%d;%d" % rect)
+    if not ok or kvparse(txt).get("left", "0") != "0":
+        why.append("ProofResetRect: %s" % txt[:120])
+    site_rows = []
+    if not s.w.V.prepare_site(s.w.B, rect, site_rows, "site_%s" % name):
+        why += [str(r.get("detail") or r)[:160] for r in site_rows if r.get("status") != "PASS"] or ["prepare_site: not ready"]
+    if why:
+        s.site_bad[name] = why
+        s.notes.append("zone %s not ready: %s" % (name, why))
+    return not why
 
 
 def hediffs(snap):
@@ -621,6 +703,7 @@ def b2_tank_tall(s):
     ProofTank Store; the stored units read back. A reply that stores everything offered (no clamp) cannot answer."""
     x, z, _w, _h = s.zones["tanks"]
     import fw_walk_common as FC
+    clear_zone(s, "tanks")          # B2 runs before B4's clears: the tanks were placed on uncleared quicktest ground
     a = FC.place(s.w, "RM_LiquidTank", (x + 1, z + 1)) if not s.mock else dict(survived=True)
     b = FC.place(s.w, "RM_LiquidTankTall", (x + 6, z + 1)) if not s.mock else dict(survived=True)
     offer = 10 ** 7
@@ -650,8 +733,7 @@ def b2_readouts(s):
     rect = s.zones["readout"]
     x, z, _w, _h = rect
     W = s.size[0]
-    if not s.mock:
-        s.w.clear_site(rect)
+    clear_zone(s, "readout")
     dry, canal, pond, ground = (x + 1, z + 1), [(x + 3 + i, z + 1) for i in range(5)], (x + 10, z + 1), (x + 1, z + 4)
     s.dig(dry, 2)
     for c in canal:
@@ -737,7 +819,13 @@ def g_cover_tiers(s):
             if pid is None:
                 break
             pids.append(pid)
-            s.call("jawa/set_draft", pawnId=pid)
+            # set_draft with no `drafted` changes NOTHING: the colonists stayed undrafted and wandered off the deck between
+            # reads (live rerun 20261019T010244: 120 "held" 121.0 kg, 220 "held" 244.3 kg with depths 4 -> 0 and all six
+            # covers standing; PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON). Draft, and read the draft back.
+            dr = s.call("jawa/set_draft", pawnId=pid, drafted=True)
+            if not s.mock and dr.get("drafted") is not True:
+                trail.append(dict(n=n + 1, drafted="UNREAD", note=str(dr.get("message") or dr.get("error") or "")[:120]))
+                break
             ms = s.call("jawa/pawn_stats", pawn=pid, stats="Mass")
             m = None
             for st in ms.get("stats") or []:
@@ -748,7 +836,14 @@ def g_cover_tiers(s):
                 break
             total += m
             yield Wait(70)                          # the trigger scans the deck every 30 ticks
-            down = [(s.climb(p) or {}).get("depth") for p in pids]
+            reads = [s.climb(p) or {} for p in pids]
+            down = [r.get("depth") for r in reads]
+            # every pawn must still stand on (or have fallen through) its deck cell, or the load the row sums is not the
+            # load on the deck: a pawn found elsewhere makes the row UNMEASURED, never "held"
+            off = [] if s.mock else [r.get("cell") for r in reads if tuple(r.get("cell") or ()) not in deck]
+            if off:
+                trail.append(dict(n=n + 1, total=round(total, 1), depths=down, off_deck=off))
+                break
             # "gave way" is read off the COVER, never ProofClimb's depth: that is the cell's dug depth (ProofPocket ->
             # ClimbDepthAt, deck-blind), 4 under a colonist on an INTACT cover too (live 2026-10-19 run 20261018T233414:
             # 120/220 "gave way" under one ~60 kg colonist; PIT_COVER_DIAGNOSE_GIVES_WAY_TOO_SOON). A deck gives way whole.
@@ -767,7 +862,8 @@ def g_cover_tiers(s):
             if total >= rating:
                 dropped_over = fell
                 break
-        if any(t.get("mass") == "UNREAD" or t.get("covers_left") == "UNREAD" for t in trail):
+        if any(t.get("mass") == "UNREAD" or t.get("covers_left") == "UNREAD" or t.get("drafted") == "UNREAD" or t.get("off_deck")
+               for t in trail):
             st = "UNMEASURED"
         elif not held_under:          # gave way UNDER its rating: an answer, and the wrong one (was read as UNMEASURED)
             st = "FAIL"
@@ -1031,8 +1127,7 @@ SHARED_GENS = (("covers", g_cover_tiers), ("access", g_pit_access), ("digdepth",
 
 def b4_shared(s):
     for n in SHARED:
-        if not s.mock:
-            s.w.clear_site(s.zones[n])
+        clear_zone(s, n)
     s.ride_stop = False
     gens = {n: f(s) for n, f in SHARED_GENS}
     gens["ride"] = g_dehydration_ride(s)
@@ -1113,8 +1208,7 @@ def b5_cold_snap(s):
     x, z, _w, _h = rect
     canals = [[(x + 1 + i, z + 1 + 2 * r) for i in range(14)] for r in range(4)]   # z+1,3,5,7: a dry row between
     canal = canals[0]
-    if not s.mock:
-        s.w.clear_site(rect)
+    clear_zone(s, "ice")
     for row_ in canals:
         for c in row_:
             s.dig(c, 1, 1)
@@ -1178,8 +1272,7 @@ def b6_flood(s):
     recede 2000+ ticks later; recession polled; the canal's cells compared before/after (flood_verdict)."""
     rect = s.zones["flood"]
     x, z, _w, _h = rect
-    if not s.mock:
-        s.w.clear_site(rect)
+    clear_zone(s, "flood")
     canal = [(x + 2 + i, z + 4) for i in range(12)]
     for c in canal:
         s.dig(c, 2, 1)
@@ -1291,8 +1384,7 @@ def b9_owner(s):
     hoses, shoots, saves ONE save), after the pit-access props he must see in situ are staged east of it."""
     x, z, _w, _h = s.zones["props"]
     import fw_walk_common as FC
-    if not s.mock:
-        s.w.clear_site(s.zones["props"])
+    clear_zone(s, "props")
     s.pit((x + 1, z + 1), 3, 3, 4)
     s.pit((x + 8, z + 1), 3, 3, 1)
     if not s.mock:
