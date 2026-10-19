@@ -173,7 +173,9 @@ TIERS = {
                "on sarg.alphabiomes -- this tier therefore CANNOT carry the flowworks tier's Alpha Biomes forbid, "
                "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
                "guards stay (stale pits, ManyWaters, Invisible Conduit Continued for the GSS rows).",
-        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes"],
+        # VEF core named explicitly: insectoid2 (retired 2026-10-18) used to drag it in, and without it the composed
+        # Biomes loses VEF comps/extensions and quicktest map generation NREs (live 2026-10-19, flowworks_hugethings)
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "oskarpotocki.vanillafactionsexpanded.core"],
         # ExplosiveGrowth is composed in mandrake.rm.biomes (EXPLOSIVE_GROWTH_MERGE_COMES_HOME); its old standalone
         # packageId would load it twice.
         "forbid": ["mandrake.rm.pits", "glitchgoblin.invisibleconduitcont", "mandrake.rm.explosivegrowth"],
@@ -677,7 +679,9 @@ TIERS["flowworks_hugethings"] = {
            "RM_Oommok come from mandrake.rm.biomes) and Large Pawns (2x2 to 4x4 footprints, so the squeeze exception is exercised); "
            "the vanilla Elephant is the B 2 creature. Same FlowWorks guards as the `flowworks` tier, so a FlowWorks run here records "
            "as flowworks_hugethings, never flowworks-minimal.",
-    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.hugethings", "mandrake.rm.biomes", "neku.largepawns"],
+    # VEF core: see fw_gss_sitting (Biomes needs it since insectoid2 retired; live 2026-10-19 map gen NRE'd without it)
+    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.hugethings", "mandrake.rm.biomes", "neku.largepawns",
+             "oskarpotocki.vanillafactionsexpanded.core"],
     "forbid": ["mandrake.rm.pits"],
     "forbid_substr": ["manywaters"],
     "dlc": True,
