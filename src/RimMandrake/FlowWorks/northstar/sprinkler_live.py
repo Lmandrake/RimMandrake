@@ -3,6 +3,8 @@ the first live driver for them, written on the 2026-10-17 review walk. Rows {id,
 UNMEASURED.
 
   python.exe src/RimMandrake/FlowWorks/northstar/sprinkler_live.py [out.json] [--only draws,dries,...] [--origin X,Z]
+  python3    src/RimMandrake/FlowWorks/northstar/sprinkler_live.py --dry-run [--only ...]   plan only, no bridge
+(No --mock here: a faithful pump/pipe/tank net model is a separate job; thirst_live.py --mock has one for the thirst rows.)
 
 Bridge held, a Playing disposable map (the calm test site). Settings flipped are restored in a finally.
 
@@ -45,9 +47,20 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--only", default="")
+    ap.add_argument("--dry-run", action="store_true", help="print the plan and exit; no bridge")
     ap.add_argument("--origin", default="120,140", help="first net's tank corner; nets are 14 cells apart in z")
     a = ap.parse_args(argv)
     only = [x.strip().lower() for x in a.only.split(",") if x.strip()]
+    if a.dry_run:
+        keys = ("draws", "pressure", "switch", "dries", "thick", "walls", "brine", "effects", "reserve")
+        bad = [o for o in only if o not in keys]
+        print("sprinkler_live plan (dry run, no bridge): first net at %s, nets 14 cells apart in z" % a.origin)
+        for k in keys:
+            print("  %-9s %s" % (k, "RUN" if not only or k in only else "skip"))
+        if bad:
+            print("  UNKNOWN --only keys: %s" % bad)
+            return 2
+        return 0
     import validation_hose as VH
     B = VH.H()
     OX, OZ = map(int, a.origin.split(","))
