@@ -21,8 +21,8 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
 Then: kill hostiles, Clear weather locked, stepped toward midday, camera framed, shots, ONE save.
 
 Every action goes through Stage: --dry-run prints exactly the calls a live run would make.
-Bridge tools used (all found in the repo): jawa/flowworks_excavation_drive, jawa/build_batch, jawa/static_call (ProofLadder, ProofTank,
-ProofReadout, ProofResetRect), jawa/list_things, jawa/gss_stage, jawa/kill_hostiles, jawa/weather_set, jawa/time_clock,
+Bridge tools used (all found in the repo): jawa/flowworks_excavation_drive, jawa/build_batch, jawa/battery_set, jawa/static_call (ProofLadder, ProofTank,
+ProofReadout, ProofResetRect), jawa/list_things, jawa/kill_hostiles, jawa/weather_set, jawa/time_clock,
 jawa/clear_ui, jawa/take_screenshot, rimworld/frame_cell_rect, rimworld/save_game, rimworld/click_cell, rimworld/execute_gizmo.
 """
 import argparse
@@ -194,11 +194,21 @@ def row_shallows(s, L):
                 s.fill((pit[0] + i, pit[1] + j), notches)
         cap.append("%s m: pit %d deep, %d notches" % (metres, notches, notches))
         x += 5
-    s.ticks(300)           # let the 0.2 m strip level
-    if not s.dry:
-        for c in strip[:5]:
+    # The exact-level solver grows a body's dry rim ONE square per flow pulse (RM_FlowKernel.ExactDomain adds a dry square
+    # only beside a wet one), so 2 notches in squares 0-1 read 0.33/0.33/0.33/0/0 after one pulse and level at 0.2 m after
+    # three (measured live 2026-10-18). The 2026-10-18 run read after 300 ticks = one pulse and reported a false unlevel.
+    pulses = len(strip) + 2
+    if s.dry:
+        s.ticks(250 * pulses)
+    else:
+        s.ticks(s.w.interval() * pulses)
+        got = []
+        for c in strip:
             rd = s.w.readout(c)
+            got.append(None if rd is None else rd.get("dl"))
             s.notes.append("0.2 m strip %s readout %s" % (c, rd))
+        if None in got or len(set(got)) != 1:
+            s.notes.append("0.2 m strip NOT LEVEL after %d pulses: dl %s" % (pulses, got))
     return cap
 
 
@@ -216,12 +226,18 @@ def row_sprinklers(s, L):
         s.place("PowerConduit", (ox + 3, oz - 1))
         s.place("PowerConduit", (ox + 3, oz - 2))
         s.place("Battery", (ox + 3, oz - 4))
-        s.say("  gss_stage charge battery at %s" % ((ox + 3, oz - 4),))
+        s.say("  battery_set charge battery at %s to 100%%" % ((ox + 3, oz - 4),))
         s.say("  fill tank %s with RM_Liquid_FreshWater 100000 dL (ProofTank)" % ((ox, oz),))
         s.say("  Choose style %s on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)" % look)
         if not s.dry:
             import objects_sheet as O
-            s.w.call("jawa/gss_stage", ops="kind=gss_charge|x=%d|z=%d" % (ox + 3, oz - 4))
+            import fw_walk_common as C
+            # jawa/battery_set, never jawa/gss_stage: gss_stage needs Gimme Some Slack loaded, refused on the minimal list,
+            # and its refusal went unread, so the 2026-10-18 map shipped four dead batteries, four unpowered pumps, no spray.
+            bat = [t for t in C.list_things(s.w, ["Battery"], (ox + 1, oz - 6, 5, 5)) if t["cell"] == (ox + 3, oz - 4)]
+            br = s.w.call("jawa/battery_set", thing=bat[0]["raw"].get("id"), mode="setPct", value=1.0) if bat else {}
+            if not (br or {}).get("storedEnergyPctAfter"):
+                s.notes.append("battery for net %d NOT charged (%s): its pump will show no power" % (k, str(br)[:120]))
             s.w.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofTank",
                      args="%d,%d;Store;RM_Liquid_FreshWater;100000" % (ox, oz))
             got = O.choose_look(s.w, (ox + 2, oz), look, run=True)
