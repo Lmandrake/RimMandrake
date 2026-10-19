@@ -408,6 +408,11 @@ class Session(object):
         if self.mock or not self.args.frame_budget_ms:
             self.w.ticks(n)
             return
+        # keep the colony fed across long shared clocks (a Starving colonist stops every governed advance)
+        self._since_feed = getattr(self, "_since_feed", 0) + int(n)
+        if self._since_feed >= 2500:
+            self._since_feed = 0
+            feed_colonists(self)
         r = self.call("jawa/safe_advance", action="start", ticks=int(n), frameBudgetMs=float(self.args.frame_budget_ms),
                       timeoutMs=max(60000, int(n) * 100))
         if not r.get("success"):
@@ -1150,6 +1155,21 @@ def b9_owner(s):
 
 
 # ============================================================================ subprocess steps
+def feed_colonists(s):
+    """Top up Food and Rest on every colonist: an unfed quicktest colony reaches Starving inside a session and the
+    governor then stops every sub-script's clock (live 2026-10-19: liquid_checks L2-L6 and proof_hose realflow UNMEASURED)."""
+    if s.mock:
+        return 0
+    n = 0
+    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+        if c.get("dead") or not c.get("pawnId"):
+            continue
+        for need in ("Food", "Rest"):
+            s.call("jawa/pawn_need", pawn=c["pawnId"], action="need", need=need, level=1.0)
+        n += 1
+    return n
+
+
 def run_sub(s, step):
     bid, script, argv, mapping = step
     path = os.path.join(HERE, script)
@@ -1179,6 +1199,7 @@ def run_sub(s, step):
     # GovernorStop killed climb_proof and sprinkler_live (SITE, not the mod)
     s.call("jawa/kill_hostiles")
     s.call("jawa/incident_queue_clear")
+    feed_colonists(s)
     s.say("  RUN %s %s" % (script, " ".join(fill)))
     t0 = time.time()
     with open(log, "w", encoding="utf-8") as lf:
