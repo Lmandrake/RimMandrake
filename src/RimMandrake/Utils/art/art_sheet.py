@@ -1230,10 +1230,28 @@ def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
 
 def flip_layout(cols: list[dict]) -> tuple[list[str], int, list[str]]:
     """(face keys in grid order, frame count, facings present) for a flip-book graphic."""
-    keys = {k for c in cols for k in c["faces"]}
+    keys = {k for c in cols for k in c["faces"] if re.match(r"\d+_", k)}   # a ground face (single/south...) is not a frame
     n = max([int(k.split("_")[0]) for k in keys] + [0])
     fac = [f for f in FLIP_FACINGS if any(k.endswith("_" + f) for k in keys)]
     return [flip_key(i, f) for f in fac for i in range(1, n + 1)], n, fac
+
+
+def _ground_out_of_flip(graphics: list[dict]) -> None:
+    """A flip-book lane draws only 1_east..N_north frames. A ground-facing set that landed in it (a def with both a
+    flyingAnimationFramePathPrefix and ordinary ground art: Strill, Whisperbird) moves to the UNASSIGNED lane,
+    where it shows its ground facings."""
+    for g in list(graphics):
+        if not g.get("flip"):
+            continue
+        gnd = [c for c in g["cols"] if not any(re.match(r"\d+_", k) for k in c["faces"])]
+        if gnd:
+            u = next((x for x in graphics if x["res"] is None), None)
+            if u is None:
+                u = {"res": None, "role": ROLE_TEXT[None], "cols": [], "prior_raw": None}
+                graphics.append(u)
+            for c in gnd:
+                g["cols"].remove(c)
+                u["cols"].append(c)
 
 
 def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
@@ -2766,7 +2784,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                             graphics.append(_unas)
                     g["cols"].remove(c)
                     _unas["cols"].append(c)
-        graphics = [g for g in graphics if g["cols"] or g is graphics[0]]
+        _ground_out_of_flip(graphics)
         for c in allcols:
             # a "donor" column whose bytes an artpipe render made is our art under a donor-ported texPath
             # (TheRot's RotSporeKit/... carries rot_*_v2 renders): it must not read as donor-only (gate req 3)
