@@ -114,7 +114,7 @@ def main() -> int:
     ]
     for needle, why in FIRE_SHAPES:
         cases.append(("fire_shape: " + why, lambda n=needle, w=why: [] if n in fire else [w + " (missing)"],
-                      lambda n=needle, w=why: [w] if n not in fire.replace(n, "") else []))
+                      lambda n=needle, w=why: [] if n in fire.replace(n, "") else [w + " (missing)"]))   # the SAME check on the text with the shape cut out
     failed = 0
     for name, run, undo in cases:
         errs = run()

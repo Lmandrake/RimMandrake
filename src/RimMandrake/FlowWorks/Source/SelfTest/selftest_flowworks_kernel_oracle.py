@@ -222,6 +222,9 @@ def main():
         # "bodies" (FISH_ROLL_MEND_PONDS_BORN_BARREN, trap c): the vanilla water-body tracker port with the production split mend
         # (SelfTest/WaterBodyMendChecks.cs over RM_WaterBodyMath.cs) against union-find pieces, body sizes after every toggle.
         modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies")
+        known = ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies")
+        if n < 1 or [m for m in modes if m not in known]:
+            sys.exit("N must be >= 1 and every mode one of %s (a typo ran an unlabelled engine; N=0 compared nothing)" % ",".join(known))
         for mode in modes:
             scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else bodysc if mode == "bodies" else plain
             enc = encode_bodies if mode == "bodies" else encode
