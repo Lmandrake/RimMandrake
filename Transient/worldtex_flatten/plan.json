@@ -1,0 +1,1506 @@
+[
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_LongShade.png",
+  "defs": [
+   "RUT_Desert"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_LongShade.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_LongShade.png",
+  "std": 24.6,
+  "std32": 15.6,
+  "mean": [
+   211,
+   182,
+   136
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.9,
+  "mean_after": [
+   211,
+   182,
+   136
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Greentide.png",
+  "defs": [
+   "RUT_Greentide"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Greentide.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Greentide.png",
+  "std": 22.2,
+  "std32": 10.2,
+  "mean": [
+   29,
+   117,
+   66
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.4,
+  "mean_after": [
+   29,
+   117,
+   66
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Umbra.png",
+  "defs": [
+   "RUT_FuelSnows",
+   "RUT_Umbra"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Umbra.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Umbra.png",
+  "std": 29.3,
+  "std32": 5.6,
+  "mean": [
+   11,
+   22,
+   36
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.7,
+  "mean_after": [
+   11,
+   22,
+   36
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_MineralWater.png",
+  "defs": [
+   "RUT_Jawa_BackgroundWater"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_MineralWater.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_MineralWater.png",
+  "std": 19.2,
+  "std32": 12.1,
+  "mean": [
+   94,
+   128,
+   106
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.9,
+  "mean_after": [
+   94,
+   128,
+   106
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Chill.png",
+  "defs": [
+   "RUT_PropaneLake"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Chill.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Chill.png",
+  "std": 20.6,
+  "std32": 7.6,
+  "mean": [
+   37,
+   77,
+   112
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.2,
+  "mean_after": [
+   37,
+   77,
+   112
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Cauldron.png",
+  "defs": [
+   "RUT_Cauldron"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Cauldron.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Cauldron.png",
+  "std": 26.1,
+  "std32": 14.5,
+  "mean": [
+   39,
+   45,
+   32
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.7,
+  "mean_after": [
+   39,
+   45,
+   32
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Warscar.png",
+  "defs": [
+   "RUT_Scarlands"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Warscar.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Warscar.png",
+  "std": 14.6,
+  "std32": 9.0,
+  "mean": [
+   92,
+   73,
+   59
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.9,
+  "mean_after": [
+   92,
+   73,
+   59
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Webwork.png",
+  "defs": [
+   "RUT_Webwork"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Webwork.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Webwork.png",
+  "std": 49.3,
+  "std32": 11.1,
+  "mean": [
+   51,
+   62,
+   74
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.8,
+  "mean_after": [
+   51,
+   62,
+   74
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_TheRot.png",
+  "defs": [
+   "RUT_TheRot"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_TheRot.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_TheRot.png",
+  "std": 10.9,
+  "std32": 4.6,
+  "mean": [
+   182,
+   162,
+   196
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.3,
+  "mean_after": [
+   182,
+   162,
+   196
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_FeverWood.png",
+  "defs": [
+   "RUT_FeverWood"
+  ],
+  "std": 6.0,
+  "std32": 3.4,
+  "mean": [
+   64,
+   78,
+   35
+  ],
+  "action": "keep"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_SleepingIce.png",
+  "defs": [
+   "RUT_NightsideIce"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_SleepingIce.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_SleepingIce.png",
+  "std": 11.2,
+  "std32": 4.8,
+  "mean": [
+   178,
+   188,
+   196
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.4,
+  "mean_after": [
+   178,
+   188,
+   196
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Scald.png",
+  "defs": [
+   "RUT_TheScald"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Scald.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Scald.png",
+  "std": 49.8,
+  "std32": 4.6,
+  "mean": [
+   71,
+   157,
+   164
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.5,
+  "mean_after": [
+   71,
+   157,
+   164
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_RustCathedral.png",
+  "defs": [
+   "RUT_RustCathedral"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_RustCathedral.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_RustCathedral.png",
+  "std": 22.1,
+  "std32": 9.2,
+  "mean": [
+   134,
+   54,
+   23
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.3,
+  "mean_after": [
+   134,
+   54,
+   23
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_BlueDesert.png",
+  "defs": [
+   "RUT_BlueDesert"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_BlueDesert.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_BlueDesert.png",
+  "std": 8.8,
+  "std32": 6.3,
+  "mean": [
+   209,
+   232,
+   246
+  ],
+  "std_after": 5.0,
+  "std32_after": 2.2,
+  "mean_after": [
+   209,
+   232,
+   246
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Slime.png",
+  "defs": [
+   "RUT_Slime"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Slime.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Slime.png",
+  "std": 17.0,
+  "std32": 6.1,
+  "mean": [
+   147,
+   187,
+   32
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.2,
+  "mean_after": [
+   147,
+   187,
+   32
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_CrackedLands.png",
+  "defs": [
+   "RUT_CrackedLands"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_CrackedLands.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_CrackedLands.png",
+  "std": 9.7,
+  "std32": 4.7,
+  "mean": [
+   146,
+   67,
+   43
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.5,
+  "mean_after": [
+   146,
+   67,
+   43
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_TwilightSea.png",
+  "defs": [
+   "RUT_TwilightSea"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_TwilightSea.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_TwilightSea.png",
+  "std": 51.0,
+  "std32": 46.5,
+  "mean": [
+   42,
+   96,
+   132
+  ],
+  "std_after": 5.1,
+  "std32_after": 2.8,
+  "mean_after": [
+   42,
+   96,
+   132
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Forge.png",
+  "defs": [
+   "RUT_TheForge"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Forge.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Forge.png",
+  "std": 29.1,
+  "std32": 8.2,
+  "mean": [
+   74,
+   31,
+   14
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.9,
+  "mean_after": [
+   74,
+   31,
+   14
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Sump.png",
+  "defs": [
+   "RUT_Sump"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Sump.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Sump.png",
+  "std": 8.4,
+  "std32": 4.7,
+  "mean": [
+   31,
+   28,
+   17
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.7,
+  "mean_after": [
+   31,
+   28,
+   17
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Wasteland.png",
+  "defs": [
+   "RUT_Wasteland"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Wasteland.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Wasteland.png",
+  "std": 12.2,
+  "std32": 6.7,
+  "mean": [
+   172,
+   163,
+   139
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.7,
+  "mean_after": [
+   172,
+   163,
+   139
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Abyss.png",
+  "defs": [
+   "RUT_Abyss"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Abyss.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Abyss.png",
+  "std": 15.2,
+  "std32": 1.5,
+  "mean": [
+   55,
+   21,
+   88
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.5,
+  "mean_after": [
+   55,
+   21,
+   88
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_GreySea.png",
+  "defs": [
+   "RUT_GreySea"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_GreySea.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_GreySea.png",
+  "std": 23.1,
+  "std32": 7.9,
+  "mean": [
+   126,
+   140,
+   140
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.1,
+  "mean_after": [
+   126,
+   140,
+   140
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Stillsand.png",
+  "defs": [
+   "RUT_ExtremeDesert"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Stillsand.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Stillsand.png",
+  "std": 17.0,
+  "std32": 3.7,
+  "mean": [
+   199,
+   165,
+   65
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.8,
+  "mean_after": [
+   199,
+   165,
+   65
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Contagion.png",
+  "defs": [
+   "RUT_Contagion"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Contagion.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Contagion.png",
+  "std": 20.8,
+  "std32": 12.6,
+  "mean": [
+   108,
+   19,
+   26
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.8,
+  "mean_after": [
+   108,
+   19,
+   26
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_LeaningScrub.png",
+  "defs": [
+   "RUT_AridShrubland"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_LeaningScrub.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_LeaningScrub.png",
+  "std": 12.0,
+  "std32": 3.3,
+  "mean": [
+   142,
+   158,
+   140
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.9,
+  "mean_after": [
+   142,
+   158,
+   140
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_WeepingStones.png",
+  "defs": [
+   "RUT_WeepingStones"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_WeepingStones.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_WeepingStones.png",
+  "std": 40.2,
+  "std32": 15.2,
+  "mean": [
+   187,
+   184,
+   173
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.2,
+  "mean_after": [
+   187,
+   184,
+   173
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimUtinni/UtinniPatches/Textures/World/Biomes/RUT_Miasma.png",
+  "defs": [
+   "RUT_Miasma"
+  ],
+  "mod": "RimUtinni/UtinniPatches",
+  "rel": "World/Biomes/RUT_Miasma.png",
+  "stage": "Transient/worldtex_flatten/tex/RimUtinni__UtinniPatches__RUT_Miasma.png",
+  "std": 13.1,
+  "std32": 3.1,
+  "mean": [
+   119,
+   117,
+   29
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.8,
+  "mean_after": [
+   119,
+   117,
+   29
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Scarlands/Textures/World/Biomes/RM_Warscar.png",
+  "defs": [
+   "RM_Warscar"
+  ],
+  "mod": "RimMandrake/Scarlands",
+  "rel": "World/Biomes/RM_Warscar.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Scarlands__RM_Warscar.png",
+  "std": 14.6,
+  "std32": 9.0,
+  "mean": [
+   92,
+   73,
+   59
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.9,
+  "mean_after": [
+   92,
+   73,
+   59
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/RustCathedral/Textures/World/Biomes/RM_RustCathedral.png",
+  "defs": [
+   "RM_RustCathedral"
+  ],
+  "mod": "RimMandrake/RustCathedral",
+  "rel": "World/Biomes/RM_RustCathedral.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__RustCathedral__RM_RustCathedral.png",
+  "std": 22.1,
+  "std32": 9.2,
+  "mean": [
+   134,
+   54,
+   23
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.3,
+  "mean_after": [
+   134,
+   54,
+   23
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TerminalBiomes/Textures/World/Biomes/RM_Scald.png",
+  "defs": [
+   "RM_TheScald"
+  ],
+  "mod": "RimMandrake/TerminalBiomes",
+  "rel": "World/Biomes/RM_Scald.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TerminalBiomes__RM_Scald.png",
+  "std": 49.8,
+  "std32": 4.6,
+  "mean": [
+   71,
+   157,
+   164
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.5,
+  "mean_after": [
+   71,
+   157,
+   164
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TerminalBiomes/Textures/World/Biomes/RM_GreySea.png",
+  "defs": [
+   "RM_GreySea"
+  ],
+  "mod": "RimMandrake/TerminalBiomes",
+  "rel": "World/Biomes/RM_GreySea.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TerminalBiomes__RM_GreySea.png",
+  "std": 23.1,
+  "std32": 7.9,
+  "mean": [
+   126,
+   140,
+   140
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.1,
+  "mean_after": [
+   126,
+   140,
+   140
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TerminalBiomes/Textures/World/Biomes/RM_Chill.png",
+  "defs": [
+   "RM_TheChill"
+  ],
+  "mod": "RimMandrake/TerminalBiomes",
+  "rel": "World/Biomes/RM_Chill.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TerminalBiomes__RM_Chill.png",
+  "std": 20.6,
+  "std32": 7.6,
+  "mean": [
+   37,
+   77,
+   112
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.2,
+  "mean_after": [
+   37,
+   77,
+   112
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TerminalBiomes/Textures/World/Biomes/RM_ChillCrater.png",
+  "defs": [
+   "RM_ChillCrater"
+  ],
+  "mod": "RimMandrake/TerminalBiomes",
+  "rel": "World/Biomes/RM_ChillCrater.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TerminalBiomes__RM_ChillCrater.png",
+  "std": 12.0,
+  "std32": 3.7,
+  "mean": [
+   8,
+   8,
+   20
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.0,
+  "mean_after": [
+   8,
+   8,
+   20
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TerminalBiomes/Textures/World/Biomes/RM_TwilightSea.png",
+  "defs": [
+   "RM_TwilightSea"
+  ],
+  "mod": "RimMandrake/TerminalBiomes",
+  "rel": "World/Biomes/RM_TwilightSea.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TerminalBiomes__RM_TwilightSea.png",
+  "std": 51.0,
+  "std32": 46.5,
+  "mean": [
+   42,
+   96,
+   132
+  ],
+  "std_after": 5.0,
+  "std32_after": 2.7,
+  "mean_after": [
+   42,
+   96,
+   132
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Webwork/Textures/World/Biomes/RM_Webwork.png",
+  "defs": [
+   "RM_Webwork"
+  ],
+  "mod": "RimMandrake/Webwork",
+  "rel": "World/Biomes/RM_Webwork.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Webwork__RM_Webwork.png",
+  "std": 49.3,
+  "std32": 11.1,
+  "mean": [
+   51,
+   62,
+   74
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.8,
+  "mean_after": [
+   51,
+   62,
+   74
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TheRot/Textures/World/Biomes/RM_TheRot.png",
+  "defs": [
+   "RM_TheRot"
+  ],
+  "mod": "RimMandrake/TheRot",
+  "rel": "World/Biomes/RM_TheRot.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TheRot__RM_TheRot.png",
+  "std": 10.9,
+  "std32": 4.6,
+  "mean": [
+   182,
+   162,
+   196
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.3,
+  "mean_after": [
+   182,
+   162,
+   196
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/BlueDesert/Textures/World/Biomes/RM_BlueDesert.png",
+  "defs": [
+   "RM_BlueDesert"
+  ],
+  "mod": "RimMandrake/BlueDesert",
+  "rel": "World/Biomes/RM_BlueDesert.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__BlueDesert__RM_BlueDesert.png",
+  "std": 8.8,
+  "std32": 6.3,
+  "mean": [
+   209,
+   232,
+   246
+  ],
+  "std_after": 5.0,
+  "std32_after": 2.2,
+  "mean_after": [
+   209,
+   232,
+   246
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Miasma/Textures/World/Biomes/RM_Miasma.png",
+  "defs": [
+   "RM_Miasma"
+  ],
+  "mod": "RimMandrake/Miasma",
+  "rel": "World/Biomes/RM_Miasma.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Miasma__RM_Miasma.png",
+  "std": 13.1,
+  "std32": 3.1,
+  "mean": [
+   119,
+   117,
+   29
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.8,
+  "mean_after": [
+   119,
+   117,
+   29
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TheForge/Textures/World/Biomes/RM_Forge.png",
+  "defs": [
+   "RM_TheForge"
+  ],
+  "mod": "RimMandrake/TheForge",
+  "rel": "World/Biomes/RM_Forge.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TheForge__RM_Forge.png",
+  "std": 29.1,
+  "std32": 8.2,
+  "mean": [
+   74,
+   31,
+   14
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.9,
+  "mean_after": [
+   74,
+   31,
+   14
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/TheSump/Textures/World/Biomes/RM_Sump.png",
+  "defs": [
+   "RM_TheSump"
+  ],
+  "mod": "RimMandrake/TheSump",
+  "rel": "World/Biomes/RM_Sump.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__TheSump__RM_Sump.png",
+  "std": 8.4,
+  "std32": 4.7,
+  "mean": [
+   31,
+   28,
+   17
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.7,
+  "mean_after": [
+   31,
+   28,
+   17
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/NightsideIce/Textures/World/Biomes/RM_SleepingIce.png",
+  "defs": [
+   "RM_NightsideIce"
+  ],
+  "mod": "RimMandrake/NightsideIce",
+  "rel": "World/Biomes/RM_SleepingIce.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__NightsideIce__RM_SleepingIce.png",
+  "std": 11.2,
+  "std32": 4.8,
+  "mean": [
+   178,
+   188,
+   196
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.4,
+  "mean_after": [
+   178,
+   188,
+   196
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/GelatinousSlime/Textures/World/Biomes/RM_Slime.png",
+  "defs": [
+   "RM_GelatinousSlime"
+  ],
+  "mod": "RimMandrake/GelatinousSlime",
+  "rel": "World/Biomes/RM_Slime.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__GelatinousSlime__RM_Slime.png",
+  "std": 17.0,
+  "std32": 6.1,
+  "mean": [
+   147,
+   187,
+   32
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.2,
+  "mean_after": [
+   147,
+   187,
+   32
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/LongShade/Textures/World/Biomes/RM_LongShade.png",
+  "defs": [
+   "RM_LongShade"
+  ],
+  "mod": "RimMandrake/LongShade",
+  "rel": "World/Biomes/RM_LongShade.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__LongShade__RM_LongShade.png",
+  "std": 24.6,
+  "std32": 15.6,
+  "mean": [
+   211,
+   182,
+   136
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.9,
+  "mean_after": [
+   211,
+   182,
+   136
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/WeepingStones/Textures/World/Biomes/RM_WeepingStones.png",
+  "defs": [
+   "RM_WeepingStones"
+  ],
+  "mod": "RimMandrake/WeepingStones",
+  "rel": "World/Biomes/RM_WeepingStones.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__WeepingStones__RM_WeepingStones.png",
+  "std": 40.2,
+  "std32": 15.2,
+  "mean": [
+   187,
+   184,
+   173
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.2,
+  "mean_after": [
+   187,
+   184,
+   173
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Contagion/Textures/World/Biomes/RM_Contagion.png",
+  "defs": [
+   "RM_Contagion"
+  ],
+  "mod": "RimMandrake/Contagion",
+  "rel": "World/Biomes/RM_Contagion.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Contagion__RM_Contagion.png",
+  "std": 20.8,
+  "std32": 12.6,
+  "mean": [
+   108,
+   19,
+   26
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.9,
+  "mean_after": [
+   108,
+   19,
+   26
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/LeaningScrub/Textures/World/Biomes/RM_LeaningScrub.png",
+  "defs": [
+   "RM_LeaningScrub"
+  ],
+  "mod": "RimMandrake/LeaningScrub",
+  "rel": "World/Biomes/RM_LeaningScrub.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__LeaningScrub__RM_LeaningScrub.png",
+  "std": 12.0,
+  "std32": 3.3,
+  "mean": [
+   142,
+   158,
+   140
+  ],
+  "std_after": 5.1,
+  "std32_after": 0.9,
+  "mean_after": [
+   142,
+   158,
+   140
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Pyrelands/Textures/World/Biomes/RM_Pyrelands.png",
+  "defs": [
+   "RM_Pyrelands"
+  ],
+  "mod": "RimMandrake/Pyrelands",
+  "rel": "World/Biomes/RM_Pyrelands.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Pyrelands__RM_Pyrelands.png",
+  "std": 9.0,
+  "std32": 2.6,
+  "mean": [
+   102,
+   92,
+   36
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.9,
+  "mean_after": [
+   102,
+   92,
+   36
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Wasteland/Textures/World/Biomes/RM_Wasteland.png",
+  "defs": [
+   "RM_Wasteland"
+  ],
+  "mod": "RimMandrake/Wasteland",
+  "rel": "World/Biomes/RM_Wasteland.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Wasteland__RM_Wasteland.png",
+  "std": 12.2,
+  "std32": 6.7,
+  "mean": [
+   172,
+   163,
+   139
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.7,
+  "mean_after": [
+   172,
+   163,
+   139
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/FeverWood/Textures/World/Biomes/RM_FeverWood.png",
+  "defs": [
+   "RM_FeverWood"
+  ],
+  "std": 6.0,
+  "std32": 3.4,
+  "mean": [
+   64,
+   78,
+   35
+  ],
+  "action": "keep"
+ },
+ {
+  "src": "src/RimMandrake/LanternDeeps/Textures/World/Biomes/RM_LanternDeeps.png",
+  "defs": [
+   "RM_LanternDeeps"
+  ],
+  "mod": "RimMandrake/LanternDeeps",
+  "rel": "World/Biomes/RM_LanternDeeps.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__LanternDeeps__RM_LanternDeeps.png",
+  "std": 20.6,
+  "std32": 11.8,
+  "mean": [
+   12,
+   35,
+   73
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.7,
+  "mean_after": [
+   12,
+   35,
+   73
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Stillsand/Textures/World/Biomes/RM_Stillsand.png",
+  "defs": [
+   "RM_Stillsand"
+  ],
+  "mod": "RimMandrake/Stillsand",
+  "rel": "World/Biomes/RM_Stillsand.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Stillsand__RM_Stillsand.png",
+  "std": 17.0,
+  "std32": 3.7,
+  "mean": [
+   199,
+   165,
+   65
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.8,
+  "mean_after": [
+   199,
+   165,
+   65
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Cauldron/Textures/World/Biomes/RM_Cauldron.png",
+  "defs": [
+   "RM_Cauldron"
+  ],
+  "mod": "RimMandrake/Cauldron",
+  "rel": "World/Biomes/RM_Cauldron.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Cauldron__RM_Cauldron.png",
+  "std": 26.1,
+  "std32": 14.5,
+  "mean": [
+   39,
+   45,
+   32
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.7,
+  "mean_after": [
+   39,
+   45,
+   32
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedScald.png",
+  "defs": [
+   "RM_SeabedFloor_TheScald"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedScald.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedScald.png",
+  "std": 13.9,
+  "std32": 5.7,
+  "mean": [
+   93,
+   30,
+   14
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.3,
+  "mean_after": [
+   93,
+   30,
+   14
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedGrey.png",
+  "defs": [
+   "RM_SeabedFloor_GreySea"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedGrey.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedGrey.png",
+  "std": 14.0,
+  "std32": 4.5,
+  "mean": [
+   194,
+   151,
+   158
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.0,
+  "mean_after": [
+   194,
+   151,
+   158
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedTwilight.png",
+  "defs": [
+   "RM_SeabedFloor_TwilightSea"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedTwilight.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedTwilight.png",
+  "std": 21.6,
+  "std32": 6.3,
+  "mean": [
+   78,
+   38,
+   60
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.9,
+  "mean_after": [
+   78,
+   38,
+   60
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedChill.png",
+  "defs": [
+   "RM_SeabedFloor_TheChill"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedChill.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedChill.png",
+  "std": 21.0,
+  "std32": 9.5,
+  "mean": [
+   26,
+   88,
+   79
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.4,
+  "mean_after": [
+   26,
+   88,
+   79
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedBedrock.png",
+  "defs": [
+   "RM_SeabedUnavailable"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedBedrock.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedBedrock.png",
+  "std": 7.8,
+  "std32": 4.3,
+  "mean": [
+   69,
+   69,
+   74
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.7,
+  "mean_after": [
+   69,
+   69,
+   74
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/DivingInteraction/Textures/World/Biomes/RM_SeabedFloor.png",
+  "defs": [
+   "RM_SeabedFloor"
+  ],
+  "mod": "RimMandrake/DivingInteraction",
+  "rel": "World/Biomes/RM_SeabedFloor.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__DivingInteraction__RM_SeabedFloor.png",
+  "std": 15.6,
+  "std32": 6.7,
+  "mean": [
+   134,
+   134,
+   106
+  ],
+  "std_after": 5.1,
+  "std32_after": 1.4,
+  "mean_after": [
+   134,
+   134,
+   106
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Greentide/Textures/World/Biomes/RM_Greentide.png",
+  "defs": [
+   "RM_Greentide"
+  ],
+  "mod": "RimMandrake/Greentide",
+  "rel": "World/Biomes/RM_Greentide.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Greentide__RM_Greentide.png",
+  "std": 22.2,
+  "std32": 10.2,
+  "mean": [
+   29,
+   117,
+   66
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.4,
+  "mean_after": [
+   29,
+   117,
+   66
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png",
+  "defs": [
+   "RM_Abyss"
+  ],
+  "mod": "RimMandrake/Abyss",
+  "rel": "World/Biomes/RM_Abyss.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__Abyss__RM_Abyss.png",
+  "std": 15.2,
+  "std32": 1.5,
+  "mean": [
+   55,
+   21,
+   88
+  ],
+  "std_after": 5.0,
+  "std32_after": 0.5,
+  "mean_after": [
+   55,
+   21,
+   88
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ },
+ {
+  "src": "src/RimMandrake/CrackedLands/Textures/World/Biomes/RM_CrackedLands.png",
+  "defs": [
+   "RM_FloodedCanyon"
+  ],
+  "mod": "RimMandrake/CrackedLands",
+  "rel": "World/Biomes/RM_CrackedLands.png",
+  "stage": "Transient/worldtex_flatten/tex/RimMandrake__CrackedLands__RM_CrackedLands.png",
+  "std": 9.7,
+  "std32": 4.7,
+  "mean": [
+   146,
+   67,
+   43
+  ],
+  "std_after": 5.0,
+  "std32_after": 1.5,
+  "mean_after": [
+   146,
+   67,
+   43
+  ],
+  "placeholder": null,
+  "action": "flatten"
+ }
+]
