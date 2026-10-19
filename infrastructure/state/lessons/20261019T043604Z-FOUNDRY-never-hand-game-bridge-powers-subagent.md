@@ -1,0 +1,1 @@
+Never hand game/bridge powers to a subagent without checking rimflow bridge who and the driver lock first; compare jawa/running_mods to ModsConfig.xml after any launch (a 26-mod game ran while the file said 544); Windows case-twin texture files (PaleTree_B/_b) block the compose — retire via artledger.retire
