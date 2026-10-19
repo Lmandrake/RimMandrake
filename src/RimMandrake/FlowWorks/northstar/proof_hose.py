@@ -542,6 +542,7 @@ class Proof(object):
         if name not in ("preflight", "session"):
             try:
                 self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+                self.res.setdefault("site_calm_blocks", {})[name] = V.site_calm(self.B).get("ok")   # statics reset by any load
                 # a giant plant regrown near a site re-plans trunk blockers into it (V.clear_huge_plants), re-calmed per block
                 self.res.setdefault("huge_plants_cleared", {})[name] = V.clear_huge_plants(self.B)
             except Exception:  # noqa: BLE001
@@ -596,6 +597,7 @@ class Proof(object):
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
         B.call("jawa/incident_queue_clear")
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        self.res["site_calm"] = V.site_calm(B)       # static boring world: storyteller/mental/disease off, wild spawner blocked
         drafted = [p["id"] for p in (B.hp("colonists").get("pawns") or []) if B.hp("pawn:%d=draft" % p["id"]).get("success")]
         self.row("preflight", "HP2_probes_site_pinned", "PASS" if hd.get("success") else "FAIL", "HARNESS",
                  {"hoseProbe": hd.get("success"), "colonistsDrafted": drafted})
@@ -927,6 +929,10 @@ def main(argv=None):
     finally:
         try:
             P.B.hp("defaults")
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            P.res["site_calm_restore"] = V.site_calm_restore(P.B)
         except Exception:  # noqa: BLE001
             pass
         P.checkpoint(final=True)
