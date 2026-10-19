@@ -1074,6 +1074,27 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				PlaceRailing(d.Position);
 			}
+			// SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN: a deck completed over the hole has whoever stands on its floor UNDER it
+			// (the band was entered only by a walked step: live 2026-10-19 a timber span read 816 kg with one rider, 13 pawns in
+			// the trench below counted on top) and what lies there slides out to open floor, or is marked under.
+			if (!d.FloorBandPassesUnder)
+			{
+				return;
+			}
+			foreach (Thing t in d.Position.GetThingList(map).ToList())
+			{
+				if (t is Pawn p)
+				{
+					if (!p.Dead && !p.Flying)
+					{
+						SetBand(p, true);
+					}
+				}
+				else if (t.def.category == ThingCategory.Item)
+				{
+					RM_SuspensionUnderpass.SlideOut(t);
+				}
+			}
 		}
 
 		// ── railings ────────────────────────────────────────────────────────────────
