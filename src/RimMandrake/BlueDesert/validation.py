@@ -536,7 +536,7 @@ def defs_chain(t):
     with _comp(t, "defs_resolve"):
         if _live(t):
             # The parser must see the mod: a broken regex would read "all 0 defs resolve".
-            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 8:
+            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 9:  # 9 = the 8 + RM_Rimetangle (owner, picks_plants_and_gaps 2026-10-19)
                 _fail("parsed only %d shipped defs / %d natives / %d flora from %s (parser broken?)"
                       % (len(SHIPPED), len(NATIVES), len(FLORA), HERE))
             r = t.bridge_call("jawa/get_defs", defs=";".join(SHIPPED), fields="defName", limit=200)

@@ -567,5 +567,69 @@
     </comps>
   </ThingDef>
 
+  <!-- ============== Rimetangle (ground tangle, sparse) ==============
+       Owner 2026-10-19, picks_plants_and_gaps_sheet_2026-10-19, AB_Bryolux row, picture A: "keep this, but rename it
+       and place it sparsely on the blue desert. Its description should be hydrocarbon-based." A new def: the Rot's
+       RM_Bryolux keeps its own picture and home. Mechanics follow RM_Palefloss (the biome's ground-cover law);
+       harvest/size/commonality INVENTED for the sitting to calibrate. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Rimetangle</defName>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <label>rimetangle</label>
+    <description>A low snarl of glassy white tendrils, each one a sealed capillary of liquid propane and heavier waxes, curling back on itself to keep its charge out of the wind. Where the cold is deepest the tips frost blue as the lighter fractions bleed off. It grows in scattered patches, never fields, and a careful hand can strip it for cold wax; a warm one should not touch it at all.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Nutrition>0.15</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Rimetangle</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>8</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>60</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <!-- smallness law (bible §0/§4): nothing above 1.1 cells -->
+      <visualSizeRange>0.6~0.95</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>1</wildOrder>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.1</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
 
 </Defs>

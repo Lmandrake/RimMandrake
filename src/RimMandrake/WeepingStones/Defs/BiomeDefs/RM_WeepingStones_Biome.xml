@@ -188,6 +188,7 @@
       <RM_Dripfringe>0.3</RM_Dripfringe>  <!-- dripfringe - the overhang register -->
       <RM_Salvecomb>0.2</RM_Salvecomb>  <!-- salvecomb - the medicine plant -->
       <RM_Rockfinger>0.15</RM_Rockfinger>  <!-- rockfinger - the tree, RULED name (was Sailfin) -->
+      <RM_Talvessar>0.1</RM_Talvessar>  <!-- talvessar - ember-leaf tree: ADDED 2026-10-19, owner "place it in the Weeping Stones biome" (picks_plants_and_gaps, AB_FirevineTree row); commonality INVENTED -->
       <RM_Steamfrond>0.1</RM_Steamfrond>  <!-- steamfrond - the seep-oasis signature -->
       <RM_Dewgourd>0.02</RM_Dewgourd>  <!-- dewgourd - the farmed crop; wild rows rare at pool ring, sowable everywhere else -->
     </wildPlants>

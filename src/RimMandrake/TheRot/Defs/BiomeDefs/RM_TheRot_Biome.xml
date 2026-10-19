@@ -174,6 +174,9 @@
       <RM_AmbrosyxFungus>0.1</RM_AmbrosyxFungus>  <!-- ambrosyx: ADDED 2026-10-11 (AMBROSYX_SOURCE_BUILD_DISH_BEFORE_SHROOM), the only source of RM_AmbrosyxShroom; additive, nothing evicted; commonality PROVISIONAL for the Rot's sitting; gate ambrosyxSpawn -->
       <RM_AgaricusDomeCap>0.1</RM_AgaricusDomeCap>  <!-- agaricus domecap -->
       <RM_DribblingCap>0.1</RM_DribblingCap>  <!-- dribbling cap -->
+      <RM_Ruskara>0.1</RM_Ruskara>  <!-- ruskara: ADDED 2026-10-19, owner picks_plants_and_gaps sheet (AB_DribblingCap row, "a new kind of mushroom to add to the Rot"); commonality INVENTED -->
+      <RM_Ullumbra>0.3</RM_Ullumbra>  <!-- ullumbra: ADDED 2026-10-19, same sheet (AB_GiantAgarilux row); commonality INVENTED -->
+      <RM_Vellugra>0.2</RM_Vellugra>  <!-- vellugra: ADDED 2026-10-19, same sheet (AB_SlimyPholiota row); commonality INVENTED -->
       <RM_Skulltop>0.1</RM_Skulltop>  <!-- skulltop - tree -->
       <RM_BlastpodShroom>0.05</RM_BlastpodShroom>  <!-- blastpod shroom - wild-only per owner ruling, no sow tags -->
       <RM_AgariluxPrime>0.01</RM_AgariluxPrime>  <!-- Agarilux Prime -->

@@ -45,7 +45,7 @@
     </match>
   </Operation>
 
-  <!-- RM_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells -->
+  <!-- RM_DribblingCap, amber weeper (12 wide): DribblingCap_A 28 contact cells, DribblingCap_b 10 contact cells, DribblingCap_c 22 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_DribblingCap"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -64,6 +64,27 @@
                 <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li><li>(2,3)</li>
                 <li>(-2,4)</li><li>(-1,4)</li><li>(0,4)</li><li>(1,4)</li><li>(2,4)</li>
                 <li>(-1,5)</li><li>(0,5)</li><li>(1,5)</li><li>(2,5)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>DribblingCap_b</texture>
+              <opaqueMin>(0.1055,0.0703)</opaqueMin>
+              <opaqueMax>(0.8984,0.9102)</opaqueMax>
+              <contact>
+                <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
+                <li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li>
+                <li>(0,3)</li><li>(1,3)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>DribblingCap_c</texture>
+              <opaqueMin>(0.0117,0.0859)</opaqueMin>
+              <opaqueMax>(0.9922,0.8984)</opaqueMax>
+              <contact>
+                <li>(-3,1)</li><li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li><li>(3,1)</li>
+                <li>(-3,2)</li><li>(-2,2)</li><li>(-1,2)</li><li>(0,2)</li><li>(1,2)</li><li>(2,2)</li>
+                <li>(-2,3)</li><li>(-1,3)</li><li>(0,3)</li><li>(1,3)</li><li>(2,3)</li>
+                <li>(-2,4)</li><li>(-1,4)</li><li>(0,4)</li><li>(1,4)</li>
               </contact>
             </li>
           </variants>
@@ -219,7 +240,7 @@
     </match>
   </Operation>
 
-  <!-- RM_GiantAgarilux, vokkun pillar (6 wide): GiantAgarilux_A 0 contact cells -->
+  <!-- RM_GiantAgarilux, vokkun pillar (6 wide): GiantAgarilux_A 0 contact cells, GiantAgarilux_b 0 contact cells, GiantAgarilux_c 3 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_GiantAgarilux"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -235,13 +256,29 @@
               <contact>
               </contact>
             </li>
+            <li>
+              <texture>GiantAgarilux_b</texture>
+              <opaqueMin>(0.3633,0.0117)</opaqueMin>
+              <opaqueMax>(0.6562,0.9688)</opaqueMax>
+              <contact>
+              </contact>
+            </li>
+            <li>
+              <texture>GiantAgarilux_c</texture>
+              <opaqueMin>(0.2344,0.0039)</opaqueMin>
+              <opaqueMax>(0.7852,0.9922)</opaqueMax>
+              <contact>
+                <li>(-1,0)</li><li>(1,0)</li>
+                <li>(0,1)</li>
+              </contact>
+            </li>
           </variants>
         </li>
       </value>
     </match>
   </Operation>
 
-  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 4 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
+  <!-- RM_PaleTree, quellan tree (6 wide): PaleTree_A 4 contact cells, PaleTree_B 5 contact cells, PaleTree_b 3 contact cells, PaleTree_c 9 contact cells, PaleTree_d 4 contact cells, PaleTree_e 5 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_PaleTree"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -257,6 +294,15 @@
               <contact>
                 <li>(-1,0)</li><li>(1,0)</li>
                 <li>(0,1)</li><li>(1,1)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>PaleTree_B</texture>
+              <opaqueMin>(0.0352,0.0195)</opaqueMin>
+              <opaqueMax>(0.9805,0.9727)</opaqueMax>
+              <contact>
+                <li>(-1,0)</li><li>(1,0)</li>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li>
               </contact>
             </li>
             <li>
@@ -294,6 +340,47 @@
               <contact>
                 <li>(-1,0)</li><li>(1,0)</li>
                 <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li>
+              </contact>
+            </li>
+          </variants>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RM_Ullumbra, ullumbra (6 wide): RM_Ullumbra_a 2 contact cells, RM_Ullumbra_b 2 contact cells, RM_Ullumbra_c 1 contact cells -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ullumbra"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_Ullumbra"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <measuredSize>6</measuredSize>
+          <variants>
+            <li>
+              <texture>RM_Ullumbra_a</texture>
+              <opaqueMin>(0.0273,0.0234)</opaqueMin>
+              <opaqueMax>(0.9844,0.9609)</opaqueMax>
+              <contact>
+                <li>(1,0)</li>
+                <li>(0,1)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>RM_Ullumbra_b</texture>
+              <opaqueMin>(0.0195,0.0273)</opaqueMin>
+              <opaqueMax>(0.9844,0.9531)</opaqueMax>
+              <contact>
+                <li>(1,0)</li>
+                <li>(0,1)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>RM_Ullumbra_c</texture>
+              <opaqueMin>(0.0234,0.0156)</opaqueMin>
+              <opaqueMax>(0.9844,0.9766)</opaqueMax>
+              <contact>
+                <li>(1,0)</li>
               </contact>
             </li>
           </variants>
