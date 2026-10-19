@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_TableResistance nullifies AteWithoutTable. Port of Alpha Genes' 1.6/Patches/AteWithoutATablePatch.xml
+     (sarg.alphagenes, retired 2026-10-18). Gene: Defs/GeneDefs/RSW_JawaPortedGenes.xml. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <success>Always</success>
+    <xpath>/Defs/ThoughtDef[defName="AteWithoutTable"]/nullifyingGenes</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThoughtDef[defName="AteWithoutTable"]/nullifyingGenes</xpath>
+      <value>
+        <li>RSW_TableResistance</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThoughtDef[defName="AteWithoutTable"]</xpath>
+      <value>
+        <nullifyingGenes>
+          <li>RSW_TableResistance</li>
+        </nullifyingGenes>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>

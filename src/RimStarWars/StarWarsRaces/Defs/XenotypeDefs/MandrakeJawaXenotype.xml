@@ -84,13 +84,13 @@
       <!-- frame and constitution -->
       <li>RSW_BodySizeGene_smaller</li>
       <li>StrongStomach</li>
-      <li>AG_UnderdevelopedTeeth</li>
-      <li>AG_SurvivalInstinct_High</li>
-      <li>AG_TableResistance</li>
+      <li>RSW_UnderdevelopedTeeth</li>
+      <li>RSW_SurvivalInstinctHigh</li>
+      <li>RSW_TableResistance</li>
       <li>WoundHealing_Slow</li>
       <li>Superclotting</li>
-      <li>AG_Stinky</li>
-      <li>AG_FrailSkin</li>
+      <li>RSW_Stinky</li>
+      <li>RSW_FrailSkin</li>
       <li>Mood_Pessimist</li>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_LargeIncrease</li>
