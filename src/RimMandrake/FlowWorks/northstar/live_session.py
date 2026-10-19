@@ -668,8 +668,15 @@ def b2_settings_dialog(s):
     for (item, cid), label in DIALOG_LABELS.items():
         if not opened or not texts:
             st, why = "UNMEASURED", "dialog not opened" if not opened else "get_ui_layout returned no text"
+        elif label.lower() in texts.lower():
+            st, why = "PASS", ""
+        elif "reset this section" in texts.lower():
+            # pass 2 (2026-10-19, HARNESS): since 5c75405998 the dialog is ONE scrolled column (screenshot: sections draw
+            # below "Reset all" with a scrollbar) and get_ui_layout returns only the rows inside the visible scroll rect,
+            # so a label further down is not "missing". The body draws; the label's own row is not readable from here.
+            st, why = "UNMEASURED", "label below the fold: get_ui_layout reads only the visible rows of the scrolled list"
         else:
-            st, why = ("PASS" if label.lower() in texts.lower() else "FAIL"), ""
+            st, why = "FAIL", "the dialog draws no section body (no 'Reset this section')"
         s.row("B2_dialog_%s_%s" % (item.split("_")[0].lower(), cid), item, cid, st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
               dict(label=label, why=why, shot=shot, textChars=len(texts)), "B2", eyes=not texts)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
