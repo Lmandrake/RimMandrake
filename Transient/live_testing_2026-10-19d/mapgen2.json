@@ -1,0 +1,288 @@
+{
+ "mode": "partial",
+ "tier": "donor_off_phase0",
+ "manifestHead": "0cccafd27",
+ "utc": "2026-10-19T16:52:39Z",
+ "phases": [
+  "pre",
+  "mapgen"
+ ],
+ "ownerPresent": null,
+ "aborted": false,
+ "rows": [
+  {
+   "id": "P01_TIER_TRUTH",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "running": 536,
+    "tierLen": 19,
+    "donorsPresent": [],
+    "dlcMissing": [],
+    "vef": true,
+    "lenMatches": false
+   }
+  },
+  {
+   "id": "P02_TOOLS",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "missing": [],
+    "tools": 542
+   }
+  },
+  {
+   "id": "P03_LOG_ALIVE",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "alive": true,
+    "sentinel": "[proof log sentinel] revive 1792428714853",
+    "emitted": true,
+    "why": null,
+    "cleared": true
+   }
+  },
+  {
+   "id": "P04_MAP",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "mapId": 1,
+    "tile": 3,
+    "biome": "RM_Cauldron",
+    "colonist": "Human79122"
+   }
+  },
+  {
+   "id": "ROSTER_RM_Cauldron",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "ports": 4,
+    "notSpawning": {
+     "RM_Bileworm": "absent"
+    },
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_TheSump",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 0,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RM_RustCathedral",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 0,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "ROSTER_RUT_TheRot",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ports": 0,
+    "notSpawning": {},
+    "donorGuardedDropExpected": []
+   }
+  },
+  {
+   "id": "MAPGEN_RM_Cauldron",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 339,
+    "mapBiome": "RM_Cauldron",
+    "temperature": -2.9,
+    "wildAnimals": 0,
+    "kinds": {},
+    "plants": 1740,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66]\n  at MineralsFramework.ThingDef_StaticMineral.settlementDistProbFactor (Verse.Map "
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RM_TheSump",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 376,
+    "mapBiome": "RM_TheSump",
+    "temperature": null,
+    "wildAnimals": 2,
+    "kinds": {
+     "RSW_Urusai": 1,
+     "Iguana": 1
+    },
+    "plants": 47,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original",
+     "Error in PostMapInit() for Mergan: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7825C91C]\n  at Verse.Pawn.PostMapInit () [0x00006] in <61e4173561894da49d21",
+     "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7BAE5761]\n  at Verse.PawnTweener.TweenedPosRoot () [0x00053] in <61e41735618"
+    ],
+    "errors": 31
+   }
+  },
+  {
+   "id": "MAPGEN_RM_RustCathedral",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 524,
+    "mapBiome": "RM_RustCathedral",
+    "temperature": null,
+    "wildAnimals": 5,
+    "kinds": {
+     "RM_CoolantEel": 4,
+     "Iguana": 1
+    },
+    "plants": 3969,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  },
+  {
+   "id": "MAPGEN_RUT_TheRot",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "tile": 635,
+    "mapBiome": "RUT_TheRot",
+    "temperature": null,
+    "wildAnimals": 4,
+    "kinds": {
+     "RM_ThozzikColony": 2,
+     "RM_Thozzik": 1,
+     "RM_Brullith": 1
+    },
+    "plants": 5254,
+    "exceptions": [
+     "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref D2C22D66] Duplicate stacktrace, see ref for original"
+    ],
+    "errors": 1
+   }
+  }
+ ],
+ "summary": {
+  "PASS": 7,
+  "FAIL": 5
+ },
+ "tapLost": 0,
+ "plan": {
+  "P01_TIER_TRUTH": [
+   "jawa/running_mods details=false",
+   "no donor packageId; all five DLC; len == manifest tier len",
+   "a label that is not the list (2026-10-10: a 'tier' run on 550 mods)"
+  ],
+  "P02_TOOLS": [
+   "rimbridge list_tools",
+   "every tool this round calls is registered",
+   "a stale companion (L05, 2026-10-15) answers some calls and not others"
+  ],
+  "P03_LOG_ALIVE": [
+   "validation_core.log_revive",
+   "the sentinel warning reads back",
+   "Verse.Log cap: silent PASSes"
+  ],
+  "P04_MAP": [
+   "jawa/map_info + list_pawns faction=player",
+   "a Playing map with >=1 free colonist",
+   "rows that wait on a colonist void after a menu drop"
+  ],
+  "L01_FIRST_EXCEPTION": [
+   "Player.log of this load",
+   "0 lines containing Exception",
+   "a stale log from the previous process (identity: [JawaBench] ready line)"
+  ],
+  "L02_XREF_OURS": [
+   "Player.log",
+   "0 'Could not resolve cross-reference' lines naming RM_/RSW_/RUT_",
+   "cross-refs to absent mods' defs are expected on a 25-mod tier; only ours are graded"
+  ],
+  "L03_TEX_PORTED": [
+   "Player.log",
+   "0 texture misses on a manifest subject's texPath",
+   "a pawn texture resolves at load, not at spawn: the spawn row alone cannot see it"
+  ],
+  "L04_TEX_OURS": [
+   "Player.log",
+   "0 texture misses on any RM_/RSW_/RUT_ path (gate 0.5.5 #5)",
+   "art-owed items (no PNG yet) fail this honestly; read the split before blaming the port"
+  ],
+  "SPAWN_*": [
+   "jawa/spawn_pawn count=2 faction=none; 60 ticks; list_pawns; thing_graphic; tap",
+   "2 alive, kindActual == kind, no badTex, no new log line naming the kind/race/texPath",
+   "thing_graphic may not read a pawn graphic (then the log is the only texture evidence: said so)"
+  ],
+  "PLANT_*": [
+   "jawa/set_plants; list_things; thing_graphic",
+   "the plant stands and badTex is false",
+   "a plant with no PNG reads badTex only if the instrument can see the material"
+  ],
+  "BURST_*": [
+   "spawn hostile, kill_hostiles(pawnDef, destroyCorpses=false), 30 ticks, census the rect",
+   "acid: Filth_SpentAcid delta > 0; sentinel: WoodLog HP < max or Fire; gestation: organs > 0, acid 0",
+   "the burst's own Mod Setting off reads as a mod FAIL: the row reports the death and the tell separately"
+  ],
+  "OOMB_GROWTH": [
+   "tamed RM_LesserOomb; food need 0 then 500 ticks, repeated",
+   "RM_Oomb appears, the lesser is gone",
+   "growth is VEF's feeding counter: no VEF, no growth (P01 reads VEF in the list)"
+  ],
+  "OOMB_SPLIT": [
+   "tamed RM_GreaterOomb; same cycle",
+   ">=2 new tamed RM_LesserOomb, the greater is gone",
+   "fissionOnlyIfTamed: a wild subject never splits (spawned as player on purpose)"
+  ],
+  "HAZE_ZHOOL": [
+   "home tile -> RM_Contagion, grass site, 3 zhools, rate 5 (compressed, restored), 2500 ticks",
+   "converted ocular flora count > 0",
+   "OurBiome() refuses a non-mandrake biome: the row reads the map biome back first"
+  ],
+  "PORTAL_ENTER": [
+   "spawn RSW_DeadSarlaccHusk; ordered_job EnterPortal",
+   "a new map with a CaveExit, colonist on it",
+   "the old route listed loaded maps from a wrong key and read 'no map' x4 (SEA_DIVE_LIVE_ERRORS_1)"
+  ],
+  "PORTAL_EXIT": [
+   "ordered_job EnterPortal on the CaveExit",
+   "the colonist is back on the home map",
+   ""
+  ],
+  "MAPGEN_*": [
+   "jawa/world_tile_map_generate(tile, biome) on a scratch tile, read, map_drop",
+   "map biome == B; wild animals > 0 or plants > 0 (gate 0.5.5 #5); no exception during mapgen",
+   "a tile climate outside the roster's comfort reads 0 animals: the row says the temperature used"
+  ],
+  "ROSTER_*": [
+   "jawa/biome_probe find=<ported rows of B>",
+   "each unguarded port reads 'spawning'",
+   "rows still MayRequire'd on a donor (art owed) drop donor-off: expected, listed, not FAIL"
+  ],
+  "FLIGHT_*": [
+   "OWNER PRESENT ONLY: jawa/pawn_flight action=report kind=K",
+   "canEverFly true, maxFlightTimeStat > 0",
+   "never visual; never forced; a report read is the whole bar"
+  ],
+  "SAVE_LOAD": [
+   "go_to_main_menu; rimworld/load_game <fixed save>",
+   "Playing; 0 reference errors naming a donor def or its RSW_ rename",
+   "on a 25-mod tier the save's other mods are missing: only donor names graded"
+  ]
+ }
+}
