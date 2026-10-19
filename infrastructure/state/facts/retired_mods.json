@@ -122,6 +122,11 @@
       "retiredOn": "2026-10-18",
       "commit": "see git log of this file",
       "why": "owner 2026-10-18: \"Just put in placeholder art for now or donor copies and retire these mods!!! Just get it done.\" (Phase 0, biome_sprint_kickoff_2026-10-15 §0.5)"
-    }
+    },
+    {"packageId": "grimterra.biomesmod", "modNames": ["GrimTerra"], "retiredOn": "2026-10-18", "commit": "f880d0a6c", "why": "tail-mod retirement, design/RimMandrake/tail_mods_art_retirement_2026-10-18.md; FlowWorks ChunkStone still reads regrowth until its stand-in lands"},
+    {"packageId": "who.vfee.isopodageneline", "modNames": ["Isopoda Geneline"], "retiredOn": "2026-10-18", "commit": "f880d0a6c", "why": "tail-mod retirement, design/RimMandrake/tail_mods_art_retirement_2026-10-18.md; FlowWorks ChunkStone still reads regrowth until its stand-in lands"},
+    {"packageId": "regrowth.botr.core", "modNames": ["ReGrowth 2 (BOTR core)"], "retiredOn": "2026-10-18", "commit": "f880d0a6c", "why": "tail-mod retirement, design/RimMandrake/tail_mods_art_retirement_2026-10-18.md; FlowWorks ChunkStone still reads regrowth until its stand-in lands"},
+    {"packageId": "mlie.horrors", "modNames": ["Horrors"], "retiredOn": "2026-10-18", "commit": "f880d0a6c", "why": "tail-mod retirement, design/RimMandrake/tail_mods_art_retirement_2026-10-18.md; FlowWorks ChunkStone still reads regrowth until its stand-in lands"},
+    {"packageId": "lingluo.cockroach", "modNames": ["Cockroach"], "retiredOn": "2026-10-18", "commit": "f880d0a6c", "why": "tail-mod retirement, design/RimMandrake/tail_mods_art_retirement_2026-10-18.md; FlowWorks ChunkStone still reads regrowth until its stand-in lands"}
   ]
 }

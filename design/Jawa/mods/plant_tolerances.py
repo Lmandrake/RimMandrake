@@ -107,6 +107,14 @@ def _pct(xs, p):
     return xs[min(len(xs) - 1, max(0, int(round((len(xs) - 1) * p))))]
 
 
+def _donor_retired(d):
+    """True if the dump row `d` comes from a mod listed in retired_mods.json."""
+    if not d:
+        return False
+    import retired_mods
+    return any(retired_mods.is_retired(d.get(k)) for k in ('packageId', 'modName', 'mod'))
+
+
 def plant_homes():
     """plant defName -> the tile temperatures of every biome it was assigned to."""
     temps = bf._tile_temps()
@@ -400,6 +408,9 @@ def emit(rows, plants):
     # 🔴 Rosters and the def dump still speak the DONOR's names; a patch keyed on a donor name matches
     # nothing once the donor is retired. Translate at emit time (the bands above were fitted from the
     # donor's shipped values, which our port copied). Donor-only plants with no twin emit nothing.
+    # 🔴 Also drop rows whose SOURCE mod is retired (retired_mods.json): a frozen dump still carries e.g.
+    # AG_Gamma/AG_Septimum (Alpha Genes), and a rerun would resurrect their ops (2026-10-19).
+    rows = [r for r in rows if not _donor_retired(plants.get(r[0]))]
     seen, mapped = set(), []
     for r in rows:
         t = dnm.ours(r[0])

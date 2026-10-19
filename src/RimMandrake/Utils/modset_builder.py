@@ -308,12 +308,9 @@ TIERS = {
             #    <modDependencies>) skips it, the comp types fail to resolve, and
             #    a missing comp type DISCARDS THE WHOLE DEF silently. That ate
             #    RSW_Drazzik, RSW_WraidAlpha and the BiomesTeamPort races.
-            #  - OskarPotocki.VFE.Insectoid2 is not declared anywhere at all, yet
-            #    owns the ONLY copy of Things/Pawn/Animal/Fuelmite/* -- the texPath
-            #    RSW_Zhakka (zhakka) binds to. Without it the creature spawns
-            #    fine and renders as a magenta X.
+            #  - (OskarPotocki.VFE.Insectoid2 used to be listed here for the Fuelmite
+            #    art; retired 2026-10-18, its twins carry the art now.)
             "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: creaturebehaviors folded
-            "oskarpotocki.vfe.insectoid2",
             # 🔑 ADDED 2026-09-20 for DRUM_LURE_PREDATOR_BUILD_1: RSW_DrazzikEgg-
             # Fertilized's trap comp is MayRequire="mandrake.rm.proximityhatch" and
             # is also only in SWBestiary's <loadAfter>, not <modDependencies> --
@@ -443,7 +440,7 @@ TIERS = {
                "new RSW_Filth_WhaleDung) and VENOMVINE_PATHCOST_AND_FLYER_1 "
                "(RM_Venomvine, mandrake.rm.environmentalhazards). "
                "🔑 mandrake.rm.creaturebehaviors, sarg.alphaanimals, "
-               "mlie.starwarsanimalcollection, oskarpotocki.vfe.insectoid2 and "
+               "mlie.starwarsanimalcollection and "
                "mandrake.rm.proximityhatch are named EXPLICITLY for the reasons "
                "spelled out on the `beastmechanics` tier -- SWBestiary carries them "
                "under <loadAfter> or not at all, closure walks only "
@@ -458,13 +455,12 @@ TIERS = {
             "mandrake.rut.patches",
             "sarg.alphaanimals",
             "mlie.starwarsanimalcollection",
-            "oskarpotocki.vfe.insectoid2",
         ],
         "dlc": True,
     },
     "donor_off_w4": {
         "why": "DONOR_DEFS_PORT_TO_OURS_1 W4 gate: the Star Wars donor (mlie.starwarsanimalcollection) is NOT in the list. "
-               "Same cast as `shrublandfauna` minus that one mod (sarg.alphaanimals and insectoid2 stay: other donors, W5). "
+               "Same cast as `shrublandfauna` minus that one mod (sarg.alphaanimals stays: another donor, W5; insectoid2 retired 2026-10-18). "
                "Read the first exception, every cross-ref/config error and texture miss on RSW_/RUT_/RM_ or sw* paths.",
         "want": [
             BRIDGE,
@@ -474,7 +470,6 @@ TIERS = {
             "mandrake.rut.patches",
             "mandrake.rsw.shokk",
             "sarg.alphaanimals",
-            "oskarpotocki.vfe.insectoid2",
         ],
         "dlc": True,
     },
@@ -484,8 +479,8 @@ TIERS = {
                "its Outposts patch) may be in the closure: `forbid` refuses the tier if any dependency drags one back. "
                "Alpha Biomes (sarg.alphabiomes) was retired too (owner 2026-10-18), so retired_mods.json keeps it out; "
                "until the composed mandrake.rm.biomes is redeployed its OLD deployed About still hard-depends on it and "
-               "this tier is refused. VEF core arrives through "
-               "insectoid2 and carries the oomb growth/split comp and the bulloo/zhool Floating comp. "
+               "this tier is refused. VEF core was only ever dragged in by "
+               "insectoid2 (retired 2026-10-18), so it is now named explicitly; it carries the oomb growth/split comp and the bulloo/zhool Floating comp. "
                "Driver: src/RimMandrake/Utils/modcheck/l1_donor_off_round.py; runbook Transient/phase0_L1_runbook.md.",
         "want": [
             BRIDGE,
@@ -494,7 +489,7 @@ TIERS = {
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
             "mandrake.rsw.shokk",
-            "oskarpotocki.vfe.insectoid2",
+            "oskarpotocki.vanillafactionsexpanded.core",
             # The fixed world carries Deep Orbit's PlanetLayerDef Orbit2; without it WorldGrid.CreateRequiredLayers
             # NREs and the SAVE_LOAD row falls back to the main menu (PHASE0_L1_SAVE_LOAD, live 2026-10-16).
             "broms.deeporbit",
