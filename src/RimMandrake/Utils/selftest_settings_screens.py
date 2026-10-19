@@ -54,7 +54,7 @@ MODS = {
     }, ()),
     "HugeThings": ("RM_HugeThingsSettings.cs", "RM_HugeThings.csproj", {
         "Giant plants": "Now",
-        "Giant animals: hitbox and roofs": "Now",
+        "Giant animals": "Now",   # keyed header since HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS (601e7482f3): RM_HugeThings_GiantAnimals
         "Large Pawns footprint and custom size tiers": "NextGameStart",
         "Wake and plant smashing": "Now",
         "Big creatures: walls, slots and roofs": "Now",   # BIG_CREATURES_DESIGN_WALLS_AND_SLOTS: read at each path start, strike and tick
@@ -827,8 +827,30 @@ DELIBERATE_KEY_PREFIXES = ("hose_",)
 INTERNAL_FLAGS = {"hoseSettingsImported"}
 
 
-def check(cs, csproj, expected, extra=()):
+GROUP_RE = re.compile(r'if \(Group\(list, ("([^"]+)"|"(\w+)"\.Translate\(\)), [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)')
+
+
+def english_keyed(mod_dir):
+    """{key: English text} from the mod's Languages/English/Keyed/*.xml (a Group title may be `"KEY".Translate()`)."""
+    import glob
+    import xml.etree.ElementTree as ET
+    out = {}
+    for f in glob.glob(os.path.join(mod_dir, "Languages", "English", "Keyed", "*.xml")):
+        try:
+            for el in ET.parse(f).getroot():
+                if isinstance(el.tag, str) and el.text is not None:
+                    out[el.tag] = el.text.strip()
+        except ET.ParseError as ex:
+            out.setdefault("__parse_errors__", []).append("%s: %s" % (os.path.basename(f), ex))
+    return out
+
+
+def check(cs, csproj, expected, extra=(), keyed=None):
+    """errs, groups; each group is (title, scope, names, block text, the title argument as written in the source). A title
+    written `"KEY".Translate()` is the KEY's English Keyed text (HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS), and an unresolved key
+    is an error."""
     errs = []
+    keyed = keyed or {}
     scribed = set(re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs))
     for field, key in scribed:
         if field != key and (field, key) not in DELIBERATE_KEY_RENAMES and not any(key == p + field for p in DELIBERATE_KEY_PREFIXES):
@@ -838,9 +860,16 @@ def check(cs, csproj, expected, extra=()):
     m_end = cs.index("\n        }\n", a)          # the method's own closing brace (8-space indent)
     le = cs.find("list.End();", a)
     body = cs[a:le if 0 <= le < m_end else m_end]  # a static section drawn into the parent's list has no list.End()
-    groups = []   # (title, scope, names, text)
-    for m in re.finditer(r'if \(Group\(list, "([^"]+)", [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)', body):
-        names = re.findall(r'"(\w+)"', m.group(3))
+    groups = []   # (title, scope, names, text, raw title argument)
+    for m in GROUP_RE.finditer(body):
+        if m.group(2) is not None:
+            gtitle = m.group(2)
+        else:
+            gtitle = keyed.get(m.group(3))
+            if gtitle is None:
+                errs.append(f"group title key {m.group(3)!r} has no English Keyed text")
+                gtitle = m.group(3)
+        names = re.findall(r'"(\w+)"', m.group(5))
         i = body.index("{", m.end())          # the block's opening brace (the line after the if(...))
         depth, j = 0, i
         while j < len(body):
@@ -850,12 +879,12 @@ def check(cs, csproj, expected, extra=()):
             if depth == 0:
                 break
         else:
-            errs.append(f"group {m.group(1)!r}: unbalanced braces")
+            errs.append(f"group {gtitle!r}: unbalanced braces")
         if "if (Group(" in body[i:j]:
-            errs.append(f"group {m.group(1)!r}: swallows the next group (a closing brace is missing)")
-        scope = {"[next game start]": "NextGameStart"}.get(m.group(4), m.group(2))   # a tag override is the audited label
-        groups.append((m.group(1), scope, names, body[i:j]))
-    got = {t: s for t, s, _, _ in groups}
+            errs.append(f"group {gtitle!r}: swallows the next group (a closing brace is missing)")
+        scope = {"[next game start]": "NextGameStart"}.get(m.group(6), m.group(4))   # a tag override is the audited label
+        groups.append((gtitle, scope, names, body[i:j], m.group(1)))
+    got = {t: s for t, s, _, _, _ in groups}
     if len(groups) != len(expected):
         errs.append(f"{len(groups)} groups found, expected {len(expected)}")
     for t, s in expected.items():
@@ -864,7 +893,7 @@ def check(cs, csproj, expected, extra=()):
         elif got[t] != s:
             errs.append(f"group {t!r} scope tag {got[t]} but the audited scope is {s}")
     seen = {}
-    for title, _, names, text in groups:
+    for title, _, names, text, _ in groups:
         for n in names:
             if n in seen:
                 errs.append(f"{n} listed in two groups: {seen[n]!r} and {title!r}")
@@ -954,18 +983,20 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     src = os.path.join(tier, base, "Source")
     cs = open(os.path.join(src, cs_name), encoding="utf-8").read()
     pj = open(os.path.join(src, pj_name), encoding="utf-8").read()
+    keyed = english_keyed(os.path.join(tier, base))
     bad = total = 0
-    e, groups = check(cs, pj, expected, extra)
+    e, groups = check(cs, pj, expected, extra, keyed)
     total += 1
     print(("ok   " if not e else "FAIL ") + f"{name}: real screen, every setting grouped, resettable, scopes as audited" + ("" if not e else " | " + "; ".join(e[:4])))
     bad += bool(e)
     g0, g1 = groups[0], (groups[1] if len(groups) > 1 else groups[0])
     last0 = g0[2][-1]
     g1lit = {'NextGameStart': 'Now'}.get(g1[1], g1[1])   # a [next game start] override is written as SettingScope.Now
+    raw_of = {g[0]: g[4] for g in groups}                 # title -> its argument as written ("title" or "KEY".Translate())
     scope_swap = next(((t, s) for t, s in expected.items() if s not in ("Now", "NextGameStart")), None)
     plants = [
         ("a name dropped from its group array", lambda c, p: (c.replace(f', "{last0}" }}', ' }', 1) if f', "{last0}" }}' in c else c.replace(f'"{last0}" }}', ' }', 1), p), "no group"),
-        ("a setting in two groups", lambda c, p: (c.replace(f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ ', f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
+        ("a setting in two groups", lambda c, p: (c.replace(f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ ', f'{g1[4]}, RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
         ("group names a non-setting", lambda c, p: (c.replace(f'"{last0}" }}', '"notASettingAtAll" }', 1), p), "not a Scribed setting"),
         ("a Group's closing brace lost", lambda c, p: (c.replace('                list.GapLine();\n            }\n', '                list.GapLine();\n', 1), p), "swallows|unbalanced braces"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
@@ -973,7 +1004,10 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     ]
     if scope_swap:
         t, s = scope_swap
-        plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'"{t}", RimMandrake.Shared.SettingScope.{s}', f'"{t}", RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))
+        plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.{s}', f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))
+    tk = next((g[4] for g in groups if g[4].endswith(".Translate()")), None)
+    if tk:
+        plants.append(("a keyed group title with no English text", lambda c, p: (c.replace(tk, tk.replace('".Translate()', 'Zz".Translate()'), 1), p), "no English Keyed text"))
     if "NextGameStart" in expected.values():
         plants.append(("a next-game-start tag overridden to [now]", lambda c, p: (c.replace('"[next game start]"))', '"[now]"))', 1), p), "audited scope"))
     decl = re.search(r'\.Declare\(([^)]*)\)', cs)
@@ -1015,7 +1049,7 @@ def run_mod(name, cs_name, pj_name, expected, extra):
             bad += 1
             continue
         try:
-            e, _ = check(c2, p2, expected, extra)
+            e, _ = check(c2, p2, expected, extra, keyed)
         except Exception as ex:   # a broken file must still be a failure, not a crash
             e = [f"exception {ex}"]
         hit = any(w in x for x in e for w in want.split('|'))
@@ -1115,9 +1149,25 @@ def check_flowworks_main(cs, csproj):
         errs.append("no Reset-all button")
     if "shippedDefaults = CaptureDefaults()" not in cs:
         errs.append("no shippedDefaults snapshot for per-section reset")
-    # FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET: a throw in the long draw must be caught and shown, not left as a blank screen
-    if "catch (System.Exception" not in body[:body.index("lastListHeight") if "lastListHeight" in body else len(body)] and "drawFailure" not in cs:
-        errs.append("the screen's draw is not guarded: a throw would leave it blank below Reset all")
+    # FLOWWORKS_SETTINGS_MEND_EMPTY_BELOW_RESET: a throw in the long draw must be caught and shown, not left as a blank screen.
+    # In the method: list.Begin(...) BEFORE the try (so the catch never leaves the group open), a catch of System.Exception
+    # (not a narrower type) that records drawFailure, and list.End() / Widgets.EndScrollView() AFTER the catch. (Until
+    # 2026-10-19 this read `"catch" not in <text before the try> and "drawFailure" not in cs`: only the variable's name was
+    # really checked, so a narrowed or deleted catch passed.)
+    meth = cs[a:cs.index("\n        }\n", a)]
+    tr, cat = meth.find("try\n"), meth.find("catch (System.Exception ")
+    guard = []
+    if tr < 0 or cat < tr:
+        guard.append("no try ... catch (System.Exception ...) around the draw")
+    else:
+        if not re.match(r'catch \(System\.Exception (\w+)\)\s*\{[^}]*drawFailure = \1;', meth[cat:]):
+            guard.append("the catch does not record drawFailure")
+        if not 0 <= meth.find("list.Begin(") < tr:
+            guard.append("list.Begin is not before the try")
+        if not (meth.rfind("list.End();") > cat and meth.rfind("Widgets.EndScrollView();") > cat):
+            guard.append("list.End / EndScrollView are not after the catch")
+    if guard:
+        errs.append("the screen's draw is not guarded (a throw would leave it blank below Reset all): " + "; ".join(guard))
     return errs
 
 
@@ -1141,6 +1191,13 @@ def run_flowworks_main():
         ("Reset-all removed", lambda c, p: (c.replace("SettingsKitMastersDrawer.ResetAllButton", "SettingsKitMastersDrawer.ResetAllButtn"), p), "Reset-all"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitMastersDrawer.cs", "SettingsKitMastersDrawr.cs")), "SettingsKitMastersDrawer.cs"),
         ("the draw guard removed", lambda c, p: (c.replace("drawFailure", "drawFailur3"), p), "not guarded"),
+        ("the draw guard narrowed to one exception type",
+         lambda c, p: (c.replace("catch (System.Exception ex)", "catch (System.ArgumentException ex)", 1), p), "not guarded"),
+        ("list.End moved inside the try",
+         lambda c, p: (c.replace("            list.End();\n            Widgets.EndScrollView();", "            Widgets.EndScrollView();", 1)
+                       .replace("            RM_WaterMendSettings.DoSettingsSection(list);\n            }\n            catch",
+                                "            RM_WaterMendSettings.DoSettingsSection(list);\n            list.End();\n            }\n            catch", 1), p),
+         "not guarded"),
     ]
     for label, f, want in plants:
         c2, p2 = f(cs, pj)
