@@ -31,7 +31,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Empty</defName>
     <label>canal (0.5 m)</label>
-    <description>Ground dug one level below the surface. Climbing in or out takes a moment; walking along it is easy. Dig again to deepen it.</description>
+    <description>Ground dug half a metre below the surface. Climbing in or out takes a moment; walking along it is easy. Dig again to deepen it.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <renderPrecedence>325</renderPrecedence>
     <fertility>0</fertility>
@@ -58,7 +58,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Mid</defName>
     <label>canal (1 m)</label>
-    <description>Ground dug two levels below the surface. Climbing in or out is slow work; walking along the bottom is not.</description>
+    <description>Ground dug a metre below the surface. Climbing in or out is slow work; walking along the bottom is not.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.78,0.75,0.70)</color>
     <renderPrecedence>326</renderPrecedence>
@@ -84,7 +84,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Deep</defName>
     <label>canal (1.5 m)</label>
-    <description>Ground dug three levels below the surface. Climbing in or out costs dearly; walking along the bottom is easy.</description>
+    <description>Ground dug a metre and a half below the surface. Climbing in or out costs dearly; walking along the bottom is easy.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.58,0.55,0.51)</color>
     <renderPrecedence>327</renderPrecedence>
@@ -119,7 +119,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Superdeep</defName>
     <label>pit (2 m or more)</label>
-    <description>Ground dug four levels below the surface. Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
+    <description>Ground dug two metres or more below the surface. Anything that walks into it falls in and is held there; without a ladder or a ramp standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.38,0.36,0.33)</color>
     <renderPrecedence>328</renderPrecedence>
@@ -159,7 +159,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Lakebed_Shallow</defName>
     <label>dry lakebed</label>
-    <description>The cracked floor of a pond that has been drained, two levels below the surrounding ground. Climbing in or out is slow work; walking along it is not. Water pumped back fills it again.</description>
+    <description>The cracked floor of a pond that has been drained, a metre below the surrounding ground. Climbing in or out is slow work; walking along it is not. Water pumped back fills it again.</description>
     <texturePath>Terrain/FlowWorks/RM_Lakebed_Shallow</texturePath>
     <renderPrecedence>329</renderPrecedence>
     <fertility>0</fertility>
@@ -184,7 +184,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Lakebed_Deep</defName>
     <label>deep dry lakebed</label>
-    <description>The cracked floor of a drained deep pond, four levels below the surrounding ground. Where the bed shelves gently it can be walked out of; where it drops sheer, it holds whatever falls in. Water pumped back fills it again.</description>
+    <description>The cracked floor of a drained deep pond, two metres or more below the surrounding ground. Where the bed shelves gently it can be walked out of; where it drops sheer, it holds whatever falls in. Water pumped back fills it again.</description>
     <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
     <renderPrecedence>330</renderPrecedence>
     <fertility>0</fertility>
@@ -210,7 +210,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Lakebed_Abyss</defName>
     <label>deep lake floor</label>
-    <description>The cracked floor at the middle of a big drained lake, eight levels or more below the surrounding ground. The bed shelves up gently to the shore, so it can be walked out of. Water pumped back fills it again.</description>
+    <description>The cracked floor at the middle of a big drained lake, four metres or more below the surrounding ground. The bed shelves up gently to the shore, so it can be walked out of. Water pumped back fills it again.</description>
     <texturePath>Terrain/FlowWorks/RM_Lakebed_Deep</texturePath>
     <color>(0.62, 0.58, 0.56)</color>
     <renderPrecedence>331</renderPrecedence>

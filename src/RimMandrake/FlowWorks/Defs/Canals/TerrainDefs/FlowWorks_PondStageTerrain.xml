@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (design/RimMandrake/pond_depth_design_2026-10-16.md §4; owner by card 2026-10-16,
-  "Yes, ponds shallow out"). The two stage terrains a drawn-down still pond shows between its own water and mud:
+  "Yes, ponds shallow out"). The stage terrains a drawn-down still pond shows between its own water and mud:
     w = 3  RM_WaterChestDeepStill  vanilla chest-deep art, still (no MovingFluid, no River tag)
     w = 1  RM_WaterThin            ankle-deep, the bed showing (D4: the one new texture)
-  Both are WaterShallowBase children, so they carry the Water tag: IsWater, fish, splashes and fire behave as water, the
+    under 25 cm  RM_WaterVeryShallow  a damp film, the ground showing through
+  All are WaterShallowBase children, so they carry the Water tag: IsWater, fish, splashes and fire behave as water, the
   square stays a natural source (RM_MapComponent_Excavation.IsNaturalLiquid) and its body keeps the default water fluid
   (RM_FluidIdentity: no LiquidDef claims them).
 
