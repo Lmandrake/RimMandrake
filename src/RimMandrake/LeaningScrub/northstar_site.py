@@ -55,6 +55,12 @@ def preflight(s):
             bad.append("settings_defaults: not at shipped defaults (or missing): %s" % wrong)
     except Exception as ex:
         bad.append("settings_defaults: %s" % ex)
+    try:    # no raid, no incident may arrive and hurt a test pawn mid-chain (as Cauldron's preflight does)
+        st = s.call("jawa/site_state", storyteller="off", clearIncidentQueue=True) or {}
+        if (st.get("storyteller") or {}).get("enabledAfter") is not False:
+            bad.append("storyteller: could not be turned off: %r" % (st.get("storyteller"),))
+    except Exception as ex:
+        bad.append("storyteller: %s" % ex)
     try:
         with contextlib.suppress(Exception):
             s.call("jawa/weather_set", unlock=True)

@@ -5,7 +5,7 @@ Built only from northstar_driver.site primitives (existing bridge tools).
 The quicktest map the baroque_wave0 tier starts on is enough: every mechanic this suite drives is
 keyed on a def, a weather or a Mod Settings field, not on the map's biome (the native-animal exemption
 of the vent bloom is compared against whatever biome THIS map has, read live). The suite builds and
-clears its own pads, 45 cells from the map centre."""
+clears its own pads, up to 85 cells from the map centre."""
 import contextlib
 import os
 import sys
@@ -39,8 +39,8 @@ def _same(got, want):
 def preflight(s):
     bad = []
     mm = s.call("jawa/map_info") or {}
-    if min(mm.get("sizeX") or 0, mm.get("sizeZ") or 0) < 150:
-        bad.append("map_size: both axes must be >= 150 (pads sit 45 cells from the centre), got "
+    if min(mm.get("sizeX") or 0, mm.get("sizeZ") or 0) < 200:
+        bad.append("map_size: both axes must be >= 200 (validation.PADS reach 85 cells from the centre, pads are 24 wide), got "
                    "%sx%s" % (mm.get("sizeX"), mm.get("sizeZ")))
     try:
         site.dlc_status(s)

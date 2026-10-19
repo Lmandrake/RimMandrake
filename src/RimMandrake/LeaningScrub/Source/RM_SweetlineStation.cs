@@ -218,9 +218,10 @@ namespace RimMandrake.LeaningScrub
             {
                 campCount++;
                 ThingDef ash = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Ash");
-                if (ash != null)
+                IntVec3 ashCell = parent.Position + GenRadial.RadialPattern[Rand.Range(1, 9)];
+                if (ash != null && ashCell.InBounds(map))
                 {
-                    FilthMaker.TryMakeFilth(parent.Position + GenRadial.RadialPattern[Rand.Range(1, 9)], map, ash);
+                    FilthMaker.TryMakeFilth(ashCell, map, ash);
                 }
                 AddHistory("a road-party camped a night under it.");
             }

@@ -447,6 +447,12 @@ namespace RimMandrake.LeaningScrub
         public override void PostExposeData()
         {
             base.PostExposeData();
+            if (Scribe.mode == LoadSaveMode.Saving && parent.Spawned)
+            {
+                // A key destroyed since the last sweep saves as a null reference, and a null dictionary key
+                // is a Log.Error on load ("Null key while loading dictionary"): drop gone things first.
+                Prune();
+            }
             Scribe_Deep.Look(ref held, "rmHoardHeld", this);
             Scribe_Collections.Look(ref firstSeen, "rmHoardFirstSeen", LookMode.Reference, LookMode.Value,
                 ref tmpKeys, ref tmpValues);
