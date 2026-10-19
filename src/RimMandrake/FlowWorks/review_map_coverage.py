@@ -58,6 +58,9 @@ FEATURES = [
      "Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat", M + "dev-placed map controls, no station yet"),
     ("gizmo", r'^"(Read now|Schedule\.\.\.|Invert|Fast)"$|^"(Hold at|Radius:|Flows) " \+|^EdgeNames\[edge\] \+',
      "Map controls: meter, level holder, timer, map-edge setter, current painter, thermostat", M + "dev-placed map controls, no station yet"),
+    # our own copy of vanilla ChunkStone art: the 'small stones' look of every dev-placed map control above
+    ("tex", r"^StandIn/Things/Item/Chunk/ChunkStone/RockLow[A-D]\.png$", "Map-control stone art (stand-in copy of vanilla ChunkStone)",
+     M + "dev-placed map controls, no station yet"),
     ("set", r"^(depthEngineEnabled|pulseIntervalTicks|flowPerPulse)$", "The flow engine and its pulse", "flow_spreads"),
     ("set", r"^(viscosityEnabled|thickCreepEnabled|waterFrontCreepEnabled|levelBySurfaceEnabled|levelSetEnabled|levelExactEnabled)$", "Viscosity: tar crawls", "flow_identity"),
     ("set", r"^(sourceBudgetEnabled|stickyLimitlessEnabled|wetnessCutoffEnabled|minLimitlessBodyCells)$",
