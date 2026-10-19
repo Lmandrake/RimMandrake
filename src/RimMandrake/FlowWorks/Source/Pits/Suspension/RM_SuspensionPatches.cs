@@ -68,6 +68,13 @@ namespace RimMandrake.FlowWorks.Pits
 				__result = ex.ExcavatedDepthAt(c) > 0;
 				return;
 			}
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a sunken bridge's anchor stands on a dry dug ledge (the designator
+			// checks it is at the deck's height)
+			if (RM_SuspensionDefOf.IsAnchorDef(entDef) && ex.ExcavatedDepthAt(c) > 0)
+			{
+				__result = RM_SuspensionSettings.sunkenBridges && ex.FillAt(c) == 0;
+				return;
+			}
 			if (entDef == RM_SuspensionDefOf.RM_SuspensionRailing)
 			{
 				__result = RM_MapComponent_SuspensionBridges.DeckAt(map, c) != null;
@@ -262,7 +269,8 @@ namespace RimMandrake.FlowWorks.Pits
 				return;
 			}
 			float load = b.SpanLoad(r, RM_SuspensionMath.SegmentOf(i, r.Supports));
-			string line = RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg);
+			string line = RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg, r.deckNotches,
+				RM_MapComponent_SuspensionBridges.DeckAt(map, c).FloorBandPassesUnder);
 			__result = __result == null ? line : line + " · below: " + __result;
 		}
 	}
@@ -346,13 +354,383 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 	}
 
-	/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the floor band under a suspension deck. Until that item lands nobody
-	/// is ever in it (a deck is a wall from below).</summary>
+	/// <summary>
+	/// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (construction design §1.4, §4; parent §5.1-§5.2; R8 amended 2026-10-18,
+	/// owner: <i>"only for these new bridges uniquely, NOT actual tunnels."</i>): the FLOOR BAND under a suspension deck.
+	///
+	/// A deck square has two bands: the deck band (everyone who came on from an anchor, a ledge or another deck square) and the
+	/// floor band (everyone who walked in along the hole's floor). The floor band exists only under a Building_SuspensionDeck
+	/// whose floor is at least 2 m below it (FloorBandPassesUnder, setting suspensionWalkUnder); no roof, dug passage, cover or
+	/// other building ever grants it. A pawn's band is decided as it steps onto the square (StepGoesUnder) and kept in the
+	/// bridges component (saved). Everything that asks "is this pawn down in the hole" (fire, slime, fill, exposure, falls,
+	/// crush, shots, the sink, the walked-step cost and floor, the cliff masks' floor view) reads InFloorBand.
+	/// </summary>
 	public static class RM_SuspensionUnderpass
 	{
+		/// <summary>The suspension deck on this square whose floor band passes under it (intact), or null.</summary>
+		public static Building_SuspensionDeck PassingDeckAt(Map map, IntVec3 c)
+		{
+			return RM_MapComponent_SuspensionBridges.DeckAt(map, c) is Building_SuspensionDeck d && d.FloorBandPassesUnder ? d : null;
+		}
+
+		/// <summary>Is this pawn under a suspension deck now (in the floor band of the square it stands on)?</summary>
 		public static bool InFloorBand(Pawn p)
 		{
-			return false;
+			if (p == null || !p.Spawned)
+			{
+				return false;
+			}
+			RM_MapComponent_SuspensionBridges b = p.Map.GetComponent<RM_MapComponent_SuspensionBridges>();
+			return b != null && b.InBandSet(p) && PassingDeckAt(p.Map, p.Position) != null;
+		}
+
+		/// <summary>The walking depth (notches) of a square as the floor band reads it: a deck the floor band passes under reads
+		/// its floor; any other deck its walking height (a cover 0); no deck, the climb depth.</summary>
+		public static int FloorViewDepthAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			if (eng == null || !c.InBounds(map))
+			{
+				return 0;
+			}
+			int d = eng.ClimbDepthAt(c);
+			if (d <= 0)
+			{
+				return d;
+			}
+			Building_SpanDeck deck = RM_SpanUtility.DeckAt(map, c);
+			if (deck == null || deck.FloorBandPassesUnder)
+			{
+				return d;
+			}
+			return RM_SpanMath.WalkingDepth(d, deck.Read);
+		}
+
+		/// <summary>Does this pawn's step from <paramref name="from"/> into <paramref name="to"/> go under a deck (or along
+		/// the floor band from one deck square to the next)?</summary>
+		public static bool StepGoesUnder(Pawn p, IntVec3 from, IntVec3 to)
+		{
+			Map map = p?.Map;
+			if (map == null || !from.InBounds(map) || !to.InBounds(map))
+			{
+				return false;
+			}
+			Building_SuspensionDeck dTo = PassingDeckAt(map, to);
+			if (dTo == null)
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			bool fromDecked = RM_SpanUtility.DeckedAt(map, from);
+			int fromWalk = eng == null ? 0 : RM_SpanUtility.WalkingDepth(map, from, eng.ClimbDepthAt(from));
+			bool fromBand = fromDecked && from == p.Position ? InFloorBand(p) : fromDecked && PassingDeckAt(map, from) != null
+				&& RM_MapComponent_SuspensionBridges.Of(map)?.InBandSet(p) == true;
+			return RM_SuspensionMath.StepGoesUnder(true, dTo.DeckNotches, fromDecked, fromBand, fromWalk);
+		}
+
+		/// <summary>Does a step that leaves a floor-band square stay at floor level (it always does: the floor band never climbs
+		/// onto the deck it is under)? True when the pawn is in the floor band at <paramref name="from"/>.</summary>
+		public static bool StepLeavesUnder(Pawn p, IntVec3 from)
+		{
+			return p != null && from == p.Position && InFloorBand(p);
+		}
+
+		/// <summary>Which view of the cliff masks a path request of this pawn uses: the floor view (decks the floor band passes
+		/// under read as the floor) for a pawn in the floor band or down in a hole on an undecked square; else the deck view.</summary>
+		public static bool UsesFloorView(Pawn p)
+		{
+			if (p == null || !p.Spawned || !RM_SuspensionSettings.suspensionWalkUnder)
+			{
+				return false;
+			}
+			if (InFloorBand(p))
+			{
+				return true;
+			}
+			Map map = p.Map;
+			if (RM_SpanUtility.DeckedAt(map, p.Position))
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			return eng != null && eng.ClimbDepthAt(p.Position) > 0;
+		}
+
+		/// <summary>The pawn just walked from <paramref name="from"/> onto <paramref name="to"/>: its band there.</summary>
+		public static void Entered(Pawn p, IntVec3 from, IntVec3 to)
+		{
+			RM_MapComponent_SuspensionBridges b = RM_MapComponent_SuspensionBridges.Of(p?.Map);
+			if (b == null)
+			{
+				return;
+			}
+			if (PassingDeckAt(p.Map, to) == null)
+			{
+				b.SetBand(p, false);
+				return;
+			}
+			bool fromDecked = RM_SpanUtility.DeckedAt(p.Map, from);
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(p.Map);
+			int fromWalk = eng == null ? 0 : RM_SpanUtility.WalkingDepth(p.Map, from, eng.ClimbDepthAt(from));
+			bool fromBand = fromDecked && b.InBandSet(p) && PassingDeckAt(p.Map, from) != null;
+			b.SetBand(p, RM_SuspensionMath.StepGoesUnder(true, PassingDeckAt(p.Map, to).DeckNotches, fromDecked, fromBand, fromWalk));
+		}
+
+		/// <summary>The sink depth (notches) the pawn's draw reads on a square: its walking height on a suspension deck in the
+		/// deck band, the hole's depth under it (floor band). Covers keep their old read.</summary>
+		public static int DrawDepth(Pawn p, IntVec3 c, int hollow)
+		{
+			if (hollow <= 0 || p?.Map == null || !(RM_MapComponent_SuspensionBridges.DeckAt(p.Map, c) is Building_SuspensionDeck d))
+			{
+				return hollow;
+			}
+			bool under = c == p.Position ? InFloorBand(p) : StepGoesUnder(p, p.Position, c);
+			if (under)
+			{
+				return hollow;
+			}
+			int h = d.DeckNotches;
+			return h < hollow ? h : hollow;
+		}
+
+		/// <summary>Is this pawn standing on a deck (deck band)?</summary>
+		public static bool OnDeck(Pawn p)
+		{
+			return p != null && p.Spawned && RM_SpanUtility.DeckedAt(p.Map, p.Position) && !InFloorBand(p);
+		}
+
+		/// <summary>The nearest open floor square for something that may not rest under a deck: dug, no deck, standable.</summary>
+		public static IntVec3 OpenFloorNear(Map map, IntVec3 c)
+		{
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return IntVec3.Invalid;
+			}
+			foreach (IntVec3 n in GenRadial.RadialCellsAround(c, 8.9f, false))
+			{
+				if (n.InBounds(map) && eng.ClimbDepthAt(n) > 0 && !RM_SpanUtility.DeckedAt(map, n) && n.Standable(map)
+					&& n.GetFirstItem(map) == null)
+				{
+					return n;
+				}
+			}
+			return IntVec3.Invalid;
+		}
+
+		/// <summary>Nothing rests under a deck: an item or corpse a floor-band pawn left on a decked square slides to the
+		/// nearest open floor square. Returns whether it moved.</summary>
+		public static bool SlideOut(Thing t)
+		{
+			if (t == null || !t.Spawned || PassingDeckAt(t.Map, t.Position) == null)
+			{
+				return false;
+			}
+			Map map = t.Map;
+			IntVec3 to = OpenFloorNear(map, t.Position);
+			if (!to.IsValid)
+			{
+				return false;
+			}
+			t.DeSpawn();
+			GenSpawn.Spawn(t, to, map);
+			Slid++;
+			return true;
+		}
+
+		/// <summary>State read for the functional script: things slid out from under a deck this session.</summary>
+		public static int Slid;
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS: each walked step decides the pawn's band on the square it lands on.</summary>
+	[HarmonyPatch(typeof(Pawn_PathFollower), "TryEnterNextPathCell")]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionBandStep
+	{
+		[HarmonyPrefix]
+		public static void Prefix(Pawn ___pawn, out IntVec3 __state)
+		{
+			__state = ___pawn?.Position ?? IntVec3.Invalid;
+		}
+
+		[HarmonyPostfix]
+		public static void Postfix(Pawn ___pawn, IntVec3 __state)
+		{
+			if (___pawn != null && ___pawn.Spawned && __state.IsValid && ___pawn.Position != __state)
+			{
+				RM_SuspensionUnderpass.Entered(___pawn, __state, ___pawn.Position);
+			}
+		}
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS: a pawn set down anywhere (a fall, a teleport, a knock off the edge) is on whatever it
+	/// lands on: the deck band if that is a deck.</summary>
+	[HarmonyPatch(typeof(Pawn), nameof(Pawn.Notify_Teleported))]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionBandTeleport
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn __instance)
+		{
+			RM_MapComponent_SuspensionBridges.Of(__instance?.Map)?.SetBand(__instance, false);
+		}
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS: the per-step floor (RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed) reads a decked square at its
+	/// walking height; a floor-band step under a deck is judged at the floor instead.</summary>
+	[HarmonyPatch(typeof(RM_Patch_PathFollower_SuperdeepFloor), nameof(RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed))]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionUnderStepFloor
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn pawn, RM_MapComponent_Excavation eng, IntVec3 next, ref bool __result)
+		{
+			if (__result || pawn == null || eng == null || !RM_SuspensionSettings.suspensionWalkUnder)
+			{
+				return;
+			}
+			IntVec3 from = pawn.Position;
+			if (!RM_SuspensionUnderpass.StepGoesUnder(pawn, from, next) && !RM_SuspensionUnderpass.StepLeavesUnder(pawn, from))
+			{
+				return;
+			}
+			Map map = pawn.Map;
+			int k = RM_PocketGrid.ClimbLimitOf(pawn);
+			int fromD = RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, from);
+			int toD = RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, next);
+			if (from.x != next.x && from.z != next.z)
+			{
+				__result = RM_PitTrapMath.DiagonalAllowed(fromD, toD,
+					RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, new IntVec3(next.x, 0, from.z)),
+					RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, new IntVec3(from.x, 0, next.z)), k);
+				return;
+			}
+			__result = RM_PitTrapMath.StepAllowed(fromD, toD, k);
+		}
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS: the walked step under a deck costs what a step along the hole's floor costs (the pit step
+	/// cost would price it as a climb onto the deck). Runs before RM_Patch_PitStepCost, which yields to an override.</summary>
+	[HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionUnderStepCost
+	{
+		[HarmonyPrefix]
+		[HarmonyPriority(Priority.First)]
+		public static void Prefix(PathGrid __instance, IntVec3 c, bool perceivedStatic, IntVec3 prevCell, ref int? baseCostOverride)
+		{
+			if (perceivedStatic || !prevCell.IsValid || baseCostOverride.HasValue || !RM_SuspensionSettings.suspensionWalkUnder)
+			{
+				return;
+			}
+			Pawn p = RM_Patch_PathFollower_StepPawn.current;
+			Map map = __instance.map;
+			if (p == null || map == null || p.Map != map || !c.InBounds(map) || !prevCell.InBounds(map))
+			{
+				return;
+			}
+			if (!RM_SuspensionUnderpass.StepGoesUnder(p, prevCell, c) && !RM_SuspensionUnderpass.StepLeavesUnder(p, prevCell))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return;
+			}
+			if (eng.FillAt(c) > 0)
+			{
+				baseCostOverride = map.terrainGrid.TerrainAt(c)?.pathCost ?? 0;   // wading under the deck: the water's cost
+				return;
+			}
+			int from = RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, prevCell);
+			int to = RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, c);
+			int deeper = to > from ? to : from;
+			int cost = RM_ExcavationDepth.DryTerrainFor((byte)deeper)?.pathCost ?? 0;
+			baseCostOverride = RM_PitTrapMath.DryStepBaseCost(from, to, cost);
+		}
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS (construction design §1.4): shots. Under a deck a pawn is at the floor, so the cliff rule
+	/// (V5) judges it there; and a SOLID deck blocks a shot between someone on a deck and someone under one (a grate does not;
+	/// within a band the deck is ignored).</summary>
+	[HarmonyPatch(typeof(Verb), nameof(Verb.CanHitTargetFrom))]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionBandShots
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Verb __instance, IntVec3 root, LocalTargetInfo targ, ref bool __result)
+		{
+			Thing caster = __instance?.caster;
+			Map map = caster?.Map;
+			if (map == null || !targ.IsValid || __instance.IsMeleeAttack || !RM_SuspensionSettings.suspensionWalkUnder)
+			{
+				return;
+			}
+			Pawn shooter = caster as Pawn;
+			Pawn target = targ.Thing as Pawn;
+			bool sUnder = shooter != null && root == shooter.Position && RM_SuspensionUnderpass.InFloorBand(shooter);
+			bool tUnder = target != null && RM_SuspensionUnderpass.InFloorBand(target);
+			if (!sUnder && !tUnder)
+			{
+				return;
+			}
+			if (!__result)
+			{
+				// the cliff rule read the decked square at the deck's height: judge the floor band at the floor
+				if (!RM_SuperdeepShooting.RuleAppliesTo(__instance) || RM_SuperdeepTrap.EngineOf(map) == null)
+				{
+					return;
+				}
+				RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+				bool sFloorSide = sUnder || (!RM_SpanUtility.DeckedAt(map, root) && eng.ClimbDepthAt(root) > 0);
+				bool tFloorSide = tUnder || (!RM_SpanUtility.DeckedAt(map, targ.Cell) && eng.ClimbDepthAt(targ.Cell) > 0);
+				if (!(sFloorSide && tFloorSide))
+				{
+					return;
+				}
+				__result = !RM_RelativeRulesMath.ShotBlocked((x, z) => RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, new IntVec3(x, 0, z)),
+					root.x, root.z, targ.Cell.x, targ.Cell.z, RM_SuperdeepShooting.CliffNotches);
+				return;
+			}
+			bool sOnDeck = shooter != null && root == shooter.Position ? RM_SuspensionUnderpass.OnDeck(shooter) : RM_SpanUtility.DeckedAt(map, root);
+			bool tOnDeck = target != null ? RM_SuspensionUnderpass.OnDeck(target) : RM_SpanUtility.DeckedAt(map, targ.Cell);
+			bool sGrate = sUnder && RM_SpanUtility.DeckAt(map, root)?.Grated == true;
+			bool tGrate = tUnder && RM_SpanUtility.DeckAt(map, targ.Cell)?.Grated == true;
+			if (RM_SuspensionMath.ShotBlockedBetweenBands(sUnder, sGrate, sOnDeck, tUnder, tGrate, tOnDeck))
+			{
+				__result = false;
+			}
+		}
+	}
+
+	/// <summary>SUSPENSION_UNDERPASS: nothing rests under a deck. What a floor-band pawn puts down there slides to the nearest
+	/// open floor square (corpses: RM_MapComponent_SuspensionBridges' sweep).</summary>
+	[HarmonyPatch(typeof(Pawn_CarryTracker), nameof(Pawn_CarryTracker.TryDropCarriedThing),
+		new[] { typeof(IntVec3), typeof(ThingPlaceMode), typeof(Thing), typeof(System.Action<Thing, int>) },
+		new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionDropUnder
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn_CarryTracker __instance, bool __result, Thing resultingThing)
+		{
+			if (__result && __instance?.pawn != null && RM_SuspensionUnderpass.InFloorBand(__instance.pawn))
+			{
+				RM_SuspensionUnderpass.SlideOut(resultingThing);
+			}
+		}
+	}
+
+	[HarmonyPatch(typeof(Pawn_CarryTracker), nameof(Pawn_CarryTracker.TryDropCarriedThing),
+		new[] { typeof(IntVec3), typeof(int), typeof(ThingPlaceMode), typeof(Thing), typeof(System.Action<Thing, int>) },
+		new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
+	[RimMandrake.Shared.PatchFeature("Walking under suspension bridges", typeof(RM_SuspensionSettings), "suspensionWalkUnder")]
+	public static class RM_Patch_SuspensionDropUnderCount
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn_CarryTracker __instance, bool __result, Thing resultingThing)
+		{
+			RM_Patch_SuspensionDropUnder.Postfix(__instance, __result, resultingThing);
 		}
 	}
 }

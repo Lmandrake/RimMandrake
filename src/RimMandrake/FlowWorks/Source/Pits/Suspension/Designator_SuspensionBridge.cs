@@ -97,6 +97,16 @@ namespace RimMandrake.FlowWorks.Pits
 					stuff = StuffDef,
 					grated = Grated,
 				};
+				// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the deck's height is the ends' (surface, or one dry ledge depth: a
+				// sunken bridge, setting sunkenBridges)
+				r.deckNotches = RM_SuspensionMath.DeckNotchesFor(EndDepth(map, r.Cell(0, 0)), EndDepth(map, r.Cell(0, r.length - 1)),
+					RM_SuspensionSettings.sunkenBridges);
+				if (r.deckNotches < 0)
+				{
+					first = first ?? "Both ends of a suspension bridge must stand at one height: solid surface ground, or (a sunken bridge) "
+						+ "dry ledges at the same depth inside the hole.";
+					continue;
+				}
 				string why = Plan(map, r, dragged);
 				if (why == null)
 				{
@@ -121,7 +131,7 @@ namespace RimMandrake.FlowWorks.Pits
 				for (int i = 0; i < r.length; i++)
 				{
 					IntVec3 c = r.Cell(lane, i);
-					g.Add(dragged.Contains(c) ? Classify(map, c) : SpanGround.Blocked);
+					g.Add(dragged.Contains(c) ? Classify(map, c, r.deckNotches) : SpanGround.Blocked);
 					if (i > 0 && i < r.length - 1 && c.InBounds(map) && RM_MapComponent_SuspensionBridges.TowerAt(map, c))
 					{
 						t.Add(i);
@@ -158,8 +168,32 @@ namespace RimMandrake.FlowWorks.Pits
 			return null;
 		}
 
-		/// <summary>What one dragged square is for a bridge: solid ground, a dug hole a deck may cross, or blocked.</summary>
+		/// <summary>The walking depth (notches) an END of the drag stands at: 0 on undug ground, the dug depth of a dry ledge,
+		/// -1 where no anchor can stand (wet, out of the map).</summary>
+		public static int EndDepth(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return -1;
+			}
+			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null || ex.ExcavatedDepthAt(c) <= 0)
+			{
+				return 0;
+			}
+			return ex.FillAt(c) == 0 ? ex.ExcavatedDepthAt(c) : -1;
+		}
+
+		/// <summary>What one dragged square is for a surface bridge (the posts build's reading).</summary>
 		public static SpanGround Classify(Map map, IntVec3 c)
+		{
+			return Classify(map, c, 0);
+		}
+
+		/// <summary>What one dragged square is for a deck at <paramref name="deckNotches"/>: ground an anchor stands on (the
+		/// surface, or a dry ledge at exactly the deck's height), a hole a deck may cross (at least 0.5 m below the deck), or
+		/// blocked.</summary>
+		public static SpanGround Classify(Map map, IntVec3 c, int deckNotches)
 		{
 			if (!c.InBounds(map) || c.Fogged(map))
 			{
@@ -179,7 +213,12 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			if (ex != null && ex.ExcavatedDepthAt(c) > 0)
 			{
-				return RM_SpanMath.HasDrop(ex.ExcavatedDepthAt(c), 0) ? SpanGround.Hole : SpanGround.Blocked;
+				bool dryClear = ex.FillAt(c) == 0 && c.Standable(map);
+				return RM_SuspensionMath.GroundFor(ex.ExcavatedDepthAt(c), deckNotches, dryClear);
+			}
+			if (deckNotches > 0)
+			{
+				return SpanGround.Blocked;   // undug ground above a sunken deck
 			}
 			TerrainDef terrain = c.GetTerrain(map);
 			if (terrain == null || terrain.IsWater || !c.Standable(map) || (ex != null && ex.DepthAt(c) > 0))

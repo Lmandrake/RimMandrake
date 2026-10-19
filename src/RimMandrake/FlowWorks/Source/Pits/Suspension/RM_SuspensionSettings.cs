@@ -8,7 +8,7 @@ namespace RimMandrake.FlowWorks.Pits
 	/// FlowWorks settings file from RimMandrakeFlowWorksSettings.ExposeData and drawn by its window, the same shape as
 	/// RM_SprinklerSettings. Defaults = shipped behaviour. All off: no build buttons, existing bridges stay as plain walkable
 	/// decks that never break from weight or a lost anchor; nothing is deleted from a save. Each later suspension item adds its
-	/// own §9 rows here (grates: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP).</summary>
+	/// own §9 rows here (grates: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP; walk under, sunken: SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
 	public static class RM_SuspensionSettings
 	{
 		public static bool suspensionBridgesBuildable = true;
@@ -21,6 +21,9 @@ namespace RimMandrake.FlowWorks.Pits
 		// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP
 		public static bool grateFirePasses = true;
 		public static bool grateDrainsSpills = true;
+		// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD
+		public static bool suspensionWalkUnder = true;
+		public static bool sunkenBridges = true;
 
 		public static void ExposeData()
 		{
@@ -33,6 +36,8 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref suspensionOwnPeopleFall, "suspensionOwnPeopleFall", true);
 			Scribe_Values.Look(ref grateFirePasses, "grateFirePasses", true);
 			Scribe_Values.Look(ref grateDrainsSpills, "grateDrainsSpills", true);
+			Scribe_Values.Look(ref suspensionWalkUnder, "suspensionWalkUnder", true);
+			Scribe_Values.Look(ref sunkenBridges, "sunkenBridges", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -67,6 +72,19 @@ namespace RimMandrake.FlowWorks.Pits
 			list.CheckboxLabeled("Grates drain spills into the hole below", ref grateDrainsSpills,
 				"On: liquid spilled or poured on a grated suspension bridge over dug ground drains into the hole below it (nothing is "
 				+ "lost; items stay on the deck). Off: spills stay on the deck as puddles.");
+			bool walkUnder = suspensionWalkUnder;
+			list.CheckboxLabeled("People can walk under suspension bridges", ref suspensionWalkUnder,
+				"On: people down in a hole walk under a suspension bridge when its floor is at least 2 m below the deck (shallower, "
+				+ "it is a wall from below). Only these bridges: no roof or dug passage lets anyone under it. Raiders in a deep moat "
+				+ "walk under too. Off: every deck is a wall from below.");
+			if (walkUnder != suspensionWalkUnder)
+			{
+				RM_PocketGrid.SettingsChanged();
+			}
+			list.CheckboxLabeled("Sunken bridges (below ground)", ref sunkenBridges,
+				"On: a suspension bridge can be dragged between two dry ledges at the same depth inside a deeper hole (for example "
+				+ "across the core of a stepped pit), reached from a ledge, ramp or ladder at its height. Off: bridges only at the "
+				+ "surface; sunken bridges already built stay.");
 		}
 	}
 }

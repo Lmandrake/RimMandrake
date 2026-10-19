@@ -37,6 +37,10 @@ namespace RimMandrake.FlowWorks
 		{
 			public NativeArray<CellConnection>[] band; // index K, 1..RM_PitTrapMath.MaxClimbLimit
 			public bool derived;     // the bands hold a derivation (false: never derived, or no hole: vanilla is right)
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the floor band's view, where a suspension deck the floor band passes under
+			// reads as the floor (RM_PocketGrid.EffectiveDepth(…, floorView: true)). Derived only while such a deck stands.
+			public NativeArray<CellConnection>[] under;
+			public bool underDerived;
 			public long key = long.MinValue;
 			public bool disposed;
 		}
@@ -69,10 +73,12 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int n = map.cellIndices.NumGridCells;
-			var m = new Masks { band = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands] };
+			var m = new Masks { band = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands],
+				under = new NativeArray<CellConnection>[RM_PitTrapMath.ClimbBands] };
 			for (int k = 1; k < m.band.Length; k++)
 			{
 				m.band[k] = new NativeArray<CellConnection>(n, Allocator.Persistent);
+				m.under[k] = new NativeArray<CellConnection>(n, Allocator.Persistent);
 			}
 			lock (gate)
 			{
@@ -109,6 +115,10 @@ namespace RimMandrake.FlowWorks
 				{
 					m.band[k].Dispose();
 				}
+				if (m.under != null && m.under[k].IsCreated)
+				{
+					m.under[k].Dispose();
+				}
 			}
 		}
 
@@ -123,6 +133,7 @@ namespace RimMandrake.FlowWorks
 			k = k * 2 + (RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? 1 : 0);
 			k = k * 2 + (RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0);
 			k = k * 4 + RM_PitRamp.MaxSpan;
+			k = k * 2 + (Pits.RM_SuspensionSettings.suspensionWalkUnder ? 1 : 0);
 			return k;
 		}
 
@@ -166,7 +177,11 @@ namespace RimMandrake.FlowWorks
 						var c = new IntVec3(d.x + dx, 0, d.z + dz);
 						if (c.InBounds(map) && done.Add(ci.CellToIndex(c)))
 						{
-							DeriveCell(map, eng, m, vanilla, c, null);
+							DeriveCell(map, eng, m.band, vanilla, c, null, false);
+							if (m.underDerived)
+							{
+								DeriveCell(map, eng, m.under, vanilla, c, null, true);
+							}
 						}
 					}
 				}
@@ -181,18 +196,38 @@ namespace RimMandrake.FlowWorks
 			if (!On || eng == null || eng.ClimbCellCount == 0)
 			{
 				m.derived = false; // no hole (or the rule is off): vanilla's array is the answer, the swap hands it out
+				m.underDerived = false;
 				return;
 			}
-			int n = map.cellIndices.NumGridCells;
-			for (int k = 1; k < m.band.Length; k++)
+			byte[] depth = RM_PocketGrid.EffectiveDepth(map, eng);
+			Derive(map, eng, m.band, vanilla, depth, false);
+			m.derived = true;
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the floor view, only when it differs (a deck the floor band passes under)
+			byte[] floor = RM_PocketGrid.EffectiveDepth(map, eng, true);
+			bool differs = false;
+			for (int i = 0; i < floor.Length && !differs; i++)
 			{
-				NativeArray<CellConnection> a = m.band[k];
+				differs = floor[i] != depth[i];
+			}
+			if (differs)
+			{
+				Derive(map, eng, m.under, vanilla, floor, true);
+			}
+			m.underDerived = differs;
+		}
+
+		private static void Derive(Map map, RM_MapComponent_Excavation eng, NativeArray<CellConnection>[] bands,
+			NativeArray<CellConnection>.ReadOnly vanilla, byte[] depth, bool floorView)
+		{
+			int n = map.cellIndices.NumGridCells;
+			for (int k = 1; k < bands.Length; k++)
+			{
+				NativeArray<CellConnection> a = bands[k];
 				for (int i = 0; i < n; i++)
 				{
 					a[i] = vanilla[i];
 				}
 			}
-			byte[] depth = RM_PocketGrid.EffectiveDepth(map, eng);
 			CellIndices ci = map.cellIndices;
 			int w = map.Size.x, h = map.Size.z;
 			var done = new HashSet<int>();
@@ -215,16 +250,15 @@ namespace RimMandrake.FlowWorks
 						int j = z * w + x;
 						if (done.Add(j))
 						{
-							DeriveCell(map, eng, m, vanilla, new IntVec3(x, 0, z), depth);
+							DeriveCell(map, eng, bands, vanilla, new IntVec3(x, 0, z), depth, floorView);
 						}
 					}
 				}
 			}
-			m.derived = true;
 		}
 
-		private static void DeriveCell(Map map, RM_MapComponent_Excavation eng, Masks m, NativeArray<CellConnection>.ReadOnly vanilla,
-			IntVec3 c, byte[] depth)
+		private static void DeriveCell(Map map, RM_MapComponent_Excavation eng, NativeArray<CellConnection>[] bands,
+			NativeArray<CellConnection>.ReadOnly vanilla, IntVec3 c, byte[] depth, bool floorView)
 		{
 			int w = map.Size.x, h = map.Size.z;
 			var d9 = new int[9];
@@ -237,21 +271,22 @@ namespace RimMandrake.FlowWorks
 					if (x >= 0 && z >= 0 && x < w && z < h)
 					{
 						var cc = new IntVec3(x, 0, z);
-						v = depth != null ? depth[z * w + x] : RM_SuperdeepTrap.StepDepthAt(map, eng, cc);
+						v = depth != null ? depth[z * w + x] : floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, cc)
+							: RM_SuperdeepTrap.StepDepthAt(map, eng, cc);
 					}
 					d9[RM_CliffMaskMath.N9(dx, dz)] = v;
 				}
 			}
 			int idx = map.cellIndices.CellToIndex(c);
 			byte van = (byte)vanilla[idx];
-			for (int k = 1; k < m.band.Length; k++)
+			for (int k = 1; k < bands.Length; k++)
 			{
 				byte allowed = RM_CliffMaskMath.AllowedBits(d9, k, b =>
 				{
 					var o = new IntVec3(c.x + RM_CliffMaskMath.Dx[b], 0, c.z + RM_CliffMaskMath.Dz[b]);
 					return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(RM_CliffMaskMath.Dx[b], RM_CliffMaskMath.Dz[b])]);
 				});
-				m.band[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, allowed);
+				bands[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, allowed);
 			}
 		}
 
@@ -294,6 +329,13 @@ namespace RimMandrake.FlowWorks
 			int band = RM_PocketGridMath.BandFor(k, RM_PitTrapMath.ClimbBands);
 			if (band <= 0 || band >= m.band.Length)
 			{
+				return;
+			}
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a pawn in the floor band, or down in a hole, plans on the floor view
+			// (it walks under the decks it may pass under; it cannot use them as a deck on this walk)
+			if (m.underDerived && Pits.RM_SuspensionUnderpass.UsesFloorView(p))
+			{
+				job.connectivity = m.under[band].AsReadOnly();
 				return;
 			}
 			job.connectivity = m.band[band].AsReadOnly();

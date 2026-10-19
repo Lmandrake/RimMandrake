@@ -134,8 +134,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "weight collapse and anchor-loss falls obey their settings");
                 string deck = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
                 Assert(deck.Contains("public class Building_SuspensionDeck : Building_SpanDeck"), "a suspension deck is a span deck (extends the base)");
-                Assert(!deck.Contains("override float DeckHeightM") && !deck.Contains("override bool FloorBandPassesUnder"),
-                    "can-fail: a surface bridge keeps height 0 and no underpass (the UNDERPASS item's)");
+                Assert(deck.Contains("public override float DeckHeightM => (Record?.deckNotches ?? 0) * RM_SpanMath.NotchM;")
+                    && deck.Contains("RM_SpanMath.ClearsUnderpass(eng.ClimbDepthAt(Position), DeckNotches)"),
+                    "a deck's height is its record's (0 = surface) and its floor band passes under at 2 m clearance (UNDERPASS)");
                 string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
                 Assert(patches.Contains("\"Use a suspension bridge over dug ground\""), "vanilla bridges refused with the ruled message (Q6)");
                 Assert(patches.Contains("nameof(GenConstruct.CanConstruct)") && patches.Contains("MayBuildDeck"), "build order is enforced on CanConstruct");
@@ -222,6 +223,73 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
                 Assert(patch.Contains("Designator_SuspensionBridge_SteelGrated") && patch.Contains("Designator_SuspensionBridge_HeavyGrated"),
                     "the two grated build buttons are registered");
+            });
+            // SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (construction design §1.4, §4; Q2 2 m, Q6 crush, Q7 sunken): the band rules.
+            Case("Underpass_band_step_clearance_and_sunken_height", () =>
+            {
+                Assert(RM_SpanMath.ClearsUnderpass(8, 0) && RM_SpanMath.ClearsUnderpass(4, 0) && !RM_SpanMath.ClearsUnderpass(3, 0),
+                    "verify L2 shape: a 4 m and a 2 m trench pass under a surface deck; 1.5 m does not (a wall from below)");
+                Assert(RM_SpanMath.ClearsUnderpass(14, 8) && !RM_SpanMath.ClearsUnderpass(11, 8), "a sunken deck at 4 m clears a 7 m core only with 2 m to spare");
+                Assert(RM_SuspensionMath.StepGoesUnder(true, 0, false, false, 8), "from the trench floor (4 m) into a surface deck square: under it");
+                Assert(!RM_SuspensionMath.StepGoesUnder(true, 0, false, false, 0), "from an anchor (surface) onto the deck: on it");
+                Assert(RM_SuspensionMath.StepGoesUnder(true, 0, true, true, 0) && !RM_SuspensionMath.StepGoesUnder(true, 0, true, false, 0),
+                    "deck square to deck square: the band is kept (under stays under, on stays on)");
+                Assert(!RM_SuspensionMath.StepGoesUnder(false, 0, false, false, 8), "can-fail: a deck that does not clear is never walked under");
+                Assert(!RM_SuspensionMath.StepGoesUnder(true, 8, false, false, 8), "from a ledge at the sunken deck's height: onto it");
+                Assert(RM_SuspensionMath.DeckNotchesFor(0, 0, true) == 0 && RM_SuspensionMath.DeckNotchesFor(8, 8, true) == 8,
+                    "both ends at the surface: 0; both on a 4 m ledge: a sunken deck at 4 m");
+                Assert(RM_SuspensionMath.DeckNotchesFor(8, 8, false) == -1 && RM_SuspensionMath.DeckNotchesFor(8, 6, true) == -1
+                    && RM_SuspensionMath.DeckNotchesFor(-1, 0, true) == -1, "sunken off, uneven ends or a wet end: refused");
+                Assert(RM_SuspensionMath.GroundFor(8, 8, true) == SpanGround.Ground && RM_SuspensionMath.GroundFor(14, 8, true) == SpanGround.Hole
+                    && RM_SuspensionMath.GroundFor(8, 0, true) == SpanGround.Hole && RM_SuspensionMath.GroundFor(4, 8, true) == SpanGround.Blocked,
+                    "a 4 m ledge anchors a sunken deck at 4 m and the 7 m core is its hole; a shallower square is blocked");
+                Assert(RM_SuspensionMath.GroundFor(8, 8, false) == SpanGround.Blocked && RM_SuspensionMath.GroundFor(14, 8, false) == SpanGround.Hole,
+                    "a wet ledge cannot hold an anchor; wet hole squares are still crossed");
+                Assert(RM_SuspensionMath.HeightPhrase(0, true) == "deck at surface · people below walk under it"
+                    && RM_SuspensionMath.HeightPhrase(8, false) == "deck at 4 m (sunken) · a wall from below", "the readout says the height and the underside");
+            });
+
+            Case("Underpass_shots_between_bands_and_crush", () =>
+            {
+                Assert(RM_SuspensionMath.ShotBlockedBetweenBands(true, false, false, false, false, true), "verify L2: solid deck: floor band -> deck blocked");
+                Assert(RM_SuspensionMath.ShotBlockedBetweenBands(false, false, true, true, false, false), "solid deck: deck -> floor band blocked");
+                Assert(!RM_SuspensionMath.ShotBlockedBetweenBands(false, false, true, true, true, false), "verify L2: a grate does not block");
+                Assert(!RM_SuspensionMath.ShotBlockedBetweenBands(true, false, false, true, false, false), "both under: within a band, ignored");
+                Assert(!RM_SuspensionMath.ShotBlockedBetweenBands(false, false, true, false, false, true), "can-fail: both on the deck: ignored");
+                Assert(!RM_SuspensionMath.ShotBlockedBetweenBands(false, false, false, true, false, false), "someone off any deck shooting under: the cliff rule's");
+                Assert(RM_SuspensionMath.CrushDamageMin == 15 && RM_SuspensionMath.CrushDamageMax == 30, "hit like a thin-roof collapse (vanilla 15-30)");
+            });
+
+            Case("Underpass_wiring_masks_sites_not_tunnels", () =>
+            {
+                string mask = Src("Superdeep", "RM_CliffMask.cs");
+                Assert(mask.Contains("if (m.underDerived && Pits.RM_SuspensionUnderpass.UsesFloorView(p))") && mask.Contains("job.connectivity = m.under[band].AsReadOnly();"),
+                    "the swap hands the floor band the floor view");
+                Assert(mask.Contains("RM_PocketGrid.EffectiveDepth(map, eng, true)") && mask.Contains("m.underDerived = differs;"),
+                    "the floor view is derived only while a passing deck stands");
+                Assert(Src("Superdeep", "RM_PocketGrid.cs").Contains("!(floorView && c.FloorBandPassesUnder)"), "the floor view reads a passing deck as its floor");
+                Assert(Src("Superdeep", "RM_SuperdeepTrap.cs").Contains("? Pits.RM_SpanUtility.WalkingDepth(map, c, d) : d;"),
+                    "the step floor reads a sunken deck at its height (not the surface)");
+                Assert(Src("RM_PitExposure.cs").Contains("Pits.RM_SuspensionUnderpass.InFloorBand(p)"), "under a deck is exposed as in the open (Q9)");
+                Assert(Src("Superdeep", "RM_PitDepthDraw.cs").Contains("Pits.RM_SuspensionUnderpass.DrawDepth(pawn, from,"), "the sink reads the band");
+                string patches = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                foreach (string k in new[] { "\"TryEnterNextPathCell\"", "nameof(RM_Patch_PathFollower_SuperdeepFloor.RelativeStepAllowed)",
+                    "nameof(PathGrid.CalculatedCostAt)", "nameof(Verb.CanHitTargetFrom)", "nameof(Pawn_CarryTracker.TryDropCarriedThing)" })
+                {
+                    Assert(patches.Contains(k), "underpass patch point wired: " + k);
+                }
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                Assert(comp.Contains("Scribe_Collections.Look(ref floorBandScribe, \"rmSuspensionFloorBand\", LookMode.Reference);"), "the floor band is saved");
+                Assert(comp.Contains("new DamageInfo(DamageDefOf.Crush,") && comp.Contains("RM_SuspensionDefOf.RM_SuspensionWreck"), "a falling deck crushes below and leaves a wreck");
+                Assert(Src("Pits", "Building_SpanDeck.cs").Contains("&& !RM_SuspensionUnderpass.InFloorBand(p))"), "a pawn under a deck weighs nothing on it");
+                // NOT actual tunnels: only the suspension deck class grants the floor band
+                Assert(!Src("Pits", "Building_PitCover.cs").Contains("FloorBandPassesUnder"), "can-fail: a pit cover never lets anyone under");
+                Assert(Src("Pits", "Building_SpanDeck.cs").Contains("public virtual bool FloorBandPassesUnder => false;"), "the base span grants nothing");
+                string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
+                Assert(set.Contains("\"People can walk under suspension bridges\"") && set.Contains("\"Sunken bridges (below ground)\""), "both settings shown");
+                string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
+                Assert(defs.Contains("<defName>RM_SuspensionWreck</defName>") && !defs.Contains("For now nobody can walk under it"),
+                    "the wreck exists and no description still says nobody walks under");
             });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }

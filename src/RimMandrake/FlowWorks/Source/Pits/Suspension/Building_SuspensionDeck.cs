@@ -30,6 +30,7 @@ namespace RimMandrake.FlowWorks.Pits
 		public static ThingDef RM_SuspensionAnchor_Heavy;
 		public static ThingDef RM_SuspensionTower;
 		public static ThingDef RM_SuspensionRailing;
+		public static ThingDef RM_SuspensionWreck;
 
 		static RM_SuspensionDefOf()
 		{
@@ -105,6 +106,26 @@ namespace RimMandrake.FlowWorks.Pits
 		/// bands (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
 		public override bool Grated => def.GetModExtension<RM_SuspensionExtension>()?.grated ?? false;
 
+		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a sunken bridge's deck height (its record's, set by the drag from
+		/// the ledge its anchors stand on); 0 at the surface.</summary>
+		public override float DeckHeightM => (Record?.deckNotches ?? 0) * RM_SpanMath.NotchM;
+
+		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q2, ruled 2 m clearance): pawns down in the hole walk under this
+		/// deck when its floor is at least 2 m below it and the setting is on. Keyed to this class only: no roof, cover or
+		/// passage ever grants a floor band ("NOT actual tunnels").</summary>
+		public override bool FloorBandPassesUnder
+		{
+			get
+			{
+				if (!RM_SuspensionSettings.suspensionWalkUnder || !Spawned)
+				{
+					return false;
+				}
+				RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);
+				return eng != null && RM_SpanMath.ClearsUnderpass(eng.ClimbDepthAt(Position), DeckNotches);
+			}
+		}
+
 		public RM_MapComponent_SuspensionBridges Bridges => Map?.GetComponent<RM_MapComponent_SuspensionBridges>();
 
 		public SuspensionBridgeRecord Record => Bridges?.RecordAt(Position);
@@ -148,8 +169,28 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			Map map = Map;
 			IntVec3 pos = Position;
+			// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD (Q6): a square that falls (a span giving way, a swing-down) lands on the
+			// floor: whoever is under it is hit like a roof collapse, and the wreck blocks the floor until cleared
+			bool falls = collapsed;
+			List<Pawn> under = falls ? Bridges?.BandPawnsAt(pos) : null;
 			base.DeSpawn(mode);
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, pos);
+			if (falls && map != null)
+			{
+				RM_MapComponent_SuspensionBridges.LandWreck(map, pos, under);
+			}
+		}
+
+		/// <summary>A sunken deck draws a ledge shadow over itself so it reads as down in the hole, not on the surface.</summary>
+		public override void Print(SectionLayer layer)
+		{
+			base.Print(layer);
+			if (DeckNotches > 0 && RM_SuspensionMats.LedgeShadow != null)
+			{
+				Vector3 c = Position.ToVector3Shifted();
+				c.y = def.Altitude + Altitudes.AltInc;
+				Printer_Plane.PrintPlane(layer, c, Vector2.one, RM_SuspensionMats.LedgeShadow);
+			}
 		}
 
 		/// <summary>A square lost by damage or by deconstruction drops its whole span: a suspension bridge does not unzip.</summary>
@@ -180,11 +221,12 @@ namespace RimMandrake.FlowWorks.Pits
 			Map map = Map;
 			IntVec3 pos = Position;
 			List<Pawn> fallers = RM_MapComponent_SuspensionBridges.PawnsOn(map, pos);
+			SuspensionBridgeRecord rec = Record;
 			RM_MapComponent_SuspensionBridges.ClearDeckTop(map, pos);
 			collapsed = true;
 			FilthMaker.TryMakeFilth(pos, map, ThingDefOf.Filth_RubbleRock, 1);
 			Destroy(DestroyMode.Vanish);
-			RM_MapComponent_SuspensionBridges.Drop(map, fallers, null);
+			RM_MapComponent_SuspensionBridges.Drop(map, fallers, rec);
 		}
 
 		/// <summary>Marked collapsed by the bridge so its own Destroy does not re-enter the span collapse.</summary>
@@ -219,6 +261,14 @@ namespace RimMandrake.FlowWorks.Pits
 				yield return rail;
 			}
 		}
+	}
+
+	/// <summary>Materials the suspension decks print besides their own graphic.</summary>
+	[StaticConstructorOnStartup]
+	public static class RM_SuspensionMats
+	{
+		public static readonly Material LedgeShadow = MaterialPool.MatFrom("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionLedgeShadow",
+			ShaderDatabase.Transparent);
 	}
 
 	/// <summary>The posts at one end of a suspension bridge (1×1, on solid ground, facing the span). Built first; losing one

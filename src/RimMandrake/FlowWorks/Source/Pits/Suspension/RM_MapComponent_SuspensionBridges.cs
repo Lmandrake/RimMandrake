@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Pits
@@ -19,6 +21,9 @@ namespace RimMandrake.FlowWorks.Pits
 		public ThingDef stuff;
 		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: the deck squares are the grated deck of this type.</summary>
 		public bool grated;
+		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the deck's height in notches below ground (0 = surface; a sunken
+		/// bridge stands on a ledge at this depth).</summary>
+		public int deckNotches;
 
 		public IntVec3 Side => dir.Rotated(RotationDirection.Clockwise).FacingCell;
 
@@ -63,6 +68,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Values.Look(ref railings, "railings", false);
 			Scribe_Defs.Look(ref stuff, "stuff");
 			Scribe_Values.Look(ref grated, "grated", false);
+			Scribe_Values.Look(ref deckNotches, "deckNotches", 0);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();
@@ -85,6 +91,97 @@ namespace RimMandrake.FlowWorks.Pits
 		private int nextId = 1;
 		private readonly Dictionary<IntVec3, SuspensionBridgeRecord> index = new Dictionary<IntVec3, SuspensionBridgeRecord>();
 		private readonly HashSet<long> sagging = new HashSet<long>();
+
+		/// <summary>SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: pawns in the floor band (under a deck), decided per step by
+		/// RM_SuspensionUnderpass.Entered. Saved, so a load keeps everyone on their own side of the deck.</summary>
+		private HashSet<Pawn> floorBand = new HashSet<Pawn>();
+		private List<Pawn> floorBandScribe;
+
+		public static RM_MapComponent_SuspensionBridges Of(Map map)
+		{
+			return map?.GetComponent<RM_MapComponent_SuspensionBridges>();
+		}
+
+		public bool InBandSet(Pawn p)
+		{
+			return p != null && floorBand.Contains(p);
+		}
+
+		public void SetBand(Pawn p, bool under)
+		{
+			if (p == null)
+			{
+				return;
+			}
+			if (under)
+			{
+				floorBand.Add(p);
+			}
+			else
+			{
+				floorBand.Remove(p);
+			}
+		}
+
+		/// <summary>The floor-band pawns standing on this square (read before a falling deck despawns).</summary>
+		public List<Pawn> BandPawnsAt(IntVec3 c)
+		{
+			List<Pawn> ps = new List<Pawn>();
+			foreach (Pawn p in floorBand)
+			{
+				if (p != null && p.Spawned && !p.Dead && p.Position == c)
+				{
+					ps.Add(p);
+				}
+			}
+			return ps;
+		}
+
+		/// <summary>State reads for the functional script: pawns crushed under a falling deck, wreck things landed.</summary>
+		public static int Crushed, Wrecks;
+
+		/// <summary>Q6 (construction design §4, ruled by card): a deck square fell onto the floor at <paramref name="c"/>. Each pawn
+		/// that was under it takes vanilla's thin-roof collapse crush (15-30, from above); a wreck lands on the floor and blocks
+		/// it until someone clears it (deconstructs it). Where a pawn lies, only rubble lands (a wreck never spawns on anyone).</summary>
+		public static void LandWreck(Map map, IntVec3 c, List<Pawn> under)
+		{
+			RM_MapComponent_SuspensionBridges b = Of(map);
+			if (under != null)
+			{
+				foreach (Pawn p in under)
+				{
+					b?.SetBand(p, false);
+					if (p == null || !p.Spawned || p.Dead)
+					{
+						continue;
+					}
+					var dinfo = new DamageInfo(DamageDefOf.Crush, Rand.RangeInclusive(RM_SuspensionMath.CrushDamageMin, RM_SuspensionMath.CrushDamageMax),
+						0f, -1f, null, null, null, DamageInfo.SourceCategory.Collapse);
+					dinfo.SetBodyRegion(BodyPartHeight.Top, BodyPartDepth.Outside);
+					p.TakeDamage(dinfo);
+					Crushed++;
+					Messages.Message(p.LabelShort + " was hit by a falling suspension bridge.", new LookTargets(p), MessageTypeDefOf.NegativeEvent);
+				}
+			}
+			if (!c.InBounds(map) || RM_SuspensionDefOf.RM_SuspensionWreck == null)
+			{
+				return;
+			}
+			bool anyone = false;
+			foreach (Thing t in c.GetThingList(map))
+			{
+				anyone |= t is Pawn || t.def.passability == Traversability.Impassable;
+			}
+			if (anyone)
+			{
+				FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock, 2);
+				return;
+			}
+			Thing w = ThingMaker.MakeThing(RM_SuspensionDefOf.RM_SuspensionWreck);
+			w.SetFactionDirect(Faction.OfPlayer);
+			GenSpawn.Spawn(w, c, map, Rot4.Random);
+			Wrecks++;
+		}
 
 		private struct PendingDrop
 		{
@@ -137,10 +234,18 @@ namespace RimMandrake.FlowWorks.Pits
 			base.ExposeData();
 			Scribe_Collections.Look(ref bridges, "rmSuspensionBridges", LookMode.Deep);
 			Scribe_Values.Look(ref nextId, "rmSuspensionNextId", 1);
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				floorBandScribe = new List<Pawn>(floorBand);
+				floorBandScribe.RemoveAll(p => p == null || p.Destroyed);
+			}
+			Scribe_Collections.Look(ref floorBandScribe, "rmSuspensionFloorBand", LookMode.Reference);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				bridges = bridges ?? new List<SuspensionBridgeRecord>();
 				Reindex();
+				floorBand = new HashSet<Pawn>((floorBandScribe ?? new List<Pawn>()).Where(p => p != null));
+				floorBandScribe = null;
 			}
 		}
 
@@ -318,7 +423,8 @@ namespace RimMandrake.FlowWorks.Pits
 			List<Thing> things = c.GetThingList(map);
 			for (int i = 0; i < things.Count; i++)
 			{
-				if (things[i] is Pawn p && !p.Dead && !p.Flying)
+				// SUSPENSION_UNDERPASS: a pawn under the deck is not on it (it is hit, not dropped, when the deck falls)
+				if (things[i] is Pawn p && !p.Dead && !p.Flying && !RM_SuspensionUnderpass.InFloorBand(p))
 				{
 					ps.Add(p);
 				}
@@ -366,7 +472,10 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				if (state != null)
 				{
-					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state);
+					// a sunken deck's riders fall from its height (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD)
+					int h = r?.deckNotches ?? 0;
+					RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, h > 0 && eng != null ? System.Math.Max(0, eng.ClimbDepthAt(p.Position) - h) : -1);
 				}
 			}
 		}
@@ -497,6 +606,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				PruneDead();
 			}
+			SweepUnder();
 			for (int b = 0; b < bridges.Count; b++)
 			{
 				SuspensionBridgeRecord r = bridges[b];
@@ -555,6 +665,68 @@ namespace RimMandrake.FlowWorks.Pits
 				ps.AddRange(PawnsOn(map, c));
 			}
 			return ps;
+		}
+
+		/// <summary>SUSPENSION_UNDERPASS (construction design §1.4, the risk table's fallback, taken first): a pawn under a deck is
+		/// drawn UNDER it. The deck square it stands under is drawn again over it, half see-through, so the pawn reads as beneath
+		/// the deck and can still be found. (Re-layering every deck-band pawn above the deck is the alternative; it waits on a
+		/// live look at 1.6's draw batching.)</summary>
+		public override void MapComponentUpdate()
+		{
+			if (floorBand.Count == 0 || Find.CurrentMap != map)
+			{
+				return;
+			}
+			foreach (Pawn p in floorBand)
+			{
+				if (p == null || !p.Spawned || p.Map != map)
+				{
+					continue;
+				}
+				Building_SuspensionDeck d = RM_SuspensionUnderpass.PassingDeckAt(map, p.Position);
+				Material mat = d?.Graphic?.MatSingle;
+				if (mat == null)
+				{
+					continue;
+				}
+				Vector3 at = p.Position.ToVector3Shifted();
+				at.y = AltitudeLayer.PawnState.AltitudeFor();
+				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, d.Rotation.AsQuat, Vector3.one),
+					FadedMaterialPool.FadedVersionOf(mat, UnderFade), 0);
+			}
+		}
+
+		/// <summary>How opaque the deck drawn over a pawn under it is.</summary>
+		public const float UnderFade = 0.6f;
+
+		/// <summary>SUSPENSION_UNDERPASS: every 60 ticks the floor band drops anyone no longer under a deck, and a floor-band
+		/// pawn that died there leaves its corpse on open floor (nothing rests under a deck).</summary>
+		private void SweepUnder()
+		{
+			if (floorBand.Count == 0)
+			{
+				return;
+			}
+			List<Pawn> gone = null;
+			foreach (Pawn p in floorBand)
+			{
+				if (p == null || p.Dead || !p.Spawned || p.Map != map || RM_SuspensionUnderpass.PassingDeckAt(map, p.Position) == null)
+				{
+					(gone = gone ?? new List<Pawn>()).Add(p);
+				}
+			}
+			if (gone == null)
+			{
+				return;
+			}
+			foreach (Pawn p in gone)
+			{
+				floorBand.Remove(p);
+				if (p != null && p.Dead && p.Corpse != null && p.Corpse.Spawned && p.Corpse.Map == map)
+				{
+					RM_SuspensionUnderpass.SlideOut(p.Corpse);
+				}
+			}
 		}
 
 		/// <summary>A record with no part of its bridge left on any of its squares is forgotten.</summary>
@@ -863,7 +1035,8 @@ namespace RimMandrake.FlowWorks.Pits
 				span = RM_SuspensionMath.SegmentOf(i <= 0 ? 1 : i >= r.length - 1 ? r.length - 2 : i, r.Supports);
 			}
 			float load = SpanLoad(r, span);
-			lines.Add(RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg));
+			Building_SuspensionDeck d0 = DeckAt(map, at) ?? (r.length > 2 ? DeckAt(map, r.Cell(0, 1)) : null);
+			lines.Add(RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg, r.deckNotches, d0 != null && d0.FloorBandPassesUnder));
 			lines.Add(RM_SuspensionMath.LoadLine(load, r.RatingKg) + (r.SpanCount > 1 ? " (span " + (span + 1) + " of " + r.SpanCount + ")" : ""));
 			if (RM_SuspensionMath.Classify(load, r.RatingKg) != SpanLoadState.Ok)
 			{

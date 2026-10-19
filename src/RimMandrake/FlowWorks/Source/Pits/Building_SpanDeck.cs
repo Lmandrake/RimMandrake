@@ -93,7 +93,9 @@ namespace RimMandrake.FlowWorks.Pits
 					c.Destroy(DestroyMode.Vanish);
 				}
 			}
-			RM_SuperdeepTrapState state = RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			RM_SuperdeepTrapState state = eng?.SuperdeepTrap;
+			int deck = DeckNotches;
 			Pawn first = null;
 			foreach (Pawn p in fallers)
 			{
@@ -103,7 +105,8 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				if (state != null)
 				{
-					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state);
+					// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a sunken deck's riders fall from its height, not the surface
+					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state, deck > 0 && eng != null ? System.Math.Max(0, eng.ClimbDepthAt(p.Position) - deck) : -1);
 				}
 				first = first ?? p;
 			}
@@ -227,7 +230,9 @@ namespace RimMandrake.FlowWorks.Pits
 				List<Thing> thingsHere = cell.GetThingList(map);
 				for (int i = 0; i < thingsHere.Count; i++)
 				{
-					if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying && (p.Faction != owner || countOwnFaction))
+					// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: a pawn under the deck (floor band) weighs nothing on it
+				if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying && (p.Faction != owner || countOwnFaction)
+					&& !RM_SuspensionUnderpass.InFloorBand(p))
 					{
 						standing?.Add(p);
 						sum += p.GetStatValue(StatDefOf.Mass);
