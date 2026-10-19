@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). The Sump's two Alpha Biomes (sarg.alphabiomes) ground terrains, ported as RM_ defs
+    with the donor's own values. Art: StandIn/<donor texPath> marked stand-in copies (art ledger, provenance
+    kind=donor standin=true) until regenerated.
+  -->
+  <!-- RM_GrassySand: port of AB_GrassySand (Alpha Biomes, TerrainDefs/Terrain_TarPits.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_GrassySand</defName>
+    <label>grassy sand</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_GrassySand</texturePath>
+     <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_GrassySand_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>15</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Sand</generatedFilth>
+    <fertility>0.10</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tools>
+      <li>
+        <label>sand</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>SandInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+
+  <!-- RM_LushGrass: port of AB_LushGrass (Alpha Biomes, TerrainDefs/Terrain_TarPits.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_LushGrass</defName>
+    <label>lush grass</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_LushGrass</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_LushGrass_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
+    <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
+   <pollutionColor>(214, 140, 234, 0.15)</pollutionColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>340</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1.0</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tools>
+      <li>
+        <label>dirt</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>DirtInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+</Defs>

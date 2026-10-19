@@ -13,11 +13,9 @@
     world's painted tiles). This is a NEW, franchise-free sibling for any other
     generated RimWorld planet, not a rename of that one.
 
-    RM tier: nothing here knows what campaign or planet uses it. NOT donor-free:
-    terrain (AB_GrassySand/AB_LushGrass), the world-map texture (Biomes/AB_TarPits)
-    and one wildPlants row (AB_TarPuddle) are all Alpha Biomes' own, unchanged from
-    the twin — same honesty standard every sibling RM_ biome mod ships (compare
-    RM_Miasma's own header).
+    RM tier: nothing here knows what campaign or planet uses it. Alpha-Biomes-free since the 2026-10-18
+    donor retirement: terrain is our ports RM_GrassySand/RM_LushGrass, the world texture is
+    World/Biomes/RM_Sump, and AB_TarPuddle was replaced by RM_Velloch.
 
     workerClass: replaces the donor AlphaBiomes.BiomeWorker_TarPits with this
     mod's own RM_BiomeWorker_TheSump (RM_TheSumpBiome.cs) - a donor type in
@@ -47,8 +45,8 @@
     same posture RM_Miasma's own wildPlants notes already establish for a donor
     row moved into a standalone mod.
 
-    terrainsByFertility: both rows gain the same MayRequire="sarg.alphabiomes"
-    guard for the same reason.
+    terrainsByFertility: both Alpha Biomes rows were replaced 1:1 by our ports RM_GrassySand/RM_LushGrass
+    (Defs/RM_TheSump_DonorPorts.xml) at the 2026-10-18 donor retirement.
 
     biomeMapConditions: RM_SumpTarRainLock (SUMP_TAR_LIVING_SYSTEMS_1: RUT_SumpDuskLock plus tar-rain
     spells; UtinniPatches' Campaign_SumpNoTarRain.xml puts RUT_SumpDuskLock back for the campaign), was RUT_SumpDuskLock baked in directly (not via a second patch
@@ -123,13 +121,13 @@
       </li>
     </diseases>
     <terrainsByFertility>
-      <li MayRequire="sarg.alphabiomes">
-        <terrain>AB_GrassySand</terrain>
+      <li>
+        <terrain>RM_GrassySand</terrain>
         <min>-999</min>
         <max>0.25</max>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <terrain>AB_LushGrass</terrain>
+      <li>
+        <terrain>RM_LushGrass</terrain>
         <min>0.25</min>
         <max>999</max>
       </li>
