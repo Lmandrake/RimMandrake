@@ -101,6 +101,7 @@
     <Compile Include="GenStep_ScaldVentField.cs" />
     <Compile Include="RM_MapComponent_ScaldVentForecast.cs" />
     <Compile Include="RM_MapComponent_ScaldWalkerGrazing.cs" />
+    <Compile Include="RM_WalkerTrampleKernel.cs" />
     <Compile Include="RM_WorkGiver_GatherGrazedMat.cs" />
     <Compile Include="RM_ReturnGallery.cs" />
     <Compile Include="RM_WorkGiver_ProbeGalleryOutlet.cs" />

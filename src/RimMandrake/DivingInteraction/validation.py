@@ -95,6 +95,16 @@ def scald_walking_pasture(t):
             if need not in src:
                 raise ExpectationFailed("crew job lost %s" % need)
         t.screenshot()
+    with t.component("moving_walker_tramples_and_warns", beyond_toggle=False):
+        # Owner card 2026-10-09: a walker that gets too close tramples (damage, not push-aside); a warning is owed.
+        # Decision logic is fuzzed offline (selftest_divinginteraction_fuzz.py, family `trample`). Live L2 owed:
+        # spawn a walker, order it to walk past a colonist, expect a caution message, then Blunt damage within ~1 s
+        # of adjacency, and none from a standing (grazing) walker.
+        src = open(os.path.join(here, "Source", "RM_MapComponent_ScaldWalkerGrazing.cs"), encoding="utf-8").read()
+        for need in ("RM_WalkerTrampleKernel.Decide", "DamageDefOf.Blunt", "RM_WalkerTrampleWarning", "RM_WalkerTrampled"):
+            if need not in src:
+                raise ExpectationFailed("trample sweep lost %s" % need)
+        t.screenshot()
 
 
 @suite.chain("scald_vent_fields")
@@ -329,6 +339,7 @@ TOGGLE_GATES = [
     ("chillThermalFootprintsEnabled", ["RM_MapComponent_ChillFootprints.cs"], "chill_footprints_gate_deposits"),
     ("chillDrownedAuroraEnabled", ["Patch_ChillDrownedAurora.cs", "RM_MapComponent_ChillDrownedAurora.cs"], "chill_drowned_aurora_gates_glow"),
     ("chillAuroraSurgeEnabled", ["RM_MapComponent_ChillAuroraSurge.cs", "RM_CompPowerPlantAuroraSurge.cs"], "chill_aurora_surge_gates_storm"),
+    ("walkerTrampleEnabled", ["RM_MapComponent_ScaldWalkerGrazing.cs"], "scald_walker_trample_gates_damage"),
 ]
 suite.toggles = [f for f, _, _ in TOGGLE_GATES]
 

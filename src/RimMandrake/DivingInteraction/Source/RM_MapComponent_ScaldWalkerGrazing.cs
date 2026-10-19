@@ -68,9 +68,21 @@ namespace RimMandrake.DivingInteraction
             return false;
         }
 
+        // Per-pawn trample/warn ticks (thingIDNumber -> tick). Not saved: a reload forgets a cooldown, which at worst
+        // repeats one warning.
+        private readonly Dictionary<int, int> lastTrample = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> lastWarn = new Dictionary<int, int>();
+        private readonly List<Pawn> movingWalkers = new List<Pawn>();
+
         public override void MapComponentTick()
         {
-            if (Find.TickManager.TicksGame % SweepInterval != 0)
+            int now = Find.TickManager.TicksGame;
+            if (now % RM_WalkerTrampleKernel.SweepInterval == 0 && RM_DivingSettings.masterEnabled
+                && RM_DivingSettings.walkerTrampleEnabled)
+            {
+                TrampleSweep(now);
+            }
+            if (now % SweepInterval != 0)
             {
                 return;
             }
@@ -92,6 +104,76 @@ namespace RimMandrake.DivingInteraction
                     continue; // a walker grazes standing still; a moving herd exposes nothing
                 }
                 Graze(p);
+            }
+        }
+
+        // SCALD_WALKING_PASTURE_1, trample half (owner card 2026-10-09). RM_WalkerTrampleKernel decides; this measures
+        // and plays it: blunt damage from the walker, a message for the player's own people, a caution message first.
+        private void TrampleSweep(int now)
+        {
+            ResolveDefs();
+            if (walkerDef == null)
+            {
+                return;
+            }
+            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            movingWalkers.Clear();
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                Pawn w = pawns[i];
+                if (w.def == walkerDef && !w.Dead && !w.Downed && w.pather != null && w.pather.Moving)
+                {
+                    movingWalkers.Add(w);
+                }
+            }
+            if (movingWalkers.Count == 0)
+            {
+                return;
+            }
+            for (int i = pawns.Count - 1; i >= 0; i--)
+            {
+                Pawn p = pawns[i];
+                if (p.def == walkerDef || p.Dead || !p.Spawned || p.RaceProps == null || !p.RaceProps.Humanlike)
+                {
+                    continue;
+                }
+                float best = float.PositiveInfinity;
+                Pawn bestWalker = null;
+                for (int k = 0; k < movingWalkers.Count; k++)
+                {
+                    float d = (movingWalkers[k].Position - p.Position).LengthHorizontalSquared;
+                    if (d < best)
+                    {
+                        best = d;
+                        bestWalker = movingWalkers[k];
+                    }
+                }
+                int id = p.thingIDNumber;
+                int lt = lastTrample.TryGetValue(id, out int a) ? a : -1;
+                int lw = lastWarn.TryGetValue(id, out int b) ? b : -1;
+                // trampleEnabled is true here: MapComponentTick only calls this sweep when the toggle is on.
+                RM_WalkerTrampleKernel.Outcome o = RM_WalkerTrampleKernel.Decide(best, p.Downed, now, lt, lw,
+                    true, RM_DivingSettings.walkerTrampleWarning);
+                bool ours = p.Faction == Faction.OfPlayer;
+                if (o == RM_WalkerTrampleKernel.Outcome.Trample)
+                {
+                    lastTrample[id] = now;
+                    lastWarn[id] = now;
+                    float dmg = RM_WalkerTrampleKernel.Damage(RM_DivingSettings.walkerTrampleDamage);
+                    p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg, 0f, -1f, bestWalker));
+                    if (ours)
+                    {
+                        Messages.Message("RM_WalkerTrampled".Translate(p.LabelShort), p, MessageTypeDefOf.NegativeHealthEvent);
+                    }
+                }
+                else if (o == RM_WalkerTrampleKernel.Outcome.Warn)
+                {
+                    lastWarn[id] = now;
+                    if (ours)
+                    {
+                        Messages.Message("RM_WalkerTrampleWarning".Translate(p.LabelShort), p, MessageTypeDefOf.CautionInput, false);
+                    }
+                }
             }
         }
 
