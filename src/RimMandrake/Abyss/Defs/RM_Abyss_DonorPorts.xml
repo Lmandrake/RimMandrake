@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). The Abyss's two Alpha Biomes (sarg.alphabiomes) ground terrains, ported as RM_ defs
+    with the donor's own values. Art: StandIn/<donor texPath> marked stand-in copies (art ledger, provenance
+    kind=donor standin=true) until regenerated.
+  -->
+  <!-- RM_FineForsakenSand: port of AB_FineForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_FineForsakenSand</defName>
+    <label>fine forsaken sand</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_FineForsakenSands</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_FineForsakenSands_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>4</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>AB_DarkScatter</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Sand</generatedFilth>
+    <fertility>0.10</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tools>
+      <li>
+        <label>sand</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>SandInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+
+  <!-- RM_ForsakenSand: port of AB_ForsakenSand (Alpha Biomes, TerrainDefs/Terrain_ForsakenCrags.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_ForsakenSand</defName>
+    <label>forsaken sand</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_ForsakenSands</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_ForsakenSands_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSand</pollutionOverlayTexturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>340</renderPrecedence>
+    <pathCost>4</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>AB_DarkScatter</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1.0</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tools>
+      <li>
+        <label>dirt</label>
+        <capacities>
+          <li>KickMaterialInEyes</li>
+        </capacities>
+        <hediff>DirtInEyes</hediff>
+        <cooldownTime>1.5</cooldownTime>
+      </li>
+    </tools>
+  </TerrainDef>
+</Defs>

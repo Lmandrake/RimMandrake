@@ -71,10 +71,7 @@
           <li>ChunkSlate</li>
           <li>ChunkMarble</li>
           <li>GU_ChunkRoseQuartz</li>
-          <li>AB_ChunkCragstone</li>
-          <li>AB_ChunkObsidian</li>
-          <li>AB_ChunkMudstone</li>
-          <li>AB_ChunkSlimeStone</li>
+          <!-- four Alpha Biomes rock chunks removed 2026-10-18 (donor retired; no port) -->
         </customThingToEat>
         <nutrition>1</nutrition>
         <digThingIfMapEmpty>false</digThingIfMapEmpty>
