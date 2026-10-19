@@ -50,6 +50,7 @@ ANTI-GUESSING NOTES
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -532,11 +533,32 @@ def _texts(o, acc):
     return acc
 
 
+def settings_surface(s, handle="RimMandrakeFlowWorksMod"):
+    """The exact settings-surface id of FlowWorks' MAIN Mod class. The packageId alone matches two surfaces
+    (RimMandrakeFlowWorksMod and RiverSteamMod) and open_mod_settings refuses it (live 2026-10-19: 'matched multiple')."""
+    if getattr(s, "_surface", None):
+        return s._surface
+    r = s.call("rimworld/list_mod_settings_surfaces") or {}
+    found = []
+    def walk(o):
+        if isinstance(o, dict):
+            if o.get("handleTypeName") == handle and str(o.get("modId", "")).startswith("mod-settings:" + MOD_ID):
+                found.append(o["modId"])
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    walk(r)
+    s._surface = found[0] if found else MOD_ID
+    return s._surface
+
+
 def b2_settings_dialog(s):
     """The five 'dialog not rendered' partials, in ONE open: every label must be found in the open dialog's UI text
     (rimworld/get_ui_layout); a dialog with no readable text is UNMEASURED, its screenshot kept for an eye check. Then
     the disk round trip: flip pitGuardrailEnabled, close the dialog (WriteSettings), read the config file, restore."""
-    r = s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
+    r = s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True)
     opened = r.get("success") is True
     lay = s.call("rimworld/get_ui_layout") if opened else {}
     texts = " | ".join(_texts(lay, []))
@@ -551,12 +573,12 @@ def b2_settings_dialog(s):
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     before = s.sget("pitGuardrailEnabled")
     s.sset("pitGuardrailEnabled", False)
-    opened2 = s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True).get("success") is True
+    opened2 = s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True).get("success") is True
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     # a dialog that never opened never closes, so nothing is written: that is UNMEASURED, not a MOD fail (live 2026-10-19)
     disk = read_settings_file(s) if opened2 else None
     s.sset("pitGuardrailEnabled", before if before is not None else True)
-    s.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
+    s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     disk2 = read_settings_file(s)
     if disk is None:
@@ -594,6 +616,10 @@ def b2_tank_tall(s):
     got = []
     for c in ((x + 1, z + 1), (x + 6, z + 1)):
         ok, txt = s.proof(NSP, "ProofTank", "%d,%d;Store;RM_Liquid_FreshWater;%d" % (c[0], c[1], offer))
+        m = re.search(r"\(capacity (\d+)\)", txt) if not ok else None
+        if m:   # ProofTank REFUSES an offer over capacity (it never clamps) and names the capacity: fill to exactly it
+            ok, txt = s.proof(NSP, "ProofTank", "%d,%d;Store;RM_Liquid_FreshWater;%s" % (c[0], c[1], m.group(1)))
+        s.timing.setdefault("tank_tall", []).append(txt[:160])
         got.append(fnum(kvparse(txt).get("units")) if ok else None)
     short, tall = got
     if not (a.get("survived") and b.get("survived")) or None in got or short in (0, offer) or tall == offer:
