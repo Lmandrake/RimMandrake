@@ -704,6 +704,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.ExposeData();
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
+            RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
             Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
             RM_WaterMendSettings.ExposeData();       // FISH_ROLL_MEND_PONDS_BORN_BARREN (engine doc §2.3; Q5a/Q6a defaults)
             RimMandrake.Shared.PatchApplier.AfterExpose();
@@ -1343,8 +1344,9 @@ namespace RimMandrake.FlowWorks
                 "The deepest drop a portable ladder spans (0.5 m a level). A deeper wall needs the fixed wall ladder.");
             portableLadderMaxLevels = Mathf.RoundToInt(list.Slider(portableLadderMaxLevels, 2f, 12f));
             list.CheckboxLabeled("Climbing gear", ref climbingGearEnabled,
-                "On, a pawn wearing climbing gear (rope, pitons, harness: a belt item) climbs up or down any pit wall, however deep, "
-              + "slowly. Off: the gear does nothing.");
+                "On, a pawn wearing climbing gear (ropes, little grappling hooks, climbing claws: a belt/backpack item) climbs up or "
+              + "down any pit wall, however deep, slowly, and over unroofed built walls (see Climbing over walls). Off: the gear "
+              + "does nothing.");
             list.Label("Climbing gear slowness: " + climbingGearSlowness.ToString("F1"), tooltip:
                 "Each level climbed on the gear costs this many normal climbs (a ladder costs the ladder slowness above). Steps the "
               + "pawn could climb without the gear cost what they always did.");
@@ -1884,6 +1886,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
+            RM_WallClimbSettings.DoSettingsSection(list);
             Swimming.RM_SwimSettings.DoSettingsSection(list);
             RM_WaterMendSettings.DoSettingsSection(list);
 

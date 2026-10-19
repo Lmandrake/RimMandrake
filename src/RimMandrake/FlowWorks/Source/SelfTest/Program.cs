@@ -2001,6 +2001,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
             PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
+            WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
