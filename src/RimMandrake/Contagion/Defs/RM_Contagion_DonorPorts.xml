@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Contagion (RUT_Contagion)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_AlienGrass: port of AB_AlienGrass (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_AlienGrass</defName>
+    <label>ocular grass</label>
+    <description>This grass is very bizarre, probably not even 100% carbon based. Not very edible for terrestrial creatures.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/GU_AlienGrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_AlienTree: port of AB_AlienTree (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_AlienTree</defName>
+    <label>ocular tree</label>
+    <description>This outlandish tree is not even 100% carbon based, and it seems to be struggling to grow from exposure to a terrestrial environment. Strange fruits resembling eyeballs hang from the tree, but they are probably not edible. Its wood releases a powerful, sweet scent. Perhaps it can be somehow useful.\n\nPlant details: Ocular Trees are a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.05. Can be harvested for Red Wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
+    <descriptionHyperlinks>
+      <ThingDef>GU_RedWood</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_OcularTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <rotatable>false</rotatable>
+    <blockWind>true</blockWind>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+<treeCategory>Full</treeCategory>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>10</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>3~3.75</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <burnedThingDef IsNull="True"/>
+      <choppedThingDef IsNull="True"/>
+      <smashedThingDef IsNull="True"/>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_AlienTree_Polluted: port of AB_AlienTree_Polluted (Alpha Biomes 1.6/Mods/Biotech/Defs/ThingDefs_Plants/Plants_Ocular_Polluted.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PollutionTreeWithStumpBase">
+    <defName>RM_AlienTree_Polluted</defName>
+    <label>mutated ocular tree</label>
+    <description>This ocular tree has been affected by pollution and mutated in strange ways. Concerningly, it seems to actually be flourishing in these conditions.\n\nPlant details: Mutated ocular trees are a wild plant, and they need minimum terrain fertility of 0.05. Can only grow in polluted terrains. Can be harvested for small amounts of Red Wood. Tree lover ideologies don't much care about chopping down these weird trees.</description>
+    <descriptionHyperlinks>
+      <ThingDef>GU_RedWood</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <Nutrition>0.05</Nutrition>
+      <Mass>175</Mass>
+      <Beauty>-5</Beauty>
+      <BeautyOutdoors>-3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_PollutedAlienTree</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <rotatable>false</rotatable>
+    <blockWind>true</blockWind>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <treeCategory>Full</treeCategory>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>800</harvestWork>
+      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>6</harvestYield>
+      <harvestMinGrowth>0.4</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>3~3.75</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_RedLeaves: port of AB_RedLeaves (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_RedLeaves</defName>
+    <label>ocular plant</label>
+    <description>This grass is very bizarre, probably not even 100% carbon based. Not very edible for terrestrial creatures.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/GU_RedLeaves</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.2</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_HalfAlienTree: port of AB_HalfAlienTree (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_HalfAlienTree</defName>
+    <label>half transformed ocular tree</label>
+    <description>A strange infection seems to be transforming this regular oak into an ocular tree. It still retains its trunk and its leaves, though they are beginning to transform into pulsating red structures that don't seem to be able to survive in this universe. This tree might be useful to harvest a small amount of real wood.\n\nPlant details: Half transformed ocular trees are a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.05. Can be harvested for normal wood.</description>
+    <descriptionHyperlinks>
+      <ThingDef>WoodLog</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <Mass>150</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_HalfAlienTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <blockWind>true</blockWind>
+    <rotatable>false</rotatable>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+    <treeCategory>Full</treeCategory>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>25</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>2.3~3</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_RedPlantsTall: port of AB_RedPlantsTall (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_RedPlantsTall</defName>
+    <label>ocular plant</label>
+    <description>This grass is very bizarre, probably not even 100% carbon based. Not very edible for terrestrial creatures.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.075</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/GU_RedLeaves2</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.2</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_GlobularPlant: port of AB_GlobularPlant (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_GlobularPlant</defName>
+    <label>globular aberration</label>
+    <description>A sickly pink orb supported by a network of gnarled branches. A reddish sap constantly drips from its wood, and seems to keep insects at bay.\n\nPlant details: Globular aberrations are a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.05. Can be harvested for red wood.\n\nBased on artwork by Rob Smyth, https://robsmythart.com/projects</description>
+    <descriptionHyperlinks>
+      <ThingDef>GU_RedWood</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_GlobularPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <blockWind>true</blockWind>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>GU_RedWood</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>10</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>2.3~3</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+    <comps>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_TentacularPlant: port of AB_TentacularPlant (Alpha Biomes 1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml), plain XML copy 2026-10-18 for donor retirement.
+       Dropped/replaced: harvest AB tentacular fruit -> vanilla RawBerries. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TentacularPlant</defName>
+    <label>tentacular aberration</label>
+    <description>An outlandish plant with blue nodules at the end of each branch that produce an eerie rattling sound from time to time.\n\nPlant details: Tentacular aberrations are a wild plant that cannot be cultivated, and it needs minimum terrain fertility of 0.05. Can be harvested for tentacular fruit.\n\nBased on artwork by Rob Smyth, https://robsmythart.com/projects</description>
+    <descriptionHyperlinks>
+      <ThingDef>RawBerries</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_TentacularPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <blockWind>true</blockWind>
+    <ingestible>
+      <foodType>Tree</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestYield>15</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+      <visualSizeRange>2.3~3</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+  </ThingDef>
+</Defs>

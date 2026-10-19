@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Blue Desert (RUT_BlueDesert)
+    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
+    painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were.
+  -->
+  <!-- RM_ToxiGrass: port of AB_ToxiGrass (Alpha Biomes 1.6/Mods/Biotech/Defs/ThingDefs_Plants/Plants_Meadows_Polluted.xml), plain XML copy 2026-10-18 for donor retirement. -->
+  <ThingDef ParentName="PollutionPlantBase">
+    <defName>RM_ToxiGrass</defName>
+    <label>toxi grass</label>
+    <description>Better not eat this...</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.30</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_ToxiGrass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>2.5</growDays>
+      <leaflessGraphicPath>Things/Plant/Graygrass_Leafless/GraygrassA</leaflessGraphicPath>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+</Defs>
