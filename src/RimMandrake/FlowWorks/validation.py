@@ -930,7 +930,12 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "riverColorsEnabled",
                         # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (2026-10-16): restart-only (read while patches apply), so a
                         # live row flipping it needs two loads with Dubs Bad Hygiene; owed
-                        "dbhBottleBridge"]
+                        "dbhBottleBridge",
+                        # TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT / PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS /
+                        # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (built 2026-10-18, registered in site_spec by the F2 settings
+                        # audit): their live rows are owed on the items (A1-A5), not yet a toggle chain
+                        "trenchCoverEnabled", "trenchAiAvoidsCages", "portableLadderEnabled", "climbingGearEnabled",
+                        "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitRescueLadderEnabled", "pipesUnderToCentre"]
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
