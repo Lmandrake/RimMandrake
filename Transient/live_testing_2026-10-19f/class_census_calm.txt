@@ -1,0 +1,9 @@
+# index: 498 active mods (0 not found on disk), 101234 types; retired donors: 1240 types; probe OK
+RM_TestSite_calm_v1_AREAFIX2.rws: 7 unresolved class sites
+  SKIPPED unknown     1  AlphaBehavioursAndEvents.MapRoomUpdater  @ li/components
+  SKIPPED RETIRED     1  AlphaBiomes.MapComponentExtender  @ li/components
+  SKIPPED RETIRED     1  AlphaBiomes.WorldComponentExtender  @ world/components
+  SKIPPED unknown     1  RimMandrake.FloodedCanyon.RM_MapComponent_CanyonFlood  @ li/components
+  SKIPPED unknown     1  RimMandrake.FloodedCanyon.RM_MapComponent_LedgeRefuge  @ li/components
+  SKIPPED unknown     1  RimMandrake.FloodedCanyon.RM_MapComponent_RecedeAftermath  @ li/components
+  SKIPPED RETIRED     1  VFEInsectoids.GameComponent_Insectoids  @ game/components

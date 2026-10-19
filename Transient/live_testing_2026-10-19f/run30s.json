@@ -1,0 +1,85 @@
+{
+ "set": {
+  "success": true,
+  "timeSpeed": "Superfast",
+  "ultraSpeedBoostAvailable": true,
+  "previousUltraSpeedBoost": true,
+  "currentUltraSpeedBoost": true,
+  "paused": false,
+  "message": "Time speed set to Superfast.",
+  "state": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "longEventPending": false,
+   "paused": false,
+   "timeSpeed": "Superfast",
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true,
+   "tick": 2
+  },
+  "operation": {
+   "OperationId": "op_608b7129ef8a4a8bb2c63b48c9fa47d4",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 0
+  }
+ },
+ "unpause": {
+  "success": true,
+  "paused": false,
+  "message": "Game unpaused",
+  "operation": {
+   "OperationId": "op_73a0ec77af2d498898baa2472db28e68",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 174
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": false,
+   "timeSpeed": "Superfast",
+   "tick": 3
+  }
+ },
+ "pause": {
+  "success": true,
+  "paused": true,
+  "message": "Game paused",
+  "operation": {
+   "OperationId": "op_e7832c1c5065433eace5f8f5e3dca690",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 5
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 10230
+  }
+ },
+ "info": {
+  "status": "game_loaded",
+  "ticksGame": 10230,
+  "mapCount": 1,
+  "selectedPawns": [],
+  "operation": {
+   "OperationId": "op_d03db01958ae40d4b87de31d797caa6d",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 15
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 10230
+  }
+ }
+}

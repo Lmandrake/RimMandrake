@@ -1,0 +1,3 @@
+launch_ready: profile full (498 active mods in ModsConfig): warn 1500s, deadline 2700s, no kill on deadline
+launch_ready: READY - pid 44116, port 5174, 498 active mods, 962s from launch; first exception: Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of
+launch_ready: receipt /mnt/d/Luke/dev/_rmscratch/launch_receipts/launch_20261019T154813.json

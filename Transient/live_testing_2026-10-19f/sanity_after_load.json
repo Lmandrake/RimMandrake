@@ -1,0 +1,136 @@
+{
+ "rimworld/get_game_info": {
+  "status": "game_loaded",
+  "ticksGame": 2,
+  "mapCount": 1,
+  "selectedPawns": [],
+  "operation": {
+   "OperationId": "op_39f1858e505541a88dba311e655f3ed5",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 18
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 2
+  }
+ },
+ "rimworld/list_colonists": {
+  "success": true,
+  "count": 3,
+  "colonists": [
+   {
+    "pawnId": "Thing_Human428",
+    "thingIdNumber": 428,
+    "className": "Verse.Pawn",
+    "defName": "Human",
+    "kindDef": "Colonist",
+    "race": "Verse.RaceProperties",
+    "name": "Dirt",
+    "fullName": "Jim 'Dirt' Brennan",
+    "label": "Dirt<color=#999999FF>, Inventor</color>",
+    "selected": false,
+    "drafted": false,
+    "downed": false,
+    "dead": false,
+    "spawned": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "position": {
+     "x": 107,
+     "z": 121
+    },
+    "job": "SEX_StartConversation",
+    "faction": "New Arrivals",
+    "factionDef": "PlayerColony",
+    "factionIsPlayer": true,
+    "factionHostileToPlayer": false,
+    "humanlike": true,
+    "animal": false,
+    "mechanoid": false,
+    "insect": false
+   },
+   {
+    "pawnId": "Thing_Human434",
+    "thingIdNumber": 434,
+    "className": "Verse.Pawn",
+    "defName": "Human",
+    "kindDef": "Colonist",
+    "race": "Verse.RaceProperties",
+    "name": "Jet",
+    "fullName": "Hokojin 'Jet' Buraku",
+    "label": "Jet<color=#999999FF>, Officer</color>",
+    "selected": false,
+    "drafted": false,
+    "downed": false,
+    "dead": false,
+    "spawned": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "position": {
+     "x": 105,
+     "z": 126
+    },
+    "job": "SEX_StartConversation",
+    "faction": "New Arrivals",
+    "factionDef": "PlayerColony",
+    "factionIsPlayer": true,
+    "factionHostileToPlayer": false,
+    "humanlike": true,
+    "animal": false,
+    "mechanoid": false,
+    "insect": false
+   },
+   {
+    "pawnId": "Thing_Human431",
+    "thingIdNumber": 431,
+    "className": "Verse.Pawn",
+    "defName": "Human",
+    "kindDef": "Colonist",
+    "race": "Verse.RaceProperties",
+    "name": "Monika",
+    "fullName": "Nan 'Monika' Zhuoer",
+    "label": "Monika<color=#999999FF>, Builder</color>",
+    "selected": false,
+    "drafted": false,
+    "downed": false,
+    "dead": false,
+    "spawned": true,
+    "map": "0",
+    "mapId": "Map_0",
+    "mapIndex": 0,
+    "position": {
+     "x": 113,
+     "z": 124
+    },
+    "job": "DBHPackWaterBottle",
+    "faction": "New Arrivals",
+    "factionDef": "PlayerColony",
+    "factionIsPlayer": true,
+    "factionHostileToPlayer": false,
+    "humanlike": true,
+    "animal": false,
+    "mechanoid": false,
+    "insect": false
+   }
+  ],
+  "operation": {
+   "OperationId": "op_d9112f0210c1426593bcf076a5fff9d9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 17
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 2
+  }
+ }
+}

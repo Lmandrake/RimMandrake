@@ -1,0 +1,118 @@
+{
+ "log": "Transient/live_testing_2026-10-19f/playerlog_menu.txt",
+ "lines": 7944,
+ "ident": true,
+ "capAt": null,
+ "modsBlock": null,
+ "modsSource": null,
+ "firstErrorish": {
+  "line": 1119,
+  "text": "Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes."
+ },
+ "exc": {
+  "events": 5,
+  "ours": 0,
+  "retired": 0,
+  "other": 5,
+  "first": {
+   "line": 1125,
+   "text": "Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object",
+   "who": "other"
+  },
+  "sigs": {
+   "Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object": 1,
+   "Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object": 1,
+   "Could not execute post-long-event action. Exception: System.Collections.Generic.KeyNotFoundException: The given key '-N\u00a7Vanilla' was not pre": 1,
+   "Could not execute post-long-event action. Exception: System.ArgumentException: An item with the same key has already been added. Key: Sandst": 1,
+   "System.Exception: Wrong null argument: brtrue NULL": 1
+  }
+ },
+ "xref": {
+  "lines": 1,
+  "bar": 1,
+  "retired": 1,
+  "ours": 0,
+  "other": 0,
+  "names": {
+   "RM_TinkleGrass": 1
+  }
+ },
+ "scribe": {
+  "lines": 7,
+  "retired": 0,
+  "ours": 0,
+  "other": 7,
+  "names": {
+   "AG_PackMule": 1,
+   "AG_CustomXenotypeIcon12": 1,
+   "AG_UnderdevelopedTeeth": 1,
+   "AG_SurvivalInstinct_High": 1,
+   "AG_TableResistance": 1,
+   "AG_Stinky": 1,
+   "AG_FrailSkin": 1
+  }
+ },
+ "config": {
+  "lines": 21,
+  "ours": 0,
+  "other": 21
+ },
+ "patch": {
+  "lines": 4,
+  "ours": 0,
+  "other": 4,
+  "retiredTarget": 0
+ },
+ "tex": {
+  "lines": 0,
+  "ours": 0,
+  "other": 0,
+  "ported": 0,
+  "oursPaths": {},
+  "otherPaths": {}
+ },
+ "baseline": {
+  "patchfail": 4,
+  "crossref": 1,
+  "configerror": 22,
+  "scribe": 7,
+  "harmonyfail": 1
+ },
+ "ex": {
+  "xref": [
+   "817 [retired] Could not resolve cross-reference: No Verse.ThingDef named RM_TinkleGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord"
+  ],
+  "exc": [
+   "1125 [other] Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object",
+   "1149 [other] Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object",
+   "1269 [other] Could not execute post-long-event action. Exception: System.Collections.Generic.KeyNotFoundException: The given key '-1\u00a7Vanilla' was not present in the dictionary.",
+   "1281 [other] Could not execute post-long-event action. Exception: System.ArgumentException: An item with the same key has already been added. Key: Sandstone",
+   "4274 [other] System.Exception: Wrong null argument: brtrue NULL"
+  ],
+  "scribe": [
+   "4071 Could not load reference to Verse.GeneDef named AG_PackMule",
+   "4072 Could not load reference to RimWorld.XenotypeIconDef named AG_CustomXenotypeIcon12",
+   "4074 Could not load reference to Verse.GeneDef named AG_UnderdevelopedTeeth",
+   "4075 Could not load reference to Verse.GeneDef named AG_SurvivalInstinct_High",
+   "4076 Could not load reference to Verse.GeneDef named AG_TableResistance",
+   "4077 Could not load reference to Verse.GeneDef named AG_Stinky",
+   "4078 Could not load reference to Verse.GeneDef named AG_FrailSkin"
+  ]
+ },
+ "bars": {
+  "exceptions": 5,
+  "xrefOurs": 1,
+  "texOurs": 0
+ },
+ "fingerprint": "playerlog_menu.txt|570365|1792450100",
+ "mods": {
+  "count": null,
+  "source": null,
+  "retiredLoaded": []
+ },
+ "donorNamesKnown": 3080,
+ "verdict": {
+  "exit": 3,
+  "why": "UNMEASURED: loaded mod list unknown"
+ }
+}

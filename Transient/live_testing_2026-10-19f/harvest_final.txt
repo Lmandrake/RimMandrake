@@ -1,0 +1,16 @@
+DONOR-FREE HARVEST  Transient/live_testing_2026-10-19f/playerlog_final.txt  14784 lines
+  (a) mods loaded: 498 from reply file running_mods_menu.json; retired packageIds loaded: none
+      vs expected list (544): missing 48 ['aoba.warcasket', 'aqued.dredgeaberrations', 'arcjc007.wallstuff', 'armoredampharos.fancyrats', 'bonible.medievalmeleesounds', 'chezhou.chezhoulib.lib']  extra 2 ['mandrake.rm.pyrinth', 'mandrake.rut.weathersuite']
+  (b) BARS (§0.5.5 #5)       now   
+      exception events          18   ours 0 / retired-donor 0 / other 18
+        first: line 1125 [other] Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+      xref naming RM_/RSW_/RUT_    1   (all xref 1: retired-donor-or-rename 1 / ours 0 / other 0)
+      texture misses, ours       0   (0 distinct; others 0 lines, 0 distinct; on ported subjects 0)
+      also: config errors 21 (ours 0) | patch failures 4 (ours 0, aimed at a retired def 0) | Scribe 'Could not load reference' 3097 (retired 2274, ours 14)
+  (c) harvest_log baselines: crossref 1 vs 0 RED; scribe 3097 vs 0 RED; configerror 22 vs 17 RED; patchfail 4 vs 5 better
+      vs previous run: none recorded
+      e.g. xref 817 [retired] Could not resolve cross-reference: No Verse.ThingDef named RM_TinkleGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+      e.g. exc  1125 [other] Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+      e.g. exc  1149 [other] Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object
+      e.g. exc  1269 [other] Could not execute post-long-event action. Exception: System.Collections.Generic.KeyNotFoundException: The given key '-1§Vanilla' was not present in the dicti
+VERDICT exit 1: FAIL: exceptions 18, xrefOurs 1

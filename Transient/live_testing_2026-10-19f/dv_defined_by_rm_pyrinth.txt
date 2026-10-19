@@ -1,0 +1,12 @@
+DV_Filth_Pyrinth
+DV_MineablePyrinth
+DV_Mote_PyrinthGlint
+DV_Mote_PyrinthSpark
+DV_Mote_PyrinthSparkSmall
+DV_Pyrinth
+DV_PyrinthBrazier
+DV_PyrinthHeater
+DV_PyrinthLamp
+DV_PyrinthSparkingEffect
+DV_PyrinthSparkingEffectSmall
+DV_PyrinthWallLamp

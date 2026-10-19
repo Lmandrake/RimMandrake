@@ -1,0 +1,3520 @@
+{
+ "success": true,
+ "count": 498,
+ "packageIds": [
+  "zetrith.prepatcher",
+  "brrainz.harmony",
+  "mandrake.rm.loadtracer",
+  "aleksey.betterstacktraces",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "krkr.rule56",
+  "mlie.nwnrealfogofwar",
+  "owlchemist.cherrypicker",
+  "aoba.framework",
+  "vanillaexpanded.backgrounds",
+  "thesepeople.ritualattachableoutcomes",
+  "adaptive.storage.framework",
+  "redmattis.betterprerequisites",
+  "smashphil.vehicleframework",
+  "imranfish.xmlextensions",
+  "unlimitedhugs.hugslib",
+  "oskarpotocki.vanillafactionsexpanded.core",
+  "ebsg.framework",
+  "04.23.2020",
+  "ap.huntingmeme",
+  "dizzy.candlesandmeditation",
+  "jm.disstynan",
+  "zal.calltradeships",
+  "lc.tammybee.selectablesculpturegraphic",
+  "mingtuwuxiang.spacebasedecorative",
+  "nals.facialanimation",
+  "mlie.rfrumorhasit",
+  "rh2.cpers.arrest.here",
+  "cp.uncle.boris.used.furniture",
+  "sbz.neatstoragefridge",
+  "sbz.gravshipstorage",
+  "sr.modrimworld.factionalwarcontinued",
+  "zav.glowstoneforked",
+  "adaptive.ideology.storage",
+  "adaptive.primitivestorage",
+  "adaptive.simplestorage",
+  "mlie.advancedbiomes",
+  "ali.growodysseyplants",
+  "7f.alienworlds",
+  "andrewraphaellukasik.allowdeadanimals",
+  "unlimitedhugs.allowtool",
+  "duz.almosttherefork",
+  "sarg.alphamemes",
+  "swablu.ambience",
+  "vita.campdangers",
+  "xmb.ancientminingindustry.mo",
+  "asp.halituisamaricanous",
+  "automatic.autolinks",
+  "fuu.autostriponhaul",
+  "elsov.beliar",
+  "io.github.relvl.rimworld.bestapparel",
+  "ionfrigate12345.coolandgoodambush",
+  "mlie.betterbeggars",
+  "nephlite.advexplosions",
+  "arkymn.bettergrowthmoments",
+  "zal.betterinfestations",
+  "madeline.modmismatchformatter",
+  "mlie.betterprojectileorigin",
+  "jm.bettertraders",
+  "chaoticenrico.bettertrees",
+  "falconne.bwm",
+  "redmattis.biggergravship",
+  "kopp.biomecompatibilityproject",
+  "biomesteam.biomesfossils",
+  "biomesteam.coreframework",
+  "zal.biomeskit",
+  "bs.mbifvte",
+  "gulmadred.breedingritual",
+  "memegoddess.buildfrominventory",
+  "8z.callforintel",
+  "brrainz.cameraplus",
+  "iforgotmysocks.caravanadventures",
+  "kapitanoczywisty.changemapedge",
+  "void.charactereditor",
+  "heatherathebyne.childrenlearnoncaravan",
+  "kearril.choosewheretoland",
+  "kikohi.coloreddeepresources",
+  "petetimessix.compacthediffs",
+  "com.makeitso.configurabletechprints",
+  "cozyfire.velcroboy333",
+  "heatherathebyne.craftingspotslavegear",
+  "greg.customgastypes",
+  "hailuan.customquestframework",
+  "costel.customroomnames",
+  "dimonsever000.ideologyvirtues",
+  "east.dancepartycustommusic",
+  "van.beasts",
+  "darkestdungeon.incidentsounds",
+  "troopersmith1.deathrattle",
+  "mlie.decorativecliffs",
+  "gondragon.defensivepositions",
+  "merthsoft.designatorshapes",
+  "garwel.destroyitem",
+  "det.avaloi",
+  "det.boglegs",
+  "det.brawnum",
+  "det.buzzers",
+  "det.keshig",
+  "det.venators",
+  "cometopapa.deteriorated",
+  "lornath.diseaseimmunityprogresstracker",
+  "jecrell.doorsexpanded",
+  "dubwise.dubspaintshop",
+  "dubwise.dubsbadhygiene.thirst",
+  "dubwise.dubsbadhygiene.lite",
+  "dubwise.dubsmintmenus",
+  "dubwise.dubsmintminimap",
+  "dubwise.dubsrimkit",
+  "blues.forge",
+  "yourname.effigys.mod",
+  "carnysenpai.enableoversizedweapons",
+  "nep.enginesunlimited",
+  "det.epochsincense",
+  "mandrake.rm.pyrinth",
+  "keshash.extraexplosioneffects",
+  "eoralmilk.faceaddonframework",
+  "azravos.factioncustomizer",
+  "mlie.factionraidcooldown",
+  "kosaro.fahrenheitandcelsius",
+  "realify.firefoam",
+  "kathanon.floatsubmenu",
+  "temeez.floorlights2",
+  "aoba.fortress.neolithic",
+  "m00nl1ght.geologicallandforms",
+  "memegoddess.giddyup",
+  "lts.geg",
+  "albion.goexplore",
+  "arcjc007.gravshipcrashes",
+  "arcjc007.gravshipexporter",
+  "sk.gravshipraids",
+  "imagitama.rimworldgravshiprangeonmap",
+  "arti.shrinez",
+  "ael.tua.helmetsaddtoxresistance",
+  "elsov.highborn",
+  "hazn.huntingtraps",
+  "hailuan.iwbb",
+  "amegakull.scvrole",
+  "kxp.ideosymbolsasideograms",
+  "llunak.moreprecepts",
+  "agentblac.makepawnsprisoners",
+  "mlie.incidentdisabler",
+  "koth.isid",
+  "gravtide.mod",
+  "mandrake.rm.injections",
+  "mandrake.rsw.injections",
+  "mandrake.rut.injections",
+  "mandrake.rm.ninefold",
+  "mandrake.rm.aftermath",
+  "mandrake.rm.visibility",
+  "mandrake.rm.graffiti",
+  "mandrake.rm.sacredgraffiti",
+  "mandrake.rm.inhabited",
+  "mandrake.rut.inhabited",
+  "haecriver.injuredcarry",
+  "ferny.easycaravanformation",
+  "turnovus.biotech.integratedgenes",
+  "jaxe.bubbles",
+  "mlie.interactionareasettings",
+  "zal.ionweaponry",
+  "mandrake.rsw.jawarules",
+  "jecrell.jecstools",
+  "kikohi.jewelry",
+  "nep.landonanything",
+  "timuttie.justleavealready.fork.mitasamodel",
+  "mlie.justputitoverthere",
+  "linnun.keepconverting",
+  "vaguelysexual.modpackageid.goeshere",
+  "zal.largeoutpost",
+  "arcjc007.lasercannon",
+  "costel.layeredapparel",
+  "noneobsidiaexpansion.ledlightsstrip",
+  "mlie.linkablesettings",
+  "dorbo.watersfx",
+  "mlie.logafterdeferror",
+  "zylle.mapdesigner",
+  "nozome.mapmodeframework",
+  "m00nl1ght.mappreview",
+  "udon.masslovein",
+  "sirdarkelf.meaningfulencounters",
+  "mewn.medievalsigns",
+  "mlie.mercerbackpacks",
+  "andromeda.milkyway",
+  "rabiosus.minesight",
+  "cain.mineshaft",
+  "mlie.miningcoalertspeaker",
+  "mlie.miningcodrillturret",
+  "mlie.miningcomms",
+  "mlie.miningcospaceship",
+  "mandrake.rut.scavengerevents",
+  "hali.modifylandingtile",
+  "deadmano.moodalerts",
+  "acutus.moodchainreaction",
+  "mlie.morefactioninteraction",
+  "garryflowers.moreslaverystuff",
+  "zylle.morevanillabiomes",
+  "snobi.mutatorworldicons",
+  "oblitus.mylittleplanet",
+  "radzerp.naturalpaths",
+  "zylle.nightlights",
+  "nightmare.core",
+  "dingo.noforcedslowdown",
+  "mlie.nomissinggeneicons",
+  "edern.norandomapparelonideoedit",
+  "jaeger972.nomadfreindlyquests",
+  "avilmask.nonunopinata",
+  "planetace.nondestructivegravlaunch",
+  "mehni.numbers",
+  "karew.orcclan",
+  "coolzie.oocreboost",
+  "alleykat.persistentprecepts",
+  "mlie.perspectivebuildings",
+  "meltup.polyamorybeds.vanilla",
+  "xylthixlm.races.core",
+  "mlie.preceptsandmemes",
+  "m00nl1ght.unofficialupdates.preparelanding",
+  "ironscruff.primordialgeysers",
+  "mlie.prisonersshouldfearturrets",
+  "laureeeeeeeeeeeeeeen.shrooms",
+  "dawnsglow.qualcolor",
+  "ingendum.raiderswarmcompression",
+  "zal.randomgrowthchoices",
+  "wemd.realisticdarknesslight",
+  "mlie.realistichumansounds",
+  "mlie.recyclethis",
+  "mlie.relevantstatsindescription",
+  "petetimessix.researchreinvented",
+  "scorpio.resourcedictionary",
+  "alma.tossem",
+  "sihv.rombonesport",
+  "kilokio.rimai.framework",
+  "brrainz.rimbridgeserver",
+  "dubwise.rimefeller",
+  "rimfridge.kv.rw",
+  "mlie.rimquest",
+  "deon.rimtek.core",
+  "sierra.rt.generaltraits",
+  "depscian.rimtunes",
+  "mianreplicate.romanceandintimacyontherim",
+  "kupie.isjustdoingitlive.plzdonthateme.roofedscanning",
+  "ghost.rootsofrimworld",
+  "memegoddess.runandgun",
+  "mandrake.rut.empirepursuit",
+  "rwnodetree.rwplanetatmosphere",
+  "moja.salvagerubble",
+  "plusblankplus.scenarioamenderfork",
+  "hellrevenger.searchoption",
+  "avilmask.selfdyeing",
+  "sensiblebedownership.1trickpwnyta",
+  "boots.sensiblefactions",
+  "flyingsloth.scfilthreducer",
+  "shavius.medieval.flavour",
+  "spacemoth.showknowntechprints",
+  "dark.signs",
+  "usgiyi.slaveoutfits",
+  "mlie.slaverebellionsimproved",
+  "astryl.sleepingbuddies",
+  "hol.smeltpatch",
+  "weilbyte.snapout",
+  "krelinos.socialexpfromtrade",
+  "mlie.spaceworms",
+  "jpt.speakup",
+  "elshender.stackablechunks",
+  "balistafreak.standalonehotspring",
+  "amoruch.rimworldstealingmod",
+  "karshou.storagememory",
+  "mandrake.rm.strandedquest",
+  "kas.strongerscaling",
+  "moistestwhale.stuffontablesforked",
+  "gerrymon.stylizedslavecollar",
+  "mlie.tabsorting",
+  "ucp.tabletopdecorations",
+  "summersausages2ttv.techlevelenforcement",
+  "propickelz.tinkerbench",
+  "tsa.torturepod",
+  "smashphil.dropspot",
+  "mlie.tradeabletrinkets",
+  "automatic.traderships",
+  "kearril.tradingoptionscontinue",
+  "aelanna.transparentsubstructure",
+  "xercaine.tribal.furniture",
+  "geojak.tributedemand",
+  "ferny.triumphantresearch",
+  "trouperton.trystantravellersshuttleschematics",
+  "error277.tunneler.expanded",
+  "marvinkosh.ughyougotme",
+  "madarauchiha.undraftaftertucking",
+  "universalpregnancy.1trickpwnyta",
+  "nephlite.orbitaltradecolumn",
+  "vanillaexpanded.vappe",
+  "vanillaexpanded.vaeaccessories",
+  "vanillaexpanded.vanillabackstoriesexpanded",
+  "vanillaexpanded.vbrewe",
+  "vanillaexpanded.vcooke",
+  "vanillaexpanded.vee",
+  "oskarpotocki.vfe.tribals",
+  "vanillaexpanded.vfecore",
+  "vanillaexpanded.vfearchitect",
+  "vanillaexpanded.vfeart",
+  "vanillaexpanded.vfefactory",
+  "vanillaexpanded.vfefarming",
+  "vanillaexpanded.vfemedical",
+  "vanillaexpanded.vfepower",
+  "vanillaexpanded.vfeproduction",
+  "vanillaexpanded.vfepropsanddecor",
+  "vanillaexpanded.vfesecurity",
+  "vanillaexpanded.vfespacer",
+  "vanillaexpanded.gravship",
+  "vanillaexpanded.helixiengas",
+  "vanillaexpanded.viehar",
+  "vanillaexpanded.ideo.relicsandartifacts",
+  "vanillaexpanded.vexploratione",
+  "vanillaexpanded.outposts",
+  "vanillaquestsexpanded.generator",
+  "vanillaracesexpanded.archon",
+  "vanillaracesexpanded.fungoid",
+  "vanillaracesexpanded.genie",
+  "vanillaracesexpanded.phytokin",
+  "vanillaracesexpanded.saurid",
+  "vanillaracesexpanded.starjack",
+  "vanillaexpanded.vanillatraitsexpanded",
+  "vanillaexpanded.vwems",
+  "gabrieel1482.raidvehicleframework",
+  "ninagoblin.visitsettlements",
+  "addvans.walktheworld",
+  "ogliss.g223.wanderingcaravans",
+  "addvans.wasdedpawn",
+  "aelanna.weaponracks",
+  "bodlosh.weaponstats",
+  "revolus.whatsmissing",
+  "co.uk.epicguru.whatsthatmod",
+  "winggar.meaningfulparties",
+  "tleno.wireheadstyle",
+  "fluffy.worktab",
+  "ferny.worldbuilder",
+  "funkyshit.mods.worldedit.alpha",
+  "bs.xenotypespawncontrol",
+  "mlie.yayoscaravan",
+  "mlie.yayoscombat3",
+  "mlie.yayosmeteor",
+  "btd.remix.gravshipblueprints",
+  "lazyfridaystudio.genesexpandedeyes",
+  "nals.facialanimationexperimentals",
+  "7f.alienworlds.tidallylocked",
+  "xmb.ancienturbanruins.mo",
+  "mandrake.rut.ashkarrlandmarkart",
+  "mandrake.rut.ishkolandmarks",
+  "m00nl1ght.geologicallandforms.biometransitions",
+  "neronix17.retexture.charactereditor",
+  "hailuan.customquestframeworkai",
+  "mlie.dungeonpack",
+  "vesper.egihologramsandprojectors",
+  "jaeger972.factionterritories",
+  "aoba.fortress.industrial",
+  "sd.fa.geneticheadsframework",
+  "gmmp.dungeon",
+  "zal.gianttoads",
+  "icepickgma.invisibledisplaycase",
+  "mandrake.rsw.jawavoice",
+  "neku.largepawns",
+  "lwm.deepstorage",
+  "smxrez.makeshiftreexamined",
+  "zacharyfoster.mineralsframework",
+  "mandrake.rsw.cuisine",
+  "sinnamon.moreritualrewards",
+  "zal.moreutilitypacks",
+  "andromeda.niceresearchtab",
+  "mandrake.rm.planetpresetprime",
+  "xylthixlm.races.titan",
+  "mlie.preceptsandmemesritualsmodule",
+  "lambda.psykshroom",
+  "ogliss.thewhitecrayon.quarry",
+  "memegoddess.replacestuff",
+  "kilokio.rimai.core",
+  "jaxe.rimhud",
+  "zal.spaceports",
+  "co.uk.epicguru.factionloadout",
+  "deon.rimtek.digipal",
+  "deon.rimtek.docmate",
+  "telardo.romanceontherim",
+  "kathanon.searchablemenus",
+  "mlie.showmeyourhands",
+  "scherub.stonecuttingextended",
+  "cyanobot.toddlers",
+  "vanillaexpanded.vchemfuele",
+  "vanillaexpanded.vcookestews",
+  "kuhlyus.modpatch.vanillaoutpost",
+  "mrhydralisk.voeadditionaloutposts",
+  "vanillaexpanded.vwel",
+  "fourtoo.glowingbush",
+  "mandrake.rm.weathersuite",
+  "mandrake.rut.weathersuite",
+  "zal.comigogreaterswamps",
+  "mlie.functionalvanillaexpandedprops",
+  "sd.fa.geneticheadsbiotech",
+  "sd.fa.geneticheadsmods",
+  "erdelf.humanoidalienraces",
+  "zacharyfoster.mineralsfrozen",
+  "zacharyfoster.mineralsrock",
+  "zacharyfoster.mineralssparkle",
+  "mehni.pickupandhaul",
+  "avius.prisonlabor",
+  "reel.facialanims",
+  "oskarpotocki.vfe.pirates",
+  "vanillaexpanded.vmemese",
+  "sd.fa.reelsadjustments",
+  "opa.allspecialistscanwork",
+  "broms.deeporbit",
+  "teiwaz.gtgtradercore",
+  "keyz182.keyzallowutilities",
+  "toastyman.moreritualseats",
+  "sugarcube.puahsharedstorage",
+  "legator.prisonerrealism",
+  "petetimessix.simplesidearms",
+  "tribeagle.simpleslaverycollars",
+  "neronix17.toolbox",
+  "vanillaexpanded.vgeneticse",
+  "vanillaexpanded.vtexe.facialanims",
+  "oskarpotocki.vanillavehiclesexpanded",
+  "dmp.vfepirates.warcasketwork",
+  "divinederivative.romance",
+  "teiwaz.taajg",
+  "teiwaz.tacac",
+  "brrainz.achtung",
+  "sd.fa.vteadjustments",
+  "sarg.alphavehiclesneolithic",
+  "kem.beardadjustment",
+  "redmattis.bigsmall.core",
+  "lovelydovey.sex.witheuterpe",
+  "mandrake.rut.longhunger",
+  "neronix17.outerrim.core",
+  "neronix17.outland.genetics",
+  "redmattis.optional",
+  "redmattis.bigweapons",
+  "avilmask.commonsense",
+  "mandrake.rsw.desertvehiclereskin",
+  "lovelydovey.sex.withrosaline",
+  "lovelydovey.recreation.witheuterpe",
+  "leutiankane.mineablesor",
+  "leutiankane.mines2patchouterrim",
+  "neronix17.outerrim.furnitureanddecor",
+  "neronix17.outerrim.galacticempire",
+  "neronix17.outerrim.rebelalliance",
+  "frozensnowfox.complexjobs",
+  "dubwise.dubsbreakmod",
+  "danzinagri.facialanimationcompatabilityproject",
+  "mandrake.rut.doctrine",
+  "taranchuk.performanceoptimizer",
+  "co.uk.epicguru.meleeanimation",
+  "lordfelix.rimcontrol",
+  "meathax.showmeyourtools",
+  "lee.theforce.lightsaber",
+  "mandrake.rsw.starwarsraces",
+  "mandrake.rsw.armoury",
+  "mandrake.rm.proximityhatch",
+  "mandrake.rsw.gizkastowaway",
+  "mandrake.rsw.shokk",
+  "mandrake.rm.luminouspigment",
+  "mandrake.rsw.ionweapons",
+  "mandrake.rut.shipmemory",
+  "mandrake.rut.antiquities",
+  "mandrake.rut.rites",
+  "mandrake.rut.researchretag",
+  "zylle.sandcastles",
+  "mandrake.rm.patches",
+  "mandrake.rsw.bacta",
+  "mandrake.rsw.patches",
+  "mandrake.rut.patches",
+  "mandrake.rut.pawnflavor",
+  "btd.gbp.shippack.kotor.vge",
+  "mandrake.rsw.droidworks",
+  "mandrake.rut.droidrepairjobs",
+  "mandrake.rm.wreckedmachines",
+  "mandrake.rut.pyrelandsmechanics",
+  "mandrake.rm.flowworks",
+  "mandrake.rm.explosiveknockback",
+  "mandrake.rm.kineticarms",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.oracle",
+  "mandrake.rm.property",
+  "mandrake.rm.rimdefdump",
+  "mandrake.rut.birthhatchdemo",
+  "arandomkiwi.rimthemes",
+  "mandrake.rut.menushell",
+  "mandrake.rut.shokkweaveeconomy",
+  "mandrake.rut.rustcathedralroaches",
+  "mandrake.rm.gravshiplanding",
+  "rw.mod.simplestairs",
+  "kutte.stairs",
+  "mandrake.rm.hugethings",
+  "mandrake.rm.biomes",
+  "mandrake.rsw.swbestiary",
+  "mandrake.rm.shipvermin",
+  "mandrake.rut.greentideraidant"
+ ],
+ "mods": [
+  {
+   "loadOrder": 0,
+   "packageId": "zetrith.prepatcher",
+   "name": "Prepatcher",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2934420800"
+  },
+  {
+   "loadOrder": 1,
+   "packageId": "brrainz.harmony",
+   "name": "Harmony",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2009463077"
+  },
+  {
+   "loadOrder": 2,
+   "packageId": "mandrake.rm.loadtracer",
+   "name": "Load Tracer (local)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\LoadTracer"
+  },
+  {
+   "loadOrder": 3,
+   "packageId": "aleksey.betterstacktraces",
+   "name": "Better Stacktraces",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3541579129"
+  },
+  {
+   "loadOrder": 4,
+   "packageId": "ludeon.rimworld",
+   "name": "Core",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Core"
+  },
+  {
+   "loadOrder": 5,
+   "packageId": "ludeon.rimworld.royalty",
+   "name": "Royalty",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Royalty"
+  },
+  {
+   "loadOrder": 6,
+   "packageId": "ludeon.rimworld.ideology",
+   "name": "Ideology",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Ideology"
+  },
+  {
+   "loadOrder": 7,
+   "packageId": "ludeon.rimworld.biotech",
+   "name": "Biotech",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Biotech"
+  },
+  {
+   "loadOrder": 8,
+   "packageId": "ludeon.rimworld.anomaly",
+   "name": "Anomaly",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly"
+  },
+  {
+   "loadOrder": 9,
+   "packageId": "ludeon.rimworld.odyssey",
+   "name": "Odyssey",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Odyssey"
+  },
+  {
+   "loadOrder": 10,
+   "packageId": "krkr.rule56",
+   "name": "[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3673768803"
+  },
+  {
+   "loadOrder": 11,
+   "packageId": "mlie.nwnrealfogofwar",
+   "name": "(NWN) Real Fog of War (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3391128917"
+  },
+  {
+   "loadOrder": 12,
+   "packageId": "owlchemist.cherrypicker",
+   "name": "Cherry Picker",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3521312241"
+  },
+  {
+   "loadOrder": 13,
+   "packageId": "aoba.framework",
+   "name": "Fortified Features Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3498575851"
+  },
+  {
+   "loadOrder": 14,
+   "packageId": "vanillaexpanded.backgrounds",
+   "name": "Vanilla Backgrounds Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2775017012"
+  },
+  {
+   "loadOrder": 15,
+   "packageId": "thesepeople.ritualattachableoutcomes",
+   "name": "Custom Ritual Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2561617361"
+  },
+  {
+   "loadOrder": 16,
+   "packageId": "adaptive.storage.framework",
+   "name": "Adaptive Storage Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3033901359"
+  },
+  {
+   "loadOrder": 17,
+   "packageId": "redmattis.betterprerequisites",
+   "name": "Big and Small - Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2925432336"
+  },
+  {
+   "loadOrder": 18,
+   "packageId": "smashphil.vehicleframework",
+   "name": "Vehicle Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3014915404"
+  },
+  {
+   "loadOrder": 19,
+   "packageId": "imranfish.xmlextensions",
+   "name": "XML Extensions",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2574315206"
+  },
+  {
+   "loadOrder": 20,
+   "packageId": "unlimitedhugs.hugslib",
+   "name": "HugsLib",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\818773962"
+  },
+  {
+   "loadOrder": 21,
+   "packageId": "oskarpotocki.vanillafactionsexpanded.core",
+   "name": "Vanilla Expanded Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2023507013"
+  },
+  {
+   "loadOrder": 22,
+   "packageId": "ebsg.framework",
+   "name": "EBSG Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3112549163"
+  },
+  {
+   "loadOrder": 23,
+   "packageId": "04.23.2020",
+   "name": "[1.1]TO[1.6]MultipleTraders",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2070709529"
+  },
+  {
+   "loadOrder": 24,
+   "packageId": "ap.huntingmeme",
+   "name": "[AP] Hunting Meme",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535691822"
+  },
+  {
+   "loadOrder": 25,
+   "packageId": "dizzy.candlesandmeditation",
+   "name": "[Dizzy] Candles and Hidden Meditation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2569910895"
+  },
+  {
+   "loadOrder": 26,
+   "packageId": "jm.disstynan",
+   "name": "[JM]Disable Pseudo Translate \u7981\u7528\u6cf0\u5357\u8bed",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3295112942"
+  },
+  {
+   "loadOrder": 27,
+   "packageId": "zal.calltradeships",
+   "name": "[KV] Call Trade Ships (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3722921543"
+  },
+  {
+   "loadOrder": 28,
+   "packageId": "lc.tammybee.selectablesculpturegraphic",
+   "name": "[LC] Selectable Sculpture Graphic",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3239359525"
+  },
+  {
+   "loadOrder": 29,
+   "packageId": "mingtuwuxiang.spacebasedecorative",
+   "name": "[MUS]\u592a\u7a7a\u57fa\u5730\u5bb6\u5177Space Base Furniture",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3523916780"
+  },
+  {
+   "loadOrder": 30,
+   "packageId": "nals.facialanimation",
+   "name": "[NL] Facial Animation - WIP",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1635901197"
+  },
+  {
+   "loadOrder": 31,
+   "packageId": "mlie.rfrumorhasit",
+   "name": "[RF] Rumor Has It.... (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2013940581"
+  },
+  {
+   "loadOrder": 32,
+   "packageId": "rh2.cpers.arrest.here",
+   "name": "[RH2] CPERS: Arrest Here!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2563157350"
+  },
+  {
+   "loadOrder": 33,
+   "packageId": "cp.uncle.boris.used.furniture",
+   "name": "[RH2] Uncle Boris' - Used Furniture",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2563508405"
+  },
+  {
+   "loadOrder": 34,
+   "packageId": "sbz.neatstoragefridge",
+   "name": "[sbz] Fridge",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3486264784"
+  },
+  {
+   "loadOrder": 35,
+   "packageId": "sbz.gravshipstorage",
+   "name": "[sbz] Gravship Storage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3537905298"
+  },
+  {
+   "loadOrder": 36,
+   "packageId": "sr.modrimworld.factionalwarcontinued",
+   "name": "[SR]Factional War (fork)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3423264477"
+  },
+  {
+   "loadOrder": 37,
+   "packageId": "zav.glowstoneforked",
+   "name": "[ZAV] Glowstone",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3231900626"
+  },
+  {
+   "loadOrder": 38,
+   "packageId": "adaptive.ideology.storage",
+   "name": "Adaptive Ideology Storage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3301337278"
+  },
+  {
+   "loadOrder": 39,
+   "packageId": "adaptive.primitivestorage",
+   "name": "Adaptive Primitive Storage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3400037215"
+  },
+  {
+   "loadOrder": 40,
+   "packageId": "adaptive.simplestorage",
+   "name": "Adaptive Simple Storage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3297307747"
+  },
+  {
+   "loadOrder": 41,
+   "packageId": "mlie.advancedbiomes",
+   "name": "Advanced Biomes (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3541022508"
+  },
+  {
+   "loadOrder": 42,
+   "packageId": "ali.growodysseyplants",
+   "name": "Ali's Grow All Odyssey Plants",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3526247608"
+  },
+  {
+   "loadOrder": 43,
+   "packageId": "7f.alienworlds",
+   "name": "Alien Worlds Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3626210061"
+  },
+  {
+   "loadOrder": 44,
+   "packageId": "andrewraphaellukasik.allowdeadanimals",
+   "name": "Allow Dead Animals",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2403873031"
+  },
+  {
+   "loadOrder": 45,
+   "packageId": "unlimitedhugs.allowtool",
+   "name": "Allow Tool",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\761421485"
+  },
+  {
+   "loadOrder": 46,
+   "packageId": "duz.almosttherefork",
+   "name": "Almost There! Fork",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3515165298"
+  },
+  {
+   "loadOrder": 47,
+   "packageId": "sarg.alphamemes",
+   "name": "Alpha Memes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2661356814"
+  },
+  {
+   "loadOrder": 48,
+   "packageId": "swablu.ambience",
+   "name": "Ambient Rim",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3158997430"
+  },
+  {
+   "loadOrder": 49,
+   "packageId": "vita.campdangers",
+   "name": "Ancient Dangers on Campsites and Encounter maps",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3521383341"
+  },
+  {
+   "loadOrder": 50,
+   "packageId": "xmb.ancientminingindustry.mo",
+   "name": "Ancient mining industry",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3141472661"
+  },
+  {
+   "loadOrder": 51,
+   "packageId": "asp.halituisamaricanous",
+   "name": "Astronomy Style Pack",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522312454"
+  },
+  {
+   "loadOrder": 52,
+   "packageId": "automatic.autolinks",
+   "name": "Auto links",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2059389912"
+  },
+  {
+   "loadOrder": 53,
+   "packageId": "fuu.autostriponhaul",
+   "name": "Auto Strip on Haul",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2560725133"
+  },
+  {
+   "loadOrder": 54,
+   "packageId": "elsov.beliar",
+   "name": "Beliar Xenotype",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3237072670"
+  },
+  {
+   "loadOrder": 55,
+   "packageId": "io.github.relvl.rimworld.bestapparel",
+   "name": "BestApparel",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2946961833"
+  },
+  {
+   "loadOrder": 56,
+   "packageId": "ionfrigate12345.coolandgoodambush",
+   "name": "Better Ambushes Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3422946483"
+  },
+  {
+   "loadOrder": 57,
+   "packageId": "mlie.betterbeggars",
+   "name": "Better Beggars (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3006899215"
+  },
+  {
+   "loadOrder": 58,
+   "packageId": "nephlite.advexplosions",
+   "name": "Better Explosions",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2572683272"
+  },
+  {
+   "loadOrder": 59,
+   "packageId": "arkymn.bettergrowthmoments",
+   "name": "Better Growth Moments",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3642805464"
+  },
+  {
+   "loadOrder": 60,
+   "packageId": "zal.betterinfestations",
+   "name": "Better Infestations (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3285516766"
+  },
+  {
+   "loadOrder": 61,
+   "packageId": "madeline.modmismatchformatter",
+   "name": "Better ModMismatch Window",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1872244972"
+  },
+  {
+   "loadOrder": 62,
+   "packageId": "mlie.betterprojectileorigin",
+   "name": "Better Projectile Origin",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2843040075"
+  },
+  {
+   "loadOrder": 63,
+   "packageId": "jm.bettertraders",
+   "name": "Better Traders",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2012774042"
+  },
+  {
+   "loadOrder": 64,
+   "packageId": "chaoticenrico.bettertrees",
+   "name": "Better Trees",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3539609975"
+  },
+  {
+   "loadOrder": 65,
+   "packageId": "falconne.bwm",
+   "name": "Better Workbench Management",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\935982361"
+  },
+  {
+   "loadOrder": 66,
+   "packageId": "redmattis.biggergravship",
+   "name": "Bigger Gravships (and other Odyssey spaceship related settings)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522759531"
+  },
+  {
+   "loadOrder": 67,
+   "packageId": "kopp.biomecompatibilityproject",
+   "name": "Biome Compatibility Project",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535674283"
+  },
+  {
+   "loadOrder": 68,
+   "packageId": "biomesteam.biomesfossils",
+   "name": "Biomes! Fossils",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3100958580"
+  },
+  {
+   "loadOrder": 69,
+   "packageId": "biomesteam.coreframework",
+   "name": "Biomes! Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3709492514"
+  },
+  {
+   "loadOrder": 70,
+   "packageId": "zal.biomeskit",
+   "name": "BiomesKit (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3333951497"
+  },
+  {
+   "loadOrder": 71,
+   "packageId": "bs.mbifvte",
+   "name": "Bradson's Main Button Icons (Forked + Expanded)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532359201"
+  },
+  {
+   "loadOrder": 72,
+   "packageId": "gulmadred.breedingritual",
+   "name": "Breeding Ritual",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3772996961"
+  },
+  {
+   "loadOrder": 73,
+   "packageId": "memegoddess.buildfrominventory",
+   "name": "Build From Inventory - Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3534185281"
+  },
+  {
+   "loadOrder": 74,
+   "packageId": "8z.callforintel",
+   "name": "Call For Intel",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2557139479"
+  },
+  {
+   "loadOrder": 75,
+   "packageId": "brrainz.cameraplus",
+   "name": "Camera+",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\867467808"
+  },
+  {
+   "loadOrder": 76,
+   "packageId": "iforgotmysocks.caravanadventures",
+   "name": "Caravan Adventures",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2558957509"
+  },
+  {
+   "loadOrder": 77,
+   "packageId": "kapitanoczywisty.changemapedge",
+   "name": "Change map edge limit",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1546494565"
+  },
+  {
+   "loadOrder": 78,
+   "packageId": "void.charactereditor",
+   "name": "Character Editor",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1874644848"
+  },
+  {
+   "loadOrder": 79,
+   "packageId": "heatherathebyne.childrenlearnoncaravan",
+   "name": "Children Learn on Caravan [USE NEW FORK!]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3497730368"
+  },
+  {
+   "loadOrder": 80,
+   "packageId": "kearril.choosewheretoland",
+   "name": "Choose Where To Land",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3537970831"
+  },
+  {
+   "loadOrder": 81,
+   "packageId": "kikohi.coloreddeepresources",
+   "name": "Colored deep resources",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3203269467"
+  },
+  {
+   "loadOrder": 82,
+   "packageId": "petetimessix.compacthediffs",
+   "name": "Compact Hediffs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2031734067"
+  },
+  {
+   "loadOrder": 83,
+   "packageId": "com.makeitso.configurabletechprints",
+   "name": "Configurable Techprints",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2876747024"
+  },
+  {
+   "loadOrder": 84,
+   "packageId": "cozyfire.velcroboy333",
+   "name": "Cozy Fires",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2390924647"
+  },
+  {
+   "loadOrder": 85,
+   "packageId": "heatherathebyne.craftingspotslavegear",
+   "name": "Crafting Spot Slave Gear",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3502196889"
+  },
+  {
+   "loadOrder": 86,
+   "packageId": "greg.customgastypes",
+   "name": "Custom Gas Types",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3756399441"
+  },
+  {
+   "loadOrder": 87,
+   "packageId": "hailuan.customquestframework",
+   "name": "Custom Quest Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2978572782"
+  },
+  {
+   "loadOrder": 88,
+   "packageId": "costel.customroomnames",
+   "name": "Custom Room Names",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3626983473"
+  },
+  {
+   "loadOrder": 89,
+   "packageId": "dimonsever000.ideologyvirtues",
+   "name": "Cybranian - Ideology Virtues",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3459205505"
+  },
+  {
+   "loadOrder": 90,
+   "packageId": "east.dancepartycustommusic",
+   "name": "Dance Party Custom Music",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3752711168"
+  },
+  {
+   "loadOrder": 91,
+   "packageId": "van.beasts",
+   "name": "Dark Ages : Beasts and Monsters",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3472275628"
+  },
+  {
+   "loadOrder": 92,
+   "packageId": "darkestdungeon.incidentsounds",
+   "name": "Darkest Dungeon Incident Sounds",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3438213596"
+  },
+  {
+   "loadOrder": 93,
+   "packageId": "troopersmith1.deathrattle",
+   "name": "Death Rattle Continued [1.2+]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2896207870"
+  },
+  {
+   "loadOrder": 94,
+   "packageId": "mlie.decorativecliffs",
+   "name": "Decorative Cliffs (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2453099145"
+  },
+  {
+   "loadOrder": 95,
+   "packageId": "gondragon.defensivepositions",
+   "name": "Defensive Positions - Forked",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3550360467"
+  },
+  {
+   "loadOrder": 96,
+   "packageId": "merthsoft.designatorshapes",
+   "name": "Designator Shapes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1235181370"
+  },
+  {
+   "loadOrder": 97,
+   "packageId": "garwel.destroyitem",
+   "name": "Destroy Item",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2423311270"
+  },
+  {
+   "loadOrder": 98,
+   "packageId": "det.avaloi",
+   "name": "Det's Xenotypes - Avaloi",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3199692643"
+  },
+  {
+   "loadOrder": 99,
+   "packageId": "det.boglegs",
+   "name": "Det's Xenotypes - Boglegs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3146564944"
+  },
+  {
+   "loadOrder": 100,
+   "packageId": "det.brawnum",
+   "name": "Det's Xenotypes - Brawnum",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3429572581"
+  },
+  {
+   "loadOrder": 101,
+   "packageId": "det.buzzers",
+   "name": "Det's Xenotypes - Buzzers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3545293786"
+  },
+  {
+   "loadOrder": 102,
+   "packageId": "det.keshig",
+   "name": "Det's Xenotypes - Keshig",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3376864722"
+  },
+  {
+   "loadOrder": 103,
+   "packageId": "det.venators",
+   "name": "Det's Xenotypes - Venators",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3140248688"
+  },
+  {
+   "loadOrder": 104,
+   "packageId": "cometopapa.deteriorated",
+   "name": "Deteriorable Filter",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3018050013"
+  },
+  {
+   "loadOrder": 105,
+   "packageId": "lornath.diseaseimmunityprogresstracker",
+   "name": "Disease Immunity Progress Tracker",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3659005144"
+  },
+  {
+   "loadOrder": 106,
+   "packageId": "jecrell.doorsexpanded",
+   "name": "Doors Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532342422"
+  },
+  {
+   "loadOrder": 107,
+   "packageId": "dubwise.dubspaintshop",
+   "name": "Dub's Paint Shop",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1579516669"
+  },
+  {
+   "loadOrder": 108,
+   "packageId": "dubwise.dubsbadhygiene.thirst",
+   "name": "Dubs Bad Hygiene - Thirst",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2582878800"
+  },
+  {
+   "loadOrder": 109,
+   "packageId": "dubwise.dubsbadhygiene.lite",
+   "name": "Dubs Bad Hygiene Lite",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2570319432"
+  },
+  {
+   "loadOrder": 110,
+   "packageId": "dubwise.dubsmintmenus",
+   "name": "Dubs Mint Menus",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1446523594"
+  },
+  {
+   "loadOrder": 111,
+   "packageId": "dubwise.dubsmintminimap",
+   "name": "Dubs Mint Minimap",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1662119905"
+  },
+  {
+   "loadOrder": 112,
+   "packageId": "dubwise.dubsrimkit",
+   "name": "Dubs Rimkit",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\832333531"
+  },
+  {
+   "loadOrder": 113,
+   "packageId": "blues.forge",
+   "name": "Dynamic Effects Forge",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3735443951"
+  },
+  {
+   "loadOrder": 114,
+   "packageId": "yourname.effigys.mod",
+   "name": "Effigys - Terror Spikes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3647930333"
+  },
+  {
+   "loadOrder": 115,
+   "packageId": "carnysenpai.enableoversizedweapons",
+   "name": "Enable Oversized Weapons",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2543371889"
+  },
+  {
+   "loadOrder": 116,
+   "packageId": "nep.enginesunlimited",
+   "name": "Engines Unlimited",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3528446690"
+  },
+  {
+   "loadOrder": 117,
+   "packageId": "det.epochsincense",
+   "name": "Epochs - Incense",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3072579620"
+  },
+  {
+   "loadOrder": 118,
+   "packageId": "mandrake.rm.pyrinth",
+   "name": "RimMandrake: Pyrinth",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Pyrinth"
+  },
+  {
+   "loadOrder": 119,
+   "packageId": "keshash.extraexplosioneffects",
+   "name": "Extra Explosion Effects",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3066208882"
+  },
+  {
+   "loadOrder": 120,
+   "packageId": "eoralmilk.faceaddonframework",
+   "name": "Face Addon Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3217914520"
+  },
+  {
+   "loadOrder": 121,
+   "packageId": "azravos.factioncustomizer",
+   "name": "Faction Customizer",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3336572602"
+  },
+  {
+   "loadOrder": 122,
+   "packageId": "mlie.factionraidcooldown",
+   "name": "Faction Raid Cooldown (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3547098393"
+  },
+  {
+   "loadOrder": 123,
+   "packageId": "kosaro.fahrenheitandcelsius",
+   "name": "Fahrenheit and Celsius",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\937759575"
+  },
+  {
+   "loadOrder": 124,
+   "packageId": "realify.firefoam",
+   "name": "Firefoam poppers aren't ugly!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3749974270"
+  },
+  {
+   "loadOrder": 125,
+   "packageId": "kathanon.floatsubmenu",
+   "name": "Float Sub-Menus",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2864015430"
+  },
+  {
+   "loadOrder": 126,
+   "packageId": "temeez.floorlights2",
+   "name": "Floor Lights 2",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2882927601"
+  },
+  {
+   "loadOrder": 127,
+   "packageId": "aoba.fortress.neolithic",
+   "name": "Fortifications - Neolithic",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2385960678"
+  },
+  {
+   "loadOrder": 128,
+   "packageId": "m00nl1ght.geologicallandforms",
+   "name": "Geological Landforms",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2773943594"
+  },
+  {
+   "loadOrder": 129,
+   "packageId": "memegoddess.giddyup",
+   "name": "Giddy-Up 2 - Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3674332861"
+  },
+  {
+   "loadOrder": 130,
+   "packageId": "lts.geg",
+   "name": "Glowing eyes genes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3023336989"
+  },
+  {
+   "loadOrder": 131,
+   "packageId": "albion.goexplore",
+   "name": "Go Explore!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1814100216"
+  },
+  {
+   "loadOrder": 132,
+   "packageId": "arcjc007.gravshipcrashes",
+   "name": "Gravship Crashes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3578515873"
+  },
+  {
+   "loadOrder": 133,
+   "packageId": "arcjc007.gravshipexporter",
+   "name": "Gravship Exporter",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3576790938"
+  },
+  {
+   "loadOrder": 134,
+   "packageId": "sk.gravshipraids",
+   "name": "Gravship Raids",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3767338163"
+  },
+  {
+   "loadOrder": 135,
+   "packageId": "imagitama.rimworldgravshiprangeonmap",
+   "name": "Gravship Range On Map",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3545884382"
+  },
+  {
+   "loadOrder": 136,
+   "packageId": "arti.shrinez",
+   "name": "Guaranteed Ancient Dangers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3566938404"
+  },
+  {
+   "loadOrder": 137,
+   "packageId": "ael.tua.helmetsaddtoxresistance",
+   "name": "High Tech Helmets Give Tox Gas Resistance",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3503847744"
+  },
+  {
+   "loadOrder": 138,
+   "packageId": "elsov.highborn",
+   "name": "Highborn Xenotype",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3380776687"
+  },
+  {
+   "loadOrder": 139,
+   "packageId": "hazn.huntingtraps",
+   "name": "Hunting Traps",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3219487356"
+  },
+  {
+   "loadOrder": 140,
+   "packageId": "hailuan.iwbb",
+   "name": "I will be back",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3400259397"
+  },
+  {
+   "loadOrder": 141,
+   "packageId": "amegakull.scvrole",
+   "name": "Ideology Scavenger Role",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3565039115"
+  },
+  {
+   "loadOrder": 142,
+   "packageId": "kxp.ideosymbolsasideograms",
+   "name": "Ideology symbols as Ideograms",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3199358915"
+  },
+  {
+   "loadOrder": 143,
+   "packageId": "llunak.moreprecepts",
+   "name": "Ideology: More Precepts",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2559533848"
+  },
+  {
+   "loadOrder": 144,
+   "packageId": "agentblac.makepawnsprisoners",
+   "name": "Imprisonment On The Go! (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3358620558"
+  },
+  {
+   "loadOrder": 145,
+   "packageId": "mlie.incidentdisabler",
+   "name": "Incident Disabler (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3574116665"
+  },
+  {
+   "loadOrder": 146,
+   "packageId": "koth.isid",
+   "name": "Infestations Spawn in Darkness 1.6",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3551839891"
+  },
+  {
+   "loadOrder": 147,
+   "packageId": "gravtide.mod",
+   "name": "GravTide",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3779600989"
+  },
+  {
+   "loadOrder": 148,
+   "packageId": "mandrake.rm.injections",
+   "name": "RimMandrake: Structure Injections",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections"
+  },
+  {
+   "loadOrder": 149,
+   "packageId": "mandrake.rsw.injections",
+   "name": "RimStarWars: Structure Injections",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjectionsSW"
+  },
+  {
+   "loadOrder": 150,
+   "packageId": "mandrake.rut.injections",
+   "name": "RimUtinni: Structure Injections",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjectionsRUT"
+  },
+  {
+   "loadOrder": 151,
+   "packageId": "mandrake.rm.ninefold",
+   "name": "RimMandrake Ninefold (M0 \u2014 safe core)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Ninefold"
+  },
+  {
+   "loadOrder": 152,
+   "packageId": "mandrake.rm.aftermath",
+   "name": "RimMandrake: Aftermath",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Aftermath"
+  },
+  {
+   "loadOrder": 153,
+   "packageId": "mandrake.rm.visibility",
+   "name": "RimMandrake: Colony Visibility",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Visibility"
+  },
+  {
+   "loadOrder": 154,
+   "packageId": "mandrake.rm.graffiti",
+   "name": "RimMandrake: Graffiti Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Graffiti"
+  },
+  {
+   "loadOrder": 155,
+   "packageId": "mandrake.rm.sacredgraffiti",
+   "name": "RimMandrake Sacred Marks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\SacredGraffiti"
+  },
+  {
+   "loadOrder": 156,
+   "packageId": "mandrake.rm.inhabited",
+   "name": "Inhabited (local)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Inhabited"
+  },
+  {
+   "loadOrder": 157,
+   "packageId": "mandrake.rut.inhabited",
+   "name": "RimMandrake: Utinni \u2014 Inhabited (Ash'karr)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AshkarrInhabited"
+  },
+  {
+   "loadOrder": 158,
+   "packageId": "haecriver.injuredcarry",
+   "name": "Injured Carry",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2413690575"
+  },
+  {
+   "loadOrder": 159,
+   "packageId": "ferny.easycaravanformation",
+   "name": "Instant Caravan",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3165744287"
+  },
+  {
+   "loadOrder": 160,
+   "packageId": "turnovus.biotech.integratedgenes",
+   "name": "Integrated Genes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2884115974"
+  },
+  {
+   "loadOrder": 161,
+   "packageId": "jaxe.bubbles",
+   "name": "Interaction Bubbles",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1516158345"
+  },
+  {
+   "loadOrder": 162,
+   "packageId": "mlie.interactionareasettings",
+   "name": "Interaction-Area Settings",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3647833135"
+  },
+  {
+   "loadOrder": 163,
+   "packageId": "zal.ionweaponry",
+   "name": "Ion Weaponry (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532877485"
+  },
+  {
+   "loadOrder": 164,
+   "packageId": "mandrake.rsw.jawarules",
+   "name": "Jawa Rules (local)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\JawaRules"
+  },
+  {
+   "loadOrder": 165,
+   "packageId": "jecrell.jecstools",
+   "name": "JecsTools Unofficial 1.6 BETA",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524247750"
+  },
+  {
+   "loadOrder": 166,
+   "packageId": "kikohi.jewelry",
+   "name": "Jewelry",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3203280763"
+  },
+  {
+   "loadOrder": 167,
+   "packageId": "nep.landonanything",
+   "name": "Land On Anything",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3545384484"
+  },
+  {
+   "loadOrder": 168,
+   "packageId": "timuttie.justleavealready.fork.mitasamodel",
+   "name": "Just Leave Already",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3530313037"
+  },
+  {
+   "loadOrder": 169,
+   "packageId": "mlie.justputitoverthere",
+   "name": "Just Put It Over There",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2856471776"
+  },
+  {
+   "loadOrder": 170,
+   "packageId": "linnun.keepconverting",
+   "name": "Keep Converting",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3461478214"
+  },
+  {
+   "loadOrder": 171,
+   "packageId": "vaguelysexual.modpackageid.goeshere",
+   "name": "Knick Knacks - Let your colonists decorate!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3595196942"
+  },
+  {
+   "loadOrder": 172,
+   "packageId": "zal.largeoutpost",
+   "name": "Large Outpost (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3337099675"
+  },
+  {
+   "loadOrder": 173,
+   "packageId": "arcjc007.lasercannon",
+   "name": "Laser Cannon",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3586248892"
+  },
+  {
+   "loadOrder": 174,
+   "packageId": "costel.layeredapparel",
+   "name": "Layered Apparel",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3632480044"
+  },
+  {
+   "loadOrder": 175,
+   "packageId": "noneobsidiaexpansion.ledlightsstrip",
+   "name": "LED Lights Strip",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3476135064"
+  },
+  {
+   "loadOrder": 176,
+   "packageId": "mlie.linkablesettings",
+   "name": "Linkable Settings",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2739581441"
+  },
+  {
+   "loadOrder": 177,
+   "packageId": "dorbo.watersfx",
+   "name": "LiquidSFX",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3758773902"
+  },
+  {
+   "loadOrder": 178,
+   "packageId": "mlie.logafterdeferror",
+   "name": "Log After Def Error (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3550944748"
+  },
+  {
+   "loadOrder": 179,
+   "packageId": "zylle.mapdesigner",
+   "name": "Map Designer",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2111424996"
+  },
+  {
+   "loadOrder": 180,
+   "packageId": "nozome.mapmodeframework",
+   "name": "Map Mode Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3296654393"
+  },
+  {
+   "loadOrder": 181,
+   "packageId": "m00nl1ght.mappreview",
+   "name": "Map Preview",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2800857642"
+  },
+  {
+   "loadOrder": 182,
+   "packageId": "udon.masslovein",
+   "name": "Mass Lovin'",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2612846082"
+  },
+  {
+   "loadOrder": 183,
+   "packageId": "sirdarkelf.meaningfulencounters",
+   "name": "Meaningful Encounters",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3778244635"
+  },
+  {
+   "loadOrder": 184,
+   "packageId": "mewn.medievalsigns",
+   "name": "Medieval Signs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3488857567"
+  },
+  {
+   "loadOrder": 185,
+   "packageId": "mlie.mercerbackpacks",
+   "name": "Mercer's Backpacks (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2014572849"
+  },
+  {
+   "loadOrder": 186,
+   "packageId": "andromeda.milkyway",
+   "name": "Milky Way",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3773448562"
+  },
+  {
+   "loadOrder": 187,
+   "packageId": "rabiosus.minesight",
+   "name": "Mine Sight",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3769804600"
+  },
+  {
+   "loadOrder": 188,
+   "packageId": "cain.mineshaft",
+   "name": "Mines 2.0",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2503894706"
+  },
+  {
+   "loadOrder": 189,
+   "packageId": "mlie.miningcoalertspeaker",
+   "name": "MiningCo. Alert speaker (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3276121703"
+  },
+  {
+   "loadOrder": 190,
+   "packageId": "mlie.miningcodrillturret",
+   "name": "MiningCo. DrillTurret (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3258344832"
+  },
+  {
+   "loadOrder": 191,
+   "packageId": "mlie.miningcomms",
+   "name": "MiningCo. MMS (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3257136373"
+  },
+  {
+   "loadOrder": 192,
+   "packageId": "mlie.miningcospaceship",
+   "name": "MiningCo. Spaceship (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2912642991"
+  },
+  {
+   "loadOrder": 193,
+   "packageId": "mandrake.rut.scavengerevents",
+   "name": "Jawa Scavenger Events",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ScavengerEvents"
+  },
+  {
+   "loadOrder": 194,
+   "packageId": "hali.modifylandingtile",
+   "name": "Modify Tiles at Game Start",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3667490447"
+  },
+  {
+   "loadOrder": 195,
+   "packageId": "deadmano.moodalerts",
+   "name": "Mood Alerts",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3128351120"
+  },
+  {
+   "loadOrder": 196,
+   "packageId": "acutus.moodchainreaction",
+   "name": "Mood Chain Reaction",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3721381956"
+  },
+  {
+   "loadOrder": 197,
+   "packageId": "mlie.morefactioninteraction",
+   "name": "More Faction Interaction (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2379076640"
+  },
+  {
+   "loadOrder": 198,
+   "packageId": "garryflowers.moreslaverystuff",
+   "name": "More Slavery Stuff",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2896845138"
+  },
+  {
+   "loadOrder": 199,
+   "packageId": "zylle.morevanillabiomes",
+   "name": "More Vanilla Biomes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1931453053"
+  },
+  {
+   "loadOrder": 200,
+   "packageId": "snobi.mutatorworldicons",
+   "name": "MutatorWorldIcons",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3551904193"
+  },
+  {
+   "loadOrder": 201,
+   "packageId": "oblitus.mylittleplanet",
+   "name": "My Little Planet",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1117406550"
+  },
+  {
+   "loadOrder": 202,
+   "packageId": "radzerp.naturalpaths",
+   "name": "Natural Paths",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2008833499"
+  },
+  {
+   "loadOrder": 203,
+   "packageId": "zylle.nightlights",
+   "name": "Night Lights",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2149276108"
+  },
+  {
+   "loadOrder": 204,
+   "packageId": "nightmare.core",
+   "name": "Nightmare Core",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3047049650"
+  },
+  {
+   "loadOrder": 205,
+   "packageId": "dingo.noforcedslowdown",
+   "name": "No Forced Slowdown",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1419593453"
+  },
+  {
+   "loadOrder": 206,
+   "packageId": "mlie.nomissinggeneicons",
+   "name": "No Missing Gene Icons",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2890795292"
+  },
+  {
+   "loadOrder": 207,
+   "packageId": "edern.norandomapparelonideoedit",
+   "name": "No Random Apparel on Ideology Edit",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2669243201"
+  },
+  {
+   "loadOrder": 208,
+   "packageId": "jaeger972.nomadfreindlyquests",
+   "name": "Nomad Friendly Quests",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3616175831"
+  },
+  {
+   "loadOrder": 209,
+   "packageId": "avilmask.nonunopinata",
+   "name": "Non uno Pinata (don't drop items)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1778821244"
+  },
+  {
+   "loadOrder": 210,
+   "packageId": "planetace.nondestructivegravlaunch",
+   "name": "Non-Destructive Gravlaunch",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522708183"
+  },
+  {
+   "loadOrder": 211,
+   "packageId": "mehni.numbers",
+   "name": "Numbers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1414302321"
+  },
+  {
+   "loadOrder": 212,
+   "packageId": "karew.orcclan",
+   "name": "Orc Clan + Xenotype",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3232348025"
+  },
+  {
+   "loadOrder": 213,
+   "packageId": "coolzie.oocreboost",
+   "name": "Out of Combat ReBoost",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3527970878"
+  },
+  {
+   "loadOrder": 214,
+   "packageId": "alleykat.persistentprecepts",
+   "name": "Persistent Precepts",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2944765939"
+  },
+  {
+   "loadOrder": 215,
+   "packageId": "mlie.perspectivebuildings",
+   "name": "Perspective: Buildings (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3346955193"
+  },
+  {
+   "loadOrder": 216,
+   "packageId": "meltup.polyamorybeds.vanilla",
+   "name": "Polyamory Beds (Vanilla Edition)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3276496684"
+  },
+  {
+   "loadOrder": 217,
+   "packageId": "xylthixlm.races.core",
+   "name": "Posthuman Drift Core Mod",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3521814323"
+  },
+  {
+   "loadOrder": 218,
+   "packageId": "mlie.preceptsandmemes",
+   "name": "Precepts and Memes (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2894625496"
+  },
+  {
+   "loadOrder": 219,
+   "packageId": "m00nl1ght.unofficialupdates.preparelanding",
+   "name": "Prepare Landing (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3221125358"
+  },
+  {
+   "loadOrder": 220,
+   "packageId": "ironscruff.primordialgeysers",
+   "name": "Primordial Geysers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2896731795"
+  },
+  {
+   "loadOrder": 221,
+   "packageId": "mlie.prisonersshouldfearturrets",
+   "name": "Prisoners Should Fear Turrets",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2602436826"
+  },
+  {
+   "loadOrder": 222,
+   "packageId": "laureeeeeeeeeeeeeeen.shrooms",
+   "name": "Psilocap Cultivation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3523760036"
+  },
+  {
+   "loadOrder": 223,
+   "packageId": "dawnsglow.qualcolor",
+   "name": "Quality Colors (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3513846773"
+  },
+  {
+   "loadOrder": 224,
+   "packageId": "ingendum.raiderswarmcompression",
+   "name": "Raider Swarm Compression",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3515541126"
+  },
+  {
+   "loadOrder": 225,
+   "packageId": "zal.randomgrowthchoices",
+   "name": "RandomGrowthChoices (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3413983862"
+  },
+  {
+   "loadOrder": 226,
+   "packageId": "wemd.realisticdarknesslight",
+   "name": "Realistic Darkness (Light)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1555355332"
+  },
+  {
+   "loadOrder": 227,
+   "packageId": "mlie.realistichumansounds",
+   "name": "Realistic Human Sounds (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3497264525"
+  },
+  {
+   "loadOrder": 228,
+   "packageId": "mlie.recyclethis",
+   "name": "Recycle This (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3253550009"
+  },
+  {
+   "loadOrder": 229,
+   "packageId": "mlie.relevantstatsindescription",
+   "name": "Relevant Stats In Description",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2692669482"
+  },
+  {
+   "loadOrder": 230,
+   "packageId": "petetimessix.researchreinvented",
+   "name": "Research Reinvented",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2868392160"
+  },
+  {
+   "loadOrder": 231,
+   "packageId": "scorpio.resourcedictionary",
+   "name": "Resource Dictionary",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2817607528"
+  },
+  {
+   "loadOrder": 232,
+   "packageId": "alma.tossem",
+   "name": "Right Click to Toss Carried Pawn",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3779630220"
+  },
+  {
+   "loadOrder": 233,
+   "packageId": "sihv.rombonesport",
+   "name": "Rim of Madness - Bones Unofficial Fix",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3252977437"
+  },
+  {
+   "loadOrder": 234,
+   "packageId": "kilokio.rimai.framework",
+   "name": "RimAI Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3529263357"
+  },
+  {
+   "loadOrder": 235,
+   "packageId": "brrainz.rimbridgeserver",
+   "name": "RimBridgeServer",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3727949765"
+  },
+  {
+   "loadOrder": 236,
+   "packageId": "dubwise.rimefeller",
+   "name": "Rimefeller",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1321849735"
+  },
+  {
+   "loadOrder": 237,
+   "packageId": "rimfridge.kv.rw",
+   "name": "RimFridge: Now with Shelves!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376"
+  },
+  {
+   "loadOrder": 238,
+   "packageId": "mlie.rimquest",
+   "name": "RimQuest (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2263331727"
+  },
+  {
+   "loadOrder": 239,
+   "packageId": "deon.rimtek.core",
+   "name": "RimTek Core",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3500429104"
+  },
+  {
+   "loadOrder": 240,
+   "packageId": "sierra.rt.generaltraits",
+   "name": "RimTraits - General Traits",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2206957172"
+  },
+  {
+   "loadOrder": 241,
+   "packageId": "depscian.rimtunes",
+   "name": "RimTunes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3399705740"
+  },
+  {
+   "loadOrder": 242,
+   "packageId": "mianreplicate.romanceandintimacyontherim",
+   "name": "Romance & Intimacy On The Rim",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3612563959"
+  },
+  {
+   "loadOrder": 243,
+   "packageId": "kupie.isjustdoingitlive.plzdonthateme.roofedscanning",
+   "name": "Roofed Scanning 1.6",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524551636"
+  },
+  {
+   "loadOrder": 244,
+   "packageId": "ghost.rootsofrimworld",
+   "name": "Roots of Rimworld",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2977818583"
+  },
+  {
+   "loadOrder": 245,
+   "packageId": "memegoddess.runandgun",
+   "name": "RunAndGun - Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562365100"
+  },
+  {
+   "loadOrder": 246,
+   "packageId": "mandrake.rut.empirepursuit",
+   "name": "Empire Pursuit \u2014 Survey Shadow",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\EmpirePursuit"
+  },
+  {
+   "loadOrder": 247,
+   "packageId": "rwnodetree.rwplanetatmosphere",
+   "name": "RW - Planet Atmosphere",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3272330410"
+  },
+  {
+   "loadOrder": 248,
+   "packageId": "moja.salvagerubble",
+   "name": "Salvage Rubble",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3529058623"
+  },
+  {
+   "loadOrder": 249,
+   "packageId": "plusblankplus.scenarioamenderfork",
+   "name": "Scenario Amender [1.6 Fixed]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3761028060"
+  },
+  {
+   "loadOrder": 250,
+   "packageId": "hellrevenger.searchoption",
+   "name": "Search Option",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3508618083"
+  },
+  {
+   "loadOrder": 251,
+   "packageId": "avilmask.selfdyeing",
+   "name": "Self Dyeing",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2562859859"
+  },
+  {
+   "loadOrder": 252,
+   "packageId": "sensiblebedownership.1trickpwnyta",
+   "name": "Sensible Bed Ownership",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3328702448"
+  },
+  {
+   "loadOrder": 253,
+   "packageId": "boots.sensiblefactions",
+   "name": "Sensible Factions",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3531306011"
+  },
+  {
+   "loadOrder": 254,
+   "packageId": "flyingsloth.scfilthreducer",
+   "name": "Sentience Catalyst Filth Rate Reducer",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3525790312"
+  },
+  {
+   "loadOrder": 255,
+   "packageId": "shavius.medieval.flavour",
+   "name": "Shavius's Medieval Flavour Pack",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2767940226"
+  },
+  {
+   "loadOrder": 256,
+   "packageId": "spacemoth.showknowntechprints",
+   "name": "Show Known Techprints",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2920370783"
+  },
+  {
+   "loadOrder": 257,
+   "packageId": "dark.signs",
+   "name": "Signs and Comments",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3281950776"
+  },
+  {
+   "loadOrder": 258,
+   "packageId": "usgiyi.slaveoutfits",
+   "name": "Slave Outfits [1.7]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1522429439"
+  },
+  {
+   "loadOrder": 259,
+   "packageId": "mlie.slaverebellionsimproved",
+   "name": "Slave Rebellions Improved (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3259932217"
+  },
+  {
+   "loadOrder": 260,
+   "packageId": "astryl.sleepingbuddies",
+   "name": "Sleeping Buddies",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3774741768"
+  },
+  {
+   "loadOrder": 261,
+   "packageId": "hol.smeltpatch",
+   "name": "Smelt More Stuff",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2347285971"
+  },
+  {
+   "loadOrder": 262,
+   "packageId": "weilbyte.snapout",
+   "name": "Snap Out!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1319782555"
+  },
+  {
+   "loadOrder": 263,
+   "packageId": "krelinos.socialexpfromtrade",
+   "name": "Social Experience from Trade",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3400608063"
+  },
+  {
+   "loadOrder": 264,
+   "packageId": "mlie.spaceworms",
+   "name": "Space Worms (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2105322804"
+  },
+  {
+   "loadOrder": 265,
+   "packageId": "jpt.speakup",
+   "name": "SpeakUp",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2502518544"
+  },
+  {
+   "loadOrder": 266,
+   "packageId": "elshender.stackablechunks",
+   "name": "Stackable Chunks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3222674854"
+  },
+  {
+   "loadOrder": 267,
+   "packageId": "balistafreak.standalonehotspring",
+   "name": "Standalone Hot Spring",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2205980094"
+  },
+  {
+   "loadOrder": 268,
+   "packageId": "amoruch.rimworldstealingmod",
+   "name": "Stealing Mod",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3775811814"
+  },
+  {
+   "loadOrder": 269,
+   "packageId": "karshou.storagememory",
+   "name": "Storage Memory",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3543261305"
+  },
+  {
+   "loadOrder": 270,
+   "packageId": "mandrake.rm.strandedquest",
+   "name": "RM_Stranded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StrandedQuest"
+  },
+  {
+   "loadOrder": 271,
+   "packageId": "kas.strongerscaling",
+   "name": "Stronger Quality Scaling (1.6)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1206001612"
+  },
+  {
+   "loadOrder": 272,
+   "packageId": "moistestwhale.stuffontablesforked",
+   "name": "Stuff on Tables Forked",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3289533061"
+  },
+  {
+   "loadOrder": 273,
+   "packageId": "gerrymon.stylizedslavecollar",
+   "name": "Stylized Slave Collars and Headgears",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3040600773"
+  },
+  {
+   "loadOrder": 274,
+   "packageId": "mlie.tabsorting",
+   "name": "Tab-sorting",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2138635288"
+  },
+  {
+   "loadOrder": 275,
+   "packageId": "ucp.tabletopdecorations",
+   "name": "Tabletop Decorations",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2535771403"
+  },
+  {
+   "loadOrder": 276,
+   "packageId": "summersausages2ttv.techlevelenforcement",
+   "name": "Tech Level Enforcement",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3430230860"
+  },
+  {
+   "loadOrder": 277,
+   "packageId": "propickelz.tinkerbench",
+   "name": "Tinkering Bench and Biohacking Station",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522976063"
+  },
+  {
+   "loadOrder": 278,
+   "packageId": "tsa.torturepod",
+   "name": "Torture Pod",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3572173918"
+  },
+  {
+   "loadOrder": 279,
+   "packageId": "smashphil.dropspot",
+   "name": "Trade Ships Drop Spot",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1969732297"
+  },
+  {
+   "loadOrder": 280,
+   "packageId": "mlie.tradeabletrinkets",
+   "name": "Tradeable Trinkets (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2966786575"
+  },
+  {
+   "loadOrder": 281,
+   "packageId": "automatic.traderships",
+   "name": "Trader ships",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2046222331"
+  },
+  {
+   "loadOrder": 282,
+   "packageId": "kearril.tradingoptionscontinue",
+   "name": "Trading Options Continue",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524414310"
+  },
+  {
+   "loadOrder": 283,
+   "packageId": "aelanna.transparentsubstructure",
+   "name": "Transparent Substructure",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522762741"
+  },
+  {
+   "loadOrder": 284,
+   "packageId": "xercaine.tribal.furniture",
+   "name": "Tribal Furniture",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3671245310"
+  },
+  {
+   "loadOrder": 285,
+   "packageId": "geojak.tributedemand",
+   "name": "Tribute Demand",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3711373966"
+  },
+  {
+   "loadOrder": 286,
+   "packageId": "ferny.triumphantresearch",
+   "name": "Triumphant Research",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3647618250"
+  },
+  {
+   "loadOrder": 287,
+   "packageId": "trouperton.trystantravellersshuttleschematics",
+   "name": "Trystan Traveller's Shuttle Schematics",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3655212016"
+  },
+  {
+   "loadOrder": 288,
+   "packageId": "error277.tunneler.expanded",
+   "name": "Tunneler Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2599616050"
+  },
+  {
+   "loadOrder": 289,
+   "packageId": "marvinkosh.ughyougotme",
+   "name": "Ugh You Got Me",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1542424705"
+  },
+  {
+   "loadOrder": 290,
+   "packageId": "madarauchiha.undraftaftertucking",
+   "name": "Undraft After Tucking",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2157495459"
+  },
+  {
+   "loadOrder": 291,
+   "packageId": "universalpregnancy.1trickpwnyta",
+   "name": "Universal Pregnancy",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3303758779"
+  },
+  {
+   "loadOrder": 292,
+   "packageId": "nephlite.orbitaltradecolumn",
+   "name": "Utility Columns",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2013476665"
+  },
+  {
+   "loadOrder": 293,
+   "packageId": "vanillaexpanded.vappe",
+   "name": "Vanilla Apparel Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1814987817"
+  },
+  {
+   "loadOrder": 294,
+   "packageId": "vanillaexpanded.vaeaccessories",
+   "name": "Vanilla Apparel Expanded \u2014 Accessories",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2521176396"
+  },
+  {
+   "loadOrder": 295,
+   "packageId": "vanillaexpanded.vanillabackstoriesexpanded",
+   "name": "Vanilla Backstories Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2861806869"
+  },
+  {
+   "loadOrder": 296,
+   "packageId": "vanillaexpanded.vbrewe",
+   "name": "Vanilla Brewing Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2186560858"
+  },
+  {
+   "loadOrder": 297,
+   "packageId": "vanillaexpanded.vcooke",
+   "name": "Vanilla Cooking Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2134308519"
+  },
+  {
+   "loadOrder": 298,
+   "packageId": "vanillaexpanded.vee",
+   "name": "Vanilla Events Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1938420742"
+  },
+  {
+   "loadOrder": 299,
+   "packageId": "oskarpotocki.vfe.tribals",
+   "name": "Vanilla Factions Expanded - Tribals",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3079786283"
+  },
+  {
+   "loadOrder": 300,
+   "packageId": "vanillaexpanded.vfecore",
+   "name": "Vanilla Furniture Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1718190143"
+  },
+  {
+   "loadOrder": 301,
+   "packageId": "vanillaexpanded.vfearchitect",
+   "name": "Vanilla Furniture Expanded - Architect",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2608762624"
+  },
+  {
+   "loadOrder": 302,
+   "packageId": "vanillaexpanded.vfeart",
+   "name": "Vanilla Furniture Expanded - Art",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1968134023"
+  },
+  {
+   "loadOrder": 303,
+   "packageId": "vanillaexpanded.vfefactory",
+   "name": "Vanilla Furniture Expanded - Factory",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3686924415"
+  },
+  {
+   "loadOrder": 304,
+   "packageId": "vanillaexpanded.vfefarming",
+   "name": "Vanilla Furniture Expanded - Farming",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1957158779"
+  },
+  {
+   "loadOrder": 305,
+   "packageId": "vanillaexpanded.vfemedical",
+   "name": "Vanilla Furniture Expanded - Medical Module",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1718191613"
+  },
+  {
+   "loadOrder": 306,
+   "packageId": "vanillaexpanded.vfepower",
+   "name": "Vanilla Furniture Expanded - Power",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2062943477"
+  },
+  {
+   "loadOrder": 307,
+   "packageId": "vanillaexpanded.vfeproduction",
+   "name": "Vanilla Furniture Expanded - Production",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1880253632"
+  },
+  {
+   "loadOrder": 308,
+   "packageId": "vanillaexpanded.vfepropsanddecor",
+   "name": "Vanilla Furniture Expanded - Props and Decor",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2102143149"
+  },
+  {
+   "loadOrder": 309,
+   "packageId": "vanillaexpanded.vfesecurity",
+   "name": "Vanilla Furniture Expanded - Security",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1845154007"
+  },
+  {
+   "loadOrder": 310,
+   "packageId": "vanillaexpanded.vfespacer",
+   "name": "Vanilla Furniture Expanded - Spacer Module",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2028381079"
+  },
+  {
+   "loadOrder": 311,
+   "packageId": "vanillaexpanded.gravship",
+   "name": "Vanilla Gravship Expanded - Chapter 1",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3609835606"
+  },
+  {
+   "loadOrder": 312,
+   "packageId": "vanillaexpanded.helixiengas",
+   "name": "Vanilla Helixien Gas Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2877699803"
+  },
+  {
+   "loadOrder": 313,
+   "packageId": "vanillaexpanded.viehar",
+   "name": "Vanilla Ideology Expanded - Hats and Rags",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2567387768"
+  },
+  {
+   "loadOrder": 314,
+   "packageId": "vanillaexpanded.ideo.relicsandartifacts",
+   "name": "Vanilla Ideology Expanded - Relics and Artifacts",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2564895018"
+  },
+  {
+   "loadOrder": 315,
+   "packageId": "vanillaexpanded.vexploratione",
+   "name": "Vanilla Landmarks Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3656316229"
+  },
+  {
+   "loadOrder": 316,
+   "packageId": "vanillaexpanded.outposts",
+   "name": "Vanilla Outposts Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2688941031"
+  },
+  {
+   "loadOrder": 317,
+   "packageId": "vanillaquestsexpanded.generator",
+   "name": "Vanilla Quests Expanded - The Generator",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3411401573"
+  },
+  {
+   "loadOrder": 318,
+   "packageId": "vanillaracesexpanded.archon",
+   "name": "Vanilla Races Expanded - Archon",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3067715093"
+  },
+  {
+   "loadOrder": 319,
+   "packageId": "vanillaracesexpanded.fungoid",
+   "name": "Vanilla Races Expanded - Fungoid",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3042690053"
+  },
+  {
+   "loadOrder": 320,
+   "packageId": "vanillaracesexpanded.genie",
+   "name": "Vanilla Races Expanded - Genie",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2901424072"
+  },
+  {
+   "loadOrder": 321,
+   "packageId": "vanillaracesexpanded.phytokin",
+   "name": "Vanilla Races Expanded - Phytokin",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2927323805"
+  },
+  {
+   "loadOrder": 322,
+   "packageId": "vanillaracesexpanded.saurid",
+   "name": "Vanilla Races Expanded - Saurid",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2880990495"
+  },
+  {
+   "loadOrder": 323,
+   "packageId": "vanillaracesexpanded.starjack",
+   "name": "Vanilla Races Expanded - Starjack",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3531912428"
+  },
+  {
+   "loadOrder": 324,
+   "packageId": "vanillaexpanded.vanillatraitsexpanded",
+   "name": "Vanilla Traits Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2296404655"
+  },
+  {
+   "loadOrder": 325,
+   "packageId": "vanillaexpanded.vwems",
+   "name": "Vanilla Weapons Expanded - Makeshift",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2419690698"
+  },
+  {
+   "loadOrder": 326,
+   "packageId": "gabrieel1482.raidvehicleframework",
+   "name": "VehicleRaid Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3667863988"
+  },
+  {
+   "loadOrder": 327,
+   "packageId": "ninagoblin.visitsettlements",
+   "name": "Visit Settlements",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535955435"
+  },
+  {
+   "loadOrder": 328,
+   "packageId": "addvans.walktheworld",
+   "name": "Walk the World",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3546716725"
+  },
+  {
+   "loadOrder": 329,
+   "packageId": "ogliss.g223.wanderingcaravans",
+   "name": "Wandering Caravans",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2295813916"
+  },
+  {
+   "loadOrder": 330,
+   "packageId": "addvans.wasdedpawn",
+   "name": "WASDed Pawn",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3471835151"
+  },
+  {
+   "loadOrder": 331,
+   "packageId": "aelanna.weaponracks",
+   "name": "Weapon Racks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2788630748"
+  },
+  {
+   "loadOrder": 332,
+   "packageId": "bodlosh.weaponstats",
+   "name": "WeaponStats",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\974066449"
+  },
+  {
+   "loadOrder": 333,
+   "packageId": "revolus.whatsmissing",
+   "name": "What's Missing?",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3231090162"
+  },
+  {
+   "loadOrder": 334,
+   "packageId": "co.uk.epicguru.whatsthatmod",
+   "name": "What's That Mod",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2258431182"
+  },
+  {
+   "loadOrder": 335,
+   "packageId": "winggar.meaningfulparties",
+   "name": "Wing's Meaningful Parties",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3504909699"
+  },
+  {
+   "loadOrder": 336,
+   "packageId": "tleno.wireheadstyle",
+   "name": "Wirehead Style",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3311183008"
+  },
+  {
+   "loadOrder": 337,
+   "packageId": "fluffy.worktab",
+   "name": "Work Tab",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3453549086"
+  },
+  {
+   "loadOrder": 338,
+   "packageId": "ferny.worldbuilder",
+   "name": "Worldbuilder",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522102833"
+  },
+  {
+   "loadOrder": 339,
+   "packageId": "funkyshit.mods.worldedit.alpha",
+   "name": "WorldEdit 2.0",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3590928058"
+  },
+  {
+   "loadOrder": 340,
+   "packageId": "bs.xenotypespawncontrol",
+   "name": "Xenotype Spawn Control",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2891975564"
+  },
+  {
+   "loadOrder": 341,
+   "packageId": "mlie.yayoscaravan",
+   "name": "Yayo's Caravan (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2886919774"
+  },
+  {
+   "loadOrder": 342,
+   "packageId": "mlie.yayoscombat3",
+   "name": "Yayo's Combat 3 (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2854006492"
+  },
+  {
+   "loadOrder": 343,
+   "packageId": "mlie.yayosmeteor",
+   "name": "Yayo's Meteor (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2892867866"
+  },
+  {
+   "loadOrder": 344,
+   "packageId": "btd.remix.gravshipblueprints",
+   "name": "[BTD] Gravship Blueprints",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3575162262"
+  },
+  {
+   "loadOrder": 345,
+   "packageId": "lazyfridaystudio.genesexpandedeyes",
+   "name": "[LFS] Genes Expanded - Eyes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2922457045"
+  },
+  {
+   "loadOrder": 346,
+   "packageId": "nals.facialanimationexperimentals",
+   "name": "[NL] Facial Animation - Experimentals",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2581693737"
+  },
+  {
+   "loadOrder": 347,
+   "packageId": "7f.alienworlds.tidallylocked",
+   "name": "Alien Worlds - Tidally Locked",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3631364335"
+  },
+  {
+   "loadOrder": 348,
+   "packageId": "xmb.ancienturbanruins.mo",
+   "name": "Ancient urban ruins",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3316062206"
+  },
+  {
+   "loadOrder": 349,
+   "packageId": "mandrake.rut.ashkarrlandmarkart",
+   "name": "Ash'karr Landmark Art",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AshkarrLandmarkArt"
+  },
+  {
+   "loadOrder": 350,
+   "packageId": "mandrake.rut.ishkolandmarks",
+   "name": "RimUtinni: Ishko's Dark Landmarks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\IshkoDarkLandmarks"
+  },
+  {
+   "loadOrder": 351,
+   "packageId": "m00nl1ght.geologicallandforms.biometransitions",
+   "name": "Biome Transitions",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2814391846"
+  },
+  {
+   "loadOrder": 352,
+   "packageId": "neronix17.retexture.charactereditor",
+   "name": "Character Editor Retextured",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2855844396"
+  },
+  {
+   "loadOrder": 353,
+   "packageId": "hailuan.customquestframeworkai",
+   "name": "Custom Quest Framework-Level AI",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3534228105"
+  },
+  {
+   "loadOrder": 354,
+   "packageId": "mlie.dungeonpack",
+   "name": "Dungeon Pack (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3765496911"
+  },
+  {
+   "loadOrder": 355,
+   "packageId": "vesper.egihologramsandprojectors",
+   "name": "EGI Holograms and Projectors",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2979598490"
+  },
+  {
+   "loadOrder": 356,
+   "packageId": "jaeger972.factionterritories",
+   "name": "Faction Territories and Vassalage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3626725895"
+  },
+  {
+   "loadOrder": 357,
+   "packageId": "aoba.fortress.industrial",
+   "name": "Fortifications - Industrial",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2561619583"
+  },
+  {
+   "loadOrder": 358,
+   "packageId": "sd.fa.geneticheadsframework",
+   "name": "Genetic Heads Framework for [NL] Facial Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3498759997"
+  },
+  {
+   "loadOrder": 359,
+   "packageId": "gmmp.dungeon",
+   "name": "Gerrymon's Misc Props: Dungeon",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3772571876"
+  },
+  {
+   "loadOrder": 360,
+   "packageId": "zal.gianttoads",
+   "name": "Giant Toads (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3365223736"
+  },
+  {
+   "loadOrder": 361,
+   "packageId": "icepickgma.invisibledisplaycase",
+   "name": "Invisible Display Case Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3546566196"
+  },
+  {
+   "loadOrder": 362,
+   "packageId": "mandrake.rsw.jawavoice",
+   "name": "JawaVoice (SpeakUp reskin)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\JawaVoice"
+  },
+  {
+   "loadOrder": 363,
+   "packageId": "neku.largepawns",
+   "name": "Large Pawns",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3777700657"
+  },
+  {
+   "loadOrder": 364,
+   "packageId": "lwm.deepstorage",
+   "name": "LWM's Deep Storage",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532608331"
+  },
+  {
+   "loadOrder": 365,
+   "packageId": "smxrez.makeshiftreexamined",
+   "name": "Makeshift: Re-Examined",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3455187943"
+  },
+  {
+   "loadOrder": 366,
+   "packageId": "zacharyfoster.mineralsframework",
+   "name": "Minerals Framework",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562390384"
+  },
+  {
+   "loadOrder": 367,
+   "packageId": "mandrake.rsw.cuisine",
+   "name": "RimStarWars: Cuisine",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Cuisine"
+  },
+  {
+   "loadOrder": 368,
+   "packageId": "sinnamon.moreritualrewards",
+   "name": "More Ritual Rewards",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2582489076"
+  },
+  {
+   "loadOrder": 369,
+   "packageId": "zal.moreutilitypacks",
+   "name": "More Utility Packs (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3249560356"
+  },
+  {
+   "loadOrder": 370,
+   "packageId": "andromeda.niceresearchtab",
+   "name": "Nice Research Tab",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3773496046"
+  },
+  {
+   "loadOrder": 371,
+   "packageId": "mandrake.rm.planetpresetprime",
+   "name": "Planet Preset Prime (local)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\PlanetPresetPrime"
+  },
+  {
+   "loadOrder": 372,
+   "packageId": "xylthixlm.races.titan",
+   "name": "Posthuman Drift Titan Xenotype",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3540820354"
+  },
+  {
+   "loadOrder": 373,
+   "packageId": "mlie.preceptsandmemesritualsmodule",
+   "name": "Precepts and Memes - Rituals module (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2894628849"
+  },
+  {
+   "loadOrder": 374,
+   "packageId": "lambda.psykshroom",
+   "name": "Psyshrooms",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3280268952"
+  },
+  {
+   "loadOrder": 375,
+   "packageId": "ogliss.thewhitecrayon.quarry",
+   "name": "Quarry",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2007576583"
+  },
+  {
+   "loadOrder": 376,
+   "packageId": "memegoddess.replacestuff",
+   "name": "Replace Stuff - Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3526354009"
+  },
+  {
+   "loadOrder": 377,
+   "packageId": "kilokio.rimai.core",
+   "name": "RimAI Core (BETA)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3560404184"
+  },
+  {
+   "loadOrder": 378,
+   "packageId": "jaxe.rimhud",
+   "name": "RimHUD",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1508850027"
+  },
+  {
+   "loadOrder": 379,
+   "packageId": "zal.spaceports",
+   "name": "Rimsential - Spaceports (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3225120958"
+  },
+  {
+   "loadOrder": 380,
+   "packageId": "co.uk.epicguru.factionloadout",
+   "name": "Rimsential - Total Control: Continued",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3063465133"
+  },
+  {
+   "loadOrder": 381,
+   "packageId": "deon.rimtek.digipal",
+   "name": "RimTek DigiPal",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3500443258"
+  },
+  {
+   "loadOrder": 382,
+   "packageId": "deon.rimtek.docmate",
+   "name": "RimTek DocMate",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3500863752"
+  },
+  {
+   "loadOrder": 383,
+   "packageId": "telardo.romanceontherim",
+   "name": "Romance On The Rim",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2654432921"
+  },
+  {
+   "loadOrder": 384,
+   "packageId": "kathanon.searchablemenus",
+   "name": "Searchable Menus",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2928608119"
+  },
+  {
+   "loadOrder": 385,
+   "packageId": "mlie.showmeyourhands",
+   "name": "Show Me Your Hands",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2475965842"
+  },
+  {
+   "loadOrder": 386,
+   "packageId": "scherub.stonecuttingextended",
+   "name": "Stonecutting Extended",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2571676542"
+  },
+  {
+   "loadOrder": 387,
+   "packageId": "cyanobot.toddlers",
+   "name": "Toddlers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2903359152"
+  },
+  {
+   "loadOrder": 388,
+   "packageId": "vanillaexpanded.vchemfuele",
+   "name": "Vanilla Chemfuel Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2792917473"
+  },
+  {
+   "loadOrder": 389,
+   "packageId": "vanillaexpanded.vcookestews",
+   "name": "Vanilla Cooking Expanded - Stews",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2134312965"
+  },
+  {
+   "loadOrder": 390,
+   "packageId": "kuhlyus.modpatch.vanillaoutpost",
+   "name": "Vanilla Mining Outpost Patch",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2968491314"
+  },
+  {
+   "loadOrder": 391,
+   "packageId": "mrhydralisk.voeadditionaloutposts",
+   "name": "Vanilla Outposts Expanded: Additional Outposts",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2873841790"
+  },
+  {
+   "loadOrder": 392,
+   "packageId": "vanillaexpanded.vwel",
+   "name": "Vanilla Weapons Expanded - Laser",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1989352844"
+  },
+  {
+   "loadOrder": 393,
+   "packageId": "fourtoo.glowingbush",
+   "name": "[42G]Glowing Bushes [Forked]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3425062214"
+  },
+  {
+   "loadOrder": 394,
+   "packageId": "mandrake.rm.weathersuite",
+   "name": "RimMandrake: SW \u2014 Weather Suite",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\WeatherSuite"
+  },
+  {
+   "loadOrder": 395,
+   "packageId": "mandrake.rut.weathersuite",
+   "name": "RimMandrake: Utinni \u2014 Weather Suite (Ash'karr)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AshkarrWeatherSuite"
+  },
+  {
+   "loadOrder": 396,
+   "packageId": "zal.comigogreaterswamps",
+   "name": "Comigo's Greater Swamps (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3620545124"
+  },
+  {
+   "loadOrder": 397,
+   "packageId": "mlie.functionalvanillaexpandedprops",
+   "name": "Functional Vanilla Expanded Props (Continued)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2574097280"
+  },
+  {
+   "loadOrder": 398,
+   "packageId": "sd.fa.geneticheadsbiotech",
+   "name": "Genetic Biotech for Facial Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3501317537"
+  },
+  {
+   "loadOrder": 399,
+   "packageId": "sd.fa.geneticheadsmods",
+   "name": "Genetic Mods for Facial Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3501317734"
+  },
+  {
+   "loadOrder": 400,
+   "packageId": "erdelf.humanoidalienraces",
+   "name": "Humanoid Alien Races",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\839005762"
+  },
+  {
+   "loadOrder": 401,
+   "packageId": "zacharyfoster.mineralsfrozen",
+   "name": "Minerals Frozen",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562390973"
+  },
+  {
+   "loadOrder": 402,
+   "packageId": "zacharyfoster.mineralsrock",
+   "name": "Minerals Rock",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562391080"
+  },
+  {
+   "loadOrder": 403,
+   "packageId": "zacharyfoster.mineralssparkle",
+   "name": "Minerals Sparkle",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562390730"
+  },
+  {
+   "loadOrder": 404,
+   "packageId": "mehni.pickupandhaul",
+   "name": "Pick Up And Haul",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1279012058"
+  },
+  {
+   "loadOrder": 405,
+   "packageId": "avius.prisonlabor",
+   "name": "Prison Labor",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1899474310"
+  },
+  {
+   "loadOrder": 406,
+   "packageId": "reel.facialanims",
+   "name": "Reel's Facial Animation Textures",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3118315633"
+  },
+  {
+   "loadOrder": 407,
+   "packageId": "oskarpotocki.vfe.pirates",
+   "name": "Vanilla Factions Expanded - Pirates",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2723801948"
+  },
+  {
+   "loadOrder": 408,
+   "packageId": "vanillaexpanded.vmemese",
+   "name": "Vanilla Ideology Expanded - Memes and Structures",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2636329500"
+  },
+  {
+   "loadOrder": 409,
+   "packageId": "sd.fa.reelsadjustments",
+   "name": "Adjustments for Reel's Facial Animation Textures",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3429452043"
+  },
+  {
+   "loadOrder": 410,
+   "packageId": "opa.allspecialistscanwork",
+   "name": "All Specialists Can Work",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2833543540"
+  },
+  {
+   "loadOrder": 411,
+   "packageId": "broms.deeporbit",
+   "name": "Deep Orbit",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3533793836"
+  },
+  {
+   "loadOrder": 412,
+   "packageId": "teiwaz.gtgtradercore",
+   "name": "GTG Trader Core",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3682209120"
+  },
+  {
+   "loadOrder": 413,
+   "packageId": "keyz182.keyzallowutilities",
+   "name": "Keyz' Allow Utilities",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524716849"
+  },
+  {
+   "loadOrder": 414,
+   "packageId": "toastyman.moreritualseats",
+   "name": "More Ritual Seats",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3411913071"
+  },
+  {
+   "loadOrder": 415,
+   "packageId": "sugarcube.puahsharedstorage",
+   "name": "Pick Up And Haul - Shared Storage Access",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3774922633"
+  },
+  {
+   "loadOrder": 416,
+   "packageId": "legator.prisonerrealism",
+   "name": "Prisoner Realism",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3760196312"
+  },
+  {
+   "loadOrder": 417,
+   "packageId": "petetimessix.simplesidearms",
+   "name": "Simple sidearms",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\927155256"
+  },
+  {
+   "loadOrder": 418,
+   "packageId": "tribeagle.simpleslaverycollars",
+   "name": "Simple Slavery Collars",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2557274194"
+  },
+  {
+   "loadOrder": 419,
+   "packageId": "neronix17.toolbox",
+   "name": "Tabula Rasa",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1660622094"
+  },
+  {
+   "loadOrder": 420,
+   "packageId": "vanillaexpanded.vgeneticse",
+   "name": "Vanilla Genetics Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2801160906"
+  },
+  {
+   "loadOrder": 421,
+   "packageId": "vanillaexpanded.vtexe.facialanims",
+   "name": "Vanilla Textures Expanded - [NL] Facial Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2816938779"
+  },
+  {
+   "loadOrder": 422,
+   "packageId": "oskarpotocki.vanillavehiclesexpanded",
+   "name": "Vanilla Vehicles Expanded",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3014906877"
+  },
+  {
+   "loadOrder": 423,
+   "packageId": "dmp.vfepirates.warcasketwork",
+   "name": "VFE Pirates - Hardworking Warcaskets",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535194807"
+  },
+  {
+   "loadOrder": 424,
+   "packageId": "divinederivative.romance",
+   "name": "Way Better Romance",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2877731755"
+  },
+  {
+   "loadOrder": 425,
+   "packageId": "teiwaz.taajg",
+   "name": "[GTG]Traders Accept All Junk Gear",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3729570505"
+  },
+  {
+   "loadOrder": 426,
+   "packageId": "teiwaz.tacac",
+   "name": "[GTG]Traders Accept Chunks & Corpses",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3756658373"
+  },
+  {
+   "loadOrder": 427,
+   "packageId": "brrainz.achtung",
+   "name": "Achtung!",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\730936602"
+  },
+  {
+   "loadOrder": 428,
+   "packageId": "sd.fa.vteadjustments",
+   "name": "Adjustments for Vanilla Textures Expanded - [NL] Facial Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532050275"
+  },
+  {
+   "loadOrder": 429,
+   "packageId": "sarg.alphavehiclesneolithic",
+   "name": "Alpha Vehicles - Neolithic",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3028675048"
+  },
+  {
+   "loadOrder": 430,
+   "packageId": "kem.beardadjustment",
+   "name": "Beard Adjustment",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2880669781"
+  },
+  {
+   "loadOrder": 431,
+   "packageId": "redmattis.bigsmall.core",
+   "name": "Big and Small - Genes & More",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2920751126"
+  },
+  {
+   "loadOrder": 432,
+   "packageId": "lovelydovey.sex.witheuterpe",
+   "name": "Intimacy - Friends n' Lovers",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3498422643"
+  },
+  {
+   "loadOrder": 433,
+   "packageId": "mandrake.rut.longhunger",
+   "name": "RimUtinni: The Long Hunger",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\LongHunger"
+  },
+  {
+   "loadOrder": 434,
+   "packageId": "neronix17.outerrim.core",
+   "name": "Outer Rim - Core",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919227155"
+  },
+  {
+   "loadOrder": 435,
+   "packageId": "neronix17.outland.genetics",
+   "name": "Outland - Genetics",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2910172297"
+  },
+  {
+   "loadOrder": 436,
+   "packageId": "redmattis.optional",
+   "name": "Big and Small - Enable All Optional Content",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532649666"
+  },
+  {
+   "loadOrder": 437,
+   "packageId": "redmattis.bigweapons",
+   "name": "Big and Small - Weapons",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3105907309"
+  },
+  {
+   "loadOrder": 438,
+   "packageId": "avilmask.commonsense",
+   "name": "Common Sense",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1561769193"
+  },
+  {
+   "loadOrder": 439,
+   "packageId": "mandrake.rsw.desertvehiclereskin",
+   "name": "Desert Vehicle Reskin \u2014 Alpha Vehicles Neolithic",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\DesertVehicleReskin"
+  },
+  {
+   "loadOrder": 440,
+   "packageId": "lovelydovey.sex.withrosaline",
+   "name": "Intimacy - Gender Works",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3534254491"
+  },
+  {
+   "loadOrder": 441,
+   "packageId": "lovelydovey.recreation.witheuterpe",
+   "name": "Intimacy - Socio Butterfly",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3630896210"
+  },
+  {
+   "loadOrder": 442,
+   "packageId": "leutiankane.mineablesor",
+   "name": "LK Mineable Resources Outer Rim",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3565716659"
+  },
+  {
+   "loadOrder": 443,
+   "packageId": "leutiankane.mines2patchouterrim",
+   "name": "LK Mines 2.0 Compatability[Outer Rim Core]",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3558833789"
+  },
+  {
+   "loadOrder": 444,
+   "packageId": "neronix17.outerrim.furnitureanddecor",
+   "name": "Outer Rim - Furniture & Decor",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919553599"
+  },
+  {
+   "loadOrder": 445,
+   "packageId": "neronix17.outerrim.galacticempire",
+   "name": "Outer Rim - Galactic Empire",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919248699"
+  },
+  {
+   "loadOrder": 446,
+   "packageId": "neronix17.outerrim.rebelalliance",
+   "name": "Outer Rim - Rebel Alliance",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919249903"
+  },
+  {
+   "loadOrder": 447,
+   "packageId": "frozensnowfox.complexjobs",
+   "name": "[FSF] Complex Jobs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2069684319"
+  },
+  {
+   "loadOrder": 448,
+   "packageId": "dubwise.dubsbreakmod",
+   "name": "Dubs Break Mod",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1722398508"
+  },
+  {
+   "loadOrder": 449,
+   "packageId": "danzinagri.facialanimationcompatabilityproject",
+   "name": "Facial Animation Compatability Project",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3585705988"
+  },
+  {
+   "loadOrder": 450,
+   "packageId": "mandrake.rut.doctrine",
+   "name": "Jawa Doctrine Patches",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Doctrine"
+  },
+  {
+   "loadOrder": 451,
+   "packageId": "taranchuk.performanceoptimizer",
+   "name": "Performance Optimizer",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2664723367"
+  },
+  {
+   "loadOrder": 452,
+   "packageId": "co.uk.epicguru.meleeanimation",
+   "name": "Melee Animation",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2944488802"
+  },
+  {
+   "loadOrder": 453,
+   "packageId": "lordfelix.rimcontrol",
+   "name": "Rim Control",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3774299554"
+  },
+  {
+   "loadOrder": 454,
+   "packageId": "meathax.showmeyourtools",
+   "name": "Show Me Your Tools - Forked",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3774821567"
+  },
+  {
+   "loadOrder": 455,
+   "packageId": "lee.theforce.lightsaber",
+   "name": "Star Wars : The Force - Lightsaber",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3466124712"
+  },
+  {
+   "loadOrder": 456,
+   "packageId": "mandrake.rsw.starwarsraces",
+   "name": "RimMandrake - Star Wars Races",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StarWarsRaces"
+  },
+  {
+   "loadOrder": 457,
+   "packageId": "mandrake.rsw.armoury",
+   "name": "Jawa Armoury Rebalance",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Armoury"
+  },
+  {
+   "loadOrder": 458,
+   "packageId": "mandrake.rm.proximityhatch",
+   "name": "RimMandrake: Proximity Hatch",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ProximityHatch"
+  },
+  {
+   "loadOrder": 459,
+   "packageId": "mandrake.rsw.gizkastowaway",
+   "name": "RimMandrake: SW \u2014 Gizka Stowaway",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GizkaStowaway"
+  },
+  {
+   "loadOrder": 460,
+   "packageId": "mandrake.rsw.shokk",
+   "name": "RimMandrake: SW \u2014 Shokk",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Shokk"
+  },
+  {
+   "loadOrder": 461,
+   "packageId": "mandrake.rm.luminouspigment",
+   "name": "RimMandrake: Luminous Pigment",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\LuminousPigment"
+  },
+  {
+   "loadOrder": 462,
+   "packageId": "mandrake.rsw.ionweapons",
+   "name": "Jawa Ion Weapons (local)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\JawaIonWeapons"
+  },
+  {
+   "loadOrder": 463,
+   "packageId": "mandrake.rut.shipmemory",
+   "name": "RimUtinni: Ship Memory \u2014 the Chains Below",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ShipMemory"
+  },
+  {
+   "loadOrder": 464,
+   "packageId": "mandrake.rut.antiquities",
+   "name": "Antiquities",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Antiquities"
+  },
+  {
+   "loadOrder": 465,
+   "packageId": "mandrake.rut.rites",
+   "name": "Salvation Rites",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Rites"
+  },
+  {
+   "loadOrder": 466,
+   "packageId": "mandrake.rut.researchretag",
+   "name": "Research Retag",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ResearchRetag"
+  },
+  {
+   "loadOrder": 467,
+   "packageId": "zylle.sandcastles",
+   "name": "Sand Castles",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1980394843"
+  },
+  {
+   "loadOrder": 468,
+   "packageId": "mandrake.rm.patches",
+   "name": "RimMandrake Patches",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\MandrakePatches"
+  },
+  {
+   "loadOrder": 469,
+   "packageId": "mandrake.rsw.bacta",
+   "name": "RimStarWars \u2014 Bacta",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Bacta"
+  },
+  {
+   "loadOrder": 470,
+   "packageId": "mandrake.rsw.patches",
+   "name": "RimStarWars Patches",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StarWarsPatches"
+  },
+  {
+   "loadOrder": 471,
+   "packageId": "mandrake.rut.patches",
+   "name": "RimUtinni Patches (Jawa campaign)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches"
+  },
+  {
+   "loadOrder": 472,
+   "packageId": "mandrake.rut.pawnflavor",
+   "name": "Jawa Pawn Flavor \u2014 faction backstories and traits",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\PawnFlavor"
+  },
+  {
+   "loadOrder": 473,
+   "packageId": "btd.gbp.shippack.kotor.vge",
+   "name": "[BTD] Ship Pack: KotOR Ships VGE",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3614012898"
+  },
+  {
+   "loadOrder": 474,
+   "packageId": "mandrake.rsw.droidworks",
+   "name": "Droidworks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Droidworks"
+  },
+  {
+   "loadOrder": 475,
+   "packageId": "mandrake.rut.droidrepairjobs",
+   "name": "RimUtinni: Droid Repair Jobs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\DroidRepairJobs"
+  },
+  {
+   "loadOrder": 476,
+   "packageId": "mandrake.rm.wreckedmachines",
+   "name": "Wrecked Machines",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\WreckedMachines"
+  },
+  {
+   "loadOrder": 477,
+   "packageId": "mandrake.rut.pyrelandsmechanics",
+   "name": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\PyrelandsMechanics"
+  },
+  {
+   "loadOrder": 478,
+   "packageId": "mandrake.rm.flowworks",
+   "name": "RimMandrake: FlowWorks",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks"
+  },
+  {
+   "loadOrder": 479,
+   "packageId": "mandrake.rm.explosiveknockback",
+   "name": "RimMandrake: Explosive Knockback",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ExplosiveKnockback"
+  },
+  {
+   "loadOrder": 480,
+   "packageId": "mandrake.rm.kineticarms",
+   "name": "RimMandrake: Kinetic Arms",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\KineticArms"
+  },
+  {
+   "loadOrder": 481,
+   "packageId": "mandrake.rm.gimmesomeslack",
+   "name": "RimMandrake: Gimme Some Slack",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GimmeSomeSlack"
+  },
+  {
+   "loadOrder": 482,
+   "packageId": "mandrake.rm.oracle",
+   "name": "RimMandrake: Oracle",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Oracle"
+  },
+  {
+   "loadOrder": 483,
+   "packageId": "mandrake.rm.property",
+   "name": "RimProperty",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimProperty"
+  },
+  {
+   "loadOrder": 484,
+   "packageId": "mandrake.rm.rimdefdump",
+   "name": "RimDefDump (local tooling)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimDefDump"
+  },
+  {
+   "loadOrder": 485,
+   "packageId": "mandrake.rut.birthhatchdemo",
+   "name": "RimMandrake: Utinni \u2014 Birth & Hatch Demo",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\BirthHatchDemo"
+  },
+  {
+   "loadOrder": 486,
+   "packageId": "arandomkiwi.rimthemes",
+   "name": "RimThemes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1668983184"
+  },
+  {
+   "loadOrder": 487,
+   "packageId": "mandrake.rut.menushell",
+   "name": "RimUtinni: Menu Shell",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\MenuShell"
+  },
+  {
+   "loadOrder": 488,
+   "packageId": "mandrake.rut.shokkweaveeconomy",
+   "name": "RimUtinni: Shokkweave Economy",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ShokkweaveEconomy"
+  },
+  {
+   "loadOrder": 489,
+   "packageId": "mandrake.rut.rustcathedralroaches",
+   "name": "RimMandrake: Utinni \u2014 Rust Cathedral Roaches",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RustCathedralRoaches"
+  },
+  {
+   "loadOrder": 490,
+   "packageId": "mandrake.rm.gravshiplanding",
+   "name": "RimMandrake: Gravship Landing Reveal",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GravshipLanding"
+  },
+  {
+   "loadOrder": 491,
+   "packageId": "rw.mod.simplestairs",
+   "name": "SimpleStairs (Fork)",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3526906079"
+  },
+  {
+   "loadOrder": 492,
+   "packageId": "kutte.stairs",
+   "name": "Simple Visual Stairs",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3459462328"
+  },
+  {
+   "loadOrder": 493,
+   "packageId": "mandrake.rm.hugethings",
+   "name": "RimMandrake: Huge Things",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\HugeThings"
+  },
+  {
+   "loadOrder": 494,
+   "packageId": "mandrake.rm.biomes",
+   "name": "RimMandrake: Baroque Biomes",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes"
+  },
+  {
+   "loadOrder": 495,
+   "packageId": "mandrake.rsw.swbestiary",
+   "name": "RimMandrake: SW \u2014 Bestiary",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\SWBestiary"
+  },
+  {
+   "loadOrder": 496,
+   "packageId": "mandrake.rm.shipvermin",
+   "name": "RimMandrake: Ship Vermin",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\ShipVermin"
+  },
+  {
+   "loadOrder": 497,
+   "packageId": "mandrake.rut.greentideraidant",
+   "name": "RimUtinni: Greentide Raid Ant",
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GreentideRaidAnt"
+  }
+ ],
+ "assembly": {
+  "name": "RimMandrakeGraffiti",
+  "matchCount": 1,
+  "matches": [
+   {
+    "mvid": "f726ae29-8efd-401f-b11d-f9f0415e605a",
+    "version": "0.1.0.0",
+    "fileBytes": -1,
+    "fileExists": false,
+    "claimedBy": [
+     "mandrake.rm.graffiti"
+    ]
+   }
+  ]
+ },
+ "ticksGame": -1,
+ "operation": {
+  "OperationId": "op_30e3ff10e776494cad2ba6234a301dae",
+  "Status": "Completed",
+  "Success": true,
+  "DurationMs": 97
+ },
+ "state": {
+  "programState": "Entry",
+  "hasCurrentGame": false
+ }
+}
