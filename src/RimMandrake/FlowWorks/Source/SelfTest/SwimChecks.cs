@@ -310,9 +310,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
                 Assert(sw.Contains("private static int Fingerprint()") && !sw.Contains("private static string Fingerprint()"), "the fingerprint is an int");
                 Assert(Regex.IsMatch(sw, @"private static int Fingerprint\(\)\s*\{[^}]*RM_SwimSettings\.swimPathCost"), "the swim cost is in it");
-                Assert(sw.Contains("if (swimTerrain == null || fp == appliedFingerprint)") && sw.Contains("appliedFingerprint = fp;"),
+                Assert(sw.Contains("if (swimTerrain != null && fp == appliedFingerprint)") && sw.Contains("appliedFingerprint = fp;"),
                     "Reapply compares against what the maps were computed under, not the tables");
                 Assert(sw.Contains("&& fp == tableFingerprint)"), "the tables keep their own fingerprint");
+            });
+            Case("SWIM_REAPPLY_cold_tables_still_recompute", () =>
+            {
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                Assert(!sw.Contains("swimTerrain == null || fp == appliedFingerprint"), "Reapply no longer returns early on null tables");
+                Assert(Regex.IsMatch(sw, @"public static void Reapply\(\)[\s\S]*?appliedFingerprint = fp;\s*EnsureTables\(\);[\s\S]*?RecalculateAllPerceivedPathCosts"),
+                    "cold tables are built on demand, then every map recomputed");
             });
             // SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER (live day 3: a 9x5 dug reservoir, 6 notches, brim-full, "Hole 3 m · Water
             // 3.00 m": order to the middle CanReach false, a pawn in it read deepCell=False pathCost=300; natural 2 m lakes swim).

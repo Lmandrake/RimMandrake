@@ -185,7 +185,7 @@ namespace RimMandrake.HugeThings
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
             // HUGETHINGS_SETTINGS_HARDENING_1 (A2.7 / D1.5): every string is keyed in Languages/English/Keyed/RM_HugeThings.xml.
-            if (Group(list, "Giant plants", RimMandrake.Shared.SettingScope.Now, new[] { "giantPlantsEnabled", "plantTrunkEnabled", "plantSelectionEnabled", "plantTrunkScale", "plantTrunkDamageEnabled", "plantItemPushEnabled" }))
+            if (Group(list, "RM_HugeThings_GiantPlants".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "giantPlantsEnabled", "plantTrunkEnabled", "plantSelectionEnabled", "plantTrunkScale", "plantTrunkDamageEnabled", "plantItemPushEnabled" }))
             {
                 list.CheckboxLabeled("RM_HugeThings_GiantPlantsEnabled".Translate(), ref giantPlantsEnabled, "RM_HugeThings_GiantPlantsEnabled_Desc".Translate());
                 if (giantPlantsEnabled)
@@ -203,7 +203,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Giant animals: hitbox and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "giantAnimalsEnabled", "pawnHitboxEnabled", "pawnHitboxScale", "roofAvoidanceEnabled" }))
+            if (Group(list, "RM_HugeThings_GiantAnimals".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "giantAnimalsEnabled", "pawnHitboxEnabled", "pawnHitboxScale", "roofAvoidanceEnabled" }))
             {
                 list.CheckboxLabeled("RM_HugeThings_GiantAnimalsEnabled".Translate(), ref giantAnimalsEnabled, "RM_HugeThings_GiantAnimalsEnabled_Desc".Translate());
                 if (giantAnimalsEnabled)

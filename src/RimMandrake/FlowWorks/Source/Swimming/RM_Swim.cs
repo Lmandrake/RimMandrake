@@ -329,7 +329,9 @@ namespace RimMandrake.FlowWorks.Swimming
 		public static void Reapply()
 		{
 			int fp = Fingerprint();
-			if (swimTerrain == null || fp == appliedFingerprint)
+			// SWIM_REAPPLY_FIX_LATE_TOGGLE_STAYS_DRY: cold tables (never built) are built on demand below and the maps recomputed,
+			// not skipped: deep swimming switched on mid-game must open the band without a reload.
+			if (swimTerrain != null && fp == appliedFingerprint)
 			{
 				RM_SwimPathing.BumpAll();
 				return;
