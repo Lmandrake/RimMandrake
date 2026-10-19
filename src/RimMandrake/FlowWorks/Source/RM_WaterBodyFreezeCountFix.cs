@@ -27,6 +27,8 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly ConditionalWeakTable<WaterBody, object> Stale = new ConditionalWeakTable<WaterBody, object>();
 		private static readonly object Mark = new object();
+		// bodies recounted to a true zero (no freezable base square): the zero-count fallback must not rescan them every roll
+		private static readonly ConditionalWeakTable<WaterBody, object> CountedZero = new ConditionalWeakTable<WaterBody, object>();
 
 		[HarmonyPostfix]
 		[HarmonyPriority(Priority.Last)]
@@ -70,15 +72,20 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			bool stale = Stale.TryGetValue(b, out _);
-			if (!stale && b.numCellsCanFreeze > 0)
+			if (!stale && (b.numCellsCanFreeze > 0 || CountedZero.TryGetValue(b, out _)))
 			{
 				return false;
 			}
 			if (stale)
 			{
 				Stale.Remove(b);
+				CountedZero.Remove(b);
 			}
 			b.RecacheState();
+			if (b.numCellsCanFreeze <= 0)
+			{
+				CountedZero.GetValue(b, _ => Mark);
+			}
 			return true;
 		}
 	}
