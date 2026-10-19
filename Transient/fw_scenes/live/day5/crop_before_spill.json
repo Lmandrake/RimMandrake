@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "message": "2 thing(s) inspected, 35495 examined.",
+  "matched": 2,
+  "examined": 35495,
+  "threw": 0,
+  "things": [
+    {
+      "id": "Plant_Potato45993",
+      "defName": "Plant_Potato",
+      "label": "potato plant",
+      "x": 165,
+      "z": 178,
+      "className": "RimWorld.Plant",
+      "inspect": [
+        "15% grown",
+        "Growth rate: 1.2% (temperature growth multiplier 73%)"
+      ]
+    },
+    {
+      "id": "Plant_Potato45994",
+      "defName": "Plant_Potato",
+      "label": "potato plant",
+      "x": 175,
+      "z": 178,
+      "className": "RimWorld.Plant",
+      "inspect": [
+        "15% grown",
+        "Growth rate: 1.2% (temperature growth multiplier 73%)"
+      ]
+    }
+  ],
+  "ticksGame": 1616,
+  "operation": {
+    "OperationId": "op_b59c605933e94388970443a52fede036",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 46
+  },
+  "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1616
+  }
+}

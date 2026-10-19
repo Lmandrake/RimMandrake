@@ -1,0 +1,163 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.119 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.764500 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001CF630252D0.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001CF65B265B0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=170 elapsedMs=170
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=170
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=170 elapsedMs=170
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 28, missing 0
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+[RimMandrake.Wreckage] Harmony: patched 1, missing 0
+[RimMandrake.Abyss] Harmony: patched 1, missing 0
+[RimMandrake.FeverWood] Harmony: patched 5, missing 0
+[RimMandrake.CrackedLands] Harmony: patched 2, missing 0
+[RimMandrake.TerminalBiomes] Harmony: patched 12, missing 0
+[RimMandrake.DivingInteraction] Harmony: patched 10, missing 0
+Could not find a type named AlphaBehavioursAndEvents.DamageWorker_Vampiric
+[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationRemove(/Defs/PawnKindDef[defName="AA_AngelMoth"]/alternateGraphics/li[texPath="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\TheRot\Patches\RotSpecies_NamesAndSizes.xml
+[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationRemove(/Defs/PawnKindDef[defName="AA_AngelMoth"]/alternateGraphics/li[texPath="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\TheRot\Patches\RotSpecies_NamesAndSizes.xml
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Glasskelle' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Pulsebead' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Rimebeard' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantB' for def 'RM_Stillbloom' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Simmerlace' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Kettlewick' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_Vekkfan' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_Thurlsponge' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_Foamgorse' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_Seepcandle' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Threshreed' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_NoothelmPlant' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path swresource/Leather_Heavy
+Collection cannot init: No textures found at path swresource/Meat_Saurian
+Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path Things/RM_Salvessa/RM_Salvessa
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.
+MatFrom with null sourceTex.
+KCSG has Created 7290 symbolDefs for vanilla and DLCs
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[RimMandrake.FlowWorks] Harmony: patched 81, missing 0
+[FlowWorks] thirst provider: Own (no DBHThirst NeedDef loaded)
+[RimMandrake.LuminousPigment] Harmony: patched 15, missing 0
+[Baroque Biomes] roster 32 entries (CreatureBehaviors:0, ExplosiveGrowth:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, CrackedLands:1, CrackedLandsKeptArt:0, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[Baroque Biomes] plant draw order: 2 PrintPlane call(s) in Plant.Print routed.
+[Baroque Biomes] plant draw order: 2 PrintPlane call(s) in Plant.Print routed.
+[RimMandrake.ExplosiveGrowth] Harmony: patched 8, missing 0
+[RM ExplosiveGrowth] charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry relaxes) | ruled rates PASS (x10 wet, x0.1 dry, x4 jungle, x6.25 tree, vanilla x0.1/x1, sealed x1, age x0.1)
+[RM ExplosiveGrowth] 300 plant defs soak (churn 269, burst 0, slime 9, tinder 0, rupture 21, flush 1), 256 never soak; roster rows resolved 123, absent 3; rupture kinds 2, mutation hediffs 6. Archetypes: dry 219, wet 129, fire 2, exempt 33, vanilla 173; 0 stalled, 6 wet and 1 fire biome(s); 9 natural-water terrain(s), 2 water filth(s), 2 liquid set(s), tidally locked False. Scope (home mod mandrake.rm.biomes): 34 Baroque Biomes biome(s) only. Trees (3.0+, not fungi) 48, fungi marked 17.
+[RimMandrake.Cauldron] Harmony: patched 1, missing 0
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.LanternDeeps] Harmony: patched 4, missing 0
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] ash-field fertility: armed; deep ash reads watered / fresh-burn fertility
+[Pyrelands] Baroque Biomes toggle "Pyrelands" gates Pyrelands mechanics (now on).
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[RimMandrake.RustCathedral.Hum] Harmony: patched 12, missing 0
+[RimMandrake.RustCathedral.Walls] Harmony: patched 1, missing 0
+[RimMandrake.TheForge] Harmony: patched 5, missing 0
+[RimMandrake.Scarlands] Harmony: patched 14, missing 0
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 1994 items @0.45, 511 plants @0.55, 72 filth @0.2 (of 6345 ThingDefs; defs with their own value untouched).
+[RimMandrake.SeaShores] Harmony: patched 3, missing 0
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 37394.
+Total: 196.200000 ms (FindLiveObjects: 1.459300 ms CreateObjectMapping: 1.526400 ms MarkObjects: 192.817900 ms  DeleteObjects: 0.396100 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=17 elapsedMs=38429
+[JawaBench] ready: 413 tools, build c37ed41ae59c
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 15/fed00b66, toolSet 3f60d9fe, defDump ARMED, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session d6bd76495e394b8f85a7f89dff0ab8e3 seq 2 utc 2026-10-18T22:30:20.681Z
+[JawaBench] TPS sampler installed (bridge-registration): session d6bd76495e394b8f85a7f89dff0ab8e3 pid 39428 -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261018T223020Z_d6bd76495e394b8f85a7f89dff0ab8e3_39428_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (412 tools gated, 0 unguarded, by bridge-registration, 1414 ms); compile gm, runtime profile campaign (test profile expired at 2026-10-18T22:00:00.0000000Z: campaign)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=3679 elapsedMs=42108
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=42108
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=42109
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=42109
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=42109
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=42110
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=42111
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=42114
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=42114
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=42115
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=42117
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=25 elapsedMs=42143
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=3715 elapsedMs=42144
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=26 elapsedMs=42144
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 54079b8f6473495899324f4d63858f41

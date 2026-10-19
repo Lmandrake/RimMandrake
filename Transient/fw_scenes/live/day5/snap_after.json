@@ -1,0 +1,851 @@
+{
+ "cells": {
+  "143,181": [
+   4,
+   4,
+   "RM_Fill_Water_Superdeep"
+  ],
+  "144,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "145,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "146,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "147,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "148,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "149,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "150,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "151,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "152,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "152,181": [
+   4,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "153,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "153,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "153,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "153,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "153,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "153,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "154,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "155,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "156,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "157,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "158,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "159,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "160,170": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "160,171": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "160,172": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "161,170": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "161,171": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "161,172": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "162,170": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "162,171": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "162,172": [
+   9,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "170,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "170,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "171,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "172,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "173,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "174,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "175,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "176,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,150": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,151": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,152": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,153": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,154": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,155": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,156": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "177,157": [
+   0,
+   0,
+   "RM_WaterThin"
+  ],
+  "180,170": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "180,171": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "180,172": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "181,170": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "181,171": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "181,172": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "182,170": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "182,171": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "182,172": [
+   6,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "186,160": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "186,161": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "186,162": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "187,160": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "187,161": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "187,162": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "188,160": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "188,161": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "188,162": [
+   40,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,160": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,161": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,162": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,170": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,171": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "192,172": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,160": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,161": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,162": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,170": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,171": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "193,172": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,160": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,161": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,162": [
+   14,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,170": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,171": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ],
+  "194,172": [
+   10,
+   0,
+   "RM_Channel_Superdeep"
+  ]
+ },
+ "climb": {
+  "161,171": "POCKET k=2 comp=3 pocket=True size=9 depth=9",
+  "181,171": "POCKET k=2 comp=4 pocket=True size=9 depth=6",
+  "187,161": "POCKET k=2 comp=1 pocket=True size=9 depth=40",
+  "193,161": "POCKET k=2 comp=2 pocket=True size=9 depth=14",
+  "193,171": "POCKET k=2 comp=5 pocket=True size=9 depth=10"
+ },
+ "excavatedCellCount": 55,
+ "readout": {
+  "143,181": "OK Hole 2 m \u00b7 Water 2.00 m (4,000 L)",
+  "150,155": "OK Hole 1 m \u00b7 Water 0.00 m (0 L)",
+  "161,171": "OK Hole 4.5 m \u00b7 Water 0.00 m (0 L)",
+  "173,153": "OK Hole 2 m \u00b7 Water 0.00 m (3 L)",
+  "187,161": "OK Hole 20 m \u00b7 Water 0.00 m (0 L)"
+ },
+ "room": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True",
+ "ticks": 1617
+}
