@@ -126,12 +126,12 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_GrassySand</terrain>
+        <terrain>RM_GrassySand</terrain>
         <min>-999</min>
         <max>0.25</max>
       </li>
       <li>
-        <terrain>AB_LushGrass</terrain>
+        <terrain>RM_LushGrass</terrain>
         <min>0.25</min>
         <max>999</max>
       </li>
@@ -153,7 +153,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_TarPuddle>0.6</AB_TarPuddle>  <!-- tar puddle -->
+      <RM_Velloch MayRequire="mandrake.rm.flowworks">0.6</RM_Velloch>  <!-- was AB_TarPuddle; RM_Velloch replaces it (as in RM_TheSump), donor retired 2026-10-18 -->  <!-- tar puddle -->
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
     <modExtensions>

@@ -63,12 +63,12 @@
     <texture>World/Biomes/RUT_Contagion</texture>
     <diseaseMtbDays>30</diseaseMtbDays>
     <diseases>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_SporeAllergy</diseaseInc>
         <commonality>50</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_AnimalSporeAllergy</diseaseInc>
         <commonality>50</commonality>
       </li>
       <li>
@@ -114,7 +114,7 @@
       </li>
     </terrainsByFertility>
     <baseWeatherCommonalities>
-      <AB_RedFog MayRequire="sarg.alphabiomes">70</AB_RedFog>
+      <RM_ContagionBloom>70</RM_ContagionBloom>
       <Clear>8</Clear>
       <Rain>1</Rain>
       <DryThunderstorm>1</DryThunderstorm>
@@ -134,14 +134,14 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_AlienGrass>1.0</AB_AlienGrass>  <!-- ocular grass -->
-      <AB_AlienTree>1.0</AB_AlienTree>  <!-- ocular tree - tree -->
-      <AB_RedLeaves>0.6</AB_RedLeaves>  <!-- ocular plant -->
-      <AB_HalfAlienTree>0.5</AB_HalfAlienTree>  <!-- half transformed ocular tree - tree -->
-      <AB_RedPlantsTall>0.5</AB_RedPlantsTall>  <!-- ocular plant -->
-      <AB_GlobularPlant>0.4</AB_GlobularPlant>  <!-- globular aberration -->
-      <AB_TentacularPlant>0.4</AB_TentacularPlant>  <!-- tentacular aberration -->
-      <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
+      <RM_AlienGrass>1.0</RM_AlienGrass>  <!-- ocular grass -->
+      <RM_AlienTree>1.0</RM_AlienTree>  <!-- ocular tree - tree -->
+      <RM_RedLeaves>0.6</RM_RedLeaves>  <!-- ocular plant -->
+      <RM_HalfAlienTree>0.5</RM_HalfAlienTree>  <!-- half transformed ocular tree - tree -->
+      <RM_RedPlantsTall>0.5</RM_RedPlantsTall>  <!-- ocular plant -->
+      <RM_GlobularPlant>0.4</RM_GlobularPlant>  <!-- globular aberration -->
+      <RM_TentacularPlant>0.4</RM_TentacularPlant>  <!-- tentacular aberration -->
+      <RM_BloodBouquet>0.3</RM_BloodBouquet>  <!-- blood bouquet -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_EyeGrass purged outright
            (no successor authored), RUT_RustPuff moved in from the_rot ("The Contagion...
            and hatches occular creature when damaged"). Both rulings landed in
@@ -149,7 +149,7 @@
            BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries them itself. -->
       <RM_RustPuff MayRequire="mandrake.rm.biomes">0.3</RM_RustPuff>  <!-- rust puff -->
-      <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
+      <RM_AlienTree_Polluted>0.15</RM_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
   </BiomeDef>

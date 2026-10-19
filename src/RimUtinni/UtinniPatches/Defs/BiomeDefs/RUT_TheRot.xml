@@ -70,12 +70,12 @@
     <texture>World/Biomes/RUT_TheRot</texture>
     <diseaseMtbDays>35</diseaseMtbDays>
     <diseases>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_SporeAllergy</diseaseInc>
         <commonality>100</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_AnimalSporeAllergy</diseaseInc>
         <commonality>100</commonality>
       </li>
       <li>
@@ -113,12 +113,12 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_MycoticGrass</terrain>
+        <terrain>RM_TheRotGrass</terrain>
         <min>-999</min>
         <max>0.87</max>
       </li>
       <li>
-        <terrain>AB_MycoticSoilRich</terrain>
+        <terrain>RM_TheRotSoilRich</terrain>
         <min>0.87</min>
         <max>999</max>
       </li>
@@ -174,13 +174,13 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_Bryolux>10</AB_Bryolux>  <!-- bryolux -->
-      <AB_Glowstool>3</AB_Glowstool>  <!-- glowstool -->
+      <RM_Bryolux>10</RM_Bryolux>  <!-- bryolux -->
+      <RM_Glowstool>3</RM_Glowstool>  <!-- glowstool -->
       <RM_TollukCap MayRequire="mandrake.rm.biomes">2</RM_TollukCap>  <!-- aumbri (replaces donor AB_Agarilux) -->
-      <AB_GiantAgarilux>2</AB_GiantAgarilux>  <!-- giant agarilux -->
-      <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
-      <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
-      <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
+      <RM_GiantAgarilux>2</RM_GiantAgarilux>  <!-- giant agarilux -->
+      <RM_GlowingAgarilux>1</RM_GlowingAgarilux>  <!-- glowing agarilux -->
+      <RM_LilacBeacon>0.5</RM_LilacBeacon>  <!-- lilac beacon -->
+      <RM_WitchesOyster>0.5</RM_WitchesOyster>  <!-- witches' oyster -->
       <RM_Dewshrooms MayRequire="mandrake.rm.biomes">0.5</RM_Dewshrooms>  <!-- dewshrooms - RUT_ (raided, FUNGALFOREST_RAID_MERGE_1) -->
       <RM_FruitingBodies MayRequire="mandrake.rm.biomes">0.5</RM_FruitingBodies>  <!-- mold fruiting bodies - RUT_ (raided) -->
       <RM_Nuitae MayRequire="mandrake.rm.biomes">0.5</RM_Nuitae>  <!-- nuitae - RUT_ (raided) -->
@@ -191,12 +191,12 @@
            rosters/the_rot.json and reached the game only through BiomeFlora_Ashkarr.xml's
            now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
+      <RM_RecurvedStropharia>0.3</RM_RecurvedStropharia>  <!-- recurved stropharia -->
       <RM_FlakespireFungus MayRequire="mandrake.rm.biomes">0.3</RM_FlakespireFungus>  <!-- flakespire fungus - tree - RUT_ (raided) -->
       <RM_Pusmelon MayRequire="mandrake.rm.biomes">0.3</RM_Pusmelon>  <!-- pusmelon - RUT_ (raided) -->
       <RM_Sagecrust MayRequire="mandrake.rm.biomes">0.3</RM_Sagecrust>  <!-- sagecrust - RUT_ (raided) -->
-      <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
-      <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <RM_ArbuscularMycorrhiza>0.2</RM_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
+      <RM_SlimyPholiota>0.2</RM_SlimyPholiota>  <!-- slimy pholiota -->
       <RM_BleedingTooth MayRequire="mandrake.rm.biomes">0.2</RM_BleedingTooth>  <!-- bleeding tooth - RUT_ (raided) -->
       <RM_Brightbell MayRequire="mandrake.rm.biomes">0.2</RM_Brightbell>  <!-- shinebell - RUT_ (raided); was BMT_Brightbells, a defName that never existed in the donor (real donor defName is singular BMT_Brightbell) - fixed on ingest -->
       <RM_CrimsonCap MayRequire="mandrake.rm.biomes">0.2</RM_CrimsonCap>  <!-- crimson cap - RUT_ (raided) -->
@@ -204,11 +204,11 @@
       <RM_Shinecap MayRequire="mandrake.rm.biomes">0.2</RM_Shinecap>  <!-- shine cap - tree - RUT_ (raided) -->
       <RM_VioletWimple MayRequire="mandrake.rm.biomes">0.2</RM_VioletWimple>  <!-- violet wimple - RUT_ (raided) -->
       <RM_MortalMorelPlant MayRequire="mandrake.rm.biomes">0.15</RM_MortalMorelPlant>  <!-- mortal morel - RUT_ (raided) -->
-      <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
-      <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
+      <RM_AgaricusDomeCap>0.1</RM_AgaricusDomeCap>  <!-- agaricus domecap -->
+      <RM_DribblingCap>0.1</RM_DribblingCap>  <!-- dribbling cap -->
       <RM_Skulltop MayRequire="mandrake.rm.biomes">0.1</RM_Skulltop>  <!-- skulltop - tree - RUT_ (raided) -->
       <RM_BlastpodShroom MayRequire="mandrake.rm.biomes">0.05</RM_BlastpodShroom>  <!-- blastpod shroom - RUT_ (raided); wild-only per owner ruling 2026-09-06, no sow tags -->
-      <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
+      <RM_AgariluxPrime>0.01</RM_AgariluxPrime>  <!-- Agarilux Prime -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
     <!--
@@ -233,8 +233,8 @@
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
         <warmTerrains>
-          <li>AB_MycoticGrass</li>
-          <li>AB_MycoticSoilRich</li>
+          <li>RM_TheRotGrass</li>  <!-- was AB_MycoticGrass (Alpha Biomes retired 2026-10-18) -->
+          <li>RM_TheRotSoilRich</li>  <!-- was AB_MycoticSoilRich -->
           <li MayRequire="mandrake.rm.biomes">RM_MycelialSoil</li>
           <li MayRequire="mandrake.rm.biomes">RM_MycelialMatting</li>
         </warmTerrains>

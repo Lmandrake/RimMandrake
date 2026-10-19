@@ -129,8 +129,8 @@
     <texture>World/Biomes/RUT_Chill</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <waterDeepTerrain>AB_PropaneLake</waterDeepTerrain>
-    <waterShallowTerrain>AB_SolidPropane</waterShallowTerrain>
+    <waterDeepTerrain>RM_TheChillDeep</waterDeepTerrain>
+    <waterShallowTerrain>RM_SolidPropane</waterShallowTerrain>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-23/24. Makes the land tiles around
          the Propane Lake read as coastal and cut a shore of liquid and solid
@@ -192,7 +192,7 @@
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>
-        <terrain>AB_PropaneLake</terrain>
+        <terrain>RM_TheChillDeep</terrain>
         <min>-999</min>
         <max>999</max>
       </li>

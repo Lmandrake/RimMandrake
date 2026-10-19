@@ -123,12 +123,12 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_PackedSnow</terrain>
+        <terrain>RM_PackedSnow</terrain>
         <min>-999</min>
         <max>0.87</max>
       </li>
       <li>
-        <terrain>AB_PackedIce</terrain>
+        <terrain>RM_PackedIce</terrain>
         <min>0.87</min>
         <max>999</max>
       </li>
@@ -152,9 +152,9 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_CrystalHorn>1.0</AB_CrystalHorn>  <!-- crystal horn -->
-      <AB_FrostLeaf>0.6</AB_FrostLeaf>  <!-- frost leaf -->
-      <AB_RimeNodules>0.4</AB_RimeNodules>  <!-- rime nodules -->
+      <RM_CrystalHorn>1.0</RM_CrystalHorn>  <!-- crystal horn -->
+      <RM_FrostLeaf>0.6</RM_FrostLeaf>  <!-- frost leaf -->
+      <!-- AB_RimeNodules 0.4 (rime nodules) removed 2026-10-18: Alpha Biomes retired; unguarded, it would be a cross-reference error. -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: AB_CrystalFlower moved OUT
            (kept only at poison_forest, its "elsewhere") and PoisonShrub moved IN from
            wasteland (".8 cells, propane lakes"). Both rulings landed in

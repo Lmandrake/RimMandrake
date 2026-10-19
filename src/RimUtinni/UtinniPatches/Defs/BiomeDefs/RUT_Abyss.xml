@@ -17,10 +17,9 @@
     planet: 614 tiles at large-hills or worse.
 
     Weather: ban 4 is explicit — "No permanent Clear — Clear weather commonality
-    stays 0" — matched exactly (donor already carried Clear:0). AB_ForsakenNight/
-    AB_ForsakenThunderstorm/AB_ForsakenRainyNight (all Alpha Biomes WeatherDefs, kept
-    MayRequire-gated on sarg.alphabiomes since they are optional content, unlike the
-    terrain/texture fields which already assume that mod stays installed) carry the
+    stays 0" — matched exactly (donor already carried Clear:0). RM_ForsakenNight/
+    RM_ForsakenThunderstorm/RM_ForsakenRainyNight (our 2026-10-18 ports of the Alpha Biomes
+    WeatherDefs, src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts_Weathers.xml) carry the
     donor's re-skinned physics per the sheet: "the Dark" (permanent), "the
     Unveiling" (rare illumination rise, still un-authored as its own WeatherDef —
     SS Owed), "Etchfall" (never water, ban 3), "Witchfire storms." Ban 1 (no
@@ -90,21 +89,21 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_FineForsakenSand</terrain>
+        <terrain>RM_FineForsakenSand</terrain>
         <min>-999</min>
         <max>0.5</max>
       </li>
       <li>
-        <terrain>AB_ForsakenSand</terrain>
+        <terrain>RM_ForsakenSand</terrain>
         <min>0.5</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
     <baseWeatherCommonalities>
       <Clear>0</Clear>
-      <AB_ForsakenNight MayRequire="sarg.alphabiomes">70</AB_ForsakenNight>
-      <AB_ForsakenThunderstorm MayRequire="sarg.alphabiomes">4</AB_ForsakenThunderstorm>
-      <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
+      <RM_ForsakenNight>70</RM_ForsakenNight>
+      <RM_ForsakenThunderstorm>4</RM_ForsakenThunderstorm>
+      <RM_ForsakenRainyNight>4</RM_ForsakenRainyNight>
     </baseWeatherCommonalities>
     <wildAnimals>
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read

@@ -91,7 +91,7 @@
         <landRepaintMinSalinity>0.85</landRepaintMinSalinity>
         <landRepaintSource>
           <li>Mud</li>
-          <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
+          <li>RM_FertileMud</li>
         </landRepaintSource>
         <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
       </li>
@@ -151,16 +151,16 @@
       </li>
     </modExtensions>
     <diseases>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_BacterialGangrene</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_BacterialGangrene</diseaseInc>
         <commonality>100</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_ViralAbasia</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_ViralAbasia</diseaseInc>
         <commonality>100</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_RavagingIntestinalParasites</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_RavagingIntestinalParasites</diseaseInc>
         <commonality>100</commonality>
       </li>
       <li>
@@ -195,7 +195,7 @@
         <max>0.65</max>
       </li>
       <li>
-        <terrain>AB_FertileMud</terrain>
+        <terrain>RM_FertileMud</terrain>
         <min>0.65</min>
         <max>999</max>
       </li>
@@ -246,9 +246,9 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_MangroveTree>25</AB_MangroveTree>  <!-- mangrove tree - tree -->
-      <AB_ParasiticMangrove>8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
-      <AB_MangrovePalm>6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
+      <RM_MangroveTree>25</RM_MangroveTree>  <!-- mangrove tree - tree -->
+      <RM_ParasiticMangrove>8</RM_ParasiticMangrove>  <!-- parasitic mangrove -->
+      <RM_MangrovePalm>6</RM_MangrovePalm>  <!-- mangrove palm - tree -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20 ("miasma"): RUT_Nogtyl moved
            here from the_rot. The ruling landed in rosters/the_miasma.json and reached the
            game only through BiomeFlora_Ashkarr.xml's now-retired replace operation;

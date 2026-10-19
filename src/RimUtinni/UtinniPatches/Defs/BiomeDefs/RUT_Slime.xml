@@ -51,7 +51,7 @@
     <label>the Slime</label>
     <description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master ages decayed.</description>
     <workerClass>RimMandrake.GelatinousSlime.BiomeWorker_GelatinousSlime</workerClass>  <!-- was AlphaBiomes.BiomeWorker_GelatinousSuperorganism; Alpha Biomes retired 2026-10-18. A worker scores tiles only at worldgen, which this frozen world never runs. -->
-    <foragedFood>AB_RawSlime</foragedFood>
+    <foragedFood>RM_RawSlime</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>
     <allowFarmingCamps>true</allowFarmingCamps>
@@ -64,12 +64,12 @@
     <diseases />
     <terrainsByFertility>
       <li>
-        <terrain>AB_Slime</terrain>
+        <terrain>RM_Slime</terrain>
         <min>-999</min>
         <max>0.87</max>
       </li>
       <li>
-        <terrain>AB_RichSlime</terrain>
+        <terrain>RM_RichSlime</terrain>
         <min>0.87</min>
         <max>999</max>
       </li>
@@ -96,16 +96,16 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_TallSlimyGrass>1.0</AB_TallSlimyGrass>  <!-- tall slimy grass -->
-      <AB_SlimyFern>0.5</AB_SlimyFern>  <!-- slimy fern -->
-      <AB_SlimyTree>0.5</AB_SlimyTree>  <!-- slimy tree -->
-      <AB_Slimecasia>0.4</AB_Slimecasia>  <!-- slimecasia -->
+      <RM_TallSlimyGrass>1.0</RM_TallSlimyGrass>  <!-- tall slimy grass -->
+      <RM_SlimyFern>0.5</RM_SlimyFern>  <!-- slimy fern -->
+      <RM_SlimyTree>0.5</RM_SlimyTree>  <!-- slimy tree -->
+      <RM_Slimecasia>0.4</RM_Slimecasia>  <!-- slimecasia -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner ruling 2026-09-20: AB_SlimyPholiota removed as
            a duplicate listing, kept only at the_rot (its "elsewhere"). The ruling landed in
            rosters/the_slime.json and reached the game only through BiomeFlora_Ashkarr.xml's
            now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <AB_LargeSlimyTree>0.3</AB_LargeSlimyTree>  <!-- large slimy tree -->
+      <RM_LargeSlimyTree>0.3</RM_LargeSlimyTree>  <!-- large slimy tree -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>
   </BiomeDef>
