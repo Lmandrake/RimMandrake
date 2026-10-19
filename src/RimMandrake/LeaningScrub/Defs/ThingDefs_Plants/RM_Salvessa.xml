@@ -31,7 +31,7 @@
       <fertilityMin>0.8</fertilityMin>
       <fertilitySensitivity>0.8</fertilitySensitivity>
       <maxMeshCount>9</maxMeshCount>
-      <immatureGraphicPath>Things/RM_Salvessa/RM_Salvessa</immatureGraphicPath>
+      <immatureGraphicPath>Things/RM_Salvessa</immatureGraphicPath>
       <growDays>10</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>

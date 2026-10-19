@@ -200,7 +200,7 @@
     <label>lunger fry</label>
     <description>A Lunger no longer than your arm, which means its mother is under this bank -- eat it now, before it eats you next year. The Greentide's one prize fish: netted rarer than anything else the river gives up, and the one catch every Wildsteam crew brags about.</description>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RUT_LungerFry/RUT_LungerFry_StandIn</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
