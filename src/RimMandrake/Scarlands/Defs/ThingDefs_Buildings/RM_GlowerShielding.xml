@@ -53,7 +53,7 @@
     <description>A belt-slung plate of cured glower crust. Heavy and ugly, it soaks up the worst of airborne toxins. Worn in the waist slot, so it replaces a shield belt or similar.</description>
     <thingClass>Apparel</thingClass>
     <graphicData>
-      <texPath>Things/Pawn/Humanlike/Apparel/ShieldBelt/ShieldBelt</texPath>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_GlowerPlate/RM_GlowerPlate</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(60,60,60)</color>
     </graphicData>

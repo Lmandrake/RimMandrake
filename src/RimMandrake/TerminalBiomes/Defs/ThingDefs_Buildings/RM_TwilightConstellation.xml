@@ -180,7 +180,7 @@
     <label>hoolimbre lamp</label>
     <description>A string of hoolimbre clipped whole to a tether-chain — sealed, living and permanent. It is the same organism as the loose bladder you can pick up on day one, grown out and fixed instead of carried and left to rot. Its light runs cooler and greener than the noothelm's, and it breathes the same slow way.</description>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Mote/RM_HoolimbreLampClipped/RM_HoolimbreLampClipped</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>(1.4,1.4)</drawSize>
