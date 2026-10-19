@@ -69,6 +69,7 @@ DEFAULTS = {
     "burnEnabled": True, "burnTellsEnabled": True, "burnFrequency": 1.0, "burnDamageFactor": 1.0,
     "cloudRepulsorEnabled": True, "sunbeamNativeFactor": 6.0, "coalescenceEnabled": True,
     "grownLimbsEnabled": True,
+    "draftprintsEnabled": True, "draftprintProvokeChance": 0.35, "helixContractRewardFactor": 1.0,
     "zhoolHazeEnabled": True, "zhoolHazeDensity": 1.0, "zhoolConversionEnabled": True,
     "zhoolConversionRate": 1.0, "zhoolConvertsCrops": False,
     "touchedEnabled": True, "touchedExposureFactor": 1.0, "touchedMutationRate": 1.0,
@@ -77,7 +78,7 @@ DEFAULTS = {
 # a value different from the default, for the write+read-back round trip
 ALT = {"biomeRarityFactor": 0.5, "burnFrequency": 2.0, "burnDamageFactor": 0.5, "sunbeamNativeFactor": 3.0,
        "zhoolHazeDensity": 2.0, "zhoolConversionRate": 2.0, "touchedExposureFactor": 2.0,
-       "touchedMutationRate": 2.0}
+       "touchedMutationRate": 2.0, "draftprintProvokeChance": 0.7, "helixContractRewardFactor": 2.0}
 suite.toggles = sorted(DEFAULTS)
 
 PADS = {"repulsor": (-45, -45), "spawner": (45, -45), "burn": (0, -45), "uv": (-45, 0),
