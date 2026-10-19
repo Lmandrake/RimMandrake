@@ -376,7 +376,16 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_CompLadder comp = ladder.TryGetComp<RM_CompLadder>();
 			return RM_PitTrapMath.LadderUsable(RimMandrakeFlowWorksSettings.ladderRaiseLowerEnabled,
-				comp != null && comp.raised && !comp.Props.portable, RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled, MayClimb(p));
+				comp != null && comp.raised && !comp.Props.portable, RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled,
+				MayClimb(p) || ClimbsOwnLadder(ladder, p));
+		}
+
+		/// <summary>RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: a scaling ladder a raid set (RM_RaiderTrench) is its own way in and out:
+		/// a pawn of the ladder's (non-player) faction climbs it. Every other hostile is still under the prison-door rule.</summary>
+		public static bool ClimbsOwnLadder(Thing ladder, Pawn p)
+		{
+			return RM_RaiderTrenchSettings.raiderTrenchEnabled && p != null && ladder != null && !p.IsPrisoner
+				&& ladder.Faction != null && ladder.Faction != Faction.OfPlayer && p.Faction == ladder.Faction;
 		}
 
 		/// <summary>PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: does the ladder on <paramref name="deep"/> hang on the wall toward

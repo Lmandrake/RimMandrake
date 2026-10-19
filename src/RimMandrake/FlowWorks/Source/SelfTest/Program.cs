@@ -2002,6 +2002,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
             PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
             WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
+            RaiderTrenchChecks.Run(Case);      // RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: go around, jump, ladders, fill; sieges unchanged (RaiderTrenchChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, DBH bridge patch (ThirstChecks.cs)
