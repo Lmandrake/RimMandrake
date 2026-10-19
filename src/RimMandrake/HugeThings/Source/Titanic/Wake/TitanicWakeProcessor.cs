@@ -122,6 +122,12 @@ namespace RimMandrake.TitanicCreatures
             {
                 return;
             }
+            // BIG_CREATURES_DESIGN_WALLS_AND_SLOTS §5.8: with the walls-and-slots rule on, walls and doors are judged by breadth
+            // (break through / smash / hold, and the squeeze's scrape), never by the tier gates here. Furniture and plants keep them.
+            if (RM_HugeThingsSettings.WallsSlotsActive && t is Building && (t.def.passability == Traversability.Impassable || t is Building_Door))
+            {
+                return;
+            }
             if (!CrushTableUtility.IsCrushableAtTier(t, tier))
             {
                 return;

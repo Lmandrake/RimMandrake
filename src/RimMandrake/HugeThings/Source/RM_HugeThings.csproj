@@ -43,6 +43,7 @@
     <Compile Include="Kernel\RM_HugeTitanKernel.cs" />
     <Compile Include="Kernel\RM_TitanicKernel.cs" />
     <Compile Include="Kernel\RM_TitanClearingKernel.cs" />
+    <Compile Include="Kernel\RM_WallsSlotsKernel.cs" />
     <Compile Include="Building_TrunkBlocker.cs" />
     <Compile Include="CompHugeFootprint.cs" />
     <Compile Include="Extensions.cs" />
@@ -77,6 +78,10 @@
     <Compile Include="Titanic\Wake\RM_CrushRuleDef.cs" />
     <Compile Include="Titanic\Wake\TitanicWakeProcessor.cs" />
     <Compile Include="Titanic\Wake\YieldCurveUtility.cs" />
+    <Compile Include="Titanic\WallsSlots\JobDriver_TitanSqueeze.cs" />
+    <Compile Include="Titanic\WallsSlots\Patch_WallsSlots.cs" />
+    <Compile Include="Titanic\WallsSlots\WallsSlotsDecider.cs" />
+    <Compile Include="Titanic\WallsSlots\WallsSlotsUtility.cs" />
   </ItemGroup>
 
   <ItemGroup>

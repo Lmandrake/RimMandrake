@@ -18,5 +18,9 @@ namespace RimMandrake.TitanicCreatures
     public class RM_TitanicExtension : DefModExtension
     {
         public bool? forceEnabled;
+
+        /// <summary>BIG_CREATURES_DESIGN_WALLS_AND_SLOTS §3: the creature's breadth B in cells for the walls-and-slots rule, for a
+        /// body whose shape is not a square (a serpent, a whale). 0 (unset) = auto, max(1, round(sqrt(body size))).</summary>
+        public int breadthCells;
     }
 }

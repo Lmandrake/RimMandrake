@@ -43,6 +43,19 @@ namespace RimMandrake.HugeThings
         // TITAN_BREAKTHROUGH_CLEARING_1 (card #1: a titan smashes through anything built): sealed or long-detour paths are cleared.
         public static bool titanClearingEnabled = true;
         public static float titanClearingDetourFactor = 2.5f;
+        // BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1 (design/RimMandrake/big_creatures_walls_and_slots_2026-10-18.md §5.10; the
+        // owner's card answers 2026-10-18 are the defaults): breadth against slots, thin walls and roofs.
+        public static bool wallsSlotsEnabled = true;
+        public static bool squeezeEnabled = true;
+        public static float squeezeSlowdownAtHalf = 2f;
+        public static float trampleBudgetPerBreadth = 100f;
+        public static float blowDamagePerBreadth = 20f;
+        public static float holdLineFactor = 1f;
+        public static float roofWallHpFactor = 1.5f;
+        public static float roofWallDamageFactor = 0.6667f;
+        public static bool scrapeEnabled = true;
+        public static bool temperamentEnabled = true;
+        public static bool breadth2BreakingEnabled = true;
         public static bool roofAvoidanceEnabled = true;
         public static bool yieldCurveEnabled = true;
         public static float yieldCurveMinFactor = 0.15f;
@@ -66,6 +79,10 @@ namespace RimMandrake.HugeThings
         public static bool RoofHolingActive => HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, wakeRoofHolingEnabled);
         public static bool GiantPlantSmashActive => HugeGates.Smash(giantPlantsEnabled, giantAnimalsEnabled, wakeEnabled, giantPlantSmashEnabled);
         public static bool TitanClearingActive => HugeGates.Wake(giantAnimalsEnabled, wakeEnabled, titanClearingEnabled);
+        public static bool WallsSlotsActive => WallsSlots.Active(giantAnimalsEnabled, wakeEnabled, titanClearingEnabled, wallsSlotsEnabled);
+        public static bool SqueezeActive => WallsSlotsActive && squeezeEnabled;
+        public static bool ScrapeActive => WallsSlotsActive && scrapeEnabled;
+        public static bool TemperamentActive => WallsSlotsActive && temperamentEnabled;
         public static bool RoofAvoidanceActive => HugeGates.Animal(giantAnimalsEnabled, roofAvoidanceEnabled);
         public static bool YieldCurveActive => HugeGates.Animal(giantAnimalsEnabled, yieldCurveEnabled);
         public static bool CorpseSiteActive => HugeGates.Animal(giantAnimalsEnabled, corpseSiteEnabled);
@@ -96,6 +113,17 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref giantPlantSmashMinTier, "giantPlantSmashMinTier", 3);
             Scribe_Values.Look(ref titanClearingEnabled, "titanClearingEnabled", true);
             Scribe_Values.Look(ref titanClearingDetourFactor, "titanClearingDetourFactor", 2.5f);
+            Scribe_Values.Look(ref wallsSlotsEnabled, "wallsSlotsEnabled", true);
+            Scribe_Values.Look(ref squeezeEnabled, "squeezeEnabled", true);
+            Scribe_Values.Look(ref squeezeSlowdownAtHalf, "squeezeSlowdownAtHalf", 2f);
+            Scribe_Values.Look(ref trampleBudgetPerBreadth, "trampleBudgetPerBreadth", 100f);
+            Scribe_Values.Look(ref blowDamagePerBreadth, "blowDamagePerBreadth", 20f);
+            Scribe_Values.Look(ref holdLineFactor, "holdLineFactor", 1f);
+            Scribe_Values.Look(ref roofWallHpFactor, "roofWallHpFactor", 1.5f);
+            Scribe_Values.Look(ref roofWallDamageFactor, "roofWallDamageFactor", 0.6667f);
+            Scribe_Values.Look(ref scrapeEnabled, "scrapeEnabled", true);
+            Scribe_Values.Look(ref temperamentEnabled, "temperamentEnabled", true);
+            Scribe_Values.Look(ref breadth2BreakingEnabled, "breadth2BreakingEnabled", true);
             Scribe_Values.Look(ref roofAvoidanceEnabled, "roofAvoidanceEnabled", true);
             Scribe_Values.Look(ref yieldCurveEnabled, "yieldCurveEnabled", true);
             Scribe_Values.Look(ref yieldCurveMinFactor, "yieldCurveMinFactor", 0.15f);
@@ -126,6 +154,12 @@ namespace RimMandrake.HugeThings
             giantPlantSmashMinTier = RM_TitanicKernel.SaneSetting(giantPlantSmashMinTier, 1, 3);
             titanClearingDetourFactor = RM_TitanicKernel.SaneSetting(titanClearingDetourFactor, TitanClearing.MinDetourFactor,
                 TitanClearing.MaxDetourFactor, TitanClearing.DefaultDetourFactor);
+            squeezeSlowdownAtHalf = RM_TitanicKernel.SaneSetting(squeezeSlowdownAtHalf, 1f, 4f, 2f);
+            trampleBudgetPerBreadth = RM_TitanicKernel.SaneSetting(trampleBudgetPerBreadth, 25f, 400f, 100f);
+            blowDamagePerBreadth = RM_TitanicKernel.SaneSetting(blowDamagePerBreadth, 5f, 80f, 20f);
+            holdLineFactor = RM_TitanicKernel.SaneSetting(holdLineFactor, 0.5f, 2f, 1f);
+            roofWallHpFactor = RM_TitanicKernel.SaneSetting(roofWallHpFactor, 1f, 3f, 1.5f);
+            roofWallDamageFactor = RM_TitanicKernel.SaneSetting(roofWallDamageFactor, 0.25f, 1f, 0.6667f);
             yieldCurveMinFactor = RM_TitanicKernel.SaneSetting(yieldCurveMinFactor, 0.05f, 1f, 0.15f);
             corpseSiteHarvestMeatPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestMeatPerSession, 5, 100);
             corpseSiteHarvestLeatherPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestLeatherPerSession, 2, 50);
@@ -233,6 +267,38 @@ namespace RimMandrake.HugeThings
                     }
                 }
                 else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Big creatures: walls, slots and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled" }))
+            {
+                if (giantAnimalsEnabled && wakeEnabled && titanClearingEnabled)
+                {
+                    list.CheckboxLabeled("RM_HugeThings_WallsSlots".Translate(), ref wallsSlotsEnabled, "RM_HugeThings_WallsSlots_Desc".Translate());
+                    if (wallsSlotsEnabled)
+                    {
+                        list.CheckboxLabeled("RM_HugeThings_Squeeze".Translate(), ref squeezeEnabled, "RM_HugeThings_Squeeze_Desc".Translate());
+                        if (squeezeEnabled)
+                        {
+                            list.Label("RM_HugeThings_SqueezeSlow".Translate(squeezeSlowdownAtHalf.ToString("0.0")));
+                            squeezeSlowdownAtHalf = list.Slider(squeezeSlowdownAtHalf, 1f, 4f);
+                            list.CheckboxLabeled("RM_HugeThings_Scrape".Translate(), ref scrapeEnabled, "RM_HugeThings_Scrape_Desc".Translate());
+                        }
+                        list.Label("RM_HugeThings_HoldLine".Translate(holdLineFactor.ToString("0.00")));
+                        holdLineFactor = list.Slider(holdLineFactor, 0.5f, 2f);
+                        list.Label("RM_HugeThings_TrampleBudget".Translate(trampleBudgetPerBreadth.ToString("0")));
+                        trampleBudgetPerBreadth = list.Slider(trampleBudgetPerBreadth, 25f, 400f);
+                        list.Label("RM_HugeThings_BlowDamage".Translate(blowDamagePerBreadth.ToString("0")));
+                        blowDamagePerBreadth = list.Slider(blowDamagePerBreadth, 5f, 80f);
+                        list.Label("RM_HugeThings_RoofHp".Translate(roofWallHpFactor.ToString("0.00")));
+                        roofWallHpFactor = list.Slider(roofWallHpFactor, 1f, 3f);
+                        list.Label("RM_HugeThings_RoofDamage".Translate((roofWallDamageFactor * 100f).ToString("0")));
+                        roofWallDamageFactor = list.Slider(roofWallDamageFactor, 0.25f, 1f);
+                        list.CheckboxLabeled("RM_HugeThings_Temperament".Translate(), ref temperamentEnabled, "RM_HugeThings_Temperament_Desc".Translate());
+                        list.CheckboxLabeled("RM_HugeThings_Breadth2".Translate(), ref breadth2BreakingEnabled, "RM_HugeThings_Breadth2_Desc".Translate());
+                    }
+                }
+                else list.Label("RM_HugeThings_WallsSlotsNeeds".Translate());
                 list.GapLine();
             }
 
