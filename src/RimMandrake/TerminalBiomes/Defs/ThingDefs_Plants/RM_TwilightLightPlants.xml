@@ -30,7 +30,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_NoothelmPlant/RM_NoothelmPlant_StandIn</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(180,150,80)</colorTwo>
       <drawSize>(1.2,1.2)</drawSize>
