@@ -399,6 +399,40 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
             });
+            // SUSPENSION_TOWER_LOAD_FIX_LEFTOVERS_PILE: the suspension review's leftovers, each can-fail on the production source.
+            Case("Leftovers_tower_load_wreck_band_link", () =>
+            {
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                int lost = comp.IndexOf("public void Notify_SupportLost(IntVec3 c)");
+                string lostBody = comp.Substring(lost, comp.IndexOf("private static List<int> WithTower", lost) - lost);
+                Assert(!lostBody.Contains("TowerAt(map, c)") && lostBody.Contains("BuiltAt<Building_SuspensionTower>(map, c) != null"),
+                    "can-fail: only a BUILT tower holds the span (a rebuild blueprint or frame on a lost tower's square does not)");
+                string deck = Src("Pits", "Suspension", "Building_SuspensionDeck.cs");
+                Assert(deck.Contains("Notify_TowerBuilt(this)"), "can-fail: a rebuilt tower supports its bridge again");
+                string span = Src("Pits", "Building_SpanDeck.cs");
+                Assert(span.Contains("p.carryTracker?.CarriedThing") && span.Contains("sum += p.GetStatValue(StatDefOf.Mass) + CarriedKg(p);")
+                    && !span.Contains("MassUtility.GearAndInventoryMass") && !span.Contains("MassUtility.InventoryMass"),
+                    "can-fail: a pawn weighs body + gear + inventory (the Mass stat) + what it carries, inventory never added twice");
+                int clear = comp.IndexOf("public static void ClearDeckTop(Map map, IntVec3 c)");
+                string clearBody = comp.Substring(clear, comp.IndexOf("public static void Drop(", clear) - clear);
+                Assert(clearBody.Contains("rebuild") && clearBody.LastIndexOf("t.def.IsBlueprint") > clearBody.IndexOf("DestroyMode.KillFinalize"),
+                    "can-fail: rebuild blueprints left by things killed on a falling deck are cleared off the hole");
+                Assert(comp.Contains("bandGame != Current.Game") && comp.Contains("public override void MapRemoved()"),
+                    "can-fail: the band counter resets for a new game/load and drops a removed map's band");
+                string link = Src("Pits", "Suspension", "RM_SuspensionDeckLink.cs");
+                Assert(link.Contains("r.TryIndexOf(c, out _, out _)") && link.Contains("LinksTo(map, r, p + IntVec3.North)"),
+                    "can-fail: a deck links only to the deck squares and anchors of its own bridge");
+                Assert(comp.Contains("IsUnder(t)") && comp.Contains("public void MarkUnder(Thing t)")
+                    && Src("Pits", "Suspension", "RM_SuspensionPatches.cs").Contains("?.MarkUnder(t);"),
+                    "can-fail: an item or corpse left UNDER a deck (no open floor to slide to) is not the deck's load");
+                string proofs = Src("Pits", "Suspension", "RM_SuspensionProofs.cs");
+                Assert(proofs.Contains("if (!p.Spawned || p.Dead || p.Map != map)"), "can-fail: the knock proof never writes a position across maps");
+                Assert(proofs.Contains("idx.Count == 0 ? new List<Building_SpanDeck>()"), "can-fail: the span proof survives a span with no deck squares");
+                Assert(proofs.Contains("p.carryTracker.DestroyCarriedThing();"), "can-fail: a failed proof drop leaves nothing in the pawn's hands");
+                string fire = Src("RM_LiquidFire.cs");
+                Assert(fire.Contains("PawnsAt(map, c)") && !fire.Contains("for (int t = things.Count - 1; t >= 0; t--)"),
+                    "can-fail: the fire and grate effects walk a snapshot of the pawns, not the live thing list a death or a fire spawn edits");
+            });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }
     }

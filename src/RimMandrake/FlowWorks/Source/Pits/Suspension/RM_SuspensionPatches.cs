@@ -534,6 +534,7 @@ namespace RimMandrake.FlowWorks.Pits
 			IntVec3 to = OpenFloorNear(map, t.Position);
 			if (!to.IsValid)
 			{
+				RM_MapComponent_SuspensionBridges.Of(map)?.MarkUnder(t);   // stays under the deck: not the deck's load
 				return false;
 			}
 			t.DeSpawn();

@@ -341,6 +341,15 @@ namespace RimMandrake.FlowWorks.Pits
 	/// middle, splitting it into two spans. Plan it before dragging the bridge over it. Losing it swings both spans down.</summary>
 	public class Building_SuspensionTower : Building
 	{
+		public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			base.SpawnSetup(map, respawningAfterLoad);
+			if (!respawningAfterLoad)
+			{
+				map.GetComponent<RM_MapComponent_SuspensionBridges>()?.Notify_TowerBuilt(this);
+			}
+		}
+
 		public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;

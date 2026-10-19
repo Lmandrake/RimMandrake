@@ -136,6 +136,42 @@ namespace RimMandrake.FlowWorks.Pits
 		private HashSet<Pawn> floorBand = new HashSet<Pawn>();
 		private List<Pawn> floorBandScribe;
 
+		/// <summary>Items and corpses lying UNDER a deck (on the hole's floor, beneath it) that found no open floor to slide to:
+		/// the square they lay on when marked. They are not the deck's load. Saved.</summary>
+		private readonly Dictionary<Thing, IntVec3> underThings = new Dictionary<Thing, IntVec3>();
+		private List<Thing> underScribe;
+		private List<IntVec3> underCells;
+
+		/// <summary>This thing lies under the deck on its square (RM_SuspensionUnderpass.SlideOut found nowhere to put it).</summary>
+		public void MarkUnder(Thing t)
+		{
+			if (t != null && t.Spawned && t.Map == map)
+			{
+				underThings[t] = t.Position;
+			}
+		}
+
+		/// <summary>Is this thing lying under the deck (marked, and still where it was marked)?</summary>
+		public bool IsUnder(Thing t)
+		{
+			return underThings.Count > 0 && underThings.TryGetValue(t, out IntVec3 c) && t.Spawned && t.Position == c;
+		}
+
+		private void PruneUnder()
+		{
+			if (underThings.Count == 0)
+			{
+				return;
+			}
+			foreach (Thing t in underThings.Keys.ToList())
+			{
+				if (t == null || !t.Spawned || t.Map != map || t.Position != underThings[t] || RM_SuspensionUnderpass.PassingDeckAt(map, t.Position) == null)
+				{
+					underThings.Remove(t);
+				}
+			}
+		}
+
 		public static RM_MapComponent_SuspensionBridges Of(Map map)
 		{
 			return map?.GetComponent<RM_MapComponent_SuspensionBridges>();
@@ -146,8 +182,28 @@ namespace RimMandrake.FlowWorks.Pits
 			return p != null && floorBand.Contains(p);
 		}
 
-		/// <summary>Pawns in any floor band on any map: 0 lets the hot reads (shots, draw, loads) skip the band at once.</summary>
+		/// <summary>Pawns in any floor band on any map: 0 lets the hot reads (shots, draw, loads) skip the band at once. Static, so
+		/// it is zeroed when a new game starts or loads (bandGame) and a removed map takes its band with it (MapRemoved).</summary>
 		public static int BandTotal;
+
+		private static Game bandGame;
+
+		private static void BandForThisGame()
+		{
+			if (bandGame != Current.Game)
+			{
+				bandGame = Current.Game;
+				BandTotal = 0;
+			}
+		}
+
+		public override void MapRemoved()
+		{
+			base.MapRemoved();
+			BandTotal = System.Math.Max(0, BandTotal - floorBand.Count);
+			floorBand.Clear();
+			underThings.Clear();
+		}
 
 		public void SetBand(Pawn p, bool under)
 		{
@@ -155,6 +211,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
+			BandForThisGame();
 			if (under)
 			{
 				if (floorBand.Add(p))
@@ -291,6 +348,19 @@ namespace RimMandrake.FlowWorks.Pits
 				floorBandScribe.RemoveAll(p => p == null || p.Destroyed);
 			}
 			Scribe_Collections.Look(ref floorBandScribe, "rmSuspensionFloorBand", LookMode.Reference);
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				PruneUnder();
+				underScribe = underThings.Keys.ToList();
+				underCells = underScribe.Select(t => underThings[t]).ToList();
+			}
+			Scribe_Collections.Look(ref underScribe, "rmSuspensionUnderThings", LookMode.Reference);
+			Scribe_Collections.Look(ref underCells, "rmSuspensionUnderCells", LookMode.Value);
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				underScribe = null;
+				underCells = null;
+			}
 			// a swing-down in flight survives a save (else the unfallen squares hang anchorless for good); old saves: keys absent = none
 			List<int> swingTicks = null;
 			List<IntVec3> swingCells = null;
@@ -314,8 +384,19 @@ namespace RimMandrake.FlowWorks.Pits
 				bridges = bridges ?? new List<SuspensionBridgeRecord>();
 				Reindex();
 				floorBand = new HashSet<Pawn>((floorBandScribe ?? new List<Pawn>()).Where(p => p != null));
+				BandForThisGame();
 				BandTotal += floorBand.Count;
 				floorBandScribe = null;
+				underThings.Clear();
+				for (int i = 0; underScribe != null && underCells != null && i < System.Math.Min(underScribe.Count, underCells.Count); i++)
+				{
+					if (underScribe[i] != null)
+					{
+						underThings[underScribe[i]] = underCells[i];
+					}
+				}
+				underScribe = null;
+				underCells = null;
 			}
 		}
 
@@ -518,6 +599,15 @@ namespace RimMandrake.FlowWorks.Pits
 					t.Destroy(t is Building && !(t is Building_SuspensionRailing) ? DestroyMode.KillFinalize : DestroyMode.Vanish);
 				}
 			}
+			// a player building killed above leaves its auto-rebuild blueprint (ThingUtility.CheckAutoRebuildOnDestroyed) on the
+			// square that is about to be an open hole: nothing can be rebuilt there, so it goes too
+			foreach (Thing t in new List<Thing>(c.GetThingList(map)))
+			{
+				if (!t.Destroyed && t.def.IsBlueprint)
+				{
+					t.Destroy(DestroyMode.Vanish);
+				}
+			}
 		}
 
 		/// <summary>Everyone on a deck that just went falls through the descent event; with suspensionOwnPeopleFall off, your
@@ -596,7 +686,7 @@ namespace RimMandrake.FlowWorks.Pits
 				for (int i = 0; i < things.Count; i++)
 				{
 					Thing t = things[i];
-					if (t.def.category == ThingCategory.Item)
+					if (t.def.category == ThingCategory.Item && !IsUnder(t))
 					{
 						sum += t.GetStatValue(StatDefOf.Mass) * t.stackCount;
 					}
@@ -678,6 +768,7 @@ namespace RimMandrake.FlowWorks.Pits
 				PruneDead();
 			}
 			SweepUnder();
+			PruneUnder();
 			if (now % RM_SuspensionMath.TicksPerHour == 0)
 			{
 				RM_SuspensionWaters.FloodHour(map, bridges);
@@ -909,9 +1000,9 @@ namespace RimMandrake.FlowWorks.Pits
 			bool isTower = i > 0 && i < r.length - 1;
 			if (isTower)
 			{
-				if (TowerAt(map, c))
+				if (BuiltAt<Building_SuspensionTower>(map, c) != null)
 				{
-					return;   // another tower thing (a blueprint or frame) still stands there
+					return;   // another built tower stands there (a rebuild blueprint or frame holds nothing up)
 				}
 				r.towers.Remove(i);
 			}
@@ -963,6 +1054,17 @@ namespace RimMandrake.FlowWorks.Pits
 				t.Add(i);
 			}
 			return t;
+		}
+
+		/// <summary>A tower was built (a rebuilt one included) in the middle of a bridge: it is one of that bridge's supports again.</summary>
+		public void Notify_TowerBuilt(Building_SuspensionTower t)
+		{
+			SuspensionBridgeRecord r = RecordAt(t.Position);
+			if (r != null && !r.jetty && r.TryIndexOf(t.Position, out _, out int i) && i > 0 && i < r.length - 1 && !r.towers.Contains(i))
+			{
+				r.towers.Add(i);
+				r.towers.Sort();
+			}
 		}
 
 		public void Notify_DeckBuilt(Building_SuspensionDeck d)

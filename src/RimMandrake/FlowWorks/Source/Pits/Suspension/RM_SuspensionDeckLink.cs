@@ -31,9 +31,12 @@ namespace RimMandrake.FlowWorks.Pits
 			return mask;
 		}
 
-		public static bool LinksTo(Map map, IntVec3 c)
+		/// <summary>Does the deck square of bridge <paramref name="r"/> link toward <paramref name="c"/>? Only to a deck square or
+		/// anchor of the same bridge (any lane; a jetty to its root anchor): a neighbouring separate bridge or jetty keeps its
+		/// side band. A deck with no record (none in play) links to any deck or anchor.</summary>
+		public static bool LinksTo(Map map, SuspensionBridgeRecord r, IntVec3 c)
 		{
-			if (map == null || !c.InBounds(map))
+			if (map == null || !c.InBounds(map) || (r != null && !r.TryIndexOf(c, out _, out _)))
 			{
 				return false;
 			}
@@ -56,8 +59,9 @@ namespace RimMandrake.FlowWorks.Pits
 				Map map = deck.Map;
 				IntVec3 p = deck.Position;
 				bool horizontal = deck.Rotation.IsHorizontal;
-				int mask = TileMask(LinksTo(map, p + IntVec3.North), LinksTo(map, p + IntVec3.East),
-					LinksTo(map, p + IntVec3.South), LinksTo(map, p + IntVec3.West), horizontal);
+				SuspensionBridgeRecord r = deck.Record;
+				int mask = TileMask(LinksTo(map, r, p + IntVec3.North), LinksTo(map, r, p + IntVec3.East),
+					LinksTo(map, r, p + IntVec3.South), LinksTo(map, r, p + IntVec3.West), horizontal);
 				angle = horizontal ? 90f : 0f;
 				return MaterialAtlasPool.SubMaterialFromAtlas(graphic.SubGraphic.MatSingleFor(deck), (LinkDirections)mask);
 			}
