@@ -14,7 +14,7 @@
      donor's intent. -->
 <Defs>
 
-  <!-- ===== ancient vents (AB_AncientFreezingVent / GreyPallVent / BloodRainVent / DeathPallVent) ===== -->
+  <!-- ===== ancient vents (AB_AncientFreezingVent / GreyPallVent / BloodRainVent; DeathPallVent dropped by owner 2026-10-19) ===== -->
   <TileMutatorDef Name="RM_PortedAncientVentMutatorBase" Abstract="True">
     <workerClass>RimMandrake.EnvironmentalHazards.RM_TileMutatorWorker_AncientVent</workerClass>
     <categories>
@@ -52,17 +52,6 @@
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
         <ventDef>RM_AncientBloodRainVent</ventDef>
-      </li>
-    </modExtensions>
-  </TileMutatorDef>
-
-  <TileMutatorDef ParentName="RM_PortedAncientVentMutatorBase">
-    <defName>RM_AncientDeathPallVent</defName>
-    <label>death pall vent</label>
-    <description>This area has a number of ancient runic grates of unknown origin. An ancient mechanism buried deep beneath the earth will occasionally vent clouds of microscopic self-powered archites that affect corpses, reanimating them to create a twisted imitation of life.</description>
-    <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_TileMutatorPortExtension">
-        <ventDef>RM_AncientDeathPallVent</ventDef>
       </li>
     </modExtensions>
   </TileMutatorDef>

@@ -156,7 +156,6 @@ MUTATOR = {
     "RM_AncientFreezingVent": "Periodically vents freezing air across the map — recurring cold shocks.",
     "RM_AncientGrayPallVent": "Periodically vents smoke that plunges the map into DARKNESS — solar and plant growth stop.",
     "RM_AncientBloodRainVent": "Periodically vents vaporised blood that condenses into blood rain over the map.",
-    "RM_AncientDeathPallVent": "🔴 Periodically vents archites that REANIMATE CORPSES — your own dead get up.",
     "RM_TarLakes": "Impassable tar pools that CANNOT BE BRIDGED — permanent no-go ground. Inland only.",
     "RM_MagmaticQuagmire": "Molten, cracking ground: volcanic rock, cooled lava and pools of lava — flat inland tiles only.",
     "RM_MagmaVents": "Places 6–12 magma vents that erupt with molten rock and searing gas.",

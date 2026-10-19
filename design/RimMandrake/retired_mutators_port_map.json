@@ -22,10 +22,11 @@
    "how": "vanilla vent layout + vanilla BloodRain"
   },
   "AB_AncientDeathPallVent": {
-   "new": "RM_AncientDeathPallVent",
-   "status": "new",
-   "mod": "EnvironmentalHazards",
-   "how": "vanilla vent layout + vanilla DeathPall"
+   "new": null,
+   "drop": true,
+   "status": "dropped",
+   "mod": "-",
+   "how": "DROPPED by owner 2026-10-19: no zombies in Utinni; its 33 tiles are stripped, not renamed"
   },
   "AB_AncientFreezingVent": {
    "new": "RM_AncientFreezingVent",

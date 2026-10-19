@@ -13,13 +13,13 @@ mutator or landmark; hash simulation; planted-negative probe).
 
 | | count |
 |---|---:|
-| TileMutatorDefs created (RM_ 18, RSW_ 2) | 20 |
+| TileMutatorDefs created (RM_ 17, RSW_ 2) | 19 |
 | LandmarkDefs created (RM_) | 3 |
 | reused, already ported 2026-10-15 (`RSW_SarlaccLair`, `RSW_DeadSarlaccCave`, `RSW_Sarlacc`, `RSW_DeadSarlacc`) | 4 |
-| partly reproduced (`RM_DerelictClusters`, `RSW_WildGalacticPlants`) | 2 of the 20 |
+| partly reproduced (`RM_DerelictClusters`, `RSW_WildGalacticPlants`) | 2 of the 19 |
 | **not reproduced** (`AB_DerelictArchonexus`, `AB_DerelictBioLab`, `AB_DerelictKemeticTemple`, `WildDantooinePlants`) | 4 |
 
-Supporting defs created: 4 vent buildings, `RM_MagmaVent`, `RM_MagmaThermalGenerator`, `RM_MycoticCollector`, game
+Supporting defs created: 3 vent buildings, `RM_MagmaVent`, `RM_MagmaThermalGenerator`, `RM_MycoticCollector`, game
 conditions `RM_AmbientRadiation` and `RM_MoldyEnvironment`, thought `RM_MoldyEnvironment`, 9 GenStepDefs. C#
 (`src/RimMandrake/EnvironmentalHazards/Source/RM_WorldMutatorPorts.cs`, namespace `RimMandrake.EnvironmentalHazards`):
 a vent worker, an infesting-animal worker, the radiation condition, the outdoors thought worker, a tile-locked
@@ -36,7 +36,7 @@ RimSage); no donor C# was read or copied.
 | `AB_AgariluxPrime_Mutator` | mutator | 10 | `RM_AgariluxPrimeSprout` | TheRot | one `RM_AgariluxPrime` (our earlier port) by GenStep_ScatterThings | new |
 | `AB_AmbientRadiation` | mutator | 104 | `RM_AmbientRadiation` | EnvironmentalHazards | permanent condition; a random colonist gains a random non-archite gene ~every 15 days | new |
 | `AB_AncientBloodRainVent` | mutator | 43 | `RM_AncientBloodRainVent` | EnvironmentalHazards | vanilla vent layout (5-9 vents) + vanilla `BloodRain` | new |
-| `AB_AncientDeathPallVent` | mutator | 33 | `RM_AncientDeathPallVent` | EnvironmentalHazards | vanilla vent layout + vanilla `DeathPall` | new |
+| `AB_AncientDeathPallVent` | mutator | 33 | none | - | **DROPPED by owner 2026-10-19: no zombies in Utinni; its 33 tiles are stripped, not renamed** | dropped |
 | `AB_AncientFreezingVent` | mutator | 61 | `RM_AncientFreezingVent` | EnvironmentalHazards | vanilla vent layout + vanilla `DeepFreeze` | new |
 | `AB_AncientGreyPallVent` | mutator | 42 | `RM_AncientGrayPallVent` | EnvironmentalHazards | vanilla vent layout + vanilla `GrayPall` | new |
 | `AB_BumbledroneNests` | mutator | 26 | `RM_SwarmHiveNests` | EnvironmentalHazards | **stand-in**: 3-4 vanilla insect `Hive` (bumbledrones retired with no twin) | new |
@@ -79,9 +79,10 @@ refinery, tinted). New art is the owner's call.
 ## Owner's frozen 2026-08-16 world-map calls disagree on two rows
 
 `design/Jawa/worldbuilding/review/worldmap_elements.prefill.json` (frozen by the owner) **rejects**
-`AB_AncientDeathPallVent` and `AB_AncientFreezingVent`; the canonical save carries them on 33 and 61 tiles. Both are
-ported here because today's instruction covers the whole list; whether they stay on the planet is his call at the
-repaint. Every other row is in that file's whitelist.
+`AB_AncientDeathPallVent` and `AB_AncientFreezingVent`; the canonical save carries them on 33 and 61 tiles. Owner,
+2026-10-19: "No death pall, freezing vents are ok. We don't have zombies in Utinni." So the freezing vent is ported and
+the death pall vent is DROPPED (its 33 tiles are stripped from the save copy). The gray pall vent (`GrayPall`, darkness)
+is a different thing and stays. Every other row is in that file's whitelist.
 
 ## Save side
 
@@ -95,7 +96,7 @@ simulating that over the donor-free capture `2026-10-19T11-55-43Z` plus the port
 reproduces every live hash of that capture (it did: 353/353). If the deployed mod set changes which TileMutatorDefs
 exist, rerun it against a fresh capture before swapping a save.
 
-**Verified copy (2026-10-19, canonical save, offline; the canonical save and every file under Saves untouched):**
+**Verified copy, superseded by the `_NODEATHPALL` copy below (2026-10-19, canonical save, offline; the canonical save and every file under Saves untouched):**
 `D:\Luke\dev\_rmscratch\ported_mutator_saves\CANONICAL_ASHKARR_START_2026-09-12_PORTED_MUTATORS.rws`
 (sha256 `3c20801f7ff812d3bd1dbe95bfeb4c714b6857bfa92fd43758ddf5bfdbfd4610`; input sha256 starts `1ff329161abeaa8c`), with
 `verify.txt` and `port_table.md` beside it. Independent check (own decoder and own hash simulation):
@@ -105,6 +106,14 @@ exist, rerun it against a fresh capture before swapping a save.
 - 16 entries on the 4 unported mutators left in place (the load drops them);
 - landmarks: 3,008 entries, 26 renamed, order kept;
 - every other byte identical; the output parses as XML.
+
+**Current copy (2026-10-19, owner dropped the death pall):**
+`D:\Luke\dev\_rmscratch\ported_mutator_saves\CANONICAL_ASHKARR_START_2026-09-12_PORTED_MUTATORS_NODEATHPALL.rws`
+(md5 `a6366d9b1f592441832d329b68a6c5e2`, sha256 `ad15abc8f0885bf2a478c24065a9485b11e18260fb02e93861a432a95bd81e82`;
+table `port_table_NODEATHPALL.md` beside it). Same tool; the map row carries `"drop": true`, which removes the entry
+from BOTH parallel arrays (`tileMutatorTilesDeflate`, `tileMutatorDefsDeflate`). Checked with an own decoder: 27,856 ->
+27,823 entries (exactly the 33 `AB_AncientDeathPallVent` entries gone, the 30 other mutators on those tiles kept), all
+else byte-identical to the `_PORTED_MUTATORS` copy, XML parses.
 
 This copy is the **canonical** save renamed, so it still carries the residue `donor_save_residue_2026-10-19.md` lists
 (lost-biome hashes, donor things and pawns). The BENCH-repaired donor-free save
@@ -116,8 +125,8 @@ nothing; putting them back there means inserting entries, which this tool does n
 
 - **Deploy** at a game-down window: `deploy_custom_mods.py --compose biomes` (EnvironmentalHazards DLL + all biome
   defs), `--mod UtinniPatches`, `--mod SWBestiary`, `--mod AshkarrLandmarkArt`. Nothing was deployed.
-- **Live check after a restart:** the ports load with no config error, a fresh capture lists all 23 new defs, and their
+- **Live check after a restart:** the ports load with no config error, a fresh capture lists all 21 new defs, and their
   shortHashes match the predicted ones in `port_table.md`; then load the renamed copy and read a few tiles' mutators
   (e.g. tile of `RM_TarLakes`) through the bridge.
 - **Not reproduced:** the 4 rows above, for the owner at the repaint (new structures or art, or cut).
-- Placeholder art on 7 new buildings.
+- Placeholder art on 6 new buildings.
