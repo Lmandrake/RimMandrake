@@ -510,9 +510,10 @@ def _failed_jobs(art: Path):
         m = art / "failed" / (f.stem + ".manifest.json")
         note = ""
         if m.is_file():
+            import donor_regen_jobs as DJ
             mm = json.loads(m.read_text())
             tail = json.dumps(mm)
-            note = "429" if "429" in tail else ("derived" if "derivation impossible" in tail else "other")
+            note = "429" if DJ.rate_limited(mm) else ("derived" if "derivation impossible" in tail else "other")
         j["_cause"] = note
         out.append(j)
     return out

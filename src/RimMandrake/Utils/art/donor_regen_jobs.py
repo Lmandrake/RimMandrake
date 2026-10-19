@@ -40,7 +40,6 @@ import argparse
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
 import time
@@ -80,11 +79,17 @@ def clean(s):
     return re.sub(r"\s+", " ", (s or "").replace("\\n", " ")).strip()
 
 
+def rel_posix(p, root) -> str:
+    """Repo-relative path with forward slashes on every OS: str() of a Windows path has backslashes, so "/Defs/" never
+    matched and a native-Windows build saw no defs at all (GPT review 2026-10-19 #18)."""
+    return p.relative_to(root).as_posix()
+
+
 def load_xml_defs():
     """defName -> (element, deftype, repo-rel file); race -> PawnKindDef element. Defs folders only, no FlowWorks."""
     defs, kinds = {}, {}
     for x in (REPO / "src").rglob("*.xml"):
-        r = str(x.relative_to(REPO))
+        r = rel_posix(x, REPO)
         if "/Defs/" not in r or BA.excluded(r):
             continue
         try:
@@ -481,8 +486,8 @@ def submit(jobs_ps, cap: int, dry: bool, gate=None, journal=None, requeue_pool: 
             print(f"queue at cap before {jp.name}")
             break
         rc = submit_one(jp, cap, dry, gate) or rc
-    if requeue_pool:
-        rc = requeue(ART, cap, REQUEUE_BATCH, dry, gate, journal=lambda: 0) or rc
+    if requeue_pool:                       # the journal is read AGAIN: a 429 during the submits stops the retries (#15)
+        rc = requeue(ART, cap, REQUEUE_BATCH, dry, gate, journal=journal) or rc
     return rc
 
 
@@ -509,7 +514,7 @@ def submit_one(jobs_p: Path, cap: int, dry: bool, gate=None):
         if not v["eligible"]:
             refused.append(v)
             continue
-        if n > room and batch:
+        if n > room:                       # every facing counts against the cap, the first row too (#14)
             break
         batch.append({k: v for k, v in r.items() if not k.startswith("_") and k not in ("kind", "biomes", "why")})
         room -= n
@@ -523,6 +528,14 @@ def submit_one(jobs_p: Path, cap: int, dry: bool, gate=None):
                 for v in refused:
                     fh.write(json.dumps({"ts": BA.A.now(), "id": v["id"], "verdict": v["verdict"],
                                          "reason": v["reason"]}) + "\n")
+    if batch:                              # re-judge on the disk and ledger as they are NOW, just before filing (#5)
+        try:
+            batch, gone = gate.recheck(batch)
+        except RE.GateError as e:
+            print(f"ELIGIBILITY GATE FAILED at publish time — filing nothing: {e}", file=sys.stderr)
+            return 2
+        for v in gone:
+            print(f"  REFUSED at publish time (changed since the run began) {v['id']}: {v['verdict']} — {v['reason'][:160]}")
     if not batch:
         print("nothing to file (queue at cap, every row already filed, or every remaining row refused)")
         return 0
@@ -562,6 +575,19 @@ def recent_429s(minutes: int = BACKOFF_MIN) -> int:
     return sum(1 for ln in r.stdout.splitlines() if "429" in ln)
 
 
+_RATE = re.compile(r"\bstatus:?\s*429\b|\bHTTP(?:/[\d.]+)?\s+429\b|\b429 Too Many Requests\b", re.I)
+
+
+def rate_limited(man: dict) -> bool:
+    """A failure manifest whose worker hit HTTP 429. Read from the worker's own error fields, never the raw manifest
+    text: `elapsed_s` 43.6429... or a request id holding "429" is not a rate limit (#16). The daemon's `status` field
+    says only "failed"; the HTTP status the worker saw is in its stderr/stdout tail ("last status: 429 Too Many
+    Requests")."""
+    if not isinstance(man, dict) or man.get("status") not in (None, "failed"):
+        return False
+    return any(_RATE.search(str(man.get(k) or "")) for k in ("worker_stderr_tail", "worker_stdout_tail", "note"))
+
+
 def eligible_failed(art: Path, gate) -> list:
     """-> [(job dict, verdict)] for failed dregen_ jobs that failed on a 429 and pass the gate NOW."""
     out = []
@@ -570,7 +596,7 @@ def eligible_failed(art: Path, gate) -> list:
             continue
         man = art / "failed" / (f.stem + ".manifest.json")
         try:
-            if "429" not in man.read_text():
+            if not rate_limited(json.loads(man.read_text())):
                 continue
             j = json.loads(f.read_text())
         except (OSError, ValueError):
@@ -606,22 +632,80 @@ def requeue(art: Path = None, cap: int = 40, batch: int = REQUEUE_BATCH, dry: bo
     print(f"eligible failed pool {len(pool)}; in flight {inflight} / cap {cap}; this run up to {max(room, 0)}")
     if room <= 0 or not pool:
         return 0
+    take = pool[:room]
+    if not dry:                            # re-judge on the disk and ledger as they are NOW (#5)
+        try:
+            ok, gone = gate.recheck([j for j, _ in take])
+        except RE.GateError as e:
+            print(f"ELIGIBILITY GATE FAILED at publish time — requeuing nothing: {e}", file=sys.stderr)
+            return 2
+        for g in gone:
+            print(f"  REFUSED at publish time {g['id']}: {g['verdict']} — {g['reason'][:160]}")
+        okid = {j["id"] for j in ok}
+        take = [(j, v) for j, v in take if j["id"] in okid]
     park = art / "_requeued_manifests"
     n = 0
-    for j, v in pool[:room]:
-        name = j["id"] + ".json"
+    for j, v in take:
         if dry:
             print(f"would requeue {j['id']} ({v['verdict']})")
             n += 1
             continue
         park.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(art / "failed" / name), str(art / "pending" / name))
-        man = art / "failed" / (j["id"] + ".manifest.json")
-        if man.is_file():
-            shutil.move(str(man), str(park / f"{man.stem}.{int(time.time())}.json"))
-        n += 1
+        r = requeue_one(art, j["id"], park)
+        if r == "ok":
+            n += 1
+        else:
+            print(f"  skipped {j['id']}: {r}")
     print(f"requeued {n}" + (" (dry run)" if dry else ""))
     return 0
+
+
+_after_publish = None                       # selftest hook: called(pending path) right after the job becomes visible
+
+
+def requeue_one(art: Path, jid: str, park: Path) -> str:
+    """Move failed/<jid>.json back to pending/ without ever losing a manifest or replacing a job (#12, #13):
+    1. take the job out of failed/ under a private name (a worker's next failure cannot be mistaken for it);
+    2. ARCHIVE its failure manifest (rename to a unique name under _requeued_manifests/) BEFORE the job is visible;
+    3. publish with os.link (atomic, never replaces: an existing pending/<jid>.json wins and we put everything back);
+    4. drop the private name. A worker may claim, fail and rewrite failed/<jid>.* at any moment after step 3."""
+    name = jid + ".json"
+    src, man = art / "failed" / name, art / "failed" / (jid + ".manifest.json")
+    stage = art / "failed" / f".{jid}.requeue-{os.getpid()}-{time.time_ns()}"
+    dst = art / "pending" / name
+    if (art / "active" / name).exists():
+        return "already active"
+    try:
+        os.rename(src, stage)
+    except FileNotFoundError:
+        return "gone from failed/ (another requeuer or the owner moved it)"
+    parked = None
+    if man.is_file():
+        parked = park / f"{jid}.manifest.{time.time_ns()}.json"
+        os.rename(man, parked)
+    try:
+        os.link(stage, dst)
+    except FileExistsError:
+        _put_back(stage, src, parked, man)
+        return "pending/ already holds this id (left as it was; job and manifest restored to failed/)"
+    except OSError as e:
+        _put_back(stage, src, parked, man)
+        return f"could not publish ({e}); restored to failed/"
+    if _after_publish:
+        _after_publish(dst)
+    os.unlink(stage)
+    return "ok"
+
+
+def _put_back(stage: Path, src: Path, parked, man: Path):
+    for a, b in ((stage, src), (parked, man)):
+        if a is None:
+            continue
+        try:
+            os.link(a, b)                   # never over a newer file of the same name
+            os.unlink(a)
+        except FileExistsError:
+            print(f"  left {a} (a newer {b.name} exists)")
 
 
 def main():
