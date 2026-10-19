@@ -50,6 +50,15 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Dictionary<Lord, (int tick, IntVec3 lip)> lordLips = new Dictionary<Lord, (int, IntVec3)>();
 		private static readonly HashSet<Lord> warned = new HashSet<Lord>();
+		private static bool dryRun;   // ProofDecision's probe: decide, but remember and warn about nothing
+
+		/// <summary>Lords die with the save: drop every per-lord memo when a game loads (Game.FinalizeInit).</summary>
+		public static void ClearMemos()
+		{
+			lordLips.Clear();
+			warned.Clear();
+			dryRun = false;
+		}
 
 		public static bool IsSiege(Pawn p)
 		{
@@ -196,7 +205,7 @@ namespace RimMandrake.FlowWorks
 		internal static void RememberLip(Pawn p, IntVec3 lip)
 		{
 			Lord lord = p.GetLord();
-			if (lord == null)
+			if (dryRun || lord == null)
 			{
 				return;
 			}
@@ -235,9 +244,13 @@ namespace RimMandrake.FlowWorks
 					{
 						if (v is Verb_Jump && v.Available())
 						{
-							verb = v;
-							range = v.EffectiveRange;
-							return range > 0f;
+							float r = v.EffectiveRange;
+							if (r > 0f)
+							{
+								verb = v;
+								range = r;
+								return true;
+							}
 						}
 					}
 				}
@@ -250,9 +263,13 @@ namespace RimMandrake.FlowWorks
 					Ability a = abilities[i];
 					if (a.verb is Verb_CastAbilityJump && a.CanCast.Accepted)
 					{
-						ability = a;
-						range = a.verb.EffectiveRange;
-						return range > 0f;
+						float r = a.verb.EffectiveRange;
+						if (r > 0f)
+						{
+							ability = a;
+							range = r;
+							return true;
+						}
 					}
 				}
 			}
@@ -428,7 +445,7 @@ namespace RimMandrake.FlowWorks
 		private static void Warn(Pawn p, string key)
 		{
 			Lord lord = p.GetLord();
-			if (lord == null || !warned.Add(lord))
+			if (dryRun || lord == null || !warned.Add(lord))
 			{
 				return;
 			}
@@ -543,8 +560,28 @@ namespace RimMandrake.FlowWorks
 			{
 				return "None (no crossing line) " + target;
 			}
-			Job j = TryCross(p);
+			Job j;
+			dryRun = true;
+			try
+			{
+				j = TryCross(p);
+			}
+			finally
+			{
+				dryRun = false;
+			}
 			return (j == null ? "None" : j.def.defName + " " + j.targetA) + " line=" + string.Join("/", plan.depths);
+		}
+	}
+
+	[HarmonyPatch(typeof(Game), nameof(Game.FinalizeInit))]
+	[RimMandrake.Shared.PatchFeature("Raiders cross trenches (jump packs)", typeof(RimMandrake.FlowWorks.RM_RaiderTrenchSettings), "raiderTrenchEnabled")]
+	public static class RM_Patch_GameInit_RaiderTrenchMemos
+	{
+		[HarmonyPostfix]
+		public static void Postfix()
+		{
+			RM_RaiderTrench.ClearMemos();
 		}
 	}
 

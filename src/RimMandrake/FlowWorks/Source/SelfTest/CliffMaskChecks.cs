@@ -337,8 +337,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var big = RM_PocketGridMath.Label(g, w, h, 5);
                 Assert(big.label[4 * w + 4] == big.label[0], "a climber of 5 crosses the moat: one component");
                 string trap = Src("Superdeep", "RM_SuperdeepTrap.cs");
-                Assert(trap.Contains("!g.ComponentIsPocket(k, comp) && !g.ReachesEdge(k, comp, p)"),
-                    "the map-edge postfix vetoes an island (unless ladders this pawn may use join it to a border component)");
+                Assert(trap.Contains("g.TrappedIn(k, comp, p) || (!walksOut && !g.ReachesEdge(k, comp, p))"),
+                    "the map-edge postfix vetoes an island or a pit pocket with no way to the edge (unless ladders this pawn may use join it to a border component)");
                 Assert(trap.Contains("n.Walkable(p.Map) && eng.IsSuperdeepExcavation(n)"), "absolute-rule trap BFS never crosses a wall (C3-F12)");
             });
 

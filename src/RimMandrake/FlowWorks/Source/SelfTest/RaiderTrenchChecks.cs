@@ -117,7 +117,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(got > 1700 && got < 2300, "about 10% of raiders bring a jump pack: " + got);
                 Assert(!RM_RaiderTrenchMath.GetsJumpPack(7, 0f), "can-fail: 0% gives none");
                 Assert(RM_RaiderTrenchMath.GetsJumpPack(7, 1f), "100% gives all");
-                Assert(RM_RaiderTrenchMath.GetsJumpPack(12345, 0.5f) == RM_RaiderTrenchMath.GetsJumpPack(12345, 0.5f), "stable per pawn");
+                int mono = 0;
+                for (int id = 1; id <= 2000; id++)
+                {
+                    if (RM_RaiderTrenchMath.GetsJumpPack(id, 0.3f) && !RM_RaiderTrenchMath.GetsJumpPack(id, 0.6f)) mono++;
+                }
+                Assert(mono == 0, "a raider with a pack at a 30% share keeps it at 60% (a fixed draw per pawn, not a re-roll): " + mono);
                 Assert(RM_RaiderTrenchMath.JumpLanding(0, 4, 4, i => i >= 1, i => i <= 2) == 1, "the nearest valid landing in range");
                 Assert(RM_RaiderTrenchMath.JumpLanding(0, 4, 4, i => i >= 3, i => i <= 2) == -1, "can-fail: none in range");
             });
@@ -134,6 +139,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(r, @"\[HarmonyPatch\(typeof\(IncidentWorker_Raid\), ""PostProcessSpawnedPawns""\)\]", "jump packs handed out at arrival");
                 RiverSwitchFlipChecks.Has(r, @"RaidStrategyWorker_Siege", "never to a siege");
                 RiverSwitchFlipChecks.Has(r, @"CanWearWithoutDroppingAnything\(jumpPack\)", "never swaps out a shield belt");
+                // RM_RaiderTrench review minors (2026-10-18): lords die with the save; the proof probe is a dry run; a range-0 jump
+                // source does not hide the next one.
+                RiverSwitchFlipChecks.Has(r, @"\[HarmonyPatch\(typeof\(Game\), nameof\(Game\.FinalizeInit\)\)\]", "per-lord memos cleared on every game load");
+                RiverSwitchFlipChecks.Has(r, @"public static void ClearMemos\(\)\s*\{\s*lordLips\.Clear\(\);\s*warned\.Clear\(\);", "ClearMemos empties both statics");
+                RiverSwitchFlipChecks.Has(r, @"dryRun = true;\s*try\s*\{\s*j = TryCross\(p\);\s*\}\s*finally\s*\{\s*dryRun = false;", "ProofDecision decides dry");
+                RiverSwitchFlipChecks.Has(r, @"if \(dryRun \|\| lord == null \|\| !warned\.Add\(lord\)\)", "a dry run warns nobody");
+                RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*verb = v;", "a pack with range 0 falls through to the next source");
+                RiverSwitchFlipChecks.Has(r, @"if \(r > 0f\)\s*\{\s*ability = a;", "a range-0 ability falls through to the next ability");
                 string u = Src("Superdeep", "RM_LadderUtility.cs");
                 RiverSwitchFlipChecks.Has(u, @"MayClimb\(p\) \|\| ClimbsOwnLadder\(ladder, p\)", "the prison door lets a raid climb its own ladder");
                 RiverSwitchFlipChecks.Has(u, @"ladder\.Faction != Faction\.OfPlayer && p\.Faction == ladder\.Faction", "only the ladder's own (non-player) faction");
