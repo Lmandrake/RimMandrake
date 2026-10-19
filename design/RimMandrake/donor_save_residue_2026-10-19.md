@@ -75,3 +75,18 @@ AreaManager is discarded, Vehicle Framework NREs and the map never finishes (`Tr
   `VanillaQuestsExpandedCryptoforge.*`). The 2026-10-18 DONORFREE pair carries only the AlphaGenes, ReGrowth and
   VFEI2 components. Full table: `D:\Luke\dev\_rmscratch\saves_backup_20261019_areafix\class_census.txt`.
 - **Rule:** before calling a retirement save-safe, run `save_class_census.py` on the save as well as the def census.
+
+## Removed defs, not only donor defs (2026-10-19, FOUNDRY)
+A test-site save kept `RM_TreeMartyr`, a def of OURS cut the day before (9a8fc0edf): 1528 plants in `RM_TestSite_cauldron_v1_AREAFIX`
+gave 1534 'Could not load reference' lines and 100 'Exception spawning loaded thing null'. The donor census only knows the retired-donor
+list, so any def WE remove is invisible to it. **Before removing a def, run `src/RimMandrake/Utils/save_def_census.py <saves>` and read
+the THING rows** (a THING is an element with `<def>` and `<id>`; they throw at spawn, other refs are dropped with one log line).
+- Index: every `<defName>` under the 536 active mod folders (Steam Mods/workshop + Data/<DLC>); `--src` marks defs present only in `src/`.
+  `--strip-things OUT` writes a copy without plain thing blocks (not nested, id not referenced elsewhere), byte-level, never in place.
+- Measured on the 11 `_AREAFIX` saves (`D:\Luke\dev\_rmscratch\saves_backup_20261019_areafix\areafix2\def_census.txt`): unresolved THINGS
+  = cauldron RM_TreeMartyr x1528 + AB_PsychotropicFungus x1; calm VCE_Plant_* x55; the five 2026-09-12 canonical-family saves AB_Mech_Ruined*
+  Buildings x91 + RG_Boulder* Mineables x11 + VFEI2_RoyalInsectJelly x1 (the unflagged 09-12 `_AREAFIX` also Scavrat pawns x3 and
+  world-pawn li entries WompRat/WarWyrm/Lothcat/Mynock/Kreetle); the two 2026-10-18 DONORFREE x11; river world pawns AA_* x43 (ChameleonSkins);
+  leaningscrub VFEI2_Swarmling x1; contagion none. Pawns and the items inside containers are LISTED, not removed.
+- `_AREAFIX2` copies (things removed, originals and `_AREAFIX` kept) sit beside them: cauldron, calm, and the six canonical. The cauldron copy
+  still lists `RM_TreeMartyr` in six `<li>` def-name lists (not things; Scribe drops them with a log line).
