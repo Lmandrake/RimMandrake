@@ -1,0 +1,1 @@
+rimflow note/close/file with --owner-said or --by-card appends to infrastructure/state/ledger/events/OWNER.jsonl, not your seat's shard: commit OWNER.jsonl too, or the ruling sits unpublished (BENCH 2026-10-18: three owner rulings stayed uncommitted until a second commit)
