@@ -44,6 +44,7 @@ jawa/clear_ui, jawa/take_screenshot, rimworld/frame_cell_rect, rimworld/save_gam
 """
 import argparse
 import os
+import re
 import sys
 import time
 
@@ -169,7 +170,10 @@ class Stage(object):
             g = self.w.call("jawa/pawn_gear", **{"pawn": pid, "action": "wear", "def": wear, "stuff": ""}) or {}
             if not g.get("success"):
                 self.notes.append("%s NOT worn at %s (%s)" % (wear, cell, str(g)[:100]))
-        self.w.hp("pawn:%d=draft" % pid)
+        # jawa/spawn_pawn answers ids like "Human41594": the probe wants the number (live 2026-10-19: TypeError killed B9)
+        m = re.search(r"(\d+)$", str(pid))
+        if m:
+            self.w.hp("pawn:%d=draft" % int(m.group(1)))
         return pid
 
     def item(self, d, cell):
