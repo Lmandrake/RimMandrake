@@ -1,0 +1,39 @@
+Line references use the supplied text. All three files are under `src/RimMandrake/Utils/art/`.
+
+1. **P1 — Windows case alias can classify owner-kept art as `NONE`.** `regen_eligibility.py:278`, also `:138`: `StandIn/` is removed case-sensitively before lowercasing. Given kept `Textures/StandIn/Foo.png`, XML drawing `StandIn/Foo`, and a job targeting `Textures/standin/Foo.png`, neither the exact lookup nor `tex_low` finds it. With no deployed copy, the gate returns `NONE`, although Windows resolves the destination to the kept file.
+
+2. **P1 — External jobs ignore an owner-kept destination.** `regen_eligibility.py:347–350`: inspection of `own_path()` rejects only `REFUSED_REGEN`; it discards `REFUSED_KEPT` and `REFUSED_UNCONFIRMED`. If `D` draws donor `Foo/Body`, but its eventual destination `Foo/D/D.png` contains kept art, classification can continue and return `DONOR`.
+
+3. **P1 — Existing donor/placeholder files bypass regeneration history.** `regen_eligibility.py:289–305`: exact, stand-in, and other-mod matches return before `_renamed()` runs. A finished render already bound to the destination is therefore ignored while the original donor file remains. Likewise, restoring donor bytes to a previously regenerated path makes it eligible again.
+
+4. **P1 — Another def’s reference defeats renamed-path refusal.** `regen_eligibility.py:282`: `_drawn()` checks references globally, rather than references belonging to `target_def`. If `D` now draws regenerated `New/Body`, while another def still draws donor `Old/Body`, a stale job for `D → Old/Body` passes `_drawn()` and returns `DONOR` without checking `_def_now_regen(D)`.
+
+5. **P1 — Gate snapshots can authorize work against newly installed renders.** `regen_eligibility.py:89–107`; reused at `donor_regen_jobs.py:482–485`: texture enumeration, regeneration history, and the game index are cached for the run. If another process installs and records a render after construction at a previously absent destination, subsequent classification can still return cached `NONE`. No freshness check occurs before queue publication.
+
+6. **P1 — Only the first copy/facing is judged.** `regen_eligibility.py:353` and `:326`: external source matches use `ours[0]`, and deployed copies return from the first matching package file. For a south-facing job, `_game_side()` strips the facing and can judge an east donor copy first, returning `DONOR` while the south copy is kept or regenerated. Multiple source mods have the same first-match problem.
+
+7. **P1 — Installed-art history disappears when its file moves.** `regen_eligibility.py:185–196`: binding and resource history include only `regen_sha`, excluding hashes classified solely as `kind=install` in `install_sha`. Remove such an installed file while leaving its XML reference and ledger binding: with no deployed copy, the old destination can return `NONE` despite its recorded installation history.
+
+8. **P1 — Whole-file commits absorb someone else’s edits.** `donor_regen_install_hourly.py:78–83`: listing a touched path commits its entire current contents. If an owner edits an XML description before the installer repoints a texture in that XML, both changes enter the hourly commit. Unconditionally including `FOUNDRY.jsonl` similarly captures any pre-existing changes in that shard.
+
+9. **P1 — The lock check does not isolate the shared index.** `donor_regen_install_hourly.py:39–47`, `:78–83`: the initial existence check reserves nothing, and the script stages into the normal index. A user commit between hourly `git add` and `git commit` can consume the hourly changes. A failed hourly commit also leaves those additions staged for the user’s next commit.
+
+10. **P1 — Publishing can send unrelated local commits.** `donor_regen_install_hourly.py:87`: `./publish` runs even when nothing was installed, without checking unpublished commit ownership. With the stated origin/main publishing behavior, an unrelated local commit already ahead of `origin/main` is published alongside—or instead of—the hourly commit.
+
+11. **P2 — Reported paths are interpreted as Git patterns.** `donor_regen_install_hourly.py:77–83`: `--pathspec-from-file` does not make entries literal. An installed filename such as `Icon[1].png` can also match a separately modified `Icon1.png`; both `git add` and `git commit` can include that other file.
+
+12. **P1 — Requeue exposes jobs before preserving their manifests.** `donor_regen_jobs.py:618–621`: the job becomes visible in `pending/` before its old failure manifest is archived. A fast worker can claim it, fail again, and overwrite `failed/<id>.manifest.json`; the requeuer then archives the new failure manifest, losing the old one and removing the current failure’s manifest.
+
+13. **P2 — Requeue can overwrite a concurrently created pending job.** `donor_regen_jobs.py:578`, `:618`: destination existence is checked while building the pool, potentially long before the move. If another producer creates `pending/<id>.json` meanwhile, `shutil.move` can replace it on Linux. There is no atomic claim or no-replace publication.
+
+14. **P2 — A single batch can exceed the queue cap.** `donor_regen_jobs.py:512`: oversized rows are rejected only when `batch` is already nonempty. With 39 jobs in flight, cap 40, and a first eligible three-facing row, the code files all three and reaches 42.
+
+15. **P2 — Submit explicitly bypasses the requeue backoff check.** `donor_regen_jobs.py:485`: passing `journal=lambda: 0` suppresses the real check. If workers report a 429 while earlier job lists are being submitted, the subsequent requeue still files retries despite that new 429.
+
+16. **P2 — Any occurrence of `429` qualifies a failure for retry.** `donor_regen_jobs.py:573`: this searches raw manifest text rather than the failure status. A permanent 403 failure whose request ID contains `429` is treated as a rate-limit failure and requeued.
+
+17. **P2 — XML scan failures do not fail closed.** `regen_eligibility.py:147–148`: unreadable or malformed XML is silently skipped. Gate construction succeeds and can authorize other rows despite an incomplete XML scan, contradicting the stated requirement that an XML-scan failure prevents all filing.
+
+18. **P2 — Native Windows builds silently skip every def file.** `donor_regen_jobs.py:87–89`: `str(relative_path)` uses backslashes on Windows, so `"/Defs/" not in r` is always true. `load_xml_defs()` consequently returns no defs and the build omits valid targets.
+
+No intrinsic unbounded Python loop is apparent. Child processes other than `journalctl` have no timeout, so a hung child can stall the hourly service indefinitely.
