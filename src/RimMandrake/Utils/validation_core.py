@@ -13,6 +13,7 @@ _saves_stat / _wait_saved / _wait_playing.
 """
 import json
 import os
+import re
 import sys
 import time
 
@@ -88,12 +89,27 @@ class _BridgeBase(object):
 
     def ticks(self, n):
         """Game time in governed chunks (WATCH_WAIT_WIRE_SMALL_STEPS): jawa/safe_advance when present, stopped by the
-        vitals latch (raises clockgate.GovernorStop); the legacy rimworld/step_game_ticks otherwise."""
+        vitals latch (raises clockgate.GovernorStop); the legacy rimworld/step_game_ticks otherwise.
+
+        TESTENV_GOVERNOR_STOP_SITE_NOT_MOD (2026-10-19): a stop whose cause is a NON-MOD disturbance (a wild/entity hostile
+        arriving, a colonist bruised by a pawn in a fight) is a SITE event: it is recorded in SITE_NOTES, the intruder is
+        removed / the fight ended / the wound healed (site_recover), and the remaining ticks run. Anything else (a death, a
+        downed colonist, a modal, a hurt with no pawn source -- the mod's own damage) still raises, as does a stop whose
+        recovery could not be read back, or the SITE_RECOVER_MAX-th recovery of the session."""
         cg = _clockgate()
         left, done = int(n), 0
         while left > 0:
             req = min(left, cg.SAFE_CHUNK_MAX)
-            ex = cg.advance_chunk(self, req)
+            try:
+                ex = cg.advance_chunk(self, req)
+            except cg.GovernorStop as g:
+                took = site_recover(self, g.result)
+                if took is None:
+                    raise
+                ex = min(req, took)
+                left -= ex
+                done += ex
+                continue
             done += req if ex is None else int(ex)
             left -= req
         return {"success": True, "advanced": done}
@@ -134,6 +150,163 @@ class SuiteBridge(_BridgeBase):
     def ticks(self, n):
         self.t.wait_ticks(n)
         return {"success": True}
+
+
+# ------------------------------------------------------------------ site disturbances (not the mod's doing)
+SITE_PHASE = ["measure"]          # "prepare" inside prepare_site; recorded on every event so a reader can weigh it
+SITE_RECOVER_MAX = 12             # recoveries per session: a site that keeps raising them is a site problem, so it stops
+SITE_RECOVERED = [0]
+SITE_SWEEP_MARGIN = 30            # cells around a plot swept of non-colonists before the plot is prepared
+_HURT_BY_PAWN = re.compile(r"newest hediff (\w+)/([\w ]+?) age \d+ from ([A-Za-z_]\w*)\s*$")
+_RIDE_ALONG = ("departed", "hurt", "downed")
+
+
+def classify_site_stop(r):
+    """-> None (a REAL stop: the clock stays stopped) or {"kind": "intruder"|"fight", "hurt": [(pawnId, hediff, part)]}
+    for a safe_advance stop whose every trigger is a non-mod disturbance. Pure.
+    Recoverable: stopBy is a hostile_arrival (a wild animal / entity), or a `hurt` of damage severity whose newest hediff names
+    a pawn source ("... Bruise/Leg age 0 from Human": a colonist fight -- the mod's own damage, e.g. a current's bruise, names
+    none). Every other trigger must be one of those or an info-severity departed/hurt/downed of nobody critical or declared.
+    A death, a downed colonist, a critical or declared actor, a modal, a clock jump are never recoverable."""
+    if not isinstance(r, dict) or r.get("state") != "stopped" or not r.get("stopBy"):
+        return None
+    sb = r["stopBy"]
+    trig = list(r.get("triggers") or []) or [sb]
+    out = {"kind": None, "hurt": []}
+
+    def pawn_hurt(t):
+        m = _HURT_BY_PAWN.search(str(t.get("detail") or ""))
+        return m if (t.get("kind") == "hurt" and t.get("severity") == "damage" and m) else None
+
+    for t in [sb] + trig:
+        if t.get("critical") or t.get("declared"):
+            return None
+    m = pawn_hurt(sb)
+    if sb.get("kind") == "hostile_arrival":
+        out["kind"] = "intruder"
+    elif m:
+        out["kind"] = "fight"
+    else:
+        return None
+    for t in trig:
+        if t.get("kind") == "hostile_arrival":
+            continue
+        mt = pawn_hurt(t)
+        if mt:
+            out["hurt"].append((t.get("subjectId"), mt.group(1), mt.group(2).strip()))
+            continue
+        if t.get("severity") == "info" and t.get("kind") in _RIDE_ALONG:
+            continue
+        return None
+    return out
+
+
+def _helpers():
+    d = os.path.join(UTILS, "modcheck")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import helpers  # noqa: E402
+    return helpers
+
+
+def remove_intruders(B, rect=None, margin=SITE_SWEEP_MARGIN):
+    """Vanish (no death action: a killed Toughspike/Fingerspike runs DeathActionWorker_Divide) every hostile pawn and every
+    factionless stranger / wild animal -- on the whole map, or inside rect +- margin. Colonists and the colony's own are never
+    matched. Read back; -> {"removed": [...], "left": [...]}."""
+    H = _helpers()
+
+    def pick(x):
+        if x.get("dead") or not x.get("spawned", True) or H.is_colonist(x):
+            return False
+        if not (H.is_hostile(x) or H.is_stranger(x) or H.is_wildlife(x)):
+            return False
+        if rect is None or x.get("x") is None:
+            return True
+        rx, rz, rw, rh = rect
+        return rx - margin <= x["x"] <= rx + rw + margin and rz - margin <= x["z"] <= rz + rh + margin
+
+    ids = [x["id"] for x in H.read_pawns(B, health=False) if pick(x)]
+    if not ids:
+        return {"removed": [], "left": []}
+    res = H._kill_ids(B, set(ids), "remove_intruders", pick, action="vanish")
+    return {"removed": sorted(res.evidence.get("targeted") or []), "left": list(res.residue)}
+
+
+def site_recover(B, r):
+    """A safe_advance stop `r` that classify_site_stop calls a non-mod disturbance: record it (SITE_NOTES, with the phase),
+    remove the intruder / end the fight and heal what the fight did, READ BACK. -> ticks the stopped chunk had executed
+    (the caller carries on), or None when the stop is real, the recovery did not read back clean, or the session has used
+    SITE_RECOVER_MAX recoveries. Never raises."""
+    try:
+        c = classify_site_stop(r)
+        if c is None or SITE_RECOVERED[0] >= SITE_RECOVER_MAX:
+            return None
+        H = _helpers()
+        ev = {"kind": c["kind"], "phase": SITE_PHASE[0], "stopBy": r.get("stopBy"), "tick": (r.get("stopBy") or {}).get("tick"),
+              "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        gone = remove_intruders(B)
+        ev["removed"] = gone["removed"]
+        clean = not gone["left"]
+        if c["kind"] == "fight":
+            cols = [p["id"] for p in H.read_pawns(B, health=False) if H.is_colonist(p) and not p["dead"]]
+            calm = H.calm_colonists(B, cols)
+            healed = []
+            for pid, hd, part in c["hurt"]:
+                if pid is None:
+                    continue
+                res = B.call("jawa/pawn_health", pawn=pid, action="remove", hediff=hd, bodyPart=part) or {}
+                if not res.get("success") and "no hediff" in str(res.get("message", "")).lower():
+                    res = B.call("jawa/pawn_health", pawn=pid, action="remove", hediff=hd) or {}
+                healed.append((pid, hd, part, bool(res.get("success"))))
+            ev["calmed"], ev["calmResidue"], ev["healed"] = calm.acted, calm.residue, healed
+            clean = clean and calm.verified and all(h[3] for h in healed)
+        ev["recovered"] = clean
+        SITE_NOTES.append({"id": "SITE_DISTURBANCE_%s" % c["kind"].upper(), "detail": ev})
+        if not clean:
+            return None
+        SITE_RECOVERED[0] += 1
+        return int(r.get("executed") or 0)
+    except Exception as ex:  # noqa: BLE001 - a recovery that breaks is a real stop, never a silent resume
+        SITE_NOTES.append({"id": "SITE_DISTURBANCE_RECOVERY_FAILED", "detail": repr(ex)})
+        return None
+
+
+_CALM = {}
+
+
+def site_calm(B):
+    """Static boring test world for the whole run: storyteller off, threat scale 0, queue cleared, random mental breaks and
+    diseases off, wild-animal replenishment blocked, and every non-colonist already on the map removed. DebugSettings are statics
+    a load turns back on, so a driver re-applies this at each block. Idempotent; every piece is read back by helpers; a piece the
+    companion lacks is named in the result, never assumed. Restore with site_calm_restore(). Social fights are not a
+    random mental break, so they are NOT prevented here: site_recover ends one and heals its wound instead.
+    -> {"ok": bool, "storyteller": ..., "wildSpawner": ..., "removed": ...}"""
+    out = {"ok": True}
+    try:
+        H = _helpers()
+        if "tx" not in _CALM:
+            _CALM["tx"] = H.SettingsTransaction(B).__enter__()
+        q = H.quiet_world(B, _CALM["tx"], wild_spawner=("wild" not in _CALM))
+        _CALM["wild"] = True
+        H.random_events_off(B, _CALM["tx"])
+        out["storyteller"] = q.evidence.get("readBack")
+        out["wildSpawner"] = q.evidence.get("wildSpawner")
+        out["ok"] = bool(q.verified)
+        out["removed"] = remove_intruders(B)
+    except Exception as ex:  # noqa: BLE001
+        out["ok"], out["error"] = False, repr(ex)
+    return out
+
+
+def site_calm_restore(B):
+    tx = _CALM.pop("tx", None)
+    _CALM.pop("wild", None)
+    if tx is None:
+        return None
+    try:
+        return tx.__exit__(None, None, None)
+    except Exception as ex:  # noqa: BLE001
+        return repr(ex)
 
 
 def perimeter(x0, z0, x1, z1):
@@ -331,6 +504,25 @@ def clear_huge_plants(B, margin=6, tile=16):
 
 
 def prepare_site(B, rect, rows, rid):
+    """The site prep proper (_prepare_site), run on a map first swept of intruders. Wild animals, entities and strangers near
+    the plot are removed BEFORE the colonist walks in (reveal() teleports him across the plot and ticks the clock there), a
+    disturbance that still lands inside the prep is recovered by _BridgeBase.ticks (site_recover) and recorded as a SITE note
+    with phase "prepare" -- it no longer stops the block (2026-10-19: two reruns of proof_hose realflow ended UNMEASURED on a
+    Fingerspike arriving and on a colonist-fight bruise, both inside reveal)."""
+    SITE_PHASE[0] = "prepare"
+    try:
+        try:
+            swept = remove_intruders(B, rect)
+            if swept["removed"] or swept["left"]:
+                SITE_NOTES.append({"id": "%s_site_sweep" % rid, "detail": swept})
+        except Exception as ex:  # noqa: BLE001 - the sweep is a courtesy; the read-back below still gates the site
+            SITE_NOTES.append({"id": "%s_site_sweep_failed" % rid, "detail": repr(ex)})
+        return _prepare_site(B, rect, rows, rid)
+    finally:
+        SITE_PHASE[0] = "measure"
+
+
+def _prepare_site(B, rect, rows, rid):
     """Make a site's cells independent of the quicktest map's random terrain (roofed ruins, rock, plants, non-soil floor).
     Clear everything, Soil, unfog, remove roof, then READ BACK: any roof or any thing still standing in the rect is an
     environmental block and is recorded UNMEASURED (never a mod FAIL). Returns True when the site is ready."""
