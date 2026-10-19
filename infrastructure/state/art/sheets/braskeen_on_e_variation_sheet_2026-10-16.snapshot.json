@@ -1,30 +1,62 @@
 {
  "biome": "SUBJECTS_braskeen_on_e_variation",
- "built": "2026-10-16T07:56:57-0700",
+ "built": "2026-10-19T04:34:06-0700",
  "census": "Transient/biome_ffar/braskeen_on_e_variation.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 20 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 542 active",
  "rows": {
   "RM_Braskeen": {
    "columns": {
     "A": {
      "single": "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
+    },
+    "B": {
+     "single": "6d792f036e00cfbf70da14356661e8ccd4d859ebe1dcca3d7f2b43fe07f4b06b"
+    },
+    "C": {
+     "single": "0c1911ef2c1489297b3ea3aa8cc031a2690b80d456e667cc5353fb19b38f8195"
+    },
+    "D": {
+     "single": "b03534e14dff577504c2ffdb30a7326b87eef80ad910a28862d38b28a049775a"
+    },
+    "E": {
+     "single": "9c1faa7ca91933baad3baf83a14d6618daebc4b09c7f615178ae38a71770a40c"
+    },
+    "F": {
+     "single": "61371decb5b0f076e9daf39b973833c00e90aee2c8b412a8b86e83934ce886f1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Braskeen"
+    "A": "Things/Plant/RM_Braskeen",
+    "B": "Things/Plant/RM_Braskeen",
+    "C": "Things/Plant/RM_Braskeen",
+    "D": "Things/Plant/RM_Braskeen",
+    "E": "Things/Plant/RM_Braskeen",
+    "F": "Things/Plant/RM_Braskeen"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Braskeen (1 of 1) \u2014 Miasma"
+    "A": "IN GAME \u2014 random variant RM_Braskeen (1 of 2) \u2014 Miasma",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Braskeen_b (2 of 2) \u2014 Miasma",
+    "C": "render braskeen_onE_v1",
+    "D": "render braskeen_onE_v2",
+    "E": "render braskeen_onE_v4",
+    "F": "render braskeen_onE_v5"
    },
    "pools": [
     "Things/Plant/RM_Braskeen"
    ],
    "res": "Things/Plant/RM_Braskeen",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "0b0264cb3dd0fd3fee3c360cf8a66d7e44f6d8a92b10f3bb504fcf0bfa1d9ddf"
+   ],
    "subject_key": "braskeen"
   }
  },

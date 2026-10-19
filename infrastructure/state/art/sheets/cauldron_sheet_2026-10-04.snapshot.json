@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-14T20:56:12-0700",
+ "built": "2026-10-19T04:35:37-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 542 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -27,15 +27,13 @@
      "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
      "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
     },
-    "E": {
-     "east": "64e5782144cd9f1f6724fd10e71e195ead22b4a1e534cad99b2b8711c41d406c",
-     "north": "183283e6e31e28eb4db635cb1196ebd436163e7cefc30f387a34f5c14c885fb9",
-     "south": "2381b2320ac1db1924a7f5066c7cb604f03b38cc544ee799450c48831ec1bc63"
+    "G": {
+     "single": "8f4a2f73d82f7546fb3a9af1b15a1967b50023bf97647f098ffe10064abe7bc3"
     },
-    "F": {
-     "east": "d29edad23278ca6e44e05033e0ae4571798b283d90b58b56697a28d608915521",
-     "north": "5f4125884b79acfaa5e76660d64dec28684ef29d5335b9aef7986f1118df8329",
-     "south": "d2e620ee69a5a39f6a6f01c5bbbc3bb97a3a097b885fdf48a3b771c3e345898c"
+    "H": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "dc5952fbeb5cc8e2a105030f3d8296023e06a4bd9eb65731b1609ebb1ad7d2da",
+     "south": "8a78ca5f2891954c43e951f7912e7e630cc92de0d7a0b4402825d55b1ae7224c"
     }
    },
    "graphic_of": {
@@ -43,22 +41,18 @@
     "B": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
     "C": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
     "D": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
-    "E": "Things/Pawn/Animal/AA_BedBug/AA_BedBug2",
-    "F": "Things/Pawn/Animal/AA_BedBug/AA_BedBug3"
+    "G": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+    "H": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_BedBug_v1",
     "C": "render enact_be511e0a_bedbug_v1",
     "D": "render cauldronfix_bedbug_v2",
-    "E": "IN GAME \u2014 Alpha Animals",
-    "F": "IN GAME \u2014 Alpha Animals"
+    "G": "render donorart_p2_bedbug_egg_v1",
+    "H": "render standtall_b1_rm_bedbug"
    },
-   "pools": [
-    "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
-    "Things/Pawn/Animal/AA_BedBug/AA_BedBug2",
-    "Things/Pawn/Animal/AA_BedBug/AA_BedBug3"
-   ],
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
    "reserved": [
     "A",
@@ -66,7 +60,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "shownBase": [
     "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
@@ -94,37 +90,19 @@
      "east": "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
      "north": "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b",
      "south": "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417"
-    },
-    "D": {
-     "east": "f4017e55013d5661d09dca45aac59033b3c25f743bdfc5f056342eb20041bdc9",
-     "north": "fcdb465c02d69456761fe989800331564020d6011570b80fb15740ce60f03f4e",
-     "south": "5ae22e8dd7300e8834dee4ab57fb0e902db0358d81126c601bc5b4f8108c4d4a"
-    },
-    "E": {
-     "east": "be4c35bc46f335cffc0ecb8e85672f05d8712b9868fd840a978ffc4dbce79f50",
-     "north": "018019d8351bf2c5c3ec9d48c438a1dcf5883167b31b74eee91cff7b0106cd16",
-     "south": "f700810dd0b60310f52419fbad378ab19ae4f1a33f82f209de29fb38b2f61234"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
     "B": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
-    "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
-    "D": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit2",
-    "E": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit3"
+    "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_CrystalMit_v1",
-    "C": "render enact_f2b850a2_crystalmit_v1",
-    "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "C": "render enact_f2b850a2_crystalmit_v1"
    },
-   "pools": [
-    "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
-    "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit2",
-    "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit3"
-   ],
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
    "reserved": [
     "A",
@@ -161,7 +139,7 @@
     "B": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_DecayDrake_v1"
    },
    "pools": [],
@@ -228,11 +206,11 @@
     "G": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_GiantCrownedSilkie_v1",
-    "C": "IN GAME \u2014 Alpha Animals",
-    "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals",
+    "C": "donor original \u2014 Alpha Animals",
+    "D": "donor original \u2014 Alpha Animals",
+    "E": "donor original \u2014 Alpha Animals",
     "F": "render enact_4d78432e_giantcrownedsilkie_v1",
     "G": "render cauldronfix_giantcrownedsilkie_v2"
    },
@@ -284,7 +262,7 @@
     "B": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_Helixien_v1"
    },
    "pools": [],
@@ -321,7 +299,7 @@
     "C": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "C": "render enact_d3c59886_infectedaerofleet_v1"
    },
    "pools": [],
@@ -359,7 +337,7 @@
     "B": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_LuciferBug_v1"
    },
    "pools": [],
@@ -396,7 +374,7 @@
     "B": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_OcularJelly_v1"
    },
    "pools": [],
@@ -433,7 +411,7 @@
     "B": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_Plasmorph_v1"
    },
    "pools": [],
@@ -488,9 +466,9 @@
     "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
-    "B": "IN GAME \u2014 Alpha Animals",
-    "C": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
+    "B": "donor original \u2014 Alpha Animals",
+    "C": "donor original \u2014 Alpha Animals",
     "D": "render gapall_AA_Radyak_v1",
     "E": "render enact_f3decf4d_radyak_v1"
    },
@@ -537,7 +515,7 @@
     "B": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render gapall_AA_RipperHound_v1"
    },
    "pools": [],
@@ -685,19 +663,25 @@
     },
     "D": {
      "north": "69d3d9b67fa6692eb7bf52aa14b333e57e2e2a06584589fc4ee128ab29fec9fc"
+    },
+    "E": {
+     "east": "4776936f19926bf614f796a3851d808f490872d9bd150eac50baccbebd3a21e4",
+     "south": "ae55f4ed4754f559f4f7a39ddf352ce3dc28a48050a9eaa6773b7891020d6313"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
     "B": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
     "C": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Vanilla Genetics Expanded",
+    "A": "donor original \u2014 Vanilla Genetics Expanded",
     "B": "render gapall_GR_Beetlefleet_v1",
     "C": "render gapall_GR_Beetlefleet_v1",
-    "D": "render enact_c8bcd172_garsulix_north_v1"
+    "D": "render enact_c8bcd172_garsulix_north_v1",
+    "E": "IN GAME \u2014 Cauldron"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
@@ -705,7 +689,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "0beaebade447fef66844c563e919c8e7a97729f42d97911c752fa13cd36675e8",
@@ -968,15 +953,17 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
-    "B": "_byname",
-    "C": "_byname"
+    "B": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
+    "C": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron",
-    "B": "render keeningcordax_v3",
-    "C": "render gap_RM_Dewfall_KeeningCordax_dew"
+    "A": "IN GAME \u2014 random variant RM_KeeningCordax_a_a (1 of 3) \u2014 Cauldron",
+    "B": "IN GAME \u2014 random variant RM_KeeningCordax_a_c (3 of 3) \u2014 Cauldron",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_KeeningCordax_a_b (2 of 3) \u2014 Cauldron"
    },
-   "pools": [],
+   "pools": [
+    "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a"
+   ],
    "res": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
    "reserved": [
     "A",
@@ -1017,18 +1004,26 @@
      "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
      "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
      "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+    },
+    "B": {
+     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+     "north": "b9b8371b78698e470f8e66d6d198e668213c96a3b152e139a63867877df46c25",
+     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+    "A": "_byname",
+    "B": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "render rot_wildpod_v2",
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
@@ -1158,18 +1153,26 @@
      "east": "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
      "north": "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3",
      "south": "9316d67739073805bcacb4f25535ca053fbfe8f7e7dce37f0259be624404d5bd"
+    },
+    "B": {
+     "east": "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
+     "north": "96254924c22c1d2b950dc5e2223035a331c78fb2ef8119f91334c4e83402aa47",
+     "south": "b599ac8df9eaabfdd43a3fe2ff174883d65e632aef8620dfe1b71640e9638afd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Suush/RM_Suush"
+    "A": "Things/Pawn/Animal/RM_Suush/RM_Suush",
+    "B": "Things/Pawn/Animal/RM_Suush/RM_Suush"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron"
+    "A": "render cauldron_suush",
+    "B": "IN GAME \u2014 Cauldron"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Suush/RM_Suush",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3",
@@ -1192,12 +1195,10 @@
     "B": "Things/Plant/RM_TreeMartyr"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant MartyrTree_a (1 of 1) \u2014 Cauldron"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_TreeMartyr_v1"
    },
-   "pools": [
-    "Things/Plant/RM_TreeMartyr"
-   ],
+   "pools": [],
    "res": "Things/Plant/RM_TreeMartyr",
    "reserved": [
     "A",
@@ -1238,15 +1239,20 @@
     },
     "B": {
      "single": "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c"
+    },
+    "C": {
+     "single": "36b7b61f0f61c900206de9c4363c27b230d0c82426d4cd0ffe62844898b7824f"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_TwistingThornwood",
-    "B": "Things/Plant/RM_TwistingThornwood"
+    "B": "Things/Plant/RM_TwistingThornwood",
+    "C": "_byname"
    },
    "labels": {
     "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant TwistingThornwood_a (1 of 1) \u2014 Cauldron"
+    "B": "IN GAME \u2014 random variant TwistingThornwood_a (1 of 1) \u2014 Cauldron",
+    "C": "render dregen_RM_TwistingThornwood_TwistingThornwooda_v1"
    },
    "pools": [
     "Things/Plant/RM_TwistingThornwood"
@@ -1254,7 +1260,8 @@
    "res": "Things/Plant/RM_TwistingThornwood",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c",
@@ -1273,21 +1280,29 @@
      "east": "4e1cb10541d63a2586631cfb334427cd32fa75e9df2c99c31b0f9c4af51ae7c4",
      "north": "bffe8fadce49725788be47da27f00789b0614986a3e7f1566a55326e09c0f7bb",
      "south": "527e2e609dbb5e5612a08701c0f0af1a934a7a222b6f0017a236e70fbda41a78"
+    },
+    "C": {
+     "east": "c29c7ef46e3f96095e7a463eef8e3a8a18911dbd7ed22520ae15fdd060493c5f",
+     "north": "dba7a67e7c725911c6e7ed3ab72505ca99c29d9de13d2d1415880c5200385d8f",
+     "south": "4e54b01f0d001615f67a1d483b9f538982c74f2dd7727ebed5db634181072671"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss",
-    "B": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss"
+    "B": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss",
+    "C": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron",
-    "B": "render RM_Vexxiss_v2"
+    "A": "render RM_Vexxiss",
+    "B": "render RM_Vexxiss_v2",
+    "C": "IN GAME \u2014 Cauldron"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "4e1cb10541d63a2586631cfb334427cd32fa75e9df2c99c31b0f9c4af51ae7c4",
@@ -1354,33 +1369,40 @@
      "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
      "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
     },
-    "B": {
-     "east": "cae403ba359002e43bc61089bfa26b1155b6a7f6aad89b62d4a7cfb23baea7ea",
-     "north": "14dcdb69251f771c28241ab92fb30246c32c76563b9aac3951899bc57f4f7bc7",
-     "south": "ed17f9f93180fffdf1aa0e15204ab5344d7c18cba004305bdb031a7a44032f0a"
-    },
     "C": {
      "east": "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
      "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
      "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
+    },
+    "D": {
+     "east": "efd923996ac19754fa0bc545a4dc823cb4ab9968cc6d6529fe5ade17d94dcd75",
+     "north": "5acb23c0e87d2e815511979595b57e2c069d7244e404c0d3dae837e952e0cd8f",
+     "south": "a8ba302dc700373cbb387089e6083d19ca10eccd362f1ecef28e5553f42dcff6"
+    },
+    "E": {
+     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d"
     }
    },
    "graphic_of": {
     "A": "swanimals/GraniteSlug/GraniteSlug",
-    "B": "swanimals/GraniteSlug/GraniteSlug",
-    "C": "swanimals/GraniteSlug/GraniteSlug"
+    "C": "swanimals/GraniteSlug/GraniteSlug",
+    "D": "swanimals/GraniteSlug/GraniteSlug",
+    "E": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render stillsand_s2_RSW_GraniteSlug_v3",
-    "C": "history SWBestiary 2026-09-17"
+    "A": "render stillsand_regen_RSW_GraniteSlug_v2",
+    "C": "history SWBestiary 2026-09-17",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_graniteslug"
    },
    "pools": [],
    "res": "swanimals/GraniteSlug/GraniteSlug",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "shownBase": [
     "14dcdb69251f771c28241ab92fb30246c32c76563b9aac3951899bc57f4f7bc7",
@@ -1433,21 +1455,29 @@
     "B": {
      "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
      "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
+    },
+    "C": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+     "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
     }
    },
    "graphic_of": {
     "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
-    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+    "B": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render warscar_Mynock_v2"
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render warscar_Mynock_v2",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
@@ -1486,19 +1516,26 @@
      "east": "3fbc68e68031cb909825fc8d4c2bd3ff8f1ddc498c1ee1e910454a755b2684f3",
      "north": "5b434bde0eb5cd44b6ae75d14deeefe1cfc005211c1ffcbe9336a3953e909cd2",
      "south": "0075abf2ba7ef4784b62348c2f019863997ddbc6382cafa736bfb1edecf6f506"
+    },
+    "F": {
+     "east": "3fbc68e68031cb909825fc8d4c2bd3ff8f1ddc498c1ee1e910454a755b2684f3",
+     "north": "d7869989dc69ba8ac9efdab895b3c86cc41000567da56133033b9d1fc73309d6",
+     "south": "0075abf2ba7ef4784b62348c2f019863997ddbc6382cafa736bfb1edecf6f506"
     }
    },
    "graphic_of": {
     "A": "swanimals/Neebray/Neebray",
     "B": "_flip:swanimals/Neebray/Neebray_Flying_",
     "D": "swanimals/Neebray/Neebray",
-    "E": "swanimals/Neebray/Neebray"
+    "E": "swanimals/Neebray/Neebray",
+    "F": "swanimals/Neebray/Neebray"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "history SWBestiary 2026-09-17",
     "B": "IN GAME \u2014 Neebray_Flying_",
     "D": "render enact_cabe4675_neebray_v1",
-    "E": "render cauldronfix_neebray_v2"
+    "E": "render cauldronfix_neebray_v2",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Neebray/Neebray",
@@ -1507,7 +1544,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "31abfd6f66b85c947b5093bdc1cfdc0fbd98fc58313744d3514c03bdbbf600d2",
@@ -1584,21 +1622,37 @@
      "east": "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
      "north": "91578cd65de4259e1b5bc0916a045069dbc063b28ac48f320f48497c35594de6",
      "south": "8f631848c120023acff8586cff3b792f137d95a71f6f9f7547ebe5288b946d87"
+    },
+    "C": {
+     "east": "4731644e229ee21b2f9d6ddc410ec03eda7d51a8ee8dd9fd18644837575dd19e",
+     "north": "346ce9cb3a60fa50e7ed7b13e6d8dedb927c0a4caa56148b02026a8280f75f4f",
+     "south": "5bd76ca7fa1fd17addd6c5fe97d76e2a35dad024c97dcf64331a12e9611f900e"
+    },
+    "D": {
+     "east": "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
+     "north": "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
+     "south": "4afb1a23e6cb7960d4efb76d15526bbb24d109c9cf1a8347cb26a4328d3f9b44"
     }
    },
    "graphic_of": {
     "A": "swanimals/Skalder/Skalder",
-    "B": "swanimals/Skalder/Skalder_Swimming"
+    "B": "swanimals/Skalder/Skalder_Swimming",
+    "C": "swanimals/Skalder/Skalder",
+    "D": "swanimals/Skalder/Skalder"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render dregen_RSW_Skalder_SkalderSwimming_v1",
+    "D": "render longshade_rsw_skalder_v1"
    },
    "pools": [],
    "res": "swanimals/Skalder/Skalder",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "shownBase": [
     "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
@@ -1668,9 +1722,6 @@
      "north": "209a404f0eedf64d73c25f7f126f51f25fea2a6c049f225b733de2224874aff3",
      "south": "1ca98a94ea0318c3ad6b5e865f3ca5846193d63bd8c430e0fe642ef476a06846"
     },
-    "F": {
-     "east": "7f7a8260f125ee3bda4cf404193fb8df4e138f4313ee4acecd224351519c9a0d"
-    },
     "G": {
      "east": "daa8f55220a1b9598b2731e4986b9cf7f920f79701dffe207d2b9cae790ae28d"
     },
@@ -1687,6 +1738,17 @@
     },
     "K": {
      "east": "90e21a2a9ba21b537231e1cddf88ef64faa50c6fb690a9592d0b1b292778d821"
+    },
+    "L": {
+     "east": "7fc773ea34ae12f38102ff9bcf0baae21c29435b6c7cc4c87154e9daa89eeacd"
+    },
+    "M": {
+     "east": "cb8056760f77451b1e1bd0294936719fac62f8669c8c2ac30319a28cd37cba22"
+    },
+    "N": {
+     "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
+     "north": "afa9657f1b60acb6890979b44807432c67ab2073afac37bd0e5595ea734689c2",
+     "south": "d80d9a67d0cfd71ea503701c5dc28da72cd6d3b6fd5303ab085aac795c6afbb5"
     }
    },
    "graphic_of": {
@@ -1694,24 +1756,28 @@
     "B": "swanimals/Silooth/Silooth",
     "C": "swanimals/Silooth/Silooth_j",
     "E": "swanimals/Silooth/Silooth",
-    "F": "swanimals/Silooth/Silooth",
     "G": "swanimals/Silooth/Silooth",
     "H": "swanimals/Silooth/Silooth",
     "I": "swanimals/Silooth/Silooth",
     "J": "swanimals/Silooth/Silooth",
-    "K": "swanimals/Silooth/Silooth"
+    "K": "swanimals/Silooth/Silooth",
+    "L": "swanimals/Silooth/Silooth",
+    "M": "swanimals/Silooth/Silooth",
+    "N": "swanimals/Silooth/Silooth_j"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "A": "donor original \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Silooth_v1",
-    "C": "IN GAME \u2014 SWBestiary",
+    "C": "donor original \u2014 mlie.starwarsanimalcollection",
     "E": "render enact_7a2b5db5_silooth_v1",
-    "F": "render cauldronfix_silooth_v5",
     "G": "render cauldronfix_silooth_v5b",
     "H": "render cauldronfix_silooth_v6",
     "I": "render cauldronfix_silooth_v2",
     "J": "render cauldronfix_silooth_v3",
-    "K": "render cauldronfix_silooth_v4"
+    "K": "render cauldronfix_silooth_v4",
+    "L": "render dregen_RSW_Silooth_Siloothj_v1",
+    "M": "render cauldronfix_silooth_v5",
+    "N": "IN GAME \u2014 SWBestiary"
    },
    "pools": [],
    "res": "swanimals/Silooth/Silooth",
@@ -1726,7 +1792,10 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L",
+    "M",
+    "N"
    ],
    "shownBase": [
     "0f73e9092f41ee7beac27c033f2fbb3968a4c041438f872e682cecc713be7252",
@@ -1802,5 +1871,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "203a98a0f90828b9"
+ "snapshotId": "b1c24502d26896b5"
 }

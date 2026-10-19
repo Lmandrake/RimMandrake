@@ -1,9 +1,9 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-10T23:27:02-0700",
+ "built": "2026-10-19T04:33:25-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "live ModsConfig.xml: 542 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
@@ -11,13 +11,20 @@
      "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
      "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
      "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
+    },
+    "G": {
+     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
+     "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
+     "south": "b3e08d85a3db0739d1ac5e6c97fcd82b09e1e7a957482129761a54d5dd7412c3"
     }
    },
    "graphic_of": {
-    "E": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert"
+    "E": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
+    "G": "_byname"
    },
    "labels": {
-    "E": "IN GAME \u2014 BlueDesert"
+    "E": "IN GAME \u2014 BlueDesert",
+    "G": "render bluedesert_Thunderbeast_v2 \u2014 grader flagged (advisory)"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
@@ -27,7 +34,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "shownBase": [
     "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
@@ -45,15 +53,20 @@
     },
     "B": {
      "single": "833b2b9be1124774974b77dcbc4ecd41864290edabe2dd0d3c439960220a0c8f"
+    },
+    "C": {
+     "single": "4dc08d5832a0bbf2e4004fac97875cb4312ae0e9453378b203765a07c9d709d6"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
-    "B": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
+    "B": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Chimeglobe_a (1 of 2) \u2014 BlueDesert",
-    "B": "IN GAME \u2014 random variant RM_Chimeglobe_b (2 of 2) \u2014 BlueDesert"
+    "B": "IN GAME \u2014 random variant RM_Chimeglobe_b (2 of 2) \u2014 BlueDesert",
+    "C": "render dregen_RM_Chimeglobe_RMChimeglobea_v1"
    },
    "pools": [
     "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
@@ -61,7 +74,8 @@
    "res": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "2f73cf811685700858536bc89baf9fa6fe0563c7db08df5e10cb88cbe2b0d8fc",
@@ -75,18 +89,26 @@
      "east": "a2fdfba3c88e058d381b3a5b53df9abd4896e4678667b06d09b4e439469ab145",
      "north": "a2f99d3ab38760f4b21f3d3d9e277c56f5a9e91cd1f614044d166a71c70364ab",
      "south": "3a991588fd8c8219e9c67b3e919a2266b8757ed7707ebceaa964521b214f58fe"
+    },
+    "B": {
+     "east": "a2fdfba3c88e058d381b3a5b53df9abd4896e4678667b06d09b4e439469ab145",
+     "north": "04b96bbc0bf0a20eb41507d0446aa67d137f0d5712d021f95de4fd85005a58e5",
+     "south": "90008c9b7ce36352c717db318941a2561a8246094e399716fa492994869f4b3a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Dorrak/RM_Dorrak"
+    "A": "Things/Pawn/Animal/RM_Dorrak/RM_Dorrak",
+    "B": "Things/Pawn/Animal/RM_Dorrak/RM_Dorrak"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "render bluedesert_dorrak",
+    "B": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Dorrak/RM_Dorrak",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "3a991588fd8c8219e9c67b3e919a2266b8757ed7707ebceaa964521b214f58fe",
@@ -106,22 +128,30 @@
      "east": "91343b9b5236926abc6d07738fb4ca5fa778b1622c4a4adb4f0984ab59154091",
      "north": "a4ac897f818f59dcc6d1643ab36081fd81ed0873dc6af76db203851c14fb54ad",
      "south": "245286304fe3ec07bd8f240095c74c41945cd23fcc2863cad2c5988315b37fbc"
+    },
+    "D": {
+     "east": "55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f",
+     "north": "1dba5b34c44768c87a9684ef19eb72639af099b8c1abfa8532f75d8418fb7897",
+     "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
     }
    },
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
-    "C": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
+    "C": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
+    "D": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
    },
    "labels": {
-    "B": "IN GAME \u2014 BlueDesert",
-    "C": "render enact_e3e8ae91_dovvik_v1"
+    "B": "render bluedesert_Dovvik_v2 \u2014 grader flagged (advisory)",
+    "C": "render enact_e3e8ae91_dovvik_v1",
+    "D": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849",
@@ -140,15 +170,20 @@
     },
     "C": {
      "single": "4ac6dd293a467ad1c1009ceb91e62c4861d9b7e721cecefaea63a75bde9cb81c"
+    },
+    "D": {
+     "single": "8d42fd9a8405b55b74f579180036977ecc6f29ab0555195f1dd5a8b9b2431fd0"
     }
    },
    "graphic_of": {
     "B": "Things/Plant/RM_Glassfern/RM_Glassfern",
-    "C": "Things/Plant/RM_Glassfern/RM_Glassfern"
+    "C": "Things/Plant/RM_Glassfern/RM_Glassfern",
+    "D": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Glassfern_a (1 of 2) \u2014 BlueDesert",
-    "C": "IN GAME \u2014 random variant RM_Glassfern_b (2 of 2) \u2014 BlueDesert"
+    "C": "IN GAME \u2014 random variant RM_Glassfern_b (2 of 2) \u2014 BlueDesert",
+    "D": "render dregen_RM_Glassfern_RMGlassferna_v1"
    },
    "pools": [
     "Things/Plant/RM_Glassfern/RM_Glassfern"
@@ -157,7 +192,8 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "245ce50173522853c242c090a25cb3e0120411b2d61e6d045a548a975792edc8",
@@ -187,10 +223,10 @@
     "D": "Things/Plant/RM_Kethevar/RM_Kethevar"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Kethevar_a (1 of 4) \u2014 BlueDesert",
+    "A": "render RM_Kethevar",
     "B": "IN GAME \u2014 random variant RM_Kethevar_b (2 of 4) \u2014 BlueDesert",
     "C": "IN GAME \u2014 random variant RM_Kethevar_c (3 of 4) \u2014 BlueDesert",
-    "D": "IN GAME \u2014 random variant RM_Kethevar_d (4 of 4) \u2014 BlueDesert"
+    "D": "IN GAME \u2014 random variant RM_Kethevar_a (1 of 4) \u2014 BlueDesert"
    },
    "pools": [
     "Things/Plant/RM_Kethevar/RM_Kethevar"
@@ -216,18 +252,26 @@
      "east": "eaabe2666d6481ad76d15157f26f2dcd04214279057a8809ab32e78b5014c466",
      "north": "148e885a30d7947de7b6ee689e5d610789c7c23c6b3b8d906d22fe02d92b781c",
      "south": "0ef866d122e6d2b8b3a2160933cc0cf60e59bd5581ed01c8626a691623bf7971"
+    },
+    "B": {
+     "east": "eaabe2666d6481ad76d15157f26f2dcd04214279057a8809ab32e78b5014c466",
+     "north": "88b95b035a75cf7af110779532d1299ec1ced3597b3fb01ab5a910e4473bbcb9",
+     "south": "b741e4f2c2ee862c3f7a174fa9790bde9b916c819b5a6509b4d221635f3516a2"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Krissek/RM_Krissek"
+    "A": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
+    "B": "Things/Pawn/Animal/RM_Krissek/RM_Krissek"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "render bluedesert_krissek",
+    "B": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "0ef866d122e6d2b8b3a2160933cc0cf60e59bd5581ed01c8626a691623bf7971",
@@ -249,19 +293,24 @@
     },
     "D": {
      "single": "4848ecabcbeee9b4ba97573e3279c742978959ffa8fa3d468bcbd63ff76b1fb8"
+    },
+    "E": {
+     "single": "cb7c468e500da153e7c49bb4bb0ece4755b1c7666ae4aa45bc3b5f32694d6ccd"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
     "B": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
     "C": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
-    "D": "Things/Plant/RM_Lisqueth/RM_Lisqueth"
+    "D": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
+    "E": "Things/Plant/RM_Lisqueth/RM_Lisqueth"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Lisqueth_a (1 of 4) \u2014 BlueDesert",
+    "A": "render RM_Lisqueth",
     "B": "IN GAME \u2014 random variant RM_Lisqueth_b (2 of 4) \u2014 BlueDesert",
     "C": "IN GAME \u2014 random variant RM_Lisqueth_c (3 of 4) \u2014 BlueDesert",
-    "D": "IN GAME \u2014 random variant RM_Lisqueth_d (4 of 4) \u2014 BlueDesert"
+    "D": "IN GAME \u2014 random variant RM_Lisqueth_d (4 of 4) \u2014 BlueDesert",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Lisqueth_a (1 of 4) \u2014 BlueDesert"
    },
    "pools": [
     "Things/Plant/RM_Lisqueth/RM_Lisqueth"
@@ -271,7 +320,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "4848ecabcbeee9b4ba97573e3279c742978959ffa8fa3d468bcbd63ff76b1fb8",
@@ -351,17 +401,31 @@
      "east": "1546ea7ca7cfa4b76944720589e0ba0648553b9113dd9d20d46c17746f1fd5ad",
      "north": "958321a0a3f8bfeac8e856bed567af389c0c1c764447d9dd319ba59271e09b67",
      "south": "bdbce84c6f7c45560be963c1982e7396e4d57c18ec18bf0f5eb9014177c59c93"
+    },
+    "F": {
+     "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
+     "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
+     "south": "66ef3a75f5dc5029b61afec58002b06f91ce63ef195ff656600a8fc4efa259e4"
+    },
+    "G": {
+     "east": "17c40e9cd5ecfc1f184ba1f3d3fc6213bfb257809438e57699d8918f829c323e",
+     "north": "ca1f6642164f4403f6edd00351153c044d60424a6a7b37c8f7664ff724450cee",
+     "south": "d6ab02fbf76b45d84a7896d06e9405c5fcb9ece5b1aa5085bda41d7cf71686ef"
     }
    },
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
     "D": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
-    "E": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
+    "E": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
+    "F": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
+    "G": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
     "B": "IN GAME \u2014 BlueDesert",
     "D": "render bluedesert_Ossivel_v2",
-    "E": "render bluedesert_Ossivel_v4"
+    "E": "render bluedesert_Ossivel_v4",
+    "F": "render bluedesert_Ossivel_v3",
+    "G": "render bluedesert_Ossivel_v2"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
@@ -370,7 +434,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "shownBase": [
     "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece",
@@ -392,17 +458,22 @@
     },
     "C": {
      "single": "8e4545b038194ce05137a912e0b3b6669ffcef1a4c78a41b4d21f2d46ed403fb"
+    },
+    "D": {
+     "single": "ccdbee6450d5768627557ec702df44205a4ca5271d236692195e3a66fa871c3e"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Palefloss/RM_Palefloss",
     "B": "Things/Plant/RM_Palefloss/RM_Palefloss",
-    "C": "Things/Plant/RM_Palefloss/RM_Palefloss"
+    "C": "Things/Plant/RM_Palefloss/RM_Palefloss",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 random variant RM_Palefloss_a (1 of 3) \u2014 BlueDesert",
     "B": "IN GAME \u2014 random variant RM_Palefloss_b (2 of 3) \u2014 BlueDesert",
-    "C": "IN GAME \u2014 random variant RM_Palefloss_c (3 of 3) \u2014 BlueDesert"
+    "C": "IN GAME \u2014 random variant RM_Palefloss_c (3 of 3) \u2014 BlueDesert",
+    "D": "render dregen_RM_Palefloss_RMPaleflossa_v1"
    },
    "pools": [
     "Things/Plant/RM_Palefloss/RM_Palefloss"
@@ -411,7 +482,8 @@
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "8e4545b038194ce05137a912e0b3b6669ffcef1a4c78a41b4d21f2d46ed403fb",
@@ -478,22 +550,30 @@
      "east": "2a0cd5c520dfc7ec8e314a0e68d5b084142033e11381d49c18f0a16754e89feb",
      "north": "050dc725e638417f455fdc60a99ca71fdc9043a6f70ae6a906fba3d6d5f049cb",
      "south": "d119848378e3301d387013789ad81bc0300699d2f10cde5b34bfd57fbffac89a"
+    },
+    "D": {
+     "east": "e4f4570b4a51414d43a8acc2ee44de01e6281097c1db70414f2f38e91851ad8f",
+     "north": "2325683466513f02d97eea3ca780f7d6858dd4cce59b6028d7e37cd2368211c3",
+     "south": "5333d045c2d9c1a5c42b9c4b32598de374f6659cbc1ffb0154b982720094a7c2"
     }
    },
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
-    "C": "Things/Pawn/Animal/RM_Utikka/RM_Utikka"
+    "C": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
+    "D": "Things/Pawn/Animal/RM_Utikka/RM_Utikka"
    },
    "labels": {
-    "B": "IN GAME \u2014 BlueDesert",
-    "C": "render enact_d67b8fd8_utikka_v1"
+    "B": "render bluedesert_Utikka_v2",
+    "C": "render enact_d67b8fd8_utikka_v1",
+    "D": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae",
@@ -527,10 +607,10 @@
     "D": "Things/Plant/RM_Vashpuk/RM_Vashpuk"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Vashpuk_a (1 of 4) \u2014 BlueDesert",
+    "A": "render RM_Vashpuk",
     "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_b (2 of 4) \u2014 BlueDesert",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_c (3 of 4) \u2014 BlueDesert",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_d (4 of 4) \u2014 BlueDesert"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_a (1 of 4) \u2014 BlueDesert"
    },
    "pools": [
     "Things/Plant/RM_Vashpuk/RM_Vashpuk"
@@ -553,18 +633,26 @@
      "east": "33a1ab7949e22cc6bac50f85ee8a72a5362833755f070fc8a429dbc2eb389b78",
      "north": "1442137f3ba034c0c75964157d92389fb346dfaeb7171b28dde07ac60a9ed00a",
      "south": "ec0a282e90165143166a264dfea688e228539c4522ef1451939eac2491f4f3bf"
+    },
+    "B": {
+     "east": "33a1ab7949e22cc6bac50f85ee8a72a5362833755f070fc8a429dbc2eb389b78",
+     "north": "8d3e77ec770618813b0c18847516117e6042f0fc554a22d82ed80322a72078e6",
+     "south": "e505c849c5a5e8f349e6195b9d619602d2b59c70ff4bd35f6ef31ff274cf5e3e"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Vekkit/RM_Vekkit"
+    "A": "Things/Pawn/Animal/RM_Vekkit/RM_Vekkit",
+    "B": "Things/Pawn/Animal/RM_Vekkit/RM_Vekkit"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "render bluedesert_vekkit",
+    "B": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Vekkit/RM_Vekkit",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "1442137f3ba034c0c75964157d92389fb346dfaeb7171b28dde07ac60a9ed00a",
@@ -594,7 +682,7 @@
     "F": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk"
    },
    "labels": {
-    "D": "render RM_Vhaulk_v3 \u2014 failed canon check",
+    "D": "render RM_Vhaulk_v3 \u2014 grader flagged (advisory)",
     "E": "IN GAME \u2014 BlueDesert",
     "F": "render RM_Vhaulk"
    },
@@ -639,10 +727,10 @@
     "D": "Things/Plant/RM_Virr/RM_Virr"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RM_Virr_a (1 of 4) \u2014 BlueDesert",
+    "A": "render RM_Virr",
     "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_b (2 of 4) \u2014 BlueDesert",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_c (3 of 4) \u2014 BlueDesert",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_d (4 of 4) \u2014 BlueDesert"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_a (1 of 4) \u2014 BlueDesert"
    },
    "pools": [
     "Things/Plant/RM_Virr/RM_Virr"
@@ -705,18 +793,26 @@
      "east": "1b37eddd55bdc7a6b7d67d70b30d3fdf743efbe0fc34c35a8ef0c7009bebb270",
      "north": "8bafebf4815f85db9e750cf9562adbd9cff4131a56c350d6b3c0269727f0518d",
      "south": "9c74011e26eec8806aaf2e73bb84b47d5cff4833d9f431231e7f041043f010b4"
+    },
+    "B": {
+     "east": "1b37eddd55bdc7a6b7d67d70b30d3fdf743efbe0fc34c35a8ef0c7009bebb270",
+     "north": "95d9baddbf1bf7ff8dc6275b43670eae1955c399abe8c300ed7bbd423aee4607",
+     "south": "6279fda66000c856a8e919cf221da7e328fc9fe1afff349e85b531774429e9f5"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz"
+    "A": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz",
+    "B": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "render bluedesert_zhaaz",
+    "B": "IN GAME \u2014 BlueDesert"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "1b37eddd55bdc7a6b7d67d70b30d3fdf743efbe0fc34c35a8ef0c7009bebb270",

@@ -1,0 +1,3603 @@
+{
+ "biome": "SUBJECTS_picks_icons",
+ "built": "2026-10-19T06:22:09-0700",
+ "census": "Transient/biome_ffar/picks_icons.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 536 active",
+ "rows": {
+  "HiTechResearchKit": {
+   "columns": {
+    "A": {
+     "single": "f363d5364d4cec4b4e205d763819225be77ca3a4dbf2fdac22225ee1af1f1662"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render HiTechResearchKit_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "hitechresearchkit"
+  },
+  "MultiAnalyzerResearchKit": {
+   "columns": {
+    "A": {
+     "single": "fa99802647e9850b0bfe6eb56dd9f163e4d45f0c94689c14aad558a2676caf8f"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render MultiAnalyzerResearchKit_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "multianalyzerresearchkit"
+  },
+  "Pyrinth": {
+   "columns": {
+    "A": {
+     "single": "52cce63dfc6fee733cb0ad290208eb885588a1d720e629b4fe2d249c524f47ed"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render Pyrinth_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pyrinth"
+  },
+  "PyrinthBlade": {
+   "columns": {
+    "A": {
+     "single": "4d0929cca7a880d98eb6213ccff5ebe95ba195d0f6bf23884c86bed0c74d7eb6"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render PyrinthBlade_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "pyrinthblade"
+  },
+  "RM_AluunCatch": {
+   "columns": {
+    "A": {
+     "single": "bcd9d78558e398a9b3fb6b72a3418a7b40c4f86e6ffc437188b58e15afd93f62"
+    },
+    "B": {
+     "single": "45e68a0a1e7c45e3de248011d4e530e4965424343601601b731c3b40c5b6d1f0"
+    },
+    "C": {
+     "single": "a0adc3fa4a181430419fa6e0a0d6e3aed9547e040a0bd040371cf53b032ca63d"
+    },
+    "D": {
+     "east": "8bee7d9d34749900b7d6830a927e2e2fa300133945824c0b90362813b9263e7c",
+     "north": "341334f0c670ccc872562b2027c4a5084aa4ee583ba2e574e86d3aaa4ad44667",
+     "south": "5f2802b2959d32bbb452478cb51e6bc6d1f3acc854cb2879d869f8924e8a1f69"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TwilightSea/RM_AluunCatch",
+    "B": "Things/Item/RM_TwilightSea/RM_AluunCatch",
+    "C": "Things/Item/RM_TwilightSea/RM_AluunCatch",
+    "D": "_reference:RM_Aluun"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_AluunCatch_v3_nooutline",
+    "C": "render phreg_RM_AluunCatch_v1",
+    "D": "render twilightsea_aluun_v2"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TwilightSea/RM_AluunCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "aluuncatch"
+  },
+  "RM_Attar": {
+   "columns": {
+    "A": {
+     "single": "26172c8d74929bde49155075ac60581be42d1dec825ed0745726af64e9d1cecc"
+    },
+    "B": {
+     "single": "68f18813a6b78ae1adf082657de5953b56d702f98352874fa090ba8f25de2a11"
+    },
+    "C": {
+     "single": "74425ba81e2f5a2aa34f976cf23f004c67b9c12a8678cdb6594da04d87f4c749"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Attar/RM_Attar",
+    "B": "Things/Item/Resource/RM_Attar/RM_Attar",
+    "C": "Things/Item/Resource/RM_Attar/RM_Attar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render RM_Attar_v3_nooutline",
+    "C": "history Miasma 2026-10-03"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Attar/RM_Attar",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "attar"
+  },
+  "RM_BellowsItem": {
+   "columns": {
+    "A": {
+     "single": "94e81bb3b447933edfecf66f51fab5cc8a048ed7973e7d6c538417c4a42f6392"
+    },
+    "B": {
+     "single": "7ae084b00a34bc72578ddd8977a53f40bafb61d094aef09262de4e886a24e94b"
+    },
+    "C": {
+     "east": "38b547df96afeb49a978415485f4e96ac4b88093cf946912022f99a5ca74b01f",
+     "north": "c247fdb90a3f55d30c7b574b78e6cf6d8377150fedca28c41cc567e0729ed5b5",
+     "south": "4dd6c8157fdab8e394aea69068f2f6de069a55d7ba56243d54976960a20fcf77"
+    },
+    "D": {
+     "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_BellowsItem",
+    "B": "Things/Item/RM_BellowsItem",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_BellowsItem_v3_nooutline",
+    "C": "render kit_bellows_v1",
+    "D": "render gapall_RM_Plant_Bellows_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_BellowsItem",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "bellowsitem"
+  },
+  "RM_Biosilica": {
+   "columns": {
+    "A": {
+     "single": "24189941a0ef036eb496e0862b1daad2b9abd23392179a73b371fb93244f351b"
+    },
+    "B": {
+     "single": "5a59859c46d8e5e2fb296ba29fc97455c5ae25c47acf29d2cfe6b38dcdeb6ae9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Biosilica",
+    "B": "Things/Item/Resource/RM_Biosilica"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Biosilica_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Biosilica",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "biosilica"
+  },
+  "RM_Bitumen": {
+   "columns": {
+    "A": {
+     "single": "25fa8e5c68d14a6f746a8619b32c44c350e6e9fcb76a6a196279cf910876bfe6"
+    },
+    "B": {
+     "single": "58642279bf906d93e61d572511a86fec16d097bf52dfb421b951dd32e740199e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Bitumen",
+    "B": "Things/Item/Resource/RM_Bitumen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Bitumen (1 of 1) \u2014 TheSump",
+    "B": "render RM_Bitumen_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_Bitumen"
+   ],
+   "res": "Things/Item/Resource/RM_Bitumen",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bitumen"
+  },
+  "RM_BladderFruit": {
+   "columns": {
+    "A": {
+     "single": "543fe3d805e6c7855d297162157998eea6e6fcc15f0646c55b40102283681dc5"
+    },
+    "B": {
+     "single": "ea07c6e552d332860cef9bc4fd6a929934c161de178a14b5893b8889f47ca420"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Plant/RM_BladderFruit",
+    "B": "Things/Item/Plant/RM_BladderFruit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render RM_BladderFruit_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Plant/RM_BladderFruit",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bladderfruit"
+  },
+  "RM_BladderboilCatch": {
+   "columns": {
+    "A": {
+     "single": "7650754ac1c1888db4a3356ef5633a60fc05d82b4153c62e886a9929a3fd4b22"
+    },
+    "B": {
+     "single": "da933ee74f8604ddf478796f739d37dced1c91077fdbfea5da67795767ea7638"
+    },
+    "C": {
+     "single": "f7215eb84d9ebfe3bf0a05dc08fe0c5f158308733c7f22699b53a6e6229b2bb5"
+    },
+    "D": {
+     "single": "b2e72fe2387f11fa8f5567cc9b770fb9bb6ea0c9182a9cb7bf41c93a78555296"
+    },
+    "E": {
+     "single": "00e3641c852d05d123f6c83945e17abafd0c71c28040097bfcd23f8c4191e84c"
+    },
+    "F": {
+     "single": "310fd5db7bd3899cbe277e8138c7ab774d0d69781afa8fc1e4c442ca17b653a7"
+    },
+    "G": {
+     "single": "fe96c6e25e7cfcce87ca217b0891dae406202a8439d880cd9b33a9e189e62dbd"
+    },
+    "H": {
+     "single": "eea25b3467344a5f2b26c6cb6ddd3d258fe4623a6018e978ffe78b54cf59fc85"
+    },
+    "I": {
+     "east": "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
+     "north": "66a28004fa1a26ee5f17d58b87459e3ce0dd8528957b5017a621425f68a4c6c4",
+     "south": "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db"
+    },
+    "J": {
+     "east": "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
+     "north": "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9",
+     "south": "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_BladderboilCatch",
+    "B": "Things/Item/Fish/RM_BladderboilCatch",
+    "C": "Things/Item/Fish/RM_BladderboilCatch",
+    "D": "Things/Item/Fish/RM_BladderboilCatch",
+    "E": "Things/Item/Fish/RM_BladderboilCatch",
+    "F": "Things/Item/Fish/RM_BladderboilCatch",
+    "G": "Things/Item/Fish/RM_BladderboilCatch",
+    "H": "Things/Item/Fish/RM_BladderboilCatch",
+    "I": "_reference:RM_Bladderboil",
+    "J": "_reference:RM_Bladderboil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_BladderboilCatch_v3_nooutline",
+    "C": "render phfix_RUT_BladderboilCatch_b",
+    "D": "render phfix_RUT_BladderboilCatch_a",
+    "E": "render scald2_bladderboilcatch_a",
+    "F": "render scald2_bladderboilcatch_b",
+    "G": "render scald2_bladderboilcatch_c",
+    "H": "render scald_bladderboilcatch_v1",
+    "I": "render standtall_b1_rm_bladderboil",
+    "J": "render scaldfloor_bladderboil"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_BladderboilCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "bladderboilcatch"
+  },
+  "RM_BloomLiquor": {
+   "columns": {
+    "A": {
+     "single": "7f2f5336566c54827d49f04b745fce66693490a0f9ea86b43fdeec5dc2afd0c1"
+    },
+    "B": {
+     "single": "751af6ef6b2e601f619ec9a6bc9572ea9b45ba76bb3e0ebd4f8af6fa3d1db4f1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_BloomLiquor",
+    "B": "Things/Item/RM_BloomLiquor"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_BloomLiquor_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_BloomLiquor",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "bloomliquor"
+  },
+  "RM_BlueIceMeltwaterCan": {
+   "columns": {
+    "A": {
+     "single": "20d42353e8177a06e0a9d24b4a6e4cf701463a1d9cbbe4aee8ac4029982b76cc"
+    },
+    "B": {
+     "single": "4a538a95d19462a724fa06796a633cc1bf77b6305e36851550349462c3f557ea"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan",
+    "B": "Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render RM_BlueIceMeltwaterCan_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "blueicemeltwatercan"
+  },
+  "RM_Bones": {
+   "columns": {
+    "A": {
+     "single": "fc67f9e8f4ea3ce4779d00b527d3789532719a7352a96059659890ae1bfd7dd3"
+    },
+    "B": {
+     "single": "a4d139169f115aab01d38ccd0c0b50e37ee4aa2bbace1c8052b214bb88cb40be"
+    },
+    "C": {
+     "single": "76b4a98a07db4c396cf093b4ee8b42fe9ed0d8b827c0f35bd4affbc4e613fad3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Bones",
+    "B": "Things/Item/Resource/RM_Bones",
+    "C": "Things/Item/Resource/RM_Bones"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Bones (1 of 1) \u2014 Miasma",
+    "B": "render RM_Bones_v3_nooutline",
+    "C": "render RM_Bones_v2"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_Bones"
+   ],
+   "res": "Things/Item/Resource/RM_Bones",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bones"
+  },
+  "RM_BrimlockWater": {
+   "columns": {
+    "A": {
+     "single": "af79bf17efce8630ae46303ced07003428085f6d7de1212f6d5af8d436bb15a9"
+    },
+    "B": {
+     "single": "0e82583a16310784a0e00518c6762767d1f925e95438989b58fa9efbe37a502b"
+    },
+    "C": {
+     "single": "1c83895e7fc5ad4cab9b35b7560cacba7a85b0c3141635be1a3cc3dcb3c44e15"
+    },
+    "D": {
+     "single": "ea98606189957096a0092b0082c1b0b322e5e661ab862785e2e5172aaf7a01cc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater",
+    "B": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater",
+    "C": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater",
+    "D": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render phfix_RM_BrimlockWater_a",
+    "C": "render phfix_RM_BrimlockWater_b",
+    "D": "history Webwork 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "brimlockwater"
+  },
+  "RM_BrinePlate": {
+   "columns": {
+    "A": {
+     "single": "e9b2379fd46b0d7bf6704980f5769cea2636c27773860539babcf6f16d3d3edd"
+    },
+    "B": {
+     "single": "c925ee0a5f87611a3a01e3bed0c43b5c232233641b18a0cd6a132c795e8fb582"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_BrinePlate",
+    "B": "Things/Item/Resource/RM_BrinePlate"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_BrinePlate_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_BrinePlate",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "brineplate"
+  },
+  "RM_CaudalSpringItem": {
+   "columns": {
+    "A": {
+     "single": "d696fcbcd67ec49926df371dc7156fe9329111f7af848078158fd36e0e702ac2"
+    },
+    "B": {
+     "single": "1fc11deb735902753379d440bd02e89b84c5ba68f14ece427f7888c0fd90cfe2"
+    },
+    "C": {
+     "east": "cad57773ef6e2c394690efeda7b42c326a0423f0f31653498220a645435a3262",
+     "north": "f365e4e8294e587a468196d9e5aea269f35304d14fdf0cb18f73e1f6b4a1d8f7",
+     "south": "d75aa53a6386dba17ce726fe1c1a6548a4cb4014ee9f13db89342d209367ec49"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_CaudalSpringItem",
+    "B": "Things/Item/RM_CaudalSpringItem",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_CaudalSpringItem_v3_nooutline",
+    "C": "render kit_caudalspring_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_CaudalSpringItem",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "caudalspringitem"
+  },
+  "RM_CharLace": {
+   "columns": {
+    "A": {
+     "single": "e85865dd9e4ea1d8349eb15ff0303ca02abbf5d6a948a86cafe056fe12c92cf6"
+    },
+    "B": {
+     "single": "28408752d7816a6f4ca5dccc7d93a49d05f63112aa5f417fb6b8348a6f3a5ccd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_CharLace/RM_CharLace",
+    "B": "Things/Item/Resource/RM_CharLace/RM_CharLace"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render RM_CharLace_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_CharLace/RM_CharLace",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "charlace"
+  },
+  "RM_ChassisCore": {
+   "columns": {
+    "A": {
+     "single": "6aaa99432456f6b722a9fff923dbe41385aa3ea193c13ab72d0a7086aeccedcb"
+    },
+    "B": {
+     "single": "16b7eabd8f4321ea63ef95e98dce49e5c3d43cbada54d5c80631018fe69ef8aa"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_ChassisCore",
+    "B": "Things/Item/RM_ChassisCore"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_ChassisCore_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_ChassisCore",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "chassiscore"
+  },
+  "RM_ContaminantBezoar": {
+   "columns": {
+    "A": {
+     "single": "4c99b0beafc9c7e252a2f4a629b91a50d75585c7d6f86591a08897205a4e21d8"
+    },
+    "B": {
+     "single": "dcd3a1739a405737faef7daf27c45339c5778ca8c186307b4a12771432806993"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_ContaminantBezoar",
+    "B": "Things/Item/Resource/RM_ContaminantBezoar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_ContaminantBezoar_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_ContaminantBezoar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "contaminantbezoar"
+  },
+  "RM_CrestPlate": {
+   "columns": {
+    "A": {
+     "single": "0bd5cdbcf812ef091ffe1fa709560137ad41b95fc59f2cb35392d50b2f940d5f"
+    },
+    "B": {
+     "single": "b914f7bb93bee9a3cee6fcb08c6ea61ef3f26ad605a76999c4b7af183cf555e5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_CrestPlate",
+    "B": "Things/Item/Resource/RM_CrestPlate"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_CrestPlate_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_CrestPlate",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "crestplate"
+  },
+  "RM_Deepfire": {
+   "columns": {
+    "A": {
+     "single": "84b6bd6136000cc1c99cf5c5ee58c0b6f42e18103fea6e4a1a5fe51d1276dff2"
+    },
+    "B": {
+     "single": "2ee5949fa5ebb35ff97f030a97d796fbf196db913f1c3994df2857eaa7211143"
+    },
+    "C": {
+     "single": "1c5b7cea24b68e9d08e2f530bd9ae62651cde2f253a9d7d182dd4ea9b05179be"
+    },
+    "D": {
+     "single": "44806f03808070d3468ea1fb16f1c31a024f9bab5d988aa1840d7108827b5bb4"
+    },
+    "E": {
+     "single": "e1db64f1349a18702f422aea2bed8a36b08e072b7c5ed9d2bba367d4f5c26c1e"
+    },
+    "F": {
+     "single": "22862fcb779a5eb6fbdb8fca7f976ff02cf813e75dc6ea5f6895fbddf66e71d7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "B": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "C": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "D": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "E": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+    "F": "Things/Item/Resource/RM_Deepfire/RM_Deepfire"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_Deepfire_a (1 of 1) \u2014 LuminousPigment",
+    "B": "render RM_Deepfire_v3_nooutline",
+    "C": "render deepfire_pigmentjar_c",
+    "D": "render deepfire_pigmentjar_d",
+    "E": "render deepfire_pigmentjar_a",
+    "F": "history LuminousPigment 2026-09-26"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_Deepfire/RM_Deepfire"
+   ],
+   "res": "Things/Item/Resource/RM_Deepfire/RM_Deepfire",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "deepfire"
+  },
+  "RM_DeltaLoam": {
+   "columns": {
+    "A": {
+     "single": "0396a42d97c20f05449e44b1f156d5293e1bd20c0fe9f06ff6db9f979b73acf2"
+    },
+    "B": {
+     "single": "21f5e5153a4c38a8d0e7bf749506bbed37d8b46311dc8784ca92504c7c8e2f1a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_DeltaLoam",
+    "B": "Things/Item/Resource/RM_DeltaLoam"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_DeltaLoam (1 of 2) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant RM_DeltaLoam_a (2 of 2) \u2014 Miasma"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_DeltaLoam"
+   ],
+   "res": "Things/Item/Resource/RM_DeltaLoam",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "deltaloam"
+  },
+  "RM_DewgourdFruit": {
+   "columns": {
+    "A": {
+     "single": "0792cdb2f09750d925ed7fc0366e9972cbaefb42af1dbc773faf9379e07d6d7c"
+    },
+    "B": {
+     "single": "f2ff6f8b956488290c4883570da603195905da2559d75d711e390caf3aeb174f"
+    },
+    "C": {
+     "single": "3a8f57bec3e170e1ee6befc90fd63c7263e9427b37fd7c23265a7227a3f9dc33"
+    },
+    "D": {
+     "single": "3f94b316702768ec57003be634d6aa0e8d2694b596d7eb18b713e840918305a1"
+    },
+    "E": {
+     "single": "82249f1417ff992e08e4c42d799fe8f9950d566ef7845568b5c8f2b03f2a9c44"
+    },
+    "F": {
+     "single": "6acb8dbc6fe4a6d4b415564f174ba630676e8b92d2c16d55e31ec134355ea830"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Plant/RM_DewgourdFruit",
+    "B": "Things/Item/Plant/RM_DewgourdFruit",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render RM_DewgourdFruit_v3_nooutline",
+    "C": "render wsvar_dewgourd_a_v1",
+    "D": "render wsvar_dewgourd_b_v1",
+    "E": "render gapfin_RM_Dewgourd_v1",
+    "F": "render weepingstones2_dewgourd"
+   },
+   "pools": [],
+   "res": "Things/Item/Plant/RM_DewgourdFruit",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "dewgourdfruit"
+  },
+  "RM_Dewsilk": {
+   "columns": {
+    "A": {
+     "single": "7a5c86baddee9282603f84cfb028d81a544db0ea1af33f5e37f34607849da08f"
+    },
+    "B": {
+     "single": "eb3924b002c07a65e38afa322c8f1e6f478c58ab31a58c12922b8e8db2055993"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_Dewsilk",
+    "B": "Things/Item/RM_Dewsilk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render RM_Dewsilk_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_Dewsilk",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dewsilk"
+  },
+  "RM_DielectricGel": {
+   "columns": {
+    "A": {
+     "single": "d1c1ce79749c89bfd5a5fd7b2476fcea2e19be23390fcb98962a62b1f03fd9b5"
+    },
+    "B": {
+     "single": "09d2e8e2dfbef705846e6f379bb8b14334aff8f60601ad54f3b1ed15e1afa9d5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_DielectricGel",
+    "B": "Things/Item/RM_DielectricGel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_DielectricGel_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_DielectricGel",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "dielectricgel"
+  },
+  "RM_DossCatch": {
+   "columns": {
+    "A": {
+     "single": "92116c04ae4664b52b554b8e01f7e69ee17a0ed3e6e8f61a7c7d0ccf498bfa56"
+    },
+    "B": {
+     "single": "0a490d7b25d384f4d005aef250f75a949c67740c284422517d9b38266185ecbb"
+    },
+    "C": {
+     "single": "ea538fd9cad1137b76510537fa8952f0e95a28f1f188924f76c03bac32287424"
+    },
+    "D": {
+     "single": "3ab4c7a84b159efc9dbb6c939a806d942cd18ca66aeb7f321e3feb899b6ee451"
+    },
+    "E": {
+     "single": "386bc4aa5eb0665e61176aa3d6cbaf8fa00f471387f6eeecf1a59495a172e441"
+    },
+    "F": {
+     "east": "1a0da401355631432adac68a84476db252ad05a19c0c4b08d656e56a76b11b26",
+     "north": "c81b1d6c0a48e89bd1d91fa190b21f291962aea8ae9e90c2c197144accab9a51",
+     "south": "e84253857c716e7d9a3840f6cccbfd331141084f896092a9c5c9cb8af09bc0cd"
+    },
+    "G": {
+     "east": "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c",
+     "north": "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
+     "south": "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_DossCatch",
+    "B": "Things/Item/Fish/RM_DossCatch",
+    "C": "Things/Item/Fish/RM_DossCatch",
+    "D": "Things/Item/Fish/RM_DossCatch",
+    "E": "Things/Item/Fish/RM_DossCatch",
+    "F": "_reference:RM_Doss",
+    "G": "_reference:RM_Doss"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_DossCatch_v3_nooutline",
+    "C": "render scald2_dosscatch_a",
+    "D": "render scald2_dosscatch_b",
+    "E": "render scald2_dosscatch_c",
+    "F": "render scald3_doss",
+    "G": "render scaldfloor_doss"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_DossCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "dosscatch"
+  },
+  "RM_Drazz": {
+   "columns": {
+    "A": {
+     "single": "959768ce0a29a14e58598cb6f5e0441e4b5839f16d15e97a253882d56cd06bfe"
+    },
+    "B": {
+     "single": "0d13cfdcc4f4312c2a6bb5a3d9bc1b810d1aab44340b0cac27a4b8484f593804"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Drazz",
+    "B": "Things/Item/Resource/RM_Drazz"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_Drazz_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Drazz",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "drazz"
+  },
+  "RM_DuneCrawler": {
+   "columns": {
+    "A": {
+     "single": "983657f86e29d1f0e2c53626b940f1813b6ec7d6524feb6f20100036f6f155ea"
+    },
+    "B": {
+     "single": "28da68744208da1bcc1f5fdb27cdc118f88232743091f03655451d42c6ad99b3"
+    },
+    "C": {
+     "single": "85d47356ad87e3daaf8c007e30cbd4913c7da1f1a5e511890350b871bcd90987"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_DuneCrawler",
+    "B": "Things/Item/Resource/RM_DuneCrawler",
+    "C": "Things/Item/Resource/RM_DuneCrawler"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_DuneCrawler_v3_nooutline",
+    "C": "history Stillsand 2026-10-01"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_DuneCrawler",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dunecrawler"
+  },
+  "RM_EeshCatch": {
+   "columns": {
+    "A": {
+     "single": "8ce291f98aa1c954be756934505a65d5667e62249ae51b1f6bbdaefc615555c0"
+    },
+    "B": {
+     "single": "e3a234eda8ecc99d6d9fe3bc070d82c4f919cc1c454f039cca0f04c367d0259f"
+    },
+    "C": {
+     "single": "b034ee1c5bde0b0d7a7da94888b88b02b16b0ca6991bfc1f5ed1a2587074fc9f"
+    },
+    "D": {
+     "single": "7724d4ae5fdf4d8996e84f092c60584cc87846dfad053dd5af3cf02b91b7ba19"
+    },
+    "E": {
+     "single": "92bd9d5916387d1b3c6ad525a1e725fb561f353f24070d3b2aeda2d8473d54a2"
+    },
+    "F": {
+     "east": "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
+     "north": "512b36294b63eb31d70c4da0c9cd1849c4e5d27c3304cd2bd1f708f0bf52ffa7",
+     "south": "9991625f8cf03c92c581d0bca49b0ca8f42fd92e24a49ba5a7b8b0dbe0e09a70"
+    },
+    "G": {
+     "east": "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
+     "north": "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268",
+     "south": "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_EeshCatch",
+    "B": "Things/Item/Fish/RM_EeshCatch",
+    "C": "Things/Item/Fish/RM_EeshCatch",
+    "D": "Things/Item/Fish/RM_EeshCatch",
+    "E": "Things/Item/Fish/RM_EeshCatch",
+    "F": "_reference:RM_Eesh",
+    "G": "_reference:RM_Eesh"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_EeshCatch_v3_nooutline",
+    "C": "render scald2_eeshcatch_a",
+    "D": "render scald2_eeshcatch_b",
+    "E": "render scald2_eeshcatch_c",
+    "F": "render standtall_b1_rm_eesh",
+    "G": "render scaldfloor_eesh"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_EeshCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "eeshcatch"
+  },
+  "RM_EggScaled": {
+   "columns": {
+    "A": {
+     "single": "e7b0f8a457a93599c1baadc3b098a0480201be361250b438eddd4c3d2b8ae653"
+    },
+    "B": {
+     "single": "eae8be2b41f1163809009a51efc8923c1fa5a84a32764fb738cda11a65d4688f"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render RM_EggScaled_v3_nooutline",
+    "B": "render RM_EggScaled_v4_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "eggscaled"
+  },
+  "RM_EkkelCatch": {
+   "columns": {
+    "A": {
+     "single": "815a723e07d2da360d6b6b1ff4f0a6a0d6619ef868f4a2dd0610707b4ccc52e0"
+    },
+    "B": {
+     "single": "973f82434a9c3abcde6be1ff31a2ba825d4d0e441218fb6b5ce90532a0dc998d"
+    },
+    "C": {
+     "single": "72b7c52ff55b4b0ee61091b19c27e24c4b586aaee07c7c6fc2d7ba29411eeb15"
+    },
+    "D": {
+     "single": "36baba10aa4730c77d65d657e913e6d81059ba339f5bd4c546a1172560646647"
+    },
+    "E": {
+     "single": "847ad00ebe986a81c9e5f43989d4f6807b2448a6b98d5e417b5bff6ed168ef5f"
+    },
+    "F": {
+     "east": "7fd74f9d8d51d25969192dca23c43601ddd457120a035c83ecc656182419670f",
+     "north": "e1d90db9dd5ff787edcd7cb910a5800a445fde8932beb837612eae9a22737ae8",
+     "south": "eae1d446a1c4ee1c753c8a6e0effab016250ecd788d41cd4ce6b7578decefe0e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_EkkelCatch",
+    "B": "Things/Item/Fish/RM_EkkelCatch",
+    "C": "Things/Item/Fish/RM_EkkelCatch",
+    "D": "Things/Item/Fish/RM_EkkelCatch",
+    "E": "Things/Item/Fish/RM_EkkelCatch",
+    "F": "_reference:RM_Ekkel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_EkkelCatch_v3_nooutline",
+    "C": "render scald2_ekkelcatch_a",
+    "D": "render scald2_ekkelcatch_b",
+    "E": "render scald2_ekkelcatch_c",
+    "F": "render scaldfloor_ekkel"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_EkkelCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "ekkelcatch"
+  },
+  "RM_EssarnCatch": {
+   "columns": {
+    "A": {
+     "single": "972f1cc7c0ecb8483ff464fffd56ce5f0da310873a0bcf480c9e9d3e0844ebfd"
+    },
+    "B": {
+     "single": "539bfc0a63a14a02fc0a69704bd965a56af08f7cf21a60d0c84ebbe8b587df85"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_GreySea/RM_EssarnCatch",
+    "B": "Things/Item/RM_GreySea/RM_EssarnCatch"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_EssarnCatch_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_GreySea/RM_EssarnCatch",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "essarncatch"
+  },
+  "RM_Etchant": {
+   "columns": {
+    "A": {
+     "single": "ef53713cf1961a3b1c75b7bcfd932daee2d1263c4f13eaf72b0e1290d72e1b34"
+    },
+    "B": {
+     "single": "03163c97e144c05200dbb9f97437478b360a99b96e3cb72a1453e06bbd1325a4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_Etchant",
+    "B": "Things/Item/RM_Etchant"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_Etchant_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_Etchant",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "etchant"
+  },
+  "RM_EyeburstItem": {
+   "columns": {
+    "A": {
+     "single": "686da9ad234e82efaf7355e40f8f81ab9c729c815f53a928ecef2f207bc9d73a"
+    },
+    "B": {
+     "single": "808a2603b5e638de09902dce41ac34c2fa4dba616d40dcfaa675dc94687cf450"
+    },
+    "C": {
+     "east": "dc7b0e6a879a5aa1968ca49727dd949d7c1ca97636630c7216ff81abc3efb2ba",
+     "north": "4768e9371858a908a9cd36e6e383b9bb462d012e93411b4bdfefe85cb58d00ff",
+     "south": "8835afb2f1e56b57641244720f71b66b0f0d526050a39dd273ba21646c04aa35"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_EyeburstItem",
+    "B": "Things/Item/RM_EyeburstItem",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_EyeburstItem_v3_nooutline",
+    "C": "render kit_eyeburst_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_EyeburstItem",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "eyeburstitem"
+  },
+  "RM_FE_Fulgurite": {
+   "columns": {
+    "A": {
+     "single": "39303388aecc5e55166230f759f74a208a7a8eee15b37969109c180b210f7a5d"
+    },
+    "B": {
+     "single": "152d15ca0896325acad0b1e4be0c2e43745b53674a5549ccc7b4db6c21360d4d"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render RM_FE_Fulgurite_v3_nooutline",
+    "B": "render RM_FE_Fulgurite_real"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fe_fulgurite"
+  },
+  "RM_FE_ScorchFruitYield": {
+   "columns": {
+    "A": {
+     "single": "af9f1975c430dc0eb67d2618a9ab32bd0c5bea811ee64b658ab5087185661519"
+    },
+    "B": {
+     "single": "943e6a9ff59ba834556d0b0084e954c9408b91cc25dad5304a05c5e0c137810c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_FE_ScorchFruit",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render RM_FE_ScorchFruitYield_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_FE_ScorchFruit",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fe_scorchfruityield"
+  },
+  "RM_FailedChassis": {
+   "columns": {
+    "A": {
+     "single": "1c006fbce2d1e6878d6812ccdc791d2de60285386a2108825bdde33f9a93f33a"
+    },
+    "B": {
+     "single": "9545df73a5a326170945a240dcacad412fcc84676c95d716031b56215c2b6765"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_FailedChassis",
+    "B": "Things/Item/RM_FailedChassis"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_FailedChassis_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_FailedChassis",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "failedchassis"
+  },
+  "RM_FexxilShard": {
+   "columns": {
+    "A": {
+     "single": "f8c423aae384584fd53176cd04ba9cefcbd73a8d961b08f1dcf1ea6b4417b565"
+    },
+    "B": {
+     "single": "9ed0e17efd70f0f7c3b489f686525ae7ccd8bc065851f116a9040a20511bd88d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_FexxilShard",
+    "B": "Things/Item/RM_FexxilShard"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render RM_FexxilShard_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_FexxilShard",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fexxilshard"
+  },
+  "RM_Floatstone": {
+   "columns": {
+    "A": {
+     "single": "b20979344edbc960713f90039a9187e883f335680c069edb6b43f242a6ebf6c7"
+    },
+    "B": {
+     "single": "ba21af1e454533c8c63324bb2e90ffd455327d6408c08b9da0e90b91329e9a2c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_Floatstone/RM_Floatstone",
+    "B": "Things/Item/RM_Floatstone/RM_Floatstone"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheForge",
+    "B": "render RM_Floatstone_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_Floatstone/RM_Floatstone",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "floatstone"
+  },
+  "RM_FossilDeepStratum": {
+   "columns": {
+    "A": {
+     "single": "5aa2bea4c2f1cc887b3899dc30280ee013593f147a7e69182a862d6f2a4bfb90"
+    },
+    "B": {
+     "single": "3a306e6d0d0a700fb5611f7c067e4b8531eaa6052ab434f137689611c8cf9407"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum",
+    "B": "Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_FossilDeepStratum_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fossildeepstratum"
+  },
+  "RM_FossilSkeleton": {
+   "columns": {
+    "A": {
+     "single": "65ae7f82c0ee2410f905e7a8874bb4bb22e0a72e78d9ac5438b6ce9789886552"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "fossilskeleton"
+  },
+  "RM_GeneSeekerLoaded": {
+   "columns": {
+    "A": {
+     "single": "365e56dbe674b5a15b80cb07c37f66e64dd112d3c145afbf08947e900c4ca3ec"
+    },
+    "B": {
+     "single": "d4cf1cedcf7cf690f073158cfff1e579959ed0e845386c860dbdf5a96ab8a6ea"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "render RM_GeneSeekerLoaded_v3_nooutline",
+    "B": "render RM_GeneSeekerLoaded"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "geneseekerloaded"
+  },
+  "RM_GlowerCrust": {
+   "columns": {
+    "A": {
+     "single": "44192dfc1e218fb6ac56cd964f5119347b08fe222320e73e265f0f8d5e0b83f0"
+    },
+    "B": {
+     "single": "6ad084d0c87bde8cbb945f41f204da599b796e63ff4e5ab710c760cdbfb9b81a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_GlowerCrust",
+    "B": "Things/Item/Resource/RM_GlowerCrust"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_GlowerCrust (1 of 2) \u2014 Scarlands",
+    "B": "IN GAME \u2014 random variant RM_GlowerCrust_a (2 of 2) \u2014 Scarlands"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_GlowerCrust"
+   ],
+   "res": "Things/Item/Resource/RM_GlowerCrust",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "glowercrust"
+  },
+  "RM_HalfExtractedCore": {
+   "columns": {
+    "A": {
+     "single": "0c617f80f2413024fdd2844724271b7326671367d62ef674af143026c20e709b"
+    },
+    "B": {
+     "single": "6873480016fda6ca4ba89736539d5422461ab7d65410bb39635ae6ae22dbc582"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_HalfExtractedCore/RM_HalfExtractedCore",
+    "B": "Things/Item/Resource/RM_HalfExtractedCore/RM_HalfExtractedCore"
+   },
+   "labels": {
+    "A": "shipped, not loaded \u2014 Warcasket",
+    "B": "render RM_HalfExtractedCore_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_HalfExtractedCore/RM_HalfExtractedCore",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "halfextractedcore"
+  },
+  "RM_IlissCatch": {
+   "columns": {
+    "A": {
+     "single": "a661d661dcaa932ba8295b7e64d42abced9528e29efb12ea7acdd56458a3d03b"
+    },
+    "B": {
+     "single": "1b97ee29834388542925113dd7262fe8f9f3888edef82a7b6154c2d6b64ce276"
+    },
+    "C": {
+     "single": "78ab266cd32958975ce5c37c6ee86a0fbae0ac34c45d7c38503844ddab1bd793"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TheChill/RM_IlissCatch",
+    "B": "Things/Item/RM_TheChill/RM_IlissCatch",
+    "C": "_reference:RM_Iliss"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_IlissCatch_v3_nooutline",
+    "C": "render propanelake_iliss"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TheChill/RM_IlissCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "ilisscatch"
+  },
+  "RM_KarrashCatch": {
+   "columns": {
+    "A": {
+     "single": "a15c9eeed4c1f20ffb4e7036a611421b8ee2653c1f6abc3247305fda07c979a1"
+    },
+    "B": {
+     "single": "fb4fc12993f6def3056d87cfc0cad7b1bd0c626d45428b5d99d38ad6b4ff348f"
+    },
+    "C": {
+     "single": "08e3b632a747a3c1a555bc989f8975b6d1f5f6eec5e800b7e49d72c9edb306d3"
+    },
+    "D": {
+     "single": "bdcff0beba9f50f91a9ea5679fcb09124b71d57a288c99f71564a3553cd06e3b"
+    },
+    "E": {
+     "single": "c934e03786a58f6d207d0ea0da51d60135c35294053c9886cb00ce4ec19cecdd"
+    },
+    "F": {
+     "east": "75fc4c784a8351233193e985ace64f84408ecbcda4264e1f55ca2f2489262a3e",
+     "north": "e079a671fe1a70f8cd59abadd8d9c22a5236e6bef3a1a19bc44692fe6f714bd7",
+     "south": "bd58b5e6d19f0f92b7e1bddc5d07e2ab6fa656fc078b1f0a17618f6b34089909"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_KarrashCatch",
+    "B": "Things/Item/Fish/RM_KarrashCatch",
+    "C": "Things/Item/Fish/RM_KarrashCatch",
+    "D": "Things/Item/Fish/RM_KarrashCatch",
+    "E": "Things/Item/Fish/RM_KarrashCatch",
+    "F": "_reference:RM_Karrash"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_KarrashCatch_v3_nooutline",
+    "C": "render scald2_karrashcatch_a",
+    "D": "render scald2_karrashcatch_b",
+    "E": "render scald2_karrashcatch_c",
+    "F": "render scaldfloor_karrash"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_KarrashCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "karrashcatch"
+  },
+  "RM_LilianaEgg": {
+   "columns": {
+    "A": {
+     "single": "b8e96d3c2b08a4030d0eb55f7ec7d52575f761467a51fb5f209e1f4ad1e908f6"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_LilianaEgg_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "lilianaegg"
+  },
+  "RM_LilianaSilk": {
+   "columns": {
+    "A": {
+     "single": "e78ba1ef422a43cc0b71e076c0970ed4def69a0780c7a35e71c27335aca2653c"
+    },
+    "B": {
+     "single": "fdde8cd1d39c3f8b153832525b0f2f35117fee5e85a1aa172681290b18157820"
+    },
+    "C": {
+     "single": "df1c37651b2e2a2fe4fedfc3f79c00e8f830db8bf6dd075779735da23b6836a1"
+    },
+    "D": {
+     "single": "65c27cd37196323577d44e504b2e5d5bc8f4f75418ada54b67dc41a8ba19ca41"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_LilianaSilk",
+    "B": "Things/Item/Resource/RM_LilianaSilk",
+    "C": "Things/Item/Resource/RM_LilianaSilk",
+    "D": "Things/Item/Resource/RM_LilianaSilk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_LilianaSilk (1 of 4) \u2014 Miasma",
+    "B": "IN GAME \u2014 random variant RM_LilianaSilk_A (2 of 4) \u2014 Miasma",
+    "C": "IN GAME \u2014 random variant RM_LilianaSilk_B (3 of 4) \u2014 Miasma",
+    "D": "IN GAME \u2014 random variant RM_LilianaSilk_C (4 of 4) \u2014 Miasma"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_LilianaSilk"
+   ],
+   "res": "Things/Item/Resource/RM_LilianaSilk",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "lilianasilk"
+  },
+  "RM_MedicalCoagulant": {
+   "columns": {
+    "A": {
+     "single": "1d927ac530baa4348757884b4679453483495325205816639be7399682fba617"
+    },
+    "B": {
+     "single": "8cadbca2b6858cdfcee139a9ac878c6dfd10ab49b41ac8632eecafaaf1c20488"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_MedicalCoagulant",
+    "B": "Things/Item/RM_MedicalCoagulant"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_MedicalCoagulant_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_MedicalCoagulant",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "medicalcoagulant"
+  },
+  "RM_MuddalCatch": {
+   "columns": {
+    "A": {
+     "single": "a6e38b67849b55853a5ebc0c22c84639792f0f907290c6da372faa199c18aa3f"
+    },
+    "B": {
+     "single": "4b3deff1de43b1d7dae301af1057d5eb073888447c29cd451f70d8835accb5fc"
+    },
+    "C": {
+     "single": "408f440bf3cee97e1f949def40bcb8d95847e229fa3f108ff47dc1dba08f4d1c"
+    },
+    "D": {
+     "single": "b1bcd4e4df7badc00c68e72236a3478318b7ab76c493d103f97876dca9e9a35d"
+    },
+    "E": {
+     "single": "3c8fc76df7e6640cd52f5ddcdcb0ff77bdddbae9def41d8ec171a992c13f898a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_MuddalCatch",
+    "B": "Things/Item/Fish/RM_MuddalCatch",
+    "C": "Things/Item/Fish/RM_MuddalCatch",
+    "D": "Things/Item/Fish/RM_MuddalCatch",
+    "E": "Things/Item/Fish/RM_MuddalCatch"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_MuddalCatch_v3_nooutline",
+    "C": "render scald2_muddalcatch_a",
+    "D": "render scald2_muddalcatch_b",
+    "E": "render scald2_muddalcatch_c"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_MuddalCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "muddalcatch"
+  },
+  "RM_MurrinCatch": {
+   "columns": {
+    "A": {
+     "single": "848eea3e71d32536310abb125922650579e3af0a783e7c4d06321b370723430b"
+    },
+    "B": {
+     "single": "94ddb6a01d13b31cd934613b7d7ddb5da00b27d2266583f71cd3b4b5ddc9ffd4"
+    },
+    "C": {
+     "east": "395bfc698568c4407d35601e49738e5121cabffe0c3f018575ca6e22338f1dda"
+    },
+    "D": {
+     "east": "033853752df32752d5c36641bb851c83c50ebe1dc938dd40223c64a14d7dee7c",
+     "north": "c46861b70ddd843c42942d4cd4df2867551629d7ac19f80c71783cd8744a3541",
+     "south": "a1a6cbfae0d1626b065e91f3030f6bb69bce9fa353d9ec4522ecb45ecabb6436"
+    },
+    "E": {
+     "east": "525cb84dc809f9085efbc2a35234d3632069a90671247ec1228f0f4e152bc0a7",
+     "north": "b5c937a64a38cd0d9b97e80dd5733d58b85c156f02b10768fb803bed64c4bcba",
+     "south": "2933600dfd802d9f76cc9b386765c854cb28a1dd4b39df115628cbcab98ebd8d"
+    },
+    "F": {
+     "east": "bd224b827f1942abda6ef840603fa57204ac26fc7680707737e7a1a3b4aaca8c",
+     "north": "f90c8e25074735c179a4cb424a32c00c061e9f778cb4edae2b4a784e270f45a6",
+     "south": "22fdd11c154c2264da21ef263739a283d1b1cdef5115e0ceccbda2c9d699f6e9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_MurrinCatch",
+    "B": "Things/Item/RM_MurrinCatch",
+    "C": "Things/Item/RM_MurrinCatch",
+    "D": "_reference:RM_Murrin",
+    "E": "_reference:RM_Murrin",
+    "F": "_reference:RM_Murrin"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render RM_MurrinCatch_v3_nooutline",
+    "C": "render enact_0b47a9f1_murrincatch_v1",
+    "D": "render enact_e6d931f4_murrin_v1",
+    "E": "render enact_e6d931f4_murrin_v2",
+    "F": "render weepingstones_murrin"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_MurrinCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "murrincatch"
+  },
+  "RM_NoolimCatch": {
+   "columns": {
+    "A": {
+     "single": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44"
+    },
+    "B": {
+     "single": "af9fe7d42c64ffbee94d15629df174cb47f5978624fd7428e66b2db62d204493"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
+    "B": "Things/Item/RM_TwilightSea/RM_NoolimCatch"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_NoolimCatch_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "noolimcatch"
+  },
+  "RM_OllimWood": {
+   "columns": {
+    "A": {
+     "single": "069d42fea3e388f45de370b18f1c357e1248d0c0657c582c70d4fe117e43b339"
+    },
+    "B": {
+     "single": "4faf8e0b625e03f86afffdbb97c51d81a44a825cc7daa9b55199c8831811cb68"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_OllimWood",
+    "B": "Things/Item/Resource/RM_OllimWood"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_OllimWood_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_OllimWood",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ollimwood"
+  },
+  "RM_OssagrelSap": {
+   "columns": {
+    "A": {
+     "single": "86eb4c483e7885daf53346b34208b7b688f0203adfeeef6783e06149ed70d2fe"
+    },
+    "B": {
+     "single": "ab01c0d2122d1e3a9bfa3dda7d002300cfc6b9d1433df46df0a86734161ad287"
+    },
+    "C": {
+     "single": "930d996b1c73463e3667986f2d6d743aec50315274b24f6115f03be069b895be"
+    },
+    "D": {
+     "single": "ef671aae1019c3dc2db88d7fd6c2625885b73a8583f4880904ae52f46374ecff"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap",
+    "B": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap",
+    "C": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap",
+    "D": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render phfix_RM_OssagrelSap_a",
+    "C": "render phfix_RM_OssagrelSap_b",
+    "D": "history FeverWood 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "ossagrelsap"
+  },
+  "RM_PearlLens": {
+   "columns": {
+    "A": {
+     "single": "d7ff5dec17a0b8493b65e988ca453fa2edb0c78af3a381d206f8e3486190f99c"
+    },
+    "B": {
+     "single": "5f5c424733af81d573502450f758e2420a5fd8358a846aef7a025155eab60f0d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_PearlLens",
+    "B": "Things/Item/Resource/RM_PearlLens"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_PearlLens_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_PearlLens",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pearllens"
+  },
+  "RM_PillarArmItem": {
+   "columns": {
+    "A": {
+     "single": "e0578f0a96e2a7eb92755b74263eea5944e8260ca3ac5f0b009eb352b0622f84"
+    },
+    "B": {
+     "single": "a2bf9137419ef5583d26499a57751a5bacf1d93230ae6870008a836f1f176515"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Health/RM_PillarArmItem",
+    "B": "Things/Item/Health/RM_PillarArmItem"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_PillarArmItem_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Health/RM_PillarArmItem",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pillararmitem"
+  },
+  "RM_PottersClay": {
+   "columns": {
+    "A": {
+     "single": "742d2437d1420f3b47d86f5c53e12df47dddf18fbc8e9eb178407144731b4c9a"
+    },
+    "B": {
+     "single": "3eed3ab2dc03a19a999ecf8c1567f056969974e4bd37d3021a0859224c2b8178"
+    },
+    "C": {
+     "single": "00bb246d2c4f39df539d99ab6ced47ab4553a5442ccad1f23daf0ad223f689f3"
+    },
+    "D": {
+     "single": "7221123457c22d7d260c691e3f3ae54d9c7d72fc2982074aa0cd77bc2d0d894b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_PottersClay/RM_PottersClay",
+    "B": "Things/Item/Resource/RM_PottersClay/RM_PottersClay",
+    "C": "Things/Item/Resource/RM_PottersClay/RM_PottersClay",
+    "D": "Things/Item/Resource/RM_PottersClay/RM_PottersClay"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render phfix_RM_PottersClay_a",
+    "C": "render phfix_RM_PottersClay_b",
+    "D": "history FeverWood 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_PottersClay/RM_PottersClay",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "pottersclay"
+  },
+  "RM_QeshraRoe": {
+   "columns": {
+    "A": {
+     "single": "53d984ef1c2280426b0bb49c427f004965d2737db6b39c8beb577c96cb2c1d6c"
+    },
+    "B": {
+     "single": "72f4b8ab590a74740dda9e8c849d75e57fdf86d31995c5ebeaefff0bd1670395"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe",
+    "B": "Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render RM_QeshraRoe_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "qeshraroe"
+  },
+  "RM_RawSlime": {
+   "columns": {
+    "A": {
+     "single": "d0d558bc313a596540528769566248e3e63b882ee5643a55b1fc346b961c6ffc"
+    },
+    "B": {
+     "single": "3bc65e179f48b8355fce84d93b3b016eb7a645b3a63ddab58ccaca2c19ae6fba"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_RawSlime",
+    "B": "Things/Item/RM_RawSlime"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render RM_RawSlime_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_RawSlime",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "rawslime"
+  },
+  "RM_RawUltracactus": {
+   "columns": {
+    "A": {
+     "single": "88d233f7c9753c38ceb3a71dbaa3bd4b894ddf9fc9c40b504900bf4df6d2320e"
+    },
+    "B": {
+     "single": "f732d9c875c65d423042cfe7d974cfbf1a8aa1bc408b95bbd9638d7f0059bcb5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Plant/RM_RawUltracactus",
+    "B": "Things/Item/Plant/RM_RawUltracactus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render RM_RawUltracactus_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Plant/RM_RawUltracactus",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "rawultracactus"
+  },
+  "RM_RawVenom": {
+   "columns": {
+    "A": {
+     "single": "808ba8ea20001fbb0b2502bfe8852774489edc638a49c16c7e0c5567e95361f3"
+    },
+    "B": {
+     "single": "809952b8a28ad5de7de3e05bab26b1aebd451a7b7db13f7073c5af974d64c572"
+    },
+    "C": {
+     "single": "fcc8e7b99029edacb856999442abd7bf581c75d68a1da77c64582d2fec3105f4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_RawVenom",
+    "B": "Things/Item/Resource/RM_RawVenom",
+    "C": "Things/Item/Resource/RM_RawVenom"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_RawVenom_a (1 of 1) \u2014 LeaningScrub",
+    "B": "render RM_RawVenom_v3_nooutline",
+    "C": "render RM_RawVenom"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_RawVenom"
+   ],
+   "res": "Things/Item/Resource/RM_RawVenom",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "rawvenom"
+  },
+  "RM_RuqqalFibre": {
+   "columns": {
+    "A": {
+     "single": "1183d5176ee2b2d54aba92e513e9228e9a9682dd34e8a709615567a75726ebba"
+    },
+    "B": {
+     "single": "b638424ac771a1e88d7b6042c9b043832c809d92dc9a40c1b2ede1aab7d0fdb9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_RuqqalFibre",
+    "B": "Things/Item/RM_RuqqalFibre"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_RuqqalFibre_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_RuqqalFibre",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ruqqalfibre"
+  },
+  "RM_Saal": {
+   "columns": {
+    "A": {
+     "single": "be25d59718cdb07b7255391f85800b8eefc68cdc3a27e0027b1ae2edfd9f3206"
+    },
+    "B": {
+     "single": "9e45fb05b7842039980dd9b5b0bc6ffca31f8497f5b264accbaf8a32b5c81c93"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_Saal",
+    "B": "Things/Item/Fish/RM_Saal"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_Saal_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_Saal",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "saal"
+  },
+  "RM_SandSieve": {
+   "columns": {
+    "A": {
+     "single": "dc4647c210fac7a72e44d6aaba43cb5bf794e3841347204c12fcd519de4b1bf0"
+    },
+    "B": {
+     "single": "840a69498ce1b734beb8e7073f0ebf735728b490f9bd99377c010776c70bd687"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_SandSieve",
+    "B": "Things/Item/RM_SandSieve"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_SandSieve_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_SandSieve",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sandsieve"
+  },
+  "RM_ScaaLumsigh": {
+   "columns": {
+    "A": {
+     "single": "2aa6758ed0bfc966810ab56b9a3503324e6d1960c89712c3ce1a8b21a1e727c4"
+    },
+    "B": {
+     "single": "e12e9f8e72c274c09cf360b3fcd9d63319f3da1620d055e041a485594e4a0293"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_ScaaLumsigh",
+    "B": "Things/Item/Fish/RM_ScaaLumsigh"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide",
+    "B": "render RM_ScaaLumsigh_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_ScaaLumsigh",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "scaalumsigh"
+  },
+  "RM_SeepOil": {
+   "columns": {
+    "A": {
+     "single": "00897f566a7e13615a4986ddff5c318552b4542d82d230151fa7c3c2435833bb"
+    },
+    "B": {
+     "single": "e325cf8ee2bde3812013139e1dad88e381e6a993ae21ac2481a2f71ab69a2ade"
+    },
+    "C": {
+     "single": "20ac9821e5981fec2be86f5ba5a7c54bdda01de414810524ee14b87ee70f437f"
+    },
+    "D": {
+     "single": "0804726e2f5d5679e3ee6bb2021582231e9781909935cc7b0539c3d4302b0b4f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
+    "B": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
+    "C": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
+    "D": "Things/Item/Resource/RM_SeepOil/RM_SeepOil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render phfix_RM_SeepOil_a",
+    "C": "render phfix_RM_SeepOil_b",
+    "D": "history FeverWood 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "seepoil"
+  },
+  "RM_ShullaCatch": {
+   "columns": {
+    "A": {
+     "single": "3577cf098617dc47a8a348ba63cf8df2a023137d8aa6b354e95a48b2dbf715ab"
+    },
+    "B": {
+     "single": "5b3914eed767545dfd3fcc2a907f00bed31f33d19a7a9507100217be85946c47"
+    },
+    "C": {
+     "single": "df523512f1caf7b007f742a34f3e7029ca1e8d3855f6c431155f4917d497db09"
+    },
+    "D": {
+     "single": "e6b8772e6ba31290fb900b931e3d97097d0e77415d3c4f9d9bd0ba3a5f09a499"
+    },
+    "E": {
+     "single": "e9333823e69f4a7372291d552a7b2bf91d20f2459ed6e3f9444e10545f677f8e"
+    },
+    "F": {
+     "single": "2397bcafac35ca89d649d1af4cf2c33285bb7e95c9ea4b0e7a071df298266a44"
+    },
+    "G": {
+     "east": "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb",
+     "north": "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
+     "south": "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_ShullaCatch",
+    "B": "Things/Item/Fish/RM_ShullaCatch",
+    "C": "Things/Item/Fish/RM_ShullaCatch",
+    "D": "Things/Item/Fish/RM_ShullaCatch",
+    "E": "Things/Item/Fish/RM_ShullaCatch",
+    "F": "Things/Item/Fish/RM_ShullaCatch",
+    "G": "_reference:RM_Shulla"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_ShullaCatch_v3_nooutline",
+    "C": "render scald3_shullacatch_a",
+    "D": "render scald2_shullacatch_b",
+    "E": "render scald2_shullacatch_c",
+    "F": "render scald_shullacatch_v1",
+    "G": "render scald_shulla_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_ShullaCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "shullacatch"
+  },
+  "RM_SlimeAntidote": {
+   "columns": {
+    "A": {
+     "single": "60acd8925c54813c383b977c493767ec1cb8798a6645ba43f9bddd9bab401d51"
+    },
+    "B": {
+     "single": "d97afb3c32c0c5c776566fa486c7f9019801baeaafed63ce01ed70959c6fda33"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_SlimeAntidote",
+    "B": "Things/Item/RM_SlimeAntidote"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render RM_SlimeAntidote_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_SlimeAntidote",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "slimeantidote"
+  },
+  "RM_SlimeBlock": {
+   "columns": {
+    "A": {
+     "single": "cacf63c8fdc706c4c5ca1a9ce8b5b5e55a43edfc7b563b523bc803c75fe7a6ca"
+    },
+    "B": {
+     "single": "042cec2592e11af7c3b9b85358b3aff5f768ae172f5daa916b68a554cc1b49d9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_SlimeBlock",
+    "B": "Things/Item/RM_SlimeBlock"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render RM_SlimeBlock_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_SlimeBlock",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "slimeblock"
+  },
+  "RM_SootBrick": {
+   "columns": {
+    "A": {
+     "single": "ec4349899f4a1613bac4acb1ec20b6e5a678fab5984b8d4295fb3a3a65d7e85f"
+    },
+    "B": {
+     "single": "9aa734a93ed56675d3e94ee2bc7bf75a5c5892a260429b57e9ce861419ec3cc4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_SootBrick",
+    "B": "Things/Item/Resource/RM_SootBrick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_SootBrick_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_SootBrick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sootbrick"
+  },
+  "RM_SunGlass": {
+   "columns": {
+    "A": {
+     "single": "40ebb4275d748d69fb4dd5920089e45547892fce25402430c625590cd351f9ca"
+    },
+    "B": {
+     "single": "59edd778a7982bbd5c9ae5af9a12a9553f4a4e6e2016793d0f987d8ed67e579f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_SunGlass",
+    "B": "Things/Item/Resource/RM_SunGlass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_SunGlass_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_SunGlass",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sunglass"
+  },
+  "RM_Sunbeam": {
+   "columns": {
+    "A": {
+     "single": "894ce16c1602b157c1d806453f0b5a371de536a9ae981102a5c4c5197786652a"
+    },
+    "B": {
+     "single": "255fabe2220ad4b88b2bb82ff9e1ca236c3bd39f96399e7cb137ecd9d2ef7c1a"
+    },
+    "C": {
+     "single": "a859ad5cb24e22f04825fd7da2f277c17de3ca0ecc97820b7e736e9adba9b897"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Equipment/RM_Sunbeam",
+    "B": "Things/Item/Equipment/RM_Sunbeam",
+    "C": "Things/Item/Equipment/RM_Sunbeam"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_Sunbeam_v3_nooutline",
+    "C": "render RM_Sunbeam"
+   },
+   "pools": [],
+   "res": "Things/Item/Equipment/RM_Sunbeam",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sunbeam"
+  },
+  "RM_SweetlineWool": {
+   "columns": {
+    "A": {
+     "single": "d732695ab8fbec32c4f30e7d5c346043a16eab0175f68001ec48574d1cfc07f0"
+    },
+    "B": {
+     "single": "fde8519d3c3b57bfb4d50edb418decdc34575e1db94381178e23aba62ca4044f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_SweetlineWool",
+    "B": "Things/Item/Resource/RM_SweetlineWool"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render RM_SweetlineWool_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_SweetlineWool",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sweetlinewool"
+  },
+  "RM_TarRuinedGoods": {
+   "columns": {
+    "A": {
+     "single": "7886f97d89a6e41e977f96ff3d93a0ae6c3e09b24a6d6c4a527ce394478da491"
+    },
+    "B": {
+     "single": "da11870c382b4c8442d8f8c302a59566176ab46aa2798334f231219b76508c17"
+    },
+    "C": {
+     "single": "f535e814bd45a26f2ade3091abc3089e90debd3ddff4ed544705ce97f3e4654c"
+    },
+    "D": {
+     "single": "0876694cf66d9596efe153caff7d8cd4cd13fae9e5f230a23115934349ffd9d0"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+    "B": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+    "C": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+    "D": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render phfix_RM_TarRuinedGoods_a",
+    "C": "render phfix_RM_TarRuinedGoods_b",
+    "D": "history TheSump 2026-10-03"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "tarruinedgoods"
+  },
+  "RM_TavroskLiquor": {
+   "columns": {
+    "A": {
+     "single": "eb3a8aa0a44fc87efb751cf72156d8ec76a60031fcbe44ae4d78415574114baf"
+    },
+    "B": {
+     "single": "bd8f7e40f7bbd243ba81a0860ef7e7398f98d1023d0722eb152dcef97679f900"
+    },
+    "C": {
+     "single": "ebe2c5c3e7d14f8f7993ca0d6df3ecde27447c0396e70e4d82f91daf4b07ef9d"
+    },
+    "D": {
+     "single": "5aaf348d50a4060b70c86a2a686711559de7bac55a1f5b1214d9ab03ce5371f5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor",
+    "B": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor",
+    "C": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor",
+    "D": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render phfix_RM_TavroskLiquor_a",
+    "C": "render phfix_RM_TavroskLiquor_b",
+    "D": "history Webwork 2026-09-25"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "tavroskliquor"
+  },
+  "RM_Tekk": {
+   "columns": {
+    "A": {
+     "single": "e88becfeea0883b77af42c66f6fb890b80528fde5e81438a55a4f4c319073eea"
+    },
+    "B": {
+     "single": "467e9291477b9c1a44369d3e233fa419a8500646cbdc16145454212fae5aed1a"
+    },
+    "C": {
+     "single": "f1b5e39a1b9e347018b1dee55d8c9fd752f6c1be706278f17394a352d11bd33c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_Tekk",
+    "B": "Things/Item/Resource/RM_Tekk",
+    "C": "Things/Item/Resource/RM_Tekk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_Tekk_v3_nooutline",
+    "C": "history Wasteland 2026-09-24"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_Tekk",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "tekk"
+  },
+  "RM_TetchikJar": {
+   "columns": {
+    "A": {
+     "single": "e103ff1f9343a600055bec088546bf0a14bc72e77a824adfb252a2a104889cf7"
+    },
+    "B": {
+     "single": "1559e7e48cf766dd6ab716601bcd39528776e6f3bf8e3584c7ac6f641e7a8449"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TetchikJar",
+    "B": "Things/Item/RM_TetchikJar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_TetchikJar_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TetchikJar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tetchikjar"
+  },
+  "RM_ThuumCatch": {
+   "columns": {
+    "A": {
+     "single": "c553d1f5959027c08a49d78423cfeb45d9b29f7b51ccbe3b11f5e04e6b51bef8"
+    },
+    "B": {
+     "single": "aa9d1b127d0410a3cdc58ae2d79f881ef28f0b3c2655f25ec3a92758cef618a8"
+    },
+    "C": {
+     "single": "ccf3bff353fcce0a5d2b744a4d88c9c11bbad135a9f54fee8589b46ba75d4a1e"
+    },
+    "D": {
+     "single": "bcc8f6c762dd4276eeba8b54f0e409799d0734f5000c3274a13c6e5c9e71c99e"
+    },
+    "E": {
+     "single": "b76dcff49c5cde7d9864c042da36e3f9409a1a61f7899649846d4fcda0a05cbb"
+    },
+    "F": {
+     "east": "f36a956233bd2721f408f28e7086e8b15e600ea43ee6118b947a9d3d5fbd52fd",
+     "north": "1ca1f36e13f2a29c2c8a4333eb69cd5c0aa1e997cc03ed245de2564bfc77aaf7",
+     "south": "0804febcebf0cd1036b5294038c5993932d0f426598af4ea9e9fc7b9bca1ae09"
+    },
+    "G": {
+     "east": "3c646706b24d25794076168128fe741796de95757a90ed93af28f0c8fffc186f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/RM_ThuumCatch",
+    "B": "Things/Item/Fish/RM_ThuumCatch",
+    "C": "Things/Item/Fish/RM_ThuumCatch",
+    "D": "Things/Item/Fish/RM_ThuumCatch",
+    "E": "Things/Item/Fish/RM_ThuumCatch",
+    "F": "_reference:RM_Thuum",
+    "G": "_reference:RM_Thuum"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_ThuumCatch_v3_nooutline",
+    "C": "render scald2_thuumcatch_a",
+    "D": "render scald2_thuumcatch_b",
+    "E": "render scald2_thuumcatch_c",
+    "F": "render scald4_shimmereel",
+    "G": "render scald3_shimmereel"
+   },
+   "pools": [],
+   "res": "Things/Item/Fish/RM_ThuumCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "thuumcatch"
+  },
+  "RM_TitanoslimeChunk": {
+   "columns": {
+    "A": {
+     "single": "7bf6b3b208fcc74f7fa50bf7cc9331dec7cd9f7cc6ca0f0f83ad9c63daf382ad"
+    },
+    "B": {
+     "single": "676b82e1b288cb6fbb886f988983bd5487d3a5b29990878538eff8ff5756b71c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TitanoslimeChunk",
+    "B": "Things/Item/RM_TitanoslimeChunk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render RM_TitanoslimeChunk_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TitanoslimeChunk",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "titanoslimechunk"
+  },
+  "RM_TollukCap": {
+   "columns": {
+    "A": {
+     "single": "b732474e5d7516f74b4f2875a0e28c1ab0db3a0209a660ff059ddff4b6a50556"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/TollukCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant TollukCap_A (1 of 1) \u2014 TheRot"
+   },
+   "pools": [
+    "RotSporeKit/Things/Plant/TollukCap"
+   ],
+   "res": "RotSporeKit/Things/Plant/TollukCap",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "tollukcap"
+  },
+  "RM_TollukCapHarvest": {
+   "columns": {
+    "A": {
+     "single": "2788609470cb946a2371a3ec6c4dcfd08c5977004c582de9247702f5b793d1b3"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_TollukCapHarvest_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "tollukcapharvest"
+  },
+  "RM_TsevrixPulp": {
+   "columns": {
+    "A": {
+     "single": "6af050ea3847ace18170c73c3dcc8047cb8911bbbccf262726a177ec1bfd8c16"
+    },
+    "B": {
+     "single": "165b1ddd5f68fd73ebaa9d830f2c4abbe3cc3c703f87ce4578bfb67f9562a35e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TsevrixPulp",
+    "B": "Things/Item/RM_TsevrixPulp"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render RM_TsevrixPulp_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TsevrixPulp",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tsevrixpulp"
+  },
+  "RM_TsevrixRoasted": {
+   "columns": {
+    "A": {
+     "single": "2f361cf6ce8c341170a6e453ceca57fd11207e1f7670a10c26313c53b80994f4"
+    },
+    "B": {
+     "single": "c5e5f74a46ee5ebc6e41a6d260c786c28fd5159d91927d514181057417db412d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TsevrixRoasted",
+    "B": "Things/Item/RM_TsevrixRoasted"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render RM_TsevrixRoasted_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TsevrixRoasted",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tsevrixroasted"
+  },
+  "RM_UltracactusPad": {
+   "columns": {
+    "A": {
+     "single": "210c1223191b84e30f5a87c8e65aeaef0280891feaaf21131f6fef4b49dfbc92"
+    },
+    "B": {
+     "single": "1988f4e629681abc8e58a07cf61d30d05e7d6cefdec2fb9b369bc429c9802ac4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Plant/RM_UltracactusPad",
+    "B": "Things/Item/Plant/RM_UltracactusPad"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render RM_UltracactusPad_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Plant/RM_UltracactusPad",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ultracactuspad"
+  },
+  "RM_Vexxith": {
+   "columns": {
+    "A": {
+     "single": "04ae7cb19f2b17e1facec739043edc7be63f60642c00e0ee1453acecec7fe5ee"
+    },
+    "B": {
+     "single": "5f6d4c03db9646d31db8ad2c0caa80e876023fe079ebf61939df35bbea1dd815"
+    },
+    "C": {
+     "single": "3be0c6a0e2606eb8e5dc8440c6eebf67dec8383b62c010d81c01aa60e60eaa2c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_Vexxith/RM_Vexxith",
+    "B": "Things/Item/RM_Vexxith/RM_Vexxith",
+    "C": "Things/Item/RM_Vexxith/RM_Vexxith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render RM_Vexxith_v3_nooutline",
+    "C": "render RM_Vexxith_v4_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_Vexxith/RM_Vexxith",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vexxith"
+  },
+  "RM_VisslerArm": {
+   "columns": {
+    "A": {
+     "single": "fa157c363ebc0b59e337ab88736db1abf6c142a9dd24363bd70d0a860ca52696"
+    },
+    "B": {
+     "single": "7a0b3394881020343fc332f9545040178c6e0b443adebd12e0c0ef64dfe72f25"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_VisslerArm",
+    "B": "Things/Item/Resource/RM_VisslerArm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render RM_VisslerArm_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_VisslerArm",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "visslerarm"
+  },
+  "RM_VitrifiedBezoar": {
+   "columns": {
+    "A": {
+     "single": "64c983c33c776061d89e249b286edf26d27af455abc22c321f0005fa235be0f5"
+    },
+    "B": {
+     "single": "8ba5c7bac00374166803b53f98c140d5de0627bf7e6d8a271dd81d2e6c26cd94"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_VitrifiedBezoar",
+    "B": "Things/Item/Resource/RM_VitrifiedBezoar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render RM_VitrifiedBezoar_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_VitrifiedBezoar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vitrifiedbezoar"
+  },
+  "RM_VorrelFruit": {
+   "columns": {
+    "A": {
+     "single": "8a40f79f8394cfeeec3fa1a7df0f908762bf8cc2f17bb11ddd0d49c8f4962582"
+    },
+    "B": {
+     "single": "f37dd6f324c1c9f81656071cc25167b01c5f039b63d7726433ff7c32a4f5ea8c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Plant/RM_VorrelFruit",
+    "B": "Things/Item/Plant/RM_VorrelFruit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "history LongShade 2026-09-29"
+   },
+   "pools": [],
+   "res": "Things/Item/Plant/RM_VorrelFruit",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vorrelfruit"
+  },
+  "RM_VorrelSeedDish": {
+   "columns": {
+    "A": {
+     "single": "8d0e40b6ac70ecdc6185a12db645f6e4d6048757720a8d0b9be9561122aa2162"
+    },
+    "B": {
+     "single": "715fbbe5e58a7e0a9b206f854e9fc50640c451c5763c43e1f671307edef33ce3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RM_VorrelSeedDish",
+    "B": "Things/Item/Meal/RM_VorrelSeedDish"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render RM_VorrelSeedDish_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Meal/RM_VorrelSeedDish",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vorrelseeddish"
+  },
+  "RM_WarDust": {
+   "columns": {
+    "A": {
+     "single": "ba87f2fb40e6f293ba8578ef151c8ee245fe856a56a80b58418010a017dc1e9f"
+    },
+    "B": {
+     "single": "7a86fa481948dff4bfd4bce9e6dfdcc50157636b7e5a0d5f87d0aa431f9649dc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_WarDust",
+    "B": "Things/Item/Resource/RM_WarDust"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_WarDust_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_WarDust",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "wardust"
+  },
+  "RM_WasteCask": {
+   "columns": {
+    "A": {
+     "single": "1e6cb69b7d9e1e4477206acc9e85862f6b276aef8b745588317cc85abaf991be"
+    },
+    "B": {
+     "single": "65928ccee5b321706e45794baa1f275b7167abdd6ff68bd4a38fa43d75b6b44d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_WasteCask",
+    "B": "Things/Item/Resource/RM_WasteCask"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RM_WasteCask (1 of 1) \u2014 Wasteland",
+    "B": "render RM_WasteCask_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Resource/RM_WasteCask"
+   ],
+   "res": "Things/Item/Resource/RM_WasteCask",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "wastecask"
+  },
+  "RM_WeloonCatch": {
+   "columns": {
+    "A": {
+     "single": "98ea8d29fd8653055ed03b4961ce3044b8f3df3c1c628d67e4b67edc7f094828"
+    },
+    "B": {
+     "single": "32613d1bcaa8010ffbe0e6094a57b708a59b06869bab3ef805408c02fce74e08"
+    },
+    "C": {
+     "single": "c203329fee5e8f496e5f007946e7cf5d38423f0da00360e5d9a677dabfef759c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+    "B": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+    "C": "Things/Item/RM_TwilightSea/RM_WeloonCatch"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_WeloonCatch_v3_nooutline",
+    "C": "render phreg_RM_WeloonCatch_v1"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "welooncatch"
+  },
+  "RM_WreckLichenScrapings": {
+   "columns": {
+    "A": {
+     "single": "d10301f9fc1eed7b085fc49ea116fe4493d3e67a1d51aa2c78d8ae33cc2414ff"
+    },
+    "B": {
+     "single": "f9510291edd24403c79d0517f2a325dd4c02e29a693dfd13282e35ad9d8e6d9d"
+    },
+    "C": {
+     "single": "0d51a1c34b72f08779c7674890bde3358027f7f675656c40192f03c2a90f4587"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings",
+    "B": "Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings",
+    "C": "Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render RM_WreckLichenScrapings_v3_nooutline",
+    "C": "history Scarlands 2026-10-01"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "wrecklichenscrapings"
+  },
+  "RM_ZennaqFilament": {
+   "columns": {
+    "A": {
+     "single": "f6545748083228eee44bb1a6da64d18835198116a1f6fcf14bb995b856de1ed7"
+    },
+    "B": {
+     "single": "42ea6f8d28504a6142bd21102ab7bbcfc03cd9adeb403994c9555e02da1a3147"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RM_ZennaqFilament",
+    "B": "Things/Item/RM_ZennaqFilament"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_ZennaqFilament_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RM_ZennaqFilament",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "zennaqfilament"
+  },
+  "RSW_Apparel_FangPendant": {
+   "columns": {
+    "A": {
+     "single": "1d54f88d631157b1a5d2b89a0966ead8220c6f60c65d2d904fea3b62b0aff726"
+    },
+    "B": {
+     "single": "2ae387aef240fd4877d26023b595fd6e898176706f92e8a465fe29a48f62b468"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant",
+    "B": "Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant"
+   },
+   "labels": {
+    "A": "shipped, not loaded \u2014 TrophyCraft",
+    "B": "render RSW_Apparel_FangPendant_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "apparel_fangpendant"
+  },
+  "RSW_BlendOnAStick": {
+   "columns": {
+    "A": {
+     "single": "5c5d89e4f4e4d85a61e7dc6ed6800b6d757aefd90d7ee48289939483acb07b28"
+    },
+    "B": {
+     "single": "ab4b682ebf429427d919a0d3e4b3cfb8dabf8b2dd3da5be600124a245159247f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick",
+    "B": "Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_BlendOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_BlendOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "blendonastick"
+  },
+  "RSW_CookedSkewer": {
+   "columns": {
+    "A": {
+     "single": "04407c280639305b28523524a18245790757f12fcee40a81f680d28d22dd1e42"
+    },
+    "B": {
+     "single": "de6f6d8d87c1c0ea8bf1e3ad04ad3acef0e9735d579b517b2af80c6f69cdc61b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer",
+    "B": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_CookedSkewer (1 of 2) \u2014 Cuisine",
+    "B": "IN GAME \u2014 random variant RSW_CookedSkewer_a (2 of 2) \u2014 Cuisine"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer"
+   ],
+   "res": "Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "cookedskewer"
+  },
+  "RSW_EggOval": {
+   "columns": {
+    "A": {
+     "single": "a72a5fab21b8682d9ae78d58dddedf28e5114538e6480bb0ed9a913110a4b355"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RSW_EggOval_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "eggoval"
+  },
+  "RSW_FishOnAStick": {
+   "columns": {
+    "A": {
+     "single": "8fb4a58e7869e8775b0e5160df718402c4fea131a55e0eef80313d9ec7754d5b"
+    },
+    "B": {
+     "single": "70638359e7977d608ad009145fa6626186c814f4c7053d9223097092f7201309"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick",
+    "B": "Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_FishOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_FishOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fishonastick"
+  },
+  "RSW_FruitOnAStick": {
+   "columns": {
+    "A": {
+     "single": "a856bf21aa9ce88819ecc9f71b391a59cb8790f74938cda6208f2f6a8438e402"
+    },
+    "B": {
+     "single": "6a786e5978d2047678e033ca06659dea26d36ccebafb48497701e578cd76028f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick",
+    "B": "Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_FruitOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_FruitOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fruitonastick"
+  },
+  "RSW_FungusOnAStick": {
+   "columns": {
+    "A": {
+     "single": "5b96e6c62617b8c4be3362f69e85ebb250cb37ef629833ce808f7a0b985cd1ce"
+    },
+    "B": {
+     "single": "c732dca00b515cd5574e1c5e066b22f42186c4969f30de7ca9d94700834327b4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick",
+    "B": "Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_FungusOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_FungusOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "fungusonastick"
+  },
+  "RSW_KraytHorn": {
+   "columns": {
+    "A": {
+     "single": "f38220f2debf8a74a29fd1d47c2f88a28c0d372274a3d19e3a220e9422d9dcff"
+    },
+    "B": {
+     "single": "dccdb73c690698161ea808a18f5c4ce8c66c170ae6106208011f34fdc529b9a6"
+    },
+    "C": {
+     "single": "62794f3b6709b9ac2834a6b2d6fe057d274a14604dda2a999369b77f440037a4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RSW_KraytHorn",
+    "B": "Things/Item/RSW_KraytHorn",
+    "C": "Things/Item/RSW_KraytHorn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render RSW_KraytHorn_v3_nooutline",
+    "C": "render RSW_KraytHorn_v4_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RSW_KraytHorn",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "kraythorn"
+  },
+  "RSW_KraytLens": {
+   "columns": {
+    "A": {
+     "single": "4283697cd0114a7dabd1aa4e55ed1163893bee872b5a946a793fe8c7fb1ed0fb"
+    },
+    "B": {
+     "single": "4692bcb78177fa7d6f22064d4bf407b3775c63b424a1e0b15ebff60d85214d98"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RSW_KraytLens",
+    "B": "Things/Item/Resource/RSW_KraytLens"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RSW_KraytLens_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Resource/RSW_KraytLens",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "kraytlens"
+  },
+  "RSW_LittleMeatOnAStick": {
+   "columns": {
+    "A": {
+     "single": "9221d5a1108fb72f2dfbf73f5b7fc5d6f09d14ac92744ead44940770b686875b"
+    },
+    "B": {
+     "single": "824ae59fca73579e7f3c605f3f16f37e59ed9f143ab3e17c49ff9530695fcf68"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick",
+    "B": "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_LittleMeatOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_LittleMeatOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "littlemeatonastick"
+  },
+  "RSW_MarshFungus": {
+   "columns": {
+    "A": {
+     "single": "24f248738dfbd4c3e95e3439c2c9b7aab1706bb143ee400d30254732435718ed"
+    },
+    "B": {
+     "single": "9a64dbf8ef9295e393e6fdf8d88743ff6de261a82a1001ab7f15c2a672cebc35"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RSW_MarshFungus",
+    "B": "Things/Item/RSW_MarshFungus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cuisine",
+    "B": "render RSW_MarshFungus_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RSW_MarshFungus",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "marshfungus"
+  },
+  "RSW_MeatOnAStick": {
+   "columns": {
+    "A": {
+     "single": "d7e3dc6f4010cb2f4da6759642ca01a64e6196b6e05f22c20baa6e0575b18dcc"
+    },
+    "B": {
+     "single": "541e2c154d0550b524d68982744ad2dc2d8acc613eb7ecb6e79eec752cc19107"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick",
+    "B": "Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_MeatOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_MeatOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "meatonastick"
+  },
+  "RSW_VegOnAStick": {
+   "columns": {
+    "A": {
+     "single": "804df8649f0a99b76a1e9cd5af1810d922b408762d51d18ea94d356ba9e8527f"
+    },
+    "B": {
+     "single": "b880c9578e42eda0109fd9b86f065aab3d0c8518239604ab008c9ca0e6a3aaae"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick",
+    "B": "Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RSW_VegOnAStick_a (1 of 1) \u2014 Cuisine",
+    "B": "render RSW_VegOnAStick_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick"
+   ],
+   "res": "Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vegonastick"
+  },
+  "RUT_CrackWax": {
+   "columns": {
+    "A": {
+     "single": "7ad0aea6433ac2630eb41dfab8d220c3bcf75c6d46d3253b898a11111beef4f9"
+    },
+    "B": {
+     "single": "6e14f71c3580c5581ad6f54f8b5abd580ab8d1f7f949cba63a16952dd31abbda"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RUT_CrackWax",
+    "B": "Things/Item/Resource/RUT_CrackWax"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RUT_CrackWax (1 of 1) \u2014 UtinniPatches",
+    "B": "render RUT_CrackWax_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/Resource/RUT_CrackWax"
+   ],
+   "res": "Things/Item/Resource/RUT_CrackWax",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "crackwax"
+  },
+  "RUT_Jawa_ClaimRumour": {
+   "columns": {
+    "A": {
+     "single": "56fc0a3e89b964fe8bcd4bb0d0b04fc81deffc6144e745a1614361e99a8a9db5"
+    },
+    "B": {
+     "single": "b68d53ac9354aa7f0ac3d04956ad535e05cde489f55b60a641bc1991e7a4c0ca"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Special/JawaClaimRumour",
+    "B": "Things/Item/Special/JawaClaimRumour"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render RUT_Jawa_ClaimRumour_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/Special/JawaClaimRumour",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "jawa_claimrumour"
+  },
+  "RUT_MetalSaltBezoar": {
+   "columns": {
+    "A": {
+     "single": "87e0669ac44e9b70f1ed8bb4426f45acee3f2ad8e173ecde458c3f4a70de4cb3"
+    },
+    "B": {
+     "single": "35346b062136ecb0c14b3f9906da67f3f233cffc2082e8487f2bc87ca3b2c4f1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Resource/RUT_MetalSaltBezoar",
+    "B": "Things/Item/Resource/RUT_MetalSaltBezoar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant RUT_MetalSaltBezoar (1 of 2) \u2014 UtinniPatches",
+    "B": "IN GAME \u2014 random variant RUT_MetalSaltBezoar_a (2 of 2) \u2014 UtinniPatches"
+   },
+   "pools": [
+    "Things/Item/Resource/RUT_MetalSaltBezoar"
+   ],
+   "res": "Things/Item/Resource/RUT_MetalSaltBezoar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "metalsaltbezoar"
+  },
+  "RUT_Mindstone": {
+   "columns": {
+    "A": {
+     "single": "4956fba6aa66e24a4348dcae269ac4c6291ed008473deb92b237336e4cb6ceb8"
+    },
+    "B": {
+     "single": "c2bcfb387a17c46cb3affd53fb7757c2c8a337b3ecdfc608e8d58f7eba8431b5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RUT_Mindstone/RUT_Mindstone",
+    "B": "Things/Item/RUT_Mindstone/RUT_Mindstone"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render RUT_Mindstone_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RUT_Mindstone/RUT_Mindstone",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "mindstone"
+  },
+  "RUT_PilgrimJournal": {
+   "columns": {
+    "A": {
+     "single": "5753275bfd3368f8da97ce0eb9cd0f82e926ee5510e4b9e00cf50c7d04de9ec2"
+    },
+    "B": {
+     "single": "221ef7dab7447b8b6f4eadc450f2a675692986b49a39657e6850770e8c7a0413"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RUT_PilgrimJournal",
+    "B": "Things/Item/RUT_PilgrimJournal"
+   },
+   "labels": {
+    "A": "shipped, not loaded \u2014 ScarlandsLadder",
+    "B": "render RUT_PilgrimJournal_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RUT_PilgrimJournal",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pilgrimjournal"
+  },
+  "RUT_PreservedDrawJoint": {
+   "columns": {
+    "A": {
+     "single": "90b228e53adc5057015f37673239cdf69eebbc01737206046e35dc23af12d24f"
+    },
+    "B": {
+     "single": "2af195b20c30e7964d4c9d199bc136999b011e50ce6843707556bc74ce70bb45"
+    },
+    "C": {
+     "single": "bc3dd3dd5d71b02a5634f252d96dab8dc91b2cfb63299e1d0ad1f30b2e9f3a57"
+    },
+    "D": {
+     "single": "86ba04681ebb62e4e30374d8b434d0544e2d653aa65b4a97336a1b7c569ef79b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "B": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "C": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+    "D": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RUT_PreservedDrawJoint_v3_nooutline",
+    "C": "render rut_preserveddrawjoint_v1",
+    "D": "render rut_preserveddrawjoint_v2"
+   },
+   "pools": [],
+   "res": "Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "preserveddrawjoint"
+  },
+  "RUT_SealedWaterJar": {
+   "columns": {
+    "A": {
+     "single": "4884a1a364757cf5953e615ed2a0cad7798cfb76d7274705889e1979f91f2f27"
+    },
+    "B": {
+     "single": "420f82d9158f635cef431534f3873fd7765eebc33450df7259273d5763ff60e1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/RUT_SealedWaterJar",
+    "B": "Things/Item/RUT_SealedWaterJar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render RUT_SealedWaterJar_v3_nooutline"
+   },
+   "pools": [],
+   "res": "Things/Item/RUT_SealedWaterJar",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "sealedwaterjar"
+  },
+  "RemoteResearchKit": {
+   "columns": {
+    "A": {
+     "single": "e6597f5d282689fc3c144a6e1bdba3910097c725bc380e186474de45fb1f596c"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RemoteResearchKit_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "remoteresearchkit"
+  },
+  "SimpleResearchKit": {
+   "columns": {
+    "A": {
+     "single": "2ad2c4f918eaf7b937a4abb67434fad0a710a5292f80d05f225e19c289951218"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render SimpleResearchKit_v3_nooutline"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "simpleresearchkit"
+  },
+  "VAEWaste_ToxicMeat": {
+   "columns": {
+    "A": {
+     "single": "567de09af4fd863a900487915ba7776508a5b65e03711705f3cc81a8d1001975"
+    },
+    "B": {
+     "single": "69695239ffa8f3caebbc832d74778f4d4cf9f3f18bed19826d48059d276e853b"
+    },
+    "C": {
+     "single": "8cde0233ae2e946775c4a44de323e2336c470b63e5e543875bc5e23915b5f8e6"
+    },
+    "D": {
+     "single": "b50187b7ec065f1ea7f66cac9e7637f1c47a0a9675ded6b2c1a05c1625cfbd25"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/ToxicMeat",
+    "B": "Things/Item/ToxicMeat",
+    "C": "Things/Item/ToxicMeat",
+    "D": "Things/Item/ToxicMeat"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 random variant ToxicMeat_a (1 of 3) \u2014 UtinniPatches",
+    "B": "IN GAME \u2014 random variant ToxicMeat_b (2 of 3) \u2014 UtinniPatches",
+    "C": "IN GAME \u2014 random variant ToxicMeat_c (3 of 3) \u2014 UtinniPatches",
+    "D": "render VAEWaste_ToxicMeat_v3_nooutline"
+   },
+   "pools": [
+    "Things/Item/ToxicMeat"
+   ],
+   "res": "Things/Item/ToxicMeat",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "vaewaste_toxicmeat"
+  }
+ },
+ "sheetId": "picks_icons_sheet_2026-10-19",
+ "snapshotId": "d178329a3a034e9e"
+}

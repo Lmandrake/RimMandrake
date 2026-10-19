@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_dragonsnake_jfo_pick",
- "built": "2026-10-18T08:51:09-0700",
+ "built": "2026-10-19T05:07:29-0700",
  "census": "Transient/biome_ffar/dragonsnake_jfo_pick.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 548 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "Dragonsnake": {
    "columns": {
@@ -21,26 +21,184 @@
      "east": "a80b2bff4aa0fab47a021004e4c6d3b49a834062fc264f748d97f820fa86df2b",
      "north": "fa37fc5d7d3b44b9088e9071d7f344ba7c01da5f6b88d043bdbcbdee1ab65cdd",
      "south": "dbf15966857c0cfe53276997cb4f8380ed4b9fda66daf22a0ecc8d0bb6c06068"
+    },
+    "D": {
+     "east": "8a8a53dbddfd4677701874e81d3bfd2a2e7e7ca4d8637dfced215add4a51d762",
+     "north": "5aa470919f41204c6178cbd8da8105d3baaf69ba1928c862edb36bed2de67032",
+     "south": "1daf96a996f02175fce615e9db722410db84739fd00801efe3b707d384044ced"
+    },
+    "E": {
+     "east": "a21f59d2d8bfcfc26f2829ad2e26949026fe7843b75bcad914b242c5292fa7e7",
+     "north": "e659ed7f91fc277ee356394aa99505065fc5f7ab5e736d1dc4ea3d841bdd0492",
+     "south": "854efd3484e11b1d0c173a8e26e85fbb8bb5d70989c14bd6e1ab928e460681c3"
+    },
+    "F": {
+     "east": "ed7f44d52dcd00a4c026814549cfd62869d8e7506b7ba3cf310c774550b78afb",
+     "north": "7f30177e69f0968176db915923c59e8d8c869cfc28df81502f432b9c9004679a",
+     "south": "0759554a9756138f442e7057fc5f31f163793e80ac20badceab7998d25c40856"
+    },
+    "G": {
+     "east": "869ce582eb40f89beb8517d8ddae92683ef2f1bd818a900da30f419649d9aab2",
+     "north": "b9d58b70f15e7639b242f101769149e8e3aa30fb18dcc10688e7ae0b31061215",
+     "south": "21cb1fb5ce397751735bd0cef2c8f4fc15e3d4e8d73716388887eccf39f98c6c"
+    },
+    "H": {
+     "east": "7010c422a04dae6c11ac9c4b90775a1fae8ba2a8a60ec1a170bebf79432e64f3",
+     "north": "54b9f848dd98a59e6539abacf7512cf88f210c7c4ca2d889edb4e85ac1216a4b",
+     "south": "8698de28770708cdc4daea7c05797f323eebe3a96ef708a990bc338720b108c8"
+    },
+    "I": {
+     "east": "beca52c84306aad915901d752a4f919cd70abab44465e1561949b0a5f5c44331",
+     "north": "ef6158657763ba261c0608d1896e3083760057e97d6991b4371d395666b02dd5",
+     "south": "b2b37e76533194f38b1da666979b60a763f90f0cf83ea5a2760742b69f6fe961"
+    },
+    "J": {
+     "east": "738d34903dc065465b1ce675e99600be6d9d391c3fff3019ebe1f3583e07aeb5",
+     "north": "f8583fa98544489216602bc3d74b9d68a54d206ed5253e706c7f4c68adc5f444",
+     "south": "fad99dc6901654a794a496353196a9fd6fba0c0792f593ca9813068944a1c55b"
+    },
+    "K": {
+     "east": "32b3281d4d11207f30bcc28542f2764710f95d50aa4e5c84b40c89b4ef894885",
+     "north": "31b20ff5e127467db49c307eeada834d9a47a859f65ae621aed0b86651472afa",
+     "south": "00ba1421ce0a347d9aaf5cc7ce8f6341cb7f587c38b642cf87653989807d7279"
+    },
+    "L": {
+     "east": "5dac3487db9f80c7cd5ac37702da531620320548f37b3f577e4125354c9b0881",
+     "north": "5c8235e4b8696b24b4b8c3685d6470d27006057e9ed594a088686fe9450eb095",
+     "south": "2475c7103728aa860effceb7fb30229d042aa721d9196e562bf5495a7470c48a"
+    },
+    "M": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "N": {
+     "east": "d4dc059ce252373cf7a16d94c146ce7599c2a7a42ef46142c3074afc37ebf135",
+     "north": "5aad8cc5b6a3ea7d46f744cc176095d6354c574495367eddf1dbaf645f11cf76",
+     "south": "3e98c88a185684c77f3a1917ea1f4ba9b81473a9d02630c4cbed5a56a0fec1f9"
+    },
+    "O": {
+     "north": "9209330c8e08583c7972370fd29c34bac3dca0aac820ea66de35dd0201703e48"
+    },
+    "P": {
+     "north": "e22328f7d460ffa42fc708821d470d8e2e67fd5cb4e9f93f8bba635ba37d9078"
+    },
+    "Q": {
+     "north": "de406af1798d2eab595103186de53988f121e42d4e3e2ddb79aae1d5d5f386ce"
+    },
+    "R": {
+     "north": "7aeb051b03d6032639febba8f49e410e1cd70312b4962b640b2a7b4fc8d37c3d"
+    },
+    "S": {
+     "north": "d6f65bd179ff410388fd73bc52c9bde039fed38fd8521c0c503e5a4e64955ffb"
+    },
+    "T": {
+     "north": "1d0d6aacbe212dbada6963cb666b33594112cff3f737ca0d57c445166cab8440"
+    },
+    "U": {
+     "north": "20b55c03e8c53c774d585811d01221e77093b6f525cb172ed10b847fa36e0b68"
+    },
+    "V": {
+     "north": "b4dba8b10bd86b2341a81109ca4408d7c67f45ad0412c820cfed1d18f19e6273"
+    },
+    "W": {
+     "north": "fbf7f811546a45a6c8a05a0f43e6ce2993891a87e2a35646ffe201f64c36eecc"
+    },
+    "X": {
+     "north": "94044d231f2dd16de2398ca9bb1618db9e143ee0f9d79abaf659b0667e5f8832"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dragonsnake/Dragonsnake",
     "B": "swanimals/Dragonsnake/Dragonsnake",
-    "C": "swanimals/Dragonsnake/Dragonsnake"
+    "C": "swanimals/Dragonsnake/Dragonsnake",
+    "D": "swanimals/Dragonsnake/Dragonsnake",
+    "E": "swanimals/Dragonsnake/Dragonsnake",
+    "F": "swanimals/Dragonsnake/Dragonsnake",
+    "G": "swanimals/Dragonsnake/Dragonsnake",
+    "H": "swanimals/Dragonsnake/Dragonsnake",
+    "I": "swanimals/Dragonsnake/Dragonsnake",
+    "J": "swanimals/Dragonsnake/Dragonsnake",
+    "K": "swanimals/Dragonsnake/Dragonsnake",
+    "L": "swanimals/Dragonsnake/Dragonsnake",
+    "M": "swanimals/Dragonsnake/Dragonsnake",
+    "N": "swanimals/Dragonsnake/Dragonsnake",
+    "O": "_byname",
+    "P": "_byname",
+    "Q": "_byname",
+    "R": "_byname",
+    "S": "_byname",
+    "T": "_byname",
+    "U": "_byname",
+    "V": "_byname",
+    "W": "_byname",
+    "X": "_byname"
    },
    "labels": {
     "A": "render regen_gt_canon_dragonsnake_v1",
     "B": "render regen_gt_canon_dragonsnake_v1_swim \u2014 grader flagged (advisory)",
-    "C": "history DragonsnakeArtOverride 2026-09-20"
+    "C": "history DragonsnakeArtOverride 2026-09-20",
+    "D": "render dragonsnake_jfo_vara_v1",
+    "E": "render dragonsnake_jfo_vara_v1_swim",
+    "F": "render dragonsnake_jfo_varb_v1",
+    "G": "render dragonsnake_jfo_varb_v1_swim",
+    "H": "render dragonsnake_jfo_varc_v1",
+    "I": "render dragonsnake_jfo_vard_v1",
+    "J": "render dragonsnake_jfo_varc_v1_swim",
+    "K": "render dragonsnake_jfo_vard_v1_swim",
+    "L": "render dragonsnake_albino_v1_swim",
+    "M": "render dragonsnake_jfo_v1",
+    "N": "render dragonsnake_jfo_v1_swim",
+    "O": "render facings_redraw_dragonsnake_a_north_v3",
+    "P": "render facings_redraw_dragonsnake_b_north_v3",
+    "Q": "render facings_redraw_dragonsnake_c_north_v3",
+    "R": "render facings_redraw_dragonsnake_d_north_v3",
+    "S": "render facings_redraw_dragonsnake_swim_north_v3",
+    "T": "render facings_redraw_dragonsnake_a_north_v2",
+    "U": "render facings_redraw_dragonsnake_b_north_v2",
+    "V": "render facings_redraw_dragonsnake_c_north_v2",
+    "W": "render facings_redraw_dragonsnake_d_north_v2",
+    "X": "render facings_redraw_dragonsnake_swim_north_v2"
    },
    "pools": [],
    "res": "swanimals/Dragonsnake/Dragonsnake",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "4b4350425edb6c35c2059ff192215bf76b3d54170a6fa0ebac822019e1f6def8",
+    "656c748fad1cbeab9bd0d0aa48db448e1a30b169cd823daa7433f617bf165652",
+    "6d7499417366d60597d4f0d69e3faf226142178d72d3ff6a1add9f11ae7016d4",
+    "6ebfafc37cbee0418392bde46f4401a2f1b2b23c9964db763f697084339bffc6",
+    "72145c0126cc95f3d299f5be219914d141ade7e6bc286dce949b02ed373a2228",
+    "a80b2bff4aa0fab47a021004e4c6d3b49a834062fc264f748d97f820fa86df2b",
+    "dbf15966857c0cfe53276997cb4f8380ed4b9fda66daf22a0ecc8d0bb6c06068",
+    "e1eee1d8bdd20ce38c142ccc9f448e7d87d018c9d9e9b0fa63792d064eec116d",
+    "fa37fc5d7d3b44b9088e9071d7f344ba7c01da5f6b88d043bdbcbdee1ab65cdd"
+   ],
    "subject_key": "dragonsnake"
   },
   "RSW_Dragonsnake": {
@@ -55,33 +213,189 @@
      "north": "e1eee1d8bdd20ce38c142ccc9f448e7d87d018c9d9e9b0fa63792d064eec116d",
      "south": "656c748fad1cbeab9bd0d0aa48db448e1a30b169cd823daa7433f617bf165652"
     },
-    "C": {
-     "east": "3850909de68ee991cdbd44e88eb3ffeb2d70af037475a0118bbcd2712757111d",
-     "north": "b3e30f80a4206309653e35710a55fb0d79a2003354716645fc0823a32ca1d775",
-     "south": "f1cc492b887c26331d7165732adc2dd0e8274da1a1d46ae6699be5c2721cfa42"
+    "D": {
+     "east": "8a8a53dbddfd4677701874e81d3bfd2a2e7e7ca4d8637dfced215add4a51d762",
+     "north": "5aa470919f41204c6178cbd8da8105d3baaf69ba1928c862edb36bed2de67032",
+     "south": "1daf96a996f02175fce615e9db722410db84739fd00801efe3b707d384044ced"
+    },
+    "E": {
+     "north": "9209330c8e08583c7972370fd29c34bac3dca0aac820ea66de35dd0201703e48"
+    },
+    "F": {
+     "north": "1d0d6aacbe212dbada6963cb666b33594112cff3f737ca0d57c445166cab8440"
+    },
+    "G": {
+     "east": "ed7f44d52dcd00a4c026814549cfd62869d8e7506b7ba3cf310c774550b78afb",
+     "north": "7f30177e69f0968176db915923c59e8d8c869cfc28df81502f432b9c9004679a",
+     "south": "0759554a9756138f442e7057fc5f31f163793e80ac20badceab7998d25c40856"
+    },
+    "H": {
+     "north": "e22328f7d460ffa42fc708821d470d8e2e67fd5cb4e9f93f8bba635ba37d9078"
+    },
+    "I": {
+     "north": "20b55c03e8c53c774d585811d01221e77093b6f525cb172ed10b847fa36e0b68"
+    },
+    "J": {
+     "east": "7010c422a04dae6c11ac9c4b90775a1fae8ba2a8a60ec1a170bebf79432e64f3",
+     "north": "54b9f848dd98a59e6539abacf7512cf88f210c7c4ca2d889edb4e85ac1216a4b",
+     "south": "8698de28770708cdc4daea7c05797f323eebe3a96ef708a990bc338720b108c8"
+    },
+    "K": {
+     "north": "de406af1798d2eab595103186de53988f121e42d4e3e2ddb79aae1d5d5f386ce"
+    },
+    "L": {
+     "north": "b4dba8b10bd86b2341a81109ca4408d7c67f45ad0412c820cfed1d18f19e6273"
+    },
+    "M": {
+     "east": "beca52c84306aad915901d752a4f919cd70abab44465e1561949b0a5f5c44331",
+     "north": "ef6158657763ba261c0608d1896e3083760057e97d6991b4371d395666b02dd5",
+     "south": "b2b37e76533194f38b1da666979b60a763f90f0cf83ea5a2760742b69f6fe961"
+    },
+    "N": {
+     "north": "7aeb051b03d6032639febba8f49e410e1cd70312b4962b640b2a7b4fc8d37c3d"
+    },
+    "O": {
+     "north": "fbf7f811546a45a6c8a05a0f43e6ce2993891a87e2a35646ffe201f64c36eecc"
+    },
+    "P": {
+     "north": "d6f65bd179ff410388fd73bc52c9bde039fed38fd8521c0c503e5a4e64955ffb"
+    },
+    "Q": {
+     "east": "a21f59d2d8bfcfc26f2829ad2e26949026fe7843b75bcad914b242c5292fa7e7",
+     "north": "e659ed7f91fc277ee356394aa99505065fc5f7ab5e736d1dc4ea3d841bdd0492",
+     "south": "854efd3484e11b1d0c173a8e26e85fbb8bb5d70989c14bd6e1ab928e460681c3"
+    },
+    "R": {
+     "east": "869ce582eb40f89beb8517d8ddae92683ef2f1bd818a900da30f419649d9aab2",
+     "north": "b9d58b70f15e7639b242f101769149e8e3aa30fb18dcc10688e7ae0b31061215",
+     "south": "21cb1fb5ce397751735bd0cef2c8f4fc15e3d4e8d73716388887eccf39f98c6c"
+    },
+    "S": {
+     "east": "738d34903dc065465b1ce675e99600be6d9d391c3fff3019ebe1f3583e07aeb5",
+     "north": "f8583fa98544489216602bc3d74b9d68a54d206ed5253e706c7f4c68adc5f444",
+     "south": "fad99dc6901654a794a496353196a9fd6fba0c0792f593ca9813068944a1c55b"
+    },
+    "T": {
+     "east": "32b3281d4d11207f30bcc28542f2764710f95d50aa4e5c84b40c89b4ef894885",
+     "north": "31b20ff5e127467db49c307eeada834d9a47a859f65ae621aed0b86651472afa",
+     "south": "00ba1421ce0a347d9aaf5cc7ce8f6341cb7f587c38b642cf87653989807d7279"
+    },
+    "U": {
+     "north": "94044d231f2dd16de2398ca9bb1618db9e143ee0f9d79abaf659b0667e5f8832"
+    },
+    "V": {
+     "east": "5dac3487db9f80c7cd5ac37702da531620320548f37b3f577e4125354c9b0881",
+     "north": "5c8235e4b8696b24b4b8c3685d6470d27006057e9ed594a088686fe9450eb095",
+     "south": "2475c7103728aa860effceb7fb30229d042aa721d9196e562bf5495a7470c48a"
+    },
+    "W": {
+     "east": "6cfbff63d420fa991ee6318835fe03b54615d1309b22d7ba6ba58a16045bab1a",
+     "north": "265322e61685b49b44b9078973cd31cfb1c515f93185ef0be5613ed895317784",
+     "south": "f5d3636ecca625250f4d83233e71be437c2ddcf7b71d775d432cea9180930f8f"
+    },
+    "X": {
+     "east": "d4dc059ce252373cf7a16d94c146ce7599c2a7a42ef46142c3074afc37ebf135",
+     "north": "5aad8cc5b6a3ea7d46f744cc176095d6354c574495367eddf1dbaf645f11cf76",
+     "south": "3e98c88a185684c77f3a1917ea1f4ba9b81473a9d02630c4cbed5a56a0fec1f9"
     }
    },
    "graphic_of": {
-    "A": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake",
-    "B": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake",
-    "C": "swanimals/Dragonsnake/Dragonsnake_Swimming"
+    "A": "_byname",
+    "B": "_byname",
+    "D": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "E": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "F": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "G": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "H": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "I": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "J": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "K": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "L": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "M": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "N": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "O": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "P": "_byname",
+    "Q": "_byname",
+    "R": "_byname",
+    "S": "_byname",
+    "T": "_byname",
+    "U": "_byname",
+    "V": "_byname",
+    "W": "_byname",
+    "X": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
+    "A": "render regen_gt_canon_dragonsnake_v1",
     "B": "render regen_gt_canon_dragonsnake_v1_swim \u2014 grader flagged (advisory)",
-    "C": "IN GAME \u2014 SWBestiary"
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render facings_redraw_dragonsnake_a_north_v3",
+    "F": "render facings_redraw_dragonsnake_a_north_v2",
+    "G": "IN GAME \u2014 SWBestiary",
+    "H": "render facings_redraw_dragonsnake_b_north_v3",
+    "I": "render facings_redraw_dragonsnake_b_north_v2",
+    "J": "IN GAME \u2014 SWBestiary",
+    "K": "render facings_redraw_dragonsnake_c_north_v3",
+    "L": "render facings_redraw_dragonsnake_c_north_v2",
+    "M": "IN GAME \u2014 SWBestiary",
+    "N": "render facings_redraw_dragonsnake_d_north_v3",
+    "O": "render facings_redraw_dragonsnake_d_north_v2",
+    "P": "render facings_redraw_dragonsnake_swim_north_v3",
+    "Q": "render dragonsnake_jfo_vara_v1_swim",
+    "R": "render dragonsnake_jfo_varb_v1_swim",
+    "S": "render dragonsnake_jfo_varc_v1_swim",
+    "T": "render dragonsnake_jfo_vard_v1_swim",
+    "U": "render facings_redraw_dragonsnake_swim_north_v2",
+    "V": "render dragonsnake_albino_v1_swim",
+    "W": "render dragonsnake_jfo_v1",
+    "X": "render dragonsnake_jfo_v1_swim"
    },
-   "pools": [],
-   "res": "RimStarWars/SWBestiary/Dragonsnake/Dragonsnake",
+   "pools": [
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D"
+   ],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X"
    ],
-   "shownBase": [],
+   "shownBase": [
+    "3850909de68ee991cdbd44e88eb3ffeb2d70af037475a0118bbcd2712757111d",
+    "4b4350425edb6c35c2059ff192215bf76b3d54170a6fa0ebac822019e1f6def8",
+    "656c748fad1cbeab9bd0d0aa48db448e1a30b169cd823daa7433f617bf165652",
+    "6d7499417366d60597d4f0d69e3faf226142178d72d3ff6a1add9f11ae7016d4",
+    "6ebfafc37cbee0418392bde46f4401a2f1b2b23c9964db763f697084339bffc6",
+    "72145c0126cc95f3d299f5be219914d141ade7e6bc286dce949b02ed373a2228",
+    "b3e30f80a4206309653e35710a55fb0d79a2003354716645fc0823a32ca1d775",
+    "e1eee1d8bdd20ce38c142ccc9f448e7d87d018c9d9e9b0fa63792d064eec116d",
+    "f1cc492b887c26331d7165732adc2dd0e8274da1a1d46ae6699be5c2721cfa42"
+   ],
    "subject_key": "dragonsnake"
   }
  },
  "sheetId": "dragonsnake_jfo_pick_sheet_2026-10-18",
- "snapshotId": "d8436e08c362bc04"
+ "snapshotId": "1790e7d3997462c9"
 }

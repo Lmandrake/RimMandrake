@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-10T13:07:49-0700",
+ "built": "2026-10-19T05:19:54-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -48,21 +48,29 @@
     },
     "B": {
      "south": "8b287325be5df7d22f1c4e24692bff1f05a79eef6128c9b2c690acb91d49953b"
+    },
+    "C": {
+     "east": "b9a9818ef5aaaa94de7f408f20bd226d82f90d8e6d040e0e1499fa0d38a5399c",
+     "north": "8762d7572e9071fc327f254a0c0fc93a117394b8d6ff94ec0ad8050812c676ff",
+     "south": "8b287325be5df7d22f1c4e24692bff1f05a79eef6128c9b2c690acb91d49953b"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
-    "B": "Things/Pawn/Animal/Fubbum/RM_Fubbum"
+    "B": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
+    "C": "Things/Pawn/Animal/Fubbum/RM_Fubbum"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime",
-    "B": "history GelatinousSlime 2026-10-03"
+    "A": "render RM_Fubbum",
+    "B": "history GelatinousSlime 2026-10-03",
+    "C": "IN GAME \u2014 GelatinousSlime"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "6e97315c38e6df849d306ea50e00b60cfee0d1b80d3413b1ae5191b6b2bd03b1",
@@ -77,18 +85,26 @@
      "east": "d8299031e1f6d0ec33ee7162b686c9ef5b3258d79a4f7dd0604262986bb46996",
      "north": "d86b01b63d66ca8844f90968232f9804a229dc810bcf3429272b0918e4a955fe",
      "south": "618c3f7aa0eb9fbb842a82ddabd9d969e08c0c12d5c374baa5bb4797abb50e83"
+    },
+    "B": {
+     "east": "d8299031e1f6d0ec33ee7162b686c9ef5b3258d79a4f7dd0604262986bb46996",
+     "north": "425c33032be2849596010d614a434976d2930e70e22bb6cfba993832e3aba6db",
+     "south": "1fc9103e7d680b780ee615e55b71337acdb7247fe411afdb198606ddce64aab7"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Gappo/RM_Gappo"
+    "A": "Things/Pawn/Animal/Gappo/RM_Gappo",
+    "B": "Things/Pawn/Animal/Gappo/RM_Gappo"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime"
+    "A": "history GelatinousSlime 2026-10-03",
+    "B": "IN GAME \u2014 GelatinousSlime"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_Gappo",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "618c3f7aa0eb9fbb842a82ddabd9d969e08c0c12d5c374baa5bb4797abb50e83",
@@ -103,18 +119,26 @@
      "east": "a719ea1be4f33bbb884bfab53e30409e3b2c987bb3f84137e8bd7205643f44f0",
      "north": "c2e0cfad8a9085ea6b17925a37fc72fcddc7e2a30de1ba83c446907d581b33f2",
      "south": "c061c490b7146415f038472e9b66ad369829e44fd3ed8c92c05eb47c9632752c"
+    },
+    "B": {
+     "east": "a719ea1be4f33bbb884bfab53e30409e3b2c987bb3f84137e8bd7205643f44f0",
+     "north": "9e31517a4639070cdcc222deac92c0c130dfb341de2402ff0fc2f1ceb0ece8fb",
+     "south": "c061c490b7146415f038472e9b66ad369829e44fd3ed8c92c05eb47c9632752c"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Gappo/RM_GappoGreater"
+    "A": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
+    "B": "Things/Pawn/Animal/Gappo/RM_GappoGreater"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime"
+    "A": "render RM_GappoGreater",
+    "B": "IN GAME \u2014 GelatinousSlime"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "a719ea1be4f33bbb884bfab53e30409e3b2c987bb3f84137e8bd7205643f44f0",
@@ -129,18 +153,26 @@
      "east": "b5861746c5d077a712ec3acf4d1440c99b52d31cb86054ec59049f0aa1073163",
      "north": "736bc145228864a9b92b0d6d85b7032e472e2d13ecdd9b6e54d64637445b1324",
      "south": "158082ff7223975cd9520bb294ff00de11e8262ae5161ae295f514aae175a49a"
+    },
+    "B": {
+     "east": "b5861746c5d077a712ec3acf4d1440c99b52d31cb86054ec59049f0aa1073163",
+     "north": "26468b7c365a085f4a27af744278529baaf0b2dded1bc9c05dee8ef18b81f966",
+     "south": "158082ff7223975cd9520bb294ff00de11e8262ae5161ae295f514aae175a49a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Gappo/RM_GappoLesser"
+    "A": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
+    "B": "Things/Pawn/Animal/Gappo/RM_GappoLesser"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime"
+    "A": "render RM_GappoLesser",
+    "B": "IN GAME \u2014 GelatinousSlime"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "158082ff7223975cd9520bb294ff00de11e8262ae5161ae295f514aae175a49a",
@@ -200,13 +232,20 @@
    "columns": {
     "B": {
      "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
+    },
+    "C": {
+     "east": "38b547df96afeb49a978415485f4e96ac4b88093cf946912022f99a5ca74b01f",
+     "north": "c247fdb90a3f55d30c7b574b78e6cf6d8377150fedca28c41cc567e0729ed5b5",
+     "south": "4dd6c8157fdab8e394aea69068f2f6de069a55d7ba56243d54976960a20fcf77"
     }
    },
    "graphic_of": {
-    "B": "Things/Plant/RM_Bellows/RM_Bellows"
+    "B": "Things/Plant/RM_Bellows/RM_Bellows",
+    "C": "Things/Plant/RM_Bellows/RM_Bellows"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime"
+    "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime",
+    "C": "render kit_bellows_v1"
    },
    "pools": [
     "Things/Plant/RM_Bellows/RM_Bellows"
@@ -214,7 +253,8 @@
    "res": "Things/Plant/RM_Bellows/RM_Bellows",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "shownBase": [
     "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571",
@@ -236,8 +276,8 @@
     "C": "Things/Plant/RM_Readerbloom/RM_Readerbloom"
    },
    "labels": {
-    "B": "IN GAME \u2014 random variant RM_Readerbloom_a (1 of 1) \u2014 GelatinousSlime",
-    "C": "render enact_a78ae7bb_plant_readerbloom_v1"
+    "B": "render RM_Readerbloom",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Readerbloom_a (1 of 1) \u2014 GelatinousSlime"
    },
    "pools": [
     "Things/Plant/RM_Readerbloom/RM_Readerbloom"
@@ -270,6 +310,12 @@
     },
     "G": {
      "single": "3e8ed44c8bdd3c9f9c04975c409e41c01efcc409c8e65303e3d3bf3a1353c965"
+    },
+    "H": {
+     "single": "23d0363f67d499a232174fc883004b170196d59fcbd0abe96a69f59a92679053"
+    },
+    "I": {
+     "single": "ba56f569fd41e7903b65db989dfd23fcfde2eaa44b2c6221a8884a243920152c"
     }
    },
    "graphic_of": {
@@ -277,14 +323,18 @@
     "D": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
     "E": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
     "F": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
-    "G": "Things/Plant/Grass_Leafless"
+    "G": "Things/Plant/Grass_Leafless",
+    "H": "Things/Plant/Grass_Leafless",
+    "I": "_byname"
    },
    "labels": {
     "C": "IN GAME \u2014 random variant RM_SlimeGrass_a (1 of 4) \u2014 GelatinousSlime",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_b (2 of 4) \u2014 GelatinousSlime",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_c (3 of 4) \u2014 GelatinousSlime",
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_d (4 of 4) \u2014 GelatinousSlime",
-    "G": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures"
+    "G": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
+    "H": "render dregen_RM_HardyGrass_GrassLeafless_v1",
+    "I": "render dregen_RM_Plant_SlimeGrass_RMSlimeGrassa_v1"
    },
    "pools": [
     "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
@@ -297,7 +347,9 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I"
    ],
    "shownBase": [
     "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a",
@@ -319,19 +371,24 @@
     },
     "E": {
      "single": "d3a008894495ef0487b5228fb81b92ae65432f5b72bee1164dbbb940634b02e4"
+    },
+    "F": {
+     "single": "03db2bbe75a90ea4caac7afa96a58fae8eebcb285ec6669f09660899c26160b8"
     }
    },
    "graphic_of": {
     "B": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
     "C": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
     "D": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
-    "E": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
+    "E": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
+    "F": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Thumbstalk_a (1 of 4) \u2014 GelatinousSlime",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_b (2 of 4) \u2014 GelatinousSlime",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_c (3 of 4) \u2014 GelatinousSlime",
-    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_d (4 of 4) \u2014 GelatinousSlime"
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_d (4 of 4) \u2014 GelatinousSlime",
+    "F": "render dregen_RM_Plant_Thumbstalk_RMThumbstalka_v1"
    },
    "pools": [
     "Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
@@ -342,7 +399,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "b84959459d9c7b751194c408e0cf90db375b4a3ba4239cad646ec7c68778547e",

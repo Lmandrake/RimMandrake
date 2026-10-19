@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-10T23:26:23-0700",
+ "built": "2026-10-19T04:36:38-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 550 active",
+ "loadOrder": "live ModsConfig.xml: 542 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -179,28 +179,29 @@
      "north": "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
      "south": "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
     },
-    "C": {
+    "D": {
      "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
      "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-     "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+     "south": "37cc9074739786995917f32fd520f643bba62ccad9b4b1d852bbb34506f82ee0"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
     "B": "_byname",
-    "C": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
+    "D": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
    },
    "labels": {
     "A": "history Contagion 2026-09-29",
     "B": "render stillsand_regen_RSW_Ikee_v2",
-    "C": "IN GAME \u2014 Contagion"
+    "D": "IN GAME \u2014 Contagion"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
@@ -324,13 +325,15 @@
     "E": "Things/Plant/RM_Eyebark/RM_Eyebark"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion",
-    "B": "render RM_Eyebark",
-    "C": "render contagion_Eyebark_var1",
-    "D": "render contagion_Eyebark_var2",
-    "E": "render contagion_Eyebark_var3"
+    "A": "IN GAME \u2014 random variant RM_Eyebark_a (1 of 5) \u2014 Contagion",
+    "B": "IN GAME \u2014 random variant RM_Eyebark_e (5 of 5) \u2014 Contagion",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Eyebark_b (2 of 5) \u2014 Contagion",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Eyebark_c (3 of 5) \u2014 Contagion",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Eyebark_d (4 of 5) \u2014 Contagion"
    },
-   "pools": [],
+   "pools": [
+    "Things/Plant/RM_Eyebark/RM_Eyebark"
+   ],
    "res": "Things/Plant/RM_Eyebark/RM_Eyebark",
    "reserved": [
     "A",
@@ -416,26 +419,27 @@
      "north": "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408",
      "south": "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1"
     },
-    "C": {
-     "east": "264574025d40363b85e2cf3a91612dd45bfdb765d9d0385a79a7d40e5093e5e1",
+    "D": {
+     "east": "ffed605d87d0453f76bfc3054b3ddce5677241929d13b4637baa3b10e4ac522a",
      "north": "80443a5c6948e310c7d6788110f555e41917bb172195662476a049de6d3586d9",
      "south": "959111c50909076068b779f08f446a048af15c06032b1c9fe3056307a67d6a99"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
-    "C": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+    "D": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
    },
    "labels": {
     "A": "IN GAME \u2014 Contagion",
-    "C": "render enact_712dc596_gawpsack_v1"
+    "D": "render enact_712dc596_gawpsack_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "shownBase": [
     "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1",
@@ -501,27 +505,27 @@
     "A": {
      "single": "523207eca1fecbb0d7f59686ba687ada463df01add21d4a757207c147070bcf5"
     },
-    "B": {
-     "single": "22143867e5d9d156fa9f83b3976a97d91f8a7df3212f990e75e4cd8a9962ed94"
-    },
     "C": {
      "single": "48973acc278c85bb37312c3e56791b7c1360aa1615d4180be01cca0d9a3f7633"
     },
     "D": {
      "single": "1d3a4b694c49801c589b82b2b61b80d9adf3aa21e095a418759b7a3a94c4a980"
+    },
+    "E": {
+     "single": "660ecf213d56453f658806655906b6e4891f0beda03b1d85ff86ff3f0125b1d3"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
-    "B": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
     "C": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
-    "D": "Things/Plant/RM_Gorestalk/RM_Gorestalk"
+    "D": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+    "E": "Things/Plant/RM_Gorestalk/RM_Gorestalk"
    },
    "labels": {
     "A": "IN GAME \u2014 Contagion",
-    "B": "render contagion_Gorestalk_var1 \u2014 failed canon check",
     "C": "render contagion_Gorestalk_var2",
-    "D": "render contagion_Gorestalk_var3"
+    "D": "render contagion_Gorestalk_var3",
+    "E": "render contagion_Gorestalk_var1 \u2014 grader flagged (advisory)"
    },
    "pools": [],
    "res": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
@@ -529,7 +533,8 @@
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "shownBase": [
     "523207eca1fecbb0d7f59686ba687ada463df01add21d4a757207c147070bcf5"
@@ -558,12 +563,14 @@
     "D": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion",
-    "B": "render contagion_HalfmadeTree_var1",
-    "C": "render contagion_HalfmadeTree_var2",
-    "D": "render contagion_HalfmadeTree_var3"
+    "A": "IN GAME \u2014 random variant RM_HalfmadeTree_a (1 of 4) \u2014 Contagion",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_HalfmadeTree_b (2 of 4) \u2014 Contagion",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_HalfmadeTree_c (3 of 4) \u2014 Contagion",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_HalfmadeTree_d (4 of 4) \u2014 Contagion"
    },
-   "pools": [],
+   "pools": [
+    "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
+   ],
    "res": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
    "reserved": [
     "A",
@@ -702,18 +709,26 @@
      "east": "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
      "north": "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9",
      "south": "22832bea0e572c9b779d8c5f0a8e086c5491acf1493714660f442f13c84b4cff"
+    },
+    "B": {
+     "east": "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
+     "north": "7b30a40bb61fbbc351191e568b43df236039d15d642b547c50c94c36a5496eb4",
+     "south": "074538a8e6849cf7042f7d4c5a916dbade2df2ed8c3168d2eba9aaae30b13fb0"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
+    "A": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+    "B": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "render RM_Meltgut",
+    "B": "IN GAME \u2014 Contagion"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
@@ -825,26 +840,26 @@
     "C": {
      "single": "59dca961fc3191dfc6b9000baae67c24f8efa682a01326aa18476f8b80dce2a6"
     },
-    "D": {
-     "single": "2bd852d3d8d2a7cc30aeb67a63007c17a3f8c93cd78f8da3804dfdd144dd1b96"
-    },
     "E": {
      "single": "cc12e580afba357364341407215f0df5562b76afb639a30b21b5e2b75e7fd8f5"
+    },
+    "F": {
+     "single": "e4ad00fe491ea3176ba7f08e7d4ec0cd47907ca052bbd239ec7eba0f9efe729f"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/RustPuff",
     "B": "RotSporeKit/Things/Plant/RustPuff",
     "C": "RotSporeKit/Things/Plant/RustPuff",
-    "D": "RotSporeKit/Things/Plant/RustPuff",
-    "E": "RotSporeKit/Things/Plant/RustPuff"
+    "E": "RotSporeKit/Things/Plant/RustPuff",
+    "F": "RotSporeKit/Things/Plant/RustPuff"
    },
    "labels": {
     "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "IN GAME \u2014 random variant RustPuff_A (1 of 1) \u2014 TheRot",
     "C": "render contagion_RustPuff_var1",
-    "D": "render contagion_RustPuff_var2",
-    "E": "render contagion_RustPuff_var3"
+    "E": "render contagion_RustPuff_var3",
+    "F": "render contagion_RustPuff_var2"
    },
    "pools": [
     "RotSporeKit/Things/Plant/RustPuff"
@@ -855,7 +870,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "shownBase": [
     "0de2d53cf0edb6f7890d110137b4736cdafe457297ce97b05580af63fdf92081",
@@ -909,18 +925,26 @@
      "east": "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
      "north": "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631",
      "south": "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
+    },
+    "B": {
+     "east": "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+     "north": "1bb8d68516efc4b297f8e27579ac699e54736c428211787f14d3c202a18c5de3",
+     "south": "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
+    "A": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+    "B": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "render RM_Scaldhide",
+    "B": "IN GAME \u2014 Contagion"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
@@ -1075,18 +1099,26 @@
      "east": "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
      "north": "d09f63f36c4c346a687429a723400a01c434026691cf50cd7eb4d40e7c44f6e3",
      "south": "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158"
+    },
+    "B": {
+     "east": "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
+     "north": "a8cb4503f26cde8f3df32dd4303f6a14a6edf7ebb80312ebbb903c00216b91bc",
+     "south": "9cdad7d3b0fc0a78a40bf14bf8ca309660a4b6bf63d941985bb242b9fe1e4d2a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+    "A": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+    "B": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "render RM_SparkleechGrub",
+    "B": "IN GAME \u2014 Contagion"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [
     "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158",
@@ -1177,5 +1209,5 @@
   }
  },
  "sheetId": "contagion_sheet_2026-10-04",
- "snapshotId": "b7b5d41f636d3e55"
+ "snapshotId": "8356c2fb7c6672c7"
 }

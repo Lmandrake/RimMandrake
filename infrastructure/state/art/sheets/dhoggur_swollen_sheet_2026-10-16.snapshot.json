@@ -1,9 +1,9 @@
 {
  "biome": "SUBJECTS_dhoggur_swollen",
- "built": "2026-10-16T08:15:29-0700",
+ "built": "2026-10-19T05:04:57-0700",
  "census": "Transient/biome_ffar/dhoggur_swollen.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 20 mods \u2014 a test list): 551 active",
+ "loadOrder": "live ModsConfig.xml: 535 active",
  "rows": {
   "RM_Dhoggur": {
    "columns": {
@@ -11,18 +11,26 @@
      "east": "948188e777ef9336733d7570f826e654602ac47e2425f48bbdf82de63f652c40",
      "north": "b1f818932f35c45309819fe4584922372f6672ae59aecb3f851850d9b626306f",
      "south": "310dad78fcf39a060dabe1ccb7b307c0dda73866e348a9aed760922b3565a8dc"
+    },
+    "B": {
+     "east": "9d1b682a0cc15392a72816daa94f33b3ea4543036909eff3f390fde4717987c9",
+     "north": "2087c81fce015957be4ce4f87dcb74b1e2bbd37f715b2e7d406a847c6c289b6d",
+     "south": "10c742a6a47497755da620cb4f785c8025bddb6d36f43c3375a9c5693cddbd1e"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur"
+    "A": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
+    "B": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheForge"
+    "A": "IN GAME \u2014 TheForge",
+    "B": "render forgeslot_dhoggur_swollen_v1"
    },
    "pools": [],
    "res": "Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "shownBase": [],
    "subject_key": "dhoggur"
