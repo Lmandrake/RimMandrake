@@ -106,18 +106,6 @@ namespace RimMandrake.FlowWorks
 				RM_ClimbJoins.ForPawn(map, eng, from, to, fromD, toD, p, out viaLadder, out viaRamp);
 			}
 			int perLevel = RM_ClimbJoins.LadderCostPerLevel(climbCost);
-			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: a step taller than the wearer climbs unaided is taken on the climbing gear,
-			// slowly, per level (like a ladder, at the gear's own slowness). The rest of its steps cost what they always did.
-			if (p != null && !viaRamp && !viaLadder && RM_PocketGrid.ClimbsOnGear(p))
-			{
-				int natural = RM_PocketGrid.NaturalClimbLimitOf(p);
-				if (RM_PitAccessMath.StepOnGear(fromD, toD, natural, true))
-				{
-					int gearPerLevel = Mathf.RoundToInt(climbCost * Mathf.Max(1f, RimMandrakeFlowWorksSettings.climbingGearSlowness));
-					return RM_PitTrapMath.StepCost(fromD, toD, natural, climbCost, false, true, gearPerLevel);
-				}
-				k = natural;
-			}
 			return RM_PitTrapMath.StepCost(fromD, toD, k, climbCost, viaRamp, viaLadder, perLevel,
 				RimMandrakeFlowWorksSettings.pitSlowClimbFactor);
 		}

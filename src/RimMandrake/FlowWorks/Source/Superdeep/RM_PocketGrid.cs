@@ -33,8 +33,6 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The band rooms and pawnless queries use: a person (K = 2, design §8.5 steps 6-7).</summary>
 		public const int PersonBand = 2;
 
-		private readonly List<Thing> ladderScratch = new List<Thing>();
-
 		private static readonly ConditionalWeakTable<Map, RM_PocketGrid> grids = new ConditionalWeakTable<Map, RM_PocketGrid>();
 		private static int settingsSalt;
 
@@ -207,47 +205,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return PersonBand;
 			}
-			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: climbing gear climbs any wall (a K no band answers for: "climbs every step").
-			return RM_PitAccessMath.ClimbLimitWithGear(NaturalClimbLimitOf(p), WearsClimbingGear(p),
-				RimMandrakeFlowWorksSettings.climbingGearEnabled);
-		}
-
-		/// <summary>The climb limit without climbing gear: body size and the race's RM_ClimbAbility.</summary>
-		public static int NaturalClimbLimitOf(Pawn p)
-		{
-			if (p == null)
-			{
-				return PersonBand;
-			}
 			RM_ClimbAbility ext = p.def?.GetModExtension<RM_ClimbAbility>();
 			int extra = ext == null ? 0 : ext.extraLevels + (ext.leaper ? 1 : 0);
 			return RM_PitTrapMath.ClimbLimit(p.BodySize, extra, RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier);
-		}
-
-		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: wearing apparel whose def carries RM_ClimbAbility with scalesAnyWall
-		/// (RM_ClimbingGear). Setting-blind: the caller applies climbingGearEnabled.</summary>
-		public static bool WearsClimbingGear(Pawn p)
-		{
-			List<Apparel> worn = p?.apparel?.WornApparel;
-			if (worn == null)
-			{
-				return false;
-			}
-			for (int i = 0; i < worn.Count; i++)
-			{
-				RM_ClimbAbility ext = worn[i].def.GetModExtension<RM_ClimbAbility>();
-				if (ext != null && ext.scalesAnyWall)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>Climbing gear is worn AND switched on.</summary>
-		public static bool ClimbsOnGear(Pawn p)
-		{
-			return RimMandrakeFlowWorksSettings.climbingGearEnabled && WearsClimbingGear(p);
 		}
 
 		private static StatDef maxFlightTime;
@@ -392,8 +352,12 @@ namespace RimMandrake.FlowWorks
 		/// pawnless StartPath reachability check must share).</summary>
 		public bool UsableLadderIn(int k, int component, Pawn p)
 		{
-			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: both ladder defs (the portable one's reach is LoweredLadderAt/LadderLetsOut's).
-			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
+			if (ladderDef == null)
+			{
+				return false;
+			}
+			List<Thing> ladders = map.listerThings.ThingsOfDef(ladderDef);
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
@@ -480,9 +444,5 @@ namespace RimMandrake.FlowWorks
 	{
 		public int extraLevels;
 		public bool leaper;
-
-		/// <summary>PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: on an APPAREL def (climbing gear), the wearer climbs any pit wall,
-		/// slowly (RimMandrakeFlowWorksSettings.climbingGearSlowness per level).</summary>
-		public bool scalesAnyWall;
 	}
 }
