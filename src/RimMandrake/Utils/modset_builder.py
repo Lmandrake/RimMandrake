@@ -594,9 +594,9 @@ TIERS["greentideant"] = {
 # top-level <Operation>, which the engine ignores, so without it GenStep_Animals NREs.
 # `forbid` (tier_guard) refuses the tier, plan or apply, if any of these lands in the
 # resolved closure (neighbour bleed / plantDensity rewrite / flora injection).
-# ⚠️ sarg.alphabiomes is NOT forbiddable although §3.1 once listed it: the composed
-# mandrake.rm.biomes About.xml hard-depends on it (MEASURED 2026-10-01 over the
-# installed set). Plant purity is then guarded by WildPlantAllowlist + bar 1.
+# sarg.alphabiomes was retired 2026-10-18 (retired_mods.json keeps it out of every tier) and
+# no composed entry of mandrake.rm.biomes depends on it any more. Plant purity is guarded by
+# WildPlantAllowlist + bar 1.
 TIERS["pyrelands"] = {
     "why": "PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni "
            "fauna/mechanics patch closure for the Pyrelands north-star trial, with "

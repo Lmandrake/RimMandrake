@@ -472,7 +472,7 @@ class FakeEnv(P.Env):
 
 
 MANIFEST = (["brrainz.harmony", "ludeon.rimworld"] + list(P.DLCS) +
-            ["brrainz.rimbridgeserver", "sarg.alphabiomes", "mandrake.rm.biomes", "mandrake.rut.patches",
+            ["brrainz.rimbridgeserver", "mandrake.rm.biomes", "mandrake.rut.patches",
              "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"])
 
 
@@ -526,16 +526,24 @@ def test_tier():
     check("tier excludes transitions/mapdesigner/BCP", {"m00nl1ght.geologicallandforms",
           "m00nl1ght.geologicallandforms.biometransitions", "zylle.mapdesigner",
           "kopp.biomecompatibilityproject"} <= ex)
-    check("alphabiomes NOT excluded (hard dep of mandrake.rm.biomes)", "sarg.alphabiomes" not in ex)
+    # Alpha Biomes was retired 2026-10-18 (infrastructure/state/facts/retired_mods.json) and no composed
+    # entry of mandrake.rm.biomes depends on it any more, so the fake install below carries it nowhere.
+    check("alphabiomes is a retired donor (retired_mods.json, 2026-10-18)", mb._is_retired_donor("sarg.alphabiomes"))
 
     def rec(pid, deps=()):
         return {"packageId": pid, "name": pid, "deps": list(deps), "after": [], "before": []}
     inst = {p: rec(p) for p in ["ludeon.rimworld", "brrainz.harmony", mb.BRIDGE, "mandrake.rut.patches",
-                                "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics", "sarg.alphabiomes"]
+                                "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"]
             + list(P.DLCS)}
-    inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes", ["sarg.alphabiomes"])
+    inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes")
     ordered, missing, banned = mb.resolve_tier("pyrelands", inst)
     check("resolve_tier clean: nothing missing/banned", not missing and not banned, (missing, banned))
+    inst["sarg.alphabiomes"] = rec("sarg.alphabiomes")
+    inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes", ["sarg.alphabiomes"])
+    _o, _m, banned_r = mb.resolve_tier("pyrelands", inst)
+    check("resolve_tier refuses the retired alphabiomes if a dep pulls it back", any("sarg.alphabiomes" in r for r in banned_r), banned_r)
+    inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes")
+    del inst["sarg.alphabiomes"]
     check("resolve_tier carries all 5 DLCs", all(d in ordered for d in P.DLCS))
     inst["zylle.mapdesigner"] = rec("zylle.mapdesigner")
     inst["mandrake.rut.patches"] = rec("mandrake.rut.patches", ["zylle.mapdesigner"])
