@@ -207,3 +207,48 @@ last are in the ONE owner save B9 writes, or in the B2 dialog screenshot.
   (ProofBuild/ProofSpan/ProofKnock/ProofPath) exists, and a B4 zone (`suspension`, 40 x 16) is reserved for their rows.
 - `WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES` A2 is the epic's P10 walk (`water_scenes_walk go S5/S6` +
   `level_surface_bar`, S5 MEASURED 229 s): same load, after B9, when P10 is ready.
+
+## 8. Huge Things walls and slots (`BIG_CREATURES_DESIGN_WALLS_AND_SLOTS` A2-A8): tier, load, and sharing
+
+Script: `src/RimMandrake/HugeThings/northstar/walls_slots_live.py` (offline: `--dry-run`, `--mock`, `--mock-fault <f>`;
+`selftest_walls_slots_live.py` beside it proves the rows can FAIL). One map, one arena cleared and reused by eight blocks
+(B0 preflight, B1 A8 defaults and dialog, B2 A2 canyons, B3 A3 ladder + A8 inspect lines, B4 A4 sandwich and plug, B5 A6 scrape
+and roof pair, B6 A7 door / concurrency / wall destroyed en route, B7 A5 pen). ESTIMATED 1,500 s and about 32,000 ticks on a
+shared clock, wave by wave; no flyer is spawned.
+
+**Which tier loads both mods.** No existing tier is right. The `flowworks` tier (11 mods) has no Huge Things; the tiers that
+carry both (`biomes_sprint` 21 mods, `live_20261008` 14, the `acc_*` family 25-64) have no Large Pawns, so every creature is
+1x1 and the squeeze exception for 2x2 to 4x4 bodies (design section 6) would go untested. Measured with
+`modset_builder.resolve_tier` on the installed mods, 2026-10-19. A new tier is added: **`flowworks_hugethings`** = bridge +
+FlowWorks + Gimme Some Slack + Huge Things + Baroque Biomes (RM_Hwelgrue, RM_Totchak, RM_Oommok) + Large Pawns
+(`neku.largepawns`), all five DLCs: **15 mods, plan clean, nothing refused**. The B 2 creature is the vanilla Elephant, so no
+donor is needed. `python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks_hugethings --apply` (with the game closed).
+
+**Can it share the FlowWorks session?** Technically yes (the superset tier loads FlowWorks too), by default **no**:
+
+| reason | detail |
+|---|---|
+| the FlowWorks green-minimal record | `FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1` is recorded on the `flowworks` tier; a FlowWorks run on the superset records as `flowworks_hugethings`, never flowworks-minimal (same rule as `ratchet_pilot`). B0 of `live_session.py` also refuses a load over 40 mods and reads the tier as `flowworks`. |
+| map state | B10 (thirst) paints every potable water cell to Soil and B6/B5 flood and freeze the map; a titan lane wants dry flat ground and `kill_hostiles` between waves. The walls-and-slots arena is reused by eight blocks and clears everything it touches. |
+| the clock | titans wake-crush plants and holes thin roofs; the FlowWorks B4 shared clock stages disjoint zones for hours of game time and cannot afford a stray titan. |
+| cost of a second load | a 15-mod load is the same order as the 11-mod `flowworks` load (MEASURED 44-70 s launch), so a separate sitting costs about 1.5 minutes, not a cold full list. |
+
+So: run the FlowWorks session on `flowworks`, then one modlist swap to `flowworks_hugethings` and `walls_slots_live.py`
+(about 25 minutes of wall time). If the owner prefers ONE load, the safe order is FlowWorks B0-B9, then this script as a
+B11 block on the superset load, with the FlowWorks rows recorded as `flowworks_hugethings` and B10 skipped; the one
+save/reload (`b7_reload`) can then also carry a mid-squeeze and a mid-smash (row `A7_save_reload`, owed otherwise).
+
+**What the script found while it was being written (read from the built code, not in the design document):**
+- A creature breaks only walls it is not friendly to (`WallsSlotsUtility.WallEligible`): a TAMED creature never breaks the
+  player's walls. The rows use WILD creatures against player walls; the tamed rows expect "leaves it alone, or squeezes".
+- A door is one cell wide, so for passage width P >= 3 a door is below half width: design section 7 test 8 ("the tamed B 3
+  squeezes through the door") cannot be true of the built kernel. The script expects it NOT to for B 3 and to squeeze for the
+  B 2 (P 2). Worth a one-line ruling from him if he meant the door to be a squeezable gap for B 3.
+- Restlessness rises 1.0 per day per cause (confined, hungry): a full meter is 30,000 to 60,000 ticks. The default run measures
+  the rate and infers the breakout (row `A5_breakout_at_100` stays UNMEASURED/OWED); `--long-restless` waits it out.
+- Bridge gaps (UNMEASURED, never PASS): no tool is known to place natural rock (B0 probes `spawn_batch` with `Granite`; if it
+  does not appear, A2 and the plug row are UNMEASURED with that reason); no bridge tool sets a pawn's restlessness; the
+  roof collapse after a breach needs his eye (`A6_roof_collapse_vanilla`).
+- The cast is read LIVE (`WallsSlotsUtility.Breadth/Footprint/Passage` by `jawa/static_call`); the bars use the live breadth,
+  so a juvenile spawn or a changed `baseBodySize` shifts the expectation instead of failing the mod. The 2026-10-07 walk plan's
+  RM_Ulgga body size 6 is stale (the def now has none of its own), which is why the Elephant is the B 2.

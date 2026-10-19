@@ -679,6 +679,18 @@ TIERS["biomes_sprint"] = {
     "dlc": True,
 }
 
+TIERS["flowworks_hugethings"] = {
+    "why": "BIG_CREATURES_DESIGN_WALLS_AND_SLOTS A2-A8 live sitting (HugeThings/northstar/walls_slots_live.py): Huge Things beside "
+           "FlowWorks. Huge Things has no dependency on FlowWorks; the walls-and-slots rows need its titans (RM_Hwelgrue, RM_Totchak, "
+           "RM_Oommok come from mandrake.rm.biomes) and Large Pawns (2x2 to 4x4 footprints, so the squeeze exception is exercised); "
+           "the vanilla Elephant is the B 2 creature. Same FlowWorks guards as the `flowworks` tier, so a FlowWorks run here records "
+           "as flowworks_hugethings, never flowworks-minimal.",
+    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.hugethings", "mandrake.rm.biomes", "neku.largepawns"],
+    "forbid": ["mandrake.rm.pits"],
+    "forbid_substr": ["manywaters"],
+    "dlc": True,
+}
+
 TIERS["flowworks_vepipe"] = {
     "why": "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES A2: the `flowworks` tier plus one Vanilla Expanded PipeSystem mod "
            "(Vanilla Chemfuel Expanded, which brings VEF and the shared VCHE_PipeNetworks designation category), so the "
