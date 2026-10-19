@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RSW_Stinky: social opinion -15 toward a known pawn carrying the RSW_Stinky gene (StarWarsRaces).
+     Port of Alpha Genes' AG_Stinky ThoughtDef (sarg.alphagenes, retired 2026-10-18), same numbers;
+     worker is Source/ThoughtWorker_RSW_Stinky.cs. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RSW_Stinky</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimMandrake.StarWars.JawaRules.ThoughtWorker_RSW_Stinky</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>stinky</label>
+        <baseOpinionOffset>-15</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

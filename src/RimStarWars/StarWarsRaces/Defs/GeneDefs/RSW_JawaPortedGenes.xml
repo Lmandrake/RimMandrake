@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_JawaPortedGenes.xml — five genes of RSW_MandrakeJawa, ported from Alpha Genes (sarg.alphagenes,
+  Workshop 2891845502, 1.6/Defs/GeneDefs) when that donor was retired 2026-10-18.
+  Plain XML copies of AG_UnderdevelopedTeeth, AG_SurvivalInstinct_High, AG_TableResistance, AG_Stinky and
+  AG_FrailSkin, same numbers. Changes: displayCategory moved to vanilla categories (the donor's AG_ categories
+  went with it); the donor's VEF.Genes.GeneExtension (icon backgrounds only) dropped.
+  Wiring that lived elsewhere in the donor:
+    - RSW_TableResistance: nullifies AteWithoutTable (Patches/RSW_TableResistance_AteWithoutTable.xml).
+    - RSW_Stinky: the -15 opinion social thought RSW_Stinky lives in JawaRules (it needs a ThoughtWorker).
+  Icons are donor stand-ins until regenerated.
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RSW_UnderdevelopedTeeth</defName>
+    <label>underdeveloped teeth</label>
+    <description>Carriers of this gene have very weak, underdeveloped teeth, finding eating to be a chore.</description>
+    <iconPath>StandIn/UI/Icons/Genes/AG_UnderdevelopedTeeth</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>70</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <statFactors>
+      <EatingSpeed>0.7</EatingSpeed>
+    </statFactors>
+    <exclusionTags>
+      <li>RSW_TeethStrength</li>
+    </exclusionTags>
+    <selectionWeight>0</selectionWeight>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_SurvivalInstinctHigh</defName>
+    <label>survival instinct, high</label>
+    <description>Carriers of this gene have a strong survival instinct, intuitively knowing where to find the best forage and living off the land.</description>
+    <iconPath>StandIn/UI/Icons/Genes/AG_SurvivalInstinct_High</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>80</displayOrderInCategory>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+    <statFactors>
+      <ForagedNutritionPerDay>1.75</ForagedNutritionPerDay>
+    </statFactors>
+    <exclusionTags>
+      <li>RSW_SurvivalInstinct</li>
+    </exclusionTags>
+    <selectionWeight>0</selectionWeight>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_TableResistance</defName>
+    <label>table resistance</label>
+    <description>Carriers of this gene have developed a GIGANTIC mental fortitude and are capable of withstanding the greatest torture of all time: eating without a table.</description>
+    <iconPath>StandIn/UI/Icons/Genes/AG_TableResistance</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>2000</displayOrderInCategory>
+    <biostatMet>-1</biostatMet>
+    <symbolPack>
+      <prefixSymbols>
+        <li><symbol>stander</symbol></li>
+        <li><symbol>unkneeler</symbol></li>
+        <li><symbol>table-less</symbol></li>
+      </prefixSymbols>
+    </symbolPack>
+    <selectionWeight>0</selectionWeight>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_Stinky</defName>
+    <label>stinky</label>
+    <description>Carriers of this gene generate a very unpleasant aroma that will bother other people.</description>
+    <iconPath>StandIn/UI/Icons/Genes/AG_Stinky</iconPath>
+    <displayCategory>Healing</displayCategory>
+    <displayOrderInCategory>399.5</displayOrderInCategory>
+    <biostatMet>1</biostatMet>
+    <selectionWeight>0</selectionWeight>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_FrailSkin</defName>
+    <label>frail skin</label>
+    <description>Carriers of this gene have very frail and thin skin. This confers a small increase to damage received.</description>
+    <iconPath>StandIn/UI/Icons/Genes/AG_FrailSkin</iconPath>
+    <displayCategory>ResistanceAndWeakness</displayCategory>
+    <displayOrderInCategory>-1</displayOrderInCategory>
+    <statFactors>
+      <IncomingDamageFactor>1.1</IncomingDamageFactor>
+    </statFactors>
+    <biostatCpx>0</biostatCpx>
+    <biostatMet>1</biostatMet>
+    <exclusionTags>
+      <li>Armour</li>
+      <li>Armor</li>
+    </exclusionTags>
+    <symbolPack>
+      <prefixSymbols>
+        <li><symbol>frail</symbol></li>
+        <li><symbol>thinskin</symbol></li>
+      </prefixSymbols>
+    </symbolPack>
+    <selectionWeight>0</selectionWeight>
+  </GeneDef>
+
+</Defs>
