@@ -1069,7 +1069,9 @@ def biome_wiring(t):
         with _comp(t, "wild_%s_wired" % kind, independent=True):
             if _live(t):
                 _need_parse(t)
-                if len(expect) < 8:
+                # floor 6 for plants since the owner's 2026-10-19 card cut the three IronScruff_* rows (9 -> 6);
+                # animals keep 8.
+                if len(expect) < (6 if kind == "plants" else 8):
                     _fail("source parse found %d wild %s rows: parse failure" % (len(expect), kind))
                 missing, skewed, skipped = [], [], []
                 for name, (c, req) in sorted(expect.items()):
