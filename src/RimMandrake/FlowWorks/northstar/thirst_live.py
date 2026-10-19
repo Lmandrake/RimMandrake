@@ -736,7 +736,18 @@ def main(argv=None):
             FX, FZ = X0 + 25, Z0 + 5
             B.call("jawa/destroy_batch", rects="%d,%d,14,10" % (FX - 6, FZ - 3), categories="Plant,Item,Filth")
             B.call("jawa/map_zones", action="paintArea", area="Home", rect="%d,%d,14,10" % (FX - 6, FZ - 3), value=True)
-            pf = spawn_colonist(FX - 5, FZ + 1)
+            # HARNESS (T24 failed once in the full run at ea44bf7957, passed in the isolated run with the same DLL): the douse
+            # giver is skipped for a pawn whose Firefighting is disabled (WorkGiver_RM_DouseFireWithBucket.ShouldSkip,
+            # RM_BucketFirefighting.cs:120), and a generated colonist can be incapable of it (T25 hit the same with Hauling);
+            # fires 9 -> 9 with only wander jobs is that signature. Replace refused pawns, as worker() does, and set priority 1.
+            for _ in range(6):
+                pf = spawn_colonist(FX - 5, FZ + 1)
+                UNDER_TEST.add(pf)
+                if (B.call("jawa/set_work_priority", pawnId=pf, workType="Firefighter", priority=1) or {}).get("success") is not False:
+                    break
+                draft(pf)
+            else:
+                raise RuntimeError("six colonists in a row were incapable of Firefighting")
             spawn("RM_Bucket_FreshWater", FX - 3, FZ + 1)
             empty0 = count("RM_BucketEmpty") + count("RM_BucketDirty")
             # fuel: ChanceToStartFireIn refuses bare soil (live: 9 of 9 cells refused), so the 3x3 gets grown grass first
@@ -1150,6 +1161,19 @@ def main(argv=None):
             # A mid-fill job stopped by stop_job can still finish its carry later, so the arm now settles 300 ticks,
             # clears the ground again, then samples every 30 ticks and names where each new brine bucket lies.
             ticks(300)
+            for t in things("RM_Bucket_Brine"):
+                B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t.get("x"), t.get("z")), categories="Item")
+            # HARNESS (T23 failed in 2 of 3 runs at ea44bf7957 and passed once on the same DLL; the mod refuses a Store tank's
+            # brine order: RM_LiquidBottleUtility.StandingOrders -> Building_LiquidTank.TakesBottles(false) -> RM_TankBottleRules.
+            # PoursInto, RM_LiquidNetKernel.cs:405, and no fill job showed in 3,000 sampled ticks): the one brine bucket lay
+            # at the same cell both times with no job sampled -- a fill/pour already in flight at the switch finishing inside
+            # the blind first 30 ticks of the sampling loop, or a bucket carried through the 300-tick clear. The baseline now
+            # waits until the pawn is off every fill/pour job, then settles 600 more ticks and clears again.
+            for _ in range(20):
+                if job(p23) not in ("RM_FillBottleJob", "RM_EmptyIntoTankJob"):
+                    break
+                ticks(60)
+            ticks(600)
             for t in things("RM_Bucket_Brine"):
                 B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t.get("x"), t.get("z")), categories="Item")
             base2 = count("RM_Bucket_Brine")
