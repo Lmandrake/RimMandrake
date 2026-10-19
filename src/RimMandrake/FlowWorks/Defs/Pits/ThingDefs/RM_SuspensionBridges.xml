@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (design/RimMandrake/suspension_bridge_construction_design_2026-10-18.md;
+     design/RimMandrake/flowworks_bridges_design_2026-10-17.md §6): the surface "Suspension bridge" over dug ground, four types.
+     Built only through Designator_SuspensionBridge_* (Patches/Pits/RM_SuspensionBridges.xml adds them to Structure), which
+     drags anchor to anchor; canGenerateDefaultDesignator is false so no plain per-square button exists. Lengths, loads, costs,
+     hit points and path costs are the builder's playtest starting points, not ruled. -->
+<Defs>
+
+  <DrawStyleCategoryDef>
+    <defName>RM_SuspensionBridge</defName>
+    <styles>
+      <li>Line</li>
+      <li>FilledRectangle</li>
+    </styles>
+  </DrawStyleCategoryDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionDeck_Rope</defName>
+    <label>rope suspension bridge</label>
+    <description>Planks lashed between two ropes. Light and long (up to 8 squares between supports) but it carries only about 150 kg on a span, and nothing can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>10</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2210</uiOrder>
+    <costList>
+      <WoodLog>6</WoodLog>
+      <Cloth>4</Cloth>
+    </costList>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Rope</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionAnchor_Rope</defName>
+    <label>rope suspension bridge anchor</label>
+    <description>The posts that hold one end of a rope suspension bridge, on solid ground. Placed by dragging a suspension bridge; built before the deck. If it goes, the span it holds swings down from this end.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Rope</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>6</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <costList>
+      <WoodLog>10</WoodLog>
+      <Cloth>6</Cloth>
+    </costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Rope</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionDeck_Timber</defName>
+    <label>timber suspension bridge</label>
+    <description>Beams and boards. Spans up to 6 squares between supports and carries about 600 kg on a span; light furniture can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Timber</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>4</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2210</uiOrder>
+    <stuffCategories>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>12</costStuffCount>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Timber</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionAnchor_Timber</defName>
+    <label>timber suspension bridge anchor</label>
+    <description>The posts that hold one end of a timber suspension bridge, on solid ground. Placed by dragging a suspension bridge; built before the deck. If it goes, the span it holds swings down from this end.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Timber</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>6</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <stuffCategories>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <statBases>
+      <MaxHitPoints>240</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Timber</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionDeck_Steel</defName>
+    <label>steel suspension bridge</label>
+    <description>Girders and riveted plate. Spans up to 10 squares between supports and carries about 2,000 kg on a span; light and medium buildings can stand on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>2</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2210</uiOrder>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>15</costStuffCount>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>1400</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Steel</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionAnchor_Steel</defName>
+    <label>steel suspension bridge anchor</label>
+    <description>The posts that hold one end of a steel suspension bridge, on solid ground. Placed by dragging a suspension bridge; built before the deck. If it goes, the span it holds swings down from this end.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>6</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>30</costStuffCount>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>1400</WorkToBuild>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Steel</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionDeck_Heavy</defName>
+    <label>heavy suspension bridge</label>
+    <description>A box-girder deck. Spans up to 14 squares between supports and carries about 8,000 kg on a span; anything can be built on it.\n\nA suspension bridge crosses dug ground: drag it like a wall, 1 to 3 squares wide, from solid ground to solid ground. Posts go on both ends and are built first; the deck is built from the posts inward. The deck between two supports is one span: everything on it is weighed together, it sags and creaks near its rating, and over it the whole span gives way and everyone on it falls. Losing a post swings the span down from that end. A tower on the hole floor is a support in the middle. Use the Railings switch to stop falls off the edges. For now nobody can walk under it: from below it is a wall.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionDeck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>1</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <drawStyleCategory>RM_SuspensionBridge</drawStyleCategory>
+    <uiOrder>2210</uiOrder>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <researchPrerequisites>
+      <li>HeavyBridges</li>
+    </researchPrerequisites>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Heavy</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionAnchor_Heavy</defName>
+    <label>heavy suspension bridge anchor</label>
+    <description>The posts that hold one end of a heavy suspension bridge, on solid ground. Placed by dragging a suspension bridge; built before the deck. If it goes, the span it holds swings down from this end.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionAnchor</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>6</pathCost>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <costList>
+      <Steel>45</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <researchPrerequisites>
+      <li>HeavyBridges</li>
+    </researchPrerequisites>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
+        <tier>Heavy</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionTower</defName>
+    <label>suspension bridge tower</label>
+    <description>A column built on the floor of a dug hole that holds a suspension bridge in the middle, so a crossing longer than one span can be made of two. Build it first (someone has to get down to the floor), then drag the bridge over it. If it goes, the spans either side swing down.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionTower</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>30</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <uiOrder>2215</uiOrder>
+    <stuffCategories>
+      <li>Stony</li>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>40</costStuffCount>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_SuspensionOverHole</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SuspensionRailing</defName>
+    <label>suspension bridge railing</label>
+    <description>Posts and a cable handrail along the open edges of one square of a suspension bridge, ordered by the bridge's Railings switch. Nobody falls or jumps off a railed edge, and a blast that would throw someone over it stops them at the rail. It gives no cover.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_SuspensionRailing</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionRailing_Edge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>false</selectable>
+    <tickerType>Never</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>6</costStuffCount>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <WorkToBuild>250</WorkToBuild>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

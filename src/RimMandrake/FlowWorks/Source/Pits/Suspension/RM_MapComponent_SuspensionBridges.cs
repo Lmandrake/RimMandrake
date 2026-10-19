@@ -1,0 +1,878 @@
+using System.Collections.Generic;
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.FlowWorks.Pits
+{
+	/// <summary>One dragged suspension bridge: lanes (1 to 3) of `length` squares from anchor A (index 0) to anchor B
+	/// (index length-1) along `dir`, towers at indices in the middle. Cell(lane, i) = origin + side × lane + dir × i.</summary>
+	public class SuspensionBridgeRecord : IExposable
+	{
+		public int id;
+		public SuspensionTier tier;
+		public IntVec3 origin;
+		public Rot4 dir = Rot4.North;
+		public int length;
+		public int width = 1;
+		public List<int> towers = new List<int>();
+		public bool railings;
+		public ThingDef stuff;
+
+		public IntVec3 Side => dir.Rotated(RotationDirection.Clockwise).FacingCell;
+
+		public IntVec3 Cell(int lane, int i)
+		{
+			return origin + Side * lane + dir.FacingCell * i;
+		}
+
+		public List<int> Supports => RM_SuspensionMath.Supports(length, towers);
+
+		public int SpanCount => Supports.Count - 1;
+
+		public float RatingKg => RM_SuspensionMath.RatingKg(tier, width, RM_SuspensionSettings.suspensionLoadMultiplier);
+
+		public bool TryIndexOf(IntVec3 c, out int lane, out int i)
+		{
+			lane = -1;
+			i = -1;
+			IntVec3 d = c - origin;
+			IntVec3 f = dir.FacingCell;
+			IntVec3 s = Side;
+			int along = d.x * f.x + d.z * f.z;
+			int across = d.x * s.x + d.z * s.z;
+			if (along < 0 || along >= length || across < 0 || across >= width || Cell(across, along) != c)
+			{
+				return false;
+			}
+			lane = across;
+			i = along;
+			return true;
+		}
+
+		public void ExposeData()
+		{
+			Scribe_Values.Look(ref id, "id", 0);
+			Scribe_Values.Look(ref tier, "tier", SuspensionTier.Timber);
+			Scribe_Values.Look(ref origin, "origin");
+			Scribe_Values.Look(ref dir, "dir", Rot4.North);
+			Scribe_Values.Look(ref length, "length", 0);
+			Scribe_Values.Look(ref width, "width", 1);
+			Scribe_Collections.Look(ref towers, "towers", LookMode.Value);
+			Scribe_Values.Look(ref railings, "railings", false);
+			Scribe_Defs.Look(ref stuff, "stuff");
+			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
+			{
+				towers = new List<int>();
+			}
+		}
+	}
+
+	/// <summary>
+	/// SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: the span record of every suspension bridge on a map (construction design
+	/// §1.2 model C: "a map component records this span = these cells between these anchors"), its load check, collapse,
+	/// swing-down from a lost support, railings switch and the shared reads the patches make.
+	///
+	/// Load (every 60 ticks): pawns (StatDefOf.Mass), items (mass × stack) and buildings (mass of their cost list) on each
+	/// span's built deck squares, all lanes together, against the span's rating. At 90% it sags (inspect warning, a caution
+	/// message as the creak); over it, the whole span gives way (setting suspensionWeightCollapse).
+	/// </summary>
+	public class RM_MapComponent_SuspensionBridges : MapComponent
+	{
+		private List<SuspensionBridgeRecord> bridges = new List<SuspensionBridgeRecord>();
+		private int nextId = 1;
+		private readonly Dictionary<IntVec3, SuspensionBridgeRecord> index = new Dictionary<IntVec3, SuspensionBridgeRecord>();
+		private readonly HashSet<long> sagging = new HashSet<long>();
+
+		private struct PendingDrop
+		{
+			public int tick;
+			public IntVec3 cell;
+		}
+
+		private readonly List<PendingDrop> swing = new List<PendingDrop>();
+
+		/// <summary>Read by the functional script (northstar/suspension_bridge_proof.py) through the bridge: "x,z@tick" of every
+		/// square that dropped in a swing-down, oldest first, max 64. Not saved.</summary>
+		public readonly List<string> swingLog = new List<string>();
+
+		public RM_MapComponent_SuspensionBridges(Map map) : base(map)
+		{
+		}
+
+		public IReadOnlyList<SuspensionBridgeRecord> Bridges => bridges;
+
+		public SuspensionBridgeRecord RecordAt(IntVec3 c)
+		{
+			return index.TryGetValue(c, out SuspensionBridgeRecord r) ? r : null;
+		}
+
+		public SuspensionBridgeRecord Register(SuspensionBridgeRecord r)
+		{
+			r.id = nextId++;
+			bridges.Add(r);
+			Reindex();
+			return r;
+		}
+
+		private void Reindex()
+		{
+			index.Clear();
+			foreach (SuspensionBridgeRecord r in bridges)
+			{
+				for (int lane = 0; lane < r.width; lane++)
+				{
+					for (int i = 0; i < r.length; i++)
+					{
+						index[r.Cell(lane, i)] = r;
+					}
+				}
+			}
+		}
+
+		public override void ExposeData()
+		{
+			base.ExposeData();
+			Scribe_Collections.Look(ref bridges, "rmSuspensionBridges", LookMode.Deep);
+			Scribe_Values.Look(ref nextId, "rmSuspensionNextId", 1);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
+			{
+				bridges = bridges ?? new List<SuspensionBridgeRecord>();
+				Reindex();
+			}
+		}
+
+		// ── shared reads ─────────────────────────────────────────────────────────────
+
+		/// <summary>Do these two squares hold deck of one span of one bridge?</summary>
+		public bool SameSpan(IntVec3 a, IntVec3 b)
+		{
+			SuspensionBridgeRecord r = RecordAt(a);
+			if (r == null || r != RecordAt(b) || !r.TryIndexOf(a, out _, out int ia) || !r.TryIndexOf(b, out _, out int ib))
+			{
+				return false;
+			}
+			List<int> sup = r.Supports;
+			return RM_SuspensionMath.SegmentOf(ia, sup) == RM_SuspensionMath.SegmentOf(ib, sup);
+		}
+
+		public List<IntVec3> SpanCellsOf(SuspensionBridgeRecord r, int span)
+		{
+			List<IntVec3> cells = new List<IntVec3>();
+			List<int> idx = RM_SuspensionMath.SegmentCells(span, r.Supports, r.length);
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				foreach (int i in idx)
+				{
+					cells.Add(r.Cell(lane, i));
+				}
+			}
+			return cells;
+		}
+
+		/// <summary>Every intact deck of the span holding this square.</summary>
+		public List<Building_SpanDeck> SpanDecks(IntVec3 c)
+		{
+			List<Building_SpanDeck> decks = new List<Building_SpanDeck>();
+			SuspensionBridgeRecord r = RecordAt(c);
+			if (r == null || !r.TryIndexOf(c, out _, out int i))
+			{
+				if (DeckAt(map, c) is Building_SuspensionDeck lone)
+				{
+					decks.Add(lone);
+				}
+				return decks;
+			}
+			foreach (IntVec3 cell in SpanCellsOf(r, RM_SuspensionMath.SegmentOf(i, r.Supports)))
+			{
+				if (DeckAt(map, cell) is Building_SuspensionDeck d)
+				{
+					decks.Add(d);
+				}
+			}
+			return decks;
+		}
+
+		public static Building_SuspensionDeck DeckAt(Map map, IntVec3 c)
+		{
+			return RM_SpanUtility.DeckAt(map, c) as Building_SuspensionDeck;
+		}
+
+		public static T BuiltAt<T>(Map map, IntVec3 c) where T : Thing
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return null;
+			}
+			List<Thing> things = map.thingGrid.ThingsListAtFast(c);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is T t)
+				{
+					return t;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>A built railing on this square.</summary>
+		public static bool RailedAt(Map map, IntVec3 c)
+		{
+			return BuiltAt<Building_SuspensionRailing>(map, c) != null;
+		}
+
+		/// <summary>A railing draws no edge toward another deck square or an anchor (built or planned).</summary>
+		public static bool HoldsBridgeEnd(Map map, IntVec3 c)
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			List<Thing> things = map.thingGrid.ThingsListAtFast(c);
+			for (int i = 0; i < things.Count; i++)
+			{
+				ThingDef d = things[i].def;
+				BuildableDef b = d.IsBlueprint || d.IsFrame ? d.entityDefToBuild : d;
+				if (RM_SuspensionDefOf.IsDeckDef(b) || RM_SuspensionDefOf.IsAnchorDef(b))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Is there a suspension bridge part (built, frame or blueprint) on this square? (dig and fill refuse it)</summary>
+		public static bool AnyPartAt(Map map, IntVec3 c)
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			List<Thing> things = map.thingGrid.ThingsListAtFast(c);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (RM_SuspensionDefOf.IsPartDef(things[i].def))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Is there a tower (built, frame or blueprint) on this square?</summary>
+		public static bool TowerAt(Map map, IntVec3 c)
+		{
+			List<Thing> things = map.thingGrid.ThingsListAtFast(c);
+			for (int i = 0; i < things.Count; i++)
+			{
+				ThingDef d = things[i].def;
+				if (d == RM_SuspensionDefOf.RM_SuspensionTower || d.entityDefToBuild == RM_SuspensionDefOf.RM_SuspensionTower)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>An open hole beside a deck square (a cardinal neighbour that is dug and not decked), or Invalid.</summary>
+		public static IntVec3 OpenEdgeBeside(Map map, IntVec3 c)
+		{
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null)
+			{
+				return IntVec3.Invalid;
+			}
+			List<IntVec3> open = new List<IntVec3>();
+			for (int i = 0; i < 4; i++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[i];
+				if (n.InBounds(map) && ex.ExcavatedDepthAt(n) > 0 && !RM_SpanUtility.DeckedAt(map, n) && n.Standable(map))
+				{
+					open.Add(n);
+				}
+			}
+			return open.Count == 0 ? IntVec3.Invalid : open.RandomElement();
+		}
+
+		public static void DirtyAround(Map map, IntVec3 c)
+		{
+			if (map == null)
+			{
+				return;
+			}
+			for (int i = 0; i < 4; i++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[i];
+				if (n.InBounds(map))
+				{
+					map.mapDrawer.MapMeshDirty(n, MapMeshFlagDefOf.Buildings);
+				}
+			}
+		}
+
+		public static List<Pawn> PawnsOn(Map map, IntVec3 c)
+		{
+			List<Pawn> ps = new List<Pawn>();
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i] is Pawn p && !p.Dead && !p.Flying)
+				{
+					ps.Add(p);
+				}
+			}
+			return ps;
+		}
+
+		/// <summary>Buildings standing on a falling deck square (railings included) are destroyed; items stay and fall with it.</summary>
+		public static void ClearDeckTop(Map map, IntVec3 c)
+		{
+			List<Thing> things = new List<Thing>(c.GetThingList(map));
+			foreach (Thing t in things)
+			{
+				if (t.Destroyed || t is Building_SpanDeck || t is Building_SuspensionTower)
+				{
+					continue;
+				}
+				if (t is Building || t.def.IsBlueprint || t.def.IsFrame)
+				{
+					t.Destroy(t is Building && !(t is Building_SuspensionRailing) ? DestroyMode.KillFinalize : DestroyMode.Vanish);
+				}
+			}
+		}
+
+		/// <summary>Everyone on a deck that just went falls through the descent event; with suspensionOwnPeopleFall off, your
+		/// own people are set down on the nearest standing anchor instead.</summary>
+		public static void Drop(Map map, List<Pawn> fallers, SuspensionBridgeRecord r)
+		{
+			RM_SuperdeepTrapState state = RM_SuperdeepTrap.EngineOf(map)?.SuperdeepTrap;
+			foreach (Pawn p in fallers)
+			{
+				if (p == null || !p.Spawned || p.Dead || p.Flying)
+				{
+					continue;
+				}
+				if (!RM_SuspensionSettings.suspensionOwnPeopleFall && p.Faction == Faction.OfPlayer)
+				{
+					IntVec3 safe = NearestAnchor(map, p.Position, r);
+					if (safe.IsValid)
+					{
+						p.Position = safe;
+						p.Notify_Teleported(true, true);
+						continue;
+					}
+				}
+				if (state != null)
+				{
+					RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state);
+				}
+			}
+		}
+
+		private static IntVec3 NearestAnchor(Map map, IntVec3 from, SuspensionBridgeRecord r)
+		{
+			IntVec3 best = IntVec3.Invalid;
+			float bestD = float.MaxValue;
+			RM_MapComponent_SuspensionBridges b = map.GetComponent<RM_MapComponent_SuspensionBridges>();
+			r = r ?? b?.RecordAt(from);
+			if (r == null)
+			{
+				return best;
+			}
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				foreach (int i in new[] { 0, r.length - 1 })
+				{
+					IntVec3 c = r.Cell(lane, i);
+					if (BuiltAt<Building_SuspensionAnchor>(map, c) != null && c.Standable(map))
+					{
+						float d = c.DistanceToSquared(from);
+						if (d < bestD)
+						{
+							bestD = d;
+							best = c;
+						}
+					}
+				}
+			}
+			return best;
+		}
+
+		// ── load ─────────────────────────────────────────────────────────────────────
+
+		/// <summary>The weight on these deck squares: pawns, items, buildings (not the bridge's own parts).</summary>
+		public float LoadOn(List<IntVec3> cells, List<Pawn> standing)
+		{
+			float sum = RM_SpanUtility.LoadOn(map, cells, null, true, standing);
+			foreach (IntVec3 c in cells)
+			{
+				if (DeckAt(map, c) == null)
+				{
+					continue;
+				}
+				List<Thing> things = c.GetThingList(map);
+				for (int i = 0; i < things.Count; i++)
+				{
+					Thing t = things[i];
+					if (t.def.category == ThingCategory.Item)
+					{
+						sum += t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+					}
+					else if (t is Building bld && !RM_SuspensionDefOf.IsPartDef(bld.def) && !(bld is Building_SpanDeck))
+					{
+						sum += BuildingMass(bld);
+					}
+				}
+			}
+			return sum;
+		}
+
+		/// <summary>A building's weight on a deck: its own mass stat when set, else the mass of what it was built from.</summary>
+		public static float BuildingMass(Building b)
+		{
+			float own = b.GetStatValue(StatDefOf.Mass);
+			if (own > 0.01f)
+			{
+				return own;
+			}
+			float m = 0f;
+			List<ThingDefCountClass> cost = b.def.CostListAdjusted(b.Stuff, false);
+			if (cost != null)
+			{
+				foreach (ThingDefCountClass c in cost)
+				{
+					m += c.thingDef.BaseMass * c.count;
+				}
+			}
+			return m;
+		}
+
+		/// <summary>Built deck squares of span k.</summary>
+		private List<IntVec3> BuiltSpanCells(SuspensionBridgeRecord r, int span)
+		{
+			List<IntVec3> cells = new List<IntVec3>();
+			foreach (IntVec3 c in SpanCellsOf(r, span))
+			{
+				if (DeckAt(map, c) != null)
+				{
+					cells.Add(c);
+				}
+			}
+			return cells;
+		}
+
+		public float SpanLoad(SuspensionBridgeRecord r, int span, List<Pawn> standing = null)
+		{
+			return LoadOn(BuiltSpanCells(r, span), standing);
+		}
+
+		public override void MapComponentTick()
+		{
+			int now = Find.TickManager.TicksGame;
+			for (int k = swing.Count - 1; k >= 0; k--)
+			{
+				if (swing[k].tick <= now)
+				{
+					IntVec3 c = swing[k].cell;
+					swing.RemoveAt(k);
+					Building_SuspensionDeck d = DeckAt(map, c);
+					if (d != null)
+					{
+						d.DropAlone();
+						swingLog.Add(c.x + "," + c.z + "@" + now);
+						if (swingLog.Count > 64)
+						{
+							swingLog.RemoveAt(0);
+						}
+					}
+				}
+			}
+			if (now % 60 != 0 || bridges.Count == 0)
+			{
+				return;
+			}
+			if (now % 600 == 0)
+			{
+				PruneDead();
+			}
+			for (int b = 0; b < bridges.Count; b++)
+			{
+				SuspensionBridgeRecord r = bridges[b];
+				for (int span = 0; span < r.SpanCount; span++)
+				{
+					List<Pawn> standing = new List<Pawn>();
+					List<IntVec3> cells = BuiltSpanCells(r, span);
+					if (cells.Count == 0)
+					{
+						continue;
+					}
+					float load = LoadOn(cells, standing);
+					SpanLoadState st = RM_SuspensionMath.Classify(load, r.RatingKg);
+					long key = ((long)r.id << 8) | (uint)span;
+					if (st == SpanLoadState.Over && RM_SuspensionSettings.suspensionWeightCollapse)
+					{
+						sagging.Remove(key);
+						Building_SuspensionDeck d = DeckAt(map, cells[0]);
+						List<Pawn> fallers = PawnsOnCells(cells);
+						foreach (IntVec3 c in cells)
+						{
+							ClearDeckTop(map, c);
+						}
+						if (d != null)
+						{
+							CollapseWithOwnFactionRule(d, fallers);
+						}
+						if (d != null && fallers.Count == 0)
+						{
+							Messages.Message("The " + RM_SuspensionMath.TierLabel(r.tier) + " suspension bridge gave way under its load ("
+								+ RM_SuspensionMath.LoadLine(load, r.RatingKg) + ").", new TargetInfo(cells[0], map), MessageTypeDefOf.NegativeEvent);
+						}
+						break;   // the record's spans changed under us; next pass sees the rest
+					}
+					if (st != SpanLoadState.Ok)
+					{
+						if (sagging.Add(key))
+						{
+							Messages.Message("A " + RM_SuspensionMath.TierLabel(r.tier) + " suspension bridge creaks and sags: "
+								+ RM_SuspensionMath.LoadLine(load, r.RatingKg) + ".", new TargetInfo(cells[0], map), MessageTypeDefOf.CautionInput);
+						}
+					}
+					else
+					{
+						sagging.Remove(key);
+					}
+				}
+			}
+		}
+
+		private List<Pawn> PawnsOnCells(List<IntVec3> cells)
+		{
+			List<Pawn> ps = new List<Pawn>();
+			foreach (IntVec3 c in cells)
+			{
+				ps.AddRange(PawnsOn(map, c));
+			}
+			return ps;
+		}
+
+		/// <summary>A record with no part of its bridge left on any of its squares is forgotten.</summary>
+		private void PruneDead()
+		{
+			bool changed = false;
+			for (int b = bridges.Count - 1; b >= 0; b--)
+			{
+				SuspensionBridgeRecord r = bridges[b];
+				bool any = false;
+				for (int lane = 0; lane < r.width && !any; lane++)
+				{
+					for (int i = 0; i < r.length && !any; i++)
+					{
+						IntVec3 c = r.Cell(lane, i);
+						if (c.InBounds(map) && AnyPartAt(map, c) && !TowerAt(map, c))
+						{
+							any = true;
+						}
+					}
+				}
+				if (!any)
+				{
+					bridges.RemoveAt(b);
+					changed = true;
+				}
+			}
+			if (changed)
+			{
+				Reindex();
+			}
+		}
+
+		// ── collapse and swing-down ─────────────────────────────────────────────────
+
+		/// <summary>The span holding this deck gives way whole (a square broke or was taken apart).</summary>
+		public void CollapseSpan(Building_SuspensionDeck from, string how)
+		{
+			List<Building_SpanDeck> span = SpanDecks(from.Position);
+			List<Pawn> fallers = new List<Pawn>();
+			foreach (Building_SpanDeck d in span)
+			{
+				fallers.AddRange(PawnsOn(map, d.Position));
+				ClearDeckTop(map, d.Position);
+			}
+			if (fallers.Count == 0)
+			{
+				Messages.Message("A square of a " + RM_SuspensionMath.TierLabel(from.Tier) + " suspension bridge " + how
+					+ "; its whole span fell.", new TargetInfo(from.Position, map), MessageTypeDefOf.NegativeEvent);
+			}
+			CollapseWithOwnFactionRule(from, fallers);
+		}
+
+		/// <summary>Building_SpanDeck.Collapse with the own-faction rule: your own people are set down on an anchor first when
+		/// suspensionOwnPeopleFall is off.</summary>
+		private void CollapseWithOwnFactionRule(Building_SuspensionDeck d, List<Pawn> fallers)
+		{
+			if (!RM_SuspensionSettings.suspensionOwnPeopleFall)
+			{
+				SuspensionBridgeRecord r = RecordAt(d.Position);
+				fallers.RemoveAll(p =>
+				{
+					if (p.Faction != Faction.OfPlayer)
+					{
+						return false;
+					}
+					IntVec3 safe = NearestAnchor(map, p.Position, r);
+					if (!safe.IsValid)
+					{
+						return false;   // no anchor stands: they fall with the rest
+					}
+					p.Position = safe;
+					p.Notify_Teleported(true, true);
+					return true;
+				});
+			}
+			d.Collapse(fallers);
+		}
+
+		/// <summary>An anchor or tower at this square went: the span(s) it held swing down from that end, square by square
+		/// (setting suspensionAnchorLossFalls; off, a bridge with no anchor stays up).</summary>
+		public void Notify_SupportLost(IntVec3 c)
+		{
+			SuspensionBridgeRecord r = RecordAt(c);
+			if (r == null || !r.TryIndexOf(c, out int lane, out int i))
+			{
+				return;
+			}
+			bool isTower = i > 0 && i < r.length - 1;
+			if (isTower)
+			{
+				if (TowerAt(map, c))
+				{
+					return;   // another tower thing (a blueprint or frame) still stands there
+				}
+				r.towers.Remove(i);
+			}
+			if (!RM_SuspensionSettings.suspensionAnchorLossFalls)
+			{
+				return;
+			}
+			List<int> sup = isTower ? RM_SuspensionMath.Supports(r.length, WithTower(r.towers, i)) : r.Supports;
+			int now = Find.TickManager.TicksGame;
+			int k = sup.IndexOf(i);
+			// the span(s) that touched the lost support: before it (lost at its high end) and after it (lost at its low end)
+			List<(List<int> cells, bool lowEnd)> lost = new List<(List<int>, bool)>();
+			if (k > 0)
+			{
+				lost.Add((RM_SuspensionMath.SegmentCells(k - 1, sup, r.length), false));
+			}
+			if (k >= 0 && k < sup.Count - 1)
+			{
+				lost.Add((RM_SuspensionMath.SegmentCells(k, sup, r.length), true));
+			}
+			foreach ((List<int> cells, bool lowEnd) in lost)
+			{
+				List<int> order = RM_SuspensionMath.SwingOrder(cells, lowEnd);
+				// an anchor carries its own lane; a tower carries every lane (it stands under the whole deck width)
+				for (int l = 0; l < r.width; l++)
+				{
+					if (!isTower && l != lane)
+					{
+						continue;
+					}
+					for (int s = 0; s < order.Count; s++)
+					{
+						swing.Add(new PendingDrop { tick = now + 1 + s * RM_SuspensionMath.SwingTicksPerCell, cell = r.Cell(l, order[s]) });
+					}
+				}
+			}
+			if (lost.Count > 0)
+			{
+				Messages.Message("A suspension bridge lost its " + (isTower ? "tower" : "anchor") + " and is swinging down.",
+					new TargetInfo(c, map), MessageTypeDefOf.NegativeEvent);
+			}
+		}
+
+		private static List<int> WithTower(List<int> towers, int i)
+		{
+			List<int> t = new List<int>(towers);
+			if (!t.Contains(i))
+			{
+				t.Add(i);
+			}
+			return t;
+		}
+
+		public void Notify_DeckBuilt(Building_SuspensionDeck d)
+		{
+			SuspensionBridgeRecord r = RecordAt(d.Position);
+			if (r != null && r.railings)
+			{
+				PlaceRailing(d.Position);
+			}
+		}
+
+		// ── railings ────────────────────────────────────────────────────────────────
+
+		public static Gizmo RailingGizmo(Map map, SuspensionBridgeRecord r)
+		{
+			if (map == null || r == null)
+			{
+				return null;
+			}
+			RM_MapComponent_SuspensionBridges b = map.GetComponent<RM_MapComponent_SuspensionBridges>();
+			bool want = !r.railings;
+			return new Command_Toggle
+			{
+				defaultLabel = "Railings: " + (r.railings ? "on" : "off"),
+				defaultDesc = "Order railings built on every square of this suspension bridge (+50% of the deck's cost), or taken "
+					+ "down. A railed edge never drops anyone; an open edge lets people fall off when staggered, blasted or slipping, "
+					+ "and lets them jump down into the hole on purpose. Railings give no cover.",
+				icon = TexCommand.ForbidOff,
+				isActive = () => r.railings,
+				toggleAction = () => b.SetRailings(r, want),
+			};
+		}
+
+		/// <summary>Idempotent: the switch's wanted state is fixed when the gizmo is made, so a multi-selection toggling every
+		/// selected square sets the one bridge once.</summary>
+		public void SetRailings(SuspensionBridgeRecord r, bool on)
+		{
+			if (r.railings == on)
+			{
+				return;
+			}
+			r.railings = on;
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 1; i < r.length - 1; i++)
+				{
+					IntVec3 c = r.Cell(lane, i);
+					if (on)
+					{
+						if (DeckAt(map, c) != null)
+						{
+							PlaceRailing(c);
+						}
+					}
+					else
+					{
+						RemoveRailing(c);
+					}
+				}
+			}
+		}
+
+		private void PlaceRailing(IntVec3 c)
+		{
+			ThingDef rail = RM_SuspensionDefOf.RM_SuspensionRailing;
+			if (rail == null || RailedAt(map, c))
+			{
+				return;
+			}
+			foreach (Thing t in c.GetThingList(map))
+			{
+				if (t.def.entityDefToBuild == rail)
+				{
+					return;
+				}
+			}
+			if (GenConstruct.CanPlaceBlueprintAt(rail, c, Rot4.North, map).Accepted)
+			{
+				if (DebugSettings.godMode)
+				{
+					Thing t = ThingMaker.MakeThing(rail);
+					t.SetFactionDirect(Faction.OfPlayer);
+					GenSpawn.Spawn(t, c, map, Rot4.North);
+				}
+				else
+				{
+					GenConstruct.PlaceBlueprintForBuild(rail, c, map, Rot4.North, Faction.OfPlayer, null);
+				}
+			}
+		}
+
+		private void RemoveRailing(IntVec3 c)
+		{
+			List<Thing> things = new List<Thing>(c.GetThingList(map));
+			foreach (Thing t in things)
+			{
+				if (t.def.entityDefToBuild == RM_SuspensionDefOf.RM_SuspensionRailing && (t.def.IsBlueprint || t.def.IsFrame))
+				{
+					t.Destroy(DestroyMode.Cancel);
+				}
+				else if (t is Building_SuspensionRailing rail)
+				{
+					if (DebugSettings.godMode)
+					{
+						rail.Destroy(DestroyMode.Vanish);
+					}
+					else if (map.designationManager.DesignationOn(rail, DesignationDefOf.Deconstruct) == null)
+					{
+						map.designationManager.AddDesignation(new Designation(rail, DesignationDefOf.Deconstruct));
+					}
+				}
+			}
+		}
+
+		// ── accidental falls off an open edge ─────────────────────────────────────────
+
+		/// <summary>A stagger, blast or slime slip on a deck square with an open edge drops the pawn into the hole beside it
+		/// with this chance (0 on a railed square): the existing descent event, fall damage by metres.</summary>
+		public static bool TryKnockOff(Pawn p, float chance, string why)
+		{
+			if (p == null || !p.Spawned || p.Dead || p.Flying)
+			{
+				return false;
+			}
+			Map map = p.Map;
+			IntVec3 c = p.Position;
+			if (DeckAt(map, c) == null)
+			{
+				return false;
+			}
+			IntVec3 open = OpenEdgeBeside(map, c);
+			float ch = RM_SuspensionMath.FallChance(chance, RailedAt(map, c), open.IsValid);
+			if (ch <= 0f || !Rand.Chance(ch))
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			RM_SuperdeepTrapState state = ex?.SuperdeepTrap;
+			if (state == null)
+			{
+				return false;
+			}
+			p.jobs?.StopAll();
+			p.pather?.StopDead();
+			p.Position = open;
+			p.Notify_Teleported(true, true);
+			RM_SuperdeepTrap.OnForcedDescent(p, open, state, ex.ClimbDepthAt(open));
+			Messages.Message(p.LabelShort + " was " + why + " off the edge of a suspension bridge.", new LookTargets(p),
+				MessageTypeDefOf.NegativeEvent);
+			return true;
+		}
+
+		// ── inspect ─────────────────────────────────────────────────────────────────
+
+		public string InspectLines(SuspensionBridgeRecord r, IntVec3 at)
+		{
+			List<string> lines = new List<string>();
+			int span = 0;
+			if (r.TryIndexOf(at, out _, out int i))
+			{
+				span = RM_SuspensionMath.SegmentOf(i <= 0 ? 1 : i >= r.length - 1 ? r.length - 2 : i, r.Supports);
+			}
+			float load = SpanLoad(r, span);
+			lines.Add(RM_SuspensionMath.ReadoutLine(r.tier, load, r.RatingKg));
+			lines.Add(RM_SuspensionMath.LoadLine(load, r.RatingKg) + (r.SpanCount > 1 ? " (span " + (span + 1) + " of " + r.SpanCount + ")" : ""));
+			if (RM_SuspensionMath.Classify(load, r.RatingKg) != SpanLoadState.Ok)
+			{
+				lines.Add(RM_SuspensionSettings.suspensionWeightCollapse
+					? "Sagging: near its rating. Any more weight and the whole span gives way."
+					: "Over its rating (weight collapse is off in Mod Settings).");
+			}
+			List<int> sup = r.Supports;
+			int run = sup[span + 1] - sup[span] - 1;
+			lines.Add("Span " + run + " / " + RM_SuspensionMath.MaxLength(r.tier, RM_SuspensionSettings.suspensionLengthMultiplier)
+				+ " squares between supports · " + r.width + " wide · railings " + (r.railings ? "on" : "off"));
+			return string.Join("\n", lines);
+		}
+	}
+}

@@ -704,6 +704,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.ExposeData();
             Thirst.RM_ThirstSettings.ExposeData();   // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design §6)
             Sprinklers.RM_SprinklerSettings.ExposeData();   // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED (design §5)
+            Pits.RM_SuspensionSettings.ExposeData();        // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS (bridges design §9)
             RM_WallClimbSettings.ExposeData();              // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS
             Swimming.RM_SwimSettings.ExposeData();   // DEEP_WATER_BUILD_SWIM_OR_SINK (owner R12)
             RM_WaterMendSettings.ExposeData();       // FISH_ROLL_MEND_PONDS_BORN_BARREN (engine doc §2.3; Q5a/Q6a defaults)
@@ -1886,6 +1887,7 @@ namespace RimMandrake.FlowWorks
             Hose.RM_HoseSettings.DoSettingsSection(list);
             Thirst.RM_ThirstSettings.DoSettingsSection(list);
             Sprinklers.RM_SprinklerSettings.DoSettingsSection(list);
+            Pits.RM_SuspensionSettings.DoSettingsSection(list);
             RM_WallClimbSettings.DoSettingsSection(list);
             Swimming.RM_SwimSettings.DoSettingsSection(list);
             RM_WaterMendSettings.DoSettingsSection(list);

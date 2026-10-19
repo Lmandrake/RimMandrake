@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: the four suspension bridge build buttons (drag anchor to anchor) live in the
+     Structure tab as special designators; the deck defs set canGenerateDefaultDesignator false. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/DesignationCategoryDef[defName="Structure"]/specialDesignatorClasses</xpath>
+    <value>
+      <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionBridge_Rope</li>
+      <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionBridge_Timber</li>
+      <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionBridge_Steel</li>
+      <li>RimMandrake.FlowWorks.Pits.Designator_SuspensionBridge_Heavy</li>
+    </value>
+  </Operation>
+</Patch>
