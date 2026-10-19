@@ -264,21 +264,20 @@ namespace RimMandrake.FlowWorks
 			// PAWNLESS CanReach (TraverseMode.PassDoors) before every walk; a pawnless query counts any lowered ladder
 			// (RM_PocketGridMath.LadderIsAWay), or every walk down or up a ladder failed there.
 			bool startPocket = g.ComponentIsPocket(k, cs);
+			int width = RequiredWidth(p);
+			bool startNarrow = startPocket && !g.WideEverywhere(k, cs, width);
 			bool startWayOut = startPocket && !g.TrappedIn(k, cs, p);
 			int cd = g.ComponentOf(k, dest.Cell);
 			bool destPocket = g.ComponentIsPocket(k, cd);
 			// REACH_VETO_FIX_ONE_END_ENOUGH: both ends are judged; a way out of the start no longer excuses a sealed destination.
-			bool destWayIn = destPocket
-				&& (g.UsableLadderIn(k, cd, p) || !g.WideEverywhere(k, cd, RequiredWidth(p)));
-			if (!RM_PocketGridMath.ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn))
-			{
-				return false;
-			}
-			// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: bank to bank across a trench laddered on both walls (down, the floor, up)
-			// is one route for any pawn those ladders allow — the same structural ladder edges the cliff masks restore for A*,
-			// closed per pawn by RM_PitPathing's ladder grid. Only narrows the veto; the graph is searched only when vetoed.
-			return RM_PocketGridMath.ReachVetoedAcross(false, startPocket, startWayOut, destPocket, destWayIn,
-				g.JoinedByLadders(k, cs, cd, p));
+			bool destNarrow = destPocket && !g.WideEverywhere(k, cd, width);
+			bool destWayIn = destPocket && (destNarrow || g.UsableLadderIn(k, cd, p));
+			// TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP + RAIDER_TRENCH_FIX_REACH_BOUNCE: a ladder way is a route only where its
+			// ladders lead — the ladder graph (the same structural edges the cliff masks restore for A*, closed per pawn by
+			// RM_PitPathing's ladder grid) decides floor -> bank, bank -> bank and bank -> floor; the end rule answers only for a
+			// pocket too narrow to hold the pawn.
+			return RM_PocketGridMath.ReachVetoedWhole(startPocket, startNarrow, startWayOut, destPocket, destNarrow, destWayIn,
+				() => g.JoinedByLadders(k, cs, cd, p));
 		}
 
 		// ── the reachability region, cached per pawn per tick ──────────────

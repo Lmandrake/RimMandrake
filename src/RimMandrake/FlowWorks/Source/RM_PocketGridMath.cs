@@ -253,6 +253,26 @@ namespace RimMandrake.FlowWorks
 			return !joinedByLadders && ReachVetoed(sameComponent, startPocket, startWayOut, destPocket, destWayIn);
 		}
 
+		/// <summary>RAIDER_TRENCH_FIX_REACH_BOUNCE: RelativeVeto's whole decision for two DIFFERENT band components. A ladder is a
+		/// route only to the component across the wall it hangs on, so a ladder way is judged by the ladder graph alone
+		/// (<see cref="JoinedByLadders"/>, the edges the cliff masks restore for A*). The end rule (<see cref="ReachVetoed"/>)
+		/// still answers only when an end is a pocket too NARROW to hold the pawn: it braces across and walks out, and the masks
+		/// give such a pawn vanilla's array (RM_CliffMask), so no ladder edge describes it. Before: a trench floor with a ladder up
+		/// the near wall cleared the veto for the FAR bank too (and a bank for a floor laddered only from the other bank); A* found
+		/// no path and the raider looped (GotoNearestHostile → TryCross null → again). joinedByLadders is asked only when needed.</summary>
+		public static bool ReachVetoedWhole(bool startPocket, bool startNarrow, bool startWayOut, bool destPocket, bool destNarrow,
+			bool destWayIn, Func<bool> joinedByLadders)
+		{
+			if ((startPocket && startNarrow) || (destPocket && destNarrow))
+			{
+				if (!ReachVetoed(false, startPocket, startWayOut, destPocket, destWayIn))
+				{
+					return false;
+				}
+			}
+			return !joinedByLadders();
+		}
+
 		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH (GPT C3-F9): does this component hold a cell on the map's border? A surface
 		/// component that does not (an island ringed by a sheer trench) never reaches the map edge on foot.</summary>
 		public static bool TouchesEdge(Labels l, int label)
