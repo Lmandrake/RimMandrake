@@ -150,26 +150,13 @@ Bridge: `rimflow bridge take --for "<what>"` first, release on stop; no flyer li
 | `WATER_SCENES_S5_JUDGE_THIRD_DRAFT` | **Open**, waits on P10 re-seal. |
 | `BIG_CREATURES_DESIGN_WALLS_AND_SLOTS` six questions | **Open** (design doc section 8); not needed to finish. Defer to after ship. |
 
-Cards to put to him (plain words; one recommended each). Use the `question-card` skill layout when sending.
+**Answered by card, 2026-10-18 18:57 PDT** (ledger: SHIP_1 note, epic note, both card items closed):
+- Q1 scope: **everything filed** — the seven suspension-bridge builds, trench cover, raider trench and big-creature walls are IN this release. Owner: *"(3) but simply accept all of your art the first time so as not to block. I can review in parallel."*
+- Q2 art: borrowed art accepted as-is; every new render is accepted the first time and never blocks (F3 waived).
+- Q3 pit rescue: any colonist who can climb back out goes; if nobody can, a ladder job is queued first.
+- Q4 leftover defaults: V2 slow drowning, V7 picture bands, D3 one burn rate all kept.
 
-**Q1. What does "finished" include?**
-- A. Water, pits, thirst, hoses, sprinklers and rivers as they are, plus the rebuild. Bridges, trench cover, big creatures wait for the next version. *Buys:* a ship in days to weeks. *Costs:* the seven suspension-bridge builds and trench cover you filed last night are not in this release. **(recommended)**
-- B. Everything filed, including the suspension bridges. *Buys:* nothing left out. *Costs:* ESTIMATED 25 to 40 more agent-days (7 builds + art with his look).
-- C. A plus trench cover and the raider-trench build only. *Buys:* the fight-from-a-trench story is whole. *Costs:* ESTIMATED 5 to 8 more agent-days.
-
-**Q2. May FlowWorks ship with its borrowed art (97 of 100 textures borrowed from vanilla or other mods, as of 2026-10-05)?**
-- A. Yes, accept it as-is and review later, like the biomes (your 2026-10-18 ruling). *Buys:* no art wait. *Costs:* the ship acceptance line "art for every visual bar" is waived. **(recommended)**
-- B. Only the new depth art (thin water, wall faces, deep tints) must be made and seen by you first. *Buys:* the rebuild looks right. *Costs:* one art sitting (ESTIMATED 1 to 2 agent-days + your look).
-- C. All FlowWorks art replaced. *Costs:* ESTIMATED weeks.
-
-**Q3. Who goes down into a pit to tend or rescue someone (Q11)?**
-- A. Any colonist who can climb back out; if nobody can, a ladder job is queued first. *Buys:* no one gets stuck rescuing. **(recommended)**
-- B. Only colonists at or above a climbing skill; others wait for a ladder. *Costs:* slower rescues.
-- C. Nobody; prisoners in pits are fed by drop-in only. *Costs:* kills rescue play.
-
-**Q4. Leftovers of the old vetoes card (V2 drowning over the head, V7 picture bands, D3 one burn rate): keep the built defaults?**
-- A. Keep all three; you judge V7 in the art sitting. *Buys:* closes the card. **(recommended)**
-- B. Tell me which to change.
+The section 5 estimate assumed the narrow scope; the full scope adds ESTIMATED 25 to 40 agent-days (section 4 Q1 at filing).
 
 ## 5. Critical path (ordered, at most 12 steps; every figure ESTIMATED, in agent-hours; 1 agent-day = 8 h)
 
