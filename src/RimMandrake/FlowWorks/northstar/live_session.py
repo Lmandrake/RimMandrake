@@ -627,7 +627,7 @@ def b2_tank_tall(s):
     else:
         st = "PASS" if abs(tall - 2 * short) <= 1 else "FAIL"
     s.row("B2_tank_tall_twice", "TANK_TALL_BUILD_TWICE_THE_DRINK", "live", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(short=short, tall=tall, offered=offer), "B2")
+          dict(short=short, tall=tall, offered=offer, placed=[a.get("note") or a.get("survived"), b.get("note") or b.get("survived")]), "B2")
 
 
 def b2_readouts(s):
@@ -652,10 +652,14 @@ def b2_readouts(s):
     unparsed = [k for k, v in p.items() if v is None]
     fmt_ok = p.get("canal") and p["canal"].get("kind") == "water" and p.get("pond") and p["pond"].get("kind") == "water"
     lake_ok = (p.get("lake") or {}).get("kind") == "limitless"
-    st = "UNMEASURED" if unparsed or any(str(v).startswith("UNREAD") for v in reads.values()) else ("PASS" if fmt_ok and lake_ok else "FAIL")
+    # the sea half is its own row: a painted mid-map lake is a LIMITED body by design (limitless = an off-map
+    # continuation at the map edge), so it can never read 'never runs dry' here (live 2026-10-19 read 'Hole 2 m')
+    st = "UNMEASURED" if unparsed or any(str(v).startswith("UNREAD") for v in reads.values()) else ("PASS" if fmt_ok else "FAIL")
+    s.row("B2_readout_sea_never_dry", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", "PASS" if lake_ok else "UNMEASURED",
+          "MOD" if lake_ok else "SITE", dict(lake=reads.get("lake"), why="" if lake_ok else "painted lake is mid-map (LIMITED); needs a map-edge body"), "B2")
     s.row("B2_readout_two_numbers_and_sea", "DEPTH_READOUT_BUILD_TWO_NUMBERS_NOT_ONE", "A2", st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
           dict(reads=reads, wording="owner looks at these strings (V8 kept by card)"), "B2", eyes=True)
-    st2 = st if st != "PASS" else ("PASS" if all("m" in str(v) for k, v in reads.items() if k in ("canal", "pond")) else "FAIL")
+    st2 = st if st == "UNMEASURED" else ("PASS" if all(" m " in str(v) and " L)" in str(v) for k, v in reads.items() if k in ("canal", "pond")) else "FAIL")
     s.row("B2_readout_metres_litres", "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD", "A2", st2, "MOD" if st2 == "FAIL" else "HARNESS" if st2 != "PASS" else "MOD",
           dict(canal=reads.get("canal"), pond=reads.get("pond"), eyes="settings UI by eye: B2 dialog screenshot"), "B2", eyes=True)
 
