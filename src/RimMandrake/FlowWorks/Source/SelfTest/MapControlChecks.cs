@@ -326,7 +326,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string xml = File.ReadAllText(Path.Combine(root, "Defs", "Canals", "ThingDefs", "FlowWorks_MapControls.xml"));
                 foreach (string d in new[] { "RM_FlowMeter", "RM_LevelHolder", "RM_TimerSwitch", "RM_MapEdgeSetter", "RM_CurrentPainter", "RM_LiquidThermostat" })
                     Assert(xml.Contains("<defName>" + d + "</defName>"), d + " def missing");
-                Assert(xml.Contains("<texPath>Things/Item/Chunk/ChunkStone</texPath>") && !xml.Contains("PenMarker"), "map controls are not small stones (owner 2026-10-16)");
+                // The stone is vanilla's ChunkStone, or (since 460a7fe819, donor_standins.py) our marked stand-in copy of
+                // it under Textures/StandIn/. (Textures/ is not staged for this build - winbuild RSYNC_EXCLUDES - so the
+                // copy's presence cannot be checked from here; the art ledger owns that.)
+                bool vanillaStone = xml.Contains("<texPath>Things/Item/Chunk/ChunkStone</texPath>");
+                bool standInStone = xml.Contains("<texPath>StandIn/Things/Item/Chunk/ChunkStone</texPath>");
+                Assert((vanillaStone || standInStone) && !xml.Contains("PenMarker"), "map controls are not small stones (owner 2026-10-16)");
                 Assert(!xml.Contains("<designationCategory>") && !xml.Contains("<costList>"), "a map control is buildable");
                 string csproj = File.ReadAllText(Path.Combine(src, "RimMandrake_FlowWorks.csproj"));
                 foreach (string f in new[] { "RM_FlowMeter", "RM_LevelHolder", "RM_TimerSwitch", "RM_EdgeSetter", "RM_CurrentPainter", "RM_LiquidThermostat" })
