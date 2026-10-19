@@ -58,7 +58,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Half</defName>
     <label>shallow red slime (about 1 m)</label>
-    <description>Red slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
+    <description>Red slime standing knee-to-waist deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -81,7 +81,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Brim</defName>
     <label>chest-deep red slime (about 1.5 m)</label>
-    <description>Red slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
+    <description>Red slime standing chest-deep. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -147,7 +147,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Half</defName>
     <label>shallow green slime (about 1 m)</label>
-    <description>Green slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
+    <description>Green slime standing knee-to-waist deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -170,7 +170,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Brim</defName>
     <label>chest-deep green slime (about 1.5 m)</label>
-    <description>Green slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
+    <description>Green slime standing chest-deep. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -237,7 +237,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Half</defName>
     <label>shallow white slime (about 1 m)</label>
-    <description>White slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
+    <description>White slime standing knee-to-waist deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -261,7 +261,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Brim</defName>
     <label>chest-deep white slime (about 1.5 m)</label>
-    <description>White slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
+    <description>White slime standing chest-deep. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -329,7 +329,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Half</defName>
     <label>shallow yellow slime (about 1 m)</label>
-    <description>Yellow slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
+    <description>Yellow slime standing knee-to-waist deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -352,7 +352,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Brim</defName>
     <label>chest-deep yellow slime (about 1.5 m)</label>
-    <description>Yellow slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
+    <description>Yellow slime standing chest-deep. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
