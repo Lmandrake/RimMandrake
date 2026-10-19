@@ -107,7 +107,7 @@
     <baseWeatherCommonalities>
       <Clear>12</Clear>
       <Fog>7</Fog>
-      <Rain>4</Rain>
+      <!-- TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER, owner 2026-10-16: "Twilight Sea is a sea floor... no rain." -->
     </baseWeatherCommonalities>
     <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: same single-band defect
          SCALD_CROWNCARPET_NO_HABITAT_1 fixed on RM_TheScald.xml (ca774b8b9).

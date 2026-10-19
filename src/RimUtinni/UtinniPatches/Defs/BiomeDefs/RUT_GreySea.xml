@@ -111,7 +111,7 @@
     <baseWeatherCommonalities>
       <Clear>12</Clear>
       <Fog>7</Fog>
-      <Rain>4</Rain>
+      <!-- TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER: every seabed biome checked; a sea floor takes no rain (owner on the Twilight, 2026-10-16: "Twilight Sea is a sea floor... no rain."). RM_GreySea itself never had Rain. -->
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>

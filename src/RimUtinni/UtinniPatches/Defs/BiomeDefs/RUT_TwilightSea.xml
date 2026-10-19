@@ -139,7 +139,7 @@
     <baseWeatherCommonalities>
       <Clear>12</Clear>
       <Fog>7</Fog>
-      <Rain>4</Rain>
+      <!-- TWILIGHT_SEA_FIX_IT_RAINS_UNDERWATER, owner 2026-10-16: "Twilight Sea is a sea floor... no rain." -->
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>
