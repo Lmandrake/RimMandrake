@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: climbing gear scales an unroofed built wall, slowly (RM_WallClimb.cs). -->
+  <JobDef>
+    <defName>RM_ClimbOverWall</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_ClimbOverWall</driverClass>
+    <reportString>climbing over a wall.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+</Defs>

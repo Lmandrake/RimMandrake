@@ -61,6 +61,8 @@
     <Compile Include="LadderWallChecks.cs" />
     <Compile Include="..\Superdeep\RM_PitAccessMath.cs" />
     <Compile Include="PitAccessChecks.cs" />
+    <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
+    <Compile Include="WallClimbChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />

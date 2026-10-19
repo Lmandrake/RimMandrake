@@ -68,7 +68,7 @@
   <ThingDef ParentName="ApparelBase">
     <defName>RM_ClimbingGear</defName>
     <label>climbing gear</label>
-    <description>A coil of rope, iron pitons and a harness, worn at the belt. The wearer climbs up or down any pit wall, however deep, slowly. Steps the wearer could climb anyway are no slower. Takes the belt slot, so it cannot be worn with a jump pack or a shield belt.</description>
+    <description>Ropes, little grappling hooks and climbing claws, strapped together in one belt pack. The wearer climbs up or down any pit wall, however deep, slowly, and over a built wall when the wall and both sides of it are open to the sky. Steps the wearer could climb anyway are no slower. Takes the belt slot, so it cannot be worn with a jump pack or a shield belt.</description>
     <graphicData>
       <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
       <texPath>Things/Item/FlowWorks/RM_ClimbingGear</texPath>

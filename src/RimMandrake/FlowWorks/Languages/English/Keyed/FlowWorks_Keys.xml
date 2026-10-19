@@ -36,6 +36,9 @@
   <RMFlow_LadderPortableTooDeep>Too deep for a portable ladder (it reaches {0}). Build the wall ladder instead.</RMFlow_LadderPortableTooDeep>
   <RMFlow_ClimbsAnyWall>Climbing gear: climbs any pit wall, slowly.</RMFlow_ClimbsAnyWall>
   <RMFlow_RescueLadderQueued>{0} is stuck in a pit and cannot climb out: a ladder job was queued at the wall.</RMFlow_RescueLadderQueued>
+  <RMFlow_ClimbOverWall>Climb over {0}</RMFlow_ClimbOverWall>
+  <RMFlow_ClimbOverWallRoofed>roofed (the wall and both sides must be open to the sky)</RMFlow_ClimbOverWallRoofed>
+  <RMFlow_ClimbOverWallNoWay>no open side to climb from, or too thick</RMFlow_ClimbOverWallNoWay>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedDrop>Spikes go only at the foot of a sheer drop of {1} or more. The tallest wall over this square is {0}.</RMFlow_SpikesNeedDrop>
