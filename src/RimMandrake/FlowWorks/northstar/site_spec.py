@@ -186,6 +186,28 @@ SETTINGS = {
         "sprinklersEnabled": True, "sprinklerLitresPerCellHour": 0.5, "sprinklerNativeRadius": 2.9,
         "sprinklerNonWaterEffects": True, "vfeSprinklerAdapterEnabled": True, "vfeThirstValve": True,
     },
+    # WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS (own static class; registered 2026-10-19)
+    "RimMandrake.FlowWorks.RM_WallClimbSettings": {
+        "wallClimbEnabled": True, "wallClimbSlowFactor": 20.0, "raidersMayClimbWalls": True, "wallClimbAutoRoute": True,
+        "raidersCarryClimbingGear": True, "raiderGearChanceScale": 1.0, "breacherSapperGearChance": 1.0,
+    },
+    # RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
+    "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": {
+        "raiderTrenchEnabled": True, "raiderJumpsEnabled": True, "raiderLaddersEnabled": True, "raiderFillEnabled": True,
+        "raiderLadderSpeed": 1.0, "raiderFillSpeed": 1.0, "raiderJumpPackShare": 0.1,
+    },
+    # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
+    "RimMandrake.FlowWorks.RM_SwimSettings": {
+        "deepSwimEnabled": True, "swimOpenWaterEnabled": False, "humanlikesSwim": True, "mechanoidsSink": True,
+        "swimPathCost": 60, "swimEnduranceHours": 2.0, "swimRecoveryHours": 1.0, "swimWeightEndurancePenalty": 1.25,
+        "swimWeightSlowdown": 1.5, "animalsAvoidDeepWater": True, "animalAvoidCost": 3000, "swimWarnAt": 0.7,
+        "tiredSwimmersHeadForShore": True, "deepSwimJoyEnabled": True, "shallowWaterDrowningEnabled": True,
+    },
+    # FISH_ROLL_MEND_PONDS_BORN_BARREN
+    "RimMandrake.FlowWorks.RM_WaterMendSettings": {
+        "waterBodyMendsEnabled": True, "fishRollOnGrowth": True, "fishReturnOnRefill": True, "fishingZoneReturnOnRefill": True,
+        "waterBodySplitEnabled": True, "waterPlantGraceEnabled": True, "waterPlantDeepToleranceMetres": 1.0, "waterPlantGraceHours": 24.0,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -200,6 +222,10 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RiverColors.RM_RiverColorsSettings": os.path.join("RiverColors", "RM_RiverColorsSettings.cs"),
     "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": os.path.join("Thirst", "RM_ThirstSettings.cs"),
     "RimMandrake.FlowWorks.Sprinklers.RM_SprinklerSettings": os.path.join("Sprinklers", "RM_SprinklerSettings.cs"),
+    "RimMandrake.FlowWorks.RM_WallClimbSettings": os.path.join("Superdeep", "RM_WallClimbSettings.cs"),
+    "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": os.path.join("Superdeep", "RM_RaiderTrench.cs"),
+    "RimMandrake.FlowWorks.RM_SwimSettings": os.path.join("Swimming", "RM_Swim.cs"),
+    "RimMandrake.FlowWorks.RM_WaterMendSettings": "RM_WaterBodyMendGame.cs",
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
