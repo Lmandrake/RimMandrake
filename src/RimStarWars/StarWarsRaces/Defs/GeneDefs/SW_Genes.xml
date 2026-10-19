@@ -743,7 +743,7 @@
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
         <workerClass>PawnRenderNodeWorker_FlipWhenCrawling</workerClass>
         <texPath>RimMandrakeSW/OR/Outland/Genes/Horns/Common/LongProng</texPath>
-        <texPathFemale>Outland/Genes/Horns/Common/Bulb</texPathFemale>
+        <texPathFemale>RimMandrakeSW/OR/Outland/Genes/Horns/Common/Bulb</texPathFemale>
         <color>(255, 255, 255)</color>
         <parentTagDef>Head</parentTagDef>
         <drawData>

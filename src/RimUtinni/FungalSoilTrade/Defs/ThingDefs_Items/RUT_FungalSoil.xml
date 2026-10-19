@@ -32,7 +32,7 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>BMT_Caverns/Terrains/MycelialSoil</texPath>
+      <texPath>RotSporeKit/Terrains/MycelialSoil</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <stackLimit>50</stackLimit>
