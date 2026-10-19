@@ -14,7 +14,7 @@ names its liquid story, that IS the answer here.
 These are already ruled or MEASURED; the matrix applies them, it does not reopen them.
 
 1. **The six faces** (ticket table): floods (FlowWorks pulsed spread) · rain (weather
-   form slot; tar rain is the pilot) · rivers · lakes (terrain bodies + landmark meres;
+   form slot; poison/acid rain are the pilot) · rivers · lakes (terrain bodies + landmark meres;
    the Deep Black is the pilot) · oceans (**map-scale and lore ONLY** — the frozen world
    map is not touched until the paint pass) · **ground pump** (buildable on-site
    producer; every YES is a Mod Settings toggle by ruling — scenario-dependent).
@@ -31,7 +31,7 @@ These are already ruled or MEASURED; the matrix applies them, it does not reopen
    map carrying two liquids.
 5. **Scarcity is stock, not rate** (framework §4, owner reversal 2026-09-16): every
    source carries real volume; "infinite" only means stock too large to exhaust.
-6. **The mod-vs-scenario split** (tar rain, ruling 1): a dangerous face can ship in the
+6. **The mod-vs-scenario split** (poison and acid rain, ruling 1): a dangerous face can ship in the
    MOD and stay OFF in the Ash'karr campaign scenario. Cells below marked "mod-only"
    use exactly this split.
 7. **The registry rows are the matrix rows.** No liquid is invented here. Deferred
@@ -104,7 +104,7 @@ typed rulings 1 and 6 — the one ruled exception to one-liquid-per-biome.
 | 20 | Warscar (`RM_Warscar`) | **NONE** | — | 90 tiles of battlefield in the deep dayside Scorch |
 | 21 | the Forge (`RM_TheForge`) | **lava** | G | lava promoted to a v1 registry row (decision taken by question card, 2026-09-24 — "Promote lava now"); the `Volcano`/`LavaField` painted defs are the ground truth |
 | 22 | the Fever Wood (`RM_FeverWood`) | **fresh water** | G | the water made to HOLD STILL — black mirror pools and mud (Fouled quality; the mud doc details the ground state) |
-| 23 | the Sump (`RM_TheSump`) | **tar** | G (+S in mod) | ruled: the only liquid is tar; tar rain in the mod, not the scenario |
+| 23 | the Sump (`RM_TheSump`) | **tar** | G (+S in mod) | ruled: the only liquid is tar; no precipitation at all (owner 2026-10-18) |
 | 24 | the Propane Lake (`RM_TheChill`, TerminalBiomes) | **propane** | G+S | the authored body plus condensation weather below the −42 °C dew point |
 | 25 | the Twilight Sea (`RM_TwilightSea`, TerminalBiomes) | **salt water** (decision taken by question card, 2026-09-24) | G | the "last ordinary sea" by its own sheet; Grey = brine, Twilight = salt |
 | 26 | the Grey Sea (`RM_GreySea`, TerminalBiomes) | **brine** | G | hypersaline, terminal, shrinking fastest |
@@ -163,7 +163,7 @@ a clicked label is never quoted as his words.
 6. **Poison and acid rain — REVERSED from LATER. RULED, typed, verbatim:** *"Build them
    into the mod now but at this time the campaign does not use them. It does use
    boiling rain though in the contagion."* ⇒ poison rain and acid rain: YES, build now,
-   mod-only, campaign scenario OFF (the tar-rain split) — and a NEW cell: **boiling
+   mod-only, campaign scenario OFF (the mod-vs-scenario split) — and a NEW cell: **boiling
    rain in the Contagion, campaign-ON** (matrix boiling-water row; native table row 16).
 7. **Chemfuel ground pump. RULED, typed, verbatim:** *"Yes we enable it but nowhere in
    this campaign has channel or astrofuel as the pump able biome liquid."* Reading
