@@ -445,6 +445,8 @@ class Session(object):
         after clear_zone's ProofResetRect) marks the zone holding c not ready, so its rows read UNMEASURED/SITE."""
         r = self.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=n, setFill=fill)
         bad = dig_miss(r, n) if not self.mock else None
+        if not bad and fill >= 0 and not self.mock and r.get("fillSet") is False:     # dry where the row needs water
+            bad = "fill %s not set (fillSet false)" % fill
         if bad:
             z = zone_at(self.zones, c)
             if z:
@@ -523,6 +525,17 @@ def dig_miss(r, n):
     if n and "depth" in r and fnum(r.get("depth")) != float(n):
         return "depth %s after the drive, wanted %d" % (r.get("depth"), n)
     return None
+
+
+def order_taken(s, r, pid):
+    """True when jawa/order_pawn says the pawn accepted the order (its row's orderAccepted); mock has no such rows. A
+    refused order leaves the pawn where it stood, which a row must not read as 'could not climb out'."""
+    if s.mock:
+        return True
+    for p in (r or {}).get("pawns") or []:
+        if p.get("id") == pid:
+            return p.get("orderAccepted") is True
+    return False
 
 
 def draft(s, pid):
@@ -681,7 +694,7 @@ def b2_settings_dialog(s):
               dict(label=label, why=why, shot=shot, textChars=len(texts)), "B2", eyes=not texts)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     before = s.sget("pitGuardrailEnabled")
-    s.sset("pitGuardrailEnabled", False)
+    set_ok = (s.sset("pitGuardrailEnabled", False) or {}).get("success") is not False
     opened2 = s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True).get("success") is True
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     # a dialog that never opened never closes, so nothing is written: that is UNMEASURED, not a MOD fail (live 2026-10-19)
@@ -690,7 +703,7 @@ def b2_settings_dialog(s):
     s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     disk2 = read_settings_file(s)
-    if disk is None:
+    if disk is None or disk2 is None or not set_ok or before is None:     # an unread file / refused flip is no round trip
         st = "UNMEASURED"
     else:
         st = "PASS" if ("pitGuardrailEnabled>False" in disk and (disk2 or "").find("pitGuardrailEnabled>False") < 0) else "FAIL"
@@ -923,9 +936,10 @@ def g_pit_access(s):
     gear = s.call("jawa/pawn_gear", **{"pawn": g, "action": "wear", "def": "RM_ClimbingGear", "stuff": ""}) if g else {}
     jp = s.call("jawa/pawn_gear", **{"pawn": j, "action": "wear", "def": "Apparel_PackJump", "stuff": ""}) if j else {}
     out = (x + 5, z + 10)
+    ordered = {}
     for pid in (a, g, ctl):
         if pid:
-            s.order(pid, out)
+            ordered[pid] = order_taken(s, s.order(pid, out), pid)
     # downed WITHOUT bleeding (a bleeder dies inside the 6,000-tick wait) and read back: a colonist that is not downed
     # is not the A4 scene (the reply was never read)
     inc = s.call("jawa/pawn_force_incapacitate", pawn=d, action="downed", allowBleedingWounds=False) if d else {}
@@ -938,14 +952,15 @@ def g_pit_access(s):
         if not r:
             return "UNMEASURED"
         return "PASS" if ((r.get("depth") == 0) == want_out) else "FAIL"
-    st = st_out(ra) if lad.get("survived") else "UNMEASURED"
+    st = st_out(ra) if lad.get("survived") and ordered.get(a, False) else "UNMEASURED"
     s.row("B4_access_portable_ladder_out", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A1",
-          st, "MOD" if st != "UNMEASURED" else "SITE" if not lad.get("survived") else "HARNESS", dict(ladder=lad, pawn=ra,
+          st, "MOD" if st != "UNMEASURED" else "SITE" if not lad.get("survived") else "HARNESS", dict(ladder=lad, pawn=ra, orderTaken=ordered.get(a),
           owed="build-by-colonist, uninstall/re-set and the 4 m refusal are not read by this row"), "B4")
     s.row("B4_access_gear_climbs_sheer_4m", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2",
-          st_out(rg) if gear.get("success") else "UNMEASURED", "MOD" if gear.get("success") else "HARNESS",
-          dict(gear=str(gear)[:160], pawn=rg), "B4")
-    st = st_out(rc, want_out=False)
+          st_out(rg) if gear.get("success") and ordered.get(g, False) else "UNMEASURED",
+          "MOD" if gear.get("success") and ordered.get(g, False) else "HARNESS",
+          dict(gear=str(gear)[:160], pawn=rg, orderTaken=ordered.get(g)), "B4")
+    st = st_out(rc, want_out=False) if ordered.get(ctl, False) else "UNMEASURED"
     s.row("B4_access_no_gear_stays_in", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(pawn=rc), "B4")
     # A3: jump pack in and out (the jump verb is driven by jawa/pawn_use_verb on the pack; refused = UNMEASURED)
@@ -973,13 +988,15 @@ def g_pit_access(s):
                owed="jump back out, skip, knockback-still-falls: not read"), "B4")
     # A4: a downed colonist in a sheer pit -> a ladder job queued at the nearest wall, built, colonist rescued
     def ladder_there():
-        return bool(s.call("jawa/list_things", defName="RM_Ladder,RM_LadderPortable,Blueprint_RM_Ladder,Frame_RM_Ladder,"
-                           "Blueprint_RM_LadderPortable,Frame_RM_LadderPortable", rect="%d,%d,5,5" % (P4[0] - 1, P4[1] - 1),
-                           limit=10).get("things"))
+        lr = s.call("jawa/list_things", defName="RM_Ladder,RM_LadderPortable,Blueprint_RM_Ladder,Frame_RM_Ladder,"
+                    "Blueprint_RM_LadderPortable,Frame_RM_LadderPortable", rect="%d,%d,5,5" % (P4[0] - 1, P4[1] - 1), limit=10)
+        if lr.get("success") is not True:           # a refused read is not "no ladder queued"
+            return None
+        return bool(lr.get("things"))
     yield Wait(6000, until=ladder_there, every=250)
     seen = ladder_there()
     rd = s.climb(d) if d else {}
-    st = "UNMEASURED" if not d or not downed or not rd or not (rd.get("depth") or 0) > 0 else ("PASS" if seen else "FAIL")
+    st = "UNMEASURED" if not d or not downed or not rd or not (rd.get("depth") or 0) > 0 or seen is None else ("PASS" if seen else "FAIL")
     s.row("B4_access_rescue_ladder_queued", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(ladderSeen=seen, afterTicks=s.now() - rescue_t0, downed=rd, incapacitate=str(inc)[:160],
                owed="'built and the colonist carried out' needs a longer ride: read again in B7"), "B4")
@@ -1145,7 +1162,9 @@ def g_grenade(s):
     # pass 2 (2026-10-19, HARNESS): the sums were whole-body hediff severities, so a spawned pawn's own scars / chronic
     # conditions counted as blast harm (trench 35.0 vs open 20.5 at one 20-damage Bomb each). Read each pawn before the
     # blast and score only the severity the blast ADDED.
-    pre_t, pre_o = (hediffs(s.call("jawa/pawn_get", pawn=p)) if p else {} for p in (pt, po))
+    pre_r = [s.call("jawa/pawn_get", pawn=p) if p else {} for p in (pt, po)]
+    pre_t, pre_o = (hediffs(r) for r in pre_r)
+    pre_read = s.mock or all(r.get("success") is True for r in pre_r)       # an unread pre-state makes every old scar "blast harm"
     r1 = s.call("jawa/explosion_at", at="%d,%d" % t, radius=1.9, damType="Bomb", damAmount=20)
     r2 = s.call("jawa/explosion_at", at="%d,%d" % o, radius=1.9, damType="Bomb", damAmount=20)
     yield Wait(5)
@@ -1153,7 +1172,7 @@ def g_grenade(s):
     ht = {k: v - pre_t.get(k, 0.0) for k, v in ht.items() if v - pre_t.get(k, 0.0) > 1e-6}
     ho = {k: v - pre_o.get(k, 0.0) for k, v in ho.items() if v - pre_o.get(k, 0.0) > 1e-6}
     st, sum_t, sum_o = "UNMEASURED", sum(ht.values()), sum(ho.values())
-    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed:
+    if r1.get("success") and r2.get("success") and pt and po and sum_o > 0 and all(drafted) and placed and pre_read:
         st = "PASS" if abs(sum_t - sum_o) <= max(2.0, 0.25 * sum_o) else "FAIL"
     s.row("B4_grenade_no_blast_cover", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(trench=round(sum_t, 2), open=round(sum_o, 2), added=dict(trench=ht, open=ho), drafted=drafted, cells=cells,
@@ -1316,8 +1335,16 @@ def b5_cold_snap(s):
     gcs = [s.call("jawa/game_condition", action="start", condition=n, durationTicks=60000) for n in COLD_CONDITIONS]
     cond_ok = all(g.get("success") for g in gcs)
 
+    blind = []
+
     def terr():
-        return "".join(str(s.call("jawa/get_terrain_batch", rects="%d,%d,14,1" % c[0]).get("ops") or "") for c in canals)
+        out_ = []
+        for c in canals:
+            rr = s.call("jawa/get_terrain_batch", rects="%d,%d,14,1" % c[0])
+            if not s.mock and (rr.get("success") is False or not rr.get("ops")):
+                blind.append(1)             # an unread canal row reads as "no ice": counted, never judged
+            out_.append(str(rr.get("ops") or ""))
+        return "".join(out_)
 
     def temp():
         return fnum(s.call("jawa/cell_temperature", cell="%d,%d" % canal[0]).get("temperature"))
@@ -1351,6 +1378,11 @@ def b5_cold_snap(s):
     after = [s.w.readout(c) if not s.mock else None for c in canal[:3]]
     same = [(a or {}).get("dl") for a in after] == [(b or {}).get("dl") for b in before]
     st, cls, why = ice_verdict(cond_ok, temps, froze, thaw, same, sum(len(r) for r in canals))
+    unread_dl = not s.mock and any((x or {}).get("dl") is None for x in before + after)
+    if st == "PASS" and unread_dl:
+        st, cls, why = "UNMEASURED", "HARNESS", "the readout litres were unread (before/after): 'unchanged' is no reading"
+    elif st == "FAIL" and blind and froze is None:
+        st, cls, why = "UNMEASURED", "HARNESS", "%d terrain reads of the canals came back empty: 'no ice' is no reading" % len(blind)
     s.row("B5_ice_freeze_thaw", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", st, cls,
           dict(why=why, conditions=[str(g)[:80] for g in gcs], frozeAfter=froze, thawAfter=thaw,
                coldest=min([t for t in temps if t is not None] or [None]) if any(t is not None for t in temps) else None,
@@ -1394,7 +1426,7 @@ def b6_flood(s):
     # open dug squares (rainFillsExcavationsEnabled, the mod's design, proven by its own rows), which this row is not
     # about. Rain fill off for the row (restored in finally); the changed squares keep their before/after values.
     rain_fill_was = s.sget("rainFillsExcavationsEnabled")
-    s.sset("rainFillsExcavationsEnabled", False)
+    rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False
     ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
     started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
 
@@ -1424,6 +1456,10 @@ def b6_flood(s):
                 break
     after = s.w.cells(canal)[0] if not s.mock else {}
     st, cls, why = flood_verdict(started, reached, receded, before == after)
+    if not s.mock and (not before or not after):       # {} == {} was "every canal square reads as before"
+        st, cls, why = "UNMEASURED", "HARNESS", "the canal cells were unread (before %d, after %d)" % (len(before or {}), len(after or {}))
+    elif st == "FAIL" and not rain_off:
+        st, cls, why = "UNMEASURED", "SITE", "rain fill could not be switched off for the row: the squares may have filled by design"
     s.row("B6_flood_canal_kept", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A6", st, cls,
           dict(why=why, weather=str(ws)[:120], weatherBefore=(w0 or {}).get("weather"), floodReachedAfter=reached_at,
                recededAfter=gone_at, changed=[c for c in before if before.get(c) != after.get(c)][:8],
@@ -1483,7 +1519,7 @@ def b7_reload(s):
     diff = sorted(k for k in before if before.get(k) != after.get(k))
     # a key unread on EITHER side is no comparison: None == None made the pocket/setting rows PASS with nothing read
     blind = sorted(k for k in before if before.get(k) is None or after.get(k) is None)
-    ok_io = sv.get("success") is not False and ld.get("success") is not False
+    ok_io = (sv.get("success") is True and ld.get("success") is True) or (s.mock and sv.get("success") is not False)
     st = reload_verdict(ok_io, blind, diff)
     # RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS: runs 20261018T232207 / T233414 failed on pocket_covers alone and
     # kept no strings. Keep both sides of every differing key, and one SETTLED re-read (> RM_PocketGrid.RebuildMinTicks
@@ -1656,6 +1692,8 @@ def run_sub(s, step):
     s.call("jawa/kill_hostiles")
     s.call("jawa/incident_queue_clear")
     feed_colonists(s)
+    if os.path.exists(out):
+        os.remove(out)                      # a crash before the script writes must not re-read an earlier run's rows
     s.say("  RUN %s %s" % (script, " ".join(fill)))
     t0 = time.time()
     with open(log, "w", encoding="utf-8") as lf:
