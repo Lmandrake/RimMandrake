@@ -47,9 +47,9 @@ def build_site_save(s, work_dir, saves_dir=None, sleep=time.sleep):
 
 STEPS = B.steps(S, " 8b sky: map_comp_read %s %s -> BurnActive False (recorded with NextBurnTick)\n"
                    % (S.SKY_COMP, ",".join(S.SKY_MEMBERS))) + """\
-Then (on-Contagion arm only): northstar_driver run --mod Contagion --plan src/RimMandrake/Contagion/northstar_plan.py.
-Northstar_site.py's preflight still refuses an RM_Contagion map (it guards the off-Contagion retile control), so the
-arm split (packet §1.2 row 2) lands before the driver can run here; the retile control stays on the calm site.
+Then: northstar_driver run --mod Contagion --plan src/RimMandrake/Contagion/northstar_plan.py. The whole suite runs
+on this already-sick site (validation.py TWO STARTS): northstar_site.preflight accepts an RM_Contagion map, and the two
+stock-map components take it off the biome themselves and put it back.
 """
 
 

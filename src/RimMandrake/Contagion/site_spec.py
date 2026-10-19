@@ -49,8 +49,8 @@ COLONY_NAME = "Northstar Contagion"
 
 SERVES = ("the on-Contagion chains: sky state (Bloom/Burn tells), burn_forced/burn_natural, uv, coalescence, genome,"
           " spawner, Sunbeam and limb rows (packet §1.2)",)
-# NOT this site's job: the off-Contagion arm (the retile control) stays on the calm site; northstar_site.py's
-# preflight still REFUSES an RM_Contagion map ("the retile has no control") until the arms are split (harness work).
+# The suite also runs whole here: its two stock-map components re-tile this site off RM_Contagion themselves and
+# restore it (validation.py TWO STARTS); northstar_site.preflight accepts an RM_Contagion map.
 
 
 def site_entry():
