@@ -1,0 +1,973 @@
+{
+ "0": {
+  "success": true,
+  "message": "40 of 40 def(s) resolved",
+  "requested": 40,
+  "foundCount": 40,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName",
+   "label"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RM_Aaklac",
+    "found": true,
+    "defName": "RM_Aaklac",
+    "defType": "ThingDef",
+    "label": "aaklac",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Aaklac",
+     "label": "aaklac"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_AgaricusDomeCap",
+    "found": true,
+    "defName": "RM_AgaricusDomeCap",
+    "defType": "ThingDef",
+    "label": "skarrowdome",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AgaricusDomeCap",
+     "label": "skarrowdome"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_AgariluxPrime",
+    "found": true,
+    "defName": "RM_AgariluxPrime",
+    "defType": "ThingDef",
+    "label": "grath elder",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AgariluxPrime",
+     "label": "grath elder"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_AlienGrass",
+    "found": true,
+    "defName": "RM_AlienGrass",
+    "defType": "ThingDef",
+    "label": "ocular grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AlienGrass",
+     "label": "ocular grass"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_AlienSand",
+    "found": true,
+    "defName": "RM_AlienSand",
+    "defType": "TerrainDef",
+    "label": "red-tinged ground",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AlienSand",
+     "label": "red-tinged ground"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_AlienSandFine",
+    "found": true,
+    "defName": "RM_AlienSandFine",
+    "defType": "TerrainDef",
+    "label": "fine red sand",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AlienSandFine",
+     "label": "fine red sand"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_AlienTree",
+    "found": true,
+    "defName": "RM_AlienTree",
+    "defType": "ThingDef",
+    "label": "ocular tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AlienTree",
+     "label": "ocular tree"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_AlienTree_Polluted",
+    "found": true,
+    "defName": "RM_AlienTree_Polluted",
+    "defType": "ThingDef",
+    "label": "mutated ocular tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_AlienTree_Polluted",
+     "label": "mutated ocular tree"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_ArbuscularMycorrhiza",
+    "found": true,
+    "defName": "RM_ArbuscularMycorrhiza",
+    "defType": "ThingDef",
+    "label": "madruka",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ArbuscularMycorrhiza",
+     "label": "madruka"
+    }
+   },
+   {
+    "requested": "HediffDef/RM_BacterialGangrene",
+    "found": true,
+    "defName": "RM_BacterialGangrene",
+    "defType": "HediffDef",
+    "label": "bacterial gangrene",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_BacterialGangrene",
+     "label": "bacterial gangrene"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_BlackPebbles",
+    "found": true,
+    "defName": "RM_BlackPebbles",
+    "defType": "TerrainDef",
+    "label": "black volcanic sand",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_BlackPebbles",
+     "label": "black volcanic sand"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_Bryolux",
+    "found": true,
+    "defName": "RM_Bryolux",
+    "defType": "ThingDef",
+    "label": "hessuk moss",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Bryolux",
+     "label": "hessuk moss"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_CrystalHorn",
+    "found": true,
+    "defName": "RM_CrystalHorn",
+    "defType": "ThingDef",
+    "label": "crystal horn",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_CrystalHorn",
+     "label": "crystal horn"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_DenseGrass",
+    "found": true,
+    "defName": "RM_DenseGrass",
+    "defType": "TerrainDef",
+    "label": "dense grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_DenseGrass",
+     "label": "dense grass"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_DenseMud",
+    "found": true,
+    "defName": "RM_DenseMud",
+    "defType": "TerrainDef",
+    "label": "dense mud",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_DenseMud",
+     "label": "dense mud"
+    }
+   },
+   {
+    "requested": "IncidentDef/RM_Disease_BacterialGangrene",
+    "found": true,
+    "defName": "RM_Disease_BacterialGangrene",
+    "defType": "IncidentDef",
+    "label": "bacterial gangrene",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Disease_BacterialGangrene",
+     "label": "bacterial gangrene"
+    }
+   },
+   {
+    "requested": "IncidentDef/RM_Disease_RavagingIntestinalParasites",
+    "found": true,
+    "defName": "RM_Disease_RavagingIntestinalParasites",
+    "defType": "IncidentDef",
+    "label": "ravaging intestinal parasites",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Disease_RavagingIntestinalParasites",
+     "label": "ravaging intestinal parasites"
+    }
+   },
+   {
+    "requested": "IncidentDef/RM_Disease_ViralAbasia",
+    "found": true,
+    "defName": "RM_Disease_ViralAbasia",
+    "defType": "IncidentDef",
+    "label": "viral abasia",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Disease_ViralAbasia",
+     "label": "viral abasia"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_DribblingCap",
+    "found": true,
+    "defName": "RM_DribblingCap",
+    "defType": "ThingDef",
+    "label": "amber weeper",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_DribblingCap",
+     "label": "amber weeper"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_FertileMud",
+    "found": true,
+    "defName": "RM_FertileMud",
+    "defType": "TerrainDef",
+    "label": "fertile mud",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_FertileMud",
+     "label": "fertile mud"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_FineForsakenSand",
+    "found": true,
+    "defName": "RM_FineForsakenSand",
+    "defType": "TerrainDef",
+    "label": "fine forsaken sand",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_FineForsakenSand",
+     "label": "fine forsaken sand"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_FirevineTree",
+    "found": true,
+    "defName": "RM_FirevineTree",
+    "defType": "ThingDef",
+    "label": "firevine tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_FirevineTree",
+     "label": "firevine tree"
+    }
+   },
+   {
+    "requested": "ThoughtDef/RM_ForsakenNight",
+    "found": true,
+    "defName": "RM_ForsakenNight",
+    "defType": "ThoughtDef",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ForsakenNight"
+    }
+   },
+   {
+    "requested": "ThoughtDef/RM_ForsakenRain",
+    "found": true,
+    "defName": "RM_ForsakenRain",
+    "defType": "ThoughtDef",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ForsakenRain"
+    }
+   },
+   {
+    "requested": "WeatherDef/RM_ForsakenRainyNight",
+    "found": true,
+    "defName": "RM_ForsakenRainyNight",
+    "defType": "WeatherDef",
+    "label": "forsaken rain",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ForsakenRainyNight",
+     "label": "forsaken rain"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_ForsakenSand",
+    "found": true,
+    "defName": "RM_ForsakenSand",
+    "defType": "TerrainDef",
+    "label": "forsaken sand",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ForsakenSand",
+     "label": "forsaken sand"
+    }
+   },
+   {
+    "requested": "ThoughtDef/RM_ForsakenThunderstorm",
+    "found": true,
+    "defName": "RM_ForsakenThunderstorm",
+    "defType": "ThoughtDef",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ForsakenThunderstorm"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_FrostLeaf",
+    "found": true,
+    "defName": "RM_FrostLeaf",
+    "defType": "ThingDef",
+    "label": "frost leaf",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_FrostLeaf",
+     "label": "frost leaf"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_GargantuanLithops",
+    "found": true,
+    "defName": "RM_GargantuanLithops",
+    "defType": "ThingDef",
+    "label": "gargantuan lithops",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_GargantuanLithops",
+     "label": "gargantuan lithops"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_GiantAgarilux",
+    "found": true,
+    "defName": "RM_GiantAgarilux",
+    "defType": "ThingDef",
+    "label": "vokkun pillar",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_GiantAgarilux",
+     "label": "vokkun pillar"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_GlobularPlant",
+    "found": true,
+    "defName": "RM_GlobularPlant",
+    "defType": "ThingDef",
+    "label": "globular aberration",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_GlobularPlant",
+     "label": "globular aberration"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_GlowingAgarilux",
+    "found": true,
+    "defName": "RM_GlowingAgarilux",
+    "defType": "ThingDef",
+    "label": "ithrani glowcap",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_GlowingAgarilux",
+     "label": "ithrani glowcap"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_Glowstool",
+    "found": true,
+    "defName": "RM_Glowstool",
+    "defType": "ThingDef",
+    "label": "nubbik",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Glowstool",
+     "label": "nubbik"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_Gomphoeria",
+    "found": true,
+    "defName": "RM_Gomphoeria",
+    "defType": "ThingDef",
+    "label": "gomphoeria",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Gomphoeria",
+     "label": "gomphoeria"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_GrassySand",
+    "found": true,
+    "defName": "RM_GrassySand",
+    "defType": "TerrainDef",
+    "label": "grassy sand",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_GrassySand",
+     "label": "grassy sand"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_HalfAlienTree",
+    "found": true,
+    "defName": "RM_HalfAlienTree",
+    "defType": "ThingDef",
+    "label": "half transformed ocular tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_HalfAlienTree",
+     "label": "half transformed ocular tree"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_HardenedGrass",
+    "found": true,
+    "defName": "RM_HardenedGrass",
+    "defType": "TerrainDef",
+    "label": "hardened grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_HardenedGrass",
+     "label": "hardened grass"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_HardenedGrassFertile",
+    "found": true,
+    "defName": "RM_HardenedGrassFertile",
+    "defType": "TerrainDef",
+    "label": "fertile volcanic soil",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_HardenedGrassFertile",
+     "label": "fertile volcanic soil"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_HardyGrass",
+    "found": true,
+    "defName": "RM_HardyGrass",
+    "defType": "ThingDef",
+    "label": "hardy grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_HardyGrass",
+     "label": "hardy grass"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_Iashiphus",
+    "found": true,
+    "defName": "RM_Iashiphus",
+    "defType": "ThingDef",
+    "label": "iashiphus",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Iashiphus",
+     "label": "iashiphus"
+    }
+   }
+  ],
+  "ticksGame": 96506,
+  "operation": {
+   "OperationId": "op_f781f5cb79c44fe19045ce3e3072ab93",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 13
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ },
+ "40": {
+  "success": true,
+  "message": "31 of 31 def(s) resolved",
+  "requested": 31,
+  "foundCount": 31,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName",
+   "label"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RM_JungleTree",
+    "found": true,
+    "defName": "RM_JungleTree",
+    "defType": "ThingDef",
+    "label": "deep jungle tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_JungleTree",
+     "label": "deep jungle tree"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_LargeSlimyTree",
+    "found": true,
+    "defName": "RM_LargeSlimyTree",
+    "defType": "ThingDef",
+    "label": "large slimy tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_LargeSlimyTree",
+     "label": "large slimy tree"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_LilacBeacon",
+    "found": true,
+    "defName": "RM_LilacBeacon",
+    "defType": "ThingDef",
+    "label": "quessa spire",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_LilacBeacon",
+     "label": "quessa spire"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_LushGrass",
+    "found": true,
+    "defName": "RM_LushGrass",
+    "defType": "TerrainDef",
+    "label": "lush grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_LushGrass",
+     "label": "lush grass"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_MangrovePalm",
+    "found": true,
+    "defName": "RM_MangrovePalm",
+    "defType": "ThingDef",
+    "label": "mangrove palm",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_MangrovePalm",
+     "label": "mangrove palm"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_MangroveTree",
+    "found": true,
+    "defName": "RM_MangroveTree",
+    "defType": "ThingDef",
+    "label": "mangrove tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_MangroveTree",
+     "label": "mangrove tree"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_PackedIce",
+    "found": true,
+    "defName": "RM_PackedIce",
+    "defType": "TerrainDef",
+    "label": "packed ice",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_PackedIce",
+     "label": "packed ice"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_PackedSnow",
+    "found": true,
+    "defName": "RM_PackedSnow",
+    "defType": "TerrainDef",
+    "label": "packed snow",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_PackedSnow",
+     "label": "packed snow"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_ParasiticMangrove",
+    "found": true,
+    "defName": "RM_ParasiticMangrove",
+    "defType": "ThingDef",
+    "label": "parasitic mangrove",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ParasiticMangrove",
+     "label": "parasitic mangrove"
+    }
+   },
+   {
+    "requested": "HediffDef/RM_RavagingIntestinalParasites",
+    "found": true,
+    "defName": "RM_RavagingIntestinalParasites",
+    "defType": "HediffDef",
+    "label": "ravaging intestinal parasites",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RavagingIntestinalParasites",
+     "label": "ravaging intestinal parasites"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_RecurvedStropharia",
+    "found": true,
+    "defName": "RM_RecurvedStropharia",
+    "defType": "ThingDef",
+    "label": "orrusk crook",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RecurvedStropharia",
+     "label": "orrusk crook"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_RedLeaves",
+    "found": true,
+    "defName": "RM_RedLeaves",
+    "defType": "ThingDef",
+    "label": "ocular plant",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RedLeaves",
+     "label": "ocular plant"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_RedPlantsTall",
+    "found": true,
+    "defName": "RM_RedPlantsTall",
+    "defType": "ThingDef",
+    "label": "ocular plant",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RedPlantsTall",
+     "label": "ocular plant"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_RichAlienSand",
+    "found": true,
+    "defName": "RM_RichAlienSand",
+    "defType": "TerrainDef",
+    "label": "rich red-tinged ground",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RichAlienSand",
+     "label": "rich red-tinged ground"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_RichSlime",
+    "found": true,
+    "defName": "RM_RichSlime",
+    "defType": "TerrainDef",
+    "label": "rich hardened slime ground",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_RichSlime",
+     "label": "rich hardened slime ground"
+    }
+   },
+   {
+    "requested": "TerrainDef/RM_Slime",
+    "found": true,
+    "defName": "RM_Slime",
+    "defType": "TerrainDef",
+    "label": "hardened slime ground",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Slime",
+     "label": "hardened slime ground"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_Slimecasia",
+    "found": true,
+    "defName": "RM_Slimecasia",
+    "defType": "ThingDef",
+    "label": "slimecasia",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_Slimecasia",
+     "label": "slimecasia"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_SlimyFern",
+    "found": true,
+    "defName": "RM_SlimyFern",
+    "defType": "ThingDef",
+    "label": "slimy fern",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_SlimyFern",
+     "label": "slimy fern"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_SlimyPholiota",
+    "found": true,
+    "defName": "RM_SlimyPholiota",
+    "defType": "ThingDef",
+    "label": "sweetsnare",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_SlimyPholiota",
+     "label": "sweetsnare"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_SlimyTree",
+    "found": true,
+    "defName": "RM_SlimyTree",
+    "defType": "ThingDef",
+    "label": "slimy tree",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_SlimyTree",
+     "label": "slimy tree"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_SugarFamewort",
+    "found": true,
+    "defName": "RM_SugarFamewort",
+    "defType": "ThingDef",
+    "label": "sugar famewort",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_SugarFamewort",
+     "label": "sugar famewort"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TallSlimyGrass",
+    "found": true,
+    "defName": "RM_TallSlimyGrass",
+    "defType": "ThingDef",
+    "label": "tall slimy grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TallSlimyGrass",
+     "label": "tall slimy grass"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TangleTea",
+    "found": true,
+    "defName": "RM_TangleTea",
+    "defType": "ThingDef",
+    "label": "tangle tea",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TangleTea",
+     "label": "tangle tea"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TentacularPlant",
+    "found": true,
+    "defName": "RM_TentacularPlant",
+    "defType": "ThingDef",
+    "label": "tentacular aberration",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TentacularPlant",
+     "label": "tentacular aberration"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_TinkleGrass",
+    "found": true,
+    "defName": "RM_TinkleGrass",
+    "defType": "ThingDef",
+    "label": "tinkle grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_TinkleGrass",
+     "label": "tinkle grass"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_ToxiGrass",
+    "found": true,
+    "defName": "RM_ToxiGrass",
+    "defType": "ThingDef",
+    "label": "toxi grass",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ToxiGrass",
+     "label": "toxi grass"
+    }
+   },
+   {
+    "requested": "HediffDef/RM_ViralAbasia",
+    "found": true,
+    "defName": "RM_ViralAbasia",
+    "defType": "HediffDef",
+    "label": "viral abasia",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_ViralAbasia",
+     "label": "viral abasia"
+    }
+   },
+   {
+    "requested": "WeatherDef/RM_VolcanicAsh",
+    "found": true,
+    "defName": "RM_VolcanicAsh",
+    "defType": "WeatherDef",
+    "label": "ash storm",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_VolcanicAsh",
+     "label": "ash storm"
+    }
+   },
+   {
+    "requested": "WeatherDef/RM_VolcanicAshRain",
+    "found": true,
+    "defName": "RM_VolcanicAshRain",
+    "defType": "WeatherDef",
+    "label": "volcanic ash with rain",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_VolcanicAshRain",
+     "label": "volcanic ash with rain"
+    }
+   },
+   {
+    "requested": "ThoughtDef/RM_VolcanicAshThought",
+    "found": true,
+    "defName": "RM_VolcanicAshThought",
+    "defType": "ThoughtDef",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_VolcanicAshThought"
+    }
+   },
+   {
+    "requested": "ThingDef/RM_WitchesOyster",
+    "found": true,
+    "defName": "RM_WitchesOyster",
+    "defType": "ThingDef",
+    "label": "Tumrata's shelf",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "defName": "RM_WitchesOyster",
+     "label": "Tumrata's shelf"
+    }
+   }
+  ],
+  "ticksGame": 96506,
+  "operation": {
+   "OperationId": "op_f68276a88bba44a7af1c6cc669b3bff7",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 11
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ }
+}

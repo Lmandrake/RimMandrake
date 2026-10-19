@@ -1,0 +1,358 @@
+{
+ "geometry": {
+  "success": true,
+  "message": "1 of 1 def(s) resolved",
+  "requested": 1,
+  "foundCount": 1,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "substellarLat",
+   "substellarLon",
+   "terminatorBandMinArc",
+   "terminatorBandMaxArc",
+   "nightsideBandMinArc"
+  ],
+  "defs": [
+   {
+    "requested": "RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef/RUT_WS_AshkarrGeometry",
+    "found": true,
+    "defName": "RUT_WS_AshkarrGeometry",
+    "defType": "PlanetGeometryDef",
+    "modName": "RimMandrake: Utinni \u2014 Weather Suite (Ash'karr)",
+    "packageId": "mandrake.rut.weathersuite",
+    "fields": {
+     "substellarLat": 0.0,
+     "substellarLon": 0.0,
+     "terminatorBandMinArc": 63.0,
+     "terminatorBandMaxArc": 117.0,
+     "nightsideBandMinArc": 117.0
+    }
+   }
+  ],
+  "ticksGame": 96506,
+  "operation": {
+   "OperationId": "op_76160485370447fa82e7b3cded475d26",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 16
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ },
+ "weather_get": {
+  "success": true,
+  "readErrors": [],
+  "weather": {
+   "current": "RM_ScatterDusk",
+   "last": "RM_ScatterDusk",
+   "curWeatherAge": 0,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  },
+  "activeConditionCount": 26,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false,
+    "ticksPassed": 95644,
+    "ticksLeft": 0
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 95644,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 82667,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 82667,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 81467,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 81467,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 80517,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 80517,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 80517,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 80517,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 80457,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 76357,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 75877,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 71777,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 71297,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 67197,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 62977,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 55059,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 25599,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 25599,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 25599,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 3755,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 3755,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 3000,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 3000,
+    "ticksLeft": -1
+   },
+   {
+    "def": "WeatherController",
+    "label": "Forced weather",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true,
+    "ticksPassed": 0,
+    "ticksLeft": -1
+   }
+  ],
+  "threatPoints": 35.0,
+  "wealth": {
+   "total": 12946.68,
+   "items": 7605.167,
+   "buildings": 1816.51245,
+   "pawns": 3525.0
+  },
+  "storyteller": {
+   "def": "Cassandra",
+   "difficulty": "Rough",
+   "threatScale": 1.0,
+   "allowBigThreats": true
+  },
+  "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+  "ticksGame": 96506,
+  "operation": {
+   "OperationId": "op_e7a01a55491946da9ac248a0449419c9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 11
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ },
+ "test_arc": {
+  "success": false,
+  "message": "Unsupported parameter type PlanetTile (arg 0).",
+  "operation": {
+   "OperationId": "op_ca3163a8662f46a59a96d76cd8042522",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 12
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ },
+ "test_dens": {
+  "success": false,
+  "message": "Unsupported parameter type PlanetTile (arg 0).",
+  "operation": {
+   "OperationId": "op_d9cf618f42764ef18aef17609530068d",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 13
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 96506
+  }
+ }
+}
