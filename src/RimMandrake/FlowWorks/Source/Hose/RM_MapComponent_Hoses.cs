@@ -706,6 +706,10 @@ namespace RimMandrake.FlowWorks.Hose
         public const float CouplingMax = (float)HoseMath.CouplingMax, NozzleMax = 0.375f, EndCapMax = 0.344f;
         /// <summary>Binding.png (make_hose_binding.py, 82x40, wrap along +X): the wrap's widest band, 38 px of 40.</summary>
         public const float BindBand = 0.95f;
+        /// <summary>The coupling at a tank/machine port is drawn this much larger than a mid-hose one, a reducer collar so the hose
+        /// meets the building's port flange (about the hose's own width again) instead of a ribbon half its size. Hose width itself
+        /// is unchanged map-wide.</summary>
+        public const float PortCouplingWiden = 1.5f;
 
         private int RankOf(CompHoseReel r)
         {
@@ -791,7 +795,8 @@ namespace RimMandrake.FlowWorks.Hose
             if (fe.Kind == HoseEndKind.Port)
             {
                 V2 dp = fe.PortSide.X == 0 && fe.PortSide.Z == 0 ? d1 : new V2(fe.PortSide.X, fe.PortSide.Z);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint,
+                    fe.PortKind == HosePortKind.Tank || fe.PortKind == HosePortKind.Machine ? PortCouplingWiden : 1f);
                 // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
                 RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
                 DrawPortStub(r, fe, hm, vis, y - 0.001f);
@@ -1088,9 +1093,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
         /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
-        private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint)
+        private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint, float widen = 1f)
         {
-            float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand);
+            float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand) * widen;
             V2 c = end + d * (centreOff * size);
             Piece(m, c, d, size, y);
             V2 brass = c + d * (brassFrom * size);

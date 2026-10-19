@@ -205,7 +205,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(first < At(s, "Widgets.BeginScrollView(inRect"), "can-fail: the compare runs before drawing (catches a confirmed Reset-all)");
                 int second = s.IndexOf("ApplyChangedSettings();", first + 1, StringComparison.Ordinal);
                 Assert(second > At(s, "list.End();"), "can-fail: and again after drawing (catches this frame's controls and section resets)");
-                string apply = Between(s, "private static void ApplyChangedSettings()", "\n        }\n");
+                string apply = Between(s, "private static void ApplyChangedSettings()", "\n        }");
                 foreach (string f in new[] { "pondBedHollowEnabled", "pitRelativeClimbEnabled", "pitClimbAbilityMultiplier", "pitRampsEnabled",
                     "pitRampMaxSpan", "superdeepRoomsEnabled", "excavationWallFacesEnabled", "excavationWallMaterialEnabled",
                     "pitOutlineEnabled", "pitScorchEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled" })
