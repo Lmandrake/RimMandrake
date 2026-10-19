@@ -3060,7 +3060,7 @@ def phase_P(L, args):
             ctrl_ok = _order_measured(o_fc) and o_fc.get("arrived") is False and _pit_pawn(r_fc, fp) is None
             df = r_fc.get("descentCount") or 0
             ok_f, lf, tf = _proof(B, "ProofForcedFlyer", "%s,%d,%d" % (fp, wc[0], wc[1]))
-            B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
+            st_land = B.call("rimworld/step_game_ticks", ticks=FLYER_LAND_TICKS, pauseFirst=True, timeoutMs=120000)
             r_f = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pf = _pit_pawn(r_f, fp)
             rec_f = [d for d in r_f.get("recentDescents") or [] if d.startswith(fp + "@")]
@@ -3069,9 +3069,17 @@ def phase_P(L, args):
             # jump, which lands safely by design (pitJumpLandsSafe, owner 2026-10-18) -- the 2026-10-19 "own descents 0"
             # red on DLL ccf36a9af7 was that, not the trap (FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS)
             forced_measured = ok_f and lf.get("launched") == "True" and lf.get("def") == "PawnFlyer_Stun"
-            if not forced_measured:
-                L.row("P3f_forced_entry_falls", False, "HARNESS", "ProofForcedFlyer did not launch a thrown flyer "
-                      "(stale DLL? want def=PawnFlyer_Stun): %s" % tf, status="UNMEASURED")
+            # pass-2 review: a control order that was never taken (or a 0-tick wait) and an unstepped landing window are
+            # "could not ask", not a MOD FAIL (P3 already reads its own order this way)
+            p3f_unm = None if forced_measured else \
+                "ProofForcedFlyer did not launch a thrown flyer (stale DLL? want def=PawnFlyer_Stun): %s" % tf
+            if not p3f_unm and not _order_measured(o_fc):
+                p3f_unm = "control order not measurable: orderAccepted %s, ticksElapsed %s" % (
+                    o_fc.get("orderAccepted"), o_fc.get("ticksElapsed"))
+            if not p3f_unm and st_land.get("success") is False:
+                p3f_unm = "landing window not stepped: step_game_ticks replied %s" % str(st_land)[:200]
+            if p3f_unm:
+                L.row("P3f_forced_entry_falls", False, "HARNESS", p3f_unm, status="UNMEASURED")
             else:
                 L.row("P3f_forced_entry_falls", ctrl_ok and lf.get("depth") == "4" and pf is not None
                       and pf.get("spawned") is True and not pf.get("dead") and len(rec_f) == 1 and falls and falls[0] > 0
@@ -3109,8 +3117,14 @@ def phase_P(L, args):
             # P4f: the P3f pawn, forced in and held, is freed by the same lowered ladder (and took no second fall).
             pff = _pit_pawn(r_ff, fp) or {}
             rec_ff = [d for d in r_l.get("recentDescents") or [] if d.startswith(fp + "@")]
-            if not forced_measured:
-                L.row("P4f_ladder_frees_forced", False, "HARNESS", "P3f unmeasured", status="UNMEASURED")
+            # P4f needs P3f's state: the forced pawn in the pit AND held before the ladder. A pawn that was never held
+            # "freed by the ladder" is a vacuous PASS; one that never landed in the pit is P3f's finding, not P4f's.
+            if p3f_unm:
+                L.row("P4f_ladder_frees_forced", False, "HARNESS", "P3f unmeasured: %s" % p3f_unm, status="UNMEASURED")
+            elif pf is None or pf.get("held") is not True:
+                L.row("P4f_ladder_frees_forced", False, "SITE", "precondition: the forced pawn was not held in the pit "
+                      "before the ladder (in cell %s, held %s): see P3f" % (pf is not None, (pf or {}).get("held")),
+                      status="UNMEASURED")
             else:
                 L.row("P4f_ladder_frees_forced", ok_rd and r_ff.get("hasLadder") is True and pff.get("spawned") is True
                       and pff.get("held") is False and (pff.get("lipReachable") or 0) > 0 and len(rec_ff) == 1
@@ -3607,6 +3621,10 @@ class MockBridge(object):
         # harness negatives (2026-10-11 code review): each is a reading the runner once turned into a PASS or a crash
         "flame_list_late_blind": ["X10_canal_fire"],                   # list_things fails at the spent read: not "none alight"
         "order_ignored_pit": ["P3_walk_in_held", "P3f_forced_entry_falls"],   # an order into the pit never taken, 0 ticks
+        # pass-2 harness review (2026-10-19): P3f folded an unmeasurable control into a MOD FAIL; P4f PASSed a forced pawn
+        # that was never held ("freed" from nothing). FAULT_STATUS pins the exact status each must now read.
+        "forced_control_unmeasured": ["P3f_forced_entry_falls"],      # P3f's control order is never taken (0 ticks)
+        "forced_lands_free": ["P3f_forced_entry_falls", "P4f_ladder_frees_forced"],   # the forced pawn lands unheld
         "transient_B_divergence": ["G_every_cell_vs_oracle"],          # a non-E3 cell diverges mid phase B's 10 pulses
         "engine_lost_late": ["ABORT"],                                 # engine_state dies in the tail: rows must survive
         # 2026-10-11 re-review: each once read as PASS (or drove on) with no reading behind it
@@ -3614,6 +3632,8 @@ class MockBridge(object):
         "pulse_drops_twins": ["E2_twins_identical"],   # flowworks_pulse omits both E2 twins: None == None is no reading
         "cover_no_printed": ["X9_cover_deck_uniform"],  # ProofCover without printed=/around=: {None} == {None}
     }
+    FAULT_STATUS = {"forced_control_unmeasured": {"P3f_forced_entry_falls": "UNMEASURED"},
+                    "forced_lands_free": {"P3f_forced_entry_falls": "FAIL", "P4f_ladder_frees_forced": "UNMEASURED"}}
     ABORTING = ("settings_drift", "dll_stale", "engine_lost_late", "preflight_crash")   # faults whose run aborts BY DESIGN
 
     def __init__(self, faults=()):
@@ -3647,6 +3667,8 @@ class MockBridge(object):
         self.raised = set()       # ladders whose RM_CompLadder.raised is set (ProofLadder)
         self.covers = set()       # cells holding a pit cover (spawn_batch RM_PitCover_*)
         self.descents = []
+        self.landed_free = set()  # fault forced_lands_free: forced pawns the trap does not hold
+        self.spawned_at = {}
         self.jumpers = set()      # own colonists forced in (RM_SuperdeepTrap.OnForcedDescent -> AddJumper)
         self.fire, self.fire_pend, self.ash = {}, {}, set()   # X10 fire model: cell -> burn acc / due tick; ashed cells
         self.flame_lists = 0      # RM_LiquidFlame list_things calls (flame_list_late_blind)
@@ -3673,6 +3695,8 @@ class MockBridge(object):
         lad = c in self.ladders and (c not in self.raised or "ladder_raise_ignored" in self.faults)
         if p.get("id") in self.jumpers and "pit_forced_stays_held" in self.faults:
             lad = False
+        if p.get("id") in self.landed_free:
+            return False
         return pit_held(cells, c, bs, ladder=lad, captured=self.captured(p),
                         rule=self.S("superdeepCaptureEnabled") and self.S("ladderRequiredToExitEnabled"))
 
@@ -3733,7 +3757,9 @@ class MockBridge(object):
     def t_jawa_order_pawn(self, pawnId, x=-1, z=-1, waitTicks=300, draft=True, **kw):
         p = self.mp[pawnId]
         dest, start = (x, z), p["pos"]
-        if "order_ignored_pit" in self.faults and self.d4(dest):
+        forced = self.spawned_at.get(tuple(PIT_SPOTS["P_forced"]), [])[1:2]      # the 2nd colonist on that spot
+        if ("order_ignored_pit" in self.faults or ("forced_control_unmeasured" in self.faults and pawnId in forced)) \
+                and self.d4(dest):
             return dict(success=False, ticksElapsed=0, pawns=[dict(
                 id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=start[0], z=start[1]),
                 arrived=False, moved=False, canReach=True, orderAccepted=False)])
@@ -4087,6 +4113,7 @@ class MockBridge(object):
         pid = "M%d" % len(self.pawns)
         self.pawns.append(dict(id=pid, position=dict(x=x, z=z)))
         self.mp[pid] = dict(id=pid, kind=kindDef, pos=(x, z), faction=faction, bs=self.PIT_BS.get(kindDef, 1.0))
+        self.spawned_at.setdefault((x, z), []).append(pid)
         return dict(success=True, pawns=[dict(id=pid)])
 
     def t_jawa_set_pawn_skill(self, **kw):
@@ -4261,6 +4288,8 @@ class MockBridge(object):
                 if self.d4(c) and not self.d4(start) and self.S("superdeepCaptureEnabled"):
                     if p["faction"] == "player":
                         self.jumpers.add(pid)
+                    if "forced_lands_free" in self.faults:
+                        self.landed_free.add(pid)
                     if "pit_no_fall" not in self.faults:
                         self.descents.append("%s@%d,%d t=%d fall=4.8" % (pid, c[0], c[1], self.tick))
                 res = "FLYER id=%s from=%d,%d to=%d,%d depth=%d launched=True def=PawnFlyer_Stun" % (
@@ -4499,6 +4528,9 @@ def selftest_live_mock():
         if any(st.get(row) in ("PASS", None) for row in rows):
             probs.append("fault %s: rows %s stayed %s%s" % (fault, rows, [st.get(x) for x in rows],
                                                           " (run aborted: %s)" % r["aborted"] if r["aborted"] else ""))
+        for row_, want_st in MockBridge.FAULT_STATUS.get(fault, {}).items():
+            if st.get(row_) != want_st:
+                probs.append("fault %s: %s read %s, want %s" % (fault, row_, st.get(row_), want_st))
         # these faults abort by design (settings_drift/dll_stale via L2, engine_lost_late in the tail,
         # preflight_crash because an unverified DLL must never be driven); any other abort is a harness defect
         if r["aborted"] and fault not in MockBridge.ABORTING:
