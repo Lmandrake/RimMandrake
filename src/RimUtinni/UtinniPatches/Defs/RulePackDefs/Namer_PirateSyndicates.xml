@@ -53,15 +53,6 @@
     </rulePack>
   </RulePackDef>
 
-  <!-- AG_XenohumanPirates - gene-modified xenohumans -->
-  <RulePackDef>
-    <defName>RUT_Jawa_NamerFactionAG_XenohumanPirates</defName>
-    <rulePack>
-      <rulesStrings>
-        <li>r_name->Black Sun</li>
-      </rulesStrings>
-    </rulePack>
-  </RulePackDef>
 
   <!-- DV_PirateKeshig - the Keshig xenotype -->
   <RulePackDef>
