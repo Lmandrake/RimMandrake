@@ -181,6 +181,90 @@ namespace RimMandrake.FlowWorks.Machinery
         }
     }
 
+    /// <summary>
+    /// PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18): "draw pipes as though they are connected into the centers of all
+    /// pipe-receiving items even if the actual pipe ends at the edge of their graphic (so that it appears to continue beneath
+    /// them through any transparent boundaries they might have)." A pipe cell beside a tank or liquid machine (RM_LiquidJoins
+    /// .PartnerAt: the net's own Tank/Machine roles, read from class and comps) prints its own straight tile on from the shared
+    /// edge to the centre of the partner's footprint (LiquidJoinRule.CentreStub), at the pipe's altitude -- far below the
+    /// building layer, so the building's opaque body hides it and its transparent margins show it. Section mesh: built once
+    /// per change, nothing per frame. The pipe's arm to the edge is the link patch below (pipeLinksIntoMachines).
+    /// </summary>
+    public class SectionLayer_RM_PipeCentreStubs : SectionLayer
+    {
+        public SectionLayer_RM_PipeCentreStubs(Section section) : base(section)
+        {
+            relevantChangeTypes = MapMeshFlagDefOf.Buildings;
+        }
+
+        public override bool Visible => RM_MachinerySettings.pipesUnderToCentre;
+
+        /// <summary>State read: stub pieces printed by the last regeneration of any section (probe / live look).</summary>
+        public static int lastPieces;
+
+        private static readonly Vector2[] uvs = new Vector2[4];
+
+        /// <summary>The pipe's straight tile (east-west or north-south) from its own linked atlas, in its own look; null when the
+        /// pipe's graphic is not an atlas.</summary>
+        public static Material StraightMat(Thing pipe, bool eastWest)
+        {
+            Graphic g = pipe.Graphic;
+            Material atlas = g is Graphic_Linked gl && gl.SubGraphic != null ? gl.SubGraphic.MatSingleFor(pipe) : g?.MatSingleFor(pipe);
+            if (atlas == null) return null;
+            return MaterialAtlasPool.SubMaterialFromAtlas(atlas, eastWest ? LinkDirections.Left | LinkDirections.Right : LinkDirections.Up | LinkDirections.Down);
+        }
+
+        public override void Regenerate()
+        {
+            ClearSubMeshes(MeshParts.All);
+            if (!RM_MachinerySettings.pipesUnderToCentre)
+            {
+                FinalizeMesh(MeshParts.All);
+                return;
+            }
+            Map map = Map;
+            float y = AltitudeLayer.FloorEmplacement.AltitudeFor() - 0.002f;
+            int n = 0;
+            foreach (IntVec3 c in section.CellRect)
+            {
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    Thing t = l[i];
+                    if (!RM_LiquidNet.IsPipe(t)) continue;
+                    if (RM_LiquidJoins.PartnerAt(c, map) != null) break;   // a pipe under a tank or machine is hidden already
+                    foreach (IntVec3 d in GenAdj.CardinalDirections)
+                    {
+                        Thing b = RM_LiquidJoins.PartnerAt(c + d, map);
+                        if (b == null) continue;
+                        CellRect r = b.OccupiedRect();
+                        double[] poly = LiquidJoinRule.CentreStub(c.x, c.z, d.x, d.z, r.minX, r.minZ, r.Width, r.Height);
+                        foreach (LiquidJoinRule.StubPiece p in LiquidJoinRule.StubPieces(poly))
+                        {
+                            Material m = StraightMat(t, p.EastWest);
+                            if (m == null) continue;
+                            float u0 = (float)p.U0, u1 = (float)p.U1, len = (float)p.Length;
+                            if (p.EastWest)
+                            {
+                                uvs[0] = new Vector2(u0, 0f); uvs[1] = new Vector2(u0, 1f); uvs[2] = new Vector2(u1, 1f); uvs[3] = new Vector2(u1, 0f);
+                            }
+                            else
+                            {
+                                uvs[0] = new Vector2(0f, u0); uvs[1] = new Vector2(0f, u1); uvs[2] = new Vector2(1f, u1); uvs[3] = new Vector2(1f, u0);
+                            }
+                            Printer_Plane.PrintPlane(this, new Vector3((float)p.X, y, (float)p.Z),
+                                p.EastWest ? new Vector2(len, 1f) : new Vector2(1f, len), m, 0f, false, uvs, null, 0f);
+                            n++;
+                        }
+                    }
+                    break;
+                }
+            }
+            lastPieces = n;
+            FinalizeMesh(MeshParts.All);
+        }
+    }
+
     /// <summary>pipeLinksIntoMachines: a pipe's linked atlas also links toward a tank or liquid machine beside it, so its arm
     /// reaches the shared edge (the net already counts that pipe as attached).</summary>
     [RimMandrake.Shared.PatchFeature("Universal pipe: joins", typeof(RM_MachinerySettings), "pipeLinksIntoMachines")]

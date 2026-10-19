@@ -75,6 +75,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the section layer and the pipe link patch are shipped");
                 Assert(draw.Contains("RM_LiquidJoins.DrawHosePortFitting(fe.Port"), "the hose port draws the pipe's fitting");
             });
+            // PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18): a pipe or hose beside a tank or machine is drawn on beneath it
+            // to the centre of its footprint
+            Case("PipeStub_1x1_runs_edge_to_centre", () =>
+            {
+                foreach (var (dx, dz) in new[] { (1, 0), (-1, 0), (0, 1), (0, -1) })
+                {
+                    // pipe at (5,5), 1x1 pump on its (dx,dz) side
+                    double[] p = LiquidJoinRule.CentreStub(5, 5, dx, dz, 5 + dx, 5 + dz, 1, 1);
+                    Assert(p != null && p.Length == 4, $"({dx},{dz}): a straight 2-point stub");
+                    Assert(Near(p[0], 5.5 + dx * 0.5) && Near(p[1], 5.5 + dz * 0.5), $"({dx},{dz}): starts on the shared edge, got ({p[0]},{p[1]})");
+                    Assert(Near(p[2], 5.5 + dx) && Near(p[3], 5.5 + dz), $"({dx},{dz}): ends at the pump's centre, got ({p[2]},{p[3]})");
+                    var pcs = LiquidJoinRule.StubPieces(p);
+                    Assert(pcs.Count == 1 && Near(pcs[0].Length, 0.5) && pcs[0].EastWest == (dx != 0)
+                           && Near(pcs[0].U0, 0.25) && Near(pcs[0].U1, 0.75), $"({dx},{dz}): one half-cell slice of the straight tile");
+                }
+            });
+            Case("PipeStub_multicell_enters_at_edge_then_turns_to_centre", () =>
+            {
+                // 2x2 tank at (6,5)-(7,6); pipe at (5,5) west of its lower-left cell: in to x=7 at z=5.5, then up to (7,6)
+                double[] p = LiquidJoinRule.CentreStub(5, 5, 1, 0, 6, 5, 2, 2);
+                Assert(p != null && p.Length == 6, "off the centre line: 3-point stub");
+                Assert(Near(p[0], 6) && Near(p[1], 5.5) && Near(p[2], 7) && Near(p[3], 5.5) && Near(p[4], 7) && Near(p[5], 6),
+                    $"edge (6,5.5) -> (7,5.5) -> centre (7,6), got {string.Join(",", p)}");
+                var pcs = LiquidJoinRule.StubPieces(p);
+                Assert(pcs.Count == 2 && pcs[0].EastWest && Near(pcs[0].Length, 1) && !pcs[1].EastWest && Near(pcs[1].Length, 0.5),
+                    "one full east-west tile then a half north-south slice");
+                // 3x1 converter south of a pipe at (4,8): pipe over the middle cell, straight down to (4.5, 7.5)
+                double[] q = LiquidJoinRule.CentreStub(4, 8, 0, -1, 3, 7, 3, 1);
+                Assert(q != null && q.Length == 4 && Near(q[2], 4.5) && Near(q[3], 7.5), "on the centre line: straight in");
+                // a 3x3 entered from the west: 1.5 cells deep = a full tile and a half slice
+                var r = LiquidJoinRule.StubPieces(LiquidJoinRule.CentreStub(0, 1, 1, 0, 1, 0, 3, 3));
+                Assert(r.Count == 2 && Near(r[0].Length + r[1].Length, 1.5), "1.5 cells deep in two pieces");
+                // can-fail: an end that does not face the footprint draws nothing
+                Assert(LiquidJoinRule.CentreStub(5, 5, 1, 0, 6, 7, 2, 2) == null, "can-fail: not facing the footprint -> null");
+                bool threw = false;
+                try { LiquidJoinRule.CentreStub(5, 5, 1, 1, 6, 6, 1, 1); } catch (ArgumentException) { threw = true; }
+                Assert(threw, "can-fail: a diagonal stub is refused");
+            });
+            Case("PipeStub_wiring_shipped", () =>
+            {
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                string set = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_MachinerySettings.cs"));
+                string draw = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                Assert(set.Contains("public static bool pipesUnderToCentre = true;") && set.Contains("\"pipesUnderToCentre\", true"),
+                    "the under-building run ships ON");
+                Assert(joins.Contains("class SectionLayer_RM_PipeCentreStubs : SectionLayer") && joins.Contains("LiquidJoinRule.CentreStub("),
+                    "pipes: the section layer prints the stub");
+                Assert(draw.Contains("DrawPortStub(r, fe,") && draw.Contains("stubMeshes"), "hoses: the port stub is drawn from a cached mesh");
+            });
         }
     }
 }

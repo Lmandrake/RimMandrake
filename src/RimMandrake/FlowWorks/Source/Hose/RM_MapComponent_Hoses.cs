@@ -31,6 +31,22 @@ namespace RimMandrake.FlowWorks.Hose
             public Mesh flat, plump, shadow;
         }
 
+        /// <summary>PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE: a port-coupled hose's run on beneath the tank or machine to its centre,
+        /// one cached mesh per reel, rebuilt only when the end, port footprint, width or band changes (compared field by
+        /// field: no per-frame allocation).</summary>
+        private sealed class StubCache
+        {
+            public IntVec3 cell;
+            public int sx, sz;
+            public CellRect rect;
+            public float w, y;
+            public Mesh mesh;
+        }
+
+        private readonly Dictionary<CompHoseReel, StubCache> stubMeshes = new Dictionary<CompHoseReel, StubCache>();
+        /// <summary>State read: hose port stubs drawn last frame, and stub meshes built since load.</summary>
+        public int lastPortStubs, portStubBuilds;
+
         public RM_MapComponent_Hoses(Map map) : base(map) { }
 
         /// <summary>FINAL §3.9 fallback: without the save-skip patch this component would be written into saves by class
@@ -50,6 +66,8 @@ namespace RimMandrake.FlowWorks.Hose
             base.MapRemoved();
             foreach (Cached c in meshes.Values) DestroyMeshes(c);
             meshes.Clear();
+            foreach (StubCache sc in stubMeshes.Values) if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
+            stubMeshes.Clear();
             foreach (CompHoseReel r in new List<CompHoseReel>(feeds.Keys)) DropFeed(r);
             foreach (CompHoseReel r in new List<CompHoseReel>(carryCache.Keys)) DropCarryCache(r);
             FlushFrameMeshes();
@@ -564,6 +582,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
             lastDepthDraws = 0;
+            lastPortStubs = 0;
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
             {
@@ -652,6 +671,7 @@ namespace RimMandrake.FlowWorks.Hose
         private void DropMeshes(CompHoseReel r)
         {
             if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); }
+            if (stubMeshes.TryGetValue(r, out StubCache sc)) { if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh); stubMeshes.Remove(r); }
         }
 
         private static void DestroyMeshes(Cached c)
@@ -774,6 +794,7 @@ namespace RimMandrake.FlowWorks.Hose
                 Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint);
                 // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
                 RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
+                DrawPortStub(r, fe, hm, vis, y - 0.001f);
                 lastPortCouplings++;
             }
             else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
@@ -797,6 +818,44 @@ namespace RimMandrake.FlowWorks.Hose
                 Wrap(hm, e - d1 * (HoseMath.WrapLength / 2 - 0.02), d1, vis, y + 0.0002f, wrapTint);
                 PieceXZ(hm.Mouth, e - d1 * (0.10 * vis), d1, 0.30f * vis, 0.86f * vis, y + 0.0003f, Color.white);
             }
+        }
+
+        /// <summary>
+        /// PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (owner 2026-10-18: "draw pipes as though they are connected into the centers of all
+        /// pipe-receiving items ... so that it appears to continue beneath them through any transparent boundaries"): a hose
+        /// coupled to a tank or liquid machine beside its end runs on from the shared edge to the centre of the building's
+        /// footprint (LiquidJoinRule.CentreStub), in the hose band -- below the building layer, so the building's opaque body
+        /// hides it and its see-through margins show it. Pipes are the section layer's (SectionLayer_RM_PipeCentreStubs).
+        /// </summary>
+        private void DrawPortStub(CompHoseReel r, HoseFreeEnd fe, HoseLookMats hm, float vis, float y)
+        {
+            if (!RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.pipesUnderToCentre) return;
+            if (fe.Port == null || !fe.Port.Spawned || (fe.PortKind != HosePortKind.Tank && fe.PortKind != HosePortKind.Machine)) return;
+            int sx = fe.PortSide.X, sz = fe.PortSide.Z;
+            if (Math.Abs(sx) + Math.Abs(sz) != 1) return;
+            CellRect rect = fe.Port.OccupiedRect();
+            PoseInfo pi = Info(r);
+            bool plump = pi.Eased >= 0.5;
+            float w = plump ? (float)HoseMath.MeshWidthPlump(vis) : (float)HoseMath.MeshWidthFlat(vis);
+            stubMeshes.TryGetValue(r, out StubCache sc);
+            if (sc == null || sc.cell != fe.Cell || sc.sx != sx || sc.sz != sz || sc.rect != rect || sc.w != w || sc.y != y)
+            {
+                double[] poly = RimMandrake.FlowWorks.Machinery.LiquidJoinRule.CentreStub(fe.Cell.x, fe.Cell.z, sx, sz, rect.minX, rect.minZ, rect.Width, rect.Height);
+                if (sc == null) stubMeshes[r] = sc = new StubCache();
+                if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
+                sc.mesh = null;
+                if (poly != null)
+                {
+                    var pts = new List<V2>(poly.Length / 2);
+                    for (int i = 0; i + 1 < poly.Length; i += 2) pts.Add(new V2(poly[i], poly[i + 1]));
+                    sc.mesh = Ribbon(pts, w, y, 0.37);
+                    portStubBuilds++;
+                }
+                sc.cell = fe.Cell; sc.sx = sx; sc.sz = sz; sc.rect = rect; sc.w = w; sc.y = y;
+            }
+            if (sc.mesh == null) return;
+            Graphics.DrawMesh(sc.mesh, Matrix4x4.identity, plump ? hm.Plump(1f, Tint(r)) : hm.Flat(1f), 0);
+            lastPortStubs++;
         }
 
         public int lastWrapDraws, lastFeedDraws, lastReelEndHidden, lastRelayCouplings;
