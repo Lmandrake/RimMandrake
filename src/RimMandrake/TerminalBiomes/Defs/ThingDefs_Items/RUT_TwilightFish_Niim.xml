@@ -265,7 +265,7 @@
     <description>A fan-shaped shell-thing that grows on the kelp stems in the light columns, two thin translucent valves held open to whatever falls from the lid, and inside them a mantle that lights — a steady pale gold, the colour of the palette's lamps, bright enough that a kelp tower hung with aluun reads from the shore as a column of small windows. The Compact harvests them by the stem. The meat is a coin of sweet white flesh; the valves, dried, are the lantern-panes in every deep dock.</description>
     <graphicData>
       <texPath>Things/Item/RM_TwilightSea/RM_AluunCatch</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
