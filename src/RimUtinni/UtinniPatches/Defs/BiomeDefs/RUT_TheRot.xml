@@ -198,6 +198,9 @@
       <RM_MortalMorelPlant MayRequire="mandrake.rm.biomes">0.15</RM_MortalMorelPlant>  <!-- mortal morel - RUT_ (raided) -->
       <RM_AgaricusDomeCap>0.1</RM_AgaricusDomeCap>  <!-- agaricus domecap -->
       <RM_DribblingCap>0.1</RM_DribblingCap>  <!-- dribbling cap -->
+      <RM_Ruskara>0.1</RM_Ruskara>  <!-- ruskara: ADDED 2026-10-19, owner picks_plants_and_gaps sheet (AB_DribblingCap row, "a new kind of mushroom to add to the Rot"); commonality INVENTED -->
+      <RM_Ullumbra>0.3</RM_Ullumbra>  <!-- ullumbra: ADDED 2026-10-19, same sheet (AB_GiantAgarilux row); commonality INVENTED -->
+      <RM_Vellugra>0.2</RM_Vellugra>  <!-- vellugra: ADDED 2026-10-19, same sheet (AB_SlimyPholiota row); commonality INVENTED -->
       <RM_Skulltop MayRequire="mandrake.rm.biomes">0.1</RM_Skulltop>  <!-- skulltop - tree - RUT_ (raided) -->
       <RM_BlastpodShroom MayRequire="mandrake.rm.biomes">0.05</RM_BlastpodShroom>  <!-- blastpod shroom - RUT_ (raided); wild-only per owner ruling 2026-09-06, no sow tags -->
       <RM_AgariluxPrime>0.01</RM_AgariluxPrime>  <!-- Agarilux Prime -->

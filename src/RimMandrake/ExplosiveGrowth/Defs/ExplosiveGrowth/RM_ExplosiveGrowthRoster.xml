@@ -95,6 +95,9 @@
       <li><plant>RM_MortalMorelPlant</plant><top>Churn</top></li>
       <li><plant>RM_AgaricusDomeCap</plant><top>Churn</top></li>
       <li><plant>RM_DribblingCap</plant><top>Churn</top></li>
+      <li><plant>RM_Ruskara</plant><top>Churn</top></li>
+      <li><plant>RM_Ullumbra</plant><top>Churn</top></li>
+      <li><plant>RM_Vellugra</plant><top>Churn</top></li>
       <li><plant>RM_BlastpodShroom</plant><top>Churn</top></li>
       <li><plant>RM_AgariluxPrime</plant><top>Churn</top></li>
       <li><plant>RM_AgelessCap</plant><top>Churn</top></li>
@@ -262,6 +265,9 @@
       <li>RM_TollukCap</li>
       <li>RM_GlowingAgarilux</li>
       <li>RM_AgaricusDomeCap</li>
+      <li>RM_Ruskara</li>
+      <li>RM_Ullumbra</li>
+      <li>RM_Vellugra</li>
     </fungi>
     <!-- §0 (owner 2026-10-17): "Greatbole have an entirely different mechanic that's well articulated, NOT part of the
          bursting discussion. They express the same mechanic through their self healing." Kept on its old handling. -->

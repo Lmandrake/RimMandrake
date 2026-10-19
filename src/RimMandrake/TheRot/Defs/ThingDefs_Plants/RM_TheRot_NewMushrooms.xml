@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    Three new Rot mushrooms, owner 2026-10-19 (picks_plants_and_gaps_sheet_2026-10-19), each from the redrawn
+    stand-in pictures of an Alpha Biomes port that the Rot had already given a different look:
+      RM_Ruskara   <- AB_DribblingCap row, "First four are a new kind of mushroom to add to the Rot. Do so with a new
+                      name and description."
+      RM_Ullumbra  <- AB_GiantAgarilux row, "First three are a new kind of mushroom to add to the Rot. Do so with a new
+                      name and description."
+      RM_Vellugra  <- AB_SlimyPholiota row, same words.
+    Names and descriptions are ours (franchise-free RM_ tier, invented). Mechanics are the donor port each picture
+    came from (RM_TheRot_DonorPorts.xml), unchanged; growth band = the Rot band PlantTolerances_Ashkarr.xml fits the
+    amber weeper to (-53.1 / -41.6 / 27.4 / 58), set inline until that generator is rerun. Commonality INVENTED
+    (below their siblings' rows), for the Rot's sitting to calibrate.
+  -->
+
+  <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
+    <defName>RM_Ruskara</defName>
+    <label>ruskara</label>
+    <description>A heavy, rose-fleshed cap that has slumped over its own stalk like wet hide. It bleeds: dark red beads swell along every fold of the rim, hang, and drop, and the ground under an old one is tacky for a stride around. The sap is harmless and faintly sweet; the Rot's crawlers lick the stalks clean by morning. The flesh beneath is edible, if chewy.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RawFungus</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Beauty>4</Beauty>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ruskara</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.1, 0.1, 0.26)</volume>
+        <offset>(-0.0,0,-0.0)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <blockLight>true</blockLight>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>25</pathCost>
+    <ingestible />
+    <plant>
+      <minGrowthTemperature>-53.1</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>58</maxGrowthTemperature>
+      <fertilityMin>0.95</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>15</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>10</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <visualSizeRange>3.5~5</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <purpose>Food</purpose>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
+    <defName>RM_Ullumbra</defName>
+    <label>ullumbra</label>
+    <description>A sprawling violet fungus that grows like a thicket rather than a mast: a twisted, hard-fibred trunk splits low into many crooked limbs, each ending in a wide, curling shelf of cap. Soft knobs along the shelf edges glow a pale lilac in the wet dark, so a grove of ullumbra lights the forest floor beneath it. Cut at the base for mushroom logs, lighter and weaker than the vokkun pillar's.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_MushroomLog</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Beauty>4</Beauty>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ullumbra</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.1, 0.1, 0.26)</volume>
+        <offset>(-0.0,0,-0.0)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <blockLight>true</blockLight>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>25</pathCost>
+    <ingestible />
+    <plant>
+      <minGrowthTemperature>-53.1</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>58</maxGrowthTemperature>
+      <fertilityMin>0.95</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>15</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <harvestYield>25</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_MushroomLog</harvestedThingDef>
+      <visualSizeRange>3.5~6</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <purpose>Food</purpose>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TheRotPortedCavePlantBase">
+    <defName>RM_Vellugra</defName>
+    <label>vellugra</label>
+    <description>A many-capped mushroom that seems to be melting where it stands: blue-veined pink caps stacked up a knotted stalk, every rim sagging into long, slow drips of slime that never quite fall. The slime is thick and bitter, not the sweetsnare's lure; it seals the cap against the Rot's endless moulds, and a pawn who brushes one carries the smell for a day. Scraped clean, the flesh is good raw fungus.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RawFungus</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Beauty>4</Beauty>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Vellugra</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.1, 0.1, 0.26)</volume>
+        <offset>(-0.0,0,-0.0)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <blockLight>true</blockLight>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>25</pathCost>
+    <ingestible />
+    <plant>
+      <minGrowthTemperature>-53.1</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-41.6</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>27.4</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>58</maxGrowthTemperature>
+      <fertilityMin>0.95</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>15</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>10</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <visualSizeRange>3.5~5</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <purpose>Food</purpose>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+    </plant>
+  </ThingDef>
+</Defs>

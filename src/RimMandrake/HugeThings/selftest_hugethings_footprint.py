@@ -36,14 +36,15 @@ PATCH = tool.PATCH
 # in the art or the method shows here first. Rerun the tool, LOOK at --preview, then update this table.
 EXPECTED = {
     "RM_AgariluxPrime": {"AgariluxPrime": 118},
-    "RM_DribblingCap": {"DribblingCap_A": 28},
+    "RM_DribblingCap": {"DribblingCap_A": 28, "DribblingCap_b": 10, "DribblingCap_c": 22},   # b/c added to the pool by the owner, picks_plants_and_gaps 2026-10-19
     "RM_Nogtyl": {"Nogtyl_A": 17, "Nogtyl_B": 13, "Nogtyl_C": 10},
     "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_B": 7, "Arpeau_C": 10, "Arpeau_p3b": 7},
     "RM_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
     "RM_AgaricusDomeCap": {"AgaricusDomeCap": 10},
-    "RM_GiantAgarilux": {"GiantAgarilux_A": 0},   # its art touches the ground only in its own (root) cell,
+    "RM_GiantAgarilux": {"GiantAgarilux_A": 0, "GiantAgarilux_b": 0, "GiantAgarilux_c": 3},   # b/c added 2026-10-19 (same sheet); _c touches 3 cells, so it is no longer root-only
+    "RM_Ullumbra": {"RM_Ullumbra_a": 2, "RM_Ullumbra_b": 2, "RM_Ullumbra_c": 1},   # new Rot mushroom, owner 2026-10-19
     "RM_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
-    "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
+    "RM_PaleTree": {"PaleTree_A": 4, "PaleTree_B": 5, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
 }
 # Before this rework every giant blocked a trunkWidth x trunkDepth column north of its root (minus the root):
 BEFORE = {"RM_AgariluxPrime": 15, "RM_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "RM_ArbuscularMycorrhiza": 8,
@@ -271,7 +272,7 @@ def pawn_hitbox_side():
 def measured_masks_are_pinned():
     got = dict((dn, dict((t, len(v[2])) for t, v in vs.items())) for dn, (_s, vs) in patch_table().items())
     assert got == EXPECTED, "masks moved: %r" % sorted(set((k, str(v)) for k, v in got.items()) ^ set((k, str(v)) for k, v in EXPECTED.items()))
-    assert set(BEFORE) == set(EXPECTED)
+    assert set(BEFORE) == set(EXPECTED) - {"RM_Ullumbra"}   # Ullumbra (2026-10-19) postdates the rework: no BEFORE
 
 
 @test
@@ -302,7 +303,8 @@ def root_only_giants_are_made_impassable_and_stay_cuttable():
     Impassable on that cell, by the generic rule (never a per-species exception). Pins which giants that is today, and that
     the code path carries its 1.6 evidence: Touch reaches an impassable 1x1 plant from an adjacent cell."""
     root_only = sorted(dn for dn, (_s, vs) in patch_table().items() if vs and all(len(v[2]) == 0 for v in vs.values()))
-    assert root_only == ["RM_GiantAgarilux"], root_only
+    # 2026-10-19: none today (GiantAgarilux_c, added by the owner, touches 3 cells); the rule and its evidence stay pinned below.
+    assert root_only == [], root_only
     core = open(os.path.join(HERE, "Source", "HugeThingsCore.cs"), encoding="utf-8").read()
     assert "RootRule.RootImpassable(RM_HugeThingsSettings.PlantTrunkActive, ext.blockingSupported, counts)" in core
     assert "def.passability = Traversability.Impassable;" in core

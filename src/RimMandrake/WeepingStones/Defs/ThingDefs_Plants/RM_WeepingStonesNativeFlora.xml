@@ -351,4 +351,44 @@
     </plant>
   </ThingDef>
 
+  <!-- ══════════════════════ RM_Talvessar — the ember-leaf tree ══════════════════════
+       Owner 2026-10-19, picks_plants_and_gaps_sheet_2026-10-19, AB_FirevineTree row: "Rename star wars appropriate and
+       place it in the Weeping Stones biome. Generate new description. All are valid random pools." All three redrawn
+       pictures (A, B, C) are its Graphic_Random pool. Invented Star-Wars-style name (RM_ tier, Q11a). A new def: the
+       Forge's RM_FirevineTree keeps its home and stand-in art. Mechanics follow RM_Rockfinger (the biome's tree);
+       numbers INVENTED for the sitting to calibrate. -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Talvessar</defName>
+    <label>talvessar</label>
+    <description>A twisted, dark-barked tree of the sheltered weep faces, its crown a mass of long, curling leaves the colour of banked coals. The leaves are thick and waxed to catch the sea-fog: every dawn they drip what they have combed out of the air down the trunk to the roots, and the ground beneath a talvessar is the only damp soil on its shoulder of the ridge. Some trees hang clusters of hard red pods among the leaves. Its wood is dense and burns slowly; the leaves will not burn at all.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Talvessar</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.18, 0.3, 0.15)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>40</growDays>
+      <harvestWork>1000</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestYield>25</harvestYield>
+      <harvestTag>Wood</harvestTag>
+      <harvestAfterGrowth>0.3</harvestAfterGrowth>
+      <visualSizeRange>2.8~3.8</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
 </Defs>
