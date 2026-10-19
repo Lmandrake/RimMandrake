@@ -741,14 +741,15 @@ namespace RimMandrake.FlowWorks.Pits
 					continue;
 				}
 				Building_SuspensionDeck d = RM_SuspensionUnderpass.PassingDeckAt(map, p.Position);
-				Material mat = d?.Graphic?.MatSingle;
+				float angle = 0f;
+				Material mat = d == null ? null : RM_SuspensionDeckLink.TileFor(d, out angle);
 				if (mat == null)
 				{
 					continue;
 				}
 				Vector3 at = p.Position.ToVector3Shifted();
 				at.y = AltitudeLayer.PawnState.AltitudeFor();
-				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, d.Rotation.AsQuat, Vector3.one),
+				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.AngleAxis(angle, Vector3.up), Vector3.one),
 					FadedMaterialPool.FadedVersionOf(mat, UnderFade), 0);
 			}
 		}
