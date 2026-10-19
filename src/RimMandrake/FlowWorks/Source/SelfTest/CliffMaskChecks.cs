@@ -461,7 +461,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(cases[0].way && cases[1].way && !cases[2].way && !cases[3].way && cases[4].way && !cases[5].way,
                     "the usability cases resolve as ruled");
                 var ends = new (string name, int x)[] { ("bank A", 0), ("floor", 4), ("bank B", 8) };
-                int checkedPairs = 0, bounces = 0;
+                int checkedPairs = 0;
                 foreach (int nearRot in new[] { West, East })
                     foreach (var nc in cases)
                         foreach (var fc in cases)
@@ -496,13 +496,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                                         () => RM_PocketGridMath.JoinedByLadders(cs, cd, edges));
                                     bool astar = Flood(g, w, h, Person, s.x, 1, join).Contains(di);
                                     checkedPairs++;
-                                    if (!vetoed && !astar) bounces++;
                                     Assert(vetoed == !astar, "reach and A* disagree: " + s.name + " -> " + d.name + ", near ladder "
                                         + nc.name + (nearRot == East ? " (hung toward the floor)" : "") + ", far ladder " + fc.name
                                         + ": reach " + (vetoed ? "vetoed" : "allowed") + ", A* " + (astar ? "reaches" : "does not"));
                                 }
                         }
-                Assert(checkedPairs == 2 * 6 * 6 * 6 && bounces == 0, "every pair checked (" + checkedPairs + "), no bounce");
+                Assert(checkedPairs == 2 * 6 * 6 * 6, "every pair checked (" + checkedPairs + ")");
                 // the reported bug, by name: floor, near ladder only (colonist-usable), far bank
                 Assert(!Flood(g, w, h, Person, 4, 1, (i, j) => i == near && j == near - 1).Contains(1 * w + 8),
                     "can-fail: A* from the floor up the near ladder never reaches the far bank");

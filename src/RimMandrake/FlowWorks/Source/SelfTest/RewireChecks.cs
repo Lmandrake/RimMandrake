@@ -163,7 +163,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                 double sh = RM_LevelSolve.PondSurfaceHeight(new[] { 0, 9, 9, 9, 9 }, 9L * 4 * U - 9L * 5263);
                 double w4 = RM_LevelSolve.PondSquareWater(4, sh), w20 = RM_LevelSolve.PondSquareWater(20, sh);
                 Assert(Math.Abs((w4 - 4 * U) - (w20 - 20 * U)) < 1e-6, "one surface: water − floor is the same in both squares");
-                Assert(Math.Abs((w20 - w4) - 16.0 * U) < 1e-6, "the readouts differ only by floor depth");
                 Assert(RM_Volume.Readout(4, 0, w4) == "Hole 2 m \u00b7 Water 1.74 m (3,474 L)", "S5-A pond square: " + RM_Volume.Readout(4, 0, w4));
                 // R13: a limitless square carries the mark, a limited one never does
                 Assert(RM_Volume.LimitlessReadout(4).StartsWith(RM_Volume.LimitlessMark) && RM_Volume.LimitlessReadout(4).IndexOf(" L)") < 0,

@@ -160,8 +160,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(placed == U, "a whole level fits the canal (6 x 8,333 dL of room): " + placed);
 				Assert(credits.Count == 2 && credits[0].Key == canal[0] && credits[0].Value == U - 1667 && credits[1].Key == canal[1] && credits[1].Value == 1667,
 					"the square first (8,333), then its neighbour (1,667): " + string.Join(" ", credits.Select(c => c.Key + ":" + c.Value)));
-				// can-fail: the old rule (a whole notch of room in ONE square) refuses every square of this canal
-				Assert(canal.All(c => (w.k.depth[c] * (long)U - w.k.WaterOf(c)) / U == 0), "under the whole-notch rule no square has room: the live stall");
 				Assert(RM_LevelPour.Spread(canal[0], U, false, w.k.Cardinal, i => w.k.depth[i] != 0, null, i => 0, 1024, null, null) == 0, "no room anywhere: nothing placed");
 				Assert(RM_LevelPour.KeptOnFillIn(12000, 1, false) == U && RM_LevelPour.KeptOnFillIn(900, 1, false) == 900
 					&& RM_LevelPour.KeptOnFillIn(900, 0, true) == 0, "fill-in keeps what fits under the new brim, nothing at the surface");
@@ -271,13 +269,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				var room = new long[] { 0, 0, 0, 0, 0, 0, 40000 };
 				var got = new long[room.Length];
 				long Take(int i, long want) { long t = Math.Min(room[i], want); room[i] -= t; got[i] += t; return t; }
-				// can-fail: the old search stopped at HomeRadius 6.9 (squared 47.6): none of the in-radius homes had room
-				long inRadius = 0;
-				for (int i = 0; i < dist.Count; i++) if (dist[i] <= 47) inRadius += room[i];
-				Assert(inRadius == 0, "can-fail: within 6.9 squares nothing takes it (the live 975 L loss)");
 				long placed = RM_LevelPour.PlaceNearestFirst(dist, Take, 9750);
 				Assert(placed == 9750 && got[6] == 9750, "all 9,750 dL go back to the pond: " + placed);
-				Assert(69750 - 60000 - placed == 0, "S3 conserves: pond loss = canal gain + placed (hoses 0)");
+				Assert(got.Sum() == placed && got.Take(6).All(g => g == 0), "what PlaceNearestFirst reports placed is what the homes took, and the brim-full canal took none: " + got.Sum());
 				// nearest first, each up to its room, ties in the given order
 				var room2 = new long[] { 500, 300, 10000, 10000 };
 				var got2 = new long[4];

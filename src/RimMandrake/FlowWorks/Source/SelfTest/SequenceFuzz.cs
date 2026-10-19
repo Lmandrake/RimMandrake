@@ -337,6 +337,12 @@ namespace RimMandrake.FlowWorks.SelfTest
 						fails.Add($"seed {baseSeed + k} step {s}: Batches={bn} in={inU} out={outU} have={input} room={room} accrued={accrued}");
 						break;
 					}
+					// maximal: one more batch would break a limit (input on hand, output room or the accrued budget)
+					if (inU >= 1 && outU >= 1 && !((bn + 1) * inU > input || (room >= 0 && (bn + 1) * outU > room) || (bn + 1) * inU > accrued))
+					{
+						fails.Add($"seed {baseSeed + k} step {s}: Batches={bn} left an affordable batch unrun: in={inU} out={outU} have={input} room={room} accrued={accrued}");
+						break;
+					}
 					input -= bn * inU; output += bn * outU; accrued -= bn * inU;
 					consumed += bn * inU; produced += bn * outU;
 					if (accrued < -1e-3f) { fails.Add($"seed {baseSeed + k}: accrued budget went negative ({accrued})"); break; }
@@ -362,8 +368,18 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Func<int, int, bool> sd = (x, z) => x >= 0 && z >= 0 && x < S && z < S && g[x, z];
 				int cx = r.Next(S), cz = r.Next(S);
 				int w = RM_PitTrapMath.MeasuredPitWidth(sd, cx, cz);
-				if (w > 0 && !RM_PitTrapMath.PitWidthAt(sd, cx, cz, w)) fails.Add($"seed {baseSeed + k}: measured width {w} does not fit");
-				if (w < RM_PitTrapMath.MaxWidth && RM_PitTrapMath.PitWidthAt(sd, cx, cz, w + 1)) fails.Add($"seed {baseSeed + k}: width {w + 1} also fits but measured {w}");
+				// independent brute force: the widest n x n block of cells, anywhere on the grid, that holds (cx, cz) and is all superdeep
+				int brute = 0;
+				for (int bw = 1; bw <= RM_PitTrapMath.MaxWidth; bw++)
+					for (int ox = 0; ox + bw <= S; ox++)
+						for (int oz = 0; oz + bw <= S; oz++)
+						{
+							if (cx < ox || cx >= ox + bw || cz < oz || cz >= oz + bw) continue;
+							bool all = true;
+							for (int ix = ox; ix < ox + bw && all; ix++) for (int iz = oz; iz < oz + bw; iz++) if (!g[ix, iz]) { all = false; break; }
+							if (all) brute = bw;
+						}
+				if (w != brute) fails.Add($"seed {baseSeed + k}: measured width {w} but the widest all-superdeep block holding ({cx},{cz}) is {brute}");
 				int ax = r.Next(S), az = r.Next(S);
 				g[ax, az] = true;
 				int w2 = RM_PitTrapMath.MeasuredPitWidth(sd, cx, cz);

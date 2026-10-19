@@ -67,7 +67,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             Case("PitAccess_rescue_queues_a_ladder_only_when_nobody_can_go", () =>
             {
-                var R = typeof(RM_PitAccessMath.RescueLadder);
                 Assert(RM_PitAccessMath.ChooseRescueLadder(true, true, false, 4, 6, true, true) == RM_PitAccessMath.RescueLadder.None,
                     "can-fail: someone who can climb back out goes; no ladder");
                 Assert(RM_PitAccessMath.ChooseRescueLadder(true, false, true, 4, 6, true, true) == RM_PitAccessMath.RescueLadder.None,
@@ -82,7 +81,6 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "too deep for a portable: the fixed wall ladder");
                 Assert(RM_PitAccessMath.ChooseRescueLadder(true, false, false, 4, 6, true, false) == RM_PitAccessMath.RescueLadder.BuildFixed,
                     "portable ladders off: the fixed ladder");
-                Assert(R.IsEnum, "enum");
             });
             Case("PitAccess_call_sites_wired", () =>
             {

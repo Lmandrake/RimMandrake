@@ -1398,25 +1398,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     int pumped = 12 * RM_PumpMath.TankUnitsPerLevel;     // pond -> canal -> pump: 12 levels
                     int tank = pumped, held = 0;
-                    var count = new Dictionary<int, int>();
                     foreach (int baseUnits in new[] { l.barrel, l.bucket, l.bottle })
                     {
                         int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
-                        while (tank >= units) { tank -= units; held += units; count[baseUnits] = (count.TryGetValue(baseUnits, out int c0) ? c0 : 0) + 1; }
+                        while (tank >= units) { tank -= units; held += units; }
                     }
-                    // pour back: each filled container returns exactly what it took (same ScaledUnits call both ways).
-                    // NB this loop only fails if ScaledUnits is nondeterministic: the asserted sizes above carry this case.
-                    foreach (int baseUnits in new[] { l.bottle, l.bucket, l.barrel })
-                    {
-                        int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
-                        for (int k = count.TryGetValue(baseUnits, out int c1) ? c1 : 0; k > 0; k--) { held -= units; tank += units; }
-                    }
-                    Assert(held == 0 && tank == pumped, "round trip did not return the pumped liquid at factor " + f + " (held " + held + ", tank " + tank + ")");
+                    // conservation of the fill: what the containers hold plus what stays in the tank is what was pumped, and the
+                    // leftover is smaller than the smallest container (the greedy fill left nothing a container could still take)
+                    int smallest = Math.Min(l.bottle, Math.Min(l.bucket, l.barrel));
+                    Assert(held + tank == pumped, "fill did not conserve the pumped liquid at factor " + f + " (held " + held + ", tank " + tank + ")");
+                    Assert(tank < RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(smallest, f), "a container could still have been filled at factor " + f + " (tank " + tank + ")");
                 }
-                // can-fail: a mutated factor on the pour leg must break conservation
-                int fill = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(25, 1.2f);
-                int pour = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(25, 0.8f);
-                Assert(fill != pour, "mutation probe: unequal factors must change the units, else this test cannot fail");
+                // ScaledUnits is the one place a material changes a container's size: factor 1 is the contract size, the size never
+                // shrinks as the factor grows, and a positive base never reaches 0 whatever the factor
+                foreach (int baseUnits in new[] { 15, 150, 2080 })
+                {
+                    Assert(RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, 1f) == baseUnits, "factor 1 must leave " + baseUnits + " dL alone");
+                    int last = 0;
+                    foreach (float f in factors.OrderBy(x => x))
+                    {
+                        int u = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
+                        Assert(u >= 1 && u >= last, "ScaledUnits(" + baseUnits + ", " + f + ") = " + u + " is below the size at a smaller factor (" + last + ")");
+                        last = u;
+                    }
+                }
             });
 
             // ── Liquid machinery: converter cycle arithmetic ──
@@ -1515,6 +1520,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.HeatTint(1f, 0.8f, 0.3f, true) <= 0.3f, "the bake stays a tint");
                 int lo = 99, hi = 0, total = 0, chars = 0, pieces = 0;
                 bool inRange = true, stable = true;
+                var firstPass = new int[60, 60];
                 for (int x = 0; x < 60; x++)
                     for (int z = 0; z < 60; z++)
                     {
@@ -1524,7 +1530,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (u < 0.06f || u > 0.94f || w < 0.03f || w > 0.09f || len < 0.35f || len > 1f) inRange = false;
                         int dn = RM_WallFaceMath.DebrisCount(1f, x, z);
                         total += dn;
-                        if (RM_WallFaceMath.DebrisCount(1f, x, z) != dn) stable = false;
+                        firstPass[x, z] = dn;
                         for (int k = 0; k < dn; k++)
                         {
                             RM_WallFaceMath.DebrisPiece(x, z, k, 0.6f, 12, out float lx, out float lz, out float sz, out float rot, out bool ch, out int v);
@@ -1535,6 +1541,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 Assert(lo == 3 && hi == 6, "3..6 drips per far-wall cell: " + lo + ".." + hi);
                 Assert(inRange, "drip and debris parameters stay in their ranges and on the floor");
+                // a pure function of the cell: a second pass in the opposite order, after every other cell was asked, gives the same counts
+                for (int x = 59; x >= 0; x--)
+                    for (int z = 59; z >= 0; z--)
+                        if (RM_WallFaceMath.DebrisCount(1f, x, z) != firstPass[x, z]) stable = false;
                 Assert(stable, "debris is a pure function of the cell (same after save/load)");
                 Assert(total > 6000 && total < 8400, "about two pieces per burned cell: " + total);
                 Assert(chars > pieces * 0.4 && chars < pieces * 0.7, "a mix of char lumps and ash flakes: " + chars + "/" + pieces);

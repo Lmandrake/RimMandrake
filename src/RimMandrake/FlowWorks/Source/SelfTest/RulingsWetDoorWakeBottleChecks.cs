@@ -174,7 +174,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 // can-fail witness: the OLD rule (every tank that could hold it took bottles unasked; every non-empty tank refilled
                 // them) loops a single Store tank, and this same test sees it.
-                Assert(Loops(Edges(m => true, m => true), RM_TankMode.Store), "witness: the old rule's Store-tank loop is detected");
+                Assert(Loops(new HashSet<(RM_TankMode, RM_TankMode)> { (RM_TankMode.Store, RM_TankMode.Fill), (RM_TankMode.Fill, RM_TankMode.Store) }, RM_TankMode.Store)
+                    && !Loops(new HashSet<(RM_TankMode, RM_TankMode)> { (RM_TankMode.Store, RM_TankMode.Fill) }, RM_TankMode.Store),
+                    "witness: a two-step Store -> Fill -> Store cycle is detected, and a one-way edge is not");
             });
 
             Case("BottleLoop_search_and_jobs_read_the_tank_job", () =>

@@ -375,7 +375,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(!HoseLive.CacheFresh(0, int.MinValue, 60), "B4 never-read port cache is stale at tick 0");
             Check(!HoseLive.CacheFresh(123456, int.MinValue, 60), "B4 never-read port cache is stale later in the game");
             Check(HoseLive.CacheFresh(100, 70, 60) && !HoseLive.CacheFresh(130, 70, 60), "B4 a read 30 ticks ago is fresh, 60 ago is not");
-            Check(unchecked(0 - int.MinValue) < 60, "B4 can-fail: the old int subtraction overflows to fresh");
 
             // B11: with auto-resume off, NO interrupted order (Deploy, Move, Retract) on a dropped hose resumes unforced
             bool any = false;
