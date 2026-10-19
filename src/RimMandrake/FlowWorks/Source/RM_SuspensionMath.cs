@@ -281,6 +281,39 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 
+		// ── SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design §4.1, Q4, Q9) ───────────────────────────────────
+
+		/// <summary>Splash (slime slip, toxic fill) reaches a pawn on a grate at this share of the open-pit chance.</summary>
+		public const float GrateSplashFactor = 0.5f;
+
+		/// <summary>A pawn on a grate over burning liquid: chance per fire effects check (60 ticks) of one vanilla Burn injury, and
+		/// its damage. Proposals (≈ 8 burns, ≈ 12 damage spread over the body in 2,500 ticks); never a new hediff (one kind of heat).</summary>
+		public const float GrateBurnChancePerCheck = 0.2f;
+		public const float GrateBurnDamage = 1.5f;
+
+		/// <summary>Only the steel and heavy types come grated (a grate must not burn away in the fire it passes).</summary>
+		public static bool MayBeGrated(SuspensionTier t)
+		{
+			return t == SuspensionTier.Steel || t == SuspensionTier.Heavy;
+		}
+
+		/// <summary>The splash chance on a grate: half the chance the same pawn would have standing in the hole.</summary>
+		public static float GrateSplashChance(float openPitChance)
+		{
+			return openPitChance * GrateSplashFactor;
+		}
+
+		/// <summary>Decilitres of a spill on a deck square that drain into the hole below: all of it the hole has room for, on
+		/// a grate over a dug square with the setting on; nothing otherwise (a solid deck keeps its spill as filth).</summary>
+		public static long GrateDrainDl(bool grated, bool settingOn, bool dug, long spilledDl, long roomDl)
+		{
+			if (!grated || !settingOn || !dug || spilledDl <= 0 || roomDl <= 0)
+			{
+				return 0;
+			}
+			return spilledDl < roomDl ? spilledDl : roomDl;
+		}
+
 		/// <summary>The build-order rule (construction design §1.3): a deck square may be worked once the square next to it along
 		/// its lane, toward either anchor, is a finished anchor or a finished deck square.</summary>
 		public static bool MayBuildDeck(int i, int n, System.Func<int, bool> builtAt)

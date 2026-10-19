@@ -40,13 +40,21 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				IntVec3 c = p.Position;
-				if (Pits.RM_SpanUtility.DeckedAt(map, c))
+				// SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: a solid deck keeps the slime below off its walkers; on a grate the splash
+				// reaches them at half the chance (no climb up there); a pawn in the floor band under a deck is in the slime
+				float share = Pits.RM_GrateEffects.SplashShare(Pits.RM_SpanUtility.DeckAt(map, c), p);
+				if (share <= 0f)
 				{
 					continue;
 				}
+				bool onGrate = share < 1f;
 				int fill = ex.IsExcavated(c) ? ex.FillAt(c) : 0;
 				if (fill <= 0)
 				{
+					if (onGrate)
+					{
+						continue;
+					}
 					// natural slime ground: no fill, no climb
 					RM_SlipperyTerrain ground = NaturalSlime(map, c);
 					if (ground != null && Rand.Chance(RM_SlimeMath.SlipChance(ground.slipperiness, 1, 1, false, false,
@@ -62,9 +70,9 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				IntVec3 next = p.pather.nextCell;
-				bool climbingOut = next.IsValid && next != c && next.InBounds(map)
+				bool climbingOut = !onGrate && next.IsValid && next != c && next.InBounds(map)
 					&& RM_SlimeMath.IsClimbingOut(ex.HollowDepthAt(c), ex.HollowDepthAt(next));
-				float chance = RM_SlimeMath.SlipChance(fluid.slipperiness, fill, ex.DepthAt(c), climbingOut, false,
+				float chance = share * RM_SlimeMath.SlipChance(fluid.slipperiness, fill, ex.DepthAt(c), climbingOut, false,
 					RimMandrakeFlowWorksSettings.slimeSlipChanceMultiplier, RimMandrakeFlowWorksSettings.slimeClimbOutSlipFactor);
 				if (!Rand.Chance(chance))
 				{

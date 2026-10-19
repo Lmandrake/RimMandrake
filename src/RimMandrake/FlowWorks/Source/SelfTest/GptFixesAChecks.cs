@@ -282,7 +282,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string f = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
                 foreach (string key in new[] { "carriedAcc", "carriedTick", "carriedFluid", "burningFluid" })
                     Assert(f.Contains("Scribe_Collections.Look(ref " + key + ", \"" + key + "\""), "C4-F1: " + key + " is saved");
-                RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FireMath\.AttachChance\(heldInPit, false, p\.Flying\)\)", "C4-F7: effects read flight");
+                RiverSwitchFlipChecks.Has(f, @"Rand\.Chance\(RM_FireMath\.AttachChance\(held, onDeck && !held, p\.Flying, grated\)\)", "C4-F7: effects read flight (and the grate, SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP)");
                 RiverSwitchFlipChecks.Has(f, @"bool heldInPit = RM_PitRooms\.IsPitFloor\(map, ex, c\);", "C4-F7: a covered square is ground (IsPitFloor reads covers), P7");
                 RiverSwitchFlipChecks.Has(f, @"int boom = NewestExplosionAt\(map, c\); if \(boom >= 0\) \{ blastHops\[boom\] = 0;", "C4-F9: the chain's blast is remembered by its Explosion id (since CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL the only liquid blast is the astrofuel chain's, at hops 0)");
                 RiverSwitchFlipChecks.Has(f, @"if \(explosionId >= 0 && blastHops\.TryGetValue\(explosionId, out int bh\)", "C4-F9: only that explosion inherits the hops");

@@ -17,6 +17,8 @@ namespace RimMandrake.FlowWorks.Pits
 		public List<int> towers = new List<int>();
 		public bool railings;
 		public ThingDef stuff;
+		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: the deck squares are the grated deck of this type.</summary>
+		public bool grated;
 
 		public IntVec3 Side => dir.Rotated(RotationDirection.Clockwise).FacingCell;
 
@@ -60,6 +62,7 @@ namespace RimMandrake.FlowWorks.Pits
 			Scribe_Collections.Look(ref towers, "towers", LookMode.Value);
 			Scribe_Values.Look(ref railings, "railings", false);
 			Scribe_Defs.Look(ref stuff, "stuff");
+			Scribe_Values.Look(ref grated, "grated", false);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit && towers == null)
 			{
 				towers = new List<int>();
@@ -823,9 +826,9 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Map map = p.Map;
 			IntVec3 c = p.Position;
-			if (DeckAt(map, c) == null)
+			if (DeckAt(map, c) == null || RM_SuspensionUnderpass.InFloorBand(p))
 			{
-				return false;
+				return false;   // not on a deck (a pawn under it, in the floor band, is already down in the hole)
 			}
 			IntVec3 open = OpenEdgeBeside(map, c);
 			float ch = RM_SuspensionMath.FallChance(chance, RailedAt(map, c), open.IsValid);

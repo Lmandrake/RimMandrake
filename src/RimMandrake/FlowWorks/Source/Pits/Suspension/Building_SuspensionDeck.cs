@@ -9,6 +9,10 @@ namespace RimMandrake.FlowWorks.Pits
 	public class RM_SuspensionExtension : DefModExtension
 	{
 		public SuspensionTier tier = SuspensionTier.Timber;
+
+		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: an open grating (steel and heavy only): fire, spilled liquid and splash
+		/// pass; shots between the deck and the floor band are not blocked.</summary>
+		public bool grated;
 	}
 
 	[DefOf]
@@ -18,6 +22,8 @@ namespace RimMandrake.FlowWorks.Pits
 		public static ThingDef RM_SuspensionDeck_Timber;
 		public static ThingDef RM_SuspensionDeck_Steel;
 		public static ThingDef RM_SuspensionDeck_Heavy;
+		public static ThingDef RM_SuspensionDeck_SteelGrated;
+		public static ThingDef RM_SuspensionDeck_HeavyGrated;
 		public static ThingDef RM_SuspensionAnchor_Rope;
 		public static ThingDef RM_SuspensionAnchor_Timber;
 		public static ThingDef RM_SuspensionAnchor_Steel;
@@ -28,6 +34,16 @@ namespace RimMandrake.FlowWorks.Pits
 		static RM_SuspensionDefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RM_SuspensionDefOf));
+		}
+
+		/// <summary>The deck def of this type, grated (steel and heavy only; any other type has no grated deck).</summary>
+		public static ThingDef DeckOf(SuspensionTier t, bool grated)
+		{
+			if (grated && RM_SuspensionMath.MayBeGrated(t))
+			{
+				return t == SuspensionTier.Steel ? RM_SuspensionDeck_SteelGrated : RM_SuspensionDeck_HeavyGrated;
+			}
+			return DeckOf(t);
 		}
 
 		public static ThingDef DeckOf(SuspensionTier t)
@@ -84,6 +100,10 @@ namespace RimMandrake.FlowWorks.Pits
 	public class Building_SuspensionDeck : Building_SpanDeck
 	{
 		public SuspensionTier Tier => def.GetModExtension<RM_SuspensionExtension>()?.tier ?? SuspensionTier.Timber;
+
+		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: read by RM_GrateEffects (fire, spills, splash) and the shots between
+		/// bands (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD).</summary>
+		public override bool Grated => def.GetModExtension<RM_SuspensionExtension>()?.grated ?? false;
 
 		public RM_MapComponent_SuspensionBridges Bridges => Map?.GetComponent<RM_MapComponent_SuspensionBridges>();
 

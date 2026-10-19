@@ -1,5 +1,5 @@
 """SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: every texPath the suspension bridge defs name resolves to a real RGBA PNG
-in this mod's Textures folder, 256x256 (1 cell at 128 px/cell, rounded up), with real alpha: the anchor, tower and railing
+in this mod's Textures folder (a grated deck: real holes, SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP), 256x256 (1 cell at 128 px/cell, rounded up), with real alpha: the anchor, tower and railing
 art has transparent corners (ground shows round them), and the railing edge is transparent below its top band.
 
 Can-fail: pointed at a texPath that does not exist it FAILS (checked by --canfail). The C# SelfTest cannot do this (its
@@ -18,6 +18,8 @@ import zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFS = os.path.join(HERE, "Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml")
 TEX = os.path.join(HERE, "Textures")
+# 10 from the posts build; +2 grated decks (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP)
+EXPECTED = 12
 
 
 def read_png(path):
@@ -87,18 +89,24 @@ def check(texpaths):
             top = sum(1 for r in a[:h // 4] for v in r if v > 0)
             if low > 0.02 * w * h or top == 0:
                 fails.append(f"{tp}: rail is not a band along the top edge (top {top}, below {low})")
-        if "Deck" in name:
+        if "Deck" in name and "Grated" not in name:
             opaque = sum(1 for r in a for v in r if v >= 200)
             if opaque < 0.5 * w * h:
                 fails.append(f"{tp}: a deck must cover the hole ({opaque} opaque px)")
+        if "Grated" in name:
+            # SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: real holes (the liquid below shows through) in a deck still walkable
+            holes = sum(1 for r in a for v in r if v == 0)
+            opaque = sum(1 for r in a for v in r if v >= 200)
+            if holes < 0.25 * w * h or opaque < 0.3 * w * h:
+                fails.append(f"{tp}: a grate needs real holes and real bars ({holes} clear px, {opaque} opaque px)")
     return fails
 
 
 def main():
     xml = open(DEFS, encoding="utf-8").read()
     texpaths = sorted(set(re.findall(r"<texPath>([^<]+)</texPath>", xml)))
-    if len(texpaths) != 10:
-        print(f"FAIL expected 10 texPaths in {DEFS}, found {len(texpaths)}")
+    if len(texpaths) != EXPECTED:
+        print(f"FAIL expected {EXPECTED} texPaths in {DEFS}, found {len(texpaths)}")
         return 1
     if "--canfail" in sys.argv:
         bad = check(["Things/Building/FlowWorks/SuspensionBridge/RM_NoSuchTexture"])

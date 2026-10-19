@@ -21,6 +21,9 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public SuspensionTier Tier => ((ThingDef)PlacingDef).GetModExtension<RM_SuspensionExtension>()?.tier ?? SuspensionTier.Timber;
 
+		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: this button places the grated deck of its type.</summary>
+		public bool Grated => ((ThingDef)PlacingDef).GetModExtension<RM_SuspensionExtension>()?.grated ?? false;
+
 		public override bool Visible => RM_SuspensionSettings.suspensionBridgesBuildable && base.Visible;
 
 		public override string Desc => base.Desc + "\n\nDrag from solid ground, across a dug hole, to solid ground: 1 to 3 squares wide, at most "
@@ -92,6 +95,7 @@ namespace RimMandrake.FlowWorks.Pits
 					length = dir == Rot4.North ? dz : dx,
 					width = dir == Rot4.North ? dx : dz,
 					stuff = StuffDef,
+					grated = Grated,
 				};
 				string why = Plan(map, r, dragged);
 				if (why == null)
@@ -134,7 +138,7 @@ namespace RimMandrake.FlowWorks.Pits
 			// every lane shares the same tower squares (a tower holds the whole width): the record keeps lane 0's
 			r.towers = towers[0].ToList();
 			ThingDef anchor = RM_SuspensionDefOf.AnchorOf(r.tier);
-			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier);
+			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier, r.grated);
 			for (int lane = 0; lane < r.width; lane++)
 			{
 				for (int i = 0; i < r.length; i++)
@@ -188,7 +192,7 @@ namespace RimMandrake.FlowWorks.Pits
 		private void Place(Map map, SuspensionBridgeRecord r)
 		{
 			ThingDef anchor = RM_SuspensionDefOf.AnchorOf(r.tier);
-			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier);
+			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier, r.grated);
 			map.GetComponent<RM_MapComponent_SuspensionBridges>().Register(r);
 			// anchors first, then the deck from both ends inward, so the god-mode path (instant build) runs the same order
 			List<(int lane, int i)> order = new List<(int, int)>();
@@ -260,6 +264,20 @@ namespace RimMandrake.FlowWorks.Pits
 	public class Designator_SuspensionBridge_Heavy : Designator_SuspensionBridge
 	{
 		public Designator_SuspensionBridge_Heavy() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionDeck_Heavy"))
+		{
+		}
+	}
+
+	public class Designator_SuspensionBridge_SteelGrated : Designator_SuspensionBridge
+	{
+		public Designator_SuspensionBridge_SteelGrated() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionDeck_SteelGrated"))
+		{
+		}
+	}
+
+	public class Designator_SuspensionBridge_HeavyGrated : Designator_SuspensionBridge
+	{
+		public Designator_SuspensionBridge_HeavyGrated() : base(DefDatabase<ThingDef>.GetNamed("RM_SuspensionDeck_HeavyGrated"))
 		{
 		}
 	}

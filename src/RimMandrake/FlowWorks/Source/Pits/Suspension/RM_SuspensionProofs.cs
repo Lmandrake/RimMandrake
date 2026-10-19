@@ -32,6 +32,8 @@ namespace RimMandrake.FlowWorks.Pits
 				case "rope": return new Designator_SuspensionBridge_Rope();
 				case "steel": return new Designator_SuspensionBridge_Steel();
 				case "heavy": return new Designator_SuspensionBridge_Heavy();
+				case "steelgrated": return new Designator_SuspensionBridge_SteelGrated();
+				case "heavygrated": return new Designator_SuspensionBridge_HeavyGrated();
 				default: return new Designator_SuspensionBridge_Timber();
 			}
 		}
@@ -209,6 +211,66 @@ namespace RimMandrake.FlowWorks.Pits
 				int decked = path.NodesReversed.Count(n => RM_MapComponent_SuspensionBridges.DeckAt(map, n) != null);
 				return "PATH found=True cells=" + path.NodesLeftCount + " decked=" + decked;
 			}
+		}
+
+		// ── SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP ──────────────────────────────────────────────────────────────────
+
+		/// <summary>"x,z": the grate reads on that square. → "GRATE grated=b deck=b fire=b attach=0.75 splash=0.5 scorches=N
+		/// drainedDl=N"</summary>
+		public static string ProofGrate(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || !Cell(arg, out IntVec3 c) || !c.InBounds(map))
+			{
+				return "REFUSED: arg must be x,z on the current map";
+			}
+			Building_SpanDeck deck = RM_SpanUtility.DeckAt(map, c);
+			bool grated = RM_GrateEffects.GrateAt(map, c) != null;
+			bool fire = RM_GrateEffects.GratePassesFire(map, c);
+			return "GRATE grated=" + grated + " deck=" + (deck != null) + " fire=" + fire
+				+ " attach=" + RM_FireMath.AttachChance(false, deck != null, false, fire).ToString("0.00")
+				+ " splash=" + (deck == null ? 1f : deck.Grated ? RM_SuspensionMath.GrateSplashChance(1f) : 0f).ToString("0.00")
+				+ " scorches=" + RM_GrateEffects.Scorches + " drainedDl=" + RM_GrateEffects.DrainedDl;
+		}
+
+		/// <summary>"x,z;litres;liquidDefName": spill that much liquid on that square through the production spill
+		/// (RM_LiquidSpill.Spill, what a hose end, a tank leak or a sprinkler calls). → "POUR dl=N bodyBefore=N bodyAfter=N
+		/// rise=N filthBefore=N filthAfter=N" (body = every dug square's water within 12 squares, decilitres; filth = filth on
+		/// the square).</summary>
+		public static string ProofPour(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 3 || !Cell(a[0], out IntVec3 c) || !c.InBounds(map) || !int.TryParse(a[1], out int litres))
+			{
+				return "REFUSED: arg must be x,z;litres;liquidDefName";
+			}
+			LiquidTypes.LiquidDef liquid = DefDatabase<LiquidTypes.LiquidDef>.GetNamedSilentFail(a[2]);
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (liquid == null || ex == null)
+			{
+				return "REFUSED: no such LiquidDef or no excavation component";
+			}
+			long Body()
+			{
+				long sum = 0;
+				foreach (IntVec3 n in GenRadial.RadialCellsAround(c, 12f, true))
+				{
+					if (n.InBounds(map) && ex.IsExcavated(n))
+					{
+						sum += ex.WaterDlAt(n);
+					}
+				}
+				return sum;
+			}
+			int Filth() => c.GetThingList(map).Count(t => t is Filth);
+			long b0 = Body();
+			int f0 = Filth();
+			int dl = litres * RM_Volume.UnitsPerLitre;
+			Machinery.RM_LiquidSpill.Spill(map, c, liquid, dl);
+			long b1 = Body();
+			return "POUR dl=" + dl + " bodyBefore=" + b0 + " bodyAfter=" + b1 + " rise=" + (b1 - b0) + " filthBefore=" + f0
+				+ " filthAfter=" + Filth();
 		}
 	}
 }
