@@ -117,7 +117,7 @@
     </statBases>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveExit/CaveExit</texPath>
+      <texPath>Things/Building/Misc/RM_SeaDiveExit/RM_SeaDiveExit</texPath>
       <drawSize>(3,3)</drawSize>
     </graphicData>
   </ThingDef>

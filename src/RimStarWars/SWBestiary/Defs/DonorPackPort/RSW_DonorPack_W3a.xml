@@ -798,7 +798,7 @@
     <defName>RSW_Bullet_AnimalToxbomb</defName>
     <label>toxic vomit</label>
     <graphicData>
-      <texPath>Things/Projectile/Acid</texPath>
+      <texPath>Things/Projectile/RSW_Bullet_AnimalToxbomb</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>0.85</drawSize>

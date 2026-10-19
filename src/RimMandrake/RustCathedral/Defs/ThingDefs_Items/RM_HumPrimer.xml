@@ -13,11 +13,11 @@
     <description>A hand-copied primer of tones and figures.</description>
     <thingClass>Book</thingClass>
     <graphicData>
-      <texPath>Things/Item/Book/Schematic/Schematic</texPath>
+      <texPath>Things/Item/Book/RM_HumPrimer/RM_HumPrimer</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.8</drawSize>
     </graphicData>
-    <uiIconPath>Things/Item/Book/Schematic/Schematic</uiIconPath>
+    <uiIconPath>Things/Item/Book/RM_HumPrimer/RM_HumPrimer</uiIconPath>
     <statBases>
       <MarketValue>120</MarketValue>
     </statBases>

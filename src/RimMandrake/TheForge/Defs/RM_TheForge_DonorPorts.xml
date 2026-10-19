@@ -11,7 +11,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_BlackPebbles</defName>
     <label>black volcanic sand</label>
-    <texturePath>StandIn/Terrain/Surfaces/AB_BlackPebbles</texturePath>
+    <texturePath>Terrain/Surfaces/AB_BlackPebbles</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>350</renderPrecedence>
     <pathCost>12</pathCost>

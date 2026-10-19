@@ -90,7 +90,7 @@
     <equipmentType>Primary</equipmentType>
     <graphicData>
       <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
-      <texPath>Things/Item/Equipment/WeaponRanged/ToxGrenades</texPath>
+      <texPath>Things/Item/Equipment/WeaponRanged/RM_Grenade_StenchSmoke/RM_Grenade_StenchSmoke</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(140, 191, 64)</color>
     </graphicData>

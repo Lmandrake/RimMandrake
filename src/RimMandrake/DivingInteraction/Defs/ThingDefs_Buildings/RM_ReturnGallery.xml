@@ -121,7 +121,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/CaveEntranceA</texPath>
+      <texPath>Things/Building/RM_ReturnGalleryLocker/RM_ReturnGalleryLocker</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(90,110,120)</color>
     </graphicData>

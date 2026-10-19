@@ -15,7 +15,7 @@
     <description>A rescue gravship that came down into the chasm after someone and never came back up, driven nose-first into the rock. Its hull is split but much of its fitting-out is whole. Cut fittings free with salvage bills. The cutting is loud, and something enormous sleeps nearby.</description>
     <thingClass>RimMandrake.Abyss.Building_RM_ShipWreck</thingClass>
     <graphicData>
-      <texPath>Things/Building/Exotic/ShipChunk</texPath>
+      <texPath>Things/Building/Exotic/RM_RescueShipWreck</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(8,6)</drawSize>
       <color>(0.75,0.75,0.8)</color>

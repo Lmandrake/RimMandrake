@@ -254,7 +254,7 @@
       <Nutrition>0.35</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>StandIn/Things/Plants/AB_WitchesOyster</texPath>
+      <texPath>Things/Plants/AB_WitchesOyster</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <selectable>true</selectable>

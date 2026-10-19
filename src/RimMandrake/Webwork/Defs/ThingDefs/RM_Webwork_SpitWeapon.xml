@@ -37,7 +37,7 @@
     <label>mouth-loom</label>
     <description>Not a weapon in the ordinary sense — the ranged spinneret an ollathrix uses to bind prey from a distance before closing in.</description>
     <graphicData>
-      <texPath>Things/Item/Equipment/WeaponRanged/Autopistol</texPath>
+      <texPath>Things/Item/Equipment/WeaponRanged/RM_Gun_LoomSpit/RM_Gun_LoomSpit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

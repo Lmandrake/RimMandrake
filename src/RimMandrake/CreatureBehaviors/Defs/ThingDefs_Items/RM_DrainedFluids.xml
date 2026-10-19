@@ -19,7 +19,7 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <texPath>Things/Item/Resource/RM_DrainedFluids/RM_DrainedFluids</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(70, 40, 75)</color>
       <drawSize>0.85</drawSize>
