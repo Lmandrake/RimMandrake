@@ -347,6 +347,15 @@
         <bodyHeight>Bottom</bodyHeight>
       </li>
     </comps>
+    <!-- Retraction, owner by card 2026-10-18: "Picture only". During salt snow the
+         crown shows its pulled-in, spines-only form; nothing else changes (venom,
+         path cost, beauty, hit points). Mechanism: Source/RM_WeatherPlantGraphic.cs.
+         ⛔ NOT WIRED until the retracted art is installed (a texPath with no file
+         fails validate_patch). At art install, add inside this ThingDef:
+           modExtensions / li Class="RimMandrake.TerminalBiomes.RM_WeatherGraphicExtension"
+             weather = RM_GreySaltSnow
+             texPath = Things/Plant/RM_GreySea/RM_BrineCrownRetracted   (Graphic_Random folder)
+    -->
   </ThingDef>
 
   <!-- ==================================================================
