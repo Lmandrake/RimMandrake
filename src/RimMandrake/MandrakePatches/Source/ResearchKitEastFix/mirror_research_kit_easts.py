@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""mirror_research_kit_easts.py - regenerate the four _east worn-graphic
+r"""mirror_research_kit_easts.py - regenerate the three _east worn-graphic
 textures this mod ships, by horizontally flipping Research Reinvented
 Retextured's own _west.
 
@@ -58,8 +58,9 @@ RRR = "3279243445"                     # Research Reinvented Retextured
 HERE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(HERE, "Textures")
 
-KITS = ["SimpleResearchKit", "MultiAnalyzerResearchKit",
-        "RemoteResearchKit", "HiTechResearchKit"]
+# SimpleResearchKit is NOT regenerated: RR_FieldResearchKitSimple is cut by Cherry Picker
+# (owner, review sheet picks_icons_sheet_2026-10-19: "drop"); its east was retired through the art ledger.
+KITS = ["MultiAnalyzerResearchKit", "RemoteResearchKit", "HiTechResearchKit"]
 
 
 def coverage(im):

@@ -218,32 +218,4 @@
     </comps>
   </ThingDef>
 
-  <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RSW_CookedSkewer</defName>
-    <label>cooked skewer</label>
-    <description>A cooked stick roasted over a fire. It does not hold any food, but you can still try eating it.
-
-Some moments in life make one wonder, "in just what direction is my life going?"</description>
-    <graphicData>
-      <texPath>Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-    </graphicData>
-    <statBases>
-      <MarketValue>1</MarketValue>
-      <WorkToMake>190</WorkToMake>
-      <Nutrition>0.01</Nutrition>
-    </statBases>
-    <ingestible>
-      <preferability>RawBad</preferability>
-      <tasteThought>RSW_AteEmptySkewer</tasteThought>
-      <ingestEffect>EatVegetarian</ingestEffect>
-      <ingestSound>RawVegetable_Eat</ingestSound>
-    </ingestible>
-    <comps>
-      <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
-      </li>
-    </comps>
-  </ThingDef>
-
 </Defs>

@@ -31,7 +31,7 @@ def comp(el, named, cls):
 def main():
     byname, named, patches = V.load_pack()
     check("shipped pack: no semantic finding", V.semantic_findings(byname, named, patches) == [], V.semantic_findings(byname, named, patches))
-    check("sanity probe: 4 glowing defs, 3 flame defs, blade and heater parsed", all(n in byname for n in V.GLOW_DEFS) and "DV_MeleeWeapon_PyrinthBlade" in byname)
+    check("sanity probe: 4 glowing defs, 3 flame defs and heater parsed", all(n in byname for n in V.GLOW_DEFS) and "DV_PyrinthHeater" in byname)
     check("sanity probe: wall lamp's own Inherit=False comps are the effective ones (one glower, radius 9)",
           V._num(comp(byname["DV_PyrinthWallLamp"], named, "CompProperties_Glower"), "glowRadius") == 9.0)
 
@@ -75,13 +75,8 @@ def main():
     run_break("spark never fires", lambda b, n, p: b["DV_PyrinthSparkingEffect"].find("children/li/chancePerTick").__setattr__("text", "0"), "chancePerTick")
     run_break("small spark not rarer", lambda b, n, p: b["DV_PyrinthSparkingEffectSmall"].find("children/li/chancePerTick").__setattr__("text", "0.5"), "rarer")
     run_break("lamp effecter missing", lambda b, n, p: b["DV_PyrinthLamp"].find("comps/li[@Class='CompProperties_Effecter']/effecterDef").__setattr__("text", "DV_NoEffecter"), "effecter")
-    run_break("blade point stops searing", lambda b, n, p: b["DV_MeleeWeapon_PyrinthBlade"].findall("tools/li")[1].find("extraMeleeDamages/li/amount").__setattr__("text", "0"), "blade")
-
-    def edge_not_burning(b, n, p):
-        t = b["DV_MeleeWeapon_PyrinthBlade"].findall("tools/li")[2]
-        t.remove(t.find("extraMeleeDamages"))
-    run_break("blade edge loses flame", edge_not_burning, "blade")
-    run_break("blade tool power 0", lambda b, n, p: b["DV_MeleeWeapon_PyrinthBlade"].find("tools/li/power").__setattr__("text", "0"), "blade")
+    # the blade was cut by the owner (picks_icons_sheet_2026-10-19, "not needed"): planting it back must redden
+    run_break("cut blade comes back", lambda b, n, p: b.__setitem__("DV_MeleeWeapon_PyrinthBlade", b["DV_PyrinthHeater"]), "cut by the owner")
     run_break("heater filth missing", lambda b, n, p: setc(b["DV_PyrinthHeater"], n, "CompProperties_Explosive", "preExplosionSpawnThingDef", "DV_Nope"), "explosive")
 
     def bad_cost(b, n, p):
@@ -124,9 +119,9 @@ def main():
             V.semantic_findings = saved
         return dict((c["name"], c["verdict"]) for ch in res["chains"] if ch["name"] == "furniture_and_weapon" for c in ch["components"])
     got = chain()
-    check("clean chain: the 6 static bars PASS", sum(1 for v in got.values() if v == "PASS") == 6, got)
+    check("clean chain: the 5 static bars PASS", sum(1 for v in got.values() if v == "PASS") == 5, got)
     got = chain(lambda f: f + ["DV_X: something brand new and unclaimed"])
-    check("an unclaimed finding reddens no_finding_escapes_the_five_bars_above", got["no_finding_escapes_the_five_bars_above"] == "FAIL", got)
+    check("an unclaimed finding reddens no_finding_escapes_the_bars_above", got["no_finding_escapes_the_bars_above"] == "FAIL", got)
     got = chain(lambda f: f + ["DV_PyrinthLamp: no Glower with glowRadius > 0 (0 glowers)"])
     check("a Glower finding reddens the torch bar", got["torch_family_glows_heats_and_carries_the_ladder"] == "FAIL", got)
 

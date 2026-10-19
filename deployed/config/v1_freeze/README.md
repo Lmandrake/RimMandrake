@@ -115,3 +115,11 @@ is installed**. So all three were arriving bare-handed.
 weapon that was the sole carrier of a tag some pawn kind depends on.* The general test now
 lives in `THOROUGH_RETAG_WEAPONS_ARMOUR_1` — **a cut is safe only if every tag it carried
 still has another carrier, or nobody asks for it.**
+
+## Amended 2026-10-19 — two cuts from review sheet picks_icons_sheet_2026-10-19
+
+Owner's rulings on that sheet: `ThingDef/DV_MeleeWeapon_PyrinthBlade` (det.epochspyrinth) *"not
+needed"*, and `ThingDef/RR_FieldResearchKitSimple` (Research Reinvented) *"drop"*. Both appended.
+Tag-carrier test: the blade's `MedievalMeleeAdvanced`/`LongSword` tags keep vanilla carriers; no
+Research Reinvented def or DLL names the simple kit, but it was the only Neolithic field kit (the
+one substituting `SimpleResearchBench`), so field research starts at the hi-tech kit.

@@ -2135,6 +2135,8 @@
 			<li>GeneDef/Outland_XenotypeAscension_BS_Ymir</li>
 			<li>AbilityDef/Outland_XenotypeImplanter_BS_Ymir</li>
 			<li>GeneDef/Outland_XenotypeImplanter_BS_Ymir</li>
+			<li>ThingDef/DV_MeleeWeapon_PyrinthBlade</li>
+			<li>ThingDef/RR_FieldResearchKitSimple</li>
 		</keys>
 	</ModSettings>
 </SettingsBlock>

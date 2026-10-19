@@ -9,15 +9,14 @@ without it, `WorkGiver_DoBill`'s ingredient-picking loop divides by zero
 and no bill naming `RSW_Skewer` can ever be satisfied), `NameGenComp.cs`
 (the "Roasted <first ingredient>" `TransformLabel` override, ported from
 badoaks.meatonastick per STICK_FOOD_INGEST_1), `ThingDefs_Cuisine.xml`
-(`RSW_Skewer` plus the 8 `MealCookedIngredientless`-parented meal defs),
-`RecipeDefs_Cuisine.xml` (14 RecipeDefs: 2 skewer-free meat recipes using
-plain `IngredientValueGetter_Nutrition`, 1 skewer-crafting recipe, and 10
-skewer-consuming recipes using `IngredientValueGetter_ExcludeSkewer`),
-`ThoughtDefs_Cuisine.xml` (`RSW_AteEmptySkewer`, -6 mood for a day), and
+(`RSW_Skewer` plus the 7 `MealCookedIngredientless`-parented meal defs),
+`RecipeDefs_Cuisine.xml` (15 RecipeDefs: 2 skewer-free meat recipes using
+plain `IngredientValueGetter_Nutrition`, 1 skewer-crafting recipe, and 12
+skewer-consuming recipes using `IngredientValueGetter_ExcludeSkewer`), and
 `About.xml` (no ModSettings anywhere in this mod's tree -- pure content,
 `suite.toggles = []`).
 
-WHY TWO DIFFERENT `ingredientValueGetterClass` VALUES APPEAR ACROSS THE 14
+WHY TWO DIFFERENT `ingredientValueGetterClass` VALUES APPEAR ACROSS THE 15
 RECIPES, and why this suite checks both: `RSW_CookMeatOnAStick`/
 `RSW_CookMeatOnAStickBulk` need no skewer at all (the file's own comment:
 "Base: meat only, no skewer resource required") and use plain
@@ -28,21 +27,14 @@ skewer requirement becomes unsatisfiable (module docstring's own C#
 comment, verified against `WorkGiver_DoBill.
 TryFindBestBillIngredientsInSet_AllowMix`'s division). `recipes_readback`
 below checks a representative recipe from each of the three shapes
-(meat-only, skewer-crafting, skewer-consuming), not all 14 -- enough to
+(meat-only, skewer-crafting, skewer-consuming), not all 15 -- enough to
 catch a whole-file load break without being a rubber stamp, per this
 suite family's own sampling precedent (PawnFlavor's backstory sample).
 
-MOOD THOUGHT COVERAGE -- `jawa/pawn_thoughts` IS A REAL, CONFIRMED-LIVE
-CHANNEL, contrary to what a shallow read of Ninefold/validation.py's own
-docstring might suggest. Ninefold's "MOOD has NO read-back channel
-anywhere" finding is specifically about a PERIODIC MOOD-SHIFT SCALAR
-(`moodWalkMultiplier`'s tick-driven walk) -- a genuinely different
-question from "does a discrete ThoughtDef appear in a pawn's active
-thoughts", which `jawa/pawn_thoughts` answers directly and which
-`Droidworks/validation.py` already drives live (`mood_penalty_nearby`,
-checking for `RSW_DW_NearBoltedDroid` in the returned `thoughts[].def`
-list). `eating_empty_skewer_applies_mood_thought` below uses the exact
-same call shape to check for `RSW_AteEmptySkewer`.
+The cooked empty skewer (`RSW_CookedSkewer`), its two `RSW_CookEmptySkewer*`
+recipes and its `RSW_AteEmptySkewer` taste thought were removed from the
+game (owner, picks_icons_sheet_2026-10-19: "Drop from game."); this suite
+no longer checks them.
 
 WHAT IS NOT ATTEMPTED, and why -- the "Roasted <ingredient>" rename
 itself: `NameGenComp.TransformLabel` only fires its interesting branch
@@ -62,16 +54,7 @@ would be exactly the kind of invented-pass this task's rigor bar forbids.
 `namegen_fallback_on_bare_spawn` below proves the FALLBACK branch only,
 honestly labeled as such.
 
-Still not proven / likely first-live-run corrections:
-  1. `eating_empty_skewer_applies_mood_thought`'s `wait_ticks` sizing for
-     an `Ingest` job to complete and its thought to register has no
-     precedent in this suite family (no other suite drives a plain
-     `Ingest` job) -- sized generously (300 ticks) but untested at this
-     specific mechanism.
-  2. Lowering the eater's Food need first (`jawa/pawn_need` action="need")
-     mirrors Droidworks' own precedent for making a needs-driven job
-     realistic, not a confirmed requirement for a FORCED `Ingest` job to
-     be accepted.
+Still not proven / likely first-live-run corrections: none recorded.
 """
 import os
 import sys
@@ -145,8 +128,7 @@ def no_config_or_load_errors(t):
     XML error naming any of the three Defs files."""
     with t.component("no_config_or_xml_error", beyond_toggle=True):
         for tag in ("Config error in mandrake.rsw.cuisine",
-                    "ThingDefs_Cuisine.xml", "RecipeDefs_Cuisine.xml",
-                    "ThoughtDefs_Cuisine.xml"):
+                    "ThingDefs_Cuisine.xml", "RecipeDefs_Cuisine.xml"):
             r = t.bridge_call("jawa/drain_log", limit=400, contains=tag)
             msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
             bad = [m for m in msgs if "error" in m.lower()]
@@ -158,9 +140,8 @@ def no_config_or_load_errors(t):
 
 @suite.chain("thingdefs_readback")
 def thingdefs_readback(t):
-    """RSW_Skewer's own stats, each meal ThingDef's CompProperties_NameGen
-    wiring, and RSW_CookedSkewer's tasteThought link to the mood thought
-    this suite checks live in `eating_empty_skewer_applies_mood_thought`."""
+    """RSW_Skewer's own stats and each meal ThingDef's CompProperties_NameGen
+    wiring."""
     t.clear_area(size=10)
     with t.component("skewer_stats", beyond_toggle=True):
         r = _get_defs(t, "ThingDef/RSW_Skewer", "statBases,tradeability")
@@ -186,23 +167,12 @@ def thingdefs_readback(t):
                     "%s.comps = %r, expected to contain CompProperties_"
                     "NameGen" % (def_name, got_comps))
 
-    with t.component("cooked_skewer_taste_thought", beyond_toggle=True):
-        r = _get_defs(t, "ThingDef/RSW_CookedSkewer", "ingestible")
-        row = _row_for(r, "ThingDef/RSW_CookedSkewer")
-        got = str((row or {}).get("fields", {}).get("ingestible", ""))
-        ok = "RSW_AteEmptySkewer" in got
-        t._record("RSW_CookedSkewer.ingestible -> %r" % got, ok)
-        if not ok:
-            raise ExpectationFailed(
-                "RSW_CookedSkewer.ingestible = %r, expected to contain "
-                "tasteThought RSW_AteEmptySkewer" % got)
-
 
 @suite.chain("recipes_readback")
 def recipes_readback(t):
     """One representative recipe per shape (module docstring): meat-only
     (no skewer), skewer-crafting, and skewer-consuming (ExcludeSkewer
-    getter) -- not all 14, per this family's own sampling precedent."""
+    getter) -- not all 15, per this family's own sampling precedent."""
     with t.component("meat_only_recipe_no_skewer_getter", beyond_toggle=True):
         r = _get_defs(t, "RecipeDef/RSW_CookMeatOnAStick",
                      "recipeUsers,ingredientValueGetterClass,products")
@@ -253,29 +223,9 @@ def recipes_readback(t):
                 "expected to contain %r" % (got_getter, EXCLUDE_SKEWER_GETTER))
 
 
-@suite.chain("thoughtdef_readback")
-def thoughtdef_readback(t):
-    """RSW_AteEmptySkewer's own stat numbers, read directly off the def --
-    the structural half of `eating_empty_skewer_applies_mood_thought`'s
-    live proof below."""
-    with t.component("ate_empty_skewer_stats", beyond_toggle=True):
-        r = _get_defs(t, "ThoughtDef/RSW_AteEmptySkewer", "durationDays,stages")
-        row = _row_for(r, "ThoughtDef/RSW_AteEmptySkewer")
-        fields = (row or {}).get("fields") or {}
-        got_dur = str(fields.get("durationDays", ""))
-        got_stages = str(fields.get("stages", ""))
-        ok = got_dur == "1" and "-6" in got_stages
-        t._record("RSW_AteEmptySkewer -> durationDays=%r stages=%r"
-                  % (got_dur, got_stages), ok)
-        if not ok:
-            raise ExpectationFailed(
-                "RSW_AteEmptySkewer durationDays=%r stages=%r, expected "
-                "durationDays=1 and a stage containing -6" % (got_dur, got_stages))
-
-
-@suite.chain("skewer_and_cooked_skewer_spawn")
-def skewer_and_cooked_skewer_spawn(t):
-    """Walk steps 5-6: both resources actually spawn onto a real map."""
+@suite.chain("skewer_spawns")
+def skewer_spawns(t):
+    """Walk step 5: the skewer resource actually spawns onto a real map."""
     t.clear_area(size=15)
     with t.component("skewer_stack_spawns", beyond_toggle=True):
         cells = t.spawn("RSW_Skewer", count=1, at="point")
@@ -288,16 +238,6 @@ def skewer_and_cooked_skewer_spawn(t):
             raise ExpectationFailed(
                 "no RSW_Skewer found at (%d,%d) after spawning: %r" % (x, z, rows))
 
-    with t.component("cooked_skewer_spawns", beyond_toggle=True):
-        cells = t.spawn("RSW_CookedSkewer", count=1, at="point")
-        x, z = cells[0] if cells else t.anchor
-        r = t.bridge_call("jawa/list_things", rect="%d,%d,3,3" % (x - 1, z - 1))
-        rows = (r or {}).get("things") or []
-        ok = any(row.get("def") == "RSW_CookedSkewer" for row in rows)
-        t._record("RSW_CookedSkewer present at (%d,%d) -> %s" % (x, z, ok), ok)
-        if not ok:
-            raise ExpectationFailed(
-                "no RSW_CookedSkewer found at (%d,%d) after spawning: %r" % (x, z, rows))
         t.screenshot()
 
 
@@ -325,52 +265,6 @@ def namegen_fallback_on_bare_spawn(t):
                 "unchanged fallback label (not a 'Roasted ...' rename, "
                 "which needs recorded ingredients this spawn never sets)"
                 % label)
-
-
-@suite.chain("eating_empty_skewer_applies_mood_thought")
-def eating_empty_skewer_applies_mood_thought(t):
-    """Real behavioral proof of RSW_AteEmptySkewer via `jawa/pawn_thoughts`
-    -- module docstring's note on why this IS a grounded, live-confirmed
-    channel (Droidworks/validation.py already drives it), distinct from
-    Ninefold's own "no mood read-back" finding about a different, scalar
-    mechanic."""
-    t.clear_area(size=12)
-    x, z = t.anchor
-    cells = t.spawn("RSW_CookedSkewer", count=1, at="point")
-    sx, sz = cells[0] if cells else (x, z)
-    eater = t.spawn_pawn("Colonist", hostile=False)
-
-    with t.component("ate_empty_skewer_thought_applied", beyond_toggle=True):
-        t.bridge_call("jawa/pawn_need", pawn=eater, action="need",
-                      need="Food", level=0.1)
-
-        things = t.bridge_call("jawa/list_things", rect="%d,%d,3,3" % (sx - 1, sz - 1))
-        rows = (things or {}).get("things") or []
-        skewer_id = next((row.get("id") for row in rows
-                          if row.get("def") == "RSW_CookedSkewer"), None)
-        if not skewer_id:
-            raise ExpectationFailed(
-                "could not resolve RSW_CookedSkewer's thingId from "
-                "jawa/list_things: %r" % rows)
-
-        r = t.bridge_call("jawa/ordered_job", pawnId=eater, jobDef="Ingest",
-                          targetAId=skewer_id, waitTicks=60)
-        if not (r or {}).get("accepted"):
-            raise ExpectationFailed(
-                "jawa/ordered_job(Ingest, RSW_CookedSkewer) was not "
-                "accepted: %r" % r)
-
-        t.wait_ticks(300)
-
-        thoughts = t.bridge_call("jawa/pawn_thoughts", pawn=eater)
-        defs = [th.get("def") for th in ((thoughts or {}).get("thoughts") or [])]
-        ok = "RSW_AteEmptySkewer" in defs
-        t._record("pawn_thoughts(%s) -> %r" % (eater, defs), ok)
-        if not ok:
-            raise ExpectationFailed(
-                "eater has no RSW_AteEmptySkewer thought after eating a "
-                "RSW_CookedSkewer: %s" % defs)
-        t.screenshot()
 
 
 @suite.chain("rotting_bed_grows_marsh_fungus")

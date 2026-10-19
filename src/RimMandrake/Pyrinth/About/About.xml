@@ -7,8 +7,8 @@
     <li>1.6</li>
   </supportedVersions>
   <description>Absorbed copy of det.epochspyrinth ("Epochs - Pyrinth"): the glowing orange
-  pyrinth ore, its torch/wall-torch/pylon/heater furniture family, the pyrinth blade melee
-  weapon, and its sparking mote effects (CRYSTAL_INGEST_EXECUTION_1 item 1,
+  pyrinth ore, its torch/wall-torch/pylon/heater furniture family and its sparking mote
+  effects (the donor's pyrinth blade is not absorbed: owner, 2026-10-19, "not needed") (CRYSTAL_INGEST_EXECUTION_1 item 1,
   design/Jawa/mods/crystal_mods_inventory.md). Generic content, no Star Wars or campaign
   material === RimMandrake tier per design/NAMING_SCHEME_PLAN.md.
 

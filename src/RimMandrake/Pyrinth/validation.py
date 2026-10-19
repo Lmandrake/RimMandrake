@@ -1,8 +1,8 @@
 """validation.py -- modcheck suite for RimMandrake: Pyrinth (mandrake.rm.pyrinth).
 
 First north-star script (PYRINTH_FIRST_SCRIPT_1). Walk: design/validation_walks/RimMandrake/Pyrinth.md (DRAFT).
-Absorbed copy of det.epochspyrinth: the pyrinth ore, torch/wall-torch/pylon/heater furniture, pyrinth blade and spark
-effects. DORMANT by design (About.xml: not deployable while the donor is active; defNames are preserved verbatim). It has NO C#
+Absorbed copy of det.epochspyrinth: the pyrinth ore, torch/wall-torch/pylon/heater furniture and spark
+effects (the pyrinth blade DV_MeleeWeapon_PyrinthBlade was cut by the owner, picks_icons_sheet_2026-10-19: "not needed"). DORMANT by design (About.xml: not deployable while the donor is active; defNames are preserved verbatim). It has NO C#
 and NO settings class, and no DEPLOY_HOLD entry. A live pass proves the defNames resolve, not that this pack supplied them.
 
 CHAINS
@@ -10,7 +10,7 @@ CHAINS
                      notFound; no file of this mod is named in DEPLOY_HOLD.txt.
   settings_roundtrip there is NO settings class (no Source C#): the probe asserts none exists, nothing is round-tripped.
   ore_and_donor_identity  DV_MineablePyrinth's mineableThing / mineableYield equal the XML's; whether THIS pack is the loaded copy: UNMEASURED.
-  furniture_and_weapon    glow/heat/meditation, blade, MO and Royalty patches, Lantern Deeps gate: UNMEASURED, each saying why.
+  furniture_and_weapon    glow/heat/meditation, MO and Royalty patches, Lantern Deeps gate: UNMEASURED, each saying why.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 """
@@ -81,7 +81,7 @@ def ore_facts():
 
 
 
-# ---- PYRINTH_COVERAGE_GAPS_1: what the shipped XML makes the furniture / blade / effects DO ---------------------------
+# ---- PYRINTH_COVERAGE_GAPS_1: what the shipped XML makes the furniture / effects DO ---------------------------
 # Parsed from the pack's own XML with parent/Inherit resolution inside the pack (vanilla parents are leaves), so each bar
 # asserts a property of the effective def, and a selftest plants the XML break that must redden it. Live get_defs reads
 # only prove names resolve (and cannot tell this pack from the donor), so these static bars are the behaviour floor.
@@ -152,7 +152,7 @@ def _num(el, tag, default=None):
 
 
 def semantic_findings(byname, named, patches):
-    """Findings for: glow, heat, meditation, spark effecters, blade, cost/ref integrity, patch targets and values."""
+    """Findings for: glow, heat, meditation, spark effecters, cost/ref integrity, patch targets and values."""
     bad = []
 
     def need(name):
@@ -237,24 +237,9 @@ def semantic_findings(byname, named, patches):
     if big is not None and small is not None and not (_num(small.find("children/li"), "chancePerTick", 1) < _num(big.find("children/li"), "chancePerTick", 0)):
         bad.append("the small spark effecter is not rarer than the big one")
 
-    blade = need("DV_MeleeWeapon_PyrinthBlade")
-    if blade is not None:
-        tools = blade.findall("tools/li")
-        caps = [t.findtext("capacities/li") for t in tools]
-        if sorted(caps) != ["Blunt", "Cut", "Stab"]:
-            bad.append("blade tools are %r, want Blunt+Stab+Cut" % caps)
-        for t in tools:
-            if not (_num(t, "power", 0) > 0 and _num(t, "cooldownTime", 0) > 0):
-                bad.append("blade tool %r has non-positive power or cooldown" % t.findtext("label"))
-        burners = [t for t in tools if t.find("extraMeleeDamages/li[def='Flame']") is not None]
-        if sorted(t.findtext("label") for t in burners) != ["edge", "point"]:
-            bad.append("the blade's edge and point are not both Flame-searing (its description says it burns): %r" % [t.findtext("label") for t in burners])
-        for t in burners:
-            x = t.find("extraMeleeDamages/li[def='Flame']")
-            if not (_num(x, "amount", 0) > 0 and 0 < _num(x, "chance", 0) <= 1):
-                bad.append("blade flame bonus on %s has a non-positive amount or a chance outside (0,1]" % t.findtext("label"))
-        if blade.findtext("recipeMaker/researchPrerequisite") is None or blade.find("costList/DV_Pyrinth") is None:
-            bad.append("blade has no research prerequisite or no DV_Pyrinth cost")
+    # owner, picks_icons_sheet_2026-10-19: the pyrinth blade is "not needed" -- cut; it must not come back
+    if "DV_MeleeWeapon_PyrinthBlade" in byname:
+        bad.append("DV_MeleeWeapon_PyrinthBlade is back in the pack (cut by the owner, picks_icons_sheet_2026-10-19)")
 
     ex = need("DV_PyrinthHeater")
     if ex is not None:
@@ -431,7 +416,7 @@ def _build_suite():
 
     @suite.chain("furniture_and_weapon")
     def furniture_and_weapon(t):
-        # PYRINTH_COVERAGE_GAPS_1: the first five bars assert the effective shipped XML (parent/Inherit resolved), so they run
+        # PYRINTH_COVERAGE_GAPS_1: the first four bars assert the effective shipped XML (parent/Inherit resolved), so they run
         # with no game; the stubs after them are what needs a built instance, another mod, or a pawn fight.
         findings = semantic_findings(*load_pack())
 
@@ -447,24 +432,19 @@ def _build_suite():
             bad = [f for f in findings if any(k in f for k in ("effecter", "mote", "sub-effecter", "spark"))]
             if bad:
                 raise ExpectationFailed("; ".join(bad))
-        with t.component("pyrinth_blade_tools_hit_and_the_edge_and_point_sear", beyond_toggle=True):
-            bad = [f for f in findings if any(k in f for k in ("blade", "DV_MeleeWeapon"))]
-            if bad:
-                raise ExpectationFailed("; ".join(bad))
         with t.component("every_reference_and_patch_target_resolves_inside_the_pack", beyond_toggle=True):
             bad = [f for f in findings if any(k in f for k in ("costs ", "names ", "xpath", "patch adds", "Royalty patch", "not defined", "explosive"))]
             if bad:
                 raise ExpectationFailed("; ".join(bad))
-        with t.component("no_finding_escapes_the_five_bars_above", beyond_toggle=True):
+        with t.component("no_finding_escapes_the_bars_above", beyond_toggle=True):
             known = ("Glower", "glowColor", "HeatPusher", "heat ladder", "dimmer", "CompHeatPusherPowered", "editation", "nearby-flame",
-                     "lit-flame", "focus", "effecter", "mote", "sub-effecter", "spark", "blade", "DV_MeleeWeapon", "costs ", "names ",
-                     "xpath", "patch adds", "Royalty patch", "not defined", "explosive")
+                     "lit-flame", "focus", "effecter", "mote", "sub-effecter", "spark", "costs ", "names ",
+                     "xpath", "patch adds", "Royalty patch", "not defined", "explosive", "cut by the owner")
             stray = [f for f in findings if not any(k in f for k in known)]
             if stray:
                 raise ExpectationFailed("finding(s) no bar claims: %s" % "; ".join(stray))
         for name, why in (
             ("torch_family_glow_and_heat_in_play", "a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)"),
-            ("pyrinth_blade_damage_in_a_fight", "damage in play needs a pawn fight; the tool profile is asserted statically above"),
             ("medieval_overhaul_heater_cost_patch", "applies only with Medieval Overhaul loaded; a patch that matches nothing logs nothing, so the live effect is unprovable without that mod (its xpath target is asserted statically above)"),
             ("royalty_throne_room_patch", "edits vanilla RoyalTitleDef throneRoomRequirements, which the offline def dump reports empty (a known dump blind spot), so the xpath's match is UNMEASURED until the pack is the loaded copy and get_defs deep=True reads them"),
             ("lantern_deeps_scatter_gate", "lives in RimUtinni LanternDeeps (patches the live donor def), not in this mod"),
