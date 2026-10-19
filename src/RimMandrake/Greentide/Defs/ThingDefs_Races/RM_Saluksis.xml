@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  RM_Saluksis: owned RM_ port of the swarmling (VFEI2_Swarmling, oskarpotocki.vfe.insectoid2
+  1.6/Defs/ThingDefs_Races/Races_Swarmling.xml; its parent VFEI2_BaseInsect inlined), plain XML copy 2026-10-18 for
+  donor retirement (owner: "Just put in placeholder art for now or donor copies and retire these mods!!! Just get it
+  done."). Free RM_ tier, home mod Greentide. Cast by RM_Greentide 0.4 and RUT_Greentide 0.4 (floor-vermin), and by
+  RM_Miasma / RUT_Miasma 0.7 (vermin), the rows the donor def held; evictions are stopped, so the Miasma rows stay.
+  Name and description are the Greentide sheet's (2026-10-08, "redo description. Rename it to Saluksis, make it yet
+  more alien"), formerly applied to the donor def by UtinniPatches/Patches/Greentide_Rename.xml.
+  Departures, all to make it plain XML with no VFE Insectoids reference:
+    - the cocoon comp (VFEInsectoids.CompProperties_SwarmlingToCocoon) is GONE: a saluksis never becomes anything
+      else, so the description no longer promises a cocoon.
+    - VEF MakeOtherPawnsFlee comp dropped; VFEI2 render tree, VFEI2_Swarmling body and VanishInsect death action
+      dropped: vanilla BeetleLike body and a corpse.
+  ART: the Swarmling redraw (UtinniPatches ArtFold, formerly the SwarmlingArtOverride mod), copied through the art
+  ledger to OUR path below.
+  -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Saluksis</defName>
+    <label>saluksis</label>
+    <description>Soft, pale, hand-sized things with no face to speak of: a swollen milky sac carried on a fringe of thin legs, a ring of feeding pores where a head should be, and a faint pulse showing through the skin. Saluksis drift across the jungle floor in loose crowds, eating rot and sprouts, slow and easy to kill. Nothing about a saluksis says what it is for, or whether it was ever meant to grow into anything else.</description>
+    <statBases>
+      <MoveSpeed>1.24</MoveSpeed>
+      <Flammability>0.7</Flammability>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>50</MarketValue>
+      <ArmorRating_Blunt>0</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0</ArmorRating_Sharp>
+      <LeatherAmount>0</LeatherAmount>
+      <MeatAmount>0</MeatAmount>
+      <Wildness>0.2</Wildness>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1</power>
+        <armorPenetration>0.07</armorPenetration>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <baseHungerRate>0.05</baseHungerRate>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>2</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.03</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Saluksis</defName>
+    <label>saluksis</label>
+    <race>RM_Saluksis</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <aiAvoidCover>false</aiAvoidCover>
+    <defendPointRadius>0</defendPointRadius>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Saluksis/RM_Saluksis</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Saluksis/RM_Saluksis</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Saluksis/RM_Saluksis</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

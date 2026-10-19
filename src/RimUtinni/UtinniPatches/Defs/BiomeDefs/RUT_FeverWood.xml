@@ -272,7 +272,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RSW_Urusai MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Urusai>  <!-- urusai - crown-flier, keep -->
-      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
+      <RM_Kasselith MayRequire="mandrake.rm.feverwood">0.5</RM_Kasselith>  <!-- kasselith (was VFEI2_Megathrips; our port, donor retired 2026-10-18) - wood-borer, keep -->
       <RSW_Gelagrub MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gelagrub>  <!-- gelagrub - crown-grazer, adjust-keep -->
       <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - grazer, keep; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
       <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Convor>  <!-- convor - crown-flier, import -->

@@ -46,8 +46,8 @@ this mod re-points them at RM_FeverWood; it does not re-author them.
 campaign patch layer, never the franchise-free RimMandrake tier. Ten
 wildAnimals rows and three wildPlants rows that carry canon or RSW_ names
 ride src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml instead;
-this def ships only vanilla + one non-Star-Wars donor row
-(VFEI2_Megathrips) + three non-Star-Wars donor plants (AB_KeeningCordax,
+this def ships only vanilla + this mod's own RM_Kasselith (port of the
+donor VFEI2_Megathrips, 2026-10-18) + three non-Star-Wars donor plants (AB_KeeningCordax,
 AB_Iashiphus, AB_Gomphoeria) + this mod's own RM_GiantLeaf.
 
 Live proof (step 5, a scratch-world quicktest with all five expansions) is

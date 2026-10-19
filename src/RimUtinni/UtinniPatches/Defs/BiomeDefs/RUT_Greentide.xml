@@ -216,7 +216,7 @@
       <RSW_Klorslug MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Klorslug>  <!-- k'lor'slug - gnawer, keep -->
       <RSW_Mott MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Mott>  <!-- mott - brake, import -->
       <RSW_Nuna MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Nuna>  <!-- nuna - brake, import; DUPLICATE_CANON_DEFNAME_PAIRS_1: repointed from donor Nuna to the RSW_ port, owner-ruled merge 2026-09-23 -->
-      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>  <!-- swarmlings - floor-vermin, adjust-keep -->
+      <RM_Saluksis MayRequire="mandrake.rm.greentide">0.4</RM_Saluksis>  <!-- saluksis (was VFEI2_Swarmling; our port, donor retired 2026-10-18) - floor-vermin, adjust-keep -->
       <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Convor>  <!-- convor - flier, import -->
       <RSW_Falumpaset MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Falumpaset>  <!-- falumpaset - brake, import -->
       <RSW_Gelagrub MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Gelagrub>  <!-- gelagrub - gnawer, import -->

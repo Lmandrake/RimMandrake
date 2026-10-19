@@ -170,6 +170,7 @@
          herd on many maps, none on some). The Illisk is 1.0, common (GREENTIDE_ILLISK_BUILD_1). The Vurrak (the false bank) is 0.15 by owner card
          2026-10-03 (GREENTIDE_VURRAK_BUILD_1). The skerrel stays plant-spawned. -->
     <wildAnimals>
+      <RM_Saluksis>0.4</RM_Saluksis>  <!-- saluksis (renamed from swarmlings, Greentide sheet 2026-10-08) - floor-vermin; our port of VFEI2_Swarmling, formerly patch-added by UtinniPatches WildAnimals_Greentide.xml under a FindMod on the donor (retired 2026-10-18) -->
       <RM_Krannock>0.3</RM_Krannock>
       <RM_Sulleth>0.8</RM_Sulleth>
       <RM_Dhollock>0.15</RM_Dhollock>

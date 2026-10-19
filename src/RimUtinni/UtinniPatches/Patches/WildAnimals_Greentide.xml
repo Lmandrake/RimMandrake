@@ -59,24 +59,7 @@
 
   <!-- A PatchOperationFindMod on "Alpha Animals" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Vanilla Factions Expanded - Insectoids 2</li>  <!-- FindMod matches the mod NAME, never the packageId (oskarpotocki.vfe.insectoid2); fixed 2026-10-17 live walk -->
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
-          <match Class="PatchOperationAdd">
-            <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
-            <value>
-              <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>
-            </value>
-          </match>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Vanilla Factions Expanded - Insectoids 2" (VFEI2_Swarmling 0.4) stood here; that donor was retired 2026-10-18 and the row is now RM_Greentide's own inline RM_Saluksis. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods>

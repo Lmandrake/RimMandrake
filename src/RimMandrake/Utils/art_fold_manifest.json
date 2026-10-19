@@ -656,14 +656,10 @@
    "packageId": "mandrake.rut.blackswarmlingartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
-     "new": "RimUtinni/UtinniPatches/BlackSwarmling/VFEI2_BlackSwarmling"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/BlackSwarmling_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/BlackSwarmling/VFEI2_BlackSwarmling_south.png",
+   "groups": [],
    "unlisted_files": 0
   },
   {
@@ -920,14 +916,10 @@
    "packageId": "mandrake.rut.swarmlingartoverride",
    "donor": "oskarpotocki.vfe.insectoid2",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/Swarmling/Swarmling",
-     "new": "RimUtinni/UtinniPatches/Swarmling/Swarmling"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Swarmling_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Saluksis/RM_Saluksis_south.png",
+   "groups": [],
    "unlisted_files": 0
   },
   {
@@ -979,43 +971,15 @@
    "unlisted_files": 36
   },
   {
-   "creature": "Visceral",
-   "override": "src/RimUtinni/VisceralArtOverride",
-   "packageId": "mandrake.rut.visceralartoverride",
-   "donor": "mlie.horrors",
-   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3535224844",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/Visceral/Visceral",
-     "new": "RimUtinni/UtinniPatches/Visceral/Visceral"
-    },
-    {
-     "old": "Things/Pawn/Animal/Visceral/VisceralBaby",
-     "new": "RimUtinni/UtinniPatches/Visceral/VisceralBaby"
-    },
-    {
-     "old": "Things/Pawn/Animal/Visceral/VisceralTeen",
-     "new": "RimUtinni/UtinniPatches/Visceral/VisceralTeen"
-    }
-   ],
-   "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Visceral_ArtFold.xml",
-   "unlisted_files": 0
-  },
-  {
    "creature": "Megathrips",
    "override": "src/RimUtinni/MegathripsArtOverride",
    "packageId": "mandrake.rut.megathripsartoverride",
    "donor": "oskarpotocki.vfe.insectoid2",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431",
    "owner": "src/RimUtinni/UtinniPatches",
-   "mode": "samepath",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/Megathrips/Megathrips",
-     "new": "Things/Pawn/Animal/Megathrips/Megathrips"
-    }
-   ],
+   "mode": "dead",
+   "kept": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Kasselith/RM_Kasselith_south.png",
+   "groups": [],
    "unlisted_files": 0
   },
   {
