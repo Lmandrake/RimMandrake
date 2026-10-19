@@ -44,6 +44,11 @@ WATERS (SUSPENSION_WATERS_BUILD_MAY_BACKTRACK): natural water is wherever the ma
   W3 timber and steel bridges over a 2 m water trench (1..4, 64)/(1..4, 68), a water flood released beside each, 5,000 ticks
      (2 in-game hours)                                                                      -> row WAT_FLOOD_DAMAGE.
   W4 a steel bridge across the sea: built and crossable, or the backtrack reason             -> row WAT_SEA_OR_BACKTRACK.
+JETTY (SUSPENSION_JETTY_BUILD_WALK_THE_PLANK), plot from origin + (0, 72): a 4 m pit (1..4, 72..74).
+  J1 a 2-square steel jetty (0,73)-(2,73): accepted; a 3-square one (0,72)-(3,72): refused with the reason -> rows JET_TWO_OK, JET_THREE_REFUSED.
+  J2 one colonist on (2,73): stands (ProofSpan Ok); a second added: Over, then both jetty squares gone in one load pass and
+     both pawns on the pit floor                                                            -> row JET_OVERLOAD_DROPS_WHOLE.
+  J3 a new 1-square jetty (0,74)-(1,74), railings off: a colonist on it ordered to jump down (the jump order, an open edge) -> row JET_OPEN_EDGE_DROP (owed: needs the jump order's bridge call).
 Every read is jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionProofs.<Proof*> (one line out; see that file).
 
 ANTI-GUESSING NOTES
@@ -441,11 +446,38 @@ def waters(ctx):
         row("WAT_sea_or_backtrack", "UNMEASURED", {"why": "no --sea x1,z1,x2,z2 given (a coast crossing)"})
 
 
+def jetty(ctx):
+    """SUSPENSION_JETTY_BUILD_WALK_THE_PLANK rows (verify L2 x3)."""
+    B, P, xz, row, proof, dig, spawn, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "dig", "spawn", "ticks"))
+    for z in (72, 73, 74):
+        for i in range(1, 5):
+            dig(P(i, z), 8)
+    kv, txt = proof("ProofJetty", "%s;%s;steel;god" % (xz(P(0, 73)), xz(P(2, 73))))
+    good = kv.get("ok") == "True" and kv.get("anchors") == "1" and kv.get("decks") == "2"
+    row("JET_two_square_steel_accepted", "PASS" if good else ("FAIL" if kv else "UNMEASURED"), {"read": txt})
+    kv3, txt3 = proof("ProofJetty", "%s;%s;steel" % (xz(P(0, 72)), xz(P(3, 72))))
+    good = kv3.get("ok") == "False" and "at most 2" in txt3 and kv3.get("blueprints") == "0"
+    row("JET_three_square_refused", "PASS" if good else ("FAIL" if kv3 else "UNMEASURED"), {"read": txt3})
+    p1 = spawn(P(2, 73))
+    k1, t1 = proof("ProofSpan", xz(P(2, 73)))
+    p2 = spawn(P(1, 73))
+    k2, t2 = proof("ProofSpan", xz(P(2, 73)))
+    ticks(120)
+    k3, t3 = proof("ProofSpan", xz(P(2, 73)))
+    ps = pawns_of(B)
+    on_floor = [ps.get(p) and (ps[p].get("x"), ps[p].get("z")) in (P(1, 73), P(2, 73)) for p in (p1, p2)]
+    good = k1.get("state") == "Ok" and k2.get("state") == "Over" and (t3.startswith("SPAN none") or k3.get("decks") == "0") and all(on_floor)
+    row("JET_overload_drops_whole_at_root", "PASS" if good else ("FAIL" if k1 else "UNMEASURED"),
+        {"one": t1, "two": t2, "after": t3, "onFloor": on_floor})
+    row("JET_open_edge_drop_on_order", "UNMEASURED", {"owed": True, "why": "OWED: railings off, order the 'Jump into pit' float-menu "
+        "job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"})
+
+
 def pawns_of(B):
     return {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=300) or {}).get("pawns") or []}
 
 
-SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters}
+SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty}
 
 
 class FakeBridge(object):
@@ -474,6 +506,9 @@ class FakeBridge(object):
         if method == "jawa/list_pawns":
             self.reads += 1
             late = self.reads % 2 == 0
+            if self.last_tier == "jetty":
+                return {"pawns": [{"id": i, "x": FakeBridge.ox + 1 + (i % 2), "z": FakeBridge.floor_z + 73, "hediffs": []}
+                                  for i in range(1001, self.next_id + 1)]}
             return {"pawns": [{"id": i, "x": FakeBridge.ox + 1 + (i % 6), "z": FakeBridge.floor_z,
                                "hediffs": ([] if not late else ["Burn", "Bruise"] if self.tags.get(i) == "steelgrated" else ["Bruise"])
                                + (["Crush"] * self.fell)}
@@ -493,6 +528,10 @@ class FakeBridge(object):
             return "BUILD ok=True anchors=2 decks=6 blueprints=0 reason=-"
         if m == "ProofPath":
             return "PATH found=True cells=9 decked=6"
+        if m == "ProofSpan" and self.last_tier == "jetty":
+            self.jet += 1
+            return ["SPAN tier=steel load=70.0 rating=120 state=Ok decks=2 line=Load 70 / 120 kg",
+                    "SPAN tier=steel load=140.0 rating=120 state=Over decks=2 line=Load 140 / 120 kg", "SPAN none"][min(self.jet, 3) - 1]
         if m == "ProofSpan":
             self.span += 1
             if self.last_tier == "steel":
@@ -527,6 +566,11 @@ class FakeBridge(object):
         if m == "ProofFell":
             self.fell += 1 if arg else 0
             return "FELL crushed=%d wrecks=%d slid=1" % (self.fell, self.fell)
+        if m == "ProofJetty":
+            if "%d," % (FakeBridge.ox + 3) in arg.split(";")[1]:
+                return "JETTY ok=False anchors=0 decks=0 blueprints=0 railed=0 reason=A jetty reaches at most 2 squares out (this one: 3)."
+            self.last_tier, self.jet = "jetty", 0
+            return "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-"
         if m == "ProofWater":
             return "WATER terrain=WaterMovingChestDeep water=True ocean=False river=True spannable=True decked=True exempt=True walkable=True swim=False"
         if m == "ProofDeckHp":

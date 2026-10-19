@@ -18,8 +18,10 @@ import zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFS = os.path.join(HERE, "Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml")
 TEX = os.path.join(HERE, "Textures")
-# 10 from the posts build; +2 grated decks (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP); +1 wreck (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD)
-EXPECTED = 13
+# 10 from the posts build; +2 grated decks (SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP); +1 wreck (SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD);
+# +2 jetties (SUSPENSION_JETTY_BUILD_WALK_THE_PLANK, Graphic_Multi: _north/_east/_south each)
+EXPECTED = 15
+MULTI = ("RM_SuspensionJetty_",)
 
 
 def read_png(path):
@@ -112,10 +114,16 @@ def main():
         bad = check(["Things/Building/FlowWorks/SuspensionBridge/RM_NoSuchTexture"])
         print("can-fail " + ("OK: " + bad[0] if bad else "BROKEN: a missing texture passed"))
         return 0 if bad else 1
-    fails = check(texpaths)
+    files = []
+    for tp in texpaths:
+        if any(m in tp for m in MULTI):
+            files += [tp + "_" + f for f in ("north", "east", "south")]   # west mirrors east
+        else:
+            files.append(tp)
+    fails = check(files)
     for f in fails:
         print("FAIL " + f)
-    print(f"suspension art: {len(texpaths) - len({f.split(':')[0] for f in fails})}/{len(texpaths)} textures pass")
+    print(f"suspension art: {len(files) - len({f.split(':')[0] for f in fails})}/{len(files)} texture files pass")
     return 1 if fails else 0
 
 

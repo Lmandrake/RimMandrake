@@ -155,7 +155,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(!defs.Contains("<label>bridge") && !defs.Contains("span</label>"), "player-facing names never say a bare bridge or span");
                 int noDefault = defs.Split(new[] { "<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>" }, StringSplitOptions.None).Length - 1;
-                Assert(noDefault == 11, "decks (grated included), anchors and the railing get no plain per-square button (" + noDefault + ")");
+                Assert(noDefault == 13, "decks (grated and jetty included), anchors and the railing get no plain per-square button (" + noDefault + ")");
                 string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
                 foreach (string n in new[] { "Rope", "Timber", "Steel", "Heavy" })
                 {
@@ -328,6 +328,49 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = Src("Pits", "Suspension", "RM_SuspensionSettings.cs");
                 Assert(set.Contains("\"Suspension bridges over rivers and lakes\"") && set.Contains("\"Suspension bridges over the sea\"")
                     && set.Contains("\"Floods damage light bridges\""), "the three water settings are shown");
+            });
+            // SUSPENSION_JETTY_BUILD_WALK_THE_PLANK (construction design §3): 1-2 squares, steel/heavy, one person, fails at the root.
+            Case("Jetty_reach_root_type_and_load", () =>
+            {
+                SuspensionTier st = SuspensionTier.Steel;
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("GHH"), false, st) == null, "verify L2: a 2-square steel jetty from a bank over a pit is accepted");
+                string three = RM_SuspensionMath.ValidateJetty(Lane("GHHH"), false, st);
+                Assert(three != null && three.Contains("at most 2") && three.Contains("this one: 3"), "verify L2: a 3-square jetty is refused with the reason: " + three);
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("GH"), false, SuspensionTier.Heavy) == null, "a 1-square heavy jetty is fine");
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("GHH"), false, SuspensionTier.Timber) != null
+                    && RM_SuspensionMath.ValidateJetty(Lane("GH"), false, SuspensionTier.Rope) != null, "steel or heavy only");
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("HHH"), false, st) != null, "can-fail: a root over the hole is refused");
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("XH"), true, st) == null, "rooted on a bridge's anchor (the root square is that anchor)");
+                Assert(RM_SuspensionMath.ValidateJetty(Lane("GG"), false, st) != null && RM_SuspensionMath.ValidateJetty(Lane("G"), false, st) != null,
+                    "nothing to reach over, or no reach: refused");
+                Assert(RM_SuspensionMath.JettyRatingKg(1f) == 120f && RM_SuspensionMath.JettyRatingKg(2f) == 240f, "one person's weight (120 kg) × the load multiplier");
+                Assert(RM_SuspensionMath.Classify(70f, RM_SuspensionMath.JettyRatingKg(1f)) == SpanLoadState.Ok
+                    && RM_SuspensionMath.Classify(140f, RM_SuspensionMath.JettyRatingKg(1f)) == SpanLoadState.Over, "verify L2: one 70 kg colonist stands; two drop it");
+                Assert(RM_SuspensionMath.JettyReadoutLine(st, 70f, 120f, 0) == "Jetty (steel) · deck at surface · load 70 / 120 kg", "the jetty's readout line");
+            });
+
+            Case("Jetty_wiring_record_designator_defs", () =>
+            {
+                string comp = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");
+                Assert(comp.Contains("public int SpanCount => jetty ? 1 : Supports.Count - 1;") && comp.Contains("RM_SuspensionMath.JettyRatingKg("),
+                    "a jetty is one span rated at one person");
+                Assert(comp.Contains("b.jetty && b.Cell(0, 0) == c") && comp.Contains("CollapseSpan(jd, \"lost its anchor\");"),
+                    "a jetty fails at the root: losing its anchor drops it whole");
+                Assert(comp.Contains("if (r.jetty && i == 0 && index.ContainsKey(r.Cell(lane, i)))"), "a jetty on a bridge's anchor leaves the anchor to the bridge");
+                string des = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(des.Contains("public abstract class Designator_SuspensionJetty : Designator_Build") && des.Contains("jetty = true, railings = true"),
+                    "the jetty button: its own drag, railed by default");
+                Assert(Src("Pits", "Suspension", "RM_SuspensionPatches.cs").Contains("bool ok = r.jetty ?"), "a jetty builds outward from its root");
+                string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
+                foreach (string n in new[] { "Steel", "Heavy" })
+                {
+                    int at = defs.IndexOf("<defName>RM_SuspensionJetty_" + n + "</defName>");
+                    Assert(at >= 0, n + " jetty def");
+                    string blk = defs.Substring(at, defs.IndexOf("</ThingDef>", at) - at);
+                    Assert(blk.Contains("<jetty>true</jetty>") && blk.Contains("<graphicClass>Graphic_Multi</graphicClass>"), n + " jetty: extension and Graphic_Multi");
+                }
+                string patch = ModFile("Patches", "Pits", "RM_SuspensionBridges.xml");
+                Assert(patch.Contains("Designator_SuspensionJetty_Steel") && patch.Contains("Designator_SuspensionJetty_Heavy"), "the jetty buttons are registered");
             });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
         }

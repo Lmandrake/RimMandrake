@@ -13,6 +13,9 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP: an open grating (steel and heavy only): fire, spilled liquid and splash
 		/// pass; shots between the deck and the floor band are not blocked.</summary>
 		public bool grated;
+
+		/// <summary>SUSPENSION_JETTY_BUILD_WALK_THE_PLANK: a jetty square (1 or 2 out from an anchor, no far end).</summary>
+		public bool jetty;
 	}
 
 	[DefOf]

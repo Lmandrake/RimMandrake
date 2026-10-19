@@ -425,6 +425,62 @@ namespace RimMandrake.FlowWorks
 			return d < 1 ? 1 : d;
 		}
 
+		// ── SUSPENSION_JETTY_BUILD_WALK_THE_PLANK (construction design §3; owner card: "short jetty, 1-2 squares") ─────────
+
+		public const int JettyMaxCells = 2;
+
+		/// <summary>One person's weight (proposal), × the load multiplier.</summary>
+		public const float JettyLoadKg = 120f;
+
+		public static float JettyRatingKg(float loadMultiplier)
+		{
+			return JettyLoadKg * loadMultiplier;
+		}
+
+		/// <summary>Only steel and heavy reach out as a jetty (as with grates).</summary>
+		public static bool MayBeJetty(SuspensionTier t)
+		{
+			return t == SuspensionTier.Steel || t == SuspensionTier.Heavy;
+		}
+
+		/// <summary>A jetty drag, root first: the root is solid ground at the deck's height (or an anchor already standing there),
+		/// then 1 or 2 squares over a hole or water; no far end. Null = accepted; otherwise the refusal in the player's words.</summary>
+		public static string ValidateJetty(IList<SpanGround> lane, bool rootIsAnchor, SuspensionTier tier)
+		{
+			if (!MayBeJetty(tier))
+			{
+				return "Only steel and heavy suspension bridges reach out as a jetty.";
+			}
+			int n = lane == null ? 0 : lane.Count - 1;
+			if (n < 1)
+			{
+				return "Drag a jetty from solid ground (or a bridge's anchor) out over a hole or water, 1 or 2 squares.";
+			}
+			if (!rootIsAnchor && lane[0] != SpanGround.Ground)
+			{
+				return "A jetty starts on solid ground at its own height, or on a suspension bridge's anchor.";
+			}
+			if (n > JettyMaxCells)
+			{
+				return "A jetty reaches at most " + JettyMaxCells + " squares out (this one: " + n + ").";
+			}
+			for (int i = 1; i <= n; i++)
+			{
+				if (lane[i] != SpanGround.Hole)
+				{
+					return "A jetty reaches out over a hole or water; square " + i + " is not.";
+				}
+			}
+			return null;
+		}
+
+		/// <summary>The jetty's inspect/readout line: "Jetty (steel) · deck at surface · load 70 / 120 kg".</summary>
+		public static string JettyReadoutLine(SuspensionTier t, float loadKg, float ratingKg, int deckNotches)
+		{
+			return "Jetty (" + TierLabel(t) + ") · " + (deckNotches <= 0 ? "deck at surface" : "deck at " + (deckNotches * RM_SpanMath.NotchM)
+				.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m (sunken)") + " · load " + Kg(loadKg) + " / " + Kg(ratingKg) + " kg";
+		}
+
 		/// <summary>The build-order rule (construction design §1.3): a deck square may be worked once the square next to it along
 		/// its lane, toward either anchor, is a finished anchor or a finished deck square.</summary>
 		public static bool MayBuildDeck(int i, int n, System.Func<int, bool> builtAt)
