@@ -37,11 +37,8 @@
         same vanilla-safe substitute Abyss/CrackedLands/Pyrelands
         already use for a hot/arid RM_ biome's foraging.
 
-    terrainsByFertility keeps the frozen twin's three AB_ terrain bands
-    inline, unguarded — RM_CrackedLands_Biome.xml already sets this exact
-    precedent (AB_FineForsakenSand inline, no MayRequire) for a donor terrain
-    family in an RM_-tier def; terrainsByFertility's own <li> does not carry
-    a MayRequire field in the engine anyway.
+    terrainsByFertility: the frozen twin's three Alpha Biomes terrain bands, and the AB_ weather/plant rows,
+    point at our own ports (Defs/RM_TheForge_DonorPorts.xml) since the 2026-10-18 donor retirement.
 
     wildAnimals: every RSW_/SW_/donor-Star-Wars-name entry stays OUT (per
     §7 Q11, "RimMandrake should not name star wars ever") and rides
@@ -155,17 +152,17 @@
     </diseases>
     <terrainsByFertility>
       <li>
-        <terrain>AB_BlackPebbles</terrain>
+        <terrain>RM_BlackPebbles</terrain>
         <min>-999</min>
         <max>0.7</max>
       </li>
       <li>
-        <terrain>AB_HardenedGrass</terrain>
+        <terrain>RM_HardenedGrass</terrain>
         <min>0.7</min>
         <max>0.9</max>
       </li>
       <li>
-        <terrain>AB_HardenedGrassFertile</terrain>
+        <terrain>RM_HardenedGrassFertile</terrain>
         <min>0.9</min>
         <max>999</max>
       </li>
@@ -233,8 +230,8 @@
     </terrainPatchMakers>
     <baseWeatherCommonalities>
       <Clear>40</Clear>
-      <AB_VolcanicAsh MayRequire="sarg.alphabiomes">20</AB_VolcanicAsh>
-      <AB_VolcanicAshRain MayRequire="sarg.alphabiomes">6</AB_VolcanicAshRain>
+      <RM_VolcanicAsh>20</RM_VolcanicAsh>
+      <RM_VolcanicAshRain>6</RM_VolcanicAshRain>
       <RM_RedFog>8</RM_RedFog>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
@@ -246,7 +243,7 @@
     </biomeMapConditions>
     <wildAnimals>
       <RM_Bulloo>0.4</RM_Bulloo>  <!-- aerofleet - sky -->
-      <LavaSnail MayRequire="sarg.alphabiomes">0.35</LavaSnail>  <!-- lava snail - ground-slow -->
+      <LavaSnail>0.35</LavaSnail>  <!-- lava snail - ground-slow -->
       <RM_Metallovore>0.15</RM_Metallovore>  <!-- metallovore - ground-slow -->
       <RM_Dhoggur>0.5</RM_Dhoggur>  <!-- dhoggur - small ground, fills the crescendo anole's slot (owner by card 2026-10-16), ECOSYSTEM_PYRAMID_LAW_1 -->
       <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
@@ -272,10 +269,10 @@
       <RM_FireLavender>0.6</RM_FireLavender>  <!-- renamed from RUT_FireLavender -->
       <RM_CinderCrust>0.4</RM_CinderCrust>  <!-- this biome's own variant of the shared crust-fungus, §7 Q13 -->
       <IronScruff_PrimordialGrass MayRequire="IronScruff.PrimordialGeysers">0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
-      <AB_TinkleGrass MayRequire="sarg.alphabiomes">0.3</AB_TinkleGrass>  <!-- tinkle grass -->
+      <RM_TinkleGrass>0.3</RM_TinkleGrass>  <!-- tinkle grass -->
       <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
       <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
-      <AB_FirevineTree MayRequire="sarg.alphabiomes">0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
+      <RM_FirevineTree>0.2</RM_FirevineTree>  <!-- firevine tree - tree -->
       <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- renamed from RUT_HeatsinkFungus, tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>

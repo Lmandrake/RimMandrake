@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
+    mods!!! Just get it done."). Everything the Forge still borrowed from Alpha Biomes (sarg.alphabiomes), ported
+    as RM_ defs with the donor's own values: the three ground terrains, tinkle grass, the firevine tree, both
+    volcanic-ash weathers and their mood thought. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
+    provenance kind=donor standin=true) until regenerated. LavaSnail was never Alpha Biomes' (vanilla Odyssey).
+  -->
+  <!-- RM_BlackPebbles: port of AB_BlackPebbles (Alpha Biomes, TerrainDefs/Terrain_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_BlackPebbles</defName>
+    <label>black volcanic sand</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_BlackPebbles</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>12</pathCost>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <scatterType>SoftGray</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.05</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <!-- RM_HardenedGrass: port of AB_HardenedGrass (Alpha Biomes, TerrainDefs/Terrain_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_HardenedGrass</defName>
+    <label>hardened grass</label>
+    <texturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass</texturePath>
+    <pollutedTexturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass_Polluted</pollutedTexturePath>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionMud</pollutionOverlayTexturePath>
+    <pollutionShaderType MayRequire="Ludeon.RimWorld.Biotech">TerrainFadeRoughSoftLight</pollutionShaderType>
+    <pollutionColor>(214, 140, 234, 0.15)</pollutionColor>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>353</renderPrecedence>
+    <pathCost>20</pathCost>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftGray</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.7</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <!-- RM_HardenedGrassFertile: port of AB_HardenedGrassFertile (Alpha Biomes, TerrainDefs/Terrain_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_HardenedGrassFertile</defName>
+    <label>fertile volcanic soil</label>
+    <color>(160,140,140)</color>
+    <texturePath>StandIn/Terrain/Surfaces/AB_HardenedGrass</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <pathCost>20</pathCost>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftGray</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1.5</fertility>
+    <takeFootprints>True</takeFootprints>
+  </TerrainDef>
+
+  <!-- RM_TinkleGrass: port of AB_TinkleGrass (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TinkleGrass</defName>
+    <label>tinkle grass</label>
+    <description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_TinkleGrass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>100</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>110</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>1</growDays>
+      <leaflessGraphicPath>StandIn/Things/Plants/AB_TinkleGrass_Leafless</leaflessGraphicPath>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- RM_FirevineTree: port of AB_FirevineTree (Alpha Biomes, ThingDefs_Plants/Plants_PyroclasticConflagration.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_FirevineTree</defName>
+    <label>firevine tree</label>
+    <description>Firevine trees are pyrophitic plants that are able to survive wildfires due to a clever layer of thermal insulation provided by their fire retardant bark. They can be directly burned without sustaining damage to their vital tissues. In fact, their seeds require fire to sprout, so they are only found in fire-prone areas, such as active volcanic zones.\n\nPlant details: Firevine trees are a cultivated plant that also appear in the wild, and they need minimum terrain fertility of 0.05. They are non-flammable. Can be harvested for normal wood.</description>
+    <descriptionHyperlinks>
+      <ThingDef>WoodLog</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>StandIn/Things/Plants/AB_FirevineTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.18, 0.3, 0.15)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Nutrition>2.5</Nutrition>
+    </statBases>
+    <plant>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>100</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>110</maxGrowthTemperature>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <fertilityMin>0.05</fertilityMin>
+      <growDays>14</growDays>
+      <leaflessGraphicPath>StandIn/Things/Plants/AB_FirevineTree_Leafless</leaflessGraphicPath>
+      <harvestWork>1200</harvestWork>
+      <harvestYield>35</harvestYield>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>11</wildClusterWeight>
+      <visualSizeRange>2.8~3.8</visualSizeRange>
+    </plant>
+    <ingestible/>
+  </ThingDef>
+
+  <!-- RM_VolcanicAsh: port of AB_VolcanicAsh (Alpha Biomes, WeatherDefs/Weathers.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <WeatherDef>
+    <defName>RM_VolcanicAsh</defName>
+    <label>volcanic ash</label>
+    <description>A mixture of rock, mineral, and glass particles expelled from a volcano during a volcanic eruption. This creates a thick atmospheric layer that reduces ranged accuracy.</description>
+    <accuracyMultiplier>0.7</accuracyMultiplier>
+    <repeatable>true</repeatable>
+    <favorability>Bad</favorability>
+    <perceivePriority>0</perceivePriority>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <weatherThought>RM_VolcanicAshThought</weatherThought>
+    <!-- Colors are Dark -->
+    <skyColorsDay>
+      <sky>(0.6,0.60,0.6)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.5,0.50,0.5)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.3,0.3)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.2,0.2,0.2)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- RM_VolcanicAshRain: port of AB_VolcanicAshRain (Alpha Biomes, WeatherDefs/Weathers.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <WeatherDef>
+    <defName>RM_VolcanicAshRain</defName>
+    <label>volcanic ash with rain</label>
+    <description>A mixture of rock, mineral, and glass particles expelled from a volcano during a volcanic eruption, precipitating with rain. This creates a thick atmospheric layer that reduces ranged accuracy.</description>
+    <accuracyMultiplier>0.6</accuracyMultiplier>
+    <repeatable>true</repeatable>
+    <favorability>Bad</favorability>
+    <perceivePriority>0</perceivePriority>
+    <weatherThought>RM_VolcanicAshThought</weatherThought>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <eventMakers>
+      <li>
+        <averageInterval>6000</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>6000</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <!-- Colors are Dark -->
+    <skyColorsDay>
+      <sky>(0.6,0.60,0.6)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.5,0.50,0.5)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.3,0.3)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.2,0.2,0.2)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.6</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- RM_VolcanicAshThought: port of AB_VolcanicAshThought (Alpha Biomes, ThoughtDefs/Thoughts_Weather.xml), plain XML copy 2026-10-18 for donor retirement; no AlphaBiomes C# in it. -->
+  <ThoughtDef>
+    <defName>RM_VolcanicAshThought</defName>
+    <durationDays>0.1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>can't breathe</label>
+        <description>It is SO hard to breathe through this ash!</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

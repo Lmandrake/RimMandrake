@@ -11,7 +11,8 @@
   Pyrelands tiles itself, so nothing depends on the generator being allowed to
   roll the biome.
 
-  No new weather is authored. `AB_VolcanicAsh` already loads from Alpha Biomes -
+  No new weather is authored. `RM_VolcanicAsh` (our 2026-10-18 port of Alpha Biomes' AB_VolcanicAsh,
+  shipped in mandrake.rm.biomes) already loads -
   grey sky (0.6,0.6,0.6), WeatherOverlay_Fog, accuracyMultiplier 0.7,
   favorability Bad - so this only makes it occur here, and renames it.
 
@@ -62,10 +63,10 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Alpha Biomes</li>
-    </mods>
+  <!-- Alpha Biomes retired 2026-10-18: the ash storm is now our port RM_VolcanicAsh (TheForge, composed into mandrake.rm.biomes;
+       Defs/RM_TheForge_DonorPorts.xml); the Conditional replaces the old FindMod "Alpha Biomes" gate. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="RM_VolcanicAsh"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
 
@@ -89,18 +90,18 @@
         <li Class="PatchOperationAdd">
           <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/baseWeatherCommonalities</xpath>
           <value>
-            <AB_VolcanicAsh>3</AB_VolcanicAsh>
+            <RM_VolcanicAsh>3</RM_VolcanicAsh>
           </value>
         </li>
 
         <!-- There is no volcano on this planet. -->
         <li Class="PatchOperationReplace">
-          <xpath>Defs/WeatherDef[defName="AB_VolcanicAsh"]/label</xpath>
+          <xpath>Defs/WeatherDef[defName="RM_VolcanicAsh"]/label</xpath>
           <value><label>ash storm</label></value>
         </li>
 
         <li Class="PatchOperationReplace">
-          <xpath>Defs/WeatherDef[defName="AB_VolcanicAsh"]/description</xpath>
+          <xpath>Defs/WeatherDef[defName="RM_VolcanicAsh"]/description</xpath>
           <value>
             <description>Fine grey grit lifted off the pan and carried on the wind, thick enough to grey the sun and settle in every seam. It gets into optics and into lungs, and shooting at anything further than arm's reach becomes guesswork.\n\nNobody agrees where it comes from. It is simply what the ground here has been turning into for a very long time.</description>
           </value>
