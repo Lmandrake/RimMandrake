@@ -14,7 +14,7 @@
     <!-- PLACEHOLDER ART: reusing vanilla CaveEntranceA texture; real lanternstone-geode art is owed, see LANTERN_DEEPS_INJECTION_1 -->
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/CaveEntranceA</texPath>
+      <texPath>Things/Building/RM_LanternDeepEmergence/RM_LanternDeepEmergence</texPath>
       <drawSize>(6,6)</drawSize>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>

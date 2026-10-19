@@ -95,7 +95,7 @@
     <label>lamp bladder</label>
     <description>A fist-sized bladder pulled whole off a hoolimbre stand, still glowing the same soft green it glowed on the plant. It doesn't need clipping to anything or fed anything — set it down and it lights the ground around it until it rots, a few days on, or until you fix it properly to a chain instead.</description>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Mote/RM_LampBladder/RM_LampBladder</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>0.6</drawSize>

@@ -13,7 +13,7 @@
     <description>Chewed earth and hardened resin, packed into a tunnel by kurreth workers in moments. It will crumble on its own in a few hours; anything in a hurry has to break it.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/CollapsedRocks</texPath>
+      <texPath>Things/Building/Natural/RM_KurrethResinPlug/RM_KurrethResinPlug</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(125,74,48)</color>
       <drawSize>(1.15,1.15)</drawSize>
