@@ -248,10 +248,15 @@
        temporary def, cloned from ShallowFloodwater's properties, and depend
        on no DLC at all.
 
-       ALL of these are <temporary>true</temporary> — TerrainGrid.
-       SetTempTerrain hard-refuses anything else, and temporary is what
-       makes a release RECOVERABLE: the dug channel underneath survives and
-       comes back when the liquid leaves (owner ruling 2026-09-02).
+       P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD, owner R10: one kind of
+       water): wet DUG squares are BASE-layer writes now. Dug water shows the
+       freshwater ladder (RM_WaterLadder: RM_WaterThin, WaterShallow,
+       RM_WaterChestDeepStill, WaterDeep), so the four RM_Fill_Water_* tiers
+       below stay <temporary>true</temporary> only for a spill over open
+       natural water (Flood_FlowWorks: laid, queued for removal, the ground
+       restored, owner ruling 2026-09-02). Every OTHER liquid's tiers are
+       base-layer defs (no temporary flag, waterBodyType Other): its dug
+       squares show them, and the dry floor comes back from the depth grid.
 
        Deliberately NO <tempTerrain><destroysFloors> — that flag MOVES the
        floor out of underGrid permanently and RemoveTempTerrain never puts
@@ -364,7 +369,7 @@
        "Tar needs the viscosity most of all."
 
        Same shape as the water ladder above (ParentName WaterShallow,
-       temporary, empty driesTo, canFreeze false), plus extinguishesFire
+       empty driesTo, canFreeze false; a BASE-layer def since P14), plus extinguishesFire
        false (tar burns) and a near-black tint so the TINTED-VANILLA
        FALLBACK reads as tar rather than as plain water even before Alpha
        Biomes' real art is adopted — §13's named disease ("tar rippling
@@ -394,7 +399,8 @@
     <label>knee-deep tar (under 0.75 m)</label>
     <description>Tar standing ankle-to-knee deep. Wading it is easy. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>
@@ -418,7 +424,8 @@
     <description>Tar standing chest-deep. Wading it is slow work. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>
@@ -444,7 +451,8 @@
     <description>Tar standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>
@@ -475,7 +483,8 @@
     <description>Tar filling a very deep pit. Whatever falls in is held there, and the tar goes to work on it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(86,82,88)</color>

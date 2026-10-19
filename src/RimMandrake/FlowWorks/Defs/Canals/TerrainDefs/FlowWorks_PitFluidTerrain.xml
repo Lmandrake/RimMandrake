@@ -13,7 +13,8 @@
     <label>knee-deep oil (under 0.75 m)</label>
     <description>Oil standing ankle-to-knee deep. Wading it is easy. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -37,7 +38,8 @@
     <description>Oil standing chest-deep. Wading it is slow work. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -63,7 +65,8 @@
     <description>Oil standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -89,7 +92,8 @@
     <description>Oil filling a very deep pit. Whatever falls in is held there, and the oil goes to work on it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -111,7 +115,8 @@
     <label>knee-deep poison (under 0.75 m)</label>
     <description>Poison standing ankle-to-knee deep. Wading it is easy. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -132,7 +137,8 @@
     <description>Poison standing chest-deep. Wading it is slow work. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -155,7 +161,8 @@
     <description>Poison standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -178,7 +185,8 @@
     <description>Poison filling a very deep pit. Whatever falls in is held there, and the poison goes to work on it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -202,7 +210,8 @@
     <label>knee-deep blood (under 0.75 m)</label>
     <description>Blood standing ankle-to-knee deep. Wading it is easy. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -223,7 +232,8 @@
     <description>Blood standing chest-deep. Wading it is slow work. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -246,7 +256,8 @@
     <description>Blood standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -269,7 +280,8 @@
     <description>Blood filling a very deep pit. Whatever falls in is held there, and the blood goes to work on it. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
@@ -292,7 +304,8 @@
     <label>knee-deep chemfuel (under 0.75 m)</label>
     <description>Chemfuel standing ankle-to-knee deep. Wading it is easy. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -316,7 +329,8 @@
     <description>Chemfuel standing chest-deep. Wading it is slow work. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -342,7 +356,8 @@
     <description>Chemfuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -368,7 +383,8 @@
     <description>Chemfuel filling a very deep pit. Whatever falls in is held there, and the chemfuel goes to work on it. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -391,7 +407,8 @@
     <label>knee-deep astrofuel (under 0.75 m)</label>
     <description>Astrofuel standing ankle-to-knee deep. Wading it is easy. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -415,7 +432,8 @@
     <description>Astrofuel standing chest-deep. Wading it is slow work. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -441,7 +459,8 @@
     <description>Astrofuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -467,7 +486,8 @@
     <description>Astrofuel filling a very deep pit. Whatever falls in is held there, and the astrofuel goes to work on it. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -489,7 +509,8 @@
     <label>knee-deep boiling water (under 0.75 m)</label>
     <description>Boiling water standing ankle-to-knee deep. Wading it is easy. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <burnDamage>3</burnDamage>
@@ -512,7 +533,8 @@
     <description>Boiling water standing chest-deep. Wading it is slow work. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <burnDamage>3</burnDamage>
@@ -537,7 +559,8 @@
     <description>Boiling water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <burnDamage>3</burnDamage>
@@ -562,7 +585,8 @@
     <description>Boiling water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <burnDamage>3</burnDamage>
@@ -584,7 +608,8 @@
     <label>knee-deep icy water (under 0.75 m)</label>
     <description>Icy water standing ankle-to-knee deep. Wading it is easy. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -605,7 +630,8 @@
     <description>Icy water standing chest-deep. Wading it is slow work. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -628,7 +654,8 @@
     <description>Icy water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>
@@ -651,7 +678,8 @@
     <description>Icy water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <takeSplashes>true</takeSplashes>

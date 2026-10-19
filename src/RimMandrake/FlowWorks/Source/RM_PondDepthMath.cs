@@ -157,14 +157,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return Stage.Original;
 			}
-			switch (band)
-			{
-				case 1:
-				case 2: return Stage.Thin;
-				case 3: return Stage.Shallow;
-				case 4: return Stage.ChestDeep;
-				default: return Stage.Deep;
-			}
+			// P14: the ONE ladder (RM_WaterLadder), the same table dug water reads.
+			return RM_WaterLadder.PondStageOf(RM_WaterLadder.RungForDl(w));
 		}
 
 		/// <summary>The r squares holding band s: of the squares with bed ≥ s (and <paramref name="eligible"/>, ruling 5: a

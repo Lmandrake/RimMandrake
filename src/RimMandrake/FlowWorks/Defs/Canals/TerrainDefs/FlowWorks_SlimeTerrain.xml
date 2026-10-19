@@ -5,7 +5,7 @@
        SLIME_STREAM_ROWS_1 — four canal fill-tier ladders, one per colour.
 
        Same shape as the water/tar ladders in FlowWorks_Terrain.xml
-       (ParentName WaterShallow, temporary=true, empty driesTo, canFreeze
+       (ParentName WaterShallow, base layer since P14, empty driesTo, canFreeze
        false — the flooded-cell contract every FluidDef.fillTerrain* field
        requires) — these are the CANAL side (what an excavated cell shows
        once RM_Fluid_Slime<Colour> pulses into it), distinct from the
@@ -41,7 +41,8 @@
     <description>Red slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
@@ -60,7 +61,8 @@
     <description>Red slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
@@ -82,7 +84,8 @@
     <description>Red slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
@@ -104,7 +107,8 @@
     <description>Red slime filling a very deep pit. Whatever falls in is held there, and the red slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(168,40,40)</color>
@@ -126,7 +130,8 @@
     <description>Green slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
@@ -145,7 +150,8 @@
     <description>Green slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
@@ -167,7 +173,8 @@
     <description>Green slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
@@ -189,7 +196,8 @@
     <description>Green slime filling a very deep pit. Whatever falls in is held there, and the green slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(60,140,50)</color>
@@ -211,7 +219,8 @@
     <description>White slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
@@ -231,7 +240,8 @@
     <description>White slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
@@ -254,7 +264,8 @@
     <description>White slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
@@ -277,7 +288,8 @@
     <description>White slime filling a very deep pit. Whatever falls in is held there, and the white slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <extinguishesFire>false</extinguishesFire>
@@ -300,7 +312,8 @@
     <description>Yellow slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime is 200, twice the tar trace (SLIME_CROSSING_BUILD_SLIPPERY_SLOPE). -->
     <pathCost>200</pathCost>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
@@ -319,7 +332,8 @@
     <description>Yellow slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
@@ -341,7 +355,8 @@
     <description>Yellow slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>
@@ -363,7 +378,8 @@
     <description>Yellow slime filling a very deep pit. Whatever falls in is held there, and the yellow slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
-    <temporary>true</temporary>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
     <color>(200,178,40)</color>

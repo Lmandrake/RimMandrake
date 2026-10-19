@@ -50,16 +50,17 @@ namespace RimMandrake.FlowWorks
 			// The water and non-soil gates stand unchanged, and so does the
 			// reason they exist.
 			// Top layer (foundation first; not BaseTerrainAt, which reads under a
-			// floor): liquid in a channel sits on the temp layer, and reading it
-			// here silently deleted the designation of any channel that got wet
-			// (rain, a pulse) before a pawn arrived.
+			// floor). P14: liquid in a channel is its top terrain, so the water gate
+			// below excludes dug squares, or any channel that got wet (rain, a
+			// pulse) before a pawn arrived would lose its designation.
 			TerrainDef terrain = pawn.Map.terrainGrid.FoundationAt(c) ?? pawn.Map.terrainGrid.TopTerrainAt(c);
 			// PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT: the depth is the GRID's, never the terrain's (terrain says only "2 m or
 			// deeper": every square past 2 m is RM_Channel_Superdeep, so a terrain read stopped every dig at 2 m).
 			RM_MapComponent_Excavation eng = pawn.Map.GetComponent<RM_MapComponent_Excavation>();
 			int depth = eng != null ? eng.ExcavatedDepthAt(c) : RM_ExcavationDepth.DepthOfDryTerrain(terrain);
 			int target = eng?.DigTargetAt(c) ?? 0;
-			bool stale = terrain.IsWater
+			// P14: a wet dug square's water is base terrain now; only undug water makes the designation stale.
+			bool stale = (terrain.IsWater && !(eng != null && eng.IsExcavated(c)))
 				|| c.GetEdifice(pawn.Map) != null
 				|| !RM_DigDepthMath.MayDeepen(depth, RM_ExcavationDepth.MaxDigDepth)
 				|| (target > 0 && depth >= target)

@@ -41,7 +41,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"next = \(byte\)first; RecordOriginalTerrain\(c\); DetachIfDryBed\(c, i\); \}",
                     "the first cut into a square checks for a dry bed (after the water record is kept)");
                 RiverSwitchFlipChecks.Has(ex, @"if \(body == null \|\| !body\.receded\.Contains\(c\)\) \{ return; \}", "only a DRY (receded) bed square detaches");
-                RiverSwitchFlipChecks.Has(ex, @"ClearFillTerrain\(c\); if \(!ReattachIfDetachedBed\(c, i\) && !ReturnUndetachedBedCut\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \}",
+                RiverSwitchFlipChecks.Has(ex, @"ClearFillTerrain\(c, d\); if \(!ReattachIfDetachedBed\(c, i\) && !ReturnUndetachedBedCut\(c, i\)\) \{ RestoreOriginalTerrain\(c\); \}",
                     "filling a detached bed to the surface returns it to its pond instead of writing unpaid water (G5)");
                 RiverSwitchFlipChecks.Has(ex, @"map\.terrainGrid\.SetTerrain\(c, bed\); stock\.ReattachBedCell\(map, body, c, this\);", "it comes back as dry bed");
                 RiverSwitchFlipChecks.Has(ex, @"Scribe_Collections\.Look\(ref detachedBedCells, ""RM_detachedBedCells""", "the natural-bed record survives a save (GPT #10)");

@@ -133,7 +133,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 				{
 					Pawn pawn = pawns[k];
 					if (pawn.Dead || pawn.Flying || !pawn.Position.InHorDistOf(p.center, p.reach)
-						|| !RM_HotLiquid.IsFillOf(map.terrainGrid.TempTerrainAt(pawn.Position), p.fluid))
+						|| !RM_HotLiquid.IsFillOf(map.terrainGrid.TerrainAt(pawn.Position), p.fluid))
 					{
 						continue;
 					}
@@ -149,7 +149,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 			for (int n = 0; n < puffs; n++)
 			{
 				IntVec3 c = p.center + GenRadial.RadialPattern[Rand.Range(0, GenRadial.NumCellsInRadius(p.reach))];
-				if (c.InBounds(map) && RM_HotLiquid.IsFillOf(map.terrainGrid.TempTerrainAt(c), p.fluid))
+				if (c.InBounds(map) && RM_HotLiquid.IsFillOf(map.terrainGrid.TerrainAt(c), p.fluid))
 				{
 					FleckMaker.ThrowAirPuffUp(c.ToVector3Shifted(), map);
 					statSteamPuffs++;

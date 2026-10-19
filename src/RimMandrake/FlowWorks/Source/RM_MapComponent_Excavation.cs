@@ -126,8 +126,14 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §9, "RM_depthViewModel"): 1 = every wet dug square shows
 		/// the look of its metres of water. A save without the key (0) has looks chosen by fullness: each wet dug square is
-		/// re-picked once on load (a temp-terrain write; nothing about the water changes).</summary>
+		/// re-picked once on load (nothing about the water changes).</summary>
 		private int depthViewModel = 1;
+
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (rebuild P14): 1 = wet dug squares carry their liquid on the BASE
+		/// terrain layer (the one ladder, RM_WaterLadder), the temp layer left to vanilla (ice, floods). A save without the
+		/// key (0) carries them on the temp layer: MigrateFillLayer moves every one to a base write once on load, litres
+		/// logged before and after. A new map starts at 1.</summary>
+		private int fillLayerModel = 1;
 
 		/// <summary>POND_RETURN_LEG_BUILD_WATER_GOES_HOME, owner ruling 6 (GPT #10's natural-bed record): cell index → id
 		/// of the pond a DUG dry-bed square was taken out of. Filling the square back in to the surface returns it there,
@@ -887,6 +893,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref volumeModel, "RM_volumeModel", 1);
 			Scribe_Values.Look(ref pondBudgetModel, "RM_pondBudgetModel", 0);
 			Scribe_Values.Look(ref depthViewModel, "RM_depthViewModel", 0);
+			Scribe_Values.Look(ref fillLayerModel, "RM_fillLayerModel", 0);
 			Scribe_Collections.Look(ref detachedBedCells, "RM_detachedBedCells", LookMode.Value, LookMode.Value,
 				ref detachedBedKeys, ref detachedBedValues);
 			Scribe_Values.Look(ref burnedLevelsTotal, "RM_burnedLevelsTotal", 0f);
@@ -1121,6 +1128,7 @@ namespace RimMandrake.FlowWorks
 					+ " wet dug square(s) re-pictured by their metres of water; no water moved.");
 				depthViewModel = 1;
 			}
+			MigrateFillLayer();
 			// LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP (R10): every lake gets its floor before the first tick (a new map), or once on
 			// the first load of an older save; a lake already formed keeps its recorded floor. Books only: no terrain changes.
 			if (!lakeFloorsFormed)
@@ -1190,6 +1198,13 @@ namespace RimMandrake.FlowWorks
 
 		private bool IsNaturalLiquid(IntVec3 c)
 		{
+			// P14: a wet DUG square now carries its water on the base layer too (the one ladder); it is ours, never a
+			// natural source, lake square or pond footprint. Before P14 a dug square's base was always a dry channel, so
+			// this guard keeps every caller's answer exactly what it was.
+			if (c.InBounds(map) && depthGrid[map.cellIndices.CellToIndex(c)] != 0)
+			{
+				return false;
+			}
 			TerrainDef baseTerrain = map.terrainGrid.BaseTerrainAt(c);
 			return baseTerrain != null && baseTerrain.IsWater;
 		}
@@ -1479,17 +1494,9 @@ namespace RimMandrake.FlowWorks
 			depthGrid[i] = d;
 			excavatedCells.Add(c);
 			BumpClimbGeneration();
-			TerrainDef want = RM_ExcavationDepth.DryTerrainFor(d);
-			if (want != null && map.terrainGrid.BaseTerrainAt(c) != want)
-			{
-				map.terrainGrid.SetTerrain(c, want);
-			}
-			// A wet cell cut deeper changes fill tier (F/D); redraw it now rather than leave the old tier's terrain
-			// standing until the next pulse (forever with the depth engine off).
-			if (WetDug(i))
-			{
-				ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
-			}
+			// P14: ONE base write picks the square's picture: its dry floor by depth, or its water's ladder rung when wet
+			// (a wet cell cut deeper is redrawn now rather than at the next pulse, forever with the depth engine off).
+			ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
 			// PHASE 5, ruling 26. The cut that CROSSES 2 m makes the cell a pit (SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid
 			// byte itself, RM_SuperdeepTrap; no Thing is created by digging). PIT_DEPTH_WIDEN: only the crossing counts; a pit
 			// cut deeper is still one pit (the count used to rise on every cut past 2 m).
@@ -1603,10 +1610,10 @@ namespace RimMandrake.FlowWorks
 				excavatedCells.Remove(c);
 				fillGrid[i] = 0;
 				partGrid[i] = 0;
-				// The temp fill layer must come off BEFORE the base terrain is
+				// The water picture must come off BEFORE the base terrain is
 				// restored, or a brimming cell hands back its floor and keeps
-				// standing water on top of it.
-				ClearFillTerrain(c);
+				// standing water on top of it (P14: the picture is on the base layer; a pre-P14 temp fill too).
+				ClearFillTerrain(c, d);
 				if (!ReattachIfDetachedBed(c, i) && !ReturnUndetachedBedCut(c, i))
 				{
 					RestoreOriginalTerrain(c);
@@ -1620,12 +1627,7 @@ namespace RimMandrake.FlowWorks
 			}
 			else
 			{
-				TerrainDef want = RM_ExcavationDepth.DryTerrainFor(newD);
-				if (want != null && map.terrainGrid.BaseTerrainAt(c) != want)
-				{
-					map.terrainGrid.SetTerrain(c, want);
-				}
-				ApplyFillTerrain(c, cellFluid);
+				ApplyFillTerrain(c, cellFluid);   // P14: dry floor by the new depth, or the water's rung (one base write)
 			}
 			if (displacedDl > 0)
 			{
@@ -2130,14 +2132,14 @@ namespace RimMandrake.FlowWorks
 			{
 				case RM_PondDepthMath.Stage.Original:
 					return original;
+				// P14: the wet stages are the ONE ladder's rungs (RM_WaterLadder), the same terrains a wet dug square shows.
 				case RM_PondDepthMath.Stage.Deep:
-					return original != null && original.passability == Traversability.Impassable ? original : TerrainDefOf.WaterDeep;
+					return original != null && original.passability == Traversability.Impassable
+						? original : RM_WaterLadderDefs.Freshwater(RM_WaterLadder.Rung.Deep);
 				case RM_PondDepthMath.Stage.ChestDeep:
-					return RimMandrakeFlowWorks_DefOf.RM_WaterChestDeepStill;
 				case RM_PondDepthMath.Stage.Shallow:
-					return TerrainDefOf.WaterShallow;
 				case RM_PondDepthMath.Stage.Thin:
-					return RimMandrakeFlowWorks_DefOf.RM_WaterThin;
+					return RM_WaterLadderDefs.Freshwater(RM_WaterLadder.RungOfPondStage(stage));
 				case RM_PondDepthMath.Stage.Mud:
 					return fluid?.recededTerrain;
 				default:
@@ -3082,51 +3084,140 @@ namespace RimMandrake.FlowWorks
 
 		private void ApplyFillTerrain(IntVec3 c, FluidDef fluid)
 		{
-			if (fluid == null)
+			if (!c.InBounds(map))
 			{
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
+			if (depthGrid[i] == 0)
+			{
+				return;   // the engine draws only its own dug squares; a lake square is RM_LiquidStock.StagePond's
+			}
 			// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): ONE rule for every dug square, canal or pit, exact-level
 			// water or not: the look is chosen by the TRUE metres of water standing in it (under 25 cm, 0.5, 1, 1.5, 2 m and
 			// deeper), never by how full the hole is. A part-filled pit shows its water's depth like any canal (4 cm in a 2 m pit
 			// is a thin sheet, not "very deep water"); what the pit's own fill terrain carried for pathing (cost 300: nobody
 			// routes through a pit by choice) is kept by RM_Patch_WetPitPlanningCost, and the trap, the hold and the climb read
 			// the depth grid, never the terrain (ruling 26: a pit captures as if dry).
-			TerrainDef want = fluid.FillTerrainForLook(RM_ExcavationDepth.FillTier(WaterDl(i)));
-			TerrainDef cur = map.terrainGrid.TempTerrainAt(c);
+			//
+			// POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (rebuild P14, owner R10: one kind of water): the picture is a BASE-layer
+			// write. Wet: the liquid's rung of the one ladder (water: RM_WaterLadder's freshwater terrains, the same a drawn-down
+			// lake shows; every other liquid its own non-temporary fill tiers). Dry: the dug floor from the depth grid
+			// (RM_Channel_*), recomputed, never stored as a second truth. The TEMP layer is left to vanilla: ice
+			// (FreezeManager) and floods lie over our water as they do over a lake, and the water-body tracker sees the square
+			// (GetWaterBodyType reads the base layer), which is what gives dug water fish and ice (engine doc §2.2).
+			// Things on the square follow vanilla's terrain-change rules (TerrainGrid.DoTerrainChangedEffects, the same call
+			// the temp write made): plants without the new band's tags die, filth the band refuses goes, a blueprint or frame
+			// the band cannot carry is cancelled. THE one rule for a BUILT building whose affordance the new band lacks: it
+			// stands (vanilla never removes a built thing on a terrain change, and neither did the temp-layer fill).
+			TerrainDef want = null;
+			if (WetDug(i))
+			{
+				if (fluid == null)
+				{
+					return;
+				}
+				want = fluid.WetTerrainForBand(RM_ExcavationDepth.FillTier(WaterDl(i)));
+			}
+			if (want == null)
+			{
+				want = RM_ExcavationDepth.DryTerrainFor(depthGrid[i]);
+			}
+			if (want == null)
+			{
+				return;
+			}
+			TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
 			if (cur == want)
 			{
 				return;
 			}
-			if (want == null)
+			FluidDef held = FluidAt(c) ?? fluid;
+			bool drained = held != null && held.OwnsWetTerrain(cur) && !held.OwnsWetTerrain(want);
+			map.terrainGrid.SetTerrain(c, want);
+			if (drained)
 			{
-				// Only ever clear a temp terrain THIS engine placed. The legacy
-				// Flood_FlowWorks release path also writes the temp layer, and
-				// an empty engine cell must not strip a release that is still
-				// standing — two owners for one cell is the defect the single
-				// engine exists to remove, not to reproduce.
-				if (cur != null && fluid.OwnsFillTerrain(cur))
-				{
-					map.terrainGrid.RemoveTempTerrain(c);
-				}
-				return;
+				Machinery.Kits.RM_FluidResidue.NoteDrained(map, c, held);
 			}
-			map.terrainGrid.SetTempTerrain(c, want);
 		}
 
-		/// <summary>Strip this engine's own fill terrain from one cell, and only
-		/// its own — the same ownership rule <see cref="ApplyFillTerrain"/>
-		/// follows, because a fill-in must not tear down a release some other
-		/// path is still standing on.</summary>
-		private void ClearFillTerrain(IntVec3 c)
+		/// <summary>Take the water picture off a square being filled back in to the surface (its depth already 0): a pre-P14
+		/// temp fill this engine placed comes off the temp layer, and a base-layer water picture becomes the dry floor of
+		/// <paramref name="oldDepth"/> so the restore that follows (or the legacy fallback, which keys on a channel terrain)
+		/// starts from a dug floor, never from standing water. Only this engine's own pictures: a release some other path is
+		/// still standing on is left alone.</summary>
+		private void ClearFillTerrain(IntVec3 c, byte oldDepth)
 		{
 			FluidDef fluid = FluidAt(c) ?? ActiveFluid;
-			TerrainDef cur = map.terrainGrid.TempTerrainAt(c);
-			if (cur != null && fluid != null && fluid.OwnsFillTerrain(cur))
+			if (fluid == null)
+			{
+				return;
+			}
+			TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
+			if (temp != null && fluid.OwnsFillTerrain(temp))
 			{
 				map.terrainGrid.RemoveTempTerrain(c);
 			}
+			TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
+			if (fluid.OwnsWetTerrain(cur))
+			{
+				TerrainDef dry = RM_ExcavationDepth.DryTerrainFor(oldDepth > 0 ? oldDepth : RM_ExcavationDepth.Shallow);
+				if (dry != null)
+				{
+					map.terrainGrid.SetTerrain(c, dry);
+					Machinery.Kits.RM_FluidResidue.NoteDrained(map, c, fluid);
+				}
+			}
+		}
+
+		/// <summary>P14's one-time save migration (fillLayerModel 0 -> 1). A save from before P14 carries every wet dug
+		/// square's liquid on the TEMP layer: each such fill this engine placed comes off, and the square is redrawn on the
+		/// BASE layer from the grids. No water moves: the grids are the truth and are not written; the litres are summed
+		/// before and after and logged, so "nothing lost" is read off the log, not assumed. Back up the Saves folder before
+		/// the first load (the item's instruction; downgrade is unsupported).</summary>
+		private void MigrateFillLayer()
+		{
+			if (fillLayerModel >= 1)
+			{
+				return;
+			}
+			long beforeDl = 0, afterDl = 0;
+			int wet = 0, tempFills = 0, baseWet = 0;
+			List<FluidDef> fluids = DefDatabase<FluidDef>.AllDefsListForReading;
+			foreach (IntVec3 c in excavatedCells)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				beforeDl += WaterDl(i);
+				TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
+				if (temp != null)
+				{
+					for (int k = 0; k < fluids.Count; k++)
+					{
+						if (fluids[k].OwnsFillTerrain(temp))
+						{
+							map.terrainGrid.RemoveTempTerrain(c);
+							tempFills++;
+							break;
+						}
+					}
+				}
+				ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
+				if (WetDug(i))
+				{
+					wet++;
+					FluidDef f = FluidAt(c) ?? ActiveFluid;
+					if (f != null && f.OwnsWetTerrain(map.terrainGrid.BaseTerrainAt(c)))
+					{
+						baseWet++;
+					}
+				}
+				afterDl += WaterDl(i);
+			}
+			Log.Message("[RimMandrake.FlowWorks] fill layer model 0 -> 1 (wet dug squares on the base layer, P14): " + wet
+				+ " wet dug square(s), " + tempFills + " temp fill(s) taken off, " + baseWet + " base write(s) standing; "
+				+ RM_Volume.FormatLitres(beforeDl / 10f) + " before, " + RM_Volume.FormatLitres(afterDl / 10f) + " after"
+				+ (beforeDl == afterDl ? " (unchanged)." : " (CHANGED: report this)."));
+			fillLayerModel = 1;
 		}
 
 		// ── the gate the legacy flood consults ────────────────────────────

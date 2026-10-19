@@ -12,18 +12,24 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public class FluidDef : Def
 	{
-		/// <summary>Terrain a flooded cell becomes. MUST be a temporary terrain
-		/// (<c>&lt;temporary&gt;true&lt;/temporary&gt;</c>): a release is laid on
-		/// the map's TEMP terrain layer, above whatever the cell already was, so
-		/// a dug channel or a constructed floor underneath survives intact and
-		/// comes back when the fluid drains. It must be a def this mod (or a
-		/// client) ships: the base game's temporary water terrains all live in
-		/// Data/Odyssey, and naming one hard-requires the DLC.</summary>
+		/// <summary>POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD (rebuild P14, owner R10: one kind of water): this liquid's wet dug
+		/// squares show the ONE freshwater ladder (RM_WaterLadder: RM_WaterThin, WaterShallow, RM_WaterChestDeepStill,
+		/// WaterDeep), the same terrains a drawn-down lake shows, on the BASE layer. Only RM_Fluid_Water sets it. Unset, the
+		/// liquid keeps its own fill tiers below (which must then be non-temporary: they are base writes too) and the
+		/// water-body type those tiers carry.</summary>
+		public bool freshwaterLadder;
+
+		/// <summary>Look band 2 (about 0.5 m) of this liquid's own fill tiers, and the terrain a Flood_FlowWorks spill lays
+		/// over open natural water. P14: for a liquid WITHOUT <see cref="freshwaterLadder"/> every tier, this one included, is
+		/// a BASE-layer def (non-temporary), and a spill over natural water is hands-off for it. For a freshwater-ladder liquid
+		/// (water) this stays temporary: dug water shows the ladder, and this def is only the spill over open water, laid on
+		/// the TEMP layer and queued for removal, so whatever was there comes back. It must be a def this mod (or a client)
+		/// ships: the base game's temporary water terrains all live in Data/Odyssey, and naming one hard-requires the DLC.</summary>
 		public TerrainDef floodTerrain;
 
 		/// <summary>Ruling 5's tier 2 of 3 — half full, read as chest-deep.
 		/// <see cref="floodTerrain"/> is tier 1 (trace/shallow), so only the
-		/// upper rungs need naming. Must be temporary, same as tier 1.</summary>
+		/// upper rungs need naming. A base-layer def unless the liquid uses the freshwater ladder (P14).</summary>
 		public TerrainDef fillTerrainHalf;
 
 		/// <summary>Ruling 5's tier 3 of 3 — brimming, read as deep. Ruling 26:
@@ -159,6 +165,35 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>P14: the BASE-layer terrain a wet dug square of this liquid shows at look band <paramref name="band"/>
+		/// (RM_LevelSolve.LookBand: 0 dry, 1 under 25 cm ... 5 = 2 m and deeper). The freshwater ladder for water
+		/// (<see cref="freshwaterLadder"/>), the liquid's own fill tiers for everything else. Null for band 0 (dry: the
+		/// caller draws the dug floor).</summary>
+		public TerrainDef WetTerrainForBand(int band)
+		{
+			if (band <= 0)
+			{
+				return null;
+			}
+			if (freshwaterLadder)
+			{
+				TerrainDef t = RM_WaterLadderDefs.Freshwater((RM_WaterLadder.Rung)(band > 5 ? 5 : band));
+				if (t != null)
+				{
+					return t;
+				}
+			}
+			return FillTerrainForLook(band);
+		}
+
+		/// <summary>P14: true when <paramref name="terrain"/> is a wet-square look this liquid's staging writes (its fill
+		/// tiers, or the freshwater ladder when it uses it). Only ever asked about a DUG square: WaterShallow on an undug
+		/// square is a lake, never ours.</summary>
+		public bool OwnsWetTerrain(TerrainDef terrain)
+		{
+			return OwnsFillTerrain(terrain) || (freshwaterLadder && RM_WaterLadderDefs.IsFreshwaterRung(terrain));
+		}
+
 		/// <summary>True if this terrain is one THIS fluid's engine placed, so
 		/// the engine never strips a temp terrain some other system owns.</summary>
 		public bool OwnsFillTerrain(TerrainDef terrain)
@@ -182,18 +217,34 @@ namespace RimMandrake.FlowWorks
 			{
 				yield return "floodTerrain is null -- a fluid with nothing to flood into can never do anything.";
 			}
-			else if (!floodTerrain.temporary)
+			// P14 (POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD): wet dug squares are BASE writes. TerrainGrid.SetTerrain hands a
+			// temporary def straight to SetTempTerrain (Verse/TerrainGrid.cs:206), so a temporary tier would put the liquid
+			// back on the temp layer, where vanilla's water bodies, ice and floods cannot see it. A freshwater-ladder liquid
+			// stages the ladder instead and keeps its temporary tiers only for spills over open water (Flood_FlowWorks).
+			if (!freshwaterLadder)
 			{
-				yield return "floodTerrain " + floodTerrain.defName + " is not temporary. TerrainGrid.SetTempTerrain " +
-					"refuses any terrain without <temporary>true</temporary>, so this fluid would flood nothing at all.";
-			}
-			foreach (TerrainDef tier in new[] { fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep })
-			{
-				if (tier != null && !tier.temporary)
+				foreach (TerrainDef tier in new[] { floodTerrain, fillTerrainVeryShallow, fillTerrainHalf, fillTerrainBrim, fillTerrainSuperdeep })
 				{
-					yield return "fill tier terrain " + tier.defName + " is not temporary. " +
-						"TerrainGrid.SetTempTerrain refuses any terrain without <temporary>true</temporary>, " +
-						"so this tier would render nothing and the cell would read as dry at full.";
+					if (tier != null && tier.temporary)
+					{
+						yield return "fill tier terrain " + tier.defName + " is <temporary>true</temporary>. Wet dug squares are "
+							+ "written to the BASE layer (P14) and SetTerrain sends a temporary def to the temp layer instead.";
+					}
+				}
+			}
+			else
+			{
+				for (int r = 1; r < RM_WaterLadder.RungCount; r++)
+				{
+					if (RM_WaterLadderDefs.Freshwater((RM_WaterLadder.Rung)r) == null)
+					{
+						yield return "freshwaterLadder is set but the ladder terrain " + RM_WaterLadder.FreshwaterDefName((RM_WaterLadder.Rung)r)
+							+ " is not loaded.";
+					}
+					else if (RM_WaterLadderDefs.Freshwater((RM_WaterLadder.Rung)r).temporary)
+					{
+						yield return "freshwater ladder terrain " + RM_WaterLadder.FreshwaterDefName((RM_WaterLadder.Rung)r) + " is temporary.";
+					}
 				}
 			}
 			if (volumePerTile <= 0f)
