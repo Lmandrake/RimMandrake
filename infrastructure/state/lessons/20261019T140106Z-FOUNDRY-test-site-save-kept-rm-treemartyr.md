@@ -1,0 +1,1 @@
+A test-site save kept RM_TreeMartyr (1528 plants), a def we cut the day before: 100 'Exception spawning loaded thing null' on load. Any def removal needs a save THING census first: src/RimMandrake/Utils/save_def_census.py <saves> (unresolved things throw at spawn; the donor census only knows retired donors).
