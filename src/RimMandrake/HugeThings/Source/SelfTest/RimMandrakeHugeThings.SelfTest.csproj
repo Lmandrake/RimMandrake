@@ -27,10 +27,12 @@
     <Compile Include="..\Kernel\RM_HugeTitanKernel.cs" />
     <Compile Include="..\Kernel\RM_TitanicKernel.cs" />
     <Compile Include="..\Kernel\RM_TitanClearingKernel.cs" />
+    <Compile Include="..\Kernel\RM_WallsSlotsKernel.cs" />
     <Compile Include="HugeThingsFuzz.cs" />
     <Compile Include="HugeTitanFuzz.cs" />
     <Compile Include="TitanicFuzz.cs" />
     <Compile Include="ClearingFuzz.cs" />
+    <Compile Include="WallsSlotsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
