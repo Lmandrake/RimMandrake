@@ -3037,10 +3037,15 @@ def phase_P(L, args):
             L.o.set_cell((161, 101), int(f.get("depth") or 0), 0)
         rp = B.call("jawa/flowworks_pit_report", x=160, z=100)
         pw = _pit_pawn(rp, big) or {}
-        L.row("P2_fillin_releases_large", f.get("success") and f.get("depth") == 3 and pw.get("held") is False
-              and (pw.get("lipReachable") or 0) > 0 and rp.get("pitWidth") == 1, "MOD",
-              "fill-in (161,101) -> D %s; large at (160,100): width %s held %s lip %s/%s" % (
-                  f.get("depth"), rp.get("pitWidth"), pw.get("held"), pw.get("lipReachable"), pw.get("lipCells")))
+        # a refused fill-in drive or an unread pit report is "could not ask", not a MOD FAIL (full read 2026-10-19)
+        if not f.get("success") or not rp.get("success") or not pw:
+            L.row("P2_fillin_releases_large", False, "HARNESS", "fill-in drive %s / pit_report %s / large pawn found %s: %s" % (
+                f.get("success"), rp.get("success"), bool(pw), str(f if not f.get("success") else rp)[:200]), status="UNMEASURED")
+        else:
+            L.row("P2_fillin_releases_large", f.get("depth") == 3 and pw.get("held") is False
+                  and (pw.get("lipReachable") or 0) > 0 and rp.get("pitWidth") == 1, "MOD",
+                  "fill-in (161,101) -> D %s; large at (160,100): width %s held %s lip %s/%s" % (
+                      f.get("depth"), rp.get("pitWidth"), pw.get("held"), pw.get("lipReachable"), pw.get("lipCells")))
         # FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): "You can't fall in by careless colonist pathing.
         # Only if they get blown/forced in do they fall." RM_PitPathing refuses a walk into a LADDERLESS open D=4
         # cell, so: P3 = the refusal itself (own-faction capture ON, the pawn still stays out); P4 = the colonist
@@ -3149,6 +3154,8 @@ def phase_P(L, args):
             rec_l = [d for d in r_l.get("recentDescents") or [] if d.startswith(a + "@")]
             o_l = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
             p4_unm = _orders_unmeasured(climb_down=o_l_in, walk_out=o_l)
+            if not p4_unm and not sb.get("success"):      # no ladder spawned: a setup refusal, not a mod verdict
+                p4_unm = "ladder not spawned: %s" % str(sb)[:200]
             if p4_unm:
                 L.row("P4_ladder_frees", False, "HARNESS", p4_unm, status="UNMEASURED")
             else:
@@ -3219,6 +3226,8 @@ def phase_P(L, args):
         pc = _pit_pawn(r_c, b) or {}
         o_out = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), b)
         p5_unm = _orders_unmeasured(climb_down=o_in, walk_out=o_out)
+        if not p5_unm and not sbc.get("success"):
+            p5_unm = "ladder not spawned: %s" % str(sbc)[:200]
         if p5_unm:
             L.row("P5n_own_faction_carveout", False, "HARNESS", p5_unm, status="UNMEASURED")
         else:
@@ -3375,7 +3384,7 @@ def phase_X(L, args):
         col = r["pawns"][0]["id"]
         # The strip's D=4 end carries a lowered ladder: pathing refuses a ladderless open pit (FLOWWORKS_PIT_FALL_ONLY_FORCED_1),
         # so the colonist climbs down it. The sink/wall numbers are read exactly as before.
-        B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % tuple(strip[-1]))
+        sb_x = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % tuple(strip[-1]))
         _proof(B, "ProofLadder", "%d,%d,lower" % tuple(strip[-1]))
         okk0, k0, _ = _proof(B, "ProofPawnSink", col)
         o_in = _order_row(B.call("jawa/order_pawn", pawnId=col, x=strip[-1][0], z=strip[-1][1], waitTicks=PIT_WAIT_IN, draft=True), col)
@@ -3383,7 +3392,8 @@ def phase_X(L, args):
         o_out = _order_row(B.call("jawa/order_pawn", pawnId=col, x=X_WALK[0], z=X_WALK[1], waitTicks=PIT_WAIT_IN, draft=True), col)
         ok0, k1, t1 = _proof(B, "ProofPawnSink", col)
         # full read 2026-10-19: an unread sink or an order that never ran is "could not ask", not a MOD FAIL
-        x_unm = _orders_unmeasured(walk_in=o_in, walk_out=o_out) or (
+        x_unm = ("ladder not spawned: %s" % str(sb_x)[:200] if not sb_x.get("success") else None) or \
+            _orders_unmeasured(walk_in=o_in, walk_out=o_out) or (
             None if (okk0 and ok4 and ok0) else "ProofPawnSink unreadable: %s / %s / %s" % (okk0, t4[:80], t1[:80]))
         if x_unm:
             for rid in ("X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out", "X4_pit_wall_over_head"):
@@ -3519,8 +3529,13 @@ def _things_at(B, def_name, cells):
     xs, zs = [c[0] for c in cells], [c[1] for c in cells]
     r = B.call("jawa/list_things", defName=def_name, rect="%d,%d,%d,%d" % (min(xs) - 1, min(zs) - 1, max(xs) - min(xs) + 3,
                                                                           max(zs) - min(zs) + 3), limit=200)
-    pos = [t.get("position") or t for t in (r.get("things") or [])]    # live nests x/z under "position"
-    return {(p.get("x"), p.get("z")) for p in pos} if r.get("success") else None
+    if not r.get("success"):
+        return None
+    if (r.get("countMatched") or 0) > len(r.get("things") or []):      # a truncated list is not "no more flames"
+        return None
+    pos = [t.get("position") or t for t in (r.get("things") or [])]    # top-level x/z, or nested under "position"
+    cells_ = {(p.get("x"), p.get("z")) for p in pos}
+    return None if any(None in c for c in cells_) else cells_          # a thing with no readable cell is no reading
 
 
 def _x10_canal_fire(L):
@@ -3606,6 +3621,11 @@ def _x10_canal_fire(L):
               "decilitres, not F" % lit, status="UNMEASURED")
         return
     left += [c for c, v in zip(run, lit) if v and c not in left]
+    ran_total = ((trace[-1][0] if trace else None) or 0) - (tk0 or 0)
+    if left and ran_total < 6000 and len(trace) >= 6:     # the cap loop ran its 6 chunks but the clock did not: not "unspent"
+        L.row("X10_canal_fire", False, "HARNESS", "the burn window was short: %s ticks ran of ~7000 (F>0 left %s)" % (
+            ran_total, left[:3]), status="UNMEASURED")
+        return
     parts = [("burning >=3 run cells", len(burn1 & set(run)) >= 3), ("no flame off the run", not off_run),
              ("persists 250 ticks", len(burn2 & set(run)) >= 1), ("spent: all F=0 and 0 L", not left),
              ("spent: ashed", len(ash & set(run)) >= 3), ("spent: none alight", not burn3)]
