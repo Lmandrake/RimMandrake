@@ -56,6 +56,10 @@ def main(argv=None):
     res = {"script": "sprinkler_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
     import driver_stamp
     driver_stamp.stamp(res, B.call)      # validation.py reads a result only at the current mod hash AND deployed DLL
+    # 2026-10-18 (SALT_BOTTLE_DIAGNOSE_DRUNK_FOR_NOTHING): ExplosiveGrowthAPI.IsSoaked is in the composed mandrake.rm.biomes
+    # mod; the 11-mod flowworks tier does not load it, so soaked() reads None there: SITE, not HARNESS.
+    _run = (res.get("env") or {}).get("running")
+    EG_CLS = "SITE" if _run is not None and "mandrake.rm.biomes" not in _run else "HARNESS"
 
     def save():
         txt = json.dumps(res, indent=1, default=str)
@@ -142,6 +146,13 @@ def main(argv=None):
              "build": [s1, s2]}
         n["headId"] = thing_at("RM_SprinklerHead", ox + 5, oz)
         n["pumpId"] = thing_at("RM_LiquidPump", ox + 3, oz)
+        # HARNESS (T22, 2026-10-18 rerun: brine-only read "No pressure"): the COLD pulse. A new head pulses at its first
+        # rare tick (nextPulseTick -1; CompRM_SprinklerHead.RareTick, phase (tick + thingIDNumber) % 250), but vanilla
+        # PowerNet.PowerNetTick switches a new consumer on only when TicksGame % (200 / wanting) == 0, so the pump can be
+        # unpowered for up to 200 ticks after the build. A pulse landing in that gap reads NoPressure and holds for 2,500
+        # ticks; whenever the phase put it after +130 the T22 read (fill, 2,500 + 130) WAS that cold pulse (the fresh tank
+        # then paid two pulses, 180 dL, against one, 90 dL, in the PASS runs). Let the cold pulse go before the fill.
+        ticks(250)
         return n
 
     def until_pulse():
@@ -177,7 +188,7 @@ def main(argv=None):
                 det = {"units": [u0, u1], "drop": (u0 - u1) if None not in (u0, u1) else None, "cells": cells, "inspect": line,
                        "pulseAfterTicks": spent, "sprayedUnits": [s0, s1], "soakedCovered": wet_c, "soakedFar": wet_f}
                 if spent is None or None in (u0, u1, cells, wet_c):
-                    row("sprinkler.draws_and_wets", "UNMEASURED", "HARNESS", det)
+                    row("sprinkler.draws_and_wets", "UNMEASURED", EG_CLS if wet_c is None else "HARNESS", det)
                 else:
                     bad = []
                     if (u0 - u1) != cells * UNITS_PER_CELL:
@@ -235,7 +246,7 @@ def main(argv=None):
                 line, wet = trace[-1]
                 ok = (line or "").startswith("Dry") and wet is False
                 row("sprinkler.dries_when_starved", "PASS" if ok else ("UNMEASURED" if wet is None else "FAIL"),
-                    "MOD" if wet is not None else "HARNESS", {"last": [line, wet], "ticks": 125 * len(trace)})
+                    "MOD" if wet is not None else EG_CLS, {"last": [line, wet], "ticks": 125 * len(trace)})
 
         # ---------------------------------------------------------------- thick / brine / walls / effects: net 1..
         if want("thick"):
@@ -262,7 +273,8 @@ def main(argv=None):
             wb, wo = soaked(*behind), soaked(*open_c)
             line = inspect(n["headId"])
             if None in (wb, wo) or "Spraying" not in (line or ""):
-                row("sprinkler.walls_stop_spray", "UNMEASURED", "HARNESS", {"behindWall": wb, "openSide": wo, "inspect": line})
+                row("sprinkler.walls_stop_spray", "UNMEASURED", EG_CLS if None in (wb, wo) else "HARNESS",
+                    {"behindWall": wb, "openSide": wo, "inspect": line})
             else:
                 row("sprinkler.walls_stop_spray", "PASS" if (wo and not wb) else "FAIL", "MOD",
                     {"behindWall": [behind, wb], "openSide": [open_c, wo], "inspect": line})
