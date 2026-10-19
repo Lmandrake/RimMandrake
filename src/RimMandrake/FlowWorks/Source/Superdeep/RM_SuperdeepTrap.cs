@@ -228,8 +228,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Design §8.5 step 6: AND vanilla reachability with "same band component". A pocket never reaches the surface;
 		/// two surface areas cut apart by a sheer trench are told apart (GPT #1). Pawnless queries use the person band (GPT #9).
-		/// A ladder that is a way for this query (the pawn's: one it may climb; pawnless: any lowered one) or a pocket too narrow
-		/// for the pawn is a way in or out, and vanilla decides.
+		/// A ladder that is a way for this query (the pawn's: one it may climb; pawnless: any lowered one) is a way only to the
+		/// component across its wall: the ladder graph decides (RM_PocketGridMath.ReachVetoedWhole). A pocket too narrow for the
+		/// pawn is a way in or out, and vanilla decides.
 		/// Applies only to pawns the hole captures (or pawnless): the capture policy is unchanged until the connectivity masks
 		/// make the step rule physics for everyone (the next build item); a colonist the pit ignores is never vetoed here.</summary>
 		public static bool RelativeVeto(Map map, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode, Pawn p)
