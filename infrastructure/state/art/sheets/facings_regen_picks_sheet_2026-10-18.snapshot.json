@@ -1,0 +1,459 @@
+{
+ "biome": "SUBJECTS_facings_regen_picks",
+ "built": "2026-10-18T17:11:37-0700",
+ "census": "Transient/biome_ffar/facings_regen_picks.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 548 active",
+ "rows": {
+  "RSW_Dragonsnake_A": {
+   "columns": {
+    "A": {
+     "east": "8a8a53dbddfd4677701874e81d3bfd2a2e7e7ca4d8637dfced215add4a51d762",
+     "north": "5aa470919f41204c6178cbd8da8105d3baaf69ba1928c862edb36bed2de67032",
+     "south": "1daf96a996f02175fce615e9db722410db84739fd00801efe3b707d384044ced"
+    },
+    "B": {
+     "north": "9209330c8e08583c7972370fd29c34bac3dca0aac820ea66de35dd0201703e48"
+    },
+    "C": {
+     "north": "1d0d6aacbe212dbada6963cb666b33594112cff3f737ca0d57c445166cab8440"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_dragonsnake_a_north_v3",
+    "C": "render facings_redraw_dragonsnake_a_north_v2"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_a"
+  },
+  "RSW_Dragonsnake_B": {
+   "columns": {
+    "A": {
+     "east": "ed7f44d52dcd00a4c026814549cfd62869d8e7506b7ba3cf310c774550b78afb",
+     "north": "7f30177e69f0968176db915923c59e8d8c869cfc28df81502f432b9c9004679a",
+     "south": "0759554a9756138f442e7057fc5f31f163793e80ac20badceab7998d25c40856"
+    },
+    "B": {
+     "north": "e22328f7d460ffa42fc708821d470d8e2e67fd5cb4e9f93f8bba635ba37d9078"
+    },
+    "C": {
+     "north": "20b55c03e8c53c774d585811d01221e77093b6f525cb172ed10b847fa36e0b68"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_dragonsnake_b_north_v3",
+    "C": "render facings_redraw_dragonsnake_b_north_v2"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_b"
+  },
+  "RSW_Dragonsnake_C": {
+   "columns": {
+    "A": {
+     "east": "7010c422a04dae6c11ac9c4b90775a1fae8ba2a8a60ec1a170bebf79432e64f3",
+     "north": "54b9f848dd98a59e6539abacf7512cf88f210c7c4ca2d889edb4e85ac1216a4b",
+     "south": "8698de28770708cdc4daea7c05797f323eebe3a96ef708a990bc338720b108c8"
+    },
+    "B": {
+     "north": "de406af1798d2eab595103186de53988f121e42d4e3e2ddb79aae1d5d5f386ce"
+    },
+    "C": {
+     "north": "b4dba8b10bd86b2341a81109ca4408d7c67f45ad0412c820cfed1d18f19e6273"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_dragonsnake_c_north_v3",
+    "C": "render facings_redraw_dragonsnake_c_north_v2"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_c"
+  },
+  "RSW_Dragonsnake_D": {
+   "columns": {
+    "A": {
+     "east": "beca52c84306aad915901d752a4f919cd70abab44465e1561949b0a5f5c44331",
+     "north": "ef6158657763ba261c0608d1896e3083760057e97d6991b4371d395666b02dd5",
+     "south": "b2b37e76533194f38b1da666979b60a763f90f0cf83ea5a2760742b69f6fe961"
+    },
+    "B": {
+     "north": "7aeb051b03d6032639febba8f49e410e1cd70312b4962b640b2a7b4fc8d37c3d"
+    },
+    "C": {
+     "north": "fbf7f811546a45a6c8a05a0f43e6ce2993891a87e2a35646ffe201f64c36eecc"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_dragonsnake_d_north_v3",
+    "C": "render facings_redraw_dragonsnake_d_north_v2"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_d"
+  },
+  "RSW_Dragonsnake_Swim": {
+   "columns": {
+    "A": {
+     "east": "d4dc059ce252373cf7a16d94c146ce7599c2a7a42ef46142c3074afc37ebf135",
+     "north": "5aad8cc5b6a3ea7d46f744cc176095d6354c574495367eddf1dbaf645f11cf76",
+     "south": "3e98c88a185684c77f3a1917ea1f4ba9b81473a9d02630c4cbed5a56a0fec1f9"
+    },
+    "B": {
+     "north": "d6f65bd179ff410388fd73bc52c9bde039fed38fd8521c0c503e5a4e64955ffb"
+    },
+    "C": {
+     "north": "94044d231f2dd16de2398ca9bb1618db9e143ee0f9d79abaf659b0667e5f8832"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming",
+    "B": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming",
+    "C": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_dragonsnake_swim_north_v3",
+    "C": "render facings_redraw_dragonsnake_swim_north_v2"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_Swimming",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "dragonsnake_swim"
+  },
+  "RSW_Lothcat_f": {
+   "columns": {
+    "A": {
+     "east": "1d245186f819d1f87223940a7ed8fb116b1c3b4efc67d3e6018ff732d7c2d3bc",
+     "north": "aef4042fcc1437febcd6cd7b15dabcfd613edb610585df3c62413e2cd882390e",
+     "south": "ef565249bb0425638abbb1a720cb39ae03cd80d43bf67599118b25aa9af80d4d"
+    },
+    "B": {
+     "north": "1a65852486c734a60ff5a77dd71358df7acfda5486a85c034cff9c9c0a345be0"
+    },
+    "C": {
+     "south": "f9040b231c0551af25e33b60175a5cfd988f76d620cbb45664366848feefe231"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Lothcat/Lothcat_f",
+    "B": "swanimals/Lothcat/Lothcat_f",
+    "C": "swanimals/Lothcat/Lothcat_f"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_lothcat_f_north_v2",
+    "C": "render facings_redraw_lothcat_f_south_v2"
+   },
+   "pools": [],
+   "res": "swanimals/Lothcat/Lothcat_f",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "lothcat_f"
+  },
+  "RSW_OpeeSeaKiller": {
+   "columns": {
+    "A": {
+     "east": "7129d149b2cfa24dd1a2dd0ff86af57746ad0d94d1c399deb02dc826eff15fed",
+     "north": "8b4495b85a11b6003680829603ba431f38d0a29645d6f6e563a2a9efe7b039a0",
+     "south": "35d8b9a9b81ecaac5113eb1170cb9d7df74811748ab56ed2595103c3d0bef6e6",
+     "west": "1b8f445b7dc54d2222e3b33eb2c0a8d9ced7be767e71352b730ff42ac0d14439"
+    },
+    "B": {
+     "north": "3b255faad0cbee235fe0f986ffea9754171a61bba954c50433627c1ac2655b8f"
+    },
+    "C": {
+     "north": "866facbd8a0203d0dd47a27ae3b47fe0fe4f0a51a75efb9a36fdb982e934e76e"
+    },
+    "D": {
+     "east": "314da0cc770ba94c6048049c6055b754f2d622346f92c61af5dd4e43617b6d4d",
+     "north": "8dce0c0b15708be5424b76377e490fde8deca3b17ad5cb4bcf3f2e67ede196c8",
+     "south": "c5cca4d71538c005cc70304f06f392657ff90f132b60384bab0c7a57a094a75f",
+     "west": "1b8f445b7dc54d2222e3b33eb2c0a8d9ced7be767e71352b730ff42ac0d14439"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+    "B": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+    "C": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+    "D": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_opeeseakiller_north_v3",
+    "C": "render facings_redraw_opeeseakiller_north_v2",
+    "D": "history SeaBeasts 2026-09-02"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "opeeseakiller"
+  },
+  "RSW_Strill": {
+   "columns": {
+    "A": {
+     "east": "ec565bbff9c2eb0522dbf9cd8d070533f87bc9452e5eb250b92786afa5150900",
+     "north": "bf77464493a91fa96ecc6ec59ce00ae2d1c3b855b5ecdb7a48fbc38eb1d21d58",
+     "south": "9b0f6597c2a8bf56569b4da4e5309cb8159f7f52af52632bcce2727dd97a6f0b"
+    },
+    "B": {
+     "north": "62a239c8d2d678880e4ac6cb96291fd882efb278020014940cf362cea86bc7ca"
+    },
+    "C": {
+     "north": "391191c95afee00a6f998b45e4b76d6b9ef91da8d6dfed49280d946ec7c46b91"
+    },
+    "D": {
+     "1_east": "cccf13c2b59f563c280b591a8e0a4a2d5fc7e4a3039d2967bfeaf797764f3b02",
+     "1_north": "e550de2a8819d928ae04d9cba755b5acaa704d9dec0681e600328d77dd5b7725",
+     "1_south": "fa77dce9932ae766460a02a8d420841697c051563d290f5535af8124275026f1"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Strill/Strill",
+    "B": "swanimals/Strill/Strill",
+    "C": "swanimals/Strill/Strill",
+    "D": "_flip:swanimals/Strill/Strill_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_strill_north_v3",
+    "C": "render facings_redraw_strill_north_v2",
+    "D": "IN GAME \u2014 Strill_Flying_"
+   },
+   "pools": [],
+   "res": "swanimals/Strill/Strill",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "strill"
+  },
+  "RSW_TeeMuss": {
+   "columns": {
+    "A": {
+     "east": "6a35577644c24efbde61eb255afe01f4458996eb9a7f985e4dcf90641b3236a7",
+     "north": "da6687130a13664380d3e240c37cf9ad3f9eb4d946b75cdf3fe2d3eb9f02370b",
+     "south": "b50fc8e9e16e40e08921b35420f3f085e46aff049cd0b15850f87694575501f9"
+    },
+    "B": {
+     "east": "9b306899086a2d40d2ea32a22ae5a07e8b26069e122f7de628b30f963d7449cb"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/TeeMuss/TeeMuss",
+    "B": "swanimals/TeeMuss/TeeMuss"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_teemuss_east_v2"
+   },
+   "pools": [],
+   "res": "swanimals/TeeMuss/TeeMuss",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "teemuss"
+  },
+  "RSW_Varactyl_m": {
+   "columns": {
+    "A": {
+     "east": "4d1ecee43d349226af666113b3686709b3f394e04568e749bcc0f4e3ae6600e4",
+     "north": "04d2b1dbcc093a87b29abf55c038aeb6b02431bf0dd06789619b7f7160e221db",
+     "south": "e379efb3b5e6d737445fdce3692f16a55ec0d622099720d88513844167f65090"
+    },
+    "B": {
+     "north": "a62e541af30c13598d82fc6776ead7c4402e413faeb8d11e364c8e8b2a3b51e7"
+    },
+    "C": {
+     "north": "90b55729f3a59ce4c9ca3199cd7136926657ffe14be268ee507d7a3db703b11f"
+    },
+    "D": {
+     "east": "d752c695afab46442651d7987ccf136ee28fee38707a191410dfb7bba1807d24",
+     "north": "bc00bf239dd698679ff35d4b45f18a9b0beb4b98391abc34970428559992dd87",
+     "south": "af91c32a95fc2e3e01aaa33cd581dcefa107ab6578944f72fc7981374f5bf73b"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Varactyl/Varactyl_m",
+    "B": "swanimals/Varactyl/Varactyl_m",
+    "C": "swanimals/Varactyl/Varactyl_m",
+    "D": "swanimals/Varactyl/Varactyl_m"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_varactyl_m_north_v3",
+    "C": "render facings_redraw_varactyl_m_north_v2",
+    "D": "history SWBestiary 2026-09-18"
+   },
+   "pools": [],
+   "res": "swanimals/Varactyl/Varactyl_m",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "varactyl_m"
+  },
+  "RSW_Whisperbird": {
+   "columns": {
+    "A": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+     "south": "33ef93331abf8795f3a1216d16f88d32bb76c234ca9cc85fa1fa07cf803a14d2"
+    },
+    "B": {
+     "north": "ef8cec0cad2b4f9a66524bcf2eb484c8ef9036a3e3f0326d173520a2eeda4f2a"
+    },
+    "C": {
+     "1_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
+     "1_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
+     "1_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9",
+     "2_east": "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
+     "2_north": "1796d7c62eb7d37203fc8ea78fd86baeb127f6ff41e2947b466ccd0f432cb4e4",
+     "2_south": "f1bf361b8df0285d41ac0779c64b3c5a3df92ca39da0f9b0ac76d1cd5f725318",
+     "3_east": "044567f5e87ed5eae89163b656580f64e1bcebb991303fa70bab4d35412334f6",
+     "3_north": "8e713f0b0fb3768ac78f04e7f76ff6f4ff8e513e482def4d67abe12929005278",
+     "3_south": "0fbfc37be3e254b11bdc97953506eb97a14a7636fcf201415c72df609853da3d",
+     "4_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
+     "4_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
+     "4_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9"
+    }
+   },
+   "graphic_of": {
+    "A": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "B": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+    "C": "_flip:swanimals/Whisperbird/Whisperbird_Flying_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_whisperbird_north_v2",
+    "C": "IN GAME \u2014 Whisperbird_Flying_"
+   },
+   "pools": [],
+   "res": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "whisperbird"
+  },
+  "RSW_Yobshrimp": {
+   "columns": {
+    "A": {
+     "east": "32f1e9cc4e29c035e70c358b0a8dbda94f9dc7d3c7db0ddd834c7470d71e91cb",
+     "north": "e0b43827778d72782f3a642edfd6e979ee482bd7909c3ca03bceedf96db7bf98",
+     "south": "9825f29a0ee9f21b3b6ff6d8b31bd60d84c2020116d7aa57dc99b26607771bcd",
+     "west": "c76b334a3564f934688523fa1f8d65152cc1707e591f8cdd48ea772d325130b8"
+    },
+    "B": {
+     "north": "f5d5871467a16e6f6e3a18e0ae9ad9f6d5dac0a174de959d557f486c16e8ea94"
+    },
+    "C": {
+     "north": "99d31958c03dc268b235b966c480f3442d54def24a173e2a18011cb7b13d3285"
+    },
+    "D": {
+     "north": "bbb416bfa70b9cc06aec2dda3c42b50bea040c00c56939ad575dcb31f84f7820",
+     "south": "7f02236c0f4a73884d72354cf513f638086b20e1de4efeb47b9478e75ca402bf",
+     "west": "c76b334a3564f934688523fa1f8d65152cc1707e591f8cdd48ea772d325130b8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+    "B": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+    "C": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+    "D": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render facings_redraw_yobshrimp_north_v3",
+    "C": "render facings_redraw_yobshrimp_north_v2",
+    "D": "history SeaBeasts 2026-09-02"
+   },
+   "pools": [],
+   "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "yobshrimp"
+  }
+ },
+ "sheetId": "facings_regen_picks_sheet_2026-10-18",
+ "snapshotId": "ebf5d0c3c5f312ca"
+}
