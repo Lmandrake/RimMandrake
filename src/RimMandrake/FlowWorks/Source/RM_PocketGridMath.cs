@@ -245,21 +245,13 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>TRENCH_CROSSING_FIX_DOWN_ACROSS_AND_UP: the relative rule's whole veto — <see cref="ReachVetoed"/>, lifted when
-		/// the two components are joined through ladders that are a way for this query. Only ever narrows the veto.</summary>
-		public static bool ReachVetoedAcross(bool sameComponent, bool startPocket, bool startWayOut, bool destPocket, bool destWayIn,
-			bool joinedByLadders)
-		{
-			return !joinedByLadders && ReachVetoed(sameComponent, startPocket, startWayOut, destPocket, destWayIn);
-		}
-
 		/// <summary>RAIDER_TRENCH_FIX_REACH_BOUNCE: RelativeVeto's whole decision for two DIFFERENT band components. A ladder is a
 		/// route only to the component across the wall it hangs on, so a ladder way is judged by the ladder graph alone
 		/// (<see cref="JoinedByLadders"/>, the edges the cliff masks restore for A*). The end rule (<see cref="ReachVetoed"/>)
 		/// still answers only when an end is a pocket too NARROW to hold the pawn: it braces across and walks out, and the masks
 		/// give such a pawn vanilla's array (RM_CliffMask), so no ladder edge describes it. Before: a trench floor with a ladder up
 		/// the near wall cleared the veto for the FAR bank too (and a bank for a floor laddered only from the other bank); A* found
-		/// no path and the raider looped (GotoNearestHostile → TryCross null → again). joinedByLadders is asked only when needed.</summary>
+		/// no path and the raider looped (GotoNearestHostile → TryCross null → again). joinedByLadders is asked last.</summary>
 		public static bool ReachVetoedWhole(bool startPocket, bool startNarrow, bool startWayOut, bool destPocket, bool destNarrow,
 			bool destWayIn, Func<bool> joinedByLadders)
 		{

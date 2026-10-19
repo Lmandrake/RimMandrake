@@ -370,12 +370,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 bool Way(bool mayClimb, bool ownLadder, bool raised = false, bool prisonDoor = true) =>
                     RM_PocketGridMath.LadderIsAWay(true, !raised, RM_PitTrapMath.LadderUsable(true, raised, prisonDoor, mayClimb || ownLadder));
                 bool Vetoed(List<(int a, int b)> e) =>
-                    RM_PocketGridMath.ReachVetoedAcross(false, false, false, false, false, RM_PocketGridMath.JoinedByLadders(A, B, e));
+                    RM_PocketGridMath.ReachVetoedWhole(false, false, false, false, false, false, () => RM_PocketGridMath.JoinedByLadders(A, B, e));
 
                 // colonist: down the near ladder, across the floor, up the far one
                 bool col = Way(true, false);
                 Assert(!Vetoed(Edges(col, col)), "a colonist crosses bank to bank by two ladders: one route");
-                Assert(!RM_PocketGridMath.ReachVetoedAcross(false, false, false, false, false, RM_PocketGridMath.JoinedByLadders(B, A, Edges(col, col))),
+                Assert(!RM_PocketGridMath.ReachVetoedWhole(false, false, false, false, false, false, () => RM_PocketGridMath.JoinedByLadders(B, A, Edges(col, col))),
                     "and back the other way (a ladder is climbed down and up)");
                 Assert(RM_PocketGridMath.ReachVetoed(false, false, false, false, false), "can-fail: the old veto alone kept the banks apart");
                 Assert(Vetoed(Edges(col, false)), "can-fail: one ladder only (near wall) is no crossing");
