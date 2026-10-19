@@ -268,9 +268,9 @@
       <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
       <RM_FireLavender>0.6</RM_FireLavender>  <!-- renamed from RUT_FireLavender -->
       <RM_CinderCrust>0.4</RM_CinderCrust>  <!-- this biome's own variant of the shared crust-fungus, §7 Q13 -->
-      <IronScruff_PrimordialGrass MayRequire="IronScruff.PrimordialGeysers">0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
-      <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
-      <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
+      <!-- IronScruff_PrimordialGrass / _PrimordialTallGrass / _Bindweed (Primordial Geysers) CUT from this roster:
+           owner 2026-10-19 by card ("Sixteen roster rows cast donor defs we have no def of: what happens?" ->
+           "Cut them from their biome sheets"), item REGEN_GAPS_DECIDE_STRAYS_AND_FLYERS. -->
       <RM_FirevineTree>0.2</RM_FirevineTree>  <!-- firevine tree - tree -->
       <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- renamed from RUT_HeatsinkFungus, tree -->
     </wildPlants>

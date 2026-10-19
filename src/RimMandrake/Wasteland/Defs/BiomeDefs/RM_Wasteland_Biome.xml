@@ -18,16 +18,9 @@
        all "move:*" in the roster, never executed in the defs) are dropped
        here rather than carried forward stale.
 
-  ⚠️ terrainsByFertility (VolcanoSoil/WastelandAsphalt) is copied UNCHANGED
-  from the donor-sourced twin — these are donor terrain defNames (used
-  elsewhere in this repo's own Volcano biome too, design/Jawa/fauna/
-  biome_palette.json) with no MayRequire in the source content and no
-  packageId findable offline on this pass (no def dump, no RimSage on this
-  machine). Left as-is rather than inventing a guard — see the build's own
-  REMAINS note. A standalone load with neither that donor mod nor the
-  originating biome pack active will render these two terrain rows as pink/
-  magenta, not fail to load (RimWorld degrades an unresolved TerrainDef
-  reference to the error-material terrain, not a hard crash).
+  terrainsByFertility uses this mod's own RM_WastelandAshySoil / RM_WastelandBrokenAsphalt
+  (Defs/TerrainDefs/RM_Wasteland_GroundTerrains.xml), which replaced Advanced Biomes'
+  VolcanoSoil / WastelandAsphalt on 2026-10-19 so the biome generates with that mod absent.
 
   ⭐ WASTELAND_RULED_CONTENT_1 (2026-09-29) superseded the wildAnimals/
   wildPlants rosters described above: every donor row named in points 1-3
@@ -103,13 +96,13 @@
     </diseases>
 
     <terrainsByFertility>
-      <li MayRequire="Mlie.AdvancedBiomes">
-        <terrain>VolcanoSoil</terrain>
+      <li>
+        <terrain>RM_WastelandAshySoil</terrain>
         <min>-999</min>
         <max>0.5</max>
       </li>
-      <li MayRequire="Mlie.AdvancedBiomes">
-        <terrain>WastelandAsphalt</terrain>
+      <li>
+        <terrain>RM_WastelandBrokenAsphalt</terrain>
         <min>0.5</min>
         <max>999</max>
       </li>
