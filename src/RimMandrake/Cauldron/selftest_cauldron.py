@@ -66,6 +66,7 @@ class Fake(object):
         self.roof_stripped = []                           # rects the suite opened to the sky (jawa/set_roof_batch None)
         self.chain = None                                 # the chain running now (the ruins chain reads the GENERATED Cauldron map)
         self.accr = {}                                    # Filter-Works accrued budget, by works id
+        self.cloud = None                                 # the seeded vent-gas cloud: [total, cx, cz] (drift row)
         self._mapgen()
 
     def _mapgen(self):
@@ -268,7 +269,30 @@ class Fake(object):
             old = self.ticks
             self.ticks += d
             self.wage += d
+            self.cloud_tick(d)
             self.chunk(d, old)
+
+    WIND = 1.0                                            # the fake map's wind: drift chance 0.4
+
+    def heading(self):
+        if "heading_turns_mid_arm" in self.broken:        # SITE: a day boundary inside the wind arm
+            return (self.ticks // 500) % 8
+        return V._py_heading(0, 17)                       # one heading for the fake's whole run (the law row owns the calendar)
+
+    def cloud_tick(self, d):
+        """The cloud moves a quarter-share per drift visit: ~0.25 * chance / 64 cells a tick along the heading."""
+        c = self.cloud
+        if c is None:
+            return
+        c[0] *= 0.99 ** (d / 25.0)
+        b = self.broken
+        if "cloud_stuck" in b or not self.on("ventGasDrifts", "cloud_ignores_toggle"):
+            return
+        h = self.heading()
+        sign = -1 if "cloud_wrong_way" in b else 1
+        step = 0.25 * min(0.75, self.WIND * 0.4) * d / 64.0 * sign
+        c[1] += V.HEAD_DX[h] * step
+        c[2] += V.HEAD_DZ[h] * step
 
     def chunk(self, d, old):
         b = self.broken
@@ -402,6 +426,18 @@ class Fake(object):
             if "heading_hourly" in self.broken:
                 ticks = ticks // 2500 * 60000
             return {"success": True, "result": str(V._py_heading(ticks, seed))}
+        if method == "ClearOf":
+            self.cloud = None
+            return {"success": True, "result": "cleared=0"}
+        if method == "SeedCloud":
+            x, z = [int(v) for v in a[1].split(",")]
+            self.cloud = [49.0 * int(a[3]), float(x), float(z)]
+            return {"success": True, "result": "seeded=49 total=%d" % self.cloud[0]}
+        if method == "CentroidOf":
+            c = self.cloud or [0, -1.0, -1.0]
+            ch = min(0.75, self.WIND * 0.4) if self.settings.get("ventGasDrifts") == "True" else 0.0
+            return {"success": True, "result": "total=%d cells=%d cx=%.3f cz=%.3f heading=%d wind=%.3f chance=%.3f ticks=%d"
+                    % (c[0], 49 if c[0] else 0, c[1], c[2], self.heading(), self.WIND, ch, self.ticks)}
         if method == "DriftChance":
             w = float(a[0])
             c = 0.4 if "drift_flat" in self.broken else max(0.0, min(0.75, w * 0.4))
@@ -837,6 +873,9 @@ BREAKS = {
     "heading_constant": "drift.gas_heading_is_daily_and_map_seeded",
     "heading_hourly": "drift.gas_heading_is_daily_and_map_seeded",
     "drift_flat": "drift.gas_drift_chance_follows_wind",
+    "cloud_stuck": "drift.gas_cloud_moves_along_heading",
+    "cloud_wrong_way": "drift.gas_cloud_moves_along_heading",
+    "cloud_ignores_toggle": "drift.gas_cloud_moves_along_heading",
     "missing_def": "load.defs_resolve",
     "type_unresolved": "load.types_resolve",
     "stale_dll": "load.types_resolve",
@@ -931,6 +970,10 @@ def source_checks():
     for needle in ("HeadingPeriodTicks = 60000", "2654435761L", "0x2C1B3C6Du", "h >> 15", "h >> 12", "h % 8u"):
         if needle not in blob and needle not in open(os.path.join(srcdir, "Kernel", "RM_VentGasKernel.cs"), encoding="utf-8").read():
             bad.append("RM_VentGasKernel.Heading no longer contains %r: update validation._py_heading to match" % needle)
+    ksrc = open(os.path.join(srcdir, "Kernel", "RM_VentGasKernel.cs"), encoding="utf-8").read()
+    for name, vals in (("HeadingDx", V.HEAD_DX), ("HeadingDz", V.HEAD_DZ)):
+        if not re.search(r"%s\s*=\s*\{\s*%s\s*\}" % (name, r"\s*,\s*".join(str(v) for v in vals)), ksrc):
+            bad.append("RM_VentGasKernel.%s no longer reads %r: update validation.HEAD_DX/HEAD_DZ" % (name, vals))
     if "<inputLitres>800</inputLitres>" not in V._def_text("LiquidDefs/RM_Liquid_VentCondensate.xml"):
         bad.append("COND_BATCH (8000 units) no longer matches the condensate refine step (inputLitres 800)")
     for f in V.DEFAULTS:
@@ -987,6 +1030,13 @@ def main():
     got = res.get("ruins.oomo_shrine_at_mapgen", ("?",))[0]
     if reds or got != "UNMEASURED":
         bad.append("site break no_utinni: expected oomo_shrine_at_mapgen UNMEASURED and no red, got %s / %s" % (got, reds))
+    # SITE: the heading turns inside the wind arm (a day boundary) -> the cloud row cannot ask: UNMEASURED, never red.
+    res = run(["heading_turns_mid_arm"])
+    reds = sorted(k for k, v in res.items() if v[0] in ("FAIL", "CRASH") and k != "drift.gas_heading_is_daily_and_map_seeded")
+    got = res.get("drift.gas_cloud_moves_along_heading", ("?",))[0]
+    if reds or got != "UNMEASURED":
+        bad.append("site break heading_turns_mid_arm: expected gas_cloud_moves_along_heading UNMEASURED and no red, got %s / %s"
+                   % (got, reds))
     # SITE: the loaded map is not a Cauldron map -> the mapgen census cannot ask.
     # SITE: a mountain site. With the pad's roof stripped (_open_sky) nothing collapses and the whole run stays green;
     # if the strip is lost the collapse buries the vent and vent_gas_emits must say UNMEASURED, never FAIL.

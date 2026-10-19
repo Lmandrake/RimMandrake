@@ -283,5 +283,35 @@ namespace RimMandrake.Cauldron
             for (int i = 0; i < Density.Length; i++) t += Density[i];
             return t;
         }
+
+        // The cloud's density-weighted centroid over the window x0..x1, z0..z1 (inclusive, clamped to the grid): the one
+        // read of the cloud's MOVEMENT (validation.py drift.gas_cloud_moves_along_heading). Returns the total gas in the
+        // window; with none, cx = cz = -1 and cells = 0.
+        public long CentroidIn(int x0, int z0, int x1, int z1, out double cx, out double cz, out int cells)
+        {
+            if (x0 < 0) x0 = 0;
+            if (z0 < 0) z0 = 0;
+            if (x1 >= Width) x1 = Width - 1;
+            if (z1 >= Height) z1 = Height - 1;
+            long total = 0, sx = 0, sz = 0;
+            cells = 0;
+            for (int z = z0; z <= z1; z++)
+            {
+                int row = z * Width;
+                for (int x = x0; x <= x1; x++)
+                {
+                    int d = Density[row + x];
+                    if (d == 0) continue;
+                    cells++;
+                    total += d;
+                    sx += (long)d * x;
+                    sz += (long)d * z;
+                }
+            }
+            if (total == 0) { cx = -1; cz = -1; return 0; }
+            cx = sx / (double)total;
+            cz = sz / (double)total;
+            return total;
+        }
     }
 }

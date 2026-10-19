@@ -51,6 +51,59 @@ namespace RimMandrake.Cauldron
 
         public static RM_MapComponent_VentGas For(Map map) { return map?.GetComponent<RM_MapComponent_VentGas>(); }
 
+        // The map's drift heading right now (one seed expression for the tick and the readout below).
+        public int HeadingNow => RM_VentGasKernel.Heading(Find.TickManager.TicksGame, map.uniqueID * 7919 + 17);
+
+        // The drift chance the tick is using right now: 0 when the setting is off, else the wind law.
+        public float DriftChanceNow => RM_CauldronSettings.ventGasDrifts ? RM_VentGasKernel.DriftChance(map.windManager.WindSpeed) : 0f;
+
+        // ── jawa/static_call readouts (validation.py drift.gas_cloud_moves_along_heading) ──────────────────────
+        // No other tool reads a cell's vent-gas density, so the cloud's movement had no state read. These are the read and
+        // the two fixtures the row needs; each answers one text line, "REFUSED: ..." when it cannot act.
+
+        // "total=T cells=N cx=X cz=Z heading=H wind=W chance=C ticks=K" over the square of `radius` around `center`
+        // (radius < 0: the whole map). cx/cz are -1 when the window holds no gas.
+        public static string CentroidOf(Map map, IntVec3 center, int radius)
+        {
+            RM_MapComponent_VentGas comp = For(map);
+            if (comp == null) return "REFUSED: no RM_MapComponent_VentGas on this map";
+            int x0 = 0, z0 = 0, x1 = map.Size.x - 1, z1 = map.Size.z - 1;
+            if (radius >= 0) { x0 = center.x - radius; z0 = center.z - radius; x1 = center.x + radius; z1 = center.z + radius; }
+            long total = comp.cells.CentroidIn(x0, z0, x1, z1, out double cx, out double cz, out int n);
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            return string.Format(inv, "total={0} cells={1} cx={2:0.000} cz={3:0.000} heading={4} wind={5:0.000} chance={6:0.000} ticks={7}",
+                total, n, cx, cz, comp.HeadingNow, map.windManager.WindSpeed, comp.DriftChanceNow, Find.TickManager.TicksGame);
+        }
+
+        // Puts `amount` of vent gas in every cell within `radius` of `center` (through AddGas, so walls refuse it as they
+        // refuse the vents' own gas). "seeded=N total=T".
+        public static string SeedCloud(Map map, IntVec3 center, int radius, int amount)
+        {
+            RM_MapComponent_VentGas comp = For(map);
+            if (comp == null) return "REFUSED: no RM_MapComponent_VentGas on this map";
+            if (!center.InBounds(map) || radius < 0 || radius >= GenRadial.MaxRadialPatternRadius || amount <= 0)
+                return "REFUSED: bad center/radius/amount (radius 0.." + GenRadial.MaxRadialPatternRadius + ")";
+            long before = comp.cells.Total();
+            int n = 0;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(center, radius, true))
+            {
+                if (!c.InBounds(map) || !map.gasGrid.GasCanMoveTo(c)) continue;
+                comp.AddGas(c, amount);
+                n++;
+            }
+            return "seeded=" + n + " total=" + (comp.cells.Total() - before);
+        }
+
+        // Empties the map's vent gas (the row's clean slate). "cleared=T".
+        public static string ClearOf(Map map)
+        {
+            RM_MapComponent_VentGas comp = For(map);
+            if (comp == null) return "REFUSED: no RM_MapComponent_VentGas on this map";
+            long t = comp.cells.Total();
+            comp.ClearAll();
+            return "cleared=" + t;
+        }
+
         public bool AnyGas => cells.NonZero > 0;
         public int CellsWithGas => cells.NonZero;
 
@@ -96,8 +149,8 @@ namespace RimMandrake.Cauldron
                 else if ((k & 7) == 0) dirty(i);   // thinning shows, at an eighth of the visits
             }
 
-            float chance = RM_CauldronSettings.ventGasDrifts ? RM_VentGasKernel.DriftChance(map.windManager.WindSpeed) : 0f;
-            int heading = RM_VentGasKernel.Heading(Find.TickManager.TicksGame, map.uniqueID * 7919 + 17);
+            float chance = DriftChanceNow;
+            int heading = HeadingNow;
             int nDiff = Mathf.CeilToInt(area / 64f);
             for (int k = 0; k < nDiff; k++)
             {
