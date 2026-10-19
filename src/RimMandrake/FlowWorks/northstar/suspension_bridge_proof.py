@@ -234,9 +234,13 @@ def posts(ctx):
     # the span's load with nobody on it (live 2026-10-19 read 816 kg with ONE rider: what else weighs on the deck?)
     _, empty_txt = proof("ProofSpan", xz(P(3, 0)))
 
+    # pass 2 run 3 (2026-10-19, HARNESS): two drafted riders sharing a deck square shuffle apart, and 3 of 10 stepped off
+    # the deck onto the anchor/ground inside the 60-tick load check (cells read before/after). Ballast the deck with a stack
+    # of granite blocks per square (75 x 1 kg) and put at most ONE rider per square.
+    ballast = B.call("jawa/spawn_batch", ops=";".join("BlocksGranite:%d,%d,75" % P(1 + k, 0) for k in range(6))) or {}
     riders, drafted = [], []
-    for k in range(12):
-        riders.append(spawn(P(1 + k % 6, 0)))
+    for k in range(6):
+        riders.append(spawn(P(1 + k, 0)))
         # pass 2 (2026-10-19, HARNESS): undrafted riders walked off inside the 60-tick load check (656 kg Over at the
         # spawn, 425 kg two checks later, 6 decks still up): draft each one and read it back
         if riders[-1]:
@@ -265,7 +269,11 @@ def posts(ctx):
         st = "UNMEASURED"           # never Over, no health block, or a rider not drafted (free to walk off the deck)
     row("SB_load_over_rating_whole_span_falls", st,
         {"empty": empty_txt, "before": txt, "inspect_line": line, "after": txt2, "riders": len(riders), "fell": fell, "hurt": hurt,
-         "healthSeen": health_seen(after), "drafted": drafted})
+         "healthSeen": health_seen(after), "drafted": drafted,
+         # pass 2 trace: where each rider stood before/after the 120 ticks (load fell 608 -> 365 with no collapse)
+         "cells": [[(before.get(pid) or {}).get("x"), (before.get(pid) or {}).get("z"), (after.get(pid) or {}).get("x"),
+                    (after.get(pid) or {}).get("z")] for pid in riders if pid],
+         "originZ": oz, "ballast": ballast.get("success"), "afterSpans": [proof("ProofSpan", xz(P(c, 0)))[1][:120] for c in (1, 6)]})
 
     # T2: too long for timber
     kv, txt = proof("ProofBuild", "%s;%s;timber" % (xz(P(0, 4)), xz(P(8, 4))))
