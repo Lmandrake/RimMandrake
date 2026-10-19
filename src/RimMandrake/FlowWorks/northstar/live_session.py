@@ -1150,6 +1150,9 @@ def b9_owner(s):
         FC.place(s.w, "RM_ClimbingGear", (x + 15, z + 2))
     s.row("B9_props_staged", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A5", "UNMEASURED", "OWED",
           dict(rect=s.zones["props"], why="his look: portable ladder diagonal vs flat, climbing gear icon"), "B9", eyes=True)
+    s.call("jawa/kill_hostiles")
+    heal_colonists(s)
+    feed_colonists(s)
     import owner_review_stage as ORS
     ox, oz = s.zones["owner"][0] + 3, s.zones["owner"][1] + 6
     argv = ["--origin", "%d,%d" % (ox, oz), "--only", "ladders,spikes,gates,shallows,sprinklers,hoses,bars_joint,bars_dry,bars_trench,bars_access,bars_bridges"]
@@ -1169,6 +1172,20 @@ def b9_owner(s):
 
 
 # ============================================================================ subprocess steps
+def heal_colonists(s):
+    """Restore every living colonist's health (wounds, blood loss) before a block that is not about health: after B8's
+    raid a bleeding colonist trips the governor's 'hurt' latch and kills the owner staging (live 2026-10-19, B9)."""
+    if s.mock:
+        return 0
+    n = 0
+    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+        if c.get("dead") or not c.get("pawnId"):
+            continue
+        s.call("jawa/pawn_health", pawn=c["pawnId"], action="restore", confirmDestructive=True)
+        n += 1
+    return n
+
+
 def feed_colonists(s):
     """Top up Food and Rest on every colonist: an unfed quicktest colony reaches Starving inside a session and the
     governor then stops every sub-script's clock (live 2026-10-19: liquid_checks L2-L6 and proof_hose realflow UNMEASURED)."""
