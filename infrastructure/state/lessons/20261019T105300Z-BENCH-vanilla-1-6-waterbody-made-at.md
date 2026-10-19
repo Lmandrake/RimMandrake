@@ -1,0 +1,1 @@
+Vanilla 1.6 WaterBody made at runtime counts 0 freezable cells, so FreezeManager's chance is 0/0 NaN and dug water never freezes silently; fixed by RM_WaterBodyFreezeCountFix.cs (fish size is counted correctly).
