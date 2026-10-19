@@ -35,7 +35,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>shallow oil (about 1 m)</label>
-    <description>Oil standing chest-deep. Wading it is slow work. It clings, it stinks, and it burns.</description>
+    <description>Oil standing knee-to-waist deep. Wading it is slow work. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -62,7 +62,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>chest-deep oil (about 1.5 m)</label>
-    <description>Oil standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It clings, it stinks, and it burns.</description>
+    <description>Oil standing chest-deep. Crossing it is punishing, but anyone can stand in it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -134,7 +134,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Half</defName>
     <label>shallow poison (about 1 m)</label>
-    <description>Poison standing chest-deep. Wading it is slow work. Standing in it poisons you, more the deeper it is.</description>
+    <description>Poison standing knee-to-waist deep. Wading it is slow work. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -158,7 +158,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Brim</defName>
     <label>chest-deep poison (about 1.5 m)</label>
-    <description>Poison standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Standing in it poisons you, more the deeper it is.</description>
+    <description>Poison standing chest-deep. Crossing it is punishing, but anyone can stand in it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -229,7 +229,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Half</defName>
     <label>shallow blood (about 1 m)</label>
-    <description>Blood standing chest-deep. Wading it is slow work. Thick, warm at first, and it draws flies.</description>
+    <description>Blood standing knee-to-waist deep. Wading it is slow work. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -253,7 +253,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Blood_Brim</defName>
     <label>chest-deep blood (about 1.5 m)</label>
-    <description>Blood standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick, warm at first, and it draws flies.</description>
+    <description>Blood standing chest-deep. Crossing it is punishing, but anyone can stand in it. Thick, warm at first, and it draws flies.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -326,7 +326,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>shallow chemfuel (about 1 m)</label>
-    <description>Chemfuel standing chest-deep. Wading it is slow work. It reeks of fumes; a spark sets it off.</description>
+    <description>Chemfuel standing knee-to-waist deep. Wading it is slow work. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -353,7 +353,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>chest-deep chemfuel (about 1.5 m)</label>
-    <description>Chemfuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It reeks of fumes; a spark sets it off.</description>
+    <description>Chemfuel standing chest-deep. Crossing it is punishing, but anyone can stand in it. It reeks of fumes; a spark sets it off.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -429,7 +429,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>shallow astrofuel (about 1 m)</label>
-    <description>Astrofuel standing chest-deep. Wading it is slow work. Refined propellant; a spark sets it off violently.</description>
+    <description>Astrofuel standing knee-to-waist deep. Wading it is slow work. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -456,7 +456,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>chest-deep astrofuel (about 1.5 m)</label>
-    <description>Astrofuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Refined propellant; a spark sets it off violently.</description>
+    <description>Astrofuel standing chest-deep. Crossing it is punishing, but anyone can stand in it. Refined propellant; a spark sets it off violently.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -530,7 +530,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Half</defName>
     <label>shallow boiling water (about 1 m)</label>
-    <description>Boiling water standing chest-deep. Wading it is slow work. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <description>Boiling water standing knee-to-waist deep. Wading it is slow work. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -556,7 +556,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_BoilingWater_Brim</defName>
     <label>chest-deep boiling water (about 1.5 m)</label>
-    <description>Boiling water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <description>Boiling water standing chest-deep. Crossing it is punishing, but anyone can stand in it. Steam stands off the surface and nothing wades in without paying for it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -627,7 +627,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Half</defName>
     <label>shallow icy water (about 1 m)</label>
-    <description>Icy water standing chest-deep. Wading it is slow work. Cold enough to steal warmth through boots and gloves alike.</description>
+    <description>Icy water standing knee-to-waist deep. Wading it is slow work. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -651,7 +651,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_IcyWater_Brim</defName>
     <label>chest-deep icy water (about 1.5 m)</label>
-    <description>Icy water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Cold enough to steal warmth through boots and gloves alike.</description>
+    <description>Icy water standing chest-deep. Crossing it is punishing, but anyone can stand in it. Cold enough to steal warmth through boots and gloves alike.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->

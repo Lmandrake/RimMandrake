@@ -292,11 +292,11 @@
     </tags>
   </TerrainDef>
 
-  <!-- Tier 2 of 3 — half full, read as chest-deep. -->
+  <!-- Tier 2 of 3 — half full, read as knee-to-waist shallow (about 1 m). -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Half</defName>
     <label>shallow water (about 1 m)</label>
-    <description>Water standing chest-deep. Wading it is slow work.</description>
+    <description>Water standing knee-to-waist deep. Wading it is slow work.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -320,7 +320,7 @@
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Brim</defName>
     <label>chest-deep water (about 1.5 m)</label>
-    <description>Water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it.</description>
+    <description>Water standing chest-deep. Crossing it is punishing, but anyone can stand in it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -414,14 +414,14 @@
     </tags>
   </TerrainDef>
 
-  <!-- Tier 2 of 3 — half full, read as chest-deep. -->
+  <!-- Tier 2 of 3 — half full, read as knee-to-waist shallow (about 1 m). -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Half</defName>
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>shallow tar (about 1 m)</label>
-    <description>Tar standing chest-deep. Wading it is slow work. Black and patient, it sucks at every step.</description>
+    <description>Tar standing knee-to-waist deep. Wading it is slow work. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
@@ -448,7 +448,7 @@
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
     <label>chest-deep tar (about 1.5 m)</label>
-    <description>Tar standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Black and patient, it sucks at every step.</description>
+    <description>Tar standing chest-deep. Crossing it is punishing, but anyone can stand in it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
