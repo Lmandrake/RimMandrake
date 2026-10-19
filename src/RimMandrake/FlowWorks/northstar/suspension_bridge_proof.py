@@ -68,6 +68,7 @@ ANTI-GUESSING NOTES
 import argparse
 import json
 import os
+import re
 import sys
 import time
 
@@ -124,6 +125,9 @@ def main(argv=None):
         save()
 
     def proof(method, arg):
+        # RM_SuspensionProofs.PawnById wants the thingIDNumber; jawa/spawn_pawn answers "Human41594": pass the number
+        # (first live run 2026-10-19: every pawn-taking proof REFUSED 'arg must be pawnId;...')
+        arg = ";".join(re.sub(r"^(?:Thing_)?[A-Za-z]+_?(\d+)$", r"\1", t) for t in str(arg).split(";"))
         r = B.call("jawa/static_call", type=PROOF, method=method, args=arg) or {}
         txt = str(r.get("result") or r.get("message") or r.get("error") or "")
         return (parse(txt) if r.get("success") is True and not txt.startswith("REFUSED") else {}), txt
@@ -251,7 +255,7 @@ def posts(ctx):
     proof("ProofBuild", "%s;%s;timber;god" % (xz(P(0, 12)), xz(P(5, 12))))
     B.call("jawa/destroy_batch", cells=[{"x": P(0, 12)[0], "z": P(0, 12)[1]}], defName="RM_SuspensionAnchor_Timber")
     ticks(150)
-    kv, txt = proof("ProofSwing", "")
+    kv, txt = proof("ProofSwing", "-")   # an empty args string is a 0-param call (no such overload)
     stamps = []
     for tok in txt.split()[1:]:
         if "@" not in tok:          # 'SWING none' or a key=value token: not a stamp (live 2026-10-19 crashed here)
