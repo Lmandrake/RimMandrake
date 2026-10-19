@@ -29,6 +29,7 @@ RUNTIME = ("about 12 minutes: the main map about 6 (fresh quicktest map ~1.5 min
            "~60 placing calls) plus its save. Budget 20 minutes before calling it stuck.")
 
 M = "matrix: "
+S = "staged by northstar/owner_review_stage.py "   # the owner sees these in that script, not on the review map
 # (kind, regex on the item's name, feature, where shown). kind: def | set | gizmo | tex.
 FEATURES = [
     # ---- digging
@@ -135,6 +136,31 @@ FEATURES = [
     ("set", r"^(ladderRequiredToExitEnabled|ladderPrisonDoorEnabled|ladderRaiseLowerEnabled|pitLadderSlowness)$",
      "Ladders", "hold_ladder_raised"),
     ("def", r"^ThingDef/RM_Ladder$", "Ladder", "hold_ladder"),
+    # REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS: raider/climb behaviour is read from state, not a staged scene
+    ("def", r"^JobDef/(RM_RaiderSetLadder|RM_RaiderFillTrench)$", "Raiders cross a trench with a ladder or fill it", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
+    ("def", r"^JobDef/RM_ClimbOverWall$", "Climbing over a wall", M + "pawn job; proved by WallClimbChecks, no frozen station stages a wall climb"),
+    ("def", r"^ThingDef/RM_LadderPortable$", "Portable ladder (carried, set down by hand)", M + "an inventory item with no frozen station; proved by PitAccessChecks"),
+    ("def", r"^ThingDef/RM_ClimbingGear$", "Climbing gear (apparel that speeds a climb)", M + "apparel with no frozen station; proved by PitAccessChecks"),
+    # suspension bridges etc.: no review-map station; the owner sees them in owner_review_stage.py (bars_* rows)
+    ("def", r"^ThingDef/RM_Suspension(Deck|Anchor)_(Rope|Timber|Steel|Heavy)$|^ThingDef/RM_SuspensionRailing$", "Suspension bridges: four tiers, anchors, railings", M + S + "bars_bridges (rope/timber/steel/heavy, railings on and off)"),
+    ("def", r"^ThingDef/RM_Suspension(Deck_SteelGrated|Deck_HeavyGrated|Jetty_Steel|Jetty_Heavy)$", "Grated decks and jetties", M + S + "bars_bridge_kinds (grated steel/heavy, steel/heavy jetty)"),
+    ("def", r"^ThingDef/RM_SuspensionTower$", "Bridge tower", M + S + "bars_bridge_kinds / bars_bridges, drawn where a span needs one; no separate pose"),
+    ("def", r"^ThingDef/RM_SuspensionWreck$", "Bridge wreck", M + "appears only when a loaded bridge collapses; state-read by ProofFell, not a staged scene"),
+    ("def", r"^DrawStyleCategoryDef/RM_SuspensionBridge$", "Bridge look picker category", M + S + "bars_bridge_kinds (the four looks via ProofLook)"),
+    ("def", r"^ThingStyleDef/RM_Suspension", "Bridge parts in four looks (Scrapper, Industrial, Modern, Futuristic)", M + S + "bars_bridge_kinds (steel bridge in each look); pixel-checked by selftest_flowworks_suspension_art"),
+    ("tex", r"SuspensionBridge/", "Suspension bridge art", M + S + "bars_bridges / bars_bridge_kinds; pixel-checked by selftest_flowworks_suspension_art"),
+    ("gizmo", r'^"Railings: "', "Bridge railings toggle", M + S + "bars_bridges (railings on north lane, off south lane)"),
+    ("set", r"^(suspensionBridgesBuildable|suspensionOverWater|suspensionOverSea|vanillaBridgeRefusedOverDug|sunkenBridges|suspensionWalkUnder)$", "Where bridges may be built and walked", M + "build-rule switches, state-read by ProofBuild/ProofUnderPath; no extra scene"),
+    ("set", r"^(suspensionWeightCollapse|suspensionLoadMultiplier|suspensionLengthMultiplier|suspensionAnchorLossFalls|suspensionOwnPeopleFall|floodsDamageLightBridges)$", "Bridge load, collapse and flood damage", M + "state-read by ProofSpan/ProofFell/ProofFloodHours; a collapse is not a scene to stage"),
+    ("set", r"^(grateFirePasses|grateDrainsSpills)$", "Grated decks pass fire and drain spills", M + S + "bars_bridge_kinds shows the grated decks; fire and drain are state-read by ProofGrate/ProofPour"),
+    ("set", r"^pipesUnderToCentre$", "Pipes run under to the centre", M + "pipe-routing switch; no frozen station lays pipe under a deck"),
+    ("set", r"^(trenchCoverEnabled|trenchCoverStrength|trenchCoverCap|trenchAiAvoidsCages)$", "Trench cover", M + S + "bars_trench (waist- and chest-deep colonist with a shooter); numbers read by ProofTrenchCover"),
+    ("set", r"^(portableLadderEnabled|portableLadderMaxLevels|climbingGearEnabled|climbingGearSlowness|pitRescueLadderEnabled)$", "Portable ladder and climbing gear", M + S + "bars_access (portable ladder in a pit and on a 4 m wall, gear worn and on the ground)"),
+    ("set", r"^(pitJumpLandsSafe|pitTeleportLandsSafe)$", "Jumping or teleporting into a pit lands safe", M + "state read (live_session g_pit_access); nothing to look at"),
+    ("set", r"^(wallClimbEnabled|wallClimbSlowFactor|wallClimbAutoRoute)$", "Climbing over walls", M + "pawn job; no pose call exists (owner_review_stage header), proved by WallClimbChecks"),
+    ("set", r"^(raidersMayClimbWalls|raidersCarryClimbingGear|raiderGearChanceScale|breacherSapperGearChance)$", "Raiders climb walls and carry gear", M + "raid-run state read; no frozen station stages a raid"),
+    ("tex", r"Item/FlowWorks/RM_ClimbingGear\.png", "Climbing gear art", M + S + "bars_access (gear on the ground and worn)"),
+    ("tex", r"Canals/RM_(Sluice|SecurityGrateDoor)_(east|south)\.png", "Sluice and grate side-facing art", "look_parts"),
     ("gizmo", r"RMFlow_Ladder", "Ladder up / down button", "hold_ladder_raised"),
     ("tex", r"Canals/RM_Ladder", "Ladder art, lowered and raised", "hold_ladder_raised"),
     ("set", r"^(superdeepRoomsEnabled|captureDownEnabled|wardenFromLipEnabled|pitRoomMinDepthMetres|pitStuckAlertEnabled)$", "A pit prison run from the lip",
