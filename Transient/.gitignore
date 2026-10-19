@@ -380,5 +380,14 @@
 !/walk_precheck_2026-10-18/**
 !/weekly_cleaning_2026-10-11/08_telemetry_deep_design.md
 !/work_PLUME_20261003.md
+!/worldtex_flatten/before_after_planet_zoom.png
+!/worldtex_flatten/contrast_after.txt
+!/worldtex_flatten/contrast_before.txt
+!/worldtex_flatten/flatten.py
+!/worldtex_flatten/flatten_numbers.txt
+!/worldtex_flatten/install.py
+!/worldtex_flatten/measure.py
+!/worldtex_flatten/plan.json
+!/worldtex_flatten/sheet.py
 !/xenotype_review/xenotype_skin_palette_sheet.png
 # --- END PINS ---
