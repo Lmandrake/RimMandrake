@@ -30,6 +30,8 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
             colonist in 4 m sheer pits; a pit cover over a 2 m pit.
   bars_bridges (default) suspension bridges rope/timber/steel/heavy over 4 m pits, railings on (north lane) and off (south lane), plus a
             pit cover beside them. Built with RM_SuspensionProofs.ProofBuild "...;god" and ProofRails (the proof script's own calls).
+  bars_bridge_kinds (default) the other suspension parts: steel and heavy GRATED decks, steel and heavy JETTIES, and the steel bridge in
+            each of the four looks (Scrapper/Industrial/Modern/Futuristic, railings on) via ProofLook. Own lane south of bars_bridges.
   Bars with NO site (no bridge tool can pose them): wall-climb mid-climb (RM_WallClimb has no pose call; the scale-a-built-wall build
   is in progress), raiders-never-shelter (a raid-run state read), jump-into-pit hurts nobody (state read; live_session g_pit_access).
   Site for all bars_* rows: east of the hoses, rect "bars_rect" (x = origin+150, 62 wide, 76 tall); live_session's owner zone is 216 wide.
@@ -55,7 +57,7 @@ LOOKS = ("Futuristic", "Industrial", "Modern", "Scrapper")
 PULSE = 2500
 NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a square (RM_LevelSolve.MetresPerUnit * U)
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
-BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges")
+BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds")
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
 OPT_ROWS = ("hoses",)            # run only when named in --only (own site east of the others; not in the default sweep)
 
@@ -552,8 +554,36 @@ def row_bars_bridges(s, L):
     return cap
 
 
+def row_bars_bridge_kinds(s, L):
+    bx, bz = L["bars"]
+    s.say("ROW bars_bridge_kinds: grated steel/heavy, steel/heavy jetties, steel bridge in four looks")
+    cap = []
+    z = bz + 48
+    for k, tier in enumerate(("steelgrated", "heavygrated")):
+        x0 = bx + k * 13
+        for x in range(x0 + 1, x0 + 5):
+            s.dig((x, z), 8)
+        s.proof(SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
+        cap.append("%s suspension bridge over a 4 m pit" % tier)
+    z = bz + 52
+    for k, tier in enumerate(("steel", "heavy")):
+        x0 = bx + k * 13
+        for x in range(x0 + 1, x0 + 5):
+            s.dig((x, z), 8)
+        s.proof(SUSP, "ProofJetty", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 4, z, tier))
+        cap.append("%s jetty reaching out over a 4 m pit" % tier)
+    for k, look in enumerate(("Scrapper", "Industrial", "Modern", "Futuristic")):
+        x0 = bx + k * 13
+        z = bz + 56 + 0
+        for x in range(x0 + 1, x0 + 5):
+            s.dig((x, z), 8)
+        s.proof(SUSP, "ProofLook", "%s;%d,%d;%d,%d" % (look, x0, z, x0 + 5, z))
+        cap.append("steel bridge, %s look, railings on" % look)
+    return cap
+
+
 ROWS = dict(bars_joint=row_bars_joint, bars_dry=row_bars_dry, bars_trench=row_bars_trench, bars_access=row_bars_access,
-            bars_bridges=row_bars_bridges, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
+            bars_bridges=row_bars_bridges, bars_bridge_kinds=row_bars_bridge_kinds, hoses=row_hoses, ladders=row_ladders, spikes=row_spikes, shallows=row_shallows, sprinklers=row_sprinklers)
 
 
 # ------------------------------------------------------------------ driver

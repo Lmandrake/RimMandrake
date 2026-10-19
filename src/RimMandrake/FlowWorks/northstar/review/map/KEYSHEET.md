@@ -4,7 +4,7 @@ Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-88 stations: 13 works in game, 64 built, not yet seen, 11 partly built, 0 not built yet.
+88 stations: 13 works in game, 66 built, not yet seen, 9 partly built, 0 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -75,7 +75,7 @@ Two different liquids never mix: where their fronts meet, both stop. Drain one s
 
 ### 5. A small pond runs dry - works in game
 
-Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out. An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.
+Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out. An enclosed pond supplies only the water it holds (2 levels a shallow square, 4 a deep one), then the flow stops.
 
 **Look at:** a 2x2 deep pond feeding a long 2-deep canal: it fills about 8 cells, then stops (a deep pond square holds 4 levels, two canal cells)
 
@@ -372,7 +372,7 @@ Someone in a pit can only shoot, and be shot at, from the pit's edge. Raiders do
 
 **Look for:** weak spot: a shot fired from 6 cells away
 
-### 28. Jump in on purpose - partly built
+### 28. Jump in on purpose - built, not yet seen
 
 A 'jump in' button drops a colonist in on purpose; explosions and knockback can throw people in. Whoever jumps in is stuck there too.
 
@@ -383,8 +383,6 @@ A 'jump in' button drops a colonist in on purpose; explosions and knockback can 
 - select him: 'Jump into pit' drops him in, and he is stuck there too
 
 **Look for:** weak spot: no 'Jump into pit' button; the jumper unhurt and free
-
-**Not built yet in this feature:** an explosion or knockback throwing someone into a pit
 
 ### 29. A ramp is a way out - built, not yet seen
 
@@ -539,17 +537,17 @@ People sink as the ground deepens and rise as they climb out; in a pit the walls
 
 **Look for:** weak spot: the D4 head showing over the wall; a snap instead of a step on the way out
 
-### 41. A canal looks dug and shows how full - partly built
+### 41. A canal looks dug and shows how deep its water is - partly built
 
 A canal looks dug, not like a gravel path, and shows how full it is. Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.
 
-**Look at:** D3 cells: empty, trace, half, brim; and a brimming pit
+**Look at:** 1.5 m cells: dry, 0.5 m, 1 m and 1.5 m of water; and a brimming pit (2 m of water)
 
 **Poke it:**
 
-- hover each: the fill reads empty, trace, half, brim
+- hover each: the readout says the hole and the water in metres
 
-**Look for:** weak spot: trace and half drawn the same
+**Look for:** weak spot: 0.5 m and 1 m of water drawn the same
 
 **Not built yet in this feature:** a dug canal looking dug, not like a gravel path
 
@@ -687,7 +685,7 @@ Containers in the four looks
 
 ### 52. Tanks, pumps, hoses - built, not yet seen
 
-Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all. One full tank holds about five canal tiles of liquid.
+Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all. A tank holds as much as the same footprint of deepest canal: each tank square is one deep canal square.
 
 **Look at:** a pump on the pond shore piped to a tank, powered by a battery
 
@@ -949,7 +947,7 @@ A hose on THEIR tank
 
 **Look for:** weak spot: the brass coupling not on THEIR tank; their faction is only a state read (HoseProbe census): nobody's inspect names it
 
-### 73. Drills, taps and stills - partly built
+### 73. Drills, taps and stills - built, not yet seen
 
 Drills and taps bring underground liquids up, and cleaned water feeds thirst
 
@@ -960,8 +958,6 @@ Drills and taps bring underground liquids up, and cleaned water feeds thirst
 - select the drill: it says what liquid lies under it, if any
 
 **Look for:** weak spot: a drill with nothing under it and no message saying so
-
-**Not built yet in this feature:** water cleaning feeding into thirst
 
 ### 74. Liquid kits - partly built
 
