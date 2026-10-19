@@ -314,6 +314,20 @@ def _setting(t, field, value):
             pass
 
 
+@contextmanager
+def _setting_in(t, typ, field, value):
+    """_setting for ANY registry switch (not only suite.toggles): flip it for the block, restore its shipped default."""
+    t.set_setting(typ, {field: value})
+    try:
+        yield
+    finally:
+        try:
+            t.session.call("jawa/mod_settings_field", typeName=typ, action="set", field=field,
+                           value=str(REG.BY_KEY[field]["default"]))
+        except Exception:
+            pass
+
+
 def _frame(t, x0, z0, w, h, name=None):
     """One framed screenshot of a cell rect (3-cell margin). Returns the path."""
     return t.screenshot(name=name, rect=(x0 - 3, z0 - 3, w + 6, h + 6), padding=0)
@@ -1190,14 +1204,17 @@ def toggle_liquid_ignition(t):
 @suite.chain("all_off_still_digs")
 def all_off_still_digs(t):
     """FLOWWORKS_NORTHSTAR_SHIP_1 / MOD_OPTIONS ruling 2026-09-12: with EVERY FlowWorks toggle off the mod still
-    digs dry channels. A D=1 run dug beside a pond stays D=1 and dry across pulses (no flow, no rain, no fire)."""
+    digs dry channels. A D=1 run dug beside a pond stays D=1 and dry across pulses (no flow, no rain, no fire).
+    EVERY toggle is the registry's all-off fixture (settings_registry.all_off(): every section's bool switch), not the
+    50-name FW_TOGGLES + PITS_TOGGLES floor this chain used until the 2026-10-18 F2 settings audit, which left 100+
+    switches (rivers, machinery, hose, thirst, trench cover, pit access, looks ...) ON during the "all off" check."""
     import contextlib
     x0, z0 = _prep_plot(t, "T")
     px, pz = _limited_pond(t, "T")
     cells = _channel_from(px + 5, pz + 2, 4)
     with contextlib.ExitStack() as stack:
-        for f in FW_TOGGLES + PITS_TOGGLES:
-            stack.enter_context(_setting(t, f, False))
+        for cls, f, off in REG.all_off():
+            stack.enter_context(_setting_in(t, cls, f, off))
         with t.component("all_off_digs_dry_channel"):
             _dig_run(t, cells, 1)
             _wait(t, 4 * PULSE)
