@@ -97,21 +97,9 @@ namespace RimMandrake.FlowWorks.Pits
                 }
             }
 
-            float summedMass = 0f;
+            // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base's load sum (the same pawns, the same own-faction carve-out).
             List<Pawn> onCover = new List<Pawn>();
-            foreach (IntVec3 cell in cells)
-            {
-                List<Thing> thingsHere = cell.GetThingList(map);
-                for (int i = 0; i < thingsHere.Count; i++)
-                {
-                    if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying
-                        && (p.Faction != parent.Faction || RimMandrakeFlowWorksSettings.superdeepCapturesOwnFaction))
-                    {
-                        onCover.Add(p);
-                        summedMass += p.GetStatValue(StatDefOf.Mass);
-                    }
-                }
-            }
+            float summedMass = RM_SpanUtility.LoadOn(map, cells, parent.Faction, RimMandrakeFlowWorksSettings.superdeepCapturesOwnFaction, onCover);
 
             float threshold = tierKg * RimMandrakeFlowWorksSettings.trapSensitivityMultiplier;
             if (onCover.Count > 0 && summedMass >= threshold)

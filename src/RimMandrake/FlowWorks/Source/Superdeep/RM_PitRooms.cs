@@ -87,9 +87,9 @@ namespace RimMandrake.FlowWorks
 			{
 				int d = eng.ExcavatedDepthAt(c);
 				return d > 0 && RM_RelativeRulesMath.PitRoomCell(RM_PocketGrid.IsPersonPocketCell(map, c), d, MinRoomNotches)
-					&& !Pits.RM_PitCoverUtility.IsCovered(map, c);
+					&& !Pits.RM_SpanUtility.DeckedAt(map, c);
 			}
-			return eng.IsSuperdeepExcavation(c) && !Pits.RM_PitCoverUtility.IsCovered(map, c);
+			return eng.IsSuperdeepExcavation(c) && !Pits.RM_SpanUtility.DeckedAt(map, c);
 		}
 
 		/// <summary>The cheap "could any cell be a pit floor" early-out for IsPitFloor's callers.</summary>

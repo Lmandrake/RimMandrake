@@ -59,6 +59,8 @@
     <Compile Include="..\Superdeep\RM_FlowDoorFacingMath.cs" />
     <Compile Include="..\Superdeep\RM_LadderWallMath.cs" />
     <Compile Include="LadderWallChecks.cs" />
+    <Compile Include="..\RM_SpanMath.cs" />
+    <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\RM_PocketGridMath.cs" />
     <Compile Include="..\RM_CliffMaskMath.cs" />
     <Compile Include="..\RM_WakeMath.cs" />

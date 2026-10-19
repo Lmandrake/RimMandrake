@@ -93,14 +93,18 @@ def open_pit_guard_probs(text, rel):
 
 
 def main():
+    # SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: Spring is the span base's Collapse over the cover's whole deck.
     cover = (SRC / "Pits" / "Building_PitCover.cs").read_text(encoding="utf-8")
-    spring = method_body(cover, "public void Spring(List<Pawn> fallers)")
+    assert re.search(r"public void Spring\(List<Pawn> fallers\)\s*\{\s*Collapse\(fallers\);", cover), "Spring no longer collapses the span"
+    assert "return new List<Building_SpanDeck>(RM_PitCoverUtility.Deck(this));" in cover, "a cover's span is no longer its whole deck"
+    base = (SRC / "Pits" / "Building_SpanDeck.cs").read_text(encoding="utf-8")
+    spring = method_body(base, "public void Collapse(List<Pawn> fallers)")
     destroy = spring.find("c.Destroy(")
     descend = spring.find("OnForcedDescent(")
-    assert destroy >= 0, "Spring no longer destroys the covers"
-    assert descend >= 0, "Spring no longer sends the fallers down"
-    assert destroy < descend, "Spring sends fallers down before the cover is gone"
-    assert re.search(r"foreach \(Building_PitCover c in deck\)", spring), "Spring no longer breaks the WHOLE deck"
+    assert destroy >= 0, "Collapse no longer destroys the decks"
+    assert descend >= 0, "Collapse no longer sends the fallers down"
+    assert destroy < descend, "Collapse sends fallers down before the deck is gone"
+    assert re.search(r"foreach \(Building_SpanDeck c in span\)", spring), "Collapse no longer breaks the WHOLE span"
     # every forced descent outside the trap itself goes through Spring
     callers = []
     for f in SRC.rglob("*.cs"):
@@ -109,14 +113,14 @@ def main():
         for n, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
             if "OnForcedDescent(" in line and "static void OnForcedDescent" not in line and "///" not in line:
                 callers.append((f.relative_to(SRC).as_posix(), n))
-    probe = [c for c in callers if c[0] == "Pits/Building_PitCover.cs"]
+    probe = [c for c in callers if c[0] == "Pits/Building_SpanDeck.cs"]
     assert probe, "sanity probe: the Spring call site itself must be found (%s)" % callers
     trap = (SRC / "Superdeep" / "RM_SuperdeepTrap.cs").read_text(encoding="utf-8")
     det = [c for c in callers if c[0] == "Superdeep/RM_SuperdeepTrap.cs"]
     # the detector, and PIT_FALL_MEND_SAVED_MIDAIR's ResolveArrivalNow (a jump judged at once by the detector's own test)
     assert len(det) == 2, "the trap file should call OnForcedDescent twice (the detector, ResolveArrivalNow), found %s" % det
     probs = detector_guard_probs(trap) + resolve_now_guard_probs(trap)
-    for f in sorted({f for f, _ in callers} - {"Pits/Building_PitCover.cs", "Superdeep/RM_SuperdeepTrap.cs"}):
+    for f in sorted({f for f, _ in callers} - {"Pits/Building_SpanDeck.cs", "Superdeep/RM_SuperdeepTrap.cs"}):
         probs += open_pit_guard_probs((SRC / f).read_text(encoding="utf-8"), f)
     assert not probs, "a forced descent can pass through an intact cover: %s" % probs
     held = method_body(trap, "public static bool IsHeldAt(Pawn p, IntVec3 c)")

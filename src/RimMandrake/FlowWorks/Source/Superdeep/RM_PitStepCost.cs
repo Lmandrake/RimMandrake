@@ -56,16 +56,17 @@ namespace RimMandrake.FlowWorks
 			// An intact pit cover is ground (PIT_COVER_FALL_REWIRE_1): stepping on or off a deck is surface walking, never a
 			// climb out of the hole beneath it. RM_Patch_PathGrid_PitCoverCost prices the covered cell itself.
 			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: the climb depth (a dug swim square at its water surface), not the bare hole
+			// SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: a decked cell reads its deck's walking height (a cover's is 0, the surface).
 			int to = eng.ClimbDepthAt(c);
-			Pits.Building_PitCover toCover = to > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, c) : null;
+			Pits.Building_SpanDeck toCover = to > 0 ? Pits.RM_SpanUtility.DeckAt(map, c) : null;
 			if (toCover != null)
 			{
-				to = 0;
+				to = RM_SpanMath.WalkingDepth(to, toCover.Read);
 			}
 			int from = eng.ClimbDepthAt(prevCell);
-			if (from > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prevCell))
+			if (from > 0 && Pits.RM_SpanUtility.DeckedAt(map, prevCell, out float fromDeckM))
 			{
-				from = 0;
+				from = System.Math.Min(from, RM_SpanMath.Notches(fromDeckM));
 			}
 			if ((to == 0 && from == 0) || (to > 0 && eng.FillAt(c) > 0))
 			{
@@ -105,6 +106,18 @@ namespace RimMandrake.FlowWorks
 				RM_ClimbJoins.ForPawn(map, eng, from, to, fromD, toD, p, out viaLadder, out viaRamp);
 			}
 			int perLevel = RM_ClimbJoins.LadderCostPerLevel(climbCost);
+			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: a step taller than the wearer climbs unaided is taken on the climbing gear,
+			// slowly, per level (like a ladder, at the gear's own slowness). The rest of its steps cost what they always did.
+			if (p != null && !viaRamp && !viaLadder && RM_PocketGrid.ClimbsOnGear(p))
+			{
+				int natural = RM_PocketGrid.NaturalClimbLimitOf(p);
+				if (RM_PitAccessMath.StepOnGear(fromD, toD, natural, true))
+				{
+					int gearPerLevel = Mathf.RoundToInt(climbCost * Mathf.Max(1f, RimMandrakeFlowWorksSettings.climbingGearSlowness));
+					return RM_PitTrapMath.StepCost(fromD, toD, natural, climbCost, false, true, gearPerLevel);
+				}
+				k = natural;
+			}
 			return RM_PitTrapMath.StepCost(fromD, toD, k, climbCost, viaRamp, viaLadder, perLevel,
 				RimMandrakeFlowWorksSettings.pitSlowClimbFactor);
 		}
